@@ -19,12 +19,17 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		Constraint,
 		/// <summary>
-		/// The color used to draw selected constraints
-		/// during a role picker mouse action
+		/// The colors used to draw an active constraint
+		/// and its associated roles.
+		/// </summary>
+		ActiveConstraint,
+		/// <summary>
+		/// The color used to display error conditions
+		/// on internal constraints
 		/// </summary>
 		ConstraintError,
 		/// <summary>
-		/// The color used to draw selected constraints
+		/// The colors used to draw selected constraints
 		/// during a role picker mouse action
 		/// </summary>
 		RolePicker,
@@ -83,6 +88,10 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		public const string ConstraintErrorColorName = "ORM Constraint (Error)";
 		/// <summary>
+		/// The unlocalized name for the active constraint display item
+		/// </summary>
+		public const string ActiveConstraintColorName = "ORM Constraint (Active)";
+		/// <summary>
 		/// The unlocalized name for the role highlight display item
 		/// </summary>
 		public const string RolePickerColorName = "ORM Role Picker";
@@ -126,6 +135,13 @@ namespace Northface.Tools.ORM.Shell
 			(uint)ColorTranslator.ToWin32(Color.Violet),
 			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
 			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS,
+			false)
+			,new DefaultColorSetting(
+			ActiveConstraintColorName,
+			ResourceStrings.FontsAndColorsActiveConstraintColorId,
+			(uint)COLORINDEX.CI_SYSSEL_FG | StandardPaletteBit,
+			(uint)COLORINDEX.CI_SYSSEL_BK | StandardPaletteBit,
+			__FCITEMFLAGS.FCIF_ALLOWBGCHANGE | __FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS,
 			false)
 			,new DefaultColorSetting(
 			ConstraintErrorColorName,
@@ -499,6 +515,9 @@ namespace Northface.Tools.ORM.Shell
 					break;
 				case ORMDesignerColor.RolePicker:
 					retVal = RolePickerColorName;
+					break;
+				case ORMDesignerColor.ActiveConstraint:
+					retVal = ActiveConstraintColorName;
 					break;
 				default:
 					Debug.Assert(false); // The cases may not match all of the ORMDesignerColor enums.

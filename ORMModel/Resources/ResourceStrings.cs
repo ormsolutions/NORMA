@@ -267,6 +267,10 @@ namespace Northface.Tools.ORM
 		/// </summary>
 		public const string FontsAndColorsConstraintErrorColorId = "FontsAndColors.ConstraintErrorColor";
 		/// <summary>
+		/// Display name for the color used to draw an active ORM constraint and associated roles
+		/// </summary>
+		public const string FontsAndColorsActiveConstraintColorId = "FontsAndColors.ActiveConstraintColor";
+		/// <summary>
 		/// Display name for the color used to draw the constraint box for role sequence editing
 		/// </summary>
 		public const string FontsAndColorsRolePickerColorId = "FontsAndColors.RolePickerColor";
@@ -291,6 +295,9 @@ namespace Northface.Tools.ORM
 		private const string InternalUniquenessConstraintConnectActionTransactionName_Id = "InternalUniquenessConstraintConnectAction.TransactionName";
 		private const string RoleConnectActionTransactionName_Id = "RoleConnectAction.TransactionName";
 		private const string OptionsPageChangeTransactionName_Id = "OptionsPageChange.TransactionName";
+		private const string DeleteRoleSequenceTransactionName_Id = "DeleteRoleSequence.TransactionName";
+		private const string MoveRoleSequenceDownTransactionName_Id = "MoveRoleSequenceDown.TransactionName";
+		private const string MoveRoleSequenceUpTransactionName_Id = "MoveRoleSequenceUp.TransactionName";
 		private const string ModelBrowserWindowTitle_Id = "ORMModelBrowser.WindowTitle";
 		private const string ModelExceptionReadingIsPrimaryToFalse_Id = "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse";
 		private const string ModelExceptionReadingTextChangeInvalid_Id = "ModelException.Reading.Text.InvalidText";
@@ -554,6 +561,42 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Diagram, OptionsPageChangeTransactionName_Id);
+			}
+		}
+		/// <summary>
+		/// The transaction name used for deleting a role sequence from a
+		/// multi column external uniqueness constraint. The text appears
+		/// in the undo dropdown in the VS IDE.
+		/// </summary>
+		public static string DeleteRoleSequenceTransactionName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, DeleteRoleSequenceTransactionName_Id);
+			}
+		}
+		/// <summary>
+		/// The transaction name used for moving a role sequence down in
+		/// a multi column external uniqueness constraint. The text appears
+		/// in the undo dropdown in the VS IDE.
+		/// </summary>
+		public static string MoveRoleSequenceDownTransactionName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, MoveRoleSequenceDownTransactionName_Id);
+			}
+		}
+		/// <summary>
+		/// The transaction name used for moving a role sequence up in
+		/// a multi column external uniqueness constraint. The text appears
+		/// in the undo dropdown in the VS IDE. 
+		/// </summary>
+		public static string MoveRoleSequenceUpTransactionName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, MoveRoleSequenceUpTransactionName_Id);
 			}
 		}
 		/// <summary>

@@ -175,7 +175,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
 			PenSettings penSettings = new PenSettings();
-			penSettings.Width = 1.0F / 72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
+			penSettings.Width = 1.4F / 72.0F; // 1.4 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			penSettings.Alignment = PenAlignment.Center;
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, penSettings);
 		}

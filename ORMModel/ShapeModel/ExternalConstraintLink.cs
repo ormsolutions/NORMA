@@ -18,11 +18,15 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <param name="classStyleSet"></param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
+			ORMDesignerFontsAndColors colorService = ORMDesignerPackage.FontAndColorService;
 			PenSettings settings = new PenSettings();
-			settings.Color = ORMDesignerPackage.FontAndColorService.GetForeColor(ORMDesignerColor.Constraint);
+			settings.Color = colorService.GetForeColor(ORMDesignerColor.Constraint);
 			settings.DashStyle = DashStyle.Dash;
 			settings.Width = 1.0F/72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, settings);
+
+			settings.Color = colorService.GetBackColor(ORMDesignerColor.ActiveConstraint);
+			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ConnectionLine, settings);
 		}
 		/// <summary>
 		/// Use a center to center routing style
@@ -45,6 +49,25 @@ namespace Northface.Tools.ORM.ShapeModel
 			get
 			{
 				return false;
+			}
+		}
+		/// <summary>
+		/// Draw the connection lines as sticky along with the constraint
+		/// and associated roles
+		/// </summary>
+		public override StyleSetResourceId OutlinePenId
+		{
+			get
+			{
+				PresentationElement stickyPel;
+				IFactConstraint factConstraint;
+				if (null != (stickyPel = (Diagram as ORMDiagram).StickyObject as PresentationElement) &&
+					null != (factConstraint = AssociatedFactConstraint as IFactConstraint) &&
+					object.ReferenceEquals(stickyPel.ModelElement, factConstraint.Constraint))
+				{
+					return ORMDiagram.StickyBackgroundResource;
+				}
+				return DiagramPens.ConnectionLine;
 			}
 		}
 		#endregion // Customize appearance

@@ -41,14 +41,15 @@ namespace Northface.Tools.ORM.ShapeModel
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
 			PenSettings penSettings = new PenSettings();
-			penSettings.Color = ORMDesignerPackage.FontAndColorService.GetForeColor(ORMDesignerColor.Constraint);
+			ORMDesignerFontsAndColors colorService = ORMDesignerPackage.FontAndColorService;
+			penSettings.Color = colorService.GetForeColor(ORMDesignerColor.Constraint);
 			penSettings.Width = 1.35F / 72.0F; // 1.35 Point.
 			classStyleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
 			BrushSettings brushSettings = new BrushSettings();
 			brushSettings.Color = penSettings.Color;
 			classStyleSet.AddBrush(MandatoryDotBrush, DiagramBrushes.ShapeBackground, brushSettings);
 
-			penSettings.Color = SystemColors.Highlight;
+			penSettings.Color = colorService.GetBackColor(ORMDesignerColor.ActiveConstraint);
 			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ShapeOutline, penSettings);
 		}
 		/// <summary>
@@ -313,41 +314,44 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		private void RedrawAssociatedPels()
 		{
-			if (null != AssociatedConstraint)
+			IConstraint constraint = AssociatedConstraint;
+			if (null != constraint)
 			{
-				switch (AssociatedConstraint.ConstraintStorageStyle)
+				Diagram diagram = this.Diagram;
+				switch (constraint.ConstraintStorageStyle)
 				{
 					case ConstraintStorageStyle.SingleColumnExternalConstraint:
-						SingleColumnExternalConstraint scec = AssociatedConstraint as SingleColumnExternalConstraint;
-						foreach (Role r in scec.RoleCollection)
+						SingleColumnExternalConstraint scec = constraint as SingleColumnExternalConstraint;
+						foreach (SingleColumnExternalFactConstraint factConstraint in scec.GetElementLinks(SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid))
 						{
-							RedrawOwningFactType(r);
+							// Redraw the line
+							RedrawPelsOnDiagram(factConstraint, diagram);
+							// Redraw the fact type
+							RedrawPelsOnDiagram(factConstraint.FactTypeCollection, diagram);
 						}
 						break;
 					case ConstraintStorageStyle.MultiColumnExternalConstraint:
-						MultiColumnExternalConstraint mcec = AssociatedConstraint as MultiColumnExternalConstraint;
-						foreach (MultiColumnExternalConstraintRoleSequence mcecRs in mcec.RoleSequenceCollection)
+						MultiColumnExternalConstraint mcec = constraint as MultiColumnExternalConstraint;
+						foreach (MultiColumnExternalFactConstraint factConstraint in mcec.GetElementLinks(MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid))
 						{
-							foreach (Role r in mcecRs.RoleCollection)
-							{
-								RedrawOwningFactType(r);
-							}
+							// Redraw the line
+							RedrawPelsOnDiagram(factConstraint, diagram);
+							// Redraw the fact type
+							RedrawPelsOnDiagram(factConstraint.FactTypeCollection, diagram);
 						}
-						break;
-					default:
 						break;
 				}
 			}
 			Invalidate(true);
 		}
-		private void RedrawOwningFactType(Role role)
+		private static void RedrawPelsOnDiagram(ModelElement element, Diagram diagram)
 		{
-			PresentationElementMoveableCollection pels = role.FactType.PresentationRolePlayers;
+			PresentationElementMoveableCollection pels = element.PresentationRolePlayers;
 			int pelsCount = pels.Count;
 			for (int i = 0; i < pelsCount; ++i)
 			{
 				ShapeElement shape = pels[i] as ShapeElement;
-				if (shape != null)
+				if (shape != null && object.ReferenceEquals(shape.Diagram, diagram))
 				{
 					shape.Invalidate(true);
 				}

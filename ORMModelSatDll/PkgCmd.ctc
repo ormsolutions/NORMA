@@ -46,9 +46,9 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdViewModelExplorer,			guidSHLMainMenu:IDG_VS_VIEW_WINDOWS,				0x0600,		guidOfficeIcon:msotcidNoIcon,	BUTTON,		DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Model Explorer";
 		guidORMDesignerCommandSet:cmdIdActivateRoleSequence			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0603,	guidOfficeIcon:msotcidNoIcon,	BUTTON,		DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"&Edit Role Sequence";
 		guidORMDesignerCommandSet:cmdIdDeleteRoleSequence			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0604,	guidOfficeIcon:msotcidNoIcon,	BUTTON,		DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"&Delete Role Sequence";
-		guidORMDesignerCommandSet:cmdIdEditExternalConstraint		guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0605,	guidOfficeIcon:msotcidNoIcon,	BUTTON,		DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Edit &Constaint";
-		guidORMDesignerCommandSet:cmdIdMoveRoleSequenceUp			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0606,	guidOfficeIcon:msotcidNoIcon,	BUTTON,		DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Sequence &Up";
-		guidORMDesignerCommandSet:cmdIdMoveRoleSequenceDown			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0607,	guidOfficeIcon:msotcidNoIcon,	BUTTON,		DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Sequence &Down";
+		guidORMDesignerCommandSet:cmdIdEditExternalConstraint		guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0605,	guidOfficeIcon:msotcidNoIcon,	BUTTON,		DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Edit &Constraint";
+		guidORMDesignerCommandSet:cmdIdMoveRoleSequenceUp			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0606,	guidOfficeIcon:msotcidNoIcon,	BUTTON,		DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Role Sequence &Up";
+		guidORMDesignerCommandSet:cmdIdMoveRoleSequenceDown			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0607,	guidOfficeIcon:msotcidNoIcon,	BUTTON,		DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Role Sequence &Down";
 		guidORMDesignerCommandSet:cmdIdViewReadingEditor,			guidORMDesignerCommandSet:groupIdFactCommands,		0x0610,		guidOfficeIcon:msotcidNoIcon,	 BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Readings Window";
 		guidORMDesignerCommandSet:cmdIdViewFactEditor,				guidORMDesignerCommandSet:groupIdFactCommands,		0x0620,		guidOfficeIcon:msotcidNoIcon,	 BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Fact Editor";
 

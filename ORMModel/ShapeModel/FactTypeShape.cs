@@ -1380,7 +1380,7 @@ namespace Northface.Tools.ORM.ShapeModel
 								}
 								if (connectActionBrush == null)
 								{
-									connectActionBrush = currentDiagram.StyleSet.GetBrush(DiagramBrushes.CommentText);
+									connectActionBrush = styleSet.GetBrush(RolePickerForeground);
 								}
 								g.DrawString((activeRoleIndex + 1).ToString(), connectActionFont, connectActionBrush, roleBounds, stringFormat);
 							}
@@ -1664,6 +1664,10 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		protected static readonly StyleSetResourceId RoleBoxResource = new StyleSetResourceId("Northface", "RoleBoxResource");
 		/// <summary>
+		/// Brush to draw the foreground text for a role picker  
+		/// </summary>
+		protected static readonly StyleSetResourceId RolePickerForeground = new StyleSetResourceId("Northface", "RolePickerForeground");
+		/// <summary>
 		/// Pen to draw the active part of an internal uniqueness constraint.
 		/// </summary>
 		protected static readonly StyleSetResourceId InternalFactConstraintPen = new StyleSetResourceId("Northface", "InternalFactConstraintPen");
@@ -1775,9 +1779,13 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			ORMDesignerFontsAndColors fontsAndColors = ORMDesignerPackage.FontAndColorService;
 			Color constraintForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.Constraint);
+			Color rolePickerForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.RolePicker);
 			Color rolePickerBackColor = fontsAndColors.GetBackColor(ORMDesignerColor.RolePicker);
 
 			BrushSettings brushSettings = new BrushSettings();
+			brushSettings.Color = rolePickerForeColor;
+			classStyleSet.AddBrush(RolePickerForeground, DiagramBrushes.DiagramBackground, brushSettings);
+
 			brushSettings.Color = rolePickerBackColor;
 			classStyleSet.AddBrush(RoleBoxResource, DiagramBrushes.DiagramBackground, brushSettings);
 

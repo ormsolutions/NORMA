@@ -130,6 +130,10 @@
     <value xml:space="preserve">&amp;Delete Role</value>
     <comment xml:space="preserve">This text appears in the edit menu when roles are selected in the diagram.</comment>
   </data>
+  <data name="DeleteRoleSequence.TransactionName">
+    <value xml:space="preserve">Delete Role Sequence</value>
+    <comment xml:space="preserve">The transaction name used for deleting a role sequence from a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
   <data name="ExternalConstraintConnectAction.Instructions">
     <value xml:space="preserve">To select role sequences to populate the constraint:
 -Click a role to add it to an argument set
@@ -206,6 +210,10 @@
     <value xml:space="preserve">ORM Fact Editor</value>
     <comment xml:space="preserve">This is the caption that appears in the title bar of the Fact Editor tool window.</comment>
   </data>
+  <data name="FontsAndColors.ActiveConstraintColor">
+    <value xml:space="preserve">Constraint (Activated)</value>
+    <comment xml:space="preserve">Display name for the color used to draw an active ORM constraint and associated roles</comment>
+  </data>
   <data name="FontsAndColors.CategoryName">
     <value xml:space="preserve">ORM Designer</value>
     <comment xml:space="preserve">Display name for the ORM Designer fonts and colors category</comment>
@@ -233,6 +241,14 @@
   <data name="InternalUniquenessConstraintConnectAction.TransactionName">
     <value xml:space="preserve">Add Constraint Role Sequence</value>
     <comment xml:space="preserve">The transaction name used by the internal uniqueness constraint connect action. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
+  <data name="MoveRoleSequenceDown.TransactionName">
+    <value xml:space="preserve">Move Role Sequence Down</value>
+    <comment xml:space="preserve">The transaction name used for moving a role sequence down in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
+  <data name="MoveRoleSequenceUp.TransactionName">
+    <value xml:space="preserve">Move Role Sequence Up</value>
+    <comment xml:space="preserve">The transaction name used for moving a role sequence up in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
   <data name="OptionsPage.Category.Appearance">
     <value xml:space="preserve">Appearance</value>

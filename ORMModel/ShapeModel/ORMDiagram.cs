@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
+using Northface.Tools.ORM.Shell;
 namespace Northface.Tools.ORM.ShapeModel
 {
 	#region IStickyObject interface
@@ -368,20 +369,23 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			base.InitializeResources(classStyleSet);
 
+			ORMDesignerFontsAndColors colorService = ORMDesignerPackage.FontAndColorService;
+			Color stickyBackColor = colorService.GetBackColor(ORMDesignerColor.ActiveConstraint);
+			Color stickyForeColor = colorService.GetForeColor(ORMDesignerColor.ActiveConstraint);
 			BrushSettings brushSettings = new BrushSettings();
-			brushSettings.Color = SystemColors.Highlight;
+			brushSettings.Color = stickyBackColor;
 			classStyleSet.AddBrush(StickyBackgroundResource, DiagramBrushes.ShapeBackgroundSelected, brushSettings);
 
-			brushSettings.Color = SystemColors.HighlightText;
+			brushSettings.Color = stickyForeColor;
 			classStyleSet.AddBrush(StickyForegroundResource, DiagramBrushes.ShapeText, brushSettings);
 
 			PenSettings penSettings = new PenSettings();
-			penSettings.Color = SystemColors.Highlight;
+			penSettings.Color = stickyBackColor;
 			penSettings.Width = 1.0F / 72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			penSettings.Alignment = PenAlignment.Center;
 			classStyleSet.AddPen(StickyBackgroundResource, DiagramPens.ShapeHighlightOutline, penSettings);
 
-			penSettings.Color = SystemColors.HighlightText;
+			penSettings.Color = stickyForeColor;
 			classStyleSet.AddPen(StickyForegroundResource, DiagramPens.ShapeHighlightOutline, penSettings);
 		}
 
@@ -806,7 +810,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return Shell.ORMDesignerPackage.FontAndColorService.GetFont();
+				return ORMDesignerPackage.FontAndColorService.GetFont();
 			}
 		}
 		#endregion // Other base overrides
@@ -880,8 +884,8 @@ namespace Northface.Tools.ORM.ShapeModel
 			const int luminosityCheck = 160;
 			const int luminosityFixedDelta = 60;
 			const int luminosityIncrementalDelta = 30;
-			const double luminosityFixedFactor = 0.95;
-			const double luminosityIncrementalFactor = -0.08;
+			const double luminosityFixedFactor = 0.93;
+			const double luminosityIncrementalFactor = -0.06;
 			return (startLuminosity >= luminosityCheck) ?
 				(int)(startLuminosity * (luminosityFixedFactor + (luminosityIncrementalFactor * (double)(maxLuminosity - startLuminosity) / (maxLuminosity - luminosityCheck)))) :
 				(startLuminosity + luminosityFixedDelta + (int)((double)(luminosityCheck - startLuminosity)/luminosityCheck * luminosityIncrementalDelta));

@@ -642,7 +642,7 @@ namespace Northface.Tools.ORM.Shell
 					ConstraintRoleSequenceMoveableCollection roleConstraints = role.ConstraintRoleSequenceCollection;
 
 					int constraintCount = roleConstraints.Count;
-					using (Transaction t = role.Store.TransactionManager.BeginTransaction("__Role Sequence deleted__"))
+					using (Transaction t = role.Store.TransactionManager.BeginTransaction(ResourceStrings.DeleteRoleSequenceTransactionName))
 					{
 						for (int i = constraintCount - 1; i >= 0; --i)
 						{
@@ -709,7 +709,7 @@ namespace Northface.Tools.ORM.Shell
 
 				if (sequenceToMove != null)
 				{
-					using (Transaction trans = role.Store.TransactionManager.BeginTransaction("__Role Sequence Moved Down"))
+					using (Transaction trans = role.Store.TransactionManager.BeginTransaction(ResourceStrings.MoveRoleSequenceDownTransactionName))
 					{
 						if (sequenceOriginalPosition > 0)
 						{
@@ -770,7 +770,7 @@ namespace Northface.Tools.ORM.Shell
 
 				if (sequenceToMove != null)
 				{
-					using (Transaction trans = role.Store.TransactionManager.BeginTransaction("__Role Sequence Moved Up"))
+					using (Transaction trans = role.Store.TransactionManager.BeginTransaction(ResourceStrings.MoveRoleSequenceUpTransactionName))
 					{
 						if (sequenceOriginalPosition < lastPosition)
 						{
