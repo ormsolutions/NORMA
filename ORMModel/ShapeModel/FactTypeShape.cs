@@ -219,7 +219,8 @@ namespace Northface.Tools.ORM.ShapeModel
 				Array.Sort(boxes, Compare);
 				int fullBoxCount = boxes.Length;
 				int significantBoxCount = 0;
-				for (int i = 0; i < fullBoxCount; ++i)
+				int i;
+				for (i = 0; i < fullBoxCount; ++i)
 				{
 					if (IsConstraintTypeVisible(boxes[i].ConstraintType))
 					{
@@ -232,6 +233,10 @@ namespace Northface.Tools.ORM.ShapeModel
 						significantBoxCount = i;
 						break;
 					}
+				}
+				if (i == fullBoxCount)
+				{
+					significantBoxCount = fullBoxCount;
 				}
 				return significantBoxCount;
 			}
@@ -428,6 +433,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					{
 						predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_FullySpanning;
 					}
+					else
 					{
 						switch (factRoleCount)
 						{

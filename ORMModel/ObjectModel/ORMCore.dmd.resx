@@ -234,4 +234,22 @@
   <data name="Northface.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern">
     <value xml:space="preserve">ValueType{0}</value>
   </data>
+  <data name="RoleCardinality.ExactlyOne">
+    <value xml:space="preserve">1</value>
+  </data>
+  <data name="RoleCardinality.Indeterminate">
+    <value xml:space="preserve">Indeterminate</value>
+  </data>
+  <data name="RoleCardinality.OneToMany">
+    <value xml:space="preserve">1...n</value>
+  </data>
+  <data name="RoleCardinality.Unspecified">
+    <value xml:space="preserve">Unspecified</value>
+  </data>
+  <data name="RoleCardinality.ZeroToMany">
+    <value xml:space="preserve">0...n</value>
+  </data>
+  <data name="RoleCardinality.ZeroToOne">
+    <value xml:space="preserve">0...1</value>
+  </data>
 </root>

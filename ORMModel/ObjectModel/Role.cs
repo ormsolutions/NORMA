@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 
@@ -203,6 +204,60 @@ namespace Northface.Tools.ORM.ObjectModel
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
 		#endregion // CustomStorage handlers
+		#region Cardinality Display
+		/// <summary>
+		/// Override to create a custom property descriptor for
+		/// cardinality that does not include the Indeterminate
+		/// and Unspecified values in the dropdown.
+		/// </summary>
+		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes)
+		{
+			if (metaAttributeInfo.Id == CardinalityMetaAttributeGuid)
+			{
+				return new CardinalityPropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
+			}
+			return base.CreatePropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
+		}
+		/// <summary>
+		/// A property descriptor that filters out some standard values from
+		/// the type converter.
+		/// </summary>
+		protected class CardinalityPropertyDescriptor : ElementPropertyDescriptor
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			/// <param name="modelElement">Passed to base</param>
+			/// <param name="metaAttributeInfo">Passed to base</param>
+			/// <param name="requestor">Passed to base</param>
+			/// <param name="attributes">Passed to base</param>
+			public CardinalityPropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes) : base(modelElement, metaAttributeInfo, requestor, attributes)
+			{
+			}
+			/// <summary>
+			/// Return a custom typeconverter that
+			/// limits the predefined values.
+			/// </summary>
+			/// <value></value>
+			public override TypeConverter Converter
+			{
+				get
+				{
+					return new FilteredCardinalityConverter((EnumerationDomain)MetaAttributeInfo.Domain);
+				}
+			}
+			private class FilteredCardinalityConverter : ModelingEnumerationConverter
+			{
+				public FilteredCardinalityConverter(EnumerationDomain domain) : base(domain)
+				{
+				}
+				public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+				{
+					return new StandardValuesCollection(new RoleCardinality[] { RoleCardinality.ZeroToOne, RoleCardinality.ZeroToMany, RoleCardinality.ExactlyOne, RoleCardinality.OneToMany });
+				}
+			}
+		}
+		#endregion // Cardinality Display
 		#region RoleChangeRule class
 		[RuleOn(typeof(Role))]
 		private class RoleChangeRule : ChangeRule
