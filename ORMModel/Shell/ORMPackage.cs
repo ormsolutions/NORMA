@@ -35,6 +35,7 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		private object myCommandSet;
 		private IVsWindowFrame myFactEditorToolWindow = null;
+		private ORMDesignerFontsAndColors myFontAndColorService = null;
 		private static ORMDesignerPackage mySingleton;
 		#endregion
 		#region Construction/destruction
@@ -57,6 +58,17 @@ namespace Northface.Tools.ORM.Shell
 			{
 				ORMDesignerPackage package = mySingleton;
 				return (package != null) ? package.myCommandSet : null;
+			}
+		}
+		/// <summary>
+		/// Gets the singleton font and color service for this package
+		/// </summary>
+		public static ORMDesignerFontsAndColors FontAndColorService
+		{
+			get
+			{
+				ORMDesignerPackage package = mySingleton;
+				return (package != null) ? package.myFontAndColorService : null;
 			}
 		}
 		#endregion // Properties
@@ -84,7 +96,8 @@ namespace Northface.Tools.ORM.Shell
 			if (!SetupMode)
 			{
 				IServiceContainer service = (IServiceContainer)this;
-				service.AddService(typeof(ORMDesignerFontsAndColors), new ORMDesignerFontsAndColors(), true);
+				myFontAndColorService = new ORMDesignerFontsAndColors(this);
+				service.AddService(typeof(ORMDesignerFontsAndColors), myFontAndColorService, true);
 #if FACTEDITORPROTOTYPE
 				service.AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
 #endif // FACTEDITORPROTOTYPE

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
+using Northface.Tools.ORM.Shell;
 
 namespace Northface.Tools.ORM.ShapeModel
 {
@@ -1568,12 +1569,12 @@ namespace Northface.Tools.ORM.ShapeModel
 			classStyleSet.AddPen(RoleBoxOutlinePen, DiagramPens.ShapeOutline, penSettings);
 
 			BrushSettings brushSettings = new BrushSettings();
-			brushSettings.Color = Color.Yellow;
+			brushSettings.Color = ORMDesignerPackage.FontAndColorService.GetBackColor(ORMDesignerColor.RolePicker);
 			classStyleSet.AddBrush(SelectedConstraintRoleBackgroundBrush, DiagramBrushes.DiagramBackground, brushSettings);
-			brushSettings.Color = Color.Gold;
+			brushSettings.Color = ORMDiagram.ModifyLuminosity(brushSettings.Color);
 			classStyleSet.AddBrush(SelectedConstraintRoleHighlightedBackgroundBrush, DiagramBrushes.DiagramBackground, brushSettings);
 
-			penSettings.Color = Color.Violet;
+			penSettings.Color = ORMDesignerPackage.FontAndColorService.GetForeColor(ORMDesignerColor.Constraint);
 			classStyleSet.AddPen(InternalFactConstraintPen, DiagramPens.ShapeOutline, penSettings);
 
 			penSettings.DashStyle = DashStyle.Dash;

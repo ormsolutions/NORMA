@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
+using Northface.Tools.ORM.Shell;
 namespace Northface.Tools.ORM.ShapeModel
 {
 	public partial class ExternalConstraintShape
@@ -39,11 +40,11 @@ namespace Northface.Tools.ORM.ShapeModel
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
 			PenSettings penSettings = new PenSettings();
-			penSettings.Color = Color.Violet;
+			penSettings.Color = ORMDesignerPackage.FontAndColorService.GetForeColor(ORMDesignerColor.Constraint);
 			penSettings.Width = 1.35F / 72.0F; // 1.35 Point.
 			classStyleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
 			BrushSettings brushSettings = new BrushSettings();
-			brushSettings.Color = Color.Violet;
+			brushSettings.Color = penSettings.Color;
 			classStyleSet.AddBrush(MandatoryDotBrush, DiagramBrushes.ShapeBackground, brushSettings);
 		}
 		/// <summary>

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
@@ -625,6 +626,31 @@ namespace Northface.Tools.ORM.ShapeModel
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
 		#endregion // Display Properties
+		#region Utility Methods
+		// UNDONE: The framework should make this algorithm
+		// publicly available, along with a mechanism to modify
+		// the constants, so that all luminosity checks look the same
+		/// <summary>
+		/// Modify the luminosity for a given color. This
+		/// duplicates the algorithm in ShapeElement.GetShapeLuminosity,
+		/// which is not available because it is only run for shape elements
+		/// in the DiagramClientView.HighlightedShapes collection.
+		/// </summary>
+		/// <param name="startColor">The original color</param>
+		/// <returns>The modified color</returns>
+		public static Color ModifyLuminosity(Color startColor)
+		{
+			const int luminosityCheck = 160;
+			const int luminosityDelta = 40;
+			const double luminosityFactor = 0.9;
+			HslColor hslColor = HslColor.FromRgbColor(startColor);
+			int startLuminosity = hslColor.Luminosity;
+			hslColor.Luminosity = (startLuminosity >= luminosityCheck) ?
+				(int)(startLuminosity * luminosityFactor) :
+				(startLuminosity + luminosityDelta);
+			return hslColor.ToRgbColor();
+		}
+		#endregion // Utility Methods
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return all deserialization fixup listeners for the presentation model

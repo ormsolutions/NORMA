@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Northface.Tools.ORM.ObjectModel;
+using Northface.Tools.ORM.Shell;
 namespace Northface.Tools.ORM.ShapeModel
 {
 	public partial class ExternalConstraintLink
@@ -18,7 +19,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
 			PenSettings settings = new PenSettings();
-			settings.Color = Color.Violet;
+			settings.Color = ORMDesignerPackage.FontAndColorService.GetForeColor(ORMDesignerColor.Constraint);
 			settings.DashStyle = DashStyle.Dash;
 			settings.Width = 1.0F/72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, settings);
