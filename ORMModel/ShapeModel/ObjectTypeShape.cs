@@ -6,12 +6,14 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM;
 using Northface.Tools.ORM.ObjectModel;
+using System.Runtime.InteropServices;
 namespace Northface.Tools.ORM.ShapeModel
 {
 	public partial class ObjectTypeShape
 	{
 		#region Member Variables
 		private static AutoSizeTextField myTextShapeField = null;
+		private static AutoSizeTextField myReferenceModeShapeField = null;
 		private const double HorizontalMargin = 0.2;
 		private const double VerticalMargin = 0.075;
 		private static readonly StyleSetResourceId DashedShapeOutlinePen = new StyleSetResourceId("Northface", "DashedShapeOutlinePen");
@@ -100,9 +102,13 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				SizeD retVal = SizeD.Empty;
 				TextField textShape = TextShapeField;
+				TextField referenceShape = ReferenceModeShapeField;
 				if (textShape != null)
 				{
-					retVal = textShape.GetBounds(this).Size;
+					SizeD textSize = textShape.GetBounds(this).Size;
+					SizeD referenceSize = referenceShape.GetBounds(this).Size;
+					retVal.Width = (textSize.Width > referenceSize.Width) ? textSize.Width : referenceSize.Width;
+					retVal.Height = textSize.Height + referenceSize.Height;
 				}
 				return retVal;
 			}
@@ -115,6 +121,17 @@ namespace Northface.Tools.ORM.ShapeModel
 			get
 			{
 				return myTextShapeField;
+			}
+		}
+
+		/// <summary>
+		/// Retrieve the (singleton) shape field for the text
+		/// </summary>
+		protected TextField ReferenceModeShapeField
+		{
+			get
+			{
+				return myReferenceModeShapeField;
 			}
 		}
 		/// <summary>
@@ -139,17 +156,38 @@ namespace Northface.Tools.ORM.ShapeModel
 			fieldFormat.Alignment = StringAlignment.Center;
 			field.DefaultStringFormat = fieldFormat;
 			field.AssociateValueWith(Store, ObjectTypeShape.ShapeNameMetaAttributeGuid, NamedElement.NameMetaAttributeGuid);
-			
+
+			// Initialize reference mode field
+			AutoSizeTextField referenceModeField = new ReferenceModeAutoSizeTextField();
+			referenceModeField.DrawBorder = false;
+			referenceModeField.FillBackground = false;
+			referenceModeField.DefaultTextBrushId = DiagramBrushes.ShapeTitleText;
+			referenceModeField.DefaultPenId = DiagramPens.ShapeOutline;
+			referenceModeField.DefaultFontId = DiagramFonts.ShapeTitle;
+			referenceModeField.DefaultFocusable = true;
+			referenceModeField.DefaultText = "";
+
+			referenceModeField.DefaultStringFormat = fieldFormat;
+			referenceModeField.AssociateValueWith(Store, ObjectTypeShape.ReferenceModeNameMetaAttributeGuid, ObjectType.ReferenceModeDisplayMetaAttributeGuid);
+
 			// Add all shapes before modifying anchoring behavior
 			shapeFields.Add(field);
+			shapeFields.Add(referenceModeField);
 
 			// Modify anchoring behavior
 			AnchoringBehavior anchor = field.AnchoringBehavior;
+			anchor.SetTopAnchor(AnchoringBehavior.Edge.Top, VerticalMargin);
 			anchor.CenterHorizontally();
-			anchor.CenterVertically();
+
+			// Modify anchoring behavior
+			AnchoringBehavior referenceModeAnchor = referenceModeField.AnchoringBehavior;
+			referenceModeAnchor.CenterHorizontally();
+			referenceModeAnchor.SetTopAnchor(field, AnchoringBehavior.Edge.Bottom, 0);
 
 			Debug.Assert(myTextShapeField == null); // Only called once
 			myTextShapeField = field;
+			Debug.Assert(myReferenceModeShapeField == null); // Only called once
+			myReferenceModeShapeField = referenceModeField;
 		}
 		#endregion // Customize appearance
 		#region ObjectTypeShape specific
@@ -196,5 +234,99 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Shape display update rules
+	}
+
+	/// <summary>
+	/// Temporary class to fer refernce mode to show up.
+	/// </summary>
+	public class ReferenceModeAutoSizeTextField : AutoSizeTextField
+	{
+		//TODO:Remove
+		/// <summary>
+		/// Default constructor
+		/// </summary>
+		public ReferenceModeAutoSizeTextField()
+		{
+			DefaultFocusable = true;
+			DefaultSelectable = true;
+			DefaultVisibility = true;			
+		}
+
+		/// <summary>
+		/// Get the minimum width of the shape field for the current text.
+		/// </summary>
+		/// <param name="parentShape">ShapeElement</param>
+		/// <returns>Width of current text</returns>
+		public override double GetMinimumWidth(ShapeElement parentShape)
+		{
+			ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
+			ObjectType objectType = parentShape.ModelElement as ObjectType;
+			if (objectType != null)
+			{
+				if (!objectType.IsValueType && !objectTypeShape.ExpandRefMode)
+				{
+
+					return base.GetMinimumWidth(parentShape);
+				}
+			}
+			return 0;
+		}
+		/// <summary>
+		/// Get the minimum height of the shape field for the current text.
+		/// </summary>
+		/// <param name="parentShape">ShapeElement</param>
+		/// <returns>Width of current text</returns>
+		public override double GetMinimumHeight(ShapeElement parentShape)
+		{
+			ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
+			ObjectType objectType = parentShape.ModelElement as ObjectType;
+			if (objectType != null)
+			{
+				if (!objectType.IsValueType && !objectTypeShape.ExpandRefMode)
+				{
+
+					return base.GetMinimumHeight(parentShape);
+				}
+			}
+			return 0;
+		}
+
+		/// <summary>
+		/// Returns whether or not the text field is visible
+		/// </summary>
+		/// <param name="parentShape"></param>
+		/// <returns></returns>
+		public override bool GetVisible(ShapeElement parentShape)
+		{
+			ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
+			ObjectType objectType = parentShape.ModelElement as ObjectType;
+			if (objectType != null && !objectTypeShape.ExpandRefMode)
+			{
+				if (!objectType.IsValueType)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Overrides the display text to add parenthesis
+		/// </summary>
+		/// <param name="parentShape"></param>
+		/// <returns></returns>
+		public override string GetDisplayText(ShapeElement parentShape)
+		{
+			
+			ObjectType objectType = parentShape.ModelElement as ObjectType;
+			if (objectType != null)
+			{
+				if (objectType.ReferenceModeDisplay.Length != 0)
+				{
+					return string.Format("({0})", base.GetDisplayText(parentShape));
+				}
+			}
+			return base.GetDisplayText(parentShape);
+		}
 	}
 }

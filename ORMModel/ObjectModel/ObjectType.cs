@@ -206,6 +206,21 @@ namespace Northface.Tools.ORM.ObjectModel
 			InternalUniquenessConstraint ic = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
 			ic.RoleCollection.Add(valueTypeRole); // Automatically sets FactType, setting it again will remove and delete the new constraint
 			this.PreferredIdentifier = ic;
+
+			ReadingOrder readingOrder1 = ReadingOrder.CreateReadingOrder(store);
+			RoleMoveableCollection roles = refFact.RoleCollection;
+			RoleMoveableCollection readingRoles = readingOrder1.RoleCollection;
+			readingRoles.Add(roles[0]);
+			readingRoles.Add(roles[1]);
+			readingOrder1.AddReading(ResourceStrings.ReferenceModePredicateReading); 
+			readingOrder1.FactType = refFact;
+
+			ReadingOrder readingOrder2 = ReadingOrder.CreateReadingOrder(store);
+			readingRoles = readingOrder2.RoleCollection;
+			readingRoles.Add(roles[1]);
+			readingRoles.Add(roles[0]);
+			readingOrder2.AddReading(ResourceStrings.ReferenceModePredicateInverseReading);
+			readingOrder2.FactType = refFact;
 		}
 
 		private ObjectType FindValueType(string name, ORMModel objModel)

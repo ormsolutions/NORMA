@@ -344,15 +344,15 @@ namespace Northface.Tools.ORM.Shell
 						ModelElement mel;
 						if (null != (pel = selectedObject as ShapeElement))
 						{
-							//UNDONE: Check if the object shape was in expanded mode
-							//ObjectTypeShape objectShape;
-							//if (testRefModeCollapse &&
-							//	null != (objectShape = pel as ObjectTypeShape)&& false/*) &&
-							//	!objectShape.ExpandRefMode*/
-							//	)
-							//{
-							//	t.TopLevelTransaction.Context.ContextInfo[ObjectType.DeleteReferenceModeValueType] = null;
-							//}
+							// Check if the object shape was in expanded mode
+							Northface.Tools.ORM.ShapeModel.ObjectTypeShape objectShape;
+							if (testRefModeCollapse &&
+								null != (objectShape = pel as Northface.Tools.ORM.ShapeModel.ObjectTypeShape) &&
+								!objectShape.ExpandRefMode
+								)
+							{
+								t.TopLevelTransaction.Context.ContextInfo[ObjectType.DeleteReferenceModeValueType] = null;
+							}
 							if (d == null)
 							{
 								d = pel.Diagram;

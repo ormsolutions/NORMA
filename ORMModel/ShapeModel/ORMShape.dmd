@@ -15,160 +15,168 @@ Information Contained Herein is Proprietary and Confidential.
       <model>i91d59b16ze488z4a28z8d51z59273ad5bf2e</model>
     </extended>
     <enumerations>
-      <enumeration name="ConstraintDisplayPosition" identity="410081e8-2303-40b9-a5e4-9005516313e8" namespace="Northface.Tools.ORM.ShapeModel" id="i410081e8z2303z40b9za5e4z9005516313e8">
+      <enumeration name="ConstraintDisplayPosition" identity="4e35a139-e519-4b5f-9008-29ee4f36be64" namespace="Northface.Tools.ORM.ShapeModel" id="i4e35a139ze519z4b5fz9008z29ee4f36be64">
         <literals />
       </enumeration>
     </enumerations>
     <trees>
-      <treenavigator name="intrinsic" identity="90691236-3c73-410d-a520-fcdd1540dcbf" id="i90691236z3c73z410dza520zfcdd1540dcbf">
+      <treenavigator name="intrinsic" identity="f38b8d92-ee2c-45b4-a397-47e4776629fc" id="if38b8d92zee2cz45b4za397z47e4776629fc">
         <expressions>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeShape-ORMBaseShape" identity="36d26230-89ae-44c7-b575-50084e9df8de" id="i36d26230z89aez44c7zb575z50084e9df8de" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeShape-ORMBaseShape" identity="05897e55-3141-4a68-9634-967f923ad325" id="i05897e55z3141z4a68z9634z967f923ad325" definitionlevel="none">
             <source />
             <superType>i55131f4bz0f9az408dzbed0z79451ba7f4f0</superType>
             <subType>i00c1f246zd8f1z4eeazac88z39ba238143a8</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FactTypeShape-ORMBaseShape" identity="f4c4a090-4e65-4e20-9b7b-0a12122f3401" id="if4c4a090z4e65z4e20z9b7bz0a12122f3401" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="FactTypeShape-ORMBaseShape" identity="c94a95f6-f5e8-487c-9233-a5b60782f1fd" id="ic94a95f6zf5e8z487cz9233za5b60782f1fd" definitionlevel="none">
             <source />
             <superType>i55131f4bz0f9az408dzbed0z79451ba7f4f0</superType>
             <subType>i8e440a3bz275ez42f7z868bzd5d473158acd</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalConstraintShape-ORMBaseShape" identity="aea5ea22-4257-4933-a744-7363accee631" id="iaea5ea22z4257z4933za744z7363accee631" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ExternalConstraintShape-ORMBaseShape" identity="9d393830-e7a6-46b9-b2d5-efe7b3ee93bf" id="i9d393830ze7a6z46b9zb2d5zefe7b3ee93bf" definitionlevel="none">
             <source />
             <superType>i55131f4bz0f9az408dzbed0z79451ba7f4f0</superType>
             <subType>i00a08f56z73baz4c8fz8fa1zae61b8fc1cae</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FloatingTextShape-ORMBaseShape" identity="d5298494-162d-49f1-9f61-d55e41fd66b0" id="id5298494z162dz49f1z9f61zd55e41fd66b0" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="FloatingTextShape-ORMBaseShape" identity="67ddb80c-baee-4ff4-b109-64e6d65aad5e" id="i67ddb80czbaeez4ff4zb109z64e6d65aad5e" definitionlevel="none">
             <source />
             <superType>i55131f4bz0f9az408dzbed0z79451ba7f4f0</superType>
             <subType>i0904999fzd9c5z4c4eza08fzf8dd4b2f29a3</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectifiedFactTypeNameShape-FloatingTextShape" identity="15bc840b-cfa7-4c5c-992f-58e30230552f" id="i15bc840bzcfa7z4c5cz992fz58e30230552f" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectifiedFactTypeNameShape-FloatingTextShape" identity="bb289c35-d815-4794-bfee-f4e547310e6e" id="ibb289c35zd815z4794zbfeezf4e547310e6e" definitionlevel="none">
             <source />
             <superType>i0904999fzd9c5z4c4eza08fzf8dd4b2f29a3</superType>
             <subType>i7fd5183az8bc2z43bbz8474za0a2d558d90a</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ReadingShape-FloatingTextShape" identity="cdfeb12d-566b-47f4-a8cb-f05886b70136" id="icdfeb12dz566bz47f4za8cbzf05886b70136" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ReadingShape-FloatingTextShape" identity="2e88a2f8-7242-4b73-bae5-820f96f63dfe" id="i2e88a2f8z7242z4b73zbae5z820f96f63dfe" definitionlevel="none">
             <source />
             <superType>i0904999fzd9c5z4c4eza08fzf8dd4b2f29a3</superType>
             <subType>ic567ed6dzd0a6z4fd8za974zc567aa309d5e</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ORMBaseShape-NodeShape" identity="76e7e21c-d10f-4a6e-9561-051ea3de6147" id="i76e7e21czd10fz4a6ez9561z051ea3de6147" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ORMBaseShape-NodeShape" identity="f4d7adf7-d90e-410d-9cff-53bd7fa21a80" id="if4d7adf7zd90ez410dz9cffz53bd7fa21a80" definitionlevel="none">
             <source />
-            <superType>i86cc9d28z46e9z459dz9447z7a950eaa3afd</superType>
+            <superType>if987e53bz3453z4cfbz8207z015b0761e1fd</superType>
             <subType>i55131f4bz0f9az408dzbed0z79451ba7f4f0</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="RolePlayerLink-BinaryLinkShape" identity="2644e2cd-972c-4ecd-a43f-b108c01dc6d4" id="i2644e2cdz972cz4ecdza43fzb108c01dc6d4" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="RolePlayerLink-BinaryLinkShape" identity="8b0c35d4-8b22-4bfc-b3a3-1f36adc83678" id="i8b0c35d4z8b22z4bfczb3a3z1f36adc83678" definitionlevel="none">
             <source />
-            <superType>if4b656cazb991z4075z8750z048aa41b1e80</superType>
+            <superType>i64b9b73az9257z468bz9a7ez7f1ec72fb5c8</superType>
             <subType>i2b3f0aaezb1b1z4727z8862z5c34b494b499</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalConstraintLink-BinaryLinkShape" identity="5020c302-11b8-442f-9afc-f76e330d8b02" id="i5020c302z11b8z442fz9afczf76e330d8b02" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ExternalConstraintLink-BinaryLinkShape" identity="76b7efbc-2ecd-4b2a-84c9-9babdc93842a" id="i76b7efbcz2ecdz4b2az84c9z9babdc93842a" definitionlevel="none">
             <source />
-            <superType>if4b656cazb991z4075z8750z048aa41b1e80</superType>
+            <superType>i64b9b73az9257z468bz9a7ez7f1ec72fb5c8</superType>
             <subType>i8815e6d8z238bz422cza4b3z29fdc8de9ea5</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ORMDiagram-Diagram" identity="e068badc-c872-4732-a708-97a00097b830" id="ie068badczc872z4732za708z97a00097b830" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ORMDiagram-Diagram" identity="598e9b6d-5b61-45ce-8456-235956cd3f1b" id="i598e9b6dz5b61z45cez8456z235956cd3f1b" definitionlevel="none">
             <source />
-            <superType>ieabe9a81zd75az42b7za20dz9c8e845a075e</superType>
+            <superType>i3bf886cdz537fz4b02z8a57z43ef8970190a</superType>
             <subType>i948f992dzc9b8z46f9zbe3czb48347f8ab0b</subType>
           </treeExpression>
         </expressions>
         <roots />
       </treenavigator>
-      <treenavigator xsi:type="ShadowTreeNavigator" name="completeDiagram" identity="28b50e32-1497-4347-bc92-6fc2f2b7e50e" id="i28b50e32z1497z4347zbc92z6fc2f2b7e50e">
+      <treenavigator xsi:type="ShadowTreeNavigator" name="completeDiagram" identity="fde19e30-b7ba-4506-ae7f-cbb00c805e2d" id="ifde19e30zb7baz4506zae7fzcbb00c805e2d">
         <expressions>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeShape-ORMBaseShape" identity="b33724d5-7fc3-48d6-8a2f-9ca377a0b25d" id="ib33724d5z7fc3z48d6z8a2fz9ca377a0b25d" definitionlevel="definition">
-            <source>i36d26230z89aez44c7zb575z50084e9df8de</source>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeShape-ORMBaseShape" identity="3e900ced-3bf4-48aa-bc38-4d0bd7e9d6ac" id="i3e900cedz3bf4z48aazbc38z4d0bd7e9d6ac" definitionlevel="definition">
+            <source>i05897e55z3141z4a68z9634z967f923ad325</source>
             <superType>i55131f4bz0f9az408dzbed0z79451ba7f4f0</superType>
             <subType>i00c1f246zd8f1z4eeazac88z39ba238143a8</subType>
           </treeExpression>
-          <treeExpression xsi:type="ValuePropertyExpression" name="ShapeName" identity="22aef80c-bd7b-444d-931f-fca16fb23906" id="i22aef80czbd7bz444dz931fzfca16fb23906">
+          <treeExpression xsi:type="ValuePropertyExpression" name="ShapeName" identity="413e0c9c-d5db-49ed-a379-e7f13643cc58" id="i413e0c9czd5dbz49edza379ze7f13643cc58">
             <source />
             <property>ib70a72b8z282ez403azaad6z50d75a2f071c</property>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FactTypeShape-ORMBaseShape" identity="62de5974-d5e8-4554-a5f7-d2b987230960" id="i62de5974zd5e8z4554za5f7zd2b987230960" definitionlevel="definition">
-            <source>if4c4a090z4e65z4e20z9b7bz0a12122f3401</source>
+          <treeExpression xsi:type="ValuePropertyExpression" name="ReferenceModeName" identity="072e5a46-6a4e-485f-8ba1-e4a2594a852c" id="i072e5a46z6a4ez485fz8ba1ze4a2594a852c">
+            <source />
+            <property>i55d073e6za77bz4440za881zb2a8222b6c8b</property>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="ExpandRefMode" identity="38fd6dfd-62b1-463e-a9e3-b14b0b8773b8" id="i38fd6dfdz62b1z463eza9e3zb14b0b8773b8">
+            <source />
+            <property>ib2415bb1z1c83z4f0bzb2c3z58b67bc620dd</property>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FactTypeShape-ORMBaseShape" identity="c5aa2892-c422-466b-953d-4a566e919e8f" id="ic5aa2892zc422z466bz953dz4a566e919e8f" definitionlevel="definition">
+            <source>ic94a95f6zf5e8z487cz9233za5b60782f1fd</source>
             <superType>i55131f4bz0f9az408dzbed0z79451ba7f4f0</superType>
             <subType>i8e440a3bz275ez42f7z868bzd5d473158acd</subType>
           </treeExpression>
-          <treeExpression xsi:type="ValuePropertyExpression" name="ConstraintDisplayPosition" identity="7db9915d-b5c7-4699-b31d-cc7610463d3e" id="i7db9915dzb5c7z4699zb31dzcc7610463d3e">
+          <treeExpression xsi:type="ValuePropertyExpression" name="ConstraintDisplayPosition" identity="39bbaeb4-09b1-468b-8b16-0e3d94460e8d" id="i39bbaeb4z09b1z468bz8b16z0e3d94460e8d">
             <source />
             <property>i802767fdzde7dz4541zb42bz90b613dfe22d</property>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalConstraintShape-ORMBaseShape" identity="d9de3d2d-1421-4ccb-9769-5389a38441ee" id="id9de3d2dz1421z4ccbz9769z5389a38441ee" definitionlevel="definition">
-            <source>iaea5ea22z4257z4933za744z7363accee631</source>
+          <treeExpression xsi:type="InheritanceExpression" name="ExternalConstraintShape-ORMBaseShape" identity="65d507b4-1e7b-473b-a2a3-aab5dadea2f9" id="i65d507b4z1e7bz473bza2a3zaab5dadea2f9" definitionlevel="definition">
+            <source>i9d393830ze7a6z46b9zb2d5zefe7b3ee93bf</source>
             <superType>i55131f4bz0f9az408dzbed0z79451ba7f4f0</superType>
             <subType>i00a08f56z73baz4c8fz8fa1zae61b8fc1cae</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FloatingTextShape-ORMBaseShape" identity="8095fa3e-7e33-4e91-89b2-2bca940aa20f" id="i8095fa3ez7e33z4e91z89b2z2bca940aa20f" definitionlevel="definition">
-            <source>id5298494z162dz49f1z9f61zd55e41fd66b0</source>
+          <treeExpression xsi:type="InheritanceExpression" name="FloatingTextShape-ORMBaseShape" identity="d03f7393-cab4-47a5-9bfa-56c2b04146ff" id="id03f7393zcab4z47a5z9bfaz56c2b04146ff" definitionlevel="definition">
+            <source>i67ddb80czbaeez4ff4zb109z64e6d65aad5e</source>
             <superType>i55131f4bz0f9az408dzbed0z79451ba7f4f0</superType>
             <subType>i0904999fzd9c5z4c4eza08fzf8dd4b2f29a3</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectifiedFactTypeNameShape-FloatingTextShape" identity="67f4cb83-cca4-4eb6-a6aa-6f288abfdf76" id="i67f4cb83zcca4z4eb6za6aaz6f288abfdf76" definitionlevel="definition">
-            <source>i15bc840bzcfa7z4c5cz992fz58e30230552f</source>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectifiedFactTypeNameShape-FloatingTextShape" identity="ea08e496-c6bb-426c-97c7-474a8649f2bc" id="iea08e496zc6bbz426cz97c7z474a8649f2bc" definitionlevel="definition">
+            <source>ibb289c35zd815z4794zbfeezf4e547310e6e</source>
             <superType>i0904999fzd9c5z4c4eza08fzf8dd4b2f29a3</superType>
             <subType>i7fd5183az8bc2z43bbz8474za0a2d558d90a</subType>
           </treeExpression>
-          <treeExpression xsi:type="ValuePropertyExpression" name="ObjectTypeName" identity="d36477bb-069c-4266-96a4-04468cb3d261" id="id36477bbz069cz4266z96a4z04468cb3d261">
+          <treeExpression xsi:type="ValuePropertyExpression" name="ObjectTypeName" identity="a383cd36-89dc-422b-b057-2e4a2b38089e" id="ia383cd36z89dcz422bzb057z2e4a2b38089e">
             <source />
             <property>i4c9bb78dz6290z455ezb844ze7bcc01676f8</property>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ReadingShape-FloatingTextShape" identity="4749ac56-2b0a-48a0-ae96-f83d2929bd5f" id="i4749ac56z2b0az48a0zae96zf83d2929bd5f" definitionlevel="definition">
-            <source>icdfeb12dz566bz47f4za8cbzf05886b70136</source>
+          <treeExpression xsi:type="InheritanceExpression" name="ReadingShape-FloatingTextShape" identity="d59ca044-d174-4992-b4c5-b6d6a37711bb" id="id59ca044zd174z4992zb4c5zb6d6a37711bb" definitionlevel="definition">
+            <source>i2e88a2f8z7242z4b73zbae5z820f96f63dfe</source>
             <superType>i0904999fzd9c5z4c4eza08fzf8dd4b2f29a3</superType>
             <subType>ic567ed6dzd0a6z4fd8za974zc567aa309d5e</subType>
           </treeExpression>
-          <treeExpression xsi:type="ValuePropertyExpression" name="ReadingText" identity="b4f395a1-e211-4bce-9028-d2363a675b62" id="ib4f395a1ze211z4bcez9028zd2363a675b62">
+          <treeExpression xsi:type="ValuePropertyExpression" name="ReadingText" identity="b77ca550-30d2-40e6-8c32-e494113f4633" id="ib77ca550z30d2z40e6z8c32ze494113f4633">
             <source />
             <property>i22bf9cf7z715cz4159z9ef0z1bdf98647f9c</property>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ORMBaseShape-NodeShape" identity="98491f0b-5a94-4de6-bbe4-c35b60bef97c" id="i98491f0bz5a94z4de6zbbe4zc35b60bef97c" definitionlevel="definition">
-            <source>i76e7e21czd10fz4a6ez9561z051ea3de6147</source>
-            <superType>i86cc9d28z46e9z459dz9447z7a950eaa3afd</superType>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMBaseShape-NodeShape" identity="ad1a9a28-38fb-4628-91dc-ba4654d3cffc" id="iad1a9a28z38fbz4628z91dczba4654d3cffc" definitionlevel="definition">
+            <source>if4d7adf7zd90ez410dz9cffz53bd7fa21a80</source>
+            <superType>if987e53bz3453z4cfbz8207z015b0761e1fd</superType>
             <subType>i55131f4bz0f9az408dzbed0z79451ba7f4f0</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="RolePlayerLink-BinaryLinkShape" identity="85ade1b8-dafd-4228-852d-0d308b92eb9e" id="i85ade1b8zdafdz4228z852dz0d308b92eb9e" definitionlevel="definition">
-            <source>i2644e2cdz972cz4ecdza43fzb108c01dc6d4</source>
-            <superType>if4b656cazb991z4075z8750z048aa41b1e80</superType>
+          <treeExpression xsi:type="InheritanceExpression" name="RolePlayerLink-BinaryLinkShape" identity="5d7d892b-24c0-4a9e-a669-ae01499efb89" id="i5d7d892bz24c0z4a9eza669zae01499efb89" definitionlevel="definition">
+            <source>i8b0c35d4z8b22z4bfczb3a3z1f36adc83678</source>
+            <superType>i64b9b73az9257z468bz9a7ez7f1ec72fb5c8</superType>
             <subType>i2b3f0aaezb1b1z4727z8862z5c34b494b499</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ExternalConstraintLink-BinaryLinkShape" identity="ff59e3ad-5fe0-4537-a664-e0bbdf01b94e" id="iff59e3adz5fe0z4537za664ze0bbdf01b94e" definitionlevel="definition">
-            <source>i5020c302z11b8z442fz9afczf76e330d8b02</source>
-            <superType>if4b656cazb991z4075z8750z048aa41b1e80</superType>
+          <treeExpression xsi:type="InheritanceExpression" name="ExternalConstraintLink-BinaryLinkShape" identity="8553acab-0c90-4ea9-bd82-fdb7cb41de1f" id="i8553acabz0c90z4ea9zbd82zfdb7cb41de1f" definitionlevel="definition">
+            <source>i76b7efbcz2ecdz4b2az84c9z9babdc93842a</source>
+            <superType>i64b9b73az9257z468bz9a7ez7f1ec72fb5c8</superType>
             <subType>i8815e6d8z238bz422cza4b3z29fdc8de9ea5</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ORMDiagram-Diagram" identity="1644be6d-afd6-4f8d-b2c5-f0128c70f7c4" id="i1644be6dzafd6z4f8dzb2c5zf0128c70f7c4" definitionlevel="definition">
-            <source>ie068badczc872z4732za708z97a00097b830</source>
-            <superType>ieabe9a81zd75az42b7za20dz9c8e845a075e</superType>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMDiagram-Diagram" identity="3e1e2c8d-9b74-4a24-80cb-af665de9b3e7" id="i3e1e2c8dz9b74z4a24z80cbzaf665de9b3e7" definitionlevel="definition">
+            <source>i598e9b6dz5b61z45cez8456z235956cd3f1b</source>
+            <superType>i3bf886cdz537fz4b02z8a57z43ef8970190a</superType>
             <subType>i948f992dzc9b8z46f9zbe3czb48347f8ab0b</subType>
           </treeExpression>
         </expressions>
         <roots>
-          <root name="NodeShape" identity="dcc41bac-fa5f-4764-aa21-7a9fb2a39cae" id="idcc41baczfa5fz4764zaa21z7a9fb2a39cae">
+          <root name="NodeShape" identity="a48546ed-7521-4241-81bd-ca81e7abdd39" id="ia48546edz7521z4241z81bdzca81e7abdd39">
             <source />
-            <referencetype>i86cc9d28z46e9z459dz9447z7a950eaa3afd</referencetype>
+            <referencetype>if987e53bz3453z4cfbz8207z015b0761e1fd</referencetype>
           </root>
-          <root name="BinaryLinkShape" identity="0af4a810-e282-448c-bfb5-0a1adabcf9bc" id="i0af4a810ze282z448czbfb5z0a1adabcf9bc">
+          <root name="BinaryLinkShape" identity="94048114-076c-4993-b945-4eb44bbe7798" id="i94048114z076cz4993zb945z4eb44bbe7798">
             <source />
-            <referencetype>if4b656cazb991z4075z8750z048aa41b1e80</referencetype>
+            <referencetype>i64b9b73az9257z468bz9a7ez7f1ec72fb5c8</referencetype>
           </root>
-          <root name="Diagram" identity="ec3b9049-75e1-420b-9bb6-5851a8a5c0a2" id="iec3b9049z75e1z420bz9bb6z5851a8a5c0a2">
+          <root name="Diagram" identity="08de4677-4239-4198-a9f1-2e722a1509d6" id="i08de4677z4239z4198za9f1z2e722a1509d6">
             <source />
-            <referencetype>ieabe9a81zd75az42b7za20dz9c8e845a075e</referencetype>
+            <referencetype>i3bf886cdz537fz4b02z8a57z43ef8970190a</referencetype>
           </root>
         </roots>
-        <source>i90691236z3c73z410dza520zfcdd1540dcbf</source>
+        <source>if38b8d92zee2cz45b4za397z47e4776629fc</source>
       </treenavigator>
-      <treenavigator xsi:type="ShadowTreeNavigator" name="serialization" identity="2f08be09-1aa2-4f11-9b7d-bbb546981844" id="i2f08be09z1aa2z4f11z9b7dzbbb546981844">
+      <treenavigator xsi:type="ShadowTreeNavigator" name="serialization" identity="1e707350-c0eb-468b-a26c-30d8fd7aef0a" id="i1e707350zc0ebz468bza26cz30d8fd7aef0a">
         <expressions />
         <roots />
-        <source>i90691236z3c73z410dza520zfcdd1540dcbf</source>
+        <source>if38b8d92zee2cz45b4za397z47e4776629fc</source>
       </treenavigator>
-      <treenavigator xsi:type="ShadowTreeNavigator" name="delete" identity="0499fad4-351a-4636-9f83-16f68538e40f" id="i0499fad4z351az4636z9f83z16f68538e40f">
+      <treenavigator xsi:type="ShadowTreeNavigator" name="delete" identity="9792fee3-6dbf-4132-a5d6-726c0b408af8" id="i9792fee3z6dbfz4132za5d6z726c0b408af8">
         <expressions />
         <roots />
-        <source>i90691236z3c73z410dza520zfcdd1540dcbf</source>
+        <source>if38b8d92zee2cz45b4za397z47e4776629fc</source>
       </treenavigator>
     </trees>
     <shapes>
@@ -182,7 +190,17 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" customstorage="false" allownulls="false" readwritestate="readwrite" tag="">
               <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
             </mdfmetadata>
-            <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="d84eb800-ae0e-47f9-bb59-cc0804ec4fdb" default="" max="2147483647" />
+            <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="4f767a53-dbfb-4047-bdcb-e65ccf899b67" default="" max="2147483647" />
+          </property>
+          <property name="ReferenceModeName" identity="55d073e6-a77b-4440-a881-b2a8222b6c8b" id="i55d073e6za77bz4440za881zb2a8222b6c8b">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/ObjectType/SubjectHasPresentation.Presentation/Presentation" realattributename="ReferenceModeDisplay" proxyattributename="ReferenceModeDisplay" customstorage="false" allownulls="false" readwritestate="readwrite" tag="">
+              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+            </mdfmetadata>
+            <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="7fe1bc7f-3690-4504-b6af-506c98ee4152" default="" max="2147483647" />
+          </property>
+          <property name="ExpandRefMode" identity="b2415bb1-1c83-4f0b-b2c3-58b67bc620dd" id="ib2415bb1z1c83z4f0bzb2c3z58b67bc620dd">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
+            <propertyInfo xsi:type="BooleanPropertyInfo" name="BooleanPropertyInfo" identity="1cd8a5db-90ca-4e2c-8ff8-8356d2535aa4" default="false" />
           </property>
         </valueProperties>
         <concepts />
@@ -195,8 +213,8 @@ Information Contained Herein is Proprietary and Confidential.
         <valueProperties>
           <property name="ConstraintDisplayPosition" identity="802767fd-de7d-4541-b42b-90b613dfe22d" id="i802767fdzde7dz4541zb42bz90b613dfe22d">
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
-            <propertyInfo xsi:type="EnumerationPropertyInfo" name="ConstraintDisplayPosition" identity="587634ed-9646-4357-9edc-7b29bd3b4c97" default="Top">
-              <enumeration>i410081e8z2303z40b9za5e4z9005516313e8</enumeration>
+            <propertyInfo xsi:type="EnumerationPropertyInfo" name="ConstraintDisplayPosition" identity="3a541f51-ba76-467a-819c-69995d662e0c" default="Top">
+              <enumeration>i4e35a139ze519z4b5fz9008z29ee4f36be64</enumeration>
             </propertyInfo>
           </property>
         </valueProperties>
@@ -220,7 +238,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="/ObjectifiedFactTypeNameShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" customstorage="false" allownulls="false" readwritestate="readwrite" tag="">
               <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
             </mdfmetadata>
-            <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="dc1c232c-2c40-4fbd-b1f8-7a73a704edd9" default="" max="2147483647" />
+            <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="e57bad1e-1581-44d4-8942-7e3eb0a611e9" default="" max="2147483647" />
           </property>
         </valueProperties>
         <concepts />
@@ -235,7 +253,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="/ReadingShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/Reading/SubjectHasPresentation.Presentation/Presentation" realattributename="ReadingText" proxyattributename="ReadingText" customstorage="false" allownulls="false" readwritestate="readwrite" tag="">
               <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
             </mdfmetadata>
-            <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="9d0d8597-d3d8-4aaf-9d78-be4374e06465" default="" max="2147483647" />
+            <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="27e4c1ce-a419-406d-94b8-692226066198" default="" max="2147483647" />
           </property>
         </valueProperties>
         <concepts />
@@ -247,21 +265,21 @@ Information Contained Herein is Proprietary and Confidential.
       </shape>
       <shape name="ORMBaseShape" identity="55131f4b-0f9a-408d-bed0-79451ba7f4f0" namespace="Northface.Tools.ORM.ShapeModel" id="i55131f4bz0f9az408dzbed0z79451ba7f4f0" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
-        <superType>i86cc9d28z46e9z459dz9447z7a950eaa3afd</superType>
+        <superType>if987e53bz3453z4cfbz8207z015b0761e1fd</superType>
         <concepts />
       </shape>
       <shape name="RolePlayerLink" identity="2b3f0aae-b1b1-4727-8862-5c34b494b499" namespace="Northface.Tools.ORM.ShapeModel" id="i2b3f0aaezb1b1z4727z8862z5c34b494b499" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false">
           <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ObjectTypePlaysRole)" />
         </mdfmetadata>
-        <superType>if4b656cazb991z4075z8750z048aa41b1e80</superType>
+        <superType>i64b9b73az9257z468bz9a7ez7f1ec72fb5c8</superType>
         <concepts />
       </shape>
       <shape name="ExternalConstraintLink" identity="8815e6d8-238b-422c-a4b3-29fdc8de9ea5" namespace="Northface.Tools.ORM.ShapeModel" id="i8815e6d8z238bz422cza4b3z29fdc8de9ea5" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false">
           <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint)" />
         </mdfmetadata>
-        <superType>if4b656cazb991z4075z8750z048aa41b1e80</superType>
+        <superType>i64b9b73az9257z468bz9a7ez7f1ec72fb5c8</superType>
         <concepts />
       </shape>
       <shape xsi:type="Diagram" name="ORMDiagram" identity="948f992d-c9b8-46f9-be3c-b48347f8ab0b" namespace="Northface.Tools.ORM.ShapeModel" id="i948f992dzc9b8z46f9zbe3czb48347f8ab0b" isLoaded="true" isAbstract="false">
@@ -282,15 +300,15 @@ Information Contained Herein is Proprietary and Confidential.
           <toolboxitem toolboxitemid="Toolbox.SubsetConstraint.Item.Id" position="55" bitmapresourceid="Toolbox.SubsetConstraint.Bitmap.Id" captionresourceid="Toolbox.SubsetConstraint.Caption.Id" tooltipresourceid="Toolbox.SubsetConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" cshkeywordid="" />
           <toolboxitem toolboxitemid="Toolbox.ExternalConstraintConnector.Item.Id" position="60" bitmapresourceid="Toolbox.ExternalConstraintConnector.Bitmap.Id" captionresourceid="Toolbox.ExternalConstraintConnector.Caption.Id" tooltipresourceid="Toolbox.ExternalConstraintConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" cshkeywordid="" />
         </mdfmetadata>
-        <superType>ieabe9a81zd75az42b7za20dz9c8e845a075e</superType>
+        <superType>i3bf886cdz537fz4b02z8a57z43ef8970190a</superType>
       </shape>
-      <shape name="NodeShape" identity="86cc9d28-46e9-459d-9447-7a950eaa3afd" namespace="Microsoft.VisualStudio.Modeling.Diagrams" id="i86cc9d28z46e9z459dz9447z7a950eaa3afd" isLoaded="false" isAbstract="false">
+      <shape name="NodeShape" identity="f987e53b-3453-4cfb-8207-015b0761e1fd" namespace="Microsoft.VisualStudio.Modeling.Diagrams" id="if987e53bz3453z4cfbz8207z015b0761e1fd" isLoaded="false" isAbstract="false">
         <concepts />
       </shape>
-      <shape name="BinaryLinkShape" identity="f4b656ca-b991-4075-8750-048aa41b1e80" namespace="Microsoft.VisualStudio.Modeling.Diagrams" id="if4b656cazb991z4075z8750z048aa41b1e80" isLoaded="false" isAbstract="false">
+      <shape name="BinaryLinkShape" identity="64b9b73a-9257-468b-9a7e-7f1ec72fb5c8" namespace="Microsoft.VisualStudio.Modeling.Diagrams" id="i64b9b73az9257z468bz9a7ez7f1ec72fb5c8" isLoaded="false" isAbstract="false">
         <concepts />
       </shape>
-      <shape xsi:type="Diagram" name="Diagram" identity="eabe9a81-d75a-42b7-a20d-9c8e845a075e" namespace="Microsoft.VisualStudio.Modeling.Diagrams" id="ieabe9a81zd75az42b7za20dz9c8e845a075e" isLoaded="false" isAbstract="false" />
+      <shape xsi:type="Diagram" name="Diagram" identity="3bf886cd-537f-4b02-8a57-43ef8970190a" namespace="Microsoft.VisualStudio.Modeling.Diagrams" id="i3bf886cdz537fz4b02z8a57z43ef8970190a" isLoaded="false" isAbstract="false" />
     </shapes>
   </model>
   <model name="" identity="2b131234-7959-458d-834f-2dc0769ce683" id="i2b131234z7959z458dz834fz2dc0769ce683" namespace="" isLoaded="false">

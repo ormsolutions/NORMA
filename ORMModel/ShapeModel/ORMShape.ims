@@ -21,6 +21,13 @@ Information Contained Herein is Proprietary and Confidential.
               <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
               <stringdomain default="" max="2147483647" />
             </metaattribute>
+            <metaattribute name="ReferenceModeName" identity="55d073e6-a77b-4440-a881-b2a8222b6c8b" type="System.String" xpathexpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/ObjectType/SubjectHasPresentation.Presentation/Presentation" realattributename="ReferenceModeDisplay" proxyattributename="ReferenceModeDisplay" category="" description="" doccomment="" localize="false" tag="">
+              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+              <stringdomain default="" max="2147483647" />
+            </metaattribute>
+            <metaattribute name="ExpandRefMode" identity="b2415bb1-1c83-4f0b-b2c3-58b67bc620dd" type="System.Boolean" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
+              <booleandomain default="false" />
+            </metaattribute>
           </metaattributes>
           <derivedshapes />
         </shape>

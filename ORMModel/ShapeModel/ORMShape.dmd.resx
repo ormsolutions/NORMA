@@ -123,6 +123,9 @@
   <data name="Northface.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPosition">
     <value xml:space="preserve">ConstraintDisplayPosition</value>
   </data>
+  <data name="Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode">
+    <value xml:space="preserve">ExpandRefMode</value>
+  </data>
   <data name="Northface.Tools.ORM.ShapeModel.ORMShapeModel">
     <value xml:space="preserve">ORMShapeModel</value>
   </data>

@@ -502,6 +502,216 @@ namespace Northface.Tools.ORM.ShapeModel
 		#endregion
 		#endregion
 		
+		#region ReferenceModeName's Generated  Field Code
+		#region ReferenceModeName's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ReferenceModeNameMetaAttributeGuidString = "55d073e6-a77b-4440-a881-b2a8222b6c8b";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ReferenceModeNameMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuidString);
+		#endregion
+
+		#region ReferenceModeName's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/ObjectType/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="ReferenceModeDisplay", ProxyAttributeName="ReferenceModeDisplay", FieldHandlerType=typeof(ObjectTypeShapeReferenceModeNameFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeName")]
+		public  System.String ReferenceModeName
+		{
+			get
+			{
+				return objectTypeShapeReferenceModeNameFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				objectTypeShapeReferenceModeNameFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ObjectTypeShapeReferenceModeNameFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ObjectTypeShape.ReferenceModeName field
+		/// </summary>
+		private static ObjectTypeShapeReferenceModeNameFieldHandler	objectTypeShapeReferenceModeNameFieldHandler	= ObjectTypeShapeReferenceModeNameFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ObjectTypeShape.ReferenceModeName
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ObjectTypeShapeReferenceModeNameFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Northface.Tools.ORM.ShapeModel.ObjectTypeShape,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ObjectTypeShapeReferenceModeNameFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ObjectTypeShape.ReferenceModeName field handler
+			/// </summary>
+			/// <value>ObjectTypeShapeReferenceModeNameFieldHandler</value>
+			public static ObjectTypeShapeReferenceModeNameFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeReferenceModeNameFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeReferenceModeNameFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ObjectTypeShape will assign this value to
+						// Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeReferenceModeNameFieldHandler, so just instantiate one and return it
+						return new ObjectTypeShapeReferenceModeNameFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ObjectTypeShape.ReferenceModeName field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+		#region ExpandRefMode's Generated  Field Code
+		#region ExpandRefMode's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ExpandRefModeMetaAttributeGuidString = "b2415bb1-1c83-4f0b-b2c3-58b67bc620dd";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ExpandRefModeMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuidString);
+		#endregion
+
+		#region ExpandRefMode's Generated Property Code
+
+		private System.Boolean expandRefModePropertyStorage = false;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ObjectTypeShapeExpandRefModeFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode")]
+		public  System.Boolean ExpandRefMode
+		{
+			get
+			{
+				return expandRefModePropertyStorage;
+			}
+		
+			set
+			{
+				objectTypeShapeExpandRefModeFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ObjectTypeShapeExpandRefModeFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ObjectTypeShape.ExpandRefMode field
+		/// </summary>
+		private static ObjectTypeShapeExpandRefModeFieldHandler	objectTypeShapeExpandRefModeFieldHandler	= ObjectTypeShapeExpandRefModeFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ObjectTypeShape.ExpandRefMode
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ObjectTypeShapeExpandRefModeFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ShapeModel.ObjectTypeShape,System.Boolean>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ObjectTypeShapeExpandRefModeFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ObjectTypeShape.ExpandRefMode field handler
+			/// </summary>
+			/// <value>ObjectTypeShapeExpandRefModeFieldHandler</value>
+			public static ObjectTypeShapeExpandRefModeFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeExpandRefModeFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeExpandRefModeFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ObjectTypeShape will assign this value to
+						// Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeExpandRefModeFieldHandler, so just instantiate one and return it
+						return new ObjectTypeShapeExpandRefModeFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ObjectTypeShape.ExpandRefMode field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the ObjectTypeShape</param>
+			protected sealed override System.Boolean GetValue(Northface.Tools.ORM.ShapeModel.ObjectTypeShape element)
+			{
+				return element.expandRefModePropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ShapeModel.ObjectTypeShape element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
+			{
+				oldValue = element.expandRefModePropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.expandRefModePropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
 	}
 	#region ObjectTypeShape's Generated Constructor Code
 	public  partial class ObjectTypeShape

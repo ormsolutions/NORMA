@@ -294,6 +294,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
 				ReadingOrder readingOrd = link.ReadingOrderCollection;
 				FactType fact = link.FactType;
+				Diagram.FixUpDiagram(fact.Model, fact); // Make sure the fact is already there
 				Diagram.FixUpDiagram(fact, readingOrd);
 			}
 		}

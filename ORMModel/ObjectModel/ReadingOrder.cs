@@ -41,6 +41,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 
 			Reading retval = Reading.CreateAndInitializeReading(theStore, attrList);
+			retval.ReadingOrder = this;
 
 			return retval;
 		}

@@ -144,7 +144,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						if (myModify != null)
 						{
 							int row = this.FindReferenceMode((IntrinsicReferenceMode)refMode);
-							myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.ReferenceModeKind, 1)));
+							myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.FormatString, 1)));
 						}
 					}
 				}

@@ -28,9 +28,9 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			InitializeComponent();
 			myTree.SetColumnHeaders(new VirtualTreeColumnHeader[]{
-				new	VirtualTreeColumnHeader("Name"),
-				new	VirtualTreeColumnHeader("Kind"),
-				new	VirtualTreeColumnHeader("FormatString")}
+				new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorNameColumn),
+				new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorKindColumn),
+				new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorFormatStringColumn)}
 				, true);
 			ITree treeData = new MultiColumnTree(3);
 			myHeaders = new ReferenceModeHeaderBranch();

@@ -54,19 +54,120 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			ObjectType objType;
 			if (element is FactType ||
-				element is ObjectTypePlaysRole ||
-				element is ExternalFactConstraint ||
-				element is SingleColumnExternalConstraint ||
-				element is MultiColumnExternalConstraint)
+				element is ObjectTypePlaysRole)
+			{
+				return ShouldDisplayPartOfReferenceMode(element);
+			}
+			else if (element is ExternalFactConstraint ||
+					 element is SingleColumnExternalConstraint ||
+					 element is MultiColumnExternalConstraint)
 			{
 				return true;
 			}
 			else if (null != (objType = element as ObjectType))
 			{
-				return objType.NestedFactType == null;
+				if (objType.NestedFactType == null)
+				{
+					return ShouldDisplayPartOfReferenceMode(element);
+				}
+				else
+				{
+					return false;
+				}
 			}
 			return base.ShouldAddShapeForElement(element);
 		}
+
+		/// <summary>
+		/// Check to see if the element is part of the reference mode
+		/// </summary>
+		/// <param name="element"></param>
+		/// <returns></returns>
+		private bool ShouldDisplayPartOfReferenceMode(ModelElement element)
+		{
+			ObjectType entity = null;
+			if (element is FactType)
+			{
+				FactType factType = element as FactType;
+				foreach (InternalConstraint constraint in factType.InternalConstraintCollection)
+				{
+					entity = constraint.PreferredIdentifierFor;
+					if (entity != null)
+					{
+						break;
+					}
+				}
+			}
+			else if (element is ObjectTypePlaysRole)
+			{
+				ObjectTypePlaysRole objectTypePlaysRole = element as ObjectTypePlaysRole;
+				
+				ObjectType objectType = objectTypePlaysRole.RolePlayer;
+				if (!objectType.IsValueType)
+				{
+					entity = objectType;
+				}
+				else
+				{
+					foreach (Role role in objectType.PlayedRoleCollection)
+					{
+						foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+						{
+							if (sequence is InternalConstraint)
+							{
+								entity = sequence.PreferredIdentifierFor;
+								if (entity != null)
+								{
+									break;
+								}
+							}
+						}
+						if (entity != null)
+						{
+							break;
+						}
+					}
+
+				}
+			}
+			else if (element is ObjectType)
+			{
+				ObjectType valueType = element as ObjectType;
+				if (valueType.IsValueType)
+				{
+					foreach (Role role in valueType.PlayedRoleCollection)
+					{
+						foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+						{
+							if (sequence is InternalConstraint)
+							{
+								entity = sequence.PreferredIdentifierFor;
+								if (entity != null)
+								{
+									break;
+								}
+							}
+						}
+						if (entity != null)
+						{
+							break;
+						}
+					}
+				}				
+			}
+			if (entity != null)
+			{
+				ShapeElement shapeElement = FindShapeForElement(entity);
+				ObjectTypeShape objectTypeShape = shapeElement as ObjectTypeShape;
+				if (objectTypeShape != null)
+				{
+					return objectTypeShape.ExpandRefMode;
+				}
+			}
+
+			return true;
+		}
+
 		/// <summary>
 		/// An object type is displayed as an ObjectTypeShape unless it is
 		/// objectified, in which case we display it as an ObjectifiedFactTypeNameShape

@@ -29,6 +29,78 @@ namespace Northface.Tools.ORM.ShapeModel
 		#endregion // ObjectTypedAdded class
 		#endregion // ModelHasObjectType fixup
 		#region ModelHasFactType fixup
+		#region ObjectTypeChangeRule class
+		[RuleOn(typeof(ObjectTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		private class ObjectTypeShapeChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				ObjectTypeShape objectTypeShape = e.ModelElement as ObjectTypeShape;
+				if (objectTypeShape != null)
+				{
+					Guid attributeId = e.MetaAttribute.Id;
+					if (attributeId == ObjectTypeShape.ExpandRefModeMetaAttributeGuid)
+					{
+						bool turnOn = (bool)e.NewValue;
+						ObjectType objectType =  objectTypeShape.ModelElement as ObjectType;
+						objectTypeShape.AutoResize();
+						InternalUniquenessConstraint preferredConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint;
+
+						// View or Hide FactType
+						if (preferredConstraint != null)
+						{
+							FactType factType = preferredConstraint.FactType;
+							if (turnOn)
+							{
+								Diagram.FixUpDiagram(objectType.Model, factType);
+								foreach (ReadingOrder readingOrder in factType.ReadingOrderCollection)
+								{
+									Diagram.FixUpDiagram(factType, readingOrder);
+								}
+							}
+							else
+							{
+								factType.PresentationRolePlayers.Clear();
+							}
+
+							//View or Hide value type
+							ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
+							if (valueType != null)
+							{
+								if (turnOn)
+								{
+									Diagram.FixUpDiagram(objectType.Model, valueType);
+								}
+								else
+								{
+									valueType.PresentationRolePlayers.Clear();
+								}
+							}
+							//View or Hide ObjectTypePlaysRole links
+							foreach (Role role in factType.RoleCollection)
+							{
+								foreach (ElementLink link in role.GetElementLinks())
+								{
+									ObjectTypePlaysRole objectTypePlaysRole = link as ObjectTypePlaysRole;
+									if (objectTypePlaysRole != null)
+									{
+										if (turnOn)
+										{
+											Diagram.FixUpDiagram(objectType.Model, objectTypePlaysRole);
+										}
+										else
+										{
+											objectTypePlaysRole.PresentationRolePlayers.Clear();
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // ObjectTypeShapeChangeRule class
 		#region FactTypeAdded class
 		[RuleOn(typeof(ModelHasFactType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class FactTypedAdded : AddRule

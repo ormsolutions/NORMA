@@ -317,6 +317,11 @@ namespace Northface.Tools.ORM
 		private const string ModelExceptionReferenceModeIntrinsicRefModesDontChange_Id = "ModelException.ReferenceMode.IntrinsicRefModesDontChange";
 		private const string ModelExceptionReferenceModeReferenceModesKindNotEmpty_Id = "ModelException.ReferenceMode.ReferenceModesKindNotEmpty";
 		private const string ModelReferenceModeEditorChangeReferenceModeKindTransaction_Id = "ModelReferenceModeEditor.ChangeReferenceModeKindTransaction";
+		private const string ReferenceModePredicateReading_Id = "ReferenceMode.PredicateReading";
+		private const string ReferenceModePredicateInverseReading_Id = "ReferenceMode.PredicateInverseReading";
+		private const string ModelReferenceModeEditorFormatStringColumn_Id = "ModelReferenceModeEditor.FormatStringColumn";
+		private const string ModelReferenceModeEditorKindColumn_Id = "ModelReferenceModeEditor.KindColumn";
+		private const string ModelReferenceModeEditorNameColumn_Id = "ModelReferenceModeEditor.NameColumn";
 
 		private const string FactEditorToolWindowCaption_Id = "FactEditorToolWindow.Caption";
 		#endregion // Private resource ids
@@ -1097,7 +1102,62 @@ namespace Northface.Tools.ORM
 				return GetString(ResourceManagers.Model, ModelReferenceModeEditorChangeReferenceModeKindTransaction_Id);
 			}
 		}
-		
+
+		/// <summary>
+		/// returns The reading for the predicate created by setting the ref mode.
+		/// </summary>
+		public static string ReferenceModePredicateReading
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ReferenceModePredicateReading_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns The inverse reading for the predicate created by setting the ref mode.
+		/// </summary>
+		public static string ReferenceModePredicateInverseReading
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ReferenceModePredicateInverseReading_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns The Column header text for the Format String column.
+		/// </summary>
+		public static string ModelReferenceModeEditorFormatStringColumn
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorFormatStringColumn_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns The Column header text for the Kind column.
+		/// </summary>
+		public static string ModelReferenceModeEditorKindColumn
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorKindColumn_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns The Column header text for the name column.
+		/// </summary>
+		public static string ModelReferenceModeEditorNameColumn
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorNameColumn_Id);
+			}
+		}
+
 		/// <summary>
 		/// The caption of the Fact Editor Tool Window
 		/// </summary>

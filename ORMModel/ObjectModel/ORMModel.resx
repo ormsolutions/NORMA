@@ -278,9 +278,21 @@
     <value xml:space="preserve">EntityTypeName</value>
     <comment xml:space="preserve">Text that names the Entity Type.</comment>
   </data>
+  <data name="ModelReferenceModeEditor.FormatStringColumn">
+    <value xml:space="preserve">Format String</value>
+    <comment xml:space="preserve">Column header text for the Format String column.</comment>
+  </data>
   <data name="ModelReferenceModeEditor.IntrinsicReferenceModesHeader">
     <value xml:space="preserve">Intrinsic Reference Modes</value>
     <comment xml:space="preserve">Text used to name the Intrinsic Reference Modes column</comment>
+  </data>
+  <data name="ModelReferenceModeEditor.KindColumn">
+    <value xml:space="preserve">Kind</value>
+    <comment xml:space="preserve">Column header text for the Kind column.</comment>
+  </data>
+  <data name="ModelReferenceModeEditor.NameColumn">
+    <value xml:space="preserve">Name</value>
+    <comment xml:space="preserve">Column header text for the name column</comment>
   </data>
   <data name="ModelReferenceModeEditor.ReferenceModeKindHeader">
     <value xml:space="preserve">Reference Mode Kinds</value>
@@ -289,5 +301,13 @@
   <data name="ModelReferenceModeEditor.ReferenceModeName">
     <value xml:space="preserve">ReferenceModeName</value>
     <comment xml:space="preserve">Text that names the reference mode.</comment>
+  </data>
+  <data name="ReferenceMode.PredicateInverseReading">
+    <value xml:space="preserve">{0} is of {1}</value>
+    <comment xml:space="preserve">The inverse reading for the predicate created by setting the ref mode.</comment>
+  </data>
+  <data name="ReferenceMode.PredicateReading">
+    <value xml:space="preserve">{0} has {1}</value>
+    <comment xml:space="preserve">The reading for the predicate created by setting the ref mode.</comment>
   </data>
 </root>
