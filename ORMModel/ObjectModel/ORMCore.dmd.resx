@@ -207,6 +207,9 @@
   <data name="Northface.Tools.ORM.ObjectModel.Role">
     <value xml:space="preserve">Role</value>
   </data>
+  <data name="Northface.Tools.ORM.ObjectModel.Role.Cardinality">
+    <value xml:space="preserve">Cardinality</value>
+  </data>
   <data name="Northface.Tools.ORM.ObjectModel.Role.DefaultNamePattern">
     <value xml:space="preserve">Role{0}</value>
   </data>

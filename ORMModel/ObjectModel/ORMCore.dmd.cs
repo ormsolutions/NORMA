@@ -5835,6 +5835,94 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
+		#region Cardinality's Generated  Field Code
+		#region Cardinality's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String CardinalityMetaAttributeGuidString = "91159767-f6ce-4591-aeb2-ff0ab25f1b44";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid CardinalityMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Role.CardinalityMetaAttributeGuidString);
+		#endregion
+
+		#region Cardinality's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Northface.Tools.ORM.ObjectModel.RoleCardinality),DefaultEnumerationValueName="Unspecified")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(RoleCardinalityFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Role.CardinalityMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Role.Cardinality")]
+		public  Northface.Tools.ORM.ObjectModel.RoleCardinality Cardinality
+		{
+			get
+			{
+				return roleCardinalityFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				roleCardinalityFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region RoleCardinalityFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Role.Cardinality field
+		/// </summary>
+		private static RoleCardinalityFieldHandler	roleCardinalityFieldHandler	= RoleCardinalityFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Role.Cardinality
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class RoleCardinalityFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.Role,Northface.Tools.ORM.ObjectModel.RoleCardinality>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private RoleCardinalityFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Role.Cardinality field handler
+			/// </summary>
+			/// <value>RoleCardinalityFieldHandler</value>
+			public static RoleCardinalityFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.Role.roleCardinalityFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.Role.roleCardinalityFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Role will assign this value to
+						// Northface.Tools.ORM.ObjectModel.Role.roleCardinalityFieldHandler, so just instantiate one and return it
+						return new RoleCardinalityFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Role.Cardinality field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.Role.CardinalityMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
 		#region FactType's Generated Accessor Code
 		/// <summary>
 		/// 
