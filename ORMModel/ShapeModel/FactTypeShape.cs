@@ -2536,9 +2536,10 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 			if (reading != null)
 			{
-				//UNDONE: add code to have it select it in the tree and highlight the correct row and start the edit
+				// Open the reading editor window and activate the reading  
 				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
 				window.Show();
+				window.ActivateReading(reading);
 
 			}
 		}
