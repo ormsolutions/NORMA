@@ -20,14 +20,14 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 {
 	public partial class ReadingEditor : UserControl
 	{
+		#region ColumnIndex enum
 		private enum ColumnIndex
 		{
 			ReadingText = 0,
 			IsPrimary = 1,
 		}
-
-		#region Static Members
-
+		#endregion // ColumnIndex enum
+		#region Static Methods
 		/// <summary>
 		/// Tests if the ObjectType is the RolePlayer for any of Roles
 		/// </summary>
@@ -68,9 +68,8 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			}
 			return false;
 		}
-
-		#endregion
-
+		#endregion // Static Methods
+		#region Member Variables
 		private FactType myFact = null;
 		private List<ReadingEntry> myReadingList = null;
 		private ReadingBranch myBranch = null;
@@ -81,7 +80,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		//will be null if a specific reading order or the "All"
 		//node are currently selected
 		private Role mySelectedLeadRole = null;
-
+		#endregion // Member Variables
 		#region construction
 		/// <summary>
 		/// Default constructor.
@@ -119,7 +118,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			}
 		}
 		#endregion
-
 		#region PopulateControl and helpers
 		private void PopulateControl()
 		{
@@ -225,6 +223,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 					if (IsMatchingReadingOrder(readingNode.RoleOrder, readingOrd))
 					{
 						AddReadingEntries(readingList, readingOrd);
+						break;
 					}
 				}
 				readingList.Add(NewReadingEntry.Singleton);
@@ -266,7 +265,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			this.vtrReadings.MultiColumnTree = tree;
 		}
 
-		private void AddReadingEntries(List<ReadingEntry> readingList, ReadingOrder readingOrder)
+		private static void AddReadingEntries(List<ReadingEntry> readingList, ReadingOrder readingOrder)
 		{
 			ReadingMoveableCollection readings = readingOrder.ReadingCollection;
 			foreach (Reading read in readings)
@@ -275,25 +274,80 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			}
 		}
 
-		private bool IsMatchingReadingOrder(Role[] roleOrder, ReadingOrder readingOrder)
+		private static bool IsMatchingReadingOrder(Role[] roleOrder, ReadingOrder readingOrder)
 		{
-			Debug.Assert(roleOrder.Length == readingOrder.RoleCollection.Count);
-
-			RoleMoveableCollection roles = readingOrder.RoleCollection;
+			return IsMatchingReadingOrder(roleOrder, readingOrder.RoleCollection);
+		}
+		private static bool IsMatchingReadingOrder(Role[] roleOrder, RoleMoveableCollection readingOrderRoles)
+		{
+			Debug.Assert(roleOrder.Length == readingOrderRoles.Count);
 			int numRoles = roleOrder.Length;
+			if (numRoles != readingOrderRoles.Count)
+			{
+				return false;
+			}
+
 			for (int i = 0; i < numRoles; ++i)
 			{
-				if (!roleOrder[i].Equals(roles[i])) return false;
+				if (!object.ReferenceEquals(roleOrder[i], readingOrderRoles[i])) return false;
 			}
 			return true;
 		}
 
-		private bool IsMatchingLeadRole(Role leadRoad, ReadingOrder readingOrder)
+		private static bool IsMatchingLeadRole(Role leadRole, ReadingOrder readingOrder)
 		{
-			return leadRoad.Equals(readingOrder.RoleCollection[0]);
+			return IsMatchingLeadRole(leadRole, readingOrder.RoleCollection);
+		}
+		private static bool IsMatchingLeadRole(Role leadRole, RoleMoveableCollection readingOrderRoles)
+		{
+			return object.ReferenceEquals(leadRole, readingOrderRoles[0]);
 		}
 		#endregion
+		#region Reading activation helper
+		/// <summary>
+		/// Select the current reading in the window. The
+		/// reading must be the child of the current fact.
+		/// </summary>
+		/// <param name="reading">Reading</param>
+		public void ActivateReading(Reading reading)
+		{
+			ReadingOrder order;
+			FactType factType;
+			if (null != (order = reading.ReadingOrder) &&
+				null != (factType = order.FactType) &&
+				object.ReferenceEquals(factType, myFact))
+			{
+				TreeNodeCollection nodes = tvwReadingOrder.Nodes;
+				RoleMoveableCollection readingOrderRoles = order.RoleCollection;
 
+				// Find the root node
+				foreach (TreeNode node in nodes)
+				{
+					ReadingRootTreeNode rootNode = node as ReadingRootTreeNode;
+					if (rootNode != null && IsMatchingLeadRole(rootNode.LeadRole, readingOrderRoles))
+					{
+						// Find the child node
+						foreach (ReadingTreeNode childNode in rootNode.Nodes)
+						{
+							if (IsMatchingReadingOrder(childNode.RoleOrder, readingOrderRoles))
+							{
+								// Select to populate the grid
+								tvwReadingOrder.SelectedNode = childNode;
+
+								// Find the item in the grid
+								if (vtrReadings.SelectObject(null, reading, (int)ObjectStyle.TrackingObject, 0))
+								{
+									vtrReadings.BeginLabelEdit();
+								}
+								break;
+							}
+						}
+						break;
+					}
+				}
+			}
+		}
+		#endregion // Reading activation helper
 		#region model events and handlers
 
 		#region event handler attach/detach methods
@@ -332,6 +386,10 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ReadingOrderHasRoleAddedEvent));
 			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ReadingOrderHasRoleRemovedEvent));
+
+			// Track fact type removal
+			classInfo = dataDirectory.FindMetaRelationship(ModelHasFactType.MetaRelationshipGuid);
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(FactTypeRemovedEvent));
 		}
 
 		/// <summary>
@@ -372,6 +430,10 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ReadingOrderHasRoleAddedEvent));
 			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(ReadingOrderHasRoleRemovedEvent));
+
+			// Track fact type removal
+			classInfo = dataDirectory.FindMetaRelationship(ModelHasFactType.MetaRelationshipGuid);
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(FactTypeRemovedEvent));
 		}
 
 		#endregion
@@ -591,6 +653,17 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		}
 		#endregion
 
+		#region FactType Event Handlers
+		private void FactTypeRemovedEvent(object sender, ElementRemovedEventArgs e)
+		{
+			ModelHasFactType link = e.ModelElement as ModelHasFactType;
+			if (object.ReferenceEquals(link.FactTypeCollection, myFact))
+			{
+				ORMDesignerPackage.ReadingEditorWindow.EditingFactType = null;
+			}
+		}
+		#endregion // FactType Event Handlers
+
 		#region Helper methods
 
 		private void ReloadData()
@@ -712,7 +785,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		#endregion
 
 		#endregion
-
 		#region nested abstract class BaseReadingTreeNode
 		private abstract class BaseReadingTreeNode : TreeNode
 		{
@@ -1081,7 +1153,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			{
 				get
 				{
-					return BranchFeatures.DelayedLabelEdits | BranchFeatures.ExplicitLabelEdits | BranchFeatures.StateChanges | BranchFeatures.InsertsAndDeletes | BranchFeatures.JaggedColumns;
+					return BranchFeatures.DelayedLabelEdits | BranchFeatures.ExplicitLabelEdits | BranchFeatures.PositionTracking | BranchFeatures.StateChanges | BranchFeatures.InsertsAndDeletes | BranchFeatures.JaggedColumns;
 				}
 			}
 
@@ -1142,12 +1214,25 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 
 			LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
 			{
-				ReadingEntry ent = obj as ReadingEntry;
-				Debug.Assert(ent != null);
-
-				int pos = myReadingList.IndexOf(ent);
-				LocateObjectData retval = new LocateObjectData(pos, 0, locateOptions);
-				return retval;
+				switch (style)
+				{
+					case ObjectStyle.TrackingObject:
+						Reading reading = obj as Reading;
+						if (reading != null)
+						{
+							List<ReadingEntry> list = myReadingList;
+							int listCount = list.Count;
+							for (int i = 0; i < listCount; ++i)
+							{
+								if (object.ReferenceEquals(reading, list[i].Reading))
+								{
+									return new LocateObjectData(i, 0, (int)TrackingObjectAction.ThisLevel);
+								}
+							}
+						}
+						break;
+				}
+				return new LocateObjectData();
 			}
 
 			event BranchModificationEventHandler OnBranchModification
@@ -1398,6 +1483,5 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			}
 		}
 		#endregion
-
 	}
 }

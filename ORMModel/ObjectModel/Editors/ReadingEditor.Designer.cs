@@ -31,22 +31,6 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("All");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Object1, Object2, Object3");
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Object1, Object3, Object2");
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Object1", new System.Windows.Forms.TreeNode[] {
-            treeNode2,
-            treeNode3});
-			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Object2, Object1, Object3");
-			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Object2, Object3, Object1");
-			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Object2", new System.Windows.Forms.TreeNode[] {
-            treeNode5,
-            treeNode6});
-			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Object3, Object1, Object2");
-			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Object3, Object2, Object1");
-			System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Object3", new System.Windows.Forms.TreeNode[] {
-            treeNode8,
-            treeNode9});
 			this.mySplitContainer = new System.Windows.Forms.SplitContainer();
 			this.tvwReadingOrder = new System.Windows.Forms.TreeView();
 			this.vtrReadings = new Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeControl();
@@ -82,33 +66,6 @@
 			this.tvwReadingOrder.HideSelection = false;
 			this.tvwReadingOrder.Location = new System.Drawing.Point(0, 0);
 			this.tvwReadingOrder.Name = "tvwReadingOrder";
-			treeNode1.Name = "Node0";
-			treeNode1.Text = "All";
-			treeNode2.Name = "Node5";
-			treeNode2.NodeFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			treeNode2.Text = "Object1, Object2, Object3";
-			treeNode3.Name = "Node6";
-			treeNode3.Text = "Object1, Object3, Object2";
-			treeNode4.Name = "Node1";
-			treeNode4.NodeFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			treeNode4.Text = "Object1";
-			treeNode5.Name = "Node8";
-			treeNode5.Text = "Object2, Object1, Object3";
-			treeNode6.Name = "Node9";
-			treeNode6.Text = "Object2, Object3, Object1";
-			treeNode7.Name = "Node2";
-			treeNode7.Text = "Object2";
-			treeNode8.Name = "Node10";
-			treeNode8.Text = "Object3, Object1, Object2";
-			treeNode9.Name = "Node11";
-			treeNode9.Text = "Object3, Object2, Object1";
-			treeNode10.Name = "Node4";
-			treeNode10.Text = "Object3";
-			this.tvwReadingOrder.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode4,
-            treeNode7,
-            treeNode10});
 			this.tvwReadingOrder.ShowLines = false;
 			this.tvwReadingOrder.Size = new System.Drawing.Size(181, 276);
 			this.tvwReadingOrder.TabIndex = 7;
@@ -122,7 +79,7 @@
 			this.vtrReadings.HasRootButtons = false;
 			this.vtrReadings.HasRootLines = false;
 			this.vtrReadings.ImageList = this.myImageList;
-			this.vtrReadings.LabelEditSupport = Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.Delayed;
+			this.vtrReadings.LabelEditSupport = ((Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles)((Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.Explicit | Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles.Delayed)));
 			this.vtrReadings.Location = new System.Drawing.Point(0, 0);
 			this.vtrReadings.Name = "vtrReadings";
 			this.vtrReadings.Size = new System.Drawing.Size(356, 276);

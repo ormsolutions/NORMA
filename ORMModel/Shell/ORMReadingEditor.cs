@@ -89,6 +89,18 @@ namespace Northface.Tools.ORM.Shell
 		}
 		#endregion
 
+		#region Reading activation helper
+		/// <summary>
+		/// Select the current reading in the window. The
+		/// reading must be the child of the current fact.
+		/// </summary>
+		/// <param name="reading">Reading</param>
+		public void ActivateReading(Reading reading)
+		{
+			myForm.ActivateReading(reading);
+		}
+		#endregion // Reading activation helper
+
 		#region properties
 		/// <summary>
 		/// Controls which fact is being displayed by the tool window.
@@ -182,6 +194,18 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 			#endregion
+
+			#region Reading activation helper
+			/// <summary>
+			/// Select the current reading in the window. The
+			/// reading must be the child of the current fact.
+			/// </summary>
+			/// <param name="reading">Reading</param>
+			public void ActivateReading(Reading reading)
+			{
+				myReadingEditor.ActivateReading(reading);
+			}
+			#endregion // Reading activation helper
 		}
 		#endregion
 	}
