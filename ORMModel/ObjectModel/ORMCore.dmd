@@ -40,7 +40,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i547d17bbz3dc9z4869zb280zff6be0f7dca9</source>
             <type>i910a08efze1a5z461azbebdz150932f12aad</type>
-            <generatedProperty name="ValueTypeCollection" identity="6bb385ff-624a-40f1-baf9-e688f3524735">
+            <generatedProperty name="ValueTypeCollection" identity="63cc9759-dcaa-445e-9d9e-56de33e6a558">
               <referenceType>i910a08efze1a5z461azbebdz150932f12aad</referenceType>
             </generatedProperty>
           </role>
@@ -48,7 +48,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i910a08efze1a5z461azbebdz150932f12aad</source>
             <type>i547d17bbz3dc9z4869zb280zff6be0f7dca9</type>
-            <generatedProperty name="DataType" identity="48bde3b9-6e29-480c-ad0e-b17aedd2db88">
+            <generatedProperty name="DataType" identity="202207e9-70b5-4ae4-9b93-7d8f30d48a12">
               <referenceType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</referenceType>
             </generatedProperty>
           </role>
@@ -72,7 +72,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
             <type>iddc5ef24z70bbz48aaz8481z2a76021581a3</type>
-            <generatedProperty name="DerivationRule" identity="0be7be37-c288-467f-a9cf-5306a9a27216">
+            <generatedProperty name="DerivationRule" identity="97ca9bfd-613e-4738-91ef-b9827e43acfc">
               <referenceType>iddc5ef24z70bbz48aaz8481z2a76021581a3</referenceType>
             </generatedProperty>
           </role>
@@ -85,7 +85,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i910a08efze1a5z461azbebdz150932f12aad</source>
             <type>ia3acc35azce71z4cb8z8770zb87fbfa462d8</type>
-            <generatedProperty name="NestedFactType" identity="0db97ae8-d53d-4554-abe8-c51991a5fb95">
+            <generatedProperty name="NestedFactType" identity="3d07e121-ffc1-4cb0-a6d2-dfc0439ab049">
               <referenceType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</referenceType>
             </generatedProperty>
           </role>
@@ -93,7 +93,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
             <type>i910a08efze1a5z461azbebdz150932f12aad</type>
-            <generatedProperty name="NestingType" identity="03a11f14-bdcf-49f1-b86e-ef8dfd45af82">
+            <generatedProperty name="NestingType" identity="051c34b2-ef29-406c-baea-f4729f3a7faf">
               <referenceType>i910a08efze1a5z461azbebdz150932f12aad</referenceType>
             </generatedProperty>
           </role>
@@ -106,7 +106,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i393d854fz34c5z4dc5z86c6z56816581b957</source>
             <type>ia3acc35azce71z4cb8z8770zb87fbfa462d8</type>
-            <generatedProperty name="FactType" identity="f0fe822c-f746-47ad-87f0-2312a937b549">
+            <generatedProperty name="FactType" identity="164b572a-36d8-4dfe-812e-00b65dd82922">
               <referenceType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</referenceType>
             </generatedProperty>
           </role>
@@ -114,7 +114,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="true" />
             <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
             <type>i393d854fz34c5z4dc5z86c6z56816581b957</type>
-            <generatedProperty name="RoleCollection" identity="22f39f90-5f24-4544-9192-c2493b42800d">
+            <generatedProperty name="RoleCollection" identity="1751e5ba-58fa-4920-a285-18ca99ce0027">
               <referenceType>i393d854fz34c5z4dc5z86c6z56816581b957</referenceType>
             </generatedProperty>
           </role>
@@ -127,7 +127,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i393d854fz34c5z4dc5z86c6z56816581b957</source>
             <type>i910a08efze1a5z461azbebdz150932f12aad</type>
-            <generatedProperty name="RolePlayer" identity="43b0d83e-0393-4668-b1da-09432dbed99b">
+            <generatedProperty name="RolePlayer" identity="15a724fb-ac1c-40b0-b327-2f3fb7b884ab">
               <referenceType>i910a08efze1a5z461azbebdz150932f12aad</referenceType>
             </generatedProperty>
           </role>
@@ -135,7 +135,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i910a08efze1a5z461azbebdz150932f12aad</source>
             <type>i393d854fz34c5z4dc5z86c6z56816581b957</type>
-            <generatedProperty name="PlayedRoleCollection" identity="a838df8e-4b04-45a6-8923-022e7f7e8399">
+            <generatedProperty name="PlayedRoleCollection" identity="11156228-0bc1-4896-92ee-d7c99b436fc1">
               <referenceType>i393d854fz34c5z4dc5z86c6z56816581b957</referenceType>
             </generatedProperty>
           </role>
@@ -148,7 +148,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ic6bdf8b0zef3dz406azafb2z8bfeb1f528c3</source>
             <type>ic6bdf8b0zef3dz406azafb2z8bfeb1f528c3</type>
-            <generatedProperty name="SubTypeCollection" identity="876df7c3-4ee4-4281-bf85-cf4b4aa85f96">
+            <generatedProperty name="SubTypeCollection" identity="1e678a19-b523-4491-9eb1-5dd1b98686a2">
               <referenceType>ic6bdf8b0zef3dz406azafb2z8bfeb1f528c3</referenceType>
             </generatedProperty>
           </role>
@@ -156,7 +156,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ic6bdf8b0zef3dz406azafb2z8bfeb1f528c3</source>
             <type>ic6bdf8b0zef3dz406azafb2z8bfeb1f528c3</type>
-            <generatedProperty name="SuperTypeCollection" identity="a1c36e40-5eb7-4acc-8994-0574830bb35f">
+            <generatedProperty name="SuperTypeCollection" identity="5025b567-0a59-4ad2-8959-38dee282310a">
               <referenceType>ic6bdf8b0zef3dz406azafb2z8bfeb1f528c3</referenceType>
             </generatedProperty>
           </role>
@@ -169,7 +169,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i910a08efze1a5z461azbebdz150932f12aad</source>
             <type>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</type>
-            <generatedProperty name="Model" identity="e1aaa578-8b6e-4d89-bbb2-54aaca39ce40">
+            <generatedProperty name="Model" identity="e6f95dc2-72c5-45ea-bd7e-b070d4934430">
               <referenceType>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</referenceType>
             </generatedProperty>
           </role>
@@ -177,7 +177,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</source>
             <type>i910a08efze1a5z461azbebdz150932f12aad</type>
-            <generatedProperty name="ObjectTypeCollection" identity="646e40c4-af62-4397-8e63-78bb90c5e15a">
+            <generatedProperty name="ObjectTypeCollection" identity="4cc5b396-b3b1-4722-a7c6-b008677da2ed">
               <referenceType>i910a08efze1a5z461azbebdz150932f12aad</referenceType>
             </generatedProperty>
           </role>
@@ -190,7 +190,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
             <type>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</type>
-            <generatedProperty name="Model" identity="c3a1291f-1607-4a7c-8f8f-6a281639200c">
+            <generatedProperty name="Model" identity="e0711ab4-b5af-4adb-a67e-7c626052cd05">
               <referenceType>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</referenceType>
             </generatedProperty>
           </role>
@@ -198,7 +198,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</source>
             <type>ia3acc35azce71z4cb8z8770zb87fbfa462d8</type>
-            <generatedProperty name="FactTypeCollection" identity="1b4f3709-6615-47b0-814d-2871de6456e8">
+            <generatedProperty name="FactTypeCollection" identity="c77f6c92-1a7c-44ff-9948-07a133b8e776">
               <referenceType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</referenceType>
             </generatedProperty>
           </role>
@@ -211,7 +211,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i31230436za925z46d9zb64cz24e028aa5d60</source>
             <type>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</type>
-            <generatedProperty name="Model" identity="0eb75d12-c6fd-440b-8ed0-7f65c74bc61f">
+            <generatedProperty name="Model" identity="c9db6fde-b720-4cc5-93b6-0e94a5c5d493">
               <referenceType>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</referenceType>
             </generatedProperty>
           </role>
@@ -219,7 +219,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</source>
             <type>i31230436za925z46d9zb64cz24e028aa5d60</type>
-            <generatedProperty name="ConstraintCollection" identity="f2689ea5-ee32-4574-9125-0506b95f171f">
+            <generatedProperty name="ConstraintCollection" identity="9644c9e4-e624-4938-8d4c-dae957671c7f">
               <referenceType>i31230436za925z46d9zb64cz24e028aa5d60</referenceType>
             </generatedProperty>
           </role>
@@ -232,7 +232,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
             <type>i0d75242dz1462z4936zad30ze1ce61a6ba3f</type>
-            <generatedProperty name="ExternalConstraintCollection" identity="746dfc9d-d44b-4dda-8e11-bd7543aae69d">
+            <generatedProperty name="ExternalConstraintCollection" identity="1a9862c5-6a6f-484f-aa2a-019a96ffb98b">
               <referenceType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</referenceType>
             </generatedProperty>
           </role>
@@ -240,7 +240,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i0d75242dz1462z4936zad30ze1ce61a6ba3f</source>
             <type>ia3acc35azce71z4cb8z8770zb87fbfa462d8</type>
-            <generatedProperty name="FactTypeCollection" identity="2524ab40-6051-4f33-ad72-71ed2e9abb11">
+            <generatedProperty name="FactTypeCollection" identity="9b37a8a5-22dd-47df-b8f6-27aed381876d">
               <referenceType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</referenceType>
             </generatedProperty>
           </role>
@@ -253,7 +253,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ib66ae3b4zc404z486cz933azfd23eea3c3d7</source>
             <type>i2ccd6a09z46bez4d7cz9d8bzb77679074f17</type>
-            <generatedProperty name="FactConstraintCollection" identity="d2b80e6c-6a5d-43c2-90f8-43763a8c8f70">
+            <generatedProperty name="FactConstraintCollection" identity="78c5b707-91eb-4f27-be6f-aca64d2bb508">
               <referenceType>i2ccd6a09z46bez4d7cz9d8bzb77679074f17</referenceType>
             </generatedProperty>
           </role>
@@ -261,7 +261,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i2ccd6a09z46bez4d7cz9d8bzb77679074f17</source>
             <type>ib66ae3b4zc404z486cz933azfd23eea3c3d7</type>
-            <generatedProperty name="ConstrainedRoleCollection" identity="a942af22-f55d-4a12-b7e8-e88849b99f2c">
+            <generatedProperty name="ConstrainedRoleCollection" identity="8c4ddffe-4f2a-471e-90c4-48a2ace3deb9">
               <referenceType>ib66ae3b4zc404z486cz933azfd23eea3c3d7</referenceType>
             </generatedProperty>
           </role>
@@ -274,7 +274,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="true" />
             <source>ie17dcd50zeefez4960zb425zb87f246c6ea0</source>
             <type>i8264311czaf73z4e80zae8azb312d6861a50</type>
-            <generatedProperty name="RoleSet" identity="6ac9e7e8-28ce-4dff-8756-a0cce817b288">
+            <generatedProperty name="RoleSet" identity="bf7aaecc-a54f-4c70-894f-4d074c31b269">
               <referenceType>i8264311czaf73z4e80zae8azb312d6861a50</referenceType>
             </generatedProperty>
           </role>
@@ -282,7 +282,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="true" />
             <source>i8264311czaf73z4e80zae8azb312d6861a50</source>
             <type>ie17dcd50zeefez4960zb425zb87f246c6ea0</type>
-            <generatedProperty name="InternalConstraint" identity="c10d99a7-e115-4e87-83bc-bd672a0a8c72">
+            <generatedProperty name="InternalConstraint" identity="92f5f159-bca8-47ed-a453-8dea55f66d91">
               <referenceType>ie17dcd50zeefez4960zb425zb87f246c6ea0</referenceType>
             </generatedProperty>
           </role>
@@ -295,7 +295,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i0d75242dz1462z4936zad30ze1ce61a6ba3f</source>
             <type>i34a3c709z1021z4afez80dbz6302f4c681ea</type>
-            <generatedProperty name="RoleSetCollection" identity="601b6776-3c4c-4444-87f2-46577e3122e9">
+            <generatedProperty name="RoleSetCollection" identity="6d6b310a-70a5-4e0c-89c5-0cd4cf6c089f">
               <referenceType>i34a3c709z1021z4afez80dbz6302f4c681ea</referenceType>
             </generatedProperty>
           </role>
@@ -303,7 +303,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="true" />
             <source>i34a3c709z1021z4afez80dbz6302f4c681ea</source>
             <type>i0d75242dz1462z4936zad30ze1ce61a6ba3f</type>
-            <generatedProperty name="ExternalConstraint" identity="48cf4aea-d474-48a1-9c49-68854590cfd2">
+            <generatedProperty name="ExternalConstraint" identity="ea5c292e-2855-4b04-b4d0-dbfc83f9d5c8">
               <referenceType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</referenceType>
             </generatedProperty>
           </role>
@@ -316,7 +316,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="false" />
             <source>id9ab8420z8604z4016z8827z0d59c77b47f8</source>
             <type>i393d854fz34c5z4dc5z86c6z56816581b957</type>
-            <generatedProperty name="RoleCollection" identity="5ca3c149-f968-4a1b-9710-c07c8921690c">
+            <generatedProperty name="RoleCollection" identity="3c1c2bb5-4aba-49c4-b7de-b58eda2db24b">
               <referenceType>i393d854fz34c5z4dc5z86c6z56816581b957</referenceType>
             </generatedProperty>
           </role>
@@ -324,29 +324,8 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i393d854fz34c5z4dc5z86c6z56816581b957</source>
             <type>id9ab8420z8604z4016z8827z0d59c77b47f8</type>
-            <generatedProperty name="ConstraintRoleSetCollection" identity="12e8f51d-25c1-4656-b943-76899c203979">
+            <generatedProperty name="ConstraintRoleSetCollection" identity="6b22f392-fb74-4596-85cb-9cf813fd3514">
               <referenceType>id9ab8420z8604z4016z8827z0d59c77b47f8</referenceType>
-            </generatedProperty>
-          </role>
-        </roles>
-      </relationship>
-      <relationship name="FactTypeHasReading" identity="43d4abf4-8bef-41da-9597-049a6630f300" namespace="Northface.Tools.ORM.ObjectModel" id="i43d4abf4z8befz41daz9597z049a6630f300" isLoaded="true" isAbstract="false">
-        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
-        <roles>
-          <role name="ReadingCollection" identity="e8edc6a4-0e36-4db9-8d52-5ed08e06d963" id="ie8edc6a4z0e36z4db9z8d52z5ed08e06d963" min="1" max="0" isUnbounded="true" accepts="none">
-            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
-            <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
-            <type>icef616d5z3fe8z489ezbd60z3333921b675e</type>
-            <generatedProperty name="ReadingCollection" identity="d8180d62-7eab-4d1d-8dd6-6a541337bd71">
-              <referenceType>icef616d5z3fe8z489ezbd60z3333921b675e</referenceType>
-            </generatedProperty>
-          </role>
-          <role name="FactType" identity="892d6985-b064-4452-a17a-dec195324576" id="i892d6985zb064z4452za17azdec195324576" min="1" max="1" isUnbounded="false" accepts="none">
-            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="true" />
-            <source>icef616d5z3fe8z489ezbd60z3333921b675e</source>
-            <type>ia3acc35azce71z4cb8z8770zb87fbfa462d8</type>
-            <generatedProperty name="FactType" identity="e41446d1-725b-486c-aa98-6db0e190a929">
-              <referenceType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</referenceType>
             </generatedProperty>
           </role>
         </roles>
@@ -358,7 +337,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>icef616d5z3fe8z489ezbd60z3333921b675e</source>
             <type>i393d854fz34c5z4dc5z86c6z56816581b957</type>
-            <generatedProperty name="RoleCollection" identity="f2fc546c-693f-4201-9f93-cdce76d1afb8">
+            <generatedProperty name="RoleCollection" identity="c8379192-aef6-4935-b065-1808ecc2a27a">
               <referenceType>i393d854fz34c5z4dc5z86c6z56816581b957</referenceType>
             </generatedProperty>
           </role>
@@ -376,7 +355,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="false" />
             <source>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</source>
             <type>i50b3feeazfa3az4c87zbb8cz74b26c12b330</type>
-            <generatedProperty name="ErrorCollection" identity="3b11e67d-6e6d-4460-9c40-fb3cc684b28f">
+            <generatedProperty name="ErrorCollection" identity="1e3d6a95-23ea-466f-a93b-1053aecfbfe0">
               <referenceType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</referenceType>
             </generatedProperty>
           </role>
@@ -384,7 +363,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>i50b3feeazfa3az4c87zbb8cz74b26c12b330</source>
             <type>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</type>
-            <generatedProperty name="Model" identity="2c4a75e6-9194-4722-bb07-91686394a05f">
+            <generatedProperty name="Model" identity="ee9a6a5b-c636-4ee5-a961-21b73ab1fe0a">
               <referenceType>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</referenceType>
             </generatedProperty>
           </role>
@@ -397,7 +376,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="false" />
             <source>i0d75242dz1462z4936zad30ze1ce61a6ba3f</source>
             <type>ia2f137b4z5973z4e4fz90aaz6bc936bf8e79</type>
-            <generatedProperty name="TooFewRoleSetsError" identity="21c344bc-605a-49bd-b4ac-01cd9ab4fa11">
+            <generatedProperty name="TooFewRoleSetsError" identity="ba9ac735-b367-4893-b7af-ab9b08138b6a">
               <referenceType>ia2f137b4z5973z4e4fz90aaz6bc936bf8e79</referenceType>
             </generatedProperty>
           </role>
@@ -405,7 +384,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ia2f137b4z5973z4e4fz90aaz6bc936bf8e79</source>
             <type>i0d75242dz1462z4936zad30ze1ce61a6ba3f</type>
-            <generatedProperty name="Constraint" identity="ff84be4f-d660-4bda-80ed-0381ffbe73ed">
+            <generatedProperty name="Constraint" identity="5c5acbc1-2cc0-4710-8f42-dac2cd976b18">
               <referenceType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</referenceType>
             </generatedProperty>
           </role>
@@ -418,7 +397,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="false" />
             <source>i0d75242dz1462z4936zad30ze1ce61a6ba3f</source>
             <type>ic0e9f4b2zc8e8z4126zbde2zec5de62d2b58</type>
-            <generatedProperty name="TooManyRoleSetsError" identity="24be3f38-9146-459e-a9a7-bf7df1d01a27">
+            <generatedProperty name="TooManyRoleSetsError" identity="569a2d87-ca8d-42e1-81e5-ef55dfd042aa">
               <referenceType>ic0e9f4b2zc8e8z4126zbde2zec5de62d2b58</referenceType>
             </generatedProperty>
           </role>
@@ -426,7 +405,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="false" isnavigablefrom="true" />
             <source>ic0e9f4b2zc8e8z4126zbde2zec5de62d2b58</source>
             <type>i0d75242dz1462z4936zad30ze1ce61a6ba3f</type>
-            <generatedProperty name="Constraint" identity="0eff81f6-6738-4c86-9c67-0d1c83c43515">
+            <generatedProperty name="Constraint" identity="322e4584-774f-49c1-8a23-c589ad14593f">
               <referenceType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</referenceType>
             </generatedProperty>
           </role>
@@ -439,7 +418,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i910a08efze1a5z461azbebdz150932f12aad</source>
             <type>i29be74c2z24ccz4b4bzab61z7750ca7ec339</type>
-            <generatedProperty name="DuplicateNameError" identity="cee73be1-31c6-4170-8c9e-1d940a1b5ce5">
+            <generatedProperty name="DuplicateNameError" identity="097ca0ed-e287-4a61-80fd-a1ac55de363a">
               <referenceType>i29be74c2z24ccz4b4bzab61z7750ca7ec339</referenceType>
             </generatedProperty>
           </role>
@@ -447,7 +426,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i29be74c2z24ccz4b4bzab61z7750ca7ec339</source>
             <type>i910a08efze1a5z461azbebdz150932f12aad</type>
-            <generatedProperty name="ObjectTypeCollection" identity="baa4c577-cb33-49a6-8ef9-bf64520d1d32">
+            <generatedProperty name="ObjectTypeCollection" identity="e89d8bfb-b424-4118-9c2d-ec0d14d1e248">
               <referenceType>i910a08efze1a5z461azbebdz150932f12aad</referenceType>
             </generatedProperty>
           </role>
@@ -460,7 +439,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
             <type>i51040183z4ecfz4128z9e5fz89369fcf152b</type>
-            <generatedProperty name="DuplicateNameError" identity="b50c9eb3-803f-4cf9-b06d-4121c5c3547b">
+            <generatedProperty name="DuplicateNameError" identity="ef07fa37-50e5-4630-8b4f-c40eac3e63e9">
               <referenceType>i51040183z4ecfz4128z9e5fz89369fcf152b</referenceType>
             </generatedProperty>
           </role>
@@ -468,7 +447,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i51040183z4ecfz4128z9e5fz89369fcf152b</source>
             <type>ia3acc35azce71z4cb8z8770zb87fbfa462d8</type>
-            <generatedProperty name="FactTypeCollection" identity="c8bb5b87-32c1-4bed-97d7-a01b1e4bfb8c">
+            <generatedProperty name="FactTypeCollection" identity="d8b5c5e0-223c-4b36-8a3c-5360f3b12089">
               <referenceType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</referenceType>
             </generatedProperty>
           </role>
@@ -481,7 +460,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i31230436za925z46d9zb64cz24e028aa5d60</source>
             <type>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</type>
-            <generatedProperty name="DuplicateNameError" identity="83eac7b6-2157-4119-9d14-d6be60fd5cbc">
+            <generatedProperty name="DuplicateNameError" identity="e312d4ee-f4df-4e73-aac6-195e7b292a6f">
               <referenceType>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</referenceType>
             </generatedProperty>
           </role>
@@ -489,7 +468,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</source>
             <type>i31230436za925z46d9zb64cz24e028aa5d60</type>
-            <generatedProperty name="ConstraintCollection" identity="68ca69cc-aaa4-4ffe-be9d-4dbd1a3f33b0">
+            <generatedProperty name="ConstraintCollection" identity="fd954f36-9462-417d-bf7d-aa3ef8869efe">
               <referenceType>i31230436za925z46d9zb64cz24e028aa5d60</referenceType>
             </generatedProperty>
           </role>
@@ -502,7 +481,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i910a08efze1a5z461azbebdz150932f12aad</source>
             <type>i31230436za925z46d9zb64cz24e028aa5d60</type>
-            <generatedProperty name="PreferredIdentifier" identity="69b3f976-a8eb-446a-8269-b04724d15ee5">
+            <generatedProperty name="PreferredIdentifier" identity="9d730ebc-4f97-465e-8e3a-837f435b8960">
               <referenceType>i31230436za925z46d9zb64cz24e028aa5d60</referenceType>
             </generatedProperty>
           </role>
@@ -510,8 +489,68 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i31230436za925z46d9zb64cz24e028aa5d60</source>
             <type>i910a08efze1a5z461azbebdz150932f12aad</type>
-            <generatedProperty name="PreferredIdentifierFor" identity="917a3ff3-91e3-4c82-9308-933ac53d36b0">
+            <generatedProperty name="PreferredIdentifierFor" identity="79f06c2c-111e-4c6d-98a6-9d381ac6d742">
               <referenceType>i910a08efze1a5z461azbebdz150932f12aad</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
+      <relationship name="ReadingOrderHasReading" identity="929ef898-db8d-44cf-b2d2-f1b030752b08" namespace="Northface.Tools.ORM.ObjectModel" id="i929ef898zdb8dz44cfzb2d2zf1b030752b08" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <roles>
+          <role name="ReadingCollection" identity="f09f87e5-bb49-4cc7-be1d-26104769e721" id="if09f87e5zbb49z4cc7zbe1dz26104769e721" min="1" max="0" isUnbounded="true" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i624a498ez0659z4c34zab74z7fe43b4c8fa1</source>
+            <type>icef616d5z3fe8z489ezbd60z3333921b675e</type>
+            <generatedProperty name="ReadingCollection" identity="5bbb0f06-a603-4cdb-b526-8614c630404b">
+              <referenceType>icef616d5z3fe8z489ezbd60z3333921b675e</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="ReadingOrder" identity="6d039c34-74fb-47dd-9dbd-19d7754ad67f" id="i6d039c34z74fbz47ddz9dbdz19d7754ad67f" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>icef616d5z3fe8z489ezbd60z3333921b675e</source>
+            <type>i624a498ez0659z4c34zab74z7fe43b4c8fa1</type>
+            <generatedProperty name="ReadingOrder" identity="74a32778-c738-4b67-938c-12c18687f8ee">
+              <referenceType>i624a498ez0659z4c34zab74z7fe43b4c8fa1</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
+      <relationship name="ReadingOrderHasRole" identity="5f244cf8-a0e0-48cc-9e74-ed2ee3c853b0" namespace="Northface.Tools.ORM.ObjectModel" id="i5f244cf8za0e0z48ccz9e74zed2ee3c853b0" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <roles>
+          <role name="RoleCollection" identity="fb522e84-ba2d-49a0-bd18-37cf1f00ae11" id="ifb522e84zba2dz49a0zbd18z37cf1f00ae11" min="1" max="0" isUnbounded="true" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i624a498ez0659z4c34zab74z7fe43b4c8fa1</source>
+            <type>i393d854fz34c5z4dc5z86c6z56816581b957</type>
+            <generatedProperty name="RoleCollection" identity="392d300e-5cfe-46b0-ad23-695b773e4a25">
+              <referenceType>i393d854fz34c5z4dc5z86c6z56816581b957</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="ReadingOrder" identity="71a07cfd-e938-414e-a390-1cd6dacd690e" id="i71a07cfdze938z414eza390z1cd6dacd690e" min="1" max="0" isUnbounded="true" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i393d854fz34c5z4dc5z86c6z56816581b957</source>
+            <type>i624a498ez0659z4c34zab74z7fe43b4c8fa1</type>
+          </role>
+        </roles>
+      </relationship>
+      <relationship name="FactTypeHasReadingOrder" identity="1170285d-5118-4945-81a9-c6ea63863c39" namespace="Northface.Tools.ORM.ObjectModel" id="i1170285dz5118z4945z81a9zc6ea63863c39" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <roles>
+          <role name="ReadingOrderCollection" identity="ac5ae124-5cf2-4c0f-9071-11d57cdf6668" id="iac5ae124z5cf2z4c0fz9071z11d57cdf6668" min="1" max="0" isUnbounded="true" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
+            <type>i624a498ez0659z4c34zab74z7fe43b4c8fa1</type>
+            <generatedProperty name="ReadingOrderCollection" identity="fda6ed7b-eadc-49d2-83fd-92ef62860fe2">
+              <referenceType>i624a498ez0659z4c34zab74z7fe43b4c8fa1</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="FactType" identity="b852113d-a2b6-44ff-82a5-5295e69faedb" id="ib852113dza2b6z44ffz82a5z5295e69faedb" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i624a498ez0659z4c34zab74z7fe43b4c8fa1</source>
+            <type>ia3acc35azce71z4cb8z8770zb87fbfa462d8</type>
+            <generatedProperty name="FactType" identity="9839b663-3c9b-49c9-ac23-21c23b3a263f">
+              <referenceType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</referenceType>
             </generatedProperty>
           </role>
         </roles>
@@ -523,7 +562,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>ia3acc35azce71z4cb8z8770zb87fbfa462d8</source>
             <type>ie17dcd50zeefez4960zb425zb87f246c6ea0</type>
-            <generatedProperty name="InternalConstraintCollection" identity="eda46197-f343-4ac6-8ff5-6ec56cd92114">
+            <generatedProperty name="InternalConstraintCollection" identity="10ee5846-9234-4d00-9526-1d063ab66119">
               <referenceType>ie17dcd50zeefez4960zb425zb87f246c6ea0</referenceType>
             </generatedProperty>
           </role>
@@ -531,7 +570,7 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>ie17dcd50zeefez4960zb425zb87f246c6ea0</source>
             <type>ia3acc35azce71z4cb8z8770zb87fbfa462d8</type>
-            <generatedProperty name="FactType" identity="e6312276-eede-45b5-a48b-746a3f23e446">
+            <generatedProperty name="FactType" identity="c1140252-d138-49d1-81ec-1f301ca4df61">
               <referenceType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</referenceType>
             </generatedProperty>
           </role>
@@ -677,14 +716,6 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <role>i43f43911z662ez480dzb566z8025ccb1f673</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="FactTypeHasReading.ReadingCollection" identity="272add6e-ca42-47d5-9877-3ea3844fa9b1" id="i272add6ezca42z47d5z9877z3ea3844fa9b1" definitionlevel="none" containmentstyle="embedding">
-            <source />
-            <role>ie8edc6a4z0e36z4db9z8d52z5ed08e06d963</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ReadingHasRole.RoleCollection" identity="fd647f07-dd6d-4a46-9edd-d74fb2d144ce" id="ifd647f07zdd6dz4a46z9eddzd74fb2d144ce" definitionlevel="none" containmentstyle="reference">
-            <source />
-            <role>i54350d49z2d00z46f9z85d0z68fa9771ca47</role>
-          </treeExpression>
           <treeExpression xsi:type="RoleExpression" name="ModelHasError.ErrorCollection" identity="a8d682eb-3cec-4ae1-b027-7f2cd6149dec" id="ia8d682ebz3cecz4ae1zb027z7f2cd6149dec" definitionlevel="none" containmentstyle="embedding">
             <source />
             <role>i0cc3a152zc6c3z49f3z97fdz7c97a6fd9657</role>
@@ -734,9 +765,22 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <role>i66386508z14cez48b5zaa0czac971dca74a8</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasConstraint.Constraint" identity="21ba668e-9cf9-4b21-a296-8a2174f1c95d" id="i21ba668ez9cf9z4b21za296z8a2174f1c95d" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="InheritanceExpression" name="ReadingOrder-ModelElement" identity="f39e68c7-cb32-4eb2-b3e4-cb8aa9b933de" id="if39e68c7zcb32z4eb2zb3e4zcb8aa9b933de" definitionlevel="none">
             <source />
-            <role>iccfab332z362cz4ab4zbb0bzbfcb577bcaad</role>
+            <superType>ie5acb051zdd91z4118z87e4z100cc8925646</superType>
+            <subType>i624a498ez0659z4c34zab74z7fe43b4c8fa1</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ReadingOrderHasReading.Reading" identity="24bdb145-7ba5-4792-a56a-734b06276534" id="i24bdb145z7ba5z4792za56az734b06276534" definitionlevel="none" containmentstyle="embedding">
+            <source />
+            <role>if09f87e5zbb49z4cc7zbe1dz26104769e721</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ReadingOrderHasRole.Role" identity="dd1fa134-b428-450a-9c39-55f6dba983e3" id="idd1fa134zb428z450az9c39z55f6dba983e3" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>ifb522e84zba2dz49a0zbd18z37cf1f00ae11</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="FactTypeHasReadingOrder.ReadingOrder" identity="cefe5375-d3e3-43cc-b160-07fad32c1d79" id="icefe5375zd3e3z43cczb160z07fad32c1d79" definitionlevel="none" containmentstyle="embedding">
+            <source />
+            <role>iac5ae124z5cf2z4c0fz9071z11d57cdf6668</role>
           </treeExpression>
           <treeExpression xsi:type="RoleExpression" name="FactTypeHasInternalConstraint.InternalConstraint" identity="6b7e399c-02e9-47ef-af8e-6c74e641e627" id="i6b7e399cz02e9z47efzaf8ez6c74e641e627" definitionlevel="none" containmentstyle="reference">
             <source />
@@ -959,14 +1003,6 @@ Information Contained Herein is Proprietary and Confidential.
             <source>i24e62f04z9f76z44f5z8059z39e32ad91874</source>
             <role>i43f43911z662ez480dzb566z8025ccb1f673</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="FactTypeHasReading.ReadingCollection" identity="0ed58715-b41a-409b-8198-8cbd2d4f8869" id="i0ed58715zb41az409bz8198z8cbd2d4f8869" definitionlevel="use" containmentstyle="fromsource">
-            <source>i272add6ezca42z47d5z9877z3ea3844fa9b1</source>
-            <role>ie8edc6a4z0e36z4db9z8d52z5ed08e06d963</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ReadingHasRole.RoleCollection" identity="af9b7f63-f579-4688-9e47-40912d669557" id="iaf9b7f63zf579z4688z9e47z40912d669557" definitionlevel="use" containmentstyle="fromsource">
-            <source>ifd647f07zdd6dz4a46z9eddzd74fb2d144ce</source>
-            <role>i54350d49z2d00z46f9z85d0z68fa9771ca47</role>
-          </treeExpression>
           <treeExpression xsi:type="RoleExpression" name="ModelHasError.ErrorCollection" identity="b5b40704-6af1-4433-bb87-834492525f5b" id="ib5b40704z6af1z4433zbb87z834492525f5b" definitionlevel="definition" containmentstyle="fromsource">
             <source>ia8d682ebz3cecz4ae1zb027z7f2cd6149dec</source>
             <role>i0cc3a152zc6c3z49f3z97fdz7c97a6fd9657</role>
@@ -1016,17 +1052,34 @@ Information Contained Herein is Proprietary and Confidential.
             <source>i8da548b6z6fbaz4563z81faz4387196e4c6e</source>
             <role>i66386508z14cez48b5zaa0czac971dca74a8</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasConstraint.Constraint" identity="f42215fe-7ffa-49df-b99b-192c6e37b7c7" id="if42215fez7ffaz49dfzb99bz192c6e37b7c7" definitionlevel="use" containmentstyle="fromsource">
-            <source>i21ba668ez9cf9z4b21za296z8a2174f1c95d</source>
-            <role>iccfab332z362cz4ab4zbb0bzbfcb577bcaad</role>
-          </treeExpression>
-          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="955236e5-488c-400d-824e-fd10f911de24" id="i955236e5z488cz400dz824ezfd10f911de24">
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="98bb7d29-d087-49a3-96cb-ba2a5db88dc7" id="i98bb7d29zd087z49a3z96cbzba2a5db88dc7">
             <source />
-            <property>ic1ba5d02za7e4z4cd5zac9fz89ee1d811ee8</property>
+            <property>i28f89850za91ez4b64za917z43a97cfb192e</property>
           </treeExpression>
           <treeExpression xsi:type="RoleExpression" name="FactTypeHasInternalConstraint.InternalConstraint" identity="8e3a3aca-cf78-4b21-aef5-e941096ed39b" id="i8e3a3acazcf78z4b21zaef5ze941096ed39b" definitionlevel="use" containmentstyle="fromsource">
             <source>i6b7e399cz02e9z47efzaf8ez6c74e641e627</source>
             <role>i47c8046azb913z4730zbd83zc30b188672a2</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ReadingOrder-ModelElement" identity="71b60038-b962-43bf-82fa-9a101ea42045" id="i71b60038zb962z43bfz82faz9a101ea42045" definitionlevel="use">
+            <source>if39e68c7zcb32z4eb2zb3e4zcb8aa9b933de</source>
+            <superType>ie5acb051zdd91z4118z87e4z100cc8925646</superType>
+            <subType>i624a498ez0659z4c34zab74z7fe43b4c8fa1</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ReadingOrderHasReading.Reading" identity="45a44c11-f615-4ab5-9c30-05dba9ae495a" id="i45a44c11zf615z4ab5z9c30z05dba9ae495a" definitionlevel="use" containmentstyle="fromsource">
+            <source>i24bdb145z7ba5z4792za56az734b06276534</source>
+            <role>if09f87e5zbb49z4cc7zbe1dz26104769e721</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ReadingOrderHasRole.Role" identity="bc35c408-6c2e-4abb-bad1-8e1056a66d05" id="ibc35c408z6c2ez4abbzbad1z8e1056a66d05" definitionlevel="use" containmentstyle="fromsource">
+            <source>idd1fa134zb428z450az9c39z55f6dba983e3</source>
+            <role>ifb522e84zba2dz49a0zbd18z37cf1f00ae11</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="FactTypeHasReadingOrder.ReadingOrder" identity="51c59d5d-db2c-467c-a4ad-61bf400010d1" id="i51c59d5dzdb2cz467cza4adz61bf400010d1" definitionlevel="use" containmentstyle="fromsource">
+            <source>icefe5375zd3e3z43cczb160z07fad32c1d79</source>
+            <role>iac5ae124z5cf2z4c0fz9071z11d57cdf6668</role>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="4bc1b46d-ca81-4c34-9a29-4870cf3e702b" id="i4bc1b46dzca81z4c34z9a29z4870cf3e702b">
+            <source />
+            <property>ib426931fz9232z4e42zb384z61c60d331aae</property>
           </treeExpression>
         </expressions>
         <roots>
@@ -1073,6 +1126,10 @@ Information Contained Herein is Proprietary and Confidential.
           <root name="" identity="67652fdd-0df6-449b-9dce-b963ff6e4cec" id="i67652fddz0df6z449bz9dcezb963ff6e4cec">
             <source />
             <referencetype>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</referencetype>
+          </root>
+          <root name="" identity="102658f3-bc16-4281-ae60-c3961b7fb3c8" id="i102658f3zbc16z4281zae60zc3961b7fb3c8">
+            <source />
+            <referencetype>i624a498ez0659z4c34zab74z7fe43b4c8fa1</referencetype>
           </root>
         </roots>
         <source>ib189d49fz1c21z417cz90dczec82eeb35c4c</source>
@@ -1196,22 +1253,6 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <role>idea36a6cz6706z41eezbb34z61bc9a5416d2</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="FactTypeHasReading.ReadingCollection" identity="bec62270-da2d-469c-ad3e-0a77bf5fd1ab" id="ibec62270zda2dz469czad3ez0a77bf5fd1ab" definitionlevel="none" containmentstyle="embedding">
-            <source>i272add6ezca42z47d5z9877z3ea3844fa9b1</source>
-            <role>ie8edc6a4z0e36z4db9z8d52z5ed08e06d963</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="FactTypeHasReading.FactType" identity="b4bd360e-2d65-4d37-8953-731f2f511ff5" id="ib4bd360ez2d65z4d37z8953z731f2f511ff5" definitionlevel="none" containmentstyle="reference">
-            <source />
-            <role>i892d6985zb064z4452za17azdec195324576</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ReadingHasRole.RoleCollection" identity="050a9d1b-0ffb-4434-81d9-41369ebf7b52" id="i050a9d1bz0ffbz4434z81d9z41369ebf7b52" definitionlevel="none" containmentstyle="reference">
-            <source>ifd647f07zdd6dz4a46z9eddzd74fb2d144ce</source>
-            <role>i54350d49z2d00z46f9z85d0z68fa9771ca47</role>
-          </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ReadingHasRole.ReadingCollection" identity="b887389d-6195-4f84-9543-550d2245a5ce" id="ib887389dz6195z4f84z9543z550d2245a5ce" definitionlevel="none" containmentstyle="reference">
-            <source />
-            <role>ida79a849zc301z40ffzb5a8z69c2c41045e5</role>
-          </treeExpression>
           <treeExpression xsi:type="RoleExpression" name="ModelHasError.ErrorCollection" identity="2a63368b-28a1-4740-bd85-029192e9a5b6" id="i2a63368bz28a1z4740zbd85z029192e9a5b6" definitionlevel="none" containmentstyle="embedding">
             <source>ia8d682ebz3cecz4ae1zb027z7f2cd6149dec</source>
             <role>i0cc3a152zc6c3z49f3z97fdz7c97a6fd9657</role>
@@ -1260,13 +1301,13 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <role>i9d5edc77z403fz47efza003zb56d7ad92bdb</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasConstraint.Constraint" identity="d1ddf992-f3a7-4cf4-afdb-e29884d8e34c" id="id1ddf992zf3a7z4cf4zafdbze29884d8e34c" definitionlevel="none" containmentstyle="fromsource">
-            <source>i21ba668ez9cf9z4b21za296z8a2174f1c95d</source>
-            <role>iccfab332z362cz4ab4zbb0bzbfcb577bcaad</role>
+          <treeExpression xsi:type="RoleExpression" name="ReadingOrderHasReading.Reading" identity="8504b4e3-3be4-488d-aef6-6d2c26daab95" id="i8504b4e3z3be4z488dzaef6z6d2c26daab95" definitionlevel="none" containmentstyle="fromsource">
+            <source>i24bdb145z7ba5z4792za56az734b06276534</source>
+            <role>if09f87e5zbb49z4cc7zbe1dz26104769e721</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasConstraint.ObjectType" identity="020eb651-a466-424d-9f98-d34059c49bf0" id="i020eb651za466z424dz9f98zd34059c49bf0" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="ReadingOrderHasReading.ReadingOrder" identity="8b3120c2-89fc-4267-9f63-86ec042b25d6" id="i8b3120c2z89fcz4267z9f63z86ec042b25d6" definitionlevel="none" containmentstyle="reference">
             <source />
-            <role>i37f4cab9z3ba7z44cbza366z94ba8b2e020c</role>
+            <role>i6d039c34z74fbz47ddz9dbdz19d7754ad67f</role>
           </treeExpression>
           <treeExpression xsi:type="RoleExpression" name="FactTypeHasInternalConstraint.InternalConstraint" identity="344a51c5-504b-47ff-8bf2-a264842588fc" id="i344a51c5z504bz47ffz8bf2za264842588fc" definitionlevel="none" containmentstyle="fromsource">
             <source>i6b7e399cz02e9z47efzaf8ez6c74e641e627</source>
@@ -1275,6 +1316,22 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="RoleExpression" name="FactTypeHasInternalConstraint.FactType" identity="475304b2-14bc-42f7-87a6-286d24868b6e" id="i475304b2z14bcz42f7z87a6z286d24868b6e" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>id0f8626az095dz4a76zbbf1z389d9a62b1bc</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ReadingOrderHasRole.Role" identity="b36cf9f3-c19a-4143-b72f-4f21e976a0df" id="ib36cf9f3zc19az4143zb72fz4f21e976a0df" definitionlevel="none" containmentstyle="fromsource">
+            <source>idd1fa134zb428z450az9c39z55f6dba983e3</source>
+            <role>ifb522e84zba2dz49a0zbd18z37cf1f00ae11</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ReadingOrderHasRole.ReadingOrder" identity="3e0182e1-1ec5-4ab5-98d2-0bb970ede737" id="i3e0182e1z1ec5z4ab5z98d2z0bb970ede737" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i71a07cfdze938z414eza390z1cd6dacd690e</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="FactTypeHasReadingOrder.ReadingOrder" identity="6665594e-9466-4bbc-b1a2-f766bed33cdf" id="i6665594ez9466z4bbczb1a2zf766bed33cdf" definitionlevel="none" containmentstyle="fromsource">
+            <source>icefe5375zd3e3z43cczb160z07fad32c1d79</source>
+            <role>iac5ae124z5cf2z4c0fz9071z11d57cdf6668</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="FactTypeHasReadingOrder.FactType" identity="93824b4d-3946-4f4f-b1c9-e847d3cd044e" id="i93824b4dz3946z4f4fzb1c9ze847d3cd044e" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>ib852113dza2b6z44ffz82a5z5295e69faedb</role>
           </treeExpression>
         </expressions>
         <roots />
@@ -1465,6 +1522,10 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="sometimesuireadonlypreferfalse" tag="" />
             <propertyInfo xsi:type="BooleanPropertyInfo" name="BooleanPropertyInfo" identity="9b653ee4-bdb1-4e11-bc51-27c83ea3fd10" default="false" />
           </property>
+          <property name="Language" identity="28f89850-a91e-4b64-a917-43a97cfb192e" id="i28f89850za91ez4b64za917z43a97cfb192e">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
+            <propertyInfo xsi:type="StringPropertyInfo" name="" identity="538f2fc0-573e-4510-9562-726da2038ce3" default="" max="2147483647" />
+          </property>
         </valueProperties>
       </concept>
       <concept name="TooFewRoleSetsError" identity="a2f137b4-5973-4e4f-90aa-6bc936bf8e79" namespace="Northface.Tools.ORM.ObjectModel" id="ia2f137b4z5973z4e4fz90aaz6bc936bf8e79" isLoaded="true" isAbstract="false">
@@ -1496,6 +1557,16 @@ Information Contained Herein is Proprietary and Confidential.
       <concept name="ConstraintDuplicateNameError" identity="0ecf0d2d-b3a3-4652-9e77-48fa7765d08f" namespace="Northface.Tools.ORM.ObjectModel" id="i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>icbd2724ez6199z4f12za3aaz7522187bea20</superType>
+      </concept>
+      <concept name="ReadingOrder" identity="624a498e-0659-4c34-ab74-7fe43b4c8fa1" namespace="Northface.Tools.ORM.ObjectModel" id="i624a498ez0659z4c34zab74z7fe43b4c8fa1" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>ie5acb051zdd91z4118z87e4z100cc8925646</superType>
+        <valueProperties>
+          <property name="ReadingText" identity="b426931f-9232-4e42-b384-61c60d331aae" id="ib426931fz9232z4e42zb384z61c60d331aae">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="" />
+            <propertyInfo xsi:type="StringPropertyInfo" name="" identity="61f4bd14-6e10-4206-8907-f7e9671c9ca5" default="" max="2147483647" />
+          </property>
+        </valueProperties>
       </concept>
     </concepts>
   </model>

@@ -210,6 +210,7 @@ namespace Northface.Tools.ORM
 		private const string ValueType_Id = "Northface.Tools.ORM.ObjectModel.ValueType";
 		private const string EntityType_Id = "Northface.Tools.ORM.ObjectModel.EntityType";
 		private const string FactType_Id = "Northface.Tools.ORM.ObjectModel.FactType";
+		private const string ReadingType_Id = "Northface.Tools.ORM.ObjectModel.Reading";
 		private const string ObjectifiedFactType_Id = "Northface.Tools.ORM.ObjectModel.ObjectifiedFactType";
 		private const string RolePlayerPickerNullItemText_Id = "Northface.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText";
 		private const string NestedFactTypePickerNullItemText_Id = "Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText";
@@ -288,6 +289,16 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.ObjectModel, ObjectifiedFactType_Id);
+			}
+		}
+		/// <summary>
+		/// The display name used for a ReadingType
+		/// </summary>
+		public static string ReadingType
+		{
+			get
+			{
+				return GetString(ResourceManagers.ObjectModel, ReadingType_Id);
 			}
 		}
 		/// <summary>

@@ -182,10 +182,11 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSetMetaRoleGuid, Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSetMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.RoleSetCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.RoleSetCollectionMetaRoleGuid);
-			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.ReadingCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasReading.ReadingCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -2423,15 +2424,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			get { return new Northface.Tools.ORM.ObjectModel.ExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.FactTypeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuid); }
 		}
 		#endregion
-		#region ReadingCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ReadingMoveableCollection ReadingCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.ReadingMoveableCollection(this, Northface.Tools.ORM.ObjectModel.FactTypeHasReading.FactTypeMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasReading.ReadingCollectionMetaRoleGuid); }
-		}
-		#endregion
 		#region DuplicateNameError's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -2476,6 +2468,15 @@ namespace Northface.Tools.ORM.ObjectModel
 					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError), newRoles);
 				}
 			}
+		}
+		#endregion
+		#region ReadingOrderCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ReadingOrderMoveableCollection ReadingOrderCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ReadingOrderMoveableCollection(this, Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactTypeMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid); }
 		}
 		#endregion
 		#region InternalConstraintCollection's Generated Accessor Code
@@ -7592,17 +7593,147 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
-		#region FactType's Generated Accessor Code
+		#region Language's Generated  Field Code
+		#region Language's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String LanguageMetaAttributeGuidString = "28f89850-a91e-4b64-a917-43a97cfb192e";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid LanguageMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuidString);
+		#endregion
+
+		#region Language's Generated Property Code
+
+		private System.String languagePropertyStorage = string.Empty;
+		
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.FactType FactType
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ReadingLanguageFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Reading.Language")]
+		public  System.String Language
+		{
+			get
+			{
+				return languagePropertyStorage;
+			}
+		
+			set
+			{
+				readingLanguageFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ReadingLanguageFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Reading.Language field
+		/// </summary>
+		private static ReadingLanguageFieldHandler	readingLanguageFieldHandler	= ReadingLanguageFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Reading.Language
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ReadingLanguageFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.Reading,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ReadingLanguageFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Reading.Language field handler
+			/// </summary>
+			/// <value>ReadingLanguageFieldHandler</value>
+			public static ReadingLanguageFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.Reading.readingLanguageFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.Reading.readingLanguageFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Reading will assign this value to
+						// Northface.Tools.ORM.ObjectModel.Reading.readingLanguageFieldHandler, so just instantiate one and return it
+						return new ReadingLanguageFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Reading.Language field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the Reading</param>
+			protected sealed override System.String GetValue(Northface.Tools.ORM.ObjectModel.Reading element)
+			{
+				return element.languagePropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.Reading element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
+			{
+				oldValue = element.languagePropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.languagePropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region RoleCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.RoleMoveableCollection RoleCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.RoleMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ReadingHasRole.ReadingCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasRole.RoleCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ReadingOrder's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ReadingOrder ReadingOrder
 		{
 			get
 			{
 				System.Object o = null;
 				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.ReadingCollectionMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -7613,13 +7744,13 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				if (goodLink != null)
 				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.FactTypeMetaRoleGuid);
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuid);
 				}
-				return (Northface.Tools.ORM.ObjectModel.FactType)o;
+				return (Northface.Tools.ORM.ObjectModel.ReadingOrder)o;
 			}
 			set
 			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.ReadingCollectionMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -7631,20 +7762,11 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (value != null)
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.FactTypeMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.ReadingCollectionMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasReading), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading), newRoles);
 				}
 			}
-		}
-		#endregion
-		#region RoleCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.RoleMoveableCollection RoleCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.RoleMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ReadingHasRole.ReadingCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasRole.RoleCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -8995,6 +9117,584 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrder.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrder")]
+	public  partial class ReadingOrder : Microsoft.VisualStudio.Modeling.ModelElement
+	{
+		#region ReadingOrder's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "624a498e-0659-4c34-ab74-7fe43b4c8fa1";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrder.MetaClassGuidString);
+		#endregion
+
+		#region ReadingText's Generated  Field Code
+		#region ReadingText's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ReadingTextMetaAttributeGuidString = "b426931f-9232-4e42-b384-61c60d331aae";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ReadingTextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuidString);
+		#endregion
+
+		#region ReadingText's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ReadingOrderReadingTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingText")]
+		public  System.String ReadingText
+		{
+			get
+			{
+				return readingOrderReadingTextFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				readingOrderReadingTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ReadingOrderReadingTextFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ReadingOrder.ReadingText field
+		/// </summary>
+		private static ReadingOrderReadingTextFieldHandler	readingOrderReadingTextFieldHandler	= ReadingOrderReadingTextFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ReadingOrder.ReadingText
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ReadingOrderReadingTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ReadingOrder,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ReadingOrderReadingTextFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ReadingOrder.ReadingText field handler
+			/// </summary>
+			/// <value>ReadingOrderReadingTextFieldHandler</value>
+			public static ReadingOrderReadingTextFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ReadingOrder.readingOrderReadingTextFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ReadingOrder.readingOrderReadingTextFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ReadingOrder will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ReadingOrder.readingOrderReadingTextFieldHandler, so just instantiate one and return it
+						return new ReadingOrderReadingTextFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ReadingOrder.ReadingText field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+		#region ReadingCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ReadingMoveableCollection ReadingCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ReadingMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region RoleCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.RoleMoveableCollection RoleCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.RoleMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.ReadingOrderMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.RoleCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region FactType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactTypeMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.FactType)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region Collection Classes for ReadingOrder
+	/// <summary>
+	/// Northface.Tools.ORM.ObjectModel.ReadingOrder Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class ReadingOrderMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public ReadingOrderMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.ReadingOrder[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Northface.Tools.ORM.ObjectModel.ReadingOrder at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.ReadingOrder this[System.Int32 index]
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ReadingOrder)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ReadingOrder value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Northface.Tools.ORM.ObjectModel.ReadingOrder rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ReadingOrder rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
+	#region ReadingOrder's Generated Constructor Code
+	public  partial class ReadingOrder
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingOrder(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingOrder CreateReadingOrder(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (ReadingOrder)store.ElementFactory.CreateElement(typeof(ReadingOrder));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingOrder CreateAndInitializeReadingOrder(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ReadingOrder)store.ElementFactory.CreateElement(typeof(ReadingOrder), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ReadingOrder
+	/// <summary>
+	/// ReadingOrder Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))]
+	public sealed class ReadingOrderElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingOrderElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ReadingOrder(store, bag);
 		}
 	}
 	#endregion
@@ -11665,118 +12365,6 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasReading")]
-	public  partial class FactTypeHasReading : Microsoft.VisualStudio.Modeling.ElementLink
-	{
-		#region FactTypeHasReading's Generated MetaRelationship Code
-		/// <summary>
-		/// MetaRelationship Guid String
-		/// </summary>
-		public new const System.String MetaRelationshipGuidString = "43d4abf4-8bef-41da-9597-049a6630f300";
-		/// <summary>
-		/// MetaRelationship Guid
-		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.MetaRelationshipGuidString);
-		#endregion
-
-		#region ReadingCollection's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String ReadingCollectionMetaRoleGuidString = "e8edc6a4-0e36-4db9-8d52-5ed08e06d963";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid ReadingCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.ReadingCollectionMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.ReadingCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasReading.ReadingCollection")]
-		public  Northface.Tools.ORM.ObjectModel.Reading ReadingCollection
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.Reading)this.GetRolePlayer(ReadingCollectionMetaRoleGuid); }
-			set { this.SetRolePlayer(ReadingCollectionMetaRoleGuid, value); }
-		}
-		#endregion
-		#region FactType's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String FactTypeMetaRoleGuidString = "892d6985-b064-4452-a17a-dec195324576";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid FactTypeMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.FactTypeMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasReading.FactTypeMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasReading.FactType")]
-		public  Northface.Tools.ORM.ObjectModel.FactType FactType
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeMetaRoleGuid); }
-			set { this.SetRolePlayer(FactTypeMetaRoleGuid, value); }
-		}
-		#endregion
-	}
-	#region FactTypeHasReading's Generated Constructor Code
-	public  partial class FactTypeHasReading
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FactTypeHasReading(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FactTypeHasReading CreateFactTypeHasReading(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
-		{
-			return (FactTypeHasReading)store.ElementFactory.CreateElementLink(typeof(FactTypeHasReading), rolePlayers);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FactTypeHasReading CreateAndInitializeFactTypeHasReading(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (FactTypeHasReading)store.ElementFactory.CreateElementLink(typeof(FactTypeHasReading), rolePlayers, assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for FactTypeHasReading
-	/// <summary>
-	/// FactTypeHasReading Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasReading))]
-	public sealed class FactTypeHasReadingElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FactTypeHasReadingElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.FactTypeHasReading(store, bag);
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasRole.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasRole")]
 	public  partial class ReadingHasRole : Microsoft.VisualStudio.Modeling.ElementLink
 	{
@@ -12660,6 +13248,342 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading")]
+	public  partial class ReadingOrderHasReading : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ReadingOrderHasReading's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "929ef898-db8d-44cf-b2d2-f1b030752b08";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.MetaRelationshipGuidString);
+		#endregion
+
+		#region ReadingCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ReadingCollectionMetaRoleGuidString = "f09f87e5-bb49-4cc7-be1d-26104769e721";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ReadingCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollection")]
+		public  Northface.Tools.ORM.ObjectModel.Reading ReadingCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.Reading)this.GetRolePlayer(ReadingCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ReadingCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region ReadingOrder's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ReadingOrderMetaRoleGuidString = "6d039c34-74fb-47dd-9dbd-19d7754ad67f";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ReadingOrderMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrder")]
+		public  Northface.Tools.ORM.ObjectModel.ReadingOrder ReadingOrder
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ReadingOrder)this.GetRolePlayer(ReadingOrderMetaRoleGuid); }
+			set { this.SetRolePlayer(ReadingOrderMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ReadingOrderHasReading's Generated Constructor Code
+	public  partial class ReadingOrderHasReading
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingOrderHasReading(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingOrderHasReading CreateReadingOrderHasReading(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ReadingOrderHasReading)store.ElementFactory.CreateElementLink(typeof(ReadingOrderHasReading), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingOrderHasReading CreateAndInitializeReadingOrderHasReading(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ReadingOrderHasReading)store.ElementFactory.CreateElementLink(typeof(ReadingOrderHasReading), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ReadingOrderHasReading
+	/// <summary>
+	/// ReadingOrderHasReading Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading))]
+	public sealed class ReadingOrderHasReadingElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingOrderHasReadingElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole")]
+	public  partial class ReadingOrderHasRole : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ReadingOrderHasRole's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "5f244cf8-a0e0-48cc-9e74-ed2ee3c853b0";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.MetaRelationshipGuidString);
+		#endregion
+
+		#region RoleCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String RoleCollectionMetaRoleGuidString = "fb522e84-ba2d-49a0-bd18-37cf1f00ae11";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid RoleCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.RoleCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.RoleCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.RoleCollection")]
+		public  Northface.Tools.ORM.ObjectModel.Role RoleCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.Role)this.GetRolePlayer(RoleCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(RoleCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region ReadingOrder's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ReadingOrderMetaRoleGuidString = "71a07cfd-e938-414e-a390-1cd6dacd690e";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ReadingOrderMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.ReadingOrderMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.ReadingOrderMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.ReadingOrder")]
+		public  Northface.Tools.ORM.ObjectModel.ReadingOrder ReadingOrder
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ReadingOrder)this.GetRolePlayer(ReadingOrderMetaRoleGuid); }
+			set { this.SetRolePlayer(ReadingOrderMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ReadingOrderHasRole's Generated Constructor Code
+	public  partial class ReadingOrderHasRole
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingOrderHasRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingOrderHasRole CreateReadingOrderHasRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ReadingOrderHasRole)store.ElementFactory.CreateElementLink(typeof(ReadingOrderHasRole), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingOrderHasRole CreateAndInitializeReadingOrderHasRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ReadingOrderHasRole)store.ElementFactory.CreateElementLink(typeof(ReadingOrderHasRole), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ReadingOrderHasRole
+	/// <summary>
+	/// ReadingOrderHasRole Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole))]
+	public sealed class ReadingOrderHasRoleElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingOrderHasRoleElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder")]
+	public  partial class FactTypeHasReadingOrder : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region FactTypeHasReadingOrder's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "1170285d-5118-4945-81a9-c6ea63863c39";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.MetaRelationshipGuidString);
+		#endregion
+
+		#region ReadingOrderCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ReadingOrderCollectionMetaRoleGuidString = "ac5ae124-5cf2-4c0f-9071-11d57cdf6668";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ReadingOrderCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollection")]
+		public  Northface.Tools.ORM.ObjectModel.ReadingOrder ReadingOrderCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ReadingOrder)this.GetRolePlayer(ReadingOrderCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ReadingOrderCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region FactType's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FactTypeMetaRoleGuidString = "b852113d-a2b6-44ff-82a5-5295e69faedb";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FactTypeMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactTypeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactTypeMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactType")]
+		public  Northface.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeMetaRoleGuid); }
+			set { this.SetRolePlayer(FactTypeMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region FactTypeHasReadingOrder's Generated Constructor Code
+	public  partial class FactTypeHasReadingOrder
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasReadingOrder(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasReadingOrder CreateFactTypeHasReadingOrder(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (FactTypeHasReadingOrder)store.ElementFactory.CreateElementLink(typeof(FactTypeHasReadingOrder), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasReadingOrder CreateAndInitializeFactTypeHasReadingOrder(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FactTypeHasReadingOrder)store.ElementFactory.CreateElementLink(typeof(FactTypeHasReadingOrder), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FactTypeHasReadingOrder
+	/// <summary>
+	/// FactTypeHasReadingOrder Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder))]
+	public sealed class FactTypeHasReadingOrderElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasReadingOrderElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder(store, bag);
 		}
 	}
 	#endregion

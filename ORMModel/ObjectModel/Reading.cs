@@ -14,6 +14,9 @@ namespace Northface.Tools.ORM.ObjectModel
 {
 	public partial class Reading
 	{
+		private static Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
+
+		#region overrides
 		/// <summary>
 		/// The filled version of the reading. Currently works on the assumption that the arity of
 		/// the statement is equal to the number of roles. The text is expected to have {n} where
@@ -29,7 +32,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			//as strings this will likely need to change.
 			if (IsValidReadingText())
 			{
-				RoleMoveableCollection roles = RoleCollection;
+				RoleMoveableCollection roles = ReadingOrder.RoleCollection;
 				int roleCount = roles.Count;
 				string[] roleNames = new string[roleCount];
 				for (int i = 0; i < roleCount; ++i)
@@ -53,7 +56,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		public override bool IsPropertyDescriptorReadOnly(PropertyDescriptor propertyDescriptor)
 		{
-			//TODO:test
 			ElementPropertyDescriptor elemDesc = propertyDescriptor as ElementPropertyDescriptor;
 			if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == IsPrimaryMetaAttributeGuid)
 			{
@@ -67,13 +69,15 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		public override string GetComponentName()
 		{
-			FactType fact = FactType;
-			if (fact != null)
+			ReadingOrder readOrd = ReadingOrder;
+			if (readOrd != null)
 			{
-				return string.Format("{0} Reading {1}", fact.Name, fact.ReadingCollection.IndexOf(this) + 1); // UNDONE: Localize
+				return string.Format("{0} {1}{2}", readOrd.FactType.Name, ResourceStrings.ReadingType, readOrd.ReadingCollection.IndexOf(this) + 1);
 			}
 			return base.GetComponentName();
 		}
+		#endregion
+
 		#region IsValidReadingText methods
 		/// <summary>
 		/// Does some testing to see if the reading text is appropriate for the current
@@ -83,8 +87,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>True if the reading is deemed valid, false otherwise.</returns>
 		public bool IsValidReadingText()
 		{
-			Debug.Assert(FactType.RoleCollection.Count == RoleCollection.Count);
-			return IsValidReadingText(Text, RoleCollection.Count);
+			ReadingOrder readOrd = ReadingOrder;
+			RoleMoveableCollection roles = readOrd.RoleCollection;
+			Debug.Assert(readOrd.FactType.RoleCollection.Count == roles.Count);
+			return IsValidReadingText(Text, roles.Count);
 		}
 
 		/// <summary>
@@ -99,8 +105,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			bool retval = true;
 
-			//TODO:make this regex reusable
-			Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
 			MatchCollection matches = regCountPlaces.Matches(testText);
 
 			#region testing placehold and role player counts
@@ -155,37 +159,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion
 
-		#region ReadingHasRoleRemovint rule class
-		/// <summary>
-		/// Handles the clean up of the readings that the role is involved in by replacing
-		/// the place holder with the text {{deleted}}
-		/// </summary>
-		[RuleOn(typeof(ReadingHasRole))]
-		private class ReadingHasRoleRemoving : RemovingRule
-		{
-			//TODO:test
-			public override void ElementRemoving(ElementRemovingEventArgs e)
-			{
-				ReadingHasRole link = e.ModelElement as ReadingHasRole;
-				Role linkRole = link.RoleCollection;
-				Reading linkReading = link.ReadingCollection;
-
-				//might want to change to reconstructing using a StringBuilder
-				int pos = linkReading.RoleCollection.IndexOf(linkRole);
-				if (pos >= 0)
-				{
-					// UNDONE: This could be done much cleaner with RegEx.Replace and a callback
-					linkReading.Text = linkReading.Text.Replace("{" + pos.ToString() + "}", "{{deleted}}");
-					int roleCount = linkReading.FactType.RoleCollection.Count;
-					for (int i = pos + 1; i < roleCount; ++i)
-					{
-						linkReading.Text = linkReading.Text.Replace(string.Concat("{", i.ToString(), "}"), string.Concat("{", (i - 1).ToString(), "}"));
-					}
-				}
-			}
-		}
-		#endregion ReadingHasRoleRemoving
-
 		#region ReadingIsPrimaryChanged rule class
 		/// <summary>
 		/// Handles the resetting the current primary reading when a new one is selected.
@@ -208,13 +181,13 @@ namespace Northface.Tools.ORM.ObjectModel
 					if (newVal)
 					{
 						Debug.Assert(!mySettingNewPrimary);
-						FactType readingFact = changedReading.FactType;
-						if (readingFact != null)
+						ReadingOrder readingOrder = changedReading.ReadingOrder;
+						if (readingOrder != null)
 						{
 							mySettingNewPrimary = true;
 							try
 							{
-								foreach (Reading r in readingFact.ReadingCollection)
+								foreach (Reading r in readingOrder.ReadingCollection)
 								{
 									if (!object.ReferenceEquals(r, changedReading))
 									{
@@ -237,7 +210,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				else if (attributeGuid == Reading.TextMetaAttributeGuid)
 				{
 					string newVal = e.NewValue as string;
-					int roleCount = changedReading.RoleCollection.Count;
+					int roleCount = changedReading.ReadingOrder.RoleCollection.Count;
 
 					//if text is set before roles this code will fail
 					Debug.Assert(roleCount > 0);

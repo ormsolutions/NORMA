@@ -40,7 +40,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <param name="shapeFields">ShapeFieldCollection to initialized</param>
 		protected override void InitializeShapeFields(ShapeFieldCollection shapeFields)
 		{
-			AutoSizeTextField textField = new AutoSizeTextField();
+			AutoSizeTextField textField = CreateAutoSizeTextField();
 			textField.AssociateValueWith(Store, AssociatedShapeMetaAttributeGuid, AssociatedModelMetaAttributeGuid);
 			textField.DefaultFocusable = true;
 			shapeFields.Add(textField);
@@ -108,6 +108,19 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				return NamedElement.NameMetaAttributeGuid;
 			}
+		}
+
+		/// <summary>
+		/// Method to allow inheritors to provide custom implementations of the AutoSizeTextField.
+		/// </summary>
+		/// <returns>The AutoSizeTextField to use.</returns>
+		[CLSCompliant(false)]
+		protected virtual AutoSizeTextField CreateAutoSizeTextField()
+		{
+			// Note: Don't add any other code here. The override
+			// is here specifically to enable creation of a more
+			// derived text field.
+			return new AutoSizeTextField();
 		}
 	}
 }

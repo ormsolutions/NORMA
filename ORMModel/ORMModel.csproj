@@ -82,6 +82,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ORMCore.dmd.mdfomt</DependentUpon>
     </Compile>
+    <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ShapeModel\ORMShape.dmd.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

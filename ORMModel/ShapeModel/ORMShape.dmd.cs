@@ -1173,7 +1173,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.Reading))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
@@ -1249,7 +1249,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ReadingShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/Reading/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="Text", ProxyAttributeName="Text", FieldHandlerType=typeof(ReadingShapeReadingTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ReadingShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/Reading/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="ReadingText", ProxyAttributeName="ReadingText", FieldHandlerType=typeof(ReadingShapeReadingTextFieldHandler))]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.ReadingShape.ReadingText")]
 		public  System.String ReadingText
 		{

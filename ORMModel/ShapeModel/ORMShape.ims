@@ -52,9 +52,9 @@ Information Contained Herein is Proprietary and Confidential.
               <derivedshapes />
             </shape>
             <shape namespace="Northface.Tools.ORM.ShapeModel" name="ReadingShape" identity="c567ed6d-d0a6-4fd8-a974-c567aa309d5e" accessmodifier="public" category="" description="" doccomment="" localize="false">
-              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.Reading)" />
+              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder)" />
               <metaattributes>
-                <metaattribute name="ReadingText" identity="22bf9cf7-715c-4159-9ef0-1bdf98647f9c" type="System.String" xpathexpression="/ReadingShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/Reading/SubjectHasPresentation.Presentation/Presentation" realattributename="Text" proxyattributename="Text" category="" description="" doccomment="" localize="false" tag="">
+                <metaattribute name="ReadingText" identity="22bf9cf7-715c-4159-9ef0-1bdf98647f9c" type="System.String" xpathexpression="/ReadingShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/Reading/SubjectHasPresentation.Presentation/Presentation" realattributename="ReadingText" proxyattributename="ReadingText" category="" description="" doccomment="" localize="false" tag="">
                   <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
                   <stringdomain default="" max="2147483647" />
                 </metaattribute>

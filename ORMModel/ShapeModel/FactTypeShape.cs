@@ -472,7 +472,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			Debug.Assert(
 					(element is ObjectType && ((ObjectType)element).NestedFactType == AssociatedFactType)
-					|| (element is Reading && ((Reading)element).FactType == AssociatedFactType)
+					|| (element is ReadingOrder && ((ReadingOrder)element).FactType == AssociatedFactType)
 				);
 			return true;
 		}

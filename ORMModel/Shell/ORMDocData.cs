@@ -115,11 +115,23 @@ namespace Northface.Tools.ORM.Shell
 				role.RolePlayer = entType;
 				roles.Add(role);
 
+				ReadingOrder readOrd = ReadingOrder.CreateReadingOrder(store);
+				readOrd.RoleCollection.Add(fact.RoleCollection[0]);
+				readOrd.RoleCollection.Add(fact.RoleCollection[1]);
+
+				fact.ReadingOrderCollection.Add(readOrd);
+
 				Reading read = Reading.CreateReading(store);
-				fact.ReadingCollection.Add(read);
-				read.RoleCollection.Add(fact.RoleCollection[0]);
-				read.RoleCollection.Add(fact.RoleCollection[1]);
-				read.Text = "{0} has/is of {1}";
+				readOrd.ReadingCollection.Add(read);
+				read.Text = "{0} has {1}";
+
+				read = Reading.CreateReading(store);
+				readOrd.ReadingCollection.Add(read);
+				read.Text = "{0} owns {1}";
+
+				read = Reading.CreateReading(store);
+				readOrd.ReadingCollection.Add(read);
+				read.Text = "{0} possesses {1}";
 
 				InternalConstraint ic = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
 				InternalConstraintRoleSet irs = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
