@@ -136,6 +136,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				yield return ExternalConstraint.FixupListener;
 				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.AddImplicitElements);
 				yield return ModelError.FixupListener;
+				yield return ReferenceMode.FixupListener;
 			}
 		}
 		#endregion // Deserialization Fixup

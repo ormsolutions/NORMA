@@ -305,7 +305,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="store">The context store</param>
 		protected void PhaseCompleted(int phase, Store store)
 		{
-			PhaseCompleted(store);
+			if (myPhase == phase)
+			{
+				PhaseCompleted(store);
+			}
 		}
 		void IDeserializationFixupListener.PhaseCompleted(int phase, Store store)
 		{

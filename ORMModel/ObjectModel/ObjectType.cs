@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
@@ -22,7 +23,8 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (attributeGuid == IsValueTypeMetaAttributeGuid ||
 				attributeGuid == ScaleMetaAttributeGuid ||
 				attributeGuid == LengthMetaAttributeGuid ||
-				attributeGuid == NestedFactTypeDisplayMetaAttributeGuid)
+				attributeGuid == NestedFactTypeDisplayMetaAttributeGuid ||
+				attributeGuid == ReferenceModeDisplayMetaAttributeGuid)
 			{
 				// Handled by ObjectTypeChangeRule
 				return;
@@ -50,6 +52,31 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				ValueTypeHasDataType link = GetDataTypeLink();
 				return (link == null) ? 0 : link.Length;
+			}
+			else if (attributeGuid == ObjectType.ReferenceModeDisplayMetaAttributeGuid)
+			{
+				InternalConstraint prefConstraint = this.PreferredIdentifier as InternalConstraint;
+
+				//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
+				// player is a value type then return the refence mode name.
+				if (prefConstraint != null )
+				{
+					ObjectType valueType = prefConstraint.RoleSet.RoleCollection[0].RolePlayer;
+					Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueType.Name, this.Name, this.Model);
+
+					if (valueType.IsValueType)
+					{
+						if (refMode == null)
+						{
+							return valueType.Name;
+						}
+						else
+						{
+							return refMode.Name;
+						}
+					}
+				}
+				return "";
 			}
 			else if (attributeGuid == ObjectType.NestedFactTypeDisplayMetaAttributeGuid)
 			{
@@ -103,6 +130,10 @@ namespace Northface.Tools.ORM.ObjectModel
 			else if (attributeGuid == NestedFactTypeDisplayMetaAttributeGuid)
 			{
 				return !IsValueType && PreferredIdentifier == null;
+			}
+			else if (attributeGuid == ReferenceModeDisplayMetaAttributeGuid)
+			{
+				return !IsValueType && NestedFactType == null;
 			}
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
@@ -177,7 +208,104 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					(e.ModelElement as ObjectType).NestedFactType = e.NewValue as FactType;
 				}
+				else if (attributeGuid == ObjectType.ReferenceModeDisplayMetaAttributeGuid)
+				{
+					ObjectType objectType = e.ModelElement as ObjectType;
+					Store store = objectType.Store;
+					InternalConstraint prefConstraint = objectType.PreferredIdentifier as InternalConstraint;
+
+					string newValue = (string)e.NewValue;
+					string oldValue = (string)e.OldValue;
+					
+					ICollection<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(newValue, objectType.Model);
+
+					//TODO: What if we get multiple back?
+					string name = newValue;
+					foreach (ReferenceMode referenceMode in referenceModes)
+					{
+						name = referenceMode.GenerateValueTypeName(objectType.Name);
+					}					
+
+					if (newValue.Length == 0 && oldValue.Length != 0)
+					{
+						this.KillReferenceMode(prefConstraint);
+					}
+					else if (newValue.Length != 0 && oldValue.Length != 0)
+					{
+						this.RenameReferenceMode(name, prefConstraint);
+					}
+					else if (newValue.Length != 0 && oldValue.Length == 0)
+					{
+						this.CreateReferenceMode(name, objectType, store);
+					}
+				}
 			}
+
+			#region UtilityMethods
+			/// <summary>
+			/// Utility function to create the reference mode objects.  Creates the fact, value type, and
+			/// preffered internal uniqueness constraint.
+			/// </summary>
+			private void CreateReferenceMode(string valueTypeName, ObjectType objectType,Store store)
+			{				
+				FactType refFact = FactType.CreateFactType(store);
+
+				ObjectType valueType = ObjectType.CreateObjectType(store);
+				valueType.IsValueType = true;
+				valueType.Name = valueTypeName;
+
+				Role objectTypeRole = Role.CreateRole(store);
+				objectTypeRole.RolePlayer = objectType;
+				RoleMoveableCollection roleCollection = refFact.RoleCollection;
+				roleCollection.Add(objectTypeRole);
+
+				Role valueTypeRole = Role.CreateRole(store);
+				valueTypeRole.RolePlayer = valueType;
+				roleCollection.Add(valueTypeRole);
+
+				InternalConstraint ic = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
+				InternalConstraintRoleSet irs = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
+				irs.RoleCollection.Add(valueTypeRole);
+				ic.RoleSet = irs;
+
+				ORMModel objModel = objectType.Model;
+				ic.Model = objModel;
+				refFact.Model = objModel;
+				valueType.Model = objModel;
+
+				objectType.PreferredIdentifier = ic;
+			}
+
+			/// <summary>
+			/// Utility function to cahnge the name of an existing reference mode.
+			/// </summary>
+			/// <param name="valueTypeName"></param>
+			/// <param name="preferredConstraint"></param>
+			private void RenameReferenceMode( string valueTypeName,InternalConstraint preferredConstraint)
+			{
+				ObjectType valueType = preferredConstraint.RoleSet.RoleCollection[0].RolePlayer;
+				if (valueType.IsValueType)
+				{
+					valueType.Name = valueTypeName;
+				}
+			}
+
+			/// <summary>
+			/// Utility function to remove the reference mode objects.  Removes the fact, value type, and
+			/// preffered internal uniqueness constraint.
+			/// </summary>
+			/// <param name="preferredConstraint"></param>
+			private void KillReferenceMode(InternalConstraint preferredConstraint)
+			{
+				ObjectType valueType = preferredConstraint.RoleSet.RoleCollection[0].RolePlayer;
+				if (valueType.IsValueType)
+				{
+					FactType refFact = preferredConstraint.RoleSet.RoleCollection[0].FactType;
+					valueType.Remove();
+					refFact.Remove();
+				}
+			}
+			#endregion
 		}
 		#endregion // ObjectTypeChangeRule class
 		#region INamedElementDictionaryChild implementation
@@ -296,4 +424,4 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // CheckForIncompatibleRelationshipRule class
 	}
-} 
+}

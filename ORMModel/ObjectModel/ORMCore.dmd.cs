@@ -187,6 +187,8 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -346,6 +348,24 @@ namespace Northface.Tools.ORM.ObjectModel
 		public Northface.Tools.ORM.ObjectModel.ModelErrorMoveableCollection ErrorCollection
 		{
 			get { return new Northface.Tools.ORM.ObjectModel.ModelErrorMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasError.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ReferenceModeKindCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ReferenceModeKindMoveableCollection ReferenceModeKindCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ReferenceModeKindMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ReferenceModeCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ReferenceModeMoveableCollection ReferenceModeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ReferenceModeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -1507,6 +1527,94 @@ namespace Northface.Tools.ORM.ObjectModel
 				get
 				{
 					return Northface.Tools.ORM.ObjectModel.ObjectType.NestedFactTypeDisplayMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+		#region ReferenceModeDisplay's Generated  Field Code
+		#region ReferenceModeDisplay's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ReferenceModeDisplayMetaAttributeGuidString = "4273a21b-afa2-4ba8-bdba-179b578a11b5";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ReferenceModeDisplayMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplayMetaAttributeGuidString);
+		#endregion
+
+		#region ReferenceModeDisplay's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ObjectTypeReferenceModeDisplayFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplayMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplay")]
+		public  System.String ReferenceModeDisplay
+		{
+			get
+			{
+				return objectTypeReferenceModeDisplayFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				objectTypeReferenceModeDisplayFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ObjectTypeReferenceModeDisplayFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ObjectType.ReferenceModeDisplay field
+		/// </summary>
+		private static ObjectTypeReferenceModeDisplayFieldHandler	objectTypeReferenceModeDisplayFieldHandler	= ObjectTypeReferenceModeDisplayFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ObjectType.ReferenceModeDisplay
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ObjectTypeReferenceModeDisplayFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ObjectType,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ObjectTypeReferenceModeDisplayFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ObjectType.ReferenceModeDisplay field handler
+			/// </summary>
+			/// <value>ObjectTypeReferenceModeDisplayFieldHandler</value>
+			public static ObjectTypeReferenceModeDisplayFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeReferenceModeDisplayFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeReferenceModeDisplayFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ObjectType will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeReferenceModeDisplayFieldHandler, so just instantiate one and return it
+						return new ObjectTypeReferenceModeDisplayFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ObjectType.ReferenceModeDisplay field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplayMetaAttributeGuid;
 				}
 			}
 		}
@@ -9795,6 +9903,1475 @@ namespace Northface.Tools.ORM.ObjectModel
 	/// </summary>
 	[System.CLSCompliant(true)]
 	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReferenceModeKind.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ReferenceModeKind")]
+	public  partial class ReferenceModeKind : Microsoft.VisualStudio.Modeling.NamedElement
+	{
+		#region ReferenceModeKind's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "3fc5ec28-7c78-49e7-955c-4c54536c8d21";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReferenceModeKind.MetaClassGuidString);
+		#endregion
+
+		#region FormatString's Generated  Field Code
+		#region FormatString's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String FormatStringMetaAttributeGuidString = "76827916-449c-4e9a-ab21-01ac01cc5817";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid FormatStringMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReferenceModeKind.FormatStringMetaAttributeGuidString);
+		#endregion
+
+		#region FormatString's Generated Property Code
+
+		private System.String formatStringPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ReferenceModeKindFormatStringFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReferenceModeKind.FormatStringMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ReferenceModeKind.FormatString")]
+		public  System.String FormatString
+		{
+			get
+			{
+				return formatStringPropertyStorage;
+			}
+		
+			set
+			{
+				referenceModeKindFormatStringFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ReferenceModeKindFormatStringFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ReferenceModeKind.FormatString field
+		/// </summary>
+		private static ReferenceModeKindFormatStringFieldHandler	referenceModeKindFormatStringFieldHandler	= ReferenceModeKindFormatStringFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ReferenceModeKind.FormatString
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ReferenceModeKindFormatStringFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.ReferenceModeKind,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ReferenceModeKindFormatStringFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ReferenceModeKind.FormatString field handler
+			/// </summary>
+			/// <value>ReferenceModeKindFormatStringFieldHandler</value>
+			public static ReferenceModeKindFormatStringFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ReferenceModeKind.referenceModeKindFormatStringFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ReferenceModeKind.referenceModeKindFormatStringFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ReferenceModeKind will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ReferenceModeKind.referenceModeKindFormatStringFieldHandler, so just instantiate one and return it
+						return new ReferenceModeKindFormatStringFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ReferenceModeKind.FormatString field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ReferenceModeKind.FormatStringMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the ReferenceModeKind</param>
+			protected sealed override System.String GetValue(Northface.Tools.ORM.ObjectModel.ReferenceModeKind element)
+			{
+				return element.formatStringPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.ReferenceModeKind element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
+			{
+				oldValue = element.formatStringPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.formatStringPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region ReferenceModeType's Generated  Field Code
+		#region ReferenceModeType's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ReferenceModeTypeMetaAttributeGuidString = "ccb8e858-ddf2-4810-8231-99ccabc73142";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ReferenceModeTypeMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeTypeMetaAttributeGuidString);
+		#endregion
+
+		#region ReferenceModeType's Generated Property Code
+
+		private Northface.Tools.ORM.ObjectModel.ReferenceModeType referenceModeTypePropertyStorage = Northface.Tools.ORM.ObjectModel.ReferenceModeType.General;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeType),DefaultEnumerationValueName="General")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ReferenceModeKindReferenceModeTypeFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeTypeMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeType")]
+		public  Northface.Tools.ORM.ObjectModel.ReferenceModeType ReferenceModeType
+		{
+			get
+			{
+				return referenceModeTypePropertyStorage;
+			}
+		
+			set
+			{
+				referenceModeKindReferenceModeTypeFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ReferenceModeKindReferenceModeTypeFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ReferenceModeKind.ReferenceModeType field
+		/// </summary>
+		private static ReferenceModeKindReferenceModeTypeFieldHandler	referenceModeKindReferenceModeTypeFieldHandler	= ReferenceModeKindReferenceModeTypeFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ReferenceModeKind.ReferenceModeType
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ReferenceModeKindReferenceModeTypeFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.ReferenceModeKind,Northface.Tools.ORM.ObjectModel.ReferenceModeType>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ReferenceModeKindReferenceModeTypeFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ReferenceModeKind.ReferenceModeType field handler
+			/// </summary>
+			/// <value>ReferenceModeKindReferenceModeTypeFieldHandler</value>
+			public static ReferenceModeKindReferenceModeTypeFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ReferenceModeKind.referenceModeKindReferenceModeTypeFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ReferenceModeKind.referenceModeKindReferenceModeTypeFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ReferenceModeKind will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ReferenceModeKind.referenceModeKindReferenceModeTypeFieldHandler, so just instantiate one and return it
+						return new ReferenceModeKindReferenceModeTypeFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ReferenceModeKind.ReferenceModeType field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeTypeMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the ReferenceModeKind</param>
+			protected sealed override Northface.Tools.ORM.ObjectModel.ReferenceModeType GetValue(Northface.Tools.ORM.ObjectModel.ReferenceModeKind element)
+			{
+				return element.referenceModeTypePropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.ReferenceModeKind element, Northface.Tools.ORM.ObjectModel.ReferenceModeType value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Northface.Tools.ORM.ObjectModel.ReferenceModeType oldValue)
+			{
+				oldValue = element.referenceModeTypePropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.referenceModeTypePropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region Model's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ORMModel Model
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ModelMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ORMModel)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ModelMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region ReferenceModeCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ReferenceModeMoveableCollection ReferenceModeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ReferenceModeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.KindMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid); }
+		}
+		#endregion
+	}
+	#region Collection Classes for ReferenceModeKind
+	/// <summary>
+	/// Northface.Tools.ORM.ObjectModel.ReferenceModeKind Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class ReferenceModeKindMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public ReferenceModeKindMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.ReferenceModeKind[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Northface.Tools.ORM.ObjectModel.ReferenceModeKind at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.ReferenceModeKind this[System.Int32 index]
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ReferenceModeKind)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReferenceModeKind to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ReferenceModeKind value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReferenceModeKind to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ReferenceModeKind value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReferenceModeKind to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ReferenceModeKind value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReferenceModeKind to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ReferenceModeKind value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReferenceModeKind to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.ReferenceModeKind value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Northface.Tools.ORM.ObjectModel.ReferenceModeKind rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ReferenceModeKind rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
+	#region ReferenceModeKind's Generated Constructor Code
+	public  partial class ReferenceModeKind
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReferenceModeKind(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReferenceModeKind CreateReferenceModeKind(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (ReferenceModeKind)store.ElementFactory.CreateElement(typeof(ReferenceModeKind));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReferenceModeKind CreateAndInitializeReferenceModeKind(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ReferenceModeKind)store.ElementFactory.CreateElement(typeof(ReferenceModeKind), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ReferenceModeKind
+	/// <summary>
+	/// ReferenceModeKind Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind))]
+	public sealed class ReferenceModeKindElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReferenceModeKindElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ReferenceModeKind(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReferenceMode.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ReferenceMode")]
+	public abstract partial class ReferenceMode : Microsoft.VisualStudio.Modeling.NamedElement
+	{
+		#region ReferenceMode's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "f6388323-e223-4e06-bbc8-055339c5bedb";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReferenceMode.MetaClassGuidString);
+		#endregion
+
+		#region Model's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ORMModel Model
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ModelMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ORMModel)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ModelMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region Kind's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ReferenceModeKind Kind
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.KindMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ReferenceModeKind)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.KindMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region Collection Classes for ReferenceMode
+	/// <summary>
+	/// Northface.Tools.ORM.ObjectModel.ReferenceMode Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class ReferenceModeMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public ReferenceModeMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.ReferenceMode[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Northface.Tools.ORM.ObjectModel.ReferenceMode at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.ReferenceMode this[System.Int32 index]
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ReferenceMode)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReferenceMode to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ReferenceMode value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReferenceMode to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ReferenceMode value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReferenceMode to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ReferenceMode value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReferenceMode to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ReferenceMode value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReferenceMode to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.ReferenceMode value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Northface.Tools.ORM.ObjectModel.ReferenceMode rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ReferenceMode rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
+	#region ReferenceMode's Generated Constructor Code
+	public abstract partial class ReferenceMode
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected ReferenceMode(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.IntrinsicReferenceMode.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.IntrinsicReferenceMode")]
+	public  partial class IntrinsicReferenceMode : Northface.Tools.ORM.ObjectModel.ReferenceMode
+	{
+		#region IntrinsicReferenceMode's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "3e08027c-e2c5-4237-a640-2a22a6f534af";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.IntrinsicReferenceMode.MetaClassGuidString);
+		#endregion
+
+	}
+	#region IntrinsicReferenceMode's Generated Constructor Code
+	public  partial class IntrinsicReferenceMode
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public IntrinsicReferenceMode(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static IntrinsicReferenceMode CreateIntrinsicReferenceMode(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (IntrinsicReferenceMode)store.ElementFactory.CreateElement(typeof(IntrinsicReferenceMode));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static IntrinsicReferenceMode CreateAndInitializeIntrinsicReferenceMode(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (IntrinsicReferenceMode)store.ElementFactory.CreateElement(typeof(IntrinsicReferenceMode), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for IntrinsicReferenceMode
+	/// <summary>
+	/// IntrinsicReferenceMode Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.IntrinsicReferenceMode))]
+	public sealed class IntrinsicReferenceModeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public IntrinsicReferenceModeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.IntrinsicReferenceMode(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.CustomReferenceMode.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.CustomReferenceMode")]
+	public  partial class CustomReferenceMode : Northface.Tools.ORM.ObjectModel.ReferenceMode
+	{
+		#region CustomReferenceMode's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "6c7bae68-81a4-4bfa-b75b-c231cc77a3b3";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.CustomReferenceMode.MetaClassGuidString);
+		#endregion
+
+		#region CustomFormatString's Generated  Field Code
+		#region CustomFormatString's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String CustomFormatStringMetaAttributeGuidString = "92e785d7-3457-4e91-b99b-17a8bb46e65b";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid CustomFormatStringMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.CustomReferenceMode.CustomFormatStringMetaAttributeGuidString);
+		#endregion
+
+		#region CustomFormatString's Generated Property Code
+
+		private System.String customFormatStringPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(CustomReferenceModeCustomFormatStringFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.CustomReferenceMode.CustomFormatStringMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.CustomReferenceMode.CustomFormatString")]
+		public  System.String CustomFormatString
+		{
+			get
+			{
+				return customFormatStringPropertyStorage;
+			}
+		
+			set
+			{
+				customReferenceModeCustomFormatStringFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region CustomReferenceModeCustomFormatStringFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for CustomReferenceMode.CustomFormatString field
+		/// </summary>
+		private static CustomReferenceModeCustomFormatStringFieldHandler	customReferenceModeCustomFormatStringFieldHandler	= CustomReferenceModeCustomFormatStringFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for CustomReferenceMode.CustomFormatString
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class CustomReferenceModeCustomFormatStringFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.CustomReferenceMode,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private CustomReferenceModeCustomFormatStringFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the CustomReferenceMode.CustomFormatString field handler
+			/// </summary>
+			/// <value>CustomReferenceModeCustomFormatStringFieldHandler</value>
+			public static CustomReferenceModeCustomFormatStringFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.CustomReferenceMode.customReferenceModeCustomFormatStringFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.CustomReferenceMode.customReferenceModeCustomFormatStringFieldHandler;
+					}
+					else
+					{
+						// The static constructor in CustomReferenceMode will assign this value to
+						// Northface.Tools.ORM.ObjectModel.CustomReferenceMode.customReferenceModeCustomFormatStringFieldHandler, so just instantiate one and return it
+						return new CustomReferenceModeCustomFormatStringFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the CustomReferenceMode.CustomFormatString field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.CustomReferenceMode.CustomFormatStringMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the CustomReferenceMode</param>
+			protected sealed override System.String GetValue(Northface.Tools.ORM.ObjectModel.CustomReferenceMode element)
+			{
+				return element.customFormatStringPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.CustomReferenceMode element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
+			{
+				oldValue = element.customFormatStringPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.customFormatStringPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+	}
+	#region CustomReferenceMode's Generated Constructor Code
+	public  partial class CustomReferenceMode
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public CustomReferenceMode(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static CustomReferenceMode CreateCustomReferenceMode(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (CustomReferenceMode)store.ElementFactory.CreateElement(typeof(CustomReferenceMode));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static CustomReferenceMode CreateAndInitializeCustomReferenceMode(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (CustomReferenceMode)store.ElementFactory.CreateElement(typeof(CustomReferenceMode), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for CustomReferenceMode
+	/// <summary>
+	/// CustomReferenceMode Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.CustomReferenceMode))]
+	public sealed class CustomReferenceModeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public CustomReferenceModeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.CustomReferenceMode(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType")]
 	public  partial class ValueTypeHasDataType : Microsoft.VisualStudio.Modeling.ElementLink
@@ -13784,6 +15361,342 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.InternalFactConstraint(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind")]
+	public  partial class ModelHasReferenceModeKind : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ModelHasReferenceModeKind's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "ecdad33e-fb6f-49a8-84da-abdb9f6d936c";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.MetaRelationshipGuidString);
+		#endregion
+
+		#region ReferenceModeKindCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ReferenceModeKindCollectionMetaRoleGuidString = "45bfc8c9-bf29-4e6d-81af-89f82a92e126";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ReferenceModeKindCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollection")]
+		public  Northface.Tools.ORM.ObjectModel.ReferenceModeKind ReferenceModeKindCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ReferenceModeKind)this.GetRolePlayer(ReferenceModeKindCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ReferenceModeKindCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region Model's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ModelMetaRoleGuidString = "e7a1e999-7f55-4420-b318-d3be76e3809d";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ModelMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ModelMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ModelMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.Model")]
+		public  Northface.Tools.ORM.ObjectModel.ORMModel Model
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ORMModel)this.GetRolePlayer(ModelMetaRoleGuid); }
+			set { this.SetRolePlayer(ModelMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ModelHasReferenceModeKind's Generated Constructor Code
+	public  partial class ModelHasReferenceModeKind
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ModelHasReferenceModeKind(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ModelHasReferenceModeKind CreateModelHasReferenceModeKind(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ModelHasReferenceModeKind)store.ElementFactory.CreateElementLink(typeof(ModelHasReferenceModeKind), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ModelHasReferenceModeKind CreateAndInitializeModelHasReferenceModeKind(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ModelHasReferenceModeKind)store.ElementFactory.CreateElementLink(typeof(ModelHasReferenceModeKind), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ModelHasReferenceModeKind
+	/// <summary>
+	/// ModelHasReferenceModeKind Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind))]
+	public sealed class ModelHasReferenceModeKindElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ModelHasReferenceModeKindElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode")]
+	public  partial class ModelHasReferenceMode : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ModelHasReferenceMode's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "3a05bf70-175f-4dac-9692-ca158806acb2";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.MetaRelationshipGuidString);
+		#endregion
+
+		#region ReferenceModeCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ReferenceModeCollectionMetaRoleGuidString = "47a57da0-d5e9-4291-a418-1fc328d668b3";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ReferenceModeCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollection")]
+		public  Northface.Tools.ORM.ObjectModel.ReferenceMode ReferenceModeCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ReferenceMode)this.GetRolePlayer(ReferenceModeCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ReferenceModeCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region Model's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ModelMetaRoleGuidString = "213e68bd-1cdf-4e91-be12-be0a74d334fb";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ModelMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ModelMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ModelMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.Model")]
+		public  Northface.Tools.ORM.ObjectModel.ORMModel Model
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ORMModel)this.GetRolePlayer(ModelMetaRoleGuid); }
+			set { this.SetRolePlayer(ModelMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ModelHasReferenceMode's Generated Constructor Code
+	public  partial class ModelHasReferenceMode
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ModelHasReferenceMode(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ModelHasReferenceMode CreateModelHasReferenceMode(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ModelHasReferenceMode)store.ElementFactory.CreateElementLink(typeof(ModelHasReferenceMode), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ModelHasReferenceMode CreateAndInitializeModelHasReferenceMode(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ModelHasReferenceMode)store.ElementFactory.CreateElementLink(typeof(ModelHasReferenceMode), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ModelHasReferenceMode
+	/// <summary>
+	/// ModelHasReferenceMode Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode))]
+	public sealed class ModelHasReferenceModeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ModelHasReferenceModeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind")]
+	public  partial class ReferenceModeHasReferenceModeKind : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ReferenceModeHasReferenceModeKind's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "b82e579e-4d0c-4411-9135-8c8b15979355";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.MetaRelationshipGuidString);
+		#endregion
+
+		#region Kind's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String KindMetaRoleGuidString = "bfb270b2-dcd7-4637-83af-956b28b9cd83";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid KindMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.KindMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.KindMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.Kind")]
+		public  Northface.Tools.ORM.ObjectModel.ReferenceModeKind Kind
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ReferenceModeKind)this.GetRolePlayer(KindMetaRoleGuid); }
+			set { this.SetRolePlayer(KindMetaRoleGuid, value); }
+		}
+		#endregion
+		#region ReferenceModeCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ReferenceModeCollectionMetaRoleGuidString = "babae7a3-71e7-426b-a5c3-d8ec45d12df6";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ReferenceModeCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollection")]
+		public  Northface.Tools.ORM.ObjectModel.ReferenceMode ReferenceModeCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ReferenceMode)this.GetRolePlayer(ReferenceModeCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ReferenceModeCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ReferenceModeHasReferenceModeKind's Generated Constructor Code
+	public  partial class ReferenceModeHasReferenceModeKind
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReferenceModeHasReferenceModeKind(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReferenceModeHasReferenceModeKind CreateReferenceModeHasReferenceModeKind(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ReferenceModeHasReferenceModeKind)store.ElementFactory.CreateElementLink(typeof(ReferenceModeHasReferenceModeKind), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReferenceModeHasReferenceModeKind CreateAndInitializeReferenceModeHasReferenceModeKind(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ReferenceModeHasReferenceModeKind)store.ElementFactory.CreateElementLink(typeof(ReferenceModeHasReferenceModeKind), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ReferenceModeHasReferenceModeKind
+	/// <summary>
+	/// ReferenceModeHasReferenceModeKind Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind))]
+	public sealed class ReferenceModeHasReferenceModeKindElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReferenceModeHasReferenceModeKindElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind(store, bag);
 		}
 	}
 	#endregion

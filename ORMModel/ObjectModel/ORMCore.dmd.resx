@@ -180,6 +180,9 @@
   <data name="Northface.Tools.ORM.ObjectModel.ObjectType.NestedFactTypeDisplay">
     <value xml:space="preserve">NestedFactType</value>
   </data>
+  <data name="Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplay">
+    <value xml:space="preserve">RefMode</value>
+  </data>
   <data name="Northface.Tools.ORM.ObjectModel.ObjectType.Scale">
     <value xml:space="preserve">Scale</value>
   </data>

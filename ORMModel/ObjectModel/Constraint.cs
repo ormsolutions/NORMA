@@ -81,6 +81,78 @@ namespace Northface.Tools.ORM.ObjectModel
 			childMetaRoleGuid = ModelHasConstraint.ConstraintCollectionMetaRoleGuid;
 		}
 		#endregion // INamedElementDictionaryChild implementation
+		#region ConstraintRoleSetHasRoleRemoved class
+		/// <summary>
+		/// Rule that fires when a constraint has a RoleSet Removed
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSetHasRole))]
+		private class ConstraintRoleSetHasRoleRemoved : RemoveRule
+		{
+			/// <summary>
+			/// Runs when roleset element is removed.  If there are no more roles in the role collection
+			/// then the entire roleset is removed
+			/// </summary>
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ConstraintRoleSetHasRole link = e.ModelElement as ConstraintRoleSetHasRole;
+				ConstraintRoleSet roleSet = link.ConstraintRoleSetCollection;
+				if (!roleSet.IsRemoved)
+				{
+					if (roleSet.RoleCollection.Count == 0)
+					{
+						roleSet.Remove();
+					}
+				}
+			}
+		}
+			#endregion //ConstraintRoleSetHasRoleRemoved class
+		#region InternalConstraintHasRoleSetRemoved class
+		/// <summary>
+		/// Rule that fires when an internal constraint has a RoleSet Removed
+		/// </summary>
+		[RuleOn(typeof(InternalConstraintHasRoleSet))]
+		private class InternalConstraintHasRoleSetRemoved : RemoveRule
+		{
+			/// <summary>
+			/// Runs when roleset element is removed.  If there are no more roles in the role collection
+			/// then the entire roleset is removed
+			/// </summary>
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				InternalConstraintHasRoleSet link = e.ModelElement as InternalConstraintHasRoleSet;
+				InternalConstraint constraint = link.InternalConstraint;
+				if (!constraint.IsRemoved)
+				{
+					constraint.Remove();
+				}
+			}
+		}
+		#endregion //InternalConstraintHasRoleSetRemoved class
+		#region ExternalConstraintHasRoleSetRemoved class
+		/// <summary>
+		/// Rule that fires when an external constraint has a RoleSet Removed
+		/// </summary>
+		[RuleOn(typeof(ExternalConstraintHasRoleSet))]
+		private class ExternalConstraintHasRoleSetRemoved : RemoveRule
+		{
+			/// <summary>
+			/// Runs then roleset element is removed.  If there are no more roles in the role collection
+			/// then the entire roleset is removed
+			/// </summary>
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ExternalConstraintHasRoleSet link = e.ModelElement as ExternalConstraintHasRoleSet;
+				ExternalConstraint constraint = link.ExternalConstraint;
+				if (!constraint.IsRemoved)
+				{
+					if (constraint.RoleSetCollection.Count == 0)
+					{
+						constraint.Remove();
+					}
+				}
+			}
+		}
+			#endregion //ExternalConstraintHasRoleSetRemoved class
 	}
 	#endregion // Constraint class
 	#region InternalConstraint class
