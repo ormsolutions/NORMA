@@ -261,19 +261,14 @@ namespace Northface.Tools.ORM.ShapeModel
 				if (roleArity != 0)
 				{
 					FactType factType = FactType.CreateFactType(store);
-					group.AddGraph(factType);
 					RoleMoveableCollection roles = factType.RoleCollection;
-					Role role;
-					MetaAttributeInfo attrInfo = store.MetaDataDirectory.FindMetaAttribute(Role.NameMetaAttributeGuid);
-					AttributeAssignment[] initialAttrs = new AttributeAssignment[1];
-					string baseNamePattern = ResourceStrings.RoleDefaultNamePattern;
 					for (int i = 0; i < roleArity; ++i)
 					{
-						initialAttrs[0] = new AttributeAssignment(attrInfo, string.Format(baseNamePattern, (i + 1).ToString()));
-						role = Role.CreateAndInitializeRole(store, initialAttrs);
+						Role role = Role.CreateRole(store);
 						roles.Add(role);
 						group.AddGraph(role);
 					}
+					group.AddGraph(factType);
 					retVal = group.CreatePrototype(factType);
 				}
 			}

@@ -213,9 +213,6 @@
   <data name="Northface.Tools.ORM.ObjectModel.Role.Multiplicity">
     <value xml:space="preserve">Multiplicity</value>
   </data>
-  <data name="Northface.Tools.ORM.ObjectModel.Role.DefaultNamePattern">
-    <value xml:space="preserve">Role{0}</value>
-  </data>
   <data name="Northface.Tools.ORM.ObjectModel.Role.IsMandatory">
     <value xml:space="preserve">IsMandatory</value>
   </data>

@@ -40,6 +40,14 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		DisplayReadingsWindow = 8,
 		/// <summary>
+		/// Insert a role before the current role
+		/// </summary>
+		InsertRoleAfter = 0x20,
+		/// <summary>
+		/// Insert a role after the current role
+		/// </summary>
+		InsertRoleBefore = 0x40,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint,
@@ -203,7 +211,7 @@ namespace Northface.Tools.ORM.Shell
 			}
 			else if (element is Role)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRoleAfter | ORMDesignerCommands.InsertRoleBefore;
 			}
 		}
 		
@@ -357,6 +365,49 @@ namespace Northface.Tools.ORM.Shell
 				{
 					// Clearing the selection selects the diagram
 					CurrentDesigner.Selection.Clear();
+				}
+			}
+		}
+		/// <summary>
+		/// Execute the Insert Role menu commands
+		/// </summary>
+		/// <param name="insertAfter">true to insert the role after the
+		/// selected role, false to insert it before the selected role</param>
+		protected virtual void OnMenuInsertRole(bool insertAfter)
+		{
+			ICollection components = GetSelectedComponents();
+			if (components.Count == 1)
+			{
+				Role role = null;
+				foreach (object component in components)
+				{
+					role = component as Role;
+					break;
+				}
+				FactType factType;
+				if (role != null &&
+					null != (factType = role.FactType))
+				{
+					RoleMoveableCollection roles = factType.RoleCollection;
+					int insertIndex = roles.IndexOf(role);
+					if (insertAfter)
+					{
+						++insertIndex;
+					}
+					Store store = factType.Store;
+					using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InsertRoleTransactionName))
+					{
+						Role newRole = Role.CreateRole(store);
+						if (insertIndex == roles.Count)
+						{
+							roles.Add(newRole);
+						}
+						else
+						{
+							roles.Insert(insertIndex, newRole);
+						}
+						t.Commit();
+					}
 				}
 			}
 		}

@@ -69,6 +69,14 @@ namespace Northface.Tools.ORM.Shell
 				new EventHandler(OnStatusReadingsWindow),
 				new EventHandler(OnMenuReadingsWindow),
 				ORMDesignerCommandIds.ViewReadingEditor)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusInsertRoleBefore),
+				new EventHandler(OnMenuInsertRoleBefore),
+				ORMDesignerCommandIds.InsertRoleBefore)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusInsertRoleAfter),
+				new EventHandler(OnMenuInsertRoleAfter),
+				ORMDesignerCommandIds.InsertRoleAfter)
 			};
 				#endregion
 				AddCommands(myCommands);
@@ -193,6 +201,52 @@ namespace Northface.Tools.ORM.Shell
 				editorWindow.Show();
 			}
 			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			private void OnStatusInsertRoleAfter(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.InsertRoleAfter);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuInsertRoleAfter(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// call delete on the doc view
+					docView.OnMenuInsertRole(true);
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			private void OnStatusInsertRoleBefore(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.InsertRoleBefore);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuInsertRoleBefore(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// call delete on the doc view
+					docView.OnMenuInsertRole(false);
+				}
+			}
+			/// <summary>
 			/// 
 			/// </summary>
 			protected IMenuCommandService MenuService
@@ -296,6 +350,14 @@ namespace Northface.Tools.ORM.Shell
 			/// The ORM Readings Window item on the fact type context menu
 			/// </summary>
 			public static readonly CommandID ViewReadingEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewReadingEditor);
+			/// <summary>
+			/// Insert a role after the selected role
+			/// </summary>
+			public static readonly CommandID InsertRoleAfter = new CommandID(guidORMDesignerCommandSet, cmdIdInsertRoleAfter);
+			/// <summary>
+			/// Insert a role before the selected role
+			/// </summary>
+			public static readonly CommandID InsertRoleBefore = new CommandID(guidORMDesignerCommandSet, cmdIdInsertRoleBefore);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -321,6 +383,14 @@ namespace Northface.Tools.ORM.Shell
 			/// The ORM Readings Window item on the fact type context menu
 			/// </summary>
 			private const int cmdIdViewReadingEditor = 0x2901;
+			/// <summary>
+			/// Insert a role after the selected role
+			/// </summary>
+			private const int cmdIdInsertRoleAfter = 0x2903;
+			/// <summary>
+			/// Insert a role before the selected role
+			/// </summary>
+			private const int cmdIdInsertRoleBefore = 0x2904;
 
 			/// <summary>
 			/// The context menu for the diagram

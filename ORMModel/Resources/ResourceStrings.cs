@@ -227,12 +227,12 @@ namespace Northface.Tools.ORM
 		private const string RolePlayerPickerNullItemText_Id = "Northface.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText";
 		private const string NestedFactTypePickerNullItemText_Id = "Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText";
 		private const string NestingTypePickerNullItemText_Id = "Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText";
-		private const string RoleDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.Role.DefaultNamePattern";
 		private const string EntityTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern";
 		private const string ValueTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern";
 		private const string FactTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.FactType.DefaultNamePattern";
 		private const string ExternalConstraintConnectActionInstructions_Id = "ExternalConstraintConnectAction.Instructions";
 		private const string ExternalConstraintConnectActionTransactionName_Id = "ExternalConstraintConnectAction.TransactionName";
+		private const string InsertRoleTransactionName_Id = "InsertRole.TransactionName";
 		private const string InternalUniquenessConstraintConnectActionInstructions_Id = "InternalUniquenessConstraintConnectAction.Instructions";
 		private const string InternalUniquenessConstraintConnectActionTransactionName_Id = "InternalUniquenessConstraintConnectAction.TransactionName";
 		private const string RoleConnectActionTransactionName_Id = "RoleConnectAction.TransactionName";
@@ -362,17 +362,6 @@ namespace Northface.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// The base name used to create a name for a new role. This is a format string,
-		/// with {0} being the placeholder for the number placement.
-		/// </summary>
-		public static string RoleDefaultNamePattern
-		{
-			get
-			{
-				return GetString(ResourceManagers.ObjectModel, RoleDefaultNamePattern_Id);
-			}
-		}
-		/// <summary>
 		/// The base name used to create a name for a new EntityType. This is a format string,
 		/// with {0} being the placeholder for the number placement.
 		/// </summary>
@@ -445,6 +434,17 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Diagram, InternalUniquenessConstraintConnectActionTransactionName_Id);
+			}
+		}
+		/// <summary>
+		/// The transaction name used by the InsertRoleBefore/InsertRoleAfter commands.
+		/// The text appears in the undo dropdown in the VS IDE.
+		/// </summary>
+		public static string InsertRoleTransactionName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, InsertRoleTransactionName_Id);
 			}
 		}
 		/// <summary>

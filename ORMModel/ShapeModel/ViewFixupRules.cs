@@ -180,21 +180,46 @@ namespace Northface.Tools.ORM.ShapeModel
 		#endregion // ModelHasConstraint fixup
 		#region FactTypeHasRole fixup
 		#region RoleAdded class
-		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
 		private class RoleAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-				if (link != null)
+				FactType factType = link.FactType;
+				foreach (PresentationElement pel in factType.PresentationRolePlayers)
 				{
-					// UNDONE: We'll need to do something to the fact type, but not
-					// this. The role is represented as a ShapeSubField inside the Fact object
-					//Diagram.FixUpDiagram(link.FactType, link.RoleCollection);
+					FactTypeShape shape = pel as FactTypeShape;
+					if (shape != null)
+					{
+						shape.AutoResize();
+					}
 				}
 			}
 		}
 		#endregion // RoleAdded class
+		#region RoleRemoved class
+		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class RoleRemoved : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+				FactType factType = link.FactType;
+				if (!factType.IsRemoved)
+				{
+					foreach (PresentationElement pel in factType.PresentationRolePlayers)
+					{
+						FactTypeShape shape = pel as FactTypeShape;
+						if (shape != null)
+						{
+							shape.AutoResize();
+						}
+					}
+				}
+			}
+		}
+		#endregion // RoleRemoved class
 		#endregion // FactTypeHasRole fixup
 		#region ObjectTypePlaysRole fixup
 		#region RolePlayerAdded class

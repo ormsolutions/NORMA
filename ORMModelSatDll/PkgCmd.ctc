@@ -31,8 +31,9 @@ CMDS_SECTION guidORMDesignerPackage
 #ifdef DEBUG
 		guidORMDesignerCommandSet:groupIdDebugCommands,				guidORMDesignerCommandSet:menuIdContextMenu,	0x1000;
 #endif	
-		guidORMDesignerCommandSet:groupIdFactCommands,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0007;
-		guidORMDesignerCommandSet:groupIdDeleteContext,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0008;
+		guidORMDesignerCommandSet:groupIdRoleCommands,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0010;
+		guidORMDesignerCommandSet:groupIdFactCommands,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0020;
+		guidORMDesignerCommandSet:groupIdDeleteContext,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0030;
     NEWGROUPS_END
 
     BUTTONS_BEGIN
@@ -42,6 +43,9 @@ CMDS_SECTION guidORMDesignerPackage
 #endif
 		guidORMDesignerCommandSet:cmdIdViewModelExplorer,			guidSHLMainMenu:IDG_VS_VIEW_WINDOWS,				0x0600,		guidOfficeIcon:msotcidNoIcon,	 BUTTON,	0,				"ORM &Model Explorer";
 		guidORMDesignerCommandSet:cmdIdViewReadingEditor,			guidORMDesignerCommandSet:groupIdFactCommands,		0x0610,		guidOfficeIcon:msotcidNoIcon,	 BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Readings Window";
+
+		guidORMDesignerCommandSet:cmdIdInsertRoleAfter,				guidORMDesignerCommandSet:groupIdRoleCommands,		0x010,		guidOfficeIcon:msotcidNoIcon,	 BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Insert Role &After";
+		guidORMDesignerCommandSet:cmdIdInsertRoleBefore,			guidORMDesignerCommandSet:groupIdRoleCommands,		0x020,		guidOfficeIcon:msotcidNoIcon,	 BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Insert Role &Before";
     BUTTONS_END	
 
     COMBOS_BEGIN

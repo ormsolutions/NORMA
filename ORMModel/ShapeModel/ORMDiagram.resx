@@ -138,6 +138,10 @@
     <value xml:space="preserve">Add Constraint Role Sequence</value>
     <comment xml:space="preserve">The transaction name used by the external constraint connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="InsertRole.TransactionName">
+    <value xml:space="preserve">Insert Role</value>
+    <comment xml:space="preserve">The transaction name used by the InsertRoleBefore/InsertRoleAfter commands. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
   <data name="InternalUniquenessConstraintConnectAction.Instructions">
     <value xml:space="preserve">Select the roles this constraint should span.</value>
     <comment xml:space="preserve">The text shown to explain how to hook up an internal uniqueness constraint to its associated roles.</comment>
