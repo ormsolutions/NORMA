@@ -57,6 +57,15 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				return ResourceStrings.RolePlayerPickerNullItemText;
 			}
 		}
+		private static Size myLastControlSize = Size.Empty;
+		/// <summary>
+		/// Manage control size independently
+		/// </summary>
+		protected override Size LastControlSize
+		{
+			get { return myLastControlSize; }
+			set	{ myLastControlSize = value; }
+		}
 	}
 	#endregion // RolePlayerPicker class
 	#region NestingTypePicker class
@@ -142,6 +151,15 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				return ResourceStrings.NestingTypePickerNullItemText;
 			}
 		}
+		private static Size myLastControlSize = Size.Empty;
+		/// <summary>
+		/// Manage control size independently
+		/// </summary>
+		protected override Size LastControlSize
+		{
+			get { return myLastControlSize; }
+			set { myLastControlSize = value; }
+		}
 	}
 	#endregion // NestingTypePicker class
 	#region NestedFactTypePicker class
@@ -225,6 +243,15 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				return ResourceStrings.NestedFactTypePickerNullItemText;
 			}
 		}
+		private static Size myLastControlSize = Size.Empty;
+		/// <summary>
+		/// Manage control size independently
+		/// </summary>
+		protected override Size LastControlSize
+		{
+			get { return myLastControlSize; }
+			set { myLastControlSize = value; }
+		}
 	}
 	#endregion // NestedFactTypePicker class
 	#region ReferenceModeKindPicker class
@@ -259,6 +286,15 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				candidates = kinds;
 			}
 			return candidates;
+		}
+		private static Size myLastControlSize = Size.Empty;
+		/// <summary>
+		/// Manage control size independently
+		/// </summary>
+		protected override Size LastControlSize
+		{
+			get { return myLastControlSize; }
+			set { myLastControlSize = value; }
 		}
 	}
 	#endregion // ReferenceModeKindPicker class
@@ -344,6 +380,15 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				}
 			}
 			return initialObject;
+		}
+		private static Size myLastControlSize = Size.Empty;
+		/// <summary>
+		/// Manage control size independently
+		/// </summary>
+		protected override Size LastControlSize
+		{
+			get { return myLastControlSize; }
+			set { myLastControlSize = value; }
 		}
 	}
 	#endregion // ReferenceModePicker class
