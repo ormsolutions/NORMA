@@ -87,6 +87,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ORMShape.dmd.mdfomt</DependentUpon>
     </Compile>
+    <Compile Include="ObjectModel\DeserializationManager.cs" />
     <Compile Include="Shell\ORMDocDataServices.cs" />
     <Compile Include="ObjectModel\ORMModelInterfaces.cs" />
     <Compile Include="ObjectModel\Reading.cs" />

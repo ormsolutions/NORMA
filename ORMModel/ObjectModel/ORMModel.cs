@@ -6,6 +6,44 @@ using Microsoft.VisualStudio.Modeling;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
+	#region ORMDeserializationFixupPhase enum
+	/// <summary>
+	/// Fixup stages supported during ORM deserialization
+	/// </summary>
+	public enum ORMDeserializationFixupPhase
+	{
+		/// <summary>
+		/// Add any intrinsic elements at this stage. Intrinsic elements
+		/// are not serialized but are always present in the model. For example,
+		/// intrinsic data types or intrinsic reference modes.
+		/// </summary>
+		AddIntrinsicElements = 100,
+		/// <summary>
+		/// Add implicit elements at this stage. An implicit element is
+		/// not serialized and is generally created by a rule once the model
+		/// is loaded.
+		/// </summary>
+		AddImplicitElements = 200,
+		/// <summary>
+		/// Model errors are stored with the model, but are vulnerable
+		/// to the Notepad effect, which can cause errors to be added
+		/// or removed from the model. Validate errors after all other
+		/// explicit, intrinsic, and implicit elements are in place.
+		/// </summary>
+		ValidateErrors = 300,
+		/// <summary>
+		/// Add any presentation elements that are implicit and not
+		/// serialized with the model.
+		/// </summary>
+		AddImplicitPresentationElements = 400,
+		/// <summary>
+		/// Remove any orphaned presentation elements, meaning any
+		/// PresentationElement where the ModelElement role property is null.
+		/// Orphaned pels are currently not supported.
+		/// </summary>
+		RemoveOrphanedPresentationElements = 500,
+	}
+	#endregion // ORMDeserializationFixupPhase enum
 	public partial class ORMModel
 	{
 		#region Entity- and ValueType specific collections
@@ -85,6 +123,21 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // MergeContext functions
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return all deserialization fixup listeners for the core object model
+		/// </summary>
+		[CLSCompliant(false)]
+		public static IEnumerable<IDeserializationFixupListener> DeserializationFixupListeners
+		{
+			get
+			{
+				yield return InternalConstraint.FixupListener;
+				yield return ExternalConstraint.FixupListener;
+				yield return ModelError.FixupListener;
+			}
+		}
+		#endregion // Deserialization Fixup
 	}
 	#region NamedElementDictionary and DuplicateNameError integration
 	public partial class ORMModel : INamedElementDictionaryParent

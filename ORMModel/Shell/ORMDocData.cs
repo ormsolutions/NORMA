@@ -15,6 +15,7 @@ using Northface.Tools.ORM.DocumentSynchronization;
 #endif // ATTACHELEMENTPROVIDERS
 namespace Northface.Tools.ORM.Shell
 {
+	#region ORMDesignerDocData class
 	/// <summary>
 	/// DocData object for the ORM Designer editor
 	/// </summary>
@@ -165,7 +166,12 @@ namespace Northface.Tools.ORM.Shell
 				{
 					if (stream.Length > 1)
 					{
-						(new ORMSerializer(store)).Load(stream);
+						DeserializationFixupManager fixupManager = new DeserializationFixupManager(DeserializationFixupPhaseType, store);
+						foreach (IDeserializationFixupListener listener in DeserializationFixupListeners)
+						{
+							fixupManager.AddListener(listener);
+						}
+						(new ORMSerializer(store)).Load(stream, fixupManager);
 						IList diagrams = store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid);
 						if (diagrams.Count != 0)
 						{
@@ -357,15 +363,7 @@ namespace Northface.Tools.ORM.Shell
 		}
 		private void ErrorAddedEvent(object sender, ElementAddedEventArgs e)
 		{
-			ModelHasError link = e.ModelElement as ModelHasError;
-			ModelError error = link.ErrorCollection;
-			IORMToolTaskProvider provider = (this as IORMToolServices).TaskProvider;
-			IORMToolTaskItem newTask = provider.CreateTask();
-			newTask.ElementLocator = error as IRepresentModelElements;
-			newTask.Text = error.Name;
-			Debug.Assert(error.TaskData == null);
-			error.TaskData = newTask;
-			provider.AddTask(newTask);
+			ModelError.AddToTaskProvider(e.ModelElement as ModelHasError);
 		}
 		private void ErrorRemovedEvent(object sender, ElementRemovedEventArgs e)
 		{
@@ -387,5 +385,36 @@ namespace Northface.Tools.ORM.Shell
 			}
 		}
 		#endregion // Error reporting
+		#region ORMDesignerDocData specific
+		/// <summary>
+		/// Retrieve the phase enum to use with the
+		/// deserialization manager.
+		/// </summary>
+		protected virtual Type DeserializationFixupPhaseType
+		{
+			get
+			{
+				return typeof(ORMDeserializationFixupPhase);
+			}
+		}
+		/// <summary>
+		/// Return a set of listeners for deserialization fixup
+		/// </summary>
+		protected virtual IEnumerable<IDeserializationFixupListener> DeserializationFixupListeners
+		{
+			get
+			{
+				foreach (IDeserializationFixupListener listener in ORMModel.DeserializationFixupListeners)
+				{
+					yield return listener;
+				}
+				foreach (IDeserializationFixupListener listener in ORMDiagram.DeserializationFixupListeners)
+				{
+					yield return listener;
+				}
+			}
+		}
+		#endregion // ORMDesignerDocData specific
 	}
+	#endregion // ORMDesignerDocData class
 }

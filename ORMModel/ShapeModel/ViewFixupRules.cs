@@ -8,6 +8,8 @@ namespace Northface.Tools.ORM.ShapeModel
 	public partial class ORMDiagram
 	{
 		#region View Fixup Rules
+		#region ModelHasObjectType fixup
+		#region ObjectTypedAdded class
 		[RuleOn(typeof(ModelHasObjectType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class ObjectTypedAdded : AddRule
 		{
@@ -24,6 +26,10 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		#endregion // ObjectTypedAdded class
+		#endregion // ModelHasObjectType fixup
+		#region ModelHasFactType fixup
+		#region FactTypeAdded class
 		[RuleOn(typeof(ModelHasFactType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class FactTypedAdded : AddRule
 		{
@@ -36,6 +42,10 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		#endregion // FactTypeAdded class
+		#endregion // ModelHasFactType fixup
+		#region ModelHasConstraint fixup
+		#region ExternalConstraintAdded class
 		[RuleOn(typeof(ModelHasConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class ExternalConstraintAdded : AddRule
 		{
@@ -49,6 +59,10 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		#endregion // ExternalConstraintAdded class
+		#endregion // ModelHasConstraint fixup
+		#region FactTypeHasRole fixup
+		#region RoleAdded class
 		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class RoleAdded : AddRule
 		{
@@ -63,6 +77,10 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		#endregion // RoleAdded class
+		#endregion // FactTypeHasRole fixup
+		#region ObjectTypePlaysRole fixup
+		#region RolePlayerAdded class
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
 		private class RolePlayerAdded : AddRule
 		{
@@ -71,27 +89,36 @@ namespace Northface.Tools.ORM.ShapeModel
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				if (link != null)
 				{
-					// Make sure the object type, fact type, and link
-					// are displayed on the diagram
-					ObjectType rolePlayer = link.RolePlayer;
-					FactType nestedType = rolePlayer.NestedFactType;
-					Role playedRole = link.PlayedRoleCollection;
-					FactType associatedFact = playedRole.FactType;
-					if (associatedFact != null)
-					{
-						ORMModel model = rolePlayer.Model;
-						if (model != null)
-						{
-							Debug.Assert(model == associatedFact.Model);
-							Diagram.FixUpDiagram(model, (nestedType == null) ? rolePlayer as ModelElement : nestedType);
-							Diagram.FixUpDiagram(model, associatedFact);
-							Diagram.FixUpDiagram(model, link);
-						}
-
-					}
+					FixupRolePlayerLink(link);
 				}
 			}
 		}
+		#endregion // RolePlayerAdded class
+		#region DisplayRolePlayersFixupListener class
+		/// <summary>
+		/// A fixup class to display role player links
+		/// </summary>
+		private class DisplayRolePlayersFixupListener : DeserializationFixupListener<ObjectTypePlaysRole>
+		{
+			/// <summary>
+			/// Create a new DisplayRolePlayersFixupListener
+			/// </summary>
+			public DisplayRolePlayersFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Add role player links when possible
+			/// </summary>
+			/// <param name="element">An ObjectTypePlaysRole instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(ObjectTypePlaysRole element, Store store, INotifyElementAdded notifyAdded)
+			{
+				FixupRolePlayerLink(element);
+			}
+		}
+		#endregion // DisplayRolePlayersFixupListener class
+		#region ObjectTypePlaysRoleRemoved class
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
 		private class ObjectTypePlaysRoleRemoved : RemoveRule
 		{
@@ -108,6 +135,34 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		#endregion // ObjectTypePlaysRoleRemoved class
+		/// <summary>
+		/// Helper function to display role player links.
+		/// </summary>
+		/// <param name="link">An ObjectTypePlaysRole element</param>
+		private static void FixupRolePlayerLink(ObjectTypePlaysRole link)
+		{
+			// Make sure the object type, fact type, and link
+			// are displayed on the diagram
+			ObjectType rolePlayer = link.RolePlayer;
+			FactType nestedType = rolePlayer.NestedFactType;
+			Role playedRole = link.PlayedRoleCollection;
+			FactType associatedFact = playedRole.FactType;
+			if (associatedFact != null)
+			{
+				ORMModel model = rolePlayer.Model;
+				if (model != null)
+				{
+					Debug.Assert(model == associatedFact.Model);
+					Diagram.FixUpDiagram(model, (nestedType == null) ? rolePlayer as ModelElement : nestedType);
+					Diagram.FixUpDiagram(model, associatedFact);
+					Diagram.FixUpDiagram(model, link);
+				}
+			}
+		}
+		#endregion // ObjectTypePlaysRole fixup
+		#region ExternalFactConstraint fixup
+		#region ExternalFactConstraintAdded class
 		[RuleOn(typeof(ExternalFactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
 		private class ExternalFactConstraintAdded : AddRule
 		{
@@ -116,24 +171,61 @@ namespace Northface.Tools.ORM.ShapeModel
 				ExternalFactConstraint link = e.ModelElement as ExternalFactConstraint;
 				if (link != null)
 				{
-					// Make sure the object type, fact type, and link
-					// are displayed on the diagram
-					ExternalConstraint constraint = link.ExternalConstraintCollection;
-					FactType factType = link.FactTypeCollection;
-					if (factType != null)
-					{
-						ORMModel model = factType.Model;
-						if (model != null)
-						{
-							Debug.Assert(model == constraint.Model);
-							Diagram.FixUpDiagram(model, constraint);
-							Diagram.FixUpDiagram(model, factType);
-							Diagram.FixUpDiagram(model, link);
-						}
-					}
+					FixupExternalConstraintLink(link);
 				}
 			}
 		}
+		#endregion // ExternalFactConstraintAdded class
+		#region DisplayExternalConstraintLinksFixupListener class
+		/// <summary>
+		/// A fixup class to display external constraint links for
+		/// when both endpoints are represented on the diagram
+		/// </summary>
+		private class DisplayExternalConstraintLinksFixupListener : DeserializationFixupListener<ExternalFactConstraint>
+		{
+			/// <summary>
+			/// Create a new DisplayExternalConstraintLinksFixupListener
+			/// </summary>
+			public DisplayExternalConstraintLinksFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Add external fact constraint links to the diagram
+			/// </summary>
+			/// <param name="element">A ExternalFactConstraint instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(ExternalFactConstraint element, Store store, INotifyElementAdded notifyAdded)
+			{
+				FixupExternalConstraintLink(element);
+			}
+		}
+		#endregion // DisplayExternalConstraintLinksFixupListener class
+		/// <summary>
+		/// Helper function to display external constraint links.
+		/// </summary>
+		/// <param name="link">An ObjectTypePlaysRole element</param>
+		private static void FixupExternalConstraintLink(ExternalFactConstraint link)
+		{
+			// Make sure the object type, fact type, and link
+			// are displayed on the diagram
+			ExternalConstraint constraint = link.ExternalConstraintCollection;
+			FactType factType = link.FactTypeCollection;
+			if (factType != null)
+			{
+				ORMModel model = factType.Model;
+				if (model != null)
+				{
+					Debug.Assert(model == constraint.Model);
+					Diagram.FixUpDiagram(model, constraint);
+					Diagram.FixUpDiagram(model, factType);
+					Diagram.FixUpDiagram(model, link);
+				}
+			}
+		}
+		#endregion // ExternalFactConstraint fixup
+		#region SubjectHasPresentation fixup
+		#region PresentationLinkRemoved class
 		[RuleOn(typeof(SubjectHasPresentation))]
 		private class PresentationLinkRemoved : RemoveRule
 		{
@@ -155,6 +247,36 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		#endregion // PresentationLinkRemoved class
+		#region EliminateOrphanedShapesFixupListener class
+		/// <summary>
+		/// A fixup class to remove orphaned pels
+		/// </summary>
+		private class EliminateOrphanedShapesFixupListener : DeserializationFixupListener<PresentationElement>
+		{
+			/// <summary>
+			/// Create a new EliminateOrphanedShapesFixupListener
+			/// </summary>
+			public EliminateOrphanedShapesFixupListener() : base((int)ORMDeserializationFixupPhase.RemoveOrphanedPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Remove all orphaned pels
+			/// </summary>
+			/// <param name="element">A PresentationElement instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(PresentationElement element, Store store, INotifyElementAdded notifyAdded)
+			{
+				ModelElement backingElement = element.ModelElement;
+				if (backingElement == null || backingElement.IsRemoved)
+				{
+					element.Remove();
+				}
+			}
+		}
+		#endregion // EliminateOrphanedShapesFixupListener class
+		#endregion // SubjectHasPresentation fixup
 		#endregion // View Fixup Rules
 	}
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Design;
 using System.Windows.Forms;
@@ -355,5 +356,20 @@ namespace Northface.Tools.ORM.ShapeModel
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
 		#endregion // Display Properties
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return all deserialization fixup listeners for the presentation model
+		/// </summary>
+		[CLSCompliant(false)]
+		public static IEnumerable<IDeserializationFixupListener> DeserializationFixupListeners
+		{
+			get
+			{
+				yield return new DisplayRolePlayersFixupListener();
+				yield return new DisplayExternalConstraintLinksFixupListener();
+				yield return new EliminateOrphanedShapesFixupListener();
+			}
+		}
+		#endregion // Deserialization Fixup
 	}
 }

@@ -133,32 +133,90 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		/// <summary>
 		/// If a role set is added that already contains roles, then
-		/// make sure the corresponding ExternalFactConstraint and ExternalRoleConstraint
-		/// objects are created for each role.
+		/// make sure the corresponding InternalFactConstraint
+		/// object is created for each role.
 		/// </summary>
 		[RuleOn(typeof(InternalConstraintHasRoleSet))]
 		private class ConstraintHasRoleSetAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				InternalConstraintHasRoleSet link = e.ModelElement as InternalConstraintHasRoleSet;
-				InternalConstraintRoleSet roleSet = link.RoleSet;
-				RoleMoveableCollection roles = roleSet.RoleCollection;
-				int roleCount = roles.Count;
-				if (roleCount != 0)
+				EnsureFactConstraintForRoleSet(e.ModelElement as InternalConstraintHasRoleSet);
+			}
+		}
+		/// <summary>
+		/// Helper function to support the same fact constraint fixup
+		/// during both deserialization and rules.
+		/// </summary>
+		/// <param name="link">A roleset link added to the constraint</param>
+		private static void EnsureFactConstraintForRoleSet(InternalConstraintHasRoleSet link)
+		{
+			InternalConstraintRoleSet roleSet = link.RoleSet;
+			RoleMoveableCollection roles = roleSet.RoleCollection;
+			int roleCount = roles.Count;
+			if (roleCount != 0)
+			{
+				InternalConstraint constraint = link.InternalConstraint;
+				for (int i = 0; i < roleCount; ++i)
 				{
-					InternalConstraint constraint = link.InternalConstraint;
-					for (int i = 0; i < roleCount; ++i)
-					{
-						Role role = roles[i];
-						// Call for each role, not just the first. This
-						// enforces that all roles are in the same fact type.
-						constraint.EnsureFactConstraintForRole(role);
-					}
+					Role role = roles[i];
+					// Call for each role, not just the first. This
+					// enforces that all roles are in the same fact type.
+					constraint.EnsureFactConstraintForRole(role);
 				}
 			}
 		}
 		#endregion // InternalFactConstraint synchronization rules
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// adds the implicit InternalFactConstraint elements.
+		/// </summary>
+		[CLSCompliant(false)]
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new InternalConstraintFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation. Adds implicit InternalFactConstraint relationships
+		/// </summary>
+		private class InternalConstraintFixupListener : DeserializationFixupListener<InternalConstraint>
+		{
+			/// <summary>
+			/// InternalFactConstraintFixupListener constructor
+			/// </summary>
+			public InternalConstraintFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitElements)
+			{
+			}
+			/// <summary>
+			/// Process elements by added an InternalFactConstraint for
+			/// each roleset
+			/// </summary>
+			/// <param name="element">An InternalConstraint element</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(InternalConstraint element, Store store, INotifyElementAdded notifyAdded)
+			{
+				IList links = element.GetElementLinks(InternalConstraintHasRoleSet.InternalConstraintMetaRoleGuid);
+				int linksCount = links.Count;
+				for (int i = 0; i < linksCount; ++i)
+				{
+					EnsureFactConstraintForRoleSet(links[i] as InternalConstraintHasRoleSet);
+					IList factLinks = element.GetElementLinks(InternalFactConstraint.InternalConstraintCollectionMetaRoleGuid);
+					int factLinksCount = factLinks.Count;
+					for (int j = 0; j < factLinksCount; ++j)
+					{
+						// Notify that the link was added. Note that we don't set
+						// addLinks to true here because there should only be one element
+						notifyAdded.ElementAdded(factLinks[j] as ModelElement);
+					}
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
 	}
 	#endregion // InternalConstraint class
 	#region ExternalConstraint class
@@ -250,23 +308,31 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ExternalConstraintHasRoleSet link = e.ModelElement as ExternalConstraintHasRoleSet;
-				ExternalConstraintRoleSet roleSet = link.RoleSetCollection;
-				// The following line gets the links instead of the counterparts,
-				// which are provided by roleSet.RoleCollection
-				IList roleLinks = roleSet.GetElementLinks(ConstraintRoleSetHasRole.ConstraintRoleSetCollectionMetaRoleGuid);
-				int roleCount = roleLinks.Count;
-				if (roleCount != 0)
+				EnsureFactConstraintForRoleSet(e.ModelElement as ExternalConstraintHasRoleSet);
+			}
+		}
+		/// <summary>
+		/// Helper function to support the same fact constraint fixup
+		/// during both deserialization and rules.
+		/// </summary>
+		/// <param name="link">A roleset link added to the constraint</param>
+		private static void EnsureFactConstraintForRoleSet(ExternalConstraintHasRoleSet link)
+		{
+			ExternalConstraintRoleSet roleSet = link.RoleSetCollection;
+			// The following line gets the links instead of the counterparts,
+			// which are provided by roleSet.RoleCollection
+			IList roleLinks = roleSet.GetElementLinks(ConstraintRoleSetHasRole.ConstraintRoleSetCollectionMetaRoleGuid);
+			int roleCount = roleLinks.Count;
+			if (roleCount != 0)
+			{
+				ExternalConstraint constraint = link.ExternalConstraint;
+				for (int i = 0; i < roleCount; ++i)
 				{
-					ExternalConstraint constraint = link.ExternalConstraint;
-					for (int i = 0; i < roleCount; ++i)
+					ConstraintRoleSetHasRole roleLink = (ConstraintRoleSetHasRole)roleLinks[i];
+					ExternalFactConstraint factConstraint = constraint.EnsureFactConstraintForRole(roleLink.RoleCollection);
+					if (factConstraint != null)
 					{
-						ConstraintRoleSetHasRole roleLink = (ConstraintRoleSetHasRole)roleLinks[i];
-						ExternalFactConstraint factConstraint = constraint.EnsureFactConstraintForRole(roleLink.RoleCollection);
-						if (factConstraint != null)
-						{
-							factConstraint.ConstrainedRoleCollection.Add(roleLink);
-						}
+						factConstraint.ConstrainedRoleCollection.Add(roleLink);
 					}
 				}
 			}
@@ -288,8 +354,66 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ExternalFactConstraint synchronization rules
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// adds the implicit InternalFactConstraint elements.
+		/// </summary>
+		[CLSCompliant(false)]
+		public static IDeserializationFixupListener FixupListener
+		{
+			get
+			{
+				return new ExternalConstraintFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation. Adds implicit ExternalFactConstraint relationships
+		/// </summary>
+		private class ExternalConstraintFixupListener : DeserializationFixupListener<ExternalConstraint>
+		{
+			/// <summary>
+			/// InternalFactConstraintFixupListener constructor
+			/// </summary>
+			public ExternalConstraintFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitElements)
+			{
+			}
+			/// <summary>
+			/// Process elements by added an InternalFactConstraint for
+			/// each roleset
+			/// </summary>
+			/// <param name="element">An ExternalConstraint element</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(ExternalConstraint element, Store store, INotifyElementAdded notifyAdded)
+			{
+				IList links = element.GetElementLinks(ExternalConstraintHasRoleSet.ExternalConstraintMetaRoleGuid);
+				int linksCount = links.Count;
+				for (int i = 0; i < linksCount; ++i)
+				{
+					EnsureFactConstraintForRoleSet(links[i] as ExternalConstraintHasRoleSet);
+					IList factLinks = element.GetElementLinks(ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuid);
+					int factLinksCount = factLinks.Count;
+					for (int j = 0; j < factLinksCount; ++j)
+					{
+						// Notify that the link was added. Note that we set
+						// addLinks to true here because we expect ExternalRoleConstraint
+						// links to be attached to each ExternalFactConstraint
+						notifyAdded.ElementAdded(factLinks[j] as ModelElement, true);
+					}
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
 		#region Error synchronization rules
-		private void VerifyRoleSetCountForRule()
+		/// <summary>
+		/// Add, remove, and otherwise validate the current set of
+		/// errors for this constraint.
+		/// </summary>
+		/// <param name="notifyAdded">If not null, this is being called during
+		/// load when rules are not in place. Any elements that are added
+		/// must be notified back to the caller.</param>
+		private void VerifyRoleSetCountForRule(INotifyElementAdded notifyAdded)
 		{
 			if (!IsRemoved)
 			{
@@ -309,6 +433,10 @@ namespace Northface.Tools.ORM.ObjectModel
 						insufficientError.Model = Model;
 						insufficientError.Constraint = this;
 						insufficientError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(insufficientError, true);
+						}
 					}
 					removeTooMany = true;
 				}
@@ -321,6 +449,10 @@ namespace Northface.Tools.ORM.ObjectModel
 						extraError.Model = Model;
 						extraError.Constraint = this;
 						extraError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(extraError, true);
+						}
 					}
 					else
 					{
@@ -343,7 +475,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ExternalConstraintHasRoleSet link = e.ModelElement as ExternalConstraintHasRoleSet;
-				link.ExternalConstraint.VerifyRoleSetCountForRule();
+				link.ExternalConstraint.VerifyRoleSetCountForRule(null);
 			}
 		}
 		[RuleOn(typeof(ModelHasConstraint), FireTime = TimeToFire.TopLevelCommit)]
@@ -355,7 +487,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				ExternalConstraint externalConstraint = link.ConstraintCollection as ExternalConstraint;
 				if (externalConstraint != null)
 				{
-					externalConstraint.VerifyRoleSetCountForRule();
+					externalConstraint.VerifyRoleSetCountForRule(null);
 				}
 			}
 		}
@@ -365,7 +497,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				ExternalConstraintHasRoleSet link = e.ModelElement as ExternalConstraintHasRoleSet;
-				link.ExternalConstraint.VerifyRoleSetCountForRule();
+				link.ExternalConstraint.VerifyRoleSetCountForRule(null);
 			}
 		}
 		#endregion // Error synchronization rules
@@ -396,6 +528,17 @@ namespace Northface.Tools.ORM.ObjectModel
 					yield return tooFew;
 				}
 			}
+		}
+		/// <summary>
+		/// Validate all errors on the external constraint. This
+		/// is called during deserialization fixup when rules are
+		/// suspended.
+		/// </summary>
+		/// <param name="notifyAdded">A callback for notifying
+		/// the caller of all objects that are added.</param>
+		public void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			VerifyRoleSetCountForRule(notifyAdded);
 		}
 		#endregion // IModelErrorOwner Implementation
 	}

@@ -327,18 +327,30 @@ namespace Northface.Tools.ORM.Shell
 		/// Load the stream contents into the current store
 		/// </summary>
 		/// <param name="stream">An initialized stream</param>
-		public void Load(Stream stream)
+		/// <param name="fixupManager">Class used to perfom fixup operations
+		/// after the load is complete.</param>
+		public void Load(Stream stream, DeserializationFixupManager fixupManager)
 		{
 			// Leave rules on so all of the links reconnect. Links are not saved.
-//			RulesSuspended = true;
-//			try
-//			{
-			XmlSerialization.DeserializeStore(myStore, stream, MajorVersion, MinorVersion, new XmlSerialization.UpgradeFileFormat(UpgradeFileFormat), null);
-//			}
-//			finally
-//			{
-//				RulesSuspended = false;
-//			}
+			RulesSuspended = true;
+			try
+			{
+				XmlSerialization.DeserializeStore(
+					myStore,
+					stream,
+					MajorVersion,
+					MinorVersion,
+					new XmlSerialization.UpgradeFileFormat(UpgradeFileFormat),
+					(fixupManager == null) ? null : new XmlSerialization.Deserialized((fixupManager as INotifyElementAdded).ElementAdded));
+				if (fixupManager != null)
+				{
+					fixupManager.DeserializationComplete();
+				}
+			}
+			finally
+			{
+				RulesSuspended = false;
+			}
 		}
 		/// <summary>
 		/// Called to upgrade an old file format.
