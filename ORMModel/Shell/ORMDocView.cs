@@ -5,6 +5,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.EnterpriseTools.Designer;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.EnterpriseTools.Validation.UI;
 using Microsoft.VisualStudio.Package;
@@ -156,8 +157,24 @@ namespace Northface.Tools.ORM.Shell
 				mouseArgs.Handled = true;
 			}
 		}
-
-
+		/// <summary>
+		/// Call to refresh the command status for a client view.
+		/// This is required when actions my update the currently
+		/// enabled commands, but do not change the selection.
+		/// </summary>
+		/// <param name="clientView">The modified (presumably active) view</param>
+		public static void RefreshCommandStatus(DiagramClientView clientView)
+		{
+			Diagram diagram;
+			VSDiagramView diagramView;
+			ORMDesignerDocView docView;
+			if (null != (diagram = clientView.Diagram) &&
+				null != (diagramView = diagram.ActiveDiagramView as VSDiagramView) &&
+				null != (docView = diagramView.DocView as ORMDesignerDocView))
+			{
+				docView.OnSelectionChanged(EventArgs.Empty);
+			}
+		}
 		/// <summary>
 		/// Enable menu commands when the selection changes
 		/// </summary>

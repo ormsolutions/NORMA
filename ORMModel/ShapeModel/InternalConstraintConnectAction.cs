@@ -300,14 +300,18 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <param name="e">MouseActionEventArgs</param>
 		protected override void OnClicked(MouseActionEventArgs e)
 		{
-			if (myPendingOnClickedAction == OnClickedAction.Commit)
+			switch (myPendingOnClickedAction)
 			{
-				myPendingOnClickedAction = OnClickedAction.Normal;
-				// Letting the click through to the base ConnectAction
-				// at this point (a constraint is selected and a role has been
-				// double-clicked) will force the connect action to finish.
-				base.OnClicked(e);
-				return;
+				case OnClickedAction.Commit:
+					myPendingOnClickedAction = OnClickedAction.Normal;
+					// Letting the click through to the base ConnectAction
+					// at this point (a constraint is selected and a role has been
+					// double-clicked) will force the connect action to finish.
+					base.OnClicked(e);
+					return;
+				case OnClickedAction.CheckForCommit:
+					myPendingOnClickedAction = OnClickedAction.Normal;
+					break;
 			}
 			DiagramMouseEventArgs args = CurrentDiagramArgs as DiagramMouseEventArgs;
 			if (args != null)
@@ -350,20 +354,16 @@ namespace Northface.Tools.ORM.ShapeModel
 								forceRedraw = true;
 								roles.RemoveAt(roleIndex);
 								redrawIndexBound = roles.Count;
-								if (mySourceShape != null)
-								{
-									myPendingOnClickedAction = OnClickedAction.CheckForCommit;
-								}
 							}
 						}
 						else
 						{
 							forceRedraw = true;
 							roles.Add(role);
-							if (mySourceShape != null)
-							{
-								myPendingOnClickedAction = OnClickedAction.CheckForCommit;
-							}
+						}
+						if (mySourceShape != null)
+						{
+							myPendingOnClickedAction = OnClickedAction.CheckForCommit;
 						}
 
 						if (forceRedraw)
@@ -498,8 +498,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				// Now emulate a mouse click in the middle of the added constraint. The click
 				// actions provide a starting point for the connect action, so a mouse move
 				// provides a drag line.
-				RectangleD bounds = attachToShape.GetAbsolutePositionOfConstraint(constraint);
-				Point emulateClickPoint = clientView.WorldToDevice(bounds.Center);
+				Point emulateClickPoint = clientView.WorldToDevice(attachToShape.GetAbsoluteConstraintAttachPoint(constraint));
 				DiagramMouseEventArgs mouseEventArgs = new DiagramMouseEventArgs(new MouseEventArgs(MouseButtons.Left, 1, emulateClickPoint.X, emulateClickPoint.Y, 0), clientView);
 				MouseDown(mouseEventArgs);
 				Click(new DiagramPointEventArgs(emulateClickPoint.X, emulateClickPoint.Y, PointRelativeTo.Client, clientView));

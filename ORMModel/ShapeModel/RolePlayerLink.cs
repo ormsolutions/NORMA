@@ -266,7 +266,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Update the link display when a mandatory constraint role is removed
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit)]
 		private class InternalConstraintRoleSequenceRoleRemoved : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)

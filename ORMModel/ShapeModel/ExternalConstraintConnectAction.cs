@@ -271,14 +271,18 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <param name="e">MouseActionEventArgs</param>
 		protected override void OnClicked(MouseActionEventArgs e)
 		{
-			if (myPendingOnClickedAction == OnClickedAction.Commit)
+			switch (myPendingOnClickedAction)
 			{
-				myPendingOnClickedAction = OnClickedAction.Normal;
-				// Letting the click through to the base ConnectAction
-				// at this point (a constraint is selected and a role has been
-				// double-clicked) will force the connect action to finish.
-				base.OnClicked(e);
-				return;
+				case OnClickedAction.Commit:
+					myPendingOnClickedAction = OnClickedAction.Normal;
+					// Letting the click through to the base ConnectAction
+					// at this point (a constraint is selected and a role has been
+					// double-clicked) will force the connect action to finish.
+					base.OnClicked(e);
+					return;
+				case OnClickedAction.CheckForCommit:
+					myPendingOnClickedAction = OnClickedAction.Normal;
+					break;
 			}
 			DiagramMouseEventArgs args = CurrentDiagramArgs as DiagramMouseEventArgs;
 			if (args != null)
@@ -329,10 +333,10 @@ namespace Northface.Tools.ORM.ShapeModel
 					{
 						forceRedraw = true;
 						roles.Add(role);
-						if (mySourceShape != null)
-						{
-							myPendingOnClickedAction = OnClickedAction.CheckForCommit;
-						}
+					}
+					if (mySourceShape != null)
+					{
+						myPendingOnClickedAction = OnClickedAction.CheckForCommit;
 					}
 
 					if (forceRedraw)
@@ -403,6 +407,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			Reset();
 			if (chainOnShape != null)
 			{
+				Shell.ORMDesignerDocView.RefreshCommandStatus(e.DiagramClientView);
 				// UNDONE: We should only do this if appropriate for the constraint type
 				// and the current condition of the constraint
 				ChainMouseAction(chainOnShape, e.DiagramClientView);

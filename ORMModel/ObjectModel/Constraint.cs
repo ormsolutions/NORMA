@@ -286,7 +286,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding ExternalFactConstraint and ExternalRoleConstraint
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
 		private class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -309,7 +309,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// objects are created for each role. Note that a single column external
 		/// constraint is a role sequence.
 		/// </summary>
-		[RuleOn(typeof(ModelHasSingleColumnExternalConstraint))]
+		[RuleOn(typeof(ModelHasSingleColumnExternalConstraint), FireTime = TimeToFire.LocalCommit)]
 		private class ConstraintHasRoleSequenceAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -476,7 +476,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding ExternalFactConstraint and ExternalRoleConstraint
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
 		private class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -498,7 +498,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// make sure the corresponding ExternalFactConstraint and ExternalRoleConstraint
 		/// objects are created for each role.
 		/// </summary>
-		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence))]
+		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence), FireTime = TimeToFire.LocalCommit)]
 		private class ConstraintHasRoleSequenceAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -537,7 +537,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// goes away. Note that this rule also affects single column external
 		/// constraints, but we only need to write it once.
 		/// </summary>
-		[RuleOn(typeof(ExternalRoleConstraint))]
+		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.LocalCommit, Priority = 1000)]
 		private class ExternalRoleConstraintRemoved : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -1184,7 +1184,8 @@ namespace Northface.Tools.ORM.ObjectModel
 							oppositeRole = factRoles[1];
 						}
 						ObjectType rolePlayer = oppositeRole.RolePlayer;
-						if ((forType == null || object.ReferenceEquals(forType, rolePlayer)) &&
+						if ((rolePlayer != null) &&
+							(forType == null || object.ReferenceEquals(forType, rolePlayer)) &&
 							!rolePlayer.IsValueType) // Condition 3
 						{
 							// UNDONE: Check condition 4. This

@@ -200,14 +200,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					null != (fact = link.FactType) &&
 					null != (constraint = link.InternalConstraintCollection))
 				{
-					foreach (PresentationElement pel in fact.PresentationRolePlayers)
-					{
-						FactTypeShape factShape = pel as FactTypeShape;
-						if (factShape != null)
-						{
-							factShape.ConstraintSetChanged(constraint);
-						}
-					}
+					FactTypeShape.ConstraintSetChanged(fact, constraint, false);
 				}
 			}
 		}
@@ -227,14 +220,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				{
 					if (!fact.IsRemoved)
 					{
-						foreach (PresentationElement pel in fact.PresentationRolePlayers)
-						{
-							FactTypeShape factShape = pel as FactTypeShape;
-							if (factShape != null)
-							{
-								factShape.ConstraintSetChanged(constraint);
-							}
-						}
+						FactTypeShape.ConstraintSetChanged(fact, constraint, false);
 					}
 				}
 			}
@@ -263,6 +249,51 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // PrimaryIdentifierAdded class
+		#region ConstraintRoleSequenceRoleAdded class
+		/// <summary>
+		/// Update the fact type when constraint roles are removed
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class ConstraintRoleSequenceRoleAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				FactType factType;
+				IConstraint constraint;
+				if (null != (factType = link.RoleCollection.FactType) &&
+					null != (constraint = link.ConstraintRoleSequenceCollection.Constraint))
+				{
+					FactTypeShape.ConstraintSetChanged(factType, constraint, true);
+				}
+			}
+		}
+		#endregion // ConstraintRoleSequenceRoleAdded class
+		#region ConstraintRoleSequenceRoleRemoved class
+		/// <summary>
+		/// Update the fact type when constraint roles are removed
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class ConstraintRoleSequenceRoleRemoved : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				FactType factType;
+				IConstraint constraint;
+				ConstraintRoleSequence sequence;
+				if (null != (factType = link.RoleCollection.FactType) &&
+					!factType.IsRemoved &&
+					null != (sequence = link.ConstraintRoleSequenceCollection) &&
+					!sequence.IsRemoved &&
+					null != (constraint = sequence.Constraint)
+					)
+				{
+					FactTypeShape.ConstraintSetChanged(factType, constraint, true);
+				}
+			}
+		}
+		#endregion // ConstraintRoleSequenceRoleRemoved class
 		#region PrimaryIdentifierRemoved class
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
 		private class PrimaryIdentifierRemoved : RemoveRule
@@ -445,14 +476,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					FactType fact = link.FactType;
 					if (!fact.IsRemoved)
 					{
-						foreach (PresentationElement pel in fact.PresentationRolePlayers)
-						{
-							FactTypeShape factShape = pel as FactTypeShape;
-							if (factShape != null)
-							{
-								factShape.ConstraintSetChanged(constraint);
-							}
-						}
+						FactTypeShape.ConstraintSetChanged(fact, constraint, false);
 					}
 				}
 			}
