@@ -118,6 +118,12 @@ namespace Northface.Tools.ORM.Shell
 				read.RoleCollection.Add(fact.RoleCollection[1]);
 				read.Text = "{0} has/is of {1}";
 
+				InternalConstraint ic = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
+				InternalConstraintRoleSet irs = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
+				irs.RoleCollection.Add(fact.RoleCollection[0]);
+				ic.RoleSet = irs;
+				ic.Model = model;
+
 				// Create an objectified fact type with one role
 				FactType nestedFact = FactType.CreateFactType(store);
 				nestedFact.Name = "ObjectifiedFact1";
