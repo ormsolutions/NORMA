@@ -190,6 +190,8 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -16463,7 +16465,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesError")]
 		public  Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError TooManyRolesError
 		{
@@ -16575,7 +16577,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesError")]
 		public  Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError TooFewRolesError
 		{
