@@ -75,6 +75,14 @@ Windows Registry Editor Version 5.00
 "Default Items"=dword:00000001
 "Formats"="Microsoft.VisualStudio.Modeling.ElementGroupPrototype"
 
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Services\{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}]
+@="{EFDDC549-1646-4451-8A51-E5A5E94D647C}"
+"Name"="OrmDesignerFontAndColorProvider"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Designer]
+"Category"="{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"
+"Package"="{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}"
+
 [HKEY_CLASSES_ROOT\.orm]
 @="Northface.Tools.ORMDesigner.1.0"
 

@@ -216,6 +216,34 @@ namespace Northface.Tools.ORM
 		/// Display Name of the Role Name Display option
 		/// </summary>
 		public const string OptionsPagePropertyRoleNameDisplayDisplayNameId = "OptionsPage.Property.RoleNameDisplay.DisplayName";
+		/// <summary>
+		/// Display Name of the Object Name color
+		/// </summary>
+		public const string FactEditorColorsObjectNameId = "FactEditorColors.ObjectName";
+		/// <summary>
+		/// Display Name of the Reference Mode Name color
+		/// </summary>
+		public const string FactEditorColorsReferenceModeNameId = "FactEditorColors.ReferenceModeName";
+		/// <summary>
+		/// Display Name of the Predicate Text color
+		/// </summary>
+		public const string FactEditorColorsPredicateTextId = "FactEditorColors.PredicateText";
+		/// <summary>
+		/// Display Name of the Delimiter color
+		/// </summary>
+		public const string FactEditorColorsDelimiterId = "FactEditorColors.Delimiter";
+		/// <summary>
+		/// Display name for the ORM Designer fonts and colors category
+		/// </summary>
+		public const string FontsAndColorsCategoryNameId = "FontsAndColors.CategoryName";
+		/// <summary>
+		/// Display name for the color used to draw an ORM constraint
+		/// </summary>
+		public const string FontsAndColorsConstraintColorId = "FontsAndColors.ConstraintColor";
+		/// <summary>
+		/// Display name for the color used to draw the constraint box for role sequence editing
+		/// </summary>
+		public const string FontsAndColorsRolePickerColorId = "FontsAndColors.RolePickerColor";
 		#endregion // Public resource ids
 		#region Private resource ids
 		private const string ToolboxDefaultTabName_Id = "Toolbox.DefaultTabName";
@@ -489,6 +517,14 @@ namespace Northface.Tools.ORM
 		/// The category name to display on the options pages
 		/// </summary>
 		public static string GetOptionsPageString(string resourceName)
+		{
+			return GetString(ResourceManagers.Diagram, resourceName);
+		}
+		/// <summary>
+		/// The localized string to display on Fonts and Colors setting
+		/// for the ORM Designer in the options page.
+		/// </summary>
+		public static string GetColorNameString(string resourceName)
 		{
 			return GetString(ResourceManagers.Diagram, resourceName);
 		}

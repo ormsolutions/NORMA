@@ -79,6 +79,7 @@
     <Compile Include="FactEditor\FactCodeWindowManager.cs" />
     <Compile Include="FactEditor\FactColorizer.cs" />
     <Compile Include="FactEditor\FactEditorFactory.cs" />
+    <Compile Include="FactEditor\FactFontsAndColors.cs" />
     <Compile Include="FactEditor\FactGuidList.cs" />
     <Compile Include="FactEditor\FactLanguageService.cs" />
     <Compile Include="FactEditor\FactParser.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Shell\OptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Shell\ORMFontsAndColors.cs" />
     <Compile Include="Shell\ORMModelBrowser.cs" />
     <Compile Include="Shell\ORMCommandSet.cs" />
     <Compile Include="Shell\ORMDocData.cs" />

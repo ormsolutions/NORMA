@@ -83,8 +83,9 @@ namespace Northface.Tools.ORM.Shell
 
 			if (!SetupMode)
 			{
-#if FACTEDITORPROTOTYPE
 				IServiceContainer service = (IServiceContainer)this;
+				service.AddService(typeof(ORMDesignerFontsAndColors), new ORMDesignerFontsAndColors(), true);
+#if FACTEDITORPROTOTYPE
 				service.AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
 #endif // FACTEDITORPROTOTYPE
 
@@ -106,13 +107,14 @@ namespace Northface.Tools.ORM.Shell
 		{
 			if (disposing)
 			{
+				IServiceContainer service = (IServiceContainer)this;
+				service.RemoveService(typeof(ORMDesignerFontsAndColors), true);
 #if FACTEDITORPROTOTYPE
 				if (myFactEditorToolWindow != null)
 				{
 					myFactEditorToolWindow.CloseFrame(0);
 				}
 
-				IServiceContainer service = (IServiceContainer)this;
 				service.RemoveService(typeof(FactLanguageService), true);
 #endif // FACTEDITORPROTOTYPE
 				// dispose of any private objects here
@@ -141,6 +143,7 @@ namespace Northface.Tools.ORM.Shell
 		}
 
 		#endregion // Base overrides
+		#region FactEditorToolWindow Creation
 		private IVsWindowFrame EnsureFactEditorToolWindow()
 		{
 			IVsWindowFrame frame = myFactEditorToolWindow;
@@ -239,7 +242,7 @@ namespace Northface.Tools.ORM.Shell
 			int hr = lines.SetLanguageServiceID(ref langService);
 			return windowFrame;
 		}
-
+		#endregion FactEditorToolWindow Creation
 		#region IVsInstalledProduct Members
 		int IVsInstalledProduct.IdBmpSplash(out uint pIdBmp)
 		{

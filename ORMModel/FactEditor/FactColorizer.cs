@@ -63,12 +63,9 @@ namespace Northface.Tools.ORM.FactEditor
 		// NOTES:
 		// The color of each character in the line is specified by setting a 'value'
 		// in the provided pAttributes array.
-		// The 'value' is really an index into an array of possible ColorableItems.
-		// We are using values from the DEFAULTITEMS enum in textmgr.idl.
-		// Our sample language uses the stock set of color items (which can be changed
-		// in the options dialog). 
-		// It is possible to invent your own unique set of colors but you would need
-		// to implement IVsProvideColorableItems and IVsColorableItem. 
+		// The 'value' is really an index into an array of possible FactEditorColorizableItem,
+		// plus the implicit DEFAULTITEMS.COLITEM_TEXT value (always 0).
+		// Our own unique set of colors is implemented in the FactFontsAndColors.cs file.
 		// 
 		int IVsColorizer.ColorizeLine(int iLine, int iLength, IntPtr pszText, int iState, uint[] pAttributes)
 		{
@@ -99,15 +96,15 @@ namespace Northface.Tools.ORM.FactEditor
 
 			if (pszText == IntPtr.Zero)
 			{
-				return (int)DEFAULTITEMS.COLITEM_TEXT;
+				return NativeMethods.S_OK;
 			}
 			if (iLength <= 0)
 			{
-				return (int)DEFAULTITEMS.COLITEM_TEXT;
+				return NativeMethods.S_OK;
 			}
 			if (myParser == null)
 			{
-				return (int)DEFAULTITEMS.COLITEM_TEXT;
+				return NativeMethods.S_OK;
 			}
 			
 			// Create a string from the "const" IntPtr param
@@ -117,36 +114,30 @@ namespace Northface.Tools.ORM.FactEditor
 			FactLine factLine = new FactLine(s);
 			(myParser as IFactParser).Line(ref factLine);
 
-			ulong type; 
+			uint type; 
 			int totalMarks = factLine.Marks.Count;
 			for (int m = 0; m < totalMarks; ++m)
 			{
-				// TODO: Implement our own coloring provider (currently using DEFAULTITEMS)
-				// We color one of the following 6 ways, as defined in textmgr.idl
-				//COLITEM_TEXT = 0,           // Default
-				//COLITEM_KEYWORD,            // Keyword
-				//COLITEM_COMMENT,            // Comment
-				//COLITEM_IDENTIFIER,         // Identifier
-				//COLITEM_STRING,             // String
-				//COLITEM_NUMBER              // Number
 				switch (factLine.Marks[m].TokenType)
 				{
-					case FactTokenType.Object: type = (ulong)DEFAULTITEMS.COLITEM_KEYWORD; break;
-					case FactTokenType.ReferenceMode: type = (ulong)DEFAULTITEMS.COLITEM_NUMBER; break;
-					case FactTokenType.Parenthesis: type = (ulong)DEFAULTITEMS.COLITEM_TEXT; break;
+					case FactTokenType.Object: type = (uint)FactEditorColorizableItem.ObjectName; break;
+					case FactTokenType.ReferenceMode: type = (uint)FactEditorColorizableItem.ReferenceModeName; break;
+					case FactTokenType.Parenthesis: type = (uint)FactEditorColorizableItem.Delimiter; break;
 					case FactTokenType.Predicate:
-					default: type = (ulong)DEFAULTITEMS.COLITEM_STRING; break;
+					default: type = (uint)FactEditorColorizableItem.PredicateText; break;
 				}
 
 				// color the token
-				long iStart = (long)factLine.Marks[m].nStart;
-				long iEnd = (long)factLine.Marks[m].nEnd;
-				for (long i = iStart; i <= iEnd; i++)
-					pAttributes[i] = (uint)type;
+				int iStart = factLine.Marks[m].nStart;
+				int iEnd = factLine.Marks[m].nEnd;
+				for (int i = iStart; i <= iEnd; i++)
+				{
+					pAttributes[i] = type;
+				}
 			}
 
 			pAttributes[iLength] = pAttributes[iLength - 1];
-			return (int) DEFAULTITEMS.COLITEM_TEXT; // return the current state
+			return NativeMethods.S_OK;
 		}
 
 		int IVsColorizer.GetStartState(out int piStartState)

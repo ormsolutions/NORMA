@@ -142,9 +142,37 @@
     <value xml:space="preserve">Add Constraint Role Sequence</value>
     <comment xml:space="preserve">The transaction name used by the external constraint connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="FactEditorColors.Delimiter">
+    <value xml:space="preserve">ORM Fact Delimiter</value>
+    <comment xml:space="preserve">Display Name of the Delimiter color</comment>
+  </data>
+  <data name="FactEditorColors.ObjectName">
+    <value xml:space="preserve">ORM Fact Object</value>
+    <comment xml:space="preserve">Display Name of the Object Name color</comment>
+  </data>
+  <data name="FactEditorColors.PredicateText">
+    <value xml:space="preserve">ORM Fact Predicate</value>
+    <comment xml:space="preserve">Display Name of the Predicate Text color</comment>
+  </data>
+  <data name="FactEditorColors.ReferenceModeName">
+    <value xml:space="preserve">ORM Fact Reference Mode</value>
+    <comment xml:space="preserve">Display Name of the Reference Mode Name color</comment>
+  </data>
   <data name="FactEditorToolWindow.Caption">
     <value xml:space="preserve">ORM Fact Editor</value>
     <comment xml:space="preserve">This is the caption that appears in the title bar of the Fact Editor tool window.</comment>
+  </data>
+  <data name="FontsAndColors.CategoryName">
+    <value xml:space="preserve">ORM Designer</value>
+    <comment xml:space="preserve">Display name for the ORM Designer fonts and colors category</comment>
+  </data>
+  <data name="FontsAndColors.ConstraintColor">
+    <value xml:space="preserve">Constraint</value>
+    <comment xml:space="preserve">Display name for the color used to draw an ORM constraint</comment>
+  </data>
+  <data name="FontsAndColors.RolePickerColor">
+    <value xml:space="preserve">Role Picker</value>
+    <comment xml:space="preserve">Display name for the color used to draw the constraint box for role sequence editing</comment>
   </data>
   <data name="InsertRole.TransactionName">
     <value xml:space="preserve">Insert Role</value>

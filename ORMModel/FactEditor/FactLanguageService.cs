@@ -126,7 +126,7 @@ namespace Northface.Tools.ORM.FactEditor
 	/// Language service to provide colorization
 	/// </summary>
 	[Guid("C50CD300-9D1E-4AB0-B494-73FA23D14D2B")]
-	public class FactLanguageService : IVsLanguageInfo
+	public partial class FactLanguageService : IVsLanguageInfo
 	{
 		private ORMDesignerPackage myPackage;
 		private System.IServiceProvider vsIServiceProvider;
