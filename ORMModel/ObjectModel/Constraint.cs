@@ -169,6 +169,21 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		/// <summary>
+		/// Eliminate the Name property descriptor. The name is ignored for internal
+		/// constraints.
+		/// </summary>
+		/// <param name="metaAttrInfo"></param>
+		/// <returns>false for Name, defers to base for others</returns>
+		public override bool ShouldCreatePropertyDescriptor(MetaAttributeInfo metaAttrInfo)
+		{
+			Guid attributeId = metaAttrInfo.Id;
+			if (attributeId == InternalConstraint.NameMetaAttributeGuid)
+			{
+				return false;
+			}
+			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
+		}
 		#endregion // InternalConstraint Specific
 		#region Role owner validation rules
 		/// <summary>

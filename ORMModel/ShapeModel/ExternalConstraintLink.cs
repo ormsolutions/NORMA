@@ -34,6 +34,18 @@ namespace Northface.Tools.ORM.ShapeModel
 				return VGRoutingStyle.VGRouteStraight; // VGRouteCenterToCenter;
 			}
 		}
+		/// <summary>
+		/// Selecting external constraint links gets in the way of selecting other primary
+		/// objects. It is best just to turn them off. This also eliminates a bunch of unnamed
+		/// constraint links from the property grid element picker.
+		/// </summary>
+		public override bool CanSelect
+		{
+			get
+			{
+				return false;
+			}
+		}
 		#endregion // Customize appearance
 		#region ExternalConstraintLink specific
 		/// <summary>

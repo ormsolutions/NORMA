@@ -178,6 +178,18 @@ namespace Northface.Tools.ORM.ShapeModel
 				return VGRoutingStyle.VGRouteStraight; // VGRouteCenterToCenter;
 			}
 		}
+		/// <summary>
+		/// Selecting role player links gets in the way of selecting roleboxes, etc.
+		/// It is best just to turn them off. This also eliminates a bunch of unnamed
+		/// roles from the property grid element picker.
+		/// </summary>
+		public override bool CanSelect
+		{
+			get
+			{
+				return false;
+			}
+		}
 		#endregion // Customize appearance
 		#region RolePlayerLink specific
 		/// <summary>
