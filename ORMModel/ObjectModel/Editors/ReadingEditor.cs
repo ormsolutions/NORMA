@@ -332,10 +332,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ReadingOrderHasRoleAddedEvent));
 			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ReadingOrderHasRoleRemovedEvent));
-
-			// FactTypeHasReadingOrder changes
-			classInfo = dataDirectory.FindMetaRelationship(FactTypeHasReadingOrder.MetaRelationshipGuid);
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(FactTypeHasReadingOrderRemovedEvent));
 		}
 
 		/// <summary>
@@ -376,10 +372,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ReadingOrderHasRoleAddedEvent));
 			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(ReadingOrderHasRoleRemovedEvent));
-
-			// FactTypeHasReadingOrder changes
-			classInfo = dataDirectory.FindMetaRelationship(FactTypeHasReadingOrder.MetaRelationshipGuid);
-			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(FactTypeHasReadingOrderRemovedEvent));
 		}
 
 		#endregion
@@ -595,18 +587,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 						myBranch.ItemUpdate(i, (int)ColumnIndex.ReadingText);
 					}
 				}
-			}
-		}
-		#endregion
-
-		#region FactTypeHasReadingOrder Event Handlers
-		private void FactTypeHasReadingOrderRemovedEvent(object sender, ElementRemovedEventArgs e)
-		{
-			FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
-			FactType fact = link.FactType;
-			if (myFact != null && !fact.IsRemoved && object.ReferenceEquals(myFact, fact))
-			{
-				ReloadData();
 			}
 		}
 		#endregion
