@@ -375,6 +375,11 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		/// <returns>A resolved object, or the starting instance if the item is not wrapped.</returns>
 		public static object ResolveContextInstance(object instance, bool pickAnyElement)
 		{
+			// Test early, prevent crashes if pickAnyElement is true
+			if (instance == null)
+			{
+				return null;
+			}
 			Microsoft.VisualStudio.Modeling.Diagrams.NodeShape shape;
 			Microsoft.VisualStudio.EnterpriseTools.Shell.ModelElementTreeNode treeNode;
 			if (pickAnyElement && instance.GetType().IsArray)
