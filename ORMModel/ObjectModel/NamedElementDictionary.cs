@@ -79,6 +79,17 @@ namespace Northface.Tools.ORM.ObjectModel
 				return myElement == null;
 			}
 		}
+		/// <summary>
+		/// Get either the SingleElement or the MultipleElements
+		/// value.
+		/// </summary>
+		public object AnyElement
+		{
+			get
+			{
+				return myElement;
+			}
+		}
 	}
 	#endregion // LocatedElement structure
 	#region IDuplicateNameCollectionManager interface
@@ -394,6 +405,15 @@ namespace Northface.Tools.ORM.ObjectModel
 		#region Member variables
 		private Dictionary<string, object> myDictionary;
 		private IDuplicateNameCollectionManager myDuplicateManager;
+		/// <summary>
+		/// A stack of changes that need to be reverted if the
+		/// transaction is rolled back. Managed by methods in the
+		/// EntryStateChange structure. Note that each dictionary
+		/// will be contained within a single store, and a store can
+		/// only have one top-level transaction at a time, so storing
+		/// this with the object is sufficient.
+		/// </summary>
+		private Stack<EntryStateChange> myChangeStack;
 		#endregion // Member variables
 		#region Constructors
 		/// <summary>
@@ -512,8 +532,15 @@ namespace Northface.Tools.ORM.ObjectModel
 				return;
 			}
 			LocatedElement locateData = GetElement(elementName);
+			bool afterTransaction = duplicateAction == DuplicateNameAction.RetrieveDuplicateCollection;
+			Debug.Assert(afterTransaction != element.Store.TransactionManager.InTransaction);
+			bool handleRollback = !afterTransaction && notifyAdded == null; // Don't log during loads
 			if (locateData.IsEmpty)
 			{
+				if (handleRollback)
+				{
+					EntryStateChange.OnEntryChange(element, this, elementName, null);
+				}
 				myDictionary.Add(elementName, element);
 			}
 			else if (duplicateAction == DuplicateNameAction.ThrowOnDuplicateName)
@@ -526,8 +553,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			else
 			{
 				NamedElement singleElement = locateData.SingleElement;
-				bool afterTransaction = duplicateAction == DuplicateNameAction.RetrieveDuplicateCollection;
-				Debug.Assert(afterTransaction != element.Store.TransactionManager.InTransaction);
 				ICollection newCollection = null;
 				if (singleElement == null)
 				{
@@ -555,6 +580,10 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				if (newCollection != null)
 				{
+					if (handleRollback)
+					{
+						EntryStateChange.OnEntryChange(element, this, elementName, locateData.AnyElement);
+					}
 					myDictionary[elementName] = newCollection;
 				}
 			}
@@ -585,16 +614,20 @@ namespace Northface.Tools.ORM.ObjectModel
 				LocatedElement locateData = GetElement(elementName);
 				if (!locateData.IsEmpty)
 				{
+					bool afterTransaction = duplicateAction == DuplicateNameAction.RetrieveDuplicateCollection;
 					NamedElement singleElement = locateData.SingleElement;
 					if (singleElement != null)
 					{
+						if (!afterTransaction)
+						{
+							EntryStateChange.OnEntryChange(element, this, elementName, singleElement);
+						}
 						myDictionary.Remove(elementName);
 					}
 					else
 					{
 						ICollection existingCollection = locateData.MultipleElements;
 						int elementCount = existingCollection.Count;
-						bool afterTransaction = duplicateAction == DuplicateNameAction.RetrieveDuplicateCollection;
 						Debug.Assert(elementCount >= 2);
 						if (elementCount == 2)
 						{
@@ -612,6 +645,10 @@ namespace Northface.Tools.ORM.ObjectModel
 								myDuplicateManager.OnDuplicateElementRemoved(existingCollection, element, afterTransaction),
 								otherElement,
 								afterTransaction);
+							if (!afterTransaction)
+							{
+								EntryStateChange.OnEntryChange(element, this, elementName, existingCollection);
+							}
 							myDictionary[elementName] = element;
 						}
 						else
@@ -619,6 +656,10 @@ namespace Northface.Tools.ORM.ObjectModel
 							ICollection newCollection = myDuplicateManager.OnDuplicateElementRemoved(existingCollection, element, afterTransaction);
 							if (!object.ReferenceEquals(newCollection, existingCollection))
 							{
+								if (!afterTransaction)
+								{
+									EntryStateChange.OnEntryChange(element, this, elementName, existingCollection);
+								}
 								myDictionary[elementName] = newCollection;
 							}
 						}
@@ -774,6 +815,177 @@ namespace Northface.Tools.ORM.ObjectModel
 		private static void ElementLinkRemovedEvent(object sender, ElementRemovedEventArgs e)
 		{
 			HandleAddRemove(e.ModelElement, true, true);
+		}
+		/// <summary>
+		/// A simple structure used for rolling back changes to the
+		/// dictionary when a transaction rolls back. The log entry
+		/// are only used for rollbacks, there is not enough information
+		/// to replay a change.
+		/// </summary>
+		private struct EntryStateChange
+		{
+			/// <summary>
+			/// A dictionary of either single NamedElementDictionary or
+			/// collections of NamedElementDictionary implementations that
+			/// have changes during a live transaction.
+			/// </summary>
+			private static Dictionary<Transaction, object> myTransactions = new Dictionary<Transaction, object>();
+			/// <summary>
+			/// Called before an entry is added/removed/modified in the
+			/// dictionary.
+			/// </summary>
+			/// <param name="element">The element being modified. Used to get the current transaction.</param>
+			/// <param name="dictionary">The dictionary being modified</param>
+			/// <param name="name">The name of the element</param>
+			/// <param name="value">The element value before the change</param>
+			public static void OnEntryChange(ModelElement element, NamedElementDictionary dictionary, string name, object value)
+			{
+				Transaction transaction = element.Store.TransactionManager.CurrentTransaction;
+				if (transaction.IsNested)
+				{
+					transaction = transaction.TopLevelTransaction;
+				}
+				// First, make sure this dictionary is logged for this transaction
+				// in our transaction-keyed dictionary.
+				object newEntry = null;
+				object currentValue;
+				if (myTransactions.TryGetValue(transaction, out currentValue))
+				{
+					// Check for simple case first (only one dictionary has
+					// changes in this transaction)
+					if (!object.ReferenceEquals(currentValue, dictionary))
+					{
+						List<NamedElementDictionary> list = currentValue as List<NamedElementDictionary>;
+						if (list == null)
+						{
+							list = new List<NamedElementDictionary>();
+							list.Add((NamedElementDictionary)currentValue);
+							list.Add(dictionary);
+							newEntry = list;
+						}
+						else if (!list.Contains(dictionary))
+						{
+							list.Add(dictionary);
+						}
+					}
+				}
+				else
+				{
+					// Add as a single. This will be the most common case as the
+					// majority of transactions are small.
+					newEntry = dictionary;
+				}
+				if (newEntry != null)
+				{
+					myTransactions[transaction] = newEntry;
+				}
+				EnsureStack(ref dictionary.myChangeStack).Push(new EntryStateChange(name, value));
+			}
+			/// <summary>
+			/// The transaction was successful. Clear all associated change logs and
+			/// stop watching this transaction.
+			/// </summary>
+			/// <param name="transaction">The transaction being committed</param>
+			public static void TransactionCommitted(Transaction transaction)
+			{
+				if (!transaction.IsNested)
+				{
+					object dictionaryList;
+					if (myTransactions.TryGetValue(transaction, out dictionaryList))
+					{
+						NamedElementDictionary singleDictionary = dictionaryList as NamedElementDictionary;
+						if (singleDictionary != null)
+						{
+							singleDictionary.myChangeStack = null;
+						}
+						else
+						{
+							foreach (NamedElementDictionary dictionary in (List<NamedElementDictionary>)dictionaryList)
+							{
+								dictionary.myChangeStack = null;
+							}
+						}
+						myTransactions.Remove(transaction);
+					}
+				}
+			}
+			/// <summary>
+			/// Return all dictionaries with changes during this transaction back to their
+			/// initial states.
+			/// </summary>
+			/// <param name="transaction"></param>
+			public static void TransactionRolledBack(Transaction transaction)
+			{
+				if (!transaction.IsNested)
+				{
+					object dictionaryList;
+					if (myTransactions.TryGetValue(transaction, out dictionaryList))
+					{
+						NamedElementDictionary singleDictionary = dictionaryList as NamedElementDictionary;
+						if (singleDictionary != null)
+						{
+							RollBackDictionary(singleDictionary);
+						}
+						else
+						{
+							foreach (NamedElementDictionary dictionary in (List<NamedElementDictionary>)dictionaryList)
+							{
+								RollBackDictionary(dictionary);
+							}
+						}
+						myTransactions.Remove(transaction);
+					}
+				}
+			}
+			private static void RollBackDictionary(NamedElementDictionary elementDictionary)
+			{
+				Stack<EntryStateChange> stack = elementDictionary.myChangeStack;
+				Dictionary<string, object> dic = elementDictionary.myDictionary;
+				while (stack.Count != 0)
+				{
+					EntryStateChange change = stack.Pop();
+					if (change.Value == null)
+					{
+						dic.Remove(change.Name);
+					}
+					else
+					{
+						dic[change.Name] = change.Value;
+					}
+				}
+				elementDictionary.myChangeStack = null;
+			}
+			private static Stack<EntryStateChange> EnsureStack(ref Stack<EntryStateChange> changeStack)
+			{
+				if (changeStack == null)
+				{
+					changeStack = new Stack<EntryStateChange>();
+				}
+				return changeStack;
+			}
+			private EntryStateChange(string name, object value)
+			{
+				Name = name;
+				Value = value;
+			}
+			/// <summary>
+			/// The new name. Set for a name change, null otherwise.
+			/// </summary>
+			public string Name;
+			/// <summary>
+			/// The element or collection stored in this named slot prior to the change.
+			/// A null value here indicates that the named slot did not exist
+			/// prior to the change and should be removed on rollback.
+			/// </summary>
+			public object Value;
+		}
+		private static void TransactionCommittedEvent(object sender, TransactionCommitEventArgs e)
+		{
+			EntryStateChange.TransactionCommitted(e.Transaction);
+		}
+		private static void TransactionRolledBackEvent(object sender, TransactionRollBackEventArgs e)
+		{
+			EntryStateChange.TransactionRolledBack(e.Transaction);
 		}
 		/// <summary>
 		/// See discussion of the need for NameChangeRecord in the HandleElementChanged
@@ -992,6 +1204,10 @@ namespace Northface.Tools.ORM.ObjectModel
 			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(NamedElementChangedEvent));
 
 			eventDirectory.ElementEventsEnded.Add(new ElementEventsEndedEventHandler(ElementEventsEndedEvent));
+
+			// Track commit and rollback events so we can rollback/abandon a change log as needed.
+			eventDirectory.TransactionCommitted.Add(new TransactionCommittedEventHandler(TransactionCommittedEvent));
+			eventDirectory.TransactionRolledBack.Add(new TransactionRolledBackEventHandler(TransactionRolledBackEvent));
 		}
 		/// <summary>
 		/// Call from ModelingDocData.RemoveModelingEventHandlers to detach
@@ -1014,6 +1230,10 @@ namespace Northface.Tools.ORM.ObjectModel
 			eventDirectory.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(NamedElementChangedEvent));
 
 			eventDirectory.ElementEventsEnded.Remove(new ElementEventsEndedEventHandler(ElementEventsEndedEvent));
+
+			// Track commit and rollback events so we can rollback/abandon a change log as needed.
+			eventDirectory.TransactionCommitted.Remove(new TransactionCommittedEventHandler(TransactionCommittedEvent));
+			eventDirectory.TransactionRolledBack.Remove(new TransactionRolledBackEventHandler(TransactionRolledBackEvent));
 		}
 		#endregion // IMS integration
 	}
