@@ -33,27 +33,27 @@
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Modeling.Diagrams.GraphObject, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio 8\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Diagrams.GraphObject.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Diagrams.GraphObject.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.ArtifactMapper, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools.Current\Microsoft.VisualStudio.Modeling.Sdk.ArtifactMapper.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.ArtifactMapper.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Shell, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Shell.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Shell.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Utilities, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Utilities.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Utilities.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
