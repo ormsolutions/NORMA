@@ -322,6 +322,10 @@ namespace Northface.Tools.ORM.ObjectModel
 						bool oldBroken = false;
 						switch (oldCardinality)
 						{
+							case RoleCardinality.Unspecified:
+								// Make sure we get into the main code
+								oldOne = !newOne;
+								break;
 							case RoleCardinality.Indeterminate:
 								oldBroken = oldOne = true;
 								break;
@@ -330,7 +334,6 @@ namespace Northface.Tools.ORM.ObjectModel
 								oldOne = true;
 								break;
 							default:
-								// Assume many for unspecified.
 								oldOne = false;
 								break;
 						}
@@ -421,17 +424,22 @@ namespace Northface.Tools.ORM.ObjectModel
 							}
 							else
 							{
-								// Switch to a many by removing an internal uniqueness constraint from
-								// this role. If the opposite role does not have an internal uniqueness constraint,
-								// then we need to automatically create a uniqueness constraint that spans both
-								// roles.
-								foreach (ConstraintRoleSet roleSet in role.ConstraintRoleSetCollection)
+								bool oppositeHasUnique = false;
+								bool wasUnspecified = oldCardinality == RoleCardinality.Unspecified;
+								if (!wasUnspecified)
 								{
-									if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+									// Switch to a many by removing an internal uniqueness constraint from
+									// this role. If the opposite role does not have an internal uniqueness constraint,
+									// then we need to automatically create a uniqueness constraint that spans both
+									// roles.
+									foreach (ConstraintRoleSet roleSet in role.ConstraintRoleSetCollection)
 									{
-										Debug.Assert(roleSet.RoleCollection.Count == 1);
-										roleSet.Remove();
-										break;
+										if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+										{
+											Debug.Assert(roleSet.RoleCollection.Count == 1);
+											roleSet.Remove();
+											break;
+										}
 									}
 								}
 								Role oppositeRole = factRoles[0];
@@ -439,13 +447,16 @@ namespace Northface.Tools.ORM.ObjectModel
 								{
 									oppositeRole = factRoles[1];
 								}
-								bool oppositeHasUnique = false;
-								foreach (ConstraintRoleSet roleSet in oppositeRole.ConstraintRoleSetCollection)
+								// Unspecified checks the opposite role before saying unspecified, no need to look
+								if (!wasUnspecified)
 								{
-									if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+									foreach (ConstraintRoleSet roleSet in oppositeRole.ConstraintRoleSetCollection)
 									{
-										oppositeHasUnique = true;
-										Debug.Assert(roleSet.RoleCollection.Count == 1);
+										if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+										{
+											oppositeHasUnique = true;
+											Debug.Assert(roleSet.RoleCollection.Count == 1);
+										}
 									}
 								}
 								if (!oppositeHasUnique)
