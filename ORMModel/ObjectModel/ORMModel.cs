@@ -134,6 +134,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				yield return InternalConstraint.FixupListener;
 				yield return ExternalConstraint.FixupListener;
+				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.AddImplicitElements);
 				yield return ModelError.FixupListener;
 			}
 		}
@@ -263,7 +264,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			private class DuplicateNameManager : IDuplicateNameCollectionManager
 			{
 				#region IDuplicateNameCollectionManager Implementation
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction)
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
 					ObjectType objectType = (ObjectType)element;
 					if (afterTransaction)
@@ -279,15 +280,41 @@ namespace Northface.Tools.ORM.ObjectModel
 						// Modify the object model to add the error.
 						if (elementCollection == null)
 						{
-							ObjectTypeDuplicateNameError error = ObjectTypeDuplicateNameError.CreateObjectTypeDuplicateNameError(objectType.Store);
-							objectType.DuplicateNameError = error;
-							error.Model = objectType.Model;
-							error.GenerateErrorText();
+							ObjectTypeDuplicateNameError error = null;
+							if (notifyAdded != null)
+							{
+								// During deserialization fixup, an error
+								// may already be attached to the object. Track
+								// it down and verify that it is a legitimate error.
+								// If it is not legitimate, then generate a new one.
+								error = objectType.DuplicateNameError;
+								if (error != null && !error.ValidateDuplicates(objectType))
+								{
+									error = null;
+								}
+							}
+							if (error == null)
+							{
+								error = ObjectTypeDuplicateNameError.CreateObjectTypeDuplicateNameError(objectType.Store);
+								objectType.DuplicateNameError = error;
+								error.Model = objectType.Model;
+								error.GenerateErrorText();
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(error, true);
+								}
+							}
 							elementCollection = error.ObjectTypeCollection;
 						}
 						else
 						{
-							((ObjectTypeMoveableCollection)elementCollection).Add(objectType);
+							// During deserialization fixup (notifyAdded != null), we need
+							// to make sure that the element is not already in the collection
+							ObjectTypeMoveableCollection typedCollection = (ObjectTypeMoveableCollection)elementCollection;
+							if (notifyAdded == null || !typedCollection.Contains(objectType))
+							{
+								typedCollection.Add(objectType);
+							}
 						}
 						return elementCollection;
 					}
@@ -347,7 +374,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			private class DuplicateNameManager : IDuplicateNameCollectionManager
 			{
 				#region IDuplicateNameCollectionManager Implementation
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction)
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
 					FactType factType = (FactType)element;
 					if (afterTransaction)
@@ -363,15 +390,41 @@ namespace Northface.Tools.ORM.ObjectModel
 						// Modify the object model to add the error.
 						if (elementCollection == null)
 						{
-							FactTypeDuplicateNameError error = FactTypeDuplicateNameError.CreateFactTypeDuplicateNameError(factType.Store);
-							factType.DuplicateNameError = error;
-							error.Model = factType.Model;
-							error.GenerateErrorText();
+							FactTypeDuplicateNameError error = null;
+							if (notifyAdded != null)
+							{
+								// During deserialization fixup, an error
+								// may already be attached to the object. Track
+								// it down and verify that it is a legitimate error.
+								// If it is not legitimate, then generate a new one.
+								error = factType.DuplicateNameError;
+								if (error != null && !error.ValidateDuplicates(factType))
+								{
+									error = null;
+								}
+							}
+							if (error == null)
+							{
+								error = FactTypeDuplicateNameError.CreateFactTypeDuplicateNameError(factType.Store);
+								factType.DuplicateNameError = error;
+								error.Model = factType.Model;
+								error.GenerateErrorText();
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(error, true);
+								}
+							}
 							elementCollection = error.FactTypeCollection;
 						}
 						else
 						{
-							((FactTypeMoveableCollection)elementCollection).Add(factType);
+							// During deserialization fixup (notifyAdded != null), we need
+							// to make sure that the element is not already in the collection
+							FactTypeMoveableCollection typedCollection = (FactTypeMoveableCollection)elementCollection;
+							if (notifyAdded == null || !typedCollection.Contains(factType))
+							{
+								typedCollection.Add(factType);
+							}
 						}
 						return elementCollection;
 					}
@@ -431,7 +484,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			private class DuplicateNameManager : IDuplicateNameCollectionManager
 			{
 				#region IDuplicateNameCollectionManager Implementation
-				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction)
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
 					Constraint constraint = (Constraint)element;
 					if (afterTransaction)
@@ -447,15 +500,41 @@ namespace Northface.Tools.ORM.ObjectModel
 						// Modify the object model to add the error.
 						if (elementCollection == null)
 						{
-							ConstraintDuplicateNameError error = ConstraintDuplicateNameError.CreateConstraintDuplicateNameError(constraint.Store);
-							constraint.DuplicateNameError = error;
-							error.Model = constraint.Model;
-							error.GenerateErrorText();
+							ConstraintDuplicateNameError error = null;
+							if (notifyAdded != null)
+							{
+								// During deserialization fixup, an error
+								// may already be attached to the object. Track
+								// it down and verify that it is a legitimate error.
+								// If it is not legitimate, then generate a new one.
+								error = constraint.DuplicateNameError;
+								if (error != null && !error.ValidateDuplicates(constraint))
+								{
+									error = null;
+								}
+							}
+							if (error == null)
+							{
+								error = ConstraintDuplicateNameError.CreateConstraintDuplicateNameError(constraint.Store);
+								constraint.DuplicateNameError = error;
+								error.Model = constraint.Model;
+								error.GenerateErrorText();
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(error, true);
+								}
+							}
 							elementCollection = error.ConstraintCollection;
 						}
 						else
 						{
-							((ConstraintMoveableCollection)elementCollection).Add(constraint);
+							// During deserialization fixup (notifyAdded != null), we need
+							// to make sure that the element is not already in the collection
+							ConstraintMoveableCollection typedCollection = (ConstraintMoveableCollection)elementCollection;
+							if (notifyAdded == null || !typedCollection.Contains(constraint))
+							{
+								typedCollection.Add(constraint);
+							}
 						}
 						return elementCollection;
 					}
@@ -593,7 +672,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public abstract partial class DuplicateNameError :  IRepresentModelElements
+	public abstract partial class DuplicateNameError :  IRepresentModelElements, IModelErrorOwner
 	{
 		#region DuplicateNameError Specific
 		/// <summary>
@@ -608,6 +687,49 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// element name.
 		/// </summary>
 		protected abstract string ErrorFormatText { get;}
+		/// <summary>
+		/// Verify that all of the duplicate elements attached to
+		/// this error actually have the same name.
+		/// </summary>
+		/// <param name="testElement"></param>
+		/// <returns>true if validation succeeded. false is
+		/// returned if testElement does not have a name specified</returns>
+		public bool ValidateDuplicates(NamedElement testElement)
+		{
+			return ValidateDuplicates(testElement, null);
+		}
+		/// <summary>
+		/// Helper function to allow ValidateDuplicates call from
+		/// IModelErrorOwner.ValidateErrors with expensive second
+		/// call to the DuplicateElements function.
+		/// </summary>
+		/// <param name="testElement">The element to test</param>
+		/// <param name="duplicates">Pre-fetched duplicates, or null</param>
+		/// <returns>true if validation succeeded. false is
+		/// returned if testElement does not have a name specified</returns>
+		private bool ValidateDuplicates(NamedElement testElement, IList duplicates)
+		{
+			string testName = testElement.Name;
+			if (testName.Length > 0)
+			{
+				if (duplicates == null)
+				{
+					duplicates = DuplicateElements;
+				}
+				int duplicatesCount = duplicates.Count;
+				for (int i = 0; i < duplicatesCount; ++i)
+				{
+					NamedElement compareTo = (NamedElement)duplicates[i];
+					if (!object.ReferenceEquals(compareTo, testElement) &&
+						compareTo.Name != testElement.Name)
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+			return false;
+		}
 		#endregion // DuplicateNameError Specific
 		#region Base overrides
 		/// <summary>
@@ -664,6 +786,53 @@ namespace Northface.Tools.ORM.ObjectModel
 			return GetRepresentedElements();
 		}
 		#endregion // IRepresentModelElements Implementation
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		[CLSCompliant(false)]
+		protected IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				yield return this;
+			}
+		}
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// Make sure that the DuplicateNameError is correct
+		/// </summary>
+		/// <param name="notifyAdded">A callback for notifying
+		/// the caller of all objects that are added.</param>
+		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			if (!IsRemoved)
+			{
+				IList duplicates = DuplicateElements;
+				// Note that existing name error links are validated when
+				// the element is loaded via the IDuplicateNameCollectionManager
+				// implementation(s) on the model itself. All remaining duplicate
+				// name errors should be errors that are attached to elements whose
+				// named was changed externally.
+				if (duplicates.Count < 2 ||
+					!ValidateDuplicates((NamedElement)duplicates[0], duplicates))
+				{
+					Remove();
+				}
+			}
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		#endregion // IModelErrorOwner Implementation
 	}
 	#region Relationship-specific derivations of DuplicateNameError
 	public partial class ObjectTypeDuplicateNameError : DuplicateNameError
@@ -684,7 +853,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// field {0} is replaced by the model name, field {1} is replaced by the
 		/// element name.
 		/// </summary>
-		/// <value>The</value>
 		protected override string ErrorFormatText
 		{
 			get
@@ -711,7 +879,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// field {0} is replaced by the model name, field {1} is replaced by the
 		/// element name.
 		/// </summary>
-		/// <value>The</value>
 		protected override string ErrorFormatText
 		{
 			get
@@ -738,7 +905,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// field {0} is replaced by the model name, field {1} is replaced by the
 		/// element name.
 		/// </summary>
-		/// <value>The</value>
 		protected override string ErrorFormatText
 		{
 			get

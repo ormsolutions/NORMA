@@ -145,7 +145,11 @@ namespace Northface.Tools.ORM.ObjectModel
 				int linkCount = errorLinks.Count;
 				for (int i = 0; i < linkCount; ++i)
 				{
-					ModelError.AddToTaskProvider((ModelHasError)errorLinks[i]);
+					ModelHasError error = (ModelHasError)errorLinks[i];
+					if (!error.IsRemoved)
+					{
+						ModelError.AddToTaskProvider(error);
+					}
 				}
 			}
 		}

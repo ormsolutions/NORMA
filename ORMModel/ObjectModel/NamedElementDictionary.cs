@@ -108,8 +108,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// events, which only fire during undo/redo. In this state, a collection that
 		/// is implemented through the IMS will be extant in the desired state in
 		/// the store and needs to be located and returned.</param>
+		/// <param name="notifyAdded">Used during deserialization fixup to
+		/// track elements that are added while rules are disabled</param>
 		/// <returns>A new (or modified) collection containing all elements.</returns>
-		ICollection OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction);
+		ICollection OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded);
 		/// <summary>
 		/// A duplicate element has been removed. This method is also responsible
 		/// for destroying the collection as the last element is removed.
@@ -167,7 +169,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="element">The element to add.</param>
 		/// <param name="duplicateAction">Specify the action
 		/// to take if the name is already in use in the dictionary.</param>
-		void AddElement(NamedElement element, DuplicateNameAction duplicateAction);
+		/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+		void AddElement(NamedElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded);
 		/// <summary>
 		/// An element is being removed.
 		/// </summary>
@@ -317,7 +320,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			private SimpleDuplicateCollectionManager()
 			{
 			}
-			ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction)
+			ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 			{
 				NamedElement[] elements = (NamedElement[])elementCollection;
 				NamedElement[] retVal = null;
@@ -468,18 +471,21 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // Unique name generation
 		#region INamedElementDictionary Members
-		void INamedElementDictionary.AddElement(NamedElement element, DuplicateNameAction duplicateAction)
+		void INamedElementDictionary.AddElement(NamedElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded)
 		{
-			AddElement(element, duplicateAction);
+			AddElement(element, duplicateAction, notifyAdded);
 		}
 		/// <summary>
 		/// Implements INamedElementDictionary.AddElement
 		/// </summary>
 		/// <param name="element">NamedElement</param>
 		/// <param name="duplicateAction">DuplicateNameAction</param>
-		protected void AddElement(NamedElement element, DuplicateNameAction duplicateAction)
+		/// <param name="notifyAdded">Set if a callback is required when an element is added
+		/// during the IDuplicateNameCollectionManager.OnDuplicateElementAdded. Used
+		/// during deserialization fixup</param>
+		protected void AddElement(NamedElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded)
 		{
-			AddElement(element, duplicateAction, element.Name);
+			AddElement(element, duplicateAction, element.Name, notifyAdded);
 		}
 		/// <summary>
 		/// Add an element with a provided name (ignores the current element name).
@@ -488,7 +494,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="element">NamedElement</param>
 		/// <param name="duplicateAction">DuplicateNameAction</param>
 		/// <param name="elementName">Name to use as the remove key</param>
-		private void AddElement(NamedElement element, DuplicateNameAction duplicateAction, string elementName)
+		/// <param name="notifyAdded">Set if a callback is required when an element is added
+		/// during the IDuplicateNameCollectionManager.OnDuplicateElementAdded. Used
+		/// during deserialization fixup</param>
+		private void AddElement(NamedElement element, DuplicateNameAction duplicateAction, string elementName, INotifyElementAdded notifyAdded)
 		{
 			if (elementName.Length == 0)
 			{
@@ -524,7 +533,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					// We already have a collection, just add to it
 					ICollection existingCollection = locateData.MultipleElements;
-					newCollection = myDuplicateManager.OnDuplicateElementAdded(existingCollection, element, afterTransaction);
+					newCollection = myDuplicateManager.OnDuplicateElementAdded(existingCollection, element, afterTransaction, notifyAdded);
 					if (object.ReferenceEquals(existingCollection, newCollection))
 					{
 						// No need to replace
@@ -538,9 +547,10 @@ namespace Northface.Tools.ORM.ObjectModel
 						// Call OnDuplicateElementAdded twice. The first time creates the collection,
 						// the second one adds to it.
 						newCollection = myDuplicateManager.OnDuplicateElementAdded(
-							myDuplicateManager.OnDuplicateElementAdded(null, singleElement, afterTransaction),
+							myDuplicateManager.OnDuplicateElementAdded(null, singleElement, afterTransaction, notifyAdded),
 							element,
-							afterTransaction);
+							afterTransaction,
+							notifyAdded);
 					}
 				}
 				if (newCollection != null)
@@ -630,7 +640,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			// Consider optimizing if the old/new names are the same
 			RemoveElement(originalElement, null, duplicateAction);
-			AddElement(replacementElement, duplicateAction);
+			AddElement(replacementElement, duplicateAction, null);
 		}
 		void INamedElementDictionary.RenameElement(NamedElement element, string oldName, string newName, DuplicateNameAction duplicateAction)
 		{
@@ -645,8 +655,11 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="duplicateAction">duplicateAction</param>
 		protected void RenameElement(NamedElement element, string oldName, string newName, DuplicateNameAction duplicateAction)
 		{
+			// UNDONE: If AddElement fails, this does not readd the
+			// removed element. Delay the remove until we're relatively
+			// sure the add will work correctly.
 			RemoveElement(element, oldName, duplicateAction);
-			AddElement(element, duplicateAction, newName);
+			AddElement(element, duplicateAction, newName, null);
 		}
 		LocatedElement INamedElementDictionary.GetElement(string elementName)
 		{
@@ -663,6 +676,47 @@ namespace Northface.Tools.ORM.ObjectModel
 			return myDictionary.TryGetValue(elementName, out element) ? new LocatedElement(element) : LocatedElement.Empty;
 		}
 		#endregion // INamedElementDictionary Members
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// ensures that the name dictionaries are correctly populated
+		/// after a model deserialization is completed.
+		/// </summary>
+		/// <param name="implicitFixupPhase">A fixup phase for adding implicitly
+		/// created elements and populating the name dictionaries</param>
+		[CLSCompliant(false)]
+		public static IDeserializationFixupListener GetFixupListener(int implicitFixupPhase)
+		{
+			return new DeserializationFixupListener(implicitFixupPhase);
+		}
+		/// <summary>
+		/// A listener class to validate and/or populate the ModelError
+		/// collection on load, as well as populating the task list.
+		/// </summary>
+		private class DeserializationFixupListener : DeserializationFixupListener<INamedElementDictionaryLink>
+		{
+			/// <summary>
+			/// Create a new NamedElementDictionary.DeserializationFixupListener
+			/// </summary>
+			/// <param name="implicitFixupPhase">A fixup phase for adding implicitly
+			/// created elements and populating the name dictionaries</param>
+			public DeserializationFixupListener(int implicitFixupPhase) : base(implicitFixupPhase)
+			{
+			}
+			/// <summary>
+			/// Add this element to the appropriate dictionary, and allow
+			/// IDuplicateNameCollectionManager implementations to validate
+			/// their current content.
+			/// </summary>
+			/// <param name="element">An IModelErrorOwner instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(INamedElementDictionaryLink element, Store store, INotifyElementAdded notifyAdded)
+			{
+				HandleDeserializationAdd(element, notifyAdded);
+			}
+		}
+		#endregion Deserialization Fixup
 		#region IMS integration
 		/// <summary>
 		/// Translate the current store context settings into
@@ -741,6 +795,13 @@ namespace Northface.Tools.ORM.ObjectModel
 			// Toss unused tracked changes when events are finished
 			myUnattachedNameChanges = null;
 		}
+		/// <summary>
+		/// Add or remove elements to associated named element
+		/// dictionaries when a link is added
+		/// </summary>
+		/// <param name="element">ModelElement to add or remove</param>
+		/// <param name="remove">true to remove, false to add</param>
+		/// <param name="forEvent">This call is handling an event</param>
 		private static void HandleAddRemove(ModelElement element, bool remove, bool forEvent)
 		{
 			if (forEvent)
@@ -752,6 +813,33 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 			INamedElementDictionaryLink link = element as INamedElementDictionaryLink;
+			if (link != null)
+			{
+				HandleAddRemove(link, element, remove, forEvent, null);
+			}
+		}
+		/// <summary>
+		/// Add an element resulting from deserialization fixup
+		/// </summary>
+		/// <param name="link">The link to add</param>
+		/// <param name="notifyAdded">A notification interface</param>
+		private static void HandleDeserializationAdd(INamedElementDictionaryLink link, INotifyElementAdded notifyAdded)
+		{
+			HandleAddRemove(link, null, false, false, notifyAdded);
+		}
+		/// <summary>
+		/// Add or remove elements to associated named element
+		/// dictionaries when a link is added
+		/// </summary>
+		/// <param name="link">INamedElementDictionaryLink to add</param>
+		/// <param name="element">The ModelElement (same object as link). Not required if forEvent is false</param>
+		/// <param name="remove">true to remove, false to add</param>
+		/// <param name="forEvent">This call is handling an event</param>
+		/// <param name="notifyAdded">The listener to notify if elements are added during fixup.
+		/// Passed through the INamedElementDictionary.AddElement</param>
+		private static void HandleAddRemove(INamedElementDictionaryLink link, ModelElement element, bool remove, bool forEvent, INotifyElementAdded notifyAdded)
+		{
+			Debug.Assert(element != null || !forEvent);
 			if (link != null)
 			{
 				INamedElementDictionaryParent parent;
@@ -794,7 +882,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 						else
 						{
-							dictionary.AddElement(namedChild, duplicateAction);
+							dictionary.AddElement(namedChild, duplicateAction, notifyAdded);
 						}
 					}
 				}

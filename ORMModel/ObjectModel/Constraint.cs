@@ -530,15 +530,20 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
 		/// Validate all errors on the external constraint. This
 		/// is called during deserialization fixup when rules are
 		/// suspended.
 		/// </summary>
 		/// <param name="notifyAdded">A callback for notifying
 		/// the caller of all objects that are added.</param>
-		public void ValidateErrors(INotifyElementAdded notifyAdded)
+		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			VerifyRoleSetCountForRule(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
 		}
 		#endregion // IModelErrorOwner Implementation
 	}
