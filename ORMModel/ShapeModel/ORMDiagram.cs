@@ -156,7 +156,12 @@ namespace Northface.Tools.ORM.ShapeModel
 					if (null != (fromShape = FindShapeForElement(constraint as ModelElement) as NodeShape) &&
 						null != (toShape = FindShapeForElement(attachedFact) as NodeShape))
 					{
-						constraintLink.Connect(fromShape, toShape);
+						// Note that the from/to ordering reversal here is a hack so
+						// the fact type shape folding code can find the opposite constraint
+						// based on its center point. If both ends move the connection point,
+						// then only the first one passed in here can find the opposite shape.
+						// UNDONE: Slimy hack, should be removed if we get better framework support.
+						constraintLink.Connect(toShape, fromShape);
 					}
 				}
 			}

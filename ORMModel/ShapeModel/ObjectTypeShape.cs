@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Northface.Tools.ORM;
 using Northface.Tools.ORM.ObjectModel;
 namespace Northface.Tools.ORM.ShapeModel
@@ -65,14 +64,14 @@ namespace Northface.Tools.ORM.ShapeModel
 				switch (Shell.OptionsPage.CurrentObjectTypeShape)
 				{
 					case Shell.ObjectTypeShape.Ellipse:
-						useShape = EllipseShapeGeometryEx.ShapeGeometry; // ShapeGeometries.Ellipse
+						useShape = CustomFoldEllipseShapeGeometry.ShapeGeometry;
 						break;
 					case Shell.ObjectTypeShape.HardRectangle:
-						useShape = ShapeGeometries.Rectangle;
+						useShape = CustomFoldRectangleShapeGeometry.ShapeGeometry;
 						break;
 					case Shell.ObjectTypeShape.SoftRectangle:
 					default:
-						useShape = ShapeGeometries.RoundedRectangle;
+						useShape = CustomFoldRoundedRectangleShapeGeometry.ShapeGeometry;
 						break;
 				}
 				return useShape;
@@ -153,32 +152,18 @@ namespace Northface.Tools.ORM.ShapeModel
 			myTextShapeField = field;
 		}
 		#endregion // Customize appearance
-		#region Customize connection points
+		#region ObjectTypeShape specific
 		/// <summary>
-		/// Enable custom connection points
+		/// Get the ObjectTypeType associated with this shape
 		/// </summary>
-		/// <value>true</value>
-		public override bool HasConnectionPoints
+		public ObjectType AssociatedObjectType
 		{
 			get
 			{
-				return true;
+				return ModelElement as ObjectType;
 			}
 		}
-		/// <summary>
-		/// Center the default connection point. The actual connection
-		/// point is adjusted by other routines. This is called if
-		/// there is no override for CreateConnectionPoint.
-		/// </summary>
-		protected override PointD ConnectionPoint
-		{
-			get
-			{
-				RectangleD bounds = AbsoluteBounds;
-				return new PointD(bounds.X + bounds.Width / 2, bounds.Top + bounds.Height / 2);
-			}
-		}
-		#endregion // Customize connection points
+		#endregion // ObjectTypeShape specific
 		#region Shape display update rules
 		[RuleOn(typeof(ObjectType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
 		private class ShapeChangeRule : ChangeRule
@@ -211,97 +196,5 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Shape display update rules
-	}
-	/// <summary>
-	/// UNDONE: An attempt to get connection lines correctly attaching
-	/// to the border of an ellipse shape
-	/// </summary>
-	public class EllipseShapeGeometryEx : EllipseShapeGeometry
-	{
-		/// <summary>
-		/// Singleton EllipseShapeGeometryEx instance
-		/// </summary>
-		public static readonly ShapeGeometry ShapeGeometry = new EllipseShapeGeometryEx();
-		/// <summary>
-		/// Protected default constructor. The class should be used
-		/// as a singleton isntead of being publicly constructed.
-		/// </summary>
-		protected EllipseShapeGeometryEx()
-		{
-		}
-		/// <summary>
-		/// Implement shape folding on the ellipse boundary
-		/// </summary>
-		/// <param name="geometryHost">The host view</param>
-		/// <param name="potentialPoint">A point on the rectangular boundary of the shape</param>
-		/// <param name="vectorEndPoint">A point on the opposite end of the connecting line</param>
-		/// <returns>A point on the ellipse border</returns>
-		public override PointD DoFoldToShape(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint)
-		{
-			// The vectorEndPoint value is coming in (negative, negative) for the lower
-			// right quadrant instead of (positive, positive). All other values are
-			// (positive, positive), so we switch the end point to make the rest of the work
-			// easier.
-			// UNDONE: Should this be considered a bug?
-			vectorEndPoint = new PointD(-vectorEndPoint.X, -vectorEndPoint.Y);
-
-			// The point returns needs to be relative to the upper left corner of the bounding
-			// box. The goal is to get a point on the ellipse that points to the center of the
-			// line. To do this, we translate the coordinate system to the center of the ellipse,
-			// get a slope from the vectorEndPoint/ellipse center, then solve the ellipse equation
-			// and retranslate the coordinates back out.
-			// The quadrant we're coming in from can be determined by the position of the vectorEndPoint
-			// relative to the ellipse center.
-			//
-			// The pertinent equations are:
-			// vectorEndPoint (relative point) = (xe, ye)
-			// center = (xc, yc)
-			// ellipse radii = xr, yr
-			// slope = m = (ye - yc)/(xe - xc)
-			// line equation: y = mx
-			// ellipse equation (centered at origin): x^2/xr^2 + y^2/yr^2 = 1
-			// solving gives us: x = +/-((yr*xr)/sqrt(yr^2 + m^2 * xr^2))
-			// Plugging back into the line equation gives us a +/- y value
-			// Final point = (xc, yc) + (x, y)
-			// The quadrant is determined by the relative position of the vectorEndPoint
-			RectangleD box = geometryHost.GeometryBoundingBox;
-			PointD boxCenter = box.Center;
-			double xRadius = box.Width / 2;
-			double yRadius = box.Height / 2;
-
-			if (VGConstants.FuzzEqual(vectorEndPoint.X, boxCenter.X, VGConstants.FuzzDistance))
-			{
-				return new PointD(xRadius, (vectorEndPoint.Y < boxCenter.Y) ? 0 : box.Height);
-			}
-			else if (VGConstants.FuzzEqual(vectorEndPoint.Y, boxCenter.Y, VGConstants.FuzzDistance))
-			{
-				return new PointD((vectorEndPoint.X < boxCenter.X) ? 0 : box.Width, yRadius);
-			}
-			else
-			{
-				bool negativeX = vectorEndPoint.X < boxCenter.X;
-				bool negativeY = vectorEndPoint.Y < boxCenter.Y;
-
-				double slope = (vectorEndPoint.Y - boxCenter.Y) / (vectorEndPoint.X - boxCenter.X);
-				double x = (xRadius * yRadius) / Math.Sqrt(yRadius * yRadius + slope * slope * xRadius * xRadius);
-				double y = slope * x;
-				x = Math.Abs(x);
-				y = Math.Abs(y);
-				if (negativeX)
-				{
-					x = -x;
-					if (negativeY)
-					{
-						y = -y;
-					}
-				}
-				else if (negativeY)
-				{
-					y = -y;
-				}
-				// Return a point relative to the shape
-				return new PointD(x + xRadius, y + yRadius);
-			}
-		}
 	}
 }

@@ -168,14 +168,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Use a straight line routing style
+		/// Use a center to center routing style
 		/// </summary>
 		[CLSCompliant(false)]
 		protected override VGRoutingStyle DefaultRoutingStyle
 		{
 			get
 			{
-				return VGRoutingStyle.VGRouteStraight; // VGRouteCenterToCenter;
+				return VGRoutingStyle.VGRouteCenterToCenter;
 			}
 		}
 		/// <summary>

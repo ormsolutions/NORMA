@@ -264,6 +264,7 @@ namespace Northface.Tools.ORM
 		private const string InternalUniquenessConstraintConnectActionInstructions_Id = "InternalUniquenessConstraintConnectAction.Instructions";
 		private const string InternalUniquenessConstraintConnectActionTransactionName_Id = "InternalUniquenessConstraintConnectAction.TransactionName";
 		private const string RoleConnectActionTransactionName_Id = "RoleConnectAction.TransactionName";
+		private const string OptionsPageChangeTransactionName_Id = "OptionsPageChange.TransactionName";
 		private const string ModelBrowserWindowTitle_Id = "ORMModelBrowser.WindowTitle";
 		private const string ModelExceptionReadingIsPrimaryToFalse_Id = "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse";
 		private const string ModelExceptionReadingTextChangeInvalid_Id = "ModelException.Reading.Text.InvalidText";
@@ -505,6 +506,18 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Diagram, RoleConnectActionTransactionName_Id);
+			}
+		}
+		/// <summary>
+		/// The transaction name used when an options page change modifies
+		/// diagram layout and connections. The text appears in the undo
+		/// dropdown in the VS IDE.
+		/// </summary>
+		public static string OptionsPageChangeTransactionName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, OptionsPageChangeTransactionName_Id);
 			}
 		}
 		/// <summary>

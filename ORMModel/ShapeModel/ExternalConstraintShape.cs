@@ -29,7 +29,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return ShapeGeometries.Circle;
+				return CustomFoldCircleShapeGeometry.ShapeGeometry;
 			}
 		}
 		/// <summary>

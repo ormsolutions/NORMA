@@ -6,9 +6,13 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.ShapeModel;
 using Northface.Tools.ORM.Shell;
+using CategoryAttribute = System.ComponentModel.CategoryAttribute;
+using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
 namespace Northface.Tools.ORM.Shell
 {
 	#region Shape enums
@@ -222,7 +226,20 @@ namespace Northface.Tools.ORM.Shell
 							int diagramCount = diagrams.Count;
 							for (int i = 0; i < diagramCount; ++i)
 							{
-								((ORMDiagram)diagrams[i]).Invalidate(true);
+								ORMDiagram diagram = (ORMDiagram)diagrams[i];
+								using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.OptionsPageChangeTransactionName))
+								{
+									Store store = diagram.Store;
+									foreach (BinaryLinkShape link in store.ElementDirectory.GetElements(BinaryLinkShape.MetaClassGuid, true))
+									{
+										link.RipUp();
+									}
+									if (t.HasPendingChanges)
+									{
+										t.Commit();
+									}
+								}
+								diagram.Invalidate(true);
 							}
 						}
 					}

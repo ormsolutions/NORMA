@@ -222,6 +222,10 @@
     <value xml:space="preserve">Display Role Names</value>
     <comment xml:space="preserve">The display name for the Display Role Names option.</comment>
   </data>
+  <data name="OptionsPageChange.TransactionName">
+    <value xml:space="preserve">Update Diagram Layout</value>
+    <comment xml:space="preserve">The transaction name used when an options page change modifies diagram layout and connections. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
   <data name="ORMModelBrowser.WindowTitle">
     <value xml:space="preserve">ORM Model Browser</value>
     <comment xml:space="preserve">The window title for the ORM model browser window</comment>

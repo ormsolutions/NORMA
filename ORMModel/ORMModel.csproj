@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
+    <Compile Include="ShapeModel\CustomFoldShapeGeometries.cs" />
     <Compile Include="ShapeModel\InternalConstraintConnectAction.cs" />
     <Compile Include="ShapeModel\ORMShape.dmd.cs">
       <AutoGen>True</AutoGen>

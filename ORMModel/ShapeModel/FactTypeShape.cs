@@ -9,6 +9,7 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.Shell;
 
@@ -33,7 +34,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	}
 	#endregion ConstraintDisplayPosition enum
 	#region FactTypeShape class
-	public partial class FactTypeShape
+	public partial class FactTypeShape : ICustomShapeFolding
 	{
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
@@ -1768,11 +1769,11 @@ namespace Northface.Tools.ORM.ShapeModel
 					switch (Shell.OptionsPage.CurrentObjectifiedFactShape)
 					{
 						case Shell.ObjectifiedFactShape.HardRectangle:
-							useShape = ShapeGeometries.Rectangle;
+							useShape = CustomFoldRectangleShapeGeometry.ShapeGeometry;
 							break;
 						case Shell.ObjectifiedFactShape.SoftRectangle:
 						default:
-							useShape = ShapeGeometries.RoundedRectangle;
+							useShape = CustomFoldRoundedRectangleShapeGeometry.ShapeGeometry;
 							break;
 					}
 					return useShape;
@@ -1780,7 +1781,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				else
 				{
 					// Just draw a rectangle if the fact IS NOT objectified
-					return ShapeGeometries.Rectangle;
+					return CustomFoldRectangleShapeGeometry.ShapeGeometry;
 				}
 			}
 		}
@@ -2109,92 +2110,194 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Customize property display
-		#region Customize connection points
+		#region ICustomShapeFolding implementation
 		/// <summary>
-		/// Enable custom connection points
+		/// Implements ICustomShapeFolding.CalculateConnectionPoint
 		/// </summary>
-		/// <value>true</value>
-		public override bool HasConnectionPoints
+		/// <param name="oppositeShape">The opposite shape we're connecting to</param>
+		/// <returns>The point to connect to. May be internal to the object, or on the boundary.</returns>
+		protected PointD CalculateConnectionPoint(NodeShape oppositeShape)
 		{
-			get
+			ObjectTypeShape objectShape;
+			FactTypeShape factShape;
+			ExternalConstraintShape constraintShape;
+			FactType factType = null;
+			ObjectType objectType = null;
+			int factRoleCount = 0;
+			int roleIndex = -1;
+			bool attachBeforeRole = false; // If true, attach before roleIndex, not in the middle of it
+			if (null != (factShape = oppositeShape as FactTypeShape))
 			{
-				return true;
-			}
-		}
-		/// <summary>
-		/// Determine the best connection point for a link
-		/// attached to a role in this fact type.
-		/// </summary>
-		/// <param name="link"></param>
-		public override void CreateConnectionPoint(LinkShape link)
-		{
-			RolePlayerLink roleLink;
-			if (null != (roleLink = link as RolePlayerLink))
-			{
-				// Extract basic information from the shape
-				NodeShape objShape = roleLink.ToShape;
-				if (objShape is FactTypeShape)
+				FactType oppositeFactType = factShape.AssociatedFactType;
+				if (oppositeFactType != null)
 				{
-					// Objectified end of relationship
-					base.CreateConnectionPoint(link);
-					return;
+					factType = AssociatedFactType;
+					objectType = oppositeFactType.NestingType;
 				}
-				Debug.Assert((FactTypeShape)roleLink.FromShape == this);
-				ObjectTypePlaysRole rolePlayerLink = roleLink.AssociatedRolePlayerLink;
-				Role role = rolePlayerLink.PlayedRoleCollection;
-				RoleMoveableCollection roles = AssociatedFactType.RoleCollection;
-				int roleCount = roles.Count;
-				int roleIndex = roles.IndexOf(role);
+			}
+			else if (null != (objectShape = oppositeShape as ObjectTypeShape))
+			{
+				factType = AssociatedFactType;
+				objectType = objectShape.AssociatedObjectType;
+			}
+			else if (null != (constraintShape = oppositeShape as ExternalConstraintShape))
+			{
+				IConstraint constraint = constraintShape.AssociatedConstraint;
+				factType = AssociatedFactType;
+				if (factType != null)
+				{
+					SingleColumnExternalConstraint scec;
+					MultiColumnExternalConstraint mcec;
+					IList factConstraints = null;
+					IList<Role> roles = null;
+					if (null != (scec = constraint as SingleColumnExternalConstraint))
+					{
+						factConstraints = scec.GetElementLinks(SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
+					}
+					else if (null != (mcec = constraint as MultiColumnExternalConstraint))
+					{
+						factConstraints = mcec.GetElementLinks(MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid);
+					}
+					if (factConstraints != null)
+					{
+						int factConstraintCount = factConstraints.Count;
+						for (int i = 0; i < factConstraintCount; ++i)
+						{
+							IFactConstraint factConstraint = (IFactConstraint)factConstraints[i];
+							if (object.ReferenceEquals(factConstraint.FactType, factType))
+							{
+								roles = factConstraint.RoleCollection;
+								break;
+							}
+						}
+						if (roles != null)
+						{
+							RoleMoveableCollection factRoles = factType.RoleCollection;
+							factRoleCount = factRoles.Count;
 
-				PointD objCenter = objShape.AbsoluteCenter;
+							switch (roles.Count)
+							{
+								case 1:
+									roleIndex = factRoles.IndexOf(roles[0]);
+									break;
+								case 2:
+									int index1 = factRoles.IndexOf(roles[0]);
+									int index2 = factRoles.IndexOf(roles[1]);
+									if (Math.Abs(index1 - index2) > 1)
+									{
+										goto default;
+									}
+									roleIndex = (index1 + index2 + 1) / 2;
+									attachBeforeRole = true;
+									break;
+								default:
+									// UNDONE: This is where the constraint box walking needs to
+									// come into play. We need to draw subfields that span multiple roles
+									// as well as determining where they connect. Just connect to the middle
+									// for now to indicate a problem.
+									RectangleD factBox = myRolesShapeField.GetBounds(this); // This finds the role box for both objectified and simple fact types
+									factBox.Offset(AbsoluteBoundingBox.Location);
+									return factBox.Center;
+							}
+						}
+					}
+				}
+			}
+			if (factType != null && objectType != null)
+			{
+				RoleMoveableCollection roles = factType.RoleCollection;
+				factRoleCount = roles.Count;
+				Role role = null;
+				for (int i = 0; i < factRoleCount; ++i)
+				{
+					role = (Role)roles[i];
+					if (object.ReferenceEquals(role.RolePlayer, objectType))
+					{
+						// UNDONE: Note that this where the data passed to DoFoldToShape
+						// is insufficient. Unless we're given the specific link object
+						// we're dealing with, there is no way to tell which role we're
+						// on when the role player is shared by multiple roles.
+						roleIndex = i;
+						break;
+					}
+				}
+			}
+			if (roleIndex != -1)
+			{
+				PointD objCenter = oppositeShape.AbsoluteCenter;
 				RectangleD factBox = myRolesShapeField.GetBounds(this); // This finds the role box for both objectified and simple fact types
 				factBox.Offset(AbsoluteBoundingBox.Location);
 
 				// Decide whether top or bottom works best
-				double finalY;
-				if (Math.Abs(objCenter.Y - factBox.Top) <= Math.Abs(objCenter.Y - factBox.Bottom))
-				{
-					finalY = factBox.Top;
-				}
-				else
-				{
-					finalY = factBox.Bottom;
-				}
+				double finalY = (Math.Abs(objCenter.Y - factBox.Top) <= Math.Abs(objCenter.Y - factBox.Bottom)) ? factBox.Top : factBox.Bottom;
 
-				// If we're the first or last (or both) role, then
-				// prefer an edge attach point.
+				// Find the left/right position
+				double roleWidth = factBox.Width / factRoleCount;
+				double finalX = factBox.Left + roleWidth * (roleIndex + (attachBeforeRole ? 0 : .5));
 
-				double finalX = factBox.Left + (factBox.Width / roleCount) * (roleIndex + .5);
-				// UNDONE: Finish this code when connection points are more reliable
-//				if (roleCount == 1)
-//				{
-//				}
-//				else if (roleIndex == 0)
-//				{
-//				}
-//				else if (roleIndex == roleCount - 1)
-//				{
-//				}
-				base.CreateConnectionPoint(new PointD(finalX, finalY), link);
-				return;
+				if (!attachBeforeRole)
+				{
+					// If we're the first or last (or both) role, then
+					// prefer an edge attach point.
+					PointD testCenter = PointD.Empty;
+					if (factRoleCount == 1)
+					{
+						testCenter = factBox.Center;
+					}
+					else if (roleIndex == 0)
+					{
+						if (objCenter.X < factBox.Left)
+						{
+							testCenter = new PointD(factBox.Left + roleWidth * .5, factBox.Center.Y);
+						}
+					}
+					else if (roleIndex == (factRoleCount - 1))
+					{
+						if (objCenter.X > factBox.Right)
+						{
+							testCenter = new PointD(factBox.Right - roleWidth * .5, factBox.Center.Y);
+						}
+					}
+					if (!testCenter.IsEmpty)
+					{
+						// Compare the slope to a single role box height/width to see
+						// if we should connect to the edge or the top/bottom
+						double run = objCenter.X - testCenter.X;
+						if (!VGConstants.FuzzZero(run, VGConstants.FuzzDistance))
+						{
+							double slope = (objCenter.Y - testCenter.Y) / run;
+							if (Math.Abs(slope) < (factBox.Height / roleWidth))
+							{
+								finalY = testCenter.Y;
+								// The line coming in is flatter than the line
+								// across opposite corners of the role box,
+								// connect to the left/right edge
+								if (factRoleCount == 1)
+								{
+									finalX = (objCenter.X < factBox.Left) ? factBox.Left : factBox.Right;
+								}
+								else if (roleIndex == 0)
+								{
+									finalX = factBox.Left;
+								}
+								else if (roleIndex == (factRoleCount - 1))
+								{
+									finalX = factBox.Right;
+								}
+							}
+						}
+
+					}
+				}
+				return new PointD(finalX, finalY);
 			}
-			base.CreateConnectionPoint(link);
+			return AbsoluteCenter;
 		}
-		/// <summary>
-		/// Set the connection point to the middle of the object
-		/// for when we're objectified. This is consistent with the
-		/// ObjectTypeShape implementation.
-		/// </summary>
-		/// <value></value>
-		protected override PointD ConnectionPoint
+		PointD ICustomShapeFolding.CalculateConnectionPoint(NodeShape oppositeShape)
 		{
-			get
-			{
-				RectangleD bounds = AbsoluteBounds;
-				return new PointD(bounds.X + bounds.Width / 2, bounds.Top + bounds.Height / 2);
-			}
+			return CalculateConnectionPoint(oppositeShape);
 		}
-		#endregion // Customize connection points
+		#endregion // ICustomShapeFolding implementation
 		#region FactTypeShape specific
 		/// <summary>
 		/// Get the FactType associated with this shape
@@ -2430,6 +2533,14 @@ namespace Northface.Tools.ORM.ShapeModel
 					FactTypeShape factTypeShape = e.ModelElement as FactTypeShape; //InternalUniquenessConstraint;
 					if (!factTypeShape.IsRemoved)
 					{
+						foreach (LinkConnectsToNode connection in factTypeShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
+						{
+							BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
+							if (binaryLink != null)
+							{
+								binaryLink.RipUp();
+							}
+						}
 						factTypeShape.AutoResize();
 						factTypeShape.Invalidate(true);
 					}
