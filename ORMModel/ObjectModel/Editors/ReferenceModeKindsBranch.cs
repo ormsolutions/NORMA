@@ -116,9 +116,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (myModify != null)
 				{
 					int row = this.FindReferenceModeKind(referenceModeKind);
-					//This forces the whole control to redraw and pick up the refmode kind format string changes
-					myModify(this, BranchModificationEventArgs.Redraw(false));
-					myModify(this, BranchModificationEventArgs.Redraw(true));
+					myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.ReferenceModeKind, 1)));
 				}
 			}
 		}
@@ -212,47 +210,40 @@ namespace Northface.Tools.ORM.ObjectModel
 
 		LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 		{
-			Transaction t = null;
-			try
+			newText = newText.Trim();
+			switch ((Columns)column)
 			{
-				switch ((Columns)column)
-				{
-					case Columns.Empty:
+				case Columns.Empty:
+					return LabelEditResult.CancelEdit;
+				case Columns.FormatString:
+					string entityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorEntityTypeName + "}";
+					string referenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorReferenceModeName + "}";
+					string abbreviatedEntityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorAbbreviatedEntityTypeName + "}";
+					string abbreviatedReferenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorAbbreviatedReferenceModeName + "}";
+
+
+					newText = newText.Replace(abbreviatedReferenceModeName, referenceModeName).Replace(abbreviatedEntityTypeName, entityTypeName); 
+					if (newText.IndexOf(referenceModeName) == -1 ||
+						newText.IndexOf(referenceModeName) != newText.LastIndexOf(referenceModeName) ||
+						newText.IndexOf(entityTypeName) != newText.LastIndexOf(entityTypeName) )
+					{
 						return LabelEditResult.CancelEdit;
-					case Columns.FormatString:
-						string entityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorEntityTypeName + "}";
-						string referenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorReferenceModeName + "}";
-						string abbreviatedEntityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorAbbreviatedEntityTypeName + "}";
-						string abbreviatedReferenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorAbbreviatedReferenceModeName + "}";
+					}
 
-
-						newText = newText.Replace(abbreviatedReferenceModeName, referenceModeName).Replace(abbreviatedEntityTypeName, entityTypeName); 
-						if (newText.IndexOf(referenceModeName) == -1 ||
-							newText.IndexOf(referenceModeName) != newText.LastIndexOf(referenceModeName) ||
-							newText.IndexOf(entityTypeName) != newText.LastIndexOf(entityTypeName) )
+					string changeFormatStringTransaction = ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction;
+					using (Transaction t = myStore.TransactionManager.BeginTransaction(changeFormatStringTransaction))
+					{
+						myReferenceModeKindsList[row].FormatString = this.UglyFormatString(newText);
+						if (t.HasPendingChanges)
 						{
-							return LabelEditResult.CancelEdit;
+							t.Commit();
 						}
-
-						string changeFormatStringTransaction = ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction;
-						using (t = myStore.TransactionManager.BeginTransaction(changeFormatStringTransaction))
-						{
-							myReferenceModeKindsList[row].FormatString = this.UglyFormatString(newText);
-							if (t.HasPendingChanges)
-							{
-								t.Commit();
-							}
-						}
-						break;
-					case Columns.ReferenceModeKind:
-						return LabelEditResult.CancelEdit;
-				}
-				return LabelEditResult.AcceptEdit;
+					}
+					break;
+				case Columns.ReferenceModeKind:
+					return LabelEditResult.CancelEdit;
 			}
-			catch
-			{
-				return LabelEditResult.CancelEdit;
-			}
+			return LabelEditResult.AcceptEdit;
 		}
 		BranchFeatures IBranch.Features
 		{

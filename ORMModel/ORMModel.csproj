@@ -84,6 +84,7 @@
     <Compile Include="FactEditor\FactLanguageService.cs" />
     <Compile Include="FactEditor\FactParser.cs" />
     <Compile Include="FactEditor\FactTextViewFilter.cs" />
+    <Compile Include="ObjectModel\CustomSetStringPropertyDescriptor.cs" />
     <Compile Include="ObjectModel\Editors\ReadingEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -10694,52 +10694,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region Kind's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ReferenceModeKind Kind
-		{
-			get
-			{
-				System.Object o = null;
-				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						goodLink = link;
-						break;
-					}
-				}
-				if (goodLink != null)
-				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.KindMetaRoleGuid);
-				}
-				return (Northface.Tools.ORM.ObjectModel.ReferenceModeKind)o;
-			}
-			set
-			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						link.Remove();
-						break;
-					}
-				}
-				if (value != null)
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.KindMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind), newRoles);
-				}
-			}
-		}
-		#endregion
 	}
 	#region Collection Classes for ReferenceMode
 	/// <summary>

@@ -144,9 +144,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						if (myModify != null)
 						{
 							int row = this.FindReferenceMode((IntrinsicReferenceMode)refMode);
-							//This forces the whole control to redraw and pick up the refmode kind format string changes
-							myModify(this, BranchModificationEventArgs.Redraw(false));
-							myModify(this, BranchModificationEventArgs.Redraw(true));
+							myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.ReferenceModeKind, 1)));
 						}
 					}
 				}

@@ -311,8 +311,12 @@ namespace Northface.Tools.ORM
 		private const string ModelReferenceModeEditorReferenceModeKindHeader_Id = "ModelReferenceModeEditor.ReferenceModeKindHeader";
 		private const string ModelReferenceModeEditorReferenceModeName_Id = "ModelReferenceModeEditor.ReferenceModeName";
 		private const string ModelReferenceModeEditorEditorWindowTitle_Id = "ModelReferenceModeEditor.EditorWindowTitle";
-		
- 
+		private const string ModelExceptionReferenceModeEnforceUniqueFormatString_Id = "ModelException.ReferenceMode.EnforceUniqueFormatString";
+		private const string ModelExceptionReferenceModeKindEnforceUniqueFormatString_Id = "ModelException.ReferenceModeKind.EnforceUniqueFormatString";
+		private const string ModelExceptionReferenceModeIntrinsicRefModesDontChange_Id = "ModelException.ReferenceMode.IntrinsicRefModesDontChange";
+		private const string ModelExceptionReferenceModeReferenceModesKindNotEmpty_Id = "ModelException.ReferenceMode.ReferenceModesKindNotEmpty";
+		private const string ModelReferenceModeEditorChangeReferenceModeKindTransaction_Id = "ModelReferenceModeEditor.ChangeReferenceModeKindTransaction";
+
 		private const string FactEditorToolWindowCaption_Id = "FactEditorToolWindow.Caption";
 		#endregion // Private resource ids
 		#region Public accessor properties
@@ -1023,6 +1027,61 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Model, ModelReferenceModeEditorEditorWindowTitle_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns Exception message when the unique format string rule is violated for reference modes
+		/// </summary>
+		public static string ModelExceptionReferenceModeEnforceUniqueFormatString
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionReferenceModeEnforceUniqueFormatString_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns Exception message when the unique format string rule is violated for reference mode kinds
+		/// </summary>
+		public static string ModelExceptionReferenceModeKindEnforceUniqueFormatString
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionReferenceModeKindEnforceUniqueFormatString_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns Exception messege when atttempt is made to change the kind of an intrinsic reference mode
+		/// </summary>
+		public static string ModelExceptionReferenceModeIntrinsicRefModesDontChange
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionReferenceModeIntrinsicRefModesDontChange_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns Exception messege when attempt is made to remove reference mode kind.
+		/// </summary>
+		public static string ModelExceptionReferenceModeReferenceModesKindNotEmpty
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionReferenceModeReferenceModesKindNotEmpty_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns Text used to name the transaction that changes the referencemode Kind.
+		/// </summary>
+		public static string ModelReferenceModeEditorChangeReferenceModeKindTransaction
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorChangeReferenceModeKindTransaction_Id);
 			}
 		}
 		

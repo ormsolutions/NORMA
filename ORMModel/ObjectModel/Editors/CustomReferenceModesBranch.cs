@@ -28,7 +28,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			FormatString = 2
 		}
 
-		private System.Collections.Generic.List<CustomReferenceMode> myCustomReferenceModesList = new System.Collections.Generic.List<CustomReferenceMode>();
+		private List<CustomReferenceMode> myCustomReferenceModesList = new List<CustomReferenceMode>();
 		private static int myNumCols = Enum.GetValues(typeof(Columns)).Length;
 		private Columns[] myEditable = new Columns[] { Columns.FormatString, Columns.Name, Columns.ReferenceModeKind };
 		private Store myStore;
@@ -236,13 +236,13 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 
-		private void ReferenceModeHasKindChangeEvent(object sender, ElementAddedEventArgs e)
+		private void ReferenceModeHasKindChangeEvent(object sender, RolePlayerChangedEventArgs e)
 		{
-			ReferenceModeHasReferenceModeKind rel = e.ModelElement as ReferenceModeHasReferenceModeKind;
-			if (rel != null)
+			ReferenceModeHasReferenceModeKind link = e.ElementLink as ReferenceModeHasReferenceModeKind;
+			if (link != null)
 			{
-				ReferenceModeKind referenceModeKind = rel.Kind;
-				if (referenceModeKind.Model == this.myModel && !rel.IsRemoved)
+				ReferenceModeKind referenceModeKind = link.Kind;
+				if (referenceModeKind.Model == this.myModel && !link.IsRemoved)
 				{
 					foreach (ReferenceMode refMode in referenceModeKind.ReferenceModeCollection)
 					{
@@ -251,9 +251,7 @@ namespace Northface.Tools.ORM.ObjectModel
 							if (myModify != null)
 							{
 								int row = this.FindReferenceMode((CustomReferenceMode)refMode);
-								//This forces the whole control to redraw and pick up the refmode kind format string changes
-								myModify(this, BranchModificationEventArgs.Redraw(false));
-								myModify(this, BranchModificationEventArgs.Redraw(true));
+								myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.ReferenceModeKind, 1)));
 							}
 						}
 					}
@@ -291,16 +289,13 @@ namespace Northface.Tools.ORM.ObjectModel
 
 			classInfo = dataDirectory.FindMetaClass(CustomReferenceMode.MetaClassGuid);
 			eventManager.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(CustomReferenceModeChangeEvent));
-//			eventManager.ElementAdded.Add(classInfo, new ElementAddedEventHandler(CustomReferenceModeAddEvent));
-//			eventManager.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(CustomReferenceModeRemoveEvent));
-
 
 			classInfo = dataDirectory.FindMetaRelationship(ModelHasReferenceMode.MetaRelationshipGuid);
 			eventManager.ElementAdded.Add(classInfo, new ElementAddedEventHandler(CustomReferenceModeAddEvent));
 			eventManager.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(CustomReferenceModeRemoveEvent));
 
 			classInfo = dataDirectory.FindMetaRelationship(ReferenceModeHasReferenceModeKind.MetaRelationshipGuid);
-			eventManager.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ReferenceModeHasKindChangeEvent));
+			eventManager.RolePlayerChanged.Add(classInfo, new RolePlayerChangedEventHandler(ReferenceModeHasKindChangeEvent));
 		}
 		/// <summary>
 		/// Removed any events added during the AddStoreEvents methods
@@ -316,16 +311,13 @@ namespace Northface.Tools.ORM.ObjectModel
 
 			classInfo = dataDirectory.FindMetaClass(CustomReferenceMode.MetaClassGuid);
 			eventManager.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(CustomReferenceModeChangeEvent));
-//			eventManager.ElementAdded.Add(classInfo, new ElementAddedEventHandler(CustomReferenceModeAddEvent));
-//			eventManager.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(CustomReferenceModeRemoveEvent));
-
 
 			classInfo = dataDirectory.FindMetaRelationship(ModelHasReferenceMode.MetaRelationshipGuid);
 			eventManager.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(CustomReferenceModeAddEvent));
 			eventManager.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(CustomReferenceModeRemoveEvent));
 
 			classInfo = dataDirectory.FindMetaRelationship(ReferenceModeHasReferenceModeKind.MetaRelationshipGuid);
-			eventManager.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ReferenceModeHasKindChangeEvent));
+			eventManager.RolePlayerChanged.Remove(classInfo, new RolePlayerChangedEventHandler(ReferenceModeHasKindChangeEvent));
 		}
 
 		#endregion // EventHandling
@@ -407,98 +399,98 @@ namespace Northface.Tools.ORM.ObjectModel
 
 		LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 		{
-			try
+			newText = newText.Trim();
+			if (row < myCustomReferenceModesList.Count)
 			{
-				if (row < myCustomReferenceModesList.Count)
+				switch ((Columns)column)
 				{
-					switch ((Columns)column)
-					{
-						case Columns.Name:
-							string changeNameTransaction = ResourceStrings.ModelReferenceModeEditorChangeNameTransaction;
-							using (Transaction t = myStore.TransactionManager.BeginTransaction(changeNameTransaction)) 
+					case Columns.Name:
+						string changeNameTransaction = ResourceStrings.ModelReferenceModeEditorChangeNameTransaction;
+						using (Transaction t = myStore.TransactionManager.BeginTransaction(changeNameTransaction)) 
+						{
+							if (newText.Length != 0)
 							{
 								myCustomReferenceModesList[row].Name = newText;
-								if (t.HasPendingChanges)
-								{
-									t.Commit();
-								}
 							}
-							break;
-						case Columns.FormatString:
-							string entityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorEntityTypeName + "}";
-							string referenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorReferenceModeName + "}";
-							string abbreviatedEntityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorAbbreviatedEntityTypeName + "}";
-							string abbreviatedReferenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorAbbreviatedReferenceModeName + "}";
-
-
-							newText = newText.Replace(abbreviatedReferenceModeName, referenceModeName).Replace(abbreviatedEntityTypeName, entityTypeName);
-							if (newText.IndexOf(referenceModeName) == -1 ||
-								newText.IndexOf(referenceModeName) != newText.LastIndexOf(referenceModeName) ||
-								newText.IndexOf(entityTypeName) != newText.LastIndexOf(entityTypeName))
+							else
 							{
-								return LabelEditResult.CancelEdit;
+								myCustomReferenceModesList[row].Remove();
 							}
-
-							string changeFormatStringTransaction = ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction;
-							using (Transaction  t = myStore.TransactionManager.BeginTransaction(changeFormatStringTransaction))
+							if (t.HasPendingChanges)
 							{
-								myCustomReferenceModesList[row].FormatString = this.UglyFormatString(newText);
-								if (t.HasPendingChanges)
-								{
-									t.Commit();
-								}
-							}
-							break;
-						case Columns.ReferenceModeKind:
-							Debug.WriteLine("New text on Kind mode: " + newText);
-							break;
-					}
-				}
-				else
-				{
-					Transaction t = null;
-					bool success = false;
-
-					string addCustomReferenceModeTransaction = ResourceStrings.ModelReferenceModeEditorAddCustomReferenceModeTransaction;
-					using (t = myStore.TransactionManager.BeginTransaction(addCustomReferenceModeTransaction))
-					{
-
-						CustomReferenceMode newCustomReferenceMode = CustomReferenceMode.CreateAndInitializeCustomReferenceMode(this.myStore, new AttributeAssignment[] { new AttributeAssignment(CustomReferenceMode.NameMetaAttributeGuid, newText, this.myStore) });
-//						newCustomReferenceMode.Name = newText;
-						newCustomReferenceMode.Model = this.myModel;
-						// Note that the Kind is automatically set to General on Commit
-
-						if (t.HasPendingChanges)
-						{
-							try
-							{
-								myIDidIt = true;
 								t.Commit();
-								success = true;
-							}
-							finally
-							{
-								myIDidIt = false;
 							}
 						}
-					}
-					if (success)
+						break;
+					case Columns.FormatString:
+						string entityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorEntityTypeName + "}";
+						string referenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorReferenceModeName + "}";
+						string abbreviatedEntityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorAbbreviatedEntityTypeName + "}";
+						string abbreviatedReferenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorAbbreviatedReferenceModeName + "}";
+
+
+						newText = newText.Replace(abbreviatedReferenceModeName, referenceModeName).Replace(abbreviatedEntityTypeName, entityTypeName);
+						if ((newText.IndexOf(referenceModeName) == -1 ||
+							 newText.IndexOf(referenceModeName) != newText.LastIndexOf(referenceModeName) ||
+							 newText.IndexOf(entityTypeName) != newText.LastIndexOf(entityTypeName)) &&
+							(newText.Length >0))
+						{
+							return LabelEditResult.CancelEdit;
+						}
+
+						string changeFormatStringTransaction = ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction;
+						using (Transaction  t = myStore.TransactionManager.BeginTransaction(changeFormatStringTransaction))
+						{
+							myCustomReferenceModesList[row].CustomFormatString = this.UglyFormatString(newText);
+							if (t.HasPendingChanges)
+							{
+								t.Commit();
+							}
+						}
+						break;
+					case Columns.ReferenceModeKind:
+						Debug.WriteLine("New text on Kind mode: " + newText);
+						break;
+				}
+			}
+			else
+			{
+				Transaction t = null;
+				bool success = false;
+
+				string addCustomReferenceModeTransaction = ResourceStrings.ModelReferenceModeEditorAddCustomReferenceModeTransaction;
+				using (t = myStore.TransactionManager.BeginTransaction(addCustomReferenceModeTransaction))
+				{
+					CustomReferenceMode newCustomReferenceMode = CustomReferenceMode.CreateAndInitializeCustomReferenceMode(this.myStore, new AttributeAssignment[] { new AttributeAssignment(CustomReferenceMode.NameMetaAttributeGuid, newText, this.myStore) });
+					newCustomReferenceMode.Model = this.myModel;
+					// Note that the Kind is automatically set to General on Commit
+
+					if (t.HasPendingChanges)
 					{
-						// We want to activate the kind dropdown for the new row.
-						// However, if we begin a label edit now before the current
-						// one is finished, then the control gets really confused, so
-						// we wait until the control is officially done--it will tell us
-						// via an event--so we can open the new dropdown.
-						VirtualTreeControl control = ORMDesignerPackage.ReferenceModeEditorWindow.TreeControl;
-						control.LabelEditControlChanged += new EventHandler(DelayActivateKindDropdown);
+						try
+						{
+							myIDidIt = true;
+							t.Commit();
+							success = true;
+						}
+						finally
+						{
+							myIDidIt = false;
+						}
 					}
 				}
-				return LabelEditResult.AcceptEdit;
+				if (success)
+				{
+					// We want to activate the kind dropdown for the new row.
+					// However, if we begin a label edit now before the current
+					// one is finished, then the control gets really confused, so
+					// we wait until the control is officially done--it will tell us
+					// via an event--so we can open the new dropdown.
+					VirtualTreeControl control = ORMDesignerPackage.ReferenceModeEditorWindow.TreeControl;
+					control.LabelEditControlChanged += new EventHandler(DelayActivateKindDropdown);
+				}
 			}
-			catch
-			{
-				return LabelEditResult.CancelEdit;
-			}
+			return LabelEditResult.AcceptEdit;
 		}
 		/// <summary>
 		/// Select the kind column, activate the edit control, and
