@@ -434,10 +434,11 @@ namespace Northface.Tools.ORM.ObjectModel
 									// roles.
 									foreach (ConstraintRoleSet roleSet in role.ConstraintRoleSetCollection)
 									{
-										if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+										Constraint constraint = roleSet.Constraint;
+										if (constraint.ConstraintType == ConstraintType.InternalUniqueness)
 										{
 											Debug.Assert(roleSet.RoleCollection.Count == 1);
-											roleSet.Remove();
+											constraint.Remove();
 											break;
 										}
 									}
