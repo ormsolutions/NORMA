@@ -61,8 +61,27 @@ namespace Northface.Tools.ORM.Shell
 		RoleBoxEnd,
 	}
 	#endregion // Shape enums
+
+	#region Other Options Enums
+	/// <summary>
+	/// Provide options for showing and hiding role names on object types
+	/// </summary>
+	public enum RoleNameDisplay
+	{
+		/// <summary>
+		/// Show role names
+		/// </summary>
+		On,
+		/// <summary>
+		/// Hide role names
+		/// </summary>
+		Off,
+	}
+	#endregion
+
 	/// <summary>
 	/// Options dialog for ORM designers
+	/// see https://svn.northface.edu/projects/orm2/wiki/HowToAddOptionPageOptions for adding options
 	/// </summary>
 	[Guid("B4ABD9FD-CE79-4B26-8D36-F345CB53B525")]
 	public class OptionsPage : DialogPage
@@ -113,6 +132,11 @@ namespace Northface.Tools.ORM.Shell
 		private const MandatoryDotPlacement MandatoryDotPlacement_Default = MandatoryDotPlacement.RoleBoxEnd;
 		private static MandatoryDotPlacement myCurrentMandatoryDotPlacement = MandatoryDotPlacement_Default;
 		private MandatoryDotPlacement myMandatoryDotPlacement;
+
+		private const RoleNameDisplay RoleNameDisplay_Default = RoleNameDisplay.On;
+		private static RoleNameDisplay myCurrentRoleNameDisplay = RoleNameDisplay_Default;
+		private RoleNameDisplay myRoleNameDisplay;
+
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -125,6 +149,7 @@ namespace Northface.Tools.ORM.Shell
 			myObjectTypeShape = myCurrentObjectTypeShape;
 			myObjectifiedFactShape = myCurrentObjectifiedFactShape;
 			myMandatoryDotPlacement = myCurrentMandatoryDotPlacement;
+			myRoleNameDisplay = myCurrentRoleNameDisplay;
 		}
 
 		/// <summary>
@@ -136,7 +161,8 @@ namespace Northface.Tools.ORM.Shell
 			// Get out early if none of the settings have changed
 			if (myCurrentMandatoryDotPlacement == myMandatoryDotPlacement &&
 				myCurrentObjectifiedFactShape == myObjectifiedFactShape &&
-				myCurrentObjectTypeShape == myObjectTypeShape)
+				myCurrentObjectTypeShape == myObjectTypeShape &&
+				myCurrentRoleNameDisplay == myRoleNameDisplay)
 			{
 				return;
 			}
@@ -145,6 +171,7 @@ namespace Northface.Tools.ORM.Shell
 			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
 			myCurrentObjectifiedFactShape = myObjectifiedFactShape;
 			myCurrentObjectTypeShape = myObjectTypeShape;
+			myCurrentRoleNameDisplay = myRoleNameDisplay;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			IVsRunningDocumentTable docTable = (IVsRunningDocumentTable) this.Site.GetService(typeof(IVsRunningDocumentTable));
@@ -260,6 +287,27 @@ namespace Northface.Tools.ORM.Shell
 		public static MandatoryDotPlacement CurrentMandatoryDotPlacement
 		{
 			get { return myCurrentMandatoryDotPlacement; }
+		}
+
+		/// <summary>
+		/// Display of role names
+		/// </summary>
+		[DefaultValue(RoleNameDisplay_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryAppearanceId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyRoleNameDisplayDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyRoleNameDisplayDisplayNameId)]
+		public RoleNameDisplay RoleNameDisplay
+		{
+			get { return myRoleNameDisplay; }
+			set { myRoleNameDisplay = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for RoleNameDisplay
+		/// </summary>
+		public static RoleNameDisplay CurrentRoleNameDisplay
+		{
+			get { return myCurrentRoleNameDisplay; }
 		}
 		#endregion // Accessor properties
 	}

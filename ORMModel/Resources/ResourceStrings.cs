@@ -196,6 +196,14 @@ namespace Northface.Tools.ORM
 		/// Display name of the Mandatory Dot placement
 		/// </summary>
 		public const string OptionsPagePropertyMandatoryDotDisplayNameId = "OptionsPage.Property.MandatoryDot.DisplayName";
+		/// <summary>
+		/// Description of the Role Name Display option
+		/// </summary>
+		public const string OptionsPagePropertyRoleNameDisplayDescriptionId = "OptionsPage.Property.RoleNameDisplay.Description";
+		/// <summary>
+		/// Display Name of the Role Name Display option
+		/// </summary>
+		public const string OptionsPagePropertyRoleNameDisplayDisplayNameId = "OptionsPage.Property.RoleNameDisplay.DisplayName";
 		#endregion // Public resource ids
 		#region Private resource ids
 		private const string ToolboxDefaultTabName_Id = "Toolbox.DefaultTabName";

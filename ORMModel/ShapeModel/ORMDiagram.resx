@@ -135,7 +135,7 @@
     <comment xml:space="preserve">This is the title of the category on the options page.</comment>
   </data>
   <data name="OptionsPage.Property.MandatoryDot.Description">
-    <value xml:space="preserve">Specify which end of the role connector you with to place mandatory dots.</value>
+    <value xml:space="preserve">Specify which end of the role connector you wish to place mandatory dots.</value>
     <comment xml:space="preserve">The description for the mandatory dot property.</comment>
   </data>
   <data name="OptionsPage.Property.MandatoryDot.DisplayName">
@@ -157,6 +157,14 @@
   <data name="OptionsPage.Property.ObjectTypeShape.DisplayName">
     <value xml:space="preserve">Object Type Shape</value>
     <comment xml:space="preserve">The human readable name for the object shape property</comment>
+  </data>
+  <data name="OptionsPage.Property.RoleNameDisplay.Description">
+    <value xml:space="preserve">Object Types can have Role Names associated with them. This options turns the display of role names On or Off.</value>
+    <comment xml:space="preserve">The description for the Display Role Names option.</comment>
+  </data>
+  <data name="OptionsPage.Property.RoleNameDisplay.DisplayName">
+    <value xml:space="preserve">Display Role Names</value>
+    <comment xml:space="preserve">The display name for the Display Role Names option.</comment>
   </data>
   <data name="ORMModelBrowser.WindowTitle">
     <value xml:space="preserve">ORM Model Browser</value>
