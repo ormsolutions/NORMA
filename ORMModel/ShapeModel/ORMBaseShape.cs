@@ -114,6 +114,10 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override string GetClassName()
 		{
+			if (Store.Disposed)
+			{
+				return GetType().Name;
+			}
 			ModelElement element = ModelElement;
 			return (element != null) ? element.GetClassName() : base.GetClassName();
 		}

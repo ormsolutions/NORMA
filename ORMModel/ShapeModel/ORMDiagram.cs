@@ -339,6 +339,13 @@ namespace Northface.Tools.ORM.ShapeModel
 			return (element != null) ? element.GetComponentName() : base.GetComponentName();
 		}
 		/// <summary>
+		/// Crash fix, the shell is calling back after the store is disposed. Catch the case.
+		/// </summary>
+		public override string GetClassName()
+		{
+			return Store.Disposed ? GetType().Name : base.GetClassName();
+		}
+		/// <summary>
 		/// Block display of the diagram's name, which is displayed beside the
 		/// Name for the underlying model if we let it through
 		/// </summary>
