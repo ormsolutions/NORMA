@@ -146,6 +146,10 @@
     <value xml:space="preserve">A role player cannot be the type objectifying the role's parent fact type.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to use the same type as both a role player and the nesting type of a fact type.</comment>
   </data>
+  <data name="ModelException.InternalConstraint.InconsistentRoleOwners">
+    <value xml:space="preserve">All roles in an internal constraint must be owned by the same fact type.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to add roles from different fact types to a role set owned by an internal constraint.</comment>
+  </data>
   <data name="ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions">
     <value xml:space="preserve">Conditions of the uniqueness constraint, other constraints on the owning fact type, or the types of attached role players are incompatible with making it the preferred uniqueness constraint.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to set an internal uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>

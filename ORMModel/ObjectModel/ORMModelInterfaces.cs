@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Modeling;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
+	#region IORMToolServices interface
 	/// <summary>
 	/// An interface that should be implemented by any
 	/// store that hosts ORM-derived object models. This
@@ -18,6 +19,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		IORMToolTaskProvider TaskProvider { get;}
 	}
+	#endregion // IORMToolServices interface
+	#region IRepresentedModelElements interface
 	/// <summary>
 	/// Retrieve the ModelElement associated with object. Implemented
 	/// on objects that are directly associated with task items.
@@ -31,6 +34,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		ModelElement[] GetRepresentedElements();
 	}
+	#endregion // IRepresentedModelElements interface
+	#region IORMToolTaskItem interface
 	/// <summary>
 	/// An item that can be added to a task provider. At design time,
 	/// this item will appear in the VS task list. When the model is
@@ -57,6 +62,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		// UNDONE: This interface should be extended to allow
 		// more options.
 	}
+	#endregion // IORMToolTaskItem interface
+	#region IORMToolTaskProvider interface
 	/// <summary>
 	/// A service interface used for creating, adding, and removing
 	/// tasks.
@@ -94,4 +101,5 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>true if navigation successful</returns>
 		bool NavigateTo(IORMToolTaskItem task);
 	}
+	#endregion // IORMToolTaskProvider interface
 }

@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 namespace Northface.Tools.ORM.ObjectModel
 {
+	#region Constraint class
 	public partial class Constraint : INamedElementDictionaryChild
 	{
 		#region Constraint specific
@@ -81,6 +82,86 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
+	#endregion // Constraint class
+	#region InternalConstraint class
+	public partial class InternalConstraint
+	{
+		#region InternalConstraint Specific
+		/// <summary>
+		/// Ensure that the link directly from the
+		/// constraint to the fact type exists. This
+		/// method should be called from inside a transaction
+		/// and will throw
+		/// </summary>
+		/// <param name="role"></param>
+		private void EnsureFactConstraintForRole(Role role)
+		{
+			FactType existingFactType = FactType;
+			FactType candidateFactType = role.FactType;
+			if (candidateFactType != null)
+			{
+				if (existingFactType == null)
+				{
+					FactType = candidateFactType;
+				}
+				else if (!object.ReferenceEquals(existingFactType, candidateFactType))
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionInternalConstraintInconsistentRoleOwners);
+				}
+			}
+		}
+		#endregion // InternalConstraint Specific
+		#region InternalFactConstraint synchronization rules
+		/// <summary>
+		/// If a role is added after the role set is already attached,
+		/// then create the corresponding ExternalFactConstraint and ExternalRoleConstraint
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSetHasRole))]
+		private class ConstraintRoleSetHasRoleAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSetHasRole link = e.ModelElement as ConstraintRoleSetHasRole;
+				InternalConstraint constraint = link.ConstraintRoleSetCollection.Constraint as InternalConstraint;
+				if (constraint != null)
+				{
+					// Note that this will throw if the role owner
+					// is incorrect
+					constraint.EnsureFactConstraintForRole(link.RoleCollection);
+				}
+			}
+		}
+		/// <summary>
+		/// If a role set is added that already contains roles, then
+		/// make sure the corresponding ExternalFactConstraint and ExternalRoleConstraint
+		/// objects are created for each role.
+		/// </summary>
+		[RuleOn(typeof(InternalConstraintHasRoleSet))]
+		private class ConstraintHasRoleSetAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				InternalConstraintHasRoleSet link = e.ModelElement as InternalConstraintHasRoleSet;
+				InternalConstraintRoleSet roleSet = link.RoleSet;
+				RoleMoveableCollection roles = roleSet.RoleCollection;
+				int roleCount = roles.Count;
+				if (roleCount != 0)
+				{
+					InternalConstraint constraint = link.InternalConstraint;
+					for (int i = 0; i < roleCount; ++i)
+					{
+						Role role = roles[i];
+						// Call for each role, not just the first. This
+						// enforces that all roles are in the same fact type.
+						constraint.EnsureFactConstraintForRole(role);
+					}
+				}
+			}
+		}
+		#endregion // InternalFactConstraint synchronization rules
+	}
+	#endregion // InternalConstraint class
+	#region ExternalConstraint class
 	public partial class ExternalConstraint : IModelErrorOwner
 	{
 		#region ExternalConstraint Specific
@@ -94,33 +175,44 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				IList untypedList = GetElementLinks(ExternalFactConstraint.ConstraintCollectionMetaRoleGuid);
+				IList untypedList = GetElementLinks(ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuid);
 				int elementCount = untypedList.Count;
 				ExternalFactConstraint[] typedList = new ExternalFactConstraint[elementCount];
 				untypedList.CopyTo(typedList, 0);
 				return typedList;
 			}
 		}
-		private static ExternalFactConstraint EnsureFactConstraintForRole(Role role, ExternalConstraint constraint)
+		/// <summary>
+		/// Ensure that an ExternalFactConstraint exists between the
+		/// fact type owning the passed in role and this constraint.
+		/// ExternalFactConstraint links are generated automatically
+		/// and should never be directly created.
+		/// </summary>
+		/// <param name="role">The role to attach</param>
+		/// <returns>The associated ExternalFactConstraint relationship</returns>
+		private ExternalFactConstraint EnsureFactConstraintForRole(Role role)
 		{
 			ExternalFactConstraint retVal = null;
 			FactType fact = role.FactType;
 			if (fact != null)
 			{
-				IList<ExternalFactConstraint> existingFactConstraints = fact.ExternalFactConstraintCollection;
-				int listCount = existingFactConstraints.Count;
-				for (int i = 0; i < listCount; ++i)
+				while (retVal == null) // Will run at most twice
 				{
-					ExternalFactConstraint testFactConstraint = existingFactConstraints[i];
-					if (testFactConstraint.ConstraintCollection == constraint)
+					IList existingFactConstraints = fact.GetElementLinks(ExternalFactConstraint.FactTypeCollectionMetaRoleGuid);
+					int listCount = existingFactConstraints.Count;
+					for (int i = 0; i < listCount; ++i)
 					{
-						retVal = testFactConstraint;
-						break;
+						ExternalFactConstraint testFactConstraint = (ExternalFactConstraint)existingFactConstraints[i];
+						if (testFactConstraint.ExternalConstraintCollection == this)
+						{
+							retVal = testFactConstraint;
+							break;
+						}
 					}
-				}
-				if (retVal == null)
-				{
-					fact.ConstraintCollection.Add(constraint);
+					if (retVal == null)
+					{
+						fact.ExternalConstraintCollection.Add(this);
+					}
 				}
 			}
 			return retVal;
@@ -140,7 +232,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				ExternalConstraint constraint = link.ConstraintRoleSetCollection.Constraint as ExternalConstraint;
 				if (constraint != null)
 				{
-					ExternalFactConstraint factConstraint = ExternalConstraint.EnsureFactConstraintForRole(link.RoleCollection, constraint);
+					ExternalFactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.RoleCollection);
 					if (factConstraint != null)
 					{
 						factConstraint.ConstrainedRoleCollection.Add(link);
@@ -170,7 +262,7 @@ namespace Northface.Tools.ORM.ObjectModel
 					for (int i = 0; i < roleCount; ++i)
 					{
 						ConstraintRoleSetHasRole roleLink = (ConstraintRoleSetHasRole)roleLinks[i];
-						ExternalFactConstraint factConstraint = ExternalConstraint.EnsureFactConstraintForRole(roleLink.RoleCollection, constraint);
+						ExternalFactConstraint factConstraint = constraint.EnsureFactConstraintForRole(roleLink.RoleCollection);
 						if (factConstraint != null)
 						{
 							factConstraint.ConstrainedRoleCollection.Add(roleLink);
@@ -307,6 +399,102 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // IModelErrorOwner Implementation
 	}
+	#endregion // ExternalConstraint class
+	#region FactConstraint classes
+	public partial class InternalFactConstraint : IFactConstraint
+	{
+		#region IFactConstraint Implementation
+		Constraint IFactConstraint.Constraint
+		{
+			get
+			{
+				return Constraint;
+			}
+		}
+		/// <summary>
+		/// Implements IFactConstraint.Constraint
+		/// </summary>
+		protected Constraint Constraint
+		{
+			get
+			{
+				return InternalConstraintCollection;
+			}
+		}
+		IList<Role> IFactConstraint.RoleCollection
+		{
+			get
+			{
+				return RoleCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IFactConstraint.RoleCollection
+		/// </summary>
+		[CLSCompliant(false)]
+		protected IList<Role> RoleCollection
+		{
+			get
+			{
+				RoleMoveableCollection roles = InternalConstraintCollection.RoleSet.RoleCollection;
+				int roleCount = roles.Count;
+				Role[] typedList = new Role[roleCount];
+				Debug.Assert(roleCount > 0); // This object should not exist otherwise
+				roles.CopyTo(typedList, 0);
+				return typedList;
+			}
+		}
+		#endregion // IFactConstraint Implementation
+	}
+	public partial class ExternalFactConstraint : IFactConstraint
+	{
+		#region IFactConstraint Implementation
+		Constraint IFactConstraint.Constraint
+		{
+			get
+			{
+				return Constraint;
+			}
+		}
+		/// <summary>
+		/// Implements IFactConstraint.Constraint
+		/// </summary>
+		protected Constraint Constraint
+		{
+			get
+			{
+				return ExternalConstraintCollection;
+			}
+		}
+		IList<Role> IFactConstraint.RoleCollection
+		{
+			get
+			{
+				return RoleCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IFactConstraint.RoleCollection
+		/// </summary>
+		[CLSCompliant(false)]
+		protected IList<Role> RoleCollection
+		{
+			get
+			{
+				ConstraintRoleSetHasRoleMoveableCollection roleSetLinks = ConstrainedRoleCollection;
+				int roleSetLinksCount = roleSetLinks.Count;
+				Role[] typedList = new Role[roleSetLinksCount];
+				for (int i = 0; i < roleSetLinksCount; ++i)
+				{
+					typedList[i] = roleSetLinks[i].RoleCollection;
+				}
+				return typedList;
+			}
+		}
+		#endregion // IFactConstraint Implementation
+	}
+	#endregion // FactConstraint classes
+	#region ConstraintRoleSet classes
 	public partial class ConstraintRoleSet
 	{
 		#region ConstraintRoleSet Specific
@@ -346,6 +534,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // ConstraintRoleSet overrides
 	}
+	#endregion // ConstraintRoleSet classes
+	#region InternalUniquenessConstraint class
 	public partial class InternalUniquenessConstraint
 	{
 		#region CustomStorage handlers
@@ -504,6 +694,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // InternalUniquenessConstraintChangeRule class
 	}
+	#endregion // InternalUniquenessConstraint class
 	#region PreferredIdentifierAddedRule class
 	/// <summary>
 	/// Verify that all preconditions hold for adding a primary
@@ -754,6 +945,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // TestRemovePreferredIdentifierRule class
+	#region ExternalUniquenessConstraint class
 	public partial class ExternalUniquenessConstraint
 	{
 		#region CustomStorage handlers
@@ -839,6 +1031,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // ExternalUniquenessConstraintChangeRule class
 	}
+	#endregion // ExternalUniquenessConstraint class
 	#region ModelError classes
 	public partial class TooManyRoleSetsError : IRepresentModelElements
 	{

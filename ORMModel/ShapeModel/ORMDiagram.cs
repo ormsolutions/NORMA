@@ -133,7 +133,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				{
 					ExternalFactConstraint modelLink = constraintLink.ModelElement as ExternalFactConstraint;
 					FactType attachedFact = modelLink.FactTypeCollection;
-					Constraint constraint = modelLink.ConstraintCollection;
+					Constraint constraint = modelLink.ExternalConstraintCollection;
 					NodeShape fromShape;
 					NodeShape toShape;
 					if (null != (fromShape = FindShapeForElement(constraint) as NodeShape) &&

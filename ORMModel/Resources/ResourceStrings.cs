@@ -230,6 +230,7 @@ namespace Northface.Tools.ORM
 		private const string ModelExceptionIsMandatoryRequiresAttachedFactType_Id = "ModelException.Role.IsMandatoryRequiresAttachedFactType";
 		private const string ModelExceptionPreferredIdentifierMustBeUniquenessConstraint_Id = "ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint";
 		private const string ModelExceptionInvalidInternalPreferredIdentifierPreConditions_Id = "ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions";
+		private const string ModelExceptionInternalConstraintInconsistentRoleOwners_Id = "ModelException.InternalConstraint.InconsistentRoleOwners";
 		private const string CommandDeleteFactTypeText_Id = "Command.DeleteFactType.Text";
 		private const string CommandDeleteObjectTypeText_Id = "Command.DeleteObjectType.Text";
 		private const string ModelErrorConstraintHasTooFewRoleSetsText_Id = "ModelError.Constraint.TooFewRoleSets.Text";
@@ -568,6 +569,17 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Model, ModelExceptionInvalidInternalPreferredIdentifierPreConditions_Id);
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to add
+		/// roles from different fact types to a role set owned by an internal constraint.
+		/// </summary>
+		public static string ModelExceptionInternalConstraintInconsistentRoleOwners
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionInternalConstraintInconsistentRoleOwners_Id);
 			}
 		}
 		/// <summary>

@@ -2414,13 +2414,13 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region ConstraintCollection's Generated Accessor Code
+		#region ExternalConstraintCollection's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ExternalConstraintMoveableCollection ConstraintCollection
+		public Northface.Tools.ORM.ObjectModel.ExternalConstraintMoveableCollection ExternalConstraintCollection
 		{
-			get { return new Northface.Tools.ORM.ObjectModel.ExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.FactTypeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ConstraintCollectionMetaRoleGuid); }
+			get { return new Northface.Tools.ORM.ObjectModel.ExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.FactTypeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuid); }
 		}
 		#endregion
 		#region ReadingCollection's Generated Accessor Code
@@ -2476,6 +2476,15 @@ namespace Northface.Tools.ORM.ObjectModel
 					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError), newRoles);
 				}
 			}
+		}
+		#endregion
+		#region InternalConstraintCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.InternalConstraintMoveableCollection InternalConstraintCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.InternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactTypeMetaRoleGuid, Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -3477,7 +3486,407 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region FactType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactTypeMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.FactType)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.InternalFactConstraint), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
+	#region Collection Classes for InternalConstraint
+	/// <summary>
+	/// Northface.Tools.ORM.ObjectModel.InternalConstraint Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class InternalConstraintMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public InternalConstraintMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.InternalConstraint[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Northface.Tools.ORM.ObjectModel.InternalConstraint at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.InternalConstraint this[System.Int32 index]
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.InternalConstraint)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.InternalConstraint value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Northface.Tools.ORM.ObjectModel.InternalConstraint rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.InternalConstraint rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
 	#region InternalConstraint's Generated Constructor Code
 	public abstract partial class InternalConstraint
 	{
@@ -3895,7 +4304,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection FactTypeCollection
 		{
-			get { return new Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.FactTypeCollectionMetaRoleGuid); }
+			get { return new Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.FactTypeCollectionMetaRoleGuid); }
 		}
 		#endregion
 		#region RoleSetCollection's Generated Accessor Code
@@ -9984,24 +10393,24 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.MetaRelationshipGuidString);
 		#endregion
 
-		#region ConstraintCollection's Generated MetaRole Code
+		#region ExternalConstraintCollection's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
 		/// </summary>
-		public const System.String ConstraintCollectionMetaRoleGuidString = "b8e2c375-a1c8-408b-90bc-b4ce0ba65b6f";
+		public const System.String ExternalConstraintCollectionMetaRoleGuidString = "b8e2c375-a1c8-408b-90bc-b4ce0ba65b6f";
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ConstraintCollectionMetaRoleGuidString);
+		public static readonly System.Guid ExternalConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ConstraintCollection")]
-		public  Northface.Tools.ORM.ObjectModel.ExternalConstraint ConstraintCollection
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ExternalConstraintCollection")]
+		public  Northface.Tools.ORM.ObjectModel.ExternalConstraint ExternalConstraintCollection
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.ExternalConstraint)this.GetRolePlayer(ConstraintCollectionMetaRoleGuid); }
-			set { this.SetRolePlayer(ConstraintCollectionMetaRoleGuid, value); }
+			get { return (Northface.Tools.ORM.ObjectModel.ExternalConstraint)this.GetRolePlayer(ExternalConstraintCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ExternalConstraintCollectionMetaRoleGuid, value); }
 		}
 		#endregion
 		#region FactTypeCollection's Generated MetaRole Code
@@ -12251,6 +12660,118 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.InternalFactConstraint")]
+	public  partial class InternalFactConstraint : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region InternalFactConstraint's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "e3b478ea-fe89-4367-a178-cce609e667b2";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.MetaRelationshipGuidString);
+		#endregion
+
+		#region InternalConstraintCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String InternalConstraintCollectionMetaRoleGuidString = "47c8046a-b913-4730-bd83-c30b188672a2";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid InternalConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollection")]
+		public  Northface.Tools.ORM.ObjectModel.InternalConstraint InternalConstraintCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.InternalConstraint)this.GetRolePlayer(InternalConstraintCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(InternalConstraintCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region FactType's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FactTypeMetaRoleGuidString = "d0f8626a-095d-4a76-bbf1-389d9a62b1bc";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FactTypeMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactTypeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactTypeMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactType")]
+		public  Northface.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeMetaRoleGuid); }
+			set { this.SetRolePlayer(FactTypeMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region InternalFactConstraint's Generated Constructor Code
+	public  partial class InternalFactConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public InternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static InternalFactConstraint CreateInternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (InternalFactConstraint)store.ElementFactory.CreateElementLink(typeof(InternalFactConstraint), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static InternalFactConstraint CreateAndInitializeInternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (InternalFactConstraint)store.ElementFactory.CreateElementLink(typeof(InternalFactConstraint), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for InternalFactConstraint
+	/// <summary>
+	/// InternalFactConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.InternalFactConstraint))]
+	public sealed class InternalFactConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public InternalFactConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.InternalFactConstraint(store, bag);
 		}
 	}
 	#endregion

@@ -118,7 +118,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				{
 					// Make sure the object type, fact type, and link
 					// are displayed on the diagram
-					ExternalConstraint constraint = link.ConstraintCollection;
+					ExternalConstraint constraint = link.ExternalConstraintCollection;
 					FactType factType = link.FactTypeCollection;
 					if (factType != null)
 					{
