@@ -274,6 +274,24 @@
   <data name="Toolbox.InclusiveOrConstraint.Tooltip.Id">
     <value xml:space="preserve">New Inclusive Or Constraint</value>
   </data>
+  <data name="Toolbox.InternalUniquenessConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/8DAwP+AgID/AAD//wD/AP8A/////wAA//8A/////wD//////6qq
+        qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq3dqt2q3a
+        rd3d2q3ardqt3aqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+        qqqqqqqq
+</value>
+  </data>
+  <data name="Toolbox.InternalUniquenessConstraint.Caption.Id">
+    <value xml:space="preserve">InternalUniquenessConstraint</value>
+  </data>
+  <data name="Toolbox.InternalUniquenessConstraint.Item.Id">
+    <value xml:space="preserve">Toolbox.InternalUniquenessConstraint.Item.Id</value>
+  </data>
+  <data name="Toolbox.InternalUniquenessConstraint.Tooltip.Id">
+    <value xml:space="preserve">New Internal Uniqueness Constraint</value>
+  </data>
   <data name="Toolbox.RoleConnector.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA

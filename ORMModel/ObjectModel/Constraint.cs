@@ -821,7 +821,10 @@ namespace Northface.Tools.ORM.ObjectModel
 				RoleMoveableCollection roles = RoleCollection;
 				int roleCount = roles.Count;
 				Role[] typedList = new Role[roleCount];
-				roles.CopyTo(typedList, 0);
+				if (roleCount != 0)
+				{
+					roles.CopyTo(typedList, 0);
+				}
 				return typedList;
 			}
 		}

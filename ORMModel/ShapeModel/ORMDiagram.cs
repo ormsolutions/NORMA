@@ -27,6 +27,16 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public const string ORMDiagramConnectExternalConstraintFilterString = "ORMDiagramConnectExternalConstraintFilterString";
 		/// <summary>
+		/// The filter string used to create an internal constraint. Very similar to a
+		/// normal action, except the internal constraint connector is activated on completion
+		/// of the action.
+		/// </summary>
+		public const string ORMDiagramInternalUniquenessConstraintFilterString = "ORMDiagramInternalUniquenessConstraintFilterString";
+		/// <summary>
+		/// The filter string used to connect role sequences to internal uniqueness constraints
+		/// </summary>
+		public const string ORMDiagramConnectInternalUniquenessConstraintFilterString = "ORMDiagramConnectInternalUniquenessConstraintFilterString";
+		/// <summary>
 		/// The filter string used to connect a role to its role player object type
 		/// </summary>
 		public const string ORMDiagramConnectRoleFilterString = "ORMDiagramConnectRoleFilterString";
@@ -205,6 +215,11 @@ namespace Northface.Tools.ORM.ShapeModel
 				case ResourceStrings.ToolboxTernaryFactTypeItemId:
 					roleArity = 3;
 					break;
+				case ResourceStrings.ToolboxInternalUniquenessConstraintItemId:
+					InternalUniquenessConstraint iuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
+					group.AddGraph(iuc);
+					retVal = group.CreatePrototype(iuc);
+					break;
 				case ResourceStrings.ToolboxExternalUniquenessConstraintItemId:
 					ExternalUniquenessConstraint euc = ExternalUniquenessConstraint.CreateExternalUniquenessConstraint(store);
 					group.AddGraph(euc);
@@ -266,12 +281,9 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // Toolbox initialization
 		#region Toolbox support
-		private ExternalConstraintConnectAction myExternalConstraintConnectAction;
-		private ExternalConstraintAction myExternalConstraintAction;
-		private RoleDragPendingAction myRoleDragPendingAction;
-		private RoleConnectAction myRoleConnectAction;
 		/// <summary>
-		/// Enable our toolbox actions
+		/// Enable our toolbox actions. Additional filters recognized in this
+		/// routine are added in ORMEditorFactory.GetToolboxItems.
 		/// </summary>
 		public override void OnViewMouseEnter(DiagramPointEventArgs pointArgs)
 		{
@@ -287,6 +299,14 @@ namespace Northface.Tools.ORM.ShapeModel
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramExternalConstraintFilterString))
 				{
 					action = ExternalConstraintAction;
+				}
+				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramConnectInternalUniquenessConstraintFilterString))
+				{
+					action = InternalUniquenessConstraintConnectAction;
+				}
+				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramInternalUniquenessConstraintFilterString))
+				{
+					action = InternalUniquenessConstraintAction;
 				}
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramConnectRoleFilterString))
 				{
@@ -348,7 +368,13 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		private ExternalConstraintConnectAction ExternalConstraintConnectAction
+		#region External constraint action
+		private ExternalConstraintConnectAction myExternalConstraintConnectAction;
+		private ExternalConstraintAction myExternalConstraintAction;
+		/// <summary>
+		/// The connect action used to connect an external constraint to its role sequences
+		/// </summary>
+		public ExternalConstraintConnectAction ExternalConstraintConnectAction
 		{
 			get
 			{
@@ -359,13 +385,24 @@ namespace Northface.Tools.ORM.ShapeModel
 				return myExternalConstraintConnectAction;
 			}
 		}
-		private ExternalConstraintAction ExternalConstraintAction
+		/// <summary>
+		/// Create the action used to connect an external constraint to its role sequences
+		/// </summary>
+		/// <returns>ExternalConstraintConnectAction instance</returns>
+		protected virtual ExternalConstraintConnectAction CreateExternalConstraintConnectAction()
+		{
+			return new ExternalConstraintConnectAction(this);
+		}
+		/// <summary>
+		/// The action used to drop an external constraint from the toolbox
+		/// </summary>
+		public  ExternalConstraintAction ExternalConstraintAction
 		{
 			get
 			{
 				if (myExternalConstraintAction == null)
 				{
-					myExternalConstraintAction = new ExternalConstraintAction(this);
+					myExternalConstraintAction = CreateExternalConstraintAction();
 					myExternalConstraintAction.AfterMouseActionDeactivated += delegate(object sender, DiagramEventArgs e)
 					{
 						ExternalConstraintAction action = sender as ExternalConstraintAction;
@@ -380,6 +417,78 @@ namespace Northface.Tools.ORM.ShapeModel
 				return myExternalConstraintAction;
 			}
 		}
+		/// <summary>
+		/// Create the action used to add an external constraint from the toolbox
+		/// </summary>
+		/// <returns>ExternalConstraintAction instance</returns>
+		protected virtual ExternalConstraintAction CreateExternalConstraintAction()
+		{
+			return new ExternalConstraintAction(this);
+		}
+		#endregion // External constraint action
+		#region Internal uniqueness constraint action
+		private InternalUniquenssConstraintAction myInternalUniquenessConstraintAction;
+		private InternalUniquenessConstraintConnectAction myInternalUniquenessConstraintConnectAction;
+		/// <summary>
+		/// The connect action used to connect an internal uniqueness constraint
+		/// to its roles.
+		/// </summary>
+		public InternalUniquenessConstraintConnectAction InternalUniquenessConstraintConnectAction
+		{
+			get
+			{
+				if (myInternalUniquenessConstraintConnectAction == null)
+				{
+					myInternalUniquenessConstraintConnectAction = CreateInternalUniquenessConstraintConnectAction();
+				}
+				return myInternalUniquenessConstraintConnectAction;
+			}
+		}
+		/// <summary>
+		/// Create the connect action used to add an internal uniqueness constraint from the toolbox
+		/// </summary>
+		/// <returns>InternalUniquenssConstraintAction instance</returns>
+		protected virtual InternalUniquenessConstraintConnectAction CreateInternalUniquenessConstraintConnectAction()
+		{
+			return new InternalUniquenessConstraintConnectAction(this);
+		}
+		/// <summary>
+		/// The action used to add an internal uniqueness constraint from the toolbox
+		/// </summary>
+		public InternalUniquenssConstraintAction InternalUniquenessConstraintAction
+		{
+			get
+			{
+				if (myInternalUniquenessConstraintAction == null)
+				{
+					myInternalUniquenessConstraintAction = CreateInternalUniquenessConstraintAction();
+					myInternalUniquenessConstraintAction.AfterMouseActionDeactivated += delegate(object sender, DiagramEventArgs e)
+					{
+						InternalUniquenssConstraintAction action = sender as InternalUniquenssConstraintAction;
+						if (action.ActionCompleted)
+						{
+							InternalUniquenessConstraint constraint = action.AddedConstraint;
+							FactTypeShape addedToShape = action.DropTargetShape;
+							Debug.Assert(constraint != null); // ActionCompleted should be false otherwise
+							InternalUniquenessConstraintConnectAction.ChainMouseAction(addedToShape, constraint, e.DiagramClientView);
+						}
+					};
+				}
+				return myInternalUniquenessConstraintAction;
+			}
+		}
+		/// <summary>
+		/// Create the connect action used to connect internal uniqueness constrant roles
+		/// </summary>
+		/// <returns>InternalUniquenssConstraintAction instance</returns>
+		protected virtual InternalUniquenssConstraintAction CreateInternalUniquenessConstraintAction()
+		{
+			return new InternalUniquenssConstraintAction(this);
+		}
+		#endregion Internal uniqueness constraint action
+		#region Role drag action
+		private RoleDragPendingAction myRoleDragPendingAction;
+		private RoleConnectAction myRoleConnectAction;
 		/// <summary>
 		/// The drag action used by a role box to begin dragging.
 		/// The default implementation chains to a RoleConnectAction
@@ -401,7 +510,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Create the drag action used for the RoleDragPendingAction property
 		/// </summary>
 		/// <returns>RoleDragPendingAction instance</returns>
-		protected RoleDragPendingAction CreateRoleDragPendingAction()
+		protected virtual RoleDragPendingAction CreateRoleDragPendingAction()
 		{
 			return new RoleDragPendingAction(this);
 		}
@@ -425,10 +534,11 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Create the connect action used to connect roles to their role players
 		/// </summary>
 		/// <returns>RoleConnectAction instance</returns>
-		protected RoleConnectAction CreateRoleConnectAction()
+		protected virtual RoleConnectAction CreateRoleConnectAction()
 		{
 			return new RoleConnectAction(this);
 		}
+		#endregion // Role drag action
 		#endregion // Toolbox support
 		#region Other base overrides
 		/// <summary>
@@ -455,8 +565,29 @@ namespace Northface.Tools.ORM.ShapeModel
 					disposeMe.Dispose();
 				}
 
+				disposeMe = myInternalUniquenessConstraintAction as IDisposable;
+				myInternalUniquenessConstraintAction = null;
+				if (disposeMe != null)
+				{
+					disposeMe.Dispose();
+				}
+
+				disposeMe = myInternalUniquenessConstraintConnectAction as IDisposable;
+				myInternalUniquenessConstraintConnectAction = null;
+				if (disposeMe != null)
+				{
+					disposeMe.Dispose();
+				}
+
 				disposeMe = myRoleDragPendingAction as IDisposable;
 				myRoleDragPendingAction = null;
+				if (disposeMe != null)
+				{
+					disposeMe.Dispose();
+				}
+
+				disposeMe = myRoleConnectAction as IDisposable;
+				myRoleConnectAction = null;
 				if (disposeMe != null)
 				{
 					disposeMe.Dispose();

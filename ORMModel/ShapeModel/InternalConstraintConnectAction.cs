@@ -13,27 +13,41 @@ using Northface.Tools.ORM.ObjectModel;
 namespace Northface.Tools.ORM.ShapeModel
 {
 	/// <summary>
-	/// A ConnectAction to add role sequences to an external constraint
+	/// A ConnectAction to add role sequences to an Internal constraint
 	/// </summary>
 	[CLSCompliant(true)]
-	public class ExternalConstraintConnectAction : ConnectAction
+	public class InternalUniquenessConstraintConnectAction : ConnectAction
 	{
-		#region ExternalConstraintConnectionType class
+
+		/// <summary>
+		/// Override DoPaintFeedback in order to stop connect line from drawing when mouse
+		/// is over invalid object. We won't do anything.
+		/// </summary>
+		/// <param name="e"></param>
+		public override void DoPaintFeedback(DiagramPaintEventArgs e)
+		{
+		}
+
+		#region InternalUniquenessConstraintConnectionType class
 		/// <summary>
 		/// The ConnectionType used with this ConnectAction. The type
 		/// is a singleton, holds all of the context-independent logic,
 		/// and operates directly on shape elements.
 		/// </summary>
-		protected class ExternalConstraintConnectionType : ConnectionType
+		protected class InternalUniquenessConstraintConnectionType : ConnectionType
 		{
 			/// <summary>
-			/// The singleton ExternalConstraintConnectionType instance
+			/// The singleton InternalConstraintConnectionType instance
 			/// </summary>
-			public static new readonly ExternalConstraintConnectionType Instance = new ExternalConstraintConnectionType();
+			public static new readonly InternalUniquenessConstraintConnectionType Instance = new InternalUniquenessConstraintConnectionType();
 			/// <summary>
-			/// An array of one element containing the singleton ExternalConstraintConnectionType instance
+			/// An array of one element containing the singleton InternalUniquenessConstraintConnectionType instance
 			/// </summary>
-			public static readonly ConnectionType[] InstanceArray = {Instance};
+			public static readonly ConnectionType[] InstanceArray = { Instance };
+			/// <summary>
+			/// Enforce use static properties to get singleton.
+			/// </summary>
+			protected InternalUniquenessConstraintConnectionType() { }
 			/// <summary>
 			/// Called as the pointer is moved over potential targets after a source is selected
 			/// So should be pretty quick
@@ -41,24 +55,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			/// <remarks>
 			/// The cursor can change dependant on CanCreateConnection when this returns true
 			/// When this returns false, the control falls back to
-			/// ExternalConstraintConectAction.
+			/// InternalUniquenessConstraintConectAction.
 			/// </remarks>
 			/// <param name="sourceShapeElement">ShapeElement</param>
 			/// <param name="targetShapeElement">ShapeElement</param>
 			/// <returns></returns>
 			public override bool IsValidSourceAndTarget(ShapeElement sourceShapeElement, ShapeElement targetShapeElement)
 			{
-				// We support attaching from an external constraint shape to a fact type shape. However, to
-				// get warning text on the drag action we need to get through to CanCreateConnection, so we
-				// are more lenient here.
-				bool retVal = false;
-				if (sourceShapeElement is ExternalConstraintShape)
-				{
-					retVal = targetShapeElement is FactTypeShape ||
-						object.ReferenceEquals(targetShapeElement, sourceShapeElement.Diagram) ||
-						object.ReferenceEquals(sourceShapeElement, targetShapeElement);
-				}
-				return retVal;
+				return (object.ReferenceEquals(targetShapeElement, sourceShapeElement.Diagram) || object.ReferenceEquals(targetShapeElement, sourceShapeElement));
 			}
 			/// <summary>
 			/// Used for more in-depth checking before ConnectionType.CreateConnection is called, and
@@ -71,17 +75,21 @@ namespace Northface.Tools.ORM.ShapeModel
 			public override bool CanCreateConnection(ShapeElement sourceShapeElement, ShapeElement targetShapeElement, ref string connectionWarning)
 			{
 				bool retVal = false;
-				if (sourceShapeElement is ExternalConstraintShape)
+				if (sourceShapeElement is FactTypeShape)
 				{
-					if (targetShapeElement is FactTypeShape)
+					if (object.ReferenceEquals(sourceShapeElement, targetShapeElement))
 					{
+						
 						// UNDONE: Constrain this, this is overly generous
 						retVal = true;
 					}
 					else
 					{
 						Debug.Assert(IsValidSourceAndTarget(sourceShapeElement, targetShapeElement)); // The condition that got us here
-						connectionWarning = ResourceStrings.ExternalConstraintConnectActionInstructions;
+						if (object.ReferenceEquals(targetShapeElement, sourceShapeElement.Diagram))
+						{
+							connectionWarning = ResourceStrings.InternalUniquenessConstraintConnectActionInstructions;
+						}
 						// Let the click through for the diagram to generate a completion request so we can
 						// effect a cancel by ignoring it.
 						retVal = object.ReferenceEquals(targetShapeElement, sourceShapeElement.Diagram);
@@ -90,7 +98,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				return retVal;
 			}
 			/// <summary>
-			/// Create a connection between an ExternalConstraintShape and a FactType. Roles
+			/// Create a connection between a FactTypeShape and a FactType. Roles
 			/// used in the connection are stored with the currently active connect action.
 			/// </summary>
 			/// <param name="sourceShapeElement">The source of the requested connection</param>
@@ -98,35 +106,20 @@ namespace Northface.Tools.ORM.ShapeModel
 			/// <param name="paintFeedbackArgs">PaintFeedbackArgs</param>
 			public override void CreateConnection(ShapeElement sourceShapeElement, ShapeElement targetShapeElement, PaintFeedbackArgs paintFeedbackArgs)
 			{
-				ExternalConstraintShape constraintShape;
 				IConstraint constraint;
-				ExternalConstraintConnectAction action;
+				InternalUniquenessConstraintConnectAction action;
 				IList<Role> selectedRoles;
 				int rolesCount;
-				if ((null != (constraintShape = sourceShapeElement as ExternalConstraintShape)) &&
-					(null != (constraint = constraintShape.AssociatedConstraint)) &&
-					(null != (action = (sourceShapeElement.Diagram as ORMDiagram).ExternalConstraintConnectAction)) &&
+				if ((null != (action = (sourceShapeElement.Diagram as ORMDiagram).InternalUniquenessConstraintConnectAction)) &&
+					(null != (constraint = action.ActiveConstraint)) &&
 					(null != (selectedRoles = action.SelectedRoleCollection)) &&
 					(0 != (rolesCount = selectedRoles.Count)))
 				{
-					MultiColumnExternalConstraint mcConstraint;
-					SingleColumnExternalConstraint scConstraint;
-					if (null != (mcConstraint = constraint as MultiColumnExternalConstraint))
-					{
-						// Add a new role set
-						MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = mcConstraint.RoleSequenceCollection;
-						MultiColumnExternalConstraintRoleSequence roleSequence = MultiColumnExternalConstraintRoleSequence.CreateMultiColumnExternalConstraintRoleSequence(mcConstraint.Store);
-						RoleMoveableCollection roles = roleSequence.RoleCollection;
-						for (int i = 0; i < rolesCount; ++i)
-						{
-							roles.Add(selectedRoles[i]);
-						}
-						roleSequences.Add(roleSequence);
-					}
-					else if (null != (scConstraint = constraint as SingleColumnExternalConstraint))
+					InternalUniquenessConstraint iuConstraint;
+					if (null != (iuConstraint = constraint as InternalUniquenessConstraint))
 					{
 						// The single-column constraint is its own role set, just add the roles
-						RoleMoveableCollection roles = scConstraint.RoleCollection;
+						RoleMoveableCollection roles = iuConstraint.RoleCollection;
 						for (int i = 0; i < rolesCount; ++i)
 						{
 							roles.Add(selectedRoles[i]);
@@ -135,31 +128,30 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 			/// <summary>
-			/// UNDONE: Experimental routine.
+			/// Controls the PaintFeedbackArgs for while building an internal uniqueness constraint.
 			/// </summary>
-			/// <param name="sourceShapeElement"></param>
-			/// <param name="sourcePoint"></param>
-			/// <param name="targetShapeElement"></param>
-			/// <param name="targetPoint"></param>
-			/// <param name="paintFeedbackArgs"></param>
-			/// <returns></returns>
+			/// <param name="sourceShapeElement">The shape that the internal uniqueness constraint is being added to.</param>
+			/// <param name="sourcePoint">The point where the internal uniqueness constraint was added.</param>
+			/// <param name="targetShapeElement">The shape that the mouse is currently over.</param>
+			/// <param name="targetPoint">The point that the mouse is currently over.</param>
+			/// <param name="paintFeedbackArgs">The current PaintFeedbackArgs.</param>
+			/// <returns>The modified PaintFeedbackArgs</returns>
 			public override PaintFeedbackArgs UpdatePaintFeedbackParameters(ShapeElement sourceShapeElement, PointD sourcePoint, ShapeElement targetShapeElement, PointD targetPoint, PaintFeedbackArgs paintFeedbackArgs)
 			{
 				PaintFeedbackArgs args = base.UpdatePaintFeedbackParameters(sourceShapeElement, sourcePoint, targetShapeElement, targetPoint, paintFeedbackArgs);
-				RectangleD bounds = sourceShapeElement.AbsoluteBoundingBox;
-				args.SourceFeedbackBounds = bounds;
-				args.SourceConnectionPoint = bounds.Center;
-				args.SourceGraphicsPath = sourceShapeElement.ShapeGeometry.GetPath(sourceShapeElement);
+				args.DisplaySourceAndTargetFeedback = false;
+				args.TargetConnectionPoint = args.SourceConnectionPoint;
 				return args;
 			}
 		}
-		#endregion // ExternalConstraintConnectionType class
+		#endregion // InternalUniquenessConstraintConnectionType class
 		#region Member variables
 		// The following cursors are built as embedded resources. Pick them up by their file name.
-		private static Cursor myAllowedCursor = new Cursor(typeof(ExternalConstraintConnectAction), "ConnectExternalConstraintAllowed.cur");
-		private static Cursor mySearchingCursor = new Cursor(typeof(ExternalConstraintConnectAction), "ConnectExternalConstraintSearching.cur");
+		private static Cursor myAllowedCursor = new Cursor(typeof(InternalUniquenessConstraintConnectAction), "ConnectInternalConstraintAllowed.cur");
+		private static Cursor mySearchingCursor = new Cursor(typeof(InternalUniquenessConstraintConnectAction), "ConnectInternalConstraintSearching.cur");
 		private IList<Role> mySelectedRoles;
-		private ExternalConstraintShape mySourceShape;
+		private FactTypeShape mySourceShape;
+		private InternalUniquenessConstraint myIUC;
 		private DiagramItem myLastMouseMoveItem;
 		private static readonly ConnectionType[] EmptyConnectionTypes = {};
 		private enum OnClickedAction
@@ -169,30 +161,42 @@ namespace Northface.Tools.ORM.ShapeModel
 			Commit,
 			Complete, // Not necessarily a set with the others, but we don't care about other values after completion
 		}
+
+		/// <summary>
+		/// Gets the FactTypeShape this internal uniqueness constraint is on.
+		/// </summary>
+		public FactTypeShape SourceShape
+		{
+			get
+			{
+				return mySourceShape;
+			}
+		}
+
 		private OnClickedAction myPendingOnClickedAction;
 		#endregion // Member variables
 		#region Constructors
 		/// <summary>
-		/// Create an external constract action for the given diagram. One
+		/// Create an Internal constraint action for the given diagram. One
 		/// action per diagram should be sufficient.
 		/// </summary>
 		/// <param name="diagram">The hosting diagram</param>
-		public ExternalConstraintConnectAction(Diagram diagram) : base(diagram, true)
+		public InternalUniquenessConstraintConnectAction(Diagram diagram) : base(diagram, true)
 		{
 			Reset();
 		}
 		/// <summary>
 		/// Retrieve all connect types associated with this connect action.
-		/// Returns an empty array unless the sourceShapeElement is an ExternalConstraintShape
+		/// Returns an empty array unless the sourceShapeElement is a FactTypeShape
 		/// </summary>
 		/// <param name="sourceShapeElement">The source element</param>
 		/// <param name="targetShapeElement">The target element. Currently ignored.</param>
 		/// <returns></returns>
 		protected override ConnectionType[] GetConnectionTypes(ShapeElement sourceShapeElement, ShapeElement targetShapeElement)
 		{
-			if (sourceShapeElement is ExternalConstraintShape)
+			if (sourceShapeElement is FactTypeShape)
 			{
-				return ExternalConstraintConnectionType.InstanceArray;
+				return InternalUniquenessConstraintConnectionType.InstanceArray;
 			}
 			return EmptyConnectionTypes;
 		}
@@ -200,25 +204,31 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Get a cursor from the cursor type. Returns the searching cursor for
 		/// everything except the allowed action.
 		/// </summary>
-		/// <param name="connectActionCursor">The requrested cursor styl</param>
+		/// <param name="connectActionCursor">The requested cursor style</param>
 		/// <returns></returns>
 		protected override Cursor GetCursorFromCursorType(ConnectActionCursor connectActionCursor)
 		{
 			Cursor cursor = null;
-			if (connectActionCursor == ConnectActionCursor.Allowed)
+			switch (connectActionCursor)
 			{
-				DiagramItem item;
-				if (null != (item = myLastMouseMoveItem))
-				{
-					foreach (ModelElement element in item.RepresentedElements)
+				case ConnectActionCursor.Allowed:
+					DiagramItem item;
+					if (null != (item = myLastMouseMoveItem))
 					{
-						if (element is Role)
+						foreach (ModelElement element in item.RepresentedElements)
 						{
-							cursor = myAllowedCursor;
-							break;
+							if (element is Role)
+							{
+								cursor = myAllowedCursor;
+								break;
+							}
 						}
 					}
-				}
+					break;
+				case ConnectActionCursor.Searching:
+				case ConnectActionCursor.Warning:
+					cursor = Cursors.No;
+					break;
 			}
 			return (cursor == null) ? mySearchingCursor : cursor;
 		}
@@ -246,6 +256,22 @@ namespace Northface.Tools.ORM.ShapeModel
 		protected override void OnMouseMove(DiagramMouseEventArgs e)
 		{
 			myLastMouseMoveItem = (DiagramItem)e.DiagramHitTestInfo.HitDiagramItem.Clone();
+			bool isRole = false;
+			if (myLastMouseMoveItem != null)
+			{
+				foreach (ModelElement element in myLastMouseMoveItem.RepresentedElements)
+				{
+					if (element is Role)
+					{
+						isRole = true;
+						break;
+					}
+				}
+			}
+			if (!isRole)
+			{
+				e.Handled = true;
+			}
 			base.OnMouseMove(e);
 		}
 		/// <summary>
@@ -275,76 +301,60 @@ namespace Northface.Tools.ORM.ShapeModel
 					currentElement = elem;
 					break;
 				}
-				ExternalConstraintShape constraintShape;
+				InternalUniquenessConstraint internalUniquenessConstraint;
 				Role role;
-				if (null != (constraintShape = currentElement as ExternalConstraintShape))
+				if (null != (internalUniquenessConstraint = currentElement as InternalUniquenessConstraint))
 				{
 					if (mySourceShape == null)
 					{
 						// Let the click through to the base to officially begin the drag action
 						base.OnClicked(e);
-						mySourceShape = constraintShape;
+						mySourceShape = item.Shape as FactTypeShape;
+						myIUC = internalUniquenessConstraint;
 					}
 				}
 				else if (null != (role = currentElement as Role))
 				{
-					// Add or remove the role
-					IList<Role> roles = SelectedRoleCollection;
-					int roleIndex = roles.IndexOf(role);
-					bool forceRedraw = false;
-					int redrawIndexBound = -1;
-					if (roleIndex >= 0)
+					if (object.ReferenceEquals(role.FactType, mySourceShape.AssociatedFactType))
 					{
-						// Only remove a role when the control key is down. Otherwise,
-						// there is no way to double-click on a previously selected
-						// role without turning it off, and this is a natural gesture.
-						if (0 != (0xff00 & GetKeyState(Keys.ControlKey)))
+						// Add or remove the role
+						IList<Role> roles = SelectedRoleCollection;
+						int roleIndex = roles.IndexOf(role);
+						bool forceRedraw = false;
+						int redrawIndexBound = -1;
+						if (roleIndex >= 0)
+						{
+							// Only remove a role when the control key is down. Otherwise,
+							// there is no way to double-click on a previously selected
+							// role without turning it off, and this is a natural gesture.
+							if (0 != (0xff00 & GetKeyState(Keys.ControlKey)))
+							{
+								forceRedraw = true;
+								roles.RemoveAt(roleIndex);
+								redrawIndexBound = roles.Count;
+							}
+						}
+						else
 						{
 							forceRedraw = true;
-							roles.RemoveAt(roleIndex);
-							redrawIndexBound = roles.Count;
+							roles.Add(role);
+							if (mySourceShape != null)
+							{
+								myPendingOnClickedAction = OnClickedAction.CheckForCommit;
+							}
 						}
-					}
-					else
-					{
-						forceRedraw = true;
-						roles.Add(role);
-						if (mySourceShape != null)
-						{
-							myPendingOnClickedAction = OnClickedAction.CheckForCommit;
-						}
-					}
 
-					if (forceRedraw)
-					{
-						// Force the shape types to redraw
-						RedrawOwningFactType(role);
-
-						// Force anything with a later index to redraw as well.
-						// These roles may be on different fact types than the
-						// original.
-						for (int i = roleIndex; i < redrawIndexBound; ++i)
+						if (forceRedraw)
 						{
-							RedrawOwningFactType(roles[i]);
+							// Force the shape to redraw
+							Debug.Assert(mySourceShape != null); //source shape should have been set
+							mySourceShape.Invalidate(true);
 						}
 					}
 				}
 				else if (mySourceShape != null && currentElement is ORMDiagram)
 				{
 					base.OnClicked(e); // Let through to allow a cancel
-				}
-			}
-		}
-		private void RedrawOwningFactType(Role role)
-		{
-			PresentationElementMoveableCollection pels = role.FactType.PresentationRolePlayers;
-			int pelsCount = pels.Count;
-			for (int i = 0; i < pelsCount; ++i)
-			{
-				ShapeElement shape = pels[i] as ShapeElement;
-				if (shape != null)
-				{
-					shape.Invalidate(true);
 				}
 			}
 		}
@@ -357,13 +367,10 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			base.OnMouseActionDeactivated(e);
 			IList<Role> roles = mySelectedRoles;
-			if (roles != null)
+			if (roles != null && roles.Count > 0)
 			{
-				int roleCount = roles.Count;
-				for (int i = 0; i < roleCount; ++i)
-				{
-					RedrawOwningFactType(roles[i]);
-				}
+				Debug.Assert(mySourceShape != null); //source shape should have been set
+				mySourceShape.Invalidate();
 			}
 
 			// Set the selection back to pointer after connect action
@@ -375,17 +382,8 @@ namespace Northface.Tools.ORM.ShapeModel
 				toolbox.SelectedToolboxItemUsed();
 			}
 
-			// The ChainMouseAction call can reactivate this connect action,
-			// so make sure we snapshot the state we need and do all requisite
-			// cleanup before a potential reactivation.
-			ExternalConstraintShape chainOnShape = (myPendingOnClickedAction == OnClickedAction.Complete) ? mySourceShape : null;
+			// Do all requisite cleanup before a potential reactivation.
 			Reset();
-			if (chainOnShape != null)
-			{
-				// UNDONE: We should only do this if appropriate for the constraint type
-				// and the current condition of the constraint
-				ChainMouseAction(chainOnShape, e.DiagramClientView);
-			}
 		}
 		/// <summary>
 		/// Cancel if the last hit shape is the Diagram by not forwarding
@@ -398,7 +396,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				return; // Effect a cancel for a click on the diagram
 			}
-			using (Transaction t = Diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.ExternalConstraintConnectActionTransactionName))
+			using (Transaction t = Diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.InternalUniquenessConstraintConnectActionTransactionName))
 			{
 				base.OnMouseActionCompleted(e);
 				if (t.HasPendingChanges)
@@ -409,13 +407,15 @@ namespace Northface.Tools.ORM.ShapeModel
 			myPendingOnClickedAction = OnClickedAction.Complete;
 		}
 		#endregion // Base overrides
-		#region ExternalConstraintConnectAction specific
+		#region InternalUniquenessConstraintConnectAction specific
 		private void Reset()
 		{
 			mySelectedRoles = null;
 			mySourceShape = null;
+			myIUC = null;
+			myLastMouseMoveItem = null;
 			myPendingOnClickedAction = OnClickedAction.Normal;
-			FactTypeShape.ActiveExternalConstraintConnectAction = null;
+			FactTypeShape.ActiveInternalUniquenessConstraintConnectAction = null;
 		}
 		private IList<Role> SelectedRoleCollection
 		{
@@ -424,7 +424,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				if (mySelectedRoles == null)
 				{
 					mySelectedRoles = new List<Role>();
-					FactTypeShape.ActiveExternalConstraintConnectAction = this;
+					FactTypeShape.ActiveInternalUniquenessConstraintConnectAction = this;
 				}
 				return mySelectedRoles;
 			}
@@ -444,14 +444,23 @@ namespace Northface.Tools.ORM.ShapeModel
 			return -1;
 		}
 		/// <summary>
-		/// Set this mouse action as the active action on the
-		/// diagram of the given shape, and activate its drag line
-		/// centered on the shape.
+		/// The constraint that acts as the Source object for this mouse action
 		/// </summary>
-		/// <param name="attachToShape">The shape for the constraint
-		/// being connected.</param>
+		InternalUniquenessConstraint ActiveConstraint
+		{
+			get
+			{
+				return myIUC;
+			}
+		}
+		/// <summary>
+		/// Set this mouse action as the active action on the
+		/// diagram of the given shape.
+		/// </summary>
+		/// <param name="attachToShape">The shape the constraint is being attached to.</param>
+		/// <param name="constraint">The constraint being connected.</param>
 		/// <param name="clientView">The active DiagramClientView</param>
-		public void ChainMouseAction(ExternalConstraintShape attachToShape, DiagramClientView clientView)
+		public void ChainMouseAction(FactTypeShape attachToShape, InternalUniquenessConstraint constraint, DiagramClientView clientView)
 		{
 			DiagramView activeView = Diagram.ActiveDiagramView;
 			if (activeView != null)
@@ -462,23 +471,39 @@ namespace Northface.Tools.ORM.ShapeModel
 				// Now emulate a mouse click in the middle of the added constraint. The click
 				// actions provide a starting point for the connect action, so a mouse move
 				// provides a drag line.
-				Point emulateClickPoint = clientView.WorldToDevice(attachToShape.AbsoluteCenter);
+				RectangleD bounds = attachToShape.GetAbsolutePositionOfConstraint(constraint);
+				Point emulateClickPoint = clientView.WorldToDevice(bounds.Center);
 				DiagramMouseEventArgs mouseEventArgs = new DiagramMouseEventArgs(new MouseEventArgs(MouseButtons.Left, 1, emulateClickPoint.X, emulateClickPoint.Y, 0), clientView);
 				MouseDown(mouseEventArgs);
 				Click(new DiagramPointEventArgs(emulateClickPoint.X, emulateClickPoint.Y, PointRelativeTo.Client, clientView));
 				MouseUp(mouseEventArgs);
 
-				ORMDiagram.SelectToolboxItem(activeView, ResourceStrings.ToolboxExternalConstraintConnectorItemId);
+				IToolboxService toolbox = activeView.Toolbox;
+				if (toolbox != null)
+				{
+					// Select the connector action on the toolbox
+					Debug.Assert(toolbox.GetSelectedToolboxItem() == null); // Should be turned off during MouseActionDeactivated
+					ToolboxItemCollection items = toolbox.GetToolboxItems(ResourceStrings.ToolboxDefaultTabName);
+					string testName = ResourceStrings.ToolboxInternalUniquenessConstraintItemId;
+					foreach (ToolboxItem item in items)
+					{
+						ModelingToolboxItem modelingItem = item as ModelingToolboxItem;
+						if (modelingItem != null && modelingItem.Id == testName)
+						{
+							//toolbox.SetSelectedToolboxItem(item); // UNDONE: Crashes, not sure why
+							break;
+						}
+					}
+				}
 			}
 		}
-		#endregion // ExternalConstraintConnectAction specific
+		#endregion // InternalUniquenessConstraintConnectAction specific
 	}
 	/// <summary>
-	/// A toolbox action to add an external constraint and activate
-	/// the external constraint connect action
+	/// A toolbox action to add an Internal constraint
 	/// </summary>
 	[CLSCompliant(true)]
-	public class ExternalConstraintAction : ToolboxAction
+	public class InternalUniquenssConstraintAction : ToolboxAction
 	{
 		#region Member variables
 		/// <summary>
@@ -487,7 +512,8 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// action to a new standard action.
 		/// </summary>
 		public event MouseActionDeactivatedEventHandler AfterMouseActionDeactivated;
-		private ExternalConstraintShape myAddedConstraintShape;
+		private InternalUniquenessConstraint myAddedConstraint;
+		private FactTypeShape myDropTargetShape;
 		#endregion // Member variables
 		#region Constructors
 		/// <summary>
@@ -496,24 +522,25 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// deactivating it.
 		/// </summary>
 		/// <param name="diagram">The owning diagram</param>
-		public ExternalConstraintAction(Diagram diagram) : base(diagram)
+		public InternalUniquenssConstraintAction(Diagram diagram) : base(diagram)
 		{
 			Reset();
 		}
 		#endregion // Constructors
-		#region ExternalConstraintAction specific
+		#region InternalConstraintAction specific
 		/// <summary>
 		/// Central function to return member variables to a clean state.
 		/// Called by the constructor and the deactivation sequence.
 		/// </summary>
 		private void Reset()
 		{
-			myAddedConstraintShape = null;
+			myAddedConstraint = null;
+			myDropTargetShape = null;
 		}
 		/// <summary>
 		/// Add events to the store during connect action
 		/// activation. The default implementation watches for
-		/// new external constraints added to the diagram.
+		/// new Internal constraints added to the diagram.
 		/// </summary>
 		/// <param name="store">Store</param>
 		protected virtual void AddStoreEvents(Store store)
@@ -521,8 +548,8 @@ namespace Northface.Tools.ORM.ShapeModel
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventManager = store.EventManagerDirectory;
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(ExternalConstraintShape.MetaClassGuid);
-			eventManager.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ExternalConstraintShapeAddedEvent));
+			MetaClassInfo classInfo = dataDirectory.FindMetaClass(InternalUniquenessConstraint.MetaClassGuid);
+			eventManager.ElementAdded.Add(classInfo, new ElementAddedEventHandler(InternalConstraintAddedEvent));
 		}
 		/// <summary>
 		/// Removed any events added during the AddStoreEvents methods
@@ -533,8 +560,8 @@ namespace Northface.Tools.ORM.ShapeModel
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventManager = store.EventManagerDirectory;
 
-			MetaClassInfo classInfo = dataDirectory.FindMetaClass(ExternalConstraintShape.MetaClassGuid);
-			eventManager.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ExternalConstraintShapeAddedEvent));
+			MetaClassInfo classInfo = dataDirectory.FindMetaClass(InternalUniquenessConstraint.MetaClassGuid);
+			eventManager.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(InternalConstraintAddedEvent));
 		}
 		/// <summary>
 		/// An IMS event to track the shape element added to the associated
@@ -542,27 +569,46 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void ExternalConstraintShapeAddedEvent(object sender, ElementAddedEventArgs e)
+		private void InternalConstraintAddedEvent(object sender, ElementAddedEventArgs e)
 		{
-			if (myAddedConstraintShape == null)
+			if (myAddedConstraint == null)
 			{
-				ExternalConstraintShape candidate = e.ModelElement as ExternalConstraintShape;
-				// Make sure the shape was added to the diagram associated with this
-				// connect action
-				if (candidate != null && candidate.Diagram == Diagram)
+				InternalUniquenessConstraint candidate = e.ModelElement as InternalUniquenessConstraint;
+				if (candidate != null)
 				{
-					myAddedConstraintShape = candidate;
+					ORMDiagram d = Diagram as ORMDiagram;
+					if (d != null)
+					{
+						// Find the shape associated with the fact type we added to
+						FactTypeShape shape = d.FindShapeForElement(candidate.FactType) as FactTypeShape;
+						if (shape != null)
+						{
+							myDropTargetShape = shape;
+							myAddedConstraint = candidate;
+						}
+					}
 				}
 			}
 		}
+
 		/// <summary>
-		/// The constraint shape added as a result of a completed mouse action
+		/// The fact type shape added to as a result of a completed mouse action
 		/// </summary>
-		public ExternalConstraintShape AddedConstraintShape
+		public FactTypeShape DropTargetShape
 		{
 			get
 			{
-				return myAddedConstraintShape;
+				return myDropTargetShape;
+			}
+		}
+		/// <summary>
+		/// The internal uniqueness constraint added as a result of a completed mouse action
+		/// </summary>
+		public InternalUniquenessConstraint AddedConstraint
+		{
+			get
+			{
+				return myAddedConstraint;
 			}
 		}
 		/// <summary>
@@ -572,14 +618,14 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return myAddedConstraintShape != null;
+				return myAddedConstraint != null;
 			}
 		}
-		#endregion // ExternalConstraintAction specific
+		#endregion // InternalConstraintAction specific
 		#region Base overrides
 		/// <summary>
 		/// Add an event on the store so we can track
-		/// the shape for an external constraint added during
+		/// the shape for an Internal constraint added during
 		/// the transaction resulting from completion of the mouse
 		/// action.
 		/// </summary>

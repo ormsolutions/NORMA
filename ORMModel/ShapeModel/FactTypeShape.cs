@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
+
 namespace Northface.Tools.ORM.ShapeModel
 {
 	#region ConstraintDisplayPosition enum
@@ -108,7 +109,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			[CLSCompliant(false)]
 			public ConstraintBox(IFactConstraint factConstraint, ConstraintBoxRoleActivity[] roleActivity)
 			{
-				if (!roleActivity.Equals(PreDefinedConstraintBoxRoleActivities_FullySpanning))
+				if (!object.ReferenceEquals(roleActivity, PreDefinedConstraintBoxRoleActivities_FullySpanning) && !object.ReferenceEquals(roleActivity,PreDefinedConstraintBoxRoleActivities_AntiSpanning))
 				{
 					int roleActivityCount = roleActivity.Length;
 					Debug.Assert(factConstraint != null);
@@ -202,7 +203,18 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					return myActiveRoles.Equals(PreDefinedConstraintBoxRoleActivities_FullySpanning);
+					return object.ReferenceEquals(myActiveRoles, PreDefinedConstraintBoxRoleActivities_FullySpanning);
+				}
+			}
+			/// <summary>
+			/// Tests if this constraint is undefined (AntiSpanning).
+			/// </summary>
+			/// <value>True if the constraint is undefined.</value>
+			public bool IsAntiSpanning
+			{
+				get
+				{
+					return object.ReferenceEquals(myActiveRoles, PreDefinedConstraintBoxRoleActivities_AntiSpanning);
 				}
 			}
 			#endregion // Accessor Properties
@@ -346,6 +358,10 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_FullySpanning = new ConstraintBoxRoleActivity[0] {};
 		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for an undefined uniqueness constraint.
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_AntiSpanning = new ConstraintBoxRoleActivity[0] {};
+		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an n-1 binary fact with the first role active.
 		/// </summary>
 		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_BinaryLeft = new ConstraintBoxRoleActivity[2] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.NotInBox };
@@ -356,7 +372,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an n-1 ternary fact with the first and second roles active.
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryLeft = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.NotInBox, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Active };
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryLeft = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive };
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an n-1 ternary fact with the first and third roles active.
 		/// </summary>
@@ -364,7 +380,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an n-1 ternary fact with the second and third roles active.
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryRight = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive };
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryRight = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Active };
 		#endregion //Pre-defined ConstraintBoxRoleActivity arrays
 		#region WalkConstraintBoxes implementation
 		/// <summary>
@@ -401,16 +417,15 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// produced by WalkConstraintBoxes.</param>
 		protected static void WalkConstraintBoxes(ShapeElement parentShape, RectangleD fullBounds, VisitConstraintBox boxUser)
 		{
+			// initialize variables
+			FactTypeShape parentFactTypeShape = parentShape as FactTypeShape;
+			FactType parentFact = parentFactTypeShape.AssociatedFactType;
+			RoleMoveableCollection factRoles = parentFact.RoleCollection;
+			int factRoleCount = factRoles.Count;
 			if (fullBounds.IsEmpty)
 			{
 				fullBounds = new RectangleD(0, 0, RoleBoxWidth, 0);
 			}
-			FactTypeShape parentFactTypeShape = parentShape as FactTypeShape;
-			FactType parentFact = parentFactTypeShape.AssociatedFactType;
-			RoleMoveableCollection factRoles = parentFact.RoleCollection;
-
-			int factRoleCount = factRoles.Count;
-			//RectangleD fullBounds = shapeField.GetBounds(parentShape);
 
 			// First, gather the various constraints that are associated with the parent FactTypeShape.
 			//
@@ -434,6 +449,10 @@ namespace Northface.Tools.ORM.ShapeModel
 					if (constraintRoleCount == factRoleCount)
 					{
 						predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_FullySpanning;
+					}
+					else if (constraintRoleCount == 0)
+					{
+						predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_AntiSpanning;
 					}
 					else
 					{
@@ -482,7 +501,7 @@ namespace Northface.Tools.ORM.ShapeModel
 											case 1:
 												if (roleIndex1 == 0)
 												{
-													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_BinaryLeft;
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryLeft;
 												}
 												else if (roleIndex1 == 2)
 												{
@@ -561,7 +580,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				double yPosition = fullBounds.Y;
 				double xPosition = fullBounds.X;
 				double initialBottom = fullBounds.Bottom;
-				double offsetHeight = (parentFactTypeShape.ConstraintDisplayPosition == ConstraintDisplayPosition.Top) ? constraintHeight : -constraintHeight;
+				double offsetHeight = constraintHeight;
 				#region Compressing the ConstraintRoleBoxes of binary fact types.
 				if (factRoleCount == 2)
 				{
@@ -617,7 +636,21 @@ namespace Northface.Tools.ORM.ShapeModel
 				// their internal uniqueness constraints compressed.
 				else
 				{
-					for (int i = significantConstraintCount - 1; i >= 0; --i)
+					int i;
+					int j;
+					if (parentFactTypeShape.ConstraintDisplayPosition == ConstraintDisplayPosition.Top)
+					{
+						// walk the constraints from top to bottom
+						i = significantConstraintCount - 1;
+						j = -1;
+					}
+					else 
+					{
+						// walk the constraints from bottom to top
+						i = 0;
+						j = 1;
+					}
+					for (; i >= 0 && i < significantConstraintCount; i += j)
 					{
 						ConstraintBox box = constraintBoxes[i];
 						box.Bounds = fullBounds;
@@ -792,7 +825,6 @@ namespace Northface.Tools.ORM.ShapeModel
 				return factTypeShape.ConstraintDisplayPosition == myConstraintPosition;
 			}
 
-
 			/// <summary>
 			/// Find the constraint sub shape at this location
 			/// </summary>
@@ -904,11 +936,6 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				ForDrawing draw = new ForDrawing(e, parentShape as FactTypeShape);
 				FactTypeShape.WalkConstraintBoxes(parentShape, this, draw.DrawConstraint);
-
-//				//TODO: remove the following code after testing
-//				Graphics g = e.Graphics;
-//				System.Drawing.Brush myBrush = new System.Drawing.SolidBrush(Color.FromArgb(23, 255, 0, 0));
-//				g.FillRectangle(myBrush, RectangleD.ToRectangleF(this.GetBounds(parentShape)));
 			}
 
 			/// <summary>
@@ -918,10 +945,11 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				private Graphics myGraphics;
 				private HighlightedShapesCollection highlightedShapes;
-				private FactTypeShape myShapeElement;
+				private FactTypeShape myParentShapeElement;
 				private float myGap;
 				private Pen myConstraintPen;
 				private Pen myDashedConstraintPen;
+				private Pen myErrorConstraintPen;
 				private Brush myHighlightBrush;
 
 				/// <summary>
@@ -933,12 +961,13 @@ namespace Northface.Tools.ORM.ShapeModel
 				{
 					myGraphics = e.Graphics;
 					highlightedShapes = e.View.HighlightedShapes;
-					myShapeElement = parentShape;
+					myParentShapeElement = parentShape;
 
-					StyleSet styleSet = myShapeElement.StyleSet;
+					StyleSet styleSet = myParentShapeElement.StyleSet;
 					myConstraintPen = styleSet.GetPen(InternalFactConstraintPen);
 					myDashedConstraintPen = styleSet.GetPen(InternalFactConstraintSpacerPen);
 					myHighlightBrush = styleSet.GetBrush(DiagramBrushes.ShapeBackgroundSelectedInactive);
+					myErrorConstraintPen = styleSet.GetPen(InternalUniquenessConstraintErrorPen);
 					myGap = myConstraintPen.Width;
 				}
 
@@ -964,14 +993,14 @@ namespace Northface.Tools.ORM.ShapeModel
 					// test for and draw highlights
 					foreach (DiagramItem item in highlightedShapes)
 					{
-						if (object.ReferenceEquals(myShapeElement, item.Shape))
+						if (object.ReferenceEquals(myParentShapeElement, item.Shape))
 						{
 							ConstraintSubField highlightedSubField = item.SubField as ConstraintSubField;
 							IFactConstraint factConstraint = constraintBox.FactConstraint;
 							if (highlightedSubField != null && (highlightedSubField.AssociatedConstraint == factConstraint.Constraint))
 							{
 								// draw highlight
-								myGraphics.FillRectangle(myHighlightBrush, boundsF);
+								myParentShapeElement.DrawHighlight(myGraphics, boundsF);
 								break;
 							}
 						}
@@ -982,7 +1011,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					{
 						endPos = boundsF.Right;
 						//draw fully spanning constraint
-						if (myShapeElement.ShouldDrawConstraintPreferred(constraintBox.FactConstraint.Constraint))
+						if (myParentShapeElement.ShouldDrawConstraintPreferred(constraintBox.FactConstraint.Constraint))
 						{
 							//draw constraint as preferred
 							DrawPreferredConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos);
@@ -993,50 +1022,70 @@ namespace Northface.Tools.ORM.ShapeModel
 							DrawConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos);
 						}
 					}
+					else if (constraintBox.IsAntiSpanning)
+					{
+						endPos = boundsF.Right;
+						//draw an undefined constraint
+						DrawConstraintLine(myGraphics, myErrorConstraintPen, startPos, endPos, verticalPos);
+					}
 					else
 					{
-
-						for (int i = 0; i < numRoles; ++i)
+						IConstraint currentConstraint = constraintBox.FactConstraint.Constraint;
+						Pen penToUse = null;
+						bool constraintHasDrawn = false;
+						int i = 0;
+						ConstraintBoxRoleActivity currentActivity = rolePosToDraw[i];
+						for (; i < numRoles; ++i)
 						{
 							ConstraintBoxRoleActivity currentBoxActivity = rolePosToDraw[i];
-							if (currentBoxActivity != ConstraintBoxRoleActivity.NotInBox)
+							if (currentActivity != currentBoxActivity)
 							{
-								endPos += roleWidth;
-								IConstraint currentConstraint = constraintBox.FactConstraint.Constraint;
-								if (currentBoxActivity != ConstraintBoxRoleActivity.Active)
+								//activity has changed; draw previous activity
+								if (startPos != endPos && currentActivity != ConstraintBoxRoleActivity.NotInBox)
 								{
-									if (!(i == 0 || i == numRoles - 1))
+									if (currentActivity == ConstraintBoxRoleActivity.Active)
 									{
-										// position that is not first or last is being skipped,
-										// draw dashed line
-										if (myShapeElement.ShouldDrawConstraintPreferred(currentConstraint))
-										{
-											//draw constraint as preferred
-											DrawPreferredConstraintLine(myGraphics, myDashedConstraintPen, startPos, endPos, verticalPos);
-										}
-										else
-										{
-											//draw constraint as regular
-											DrawConstraintLine(myGraphics, myDashedConstraintPen, startPos, endPos, verticalPos);
-										}
-									}
-									startPos = endPos;
-								}
-								if (startPos != endPos && !(i < numRoles - 1 && (rolePosToDraw[i + 1] == ConstraintBoxRoleActivity.Active)))
-								{
-									//draw constraint
-									if (myShapeElement.ShouldDrawConstraintPreferred(currentConstraint))
-									{
-										//draw constraint as preferred
-										DrawPreferredConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos);
+										penToUse = myConstraintPen;
+										constraintHasDrawn = true;
 									}
 									else
 									{
+										Debug.Assert(currentActivity == ConstraintBoxRoleActivity.Inactive); // enforces if statement above
+										penToUse = myDashedConstraintPen;
+									}
+									//draw constraint
+									if (constraintHasDrawn && myParentShapeElement.ShouldDrawConstraintPreferred(currentConstraint))
+									{
+										//draw constraint as preferred
+										DrawPreferredConstraintLine(myGraphics, penToUse, startPos, endPos, verticalPos);
+									}
+									else if (constraintHasDrawn)
+									{
 										//draw constraint as regular
-										DrawConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos);
+										DrawConstraintLine(myGraphics, penToUse, startPos, endPos, verticalPos);
 									}
 									startPos = endPos;
 								}
+								currentActivity = currentBoxActivity;
+							}
+							if (currentActivity != ConstraintBoxRoleActivity.NotInBox)
+							{
+								endPos += roleWidth;
+							}
+						}
+						//We've reached the end. Draw out any right constraints that may exist.
+						if (endPos > startPos && currentActivity == ConstraintBoxRoleActivity.Active)
+						{
+							//draw constraint
+							if (myParentShapeElement.ShouldDrawConstraintPreferred(currentConstraint))
+							{
+								//draw constraint as preferred
+								DrawPreferredConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos);
+							}
+							else
+							{
+								//draw constraint as regular
+								DrawConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos);
 							}
 						}
 					}
@@ -1247,38 +1296,33 @@ namespace Northface.Tools.ORM.ShapeModel
 					float bottom = (float)bounds.Bottom;
 					float height = (float)bounds.Height;
 					ExternalConstraintConnectAction activeAction = ActiveExternalConstraintConnectAction;
+					InternalUniquenessConstraintConnectAction activeInternalAction = ActiveInternalUniquenessConstraintConnectAction;
 					StringFormat stringFormat = null;
 					try
 					{
 						for (int i = 0; i < roleCount; ++i)
 						{
 							float lastXF = (float)lastX;
+							RectangleF roleBounds = new RectangleF(lastXF, top, offsetByF, height);
 							if ((activeAction != null) &&
 								(-1 != (activeRoleIndex = activeAction.GetActiveRoleIndex(roles[i]))))
 							{
-								g.FillRectangle(styleSet.GetBrush((i == highlightRoleBox) ? SelectedConstraintRoleHighlightedBackgroundBrush : SelectedConstraintRoleBackgroundBrush), lastXF, top, offsetByF, height);
+								DrawHighlight(g, styleSet, roleBounds, i == highlightRoleBox);
 								if (stringFormat == null)
 								{
 									stringFormat = new StringFormat();
 									stringFormat.LineAlignment = StringAlignment.Center;
 									stringFormat.Alignment = StringAlignment.Center;
 								}
-								g.DrawString((activeRoleIndex + 1).ToString(), styleSet.GetFont(DiagramFonts.CommentText), styleSet.GetBrush(DiagramBrushes.CommentText), new RectangleF(lastXF, top, offsetByF, height), stringFormat);
+								g.DrawString((activeRoleIndex + 1).ToString(), styleSet.GetFont(DiagramFonts.CommentText), styleSet.GetBrush(DiagramBrushes.CommentText), roleBounds, stringFormat);
+							}
+							else if (activeInternalAction != null && -1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(roles[i])))
+							{
+								DrawHighlight(g, styleSet, roleBounds, i == highlightRoleBox);
 							}
 							else if (i == highlightRoleBox)
 							{
-								// UNDONE: The highlighted background for a full shape is drawn by adjusting
-								// the luminosity. MDF modifies luminosity automatically when a color is in
-								// place by directly editing the pen/brush color, then restoring it. However,
-								// there is no way to get to this facility when HasHighlighting is turned off,
-								// so matching the color is difficult. Turning HasHightlighting on would mean
-								// the entire shape would draw highlighted, and we would have to explicitly
-								// un-highlight n-1 role boxes, which would be extremely flashy. We should
-								// also use this facility to adjust the color for the selected constraint so we
-								// would not need to use a separate brush for the normal/highlight colors.
-								// Could use a brush with an alpha channel:
-								// System.Drawing.Brush myBrush = new System.Drawing.SolidBrush(Color.FromArgb(23, 0, 0, 0));
-								g.FillRectangle(styleSet.GetBrush(DiagramBrushes.ShapeBackgroundSelectedInactive), lastXF, top, offsetByF, height);
+								parentFactShape.DrawHighlight(g, roleBounds);
 							}
 
 							// Draw the line between the role boxes
@@ -1299,6 +1343,17 @@ namespace Northface.Tools.ORM.ShapeModel
 					RectangleF boundsF = RectangleD.ToRectangleF(bounds);
 					g.DrawRectangle(pen, boundsF.Left, boundsF.Top, boundsF.Width, boundsF.Height);
 				}
+			}
+			/// <summary>
+			/// Draws a role highlight.
+			/// </summary>
+			/// <param name="g">The Graphics object to draw to.</param>
+			/// <param name="styleSet">The StyleSet of the shape we are drawing to.</param>
+			/// <param name="bounds">The bounds to draw as the highlight.</param>
+			/// <param name="active">Boolean indicating whether or not to draw highlight as active (ex: the mouse is currently over this highlight).</param>
+			protected void DrawHighlight(Graphics g, StyleSet styleSet, RectangleF bounds, bool active)
+			{
+				g.FillRectangle(styleSet.GetBrush(active ? SelectedConstraintRoleHighlightedBackgroundBrush : SelectedConstraintRoleBackgroundBrush), bounds);
 			}
 		}
 		#endregion // RolesShapeField class
@@ -1417,9 +1472,11 @@ namespace Northface.Tools.ORM.ShapeModel
 		private static readonly StyleSetResourceId RoleBoxOutlinePen = new StyleSetResourceId("Northface", "RoleBoxOutlinePen");
 		private static readonly StyleSetResourceId SelectedConstraintRoleBackgroundBrush = new StyleSetResourceId("Northface", "SelectedConstraintRoleBackgroundBrush");
 		private static readonly StyleSetResourceId SelectedConstraintRoleHighlightedBackgroundBrush = new StyleSetResourceId("Northface", "SelectedConstraintRoleHighlightedBackgroundBrush");
+		private static readonly StyleSetResourceId InternalUniquenessConstraintErrorPen = new StyleSetResourceId("Northface", "InternalUniquenessConstraintErrorPen");
 		private static readonly StyleSetResourceId InternalFactConstraintPen = new StyleSetResourceId("Northface", "InternalFactConstraintPen");
 		private static readonly StyleSetResourceId InternalFactConstraintSpacerPen = new StyleSetResourceId("Northface", "InternalFactConstraintSpacerPen");
 		private static ExternalConstraintConnectAction myActiveExternalConstraintConnectAction;
+		private static InternalUniquenessConstraintConnectAction myActiveInternalUniquenessConstraintConnectAction;
 		#endregion // Member Variables
 		#region RoleSubField integration
 		/// <summary>
@@ -1455,6 +1512,26 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // RoleSubField integration
 		#region Customize appearance
+		/// <summary>
+		/// Standard method to draw a consistent highlight within the FactTypeShape.
+		/// </summary>
+		/// <param name="g">The Graphics object to draw to.</param>
+		/// <param name="bounds">The bounds of the highlight to draw.</param>
+		protected void DrawHighlight(Graphics g, RectangleF bounds)
+		{
+			// UNDONE: The highlighted background for a full shape is drawn by adjusting
+			// the luminosity. MDF modifies luminosity automatically when a color is in
+			// place by directly editing the pen/brush color, then restoring it. However,
+			// there is no way to get to this facility when HasHighlighting is turned off,
+			// so matching the color is difficult. Turning HasHightlighting on would mean
+			// the entire shape would draw highlighted, and we would have to explicitly
+			// un-highlight n-1 role boxes, which would be extremely flashy. We should
+			// also use this facility to adjust the color for the selected constraint so we
+			// would not need to use a separate brush for the normal/highlight colors.
+			// Could use a brush with an alpha channel:
+			// System.Drawing.Brush myBrush = new System.Drawing.SolidBrush(Color.FromArgb(23, 0, 0, 0));
+			g.FillRectangle(StyleSet.GetBrush(DiagramBrushes.ShapeBackgroundSelectedInactive), bounds);
+		}
 		/// <summary>
 		/// Set to true. Enables role highlighting
 		/// </summary>
@@ -1502,6 +1579,8 @@ namespace Northface.Tools.ORM.ShapeModel
 			penSettings.DashStyle = DashStyle.Dash;
 			classStyleSet.AddPen(InternalFactConstraintSpacerPen, DiagramPens.ShapeOutline, penSettings);
 
+			penSettings.Color = Color.Red;
+			classStyleSet.AddPen(InternalUniquenessConstraintErrorPen, DiagramPens.ShapeOutline, penSettings);
 		}
 		/// <summary>
 		/// Use the rolebox outline pen unless we're objectified
@@ -2137,6 +2216,30 @@ namespace Northface.Tools.ORM.ShapeModel
 				return (factType == null) ? false : (factType.NestingType != null);
 			}
 		}
+
+		/// <summary>
+		/// Gets the bounds of the specified InternalUniquenessConstraint within the FactTypeShape.
+		/// </summary>
+		/// <param name="constraint">The InternalUniquenessConstraint to find the location of.</param>
+		/// <returns></returns>
+		public RectangleD GetAbsolutePositionOfConstraint(InternalUniquenessConstraint constraint)
+		{
+			RectangleD rect = RectangleD.Empty;
+			WalkConstraintBoxes(
+				this,
+				(ConstraintDisplayPosition == ConstraintDisplayPosition.Top) ? myTopConstraintShapeField.GetBounds(this) : myBottomConstraintShapeField.GetBounds(this),
+				delegate(ref ConstraintBox constraintBox)
+				{
+					if (constraintBox.FactConstraint.Constraint == constraint)
+					{
+						rect = constraintBox.Bounds;
+						return false;
+					}
+					return true;
+				});
+			rect.Offset(Bounds.Location);
+			return rect;
+		}
 		/// <summary>
 		/// Static property set when an external constraint is being created. The active
 		/// connection is used to track which roles are highlighted.
@@ -2150,6 +2253,21 @@ namespace Northface.Tools.ORM.ShapeModel
 			set
 			{
 				myActiveExternalConstraintConnectAction = value;
+			}
+		}
+		/// <summary>
+		/// Static property set when an internal constraint is being created. The active
+		/// connection is used to track which roles are highlighted.
+		/// </summary>
+		public static InternalUniquenessConstraintConnectAction ActiveInternalUniquenessConstraintConnectAction
+		{
+			get
+			{
+				return myActiveInternalUniquenessConstraintConnectAction;
+			}
+			set
+			{
+				myActiveInternalUniquenessConstraintConnectAction = value;
 			}
 		}
 		/// <summary>

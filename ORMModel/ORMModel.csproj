@@ -96,6 +96,7 @@
     </Compile>
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
+    <Compile Include="ShapeModel\InternalConstraintConnectAction.cs" />
     <Compile Include="ShapeModel\ORMShape.dmd.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -195,6 +196,9 @@
     <None Include="Resources\Toolbox.RoleConnector.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ShapeModel\ConnectRoleAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectRoleSearching.cur" />
+    <EmbeddedResource Include="ShapeModel\ConnectInternalConstraintAllowed.cur" />
+    <EmbeddedResource Include="ShapeModel\ConnectInternalConstraintSearching.cur" />
+    <None Include="Resources\Toolbox.InternalUniquenessConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.ValueType.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.BinaryFactType.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.TernaryFactType.Bitmap.Id.bmp" />

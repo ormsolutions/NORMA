@@ -288,6 +288,40 @@ namespace Northface.Tools.ORM.ObjectModel
 			return (NestingType == null) ? ResourceStrings.FactType : ResourceStrings.ObjectifiedFactType;
 		}
 		#endregion // Customize property display
+		#region MergeContext functions
+		/// <summary>
+		/// Support adding root elements and constraints directly to the design surface
+		/// </summary>
+		/// <param name="elementGroupPrototype"></param>
+		/// <param name="protoElement"></param>
+		/// <returns></returns>
+		protected override bool CanAddChildElement(ElementGroupPrototype elementGroupPrototype, ProtoElementBase protoElement)
+		{
+			if (protoElement == null)
+			{
+				return false;
+			}
+			MetaClassInfo classInfo = Store.MetaDataDirectory.FindMetaClass(protoElement.MetaClassId);
+			return classInfo.IsDerivedFrom(InternalUniquenessConstraint.MetaClassGuid);
+		}
+
+		/// <summary>
+		/// Attach a deserialized InternalUniquenessConstraint to this FactType.
+		/// Called after prototypes for these items are dropped onto the diagram
+		/// from the toolbox.
+		/// </summary>
+		/// <param name="sourceElement">The element being added</param>
+		/// <param name="elementGroup">The element describing all of the created elements</param>
+		public override void MergeRelate(ModelElement sourceElement, ElementGroup elementGroup)
+		{
+			base.MergeRelate(sourceElement, elementGroup);
+			InternalUniquenessConstraint internalConstraint;
+			if (null != (internalConstraint = sourceElement as InternalUniquenessConstraint))
+			{
+				internalConstraint.FactType = this;
+			}
+		}
+		#endregion // MergeContext functions
 		#region CustomStorage handlers
 		/// <summary>
 		/// Standard override. All custom storage properties are derived, not
