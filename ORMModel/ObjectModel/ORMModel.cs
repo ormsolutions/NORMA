@@ -706,7 +706,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		protected INamedElementDictionaryChild ChildRolePlayer
 		{
-			get { return ConstraintCollection as ExternalConstraint; }
+			get { return ConstraintCollection as Constraint; }
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}

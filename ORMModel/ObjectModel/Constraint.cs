@@ -664,6 +664,14 @@ namespace Northface.Tools.ORM.ObjectModel
 				return typedList;
 			}
 		}
+		FactType IFactConstraint.FactType
+		{
+			get
+			{
+				// Defer to generated relationship property
+				return FactType;
+			}
+		}
 		#endregion // IFactConstraint Implementation
 	}
 	public partial class ExternalFactConstraint : IFactConstraint
@@ -709,6 +717,23 @@ namespace Northface.Tools.ORM.ObjectModel
 					typedList[i] = roleSetLinks[i].RoleCollection;
 				}
 				return typedList;
+			}
+		}
+		FactType IFactConstraint.FactType
+		{
+			get
+			{
+				return FactType;
+			}
+		}
+		/// <summary>
+		/// Implements IFactConstraint.FactType
+		/// </summary>
+		protected FactType FactType
+		{
+			get
+			{
+				return FactTypeCollection;
 			}
 		}
 		#endregion // IFactConstraint Implementation
@@ -812,7 +837,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			ElementPropertyDescriptor descriptor = propertyDescriptor as ElementPropertyDescriptor;
 			if (descriptor != null && descriptor.MetaAttributeInfo.Id == IsPreferredMetaAttributeGuid)
 			{
-				return !TestAllowPreferred(null, false);
+				return IsPreferred ? false : !TestAllowPreferred(null, false);
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
@@ -1076,7 +1101,7 @@ namespace Northface.Tools.ORM.ObjectModel
 					IList links = rolePlayer.GetElementLinks(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
 					// Don't for each, the iterator doesn't like it when you remove elements
 					int linksCount = links.Count;
-					Debug.Assert(linksCount == 1); // Should be a 1-1 relationship
+					Debug.Assert(linksCount <= 1); // Should be a 1-1 relationship
 					for (int i = linksCount - 1; i >= 0; --i)
 					{
 						EntityTypeHasPreferredIdentifier identifierLink = links[i] as EntityTypeHasPreferredIdentifier;

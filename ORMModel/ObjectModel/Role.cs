@@ -402,15 +402,21 @@ namespace Northface.Tools.ORM.ObjectModel
 								// We are considered a 'many' instead of a 'one' either
 								// because there is no internal uniqueness constraint attached
 								// to this role, or because there is a uniqueness constraint
-								// attached to both roles. Figure out which one it is and
-								// clear this role from the full-fact constraint if it is there.
+								// attached to both roles. Figure out which one it is and remove
+								// the spanning constraint. The other option is to remove the
+								// role from the spanning constraint, but this leaves us with
+								// a zero-to-one or 1-to-1 cardinality on the opposite role,
+								// which is a change from the current zero-to-many or one-to-many
+								// cardinality it currently has.
 								foreach (ConstraintRoleSet roleSet in role.ConstraintRoleSetCollection)
 								{
-									if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+									Constraint spanningConstraint = roleSet.Constraint;
+									if (spanningConstraint.ConstraintType == ConstraintType.InternalUniqueness)
 									{
-										RoleMoveableCollection roles = roleSet.RoleCollection;
-										Debug.Assert(roles.Count == 2);
-										roles.Remove(role);
+										Debug.Assert(roleSet.RoleCollection.Count == 2);
+										spanningConstraint.Remove();
+										// There will only be one of these because we
+										// already fixed any 'broken' states earlier.
 										break;
 									}
 								}

@@ -60,6 +60,110 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ExternalConstraintAdded class
+		#region InternalFactConstraint fixup
+		#region InternalConstraintAdded class
+		[RuleOn(typeof(InternalFactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class InternalFactConstraintAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				InternalFactConstraint link;
+				FactType fact;
+				Constraint constraint;
+				if (null != (link = e.ModelElement as InternalFactConstraint) &&
+					null != (fact = link.FactType) &&
+					null != (constraint = link.InternalConstraintCollection))
+				{
+					foreach (PresentationElement pel in fact.PresentationRolePlayers)
+					{
+						FactTypeShape factShape = pel as FactTypeShape;
+						if (factShape != null)
+						{
+							factShape.ConstraintSetChanged(constraint);
+						}
+					}
+				}
+			}
+		}
+		#endregion // InternalFactConstraintAdded class
+		#region InternalFactConstraintRemoved class
+		[RuleOn(typeof(InternalFactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class InternalFactConstraintRemoved : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				InternalFactConstraint link;
+				FactType fact;
+				Constraint constraint;
+				if (null != (link = e.ModelElement as InternalFactConstraint) &&
+					null != (fact = link.FactType) &&
+					null != (constraint = link.InternalConstraintCollection))
+				{
+					if (!fact.IsRemoved)
+					{
+						foreach (PresentationElement pel in fact.PresentationRolePlayers)
+						{
+							FactTypeShape factShape = pel as FactTypeShape;
+							if (factShape != null)
+							{
+								factShape.ConstraintSetChanged(constraint);
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // InternalFactConstraintRemoved class
+		#region PrimaryIdentifierAdded class
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class PrimaryIdentifierAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link;
+				InternalUniquenessConstraint constraint;
+				if (null != (link = e.ModelElement as EntityTypeHasPreferredIdentifier) &&
+					null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint))
+				{
+					foreach (PresentationElement pel in constraint.FactType.PresentationRolePlayers)
+					{
+						FactTypeShape factShape = pel as FactTypeShape;
+						if (factShape != null)
+						{
+							factShape.Invalidate(true);
+						}
+					}
+				}
+			}
+		}
+		#endregion // PrimaryIdentifierAdded class
+		#region PrimaryIdentifierRemoved class
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class PrimaryIdentifierRemoved : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link;
+				InternalUniquenessConstraint constraint;
+				if (null != (link = e.ModelElement as EntityTypeHasPreferredIdentifier) &&
+					null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint))
+				{
+					if (!constraint.IsRemoved)
+					{
+						foreach (PresentationElement pel in constraint.FactType.PresentationRolePlayers)
+						{
+							FactTypeShape factShape = pel as FactTypeShape;
+							if (factShape != null)
+							{
+								factShape.Invalidate(true);
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // PrimaryIdentifierRemoved class
+		#endregion // InternalFactConstraint fixup
 		#endregion // ModelHasConstraint fixup
 		#region FactTypeHasRole fixup
 		#region RoleAdded class
@@ -176,6 +280,35 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ExternalFactConstraintAdded class
+		#region ExternalFactConstraintRemoved class
+		[RuleOn(typeof(ExternalFactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class ExternalFactConstraintRemoved : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ExternalFactConstraint link;
+				Constraint constraint;
+				if (null != (link = e.ModelElement as ExternalFactConstraint) &&
+					null != (constraint = link.ExternalConstraintCollection))
+				{
+					ExternalFactConstraint efc = e.ModelElement as ExternalFactConstraint;
+					FactType fact = efc.FactTypeCollection;
+					if (!fact.IsRemoved)
+					{
+						foreach (PresentationElement pel in fact.PresentationRolePlayers)
+						{
+							FactTypeShape factShape = pel as FactTypeShape;
+							if (factShape != null)
+							{
+								factShape.ConstraintSetChanged(constraint);
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // ExternalFactConstraintRemoved class
+
 		#region DisplayExternalConstraintLinksFixupListener class
 		/// <summary>
 		/// A fixup class to display external constraint links for

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -25,18 +26,1096 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Draw the constraints below the role boxes
 		/// </summary>
-		Bottom,
+		Bottom
 	}
 	#endregion ConstraintDisplayPosition enum
 	#region FactTypeShape class
 	public partial class FactTypeShape
 	{
+		#region ConstraintBoxRoleActivity enum
+		/// <summary>
+		/// The activity of a role in a ConstraintBox
+		/// </summary>
+		protected enum ConstraintBoxRoleActivity
+		{
+			/// <summary>
+			/// The role is inactive
+			/// </summary>
+			Inactive,
+			/// <summary>
+			/// The role is active
+			/// </summary>
+			Active,
+			/// <summary>
+			/// The role is, technically speaking, not supposed to be in this box.  Only used for binary fact internal constraint compression.
+			/// </summary>
+			NotInBox
+		}
+		#endregion // ConstraintBoxRoleActivity enum
+		#region ConstraintBox struct
+		/// <summary>
+		/// Defines a box to contain the constraint.
+		/// </summary>
+		protected struct ConstraintBox
+		{
+			#region Member Variables
+			/// <summary>
+			/// The bounding box to use.
+			/// </summary>
+			private RectangleD myBounds;
+			/// <summary>
+			/// The type of constraint contained is this box.
+			/// </summary>
+			private ConstraintType myConstraintType;
+			/// <summary>
+			/// Roles relative to the current order of the roles
+			/// on the facr for which this constraint applies.
+			/// </summary>
+			private ConstraintBoxRoleActivity[] myActiveRoles;
+			/// <summary>
+			/// The constraint object this box is for.
+			/// </summary>
+			private IFactConstraint myFactConstraint;
+			/// <summary>
+			/// The cached role collection
+			/// </summary>
+			private IList<Role> myRoleCollection;
+			#endregion // Member Variables
+			#region Constructors
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			/// <param name="factConstraint">A reference to the original constraint that this ConstraintBox is based on.</param>
+			/// <param name="factRoleCount">The number of roles for the context fact.</param>
+			[CLSCompliant(false)]
+			public ConstraintBox(IFactConstraint factConstraint, int factRoleCount)
+			{
+				Debug.Assert(factConstraint != null);
+				Debug.Assert(factRoleCount > 0 && factRoleCount >= factConstraint.RoleCollection.Count);
+				myBounds = new RectangleD();
+				Constraint constraint = factConstraint.Constraint;
+				myConstraintType = constraint.ConstraintType;
+				myActiveRoles = new ConstraintBoxRoleActivity[factRoleCount];
+				myFactConstraint = factConstraint;
+				myRoleCollection = null;
+			}
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			/// <param name="factConstraint">A reference to the original constraint that this ConstraintBox is based on.</param>
+			/// <param name="roleActivity">A representation of the factConstraint's role activity within the fact.</param>
+			[CLSCompliant(false)]
+			public ConstraintBox(IFactConstraint factConstraint, ConstraintBoxRoleActivity[] roleActivity)
+			{
+				if (!roleActivity.Equals(PreDefinedConstraintBoxRoleActivities_FullySpanning))
+				{
+					int roleActivityCount = roleActivity.Length;
+					Debug.Assert(factConstraint != null);
+					Debug.Assert(roleActivityCount > 0 && roleActivityCount >= factConstraint.RoleCollection.Count);
+					myBounds = new RectangleD();
+					Constraint constraint = factConstraint.Constraint;
+					myConstraintType = constraint.ConstraintType;
+					myActiveRoles = roleActivity;
+					myFactConstraint = factConstraint;
+					myRoleCollection = null;
+				}
+				else
+				{
+					myBounds = new RectangleD();
+					Constraint constraint = factConstraint.Constraint;
+					myConstraintType = constraint.ConstraintType;
+					myActiveRoles = roleActivity;
+					myFactConstraint = factConstraint;
+					myRoleCollection = null;
+				}
+			}
+			#endregion // Constructors
+			#region Accessor Properties
+			/// <summary>
+			/// The bounding box to use.
+			/// </summary>
+			public RectangleD Bounds
+			{
+				get
+				{
+					return myBounds;
+				}
+				set
+				{
+					myBounds = value;
+				}
+			}
+			/// <summary>
+			/// The type of constraint contained is this box.
+			/// </summary>
+			public ConstraintType ConstraintType
+			{
+				get
+				{
+					return myConstraintType;
+				}
+			}
+			/// <summary>
+			/// Roles relative to the current order of the roles
+			/// on the facr for which this constraint applies.
+			/// </summary>
+			public ConstraintBoxRoleActivity[] ActiveRoles
+			{
+				get
+				{
+					return myActiveRoles;
+				}
+			}
+			/// <summary>
+			/// The constraint object this box is for.
+			/// </summary>
+			[CLSCompliant(false)]
+			public IFactConstraint FactConstraint
+			{
+				get
+				{
+					return myFactConstraint;
+				}
+			}
+			/// <summary>
+			/// A (cached) reference to the fact constraint's role collection
+			/// </summary>
+			[CLSCompliant(false)]
+			public IList<Role> RoleCollection
+			{
+				get
+				{
+					IList<Role> roles = myRoleCollection;
+					if (roles == null)
+					{
+						myRoleCollection = roles = myFactConstraint.RoleCollection;
+					}
+					return roles;
+				}
+			}
+			/// <summary>
+			/// Tests if this constraint is a fully spanning constraint.
+			/// </summary>
+			/// <value>True if the constraint is fully spanning.</value>
+			public bool IsSpanning
+			{
+				get
+				{
+					return myActiveRoles.Equals(PreDefinedConstraintBoxRoleActivities_FullySpanning);
+				}
+			}
+			#endregion // Accessor Properties
+			#region Array sorting code
+			/// <summary>
+			/// Sort the constraint boxes and place non-displayed constraints
+			/// at the end of the array. Return the number of boxes that
+			/// actually need displaying.
+			/// </summary>
+			/// <param name="boxes">An existing array of constraint boxes
+			/// created with the parametrized constructor</param>
+			/// <returns>The number of significant boxes</returns>
+			public static int OrderConstraintBoxes(ConstraintBox[] boxes)
+			{
+				Array.Sort(boxes, Compare);
+				int fullBoxCount = boxes.Length;
+				int significantBoxCount = 0;
+				for (int i = 0; i < fullBoxCount; ++i)
+				{
+					if (IsConstraintTypeVisible(boxes[i].ConstraintType))
+					{
+						// UNDONE: Possibly add more code here, needs to
+						// match algorithm in Compare
+					}
+					else
+					{
+						// All insignificant ones are sorted to the end
+						significantBoxCount = i;
+						break;
+					}
+				}
+				return significantBoxCount;
+			}
+			/// <summary>
+			/// Compares two ConstraintBoxes
+			/// </summary>
+			/// <param name="c1">First ConstraintBox to compare.</param>
+			/// <param name="c2">Second ConstraintBox to compare.</param>
+			/// <returns>Value indicating the relative order of the ConstraintBoxes. -1 if c1 &lt; c2, 0 if c1 == c2, 1 if c1 &gt; c2</returns>
+			private static int Compare(ConstraintBox c1, ConstraintBox c2)
+			{
+				// Order the constraints, bringing preferred uniqueness constraints to the top of 
+				// internal uniqueness constraint.  Internal constraints will be on the bottom of
+				// external constraints.
+				ConstraintType ct1 = c1.ConstraintType;
+				ConstraintType ct2 = c2.ConstraintType;
+				int retVal = 0;
+
+				if (ct1 != ct2)
+				{
+					int ctOrder1 = RelativeSortPosition(ct1);
+					int ctOrder2 = RelativeSortPosition(ct2);
+					if (ctOrder1 < ctOrder2)
+					{
+						retVal = -1;
+					}
+					else if (ctOrder1 > ctOrder2)
+					{
+						retVal = 1;
+					}
+				}
+				else if (IsConstraintTypeVisible(ct1))
+				{
+					// If one of them is the preferred identifier, it rises to the top.
+					//if (c1.Constraint.PreferredIdentifierFor.
+					// else
+					//	{
+					// Constraints with more roles sink to the bottom.
+					int c1RoleCount = c1.RoleCollection.Count;
+					int c2RoleCount = c2.RoleCollection.Count;
+					if (c1RoleCount < c2RoleCount)
+					{
+						retVal = -1;
+					}
+					else if (c1RoleCount > c2RoleCount)
+					{
+						retVal = 1;
+					}
+				}
+
+				return retVal;
+			}
+			/// <summary>
+			/// Helper function for Compare to determine
+			/// the relative order of different constraint types.
+			/// </summary>
+			/// <param name="constraintType">ConstraintType value</param>
+			/// <returns>Relative numbers (the exact values should not matter).</returns>
+			private static int RelativeSortPosition(ConstraintType constraintType)
+			{
+				int retVal = 0;
+				switch (constraintType)
+				{
+					case ConstraintType.InternalUniqueness:
+						retVal = 0;
+						break;
+					case ConstraintType.ExternalUniqueness:
+					case ConstraintType.Ring:
+					case ConstraintType.Equality:
+					case ConstraintType.Exclusion:
+					case ConstraintType.Frequency:
+					case ConstraintType.Mandatory:
+					case ConstraintType.Subset:
+					default:
+						retVal = 1;
+						break;
+				}
+				return retVal;
+			}
+			/// <summary>
+			/// Is the constraint type ever visible to the ConstraintBox walking
+			/// algorithm? A true return here does not guarantee that a specific constraint
+			/// instance of this type is visible, only that constraints of this type can
+			/// be visible.
+			/// </summary>
+			/// <param name="constraintType">ConstraintType value</param>
+			/// <returns>true if the constraint can be drawn visibly</returns>
+			private static bool IsConstraintTypeVisible(ConstraintType constraintType)
+			{
+				switch (constraintType)
+				{
+					case ConstraintType.InternalUniqueness:
+						return true;
+				}
+				return false;
+			}
+			#endregion // Array sorting code
+		}
+		#endregion // ConstraintBox struct
+		#region Pre-defined ConstraintBoxRoleActivity arrays
+		// Used for the WalkConstraints method.  Having these static arrays is very
+		// useful for saving time allocating arrays every time something is hit tested.
+		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for a fully-spanning uniqueness constraint.
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_FullySpanning = new ConstraintBoxRoleActivity[0] {};
+		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for an n-1 binary fact with the first role active.
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_BinaryLeft = new ConstraintBoxRoleActivity[2] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.NotInBox };
+		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for an n-1 binary fact with the second role active.
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_BinaryRight = new ConstraintBoxRoleActivity[2] { ConstraintBoxRoleActivity.NotInBox, ConstraintBoxRoleActivity.Active };
+		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for an n-1 ternary fact with the first and second roles active.
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryLeft = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.NotInBox, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Active };
+		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for an n-1 ternary fact with the first and third roles active.
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryCenter = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active };
+		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for an n-1 ternary fact with the second and third roles active.
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryRight = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive };
+		#endregion //Pre-defined ConstraintBoxRoleActivity arrays
+		#region WalkConstraintBoxes implementation
+		/// <summary>
+		/// Do something within the bounds you're given.  This may include
+		/// painting, hit testing, highlighting, etc.
+		/// </summary>
+		/// <param name="constraintBox">The constraint that is being described</param>
+		/// <returns>bool</returns>
+		protected delegate bool VisitConstraintBox(ref ConstraintBox constraintBox);
+
+		/// <summary>
+		/// Determines the bounding boxes of all the constraints associated with the FactType,
+		/// then passes those bounding boxes into the delegate.  Specifically, it will pass in
+		/// the bouding box, the number of roles in the box, a boolean[] telling the method
+		/// which roles are active for the constraint, and the constraint type.
+		/// </summary>
+		/// <param name="parentShape">The FactTypeShape that the ConstraintShape is associated with.</param>
+		/// <param name="shapeField">The ShapeField whose bounds define the space that the ConstraintBoxes will be built in.</param>
+		/// <param name="boxUser">The VisitConstraintBox delegate that will use the ConstraintBoxes produced by WalkConstraintBoxes.</param>
+		protected static void WalkConstraintBoxes(ShapeElement parentShape, ShapeField shapeField, VisitConstraintBox boxUser)
+		{
+			WalkConstraintBoxes(parentShape, shapeField.GetBounds(parentShape), boxUser);
+		}
+
+		/// <summary>
+		/// Determines the bounding boxes of all the constraints associated with the FactType,
+		/// then passes those bounding boxes into the delegate.  Specifically, it will pass in
+		/// the bouding box, the number of roles in the box, a boolean[] telling the method
+		/// which roles are active for the constraint, and the constraint type.
+		/// </summary>
+		/// <param name="parentShape">The FactTypeShape that the ConstraintShape is associated with.</param>
+		/// <param name="fullBounds">The bounds the rectangles need to fit in.  Pass RectangleD.Empty if unknown.</param>
+		/// <param name="boxUser">The VisitConstraintBox delegate that will use the ConstraintBoxes 
+		/// produced by WalkConstraintBoxes.</param>
+		protected static void WalkConstraintBoxes(ShapeElement parentShape, RectangleD fullBounds, VisitConstraintBox boxUser)
+		{
+			if (fullBounds.IsEmpty)
+			{
+				fullBounds = new RectangleD(0, 0, RoleBoxWidth, 0);
+			}
+			FactTypeShape parentFactTypeShape = parentShape as FactTypeShape;
+			FactType parentFact = parentFactTypeShape.AssociatedFactType;
+			RoleMoveableCollection factRoles = parentFact.RoleCollection;
+
+			int factRoleCount = factRoles.Count;
+			//RectangleD fullBounds = shapeField.GetBounds(parentShape);
+
+			// First, gather the various constraints that are associated with the parent FactTypeShape.
+			//
+			ICollection<IFactConstraint> factConstraints = parentFact.FactConstraintCollection;
+			int fullConstraintCount = factConstraints.Count;
+			ConstraintBox[] constraintBoxes = new ConstraintBox[fullConstraintCount];
+
+			if (fullConstraintCount != 0)
+			{
+				// Constraints hasn't been filled before it's used later in the code.
+				int currentConstraintIndex = 0;
+				foreach (IFactConstraint factConstraint in factConstraints)
+				{
+					IList<Role> constraintRoles = factConstraint.RoleCollection;
+					int constraintRoleCount = constraintRoles.Count;
+					#region Optimized ConstraintRoleBox assignments
+					// Optimization time: If we're dealing with binary or ternary constraints,
+					// use the pre-defined ConstraintBoxRoleActivity collections.  This saves
+					// on allocating tons of arrays every time the constraints are drawn or hit tested.
+					ConstraintBoxRoleActivity[] predefinedActivityRoles = null;
+					if (constraintRoleCount == factRoleCount)
+					{
+						predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_FullySpanning;
+					}
+					{
+						switch (factRoleCount)
+						{
+							#region Binary fact type
+							case 2:
+								switch (constraintRoleCount)
+								{
+									case 1:
+										int roleIndex = factRoles.IndexOf(constraintRoles[0]);
+										Debug.Assert(roleIndex != -1); // This violates the IFactConstraint contract
+										if (roleIndex == 0)
+										{
+											predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_BinaryLeft;
+										}
+										else if (roleIndex == 1)
+										{
+											predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_BinaryRight;
+										}
+										break;
+								}
+								break;
+							#endregion // Binary fact type
+							#region Ternary fact type
+							case 3:
+								switch (constraintRoleCount)
+								{
+									case 2:
+										int roleIndex0 = factRoles.IndexOf(constraintRoles[0]);
+										int roleIndex1 = factRoles.IndexOf(constraintRoles[1]);
+										Debug.Assert(roleIndex0 != -1); // This violates the IFactConstraint contract
+										Debug.Assert(roleIndex1 != -1); // This violates the IFactConstraint contract
+										switch (roleIndex0)
+										{
+											case 0:
+												if (roleIndex1 == 1)
+												{
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryLeft;
+												}
+												else if (roleIndex1 == 2)
+												{
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryCenter;
+												}
+												break;
+											case 1:
+												if (roleIndex1 == 0)
+												{
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_BinaryLeft;
+												}
+												else if (roleIndex1 == 2)
+												{
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryRight;
+												}
+												break;
+											case 2:
+												if (roleIndex1 == 0)
+												{
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryCenter;
+												}
+												else if (roleIndex1 == 1)
+												{
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryRight;
+												}
+												break;
+										}
+										break;
+								}
+								break;
+							#endregion // Ternary fact type
+						}
+					}
+					#endregion // Optimized ConstraintRoleBox assignments
+					#region Manual ConstraintRoleBox assignment
+					if (predefinedActivityRoles != null)
+					{
+						constraintBoxes[currentConstraintIndex] = new ConstraintBox(factConstraint, predefinedActivityRoles);
+					}
+					else
+					{
+						// The original code, now used for handling fact types with 4 or more roles
+						// or fact types that are irregular. 
+						ConstraintBox currentBox = new ConstraintBox(factConstraint, factRoleCount);
+
+						// The constraint is not a fully-spanning constraint.  We must now
+						// determine if the hole is between active roles.  This is important
+						// mainly for drawing, to determine if a dashed line needs to be drawn
+						// to connect the solid lines over the active roles of the constraint.
+						Debug.Assert(constraintRoleCount < factRoleCount); // Should be predefined otherwise
+						ConstraintBoxRoleActivity[] activeRoles = currentBox.ActiveRoles;
+						Debug.Assert(activeRoles.Length == factRoleCount);
+						// Walk the fact's roles, and for each role that is found in this constraint
+						// mark the role as active in the constraintBox.roleActive array.  
+						for (int i = 0; i < constraintRoleCount; ++i)
+						{
+							int roleIndex = factRoles.IndexOf(constraintRoles[i]);
+							Debug.Assert(roleIndex != -1); // This violates the IFactConstraint contract
+							activeRoles[roleIndex] = ConstraintBoxRoleActivity.Active;
+						}
+						if (factRoleCount == 2)
+						{
+							for (int i = 0; i < factRoleCount; ++i)
+							{
+								if (activeRoles[i] != ConstraintBoxRoleActivity.Active)
+								{
+									activeRoles[i] = ConstraintBoxRoleActivity.NotInBox;
+								}
+							}
+						}
+						constraintBoxes[currentConstraintIndex] = currentBox;
+					}
+					#endregion // Manual ConstraintRoleBox assignment
+					++currentConstraintIndex;
+				}
+				int significantConstraintCount = ConstraintBox.OrderConstraintBoxes(constraintBoxes);
+
+				double constraintHeight = ConstraintHeight;
+				double constraintWidth = fullBounds.Width / (double)factRoleCount;
+
+				// Walk the constraintBoxes array and assign a physical location to each constraint box,
+				fullBounds.Height = constraintHeight;
+				int heightLeft = 0;
+				int heightRight = 0;
+				int lastUncompressedConstraint = 0;
+				double yPosition = fullBounds.Y;
+				double xPosition = fullBounds.X;
+				double initialBottom = fullBounds.Bottom;
+
+				#region Compressing the ConstraintRoleBoxes of binary fact types.
+				if (factRoleCount == 2)
+				{
+					for (int i = significantConstraintCount - 1; i >= 0; --i)
+					{
+						ConstraintBox box = constraintBoxes[i];
+						box.Bounds = fullBounds;
+						RectangleD bounds = box.Bounds;
+
+						ConstraintBoxRoleActivity[] activeRoles = box.ActiveRoles;
+						if (activeRoles.Length == 2)
+						{
+							if (activeRoles[0] == ConstraintBoxRoleActivity.NotInBox)
+							{
+								bounds.X = bounds.X + constraintWidth;
+								bounds.Width = bounds.Width - constraintWidth;
+
+								if (heightLeft > 0)
+								{
+									bounds.Y = initialBottom - ((double)lastUncompressedConstraint * constraintHeight);
+									--heightLeft;
+								}
+								else if (heightRight++ == 0)
+								{
+									lastUncompressedConstraint = i;
+								}
+							}
+							else if (activeRoles[1] == ConstraintBoxRoleActivity.NotInBox)
+							{
+								bounds.Width = bounds.Width - constraintWidth;
+
+								if (heightRight > 0)
+								{
+									bounds.Y = initialBottom - ((double)lastUncompressedConstraint * constraintHeight);
+									--heightRight;
+								}
+								else if (heightLeft++ == 0)
+								{
+									lastUncompressedConstraint = i;
+								}
+							}
+						}
+						box.Bounds = bounds;
+						fullBounds.Offset(0, constraintHeight);
+
+						if (!boxUser(ref box))
+						{
+							break;
+						}
+					}
+				}
+				#endregion // Compressing the ConstraintRoleBoxes of binary fact types.
+				// Unaries, ternaries and n-aries do not need to have 
+				// their internal uniqueness constraints compressed.
+				else
+				{
+					for (int i = significantConstraintCount - 1; i >= 0; --i)
+					{
+						ConstraintBox box = constraintBoxes[i];
+						box.Bounds = fullBounds;
+						if (!boxUser(ref box))
+						{
+							break;
+						}
+
+						fullBounds.Offset(0, constraintHeight);
+					}
+				}
+			}
+		}
+		#endregion // WalkConstraintBoxes implementation
 		#region Size Constants
 		private const double RoleBoxHeight = 0.11;
 		private const double RoleBoxWidth = 0.16;
 		private const double NestedFactHorizontalMargin = 0.2;
 		private const double NestedFactVerticalMargin = 0.075;
+		private const double ConstraintHeight = 0.07;
 		#endregion // Size Constants
+		#region SpacerShapeField : ShapeField
+		/// <summary>
+		/// Creates a shape to properly align the other shapefields within the FactTypeShape.
+		/// </summary>
+		private class SpacerShapeField : ShapeField
+		{
+			/// <summary>
+			/// Construct a default SpacerShapeField
+			/// </summary>
+			public SpacerShapeField()
+			{
+				DefaultFocusable = false;
+				DefaultSelectable = false;
+				DefaultVisibility = false;
+			}
+
+			/// <summary>
+			/// Width is that of NestedFactHorizontalMargin if parentShape is objectified; otherwise, zero.
+			/// </summary>
+			/// <returns>NestedFactHorizontalMargin if objectified; otherwise, 0.</returns>
+			public override double GetMinimumWidth(ShapeElement parentShape)
+			{
+				FactTypeShape factShape = parentShape as FactTypeShape;
+				if (factShape.IsObjectified)
+					return NestedFactHorizontalMargin;
+				else
+					return 0;
+			}
+
+			/// <summary>
+			/// Width is that of NestedFactVerticalMargin if parentShape is objectified; otherwise, zero.
+			/// </summary>
+			/// <returns>NestedFactVerticalMargin if objectified; otherwise, 0.</returns>
+			public override double GetMinimumHeight(ShapeElement parentShape)
+			{
+				FactTypeShape factShape = parentShape as FactTypeShape;
+				if (factShape.IsObjectified)
+					return NestedFactVerticalMargin;
+				else
+					return 0;
+			}
+
+			// Nothing to paint for the spacer. So, no DoPaint override needed.
+
+		}
+		#endregion // SpacerShapeField class
+		#region SpacerSubField class
+		private class SpacerSubField : ShapeSubField
+		{
+			#region Member Variables
+			private Role myAssociatedRole;
+			#endregion // Member Variables
+			#region Construction
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			/// <param name="associatedRole">The role that this SpacerSubField is associated with.</param>
+			public SpacerSubField(Role associatedRole)
+			{
+				Debug.Assert(associatedRole != null);
+				myAssociatedRole = associatedRole;
+			}
+			#endregion // Construction
+			#region Required ShapeSubField overrides
+			/// <summary>
+			/// Returns true if the fields have the same associated role
+			/// </summary>
+			public override bool SubFieldEquals(object obj)
+			{
+				SpacerSubField compareTo;
+				if (null != (compareTo = obj as SpacerSubField))
+				{
+					return myAssociatedRole == compareTo.myAssociatedRole;
+				}
+				return false;
+			}
+			/// <summary>
+			/// Returns the hash code for the associated role
+			/// </summary>
+			public override int SubFieldHashCode
+			{
+				get
+				{
+					return myAssociatedRole.GetHashCode();
+				}
+			}
+			/// <summary>
+			/// A spacer sub field is never selectable, return false regardless of parameters
+			/// </summary>
+			/// <returns>false</returns>
+			public override bool GetSelectable(ShapeElement parentShape, ShapeField parentField)
+			{
+				return false;
+			}
+			/// <summary>
+			/// A spacer sub field is never focusable, return false regardless of parameters
+			/// </summary>
+			/// <returns>false</returns>
+			public override bool GetFocusable(ShapeElement parentShape, ShapeField parentField)
+			{
+				return false;
+			}
+			/// <summary>
+			/// Returns bounds based on the size of the parent shape
+			/// and the NestedFactVerticalMargin
+			/// </summary>
+			/// <param name="parentShape">The containing FactTypeShape</param>
+			/// <param name="parentField">The containing shape field</param>
+			/// <returns>The vertical slice for this role</returns>
+			public override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
+			{
+				RectangleD retVal = parentField.GetBounds(parentShape);
+				retVal.Height = NestedFactVerticalMargin;
+				return retVal;
+			}
+			#endregion // Required ShapeSubField overrides
+		}
+		#endregion // SpacerSubField class
+		#region ConstraintShapeField : ShapeField
+		private class ConstraintShapeField : ShapeField
+		{
+			/// <summary>
+			/// Construct a default ConstraintShapeField
+			/// </summary>
+			public ConstraintShapeField()
+			{
+				DefaultFocusable = true;
+				DefaultSelectable = true;
+				DefaultVisibility = true;
+			}
+
+			/// <summary>
+			/// Find the constraint sub shape at this location
+			/// </summary>
+			/// <param name="point">The point being hit-tested.</param>
+			/// <param name="parentShape">The current ShapeField that the mouse is over.</param>
+			/// <param name="diagramHitTestInfo">The DiagramHitTestInfo to which the ConstraintSubShapField
+			/// will be added if the mouse is over it.</param>
+			public override void DoHitTest(PointD point, ShapeElement parentShape, DiagramHitTestInfo diagramHitTestInfo)
+			{
+				ForHitTest hitTest = new ForHitTest(point, parentShape, this, diagramHitTestInfo);
+				FactTypeShape.WalkConstraintBoxes(parentShape, this, hitTest.TestForHit);
+			}
+
+			/// <summary>
+			/// Handles hit test of the constraint
+			/// </summary>
+			private class ForHitTest
+			{
+				private PointD myPoint;
+				private ShapeElement myShapeElement;
+				private ConstraintShapeField myConstraintShapeField;
+				private DiagramHitTestInfo myDiagramHitTestInfo;
+
+				public ForHitTest(PointD point, ShapeElement parentShape, ConstraintShapeField shapeField, DiagramHitTestInfo diagramHitTestInfo)
+				{
+					myPoint = point;
+					myShapeElement = parentShape;
+					myConstraintShapeField = shapeField;
+					myDiagramHitTestInfo = diagramHitTestInfo;
+				}
+
+				/// <summary>
+				/// Tests if a specific constraint is at this location.
+				/// </summary>
+				/// <param name="constraintBox">The constraint to look for</param>
+				/// <returns>true</returns>
+				public bool TestForHit(ref ConstraintBox constraintBox)
+				{
+					RectangleD fullBounds = constraintBox.Bounds;
+					if (fullBounds.Contains(myPoint))
+					{
+						IFactConstraint factConstraint = constraintBox.FactConstraint;
+						myDiagramHitTestInfo.HitDiagramItem = new DiagramItem(myShapeElement, myConstraintShapeField, new ConstraintSubField(factConstraint.Constraint));
+						return false; // Don't continue, we got our item
+					}
+					return true;
+				}
+			}
+
+			/// <summary>
+			/// Get the minimum width of the ConstraintShapeField.
+			/// </summary>
+			/// <param name="parentShape">The FactTypeShape that this ConstraintShapeField is associated with.</param>
+			/// <returns>The width of the ConstraintShapeField.</returns>
+			public override double GetMinimumWidth(ShapeElement parentShape)
+			{
+				FactTypeShape parent = parentShape as FactTypeShape;
+				return parent.RolesShape.GetMinimumWidth(parentShape);
+			}
+
+			/// <summary>
+			/// Get the minimum height of the ConstraintShapeField.
+			/// </summary>
+			/// <param name="parentShape">The FactTypeShape that this ConstraintShapeField is associated with.</param>
+			/// <returns>The height of the ConstraintShapeField.</returns>
+			public override double GetMinimumHeight(ShapeElement parentShape)
+			{
+				return ForMinimumHeight.CalculateMinimumHeight(parentShape);
+			}
+
+			/// <summary>
+			/// Helper class for GetMinimumHeight.
+			/// </summary>
+			private class ForMinimumHeight
+			{
+				private double minY = double.MaxValue;
+				private double maxY = double.MinValue;
+				private bool wasVisited = false;
+
+				private ForMinimumHeight() { }
+				public static double CalculateMinimumHeight(ShapeElement parentShape)
+				{
+					ForMinimumHeight fmh = new ForMinimumHeight();
+					WalkConstraintBoxes(parentShape, RectangleD.Empty, fmh.VisitBox);
+					return fmh.wasVisited ? fmh.maxY - fmh.minY : 0;
+				}
+				private bool VisitBox(ref ConstraintBox constraintBox)
+				{
+					wasVisited = true;
+					RectangleD bounds = constraintBox.Bounds;
+					minY = Math.Min(minY, bounds.Top);
+					maxY = Math.Max(maxY, bounds.Bottom);
+					return true;
+				}
+			}
+
+			/// <summary>
+			/// Paints the contstraints.
+			/// </summary>
+			/// <param name="e">DiagramPaintEventArgs with the Graphics object to draw to.</param>
+			/// <param name="parentShape">ConstraintShapeField to draw to.</param>
+			public override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
+			{
+				ForDrawing draw = new ForDrawing(e, parentShape as FactTypeShape);
+				FactTypeShape.WalkConstraintBoxes(parentShape, this, draw.DrawConstraint);
+			}
+
+			/// <summary>
+			/// Helper class for DoPaint().  Handles drawing of the constraint.
+			/// </summary>
+			private class ForDrawing
+			{
+				private Graphics myGraphics;
+				private HighlightedShapesCollection highlightedShapes;
+				private FactTypeShape myShapeElement;
+				private float myGap;
+				private Pen myConstraintPen;
+				private Pen myDashedConstraintPen;
+				private Brush myHighlightBrush;
+
+				/// <summary>
+				/// Constructor
+				/// </summary>
+				/// <param name="e">DiagramPaintEventArgs with the Graphics object to draw to.</param>
+				/// <param name="parentShape">ConstraintShapeField to draw to.</param>
+				public ForDrawing(DiagramPaintEventArgs e, FactTypeShape parentShape)
+				{
+					myGraphics = e.Graphics;
+					highlightedShapes = e.View.HighlightedShapes;
+					myShapeElement = parentShape;
+
+					StyleSet styleSet = myShapeElement.StyleSet;
+					myConstraintPen = styleSet.GetPen(InternalFactConstraintPen);
+					myDashedConstraintPen = styleSet.GetPen(InternalFactConstraintSpacerPen);
+					myHighlightBrush = styleSet.GetBrush(DiagramBrushes.ShapeBackgroundSelectedInactive);
+					myGap = myConstraintPen.Width;
+				}
+
+				/// <summary>
+				/// Does the actual drawing of a constraint.
+				/// </summary>
+				/// <param name="constraintBox">The constraint to draw.</param>
+				/// <returns>False if constraint is not an internal uniqueness constraint; otherwise, true.</returns>
+				public bool DrawConstraint(ref ConstraintBox constraintBox)
+				{
+					if (constraintBox.ConstraintType != ConstraintType.InternalUniqueness)
+					{
+						return false;
+					}
+
+					//variables
+					RectangleF boundsF = RectangleD.ToRectangleF(constraintBox.Bounds);
+					float verticalPos = boundsF.Top + (float)(ConstraintHeight / 2);
+					ConstraintBoxRoleActivity[] rolePosToDraw = constraintBox.ActiveRoles;
+					int numRoles = rolePosToDraw.Length;
+					float roleWidth = (float)FactTypeShape.RoleBoxWidth;
+
+					// test for and draw highlights
+					foreach (DiagramItem item in highlightedShapes)
+					{
+						if (object.ReferenceEquals(myShapeElement, item.Shape))
+						{
+							ConstraintSubField highlightedSubField = item.SubField as ConstraintSubField;
+							IFactConstraint factConstraint = constraintBox.FactConstraint;
+							if (highlightedSubField != null && (highlightedSubField.AssociatedConstraint == factConstraint.Constraint))
+							{
+								// draw highlight
+								myGraphics.FillRectangle(myHighlightBrush, boundsF);
+								break;
+							}
+						}
+					}
+
+					float startPos = boundsF.Left, endPos = startPos;
+					if (constraintBox.IsSpanning)
+					{
+						endPos = boundsF.Right;
+						//draw fully spanning constraint
+						if (myShapeElement.ShouldDrawConstraintPreferred(constraintBox.FactConstraint.Constraint))
+						{
+							//draw constraint as preferred
+							DrawPreferredConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos);
+						}
+						else
+						{
+							//draw constraint as regular
+							DrawConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos);
+						}
+					}
+					else
+					{
+
+						for (int i = 0; i < numRoles; ++i)
+						{
+							ConstraintBoxRoleActivity currentBoxActivity = rolePosToDraw[i];
+							if (currentBoxActivity != ConstraintBoxRoleActivity.NotInBox)
+							{
+								endPos += roleWidth;
+								Constraint currentConstraint = constraintBox.FactConstraint.Constraint;
+								if (currentBoxActivity != ConstraintBoxRoleActivity.Active)
+								{
+									if (!(i == 0 || i == numRoles - 1))
+									{
+										// position that is not first or last is being skipped,
+										// draw dashed line
+										if (myShapeElement.ShouldDrawConstraintPreferred(currentConstraint))
+										{
+											//draw constraint as preferred
+											DrawPreferredConstraintLine(myGraphics, myDashedConstraintPen, startPos, endPos, verticalPos);
+										}
+										else
+										{
+											//draw constraint as regular
+											DrawConstraintLine(myGraphics, myDashedConstraintPen, startPos, endPos, verticalPos);
+										}
+									}
+									startPos = endPos;
+								}
+								if (startPos != endPos && !(i < numRoles - 1 && (rolePosToDraw[i + 1] == ConstraintBoxRoleActivity.Active)))
+								{
+									//draw constraint
+									if (myShapeElement.ShouldDrawConstraintPreferred(currentConstraint))
+									{
+										//draw constraint as preferred
+										DrawPreferredConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos);
+									}
+									else
+									{
+										//draw constraint as regular
+										DrawConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos);
+									}
+									startPos = endPos;
+								}
+							}
+						}
+					}
+					return true;
+				}
+
+				/// <summary>
+				/// Draws a preferred constraint line
+				/// </summary>
+				/// <param name="g">The graphics object to draw to</param>
+				/// <param name="pen">The pen to use</param>
+				/// <param name="startPos">The x-coordinate of the left edge to draw at.</param>
+				/// <param name="endPos">The x-coordinate of the right edge to draw at.</param>
+				/// <param name="verticalPos">The y-coordinate to draw at.</param>
+				private void DrawPreferredConstraintLine(Graphics g, Pen pen, float startPos, float endPos, float verticalPos)
+				{
+					float gap = myGap;
+					float vAdjust = gap * .75f;
+					g.DrawLine(pen, startPos + gap, verticalPos - vAdjust, endPos - gap, verticalPos - vAdjust);
+					g.DrawLine(pen, startPos + gap, verticalPos + vAdjust, endPos - gap, verticalPos + vAdjust);
+				}
+
+				/// <summary>
+				/// Draws a regular constraint line
+				/// </summary>
+				/// <param name="g">The graphics object to draw to</param>
+				/// <param name="pen">The pen to use</param>
+				/// <param name="startPos">The x-coordinate of the left edge to draw at.</param>
+				/// <param name="endPos">The x-coordinate of the right edge to draw at.</param>
+				/// <param name="verticalPos">The y-coordinate to draw at.</param>
+				private void DrawConstraintLine(Graphics g, Pen pen, float startPos, float endPos, float verticalPos)
+				{
+					float gap = myGap;
+					g.DrawLine(pen, startPos + gap, verticalPos, endPos - gap, verticalPos);
+				}
+			}
+		}
+		#endregion // ConstraintShapeField class
+		#region ConstraintSubField class
+		private class ConstraintSubField : ShapeSubField
+		{
+			#region Member variables
+			private Constraint myAssociatedConstraint;
+			#endregion // Member variables
+			#region Construction
+			/// <summary>
+			/// Default constructor
+			/// </summary>
+			/// <param name="associatedConstraint">The Constraint that this ConstraintSubfield will represent.</param>
+			public ConstraintSubField(Constraint associatedConstraint)
+			{
+				Debug.Assert(associatedConstraint != null);
+				myAssociatedConstraint = associatedConstraint;
+			}
+			#endregion // Construction
+			#region Required ShapeSubField overrides
+			/// <summary>
+			/// Returns true if the fields have the same associated role
+			/// </summary>
+			public override bool SubFieldEquals(object obj)
+			{
+				ConstraintSubField compareTo;
+				if (null != (compareTo = obj as ConstraintSubField))
+				{
+					return myAssociatedConstraint == compareTo.myAssociatedConstraint;
+				}
+				return false;
+			}
+			/// <summary>
+			/// Returns the hash code for the associated role
+			/// </summary>
+			public override int SubFieldHashCode
+			{
+				get
+				{
+					return myAssociatedConstraint.GetHashCode();
+				}
+			}
+			/// <summary>
+			/// A role sub field is always selectable, return true regardless of parameters
+			/// </summary>
+			/// <returns>true</returns>
+			public override bool GetSelectable(ShapeElement parentShape, ShapeField parentField)
+			{
+				return true;
+			}
+			/// <summary>
+			/// A role sub field is always focusable, return true regardless of parameters
+			/// </summary>
+			/// <returns>true</returns>
+			public override bool GetFocusable(ShapeElement parentShape, ShapeField parentField)
+			{
+				return true;
+			}
+			/// <summary>
+			/// Returns bounds based on the size of the parent shape
+			/// and the RoleIndex of this shape
+			/// </summary>
+			/// <param name="parentShape">The containing FactTypeShape</param>
+			/// <param name="parentField">The containing shape field</param>
+			/// <returns>The vertical slice for this role</returns>
+			public override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
+			{
+				return parentField.GetBounds(parentShape);
+			}
+			#endregion // Required ShapeSubField
+			#region Accessor functions
+			/// <summary>
+			/// Get the Constraint element associated with this sub field
+			/// </summary>
+			public Constraint AssociatedConstraint
+			{
+				get
+				{
+					return myAssociatedConstraint;
+				}
+			}
+			#endregion // Accessor functions
+		}
+		#endregion // ConstraintSubField class
 		#region RolesShapeField class
 		private class RolesShapeField : ShapeField
 		{
@@ -70,14 +1149,29 @@ namespace Northface.Tools.ORM.ShapeModel
 					}
 				}
 			}
+			/// <summary>
+			/// Get the minimum width of this RolesShapeField.
+			/// </summary>
+			/// <param name="parentShape">The FactTypeShape associated with this RolesShapeField.</param>
+			/// <returns>The width of this RolesShapeField.</returns>
 			public override double GetMinimumWidth(ShapeElement parentShape)
 			{
 				return FactTypeShape.RoleBoxWidth * Math.Max(1, (parentShape as FactTypeShape).AssociatedFactType.RoleCollection.Count);
 			}
+			/// <summary>
+			/// Get the minimum height of this RolesShapeField.
+			/// </summary>
+			/// <param name="parentShape">The FactTypeShape associated with this RolesShapeField.</param>
+			/// <returns>The height of this RolesShapeField.</returns>
 			public override double GetMinimumHeight(ShapeElement parentShape)
 			{
 				return FactTypeShape.RoleBoxHeight;
 			}
+			/// <summary>
+			/// Paint the RolesShapeField
+			/// </summary>
+			/// <param name="e">DiagramPaintEventArgs with the Graphics object to draw to.</param>
+			/// <param name="parentShape">FactTypeShape to draw to.</param>
 			public override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
 			{
 				FactTypeShape parentFactShape = parentShape as FactTypeShape;
@@ -107,11 +1201,6 @@ namespace Northface.Tools.ORM.ShapeModel
 					double lastX = bounds.Left;
 					StyleSet styleSet = parentShape.StyleSet;
 					Pen pen = styleSet.GetPen(FactTypeShape.RoleBoxOutlinePen);
-					if (objectified)
-					{
-						RectangleF boundsF = RectangleD.ToRectangleF(bounds);
-						g.DrawRectangle(pen, boundsF.Left, boundsF.Top, boundsF.Width, boundsF.Height);
-					}
 					int activeRoleIndex;
 					float top = (float)bounds.Top;
 					float bottom = (float)bounds.Bottom;
@@ -133,7 +1222,7 @@ namespace Northface.Tools.ORM.ShapeModel
 									stringFormat.LineAlignment = StringAlignment.Center;
 									stringFormat.Alignment = StringAlignment.Center;
 								}
-								g.DrawString((activeRoleIndex + 1).ToString(), styleSet.GetFont(DiagramFonts.CommentText), styleSet.GetBrush(DiagramBrushes.CommentText),new RectangleF(lastXF, top, offsetByF, height), stringFormat);
+								g.DrawString((activeRoleIndex + 1).ToString(), styleSet.GetFont(DiagramFonts.CommentText), styleSet.GetBrush(DiagramBrushes.CommentText), new RectangleF(lastXF, top, offsetByF, height), stringFormat);
 							}
 							else if (i == highlightRoleBox)
 							{
@@ -146,6 +1235,8 @@ namespace Northface.Tools.ORM.ShapeModel
 								// un-highlight n-1 role boxes, which would be extremely flashy. We should
 								// also use this facility to adjust the color for the selected constraint so we
 								// would not need to use a separate brush for the normal/highlight colors.
+								// Could use a brush with an alpha channel:
+								// System.Drawing.Brush myBrush = new System.Drawing.SolidBrush(Color.FromArgb(23, 0, 0, 0));
 								g.FillRectangle(styleSet.GetBrush(DiagramBrushes.ShapeBackgroundSelectedInactive), lastXF, top, offsetByF, height);
 							}
 
@@ -164,6 +1255,8 @@ namespace Northface.Tools.ORM.ShapeModel
 							stringFormat.Dispose();
 						}
 					}
+					RectangleF boundsF = RectangleD.ToRectangleF(bounds);
+					g.DrawRectangle(pen, boundsF.Left, boundsF.Top, boundsF.Width, boundsF.Height);
 				}
 			}
 		}
@@ -268,9 +1361,13 @@ namespace Northface.Tools.ORM.ShapeModel
 		#endregion // RoleSubField class
 		#region Member Variables
 		private static RolesShapeField myRolesShapeField = null;
+		private static ConstraintShapeField myTopConstraintShapeField = null;
+		private static ConstraintShapeField myBottomConstraintShapeField = null;
 		private static readonly StyleSetResourceId RoleBoxOutlinePen = new StyleSetResourceId("Northface", "RoleBoxOutlinePen");
 		private static readonly StyleSetResourceId SelectedConstraintRoleBackgroundBrush = new StyleSetResourceId("Northface", "SelectedConstraintRoleBackgroundBrush");
 		private static readonly StyleSetResourceId SelectedConstraintRoleHighlightedBackgroundBrush = new StyleSetResourceId("Northface", "SelectedConstraintRoleHighlightedBackgroundBrush");
+		private static readonly StyleSetResourceId InternalFactConstraintPen = new StyleSetResourceId("Northface", "InternalFactConstraintPen");
+		private static readonly StyleSetResourceId InternalFactConstraintSpacerPen = new StyleSetResourceId("Northface", "InternalFactConstraintSpacerPen");
 		private static ExternalConstraintConnectAction myActiveExternalConstraintConnectAction;
 		#endregion // Member Variables
 		#region RoleSubField integration
@@ -286,6 +1383,11 @@ namespace Northface.Tools.ORM.ShapeModel
 			if (null != (roleField = subField as RoleSubField))
 			{
 				return new ModelElement[] { roleField.AssociatedRole };
+			}
+			ConstraintSubField constraintSubField;
+			if (null != (constraintSubField = subField as ConstraintSubField))
+			{
+				return new ModelElement[] { constraintSubField.AssociatedConstraint };
 			}
 			return null;
 		}
@@ -333,7 +1435,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			PenSettings penSettings = new PenSettings();
 			penSettings.Color = SystemColors.WindowText;
-			penSettings.Width = 1.0F/72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
+			penSettings.Width = 1.0F / 72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			penSettings.Alignment = PenAlignment.Center;
 			classStyleSet.AddPen(RoleBoxOutlinePen, DiagramPens.ShapeOutline, penSettings);
 
@@ -342,6 +1444,13 @@ namespace Northface.Tools.ORM.ShapeModel
 			classStyleSet.AddBrush(SelectedConstraintRoleBackgroundBrush, DiagramBrushes.DiagramBackground, brushSettings);
 			brushSettings.Color = Color.Gold;
 			classStyleSet.AddBrush(SelectedConstraintRoleHighlightedBackgroundBrush, DiagramBrushes.DiagramBackground, brushSettings);
+
+			penSettings.Color = Color.Violet;
+			classStyleSet.AddPen(InternalFactConstraintPen, DiagramPens.ShapeOutline, penSettings);
+
+			penSettings.DashStyle = DashStyle.Dash;
+			classStyleSet.AddPen(InternalFactConstraintSpacerPen, DiagramPens.ShapeOutline, penSettings);
+
 		}
 		/// <summary>
 		/// Use the rolebox outline pen unless we're objectified
@@ -362,22 +1471,46 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			base.InitializeShapeFields(shapeFields);
 
-			// Initialize field
+			// Initialize fields
 			RolesShapeField field = new RolesShapeField();
+			ConstraintShapeField topConstraintField = new ConstraintShapeField();
+			ConstraintShapeField bottomConstraintField = new ConstraintShapeField();
+			SpacerShapeField spacer = new SpacerShapeField();
 
 			// Add all shapes before modifying anchoring behavior
+			shapeFields.Add(spacer);
+			shapeFields.Add(topConstraintField);
+			shapeFields.Add(bottomConstraintField);
 			shapeFields.Add(field);
 
 			// Modify anchoring behavior
+			AnchoringBehavior bottomConstraintAnchor = bottomConstraintField.AnchoringBehavior;
+			bottomConstraintAnchor.CenterHorizontally();
+			bottomConstraintAnchor.SetTopAnchor(field, 1);
+
 			AnchoringBehavior anchor = field.AnchoringBehavior;
 			anchor.CenterHorizontally();
-			anchor.CenterVertically();
+			anchor.SetTopAnchor(topConstraintField, 1);
+
+			AnchoringBehavior topConstraintAnchor = topConstraintField.AnchoringBehavior;
+			topConstraintAnchor.CenterHorizontally();
+			topConstraintAnchor.SetTopAnchor(spacer, 1);
+
+			AnchoringBehavior spacerAnchor = spacer.AnchoringBehavior;
+			spacerAnchor.CenterHorizontally();
+
 			// Do not modify set edge anchors in this case. Edge anchors
 			// force the bounds of the text field to the size of the parent,
 			// we want it the other way around.
 
 			Debug.Assert(myRolesShapeField == null); // Only called once
 			myRolesShapeField = field;
+
+			Debug.Assert(myTopConstraintShapeField == null); // Only called once
+			myTopConstraintShapeField = topConstraintField;
+
+			Debug.Assert(myBottomConstraintShapeField == null); // Only called once
+			myBottomConstraintShapeField = bottomConstraintField;
 		}
 		/// <summary>
 		/// The shape field used to display roles
@@ -402,17 +1535,52 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Set the content size to the RolesShapeField
+		/// Show an outline around the fact type only
+		/// if it is objectified.
+		/// </summary>
+		/// <value>True if the fact type is nested</value>
+		public override bool HasOutline
+		{
+			get
+			{
+				return IsObjectified;
+			}
+		}
+		/// <summary>
+		/// Set the content size of the FactTypeShape
 		/// </summary>
 		protected override SizeD ContentSize
 		{
 			get
 			{
+				double margin = this.StyleSet.GetPen(FactTypeShape.RoleBoxOutlinePen).Width;
 				SizeD retVal = SizeD.Empty;
 				ShapeField rolesShape = RolesShape;
 				if (rolesShape != null)
 				{
-					retVal = rolesShape.GetBounds(this).Size;
+					double width, height;
+					width = rolesShape.GetMinimumWidth(this);
+					height = rolesShape.GetMinimumHeight(this);
+					if (IsObjectified)
+					{
+						height += myTopConstraintShapeField.GetMinimumHeight(this) + myBottomConstraintShapeField.GetMinimumHeight(this) + margin;
+					}
+					else
+					{
+						if (this.ConstraintDisplayPosition == ConstraintDisplayPosition.Top)
+						{
+							myTopConstraintShapeField.DefaultVisibility = true;
+							myBottomConstraintShapeField.DefaultVisibility = false;
+							height += myTopConstraintShapeField.GetMinimumHeight(this) + margin;
+						}
+						else
+						{
+							myTopConstraintShapeField.DefaultVisibility = false;
+							myBottomConstraintShapeField.DefaultVisibility = true;
+							height += myBottomConstraintShapeField.GetMinimumHeight(this) + margin;
+						}
+					}
+					retVal = new SizeD(width, height);
 				}
 				return retVal;
 			}
@@ -423,12 +1591,44 @@ namespace Northface.Tools.ORM.ShapeModel
 		public override void AutoResize()
 		{
 			SizeD contentSize = ContentSize;
-			if (!contentSize.IsEmpty && IsObjectified)
+			if (!contentSize.IsEmpty)
 			{
-				contentSize.Width += NestedFactHorizontalMargin + NestedFactHorizontalMargin;
-				contentSize.Height += NestedFactVerticalMargin + NestedFactVerticalMargin;
+				if (IsObjectified)
+				{
+					contentSize.Width += NestedFactHorizontalMargin + NestedFactHorizontalMargin;
+					contentSize.Height += NestedFactVerticalMargin + NestedFactVerticalMargin;
+				}
+				else
+				{
+					// Adjust the size of the content to incorporate the width of the pen being used
+					// and prevent the pen from being cropped at the edges of the content.
+					double margin = this.StyleSet.GetPen(FactTypeShape.RoleBoxOutlinePen).Width;
+					contentSize.Width += margin;
+					contentSize.Height += margin;
+				}
 			}
 			Size = contentSize;
+		}
+		/// <summary>
+		/// Called during a transaction when a new constraint
+		/// is added or removed that is associated with this fact.
+		/// </summary>
+		/// <param name="constraint">The newly added or removed constraint</param>
+		public void ConstraintSetChanged(Constraint constraint)
+		{
+			Debug.Assert(Store.TransactionManager.InTransaction);
+			bool resize = false;
+			switch (constraint.ConstraintType)
+			{
+				case ConstraintType.InternalUniqueness:
+					resize = true;
+					break;
+			}
+			if (resize)
+			{
+				AutoResize();
+				Invalidate(true);
+			}
 		}
 		/// <summary>
 		/// Return different shapes for objectified versus non-objectified fact types.
@@ -812,7 +2012,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				RoleMoveableCollection roles = AssociatedFactType.RoleCollection;
 				int roleCount = roles.Count;
 				int roleIndex = roles.IndexOf(role);
-				
+
 				PointD objCenter = objShape.AbsoluteCenter;
 				RectangleD factBox = myRolesShapeField.GetBounds(this); // This finds the role box for both objectified and simple fact types
 				factBox.Offset(AbsoluteBoundingBox.Location);
@@ -898,6 +2098,21 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				myActiveExternalConstraintConnectAction = value;
 			}
+		}
+		/// <summary>
+		/// The core shape model only draws preferred constraints
+		/// for the conceptual preferred identifier concept. This does
+		/// not include concepts such as the relational multi-column primary
+		/// key, so (for example), there is no way to make a spanning constraint
+		/// primary in the core model. Override this function in a derived model
+		/// to represented a primary identifier as a preferred constraint.
+		/// </summary>
+		/// <param name="constraint">Any constraint. In the core model, only uniqueness
+		/// constraints will be preferred</param>
+		/// <returns>true if the PreferredIdentifierFor property on the role is not null.</returns>
+		protected virtual bool ShouldDrawConstraintPreferred(Constraint constraint)
+		{
+			return constraint.PreferredIdentifierFor != null;
 		}
 		#endregion // FactTypeShape specific
 		#region Shape display update rules
@@ -1011,7 +2226,7 @@ namespace Northface.Tools.ORM.ShapeModel
 						}
 					}
 				}
-				
+
 				// Part3: Move any links from the fact type to the object type
 				foreach (ObjectTypePlaysRole modelLink in nestingType.GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid))
 				{
@@ -1090,4 +2305,4 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 	}
 	#endregion // ObjectifiedFactTypeNameShape class
-}  
+}

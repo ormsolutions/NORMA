@@ -30,6 +30,12 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// constraint and the fact.
 		/// </summary>
 		IList<Role> RoleCollection { get;}
+		/// <summary>
+		/// Get the fact type instance associated
+		/// with this constraint. All roles in RoleCollection
+		/// will be parented to this fact.
+		/// </summary>
+		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
 	public partial class FactType : INamedElementDictionaryChild
