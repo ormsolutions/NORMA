@@ -229,9 +229,12 @@ namespace Northface.Tools.ORM.ObjectModel
 
 			if (valueType == null)
 			{
-				valueType = ObjectType.CreateObjectType(store);
+				// UNDONE: The named element dictionary is not working with the order
+				// shown here, initialize the name attribute at creation time.
+//				valueType = ObjectType.CreateObjectType(store);
+				valueType = ObjectType.CreateAndInitializeObjectType(store, new AttributeAssignment[] { new AttributeAssignment(ObjectType.NameMetaAttributeGuid, valueTypeName, store) });
 				valueType.IsValueType = true;
-				valueType.Name = valueTypeName;
+//				valueType.Name = valueTypeName;
 				valueType.Model = model;
 			}
 
@@ -305,9 +308,13 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				if (valueType == null)
 				{
-					valueType = ObjectType.CreateObjectType(model.Store);
+					// UNDONE: The named element dictionary is not working with the order
+					// shown here, initialize the name attribute at creation time.
+					Store store = model.Store;
+//					valueType = ObjectType.CreateObjectType(store);
+					valueType = ObjectType.CreateAndInitializeObjectType(store, new AttributeAssignment[] { new AttributeAssignment(ObjectType.NameMetaAttributeGuid, valueTypeName, store) });
 					valueType.IsValueType = true;
-					valueType.Name = valueTypeName;
+//					valueType.Name = valueTypeName;
 					valueType.Model = model;
 				}
 

@@ -360,10 +360,13 @@ namespace Northface.Tools.ORM.FactEditor
 
 			// Add the object to our list of valid objects, BinarySearch saves an extra Sort
 			int newIndex = myObjectEntries.BinarySearch(objectType, myComparer);
-			Debug.Assert(newIndex < 0);
 			if (newIndex < 0)
 			{
 				myObjectEntries.Insert(~newIndex, objectType);
+			}
+			else
+			{
+				myObjectEntries[newIndex] = objectType;
 			}
 		}
 
