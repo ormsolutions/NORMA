@@ -44,7 +44,7 @@ namespace Northface.Tools.ORM.Shell
 	<xsl:template match=""om:Property[@Name='RolePlayerDisplay']"" />
 	<xsl:template match=""om:Property[@Name='NestingTypeDisplay']"" />
 	<xsl:template match=""om:Property[@Name='IsPreferred']"" />
-	<xsl:template match=""om:Property[@Name='Cardinality']"" />
+	<xsl:template match=""om:Property[@Name='Multiplicity']"" />
 </xsl:stylesheet>";
 		#endregion // Xsl transforms
 		#region Synchronized code to load transform into static variable

@@ -210,7 +210,7 @@
   <data name="Northface.Tools.ORM.ObjectModel.Role">
     <value xml:space="preserve">Role</value>
   </data>
-  <data name="Northface.Tools.ORM.ObjectModel.Role.Cardinality">
+  <data name="Northface.Tools.ORM.ObjectModel.Role.Multiplicity">
     <value xml:space="preserve">Multiplicity</value>
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.Role.DefaultNamePattern">
@@ -234,22 +234,22 @@
   <data name="Northface.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern">
     <value xml:space="preserve">ValueType{0}</value>
   </data>
-  <data name="RoleCardinality.ExactlyOne">
+  <data name="RoleMultiplicity.ExactlyOne">
     <value xml:space="preserve">1</value>
   </data>
-  <data name="RoleCardinality.Indeterminate">
+  <data name="RoleMultiplicity.Indeterminate">
     <value xml:space="preserve">Indeterminate</value>
   </data>
-  <data name="RoleCardinality.OneToMany">
+  <data name="RoleMultiplicity.OneToMany">
     <value xml:space="preserve">1..*</value>
   </data>
-  <data name="RoleCardinality.Unspecified">
+  <data name="RoleMultiplicity.Unspecified">
     <value xml:space="preserve">Unspecified</value>
   </data>
-  <data name="RoleCardinality.ZeroToMany">
+  <data name="RoleMultiplicity.ZeroToMany">
     <value xml:space="preserve">*</value>
   </data>
-  <data name="RoleCardinality.ZeroToOne">
+  <data name="RoleMultiplicity.ZeroToOne">
     <value xml:space="preserve">0..1</value>
   </data>
 </root>

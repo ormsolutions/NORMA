@@ -6,16 +6,16 @@ using Microsoft.VisualStudio.Modeling;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
-	#region RoleCardinality enum
+	#region RoleMultiplicity enum
 	/// <summary>
-	/// Define the cardinality for the roles. The role
-	/// cardinality is currently displayed only on roles
+	/// Define the multiplicity for the roles. The role
+	/// multiplicity is currently displayed only on roles
 	/// associated with binary fact types and is calculated
 	/// based on the existing mandatory and internal uniqueness
 	/// constraints associated with the fact.
 	/// </summary>
 	[CLSCompliant(true)]
-	public enum RoleCardinality
+	public enum RoleMultiplicity
 	{
 		/// <summary>
 		/// Insufficient constraints are present to
@@ -44,7 +44,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		OneToMany,
 	}
-	#endregion // RoleCardinality enum
+	#endregion // RoleMultiplicity enum
 	public partial class Role
 	{
 		#region CustomStorage handlers
@@ -59,16 +59,16 @@ namespace Northface.Tools.ORM.ObjectModel
 			Guid attributeGuid = attribute.Id;
 			if (attributeGuid == RolePlayerDisplayMetaAttributeGuid ||
 				attributeGuid == IsMandatoryMetaAttributeGuid ||
-				attributeGuid == CardinalityMetaAttributeGuid)
+				attributeGuid == MultiplicityMetaAttributeGuid)
 			{
 				// Handled by RoleChangeRule
 				return;
 			}
 			base.SetValueForCustomStoredAttribute(attribute, newValue);
 		}
-		private RoleCardinality GetReverseMultiplicity(FactType factType, RoleMoveableCollection roles)
+		private RoleMultiplicity GetReverseMultiplicity(FactType factType, RoleMoveableCollection roles)
 		{
-			RoleCardinality retVal = RoleCardinality.Unspecified;
+			RoleMultiplicity retVal = RoleMultiplicity.Unspecified;
 			bool haveMandatory = false;
 			bool haveUniqueness = false;
 			bool haveDoubleWideUniqueness = false;
@@ -106,7 +106,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			if (tooManyUniquenessConstraints)
 			{
-				retVal = RoleCardinality.Indeterminate;
+				retVal = RoleMultiplicity.Indeterminate;
 			}
 			else if (!haveUniqueness)
 			{
@@ -126,16 +126,16 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				if (haveOppositeUniqueness)
 				{
-					retVal = haveMandatory ? RoleCardinality.OneToMany : RoleCardinality.ZeroToMany;
+					retVal = haveMandatory ? RoleMultiplicity.OneToMany : RoleMultiplicity.ZeroToMany;
 				}
 			}
 			else if (haveDoubleWideUniqueness)
 			{
-				retVal = haveMandatory ? RoleCardinality.OneToMany : RoleCardinality.ZeroToMany;
+				retVal = haveMandatory ? RoleMultiplicity.OneToMany : RoleMultiplicity.ZeroToMany;
 			}
 			else
 			{
-				retVal = haveMandatory ? RoleCardinality.ExactlyOne : RoleCardinality.ZeroToOne;
+				retVal = haveMandatory ? RoleMultiplicity.ExactlyOne : RoleMultiplicity.ZeroToOne;
 			}
 			return retVal;
 		}
@@ -166,9 +166,9 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				return false;
 			}
-			else if (attributeGuid == CardinalityMetaAttributeGuid)
+			else if (attributeGuid == MultiplicityMetaAttributeGuid)
 			{
-				RoleCardinality retVal = RoleCardinality.Unspecified;
+				RoleMultiplicity retVal = RoleMultiplicity.Unspecified;
 				FactType fact = FactType;
 				if (fact != null)
 				{
@@ -205,7 +205,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override bool ShouldCreatePropertyDescriptor(MetaAttributeInfo metaAttrInfo)
 		{
 			Guid attributeGuid = metaAttrInfo.Id;
-			if (attributeGuid == CardinalityMetaAttributeGuid)
+			if (attributeGuid == MultiplicityMetaAttributeGuid)
 			{
 				FactType fact = FactType;
 				// Display for binary fact types
@@ -214,17 +214,18 @@ namespace Northface.Tools.ORM.ObjectModel
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
 		#endregion // CustomStorage handlers
-		#region Cardinality Display
+		#region Multiplicity Display
 		/// <summary>
 		/// Override to create a custom property descriptor for
-		/// cardinality that does not include the Indeterminate
-		/// and Unspecified values in the dropdown.
+		/// multiplicity that does not include the Indeterminate
+		/// and Unspecified values in the dropdown, unless either
+		/// of these is the current value.
 		/// </summary>
 		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes)
 		{
-			if (metaAttributeInfo.Id == CardinalityMetaAttributeGuid)
+			if (metaAttributeInfo.Id == MultiplicityMetaAttributeGuid)
 			{
-				return new CardinalityPropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
+				return new MultiplicityPropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
 			}
 			return base.CreatePropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
 		}
@@ -232,7 +233,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// A property descriptor that filters out some standard values from
 		/// the type converter.
 		/// </summary>
-		protected class CardinalityPropertyDescriptor : ElementPropertyDescriptor
+		protected class MultiplicityPropertyDescriptor : ElementPropertyDescriptor
 		{
 			/// <summary>
 			/// Constructor
@@ -241,7 +242,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// <param name="metaAttributeInfo">Passed to base</param>
 			/// <param name="requestor">Passed to base</param>
 			/// <param name="attributes">Passed to base</param>
-			public CardinalityPropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes) : base(modelElement, metaAttributeInfo, requestor, attributes)
+			public MultiplicityPropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes) : base(modelElement, metaAttributeInfo, requestor, attributes)
 			{
 			}
 			/// <summary>
@@ -253,38 +254,38 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				get
 				{
-					return new FilteredCardinalityConverter((EnumerationDomain)MetaAttributeInfo.Domain);
+					return new FilteredMultiplicityConverter((EnumerationDomain)MetaAttributeInfo.Domain);
 				}
 			}
-			private class FilteredCardinalityConverter : ModelingEnumerationConverter
+			private class FilteredMultiplicityConverter : ModelingEnumerationConverter
 			{
-				public FilteredCardinalityConverter(EnumerationDomain domain) : base(domain)
+				public FilteredMultiplicityConverter(EnumerationDomain domain) : base(domain)
 				{
 				}
 				public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
 				{
-					// We look at the role cardinality and modify the collection for StandardValuesCollection
-					// so double-clicking the properties list will work when the role cardinality is unspecified
+					// We look at the role multiplicity and modify the collection for StandardValuesCollection
+					// so double-clicking the properties list will work when the role multiplicity is unspecified
 					// or indeterminate.
 					Role role = (Role)Editors.EditorUtility.ResolveContextInstance(context.Instance, false);
-					RoleCardinality[] roles;
-					switch (role.Cardinality)
+					RoleMultiplicity[] roles;
+					switch (role.Multiplicity)
 					{
-						case RoleCardinality.Unspecified:
-							roles = new RoleCardinality[] { RoleCardinality.Unspecified, RoleCardinality.ZeroToOne, RoleCardinality.ZeroToMany, RoleCardinality.ExactlyOne, RoleCardinality.OneToMany };
+						case RoleMultiplicity.Unspecified:
+							roles = new RoleMultiplicity[] { RoleMultiplicity.Unspecified, RoleMultiplicity.ZeroToOne, RoleMultiplicity.ZeroToMany, RoleMultiplicity.ExactlyOne, RoleMultiplicity.OneToMany };
 							break;
-						case RoleCardinality.Indeterminate:
-							roles = new RoleCardinality[] { RoleCardinality.Indeterminate, RoleCardinality.ZeroToOne, RoleCardinality.ZeroToMany, RoleCardinality.ExactlyOne, RoleCardinality.OneToMany };
+						case RoleMultiplicity.Indeterminate:
+							roles = new RoleMultiplicity[] { RoleMultiplicity.Indeterminate, RoleMultiplicity.ZeroToOne, RoleMultiplicity.ZeroToMany, RoleMultiplicity.ExactlyOne, RoleMultiplicity.OneToMany };
 							break;
 						default:
-							roles = new RoleCardinality[] { RoleCardinality.ZeroToOne, RoleCardinality.ZeroToMany, RoleCardinality.ExactlyOne, RoleCardinality.OneToMany };
+							roles = new RoleMultiplicity[] { RoleMultiplicity.ZeroToOne, RoleMultiplicity.ZeroToMany, RoleMultiplicity.ExactlyOne, RoleMultiplicity.OneToMany };
 							break;
 					}
 					return new StandardValuesCollection(roles);
 				}
 			}
 		}
-		#endregion // Cardinality Display
+		#endregion // Multiplicity Display
 		#region RoleChangeRule class
 		[RuleOn(typeof(Role))]
 		private class RoleChangeRule : ChangeRule
@@ -335,12 +336,12 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				else if (attributeGuid == Role.CardinalityMetaAttributeGuid)
+				else if (attributeGuid == Role.MultiplicityMetaAttributeGuid)
 				{
-					RoleCardinality oldCardinality = (RoleCardinality)e.OldValue;
-					RoleCardinality newCardinality = (RoleCardinality)e.NewValue;
+					RoleMultiplicity oldMultiplicity = (RoleMultiplicity)e.OldValue;
+					RoleMultiplicity newMultiplicity = (RoleMultiplicity)e.NewValue;
 
-					if (newCardinality != RoleCardinality.Unspecified && newCardinality != RoleCardinality.Indeterminate)
+					if (newMultiplicity != RoleMultiplicity.Unspecified && newMultiplicity != RoleMultiplicity.Indeterminate)
 					{
 						Role role = e.ModelElement as Role;
 						FactType factType = role.FactType;
@@ -361,14 +362,14 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 
 						// First take care of the mandatory setting. We
-						// can deduce this setting directly from the cardinality
+						// can deduce this setting directly from the multiplicity
 						// values, so we don't touch the IsMandatory property unless
 						// we really need to.
 						bool newMandatory;
-						switch (newCardinality)
+						switch (newMultiplicity)
 						{
-							case RoleCardinality.OneToMany:
-							case RoleCardinality.ExactlyOne:
+							case RoleMultiplicity.OneToMany:
+							case RoleMultiplicity.ExactlyOne:
 								newMandatory = true;
 								break;
 							default:
@@ -376,14 +377,14 @@ namespace Northface.Tools.ORM.ObjectModel
 								break;
 						}
 						bool oldMandatory;
-						switch (oldCardinality)
+						switch (oldMultiplicity)
 						{
-							case RoleCardinality.Unspecified:
-							case RoleCardinality.Indeterminate:
+							case RoleMultiplicity.Unspecified:
+							case RoleMultiplicity.Indeterminate:
 								oldMandatory = !newMandatory; // No data, for the property set
 								break;
-							case RoleCardinality.OneToMany:
-							case RoleCardinality.ExactlyOne:
+							case RoleMultiplicity.OneToMany:
+							case RoleMultiplicity.ExactlyOne:
 								oldMandatory = true;
 								break;
 							default:
@@ -397,10 +398,10 @@ namespace Northface.Tools.ORM.ObjectModel
 
 						// Now take care of the one/many changes
 						bool newOne;
-						switch (newCardinality)
+						switch (newMultiplicity)
 						{
-							case RoleCardinality.ZeroToOne:
-							case RoleCardinality.ExactlyOne:
+							case RoleMultiplicity.ZeroToOne:
+							case RoleMultiplicity.ExactlyOne:
 								newOne = true;
 								break;
 							default:
@@ -409,17 +410,17 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 						bool oldOne;
 						bool oldBroken = false;
-						switch (oldCardinality)
+						switch (oldMultiplicity)
 						{
-							case RoleCardinality.Unspecified:
+							case RoleMultiplicity.Unspecified:
 								// Make sure we get into the main code
 								oldOne = !newOne;
 								break;
-							case RoleCardinality.Indeterminate:
+							case RoleMultiplicity.Indeterminate:
 								oldBroken = oldOne = true;
 								break;
-							case RoleCardinality.ZeroToOne:
-							case RoleCardinality.ExactlyOne:
+							case RoleMultiplicity.ZeroToOne:
+							case RoleMultiplicity.ExactlyOne:
 								oldOne = true;
 								break;
 							default:
@@ -435,7 +436,7 @@ namespace Northface.Tools.ORM.ObjectModel
 							int roleSequenceCount = roleSequences.Count;
 							// Go backwards so we can remove constraints
 							IConstraint keepCandidate = null;
-							int keepRoleCardinality = 0;
+							int keepRoleMultiplicity = 0;
 							bool keepCandidateIsPreferred = false;
 							for (int i = roleSequenceCount - 1; i >= 0; --i) // The indices may change, go backwards
 							{
@@ -443,19 +444,19 @@ namespace Northface.Tools.ORM.ObjectModel
 								IConstraint constraint = roleSequence.Constraint;
 								if (constraint.ConstraintType == ConstraintType.InternalUniqueness)
 								{
-									int currentCardinality = roleSequence.RoleCollection.Count;
+									int currentMultiplicity = roleSequence.RoleCollection.Count;
 									if (keepCandidate == null)
 									{
 										keepCandidate = constraint;
-										keepRoleCardinality = currentCardinality;
-										if (currentCardinality == 1)
+										keepRoleMultiplicity = currentMultiplicity;
+										if (currentMultiplicity == 1)
 										{
 											keepCandidateIsPreferred = (constraint as InternalUniquenessConstraint).IsPreferred;
 										}
 									}
-									else if (currentCardinality < keepRoleCardinality)
+									else if (currentMultiplicity < keepRoleMultiplicity)
 									{
-										keepRoleCardinality = currentCardinality;
+										keepRoleMultiplicity = currentMultiplicity;
 										(keepCandidate as ModelElement).Remove();
 										keepCandidate = constraint;
 									}
@@ -464,7 +465,7 @@ namespace Northface.Tools.ORM.ObjectModel
 										// Keep a preferred over a non-preferred. Preferred
 										// constraints always have a single role.
 										if (!keepCandidateIsPreferred &&
-											currentCardinality == 1 &&
+											currentMultiplicity == 1 &&
 											(constraint as InternalUniquenessConstraint).IsPreferred)
 										{
 											(keepCandidate as ModelElement).Remove();
@@ -478,7 +479,7 @@ namespace Northface.Tools.ORM.ObjectModel
 									}
 								}
 							}
-							if (keepRoleCardinality > 1)
+							if (keepRoleMultiplicity > 1)
 							{
 								oldOne = false;
 							}
@@ -494,9 +495,9 @@ namespace Northface.Tools.ORM.ObjectModel
 								// attached to both roles. Figure out which one it is and remove
 								// the spanning constraint. The other option is to remove the
 								// role from the spanning constraint, but this leaves us with
-								// a zero-to-one or 1-to-1 cardinality on the opposite role,
+								// a zero-to-one or 1-to-1 multiplicity on the opposite role,
 								// which is a change from the current zero-to-many or one-to-many
-								// cardinality it currently has.
+								// multiplicity it currently has.
 								foreach (ConstraintRoleSequence roleSequence in role.ConstraintRoleSequenceCollection)
 								{
 									IConstraint spanningConstraint = roleSequence.Constraint;
@@ -517,7 +518,7 @@ namespace Northface.Tools.ORM.ObjectModel
 							else
 							{
 								bool oppositeHasUnique = false;
-								bool wasUnspecified = oldCardinality == RoleCardinality.Unspecified;
+								bool wasUnspecified = oldMultiplicity == RoleMultiplicity.Unspecified;
 								if (!wasUnspecified)
 								{
 									// Switch to a many by removing an internal uniqueness constraint from

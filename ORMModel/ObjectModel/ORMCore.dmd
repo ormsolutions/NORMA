@@ -21,7 +21,7 @@ Information Contained Herein is Proprietary and Confidential.
       <enumeration name="ExclusionType" identity="8f4db2db-8a63-43f8-a6ee-c856289c49ee" namespace="Northface.Tools.ORM.ObjectModel" id="i8f4db2dbz8a63z43f8za6eezc856289c49ee">
         <literals />
       </enumeration>
-      <enumeration name="RoleCardinality" identity="6a8706eb-4956-4503-aefa-614e0a68aeeb" namespace="Northface.Tools.ORM.ObjectModel" id="i6a8706ebz4956z4503zaefaz614e0a68aeeb">
+      <enumeration name="RoleMultiplicity" identity="6a8706eb-4956-4503-aefa-614e0a68aeeb" namespace="Northface.Tools.ORM.ObjectModel" id="i6a8706ebz4956z4503zaefaz614e0a68aeeb">
         <literals>
           <enumerationLiteral name="Unspecified" identity="0003eaf7-298c-488c-b9a6-1b8e0558bb1d" value="0" />
           <enumerationLiteral name="Indeterminate" identity="18870d69-5694-4086-a997-86704c8e45e4" value="1" />
@@ -1067,7 +1067,7 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <property>id2d267cbz547fz441ez94abz730d1138672c</property>
           </treeExpression>
-          <treeExpression xsi:type="ValuePropertyExpression" name="Cardinality" identity="098b0c1e-5d9b-4a3d-9fd4-21d3c8b26e64" id="i098b0c1ez5d9bz4a3dz9fd4z21d3c8b26e64">
+          <treeExpression xsi:type="ValuePropertyExpression" name="Multiplicity" identity="098b0c1e-5d9b-4a3d-9fd4-21d3c8b26e64" id="i098b0c1ez5d9bz4a3dz9fd4z21d3c8b26e64">
             <source />
             <property>i91159767zf6cez4591zaeb2zff0ab25f1b44</property>
           </treeExpression>
@@ -1761,11 +1761,11 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="" />
             <propertyInfo xsi:type="BooleanPropertyInfo" name="BooleanPropertyInfo" identity="857c2937-c426-4bfe-9ff6-410cb39d2734" default="false" />
           </property>
-          <property name="Cardinality" identity="91159767-f6ce-4591-aeb2-ff0ab25f1b44" id="i91159767zf6cez4591zaeb2zff0ab25f1b44">
+          <property name="Multiplicity" identity="91159767-f6ce-4591-aeb2-ff0ab25f1b44" id="i91159767zf6cez4591zaeb2zff0ab25f1b44">
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="">
               <clrattribute name="System.ComponentModel.MergableProperty" parametertext="false" />
             </mdfmetadata>
-            <propertyInfo xsi:type="EnumerationPropertyInfo" name="RoleCardinality" identity="4bd8bf10-c268-40ba-ba4f-931bb26270e3" default="Unspecified">
+            <propertyInfo xsi:type="EnumerationPropertyInfo" name="RoleMultiplicity" identity="4bd8bf10-c268-40ba-ba4f-931bb26270e3" default="Unspecified">
               <enumeration>i6a8706ebz4956z4503zaefaz614e0a68aeeb</enumeration>
             </propertyInfo>
           </property>

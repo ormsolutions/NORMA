@@ -4387,89 +4387,89 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
-		#region Cardinality's Generated  Field Code
-		#region Cardinality's Generated  MetaAttribute Code
+		#region Multiplicity's Generated  Field Code
+		#region Multiplicity's Generated  MetaAttribute Code
 		/// <summary>
 		/// MetaAttribute Guid String
 		/// </summary>
-		public const System.String CardinalityMetaAttributeGuidString = "91159767-f6ce-4591-aeb2-ff0ab25f1b44";
+		public const System.String MultiplicityMetaAttributeGuidString = "91159767-f6ce-4591-aeb2-ff0ab25f1b44";
 
 		/// <summary>
 		/// MetaAttribute Guid
 		/// </summary>
-		public static readonly System.Guid CardinalityMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Role.CardinalityMetaAttributeGuidString);
+		public static readonly System.Guid MultiplicityMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Role.MultiplicityMetaAttributeGuidString);
 		#endregion
 
-		#region Cardinality's Generated Property Code
+		#region Multiplicity's Generated Property Code
 
 		/// <summary>
 		/// 
 		/// </summary>
 		[System.ComponentModel.MergableProperty(false)]
-		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType = typeof(Northface.Tools.ORM.ObjectModel.RoleCardinality), DefaultEnumerationValueName = "Unspecified")]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(RoleCardinalityFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Role.CardinalityMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Role.Cardinality")]
-		public  Northface.Tools.ORM.ObjectModel.RoleCardinality Cardinality
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Northface.Tools.ORM.ObjectModel.RoleMultiplicity),DefaultEnumerationValueName="Unspecified")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(RoleMultiplicityFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Role.MultiplicityMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Role.Multiplicity")]
+		public  Northface.Tools.ORM.ObjectModel.RoleMultiplicity Multiplicity
 		{
 			get
 			{
-				return roleCardinalityFieldHandler.GetFieldValue(this);
+				return roleMultiplicityFieldHandler.GetFieldValue(this);
 			}
 		
 			set
 			{
-				roleCardinalityFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+				roleMultiplicityFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
 			}
 		}
 		#endregion
 
-		#region RoleCardinalityFieldHandler Generated Code
+		#region RoleMultiplicityFieldHandler Generated Code
 		/// <summary>
-		/// FieldHandler for Role.Cardinality field
+		/// FieldHandler for Role.Multiplicity field
 		/// </summary>
-		private static RoleCardinalityFieldHandler	roleCardinalityFieldHandler	= RoleCardinalityFieldHandler.Instance;
+		private static RoleMultiplicityFieldHandler	roleMultiplicityFieldHandler	= RoleMultiplicityFieldHandler.Instance;
 
 		/// <summary>
-		/// Implement the field handler for Role.Cardinality
+		/// Implement the field handler for Role.Multiplicity
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class RoleCardinalityFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.Role,Northface.Tools.ORM.ObjectModel.RoleCardinality>
+		public sealed partial class RoleMultiplicityFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.Role,Northface.Tools.ORM.ObjectModel.RoleMultiplicity>
 		{
 			/// <summary>
 			/// Constructor
 			/// </summary>
-			private RoleCardinalityFieldHandler() { }
+			private RoleMultiplicityFieldHandler() { }
 
 			/// <summary>
-			/// Returns the singleton instance of the Role.Cardinality field handler
+			/// Returns the singleton instance of the Role.Multiplicity field handler
 			/// </summary>
-			/// <value>RoleCardinalityFieldHandler</value>
-			public static RoleCardinalityFieldHandler Instance
+			/// <value>RoleMultiplicityFieldHandler</value>
+			public static RoleMultiplicityFieldHandler Instance
 			{
 				get
 				{
-					if (Northface.Tools.ORM.ObjectModel.Role.roleCardinalityFieldHandler != null)
+					if (Northface.Tools.ORM.ObjectModel.Role.roleMultiplicityFieldHandler != null)
 					{
-						return Northface.Tools.ORM.ObjectModel.Role.roleCardinalityFieldHandler;
+						return Northface.Tools.ORM.ObjectModel.Role.roleMultiplicityFieldHandler;
 					}
 					else
 					{
 						// The static constructor in Role will assign this value to
-						// Northface.Tools.ORM.ObjectModel.Role.roleCardinalityFieldHandler, so just instantiate one and return it
-						return new RoleCardinalityFieldHandler();
+						// Northface.Tools.ORM.ObjectModel.Role.roleMultiplicityFieldHandler, so just instantiate one and return it
+						return new RoleMultiplicityFieldHandler();
 					}
 				}
 			}
 
 			/// <summary>
-			/// Returns the meta attribute id for the Role.Cardinality field handler
+			/// Returns the meta attribute id for the Role.Multiplicity field handler
 			/// </summary>
 			/// <value>Guid</value>
 			public sealed override System.Guid Id
 			{
 				get
 				{
-					return Northface.Tools.ORM.ObjectModel.Role.CardinalityMetaAttributeGuid;
+					return Northface.Tools.ORM.ObjectModel.Role.MultiplicityMetaAttributeGuid;
 				}
 			}
 		}
