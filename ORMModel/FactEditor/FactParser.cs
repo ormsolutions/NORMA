@@ -193,7 +193,9 @@ namespace Northface.Tools.ORM.FactEditor
 				
 				// TODO: localize error in squiggly lines (error message is currently unused)
 				if (nrObjects < 1)
+				{
 					factLine.Error = "Fact must contain at least one object.";
+				}
 			}
 			catch (Exception)
 			{

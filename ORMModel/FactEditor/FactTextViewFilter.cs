@@ -20,6 +20,12 @@ namespace Northface.Tools.ORM.FactEditor
 	/// </summary>
 	public class FactTextViewFilter : IOleCommandTarget, IVsTextViewEvents, IVsTextViewFilter
 	{
+		private const int CmdCompleteWord = 107;		// ctrl+space
+		private const int CmdShowMemberList = 108;		// ctrl+j
+		private const int CmdReturn = 3;				// dismiss tool tip
+		private const int CmdBackspace = 2;				// dismiss tool tip
+		private const int CmdTypeChar = 1;				// typeable character
+
 //		private bool myInit = false;
 		private IOleCommandTarget myNextCmdTarget;
 		private ORMDesignerPackage myPackage;
@@ -30,9 +36,8 @@ namespace Northface.Tools.ORM.FactEditor
 //		private bool myTipWinDisplayed = false;
 		private const int MAX_FIG_MARKS = 100;
 
-
 		// other private members from CFigTextViewFilter (used for auto-complete and red squiggly lines)
-//		CComPtr<CFigStatementCompletion> m_srpCompletionSet;
+		private FactCompletionSet myCompletionSet;
 //		CFigMethodData* m_pMethodData;
 //		CComPtr<IFigTaskManager> m_srpTaskManager;
 //		DWORD m_dwTextViewEventsCookie;	// for IVsTextViewEvents advise sink
@@ -67,6 +72,9 @@ namespace Northface.Tools.ORM.FactEditor
 			// Get an object to tie to the IDE
 			myParser = new FactParser();
 
+			// Create the completion set for intellisense
+			myCompletionSet = new FactCompletionSet(myPackage, myTextView);
+
 			// UNDONE: create a method tip window here
 //			hr = srpLocalRegistry->CreateInstance(
 //						CLSID_VsMethodTipWindow, NULL, IID_IVsMethodTipWindow, CLSCTX_INPROC_SERVER,
@@ -78,16 +86,6 @@ namespace Northface.Tools.ORM.FactEditor
 //			// when update is called.
 //			hr = m_srpMethodTipWindow->SetMethodData(
 //							static_cast<IVsMethodData*>(m_pMethodData));
-//			if (FAILED(hr))
-//				return hr;
-//
-//			// allocate an array of tokens for the parser
-//			m_pMks = new FIGMARK[MAX_FIG_MARKS];
-//			if (NULL == m_pMks)
-//				return E_OUTOFMEMORY;
-//
-//			// hook ourselves into the command target chain
-//			hr = m_srpTextView->AddCommandFilter(this, &m_srpNextCmdTarg);
 //			if (FAILED(hr))
 //				return hr;
 //
@@ -212,75 +210,18 @@ namespace Northface.Tools.ORM.FactEditor
 			{
 //				bool fCompleteWord = false;
 
-				// Resource IDs for command targets
-//				public static const int ECMD_COMPLETEWORD = 107;
-//				public static const int ECMD_SHOWMEMBERLIST = 108;
-//				public static const int ECMD_TYPECHAR = 1;
-//				public static const int ECMD_BACKSPACE = 2;
-//				public static const int ECMD_RETURN = 3;
-//				public static const int ECMD_TAB = 4;
-//				public static const int ECMD_BACKTAB = 5;
-//				public static const int ECMD_DELETE = 6;
-//				public static const int ECMD_LEFT = 7;
-//				public static const int ECMD_LEFT_EXT = 8;
-//				public static const int ECMD_RIGHT = 9;
-//				public static const int ECMD_RIGHT_EXT = 10;
-//				public static const int ECMD_UP = 11;
-//				public static const int ECMD_UP_EXT = 12;
-//				public static const int ECMD_DOWN = 13;
-//				public static const int ECMD_DOWN_EXT = 14;
-//				public static const int ECMD_HOME = 15;
-//				public static const int ECMD_HOME_EXT = 16;
-//				public static const int ECMD_END = 17;
-//				public static const int ECMD_END_EXT = 18;
-
 				switch ((int)nCmdID)
 				{
-					case 140:
-//						object testObj = Marshal.GetObjectForNativeVariant(pvaIn);						
-						goto default;
-//					case 107: //FactGuidList.ECMD_COMPLETEWORD:     // Ctrl-<space> completes a word (arrow,circle,rectangle)
-//						fCompleteWord = true;
+					case CmdCompleteWord: // Ctrl-<space> completes a word
 					// fall through
-					case 108: //FactGuidList.ECMD_SHOWMEMBERLIST:   // Ctrl-j       drops the statement completion box           
-						bool fShowDraw = true;
-						bool fShowFigures = false;
-						string cbstrText;
-
-						hr = getCurrentLineText(out cbstrText);
-//						if (hr > 0)
-//						{
-//							int nTokens = 0;
-//							hr = getTokens(cbstrText, out nTokens);
-//							if (hr > 0 && nTokens > 0)
-//							{
-//								// show 'draw' unless we have it already
-//								if (FactTokenType.Object == myMarks[0].TokenType)
-//								{
-//									fShowDraw = false;
-//
-//									// show 'type' unless we have it already
-//									if ((nTokens < 2) || (eType != m_pMks[1].eTokenType))
-//										fShowFigures = true;
-//								}
-//							}
-//						}
-
-						if (!fShowDraw && !fShowFigures)
-							break;
-
-						// TODO: implement classes for AutoComplete/Intellisense
-//						int dwFlags = 0;
-//						m_srpCompletionSet->Reset(
-//							/* [in]   BOOL   fDraw = FALSE   */ fShowDraw,
-//							/* [out]  DWORD* pdwFlags = NULL */ &dwFlags);
-//						if (fCompleteWord)
-//							dwFlags = dwFlags | UCS_COMPLETEWORD;
-//						hr = m_srpTextView->UpdateCompletionStatus(m_srpCompletionSet, dwFlags);
+					case CmdShowMemberList: // Ctrl-j drops the statement completion box           
+						int completionStatusFlags = 0;
+						myCompletionSet.Reset(out completionStatusFlags);
+						completionStatusFlags = completionStatusFlags | (int)UpdateCompletionFlags.UCS_COMPLETEWORD;
+						myTextView.UpdateCompletionStatus(myCompletionSet, (uint)completionStatusFlags);
 						break;
-
-					case 3: //FactGuidList.ECMD_RETURN:           // dismiss method tip window if it's displayed
-					case 2: //FactGuidList.ECMD_BACKSPACE:        // dismiss method tip window if it's displayed
+					case CmdReturn: // dismiss method tip window if it's displayed
+					case CmdBackspace: // dismiss method tip window if it's displayed
 //						if (myTipWinDisplayed)
 //						{
 //							hr = myTextView.UpdateTipWindow(
@@ -292,7 +233,7 @@ namespace Northface.Tools.ORM.FactEditor
 						hr = myNextCmdTarget.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
 						break;
 
-					case 1: //FactGuidList.ECMD_TYPECHAR:         // any character
+					case CmdTypeChar: // any character
 						fHandled = false;
 						// pass this character 'cmd' on to next in chain (the view so it will show up)
 						hr = myNextCmdTarget.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
@@ -335,13 +276,19 @@ namespace Northface.Tools.ORM.FactEditor
 						FactLine factLine = new FactLine(bstrLine);
 						hrLocal = myParser.Line(ref factLine);
 
+						// check for any errors
+//						if (factLine.HasError)
+//						{
+//							FactTextMarkerClient client = new FactTextMarkerClient();
+//							// UNDONE: You were putting in red squiggles here
+//							myTextLines.CreateLineMarker((int)MARKERTYPE.MARKER_CODESENSE_ERROR, nLine, 0, nLine, factLine.LineText.Length, client, null);
+//						}
+
 						if (hrLocal < 0)
 						{
 							// parse call failed
 							break;
 						}
-
-						// TODO: for IntelliSense implementation example, see Figures example
 						break;
 
 					default:
@@ -356,6 +303,8 @@ namespace Northface.Tools.ORM.FactEditor
 //				int vc;
 //				hr = myTextView.GetCaretPos(out nLine, out vc);
 //				hr = myTaskManager.CreateTask(nLine, myTextView);
+//				IVsTextMarkerClient client;
+//				myTextLines.CreateLineMarker(MARKERTYPE.MARKER_CODESENSE_ERROR, nLine, vc, nLine, client, null);
 
 				// if we handled the command return OK - we have reported any error
 				// otherwise passed the result returned from the next command target
@@ -541,6 +490,59 @@ namespace Northface.Tools.ORM.FactEditor
 			get { return myTextView; }
 		}
 
+		#endregion
+
+		#region FactTextMarkerClient nested class
+//		private class FactTextMarkerClient : IVsTextMarkerClient
+//		{
+//			public FactTextMarkerClient()
+//			{
+//			}
+//
+//			#region IVsTextMarkerClient Members
+//
+//			int IVsTextMarkerClient.ExecMarkerCommand(IVsTextMarker pMarker, int iItem)
+//			{
+//				return NativeMethods.E_NOTIMPL;
+//			}
+//
+//			int IVsTextMarkerClient.GetMarkerCommandInfo(IVsTextMarker pMarker, int iItem, string[] pbstrText, uint[] pcmdf)
+//			{
+//				return NativeMethods.E_NOTIMPL;
+//			}
+//
+//			int IVsTextMarkerClient.GetTipText(IVsTextMarker pMarker, string[] pbstrText)
+//			{
+//				return NativeMethods.E_NOTIMPL;
+//			}
+//
+//			void IVsTextMarkerClient.MarkerInvalidated()
+//			{
+//				
+//			}
+//
+//			int IVsTextMarkerClient.OnAfterMarkerChange(IVsTextMarker pMarker)
+//			{
+//				return NativeMethods.E_NOTIMPL;
+//			}
+//
+//			void IVsTextMarkerClient.OnAfterSpanReload()
+//			{
+//				
+//			}
+//
+//			void IVsTextMarkerClient.OnBeforeBufferClose()
+//			{
+//				
+//			}
+//
+//			void IVsTextMarkerClient.OnBufferSave(string pszFileName)
+//			{
+//				
+//			}
+//
+//			#endregion
+//		}
 		#endregion
 	}
 }

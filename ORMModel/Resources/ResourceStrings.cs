@@ -3,6 +3,8 @@ using System.Diagnostics;
 using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.ShapeModel;
 using System.Resources;
+using System.Windows.Forms;
+
 namespace Northface.Tools.ORM
 {
 	/// <summary>
@@ -92,10 +94,9 @@ namespace Northface.Tools.ORM
 		}
 		#endregion // Non-IMS ResourceManagers
 		#region Helper functions
-		private static string GetString(ResourceManagers manager, string resourceName)
+		private static ResourceManager GetResourceManager(ResourceManagers manager)
 		{
 			ResourceManager resMgr = null;
-			string retVal = null;
 			switch (manager)
 			{
 				case ResourceManagers.ObjectModel:
@@ -111,12 +112,33 @@ namespace Northface.Tools.ORM
 					resMgr = ModelResourceManager;
 					break;
 			}
+			return resMgr;
+		}
+
+		private static string GetString(ResourceManagers manager, string resourceName)
+		{
+			ResourceManager resMgr = null;
+			string retVal = null;
+			resMgr = GetResourceManager(manager);
 			if (resMgr != null)
 			{
 				retVal = resMgr.GetString(resourceName);
 			}
 			Debug.Assert(retVal != null && retVal.Length > 0, "Unrecognized resource string: " + resourceName);
 			return (retVal != null) ? retVal : String.Empty;
+		}
+
+		private static object GetObject(ResourceManagers manager, string resourceName)
+		{
+			ResourceManager resMgr = null;
+			object retVal = null;
+			resMgr = GetResourceManager(manager);
+			if (resMgr != null)
+			{
+				retVal = resMgr.GetObject(resourceName);
+			}
+			Debug.Assert(retVal != null, "Unrecognized resource string: " + resourceName);
+			return retVal;
 		}
 		#endregion // Helper functions
 		#region Public resource ids
@@ -324,6 +346,7 @@ namespace Northface.Tools.ORM
 		private const string ModelReferenceModeEditorNameColumn_Id = "ModelReferenceModeEditor.NameColumn";
 
 		private const string FactEditorToolWindowCaption_Id = "FactEditorToolWindow.Caption";
+		private const string FactEditorIntellisenseImageList_Id = "FactEditor.Intellisense.ImageList";
 		#endregion // Private resource ids
 		#region Public accessor properties
 		/// <summary>
@@ -1167,6 +1190,18 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Diagram, FactEditorToolWindowCaption_Id);
+			}
+		}
+
+		/// <summary>
+		/// The images for the Intellisense drop down
+		/// </summary>
+		/// <value></value>
+		public static ImageListStreamer FactEditorIntellisenseImageList
+		{
+			get
+			{
+				return GetObject(ResourceManagers.Diagram, FactEditorIntellisenseImageList_Id) as ImageListStreamer;
 			}
 		}
 		#endregion // Public accessor properties

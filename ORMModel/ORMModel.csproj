@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="FactEditor\FactCodeWindowManager.cs" />
     <Compile Include="FactEditor\FactColorizer.cs" />
+    <Compile Include="FactEditor\FactCompletionSet.cs" />
     <Compile Include="FactEditor\FactEditorFactory.cs" />
     <Compile Include="FactEditor\FactFontsAndColors.cs" />
     <Compile Include="FactEditor\FactGuidList.cs" />
