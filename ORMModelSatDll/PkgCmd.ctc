@@ -23,12 +23,12 @@
 CMDS_SECTION guidORMDesignerPackage
     MENUS_BEGIN
 		// Context menus
-		guidORMDesignerCommandSet:menuIdDeleteContext,				guidORMDesignerCommandSet:0,				0x0000,     CONTEXT,				"Delete command",				"Delete command";
+		guidORMDesignerCommandSet:menuIdContextMenu,				guidORMDesignerCommandSet:0,				0x0000,     CONTEXT,				"Delete command",				"Delete command";
 	MENUS_END
 
     NEWGROUPS_BEGIN
 	    // Command Macro Context Menu Groups
-        guidORMDesignerCommandSet:groupIdDeleteContext,				guidORMDesignerCommandSet:menuIdDeleteContext,	0x0008;
+        guidORMDesignerCommandSet:groupIdDeleteContext,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0008;
 	
 
     NEWGROUPS_END

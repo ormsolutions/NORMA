@@ -265,6 +265,11 @@ namespace Northface.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewModelExplorer = new CommandID(guidORMDesignerCommandSet, cmdIdViewModelExplorer);
 
+			/// <summary>
+			/// The context menu for the diagram
+			/// </summary>
+			public static readonly CommandID ViewContextMenu = new CommandID(guidORMDesignerCommandSet, menuIdContextMenu);
+
 			#endregion
 
 			#region cmdIds
@@ -274,6 +279,11 @@ namespace Northface.Tools.ORM.Shell
 			/// The ORM Model Explorer item on the view menu
 			/// </summary>
 			public const int cmdIdViewModelExplorer = 0x2900;
+
+			/// <summary>
+			/// The context menu for the diagram
+			/// </summary>
+			public const int menuIdContextMenu = 0x0100;
 
 			#endregion
 

@@ -85,6 +85,27 @@ namespace Northface.Tools.ORM.Shell
 
 
 		/// <summary>
+		/// Handle right-clicks on the diagram
+		/// </summary>
+		/// <param name="mouseArgs"></param>
+		protected override void OnContextMenuRequested(DiagramPointEventArgs mouseArgs)
+		{
+			// myVisibleCommands and myEnabledCommands will be set when the selection is changed
+			if (0 != (myVisibleCommands & myEnabledCommands))
+			{
+				DiagramClientView clientView = mouseArgs.DiagramClientView;
+				// Get the mouse point (relative to the diagram's position), and convert it to a point on the screen
+				System.Drawing.Point emulateClickPoint = clientView.PointToScreen(clientView.WorldToDevice(mouseArgs.MousePosition));
+				this.MenuService.ShowContextMenu(ORMDesignerCommandIds.ViewContextMenu, emulateClickPoint.X, emulateClickPoint.Y);
+			}
+			else
+			{
+				mouseArgs.Handled = true;
+			}
+		}
+
+
+		/// <summary>
 		/// Enable menu commands when the selection changes
 		/// </summary>
 		/// <param name="e"></param>
