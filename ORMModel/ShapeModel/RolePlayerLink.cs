@@ -168,6 +168,19 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Change the outline pen to a thin black line for all instances
+		/// of this shape.
+		/// </summary>
+		/// <param name="classStyleSet">The style set to modify</param>
+		protected override void InitializeResources(StyleSet classStyleSet)
+		{
+			PenSettings penSettings = new PenSettings();
+			penSettings.Width = 1.0F / 72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
+			penSettings.Alignment = PenAlignment.Center;
+			classStyleSet.OverridePen(DiagramPens.ConnectionLine, penSettings);
+		}
+		/// <summary>
+		/// Use a straight line routing style
 		/// Use a center to center routing style
 		/// </summary>
 		[CLSCompliant(false)]
@@ -203,7 +216,6 @@ namespace Northface.Tools.ORM.ShapeModel
 				return false;
 			}
 		}
-
 		/// <summary>
 		/// Get the ObjectTypePlaysRole link associated with this link shape
 		/// </summary>
@@ -269,7 +281,6 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
-
 		#endregion // Shape display update rules
 		#region Luminosity Modification
 		/// <summary>

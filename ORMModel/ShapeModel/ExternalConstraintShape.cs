@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -8,7 +9,7 @@ using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.Shell;
 namespace Northface.Tools.ORM.ShapeModel
 {
-	public partial class ExternalConstraintShape : IModelErrorActivation
+	public partial class ExternalConstraintShape : IStickyObject, IModelErrorActivation
 	{
 		#region Customize appearance
 		private static readonly StyleSetResourceId MandatoryDotBrush = new StyleSetResourceId("Northface", "ExternalConstraintMandatoryDotBrush");
@@ -46,6 +47,9 @@ namespace Northface.Tools.ORM.ShapeModel
 			BrushSettings brushSettings = new BrushSettings();
 			brushSettings.Color = penSettings.Color;
 			classStyleSet.AddBrush(MandatoryDotBrush, DiagramBrushes.ShapeBackground, brushSettings);
+
+			penSettings.Color = SystemColors.Highlight;
+			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ShapeOutline, penSettings);
 		}
 		/// <summary>
 		/// Draw the various constraint types
@@ -54,13 +58,15 @@ namespace Northface.Tools.ORM.ShapeModel
 		public override void OnPaintShape(DiagramPaintEventArgs e)
 		{
 			base.OnPaintShape(e);
-			Pen pen = StyleSet.GetPen(DiagramPens.ShapeOutline);
+			Pen pen = StyleSet.GetPen(OutlinePenId);
+
 			// Keep the pen color in sync with the color being used for highlighting
 			Color startColor = UpdateGeometryLuminosity(e.View, pen);
 			bool restoreColor = startColor != pen.Color;
 			IConstraint constraint = AssociatedConstraint;
 			RectangleD bounds = AbsoluteBounds;
 			Graphics g = e.Graphics;
+
 			switch (constraint.ConstraintType)
 			{
 				case ConstraintType.Equality:
@@ -163,6 +169,27 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Use the sticky object pen to draw the outline
+		/// </summary>
+		public override StyleSetResourceId OutlinePenId
+		{
+			get
+			{
+				ORMDiagram ormDiagram;
+				StyleSetResourceId id;
+				if (null != (ormDiagram = this.Diagram as ORMDiagram)
+					&& object.ReferenceEquals(ormDiagram.StickyObject, this))
+				{
+					id = ORMDiagram.StickyBackgroundResource;
+				}
+				else
+				{
+					id = DiagramPens.ShapeOutline;
+				}
+				return id;
+			}
+		}
+		/// <summary>
 		/// Helper function for rules
 		/// </summary>
 		/// <param name="element">The model element to redraw</param>
@@ -225,5 +252,179 @@ namespace Northface.Tools.ORM.ShapeModel
 			ActivateModelError(error);
 		}
 		#endregion // IModelErrorActivation Implementation
+		#region IStickyObject implementation
+		/// <summary>
+		/// Implements IStickyObject.StickyInitialize
+		/// </summary>
+		protected void StickyInitialize()
+		{
+			RedrawAssociatedPels();
+		}
+		void IStickyObject.StickyInitialize()
+		{
+			StickyInitialize();
+		}
+		/// <summary>
+		/// Implements IStickyObject.StickySelectable
+		/// </summary>
+		/// <param name="mel"></param>
+		/// <returns></returns>
+		protected bool StickySelectable(ModelElement mel)
+		{
+			bool rVal = false;
+			Role r;
+			if (mel == this.AssociatedConstraint)
+			{
+				rVal = true;
+			}
+			else if (null != (r = mel as Role))
+			{
+				MultiColumnExternalConstraint mcec;
+				if (null != (mcec = AssociatedConstraint as MultiColumnExternalConstraint))
+				{
+					foreach (MultiColumnExternalConstraintRoleSequence roleSequence in ((AssociatedConstraint as MultiColumnExternalConstraint).RoleSequenceCollection))
+					{
+						if (roleSequence.RoleCollection.IndexOf(r) >= 0)
+						{
+							rVal = true;
+						}
+					}
+				}
+			}
+			return rVal;
+		}
+		bool IStickyObject.StickySelectable(ModelElement mel)
+		{
+			return StickySelectable(mel);
+		}
+		/// <summary>
+		/// Implements IStickyObject.StickySelectable
+		/// </summary>
+		protected void StickyRedraw()
+		{
+			RedrawAssociatedPels();
+		}
+		/// <summary>
+		/// Implements IStickyObject.StickySelectable
+		/// </summary>
+		void IStickyObject.StickyRedraw()
+		{
+			StickyRedraw();
+		}
+		private void RedrawAssociatedPels()
+		{
+			if (null != AssociatedConstraint)
+			{
+				switch (AssociatedConstraint.ConstraintStorageStyle)
+				{
+					case ConstraintStorageStyle.SingleColumnExternalConstraint:
+						SingleColumnExternalConstraint scec = AssociatedConstraint as SingleColumnExternalConstraint;
+						foreach (Role r in scec.RoleCollection)
+						{
+							RedrawOwningFactType(r);
+						}
+						break;
+					case ConstraintStorageStyle.MultiColumnExternalConstraint:
+						MultiColumnExternalConstraint mcec = AssociatedConstraint as MultiColumnExternalConstraint;
+						foreach (MultiColumnExternalConstraintRoleSequence mcecRs in mcec.RoleSequenceCollection)
+						{
+							foreach (Role r in mcecRs.RoleCollection)
+							{
+								RedrawOwningFactType(r);
+							}
+						}
+						break;
+					default:
+						break;
+				}
+			}
+			Invalidate(true);
+		}
+		private void RedrawOwningFactType(Role role)
+		{
+			PresentationElementMoveableCollection pels = role.FactType.PresentationRolePlayers;
+			int pelsCount = pels.Count;
+			for (int i = 0; i < pelsCount; ++i)
+			{
+				ShapeElement shape = pels[i] as ShapeElement;
+				if (shape != null)
+				{
+					shape.Invalidate(true);
+				}
+			}
+		}
+		#endregion // IStickyObject implementation
+		#region Mouse Handling
+		/// <summary>
+		/// A mouse click event has occurred on this ExternalConstraintShape
+		/// </summary>
+		/// <param name="e">DiagramPointEventArgs</param>
+		public override void OnDoubleClick(DiagramPointEventArgs e)
+		{
+			ORMDiagram currentDiagram;
+			SingleColumnExternalConstraint scec;
+			if (null != (currentDiagram = this.Diagram as ORMDiagram))
+			{
+				currentDiagram.StickyObject = this;
+				if (AssociatedConstraint.ConstraintStorageStyle == ConstraintStorageStyle.SingleColumnExternalConstraint
+					&& null != (scec = AssociatedConstraint as SingleColumnExternalConstraint))
+				{
+					ExternalConstraintConnectAction connectAction = currentDiagram.ExternalConstraintConnectAction;
+					foreach (Role r in scec.RoleCollection)
+					{
+						connectAction.SelectedRoleCollection.Add(r);
+						connectAction.InitialRoles.Add(r);
+					}
+					connectAction.ChainMouseAction(this, e.DiagramClientView);
+				}
+			}
+		}
+		#endregion // Mouse Handling
+		#region Store Event Handlers
+		/// <summary>
+		/// Attach event handlers to the store
+		/// </summary>
+		/// <param name="s"></param>
+		public static void AttachEventHandlers(Store s)
+		{
+			MetaDataDirectory dataDirectory = s.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = s.EventManagerDirectory;
+
+			MetaRoleInfo roleInfo = dataDirectory.FindMetaRole(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
+			eventDirectory.RolePlayerOrderChanged.Add(roleInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedEvent));
+			roleInfo = dataDirectory.FindMetaRole(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
+		}
+		/// <summary>
+		/// Detach event handlers from the store
+		/// </summary>
+		/// <param name="s"></param>
+		public static void DetachEventHandlers(Store s)
+		{
+			MetaDataDirectory dataDirectory = s.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = s.EventManagerDirectory;
+
+			MetaRoleInfo roleInfo = dataDirectory.FindMetaRole(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
+			eventDirectory.RolePlayerOrderChanged.Remove(roleInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedEvent));
+			roleInfo = dataDirectory.FindMetaRole(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
+		}
+		private static void RolePlayerOrderChangedEvent(object sender, RolePlayerOrderChangedEventArgs e)
+		{
+			MultiColumnExternalConstraint constraint;
+			ExternalConstraintShape ecs;
+			ORMDiagram ormDiagram;
+			if (null != (constraint = e.SourceElement as MultiColumnExternalConstraint))
+			{
+				foreach (PresentationElement pel in constraint.AssociatedPresentationElements)
+				{
+					if (null != (ecs = pel as ExternalConstraintShape)
+						&& null != (ormDiagram = ecs.Diagram as ORMDiagram)
+						&& object.ReferenceEquals(ecs, ormDiagram.StickyObject))
+					{
+						ormDiagram.StickyObject.StickyRedraw();
+					}
+				}
+			}
+		}
+		#endregion // Store Event Handlers
 	}
 }

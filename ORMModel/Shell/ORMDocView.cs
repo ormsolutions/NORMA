@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
@@ -59,6 +60,33 @@ namespace Northface.Tools.ORM.Shell
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
+		#region Constraint editing commands
+		/// <summary>
+		/// Activate editing for the RoleSequence
+		/// </summary>
+		ActivateRoleSequence = 0x100,
+		/// <summary>
+		/// Delete the RoleSequence
+		/// </summary>
+		DeleteRoleSequence = 0x200,
+		/// <summary>
+		/// Roll the RoleSequence up (lower number) in the active Constraint's RoleSequenceCollection
+		/// </summary>
+		MoveRoleSequenceUp = 0x400,
+		/// <summary>
+		/// Roll the RoleSequence down (higher number) in the active Constraint's RoleSequenceCollection
+		/// </summary>
+		MoveRoleSequenceDown = 0x800,
+		/// <summary>
+		/// Activate editing for the ExternalConstraint
+		/// </summary>
+		EditExternalConstraint = 0x1000,
+
+		/// <summary>
+		/// Mask field representing individual RoleSeqeuence edit commands
+		/// </summary>
+		RoleSequenceActions = ActivateRoleSequence | DeleteRoleSequence | MoveRoleSequenceUp | MoveRoleSequenceDown,
+		#endregion //Constraint editing 
 		// Update the multiselect command filter constants in ORMDesignerDocView
 		// when new commands are added
 	}
@@ -143,6 +171,14 @@ namespace Northface.Tools.ORM.Shell
 			{
 				if (count > 1)
 				{
+					// StickyObjects cannot be multi-selected (shift-click).  In other words, if there is an active StickyObject,
+					// it will be deactivated if multiple objects are selected.
+					ORMDiagram ormDiagram;
+					if (null != (ormDiagram = CurrentDiagram as ORMDiagram))
+					{
+						ormDiagram.StickyObject = null;
+					}
+
 					ORMDesignerCommands currentVisible = ORMDesignerCommands.None;
 					ORMDesignerCommands currentEnabled = ORMDesignerCommands.None;
 					visibleCommands = enabledCommands = EnabledSimpleMultiSelectCommandFilter; // UNDONE: state.IsCoercedSelectionMixed ? EnabledComplexMultiSelectCommandFilter : EnabledSimpleMultiSelectCommandFilter;
@@ -176,10 +212,28 @@ namespace Northface.Tools.ORM.Shell
 					{
 						ModelElement mel = melIter;
 						PresentationElement pel = mel as PresentationElement;
+
+						// Checking for StickyObjects.  This needs to be done out here because when a role box is selected
+						// the pel will be null.
+						ORMDiagram ormDiagram;
+						ormDiagram = CurrentDiagram as ORMDiagram;
+						IStickyObject stickyObject;
+
+						// There is a sticky object on this diagram
+						if (null != (stickyObject = ormDiagram.StickyObject))
+						{
+							// The currently selected item is not selection-compatible with the StickyObject.
+							if (!ormDiagram.StickyObject.StickySelectable(mel))
+							{
+								ormDiagram.StickyObject = null;
+							}
+						}
+
 						if (pel != null)
 						{
 							mel = pel.ModelElement;
 						}
+
 						if (mel != null)
 						{
 							SetCommandStatus(mel, out visibleCommands, out enabledCommands);
@@ -212,6 +266,10 @@ namespace Northface.Tools.ORM.Shell
 			}
 			else if (element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint)
 			{
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.EditExternalConstraint;
+			}
+			else if (element is InternalConstraint)
+			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint;
 			}
 			else if (element is ORMModel)
@@ -227,6 +285,65 @@ namespace Northface.Tools.ORM.Shell
 				if (role.FactType.RoleCollection.Count == 1)
 				{
 					enabledCommands &= ~ORMDesignerCommands.DeleteRole;
+				}
+
+				// Extra menu commands may be visible if there is a StickyObject active on the diagram.
+				ExternalConstraintShape constraintShape;
+				IConstraint constraint;
+				ORMDiagram ormDiagram;
+
+				if (null != (ormDiagram = CurrentDiagram as ORMDiagram)
+					&& null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape)
+					&& null != (constraint = constraintShape.AssociatedConstraint))
+				{
+					bool thisRoleInConstraint = false;
+					switch (constraint.ConstraintStorageStyle)
+					{
+						case ConstraintStorageStyle.SingleColumnExternalConstraint:
+							SingleColumnExternalConstraint scec = constraint as SingleColumnExternalConstraint;
+							if (scec.RoleCollection.IndexOf(role) >= 0)
+							{
+								thisRoleInConstraint = true;
+								visibleCommands |= ORMDesignerCommands.ActivateRoleSequence;
+								enabledCommands |= ORMDesignerCommands.ActivateRoleSequence;
+							}
+							break;
+						case ConstraintStorageStyle.MultiColumnExternalConstraint:
+							MultiColumnExternalConstraint mcec = constraint as MultiColumnExternalConstraint;
+							int indexOfRole = -1;
+							RoleMoveableCollection currentRoleSequence = null;
+							foreach (MultiColumnExternalConstraintRoleSequence rs in mcec.RoleSequenceCollection)
+							{
+								currentRoleSequence = rs.RoleCollection;
+								indexOfRole = currentRoleSequence.IndexOf(role);
+								if (indexOfRole >= 0)
+								{
+									thisRoleInConstraint = true;
+									indexOfRole = mcec.RoleSequenceCollection.IndexOf(rs);
+									break;
+								}
+							}
+							if (thisRoleInConstraint)
+							{
+								visibleCommands |= ORMDesignerCommands.RoleSequenceActions | ORMDesignerCommands.ActivateRoleSequence;
+								enabledCommands |= ORMDesignerCommands.RoleSequenceActions | ORMDesignerCommands.ActivateRoleSequence;
+								if (indexOfRole == 0)
+								{
+									enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceUp;
+								}
+								else if (indexOfRole == currentRoleSequence.Count - 1)
+								{
+									enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceDown;
+								}
+							}
+							break;
+						default:
+							break;
+					}
+					if (!thisRoleInConstraint)
+					{
+						ormDiagram.StickyObject = null;
+					}
 				}
 			}
 		}
@@ -383,6 +500,9 @@ namespace Northface.Tools.ORM.Shell
 								case ORMDesignerCommands.DeleteRole:
 									shapeAssociatedMel = (selectedObject as Role).FactType;
 									break;
+								case ORMDesignerCommands.DeleteConstraint:
+									shapeAssociatedMel = (selectedObject as InternalConstraint).FactType;
+									break;
 							}
 
 							// Add the parent shape into the queued selection
@@ -453,6 +573,246 @@ namespace Northface.Tools.ORM.Shell
 						}
 						t.Commit();
 					}
+				}
+			}
+		}
+		/// <summary>
+		/// Select the constraint as the ORDiagram's sticky object for editing.
+		/// </summary>
+		protected virtual void OnMenuEditExternalConstraint()
+		{
+			ORMDiagram ormDiagram;
+			ExternalConstraintShape ecs;
+			if (null != (ormDiagram = CurrentDiagram as ORMDiagram)
+				&& null != (ecs = SelectedElements[0] as ExternalConstraintShape))
+			{
+				ormDiagram.StickyObject = ecs;
+			}
+		}
+		/// <summary>
+		/// Activate the RoleSequence for editing.
+		/// </summary>
+		protected virtual void OnMenuActivateRoleSequence()
+		{
+			// Get the constraint of the StickyObject.
+			ORMDiagram ormDiagram;
+			ExternalConstraintShape constraintShape;
+			if (null != (ormDiagram = CurrentDiagram as ORMDiagram)
+				&& null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape))
+			{
+				IConstraint constraint = constraintShape.AssociatedConstraint;
+				ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
+
+				Role role = SelectedElements[0] as Role;
+				ConstraintRoleSequence selectedSequence = null;
+				foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+				{
+					if (object.ReferenceEquals(constraint, sequence.Constraint))
+					{
+						selectedSequence = sequence;
+						break;
+					}
+				}
+				connectAction.ConstraintRoleSequenceToEdit = selectedSequence;
+				connectAction.ChainMouseAction(constraintShape, CurrentDesigner.DiagramClientView);
+			}
+		}
+		/// <summary>
+		/// Delete the RoleSequence from the ORMDiagram's StickyObject that contains the currently selected role.
+		/// </summary>
+		protected virtual void OnMenuDeleteRoleSequence()
+		{
+			if (SelectedElements.Count == 1)
+			{
+				Role role;
+				ORMDiagram ormDiagram;
+				ExternalConstraintShape ecs;
+				MultiColumnExternalConstraint mcec;
+				if (null != (role = SelectedElements[0] as Role)
+					&& null != (ormDiagram = CurrentDiagram as ORMDiagram)
+					&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
+					&& null != (mcec = ecs.AssociatedConstraint as MultiColumnExternalConstraint))
+				{
+					// TODO:  It is theoretically possible to have one role playing a part in multiple
+					// RoleSequences for a constraint.  At some point it would probably be nice to
+					// decide which RoleSequence is active and blow that one away instead of just
+					// walking the RoleSequenceCollection and killing any RoleSequence that has
+					// reference to this role.
+
+					ConstraintRoleSequenceMoveableCollection roleConstraints = role.ConstraintRoleSequenceCollection;
+
+					int constraintCount = roleConstraints.Count;
+					using (Transaction t = role.Store.TransactionManager.BeginTransaction("__Role Sequence deleted__"))
+					{
+						for (int i = constraintCount - 1; i >= 0; --i)
+						{
+							// The current ConstraintRoleSequence is the one associated with the current StickyObject.
+							if (object.ReferenceEquals((roleConstraints[i]).Constraint, mcec))
+							{
+								// TODO: Remove the ConstraintRoleSequence from this role.
+								roleConstraints[i].Remove();
+							}
+						}
+						if (t.HasPendingChanges)
+						{
+							t.Commit();
+							ormDiagram.StickyObject.StickyRedraw();
+//							// TODO:  Re-initializing the StickyObject is probably inefficient.  Implementing a rule on
+//							// MCECs whenever their constraint collection is changed would probably be more effective.
+//							// This is especially true when role sequences are just being moved up and down.  No insertions
+//							// or deletions, it's just touched.
+//							ormDiagram.StickyObject.StickyInitialize();
+						}
+					}
+				}
+			}
+			else
+			{
+				// Not sure if this should be allowed.  For that matter, since roles are represented as
+				// ShapeFields instead of ShapeElements, I don't know that it's even possible to multiselect them.
+				throw new NotImplementedException(
+					string.Concat("Multiselect deletion of role sequences is not implemented.  ",
+					"If you see this message, decide if what you're doing is really a valid operation.  ",
+					"If it is, look in Shell\\ORMCommandSet.cs, OnMenuDeleteRowSequence() to implement it."));
+			}
+
+		}
+		/// <summary>
+		/// Move the RoleSequence of the ORMDiagram's StickyObject up in the collection.
+		/// </summary>
+		protected virtual void OnMenuMoveRoleSequenceUp()
+		{
+			Role role;
+			ORMDiagram ormDiagram;
+			ExternalConstraintShape ecs;
+			MultiColumnExternalConstraint mcec;
+			if (null != (role = SelectedElements[0] as Role)
+				&& null != (ormDiagram = CurrentDiagram as ORMDiagram)
+				&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
+				&& null != (mcec = ecs.AssociatedConstraint as MultiColumnExternalConstraint))
+			{
+				ConstraintRoleSequenceMoveableCollection roleConstraints = role.ConstraintRoleSequenceCollection;
+				MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = mcec.RoleSequenceCollection;
+				MultiColumnExternalConstraintRoleSequence sequenceToMove = null;
+				int sequenceOriginalPosition = 0;
+				int sequenceNewPosition = -1;
+				int lastPosition = roleSequences.Count - 1;
+				foreach (MultiColumnExternalConstraintRoleSequence sequence in roleSequences)
+				{
+					if (sequence.RoleCollection.IndexOf(role) >= 0)
+					{
+						sequenceToMove = sequence;
+						break;
+					}
+					++sequenceOriginalPosition;
+				}
+
+				if (sequenceToMove != null)
+				{
+					using (Transaction trans = role.Store.TransactionManager.BeginTransaction("__Role Sequence Moved Down"))
+					{
+						if (sequenceOriginalPosition > 0)
+						{
+							sequenceNewPosition = sequenceOriginalPosition - 1;
+							roleSequences.Move(sequenceOriginalPosition, sequenceNewPosition);
+						}
+						if (trans.HasPendingChanges)
+						{
+							trans.Commit();
+
+							// We need to reset the enabled commands so that they are immediately available if the same
+							// role is right-clicked again.  Otherwise, the diagram's selected item will not have changed
+							// and therefore the menu's enabled items will not be refreshed and may not reflect the
+							// currently available options.
+							if (sequenceOriginalPosition == lastPosition)
+							{
+								myEnabledCommands |= ORMDesignerCommands.MoveRoleSequenceDown;
+							}
+							if (sequenceNewPosition == 0)
+							{
+								myEnabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceUp;
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Move the RoleSequence of the ORMDiagram's StickyObject down in the collection.
+		/// </summary>
+		protected virtual void OnMenuMoveRoleSequenceDown()
+		{
+			Role role;
+			ORMDiagram ormDiagram;
+			ExternalConstraintShape ecs;
+			MultiColumnExternalConstraint mcec;
+			if (null != (role = SelectedElements[0] as Role)
+				&& null != (ormDiagram = CurrentDiagram as ORMDiagram)
+				&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
+				&& null != (mcec = ecs.AssociatedConstraint as MultiColumnExternalConstraint))
+			{
+
+				ConstraintRoleSequenceMoveableCollection roleConstraints = role.ConstraintRoleSequenceCollection;
+				MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = mcec.RoleSequenceCollection;
+				MultiColumnExternalConstraintRoleSequence sequenceToMove = null;
+				int sequenceOriginalPosition = 0;
+				int sequenceNewPosition = -1;
+				int lastPosition = roleSequences.Count - 1;
+				foreach (MultiColumnExternalConstraintRoleSequence sequence in roleSequences)
+				{
+					if (sequence.RoleCollection.IndexOf(role) >= 0)
+					{
+						sequenceToMove = sequence;
+						break;
+					}
+					++sequenceOriginalPosition;
+				}
+
+				if (sequenceToMove != null)
+				{
+					using (Transaction trans = role.Store.TransactionManager.BeginTransaction("__Role Sequence Moved Up"))
+					{
+						if (sequenceOriginalPosition < lastPosition)
+						{
+							sequenceNewPosition = sequenceOriginalPosition + 1;
+							roleSequences.Move(sequenceOriginalPosition, sequenceNewPosition);
+						}
+						if (trans.HasPendingChanges)
+						{
+							trans.Commit();
+
+							// We need to reset the enabled commands so that they are immediately available if the same
+							// role is right-clicked again.  Otherwise, the diagram's selected item will not have changed
+							// and therefore the menu's enabled items will not be refreshed and may not reflect the
+							// currently available options.
+							if (sequenceOriginalPosition == 0)
+							{
+								myEnabledCommands |= ORMDesignerCommands.MoveRoleSequenceUp;
+							}
+							if (sequenceNewPosition == lastPosition)
+							{
+								myEnabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceDown;
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Begin a new RoleSequence on an ExternalConstraint.
+		/// </summary>
+		protected virtual void OnMenuBeginRoleSequenceOnExternalConstraint()
+		{
+			// Get the constraint of the StickyObject.
+			ORMDiagram ormDiagram = CurrentDiagram as ORMDiagram;
+			if (ormDiagram != null)
+			{
+				ExternalConstraintShape constraintShape;
+				if (null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape))
+				{
+					IConstraint constraint = constraintShape.AssociatedConstraint;
+					ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
+					connectAction.ChainMouseAction(constraintShape, ormDiagram.ActiveDiagramView.DiagramClientView);
 				}
 			}
 		}

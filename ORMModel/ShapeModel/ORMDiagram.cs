@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
@@ -10,6 +11,33 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
 namespace Northface.Tools.ORM.ShapeModel
 {
+	#region IStickyObject interface
+	/// <summary>
+	/// Interface for implementing "Sticky" selections.  Presentation elements that are sticky
+	/// will maintain their selected status when compatible objects are clicked.
+	/// </summary>
+	[CLSCompliant(true)]
+	public interface IStickyObject
+	{
+		/// <summary>
+		/// Call this on an object when you're setting it as a StickyObject.  This method
+		/// will go through the object's associated elements to perform any actions needed
+		/// such as calling Invalidate().
+		/// </summary>
+		void StickyInitialize();
+		/// <summary>
+		/// Returns whether the Presentation Element that was passed in is selectable in the
+		/// context of this StickyObject.  For example, when an external constraint is the
+		/// active StickyObject, roles are selectable and objects are not.
+		/// </summary>
+		/// <returns>Whether the PresentationElement passed in is selectable in this StickyObject's context</returns>
+		bool StickySelectable(ModelElement mel);
+		/// <summary>
+		/// Needed to allow outside entities to tell the StickyObject to redraw itself and its children.
+		/// </summary>
+		void StickyRedraw();
+	}
+	#endregion // IStickyObject interface
 	public partial class ORMDiagram
 	{
 		#region Toolbox filter strings
@@ -42,6 +70,46 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public const string ORMDiagramConnectRoleFilterString = "ORMDiagramConnectRoleFilterString";
 		#endregion // Toolbox filter strings
+		#region StickyEditObject
+		/// <summary>
+		/// The StickyObject associated with this diagram.  
+		/// </summary>
+		private IStickyObject mySticky;
+		/// <summary>
+		/// Get access to the diagram's StickyObject
+		/// </summary>
+		/// <value>StickyObject</value>
+		public IStickyObject StickyObject
+		{
+			get
+			{
+				return mySticky;
+			}
+			set
+			{
+				// If the previous StickyObject was a ShapeElement, invalidate it so that it can redraw.
+				// This is because a sticky ShapeElement should give a visual indicator that it's active.
+
+				// Need to account for: going from null to ShapeElement, ShapeElement to null, ShapeElement to ShapeElement
+				IStickyObject currentStickyShape;
+				IStickyObject incomingStickyShape;
+
+				currentStickyShape = mySticky;
+				incomingStickyShape = value;
+				if (currentStickyShape != null)
+				{
+					mySticky = null;
+					currentStickyShape.StickyRedraw();
+				}
+
+				if (incomingStickyShape != null)
+				{
+					mySticky = value;
+					mySticky.StickyInitialize();
+				}
+			}
+		}
+		#endregion //StickyEditObject
 		#region View Fixup Methods
 		/// <summary>
 		/// Called as a result of the FixUpDiagram calls
@@ -284,6 +352,39 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 			return null;
 		}
+		/// <summary>
+		/// The Brush to use when drawing the background of a sticky object.
+		/// </summary>
+		public static readonly StyleSetResourceId StickyBackgroundResource = new StyleSetResourceId("Northface", "StickyBackgroundResource");
+		/// <summary>
+		/// The Brush to use when drawing the foreground of a sticky object.
+		/// </summary>
+		public static readonly StyleSetResourceId StickyForegroundResource = new StyleSetResourceId("Northface", "StickyForegroundResource");
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="classStyleSet"></param>
+		protected override void InitializeResources(StyleSet classStyleSet)
+		{
+			base.InitializeResources(classStyleSet);
+
+			BrushSettings brushSettings = new BrushSettings();
+			brushSettings.Color = SystemColors.Highlight;
+			classStyleSet.AddBrush(StickyBackgroundResource, DiagramBrushes.ShapeBackgroundSelected, brushSettings);
+
+			brushSettings.Color = SystemColors.HighlightText;
+			classStyleSet.AddBrush(StickyForegroundResource, DiagramBrushes.ShapeText, brushSettings);
+
+			PenSettings penSettings = new PenSettings();
+			penSettings.Color = SystemColors.Highlight;
+			penSettings.Width = 1.0F / 72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
+			penSettings.Alignment = PenAlignment.Center;
+			classStyleSet.AddPen(StickyBackgroundResource, DiagramPens.ShapeHighlightOutline, penSettings);
+
+			penSettings.Color = SystemColors.HighlightText;
+			classStyleSet.AddPen(StickyForegroundResource, DiagramPens.ShapeHighlightOutline, penSettings);
+		}
+
 		#endregion // View Fixup Methods
 		#region Toolbox initialization
 		/// <summary>
@@ -426,8 +527,9 @@ namespace Northface.Tools.ORM.ShapeModel
 				// should correspond to the current toolbox action. However, Toolbox.SetSelectedToolboxItem
 				// always crashes, so there is no way to reset the action when we explicitly chain.
 				// The result of not doing this is that moving the mouse off and back on the diagram
-				// (or over a warning tooltip) during a chained mouse action cancels the action.
-				// See corresponding code in ExternalConstraintConnectAction.ChainMouseAction.
+				// during a chained mouse action cancels the action.
+				// See corresponding code in ExternalConstraintConnectAction.ChainMouseAction and
+				// InternalUniquenessConstraintConnectAction.ChainMouseAction.
 				(action != null || activeView.Toolbox.GetSelectedToolboxItem() != null))
 			{
 				clientView.ActiveMouseAction = action;
@@ -529,7 +631,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // External constraint action
 		#region Internal uniqueness constraint action
-		private InternalUniquenssConstraintAction myInternalUniquenessConstraintAction;
+		private InternalUniquenessConstraintAction myInternalUniquenessConstraintAction;
 		private InternalUniquenessConstraintConnectAction myInternalUniquenessConstraintConnectAction;
 		/// <summary>
 		/// The connect action used to connect an internal uniqueness constraint
@@ -557,7 +659,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The action used to add an internal uniqueness constraint from the toolbox
 		/// </summary>
-		public InternalUniquenssConstraintAction InternalUniquenessConstraintAction
+		public InternalUniquenessConstraintAction InternalUniquenessConstraintAction
 		{
 			get
 			{
@@ -566,7 +668,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					myInternalUniquenessConstraintAction = CreateInternalUniquenessConstraintAction();
 					myInternalUniquenessConstraintAction.AfterMouseActionDeactivated += delegate(object sender, DiagramEventArgs e)
 					{
-						InternalUniquenssConstraintAction action = sender as InternalUniquenssConstraintAction;
+						InternalUniquenessConstraintAction action = sender as InternalUniquenessConstraintAction;
 						if (action.ActionCompleted)
 						{
 							InternalUniquenessConstraint constraint = action.AddedConstraint;
@@ -583,9 +685,9 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Create the connect action used to connect internal uniqueness constrant roles
 		/// </summary>
 		/// <returns>InternalUniquenssConstraintAction instance</returns>
-		protected virtual InternalUniquenssConstraintAction CreateInternalUniquenessConstraintAction()
+		protected virtual InternalUniquenessConstraintAction CreateInternalUniquenessConstraintAction()
 		{
-			return new InternalUniquenssConstraintAction(this);
+			return new InternalUniquenessConstraintAction(this);
 		}
 		#endregion Internal uniqueness constraint action
 		#region Role drag action
@@ -773,13 +875,15 @@ namespace Northface.Tools.ORM.ShapeModel
 			//	(int)(startLuminosity * luminosityFactor) :
 			//	(startLuminosity + luminosityDelta);
 			
-			// Use a sliding scale to brighten colors
+			// Use a sliding scale to brighten/darken colors
+			const int maxLuminosity = 255;
 			const int luminosityCheck = 160;
 			const int luminosityFixedDelta = 60;
 			const int luminosityIncrementalDelta = 30;
-			const double luminosityFactor = 0.9;
+			const double luminosityFixedFactor = 0.95;
+			const double luminosityIncrementalFactor = -0.08;
 			return (startLuminosity >= luminosityCheck) ?
-				(int)(startLuminosity * luminosityFactor) :
+				(int)(startLuminosity * (luminosityFixedFactor + (luminosityIncrementalFactor * (double)(maxLuminosity - startLuminosity) / (maxLuminosity - luminosityCheck)))) :
 				(startLuminosity + luminosityFixedDelta + (int)((double)(luminosityCheck - startLuminosity)/luminosityCheck * luminosityIncrementalDelta));
 		}
 		#endregion // Utility Methods

@@ -29,6 +29,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		RoleSequenceStyles RoleSequenceStyles { get; }
 		/// <summary>
+		/// Get the details of how this constraint is stored.
+		/// </summary>
+		ConstraintStorageStyle ConstraintStorageStyle { get; }
+		/// <summary>
 		/// Retrieve the model for the current constraint
 		/// </summary>
 		ORMModel Model { get; }
@@ -94,7 +98,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Rule that fires when a constraint has a RoleSequence Removed
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
 		private class ConstraintRoleSequenceHasRoleRemoved : RemoveRule
 		{
 			/// <summary>
@@ -115,37 +119,23 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion //ConstraintRoleSequenceHasRoleRemoved class
-		#region MultiColumnExternalConstraintHasRoleSequenceRemoved class
-		/// <summary>
-		/// Rule that fires when an external constraint has a RoleSequence Removed
-		/// </summary>
-		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence))]
-		private class MultiColumnExternalConstraintHasRoleSequenceRemoved : RemoveRule
-		{
-			/// <summary>
-			/// Runs then roleset element is removed.  If there are no more roles in the role collection
-			/// then the entire roleset is removed
-			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
-			{
-				MultiColumnExternalConstraintHasRoleSequence link = e.ModelElement as MultiColumnExternalConstraintHasRoleSequence;
-				MultiColumnExternalConstraint constraint = link.ExternalConstraint;
-				if (!constraint.IsRemoved)
-				{
-					if (constraint.RoleSequenceCollection.Count == 0)
-					{
-						constraint.Remove();
-					}
-				}
-			}
-		}
-		#endregion //MultiColumnExternalConstraintHasRoleSequenceRemoved class
 	}
 	#endregion // Constraint class
 	#region InternalConstraint class
 	public partial class InternalConstraint
 	{
 		#region InternalConstraint Specific
+		/// <summary>
+		/// The internal storage style of this constraint.
+		/// </summary>
+		/// <value>ConstraintStorageStyle.InternalConstraint</value>
+		public ConstraintStorageStyle ConstraintStorageStyle
+		{
+			get
+			{
+				return ConstraintStorageStyle.InternalConstraint;
+			}
+		}
 		/// <summary>
 		/// Ensure that the role is owned by the same
 		/// fact type as the constraint. This method should
@@ -244,6 +234,17 @@ namespace Northface.Tools.ORM.ObjectModel
 	public partial class SingleColumnExternalConstraint
 	{
 		#region SingleColumnExternalConstraint Specific
+		/// <summary>
+		/// The internal storage style of this constraint.
+		/// </summary>
+		/// <value>ConstraintStorageStyle.SingleColumnExternalConstraint</value>
+		public ConstraintStorageStyle ConstraintStorageStyle
+		{
+			get
+			{
+				return ConstraintStorageStyle.SingleColumnExternalConstraint;
+			}
+		}
 		/// <summary>
 		/// Ensure that an ExternalFactConstraint exists between the
 		/// fact type owning the passed in role and this constraint.
@@ -406,6 +407,17 @@ namespace Northface.Tools.ORM.ObjectModel
 	public partial class MultiColumnExternalConstraint : IModelErrorOwner
 	{
 		#region MultiColumnExternalConstraint Specific
+		/// <summary>
+		/// The internal storage style of this constraint.
+		/// </summary>
+		/// <value>ConstraintStorageStyle.MultiColumnExternalConstraint</value>
+		public ConstraintStorageStyle ConstraintStorageStyle
+		{
+			get
+			{
+				return ConstraintStorageStyle.MultiColumnExternalConstraint;
+			}
+		}
 		/// <summary>
 		/// Get a read-only list of FactConstraint links. To get the
 		/// fact type from here, use the FactTypeCollection property on the returned
@@ -1795,8 +1807,34 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// sets of compatible roles.
 		/// </summary>
 		Subset,
-	}
+	}	
 	#endregion // ConstraintType enum
+	#region ConstraintStorageStyle enum
+	/// <summary>
+	/// A list of possible ways to store a constraint's role sequences.
+	/// </summary>
+	[CLSCompliant(true)]
+	public enum ConstraintStorageStyle
+	{
+		/// <summary>
+		/// The constraint is stored as a single role sequence.
+		/// </summary>
+		InternalConstraint,
+		/// <summary>
+		/// The constraint is stored as a single role sequence, but with the
+		/// rule that all roles must be compatible.  This is because the contraint
+		/// is technically a single column with many rows at the conceptual level,
+		/// but it's easier to store as a single row of many columns.
+		/// </summary>
+		SingleColumnExternalConstraint,
+		/// <summary>
+		/// The contraint is stored as a sequence of role sequences.  Each role
+		/// in a given role sequence must be compatible with roles in the same
+		/// position of all other role sequences.
+		/// </summary>
+		MultiColumnExternalConstraint,
+	}
+	#endregion // ConstraintStorageStyle enum
 	#region ConstraintType and RoleSequenceStyles implementation for all constraints
 	public partial class SimpleMandatoryConstraint : IConstraint
 	{

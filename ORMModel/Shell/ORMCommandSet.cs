@@ -8,6 +8,9 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Northface.Tools.ORM;
+using Northface.Tools.ORM.ObjectModel;
+using Northface.Tools.ORM.ShapeModel;
 
 namespace Northface.Tools.ORM.Shell
 {	
@@ -87,6 +90,28 @@ namespace Northface.Tools.ORM.Shell
 				new EventHandler(OnStatusFactEditorWindow),
 				new EventHandler(OnMenuFactEditorWindow),
 				ORMDesignerCommandIds.ViewFactEditor)
+
+				// Constraint editing commands				
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusActivateRoleSequence),
+				new EventHandler(OnMenuActivateRoleSequence),
+				ORMDesignerCommandIds.ViewActivateRoleSequence)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusDeleteRowSequence),
+				new EventHandler(OnMenuDeleteRowSequence),
+				ORMDesignerCommandIds.ViewDeleteRoleSequence)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusMoveRoleSequenceUp),
+				new EventHandler(OnMenuMoveRoleSequenceUp),
+				ORMDesignerCommandIds.ViewMoveRoleSequenceUp)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusMoveRoleSequenceDown),
+				new EventHandler(OnMenuMoveRoleSequenceDown),
+				ORMDesignerCommandIds.ViewMoveRoleSequenceDown)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusEditExternalConstraint),
+				new EventHandler(OnMenuEditExternalConstraint),
+				ORMDesignerCommandIds.ViewEditExternalConstraint)
 			};
 				#endregion
 				AddCommands(myCommands);
@@ -251,6 +276,8 @@ namespace Northface.Tools.ORM.Shell
 					docView.OnMenuInsertRole(false);
 				}
 			}
+			#region External Constraint editing menu options
+			#region Status queries
 			/// <summary>
 			/// Menu handler
 			/// </summary>
@@ -280,6 +307,121 @@ namespace Northface.Tools.ORM.Shell
 				IVsWindowFrame editorWindow = ORMDesignerPackage.FactEditorWindow;
 				editorWindow.Show();
 			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnStatusEditExternalConstraint(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.EditExternalConstraint);
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnStatusActivateRoleSequence(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ActivateRoleSequence);
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnStatusDeleteRowSequence(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DeleteRoleSequence);
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnStatusMoveRoleSequenceUp(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleSequenceUp);
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnStatusMoveRoleSequenceDown(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleSequenceDown);
+			}
+			#endregion // Status queries
+			#region Menu actions
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuEditExternalConstraint(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					docView.OnMenuEditExternalConstraint();
+				}
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuActivateRoleSequence(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					docView.OnMenuActivateRoleSequence();
+				}
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuDeleteRowSequence(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// call delete on the doc view
+					docView.OnMenuDeleteRoleSequence();
+				}
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuMoveRoleSequenceUp(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					docView.OnMenuMoveRoleSequenceUp();
+				}
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuMoveRoleSequenceDown(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					docView.OnMenuMoveRoleSequenceDown();
+				}
+			}
+			#endregion // Menu actions
+			#endregion // External Constraint editing menu options
 			/// <summary>
 			/// 
 			/// </summary>
@@ -407,6 +549,31 @@ namespace Northface.Tools.ORM.Shell
 			/// The context menu for the diagram
 			/// </summary>
 			public static readonly CommandID ViewContextMenu = new CommandID(guidORMDesignerCommandSet, menuIdContextMenu);
+
+			/// <summary>
+			/// Available on any role belonging to the active RoleSequence in the active MCEC or SCEC.
+			/// </summary>
+			public static readonly CommandID ViewActivateRoleSequence = new CommandID(guidORMDesignerCommandSet, cmdIdActivateRoleSequence);
+
+			/// <summary>
+			/// Available on any role belonging to any RoleSequence in the active MCEC.
+			/// </summary>
+			public static readonly CommandID ViewDeleteRoleSequence = new CommandID(guidORMDesignerCommandSet, cmdIdDeleteRoleSequence);
+
+			/// <summary>
+			/// Available on any non-active external constraint.
+			/// </summary>
+			public static readonly CommandID ViewEditExternalConstraint = new CommandID(guidORMDesignerCommandSet, cmdIdEditExternalConstraint);
+
+			/// <summary>
+			/// Available on any role belonging to any RoleSequence in the active MCEC.
+			/// </summary>
+			public static readonly CommandID ViewMoveRoleSequenceUp = new CommandID(guidORMDesignerCommandSet, cmdIdMoveRoleSequenceUp);
+
+			/// <summary>
+			/// Available on any role belonging to any RoleSequence in the active MCEC.
+			/// </summary>
+			public static readonly CommandID ViewMoveRoleSequenceDown = new CommandID(guidORMDesignerCommandSet, cmdIdMoveRoleSequenceDown);
 			#endregion //CommandID objects for menus
 
 			#region cmdIds
@@ -442,6 +609,27 @@ namespace Northface.Tools.ORM.Shell
 			/// The ORM Fact Editor Window item on the fact type context menu
 			/// </summary>
 			private const int cmdIdViewFactEditor = 0x2905;
+			/// <summary>
+			/// Available on any role belonging to the active RoleSequence in the active MCEC or SCEC.
+			/// </summary>
+			private const int cmdIdActivateRoleSequence = 0x2906;
+			/// <summary>
+			/// Available on any role belonging to any RoleSequence in the active MCEC.
+			/// </summary>
+			private const int cmdIdDeleteRoleSequence = 0x2907;
+			/// <summary>
+			/// Available on any non-active external constraint.
+			/// </summary>
+			private const int cmdIdEditExternalConstraint = 0x2908;
+			/// <summary>
+			/// Available on any role belonging to any RoleSequence in the active MCEC.
+			/// </summary>
+			private const int cmdIdMoveRoleSequenceUp = 0x2909;
+			/// <summary>
+			/// Available on any role belonging to any RoleSequence in the active MCEC.
+			/// </summary>
+			private const int cmdIdMoveRoleSequenceDown = 0x290A;
+
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>

@@ -79,7 +79,6 @@ namespace Northface.Tools.ORM.ShapeModel
 				{
 					if (object.ReferenceEquals(sourceShapeElement, targetShapeElement))
 					{
-						
 						// UNDONE: Constrain this, this is overly generous
 						retVal = true;
 					}
@@ -120,9 +119,32 @@ namespace Northface.Tools.ORM.ShapeModel
 					{
 						// The single-column constraint is its own role set, just add the roles
 						RoleMoveableCollection roles = iuConstraint.RoleCollection;
-						for (int i = 0; i < rolesCount; ++i)
+						int currentCount = roles.Count;
+						int removedCount = 0;
+						for (int i = currentCount - 1; i >= 0; --i)
 						{
-							roles.Add(selectedRoles[i]);
+							Role currentRole = roles[i];
+							int index = selectedRoles.IndexOf(currentRole);
+							if (index == -1)
+							{
+								roles.Remove(currentRole);
+							}
+							else
+							{
+								selectedRoles[index] = null;
+								++removedCount;
+							}
+						}
+						if (removedCount < rolesCount)
+						{
+							for (int i = 0; i < rolesCount; ++i)
+							{
+								Role r = selectedRoles[i];
+								if (r != null)
+								{
+									roles.Add(r);
+								}
+							}
 						}
 					}
 				}
@@ -170,6 +192,18 @@ namespace Northface.Tools.ORM.ShapeModel
 			get
 			{
 				return mySourceShape;
+			}
+		}
+
+		/// <summary>
+		/// Gets the InternalUniquenessConstraint being worked on.
+		/// </summary>
+		/// <value></value>
+		public InternalUniquenessConstraint SourceInternalUniquenessConstraint
+		{
+			get
+			{
+				return myIUC;
 			}
 		}
 
@@ -256,22 +290,6 @@ namespace Northface.Tools.ORM.ShapeModel
 		protected override void OnMouseMove(DiagramMouseEventArgs e)
 		{
 			myLastMouseMoveItem = (DiagramItem)e.DiagramHitTestInfo.HitDiagramItem.Clone();
-			bool isRole = false;
-			if (myLastMouseMoveItem != null)
-			{
-				foreach (ModelElement element in myLastMouseMoveItem.RepresentedElements)
-				{
-					if (element is Role)
-					{
-						isRole = true;
-						break;
-					}
-				}
-			}
-			if (!isRole)
-			{
-				e.Handled = true;
-			}
 			base.OnMouseMove(e);
 		}
 		/// <summary>
@@ -332,6 +350,10 @@ namespace Northface.Tools.ORM.ShapeModel
 								forceRedraw = true;
 								roles.RemoveAt(roleIndex);
 								redrawIndexBound = roles.Count;
+								if (mySourceShape != null)
+								{
+									myPendingOnClickedAction = OnClickedAction.CheckForCommit;
+								}
 							}
 						}
 						else
@@ -370,7 +392,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			if (roles != null && roles.Count > 0)
 			{
 				Debug.Assert(mySourceShape != null); //source shape should have been set
-				mySourceShape.Invalidate();
+				mySourceShape.Invalidate(true);
 			}
 
 			// Set the selection back to pointer after connect action
@@ -417,7 +439,12 @@ namespace Northface.Tools.ORM.ShapeModel
 			myPendingOnClickedAction = OnClickedAction.Normal;
 			FactTypeShape.ActiveInternalUniquenessConstraintConnectAction = null;
 		}
-		private IList<Role> SelectedRoleCollection
+		/// <summary>
+		/// Gets and sets the selected roles.
+		/// </summary>
+		/// <value></value>
+		[CLSCompliant(false)]
+		public IList<Role> SelectedRoleCollection
 		{
 			get
 			{
@@ -477,6 +504,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				MouseDown(mouseEventArgs);
 				Click(new DiagramPointEventArgs(emulateClickPoint.X, emulateClickPoint.Y, PointRelativeTo.Client, clientView));
 				MouseUp(mouseEventArgs);
+				attachToShape.Invalidate(true);
 
 				// An extra move lets us chain when the mouse is not on the design surface,
 				// such as when we are being activated via the task list.
@@ -491,7 +519,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// A toolbox action to add an Internal constraint
 	/// </summary>
 	[CLSCompliant(true)]
-	public class InternalUniquenssConstraintAction : ToolboxAction
+	public class InternalUniquenessConstraintAction : ToolboxAction
 	{
 		#region Member variables
 		/// <summary>
@@ -510,7 +538,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// deactivating it.
 		/// </summary>
 		/// <param name="diagram">The owning diagram</param>
-		public InternalUniquenssConstraintAction(Diagram diagram) : base(diagram)
+		public InternalUniquenessConstraintAction(Diagram diagram) : base(diagram)
 		{
 			Reset();
 		}

@@ -155,6 +155,39 @@ namespace Northface.Tools.ORM.ObjectModel
 				return new FactConstraintCollectionImpl(this, true, true);
 			}
 		}
+		/// <summary>
+		/// Get an enumeration of constraints of the given type
+		/// </summary>
+		/// <param name="filterType">The type of constraint to return</param>
+		/// <returns>IEnumerable</returns>
+		[CLSCompliant(false)]
+		public IEnumerable<InternalConstraint> GetInternalConstraints(ConstraintType filterType)
+		{
+			IList constraints = InternalConstraintCollection;
+			int constraintCount = constraints.Count;
+			for (int i = 0; i < constraintCount; ++i)
+			{
+				InternalConstraint ic = (InternalConstraint)constraints[i];
+				if (ic.Constraint.ConstraintType == filterType)
+				{
+					yield return ic;
+				}
+			}
+		}
+		/// <summary>
+		/// Get the number of internal constraints of the specified constraint type
+		/// </summary>
+		/// <param name="filterType">The type of constraint to count</param>
+		/// <returns>int</returns>
+		public int GetInternalConstraintsCount(ConstraintType filterType)
+		{
+			int retVal = 0;
+			foreach (InternalConstraint ic in GetInternalConstraints(filterType))
+			{
+				++retVal;
+			}
+			return retVal;
+		}
 		#endregion // FactType Specific
 		#region FactConstraintCollection implementation
 		private class FactConstraintCollectionImpl : ICollection<IFactConstraint>
@@ -292,17 +325,17 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Support adding root elements and constraints directly to the design surface
 		/// </summary>
-		/// <param name="elementGroupPrototype"></param>
-		/// <param name="protoElement"></param>
-		/// <returns></returns>
+		/// <param name="elementGroupPrototype">The object representing the serialized data being added to this FactType.</param>
+		/// <param name="protoElement">The element to add.</param>
+		/// <returns>True if addition is allowed; otherwise, false.</returns>
 		protected override bool CanAddChildElement(ElementGroupPrototype elementGroupPrototype, ProtoElementBase protoElement)
 		{
-			if (protoElement == null)
+			if (protoElement != null)
 			{
-				return false;
+				MetaClassInfo classInfo = Store.MetaDataDirectory.FindMetaClass(protoElement.MetaClassId);
+				return (classInfo.IsDerivedFrom(InternalUniquenessConstraint.MetaClassGuid));
 			}
-			MetaClassInfo classInfo = Store.MetaDataDirectory.FindMetaClass(protoElement.MetaClassId);
-			return classInfo.IsDerivedFrom(InternalUniquenessConstraint.MetaClassGuid);
+			return false;
 		}
 
 		/// <summary>

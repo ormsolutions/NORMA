@@ -19,6 +19,7 @@
 #define groupIdFactCommands			0x1001
 #define groupIdRoleCommands			0x1002
 #define groupIdModelCommands			0x1003
+#define groupIdConstraintEditContext		0x1004
 
 ///////////////////////////////////////////////////////////////////////////////
 // Command IDs       (0x2xxx)
@@ -32,5 +33,12 @@
 #define cmdIdInsertRoleAfter			0x2903
 #define cmdIdInsertRoleBefore			0x2904
 #define cmdIdViewFactEditor			0x2905
+
+// Menu commands associated with editing the roles in the external constraint sequences.
+#define cmdIdActivateRoleSequence		0x2906
+#define cmdIdDeleteRoleSequence			0x2907
+#define cmdIdEditExternalConstraint		0x2908
+#define cmdIdMoveRoleSequenceUp			0x2909
+#define cmdIdMoveRoleSequenceDown		0x290A
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs

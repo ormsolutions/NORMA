@@ -113,20 +113,35 @@ namespace Northface.Tools.ORM.ShapeModel
 					SingleColumnExternalConstraint scConstraint;
 					if (null != (mcConstraint = constraint as MultiColumnExternalConstraint))
 					{
+						ConstraintRoleSequence constraintRoleSequenceBeingEdited = action.ConstraintRoleSequenceToEdit;
 						// Add a new role set
-						MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = mcConstraint.RoleSequenceCollection;
-						MultiColumnExternalConstraintRoleSequence roleSequence = MultiColumnExternalConstraintRoleSequence.CreateMultiColumnExternalConstraintRoleSequence(mcConstraint.Store);
-						RoleMoveableCollection roles = roleSequence.RoleCollection;
-						for (int i = 0; i < rolesCount; ++i)
+						if (null == constraintRoleSequenceBeingEdited)
 						{
-							roles.Add(selectedRoles[i]);
+							MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = mcConstraint.RoleSequenceCollection;
+							MultiColumnExternalConstraintRoleSequence roleSequence = MultiColumnExternalConstraintRoleSequence.CreateMultiColumnExternalConstraintRoleSequence(mcConstraint.Store);
+							RoleMoveableCollection roles = roleSequence.RoleCollection;
+							for (int i = 0; i < rolesCount; ++i)
+							{
+								roles.Add(selectedRoles[i]);
+							}
+							roleSequences.Add(roleSequence);
 						}
-						roleSequences.Add(roleSequence);
+						// Edit the existing role set.
+						else
+						{
+							RoleMoveableCollection roles = constraintRoleSequenceBeingEdited.RoleCollection;
+							roles.Clear();
+							foreach (Role role in action.SelectedRoleCollection)
+							{
+								roles.Add(role);
+							}
+						}
 					}
 					else if (null != (scConstraint = constraint as SingleColumnExternalConstraint))
 					{
 						// The single-column constraint is its own role set, just add the roles
 						RoleMoveableCollection roles = scConstraint.RoleCollection;
+						roles.Clear();
 						for (int i = 0; i < rolesCount; ++i)
 						{
 							roles.Add(selectedRoles[i]);
@@ -135,7 +150,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 			/// <summary>
-			/// UNDONE: Experimental routine.
+			/// Move the feedback dragline to the center
 			/// </summary>
 			/// <param name="sourceShapeElement"></param>
 			/// <param name="sourcePoint"></param>
@@ -147,9 +162,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				PaintFeedbackArgs args = base.UpdatePaintFeedbackParameters(sourceShapeElement, sourcePoint, targetShapeElement, targetPoint, paintFeedbackArgs);
 				RectangleD bounds = sourceShapeElement.AbsoluteBoundingBox;
-				args.SourceFeedbackBounds = bounds;
 				args.SourceConnectionPoint = bounds.Center;
-				args.SourceGraphicsPath = sourceShapeElement.ShapeGeometry.GetPath(sourceShapeElement);
 				return args;
 			}
 		}
@@ -158,6 +171,8 @@ namespace Northface.Tools.ORM.ShapeModel
 		// The following cursors are built as embedded resources. Pick them up by their file name.
 		private static Cursor myAllowedCursor = new Cursor(typeof(ExternalConstraintConnectAction), "ConnectExternalConstraintAllowed.cur");
 		private static Cursor mySearchingCursor = new Cursor(typeof(ExternalConstraintConnectAction), "ConnectExternalConstraintSearching.cur");
+		private ConstraintRoleSequence myConstraintRoleSequence;
+		private IList<Role> myInitialSelectedRoles;
 		private IList<Role> mySelectedRoles;
 		private ExternalConstraintShape mySourceShape;
 		private DiagramItem myLastMouseMoveItem;
@@ -284,6 +299,11 @@ namespace Northface.Tools.ORM.ShapeModel
 						// Let the click through to the base to officially begin the drag action
 						base.OnClicked(e);
 						mySourceShape = constraintShape;
+						ORMDiagram ormDiagram;
+						if (null != (ormDiagram = mySourceShape.Diagram as ORMDiagram))
+						{
+							ormDiagram.StickyObject = constraintShape;
+						}
 					}
 				}
 				else if (null != (role = currentElement as Role))
@@ -332,6 +352,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				else if (mySourceShape != null && currentElement is ORMDiagram)
 				{
 					base.OnClicked(e); // Let through to allow a cancel
+					((ORMDiagram)currentElement).StickyObject = null;
 				}
 			}
 		}
@@ -412,12 +433,19 @@ namespace Northface.Tools.ORM.ShapeModel
 		#region ExternalConstraintConnectAction specific
 		private void Reset()
 		{
+			myConstraintRoleSequence = null;
+			myInitialSelectedRoles = null;
 			mySelectedRoles = null;
 			mySourceShape = null;
 			myPendingOnClickedAction = OnClickedAction.Normal;
 			FactTypeShape.ActiveExternalConstraintConnectAction = null;
 		}
-		private IList<Role> SelectedRoleCollection
+		/// <summary>
+		/// Get the sequence of currently selected roles.
+		/// </summary>
+		/// <value>IList&lt;Role&gt;</value>
+		[CLSCompliant(false)]
+		public IList<Role> SelectedRoleCollection
 		{
 			get
 			{
@@ -427,6 +455,46 @@ namespace Northface.Tools.ORM.ShapeModel
 					FactTypeShape.ActiveExternalConstraintConnectAction = this;
 				}
 				return mySelectedRoles;
+			}
+		}
+		/// <summary>
+		/// Set the sequence of initially selected roles.
+		/// </summary>
+		/// <value>RoleMovableCollection</value>
+		public ConstraintRoleSequence ConstraintRoleSequenceToEdit
+		{
+			set
+			{
+				myConstraintRoleSequence = value;
+				RoleMoveableCollection roleCollection = myConstraintRoleSequence.RoleCollection;
+				IList<Role> selectedRoleCollection = SelectedRoleCollection;
+				IList<Role> initialRoles = InitialRoles;
+				foreach (Role r in roleCollection)
+				{
+					selectedRoleCollection.Add(r);
+					initialRoles.Add(r);
+				}
+			}
+			get
+			{
+				return myConstraintRoleSequence;
+			}
+		}
+		/// <summary>
+		/// The initial roles that were in the role sequence that this ConnectAction is editing.
+		/// </summary>
+		/// <value>List&lt;Role&gt;</value>
+		[CLSCompliant(false)]
+		public IList<Role> InitialRoles
+		{
+			get
+			{
+				if (null == myInitialSelectedRoles)
+				{
+					myInitialSelectedRoles = new List<Role>();
+					FactTypeShape.ActiveExternalConstraintConnectAction = this;
+				}
+				return myInitialSelectedRoles;
 			}
 		}
 		/// <summary>

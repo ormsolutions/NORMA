@@ -22,9 +22,15 @@ namespace Northface.Tools.ORM.Shell
 		/// The color used to draw selected constraints
 		/// during a role picker mouse action
 		/// </summary>
+		ConstraintError,
+		/// <summary>
+		/// The color used to draw selected constraints
+		/// during a role picker mouse action
+		/// </summary>
 		RolePicker,
 		// Items here must be in the same order as myDefaultColorSettings
-		// defined in the ORMDesignerFontsAndColors class
+		// defined in the ORMDesignerFontsAndColors class. Also need to
+		// update NameFromItemIndex when adding/removing items here.
 	}
 	#endregion // ORMDesignerColor Enum
 	/// <summary>
@@ -73,6 +79,10 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		public const string ConstraintColorName = "ORM Constraint";
 		/// <summary>
+		/// The unlocalized name for the constraint error display item
+		/// </summary>
+		public const string ConstraintErrorColorName = "ORM Constraint (Error)";
+		/// <summary>
 		/// The unlocalized name for the role highlight display item
 		/// </summary>
 		public const string RolePickerColorName = "ORM Role Picker";
@@ -114,6 +124,13 @@ namespace Northface.Tools.ORM.Shell
 			ConstraintColorName,
 			ResourceStrings.FontsAndColorsConstraintColorId,
 			(uint)ColorTranslator.ToWin32(Color.Violet),
+			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
+			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS,
+			false)
+			,new DefaultColorSetting(
+			ConstraintErrorColorName,
+			ResourceStrings.FontsAndColorsConstraintErrorColorId,
+			(uint)COLORINDEX.CI_RED | StandardPaletteBit,
 			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
 			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS,
 			false)
@@ -477,10 +494,14 @@ namespace Northface.Tools.ORM.Shell
 				case ORMDesignerColor.Constraint:
 					retVal = ConstraintColorName;
 					break;
+				case ORMDesignerColor.ConstraintError:
+					retVal = ConstraintErrorColorName;
+					break;
 				case ORMDesignerColor.RolePicker:
 					retVal = RolePickerColorName;
 					break;
 				default:
+					Debug.Assert(false); // The cases may not match all of the ORMDesignerColor enums.
 					throw new ArgumentOutOfRangeException();
 			}
 			return retVal;

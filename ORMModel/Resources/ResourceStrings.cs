@@ -263,6 +263,10 @@ namespace Northface.Tools.ORM
 		/// </summary>
 		public const string FontsAndColorsConstraintColorId = "FontsAndColors.ConstraintColor";
 		/// <summary>
+		/// Display name for the color used to draw an ORM constraint
+		/// </summary>
+		public const string FontsAndColorsConstraintErrorColorId = "FontsAndColors.ConstraintErrorColor";
+		/// <summary>
 		/// Display name for the color used to draw the constraint box for role sequence editing
 		/// </summary>
 		public const string FontsAndColorsRolePickerColorId = "FontsAndColors.RolePickerColor";
