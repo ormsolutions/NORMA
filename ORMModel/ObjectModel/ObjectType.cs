@@ -10,6 +10,13 @@ namespace Northface.Tools.ORM.ObjectModel
 {
 	public partial class ObjectType : INamedElementDictionaryChild
 	{
+		#region Public token values
+		/// <summary>
+		/// A key to return from INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
+		/// if duplicate names should be allowed.
+		/// </summary>
+		public static readonly object DeleteReferenceModeValueType = new object();
+		#endregion // Public token values
 		#region CustomStorage handlers
 		/// <summary>
 		/// Standard override. All custom storage properties are derived, not
@@ -59,7 +66,7 @@ namespace Northface.Tools.ORM.ObjectModel
 
 				//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
 				// player is a value type then return the refence mode name.
-				if (prefConstraint != null )
+				if (prefConstraint != null)
 				{
 					ObjectType valueType = prefConstraint.RoleSet.RoleCollection[0].RolePlayer;
 					Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueType.Name, this.Name, this.Model);
@@ -165,6 +172,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // Customize property display
 		#region ObjectTypeChangeRule class
+
+		/// <summary>
+		/// Enforces Change Rules
+		/// </summary>
 		[RuleOn(typeof(ObjectType))]
 		private class ObjectTypeChangeRule : ChangeRule
 		{
@@ -208,15 +219,43 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					(e.ModelElement as ObjectType).NestedFactType = e.NewValue as FactType;
 				}
+				else if (attributeGuid == ObjectType.NameMetaAttributeGuid)
+				{
+					ObjectType objectType = e.ModelElement as ObjectType;
+					Store store = objectType.Store;
+					InternalUniquenessConstraint prefConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint;
+
+					if (prefConstraint != null)
+					{
+						string newValue = (string)e.NewValue;
+						string oldValue = (string)e.OldValue;
+						string oldReferenceModeName = "";
+
+						ReferenceMode referenceMode = ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(objectType.ReferenceModeDisplay, oldValue, objectType.Model);
+
+						if (referenceMode != null)
+						{
+							string name = newValue;
+							oldReferenceModeName = referenceMode.Name;
+							name = referenceMode.GenerateValueTypeName(newValue);
+
+							if (name != oldReferenceModeName)
+							{
+								this.RenameReferenceMode(name, objectType, prefConstraint, store);
+							}
+						}
+					}
+				}
 				else if (attributeGuid == ObjectType.ReferenceModeDisplayMetaAttributeGuid)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					Store store = objectType.Store;
-					InternalConstraint prefConstraint = objectType.PreferredIdentifier as InternalConstraint;
+					InternalUniquenessConstraint prefConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint;
+					bool aggressivelyKillValueType = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.Contains(DeleteReferenceModeValueType);
 
 					string newValue = (string)e.NewValue;
 					string oldValue = (string)e.OldValue;
-					
+
 					ICollection<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(newValue, objectType.Model);
 
 					//TODO: What if we get multiple back?
@@ -224,15 +263,15 @@ namespace Northface.Tools.ORM.ObjectModel
 					foreach (ReferenceMode referenceMode in referenceModes)
 					{
 						name = referenceMode.GenerateValueTypeName(objectType.Name);
-					}					
+					}
 
 					if (newValue.Length == 0 && oldValue.Length != 0)
 					{
-						this.KillReferenceMode(prefConstraint);
+						this.KillReferenceMode(prefConstraint, aggressivelyKillValueType);
 					}
 					else if (newValue.Length != 0 && oldValue.Length != 0)
 					{
-						this.RenameReferenceMode(name, prefConstraint);
+						this.RenameReferenceMode(name, objectType, prefConstraint, store);
 					}
 					else if (newValue.Length != 0 && oldValue.Length == 0)
 					{
@@ -246,47 +285,96 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// Utility function to create the reference mode objects.  Creates the fact, value type, and
 			/// preffered internal uniqueness constraint.
 			/// </summary>
-			private void CreateReferenceMode(string valueTypeName, ObjectType objectType,Store store)
+			private	void CreateReferenceMode(string	valueTypeName, ObjectType objectType, Store	store)
 			{				
+				ORMModel objModel = objectType.Model;
+				ObjectType valueType = FindValueType(valueTypeName, objModel);
+
 				FactType refFact = FactType.CreateFactType(store);
+				refFact.Model = objModel;
 
-				ObjectType valueType = ObjectType.CreateObjectType(store);
-				valueType.IsValueType = true;
-				valueType.Name = valueTypeName;
+				if (valueType  == null)
+				{
+					valueType = ObjectType.CreateObjectType(store);
+					valueType.IsValueType =	true;
+					valueType.Name = valueTypeName;
+					valueType.Model = objModel;
+				}
 
-				Role objectTypeRole = Role.CreateRole(store);
-				objectTypeRole.RolePlayer = objectType;
-				RoleMoveableCollection roleCollection = refFact.RoleCollection;
+				Role objectTypeRole	= Role.CreateRole(store);
+				objectTypeRole.RolePlayer =	objectType;
+				RoleMoveableCollection roleCollection =	refFact.RoleCollection;
 				roleCollection.Add(objectTypeRole);
 
 				Role valueTypeRole = Role.CreateRole(store);
 				valueTypeRole.RolePlayer = valueType;
 				roleCollection.Add(valueTypeRole);
 
-				InternalConstraint ic = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-				InternalConstraintRoleSet irs = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
+				InternalUniquenessConstraint ic	= InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
+				InternalConstraintRoleSet irs =	InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
 				irs.RoleCollection.Add(valueTypeRole);
-				ic.RoleSet = irs;
-
-				ORMModel objModel = objectType.Model;
-				ic.Model = objModel;
-				refFact.Model = objModel;
-				valueType.Model = objModel;
-
+				ic.RoleSet = irs;				
+				ic.Model = objModel;						
 				objectType.PreferredIdentifier = ic;
 			}
 
+			private ObjectType FindValueType(string name, ORMModel objModel)
+			{
+
+				LocatedElement element = objModel.ObjectTypesDictionary.GetElement(name);
+				if (!element.IsEmpty)
+				{
+					if (element.SingleElement != null)
+					{
+						return (ObjectType)element.SingleElement;
+					}
+					else if (element.MultipleElements.Count > 0)
+					{
+						foreach (ObjectType objectType in element.MultipleElements)
+						{
+							return objectType;
+						}
+					}
+				}
+				return null;
+			}
+
+
 			/// <summary>
-			/// Utility function to cahnge the name of an existing reference mode.
+			///  Utility function to cahnge the name of an existing reference mode.
 			/// </summary>
 			/// <param name="valueTypeName"></param>
+			/// <param name="objectType"></param>
 			/// <param name="preferredConstraint"></param>
-			private void RenameReferenceMode( string valueTypeName,InternalConstraint preferredConstraint)
+			/// <param name="store"></param>
+			private void RenameReferenceMode(string valueTypeName, ObjectType objectType, InternalUniquenessConstraint preferredConstraint, Store store)
 			{
-				ObjectType valueType = preferredConstraint.RoleSet.RoleCollection[0].RolePlayer;
-				if (valueType.IsValueType)
+				ORMModel objModel = objectType.Model;
+				ObjectType valueType = FindValueType(valueTypeName, objModel);
+				if (!IsValueTypeShared(preferredConstraint, objModel) && valueType == null)
 				{
-					valueType.Name = valueTypeName;
+					valueType = preferredConstraint.RoleSet.RoleCollection[0].RolePlayer;
+					if (valueType.IsValueType)
+					{
+						valueType.Name = valueTypeName;
+					}
+				}
+				else
+				{					
+					if (valueType == null)
+					{
+						valueType = ObjectType.CreateObjectType(store);
+						valueType.IsValueType = true;
+						valueType.Name = valueTypeName;
+						valueType.Model = objModel;
+					}
+
+					if (!IsValueTypeShared(preferredConstraint, objModel))
+					{
+						preferredConstraint.RoleSet.RoleCollection[0].RolePlayer.Remove();
+					}
+
+					preferredConstraint.RoleSet.RoleCollection[0].RolePlayer = valueType;
 				}
 			}
 
@@ -295,19 +383,69 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// preffered internal uniqueness constraint.
 			/// </summary>
 			/// <param name="preferredConstraint"></param>
-			private void KillReferenceMode(InternalConstraint preferredConstraint)
+			private void KillReferenceMode(InternalUniquenessConstraint preferredConstraint, bool aggressivelyKillValueType)
 			{
 				ObjectType valueType = preferredConstraint.RoleSet.RoleCollection[0].RolePlayer;
 				if (valueType.IsValueType)
 				{
 					FactType refFact = preferredConstraint.RoleSet.RoleCollection[0].FactType;
-					valueType.Remove();
+					if (!IsValueTypeShared(preferredConstraint, valueType.Model) && aggressivelyKillValueType)
+					{
+						valueType.Remove();
+					}
 					refFact.Remove();
 				}
+			}
+
+			private bool IsValueTypeShared(InternalUniquenessConstraint preferredConstraint, ORMModel model)
+			{
+				if (preferredConstraint != null)
+				{
+					ObjectType valueType = preferredConstraint.RoleSet.RoleCollection[0].RolePlayer;
+					if (valueType.IsValueType)
+					{
+						int count = 0;
+						foreach (ElementLink link in valueType.GetElementLinks())
+						{
+							if (!link.IsRemoving && !(link is SubjectHasPresentation))
+							{
+								++count;
+								// We're expecting a ValueTypeHasDataType,
+								// RoleHasRolePlayer, ModelHasObjectType, and
+								// 0 or more (ignored) SubjectHasPresentation
+								// links. Any other links indicate a shared value type.
+								if (count > 3)
+								{
+									return true;
+								}
+							}
+						}					
+					}
+				}
+				return false;
 			}
 			#endregion
 		}
 		#endregion // ObjectTypeChangeRule class
+		#region ObjectTypeChangeRule class
+
+		/// <summary>
+		/// Enforces Delete Rules
+		/// </summary>
+		[RuleOn(typeof(ObjectType))]
+		private class ObjectTypeRemoveRule : RemovingRule
+		{
+			/// <summary>
+			/// Executes when an object is removing
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementRemoving(ElementRemovingEventArgs e)
+			{
+				ObjectType objectType = (ObjectType)e.ModelElement;
+				objectType.ReferenceModeDisplay = "";
+			}
+		}
+		#endregion //ObjectTypeChangeRule class
 		#region INamedElementDictionaryChild implementation
 		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
 		{

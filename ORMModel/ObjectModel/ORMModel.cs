@@ -148,6 +148,43 @@ namespace Northface.Tools.ORM.ObjectModel
 		private NamedElementDictionary myObjectTypesDictionary = null;
 		private NamedElementDictionary myFactTypesDictionary = null;
 		private NamedElementDictionary myConstraintsDictionary = null;
+
+		/// <summary>
+		/// Returns the Object Types Dictionary
+		/// </summary>
+		/// <value>The model ObjectTypesDictionary </value>
+		public INamedElementDictionary ObjectTypesDictionary
+		{
+			get
+			{
+				return myObjectTypesDictionary;
+			}
+		}
+
+		/// <summary>
+		/// Returns the Fact Types Dictionary
+		/// </summary>
+		/// <value>The model FactTypesDictionary</value>
+		public INamedElementDictionary FactTypesDictionary
+		{
+			get
+			{
+				return myFactTypesDictionary;
+			}
+		}
+
+		/// <summary>
+		/// Returns the Constraints Dictionary
+		/// </summary>
+		/// <value>The model ConstraintsDictionary.</value>
+		public INamedElementDictionary ConstraintsDictionary
+		{
+			get
+			{
+				return myConstraintsDictionary;
+			}
+		}
+
 		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
 		{
 			return GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);

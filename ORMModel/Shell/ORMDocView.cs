@@ -298,6 +298,7 @@ namespace Northface.Tools.ORM.Shell
 				Diagram d = null;
 				using (Transaction t = store.TransactionManager.BeginTransaction("delete"))
 				{
+					bool testRefModeCollapse = 0 != (myEnabledCommands & ORMDesignerCommands.DeleteObjectType);
 
 					// account for multiple selection
 					foreach (object selectedObject in GetSelectedComponents())
@@ -305,6 +306,15 @@ namespace Northface.Tools.ORM.Shell
 						ShapeElement pel = selectedObject as ShapeElement; // just the shape
 						if (pel != null)
 						{
+							//UNDONE: Check if the object shape was in expanded mode
+							Northface.Tools.ORM.ShapeModel.ObjectTypeShape objectShape;
+							if (testRefModeCollapse &&
+								null != (objectShape = pel as Northface.Tools.ORM.ShapeModel.ObjectTypeShape)&& false/*) &&
+								!objectShape.ExpandRefMode*/
+								)
+							{
+								t.TopLevelTransaction.Context.ContextInfo[ObjectType.DeleteReferenceModeValueType] = null;
+							}
 							if (d == null)
 							{
 								d = pel.Diagram;

@@ -212,6 +212,7 @@ namespace Northface.Tools.ORM.Shell
 				modelElement is ExternalRoleConstraint ||
 				modelElement is InternalFactConstraint ||
 				modelElement is ExternalConstraintLink ||
+				modelElement is IntrinsicReferenceMode ||
 				modelElement is RolePlayerLink)
 			{
 				return false;
