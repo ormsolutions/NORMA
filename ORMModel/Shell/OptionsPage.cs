@@ -65,7 +65,6 @@ namespace Northface.Tools.ORM.Shell
 		RoleBoxEnd,
 	}
 	#endregion // Shape enums
-
 	#region Other Options Enums
 	/// <summary>
 	/// Provide options for showing and hiding role names on object types
@@ -82,7 +81,15 @@ namespace Northface.Tools.ORM.Shell
 		Off,
 	}
 	#endregion
-
+	#region NotifyDocument Delegate
+	/// <summary>
+	/// Used as a callback delegate for the OptionsPage.NotifySettingsChange
+	/// method. Allow other global notification methods to walk all open
+	/// documents.
+	/// </summary>
+	/// <param name="docData">A running ORMDesignerDocData to modify</param>
+	public delegate void NotifyDocument(ORMDesignerDocData docData);
+	#endregion // NotifyDocument Delegate
 	/// <summary>
 	/// Options dialog for ORM designers
 	/// see https://svn.northface.edu/projects/orm2/wiki/HowToAddOptionPageOptions for adding options
@@ -190,7 +197,48 @@ namespace Northface.Tools.ORM.Shell
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
-			IVsRunningDocumentTable docTable = (IVsRunningDocumentTable) this.Site.GetService(typeof(IVsRunningDocumentTable));
+			NotifySettingsChange(Site, FixupDocument);
+		}
+		/// <summary>
+		/// Modify the specified document layout when options are changed
+		/// </summary>
+		/// <param name="docData"></param>
+		private void FixupDocument(ORMDesignerDocData docData)
+		{
+			IList diagrams = docData.Store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid);
+			int diagramCount = diagrams.Count;
+			for (int i = 0; i < diagramCount; ++i)
+			{
+				ORMDiagram diagram = (ORMDiagram)diagrams[i];
+				using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.OptionsPageChangeTransactionName))
+				{
+					Store store = diagram.Store;
+					foreach (BinaryLinkShape link in store.ElementDirectory.GetElements(BinaryLinkShape.MetaClassGuid, true))
+					{
+						link.RipUp();
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+					}
+				}
+				diagram.Invalidate(true);
+			}
+		}
+		#endregion // Base overrides
+		#region Change Notification Functions
+		/// <summary>
+		/// Walk all running ORMDesigner documents and callback to the
+		/// notification delegate. Used to notify settings changes from
+		/// the options page or other change sources (like the FontAndColors
+		/// settings).
+		/// </summary>
+		/// <param name="serviceProvider">IServiceProvider</param>
+		/// <param name="changeCallback">Delegate callback</param>
+		public static void NotifySettingsChange(IServiceProvider serviceProvider, NotifyDocument changeCallback)
+		{
+			// Walk all the documents and invalidate ORM diagrams if the options have changed
+			IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)serviceProvider.GetService(typeof(IVsRunningDocumentTable));
 			IEnumRunningDocuments docIter;
 			NativeMethods.ThrowOnFailure(docTable.GetRunningDocumentsEnum(out docIter));
 			int hrIter;
@@ -222,25 +270,7 @@ namespace Northface.Tools.ORM.Shell
 						ORMDesignerDocData docData = Marshal.GetObjectForIUnknown(punkDocData) as ORMDesignerDocData;
 						if (docData != null)
 						{
-							IList diagrams = docData.Store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid);
-							int diagramCount = diagrams.Count;
-							for (int i = 0; i < diagramCount; ++i)
-							{
-								ORMDiagram diagram = (ORMDiagram)diagrams[i];
-								using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.OptionsPageChangeTransactionName))
-								{
-									Store store = diagram.Store;
-									foreach (BinaryLinkShape link in store.ElementDirectory.GetElements(BinaryLinkShape.MetaClassGuid, true))
-									{
-										link.RipUp();
-									}
-									if (t.HasPendingChanges)
-									{
-										t.Commit();
-									}
-								}
-								diagram.Invalidate(true);
-							}
+							changeCallback(docData);
 						}
 					}
 					finally
@@ -253,7 +283,7 @@ namespace Northface.Tools.ORM.Shell
 				}
 			} while (fetched != 0);
 		}
-		#endregion // Base overrides
+		#endregion Change Notification Functions
 		#region Accessor properties
 		/// <summary>
 		/// Object Type Shape option

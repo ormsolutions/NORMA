@@ -42,7 +42,7 @@ namespace Northface.Tools.ORM.Shell
 	/// The class to create the ORM Designer category in the tools/options/environment/fonts and colors page
 	/// </summary>
 	[Guid("C5AA80F8-F730-4809-AAB1-8D925E36F9F5")]
-	public partial class ORMDesignerFontsAndColors : IVsFontAndColorDefaultsProvider, IVsFontAndColorDefaults
+	public partial class ORMDesignerFontsAndColors : IVsFontAndColorDefaultsProvider, IVsFontAndColorDefaults, IVsFontAndColorEvents
 	{
 		#region Constant definitions
 		/// <summary>
@@ -421,10 +421,10 @@ namespace Northface.Tools.ORM.Shell
 				return ColorTranslator.FromWin32((int)colorValue);
 			}
 		}
-		// UNDONE: Need to attach IVsFontAndColor events to make the cache reliable
 		private ColorItem[] myColors;
 		private LOGFONTW myLogFont = new LOGFONTW();
 		private FontInfo myFontInfo = new FontInfo();
+		private bool mySettingsChangePending = false; // Set to true on events, no effect until OnApply fires
 		/// <summary>
 		/// Retrieve font information. A new Font object is generated
 		/// on each call and must be disposed of properly by the caller.
@@ -472,6 +472,15 @@ namespace Northface.Tools.ORM.Shell
 			if (myColors == null)
 			{
 				FillCache();
+			}
+		}
+		private void ClearCache()
+		{
+			if (myColors != null)
+			{
+				myColors = null;
+				myLogFont = new LOGFONTW();
+				myFontInfo = new FontInfo();
 			}
 		}
 		private void FillCache()
@@ -694,5 +703,109 @@ namespace Northface.Tools.ORM.Shell
 			return GetPriority(out pPriority);
 		}
 		#endregion // IVsFontAndColorDefaults Implementation
+		#region IVsFontAndColorEvents Implementation
+		private void OnChange(ref Guid rguidCategory)
+		{
+			if (rguidCategory == FontAndColorCategory)
+			{
+				mySettingsChangePending = true;
+			}
+		}
+		/// <summary>
+		/// Implements IVsFontAndColorEvents.OnApply
+		/// </summary>
+		protected int OnApply()
+		{
+			// This is a really unfortunate ommission on the
+			// part of VS because there is an OnApply, but no
+			// OnCancel. All of the new information is provided
+			// in the On*Changed events, but we can't use it
+			// because we don't no when to toss it. Therefore,
+			// we have to go all the way back and reset all
+			// values on any change.
+			// We don't even know if mySettingsChangePending
+			// was set by a previously canceled foray into
+			// the font and color settings!
+			if (mySettingsChangePending)
+			{
+				mySettingsChangePending = false;
+				ClearCache();
+				OptionsPage.NotifySettingsChange(myServiceProvider, ChangeDocumentFontAndColors);
+			}
+			return NativeMethods.S_OK;
+		}
+		int IVsFontAndColorEvents.OnApply()
+		{
+			return OnApply();
+		}
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		internal static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
+		/// <summary>
+		/// Callback function for modifying a document when font
+		/// and color changes are applied.
+		/// </summary>
+		/// <param name="docData">Currently running docdata</param>
+		protected static void ChangeDocumentFontAndColors(ORMDesignerDocData docData)
+		{
+			foreach (ORMDesignerDocView docView in docData.DocViews)
+			{
+				// UNDONE: This doesn't actually do anything right now. It triggers
+				// RefreshResources on all of the loaded style sets, but this does
+				// not re-retrieve the resources. The FCF_MUSTRESTART flags can be
+				// removed when we find a way to actually trigger a change here.
+				// 0x15 == WM_SYSCOLORCHANGE
+				SendMessage(docView.CurrentDesigner.DiagramClientView.Handle, 0x15, 0, 0);
+			}
+		}
+		/// <summary>
+		/// Implements IVsFontAndColorEvents.OnFontChanged
+		/// </summary>
+		protected int OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT, uint HFONT)
+		{
+			OnChange(ref rguidCategory);
+			return NativeMethods.S_OK;
+		}
+		int IVsFontAndColorEvents.OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT, uint HFONT)
+		{
+			return OnFontChanged(ref rguidCategory, pInfo, pLOGFONT, HFONT);
+		}
+		/// <summary>
+		/// Implements IVsFontAndColorEvents.OnItemChanged
+		/// </summary>
+		protected int OnItemChanged(ref Guid rguidCategory, string szItem, int iItem, ColorableItemInfo[] pInfo, uint crLiteralForeground, uint crLiteralBackground)
+		{
+			OnChange(ref rguidCategory);
+			return NativeMethods.S_OK;
+		}
+		int IVsFontAndColorEvents.OnItemChanged(ref Guid rguidCategory, string szItem, int iItem, ColorableItemInfo[] pInfo, uint crLiteralForeground, uint crLiteralBackground)
+		{
+			OnChange(ref rguidCategory);
+			return OnItemChanged(ref rguidCategory, szItem, iItem, pInfo, crLiteralForeground, crLiteralBackground);
+		}
+		/// <summary>
+		/// Implements IVsFontAndColorEvents.OnReset
+		/// </summary>
+		protected int OnReset(ref Guid rguidCategory)
+		{
+			OnChange(ref rguidCategory);
+			return NativeMethods.S_OK;
+		}
+		int IVsFontAndColorEvents.OnReset(ref Guid rguidCategory)
+		{
+			return OnReset(ref rguidCategory);
+		}
+		/// <summary>
+		/// Implements IVsFontAndColorEvents.OnResetToBaseCategory
+		/// </summary>
+		protected int OnResetToBaseCategory(ref Guid rguidCategory)
+		{
+			OnChange(ref rguidCategory);
+			return NativeMethods.S_OK;
+		}
+		int IVsFontAndColorEvents.OnResetToBaseCategory(ref Guid rguidCategory)
+		{
+			return OnResetToBaseCategory(ref rguidCategory);
+		}
+		#endregion // IVsFontAndColorEvents Implementation
 	}
 }
