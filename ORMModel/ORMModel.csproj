@@ -13,6 +13,7 @@
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <AssemblyOriginatorKeyMode>File</AssemblyOriginatorKeyMode>
     <ApplicationIcon>Resources\ORM.ico</ApplicationIcon>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -250,8 +251,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup Condition="">
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>C:\My Documents\Visual Studio\Projects\orm2\trunk\install.bat</PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)install.bat" "$(SolutionDir)" "$(DevEnvDir)..\..\"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORMModel", "ORMModel\ORMModel.csproj", "{888816BF-5497-49F9-8353-C8EF30CB9226}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9331A5F9-FC90-43F0-84C8-4A13115E9357} = {9331A5F9-FC90-43F0-84C8-4A13115E9357}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SatDll", "ORMModelSatDll\SatDll.vcproj", "{9331A5F9-FC90-43F0-84C8-4A13115E9357}"
 EndProject
