@@ -30,7 +30,9 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Retrieve the model element associated with this item.
 		/// The retrieved item should have a shape associated with
-		/// it that can be selected on an ORM diagram
+		/// it that can be selected on an ORM diagram. If a shape is
+		/// not available, then aggregating parent chain is used to
+		/// find a shape that is available.
 		/// </summary>
 		ModelElement[] GetRepresentedElements();
 	}

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Diagnostics;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
@@ -206,7 +207,7 @@ namespace Northface.Tools.ORM.Shell
 				}
 				// UNDONE: Move navigation code from here down into 
 				// docdata and docview classes so we can use it elsewhere
-				if (element != null)
+				while (element != null)
 				{
 					// UNDONE: We should potentially be creating a shape
 					// so we can jump to any error
@@ -219,7 +220,32 @@ namespace Northface.Tools.ORM.Shell
 							bool retVal = elementLocator.NavigateTo(Guid.Empty, shape);
 							if (retVal)
 							{
+								ModelError error;
+								IModelErrorActivation activator;
+								if (null != (error = locator as ModelError) &
+									null != (activator = shape as IModelErrorActivation))
+								{
+									activator.ActivateModelError(error);
+								}
 								return true;
+							}
+						}
+					}
+					ModelElement nextElement = element;
+					element = null;
+
+					// If we could not select the current element, then go up the aggregation chain
+					foreach (MetaRoleInfo role in nextElement.MetaClass.AllMetaRolesPlayed)
+					{
+						MetaRoleInfo oppositeRole = role.OppositeMetaRole;
+						if (oppositeRole.IsAggregate)
+						{
+							IList parents = nextElement.GetCounterpartRolePlayers(role, oppositeRole);
+							if (parents.Count > 0)
+							{
+								Debug.Assert(parents.Count == 1); // The aggregating side of a relationship should have multiplicity==1
+								element = (ModelElement)parents[0];
+								break;
 							}
 						}
 					}

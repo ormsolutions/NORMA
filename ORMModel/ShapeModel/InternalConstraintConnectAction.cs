@@ -478,23 +478,11 @@ namespace Northface.Tools.ORM.ShapeModel
 				Click(new DiagramPointEventArgs(emulateClickPoint.X, emulateClickPoint.Y, PointRelativeTo.Client, clientView));
 				MouseUp(mouseEventArgs);
 
-				IToolboxService toolbox = activeView.Toolbox;
-				if (toolbox != null)
-				{
-					// Select the connector action on the toolbox
-					Debug.Assert(toolbox.GetSelectedToolboxItem() == null); // Should be turned off during MouseActionDeactivated
-					ToolboxItemCollection items = toolbox.GetToolboxItems(ResourceStrings.ToolboxDefaultTabName);
-					string testName = ResourceStrings.ToolboxInternalUniquenessConstraintItemId;
-					foreach (ToolboxItem item in items)
-					{
-						ModelingToolboxItem modelingItem = item as ModelingToolboxItem;
-						if (modelingItem != null && modelingItem.Id == testName)
-						{
-							//toolbox.SetSelectedToolboxItem(item); // UNDONE: Crashes, not sure why
-							break;
-						}
-					}
-				}
+				// An extra move lets us chain when the mouse is not on the design surface,
+				// such as when we are being activated via the task list.
+				MouseMove(mouseEventArgs);
+
+				ORMDiagram.SelectToolboxItem(activeView, ResourceStrings.ToolboxInternalUniquenessConstraintItemId);
 			}
 		}
 		#endregion // InternalUniquenessConstraintConnectAction specific

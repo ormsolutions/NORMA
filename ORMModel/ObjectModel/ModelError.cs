@@ -56,6 +56,22 @@ namespace Northface.Tools.ORM.ObjectModel
 		void ValidateErrors(INotifyElementAdded notifyAdded);
 	}
 	#endregion // IModelErrorOwner interface
+	#region IModelErrorActivation interface
+	/// <summary>
+	/// Interface to implement on a shape element
+	/// to support custom actions when an element is
+	/// double-clicked in the error list.
+	/// </summary>
+	public interface IModelErrorActivation
+	{
+		/// <summary>
+		/// Method called after a shape has been selected
+		/// in the diagram
+		/// </summary>
+		/// <param name="error">The error being activated</param>
+		void ActivateModelError(ModelError error);
+	}
+	#endregion // IModelErrorActivation interface
 	#region ModelError class
 	public abstract partial class ModelError
 	{

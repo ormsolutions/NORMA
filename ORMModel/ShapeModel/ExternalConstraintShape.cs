@@ -8,7 +8,7 @@ using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.Shell;
 namespace Northface.Tools.ORM.ShapeModel
 {
-	public partial class ExternalConstraintShape
+	public partial class ExternalConstraintShape : IModelErrorActivation
 	{
 		#region Customize appearance
 		private static readonly StyleSetResourceId MandatoryDotBrush = new StyleSetResourceId("Northface", "ExternalConstraintMandatoryDotBrush");
@@ -204,5 +204,26 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Shape display update rules
+		#region IModelErrorActivation Implementation
+		/// <summary>
+		/// Implements IModelErrorActivation.ActivateModelError
+		/// </summary>
+		/// <param name="error">Activated model error</param>
+		protected void ActivateModelError(ModelError error)
+		{
+			if (error is TooFewRoleSequencesError)
+			{
+				ORMDiagram diagram = Diagram as ORMDiagram;
+				// UNDONE: We may want to do something different here, like
+				// making this the sticky object instead of directly chaining
+				// the mouse action.
+				diagram.ExternalConstraintConnectAction.ChainMouseAction(this, diagram.ActiveDiagramView.DiagramClientView);
+			}
+		}
+		void IModelErrorActivation.ActivateModelError(ModelError error)
+		{
+			ActivateModelError(error);
+		}
+		#endregion // IModelErrorActivation Implementation
 	}
 }
