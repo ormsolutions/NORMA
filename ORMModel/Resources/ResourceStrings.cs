@@ -234,6 +234,7 @@ namespace Northface.Tools.ORM
 		private const string ModelExceptionInternalConstraintInconsistentRoleOwners_Id = "ModelException.InternalConstraint.InconsistentRoleOwners";
 		private const string CommandDeleteFactTypeText_Id = "Command.DeleteFactType.Text";
 		private const string CommandDeleteObjectTypeText_Id = "Command.DeleteObjectType.Text";
+		private const string CommandDeleteConstraintText_Id = "Command.DeleteConstraint.Text";
 		private const string ModelErrorConstraintHasTooFewRoleSetsText_Id = "ModelError.Constraint.TooFewRoleSets.Text";
 		private const string ModelErrorConstraintHasTooManyRoleSetsText_Id = "ModelError.Constraint.TooManyRoleSets.Text";
 		private const string ModelErrorModelHasDuplicateConstraintNames_Id = "ModelError.Model.DuplicateConstraintNames.Text";
@@ -611,6 +612,16 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Diagram, CommandDeleteObjectTypeText_Id);
+			}
+		}
+		/// <summary>
+		/// This text appears in the edit menu when constraint types are selected in the diagram.
+		/// </summary>
+		public static string CommandDeleteConstraintText
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, CommandDeleteConstraintText_Id);
 			}
 		}
 		#endregion // Public accessor properties

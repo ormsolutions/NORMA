@@ -31,9 +31,13 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		DeleteFactType = 2,
 		/// <summary>
+		/// Deletion of one or more constraints is enabled
+		/// </summary>
+		DeleteConstraint = 4,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
-		Delete = DeleteObjectType | DeleteFactType,
+		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint,
 		// Update the multiselect command filter constants in ORMDesignerDocView
 		// when new commands are added
 	}
@@ -184,6 +188,10 @@ namespace Northface.Tools.ORM.Shell
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteObjectType;
 			}
+			else if (element is Constraint)
+			{
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint;
+			}
 			else if (element is ORMModel)
 			{
 				visibleCommands = ORMDesignerCommands.Delete;
@@ -227,6 +235,9 @@ namespace Northface.Tools.ORM.Shell
 					break;
 				case ORMDesignerCommands.DeleteFactType:
 					commandText = ResourceStrings.CommandDeleteFactTypeText;
+					break;
+				case ORMDesignerCommands.DeleteConstraint:
+					commandText = ResourceStrings.CommandDeleteConstraintText;
 					break;
 				default:
 					commandText = null;
