@@ -62,7 +62,20 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>Formatted string</returns>
 		public string GenerateValueTypeName(string entityName)
 		{
-			return GenerateValueTypeName(entityName, this.FormatString);
+			return GenerateValueTypeName(entityName, this.FormatString, this.Name);
+		}
+
+		/// <summary>
+		/// Given an entity name, generate the value type
+		/// name that would correspond to the entity name for
+		/// this reference type.
+		/// </summary>
+		/// <param name="entityName">The name of the associated entity type</param>
+		/// <param name="formatString"></param>
+		/// <returns>Formatted string</returns>
+		public string GenerateValueTypeName(string entityName, string formatString)
+		{
+			return GenerateValueTypeName(entityName, formatString, this.Name);
 		}
 
 		/// <summary>
@@ -72,10 +85,11 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="entityName">The name of the associated entity type</param>
 		/// <param name="formatString">The format string to use to generate the name.</param>
+		/// <param name="referenceModeName">The reference Mode Name to use to generate the name.</param>
 		/// <returns>Formatted string</returns>
-		public string GenerateValueTypeName(string entityName, string formatString)
+		public string GenerateValueTypeName(string entityName, string formatString, string referenceModeName)
 		{
-			return string.Format(CultureInfo.InvariantCulture, formatString, entityName, this.Name);
+			return string.Format(CultureInfo.InvariantCulture, formatString, entityName, referenceModeName);
 		}
 
 		/// <summary>
@@ -335,6 +349,32 @@ namespace Northface.Tools.ORM.ObjectModel
 
 			return retVal;
 		}
+
+		/// <summary>
+		/// Given the Entity and the the value type created the ref mode name
+		/// </summary>
+		/// <param name="valueTypeName">The name of the valuetype attached
+		/// to the preferred identifier role.</param>
+		/// <param name="entityTypeName">The name of the entity type.</param>
+		/// <param name="formatString">Use this format string when finding the name.</param>
+		/// <param name="referenceModeName">Use this name when finding the name.</param>
+		/// <param name="model">The model that owns the reference modes</param>
+		/// <returns>A ReferenceMode instance, or null</returns>
+		public static ReferenceMode FindReferenceModeFromEnitityNameAndValueName(string valueTypeName, string entityTypeName, string formatString, string referenceModeName, string oldReferenceModeName, ORMModel model)
+		{
+			ReferenceMode retVal = null;
+			foreach (ReferenceMode mode in model.ReferenceModeCollection)
+			{
+				if (mode.Name == referenceModeName && valueTypeName == mode.GenerateValueTypeName(entityTypeName, formatString, oldReferenceModeName))
+				{
+					retVal = mode;
+					break;
+				}
+			}
+
+			return retVal;
+		}
+
 		/// <summary>
 		/// Looks at all Reference modes in the model and returns the one with the gien format string
 		/// </summary>
@@ -361,7 +401,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="model"></param>
 		/// <returns></returns>
 		[CLSCompliant(false)]
-		public static IEnumerable<ObjectType> FindObjectUsingReferenceModes(ReferenceMode mode, ORMModel model)
+		public static IEnumerable<ObjectType> FindObjectUsingReferenceModes(ReferenceMode mode, string formatString, ORMModel model)
 		{
 			IList links = model.Store.ElementDirectory.GetElements(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
 			foreach (EntityTypeHasPreferredIdentifier link in links)
@@ -369,7 +409,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				ObjectType entity = link.PreferredIdentifierFor;
 				if (object.ReferenceEquals(model, entity.Model))
 				{
-					if (object.ReferenceEquals(entity.GetReferenceMode(), mode))
+					if (object.ReferenceEquals(entity.GetReferenceMode(formatString), mode))
 					{
 						yield return entity;
 					}
@@ -382,10 +422,11 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="mode"></param>
 		/// <param name="formatString"></param>
+		/// <param name="referenceModeName"></param>
 		/// <param name="model"></param>
 		/// <returns></returns>
 		[CLSCompliant(false)]
-		public static IEnumerable<ObjectType> FindObjectUsingReferenceModes(ReferenceMode mode, string formatString, ORMModel model)
+		public static IEnumerable<ObjectType> FindObjectUsingReferenceModes(ReferenceMode mode, string formatString, string oldReferenceModeName, ORMModel model)
 		{
 			IList links = model.Store.ElementDirectory.GetElements(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
 			foreach (EntityTypeHasPreferredIdentifier link in links)
@@ -393,7 +434,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				ObjectType entity = link.PreferredIdentifierFor;
 				if (object.ReferenceEquals(model, entity.Model))
 				{
-					if (object.ReferenceEquals(entity.GetReferenceMode(formatString), mode))
+					if (object.ReferenceEquals(entity.GetReferenceMode(formatString, mode.Name, oldReferenceModeName), mode))
 					{
 						yield return entity;
 					}
@@ -663,6 +704,21 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 					}
 				}
+				else if (attributeId == NameMetaAttributeGuid)
+				{
+					string newRefModeName = (string)e.NewValue;
+					if (newRefModeName.Length > 0)
+					{
+						string oldRefModeName = (string)e.OldValue;
+
+						IEnumerable<ObjectType> objects = FindObjectUsingReferenceModes(mode, mode.FormatString, oldRefModeName, model);
+						foreach (ObjectType entity in objects)
+						{
+							string newName = mode.GenerateValueTypeName(entity.Name, mode.FormatString);
+							entity.RenameReferenceMode(newName);
+						}
+					}
+				}
 			}
 		}
 		#endregion // CustomReferenceModeChangeRule class
@@ -740,7 +796,7 @@ namespace Northface.Tools.ORM.ObjectModel
 
 					foreach (ReferenceMode mode in kind.ReferenceModeCollection)
 					{
-						IEnumerable<ObjectType> objects = ReferenceMode.FindObjectUsingReferenceModes(mode, oldFormatString, model);
+						IEnumerable<ObjectType> objects = ReferenceMode.FindObjectUsingReferenceModes(mode, oldFormatString, mode.Name, model);
 						foreach (ObjectType entity in objects)
 						{
 							string newName = mode.GenerateValueTypeName(entity.Name);
@@ -816,7 +872,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 						customReferenceMode.CustomFormatString = "";
 
-						IEnumerable<ObjectType> objects = ReferenceMode.FindObjectUsingReferenceModes(customReferenceMode, oldFormatString, model);
+						IEnumerable<ObjectType> objects = ReferenceMode.FindObjectUsingReferenceModes(customReferenceMode, oldFormatString, customReferenceMode.Name, model);
 						foreach (ObjectType entity in objects)
 						{
 							string newName = customReferenceMode.GenerateValueTypeName(entity.Name);

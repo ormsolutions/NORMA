@@ -69,17 +69,20 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (prefConstraint != null)
 				{
 					ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
-					Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueType.Name, this.Name, this.Model);
-
-					if (valueType.IsValueType)
+					if (valueType != null)
 					{
-						if (refMode == null)
+						Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueType.Name, this.Name, this.Model);
+
+						if (valueType.IsValueType)
 						{
-							return valueType.Name;
-						}
-						else
-						{
-							return refMode.Name;
+							if (refMode == null)
+							{
+								return valueType.Name;
+							}
+							else
+							{
+								return refMode.Name;
+							}
 						}
 					}
 				}
@@ -364,6 +367,27 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
 				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueType.Name, this.Name, formatString, this.Model);
+				return refMode;
+			}
+			return null;
+
+		}
+
+
+		/// <summary>
+		/// Returns the Reference Mode for the given object if one exists
+		/// </summary>
+		/// <returns></returns>
+		public ReferenceMode GetReferenceMode(string formatString, string referenceModeName, string oldReferenceModeName)
+		{
+			InternalConstraint prefConstraint = this.PreferredIdentifier as InternalConstraint;
+
+			//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
+			// player is a value type then return the refence mode name.
+			if (prefConstraint != null)
+			{
+				ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
+				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueType.Name, this.Name, formatString, referenceModeName, oldReferenceModeName, this.Model);
 				return refMode;
 			}
 			return null;
