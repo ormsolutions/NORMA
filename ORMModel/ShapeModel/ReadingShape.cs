@@ -14,7 +14,7 @@ using System.Drawing;
 
 namespace Northface.Tools.ORM.ShapeModel
 {
-	public partial class ReadingShape
+	public partial class ReadingShape : IModelErrorActivation
 	{
 		private static AutoSizeTextField myTextShapeField;
 		private static Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
@@ -401,5 +401,25 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion
+
+		#region IModelErrorActivation Implementation
+		/// <summary>
+		/// Implements IModelErrorActivation.ActivateModelError. Forwards errors to
+		/// associated fact type
+		/// </summary>
+		/// <param name="error">Activated model error</param>
+		protected void ActivateModelError(ModelError error)
+		{
+			IModelErrorActivation parent = ParentShape as IModelErrorActivation;
+			if (parent != null)
+			{
+				parent.ActivateModelError(error);
+			}
+		}
+		void IModelErrorActivation.ActivateModelError(ModelError error)
+		{
+			ActivateModelError(error);
+		}
+		#endregion // IModelErrorActivation Implementation
 	}
 }

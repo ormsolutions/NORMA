@@ -327,6 +327,15 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			// Track ObjectType changes
 			classInfo = dataDirectory.FindMetaClass(ObjectType.MetaClassGuid);
 			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ObjectTypeAttributeChangedEvent));
+
+			// ReadingOrderHasRole changes
+			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ReadingOrderHasRoleAddedEvent));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ReadingOrderHasRoleRemovedEvent));
+
+			// FactTypeHasReadingOrder changes
+			classInfo = dataDirectory.FindMetaRelationship(FactTypeHasReadingOrder.MetaRelationshipGuid);
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(FactTypeHasReadingOrderRemovedEvent));
 		}
 
 		/// <summary>
@@ -362,6 +371,15 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			// Track ObjectType changes
 			classInfo = dataDirectory.FindMetaClass(ObjectType.MetaClassGuid);
 			eventDirectory.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(ObjectTypeAttributeChangedEvent));
+
+			// ReadingOrderHasRole changes
+			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ReadingOrderHasRoleAddedEvent));
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(ReadingOrderHasRoleRemovedEvent));
+
+			// FactTypeHasReadingOrder changes
+			classInfo = dataDirectory.FindMetaRelationship(FactTypeHasReadingOrder.MetaRelationshipGuid);
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(FactTypeHasReadingOrderRemovedEvent));
 		}
 
 		#endregion
@@ -405,7 +423,9 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				index = ord.ReadingCollection.IndexOf(read);
 			}
 
-			if(index > -1)
+			//test if it already exists so that if the list was built from scratch because
+			//of roles being added we don't put the item in the list twice
+			if(index > -1 && (IndexOfReadingEntry(read) < 0))
 			{
 				myReadingList.Insert(index, new ReadingEntry(read, ord));
 				myBranch.ItemAdded(index);
@@ -463,7 +483,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		#endregion
 
 		#region ReadingOrder Event Handlers
-		//handle model events related to the ReadingOrder being removed in order to
+		//handle model events related to the ReadingOrder or its Roles being removed in order to
 		//keep the editor window in sync with what is in the model.
 
 		private void ReadingOrderLinkRemovedEvent(object sender, ElementRemovedEventArgs e)
@@ -481,6 +501,32 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			if (!fact.IsRemoved)
 			{
 				RemoveReadingOrderRelatedEntries(ord);
+			}
+		}
+
+		private void ReadingOrderHasRoleAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
+			Role role = link.RoleCollection;
+			FactType roleFact = role.FactType;
+			if (myFact != null && object.ReferenceEquals(myFact, roleFact))
+			{
+				ReloadData();
+			}
+		}
+
+		private void ReadingOrderHasRoleRemovedEvent(object sender, ElementRemovedEventArgs e)
+		{
+			ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
+			Role role = link.RoleCollection;
+			ReadingOrder ord = link.ReadingOrder;
+			FactType roleFact = role.FactType;
+			if (myFact != null && !myFact.IsRemoved)
+			{
+				if (myFact.ReadingOrderCollection.Contains(ord))
+				{
+					ReloadData();
+				}
 			}
 		}
 
@@ -553,7 +599,27 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		}
 		#endregion
 
+		#region FactTypeHasReadingOrder Event Handlers
+		private void FactTypeHasReadingOrderRemovedEvent(object sender, ElementRemovedEventArgs e)
+		{
+			FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
+			FactType fact = link.FactType;
+			if (myFact != null && !fact.IsRemoved && object.ReferenceEquals(myFact, fact))
+			{
+				ReloadData();
+			}
+		}
+		#endregion
+
 		#region Helper methods
+
+		private void ReloadData()
+		{
+			// might be overkill but role removal changes permutations
+			PopulateControl();
+			tvwReadingOrder.SelectedNode = null;
+			tvwReadingOrder.SelectedNode = tvwReadingOrder.Nodes[0];
+		}
 
 		/// <summary>
 		/// Tests if any custom nodes that have values based on the changed ObjectType
@@ -561,7 +627,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		/// to handle child nodes. It returns true if the tree or one of its children
 		/// had to update its text because it was dependent on the object for its value.
 		/// </summary>
-		private bool SetTextOnTreeNodes(ObjectType changedObjectType, TreeNodeCollection nodes)
+		private static bool SetTextOnTreeNodes(ObjectType changedObjectType, TreeNodeCollection nodes)
 		{
 			bool wasImpacted = false;
 			BaseReadingTreeNode node;
@@ -584,7 +650,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			return wasImpacted;
 		}
 
-		private bool SetTextOnTreeNodes(Role changedRole, TreeNodeCollection nodes)
+		private static bool SetTextOnTreeNodes(Role changedRole, TreeNodeCollection nodes)
 		{
 			bool wasImpacted = false;
 			BaseReadingTreeNode node;
@@ -791,7 +857,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			Reading myReading;
 			ReadingOrder myReadingOrder;
 			String myText;
-			int myRolePosition;
 
 			#region construction
 			protected ReadingEntry()
@@ -824,7 +889,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			private String GenerateDisplayText()
 			{
 				RoleMoveableCollection roleSeq = myReading.ReadingOrder.RoleCollection;
-				myRolePosition = 0;
 				String retval = regCountPlaces.Replace(myReading.Text, new MatchEvaluator(ReplacePlaceHolders));
 				return retval;
 			}
@@ -833,9 +897,11 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			{
 				string retval = null;
 				RoleMoveableCollection roles = myReading.ReadingOrder.RoleCollection;
-				if (myReading.ReadingOrder.RoleCollection.Count > myRolePosition)
+				string matchText = m.Value;
+				int rolePosition = int.Parse(matchText.Substring(1, matchText.Length - 2));
+				if (myReading.ReadingOrder.RoleCollection.Count > rolePosition)
 				{
-					ObjectType player = myReading.ReadingOrder.RoleCollection[myRolePosition].RolePlayer;
+					ObjectType player = myReading.ReadingOrder.RoleCollection[rolePosition].RolePlayer;
 					if (player != null)
 					{
 						retval = player.Name;
@@ -849,7 +915,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				{
 					retval = ResourceStrings.ModelReadingEditorMissingRolePlayerText;
 				}
-				++myRolePosition;
 				return retval;
 			}
 
@@ -880,7 +945,11 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 
 			public bool Contains(Role role)
 			{
-				return myReadingOrder.RoleCollection.Contains(role);
+				if (myReading != null)
+				{
+					return myReadingOrder.RoleCollection.Contains(role);
+				}
+				return false;
 			}
 		}
 		#endregion

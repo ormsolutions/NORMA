@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
-	public partial class Reading
+	public partial class Reading : IModelErrorOwner
 	{
 		private static Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
 
@@ -157,20 +157,97 @@ namespace Northface.Tools.ORM.ObjectModel
 
 			return retval;
 		}
+
+		/// <summary>
+		/// Determines how many role placeholders are indicated in the indicated text
+		/// and returns the count.
+		/// </summary>
+		public static int PlaceHolderCount(string textText)
+		{
+			return regCountPlaces.Matches(textText).Count;
+		}
 		#endregion
 
-		#region ReadingIsPrimaryChanged rule class
+		#region rule classes and helpers
+
+		/// <summary>
+		/// Compares number of roles in ReadingOrder ot the place holders in
+		/// the reading and then creates or removes errors as needed.
+		/// </summary>
+		private void ValidateRoleCountError(INotifyElementAdded notifyAdded)
+		{
+			if (!IsRemoved)
+			{
+				bool removeTooFew = false;
+				bool removeTooMany = false;
+				TooFewReadingRolesError tooFewError;
+				TooManyReadingRolesError tooManyError;
+				ORMModel theModel = ReadingOrder.FactType.Model;
+				Store store = Store;
+				int numRoles = ReadingOrder.RoleCollection.Count;
+				int numPlaces = Reading.PlaceHolderCount(Text);
+
+				if (numRoles == numPlaces)
+				{
+					removeTooFew = true;
+					removeTooMany = true;
+				}
+				//too few roles
+				else if (numRoles < numPlaces)
+				{
+					removeTooMany = true;
+					if (null == TooFewRolesError)
+					{
+						tooFewError = TooFewReadingRolesError.CreateTooFewReadingRolesError(store);
+						tooFewError.Model = theModel;
+						tooFewError.Reading = this;
+						tooFewError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(tooFewError, true);
+						}
+					}
+				}
+				//too many roles
+				else
+				{
+					removeTooFew = true;
+					if (null == TooManyRolesError)
+					{
+						tooManyError = TooManyReadingRolesError.CreateTooManyReadingRolesError(store);
+						tooManyError.Model = theModel;
+						tooManyError.Reading = this;
+						tooManyError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(tooManyError, true);
+						}
+					}
+				}
+
+				if (removeTooFew && null != (tooFewError = TooFewRolesError))
+				{
+					tooFewError.Remove();
+				}
+				if (removeTooMany && null != (tooManyError = TooManyRolesError))
+				{
+					tooManyError.Remove();
+				}
+			}
+		}
+
+		#region ReadingPropertiesChanged rule class
 		/// <summary>
 		/// Handles the resetting the current primary reading when a new one is selected.
 		/// Also rejects trying to change the current primary reading's IsPrimary to false.
+		/// Validates that the reading text has the necessary number of placeholders.
 		/// </summary>
 		[RuleOn(typeof(Reading))]
-		private class ReadingIsPrimaryChanged : ChangeRule
+		private class ReadingPropertiesChanged : ChangeRule
 		{
 			//so we know when not to run code when items are being set to false
 			bool mySettingNewPrimary = false;
 
-			//TODO:test
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
 				Guid attributeGuid = e.MetaAttribute.Id;
@@ -211,17 +288,185 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					string newVal = e.NewValue as string;
 					int roleCount = changedReading.ReadingOrder.RoleCollection.Count;
+					changedReading.ValidateRoleCountError(null);
 
-					//if text is set before roles this code will fail
-					Debug.Assert(roleCount > 0);
-
-					if (!Reading.IsValidReadingText(newVal, roleCount))
+					TooFewReadingRolesError tooFew;
+					TooManyReadingRolesError tooMany;
+					if (null != (tooFew = changedReading.TooFewRolesError))
 					{
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionReadingTextChangeInvalid);
+						tooFew.GenerateErrorText();
+					}
+					if (null != (tooMany = changedReading.TooManyRolesError))
+					{
+						tooMany.GenerateErrorText();
 					}
 				}
 			}
 		}
+		#endregion
+
+		#region ReadingOrderHasRoleRemoved rule class
+		[RuleOn(typeof(ReadingOrderHasRole))]
+		private class ReadingOrderHasRoleRemoved : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
+				ReadingOrder ord = link.ReadingOrder;
+				if (!ord.IsRemoved)
+				{
+					ReadingMoveableCollection readings = ord.ReadingCollection;
+					foreach (Reading read in readings)
+					{
+						read.ValidateRoleCountError(null);
+					}
+				}
+			}
+		}
+		#endregion
+
 		#endregion ReadingIsPrimaryChanged
+
+		#region IModelErrorOwner implementation
+
+		/// <summary>
+		/// Returns the errors associated with the Reading.
+		/// </summary>
+		[CLSCompliant(false)]
+		protected IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				TooFewReadingRolesError tooFew;
+				TooManyReadingRolesError tooMany;
+				if (null != (tooFew = TooFewRolesError))
+				{
+					yield return tooFew;
+				}
+				if (null != (tooMany = TooManyRolesError))
+				{
+					yield return tooMany;
+				}
+			}
+		}
+
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// </summary>
+		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateRoleCountError(notifyAdded);
+		}
+
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+
+		#endregion
 	}
+
+	#region class TooFewRolesError
+	public partial class TooFewReadingRolesError : IRepresentModelElements
+	{
+		#region overrides
+
+		/// <summary>
+		/// Creates the error text.
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			string newText = string.Format(ResourceStrings.ModelErrorReadingTooFewRolesMessage, Reading.Text, Model.Name);
+			if(Name != newText)
+			{
+				Name = newText;
+			}
+		}
+
+		/// <summary>
+		/// Sets regernate to ModelNameChange | OwnerNameChange
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get 
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+
+		#endregion
+		#region IRepresentModelElements Members
+		/// <summary>
+		/// The reading the error belongs to
+		/// </summary>
+		protected ModelElement[] GetRepresentedEelements()
+		{
+			return new ModelElement[] { this.Reading };
+		}
+
+		ModelElement[]  IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedEelements();
+		}
+
+		#endregion
+
+	}
+	#endregion
+
+	#region class TooManyRolesError
+	public partial class TooManyReadingRolesError : IRepresentModelElements
+	{
+		#region overrides
+
+		/// <summary>
+		/// Creates the error text.
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			string newText = string.Format(ResourceStrings.ModelErrorReadingTooManyRolesMessage, Reading.Text, Model.Name);
+			if (Name != newText)
+			{
+				Name = newText;
+			}
+		}
+
+		/// <summary>
+		/// Sets regernate to ModelNameChange | OwnerNameChange
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+
+		#endregion
+
+		#region IRepresentModelElements Members
+		/// <summary>
+		/// The Reading the error belongs too.
+		/// </summary>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.Reading };
+		}
+
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+
+		#endregion
+	}
+	#endregion
 }

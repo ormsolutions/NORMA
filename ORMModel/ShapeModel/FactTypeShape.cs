@@ -2608,4 +2608,38 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 	}
 	#endregion // ObjectifiedFactTypeNameShape class
+	public partial class FactTypeShape : IModelErrorActivation
+	{
+		#region IModelErrorActivation Implementation
+		/// <summary>
+		/// Implements IModelErrorActivation.ActivateModelError
+		/// </summary>
+		/// <param name="error">Activated model error</param>
+		protected void ActivateModelError(ModelError error)
+		{
+			TooFewReadingRolesError tooFew;
+			TooManyReadingRolesError tooMany;
+			Reading reading = null;
+			if (null != (tooFew = error as TooFewReadingRolesError))
+			{
+				reading = tooFew.Reading;
+			}
+			else if (null != (tooMany = error as TooManyReadingRolesError))
+			{
+				reading = tooMany.Reading;
+			}
+			if (reading != null)
+			{
+				//UNDONE: add code to have it select it in the tree and highlight the correct row and start the edit
+				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
+				window.Show();
+
+			}
+		}
+		void IModelErrorActivation.ActivateModelError(ModelError error)
+		{
+			ActivateModelError(error);
+		}
+		#endregion // IModelErrorActivation Implementation
+	}
 }

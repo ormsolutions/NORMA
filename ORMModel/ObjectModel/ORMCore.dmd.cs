@@ -8052,6 +8052,98 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region TooManyRolesError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError TooManyRolesError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region TooFewRolesError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError TooFewRolesError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region Collection Classes for Reading
 	/// <summary>
@@ -9409,6 +9501,242 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError")]
+	public  partial class TooFewReadingRolesError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region TooFewReadingRolesError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "55d96499-dc85-4a2a-b999-5a34afa800e5";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError.MetaClassGuidString);
+		#endregion
+
+		#region Reading's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.Reading Reading
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.Reading)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region TooFewReadingRolesError's Generated Constructor Code
+	public  partial class TooFewReadingRolesError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public TooFewReadingRolesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TooFewReadingRolesError CreateTooFewReadingRolesError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (TooFewReadingRolesError)store.ElementFactory.CreateElement(typeof(TooFewReadingRolesError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TooFewReadingRolesError CreateAndInitializeTooFewReadingRolesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (TooFewReadingRolesError)store.ElementFactory.CreateElement(typeof(TooFewReadingRolesError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for TooFewReadingRolesError
+	/// <summary>
+	/// TooFewReadingRolesError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError))]
+	public sealed class TooFewReadingRolesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public TooFewReadingRolesErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError")]
+	public  partial class TooManyReadingRolesError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region TooManyReadingRolesError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "9422c67e-b405-4897-bb0c-bcce18d98537";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError.MetaClassGuidString);
+		#endregion
+
+		#region Reading's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.Reading Reading
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.Reading)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region TooManyReadingRolesError's Generated Constructor Code
+	public  partial class TooManyReadingRolesError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public TooManyReadingRolesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TooManyReadingRolesError CreateTooManyReadingRolesError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (TooManyReadingRolesError)store.ElementFactory.CreateElement(typeof(TooManyReadingRolesError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TooManyReadingRolesError CreateAndInitializeTooManyReadingRolesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (TooManyReadingRolesError)store.ElementFactory.CreateElement(typeof(TooManyReadingRolesError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for TooManyReadingRolesError
+	/// <summary>
+	/// TooManyReadingRolesError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError))]
+	public sealed class TooManyReadingRolesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public TooManyReadingRolesErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError(store, bag);
 		}
 	}
 	#endregion
@@ -16096,6 +16424,230 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError")]
+	public  partial class ReadingHasTooManyRolesError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ReadingHasTooManyRolesError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "c5e1a9c2-53c4-4de9-a6ef-b9205463e481";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.MetaRelationshipGuidString);
+		#endregion
+
+		#region TooManyRolesError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String TooManyRolesErrorMetaRoleGuidString = "cda3f679-4425-4e56-92b1-b5eecc6fc459";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid TooManyRolesErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesError")]
+		public  Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError TooManyRolesError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError)this.GetRolePlayer(TooManyRolesErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(TooManyRolesErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region Reading's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ReadingMetaRoleGuidString = "45b44737-503c-4264-8062-5a23bb99e1a3";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ReadingMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.Reading")]
+		public  Northface.Tools.ORM.ObjectModel.Reading Reading
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.Reading)this.GetRolePlayer(ReadingMetaRoleGuid); }
+			set { this.SetRolePlayer(ReadingMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ReadingHasTooManyRolesError's Generated Constructor Code
+	public  partial class ReadingHasTooManyRolesError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingHasTooManyRolesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingHasTooManyRolesError CreateReadingHasTooManyRolesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ReadingHasTooManyRolesError)store.ElementFactory.CreateElementLink(typeof(ReadingHasTooManyRolesError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingHasTooManyRolesError CreateAndInitializeReadingHasTooManyRolesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ReadingHasTooManyRolesError)store.ElementFactory.CreateElementLink(typeof(ReadingHasTooManyRolesError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ReadingHasTooManyRolesError
+	/// <summary>
+	/// ReadingHasTooManyRolesError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError))]
+	public sealed class ReadingHasTooManyRolesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingHasTooManyRolesErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError")]
+	public  partial class ReadingHasTooFewRolesError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ReadingHasTooFewRolesError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "6eaa9466-7d37-4c73-a92d-3f96b5f06cf3";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.MetaRelationshipGuidString);
+		#endregion
+
+		#region TooFewRolesError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String TooFewRolesErrorMetaRoleGuidString = "b5991c3d-0013-46ab-9f17-9a3c70d69e57";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid TooFewRolesErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesError")]
+		public  Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError TooFewRolesError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError)this.GetRolePlayer(TooFewRolesErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(TooFewRolesErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region Reading's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ReadingMetaRoleGuidString = "60e3df7d-cfad-4cf6-9d9b-5569fa68e373";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ReadingMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.Reading")]
+		public  Northface.Tools.ORM.ObjectModel.Reading Reading
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.Reading)this.GetRolePlayer(ReadingMetaRoleGuid); }
+			set { this.SetRolePlayer(ReadingMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ReadingHasTooFewRolesError's Generated Constructor Code
+	public  partial class ReadingHasTooFewRolesError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingHasTooFewRolesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingHasTooFewRolesError CreateReadingHasTooFewRolesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ReadingHasTooFewRolesError)store.ElementFactory.CreateElementLink(typeof(ReadingHasTooFewRolesError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingHasTooFewRolesError CreateAndInitializeReadingHasTooFewRolesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ReadingHasTooFewRolesError)store.ElementFactory.CreateElementLink(typeof(ReadingHasTooFewRolesError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ReadingHasTooFewRolesError
+	/// <summary>
+	/// ReadingHasTooFewRolesError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError))]
+	public sealed class ReadingHasTooFewRolesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingHasTooFewRolesErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError(store, bag);
 		}
 	}
 	#endregion

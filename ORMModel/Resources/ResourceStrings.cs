@@ -321,6 +321,10 @@ namespace Northface.Tools.ORM
 		private const string ModelReadingEditorUnsupportedSelectionText_Id = "ModelReadingEditor.UnsupportedSelectionText";
 		private const string PackageOfficialName_Id = "Package.OfficialName";
 		private const string PackageProductDetails_Id = "Package.ProductDetails";
+		private const string ModelErrorReadingTooFewRolesMessage_Id = "ModelError.Reading.TooFewRoles.Message";
+		private const string ModelErrorReadingTooManyRolesMessage_Id = "ModelError.Reading.TooManyRoles.Message";
+		private const string ModelReadingRoleDeletedRoleText_Id = "Model.Reading.RoleDeletedText";
+
 		private const string ModelReferenceModeEditorAbbreviatedEntityTypeName_Id = "ModelReferenceModeEditor.AbbreviatedEntityTypeName";
 		private const string ModelReferenceModeEditorAbbreviatedReferenceModeName_Id = "ModelReferenceModeEditor.AbbreviatedReferenceModeName";
 		private const string ModelReferenceModeEditorAddCustomReferenceModeTransaction_Id = "ModelReferenceModeEditor.AddCustomReferenceModeTransaction";
@@ -1223,6 +1227,40 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Model, ModelReferenceModePickerFormatString_Id);
+			}
+		}
+
+		/// <summary>
+		/// Text displayed in the text of the TooFewRolesError
+		/// </summary>
+		public static string ModelErrorReadingTooFewRolesMessage
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelErrorReadingTooFewRolesMessage_Id);
+			}
+		}
+
+		/// <summary>
+		/// Text displayed in the text of the TooManyRolesError
+		/// </summary>
+		public static string ModelErrorReadingTooManyRolesMessage
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelErrorReadingTooManyRolesMessage_Id);
+			}
+		}
+
+		/// <summary>
+		/// Text used to replace a role place holder when the role is deleted
+		/// </summary>
+		/// <value></value>
+		public static string ModelReadingRoleDeletedRoleText
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingRoleDeletedRoleText_Id);
 			}
 		}
 		#endregion // Public accessor properties

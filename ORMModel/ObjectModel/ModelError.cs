@@ -96,6 +96,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static void AddToTaskProvider(ModelHasError errorLink)
 		{
 			ModelError error = errorLink.ErrorCollection;
+			if (error.IsRemoved)
+			{
+				return;
+			}
 			IORMToolTaskProvider provider = (error.Store as IORMToolServices).TaskProvider;
 			IORMToolTaskItem newTask = provider.CreateTask();
 			newTask.ElementLocator = error as IRepresentModelElements;

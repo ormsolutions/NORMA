@@ -92,7 +92,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-
 		#region PrimaryReading property and helpers
 		/// <summary>
 		/// An alternate means of setting and retrieving which reading is primary.
@@ -202,7 +201,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 
 		#endregion FactTypeReadingRoleRemoved rule class
-
 		#region ReadingOrderHasRoleRemoving rule class
 		/// <summary>
 		/// Handles the clean up of the readings that the role is involved in by replacing
@@ -211,8 +209,9 @@ namespace Northface.Tools.ORM.ObjectModel
 		[RuleOn(typeof(ReadingOrderHasRole))]
 		private class ReadingOrderHasRoleRemoving : RemovingRule
 		{
-			//TODO:test
-			public override void ElementRemoving(ElementRemovingEventArgs e)
+			//UNDONE:a role being removed creates the possibility of there being two ReadingOrders with the same Role sequences, they should be merged
+			
+			public override void  ElementRemoving(ElementRemovingEventArgs e)
 			{
 				ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
 				Role linkRole = link.RoleCollection;
@@ -231,26 +230,82 @@ namespace Northface.Tools.ORM.ObjectModel
 					// UNDONE: This could be done much cleaner with RegEx.Replace and a callback
 					ReadingMoveableCollection readings = linkReadingOrder.ReadingCollection;
 					int numReadings = readings.Count;
+					int roleCount = linkReadingOrder.RoleCollection.Count;
 					for (int iReading = 0; iReading < numReadings; ++iReading)
 					{
-						Reading linkReading = linkReadingOrder.ReadingCollection[iReading];
+						Reading linkReading = readings[iReading];
 
 						if (!linkReading.IsRemoving)
 						{
 							Debug.Assert(!linkReading.IsRemoved);
 							string text = linkReading.Text;
-							text = text.Replace("{" + pos.ToString() + "}", "{{deleted}}");
-							int roleCount = linkReading.ReadingOrder.RoleCollection.Count;
+							text = text.Replace("{" + pos.ToString() + "}", ResourceStrings.ModelReadingRoleDeletedRoleText);
 							for (int i = pos + 1; i < roleCount; ++i)
 							{
 								text = text.Replace(string.Concat("{", i.ToString(), "}"), string.Concat("{", (i - 1).ToString(), "}"));
 							}
 							linkReading.Text = text;
+							//UNDONE:add entry to task list service to let user know reading text might need some fixup
 						}
 					}
 				}
 			}
 		}
 		#endregion ReadingHasRoleRemoving
+		#region FactTypeHasRoleAddedRule
+		/// <summary>
+		/// Common place for code ot deal with roles that exist in a fact
+		/// but do not exist in the ReadingOrder objects that it contains.
+		/// This allows it to be used by both the rule and to be called
+		/// during post load model fixup.
+		/// </summary>
+		private static void ValidateReadingOrdersRoleCollection(FactType theFact, Role addedRole)
+		{
+			Debug.Assert(theFact.Store.TransactionManager.InTransaction);
+
+			ReadingOrderMoveableCollection readingOrders = theFact.ReadingOrderCollection;
+			foreach (ReadingOrder ord in readingOrders)
+			{
+				RoleMoveableCollection roles = ord.RoleCollection;
+				if (!roles.Contains(addedRole))
+				{
+					ord.RoleCollection.Add(addedRole);
+					ReadingMoveableCollection readings = ord.ReadingCollection;
+					foreach (Reading read in readings)
+					{
+						string readingText = read.Text;
+						string deletedText = ResourceStrings.ModelReadingRoleDeletedRoleText;
+						int pos = readingText.IndexOf(deletedText);
+						string newText;
+						if (pos < 0)
+						{
+							newText = String.Concat(readingText, "{", roles.Count - 1, "}");
+						}
+						else
+						{
+							newText = readingText.Replace(deletedText, string.Concat("{", roles.Count - 1, "}"));
+						}
+						//UNDONE:add entries to the task list service to let user know the reading might need some correction
+
+						read.Text = newText;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rule to detect when a Role is added to the FactType so that it
+		/// can also be added to the ReadingOrders and their Readings.
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasRole))]
+		private class FactTypeHasRoleAddedRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+				ValidateReadingOrdersRoleCollection(link.FactType, link.RoleCollection);
+			}
+		}
+		#endregion
 	}
 }
