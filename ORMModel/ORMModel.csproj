@@ -249,4 +249,9 @@
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <PropertyGroup Condition="">
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>C:\My Documents\Visual Studio\Projects\orm2\trunk\install.bat</PostBuildEvent>
+  </PropertyGroup>
 </Project>
