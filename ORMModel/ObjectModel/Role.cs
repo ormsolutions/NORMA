@@ -336,10 +336,60 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 						if (oldBroken)
 						{
-							// UNDONE: There is more than one uniqueness constraint on this
-							// role. Clean it up. Prefer the a double-wide constraint over
-							// a single-wide.
-							Debug.Assert(false); // This is an error condition that we should be able to recover from
+							// If there are multiple uniqueness constraints, then remove
+							// all but one. Prefer a single-role constraint to a double-role
+							// constraint and pretend that our old value is a many.
+							ConstraintRoleSetMoveableCollection roleSets = role.ConstraintRoleSetCollection;
+							int roleSetCount = roleSets.Count;
+							// Go backwards so we can remove constraints
+							Constraint keepCandidate = null;
+							int keepRoleCardinality = 0;
+							bool keepCandidateIsPreferred = false;
+							for (int i = roleSetCount - 1; i >= 0; --i) // The indices may change, go backwards
+							{
+								ConstraintRoleSet roleSet = roleSets[i];
+								Constraint constraint = roleSet.Constraint;
+								if (constraint.ConstraintType == ConstraintType.InternalUniqueness)
+								{
+									int currentCardinality = roleSet.RoleCollection.Count;
+									if (keepCandidate == null)
+									{
+										keepCandidate = constraint;
+										keepRoleCardinality = currentCardinality;
+										if (currentCardinality == 1)
+										{
+											keepCandidateIsPreferred = (constraint as InternalUniquenessConstraint).IsPreferred;
+										}
+									}
+									else if (currentCardinality < keepRoleCardinality)
+									{
+										keepRoleCardinality = currentCardinality;
+										keepCandidate.Remove();
+										keepCandidate = constraint;
+									}
+									else
+									{
+										// Keep a preferred over a non-preferred. Preferred
+										// constraints always have a single role.
+										if (!keepCandidateIsPreferred &&
+											currentCardinality == 1 &&
+											(constraint as InternalUniquenessConstraint).IsPreferred)
+										{
+											keepCandidate.Remove();
+											keepCandidate = constraint;
+											keepCandidateIsPreferred = true;
+										}
+										else
+										{
+											constraint.Remove();
+										}
+									}
+								}
+							}
+							if (keepRoleCardinality > 1)
+							{
+								oldOne = false;
+							}
 						}
 						if (oldOne ^ newOne)
 						{
