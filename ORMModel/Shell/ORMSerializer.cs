@@ -331,7 +331,7 @@ namespace Northface.Tools.ORM.Shell
 //			RulesSuspended = true;
 //			try
 //			{
-				XmlSerialization.DeserializeStore(myStore, stream, MajorVersion, MinorVersion, new XmlSerialization.UpgradeFileFormat(UpgradeFileFormat), new XmlSerialization.Deserialized(Deserialized));
+				XmlSerialization.DeserializeStore(myStore, stream, MajorVersion, MinorVersion, new XmlSerialization.UpgradeFileFormat(UpgradeFileFormat), null);
 //			}
 //			finally
 //			{
@@ -349,29 +349,6 @@ namespace Northface.Tools.ORM.Shell
 		{
 			SysDiag.Debug.Fail("Nothing to upgrade yet");
 			return false;
-		}
-		/// <summary>
-		/// Called when an element is deserialized
-		/// </summary>
-		/// <param name="modelElement">The newly deserialized element</param>
-		private void Deserialized(ModelElement modelElement)
-		{
-			if (modelElement == null)
-			{
-				return;
-			}
-
-			// Attach class diagram to the class model root - is this really necessary - why isn't it in the serializaton?
-			ORMDiagram diagram;
-			if (null != (diagram = modelElement as ORMDiagram))
-			{
-				IList roots = myStore.ElementDirectory.GetElements(ORMModel.MetaClassGuid);
-				if (roots.Count > 0)
-				{
-					SysDiag.Debug.Assert(roots.Count == 1); // Should only have 1
-					diagram.Associate(roots[0] as ModelElement);
-				}
-			}
 		}
 		#endregion // Deserialize
 	}

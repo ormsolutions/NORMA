@@ -149,10 +149,6 @@ namespace Northface.Tools.ORM.Shell
 				// UNDONE: Need to verify that this ordering is handled as well
 				//fact.Model = model; // Done earlier to test shape generation
 				#endregion // Generate Test Object Model
-				#region Generate Test Diagram
-				diagram = ORMDiagram.CreateORMDiagram(store);
-				diagram.Associate((ModelElement)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0]);
-				#endregion // Generate Test Diagram
 			}
 			else
 			{
@@ -163,11 +159,7 @@ namespace Northface.Tools.ORM.Shell
 					{
 						(new ORMSerializer(store)).Load(stream);
 						IList diagrams = store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid);
-						if (diagrams.Count == 0)
-						{
-							diagram = ORMDiagram.CreateORMDiagram(store);
-						}
-						else
+						if (diagrams.Count != 0)
 						{
 							diagram = (Diagram)diagrams[0];
 						}
@@ -175,7 +167,29 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 
-			Debug.Assert(diagram != null, "Diagram has not been set");
+			// Make sure we have a diagram and a model associated with it
+			if (diagram == null)
+			{
+				diagram = ORMDiagram.CreateORMDiagram(store);
+			}
+
+			if (diagram.ModelElement == null)
+			{
+				// Make sure the diagram element is correctly attached to the model, and
+				// create a model if we don't have one yet.
+				ModelElement rootORMModel = null;
+				IList elements = store.ElementDirectory.GetElements(ORMModel.MetaClassGuid);
+				if (elements.Count == 0)
+				{
+					rootORMModel = ORMModel.CreateORMModel(store);
+				}
+				else
+				{
+					Debug.Assert(elements.Count == 1);
+					rootORMModel = (ModelElement)elements[0];
+				}
+				diagram.Associate(rootORMModel);
+			}
 
 			// Make sure all views are connected to the (single) diagram
 			// A more realistic scenario would be to have views for each diagram or a user's persisted set of views
