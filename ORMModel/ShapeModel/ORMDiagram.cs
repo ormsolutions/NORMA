@@ -122,10 +122,15 @@ namespace Northface.Tools.ORM.ShapeModel
 		protected override bool ShouldAddShapeForElement(ModelElement element)
 		{
 			ObjectType objType;
-			if (element is FactType ||
-				element is ObjectTypePlaysRole)
+			FactType factType;
+			ObjectTypePlaysRole objectTypePlaysRole;
+			if (null != (factType = element as FactType))
 			{
-				return ShouldDisplayPartOfReferenceMode(element);
+				return ShouldDisplayPartOfReferenceMode(factType);
+			}
+			else if (null != (objectTypePlaysRole = element as ObjectTypePlaysRole))
+			{
+				return ShouldDisplayPartOfReferenceMode(objectTypePlaysRole);
 			}
 			else if (element is ExternalFactConstraint ||
 					 element is SingleColumnExternalConstraint ||
@@ -137,7 +142,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				if (objType.NestedFactType == null)
 				{
-					return ShouldDisplayPartOfReferenceMode(element);
+					return ShouldDisplayPartOfReferenceMode(objType);
 				}
 				else
 				{
@@ -146,97 +151,92 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 			return base.ShouldAddShapeForElement(element);
 		}
-
 		/// <summary>
-		/// Check to see if the element is part of the reference mode
+		/// Function to determine if a fact type, which may be participating
+		/// in a reference mode pattern, should be displayed.
 		/// </summary>
-		/// <param name="element"></param>
-		/// <returns></returns>
-		private bool ShouldDisplayPartOfReferenceMode(ModelElement element)
+		private bool ShouldDisplayPartOfReferenceMode(FactType factType)
 		{
-			ObjectType entity = null;
-			if (element is FactType)
+			foreach (InternalConstraint constraint in factType.InternalConstraintCollection)
 			{
-				FactType factType = element as FactType;
-				foreach (InternalConstraint constraint in factType.InternalConstraintCollection)
+				ObjectType entity = constraint.PreferredIdentifierFor;
+				if (entity != null)
 				{
-					entity = constraint.PreferredIdentifierFor;
-					if (entity != null)
-					{
-						break;
-					}
+					return !ShouldCollapseReferenceMode(entity);
 				}
 			}
-			else if (element is ObjectTypePlaysRole)
-			{
-				ObjectTypePlaysRole objectTypePlaysRole = element as ObjectTypePlaysRole;
-				
-				ObjectType objectType = objectTypePlaysRole.RolePlayer;
-				if (!objectType.IsValueType)
-				{
-					entity = objectType;
-				}
-				else
-				{
-					foreach (Role role in objectType.PlayedRoleCollection)
-					{
-						foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
-						{
-							if (sequence is InternalConstraint)
-							{
-								entity = sequence.PreferredIdentifierFor;
-								if (entity != null)
-								{
-									break;
-								}
-							}
-						}
-						if (entity != null)
-						{
-							break;
-						}
-					}
-
-				}
-			}
-			else if (element is ObjectType)
-			{
-				ObjectType valueType = element as ObjectType;
-				if (valueType.IsValueType)
-				{
-					foreach (Role role in valueType.PlayedRoleCollection)
-					{
-						foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
-						{
-							if (sequence is InternalConstraint)
-							{
-								entity = sequence.PreferredIdentifierFor;
-								if (entity != null)
-								{
-									break;
-								}
-							}
-						}
-						if (entity != null)
-						{
-							break;
-						}
-					}
-				}				
-			}
-			if (entity != null && entity.ReferenceModeString.Length > 0)
-			{
-				ShapeElement shapeElement = FindShapeForElement(entity);
-				ObjectTypeShape objectTypeShape = shapeElement as ObjectTypeShape;
-				if (objectTypeShape != null)
-				{
-					return objectTypeShape.ExpandRefMode;
-				}
-			}
-
 			return true;
 		}
-
+		/// <summary>
+		/// Function to determine if a role player link, which may be participating
+		/// in a reference mode pattern, should be displayed. Defers to test for
+		/// the corresponding fact type.
+		/// </summary>
+		private bool ShouldDisplayPartOfReferenceMode(ObjectTypePlaysRole objectTypePlaysRole)
+		{
+			Role role = objectTypePlaysRole.PlayedRoleCollection;
+			FactType factType = role.FactType;
+			return (factType != null) ? ShouldDisplayPartOfReferenceMode(factType) : true;
+		}
+		/// <summary>
+		/// Function to determine if an object type, which may be participating
+		/// as the value type in the reference mode pattern, should be displayed. The
+		/// object type needs to be displayed if any of the reference modes using the
+		/// value type has a true ExpandRefMode property or if the object type is
+		/// a role player for any other visible role.
+		/// </summary>
+		private bool ShouldDisplayPartOfReferenceMode(ObjectType objectType)
+		{
+			if (objectType.IsValueType)
+			{
+				RoleMoveableCollection playedRoles = objectType.PlayedRoleCollection;
+				int playedRoleCount = playedRoles.Count;
+				if (playedRoleCount > 0)
+				{
+					bool partOfCollapsedRefMode = false;
+					for (int i = 0; i < playedRoleCount; ++i)
+					{
+						FactType factType = playedRoles[i].FactType;
+						if (factType != null)
+						{
+							if (ShouldDisplayPartOfReferenceMode(factType))
+							{
+								partOfCollapsedRefMode = false;
+								break;
+							}
+							else
+							{
+								partOfCollapsedRefMode = true;
+								// Keep going. We may be part of a
+								// non-collapsed relationship as well, in
+								// which case we need to be visible.
+							}
+						}
+					}
+					if (partOfCollapsedRefMode)
+					{
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		/// <summary>
+		/// Test if the reference mode should be collapsed. Helper function for
+		/// ShouldDisplayPartOfReferenceMode implementations.
+		/// </summary>
+		/// <param name="objectType"></param>
+		/// <returns>True if the object type has a collapsed reference mode</returns>
+		private bool ShouldCollapseReferenceMode(ObjectType objectType)
+		{
+			ShapeElement shapeElement = FindShapeForElement(objectType);
+			ObjectTypeShape objectTypeShape = shapeElement as ObjectTypeShape;
+			if (objectTypeShape != null)
+			{
+				return !objectTypeShape.ExpandRefMode;
+			}
+			return false;
+		}
 		/// <summary>
 		/// An object type is displayed as an ObjectTypeShape unless it is
 		/// objectified, in which case we display it as an ObjectifiedFactTypeNameShape

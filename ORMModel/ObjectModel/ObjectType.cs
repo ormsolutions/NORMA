@@ -293,7 +293,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			ORMModel model = this.Model;
 			InternalUniquenessConstraint preferredConstraint = this.PreferredIdentifier as InternalUniquenessConstraint;
 			ObjectType valueType = FindValueType(valueTypeName, model);
-			if (!IsValueTypeShared(preferredConstraint, model) && valueType == null)
+			if (!IsValueTypeShared(preferredConstraint) && valueType == null)
 			{
 				valueType = preferredConstraint.RoleCollection[0].RolePlayer;
 				if (valueType.IsValueType)
@@ -311,7 +311,7 @@ namespace Northface.Tools.ORM.ObjectModel
 					valueType.Model = model;
 				}
 
-				if (!IsValueTypeShared(preferredConstraint, model))
+				if (!IsValueTypeShared(preferredConstraint))
 				{
 					preferredConstraint.RoleCollection[0].RolePlayer.Remove();
 				}
@@ -332,34 +332,51 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (valueType.IsValueType)
 			{
 				FactType refFact = preferredConstraint.RoleCollection[0].FactType;
-				if (!IsValueTypeShared(preferredConstraint, valueType.Model) && aggressivelyKillValueType)
+				if (!IsValueTypeShared(preferredConstraint) && aggressivelyKillValueType)
 				{
 					valueType.Remove();
 				}
 				refFact.Remove();
 			}
 		}
-
-		private bool IsValueTypeShared(InternalUniquenessConstraint preferredConstraint, ORMModel model)
+		/// <summary>
+		/// Returns true if the reference mode pattern is sharing a value
+		/// type with another object type
+		/// </summary>
+		public bool ReferenceModeSharesValueType
+		{
+			get
+			{
+				InternalUniquenessConstraint preferredConstraint = PreferredIdentifier as InternalUniquenessConstraint;
+				return (preferredConstraint != null) ? IsValueTypeShared(preferredConstraint) : false;
+			}
+		}
+		private bool IsValueTypeShared(InternalUniquenessConstraint preferredConstraint)
 		{
 			if (preferredConstraint != null)
 			{
 				ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
 				if (valueType.IsValueType)
 				{
-					int count = 0;
-					foreach (ElementLink link in valueType.GetElementLinks())
+					IList links = valueType.GetElementLinks();
+					int linkCount = links.Count;
+					if (linkCount > 3) // Easy initial check
 					{
-						if (!link.IsRemoving && !(link is SubjectHasPresentation))
+						int count = 0;
+						for (int i = 0; i < linkCount; ++i)
 						{
-							++count;
-							// We're expecting a ValueTypeHasDataType,
-							// RoleHasRolePlayer, ModelHasObjectType, and
-							// 0 or more (ignored) SubjectHasPresentation
-							// links. Any other links indicate a shared value type.
-							if (count > 3)
+							ElementLink link = (ElementLink)links[i];
+							if (!link.IsRemoving && !(link is SubjectHasPresentation))
 							{
-								return true;
+								++count;
+								// We're expecting a ValueTypeHasDataType,
+								// RoleHasRolePlayer, ModelHasObjectType, and
+								// 0 or more (ignored) SubjectHasPresentation
+								// links. Any other links indicate a shared value type.
+								if (count > 3)
+								{
+									return true;
+								}
 							}
 						}
 					}

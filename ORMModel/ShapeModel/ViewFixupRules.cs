@@ -45,6 +45,7 @@ namespace Northface.Tools.ORM.ShapeModel
 						ObjectType objectType =  objectTypeShape.ModelElement as ObjectType;
 						objectTypeShape.AutoResize();
 						InternalUniquenessConstraint preferredConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint;
+						ORMDiagram parentDiagram = objectTypeShape.Diagram as ORMDiagram;
 
 						// View or Hide FactType
 						if (preferredConstraint != null)
@@ -60,7 +61,7 @@ namespace Northface.Tools.ORM.ShapeModel
 							}
 							else
 							{
-								factType.PresentationRolePlayers.Clear();
+								RemoveShapesFromDiagram(factType, parentDiagram);
 							}
 
 							//View or Hide value type
@@ -73,7 +74,11 @@ namespace Northface.Tools.ORM.ShapeModel
 								}
 								else
 								{
-									valueType.PresentationRolePlayers.Clear();
+									if (!objectType.ReferenceModeSharesValueType || // Easy check first
+										!parentDiagram.ShouldAddShapeForElement(valueType)) // More involved check second
+									{
+										RemoveShapesFromDiagram(valueType, parentDiagram);
+									}
 								}
 							}
 							//View or Hide ObjectTypePlaysRole links
@@ -90,12 +95,48 @@ namespace Northface.Tools.ORM.ShapeModel
 										}
 										else
 										{
-											objectTypePlaysRole.PresentationRolePlayers.Clear();
+											RemoveShapesFromDiagram(objectTypePlaysRole, parentDiagram);
 										}
 									}
 								}
 							}
 						}
+					}
+				}
+			}
+			/// <summary>
+			/// Helper function to remove shapes on the diagram for a specific element.
+			/// All child shapes will also be removed.
+			/// </summary>
+			private void RemoveShapesFromDiagram(ModelElement element, Diagram diagram)
+			{
+				PresentationElementMoveableCollection pels = element.PresentationRolePlayers;
+				int pelCount = pels.Count;
+				for (int i = pelCount - 1; i >= 0; --i) // Walk backwards so we can safely remove
+				{
+					ShapeElement shape = pels[i] as ShapeElement;
+					if (shape != null && object.ReferenceEquals(shape.Diagram, diagram))
+					{
+						ClearChildShapes(shape.NestedChildShapes);
+						ClearChildShapes(shape.RelativeChildShapes);
+						shape.Remove();
+					}
+				}
+			}
+			/// <summary>
+			/// Helper function to recursively delete child shapes. Used by RemoveShapesFromDiagram.
+			/// </summary>
+			private void ClearChildShapes(ShapeElementMoveableCollection shapes)
+			{
+				int count = shapes.Count;
+				if (count > 0)
+				{
+					for (int i = count - 1; i >= 0; --i) // Walk backwards so we can safely remove the shape
+					{
+						ShapeElement shape = shapes[i];
+						ClearChildShapes(shape.NestedChildShapes);
+						ClearChildShapes(shape.RelativeChildShapes);
+						shape.Remove();
 					}
 				}
 			}
