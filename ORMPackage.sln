@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORMModel", "ORMModel\ORMModel.csproj", "{888816BF-5497-49F9-8353-C8EF30CB9226}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SatDll", "ORMModelSatDll\SatDll.vcproj", "{9331A5F9-FC90-43F0-84C8-4A13115E9357}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed platforms = Debug|Mixed platforms
+		Debug|Win32 = Debug|Win32
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed platforms = Release|Mixed platforms
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{888816BF-5497-49F9-8353-C8EF30CB9226}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{888816BF-5497-49F9-8353-C8EF30CB9226}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{888816BF-5497-49F9-8353-C8EF30CB9226}.Debug|Mixed platforms.ActiveCfg = Debug|Any CPU
+		{888816BF-5497-49F9-8353-C8EF30CB9226}.Debug|Mixed platforms.Build.0 = Debug|Any CPU
+		{888816BF-5497-49F9-8353-C8EF30CB9226}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{888816BF-5497-49F9-8353-C8EF30CB9226}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{888816BF-5497-49F9-8353-C8EF30CB9226}.Release|Any CPU.Build.0 = Release|Any CPU
+		{888816BF-5497-49F9-8353-C8EF30CB9226}.Release|Mixed platforms.ActiveCfg = Release|Any CPU
+		{888816BF-5497-49F9-8353-C8EF30CB9226}.Release|Mixed platforms.Build.0 = Release|Any CPU
+		{888816BF-5497-49F9-8353-C8EF30CB9226}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9331A5F9-FC90-43F0-84C8-4A13115E9357}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{9331A5F9-FC90-43F0-84C8-4A13115E9357}.Debug|Mixed platforms.ActiveCfg = Debug|Win32
+		{9331A5F9-FC90-43F0-84C8-4A13115E9357}.Debug|Mixed platforms.Build.0 = Debug|Win32
+		{9331A5F9-FC90-43F0-84C8-4A13115E9357}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9331A5F9-FC90-43F0-84C8-4A13115E9357}.Debug|Win32.Build.0 = Debug|Win32
+		{9331A5F9-FC90-43F0-84C8-4A13115E9357}.Release|Any CPU.ActiveCfg = Release|Win32
+		{9331A5F9-FC90-43F0-84C8-4A13115E9357}.Release|Mixed platforms.ActiveCfg = Release|Win32
+		{9331A5F9-FC90-43F0-84C8-4A13115E9357}.Release|Mixed platforms.Build.0 = Release|Win32
+		{9331A5F9-FC90-43F0-84C8-4A13115E9357}.Release|Win32.ActiveCfg = Release|Win32
+		{9331A5F9-FC90-43F0-84C8-4A13115E9357}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

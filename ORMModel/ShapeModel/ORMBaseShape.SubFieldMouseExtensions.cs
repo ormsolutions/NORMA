@@ -1,0 +1,297 @@
+using System;
+using System.Diagnostics;
+using Microsoft.VisualStudio.Modeling.Diagrams;
+namespace Northface.Tools.ORM.ShapeModel
+{
+	/// <summary>
+	/// An extension to NodeShape to enable Enter/Leave/Hover events
+	/// on individual ShapeSubField areas. This should be in the base
+	/// framework and would be more consistent there because virtual methods
+	/// for these events could appear directly on ShapeSubField.
+	/// </summary>
+	public partial class ORMBaseShape
+	{
+		#region Extension to add SubShape Enter/Leave/Hover events
+		/// <summary>
+		/// Turn off highlighting by default if sub field highlighting is on
+		/// </summary>
+		public override bool HasHighlighting
+		{
+			get
+			{
+				return !HasSubFieldHighlighting;
+			}
+		}
+		/// <summary>
+		/// Turn on to get highlighting of subfields instead of the whole shape
+		/// </summary>
+		public virtual bool HasSubFieldHighlighting
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>
+		/// Turn on to get Enter/Leave/Hover events on shape fields. Turning
+		/// on sub shape field highlighting also means that MouseLeave and MouseEnter
+		/// events are fired when the mouse moves between a ShapeSubField region
+		/// and the normal ShapeNode region. This means that a MouseEnter can fire
+		/// multiple times without leaving the object.
+		/// 
+		/// The default implementation turns this on if HasSubFieldHighlighting
+		/// is turned on.
+		/// </summary>
+		/// <value></value>
+		public virtual bool HasSubFieldMouseEnterLeaveHover
+		{
+			get
+			{
+				return HasSubFieldHighlighting;
+			}
+		}
+		/// <summary>
+		/// A shape field used to support Enter/Leave/Hover events on shape fields.
+		/// Set to null after a MouseLeave, PendingShapeSubField.Token between an enter or
+		/// move with no SubField set and a leave, and set to the last subfield otherwise.
+		/// </summary>
+		private static ShapeSubField ActiveShapeSubField = null;
+		/// <summary>
+		/// Used with ActiveShapeSubField to give an accurate leave event.
+		/// </summary>
+		private static ShapeField ActiveShapeField = null;
+		/// <summary>
+		/// A helper class to enable distinguishing between a null
+		/// and a pending shape field.
+		/// </summary>
+		private class PendingShapeSubField : ShapeSubField
+		{
+			public static readonly PendingShapeSubField Token = new PendingShapeSubField();
+			private PendingShapeSubField()
+			{
+			}
+			public override bool SubFieldEquals(object obj)
+			{
+				// Only one instance is created, so there is not much to do
+				return object.ReferenceEquals(this, obj);
+			}
+			public override int SubFieldHashCode
+			{
+				get
+				{
+					return 1;
+				}
+			}
+			public override bool GetSelectable(ShapeElement parentShape, ShapeField parentField)
+			{
+				return false;
+			}
+			public override bool GetFocusable(ShapeElement parentShape, ShapeField parentField)
+			{
+				return false;
+			}
+			public override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
+			{
+				return RectangleD.Empty;
+			}
+		}
+		/// <summary>
+		/// Fired when the mouse enters a subfield. This is called directly
+		/// by OnMouseEnter.
+		/// 
+		/// If HasSubFieldHighlighting is set, the default implementation automatically
+		/// sets the HighlightedShapes of the active view to the DiagramItem representing
+		/// this subfield. The subfield item will be invalidated and repainted. It is
+		/// up to shapefield to check the HighlightedShapes collection and draw the subfield
+		/// highlighting explicitly.
+		/// 
+		/// Note that introducing a new ShapeSubField-derived base class would allow this
+		/// to be called as the default implementation of an OnMouseEnter event on that class.
+		/// However, this would need to be done at the framework level because ShapeSubField
+		/// is already inherited from. Another alternative is to introduce an interface for
+		/// the Enter/Leave/Hover events along with a stock implementation to help implement it.
+		/// </summary>
+		/// <param name="field">The parent ShapeField</param>
+		/// <param name="subfield">The subfield being entered</param>
+		/// <param name="e">Forwarded from the OnMouseEnter event</param>
+		public virtual void OnSubFieldMouseEnter(ShapeField field, ShapeSubField subfield, DiagramPointEventArgs e)
+		{
+			if (this.HasSubFieldHighlighting)
+			{
+				DiagramClientView view = e.DiagramClientView;
+				if (view != null)
+				{
+					view.HighlightedShapes.Set(new DiagramItem(this, field, subfield));
+				}
+			}
+		}
+		/// <summary>
+		/// Fired when the mouse leaves a subfield. This is called directly
+		/// by OnMouseLeave.
+		/// 
+		/// If HasSubFieldHighlighting is set, the default implementation automatically
+		/// removes the DiagramItem representing this subfield from the HighlightedShapes
+		///  of the active view. The subfield item will be invalidated and repainted. It is
+		/// up to shapefield to check the HighlightedShapes collection and draw the subfield
+		/// highlighting explicitly.
+		///
+		/// Note that introducing a new ShapeSubField-derived base class would allow this
+		/// to be called as the default implementation of an OnMouseLeave event on that class.
+		/// However, this would need to be done at the framework level because ShapeSubField
+		/// is already inherited from. Another alternative is to introduce an interface for
+		/// the Enter/Leave/Hover events along with a stock implementation to help implement it.
+		/// </summary>
+		/// <param name="field">The parent ShapeField</param>
+		/// <param name="subfield">The subfield being left</param>
+		/// <param name="e">Forwarded from the OnMouseLeave event</param>
+		public virtual void OnSubFieldMouseLeave(ShapeField field, ShapeSubField subfield, DiagramPointEventArgs e)
+		{
+			if (this.HasSubFieldHighlighting)
+			{
+				e.DiagramClientView.HighlightedShapes.Remove(new DiagramItem(this, field, subfield));
+			}
+		}
+		/// <summary>
+		/// Fired when the mouse hovers over a subfield. This is called directly
+		/// by OnMouseHover.
+		/// 
+		/// The default implementation is empty.
+		/// 
+		/// Note that introducing a new ShapeSubField-derived base class would allow this
+		/// to be called as the default implementation of an OnMouseHover event on that class.
+		/// However, this would need to be done at the framework level because ShapeSubField
+		/// is already inherited from. Another alternative is to introduce an interface for
+		/// the Enter/Leave/Hover events along with a stock implementation to help implement it.
+		/// </summary>
+		/// <param name="field">The parent ShapeField</param>
+		/// <param name="subfield">The subfield being hovered over</param>
+		/// <param name="e">Forwarded from the OnMouseHover event</param>
+		public virtual void OnSubFieldMouseHover(ShapeField field, ShapeSubField subfield, DiagramPointEventArgs e)
+		{
+		}
+		/// <summary>
+		/// Translate OnSubFieldMouseMove events into OnSubFieldMouseEnter and OnSubFieldMouseMove
+		/// events
+		/// </summary>
+		/// <param name="field"></param>
+		/// <param name="subfield"></param>
+		/// <param name="e"></param>
+		public override void OnSubFieldMouseMove(ShapeField field, ShapeSubField subfield, DiagramMouseEventArgs e)
+		{
+			if (HasSubFieldMouseEnterLeaveHover)
+			{
+				ShapeSubField oldSubField = ActiveShapeSubField;
+				if (oldSubField != null)
+				{
+					if (PendingShapeSubField.Token.SubFieldEquals(oldSubField))
+					{
+						ActiveShapeSubField = subfield;
+						ActiveShapeField = field;
+						base.OnMouseLeave(e);
+						OnSubFieldMouseEnter(field, subfield, e);
+					}
+					else if (!oldSubField.SubFieldEquals(subfield))
+					{
+						OnSubFieldMouseLeave(ActiveShapeField, oldSubField, e);
+						ActiveShapeSubField = subfield;
+						ActiveShapeField = field;
+						OnSubFieldMouseEnter(field, subfield, e);
+					}
+				}
+				else
+				{
+					ActiveShapeSubField = subfield;
+					ActiveShapeField = field;
+					OnSubFieldMouseEnter(field, subfield, e);
+				}
+			}
+			base.OnSubFieldMouseMove(field, subfield, e);
+		}
+		/// <summary>
+		/// Translate mouse events into OnSubFieldMouseEnter/OnSubFieldMouseLeave events
+		/// </summary>
+		/// <param name="e">DiagramMouseEventArgs</param>
+		public override void OnMouseMove(DiagramMouseEventArgs e)
+		{
+			base.OnMouseMove(e);
+			if (HasSubFieldMouseEnterLeaveHover)
+			{
+				Debug.Assert(e.DiagramHitTestInfo.HitDiagramItem.SubField == null); // Should be in OnSubFieldMouseMove, not here
+				ShapeSubField oldSubField = ActiveShapeSubField;
+				if (oldSubField != null && !PendingShapeSubField.Token.SubFieldEquals(oldSubField))
+				{
+					ShapeField oldShapeField = ActiveShapeField;
+					ActiveShapeField = null;
+					ActiveShapeSubField = PendingShapeSubField.Token;
+					OnSubFieldMouseLeave(oldShapeField, oldSubField, e);
+					base.OnMouseEnter(e);
+				}
+			}
+		}
+		/// <summary>
+		/// Translate mouse events into OnSubFieldMouseEnter/OnSubFieldMouseLeave events
+		/// </summary>
+		/// <param name="e">DiagramPointEventArgs</param>
+		public override void OnMouseEnter(DiagramPointEventArgs e)
+		{
+			base.OnMouseEnter(e);
+			if (HasSubFieldMouseEnterLeaveHover)
+			{
+				DiagramItem item = e.DiagramHitTestInfo.HitDiagramItem;
+				ShapeSubField subField = item.SubField;
+				ShapeField shapeField = item.Field;
+				// Note that we ignore any existing cached fields here. They
+				// should be null at this point, but ignoring them guards against
+				// the possibility that a leave event did not fire.
+				if (subField == null || shapeField == null)
+				{
+					ActiveShapeSubField = PendingShapeSubField.Token;
+					ActiveShapeField = null;
+				}
+				else
+				{
+					ActiveShapeSubField = subField;
+					ActiveShapeField = shapeField;
+					OnSubFieldMouseEnter(shapeField, subField, e);
+				}
+			}
+		}
+		/// <summary>
+		/// Translate mouse events into OnSubFieldMouseEnter/OnSubFieldMouseLeave events
+		/// </summary>
+		/// <param name="e">DiagramPointEventArgs</param>
+		public override void OnMouseLeave(DiagramPointEventArgs e)
+		{
+			base.OnMouseLeave(e);
+			if (HasSubFieldMouseEnterLeaveHover)
+			{
+				ShapeSubField subField = ActiveShapeSubField;
+				ActiveShapeSubField = null;
+				if (subField != null && !PendingShapeSubField.Token.SubFieldEquals(subField))
+				{
+					ShapeField shapeField = ActiveShapeField;
+					ActiveShapeField = null;
+					OnSubFieldMouseLeave(shapeField, subField, e);
+				}
+			}
+		}
+		/// <summary>
+		/// Translate mouse event into OnSubFieldMouseHover events
+		/// </summary>
+		/// <param name="e">DiagramPointEventArgs</param>
+		public override void OnMouseHover(DiagramPointEventArgs e)
+		{
+			base.OnMouseHover(e);
+			if (HasSubFieldMouseEnterLeaveHover)
+			{
+				ShapeSubField subField = ActiveShapeSubField;
+				if (subField != null && !PendingShapeSubField.Token.SubFieldEquals(subField))
+				{
+					Debug.Assert(ActiveShapeField != null); // Should be able to set sub field without shape field
+					OnSubFieldMouseHover(ActiveShapeField, subField, e);
+				}
+			}
+		}
+		#endregion // Extension to add SubShape Enter/Leave/Hover events
+	}
+}

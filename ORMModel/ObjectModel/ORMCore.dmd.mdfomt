@@ -1,0 +1,6 @@
+﻿<%@ generatedFile extension=".cs" %>
+<%@ modelFile path="ORMCore.dmd" %>
+<% 
+		context.WriteLine(context.GenerateImsCode());
+%>
+

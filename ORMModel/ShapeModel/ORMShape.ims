@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" namespace="Northface.Tools.ORM.ShapeModel" name="ORMShapeModel" identity="c52fb9a5-6bf4-4267-8716-71d74c7aa89c" majorversion="1" minorversion="0" category="" description="" doccomment="" localize="true" alwaysgeneratecollection="false" xmlns="urn:schemas-microsoft-com:phoenix">
+  <copyright>------------------------------------------------------------------------------
+Copyright (c) Northface University. All Rights Reserved.
+Information Contained Herein is Proprietary and Confidential.
+------------------------------------------------------------------------------</copyright>
+  <extendsmetamodel model="2b131234-7959-458d-834f-2dc0769ce683" />
+  <extendsmetamodel model="91d59b16-e488-4a28-8d51-59273ad5bf2e" />
+  <stringtable resxfile="ORMShape.dmd.resx" resourcesfile="Northface.Tools.ORM.ShapeModel.ORMShapeModel" usefullyqualifiedname="true" />
+  <copyclosure name="ORMShapeModelCopyClosure" classmodifier="sealed" doccomment="Copy closure visitor filter" />
+  <removeclosure name="ORMShapeModelRemoveClosure" classmodifier="sealed" doccomment="Remove closure visitor filter" />
+  <metaclasses />
+  <shapes>
+    <shape namespace="Northface.Tools.ORM.ShapeModel" name="ORMBaseShape" identity="55131f4b-0f9a-408d-bed0-79451ba7f4f0" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.NodeShape" category="" description="" doccomment="" localize="false">
+      <metaattributes />
+      <derivedshapes>
+        <shape namespace="Northface.Tools.ORM.ShapeModel" name="ObjectTypeShape" identity="00c1f246-d8f1-4eea-ac88-39ba238143a8" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ObjectType)" />
+          <metaattributes>
+            <metaattribute name="ShapeName" identity="b70a72b8-282e-403a-aad6-50d75a2f071c" type="System.String" xpathexpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
+              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+              <stringdomain default="" max="2147483647" />
+            </metaattribute>
+          </metaattributes>
+          <derivedshapes />
+        </shape>
+        <shape namespace="Northface.Tools.ORM.ShapeModel" name="FactTypeShape" identity="8e440a3b-275e-42f7-868b-d5d473158acd" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.FactType)" />
+          <metaattributes />
+          <derivedshapes />
+        </shape>
+        <shape namespace="Northface.Tools.ORM.ShapeModel" name="ExternalConstraintShape" identity="00a08f56-73ba-4c8f-8fa1-ae61b8fc1cae" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.Constraint)" />
+          <metaattributes />
+          <derivedshapes />
+        </shape>
+        <shape namespace="Northface.Tools.ORM.ShapeModel" name="FloatingTextShape" identity="0904999f-d9c5-4c4e-a08f-f8dd4b2f29a3" accessmodifier="public" classmodifier="abstract" category="" description="" doccomment="" localize="false">
+          <metaattributes />
+          <derivedshapes>
+            <shape namespace="Northface.Tools.ORM.ShapeModel" name="ObjectifiedFactTypeNameShape" identity="7fd5183a-8bc2-43bb-8474-a0a2d558d90a" accessmodifier="public" category="" description="" doccomment="" localize="false">
+              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ObjectType)" />
+              <metaattributes>
+                <metaattribute name="ObjectTypeName" identity="4c9bb78d-6290-455e-b844-e7bcc01676f8" type="System.String" xpathexpression="/ObjectifiedFactTypeNameShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
+                  <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+                  <stringdomain default="" max="2147483647" />
+                </metaattribute>
+              </metaattributes>
+              <derivedshapes />
+            </shape>
+            <shape namespace="Northface.Tools.ORM.ShapeModel" name="ReadingShape" identity="c567ed6d-d0a6-4fd8-a974-c567aa309d5e" accessmodifier="public" category="" description="" doccomment="" localize="false">
+              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.Reading)" />
+              <metaattributes>
+                <metaattribute name="ReadingText" identity="22bf9cf7-715c-4159-9ef0-1bdf98647f9c" type="System.String" xpathexpression="/ReadingShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/Reading/SubjectHasPresentation.Presentation/Presentation" realattributename="Text" proxyattributename="Text" category="" description="" doccomment="" localize="false" tag="">
+                  <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+                  <stringdomain default="" max="2147483647" />
+                </metaattribute>
+              </metaattributes>
+              <derivedshapes />
+            </shape>
+          </derivedshapes>
+        </shape>
+      </derivedshapes>
+    </shape>
+    <shape namespace="Northface.Tools.ORM.ShapeModel" name="RolePlayerLink" identity="2b3f0aae-b1b1-4727-8862-5c34b494b499" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
+      <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ObjectTypePlaysRole)" />
+      <metaattributes />
+      <derivedshapes />
+    </shape>
+    <shape namespace="Northface.Tools.ORM.ShapeModel" name="ExternalConstraintLink" identity="8815e6d8-238b-422c-a4b3-29fdc8de9ea5" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
+      <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint)" />
+      <metaattributes />
+      <derivedshapes />
+    </shape>
+  </shapes>
+  <diagrams>
+    <diagram namespace="Northface.Tools.ORM.ShapeModel" name="ORMDiagram" identity="948f992d-c9b8-46f9-be3c-b48347f8ab0b" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.Diagram" category="" description="" doccomment="" localize="false">
+      <toolboxitem toolboxitemid="Toolbox.EntityType.Item.Id" position="0" bitmapresourceid="Toolbox.EntityType.Bitmap.Id" captionresourceid="Toolbox.EntityType.Caption.Id" tooltipresourceid="Toolbox.EntityType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.ValueType.Item.Id" position="5" bitmapresourceid="Toolbox.ValueType.Bitmap.Id" captionresourceid="Toolbox.ValueType.Caption.Id" tooltipresourceid="Toolbox.ValueType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.UnaryFactType.Item.Id" position="10" bitmapresourceid="Toolbox.UnaryFactType.Bitmap.Id" captionresourceid="Toolbox.UnaryFactType.Caption.Id" tooltipresourceid="Toolbox.UnaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.BinaryFactType.Item.Id" position="15" bitmapresourceid="Toolbox.BinaryFactType.Bitmap.Id" captionresourceid="Toolbox.BinaryFactType.Caption.Id" tooltipresourceid="Toolbox.BinaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.TernaryFactType.Item.Id" position="20" bitmapresourceid="Toolbox.TernaryFactType.Bitmap.Id" captionresourceid="Toolbox.TernaryFactType.Caption.Id" tooltipresourceid="Toolbox.TernaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.ExternalUniquenessConstraint.Item.Id" position="25" bitmapresourceid="Toolbox.ExternalUniquenessConstraint.Bitmap.Id" captionresourceid="Toolbox.ExternalUniquenessConstraint.Caption.Id" tooltipresourceid="Toolbox.ExternalUniquenessConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.PreferredExternalUniquenessConstraint.Item.Id" position="30" bitmapresourceid="Toolbox.PreferredExternalUniquenessConstraint.Bitmap.Id" captionresourceid="Toolbox.PreferredExternalUniquenessConstraint.Caption.Id" tooltipresourceid="Toolbox.PreferredExternalUniquenessConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.EqualityConstraint.Item.Id" position="35" bitmapresourceid="Toolbox.EqualityConstraint.Bitmap.Id" captionresourceid="Toolbox.EqualityConstraint.Caption.Id" tooltipresourceid="Toolbox.EqualityConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.ExclusionConstraint.Item.Id" position="40" bitmapresourceid="Toolbox.ExclusionConstraint.Bitmap.Id" captionresourceid="Toolbox.ExclusionConstraint.Caption.Id" tooltipresourceid="Toolbox.ExclusionConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.InclusiveOrConstraint.Item.Id" position="45" bitmapresourceid="Toolbox.InclusiveOrConstraint.Bitmap.Id" captionresourceid="Toolbox.InclusiveOrConstraint.Caption.Id" tooltipresourceid="Toolbox.InclusiveOrConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.ExclusiveOrConstraint.Item.Id" position="50" bitmapresourceid="Toolbox.ExclusiveOrConstraint.Bitmap.Id" captionresourceid="Toolbox.ExclusiveOrConstraint.Caption.Id" tooltipresourceid="Toolbox.ExclusiveOrConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.SubsetConstraint.Item.Id" position="55" bitmapresourceid="Toolbox.SubsetConstraint.Bitmap.Id" captionresourceid="Toolbox.SubsetConstraint.Caption.Id" tooltipresourceid="Toolbox.SubsetConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.ExternalConstraintConnector.Item.Id" position="60" bitmapresourceid="Toolbox.ExternalConstraintConnector.Bitmap.Id" captionresourceid="Toolbox.ExternalConstraintConnector.Caption.Id" tooltipresourceid="Toolbox.ExternalConstraintConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <clrattribute name="System.ComponentModel.ToolboxItemFilterAttribute" parametertext="ORMDiagram.ORMDiagramDefaultFilterString, System.ComponentModel.ToolboxItemFilterType.Require" />
+      <metaattributes />
+      <deriveddiagrams />
+    </diagram>
+  </diagrams>
+  <metarelationships />
+  <visualdata />
+</metamodel>

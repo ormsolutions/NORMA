@@ -1,0 +1,57 @@
+//------------------------------------------------------------------------------
+/// <copyright from='1997' to='2003' company='Microsoft Corporation'>           
+/// Copyright (c) Microsoft Corporation. All Rights Reserved.                
+/// Information Contained Herein is Proprietary and Confidential.            
+/// </copyright>                                                                
+//------------------------------------------------------------------------------
+
+#include "stdidcmd.h"	// Shell specified commands
+#include "vsshlids.h"	// Shell specified groups/guids
+#include "msobtnid.h"	// Shell specified commands
+
+#include "PkgCmdID.h"	// Our commands
+#include "resource.h"
+#include "virtkeys.h"
+
+// (keep in sync with ORMDesigner.vrg)
+#define guidORMDesignerPackage	{0xEFDDC549, 0x1646, 0x4451, { 0x8A, 0x51, 0xE5, 0xA5, 0xE9, 0x4D, 0x64, 0x7C } }
+
+// (keep in sync with ORMDesignerCommandSet.cs)
+// {7C51C000-1EAD-4b39-89B5-42BC9F49EA24}
+#define guidORMDesignerCommandSet { 0x7c51c000, 0x1ead, 0x4b39, { 0x89, 0xb5, 0x42, 0xbc, 0x9f, 0x49, 0xea, 0x24 } }
+
+CMDS_SECTION guidORMDesignerPackage
+    MENUS_BEGIN
+		// Context menus
+		guidORMDesignerCommandSet:menuIdDeleteContext,				guidORMDesignerCommandSet:0,				0x0000,     CONTEXT,				"Delete command",				"Delete command";
+	MENUS_END
+
+    NEWGROUPS_BEGIN
+	    // Command Macro Context Menu Groups
+        guidORMDesignerCommandSet:groupIdDeleteContext,				guidORMDesignerCommandSet:menuIdDeleteContext,	0x0008;
+	
+
+    NEWGROUPS_END
+
+    BUTTONS_BEGIN
+        // Button/Menu Item											Item Group											Priority	Icon                             Type		Flags			Text    
+		guidORMDesignerCommandSet:cmdIdViewModelExplorer,			guidSHLMainMenu:IDG_VS_VIEW_WINDOWS,				0x0600,		guidOfficeIcon:msotcidNoIcon,	 BUTTON,	0,				"ORM &Model Explorer";
+    BUTTONS_END	
+
+    COMBOS_BEGIN
+    COMBOS_END
+    
+    BITMAPS_BEGIN
+    BITMAPS_END
+CMDS_END
+
+CMDPLACEMENT_SECTION
+	CMDSETID_StandardCommandSet97:cmdidDelete,						guidORMDesignerCommandSet:groupIdDeleteContext,	0x0020;
+	
+CMDPLACEMENT_END
+
+VISIBILITY_SECTION
+VISIBILITY_END
+
+KEYBINDINGS_SECTION
+KEYBINDINGS_END
