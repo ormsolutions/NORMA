@@ -142,6 +142,10 @@
     <value xml:space="preserve">Add Constraint Role Sequence</value>
     <comment xml:space="preserve">The transaction name used by the external constraint connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="FactEditorToolWindow.Caption">
+    <value xml:space="preserve">ORM Fact Editor</value>
+    <comment xml:space="preserve">This is the caption that appears in the title bar of the Fact Editor tool window.</comment>
+  </data>
   <data name="InsertRole.TransactionName">
     <value xml:space="preserve">Insert Role</value>
     <comment xml:space="preserve">The transaction name used by the InsertRoleBefore/InsertRoleAfter commands. The text appears in the undo dropdown in the VS IDE.</comment>

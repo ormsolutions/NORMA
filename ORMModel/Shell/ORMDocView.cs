@@ -52,6 +52,10 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		DeleteRole = 0x40,
 		/// <summary>
+		/// Display the fact editor toolwindow
+		/// </summary>
+		DisplayFactEditorWindow = 0x80,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
@@ -200,7 +204,7 @@ namespace Northface.Tools.ORM.Shell
 			Role role;
 			if (element is FactType)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DisplayReadingsWindow;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow;
 			}
 			else if (element is ObjectType)
 			{
@@ -217,7 +221,7 @@ namespace Northface.Tools.ORM.Shell
 			}
 			else if (null != (role = element as Role))
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.DisplayFactEditorWindow;
 				// Disable role deletion if the role count == 1
 				visibleCommands |= ORMDesignerCommands.DeleteRole;
 				if (role.FactType.RoleCollection.Count == 1)

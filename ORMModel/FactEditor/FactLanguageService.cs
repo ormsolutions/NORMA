@@ -9,7 +9,6 @@ using Northface.Tools.ORM.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
-using MsOle = Microsoft.VisualStudio.OLE.Interop;
 using System.Runtime.InteropServices;
 
 #endregion
@@ -127,7 +126,7 @@ namespace Northface.Tools.ORM.FactEditor
 	/// Language service to provide colorization
 	/// </summary>
 	[Guid("C50CD300-9D1E-4AB0-B494-73FA23D14D2B")]
-	public class FactLanguageService : IVsLanguageInfo, MsOle.IServiceProvider
+	public class FactLanguageService : IVsLanguageInfo
 	{
 		private ORMDesignerPackage myPackage;
 		private System.IServiceProvider vsIServiceProvider;
@@ -219,40 +218,5 @@ namespace Northface.Tools.ORM.FactEditor
 		}
 
 		#endregion
-		#region IServiceProvider Implementation
-		int MsOle.IServiceProvider.QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
-		{
-			return QueryService(ref guidService, ref riid, out ppvObject);
-		}
-		/// <summary>
-		/// Generic method for querying against services based on this FactLanguageService
-		/// </summary>
-		/// <param name="guidService">The service to query for</param>
-		/// <param name="riid">The interface guid</param>
-		/// <param name="ppvObject">The object to store the resulting service</param>
-		/// <returns>HRESULT</returns>
-		protected int QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
-		{
-			if (guidService == GetType().GUID)
-			{
-				// Let Marshal handle the QI so it works perfectly.
-				// GetIUnknownForObject(this as <some interface>) does not work.
-				IntPtr punk = Marshal.GetIUnknownForObject(this);
-				try
-				{
-					return Marshal.QueryInterface(punk, ref riid, out ppvObject);
-				}
-				finally
-				{
-					if (punk != IntPtr.Zero)
-					{
-						Marshal.Release(punk);
-					}
-				}
-			}
-			ppvObject = IntPtr.Zero;
-			return NativeMethods.E_NOINTERFACE;
-		}
-		#endregion // IServiceProvider Implementation
 	}
 }

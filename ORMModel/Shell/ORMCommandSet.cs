@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.EnterpriseTools.Validation.UI;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 
@@ -82,6 +83,10 @@ namespace Northface.Tools.ORM.Shell
 				new EventHandler(OnStatusInsertRole),
 				new EventHandler(OnMenuInsertRoleAfter),
 				ORMDesignerCommandIds.InsertRoleAfter)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusFactEditorWindow),
+				new EventHandler(OnMenuFactEditorWindow),
+				ORMDesignerCommandIds.ViewFactEditor)
 			};
 				#endregion
 				AddCommands(myCommands);
@@ -257,6 +262,25 @@ namespace Northface.Tools.ORM.Shell
 			}
 
 			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			private void OnStatusFactEditorWindow(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayFactEditorWindow);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuFactEditorWindow(object sender, EventArgs e)
+			{
+				IVsWindowFrame editorWindow = ORMDesignerPackage.FactEditorWindow;
+				editorWindow.Show();
+			}
+			/// <summary>
 			/// 
 			/// </summary>
 			protected IMenuCommandService MenuService
@@ -373,6 +397,10 @@ namespace Northface.Tools.ORM.Shell
 			/// The Custom Reference Mode Editor Explorer item on the view menu
 			/// </summary>
 			public static readonly CommandID ViewReferenceModeEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewReferenceModeEditor);
+			/// <summary>
+			/// The ORM Fact Editor Window item on the fact type context menu
+			/// </summary>
+			public static readonly CommandID ViewFactEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewFactEditor);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -410,6 +438,10 @@ namespace Northface.Tools.ORM.Shell
 			/// Insert a role before the selected role
 			/// </summary>
 			private const int cmdIdInsertRoleBefore = 0x2904;
+			/// <summary>
+			/// The ORM Fact Editor Window item on the fact type context menu
+			/// </summary>
+			private const int cmdIdViewFactEditor = 0x2905;
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>

@@ -101,7 +101,7 @@ namespace Northface.Tools.ORM.FactEditor
 			// Initialize to null
 			ppunkDocView = new System.IntPtr();
 			ppunkDocData = new System.IntPtr();
-			pguidCmdUI = new Guid();
+			pguidCmdUI = FactGuidList.CmdUIGuidTextEditor;
 			pgrfCDW = 0;
 			pbstrEditorCaption = null;
 

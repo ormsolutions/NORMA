@@ -285,6 +285,7 @@ namespace Northface.Tools.ORM
 		private const string ModelReferenceModeEditorEditorWindowTitle_Id = "ModelReferenceModeEditor.EditorWindowTitle";
 		
  
+		private const string FactEditorToolWindowCaption_Id = "FactEditorToolWindow.Caption";
 		#endregion // Private resource ids
 		#region Public accessor properties
 		/// <summary>
@@ -989,6 +990,17 @@ namespace Northface.Tools.ORM
 			}
 		}
 		
+		/// <summary>
+		/// The caption of the Fact Editor Tool Window
+		/// </summary>
+		/// <value></value>
+		public static string FactEditorToolWindowCaption
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, FactEditorToolWindowCaption_Id);
+			}
+		}
 		#endregion // Public accessor properties
 	}
 }

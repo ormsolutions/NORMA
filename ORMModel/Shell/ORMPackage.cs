@@ -6,11 +6,14 @@ using System.Resources;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using VsShell = Microsoft.VisualStudio.Shell.Interop;
+using OleInterop = Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
+using Microsoft.VisualStudio.TextManager.Interop;
 using Northface.Tools.ORM.FactEditor;
+
 namespace Northface.Tools.ORM.Shell
 {
 	/// <summary>
@@ -31,11 +34,8 @@ namespace Northface.Tools.ORM.Shell
 		/// The commands supported by this package
 		/// </summary>
 		private object myCommandSet;
+		private IVsWindowFrame myFactEditorToolWindow = null;
 		private static ORMDesignerPackage mySingleton;
-		private FactEditorFactory factEditorFactory;
-#if FACTEDITORPROTOTYPE
-		private uint myLanguageInfoEditorCookie = 0;
-#endif // FACTEDITORPROTOTYPE
 		#endregion
 		#region Construction/destruction
 		/// <summary>
@@ -77,22 +77,22 @@ namespace Northface.Tools.ORM.Shell
 			RegisterModelingEditorFactory(new ORMDesignerEditorFactory(this));
 
 #if FACTEDITORPROTOTYPE
-			factEditorFactory = new FactEditorFactory(this);
+			FactEditorFactory factEditorFactory = new FactEditorFactory(this);
 			base.RegisterEditorFactory(factEditorFactory);
 #endif // FACTEDITORPROTOTYPE
 
 			if (!SetupMode)
 			{
 #if FACTEDITORPROTOTYPE
-				IProfferService proffer = (IProfferService)GetService(typeof(IProfferService));
-				Guid iid = typeof(FactLanguageService).GUID;
-				proffer.ProfferService(ref iid, new FactLanguageService(this), out myLanguageInfoEditorCookie);
+				IServiceContainer service = (IServiceContainer)this;
+				service.AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
 #endif // FACTEDITORPROTOTYPE
 
 				// setup commands
 				myCommandSet = ORMDesignerDocView.CreateCommandSet(this);
 
-				// Create tool window
+
+				// Create tool windows
 				AddToolWindow(new ORMBrowserToolWindow(this));
 				AddToolWindow(new ORMReadingEditorToolWindow(this));
 				AddToolWindow(new ORMReferenceModeEditorToolWindow(this));
@@ -107,14 +107,13 @@ namespace Northface.Tools.ORM.Shell
 			if (disposing)
 			{
 #if FACTEDITORPROTOTYPE
-				if (myLanguageInfoEditorCookie != 0)
+				if (myFactEditorToolWindow != null)
 				{
-					IProfferService proffer = (IProfferService)GetService(typeof(IProfferService));
-					if (proffer != null)
-					{
-						proffer.RevokeService(myLanguageInfoEditorCookie);
-					}
+					myFactEditorToolWindow.CloseFrame(0);
 				}
+
+				IServiceContainer service = (IServiceContainer)this;
+				service.RemoveService(typeof(FactLanguageService), true);
 #endif // FACTEDITORPROTOTYPE
 				// dispose of any private objects here
 			}
@@ -142,6 +141,105 @@ namespace Northface.Tools.ORM.Shell
 		}
 
 		#endregion // Base overrides
+		private IVsWindowFrame EnsureFactEditorToolWindow()
+		{
+			IVsWindowFrame frame = myFactEditorToolWindow;
+			if (frame == null)
+			{
+				myFactEditorToolWindow = frame = AddFactEditorToolWindow();
+			}
+			return frame;
+		}
+		private IVsWindowFrame AddFactEditorToolWindow()
+		{
+			ILocalRegistry3 locReg = (ILocalRegistry3)this.GetService(typeof(ILocalRegistry));
+			IntPtr pBuf = IntPtr.Zero;
+			Guid iid = typeof(IVsTextLines).GUID;
+			NativeMethods.ThrowOnFailure(locReg.CreateInstance(
+				typeof(VsTextBufferClass).GUID,
+				null,
+				ref iid,
+				(uint)OleInterop.CLSCTX.CLSCTX_INPROC_SERVER,
+				out pBuf));
+
+			IVsTextLines lines = null;
+			OleInterop.IObjectWithSite objectWithSite = null;
+			try
+			{
+				// Get an object to tie to the IDE
+				lines = (IVsTextLines)Marshal.GetObjectForIUnknown(pBuf);
+				objectWithSite = lines as OleInterop.IObjectWithSite;
+				objectWithSite.SetSite(this);
+			}
+			finally
+			{
+				if (pBuf != IntPtr.Zero)
+				{
+					Marshal.Release(pBuf);
+				}
+			}
+
+			// Create a std code view (text)
+			IntPtr srpCodeWin = IntPtr.Zero;
+			iid = typeof(IVsCodeWindow).GUID;
+
+			// create code view (does CoCreateInstance if not in shell's registry)
+			NativeMethods.ThrowOnFailure(locReg.CreateInstance(
+				typeof(VsCodeWindowClass).GUID,
+				null,
+				ref iid,
+				(uint)OleInterop.CLSCTX.CLSCTX_INPROC_SERVER,
+				out srpCodeWin));
+
+			IVsCodeWindow codeWindow = null;
+			try
+			{
+				// Get an object to tie to the IDE
+				codeWindow = (IVsCodeWindow)Marshal.GetObjectForIUnknown(srpCodeWin);
+			}
+			finally
+			{
+				if (srpCodeWin != IntPtr.Zero)
+				{
+					Marshal.Release(srpCodeWin);
+				}
+			}
+
+			codeWindow.SetBuffer(lines);
+
+			IVsWindowFrame windowFrame;
+			IVsUIShell shell = (IVsUIShell)GetService(typeof(IVsUIShell));
+			Guid emptyGuid = new Guid();
+			Guid factEditorToolWindowGuid = FactGuidList.FactEditorToolWindowGuid;
+			// CreateToolWindow ARGS
+			// 0 - toolwindow.flags (initnew)
+			// 1 - 0 (the tool window ID)
+			// 2- IVsWindowPane
+			// 3- guid null
+			// 4- persistent slot (same nr as the guid attr on tool window class)
+			// 5- guid null
+			// 6- ole service provider (null)
+			// 7- tool window.windowTitle
+			// 8- int[] for position (empty array)
+			// 9- out IVsWindowFrame
+			shell.CreateToolWindow(
+				(uint)__VSCREATETOOLWIN.CTW_fInitNew, // tool window flags, default to init new
+				0,
+				(IVsWindowPane)codeWindow,
+				ref emptyGuid,
+				ref factEditorToolWindowGuid,
+				ref emptyGuid,
+				null,
+				ResourceStrings.FactEditorToolWindowCaption,
+				null,
+				out windowFrame);
+
+			// assign our language service to the buffer
+			Guid langService = typeof(FactLanguageService).GUID;
+			int hr = lines.SetLanguageServiceID(ref langService);
+			return windowFrame;
+		}
+
 		#region IVsInstalledProduct Members
 		int IVsInstalledProduct.IdBmpSplash(out uint pIdBmp)
 		{
@@ -207,6 +305,17 @@ namespace Northface.Tools.ORM.Shell
 			get
 			{
 				return (ORMReferenceModeEditorToolWindow)mySingleton.GetToolWindow(typeof(ORMReferenceModeEditorToolWindow));
+			}
+		}
+
+		/// <summary>
+		/// Fact editor tool window.
+		/// </summary>
+		public static IVsWindowFrame FactEditorWindow
+		{
+			get
+			{
+				return mySingleton.EnsureFactEditorToolWindow();
 			}
 		}
 		#endregion
