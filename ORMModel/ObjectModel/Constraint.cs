@@ -286,7 +286,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding ExternalFactConstraint and ExternalRoleConstraint
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -309,7 +309,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// objects are created for each role. Note that a single column external
 		/// constraint is a role sequence.
 		/// </summary>
-		[RuleOn(typeof(ModelHasSingleColumnExternalConstraint), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ModelHasSingleColumnExternalConstraint))]
 		private class ConstraintHasRoleSequenceAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -476,7 +476,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding ExternalFactConstraint and ExternalRoleConstraint
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
