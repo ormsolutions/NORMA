@@ -696,6 +696,17 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		/// <summary>
+		/// Set the base font based on the font and color settings.
+		/// UNDONE: This affects the size right now, but not the font name
+		/// </summary>
+		protected override Font BaseFontFromEnvironment
+		{
+			get
+			{
+				return Shell.ORMDesignerPackage.FontAndColorService.GetFont();
+			}
+		}
 		#endregion // Other base overrides
 		#region Display Properties
 		/// <summary>

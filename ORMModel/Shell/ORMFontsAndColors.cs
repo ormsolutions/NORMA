@@ -393,15 +393,16 @@ namespace Northface.Tools.ORM.Shell
 		private LOGFONTW myLogFont = new LOGFONTW();
 		private FontInfo myFontInfo = new FontInfo();
 		/// <summary>
-		/// Retrieve font information
+		/// Retrieve font information. A new Font object is generated
+		/// on each call and must be disposed of properly by the caller.
 		/// </summary>
-		/// <param name="logFont">LOGFONTW structure (out)</param>
-		/// <param name="fontInfo">FontInfo structure (out)</param>
-		public void GetFont(out LOGFONTW logFont, out FontInfo fontInfo)
+		/// <returns>A new font object</returns>
+		public Font GetFont()
 		{
 			EnsureCache();
-			logFont = myLogFont;
-			fontInfo = myFontInfo;
+			FontInfo fontInfo = myFontInfo;
+			Debug.Assert(fontInfo.bFaceNameValid != 0 && fontInfo.bCharSetValid != 0 && fontInfo.bPointSizeValid != 0);
+			return new Font(fontInfo.bstrFaceName, fontInfo.wPointSize / 72.0f, FontStyle.Regular, GraphicsUnit.World, fontInfo.iCharSet);
 		}
 		/// <summary>
 		/// Retrieve forecolor information for the specified index
