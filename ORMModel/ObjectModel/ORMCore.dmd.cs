@@ -1659,6 +1659,52 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region DuplicateNameError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError DuplicateNameError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.ObjectTypeCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.ObjectTypeCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.ObjectTypeCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region Collection Classes for ObjectType
 	/// <summary>
@@ -2340,6 +2386,52 @@ namespace Northface.Tools.ORM.ObjectModel
 			get { return new Northface.Tools.ORM.ObjectModel.ReadingMoveableCollection(this, Northface.Tools.ORM.ObjectModel.FactTypeHasReading.FactTypeMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasReading.ReadingCollectionMetaRoleGuid); }
 		}
 		#endregion
+		#region DuplicateNameError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameError DuplicateNameError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.FactTypeCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.FactTypeCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.FactTypeCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region Collection Classes for FactType
 	/// <summary>
@@ -2808,6 +2900,52 @@ namespace Northface.Tools.ORM.ObjectModel
 					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ModelMetaRoleGuid, value);
 					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollectionMetaRoleGuid, this);
 					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ModelHasConstraint), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region DuplicateNameError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError DuplicateNameError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError), newRoles);
 				}
 			}
 		}
@@ -8033,6 +8171,284 @@ namespace Northface.Tools.ORM.ObjectModel
 	/// </summary>
 	[System.CLSCompliant(true)]
 	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DuplicateNameError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.DuplicateNameError")]
+	public abstract partial class DuplicateNameError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region DuplicateNameError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "cbd2724e-6199-4f12-a3aa-7522187bea20";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DuplicateNameError.MetaClassGuidString);
+		#endregion
+
+	}
+	#region DuplicateNameError's Generated Constructor Code
+	public abstract partial class DuplicateNameError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected DuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError")]
+	public  partial class ObjectTypeDuplicateNameError : Northface.Tools.ORM.ObjectModel.DuplicateNameError
+	{
+		#region ObjectTypeDuplicateNameError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "29be74c2-24cc-4b4b-ab61-7750ca7ec339";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError.MetaClassGuidString);
+		#endregion
+
+		#region ObjectTypeCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ObjectTypeMoveableCollection ObjectTypeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ObjectTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.ObjectTypeCollectionMetaRoleGuid); }
+		}
+		#endregion
+	}
+	#region ObjectTypeDuplicateNameError's Generated Constructor Code
+	public  partial class ObjectTypeDuplicateNameError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeDuplicateNameError CreateObjectTypeDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (ObjectTypeDuplicateNameError)store.ElementFactory.CreateElement(typeof(ObjectTypeDuplicateNameError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeDuplicateNameError CreateAndInitializeObjectTypeDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ObjectTypeDuplicateNameError)store.ElementFactory.CreateElement(typeof(ObjectTypeDuplicateNameError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ObjectTypeDuplicateNameError
+	/// <summary>
+	/// ObjectTypeDuplicateNameError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError))]
+	public sealed class ObjectTypeDuplicateNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeDuplicateNameErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameError")]
+	public  partial class FactTypeDuplicateNameError : Northface.Tools.ORM.ObjectModel.DuplicateNameError
+	{
+		#region FactTypeDuplicateNameError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "51040183-4ecf-4128-9e5f-89369fcf152b";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameError.MetaClassGuidString);
+		#endregion
+
+		#region FactTypeCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection FactTypeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.FactTypeCollectionMetaRoleGuid); }
+		}
+		#endregion
+	}
+	#region FactTypeDuplicateNameError's Generated Constructor Code
+	public  partial class FactTypeDuplicateNameError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeDuplicateNameError CreateFactTypeDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (FactTypeDuplicateNameError)store.ElementFactory.CreateElement(typeof(FactTypeDuplicateNameError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeDuplicateNameError CreateAndInitializeFactTypeDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FactTypeDuplicateNameError)store.ElementFactory.CreateElement(typeof(FactTypeDuplicateNameError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FactTypeDuplicateNameError
+	/// <summary>
+	/// FactTypeDuplicateNameError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameError))]
+	public sealed class FactTypeDuplicateNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeDuplicateNameErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError")]
+	public  partial class ConstraintDuplicateNameError : Northface.Tools.ORM.ObjectModel.DuplicateNameError
+	{
+		#region ConstraintDuplicateNameError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "0ecf0d2d-b3a3-4652-9e77-48fa7765d08f";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError.MetaClassGuidString);
+		#endregion
+
+		#region ConstraintCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ConstraintMoveableCollection ConstraintCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuid); }
+		}
+		#endregion
+	}
+	#region ConstraintDuplicateNameError's Generated Constructor Code
+	public  partial class ConstraintDuplicateNameError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ConstraintDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ConstraintDuplicateNameError CreateConstraintDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (ConstraintDuplicateNameError)store.ElementFactory.CreateElement(typeof(ConstraintDuplicateNameError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ConstraintDuplicateNameError CreateAndInitializeConstraintDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ConstraintDuplicateNameError)store.ElementFactory.CreateElement(typeof(ConstraintDuplicateNameError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ConstraintDuplicateNameError
+	/// <summary>
+	/// ConstraintDuplicateNameError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError))]
+	public sealed class ConstraintDuplicateNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ConstraintDuplicateNameErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType")]
 	public  partial class ValueTypeHasDataType : Microsoft.VisualStudio.Modeling.ElementLink
@@ -11238,6 +11654,342 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError")]
+	public  partial class ObjectTypeHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ObjectTypeHasDuplicateNameError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "3743ce4a-674e-4aeb-8e1c-a195fa76a063";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.MetaRelationshipGuidString);
+		#endregion
+
+		#region DuplicateNameError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String DuplicateNameErrorMetaRoleGuidString = "250dd899-b1d7-40f2-88dc-b0e75c7d94c7";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid DuplicateNameErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.DuplicateNameError")]
+		public  Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError DuplicateNameError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError)this.GetRolePlayer(DuplicateNameErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(DuplicateNameErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region ObjectTypeCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ObjectTypeCollectionMetaRoleGuidString = "532ed9c4-f43f-434f-8fab-f4dd2bad747e";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ObjectTypeCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.ObjectTypeCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.ObjectTypeCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.ObjectTypeCollection")]
+		public  Northface.Tools.ORM.ObjectModel.ObjectType ObjectTypeCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ObjectType)this.GetRolePlayer(ObjectTypeCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ObjectTypeCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ObjectTypeHasDuplicateNameError's Generated Constructor Code
+	public  partial class ObjectTypeHasDuplicateNameError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeHasDuplicateNameError CreateObjectTypeHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ObjectTypeHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(ObjectTypeHasDuplicateNameError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeHasDuplicateNameError CreateAndInitializeObjectTypeHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ObjectTypeHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(ObjectTypeHasDuplicateNameError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ObjectTypeHasDuplicateNameError
+	/// <summary>
+	/// ObjectTypeHasDuplicateNameError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError))]
+	public sealed class ObjectTypeHasDuplicateNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeHasDuplicateNameErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError")]
+	public  partial class FactTypeHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region FactTypeHasDuplicateNameError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "688413fc-399c-4ebb-b1e0-cc6e302b0e08";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.MetaRelationshipGuidString);
+		#endregion
+
+		#region DuplicateNameError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String DuplicateNameErrorMetaRoleGuidString = "1c6dcf27-af15-4850-a00d-dfe60594cbfc";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid DuplicateNameErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.DuplicateNameError")]
+		public  Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameError DuplicateNameError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameError)this.GetRolePlayer(DuplicateNameErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(DuplicateNameErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region FactTypeCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FactTypeCollectionMetaRoleGuidString = "66f806d4-d65d-4ef6-9a22-72c4044dff83";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FactTypeCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.FactTypeCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.FactTypeCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.FactTypeCollection")]
+		public  Northface.Tools.ORM.ObjectModel.FactType FactTypeCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(FactTypeCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region FactTypeHasDuplicateNameError's Generated Constructor Code
+	public  partial class FactTypeHasDuplicateNameError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasDuplicateNameError CreateFactTypeHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (FactTypeHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(FactTypeHasDuplicateNameError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasDuplicateNameError CreateAndInitializeFactTypeHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FactTypeHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(FactTypeHasDuplicateNameError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FactTypeHasDuplicateNameError
+	/// <summary>
+	/// FactTypeHasDuplicateNameError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError))]
+	public sealed class FactTypeHasDuplicateNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasDuplicateNameErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError")]
+	public  partial class ConstraintHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ConstraintHasDuplicateNameError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "462e847e-840d-4766-b251-d896a18fa599";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.MetaRelationshipGuidString);
+		#endregion
+
+		#region DuplicateNameError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String DuplicateNameErrorMetaRoleGuidString = "66386508-14ce-48b5-aa0c-ac971dca74a8";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid DuplicateNameErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameError")]
+		public  Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError DuplicateNameError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError)this.GetRolePlayer(DuplicateNameErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(DuplicateNameErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region ConstraintCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ConstraintCollectionMetaRoleGuidString = "9d5edc77-403f-47ef-a003-b56d7ad92bdb";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollection")]
+		public  Northface.Tools.ORM.ObjectModel.Constraint ConstraintCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.Constraint)this.GetRolePlayer(ConstraintCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ConstraintCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ConstraintHasDuplicateNameError's Generated Constructor Code
+	public  partial class ConstraintHasDuplicateNameError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ConstraintHasDuplicateNameError CreateConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ConstraintHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(ConstraintHasDuplicateNameError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ConstraintHasDuplicateNameError CreateAndInitializeConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ConstraintHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(ConstraintHasDuplicateNameError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ConstraintHasDuplicateNameError
+	/// <summary>
+	/// ConstraintHasDuplicateNameError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError))]
+	public sealed class ConstraintHasDuplicateNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ConstraintHasDuplicateNameErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError(store, bag);
 		}
 	}
 	#endregion

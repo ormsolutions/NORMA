@@ -86,7 +86,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // MergeContext functions
 	}
-	#region NamedElementDictionary integration
+	#region NamedElementDictionary and DuplicateNameError integration
 	public partial class ORMModel : INamedElementDictionaryParent
 	{
 		#region INamedElementDictionaryParent implementation
@@ -109,7 +109,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				if (myObjectTypesDictionary == null)
 				{
-					myObjectTypesDictionary = new NamedElementDictionary();
+					myObjectTypesDictionary = new ObjectTypeNamedElementDictionary();
 				}
 				return myObjectTypesDictionary;
 			}
@@ -117,7 +117,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				if (myFactTypesDictionary == null)
 				{
-					myFactTypesDictionary = new NamedElementDictionary();
+					myFactTypesDictionary = new FactTypeNamedElementDictionary();
 				}
 				return myFactTypesDictionary;
 			}
@@ -125,7 +125,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				if (myConstraintsDictionary == null)
 				{
-					myConstraintsDictionary = new NamedElementDictionary();
+					myConstraintsDictionary = new ConstraintNamedElementDictionary();
 				}
 				return myConstraintsDictionary;
 			}
@@ -147,6 +147,311 @@ namespace Northface.Tools.ORM.ObjectModel
 			return null;
 		}
 		#endregion // INamedElementDictionaryParent implementation
+		#region Rules to remove duplicate name errors
+		[RuleOn(typeof(ObjectTypeHasDuplicateNameError))]
+		private class RemoveDuplicateObjectTypeNameErrorRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ObjectTypeHasDuplicateNameError link = e.ModelElement as ObjectTypeHasDuplicateNameError;
+				ObjectTypeDuplicateNameError error = link.DuplicateNameError;
+				if (!error.IsRemoved)
+				{
+					if (error.ObjectTypeCollection.Count < 2)
+					{
+						error.Remove();
+					}
+				}
+			}
+		}
+		[RuleOn(typeof(FactTypeHasDuplicateNameError))]
+		private class RemoveDuplicateFactTypeNameErrorRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				FactTypeHasDuplicateNameError link = e.ModelElement as FactTypeHasDuplicateNameError;
+				FactTypeDuplicateNameError error = link.DuplicateNameError;
+				if (!error.IsRemoved)
+				{
+					if (error.FactTypeCollection.Count < 2)
+					{
+						error.Remove();
+					}
+				}
+			}
+		}
+		[RuleOn(typeof(ConstraintHasDuplicateNameError))]
+		private class RemoveDuplicateConstraintNameErrorRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ConstraintHasDuplicateNameError link = e.ModelElement as ConstraintHasDuplicateNameError;
+				ConstraintDuplicateNameError error = link.DuplicateNameError;
+				if (!error.IsRemoved)
+				{
+					if (error.ConstraintCollection.Count < 2)
+					{
+						error.Remove();
+					}
+				}
+			}
+		}
+		#endregion // Rules to remove duplicate name errors
+		#region Relationship-specific NamedElementDictionary implementations
+		#region ObjectTypeNamedElementDictionary class
+		/// <summary>
+		/// Dictionary used to set the initial names of object and value types and to
+		/// generate model validation errors and exceptions for duplicate
+		/// element names.
+		/// </summary>
+		[CLSCompliant(false)]
+		protected class ObjectTypeNamedElementDictionary : NamedElementDictionary
+		{
+			private class DuplicateNameManager : IDuplicateNameCollectionManager
+			{
+				#region IDuplicateNameCollectionManager Implementation
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction)
+				{
+					ObjectType objectType = (ObjectType)element;
+					if (afterTransaction)
+					{
+						// We're not in a transaction, but the object model will be in
+						// the state we need it because we put it there during a transaction.
+						// Just return the collection from the current state of the object model.
+						ObjectTypeDuplicateNameError error = objectType.DuplicateNameError;
+						return (error != null) ? error.ObjectTypeCollection : null;
+					}
+					else
+					{
+						// Modify the object model to add the error.
+						if (elementCollection == null)
+						{
+							ObjectTypeDuplicateNameError error = ObjectTypeDuplicateNameError.CreateObjectTypeDuplicateNameError(objectType.Store);
+							objectType.DuplicateNameError = error;
+							error.Model = objectType.Model;
+							error.GenerateErrorText();
+							elementCollection = error.ObjectTypeCollection;
+						}
+						else
+						{
+							((ObjectTypeMoveableCollection)elementCollection).Add(objectType);
+						}
+						return elementCollection;
+					}
+				}
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, NamedElement element, bool afterTransaction)
+				{
+					if (!afterTransaction)
+					{
+						// Just clear the error. A rule is used to remove the error
+						// object itself when there is not longer a duplicate.
+						((ObjectType)element).DuplicateNameError = null;
+					}
+					return elementCollection;
+				}
+				#endregion // IDuplicateNameCollectionManager Implementation
+			}
+			#region Constructors
+			/// <summary>
+			/// Default constructor for ObjectTypeNamedElementDictionary
+			/// </summary>
+			public ObjectTypeNamedElementDictionary() : base(new DuplicateNameManager())
+			{
+			}
+			#endregion // Constructors
+			#region Base overrides
+			/// <summary>
+			/// Provide different base names for entity types and value types
+			/// </summary>
+			/// <param name="element">The element to test</param>
+			/// <returns>A base name string pattern</returns>
+			protected override string GetRootNamePattern(NamedElement element)
+			{
+				ObjectType objectType = (ObjectType)element;
+				return objectType.IsValueType ? ResourceStrings.ValueTypeDefaultNamePattern : ResourceStrings.EntityTypeDefaultNamePattern;
+			}
+			/// <summary>
+			/// Raise an exception with text specific to a name in a model
+			/// </summary>
+			/// <param name="element">Element we're attempting to name</param>
+			/// <param name="requestedName">The in-use requested name</param>
+			protected override void RaiseDuplicateNameException(NamedElement element, string requestedName)
+			{
+				throw new InvalidOperationException(string.Format(ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
+			}
+			#endregion // Base overrides
+		}
+		#endregion // ObjectTypeNamedElementDictionary class
+		#region FactTypeNamedElementDictionary class
+		/// <summary>
+		/// Dictionary used to set the initial names of fact types and to
+		/// generate model validation errors and exceptions for duplicate
+		/// element names.
+		/// </summary>
+		[CLSCompliant(false)]
+		protected class FactTypeNamedElementDictionary : NamedElementDictionary
+		{
+			private class DuplicateNameManager : IDuplicateNameCollectionManager
+			{
+				#region IDuplicateNameCollectionManager Implementation
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction)
+				{
+					FactType factType = (FactType)element;
+					if (afterTransaction)
+					{
+						// We're not in a transaction, but the object model will be in
+						// the state we need it because we put it there during a transaction.
+						// Just return the collection from the current state of the object model.
+						FactTypeDuplicateNameError error = factType.DuplicateNameError;
+						return (error != null) ? error.FactTypeCollection : null;
+					}
+					else
+					{
+						// Modify the object model to add the error.
+						if (elementCollection == null)
+						{
+							FactTypeDuplicateNameError error = FactTypeDuplicateNameError.CreateFactTypeDuplicateNameError(factType.Store);
+							factType.DuplicateNameError = error;
+							error.Model = factType.Model;
+							error.GenerateErrorText();
+							elementCollection = error.FactTypeCollection;
+						}
+						else
+						{
+							((FactTypeMoveableCollection)elementCollection).Add(factType);
+						}
+						return elementCollection;
+					}
+				}
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, NamedElement element, bool afterTransaction)
+				{
+					if (!afterTransaction)
+					{
+						// Just clear the error. A rule is used to remove the error
+						// object itself when there is not longer a duplicate.
+						((FactType)element).DuplicateNameError = null;
+					}
+					return elementCollection;
+				}
+				#endregion // IDuplicateNameCollectionManager Implementation
+			}
+			#region Constructors
+			/// <summary>
+			/// Default constructor for FactTypeNamedElementDictionary
+			/// </summary>
+			public FactTypeNamedElementDictionary() : base(new DuplicateNameManager())
+			{
+			}
+			#endregion // Constructors
+			#region Base overrides
+			/// <summary>
+			/// Provide a localized base name pattern for a new FactType
+			/// </summary>
+			/// <param name="element">Ignored. Should be a FactType</param>
+			/// <returns>A base name string pattern</returns>
+			protected override string GetRootNamePattern(NamedElement element)
+			{
+				Debug.Assert(element is FactType);
+				return ResourceStrings.FactTypeDefaultNamePattern;
+			}
+			/// <summary>
+			/// Raise an exception with text specific to a name in a model
+			/// </summary>
+			/// <param name="element">Element we're attempting to name</param>
+			/// <param name="requestedName">The in-use requested name</param>
+			protected override void RaiseDuplicateNameException(NamedElement element, string requestedName)
+			{
+				throw new InvalidOperationException(string.Format(ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
+			}
+			#endregion // Base overrides
+		}
+		#endregion // FactTypeNamedElementDictionary class
+		#region ConstraintNamedElementDictionary class
+		/// <summary>
+		/// Dictionary used to set the initial names of constraints and to
+		/// generate model validation errors and exceptions for duplicate
+		/// element names.
+		/// </summary>
+		[CLSCompliant(false)]
+		protected class ConstraintNamedElementDictionary : NamedElementDictionary
+		{
+			private class DuplicateNameManager : IDuplicateNameCollectionManager
+			{
+				#region IDuplicateNameCollectionManager Implementation
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction)
+				{
+					Constraint constraint = (Constraint)element;
+					if (afterTransaction)
+					{
+						// We're not in a transaction, but the object model will be in
+						// the state we need it because we put it there during a transaction.
+						// Just return the collection from the current state of the object model.
+						ConstraintDuplicateNameError error = constraint.DuplicateNameError;
+						return (error != null) ? error.ConstraintCollection : null;
+					}
+					else
+					{
+						// Modify the object model to add the error.
+						if (elementCollection == null)
+						{
+							ConstraintDuplicateNameError error = ConstraintDuplicateNameError.CreateConstraintDuplicateNameError(constraint.Store);
+							constraint.DuplicateNameError = error;
+							error.Model = constraint.Model;
+							error.GenerateErrorText();
+							elementCollection = error.ConstraintCollection;
+						}
+						else
+						{
+							((ConstraintMoveableCollection)elementCollection).Add(constraint);
+						}
+						return elementCollection;
+					}
+				}
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, NamedElement element, bool afterTransaction)
+				{
+					if (!afterTransaction)
+					{
+						// Just clear the error. A rule is used to remove the error
+						// object itself when there is not longer a duplicate.
+						((Constraint)element).DuplicateNameError = null;
+					}
+					return elementCollection;
+				}
+				#endregion // IDuplicateNameCollectionManager Implementation
+			}
+			#region Constructors
+			/// <summary>
+			/// Default constructor for ConstraintNamedElementDictionary
+			/// </summary>
+			public ConstraintNamedElementDictionary() : base(new DuplicateNameManager())
+			{
+			}
+			#endregion // Constructors
+			#region Base overrides
+			/// <summary>
+			/// Provide a localized base name pattern for a new Constraint
+			/// </summary>
+			/// <param name="element">Ignored. Should be a FactType</param>
+			/// <returns>A base name string pattern</returns>
+			protected override string GetRootNamePattern(NamedElement element)
+			{
+				Debug.Assert(element is Constraint);
+				// UNDONE: How explicit do we want to be on constraint naming?
+				return base.GetRootNamePattern(element);
+			}
+			/// <summary>
+			/// Raise an exception with text specific to a name in a model
+			/// </summary>
+			/// <param name="element">Element we're attempting to name</param>
+			/// <param name="requestedName">The in-use requested name</param>
+			protected override void RaiseDuplicateNameException(NamedElement element, string requestedName)
+			{
+				throw new InvalidOperationException(string.Format(ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
+			}
+			#endregion // Base overrides
+		}
+		#endregion // ConstraintNamedElementDictionary class
+		#endregion // Relationship-specific NamedElementDictionary implementations
 	}
 	public partial class ModelHasObjectType : INamedElementDictionaryLink
 	{
@@ -235,5 +540,160 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	#endregion // NamedElementDictionary integration
-}   
+	public abstract partial class DuplicateNameError :  IRepresentModelElements
+	{
+		#region DuplicateNameError Specific
+		/// <summary>
+		/// Get a list of elements with the same name. The
+		/// returned elements will all come from a
+		/// generated metarole collections.
+		/// </summary>
+		protected abstract IList DuplicateElements{ get;}
+		/// <summary>
+		/// Get the text to display the duplicate error information. Replacement
+		/// field {0} is replaced by the model name, field {1} is replaced by the
+		/// element name.
+		/// </summary>
+		protected abstract string ErrorFormatText { get;}
+		#endregion // DuplicateNameError Specific
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			IList elements = DuplicateElements;
+			string elementName = (elements.Count != 0) ? ((NamedElement)elements[0]).Name : "";
+			ORMModel model = Model;
+			string modelName = (model != null) ? model.Name : "";
+			string newText = string.Format(ErrorFormatText, modelName, elementName);
+			string currentText = Name;
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the model name changes.
+		/// An owner name change will drop the error, so there is
+		/// no reason to regenerate on owner name change.
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			// Pick up all roles played directly by this element. This
+			// will get ObjectTypeCollection, FactTypeCollection, etc, but
+			// not the owning model. These are non-aggregating roles.
+			ICollection elements = DuplicateElements;
+			int count = elements.Count;
+			if (count == 0)
+			{
+				return null;
+			}
+			ModelElement[] retVal = new ModelElement[count];
+			elements.CopyTo(retVal, 0);
+			return retVal;
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
+	#region Relationship-specific derivations of DuplicateNameError
+	public partial class ObjectTypeDuplicateNameError : DuplicateNameError
+	{
+		/// <summary>
+		/// Get the duplicate elements represented by this DuplicateNameError
+		/// </summary>
+		/// <returns>ObjectTypeCollection</returns>
+		protected override IList DuplicateElements
+		{
+			get
+			{
+				return ObjectTypeCollection;
+			}
+		}
+		/// <summary>
+		/// Get the text to display the duplicate error information. Replacement
+		/// field {0} is replaced by the model name, field {1} is replaced by the
+		/// element name.
+		/// </summary>
+		/// <value>The</value>
+		protected override string ErrorFormatText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorModelHasDuplicateObjectTypeNames;
+			}
+		}
+	}
+	public partial class FactTypeDuplicateNameError : DuplicateNameError
+	{
+		/// <summary>
+		/// Get the duplicate elements represented by this DuplicateNameError
+		/// </summary>
+		/// <returns>FactTypeCollection</returns>
+		protected override IList DuplicateElements
+		{
+			get
+			{
+				return FactTypeCollection;
+			}
+		}
+		/// <summary>
+		/// Get the text to display the duplicate error information. Replacement
+		/// field {0} is replaced by the model name, field {1} is replaced by the
+		/// element name.
+		/// </summary>
+		/// <value>The</value>
+		protected override string ErrorFormatText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorModelHasDuplicateFactTypeNames;
+			}
+		}
+	}
+	public partial class ConstraintDuplicateNameError : DuplicateNameError
+	{
+		/// <summary>
+		/// Get the duplicate elements represented by this DuplicateNameError
+		/// </summary>
+		/// <returns>ConstraintCollection</returns>
+		protected override IList DuplicateElements
+		{
+			get
+			{
+				return ConstraintCollection;
+			}
+		}
+		/// <summary>
+		/// Get the text to display the duplicate error information. Replacement
+		/// field {0} is replaced by the model name, field {1} is replaced by the
+		/// element name.
+		/// </summary>
+		/// <value>The</value>
+		protected override string ErrorFormatText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorModelHasDuplicateConstraintNames;
+			}
+		}
+	}
+	#endregion // Relationship-specific derivations of DuplicateNameError
+	#endregion // NamedElementDictionary and DuplicateNameError integration
+}	

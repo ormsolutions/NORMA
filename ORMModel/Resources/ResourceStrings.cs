@@ -211,15 +211,22 @@ namespace Northface.Tools.ORM
 		private const string NestedFactTypePickerNullItemText_Id = "Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText";
 		private const string NestingTypePickerNullItemText_Id = "Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText";
 		private const string RoleDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.Role.DefaultNamePattern";
+		private const string EntityTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern";
+		private const string ValueTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern";
+		private const string FactTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.FactType.DefaultNamePattern";
 		private const string ExternalConstraintConnectActionInstructions_Id = "ExternalConstraintConnectAction.Instructions";
 		private const string ModelBrowserWindowTitle_Id = "ORMModelBrowser.WindowTitle";
 		private const string ModelExceptionReadingIsPrimaryToFalse_Id = "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse";
 		private const string ModelExceptionReadingTextChangeInvalid_Id = "ModelException.Reading.Text.InvalidText";
 		private const string ModelExceptionFactAddReadingInvalidReadingText_Id = "ModelException.Fact.AddReading.InvalidReadingText";
+		private const string ModelExceptionNameAlreadyUsedByModel_Id = "ModelException.Model.DuplicateName.Text";
 		private const string CommandDeleteFactTypeText_Id = "Command.DeleteFactType.Text";
 		private const string CommandDeleteObjectTypeText_Id = "Command.DeleteObjectType.Text";
 		private const string ModelErrorConstraintHasTooFewRoleSetsText_Id = "ModelError.Constraint.TooFewRoleSets.Text";
 		private const string ModelErrorConstraintHasTooManyRoleSetsText_Id = "ModelError.Constraint.TooManyRoleSets.Text";
+		private const string ModelErrorModelHasDuplicateConstraintNames_Id = "ModelError.Model.DuplicateConstraintNames.Text";
+		private const string ModelErrorModelHasDuplicateFactTypeNames_Id = "ModelError.Model.DuplicateFactTypeNames.Text";
+		private const string ModelErrorModelHasDuplicateObjectTypeNames_Id = "ModelError.Model.DuplicateObjectTypeNames.Text";
 		#endregion // Private resource ids
 		#region Public accessor properties
 		/// <summary>
@@ -314,6 +321,39 @@ namespace Northface.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// The base name used to create a name for a new EntityType. This is a format string,
+		/// with {0} being the placeholder for the number placement.
+		/// </summary>
+		public static string EntityTypeDefaultNamePattern
+		{
+			get
+			{
+				return GetString(ResourceManagers.ObjectModel, EntityTypeDefaultNamePattern_Id);
+			}
+		}
+		/// <summary>
+		/// The base name used to create a name for a new ValueType. This is a format string,
+		/// with {0} being the placeholder for the number placement.
+		/// </summary>
+		public static string ValueTypeDefaultNamePattern
+		{
+			get
+			{
+				return GetString(ResourceManagers.ObjectModel, ValueTypeDefaultNamePattern_Id);
+			}
+		}
+		/// <summary>
+		/// The base name used to create a name for a new FactType. This is a format string,
+		/// with {0} being the placeholder for the number placement.
+		/// </summary>
+		public static string FactTypeDefaultNamePattern
+		{
+			get
+			{
+				return GetString(ResourceManagers.ObjectModel, FactTypeDefaultNamePattern_Id);
+			}
+		}
+		/// <summary>
 		/// The instructions shown when creating an external constraint
 		/// </summary>
 		public static string ExternalConstraintConnectActionInstructions
@@ -400,6 +440,53 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Model, ModelErrorConstraintHasTooManyRoleSetsText_Id);
+			}
+		}
+		/// <summary>
+		/// Model validation error shown when multiple constraints have
+		/// the same name. This is an uncommon condition that should only
+		/// occur with a hand edit to a model file.
+		/// </summary>
+		public static string ModelErrorModelHasDuplicateConstraintNames
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelErrorModelHasDuplicateConstraintNames_Id);
+			}
+		}
+		/// <summary>
+		/// Model validation error shown when multiple fact types have
+		/// the same name. This is an uncommon condition that should only
+		/// occur with a hand edit to a model file.
+		/// </summary>
+		public static string ModelErrorModelHasDuplicateFactTypeNames
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelErrorModelHasDuplicateFactTypeNames_Id);
+			}
+		}
+		/// <summary>
+		/// Model validation error shown when multiple object types have
+		/// the same name. This is an uncommon condition that should only
+		/// occur with a hand edit to a model file.
+		/// </summary>
+		public static string ModelErrorModelHasDuplicateObjectTypeNames
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelErrorModelHasDuplicateObjectTypeNames_Id);
+			}
+		}
+		/// <summary>
+		/// Exception message when a name change in the editor attempts to
+		/// introduce a duplicate name into the model.
+		/// </summary>
+		public static string ModelExceptionNameAlreadyUsedByModel
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionNameAlreadyUsedByModel_Id);
 			}
 		}
 		/// <summary>

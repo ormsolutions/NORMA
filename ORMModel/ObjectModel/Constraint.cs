@@ -63,7 +63,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // Constraint specific
 	}
-	public partial class ExternalConstraint : INamedElementDictionaryChild
+	public partial class ExternalConstraint : INamedElementDictionaryChild, IModelErrorOwner
 	{
 		#region ExternalConstraint Specific
 		/// <summary>
@@ -244,28 +244,6 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ExternalConstraint))]
-		private class SynchronizeErrorText : ChangeRule
-		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
-			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == NamedElement.NameMetaAttributeGuid)
-				{
-					ExternalConstraint constraint = e.ModelElement as ExternalConstraint;
-					TooManyRoleSetsError tooMany;
-					TooFewRoleSetsError tooFew;
-					if (null != (tooMany = constraint.TooManyRoleSetsError))
-					{
-						tooMany.GenerateErrorText();
-					}
-					if (null != (tooFew = constraint.TooFewRoleSetsError))
-					{
-						tooFew.GenerateErrorText();
-					}
-				}
-			}
-		}
 		[RuleOn(typeof(ExternalConstraintHasRoleSet), FireTime = TimeToFire.TopLevelCommit)]
 		private class EnforceRoleSetCardinalityForAdd : AddRule
 		{
@@ -298,6 +276,35 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Error synchronization rules
+		#region IModelErrorOwner Implementation
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		[CLSCompliant(false)]
+		protected IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				TooManyRoleSetsError tooMany;
+				TooFewRoleSetsError tooFew;
+				if (null != (tooMany = TooManyRoleSetsError))
+				{
+					yield return tooMany;
+				}
+				if (null != (tooFew = TooFewRoleSetsError))
+				{
+					yield return tooFew;
+				}
+			}
+		}
+		#endregion // IModelErrorOwner Implementation
 	}
 	public partial class ConstraintRoleSet
 	{
@@ -356,6 +363,16 @@ namespace Northface.Tools.ORM.ObjectModel
 				Name = newText;
 			}
 		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
 		#endregion // Base overrides
 		#region IRepresentModelElements Implementation
 		/// <summary>
@@ -387,6 +404,16 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (currentText != newText)
 			{
 				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange;
 			}
 		}
 		#endregion // Base overrides

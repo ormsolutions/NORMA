@@ -144,6 +144,9 @@
   <data name="Northface.Tools.ORM.ObjectModel.FactType">
     <value xml:space="preserve">FactType</value>
   </data>
+  <data name="Northface.Tools.ORM.ObjectModel.FactType.DefaultNamePattern">
+    <value xml:space="preserve">FactType{0}</value>
+  </data>
   <data name="Northface.Tools.ORM.ObjectModel.FactType.NestingTypeDisplay">
     <value xml:space="preserve">NestingType</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.ObjectifiedFactType">
     <value xml:space="preserve">ObjectifiedFactType</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern">
+    <value xml:space="preserve">EntityType{0}</value>
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.ObjectType.IsIndependent">
     <value xml:space="preserve">IsIndependent</value>
@@ -215,5 +221,8 @@
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.ValueType">
     <value xml:space="preserve">ValueType</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern">
+    <value xml:space="preserve">ValueType{0}</value>
   </data>
 </root>

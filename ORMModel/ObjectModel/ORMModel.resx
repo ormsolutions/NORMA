@@ -122,9 +122,25 @@
     <value xml:space="preserve">Constraint '{0}' has too many role sets.</value>
     <comment xml:space="preserve">Model validation error text when too many role sets are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
   </data>
+  <data name="ModelError.Model.DuplicateConstraintNames.Text">
+    <value xml:space="preserve">Model '{0}' contains multiple constraints named '{1}'. Constraint names must be unique in the model.</value>
+    <comment xml:space="preserve">Model validation error text used when multiple constraints with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+  </data>
+  <data name="ModelError.Model.DuplicateFactTypeNames.Text">
+    <value xml:space="preserve">Model '{0}' contains multiple fact types named '{1}'. Type names must be unique across all facts in a model.</value>
+    <comment xml:space="preserve">Model validation error text used when multiple fact types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+  </data>
+  <data name="ModelError.Model.DuplicateObjectTypeNames.Text">
+    <value xml:space="preserve">Model '{0}' contains multiple object types named '{1}'. Type names must be unique across all entity and value types in a model.</value>
+    <comment xml:space="preserve">Model validation error text used when multiple object types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+  </data>
   <data name="ModelException.Fact.AddReading.InvalidReadingText">
     <value xml:space="preserve">Reading text is not in a valid format.</value>
     <comment xml:space="preserve">Thrown when adding a reading to a fact using the AddReading with the reading text to add.</comment>
+  </data>
+  <data name="ModelException.Model.DuplicateName.Text">
+    <value xml:space="preserve">The name '{0}' is already in use in this model.</value>
+    <comment xml:space="preserve">Exception message when a name change in the editor attempts to introduce a duplicate name into the model.</comment>
   </data>
   <data name="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse">
     <value xml:space="preserve">The IsPrimary property cannot be set to false, set it to true for the new primary reading and this will occur automatically</value>
