@@ -246,6 +246,17 @@ namespace Northface.Tools.ORM
 		private const string ModelErrorModelHasDuplicateConstraintNames_Id = "ModelError.Model.DuplicateConstraintNames.Text";
 		private const string ModelErrorModelHasDuplicateFactTypeNames_Id = "ModelError.Model.DuplicateFactTypeNames.Text";
 		private const string ModelErrorModelHasDuplicateObjectTypeNames_Id = "ModelError.Model.DuplicateObjectTypeNames.Text";
+		private const string ModelReadingEditorListColumnHeaderReadingText_Id = "ModelReadingEditor.ListColumnHeader.ReadingText";
+		private const string ModelReadingEditorListColumnHeaderIsPrimary_Id = "ModelReadingEditor.ListColumnHeader.IsPrimary";
+		private const string ModelReadingEditorAllReadingsNodeName_Id = "ModelReadingEditor.AllReadingsNodeName";
+		private const string ModelReadingEditorMissingRolePlayerText_Id = "ModelReadingEditor.MissingRolePlayerText";
+		private const string ModelReadingEditorNewItemText_Id = "ModelReadingEditor.NewItemText";
+		private const string ModelReadingEditorNewReadingTransactionText_Id = "ModelReadingEditor.NewReadingTransactionText";
+		private const string ModelReadingEditorChangeReadingText_Id = "ModelReadingEditor.ChangeReadingText";
+		private const string ModelReadingEditorIsPrimaryToolTip_Id = "ModelReadingEditor.IsPrimaryToolTip";
+		private const string ModelReadingEditorChangePrimaryReadingText_Id = "ModelReadingEditor.ChangePrimaryReadingText";
+		private const string ModelReadingEditorWindowTitle_Id = "ModelReadingEditor.WindowTitle";
+		private const string ModelReadingEditorUnsupportedSelectionText_Id = "ModelReadingEditor.UnsupportedSelectionText";
 		#endregion // Private resource ids
 		#region Public accessor properties
 		/// <summary>
@@ -650,6 +661,118 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Diagram, CommandDeleteConstraintText_Id);
+			}
+		}
+		/// <summary>
+		/// Text that appears in the headers of the reading editor tool window for the reading text
+		/// </summary>
+		public static string ModelReadingEditorListColumnHeaderReadingText
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingEditorListColumnHeaderReadingText_Id);
+			}
+		}
+		/// <summary>
+		/// Text that appears in the header of the IsPrimary column in the reading editor tool window.
+		/// </summary>
+		public static string ModelReadingEditorListColumnHeaderIsPrimary
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingEditorListColumnHeaderIsPrimary_Id);
+			}
+		}
+		/// <summary>
+		/// The text to place in the node of the tree in the readings editor that shows all readings for the fact.
+		/// </summary>
+		public static string ModelReadingEditorAllReadingsNodeName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingEditorAllReadingsNodeName_Id);
+			}
+		}
+		/// <summary>
+		/// The text to display in the readings editor when a role has no roleplayer.
+		/// </summary>
+		public static string ModelReadingEditorMissingRolePlayerText
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingEditorMissingRolePlayerText_Id);
+			}
+		}
+		/// <summary>
+		/// The text that will be used for the new reading item in the readings list of the reading editor tool window.
+		/// </summary>
+		public static string ModelReadingEditorNewItemText
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingEditorNewItemText_Id);
+			}
+		}
+		/// <summary>
+		/// Text used to describe the transaction created when creating a new reading.
+		/// </summary>
+		public static string ModelReadingEditorNewReadingTransactionText
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingEditorNewReadingTransactionText_Id);
+			}
+		}
+		/// <summary>
+		/// Text used to label the transaction created when changing reading text through the editor
+		/// </summary>
+		public static string ModelReadingEditorChangeReadingText
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingEditorChangeReadingText_Id);
+			}
+		}
+		/// <summary>
+		/// ToolTip text that appears on the reading list for the IsPrimary status column.
+		/// </summary>
+		public static string ModelReadingEditorIsPrimaryToolTip
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingEditorIsPrimaryToolTip_Id);
+			}
+		}
+		/// <summary>
+		/// Text used to label the transaction created when which reading is primary is changed in the editor.
+		/// </summary>
+		public static string ModelReadingEditorChangePrimaryReadingText
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingEditorChangePrimaryReadingText_Id);
+			}
+		}
+		/// <summary>
+		/// Text to place in the title of the reading editor tool window.
+		/// </summary>
+		public static string ModelReadingEditorWindowTitle
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingEditorWindowTitle_Id);
+			}
+		}
+		/// <summary>
+		/// Text that will display in the middle of the tool window when 
+		/// the document view currently has an unsuppoted collection.
+		/// </summary>
+		/// <value></value>
+		public static string ModelReadingEditorUnsupportedSelectionText
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReadingEditorUnsupportedSelectionText_Id);
 			}
 		}
 		#endregion // Public accessor properties

@@ -178,4 +178,48 @@
     <value xml:space="preserve">A Role must be owned by a FactType that is owned by an ORMModel to set the IsMandatory property.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to set the IsMandatory property on a role of an unattached fact type. IsMandatory creates a constraint, which is owned by an ORMModel, so cannot be realized if the model is unknown.</comment>
   </data>
+  <data name="ModelReadingEditor.AllReadingsNodeName">
+    <value xml:space="preserve">All</value>
+    <comment xml:space="preserve">Text to use for the display All readings node in the readings editor tool window.</comment>
+  </data>
+  <data name="ModelReadingEditor.ChangePrimaryReadingText">
+    <value xml:space="preserve">Change Primary Reading</value>
+    <comment xml:space="preserve">Text used to label the transaction created when the primary reading is changed through the reading editor.</comment>
+  </data>
+  <data name="ModelReadingEditor.ChangeReadingText">
+    <value xml:space="preserve">Change Reading Text</value>
+    <comment xml:space="preserve">Text used to describe the transaction created when the text of a reading is changed through the editor.</comment>
+  </data>
+  <data name="ModelReadingEditor.IsPrimaryToolTip">
+    <value xml:space="preserve">Indicates if the Reading is the primary one for the ReadingOrder that it belongs to.</value>
+    <comment xml:space="preserve">Text used for the ToolTip on the IsPrimary column of the reading list.</comment>
+  </data>
+  <data name="ModelReadingEditor.ListColumnHeader.IsPrimary">
+    <value xml:space="preserve">IsPrimary</value>
+    <comment xml:space="preserve">Text used for IsPrimary column header in the reading editor tool window.</comment>
+  </data>
+  <data name="ModelReadingEditor.ListColumnHeader.ReadingText">
+    <value xml:space="preserve">Reading Text</value>
+    <comment xml:space="preserve">The text that will be displayed in the column header of the reading list in the reading editor tool window.</comment>
+  </data>
+  <data name="ModelReadingEditor.MissingRolePlayerText">
+    <value xml:space="preserve">[missing]</value>
+    <comment xml:space="preserve">Text to display in the reading editor when the role has no roleplayer to substitute into the text.</comment>
+  </data>
+  <data name="ModelReadingEditor.NewItemText">
+    <value xml:space="preserve">New…</value>
+    <comment xml:space="preserve">Text to place in the new item entry of the readings list in the reading editor tool window</comment>
+  </data>
+  <data name="ModelReadingEditor.NewReadingTransactionText">
+    <value xml:space="preserve">Add New Reading</value>
+    <comment xml:space="preserve">Text used to describe the transaction created when creating a new reading.</comment>
+  </data>
+  <data name="ModelReadingEditor.UnsupportedSelectionText">
+    <value xml:space="preserve">Select an item related to a Fact</value>
+    <comment xml:space="preserve">Text to place in the reading editor when the document view currently has an unsupported selection.</comment>
+  </data>
+  <data name="ModelReadingEditor.WindowTitle">
+    <value xml:space="preserve">Reading Editor</value>
+    <comment xml:space="preserve">Text to place in the title of the reading editor tool window.</comment>
+  </data>
 </root>

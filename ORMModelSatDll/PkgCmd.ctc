@@ -31,6 +31,7 @@ CMDS_SECTION guidORMDesignerPackage
 #ifdef DEBUG
 		guidORMDesignerCommandSet:groupIdDebugCommands,				guidORMDesignerCommandSet:menuIdContextMenu,	0x1000;
 #endif	
+		guidORMDesignerCommandSet:groupIdFactCommands,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0007;
 		guidORMDesignerCommandSet:groupIdDeleteContext,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0008;
     NEWGROUPS_END
 
@@ -40,6 +41,7 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdDebugViewStore,				guidORMDesignerCommandSet:groupIdDebugCommands,		0x0010,   guidOfficeIcon:msotcidNoIcon,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,		"Debug: View Store";
 #endif
 		guidORMDesignerCommandSet:cmdIdViewModelExplorer,			guidSHLMainMenu:IDG_VS_VIEW_WINDOWS,				0x0600,		guidOfficeIcon:msotcidNoIcon,	 BUTTON,	0,				"ORM &Model Explorer";
+		guidORMDesignerCommandSet:cmdIdViewReadingEditor,			guidORMDesignerCommandSet:groupIdFactCommands,		0x0610,		guidOfficeIcon:msotcidNoIcon,	 BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Readings Window";
     BUTTONS_END	
 
     COMBOS_BEGIN
@@ -51,7 +53,6 @@ CMDS_END
 
 CMDPLACEMENT_SECTION
 	CMDSETID_StandardCommandSet97:cmdidDelete,						guidORMDesignerCommandSet:groupIdDeleteContext,	0x0020;
-	
 CMDPLACEMENT_END
 
 VISIBILITY_SECTION

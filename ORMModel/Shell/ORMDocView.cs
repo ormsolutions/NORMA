@@ -35,6 +35,10 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		DeleteConstraint = 4,
 		/// <summary>
+		/// Display the readings toolwindow
+		/// </summary>
+		DisplayReadingsWindow = 8,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint,
@@ -182,7 +186,7 @@ namespace Northface.Tools.ORM.Shell
 			visibleCommands = ORMDesignerCommands.None;
 			if (element is FactType)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DisplayReadingsWindow;
 			}
 			else if (element is ObjectType)
 			{
@@ -195,6 +199,10 @@ namespace Northface.Tools.ORM.Shell
 			else if (element is ORMModel)
 			{
 				visibleCommands = ORMDesignerCommands.Delete;
+			}
+			else if (element is Role)
+			{
+				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow;
 			}
 		}
 		

@@ -1716,6 +1716,16 @@ namespace Northface.Tools.ORM.ShapeModel
 					(element is ObjectType && ((ObjectType)element).NestedFactType == AssociatedFactType)
 					|| (element is ReadingOrder && ((ReadingOrder)element).FactType == AssociatedFactType)
 				);
+			ReadingOrder ord;
+			if (null != (ord = element as ReadingOrder))
+			{
+				//prevent reading orders that are different from the currently displayed one
+				//from being added to the view.
+				if (!object.ReferenceEquals(FactType.FindMatchingReadingOrder(AssociatedFactType), ord))
+				{
+					return false;
+				}
+			}
 			return true;
 		}
 		/// <summary>

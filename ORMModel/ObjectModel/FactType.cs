@@ -40,6 +40,93 @@ namespace Northface.Tools.ORM.ObjectModel
 	#endregion // IFactConstraint interface
 	public partial class FactType : INamedElementDictionaryChild
 	{
+		#region ReadingOrder acquisition
+		/// <summary>
+		/// Gets a reading order, first by trying to find it, if one doesn't exist
+		/// it will then create a new ReadingOrder. It operates under the assumption
+		/// that a transaction has already been started.
+		/// </summary>
+		/// <returns></returns>
+		public static ReadingOrder GetReadingOrder(FactType theFact, Role[] roleOrder)
+		{
+			ReadingOrder retval = FindMatchingReadingOrder(theFact, roleOrder);
+			if (retval == null)
+			{
+				retval = CreateReadingOrder(theFact, roleOrder);
+			}
+			return retval;
+		}
+
+		/// <summary>
+		/// Lookes for a ReadingOrder that has the roles in the same order
+		/// as the currently selected role order.
+		/// </summary>
+		/// <returns>The reading order if found, null if it was not.</returns>
+		public static ReadingOrder FindMatchingReadingOrder(FactType theFact, Role[] roleOrder)
+		{
+			ReadingOrder retval = null;
+			ReadingOrderMoveableCollection readingOrders = theFact.ReadingOrderCollection;
+			foreach (ReadingOrder order in readingOrders)
+			{
+				RoleMoveableCollection roles = order.RoleCollection;
+				int numRoles = roles.Count;
+				if (numRoles == roleOrder.Length)
+				{
+					bool match = true;
+					for (int i = 0; i < numRoles; ++i)
+					{
+						if (roles[i] != roleOrder[i])
+						{
+							match = false;
+							break;
+						}
+					}
+					if (match)
+					{
+						retval = order;
+						break;
+					}
+				}
+			}
+			return retval;
+		}
+
+		/// <summary>
+		/// Gets the reading order that matches the currently displayed order of the
+		/// fact that is passed in.
+		/// </summary>
+		/// <returns>The matching ReadingOrder or null if one does not exist.</returns>
+		public static ReadingOrder FindMatchingReadingOrder(FactType theFact)
+		{
+			RoleMoveableCollection factRoles = theFact.RoleCollection;
+			Role[] roleOrder = new Role[factRoles.Count];
+			factRoles.CopyTo(roleOrder, 0);
+			return FindMatchingReadingOrder(theFact, roleOrder);
+		}
+
+		/// <summary>
+		/// Creates a new ReadingOrder with the same role sequence as the currently selected one.
+		/// A transaction should have been pushed before calling this method. It operates under
+		/// the assumption that a transaction has already been started.
+		/// </summary>
+		/// <returns>Should always return a value unless there was an error creating the ReadingOrder</returns>
+		public static ReadingOrder CreateReadingOrder(FactType theFact, Role[] roleOrder)
+		{
+			ReadingOrder retval = null;
+			if (roleOrder.Length > 0)
+			{
+				retval = ReadingOrder.CreateReadingOrder(theFact.Store);
+				RoleMoveableCollection readingRoles = retval.RoleCollection;
+				int numRoles = roleOrder.Length;
+				for (int i = 0; i < numRoles; ++i)
+				{
+					readingRoles.Add(roleOrder[i]);
+				}
+				theFact.ReadingOrderCollection.Add(retval);
+			}
+			return retval;
+		}
+		#endregion
 		#region FactType Specific
 		/// <summary>
 		/// Get a read-only collection of FactConstraint links. Use the

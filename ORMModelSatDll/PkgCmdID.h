@@ -16,6 +16,7 @@
 #define groupIdDebugCommands			0x0FFF
 #endif
 #define groupIdDeleteContext			0x1000
+#define groupIdFactCommands				0x1001
 
 ///////////////////////////////////////////////////////////////////////////////
 // Command IDs       (0x2xxx)
@@ -24,5 +25,6 @@
 #define cmdIdDebugViewStore				0x28FF
 #endif
 #define cmdIdViewModelExplorer			0x2900
+#define cmdIdViewReadingEditor			0x2901
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs

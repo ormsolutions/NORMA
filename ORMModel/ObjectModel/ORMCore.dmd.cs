@@ -9275,6 +9275,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Editor(typeof(Northface.Tools.ORM.ObjectModel.Editors.ReadingTextEditor), typeof(System.Drawing.Design.UITypeEditor))]
 		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
 		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ReadingOrderReadingTextFieldHandler))]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingText")]

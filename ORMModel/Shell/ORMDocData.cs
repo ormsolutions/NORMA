@@ -133,6 +133,15 @@ namespace Northface.Tools.ORM.Shell
 				readOrd.ReadingCollection.Add(read);
 				read.Text = "{0} possesses {1}";
 
+				readOrd = ReadingOrder.CreateReadingOrder(store);
+				readOrd.RoleCollection.Add(fact.RoleCollection[1]);
+				readOrd.RoleCollection.Add(fact.RoleCollection[0]);
+				fact.ReadingOrderCollection.Add(readOrd);
+
+				read = Reading.CreateReading(store);
+				readOrd.ReadingCollection.Add(read);
+				read.Text = "{0} is of {1}";
+
 				InternalConstraint ic = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
 				ic.RoleCollection.Add(fact.RoleCollection[0]); // Automatically sets FactType, setting it again will remove and delete the new constraint
 

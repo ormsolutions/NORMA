@@ -72,6 +72,7 @@ namespace Northface.Tools.ORM.Shell
 
 				// Create tool window
 				AddToolWindow(new ORMBrowserToolWindow(this));
+				AddToolWindow(new ORMReadingEditorToolWindow(this));
 			}
 
 		}
@@ -108,5 +109,29 @@ namespace Northface.Tools.ORM.Shell
 		}
 
 		#endregion // Base overrides
+
+		#region Tool Window properties
+		/// <summary>
+		/// Browser tool window.
+		/// </summary>
+		public static ORMBrowserToolWindow BrowserWindow
+		{
+			get
+			{
+				return (ORMBrowserToolWindow)mySingleton.GetToolWindow(typeof(ORMBrowserToolWindow));
+			}
+		}
+
+		/// <summary>
+		/// Reading editor tool window.
+		/// </summary>
+		public static ORMReadingEditorToolWindow ReadingEditorWindow
+		{
+			get
+			{
+				return (ORMReadingEditorToolWindow)mySingleton.GetToolWindow(typeof(ORMReadingEditorToolWindow));
+			}
+		}
+		#endregion
 	}
 }

@@ -54,7 +54,7 @@ namespace Northface.Tools.ORM.Shell
 
 				#region Array of menu commands
 				myCommands = new MenuCommand[]
-			{
+				{
 				// Commands
 #if DEBUG
 				new MenuCommand(
@@ -65,6 +65,10 @@ namespace Northface.Tools.ORM.Shell
 				new EventHandler(OnStatusDelete),
 				new EventHandler(OnMenuDelete),
 				StandardCommands.Delete)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusReadingsWindow),
+				new EventHandler(OnMenuReadingsWindow),
+				ORMDesignerCommandIds.ViewReadingEditor)
 			};
 				#endregion
 				AddCommands(myCommands);
@@ -130,8 +134,9 @@ namespace Northface.Tools.ORM.Shell
 			/// <param name="e"></param>
 			protected void OnMenuViewORMModelExplorer(object sender, EventArgs e)
 			{
-				BrowserWindow.Show();
+				ORMDesignerPackage.BrowserWindow.Show();
 			}
+
 #if DEBUG
 			/// <summary>
 			/// Show a debug window displaying the contents of the current store
@@ -168,7 +173,25 @@ namespace Northface.Tools.ORM.Shell
 					docView.OnMenuDelete();
 				}
 			}
-
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			private void OnStatusReadingsWindow(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayReadingsWindow);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuReadingsWindow(object sender, EventArgs e)
+			{
+				ORMReadingEditorToolWindow editorWindow = ORMDesignerPackage.ReadingEditorWindow;
+				editorWindow.Show();
+			}
 			/// <summary>
 			/// 
 			/// </summary>
@@ -247,23 +270,6 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 
-			/// <summary>
-			/// Browser tool window.
-			/// </summary>
-			protected ORMBrowserToolWindow BrowserWindow
-			{
-				get
-				{
-					ORMDesignerPackage package = myServiceProvider.GetService(typeof(Package)) as ORMDesignerPackage;
-
-					if (package != null)
-					{
-						return (ORMBrowserToolWindow)package.GetToolWindow(typeof(ORMBrowserToolWindow));
-					}
-
-					return null;
-				}
-			}
 		}
 		/// <summary>
 		/// CommandIDs for the Application Designer package.
@@ -286,6 +292,10 @@ namespace Northface.Tools.ORM.Shell
 			/// The ORM Model Explorer item on the view menu
 			/// </summary>
 			public static readonly CommandID ViewModelExplorer = new CommandID(guidORMDesignerCommandSet, cmdIdViewModelExplorer);
+			/// <summary>
+			/// The ORM Readings Window item on the fact type context menu
+			/// </summary>
+			public static readonly CommandID ViewReadingEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewReadingEditor);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -307,12 +317,15 @@ namespace Northface.Tools.ORM.Shell
 			/// The ORM Model Explorer item on the view menu
 			/// </summary>
 			private const int cmdIdViewModelExplorer = 0x2900;
+			/// <summary>
+			/// The ORM Readings Window item on the fact type context menu
+			/// </summary>
+			private const int cmdIdViewReadingEditor = 0x2901;
 
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>
 			private const int menuIdContextMenu = 0x0100;
-
 			#endregion
 
 		}

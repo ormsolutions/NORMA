@@ -1828,7 +1828,9 @@ Information Contained Herein is Proprietary and Confidential.
         <superType>i6dc1eeefzd103z4d96z898ezcc873481834d</superType>
         <valueProperties>
           <property name="ReadingText" identity="b426931f-9232-4e42-b384-61c60d331aae" id="ib426931fz9232z4e42zb384z61c60d331aae">
-            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="" />
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="">
+              <clrattribute name="System.ComponentModel.Editor" parametertext="typeof(Northface.Tools.ORM.ObjectModel.Editors.ReadingTextEditor), typeof(System.Drawing.Design.UITypeEditor)" />
+            </mdfmetadata>
             <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="bac6bba2-f203-4a44-9038-afe99f90af85" default="" max="2147483647" />
           </property>
         </valueProperties>

@@ -126,7 +126,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Invalidates the cached value of the primary reading.
 		/// </summary>
-		private void InvlaidatePrimaryReading()
+		private void InvalidatePrimaryReading()
 		{
 			primaryReading = null;
 		}
