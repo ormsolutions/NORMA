@@ -393,7 +393,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				return; // Effect a cancel for a click on the diagram
 			}
-			base.OnMouseActionCompleted(e);
+			using (Transaction t = Diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.ExternalConstraintConnectActionTransactionName))
+			{
+				base.OnMouseActionCompleted(e);
+				if (t.HasPendingChanges)
+				{
+					t.Commit();
+				}
+			}
 			myPendingOnClickedAction = OnClickedAction.Complete;
 		}
 		#endregion // Base overrides

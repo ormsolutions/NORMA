@@ -220,6 +220,7 @@ namespace Northface.Tools.ORM
 		private const string ValueTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern";
 		private const string FactTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.FactType.DefaultNamePattern";
 		private const string ExternalConstraintConnectActionInstructions_Id = "ExternalConstraintConnectAction.Instructions";
+		private const string ExternalConstraintConnectActionTransactionName_Id = "ExternalConstraintConnectAction.TransactionName";
 		private const string ModelBrowserWindowTitle_Id = "ORMModelBrowser.WindowTitle";
 		private const string ModelExceptionReadingIsPrimaryToFalse_Id = "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse";
 		private const string ModelExceptionReadingTextChangeInvalid_Id = "ModelException.Reading.Text.InvalidText";
@@ -384,6 +385,17 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Diagram, ExternalConstraintConnectActionInstructions_Id);
+			}
+		}
+		/// <summary>
+		/// The transaction name used by the external constraint connect action.
+		/// The text appears in the undo dropdown in the VS IDE.
+		/// </summary>
+		public static string ExternalConstraintConnectActionTransactionName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, ExternalConstraintConnectActionTransactionName_Id);
 			}
 		}
 		/// <summary>
