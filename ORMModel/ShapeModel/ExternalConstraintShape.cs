@@ -122,7 +122,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					double widthAdjust = (double)pen.Width / 2;
 					float xLeft = (float)(bounds.Left + widthAdjust);
 					float xRight = (float)(bounds.Right - widthAdjust);
-					if (euc.Preferred)
+					if (euc.IsPreferred)
 					{
 						double yCenter = bounds.Top + bounds.Height / 2;
 						double yOffset = (double)pen.Width * .7;
@@ -200,7 +200,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
 				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == ExternalUniquenessConstraint.PreferredMetaAttributeGuid)
+				if (attributeGuid == ExternalUniquenessConstraint.IsPreferredMetaAttributeGuid)
 				{
 					InvalidateElementPresentation(e.ModelElement);
 				}

@@ -426,7 +426,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			string retVal = element.RootName;
 			if (retVal == null || retVal.Length == 0)
 			{
-				retVal = element.MetaClass.Name;
+				retVal = element.GetClassName();
 			}
 			return retVal;
 		}

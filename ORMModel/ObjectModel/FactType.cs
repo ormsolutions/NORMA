@@ -85,7 +85,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		/// <summary>
 		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
-		/// this child as participating in the 'ModelHasObjectType' naming set.
+		/// this child as participating in the 'ModelHasFactType' naming set.
 		/// </summary>
 		/// <param name="parentMetaRoleGuid">Guid</param>
 		/// <param name="childMetaRoleGuid">Guid</param>

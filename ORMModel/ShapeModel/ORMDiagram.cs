@@ -176,7 +176,6 @@ namespace Northface.Tools.ORM.ShapeModel
 			ElementGroup group = new ElementGroup(store);
 			ElementGroupPrototype retVal = null;
 			int roleArity = 0;
-			bool preferred = false;
 			ExclusionType exclusionType = ExclusionType.Exclusion;
 			switch (itemId)
 			{
@@ -203,16 +202,9 @@ namespace Northface.Tools.ORM.ShapeModel
 					break;
 				case ResourceStrings.ToolboxExternalUniquenessConstraintItemId:
 					ExternalUniquenessConstraint euc = ExternalUniquenessConstraint.CreateExternalUniquenessConstraint(store);
-					if (preferred)
-					{
-						euc.Preferred = true;
-					}
 					group.AddGraph(euc);
 					retVal = group.CreatePrototype(euc);
 					break;
-				case ResourceStrings.ToolboxPreferredExternalUniquenessConstraintItemId:
-					preferred = true;
-					goto case ResourceStrings.ToolboxExternalUniquenessConstraintItemId;
 				case ResourceStrings.ToolboxEqualityConstraintItemId:
 					EqualityConstraint eqc = EqualityConstraint.CreateEqualityConstraint(store);
 					group.AddGraph(eqc);

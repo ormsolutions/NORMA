@@ -33,6 +33,7 @@ namespace Northface.Tools.ORM.Shell
 		}
 		#endregion // Construction/destruction
 		#region Base overrides
+#if DEBUG
 		/// <summary>
 		/// UNDONE: Temporary code for load failure debugging. Remove.
 		/// </summary>
@@ -53,6 +54,7 @@ namespace Northface.Tools.ORM.Shell
 			}
 			return retVal;
 		}
+#endif // DEBUG
 		/// <summary>
 		/// Return array of types of the substores used by the designer
 		/// </summary>

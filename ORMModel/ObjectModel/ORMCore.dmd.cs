@@ -1705,6 +1705,52 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region PreferredIdentifier's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.Constraint PreferredIdentifier
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.Constraint)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region Collection Classes for ObjectType
 	/// <summary>
@@ -2950,6 +2996,52 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region PreferredIdentifierFor's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ObjectType PreferredIdentifierFor
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ObjectType)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region Collection Classes for Constraint
 	/// <summary>
@@ -3564,6 +3656,95 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.MetaClassGuidString);
 		#endregion
 
+		#region IsPreferred's Generated  Field Code
+		#region IsPreferred's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String IsPreferredMetaAttributeGuidString = "c1ba5d02-a7e4-4cd5-ac9f-89ee1d811ee8";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid IsPreferredMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuidString);
+		#endregion
+
+		#region IsPreferred's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferTrue)]
+		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(InternalUniquenessConstraintIsPreferredFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferred")]
+		public  System.Boolean IsPreferred
+		{
+			get
+			{
+				return internalUniquenessConstraintIsPreferredFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				internalUniquenessConstraintIsPreferredFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region InternalUniquenessConstraintIsPreferredFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for InternalUniquenessConstraint.IsPreferred field
+		/// </summary>
+		private static InternalUniquenessConstraintIsPreferredFieldHandler	internalUniquenessConstraintIsPreferredFieldHandler	= InternalUniquenessConstraintIsPreferredFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for InternalUniquenessConstraint.IsPreferred
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class InternalUniquenessConstraintIsPreferredFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint,System.Boolean>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private InternalUniquenessConstraintIsPreferredFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the InternalUniquenessConstraint.IsPreferred field handler
+			/// </summary>
+			/// <value>InternalUniquenessConstraintIsPreferredFieldHandler</value>
+			public static InternalUniquenessConstraintIsPreferredFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.internalUniquenessConstraintIsPreferredFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.internalUniquenessConstraintIsPreferredFieldHandler;
+					}
+					else
+					{
+						// The static constructor in InternalUniquenessConstraint will assign this value to
+						// Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.internalUniquenessConstraintIsPreferredFieldHandler, so just instantiate one and return it
+						return new InternalUniquenessConstraintIsPreferredFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the InternalUniquenessConstraint.IsPreferred field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
 	}
 	#region InternalUniquenessConstraint's Generated Constructor Code
 	public  partial class InternalUniquenessConstraint
@@ -4207,123 +4388,91 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.MetaClassGuidString);
 		#endregion
 
-		#region Preferred's Generated  Field Code
-		#region Preferred's Generated  MetaAttribute Code
+		#region IsPreferred's Generated  Field Code
+		#region IsPreferred's Generated  MetaAttribute Code
 		/// <summary>
 		/// MetaAttribute Guid String
 		/// </summary>
-		public const System.String PreferredMetaAttributeGuidString = "81ceefc5-e227-4a8e-be95-1a63066bc9b7";
+		public const System.String IsPreferredMetaAttributeGuidString = "81ceefc5-e227-4a8e-be95-1a63066bc9b7";
 
 		/// <summary>
 		/// MetaAttribute Guid
 		/// </summary>
-		public static readonly System.Guid PreferredMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.PreferredMetaAttributeGuidString);
+		public static readonly System.Guid IsPreferredMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuidString);
 		#endregion
 
-		#region Preferred's Generated Property Code
+		#region IsPreferred's Generated Property Code
 
-		private System.Boolean preferredPropertyStorage = false;
-		
 		/// <summary>
 		/// 
 		/// </summary>
+		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferTrue)]
 		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ExternalUniquenessConstraintPreferredFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.PreferredMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.Preferred")]
-		public  System.Boolean Preferred
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ExternalUniquenessConstraintIsPreferredFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferred")]
+		public  System.Boolean IsPreferred
 		{
 			get
 			{
-				return preferredPropertyStorage;
+				return externalUniquenessConstraintIsPreferredFieldHandler.GetFieldValue(this);
 			}
 		
 			set
 			{
-				externalUniquenessConstraintPreferredFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+				externalUniquenessConstraintIsPreferredFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
 			}
 		}
 		#endregion
 
-		#region ExternalUniquenessConstraintPreferredFieldHandler Generated Code
+		#region ExternalUniquenessConstraintIsPreferredFieldHandler Generated Code
 		/// <summary>
-		/// FieldHandler for ExternalUniquenessConstraint.Preferred field
+		/// FieldHandler for ExternalUniquenessConstraint.IsPreferred field
 		/// </summary>
-		private static ExternalUniquenessConstraintPreferredFieldHandler	externalUniquenessConstraintPreferredFieldHandler	= ExternalUniquenessConstraintPreferredFieldHandler.Instance;
+		private static ExternalUniquenessConstraintIsPreferredFieldHandler	externalUniquenessConstraintIsPreferredFieldHandler	= ExternalUniquenessConstraintIsPreferredFieldHandler.Instance;
 
 		/// <summary>
-		/// Implement the field handler for ExternalUniquenessConstraint.Preferred
+		/// Implement the field handler for ExternalUniquenessConstraint.IsPreferred
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class ExternalUniquenessConstraintPreferredFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint,System.Boolean>
+		public sealed partial class ExternalUniquenessConstraintIsPreferredFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint,System.Boolean>
 		{
 			/// <summary>
 			/// Constructor
 			/// </summary>
-			private ExternalUniquenessConstraintPreferredFieldHandler() { }
+			private ExternalUniquenessConstraintIsPreferredFieldHandler() { }
 
 			/// <summary>
-			/// Returns the singleton instance of the ExternalUniquenessConstraint.Preferred field handler
+			/// Returns the singleton instance of the ExternalUniquenessConstraint.IsPreferred field handler
 			/// </summary>
-			/// <value>ExternalUniquenessConstraintPreferredFieldHandler</value>
-			public static ExternalUniquenessConstraintPreferredFieldHandler Instance
+			/// <value>ExternalUniquenessConstraintIsPreferredFieldHandler</value>
+			public static ExternalUniquenessConstraintIsPreferredFieldHandler Instance
 			{
 				get
 				{
-					if (Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintPreferredFieldHandler != null)
+					if (Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintIsPreferredFieldHandler != null)
 					{
-						return Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintPreferredFieldHandler;
+						return Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintIsPreferredFieldHandler;
 					}
 					else
 					{
 						// The static constructor in ExternalUniquenessConstraint will assign this value to
-						// Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintPreferredFieldHandler, so just instantiate one and return it
-						return new ExternalUniquenessConstraintPreferredFieldHandler();
+						// Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintIsPreferredFieldHandler, so just instantiate one and return it
+						return new ExternalUniquenessConstraintIsPreferredFieldHandler();
 					}
 				}
 			}
 
 			/// <summary>
-			/// Returns the meta attribute id for the ExternalUniquenessConstraint.Preferred field handler
+			/// Returns the meta attribute id for the ExternalUniquenessConstraint.IsPreferred field handler
 			/// </summary>
 			/// <value>Guid</value>
 			public sealed override System.Guid Id
 			{
 				get
 				{
-					return Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.PreferredMetaAttributeGuid;
+					return Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuid;
 				}
 			}
-			/// <summary>
-			/// Gets the value of the attribute as it exists in the element
-			/// </summary>
-			/// <param name="element">the ExternalUniquenessConstraint</param>
-			protected sealed override System.Boolean GetValue(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint element)
-			{
-				return element.preferredPropertyStorage;
-			}
-
-			/// <summary>
-			/// Sets the value into the element
-			/// </summary>
-			/// <param name="element">the element</param>
-			/// <param name="value">new value</param>
-			/// <param name="commandFactory">the command factory for this change</param>
-			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
-			/// <param name="oldValue">the old value before the change</param>
-			/// <returns>true if the value actually changed</returns>
-			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
-			{
-				oldValue = element.preferredPropertyStorage;
-				if (allowDuplicates || oldValue != value)
-				{
-					OnValueChanging(element, oldValue, value);
-					element.preferredPropertyStorage = value;
-					OnValueChanged(element, oldValue, value);
-					return true;
-				}
-				return false;
-			}
-		
 		}
 		#endregion
 		#endregion
@@ -11990,6 +12139,118 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier")]
+	public  partial class EntityTypeHasPreferredIdentifier : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region EntityTypeHasPreferredIdentifier's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "515b27c0-e9c6-4c0d-a852-8edcf3a794d5";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.MetaRelationshipGuidString);
+		#endregion
+
+		#region PreferredIdentifier's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String PreferredIdentifierMetaRoleGuidString = "ccfab332-362c-4ab4-bb0b-bfcb577bcaad";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid PreferredIdentifierMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifier")]
+		public  Northface.Tools.ORM.ObjectModel.Constraint PreferredIdentifier
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.Constraint)this.GetRolePlayer(PreferredIdentifierMetaRoleGuid); }
+			set { this.SetRolePlayer(PreferredIdentifierMetaRoleGuid, value); }
+		}
+		#endregion
+		#region PreferredIdentifierFor's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String PreferredIdentifierForMetaRoleGuidString = "37f4cab9-3ba7-44cb-a366-94ba8b2e020c";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid PreferredIdentifierForMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierFor")]
+		public  Northface.Tools.ORM.ObjectModel.ObjectType PreferredIdentifierFor
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ObjectType)this.GetRolePlayer(PreferredIdentifierForMetaRoleGuid); }
+			set { this.SetRolePlayer(PreferredIdentifierForMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region EntityTypeHasPreferredIdentifier's Generated Constructor Code
+	public  partial class EntityTypeHasPreferredIdentifier
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EntityTypeHasPreferredIdentifier(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EntityTypeHasPreferredIdentifier CreateEntityTypeHasPreferredIdentifier(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (EntityTypeHasPreferredIdentifier)store.ElementFactory.CreateElementLink(typeof(EntityTypeHasPreferredIdentifier), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EntityTypeHasPreferredIdentifier CreateAndInitializeEntityTypeHasPreferredIdentifier(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (EntityTypeHasPreferredIdentifier)store.ElementFactory.CreateElementLink(typeof(EntityTypeHasPreferredIdentifier), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for EntityTypeHasPreferredIdentifier
+	/// <summary>
+	/// EntityTypeHasPreferredIdentifier Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier))]
+	public sealed class EntityTypeHasPreferredIdentifierElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EntityTypeHasPreferredIdentifierElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier(store, bag);
 		}
 	}
 	#endregion

@@ -43,6 +43,7 @@ namespace Northface.Tools.ORM.Shell
 	<xsl:template match=""om:Property[@Name='NestedFactTypeDisplay']"" />
 	<xsl:template match=""om:Property[@Name='RolePlayerDisplay']"" />
 	<xsl:template match=""om:Property[@Name='NestingTypeDisplay']"" />
+	<xsl:template match=""om:Property[@Name='IsPreferred']"" />
 </xsl:stylesheet>";
 		#endregion // Xsl transforms
 		#region Synchronized code to load transform into static variable
@@ -331,7 +332,7 @@ namespace Northface.Tools.ORM.Shell
 //			RulesSuspended = true;
 //			try
 //			{
-				XmlSerialization.DeserializeStore(myStore, stream, MajorVersion, MinorVersion, new XmlSerialization.UpgradeFileFormat(UpgradeFileFormat), null);
+			XmlSerialization.DeserializeStore(myStore, stream, MajorVersion, MinorVersion, new XmlSerialization.UpgradeFileFormat(UpgradeFileFormat), null);
 //			}
 //			finally
 //			{

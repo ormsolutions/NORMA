@@ -92,7 +92,6 @@ namespace Northface.Tools.ORM.Shell
 				ResourceStrings.ToolboxExclusiveOrConstraintItemId,
 				ResourceStrings.ToolboxExternalUniquenessConstraintItemId,
 				ResourceStrings.ToolboxInclusiveOrConstraintItemId,
-				ResourceStrings.ToolboxPreferredExternalUniquenessConstraintItemId,
 				ResourceStrings.ToolboxSubsetConstraintItemId
 			};
 			int idCount = itemIds.Length;

@@ -145,10 +145,6 @@ namespace Northface.Tools.ORM
 		/// </summary>
 		public const string ToolboxExternalUniquenessConstraintItemId = "Toolbox.ExternalUniquenessConstraint.Item.Id";
 		/// <summary>
-		/// The identifier for an PreferredExternalUniquenessConstraint toolbox item
-		/// </summary>
-		public const string ToolboxPreferredExternalUniquenessConstraintItemId = "Toolbox.PreferredExternalUniquenessConstraint.Item.Id";
-		/// <summary>
 		/// The identifier for an ExclusionConstraint toolbox item
 		/// </summary>
 		public const string ToolboxExclusionConstraintItemId = "Toolbox.ExclusionConstraint.Item.Id";
@@ -220,6 +216,12 @@ namespace Northface.Tools.ORM
 		private const string ModelExceptionReadingTextChangeInvalid_Id = "ModelException.Reading.Text.InvalidText";
 		private const string ModelExceptionFactAddReadingInvalidReadingText_Id = "ModelException.Fact.AddReading.InvalidReadingText";
 		private const string ModelExceptionNameAlreadyUsedByModel_Id = "ModelException.Model.DuplicateName.Text";
+		private const string ModelExceptionEnforceValueTypeNotNestingType_Id = "ModelException.ObjectType.EnforceValueTypeNotNestingType";
+		private const string ModelExceptionEnforceRolePlayerNotNestingType_Id = "ModelException.FactType.EnforceRolePlayerNotNestingType";
+		private const string ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType_Id = "ModelException.ObjectType.EnforcePreferredIdentifierForUnobjectifiedEntityType";
+		private const string ModelExceptionIsMandatoryRequiresAttachedFactType_Id = "ModelException.Role.IsMandatoryRequiresAttachedFactType";
+		private const string ModelExceptionPreferredIdentifierMustBeUniquenessConstraint_Id = "ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint";
+		private const string ModelExceptionInvalidInternalPreferredIdentifierPreConditions_Id = "ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions";
 		private const string CommandDeleteFactTypeText_Id = "Command.DeleteFactType.Text";
 		private const string CommandDeleteObjectTypeText_Id = "Command.DeleteObjectType.Text";
 		private const string ModelErrorConstraintHasTooFewRoleSetsText_Id = "ModelError.Constraint.TooFewRoleSets.Text";
@@ -487,6 +489,77 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Model, ModelExceptionNameAlreadyUsedByModel_Id);
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to make an
+		/// object type both a value type and an objectified fact type.
+		/// </summary>
+		public static string ModelExceptionEnforceValueTypeNotNestingType
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionEnforceValueTypeNotNestingType_Id);
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to
+		/// use the same type as both a role player and
+		/// the nesting type of a fact type.
+		/// </summary>
+		public static string ModelExceptionEnforceRolePlayerNotNestingType
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionEnforceRolePlayerNotNestingType_Id);
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to set\
+		/// both a primary identifier and a value type or a
+		/// nested fact type on the same object type.
+		/// </summary>
+		public static string ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType_Id);
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made
+		/// to set the IsMandatory property on a role
+		/// of an unattached fact type. IsMandatory creates a constraint,
+		/// which is owned by an ORMModel, so cannot be realized if the model is unknown.
+		/// </summary>
+		public static string ModelExceptionIsMandatoryRequiresAttachedFactType
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionIsMandatoryRequiresAttachedFactType_Id);
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made
+		/// to create a preferred identifier relationship
+		/// with an incompatible constraint type.
+		/// </summary>
+		public static string ModelExceptionPreferredIdentifierMustBeUniquenessConstraint
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionPreferredIdentifierMustBeUniquenessConstraint_Id);
+			}
+		}
+		/// <summary>
+		/// Exception message when an attempt is made to set an internal uniqueness
+		/// constraint as a preferred identifier when the preconditions are not met.
+		/// </summary>
+		public static string ModelExceptionInvalidInternalPreferredIdentifierPreConditions
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionInvalidInternalPreferredIdentifierPreConditions_Id);
 			}
 		}
 		/// <summary>

@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 namespace Northface.Tools.ORM.ObjectModel
 {
-	public partial class Constraint
+	public partial class Constraint : INamedElementDictionaryChild
 	{
 		#region Constraint specific
 		/// <summary>
@@ -62,8 +63,25 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Constraint specific
+		#region INamedElementDictionaryChild implementation
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+		}
+		/// <summary>
+		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
+		/// this child as participating in the 'ModelHasConstraint' naming set.
+		/// </summary>
+		/// <param name="parentMetaRoleGuid">Guid</param>
+		/// <param name="childMetaRoleGuid">Guid</param>
+		protected void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			parentMetaRoleGuid = ModelHasConstraint.ModelMetaRoleGuid;
+			childMetaRoleGuid = ModelHasConstraint.ConstraintCollectionMetaRoleGuid;
+		}
+		#endregion // INamedElementDictionaryChild implementation
 	}
-	public partial class ExternalConstraint : INamedElementDictionaryChild, IModelErrorOwner
+	public partial class ExternalConstraint : IModelErrorOwner
 	{
 		#region ExternalConstraint Specific
 		/// <summary>
@@ -108,23 +126,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			return retVal;
 		}
 		#endregion // ExternalConstraint Specific
-		#region INamedElementDictionaryChild implementation
-		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
-		{
-			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
-		}
-		/// <summary>
-		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
-		/// this child as participating in the 'ModelHasObjectType' naming set.
-		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
-		protected void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
-		{
-			parentMetaRoleGuid = ModelHasConstraint.ModelMetaRoleGuid;
-			childMetaRoleGuid = ModelHasConstraint.ConstraintCollectionMetaRoleGuid;
-		}
-		#endregion // INamedElementDictionaryChild implementation
 		#region ExternalFactConstraint synchronization rules
 		/// <summary>
 		/// If a role is added after the role set is already attached,
@@ -344,6 +345,499 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // ConstraintRoleSet overrides
+	}
+	public partial class InternalUniquenessConstraint
+	{
+		#region CustomStorage handlers
+		/// <summary>
+		/// Standard override. Retrieve values for calculated properties.
+		/// </summary>
+		/// <param name="attribute">MetaAttributeInfo</param>
+		/// <returns></returns>
+		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		{
+			Guid attributeId = attribute.Id;
+			if (attributeId == IsPreferredMetaAttributeGuid)
+			{
+				return PreferredIdentifierFor != null;
+			}
+			return base.GetValueForCustomStoredAttribute(attribute);
+		}
+		/// <summary>
+		/// Standard override. All custom storage properties are derived, not
+		/// stored. Actual changes are handled in InternalUniquenessConstraintChangeRule.
+		/// </summary>
+		/// <param name="attribute">MetaAttributeInfo</param>
+		/// <param name="newValue">object</param>
+		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		{
+			Guid attributeGuid = attribute.Id;
+			if (attributeGuid == IsPreferredMetaAttributeGuid)
+			{
+				// Handled by InternalUniquenessConstraintChangeRule
+				return;
+			}
+			base.SetValueForCustomStoredAttribute(attribute, newValue);
+		}
+		/// <summary>
+		/// Standard override. Defer to GetValueForCustomStoredAttribute.
+		/// </summary>
+		/// <param name="attribute">MetaAttributeInfo</param>
+		/// <returns></returns>
+		protected override object GetOldValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		{
+			return GetValueForCustomStoredAttribute(attribute);
+		}
+		#endregion // CustomStorage handlers
+		#region Customize property display
+		/// <summary>
+		/// Ensure that the Preferred property is readonly
+		/// when the InternalUniquenessConstraintChangeRule is
+		/// unable to make it true.
+		/// </summary>
+		/// <param name="propertyDescriptor"></param>
+		/// <returns></returns>
+		public override bool IsPropertyDescriptorReadOnly(PropertyDescriptor propertyDescriptor)
+		{
+			ElementPropertyDescriptor descriptor = propertyDescriptor as ElementPropertyDescriptor;
+			if (descriptor != null && descriptor.MetaAttributeInfo.Id == IsPreferredMetaAttributeGuid)
+			{
+				return !TestAllowPreferred(null, false);
+			}
+			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
+		}
+		/// <summary>
+		/// Test to see if this constraint can be turned
+		/// into a preferred uniqueness constraint
+		/// </summary>
+		/// <param name="forType">If set, verify that the constraint
+		/// can be the preferred identifier for this type. Can be null.</param>
+		/// <param name="throwIfFalse">If true, thrown instead of returning false</param>
+		/// <returns>true if the test succeeds</returns>
+		public bool TestAllowPreferred(ObjectType forType, bool throwIfFalse)
+		{
+			if (forType != null || !IsPreferred)
+			{
+				// To be considered for the preferred reference
+				// mode on an object, the following must hold:
+				// 1) The constraint must have one role
+				// 2) The fact it is on must be binary
+				// 3) The opposite role player must be an entity type
+				// 4) A full-predicate constraint cannot be specified (this
+				//    will also indicate a model error, but should still be checked)
+				// The other conditions (the opposite role is mandatory and also
+				// has a single-role uniqueness constraint) will be enforced in
+				// the rule that makes the change.
+				// Note that there is no requirement on the type of the object attached
+				// to the preferred constraint role. If the primary object is created for
+				// a RefMode object type, then a ValueType is required, but this is
+				// not a requirement for all role players on preferred identifier constraints.
+				RoleMoveableCollection constraintRoles = RoleSet.RoleCollection;
+				if (constraintRoles.Count == 1) // Condition 1
+				{
+					Role role = constraintRoles[0];
+					RoleMoveableCollection factRoles = role.FactType.RoleCollection;
+					if (factRoles.Count == 2) // Condition 2
+					{
+						Role oppositeRole = factRoles[0];
+						if (object.ReferenceEquals(oppositeRole, role))
+						{
+							oppositeRole = factRoles[1];
+							ObjectType rolePlayer = oppositeRole.RolePlayer;
+							if ((forType == null || object.ReferenceEquals(forType, rolePlayer)) &&
+								!rolePlayer.IsValueType) // Condition 3
+							{
+								// UNDONE: Check condition 4. This
+								// will be much easier to do when a FactConstraint
+								// is generated for internal fact types
+								return true;
+							}
+						}
+					}
+				}
+			}
+			if (throwIfFalse)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionInvalidInternalPreferredIdentifierPreConditions);
+			}
+			return false;
+		}
+		#endregion // Customize property display
+		#region InternalUniquenessConstraintChangeRule class
+		[RuleOn(typeof(InternalUniquenessConstraint))]
+		private class InternalUniquenessConstraintChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == InternalUniquenessConstraint.IsPreferredMetaAttributeGuid)
+				{
+					InternalUniquenessConstraint constraint = e.ModelElement as InternalUniquenessConstraint;
+					if ((bool)e.NewValue)
+					{
+						// The preconditions for all of this are verified in the UI, and
+						// are verified again in the PreferredIdentifierAddRule. If any
+						// of this throws it is because the preconditions are violated,
+						// but this will be such a rare condition that I don't go
+						// out of my way to validate it. Calling code can always use
+						// the TestAllowPreferred method to get a cleaner exception.
+						Role role = constraint.RoleSet.RoleCollection[0];
+						Role oppositeRole = null;
+						foreach (Role factRole in role.FactType.RoleCollection)
+						{
+							if (!object.ReferenceEquals(role, factRole))
+							{
+								oppositeRole = factRole;
+								break;
+							}
+						}
+
+						// Let the PreferredIdentiferAddedRule do all the work
+						constraint.PreferredIdentifierFor = oppositeRole.RolePlayer;
+					}
+					else
+					{
+						constraint.PreferredIdentifierFor = null;
+					}
+				}
+			}
+		}
+		#endregion // InternalUniquenessConstraintChangeRule class
+	}
+	#region PreferredIdentifierAddedRule class
+	/// <summary>
+	/// Verify that all preconditions hold for adding a primary
+	/// identifier and extend modifiable conditions as needed.
+	/// </summary>
+	[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
+	public class PreferredIdentifierAddedRule : AddRule
+	{
+		/// <summary>
+		/// Check preconditions on an internal or external
+		/// constraint.
+		/// </summary>
+		/// <param name="e"></param>
+		public override void ElementAdded(ElementAddedEventArgs e)
+		{
+			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+
+			// Enforce that a preferred identifier is set only for unobjectified
+			// entity types. The other parts of this (don't allow this to be set
+			// for object types with preferred identifiers) is enforced in
+			// ObjectType.CheckForIncompatibleRelationshipRule
+			ObjectType entityType = link.PreferredIdentifierFor;
+			if (entityType.IsValueType || entityType.NestedFactType != null)
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType);
+			}
+
+			Constraint constraint = link.PreferredIdentifier;
+			switch (constraint.ConstraintType)
+			{
+				case ConstraintType.InternalUniqueness:
+				{
+					InternalUniquenessConstraint iuc = constraint as InternalUniquenessConstraint;
+					iuc.TestAllowPreferred(link.PreferredIdentifierFor, true);
+
+					// TestAllowPreferred verifies that the types and arities and that
+					// no constraints need to be deleted to make this happen. Addition
+					// constraints that are automatically added all happen on the opposite
+					// role, so find tye, add constraints as needed, and then let this
+					// pass through to finish creating the preferred identifier link.
+					Role role = iuc.RoleSet.RoleCollection[0];
+					Role oppositeRole = null;
+					foreach (Role factRole in role.FactType.RoleCollection)
+					{
+						if (!object.ReferenceEquals(role, factRole))
+						{
+							oppositeRole = factRole;
+							break;
+						}
+					}
+					oppositeRole.IsMandatory = true; // Make sure it is mandatory
+					bool needOppositeConstraint = true;
+					foreach (ConstraintRoleSet roleSet in oppositeRole.ConstraintRoleSetCollection)
+					{
+						if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness &&
+							roleSet.RoleCollection.Count == 1)
+						{
+							needOppositeConstraint = false;
+							break;
+						}
+					}
+					if (needOppositeConstraint)
+					{
+						// Create a uniqueness constraint on the opposite role to make
+						// this a 1-1 binary fact type.
+						Store store = iuc.Store;
+						InternalUniquenessConstraint oppositeIuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
+						InternalConstraintRoleSet roleSet = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
+						roleSet.RoleCollection.Add(oppositeRole);
+						oppositeIuc.RoleSet = roleSet;
+						oppositeIuc.Model = iuc.Model;
+					}
+					break;
+				}
+				case ConstraintType.ExternalUniqueness:
+					// UNDONE: Preferred external uniqueness. Requires path information.
+					break;
+				default:
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionPreferredIdentifierMustBeUniquenessConstraint);
+			}
+		}
+		/// <summary>
+		/// This rule checkes preconditions for adding a primary
+		/// identifier link. Fire it before the link is added
+		/// to the transaction log.
+		/// </summary>
+		public override bool FireBefore
+		{
+			get
+			{
+				return true;
+			}
+		}
+	}
+	#endregion // PreferredIdentifierAddedRule class
+	#region Remove testing for preferred identifier
+	public partial class EntityTypeHasPreferredIdentifier
+	{
+		/// <summary>
+		/// Call from a Removing rule to determine if the
+		/// preferred identifier still fits all of the requirements.
+		/// All required elements are tested for existence and IsRemoving.
+		/// If any required elements are missing, then the link itself is removed.
+		/// </summary>
+		public void TestRemovePreferredIdentifier()
+		{
+			if (!IsRemoving && !IsRemoved)
+			{
+				// This is a bit tricky because we always have to look
+				// at the links to test removing, so we can't use
+				// the generated property accessors unless they have
+				// remove propagation set on the opposite end.
+				bool remove = true;
+				Constraint constraint = PreferredIdentifier;
+				if (!constraint.IsRemoving && !constraint.IsRemoved)
+				{
+					ObjectType forType = PreferredIdentifierFor;
+					if (!forType.IsRemoving && !forType.IsRemoved)
+					{
+						InternalUniquenessConstraint iuc;
+						ExternalUniquenessConstraint euc;
+						if (null != (iuc = constraint as InternalUniquenessConstraint))
+						{
+							ConstraintRoleSet roleSet;
+							RoleMoveableCollection roles;
+							Role constraintRole;
+							FactType factType;
+							if (null != (roleSet = iuc.RoleSet) &&
+								!roleSet.IsRemoving &&
+								1 == (roles = roleSet.RoleCollection).Count &&
+								!(constraintRole = roles[0]).IsRemoving &&
+								null != (factType = constraintRole.FactType) &&
+								!factType.IsRemoving &&
+								2 == (roles = factType.RoleCollection).Count)
+							{
+								// Make sure we have exactly one additional single-roled internal
+								// uniqueness constraint on the opposite role, and that the
+								// opposite role is mandatatory, and that the role player is still
+								// connected.
+								Role oppositeRole = roles[0];
+								if (object.ReferenceEquals(oppositeRole, constraintRole))
+								{
+									oppositeRole = roles[1];
+								}
+
+								// Test for attached object type. It is very common
+								// to edit the link directly, so we need to check the
+								// link itself, not the counterpart.
+								bool rolePlayerOK = false;
+								foreach (ObjectTypePlaysRole rolePlayerLink in oppositeRole.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
+								{
+									if (!rolePlayerLink.IsRemoving)
+									{
+										rolePlayerOK = true;
+										break;
+									}
+								}
+
+								if (rolePlayerOK)
+								{
+									bool haveOppositeUniqueness = false;
+									bool haveOppositeMandatory = false;
+									foreach (ConstraintRoleSet testRoleSet in oppositeRole.ConstraintRoleSetCollection)
+									{
+										Constraint testConstraint = testRoleSet.Constraint;
+										if (testConstraint != null && !testConstraint.IsRemoving)
+										{
+											switch (testConstraint.ConstraintType)
+											{
+												case ConstraintType.InternalUniqueness:
+													if (haveOppositeUniqueness)
+													{
+														// Should only have one
+														haveOppositeUniqueness = false;
+														break;
+													}
+													if (testRoleSet.RoleCollection.Count == 1)
+													{
+														haveOppositeUniqueness = true;
+													}
+													break;
+												case ConstraintType.Mandatory:
+													haveOppositeMandatory = true;
+													break;
+											}
+										}
+									}
+									if (haveOppositeUniqueness && haveOppositeMandatory)
+									{
+										remove = false;
+									}
+								}
+							}
+						}
+						else if (null != (euc = constraint as ExternalUniquenessConstraint))
+						{
+							// UNDONE: Preferred external uniqueness. Requires path information.
+						}
+					}
+				}
+				if (remove)
+				{
+					Remove();
+				}
+			}
+		}
+	}
+	#endregion // Remove testing for preferred identifier
+	#region TestRemovePreferredIdentifierRule class
+	/// <summary>
+	/// A rule to determine if a mandatory condition for
+	/// a preferred identifier link has been eliminated.
+	/// Remove the rule if this happens.
+	/// </summary>
+	[RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(ModelHasConstraint))]
+	public class TestRemovePreferredIdentifierRule : RemovingRule
+	{
+		/// <summary>
+		/// See if a preferred identifier is still valid
+		/// </summary>
+		/// <param name="e"></param>
+		public override void ElementRemoving(ElementRemovingEventArgs e)
+		{
+			ModelElement element = e.ModelElement;
+			ObjectTypePlaysRole roleLink;
+			ModelHasConstraint constraintLink;
+			if (null != (roleLink = element as ObjectTypePlaysRole))
+			{
+				ObjectType rolePlayer = roleLink.RolePlayer;
+				if (!rolePlayer.IsRemoving)
+				{
+					IList links = rolePlayer.GetElementLinks(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
+					// Don't for each, the iterator doesn't like it when you remove elements
+					int linksCount = links.Count;
+					for (int i = 0; i < linksCount; ++i)
+					{
+						EntityTypeHasPreferredIdentifier identifierLink = links[i] as EntityTypeHasPreferredIdentifier;
+						identifierLink.TestRemovePreferredIdentifier();
+					}
+				}
+			}
+			else if (null != (constraintLink = element as ModelHasConstraint))
+			{
+				// UNDONE: Handle delete code for constraint removal
+				// UNDONE: Note that a mandatory constraint needs to be ripped
+				// automatically when a note goes away.
+			}
+		}
+	}
+	#endregion // TestRemovePreferredIdentifierRule class
+	public partial class ExternalUniquenessConstraint
+	{
+		#region CustomStorage handlers
+		/// <summary>
+		/// Standard override. Retrieve values for calculated properties.
+		/// </summary>
+		/// <param name="attribute">MetaAttributeInfo</param>
+		/// <returns></returns>
+		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		{
+			Guid attributeId = attribute.Id;
+			if (attributeId == IsPreferredMetaAttributeGuid)
+			{
+				return PreferredIdentifierFor != null;
+			}
+			return base.GetValueForCustomStoredAttribute(attribute);
+		}
+		/// <summary>
+		/// Standard override. All custom storage properties are derived, not
+		/// stored. Actual changes are handled in ExternalUniquenessConstraintChangeRule.
+		/// </summary>
+		/// <param name="attribute">MetaAttributeInfo</param>
+		/// <param name="newValue">object</param>
+		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		{
+			Guid attributeGuid = attribute.Id;
+			if (attributeGuid == IsPreferredMetaAttributeGuid)
+			{
+				// Handled by ExternalUniquenessConstraintChangeRule
+				return;
+			}
+			base.SetValueForCustomStoredAttribute(attribute, newValue);
+		}
+		/// <summary>
+		/// Standard override. Defer to GetValueForCustomStoredAttribute.
+		/// </summary>
+		/// <param name="attribute">MetaAttributeInfo</param>
+		/// <returns></returns>
+		protected override object GetOldValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		{
+			return GetValueForCustomStoredAttribute(attribute);
+		}
+		#endregion // CustomStorage handlers
+		#region Customize property display
+		/// <summary>
+		/// Ensure that the Preferred property is readonly
+		/// when the InternalUniquenessConstraintChangeRule is
+		/// unable to make it true.
+		/// </summary>
+		/// <param name="propertyDescriptor"></param>
+		/// <returns></returns>
+		public override bool IsPropertyDescriptorReadOnly(PropertyDescriptor propertyDescriptor)
+		{
+			ElementPropertyDescriptor descriptor = propertyDescriptor as ElementPropertyDescriptor;
+			if (descriptor != null && descriptor.MetaAttributeInfo.Id == IsPreferredMetaAttributeGuid)
+			{
+				// UNDONE: Preferred external uniqueness. Requires path information.
+				return true;
+			}
+			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
+		}
+		#endregion // Customize property display
+		#region ExternalUniquenessConstraintChangeRule class
+		[RuleOn(typeof(ExternalUniquenessConstraint))]
+		private class ExternalUniquenessConstraintChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == ExternalUniquenessConstraint.IsPreferredMetaAttributeGuid)
+				{
+					ExternalUniquenessConstraint constraint = e.ModelElement as ExternalUniquenessConstraint;
+					if ((bool)e.NewValue)
+					{
+						// UNDONE: Preferred external uniqueness. Requires path information.
+					}
+					else
+					{
+						constraint.PreferredIdentifierFor = null;
+					}
+				}
+			}
+		}
+		#endregion // ExternalUniquenessConstraintChangeRule class
 	}
 	#region ModelError classes
 	public partial class TooManyRoleSetsError : IRepresentModelElements

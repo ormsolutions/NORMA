@@ -86,7 +86,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				List<ObjectType> types = new List<ObjectType>(count);
 				foreach (ObjectType objType in candidates)
 				{
-					if (!objType.IsValueType)
+					if (!objType.IsValueType && objType.PreferredIdentifier == null)
 					{
 						FactType nestedFact = objType.NestedFactType;
 						if (nestedFact == null || object.ReferenceEquals(nestedFact, instance))

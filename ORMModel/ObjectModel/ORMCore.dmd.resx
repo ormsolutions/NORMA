@@ -126,6 +126,9 @@
   <data name="Northface.Tools.ORM.ObjectModel.EntityType">
     <value xml:space="preserve">EntityType</value>
   </data>
+  <data name="Northface.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern">
+    <value xml:space="preserve">EntityType{0}</value>
+  </data>
   <data name="Northface.Tools.ORM.ObjectModel.EqualityConstraint">
     <value xml:space="preserve">EqualityConstraint</value>
   </data>
@@ -138,8 +141,8 @@
   <data name="Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint">
     <value xml:space="preserve">ExternalUniquenessConstraint</value>
   </data>
-  <data name="Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.Preferred">
-    <value xml:space="preserve">Preferred</value>
+  <data name="Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferred">
+    <value xml:space="preserve">IsPreferredIdentifier</value>
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.FactType">
     <value xml:space="preserve">FactType</value>
@@ -156,14 +159,14 @@
   <data name="Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint">
     <value xml:space="preserve">InternalUniquenessConstraint</value>
   </data>
+  <data name="Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferred">
+    <value xml:space="preserve">IsPreferredIdentifier</value>
+  </data>
   <data name="Northface.Tools.ORM.ObjectModel.MandatoryConstraint">
     <value xml:space="preserve">MandatoryConstraint</value>
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.ObjectifiedFactType">
     <value xml:space="preserve">ObjectifiedFactType</value>
-  </data>
-  <data name="Northface.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern">
-    <value xml:space="preserve">EntityType{0}</value>
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.ObjectType.IsIndependent">
     <value xml:space="preserve">IsIndependent</value>

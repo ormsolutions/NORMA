@@ -134,13 +134,33 @@
     <value xml:space="preserve">Model '{0}' contains multiple object types named '{1}'. Type names must be unique across all entity and value types in a model.</value>
     <comment xml:space="preserve">Model validation error text used when multiple object types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
   </data>
+  <data name="ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint">
+    <value xml:space="preserve">A preferred identifier must have a ConstraintType of InternalUniqueness or ExternalUniqueness.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to create a preferred identifier relationship with an incompatible constraint type.</comment>
+  </data>
   <data name="ModelException.Fact.AddReading.InvalidReadingText">
     <value xml:space="preserve">Reading text is not in a valid format.</value>
     <comment xml:space="preserve">Thrown when adding a reading to a fact using the AddReading with the reading text to add.</comment>
   </data>
+  <data name="ModelException.FactType.EnforceRolePlayerNotNestingType">
+    <value xml:space="preserve">A role player cannot be the type objectifying the role's parent fact type.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to use the same type as both a role player and the nesting type of a fact type.</comment>
+  </data>
+  <data name="ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions">
+    <value xml:space="preserve">Conditions of the uniqueness constraint, other constraints on the owning fact type, or the types of attached role players are incompatible with making it the preferred uniqueness constraint.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to set an internal uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
+  </data>
   <data name="ModelException.Model.DuplicateName.Text">
     <value xml:space="preserve">The name '{0}' is already in use in this model.</value>
     <comment xml:space="preserve">Exception message when a name change in the editor attempts to introduce a duplicate name into the model.</comment>
+  </data>
+  <data name="ModelException.ObjectType.EnforcePreferredIdentifierForUnobjectifiedEntityType">
+    <value xml:space="preserve">An object type with a preferred identifier must be an unobjectified entity type.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to set both a primary identifier and a value type or a nested fact type on the same object type.</comment>
+  </data>
+  <data name="ModelException.ObjectType.EnforceValueTypeNotNestingType">
+    <value xml:space="preserve">An object type cannot be both a value type and an objectified fact type.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to make an object type both a value type and an objectified fact type.</comment>
   </data>
   <data name="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse">
     <value xml:space="preserve">The IsPrimary property cannot be set to false, set it to true for the new primary reading and this will occur automatically</value>
@@ -149,5 +169,9 @@
   <data name="ModelException.Reading.Text.InvalidText">
     <value xml:space="preserve">The new value is not valid for the current state of the reading.</value>
     <comment xml:space="preserve">Exception message when a change is made to the reading text and the new value is deemed invalid by IsValidReadingText.</comment>
+  </data>
+  <data name="ModelException.Role.IsMandatoryRequiresAttachedFactType">
+    <value xml:space="preserve">A Role must be owned by a FactType that is owned by an ORMModel to set the IsMandatory property.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to set the IsMandatory property on a role of an unattached fact type. IsMandatory creates a constraint, which is owned by an ORMModel, so cannot be realized if the model is unknown.</comment>
   </data>
 </root>

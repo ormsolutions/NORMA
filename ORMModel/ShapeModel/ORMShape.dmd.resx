@@ -265,24 +265,6 @@
   <data name="Toolbox.InclusiveOrConstraint.Tooltip.Id">
     <value xml:space="preserve">New Inclusive Or Constraint</value>
   </data>
-  <data name="Toolbox.PreferredExternalUniquenessConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA
-        gP8AgAD/AICA/4AAAP+AAID/gIAA/8DAwP+AgID/AAD//wD/AP8A/////wAA//8A/////wD//////6qq
-        rd3d2qqqqqrd3d3dqqqq3dqqqq3dqqrdqqqqqt2qrdqqqqqqrdrd3d3d3d3d3d3d3d3d3d3d3aqqqqqq
-        qt3dqqqqqqqq3d3d3d3d3d3d3d3d3d3d3d2t2qqqqqqt2qrdqqqqqt2qqt3aqqqt3aqqqt3d3d2qqqqq
-        rd3d2qqq
-</value>
-  </data>
-  <data name="Toolbox.PreferredExternalUniquenessConstraint.Caption.Id">
-    <value xml:space="preserve">PreferredExternalUniquenessConstraint</value>
-  </data>
-  <data name="Toolbox.PreferredExternalUniquenessConstraint.Item.Id">
-    <value xml:space="preserve">Toolbox.PreferredExternalUniquenessConstraint.Item.Id</value>
-  </data>
-  <data name="Toolbox.PreferredExternalUniquenessConstraint.Tooltip.Id">
-    <value xml:space="preserve">New Preferred External Uniqueness Constraint</value>
-  </data>
   <data name="Toolbox.SubsetConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA

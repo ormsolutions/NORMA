@@ -102,7 +102,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			else if (attributeGuid == NestedFactTypeDisplayMetaAttributeGuid)
 			{
-				return !IsValueType;
+				return !IsValueType && PreferredIdentifier == null;
 			}
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
@@ -118,7 +118,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			ElementPropertyDescriptor elemDesc = propertyDescriptor as ElementPropertyDescriptor;
 			if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == IsValueTypeMetaAttributeGuid)
 			{
-				return NestedFactType != null;
+				return NestedFactType != null || PreferredIdentifier != null;
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
@@ -197,13 +197,14 @@ namespace Northface.Tools.ORM.ObjectModel
 			childMetaRoleGuid = ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid;
 		}
 		#endregion // INamedElementDictionaryChild implementation
-		#region NestingTypeNotValueTypeRule class
+		#region CheckForIncompatibleRelationshipRule class
 		/// <summary>
-		/// Ensure consistency among ObjectType roles. This is an object model backup for
-		/// the UI, which stops the user from setting these conditions.
+		/// Ensure consistency among relationships attached to ObjectType roles.
+		/// This is an object model backup for the UI, which does not offer these
+		/// conditions to the user.
 		/// </summary>
 		[RuleOn(typeof(NestingEntityTypeHasFactType)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole))]
-		private class NestingTypeNotValueTypeRule : AddRule
+		private class CheckForIncompatibleRelationshipRule : AddRule
 		{
 			/// <summary>
 			/// Called when an attempt is made to turn an ObjectType into either
@@ -218,10 +219,14 @@ namespace Northface.Tools.ORM.ObjectModel
 				ModelElement element = e.ModelElement;
 				bool incompatibleValueTypeCombination = false;
 				bool incompatibleNestingAndRoleCombination = false;
+				// Note that the other portion of this condition is
+				// checked in a separate add rule for EntityTypeHasPreferredIdentifier
+				bool incompatiblePreferredIdentifierCombination = false;
 				if (null != (nester = element as NestingEntityTypeHasFactType))
 				{
 					ObjectType nestingType = nester.NestingType;
-					if (!(incompatibleValueTypeCombination = nestingType.IsValueType))
+					if (!(incompatibleValueTypeCombination = nestingType.IsValueType) &&
+						!(incompatiblePreferredIdentifierCombination = null != nestingType.PreferredIdentifier))
 					{
 						foreach (Role role in nester.NestedFactType.RoleCollection)
 						{
@@ -235,7 +240,10 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				else if (null != (valType = element as ValueTypeHasDataType))
 				{
-					incompatibleValueTypeCombination = valType.ValueTypeCollection.NestedFactType != null;
+					if (!(incompatibleValueTypeCombination = valType.ValueTypeCollection.NestedFactType != null))
+					{
+						incompatiblePreferredIdentifierCombination = null != valType.ValueTypeCollection.PreferredIdentifier;
+					}
 				}
 				else if (null != (roleLink = element as ObjectTypePlaysRole))
 				{
@@ -253,13 +261,25 @@ namespace Northface.Tools.ORM.ObjectModel
 						incompatibleNestingAndRoleCombination = player == newRole.FactType.NestingType;
 					}
 				}
+
+				// Raise an exception if any of the objectype-linked relationship
+				// combinations are invalid
+				string exceptionString = null;
 				if (incompatibleValueTypeCombination)
 				{
-					throw new InvalidOperationException("An object type cannot be both a value type and an objectified fact type.");
+					exceptionString = ResourceStrings.ModelExceptionEnforceValueTypeNotNestingType;
 				}
 				else if (incompatibleNestingAndRoleCombination)
 				{
-					throw new InvalidOperationException("An role player cannot be a type objectifying the role's parent fact type.");
+					exceptionString = ResourceStrings.ModelExceptionEnforceRolePlayerNotNestingType;
+				}
+				else if (incompatiblePreferredIdentifierCombination)
+				{
+					exceptionString = ResourceStrings.ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType;
+				}
+				if (exceptionString != null)
+				{
+					throw new InvalidOperationException(exceptionString);
 				}
 			}
 			/// <summary>
@@ -274,6 +294,6 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // NestingTypeNotValueTypeRule class
+		#endregion // CheckForIncompatibleRelationshipRule class
 	}
 } 

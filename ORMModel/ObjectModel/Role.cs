@@ -45,8 +45,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					ConstraintRoleSet roleSet = constraintRoleSets[i];
 					Constraint constraint = roleSet.Constraint;
-					if (constraint.ConstraintType == ConstraintType.Mandatory &&
-						!roleSet.IsRemoved && !constraint.IsRemoved)
+					if (constraint.ConstraintType == ConstraintType.Mandatory)
 					{
 						return true;
 					}
@@ -93,8 +92,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						if ((null == (factType = role.FactType)) ||
 							(null == (model = factType.Model)))
 						{
-							// UNDONE: Localize
-							throw new InvalidOperationException("A Role must be owned by a FactType that is owned by an ORMModel to set the IsMandatory property.");
+							throw new InvalidOperationException(ResourceStrings.ModelExceptionIsMandatoryRequiresAttachedFactType);
 						}
 						InternalConstraintRoleSet roleSet = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
 						roleSet.RoleCollection.Add(role);
