@@ -126,6 +126,10 @@
     <value xml:space="preserve">&amp;Delete Object Type</value>
     <comment xml:space="preserve">This text appears in the edit menu when object types are selected in the diagram.</comment>
   </data>
+  <data name="Command.DeleteRole.Text">
+    <value xml:space="preserve">&amp;Delete Role</value>
+    <comment xml:space="preserve">This text appears in the edit menu when roles are selected in the diagram.</comment>
+  </data>
   <data name="ExternalConstraintConnectAction.Instructions">
     <value xml:space="preserve">To select role sequences to populate the constraint:
 -Click a role to add it to an argument set

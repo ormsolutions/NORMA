@@ -251,6 +251,7 @@ namespace Northface.Tools.ORM
 		private const string CommandDeleteFactTypeText_Id = "Command.DeleteFactType.Text";
 		private const string CommandDeleteObjectTypeText_Id = "Command.DeleteObjectType.Text";
 		private const string CommandDeleteConstraintText_Id = "Command.DeleteConstraint.Text";
+		private const string CommandDeleteRoleText_Id = "Command.DeleteRole.Text";
 		private const string ModelErrorConstraintHasTooFewRoleSequencesText_Id = "ModelError.Constraint.TooFewRoleSequences.Text";
 		private const string ModelErrorConstraintHasTooManyRoleSequencesText_Id = "ModelError.Constraint.TooManyRoleSequences.Text";
 		private const string ModelErrorModelHasDuplicateConstraintNames_Id = "ModelError.Model.DuplicateConstraintNames.Text";
@@ -694,6 +695,16 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Diagram, CommandDeleteConstraintText_Id);
+			}
+		}
+		/// <summary>
+		/// This text appears in the edit menu when roles are selected in the diagram.
+		/// </summary>
+		public static string CommandDeleteRoleText
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, CommandDeleteRoleText_Id);
 			}
 		}
 		/// <summary>

@@ -70,11 +70,11 @@ namespace Northface.Tools.ORM.Shell
 				new EventHandler(OnMenuReadingsWindow),
 				ORMDesignerCommandIds.ViewReadingEditor)
 				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusInsertRoleBefore),
+				new EventHandler(OnStatusInsertRole),
 				new EventHandler(OnMenuInsertRoleBefore),
 				ORMDesignerCommandIds.InsertRoleBefore)
 				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusInsertRoleAfter),
+				new EventHandler(OnStatusInsertRole),
 				new EventHandler(OnMenuInsertRoleAfter),
 				ORMDesignerCommandIds.InsertRoleAfter)
 			};
@@ -178,7 +178,7 @@ namespace Northface.Tools.ORM.Shell
 				if (docView != null)
 				{
 					// call delete on the doc view
-					docView.OnMenuDelete();
+					docView.OnMenuDelete((sender as OleMenuCommand).Text);
 				}
 			}
 			/// <summary>
@@ -205,9 +205,9 @@ namespace Northface.Tools.ORM.Shell
 			/// </summary>
 			/// <param name="sender">Sender</param>
 			/// <param name="e">Event args</param>
-			private void OnStatusInsertRoleAfter(object sender, EventArgs e)
+			private void OnStatusInsertRole(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.InsertRoleAfter);
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.InsertRole);
 			}
 			/// <summary>
 			/// Menu handler
@@ -222,15 +222,6 @@ namespace Northface.Tools.ORM.Shell
 					// call delete on the doc view
 					docView.OnMenuInsertRole(true);
 				}
-			}
-			/// <summary>
-			/// Status callback
-			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
-			private void OnStatusInsertRoleBefore(object sender, EventArgs e)
-			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.InsertRoleBefore);
 			}
 			/// <summary>
 			/// Menu handler

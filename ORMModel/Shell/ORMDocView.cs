@@ -40,17 +40,17 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		DisplayReadingsWindow = 8,
 		/// <summary>
-		/// Insert a role before the current role
+		/// Insert a role before or after the current role
 		/// </summary>
-		InsertRoleAfter = 0x20,
+		InsertRole = 0x20,
 		/// <summary>
-		/// Insert a role after the current role
+		/// Delete the current role
 		/// </summary>
-		InsertRoleBefore = 0x40,
+		DeleteRole = 0x40,
 		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
-		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint,
+		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
 		// Update the multiselect command filter constants in ORMDesignerDocView
 		// when new commands are added
 	}
@@ -64,8 +64,8 @@ namespace Northface.Tools.ORM.Shell
 		#region Member variables
 		private ORMDesignerCommands myEnabledCommands;
 		private ORMDesignerCommands myVisibleCommands;
-		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.Delete;
-		private const ORMDesignerCommands EnabledComplexMultiSelectCommandFilter = ORMDesignerCommands.Delete;
+		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole; // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
+		private const ORMDesignerCommands EnabledComplexMultiSelectCommandFilter = ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole;
 		#endregion // Member variables
 		#region Construction/destruction
 		/// <summary>
@@ -193,6 +193,7 @@ namespace Northface.Tools.ORM.Shell
 		{
 			enabledCommands = ORMDesignerCommands.None;
 			visibleCommands = ORMDesignerCommands.None;
+			Role role;
 			if (element is FactType)
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DisplayReadingsWindow;
@@ -209,9 +210,15 @@ namespace Northface.Tools.ORM.Shell
 			{
 				visibleCommands = ORMDesignerCommands.Delete;
 			}
-			else if (element is Role)
+			else if (null != (role = element as Role))
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRoleAfter | ORMDesignerCommands.InsertRoleBefore;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole;
+				// Disable role deletion if the role count == 1
+				visibleCommands |= ORMDesignerCommands.DeleteRole;
+				if (role.FactType.RoleCollection.Count == 1)
+				{
+					enabledCommands &= ~ORMDesignerCommands.DeleteRole;
+				}
 			}
 		}
 		
@@ -256,14 +263,16 @@ namespace Northface.Tools.ORM.Shell
 				case ORMDesignerCommands.DeleteConstraint:
 					commandText = ResourceStrings.CommandDeleteConstraintText;
 					break;
+				case ORMDesignerCommands.DeleteRole:
+					commandText = ResourceStrings.CommandDeleteRoleText;
+					break;
 				default:
 					commandText = null;
 					break;
 			}
-			if (commandText != null)
-			{
-				command.Text = commandText;
-			}
+			// Setting command.Text to null will pick up
+			// the default command text
+			command.Text = commandText;
 		}
 		/// <summary>
 		/// UNDONE: Temporary workaround for DSLTools SDK bug.
@@ -301,7 +310,8 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// Execute the delete command
 		/// </summary>
-		protected virtual void OnMenuDelete()
+		/// <param name="commandText">The text from the command</param>
+		protected virtual void OnMenuDelete(string commandText)
 		{
 			int count = SelectionCount;
 			if (count > 0)
@@ -313,15 +323,17 @@ namespace Northface.Tools.ORM.Shell
 				Debug.Assert(store != null);
 
 				Diagram d = null;
-				using (Transaction t = store.TransactionManager.BeginTransaction("delete"))
+				// Use the localized text from the command for our transaction name
+				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", "")))
 				{
 					bool testRefModeCollapse = 0 != (myEnabledCommands & ORMDesignerCommands.DeleteObjectType);
 
 					// account for multiple selection
 					foreach (object selectedObject in GetSelectedComponents())
 					{
-						ShapeElement pel = selectedObject as ShapeElement; // just the shape
-						if (pel != null)
+						ShapeElement pel; // just the shape
+						ModelElement mel;
+						if (null != (pel = selectedObject as ShapeElement))
 						{
 							//UNDONE: Check if the object shape was in expanded mode
 							//ObjectTypeShape objectShape;
@@ -340,7 +352,7 @@ namespace Northface.Tools.ORM.Shell
 
 							// Get the actual object inside the pel before
 							// removing the pel.
-							ModelElement mel = pel.ModelElement;
+							mel = pel.ModelElement;
 
 							// Remove the actual object in the model
 							if (mel != null)
@@ -352,6 +364,30 @@ namespace Northface.Tools.ORM.Shell
 								// Get rid of the model element
 								mel.Remove();
 							}
+						}
+						else if (null != (mel = selectedObject as ModelElement))
+						{
+							// The object was selected directly (through a shape field or sub field element)
+							ModelElement shapeAssociatedMel = null;
+							switch (myEnabledCommands & ORMDesignerCommands.DeleteRole)
+							{
+								case ORMDesignerCommands.DeleteRole:
+									shapeAssociatedMel = (selectedObject as Role).FactType;
+									break;
+							}
+
+							// Add the parent shape into the queued selection
+							if (shapeAssociatedMel != null)
+							{
+								pel = (CurrentDiagram as ORMDiagram).FindShapeForElement(shapeAssociatedMel);
+								if (pel != null)
+								{
+									(docData.QueuedSelection as IList).Add(pel);
+								}
+							}
+
+							// Remove the item
+							mel.Remove();
 						}
 					}
 
