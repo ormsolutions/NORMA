@@ -383,6 +383,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// preffered internal uniqueness constraint.
 			/// </summary>
 			/// <param name="preferredConstraint"></param>
+			/// <param name="aggressivelyKillValueType">Allow removing the value type along with the reference mode predicate</param>
 			private void KillReferenceMode(InternalUniquenessConstraint preferredConstraint, bool aggressivelyKillValueType)
 			{
 				ObjectType valueType = preferredConstraint.RoleSet.RoleCollection[0].RolePlayer;

@@ -307,14 +307,14 @@ namespace Northface.Tools.ORM.Shell
 						if (pel != null)
 						{
 							//UNDONE: Check if the object shape was in expanded mode
-							Northface.Tools.ORM.ShapeModel.ObjectTypeShape objectShape;
-							if (testRefModeCollapse &&
-								null != (objectShape = pel as Northface.Tools.ORM.ShapeModel.ObjectTypeShape)&& false/*) &&
-								!objectShape.ExpandRefMode*/
-								)
-							{
-								t.TopLevelTransaction.Context.ContextInfo[ObjectType.DeleteReferenceModeValueType] = null;
-							}
+							//ObjectTypeShape objectShape;
+							//if (testRefModeCollapse &&
+							//	null != (objectShape = pel as ObjectTypeShape)&& false/*) &&
+							//	!objectShape.ExpandRefMode*/
+							//	)
+							//{
+							//	t.TopLevelTransaction.Context.ContextInfo[ObjectType.DeleteReferenceModeValueType] = null;
+							//}
 							if (d == null)
 							{
 								d = pel.Diagram;
