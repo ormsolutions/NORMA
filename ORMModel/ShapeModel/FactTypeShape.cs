@@ -1321,7 +1321,11 @@ namespace Northface.Tools.ORM.ShapeModel
 				if (roleCount > 0 || objectified)
 				{
 					int highlightRoleBox = -1;
-					foreach (DiagramItem item in e.View.HighlightedShapes)
+					DiagramClientView clientView = e.View;
+					SelectedShapesCollection selection = clientView.Selection;
+					RoleSubField testSubField = new RoleSubField();
+					DiagramItem testSelect = new DiagramItem(parentShape, this, testSubField);
+					foreach (DiagramItem item in clientView.HighlightedShapes)
 					{
 						if (object.ReferenceEquals(parentShape, item.Shape))
 						{
@@ -1490,6 +1494,27 @@ namespace Northface.Tools.ORM.ShapeModel
 								}
 							}
 
+							// Draw a selection rectangle if needed
+							testSubField.AssociatedRole = currentRole;
+							if (selection.Contains(testSelect))
+							{
+								roleBounds.Inflate(-.02f, -.02f);
+								StyleSetResourceId pen1Id;
+								StyleSetResourceId pen2Id;
+								if (testSelect.Equals(selection.FocusedItem))
+								{
+									pen1Id = DiagramPens.FocusIndicatorBackground;
+									pen2Id = DiagramPens.FocusIndicator;
+								}
+								else
+								{
+									pen1Id = DiagramPens.SelectionBackground;
+									pen2Id = testSelect.Equals(selection.PrimaryItem) ? DiagramPens.SelectionPrimaryOutline : DiagramPens.SelectionNonPrimaryOutline;
+								}
+								g.DrawRectangle(styleSet.GetPen(pen1Id), roleBounds.Left, roleBounds.Top, roleBounds.Width, roleBounds.Height);
+								g.DrawRectangle(styleSet.GetPen(pen2Id), roleBounds.Left, roleBounds.Top, roleBounds.Width, roleBounds.Height);
+							}
+
 							// Draw the line between the role boxes
 							if (i != 0)
 							{
@@ -1554,6 +1579,10 @@ namespace Northface.Tools.ORM.ShapeModel
 			private Role myAssociatedRole;
 			#endregion // Member variables
 			#region Construction
+			public RoleSubField()
+			{
+				myAssociatedRole = null; // Set later
+			}
 			public RoleSubField(Role associatedRole)
 			{
 				Debug.Assert(associatedRole != null);
@@ -1631,13 +1660,17 @@ namespace Northface.Tools.ORM.ShapeModel
 			#endregion // DragDrop support
 			#region Accessor functions
 			/// <summary>
-			/// Get the Role element associated with this sub field
+			/// Get or set the Role element associated with this sub field
 			/// </summary>
 			public Role AssociatedRole
 			{
 				get
 				{
 					return myAssociatedRole;
+				}
+				set
+				{
+					myAssociatedRole = value;
 				}
 			}
 			/// <summary>
