@@ -190,7 +190,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// the current element name value</param>
 		/// <param name="duplicateAction">Specify the action
 		/// to take if the name is already in use in the dictionary.</param>
-		void RemoveElement(NamedElement element, string alternateElementName, DuplicateNameAction duplicateAction);
+		/// <returns>true if the element was successfully removed</returns>
+		bool RemoveElement(NamedElement element, string alternateElementName, DuplicateNameAction duplicateAction);
 		/// <summary>
 		/// An element is being replaced with another element.
 		/// </summary>
@@ -588,9 +589,9 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		void INamedElementDictionary.RemoveElement(NamedElement element, string alternateElementName, DuplicateNameAction duplicateAction)
+		bool INamedElementDictionary.RemoveElement(NamedElement element, string alternateElementName, DuplicateNameAction duplicateAction)
 		{
-			RemoveElement(element, alternateElementName, duplicateAction);
+			return RemoveElement(element, alternateElementName, duplicateAction);
 		}
 		/// <summary>
 		/// Implements INamedElementDictionary.RemoveElement, and helper function
@@ -602,7 +603,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="alternateElementName">If specified, a name to use instead of
 		/// the current element name value</param>
 		/// <param name="duplicateAction">DuplicateNameAction</param>
-		private void RemoveElement(NamedElement element, string alternateElementName, DuplicateNameAction duplicateAction)
+		/// <returns>true if the element was successfully removed</returns>
+		private bool RemoveElement(NamedElement element, string alternateElementName, DuplicateNameAction duplicateAction)
 		{
 			string elementName = alternateElementName;
 			if (elementName == null || elementName.Length == 0)
@@ -664,8 +666,10 @@ namespace Northface.Tools.ORM.ObjectModel
 							}
 						}
 					}
+					return true;
 				}
 			}
+			return false;
 		}
 		void INamedElementDictionary.ReplaceElement(NamedElement originalElement, NamedElement replacementElement, DuplicateNameAction duplicateAction)
 		{
@@ -988,24 +992,111 @@ namespace Northface.Tools.ORM.ObjectModel
 			EntryStateChange.TransactionRolledBack(e.Transaction);
 		}
 		/// <summary>
-		/// See discussion of the need for NameChangeRecord in the HandleElementChanged
+		/// See discussion of the need for DetachedElementRecord in the HandleElementChanged
 		/// routine.
 		/// </summary>
-		private struct NameChangeRecord
+		private struct DetachedElementRecord
 		{
-			public NameChangeRecord(string oldName, string newName)
+			/// <summary>
+			/// Create a new record, recording the old and
+			/// new names for the element
+			/// </summary>
+			public DetachedElementRecord(string oldName, string newName)
 			{
 				OldName = oldName;
 				NewName = newName;
+				SingleDictionary = null;
+				Dictionaries = null;
+			}
+			/// <summary>
+			/// Create a new record, recording the dictionary
+			/// it should be removed from
+			/// </summary>
+			public DetachedElementRecord(INamedElementDictionary singleDictionary)
+			{
+				SingleDictionary = singleDictionary;
+				Dictionaries = null;
+				OldName = null;
+				NewName = null;
 			}
 			public string OldName;
 			public string NewName;
+			public INamedElementDictionary SingleDictionary;
+			public List<INamedElementDictionary> Dictionaries;
+			/// <summary>
+			/// Merge an existing record into this one. The dictionaries
+			/// and old name are pulled from the existing record, while the
+			/// new name of this record is preserved
+			/// </summary>
+			public void MergeExisting(ref DetachedElementRecord existingRecord)
+			{
+				if (existingRecord.OldName != null)
+				{
+					Debug.Assert(existingRecord.NewName == OldName);
+					OldName = existingRecord.OldName;
+				}
+				SingleDictionary = existingRecord.SingleDictionary;
+				Dictionaries = existingRecord.Dictionaries;
+			}
+			/// <summary>
+			/// Add a tracked dictionary to this record
+			/// </summary>
+			/// <param name="dictionary"></param>
+			public void AddDictionary(INamedElementDictionary dictionary)
+			{
+				if (SingleDictionary != null)
+				{
+					Debug.Assert(Dictionaries == null); // Have either a single or multiple
+					if (!object.ReferenceEquals(SingleDictionary, dictionary))
+					{
+						Dictionaries = new List<INamedElementDictionary>();
+						Dictionaries.Add(SingleDictionary);
+						Dictionaries.Add(dictionary);
+						SingleDictionary = null;
+					}
+				}
+				else if (Dictionaries != null)
+				{
+					if (!Dictionaries.Contains(dictionary))
+					{
+						Dictionaries.Add(dictionary);
+					}
+				}
+				else
+				{
+					SingleDictionary = dictionary;
+				}
+			}
 		}
-		private static Dictionary<ModelElement, NameChangeRecord> myUnattachedNameChanges;
+		private static Dictionary<NamedElement, DetachedElementRecord> myDetachedElementRecords;
 		private static void ElementEventsEndedEvent(object sender, ElementEventsEndedEventArgs e)
 		{
+			Dictionary<NamedElement, DetachedElementRecord> changes = myDetachedElementRecords;
+
 			// Toss unused tracked changes when events are finished
-			myUnattachedNameChanges = null;
+			myDetachedElementRecords = null;
+
+			// The name will have stabilized at this point, remove it
+			if (changes != null)
+			{
+				foreach (KeyValuePair<NamedElement, DetachedElementRecord> keyAndValue in changes)
+				{
+					DetachedElementRecord changeRecord = keyAndValue.Value;
+					string startingName = changeRecord.OldName;
+					NamedElement element = keyAndValue.Key;
+					if (changeRecord.SingleDictionary != null)
+					{
+						changeRecord.SingleDictionary.RemoveElement(element, startingName, DuplicateNameAction.RetrieveDuplicateCollection);
+					}
+					else if (changeRecord.Dictionaries != null)
+					{
+						foreach (INamedElementDictionary dictionary in changeRecord.Dictionaries)
+						{
+							dictionary.RemoveElement(element, startingName, DuplicateNameAction.RetrieveDuplicateCollection);
+						}
+					}
+				}
+			}
 		}
 		/// <summary>
 		/// Add or remove elements to associated named element
@@ -1068,17 +1159,17 @@ namespace Northface.Tools.ORM.ObjectModel
 					if (dictionary != null)
 					{
 						DuplicateNameAction duplicateAction;
-						string alternateRemoveName = null;
 						if (forEvent)
 						{
 							duplicateAction = DuplicateNameAction.RetrieveDuplicateCollection;
-							if (remove && element.IsRemoved && myUnattachedNameChanges != null)
+							if (remove && element.IsRemoved && myDetachedElementRecords != null)
 							{
-								NameChangeRecord changeRecord;
-								if (myUnattachedNameChanges.TryGetValue(namedChild, out changeRecord))
+								DetachedElementRecord changeRecord;
+								if (myDetachedElementRecords.TryGetValue(namedChild, out changeRecord))
 								{
-									alternateRemoveName = changeRecord.OldName;
-									myUnattachedNameChanges.Remove(element);
+									changeRecord.AddDictionary(dictionary);
+									myDetachedElementRecords[namedChild] = changeRecord;
+									return; // Handle all of these at the end of the events
 								}
 							}
 						}
@@ -1090,7 +1181,34 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 						if (remove)
 						{
-							dictionary.RemoveElement(namedChild, alternateRemoveName, duplicateAction);
+							if (!dictionary.RemoveElement(namedChild, null, duplicateAction) &&
+								forEvent)
+							{
+								string elementName = namedChild.Name;
+								if (elementName != null)
+								{
+									DetachedElementRecord changeRecord;
+									if (myDetachedElementRecords == null)
+									{
+										myDetachedElementRecords = new Dictionary<NamedElement, DetachedElementRecord>();
+										changeRecord = new DetachedElementRecord(dictionary);
+									}
+									else
+									{
+										DetachedElementRecord existingRecord;
+										if (myDetachedElementRecords.TryGetValue(namedChild, out existingRecord))
+										{
+											existingRecord.AddDictionary(dictionary);
+											changeRecord = existingRecord;
+										}
+										else
+										{
+											changeRecord = new DetachedElementRecord(dictionary);
+										}
+									}
+									myDetachedElementRecords[namedChild] = changeRecord;
+								}
+							}
 						}
 						else
 						{
@@ -1141,20 +1259,22 @@ namespace Northface.Tools.ORM.ObjectModel
 						// when we get here during events, so there is no way to get back to the parent object
 						// until we get the remove event for the element. However, the remove event will get
 						// the element with the new value, not the old. Track this change.
-						NameChangeRecord changeRecord = new NameChangeRecord(e.OldValue as string, e.NewValue as string);
+						DetachedElementRecord changeRecord = new DetachedElementRecord(e.OldValue as string, e.NewValue as string);
 						if (changeRecord.OldName != null)
 						{
-							if (myUnattachedNameChanges == null)
+							if (myDetachedElementRecords == null)
 							{
-								myUnattachedNameChanges = new Dictionary<ModelElement, NameChangeRecord>();
+								myDetachedElementRecords = new Dictionary<NamedElement, DetachedElementRecord>();
 							}
-							NameChangeRecord existingRecord;
-							if (myUnattachedNameChanges.TryGetValue(namedChild, out existingRecord))
+							else
 							{
-								Debug.Assert(existingRecord.NewName == changeRecord.OldName);
-								changeRecord.OldName = existingRecord.OldName;
+								DetachedElementRecord existingRecord;
+								if (myDetachedElementRecords.TryGetValue(namedChild, out existingRecord))
+								{
+									changeRecord.MergeExisting(ref existingRecord);
+								}
 							}
-							myUnattachedNameChanges[namedChild] = changeRecord;
+							myDetachedElementRecords[namedChild] = changeRecord;
 						}
 					}
 					for (int i = 0; i < parentsCount; ++i)
