@@ -157,6 +157,10 @@ namespace Northface.Tools.ORM
 		/// </summary>
 		public const string ToolboxExclusiveOrConstraintItemId = "Toolbox.ExclusiveOrConstraint.Item.Id";
 		/// <summary>
+		/// The identifier for the RoleConnector toolbox item
+		/// </summary>
+		public const string ToolboxRoleConnectorItemId = "Toolbox.RoleConnector.Item.Id";
+		/// <summary>
 		/// The identifier for an SubsetConstraint toolbox item
 		/// </summary>
 		public const string ToolboxSubsetConstraintItemId = "Toolbox.SubsetConstraint.Item.Id";
@@ -221,6 +225,7 @@ namespace Northface.Tools.ORM
 		private const string FactTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.FactType.DefaultNamePattern";
 		private const string ExternalConstraintConnectActionInstructions_Id = "ExternalConstraintConnectAction.Instructions";
 		private const string ExternalConstraintConnectActionTransactionName_Id = "ExternalConstraintConnectAction.TransactionName";
+		private const string RoleConnectActionTransactionName_Id = "RoleConnectAction.TransactionName";
 		private const string ModelBrowserWindowTitle_Id = "ORMModelBrowser.WindowTitle";
 		private const string ModelExceptionReadingIsPrimaryToFalse_Id = "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse";
 		private const string ModelExceptionReadingTextChangeInvalid_Id = "ModelException.Reading.Text.InvalidText";
@@ -396,6 +401,17 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Diagram, ExternalConstraintConnectActionTransactionName_Id);
+			}
+		}
+		/// <summary>
+		/// The transaction name used by the role connect action.
+		/// The text appears in the undo dropdown in the VS IDE.
+		/// </summary>
+		public static string RoleConnectActionTransactionName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, RoleConnectActionTransactionName_Id);
 			}
 		}
 		/// <summary>

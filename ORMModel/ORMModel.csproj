@@ -90,6 +90,7 @@
       <DependentUpon>ORMShape.dmd.mdfomt</DependentUpon>
     </Compile>
     <Compile Include="ObjectModel\DeserializationManager.cs" />
+    <Compile Include="ShapeModel\RoleConnectorAction.cs" />
     <Compile Include="Shell\ORMDocDataServices.cs" />
     <Compile Include="ObjectModel\ORMModelInterfaces.cs" />
     <Compile Include="ObjectModel\Reading.cs" />
@@ -178,6 +179,9 @@
       <DependentUpon>ORMShape.dmd.cs</DependentUpon>
     </EmbeddedResource>
     <Content Include="Resources\ORM.ico" />
+    <None Include="Resources\Toolbox.RoleConnector.Bitmap.Id.bmp" />
+    <EmbeddedResource Include="ShapeModel\ConnectRoleAllowed.cur" />
+    <EmbeddedResource Include="ShapeModel\ConnectRoleSearching.cur" />
     <None Include="Resources\Toolbox.ValueType.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.BinaryFactType.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.TernaryFactType.Bitmap.Id.bmp" />

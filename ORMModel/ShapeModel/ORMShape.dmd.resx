@@ -274,6 +274,24 @@
   <data name="Toolbox.InclusiveOrConstraint.Tooltip.Id">
     <value xml:space="preserve">New Inclusive Or Constraint</value>
   </data>
+  <data name="Toolbox.RoleConnector.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/8DAwP+AgID/AAD//wD/AP8A/////wAA//8A/////wD//////6qq
+        qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqrMwAAACqqqrP//D/8KqqrP//8P/wAAAM
+        ///w//AAAAz///D/8KqqrP//AAAAqqqqz/+qqqqqqqqszKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+        qqqqqqqq
+</value>
+  </data>
+  <data name="Toolbox.RoleConnector.Caption.Id">
+    <value xml:space="preserve">RoleConnector</value>
+  </data>
+  <data name="Toolbox.RoleConnector.Item.Id">
+    <value xml:space="preserve">Toolbox.RoleConnector.Item.Id</value>
+  </data>
+  <data name="Toolbox.RoleConnector.Tooltip.Id">
+    <value xml:space="preserve">Role Connector Tool</value>
+  </data>
   <data name="Toolbox.SubsetConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA

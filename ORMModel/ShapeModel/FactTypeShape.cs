@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
@@ -1373,6 +1374,16 @@ namespace Northface.Tools.ORM.ShapeModel
 				return retVal;
 			}
 			#endregion // Required ShapeSubField
+			#region DragDrop support
+			public override MouseAction GetPotentialMouseAction(MouseButtons mouseButtons, PointD point, DiagramHitTestInfo hitTestInfo)
+			{
+				if (mouseButtons == MouseButtons.Left)
+				{
+					return ((ORMDiagram)hitTestInfo.DiagramClientView.Diagram).RoleDragPendingAction;
+				}
+				return base.GetPotentialMouseAction(mouseButtons, point, hitTestInfo);
+			}
+			#endregion // DragDrop support
 			#region Accessor functions
 			/// <summary>
 			/// Get the Role element associated with this sub field

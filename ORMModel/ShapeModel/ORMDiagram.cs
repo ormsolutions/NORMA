@@ -26,6 +26,10 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// The filter string used to connect role sequences to external constraints
 		/// </summary>
 		public const string ORMDiagramConnectExternalConstraintFilterString = "ORMDiagramConnectExternalConstraintFilterString";
+		/// <summary>
+		/// The filter string used to connect a role to its role player object type
+		/// </summary>
+		public const string ORMDiagramConnectRoleFilterString = "ORMDiagramConnectRoleFilterString";
 		#endregion // Toolbox filter strings
 		#region View Fixup Methods
 		/// <summary>
@@ -229,6 +233,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					group.AddGraph(sc);
 					retVal = group.CreatePrototype(sc);
 					break;
+				case ResourceStrings.ToolboxRoleConnectorItemId:
 				case ResourceStrings.ToolboxExternalConstraintConnectorItemId:
 					// Intentionally unprototyped item
 					break;
@@ -263,6 +268,8 @@ namespace Northface.Tools.ORM.ShapeModel
 		#region Toolbox support
 		private ExternalConstraintConnectAction myExternalConstraintConnectAction;
 		private ExternalConstraintAction myExternalConstraintAction;
+		private RoleDragPendingAction myRoleDragPendingAction;
+		private RoleConnectAction myRoleConnectAction;
 		/// <summary>
 		/// Enable our toolbox actions
 		/// </summary>
@@ -281,6 +288,10 @@ namespace Northface.Tools.ORM.ShapeModel
 				{
 					action = ExternalConstraintAction;
 				}
+				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramConnectRoleFilterString))
+				{
+					action = RoleConnectAction;
+				}
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramDefaultFilterString))
 				{
 					action = ToolboxAction;
@@ -288,9 +299,53 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 
 			DiagramClientView clientView = pointArgs.DiagramClientView;
-			if (clientView.ActiveMouseAction != action)
+			if (clientView.ActiveMouseAction != action &&
+				// UNDONE: We should not need the following line because the current mouse action
+				// should correspond to the current toolbox action. However, Toolbox.SetSelectedToolboxItem
+				// always crashes, so there is no way to reset the action when we explicitly chain.
+				// The result of not doing this is that moving the mouse off and back on the diagram
+				// (or over a warning tooltip) during a chained mouse action cancels the action.
+				// See corresponding code in ExternalConstraintConnectAction.ChainMouseAction.
+				(action != null || activeView.Toolbox.GetSelectedToolboxItem() != null))
 			{
 				clientView.ActiveMouseAction = action;
+			}
+		}
+		/// <summary>
+		/// Select the given item on the default tab
+		/// </summary>
+		/// <param name="activeView">DiagramView</param>
+		/// <param name="itemId">Name of the item id</param>
+		public static void SelectToolboxItem(DiagramView activeView, string itemId)
+		{
+			SelectToolboxItem(activeView, itemId, ResourceStrings.ToolboxDefaultTabName);
+		}
+		/// <summary>
+		/// Select the given item on the specified toolbox tab
+		/// UNDONE: The critical point of this routine crashes VS, so
+		/// it is currently a noop
+		/// </summary>
+		/// <param name="activeView">DiagramView</param>
+		/// <param name="itemId">Name of the item id</param>
+		/// <param name="tabName">The tab name to select</param>
+		public static void SelectToolboxItem(DiagramView activeView, string itemId, string tabName)
+		{
+			IToolboxService toolbox = activeView.Toolbox;
+			if (toolbox != null)
+			{
+				// Select the connector action on the toolbox
+				Debug.Assert(toolbox.GetSelectedToolboxItem() == null); // Should be turned off during MouseActionDeactivated
+				ToolboxItemCollection items = toolbox.GetToolboxItems(tabName);
+				foreach (ToolboxItem item in items)
+				{
+					ModelingToolboxItem modelingItem = item as ModelingToolboxItem;
+					if (modelingItem != null && modelingItem.Id == itemId)
+					{
+						// UNDONE: See comments on side effect in ORMDiagram.OnViewMouseEnter
+						//toolbox.SetSelectedToolboxItem(item); // UNDONE: Crashes, not sure why
+						break;
+					}
+				}
 			}
 		}
 		private ExternalConstraintConnectAction ExternalConstraintConnectAction
@@ -325,7 +380,90 @@ namespace Northface.Tools.ORM.ShapeModel
 				return myExternalConstraintAction;
 			}
 		}
+		/// <summary>
+		/// The drag action used by a role box to begin dragging.
+		/// The default implementation chains to a RoleConnectAction
+		/// when dragging begins.
+		/// </summary>
+		public RoleDragPendingAction RoleDragPendingAction
+		{
+			get
+			{
+				RoleDragPendingAction retVal = myRoleDragPendingAction;
+				if (retVal == null)
+				{
+					myRoleDragPendingAction = retVal = CreateRoleDragPendingAction();
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Create the drag action used for the RoleDragPendingAction property
+		/// </summary>
+		/// <returns>RoleDragPendingAction instance</returns>
+		protected RoleDragPendingAction CreateRoleDragPendingAction()
+		{
+			return new RoleDragPendingAction(this);
+		}
+		/// <summary>
+		/// The connect action used to connect a role and
+		/// its role player (an object type)
+		/// </summary>
+		public RoleConnectAction RoleConnectAction
+		{
+			get
+			{
+				RoleConnectAction retVal = myRoleConnectAction;
+				if (retVal == null)
+				{
+					myRoleConnectAction = retVal = CreateRoleConnectAction();
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Create the connect action used to connect roles to their role players
+		/// </summary>
+		/// <returns>RoleConnectAction instance</returns>
+		protected RoleConnectAction CreateRoleConnectAction()
+		{
+			return new RoleConnectAction(this);
+		}
 		#endregion // Toolbox support
+		#region Other base overrides
+		/// <summary>
+		/// Clean up disposable members (connection actions)
+		/// </summary>
+		/// <param name="disposing">Do stuff if true</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				// Use a somewhat paranoid pattern here to protect against reentrancy
+				IDisposable disposeMe;
+				disposeMe = myExternalConstraintAction as IDisposable;
+				myExternalConstraintAction = null;
+				if (disposeMe != null)
+				{
+					disposeMe.Dispose();
+				}
+
+				disposeMe = myExternalConstraintConnectAction as IDisposable;
+				myExternalConstraintConnectAction = null;
+				if (disposeMe != null)
+				{
+					disposeMe.Dispose();
+				}
+
+				disposeMe = myRoleDragPendingAction as IDisposable;
+				myRoleDragPendingAction = null;
+				if (disposeMe != null)
+				{
+					disposeMe.Dispose();
+				}
+			}
+		}
+		#endregion // Other base overrides
 		#region Display Properties
 		/// <summary>
 		/// Retrieve the component name for the property grid. The
