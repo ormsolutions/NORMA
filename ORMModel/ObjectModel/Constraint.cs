@@ -443,15 +443,15 @@ namespace Northface.Tools.ORM.ObjectModel
 						if (object.ReferenceEquals(oppositeRole, role))
 						{
 							oppositeRole = factRoles[1];
-							ObjectType rolePlayer = oppositeRole.RolePlayer;
-							if ((forType == null || object.ReferenceEquals(forType, rolePlayer)) &&
-								!rolePlayer.IsValueType) // Condition 3
-							{
-								// UNDONE: Check condition 4. This
-								// will be much easier to do when a FactConstraint
-								// is generated for internal fact types
-								return true;
-							}
+						}
+						ObjectType rolePlayer = oppositeRole.RolePlayer;
+						if ((forType == null || object.ReferenceEquals(forType, rolePlayer)) &&
+							!rolePlayer.IsValueType) // Condition 3
+						{
+							// UNDONE: Check condition 4. This
+							// will be much easier to do when a FactConstraint
+							// is generated for internal fact types
+							return true;
 						}
 					}
 				}
