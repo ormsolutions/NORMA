@@ -155,7 +155,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					}
 				}				
 			}
-			if (entity != null && entity.ReferenceModeDisplay.Length > 0)
+			if (entity != null && entity.ReferenceModeString.Length > 0)
 			{
 				ShapeElement shapeElement = FindShapeForElement(entity);
 				ObjectTypeShape objectTypeShape = shapeElement as ObjectTypeShape;

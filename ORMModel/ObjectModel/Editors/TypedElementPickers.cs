@@ -262,5 +262,89 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		}
 	}
 	#endregion // ReferenceModeKindPicker class
-	
+	#region ReferenceModePicker class
+	/// <summary>
+	/// An element picker to select the reference mode for an object type. Associated with the 
+	/// ObjectType.ReferenceModeDisplay property
+	/// </summary>
+	public class ReferenceModePicker : ElementPicker
+	{
+		private IList myModes;
+		/// <summary>
+		/// Returns a list of role player candidates for a fact type.
+		/// The nesting type is filtered out of the list.
+		/// </summary>
+		/// <param name="context">ITypeDescriptorContext. Used to retrieve the selected instance</param>
+		/// <param name="value">The current value</param>
+		/// <returns>A list of candidates</returns>
+		protected override IList GetContentList(ITypeDescriptorContext context, object value)
+		{
+			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, true);
+			IList rawModes = instance.Model.ReferenceModeCollection;
+			IList candidates;
+			string instanceName = instance.Name;
+			string formatString = ResourceStrings.ModelReferenceModePickerFormatString; 
+			if (rawModes.Count > 1)
+			{
+				// Make sure we're sorted
+				List<ReferenceMode> modes = new List<ReferenceMode>(rawModes.Count);
+				foreach (ReferenceMode mode in rawModes)
+				{
+					modes.Add(mode);
+				}
+				modes.Sort(delegate(ReferenceMode mode1, ReferenceMode mode2)
+				{
+					return string.Compare(mode1.Name, mode2.Name);
+				});
+				myModes = modes;
+				int modeCount = modes.Count;
+				string[] prettyStrings = new string[modeCount];
+				for (int i = 0; i < modeCount; ++i)
+				{
+					ReferenceMode refMode = modes[i];
+					prettyStrings[i] = string.Format(formatString, refMode.Name, refMode.GenerateValueTypeName(instanceName));
+				}
+				candidates = prettyStrings;
+			}
+			else
+			{
+				myModes = rawModes;
+				ReferenceMode refMode = (ReferenceMode)rawModes[0];
+				candidates = new string[] { string.Format(formatString, refMode.Name, refMode.GenerateValueTypeName(instanceName)) };
+			}
+			return candidates;
+		}
+		/// <summary>
+		///  Translates the formatted string from the drop down list to the corresponding
+		///  reference mode
+		/// </summary>
+		/// <param name="newIndex"></param>
+		/// <param name="newObject"></param>
+		/// <returns></returns>
+		protected override object TranslateFromDisplayObject(int newIndex, object newObject)
+		{
+			return myModes[newIndex];
+		}
+		/// <summary>
+		/// Translates from the reference mode object in the drop down list to the corresponding
+		/// formatted string
+		/// </summary>
+		/// <param name="initialObject"></param>
+		/// <param name="contentList"></param>
+		/// <returns></returns>
+		protected override object TranslateToDisplayObject(object initialObject, IList contentList)
+		{
+			ReferenceMode mode = initialObject as ReferenceMode;
+			if (mode != null)
+			{
+				int index = myModes.IndexOf(initialObject);
+				if (index >= 0)
+				{
+					return contentList[index];
+				}
+			}
+			return initialObject;
+		}
+	}
+	#endregion // ReferenceModePicker class
 }

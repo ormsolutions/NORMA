@@ -1561,10 +1561,11 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Editor(typeof(Northface.Tools.ORM.ObjectModel.Editors.ReferenceModePicker), typeof(System.Drawing.Design.UITypeEditor))]
 		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ObjectTypeReferenceModeDisplayFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, AllowNulls=true, FieldHandlerType=typeof(ObjectTypeReferenceModeDisplayFieldHandler))]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplayMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplay")]
-		public  System.String ReferenceModeDisplay
+		public  System.Object ReferenceModeDisplay
 		{
 			get
 			{
@@ -1588,7 +1589,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Implement the field handler for ObjectType.ReferenceModeDisplay
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class ObjectTypeReferenceModeDisplayFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ObjectType,System.String>
+		public sealed partial class ObjectTypeReferenceModeDisplayFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ObjectType,System.Object>
 		{
 			/// <summary>
 			/// Constructor
@@ -1625,6 +1626,184 @@ namespace Northface.Tools.ORM.ObjectModel
 				get
 				{
 					return Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeDisplayMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+		#region ReferenceModeString's Generated  Field Code
+		#region ReferenceModeString's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ReferenceModeStringMetaAttributeGuidString = "9fe0a63e-fda6-47cb-aa43-2bd5ab99b0a5";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ReferenceModeStringMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeStringMetaAttributeGuidString);
+		#endregion
+
+		#region ReferenceModeString's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ObjectTypeReferenceModeStringFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeStringMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeString")]
+		public  System.String ReferenceModeString
+		{
+			get
+			{
+				return objectTypeReferenceModeStringFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				objectTypeReferenceModeStringFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ObjectTypeReferenceModeStringFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ObjectType.ReferenceModeString field
+		/// </summary>
+		private static ObjectTypeReferenceModeStringFieldHandler	objectTypeReferenceModeStringFieldHandler	= ObjectTypeReferenceModeStringFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ObjectType.ReferenceModeString
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ObjectTypeReferenceModeStringFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ObjectType,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ObjectTypeReferenceModeStringFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ObjectType.ReferenceModeString field handler
+			/// </summary>
+			/// <value>ObjectTypeReferenceModeStringFieldHandler</value>
+			public static ObjectTypeReferenceModeStringFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeReferenceModeStringFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeReferenceModeStringFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ObjectType will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeReferenceModeStringFieldHandler, so just instantiate one and return it
+						return new ObjectTypeReferenceModeStringFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ObjectType.ReferenceModeString field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeStringMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+		#region ReferenceMode's Generated  Field Code
+		#region ReferenceMode's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ReferenceModeMetaAttributeGuidString = "c33b225e-ba4a-4174-9231-527483fa289e";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ReferenceModeMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeMetaAttributeGuidString);
+		#endregion
+
+		#region ReferenceMode's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, AllowNulls=true, FieldHandlerType=typeof(ObjectTypeReferenceModeFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceMode")]
+		public  Northface.Tools.ORM.ObjectModel.ReferenceMode ReferenceMode
+		{
+			get
+			{
+				return objectTypeReferenceModeFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				objectTypeReferenceModeFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ObjectTypeReferenceModeFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ObjectType.ReferenceMode field
+		/// </summary>
+		private static ObjectTypeReferenceModeFieldHandler	objectTypeReferenceModeFieldHandler	= ObjectTypeReferenceModeFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ObjectType.ReferenceMode
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ObjectTypeReferenceModeFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ObjectType,Northface.Tools.ORM.ObjectModel.ReferenceMode>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ObjectTypeReferenceModeFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ObjectType.ReferenceMode field handler
+			/// </summary>
+			/// <value>ObjectTypeReferenceModeFieldHandler</value>
+			public static ObjectTypeReferenceModeFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeReferenceModeFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeReferenceModeFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ObjectType will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeReferenceModeFieldHandler, so just instantiate one and return it
+						return new ObjectTypeReferenceModeFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ObjectType.ReferenceMode field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ObjectType.ReferenceModeMetaAttributeGuid;
 				}
 			}
 		}

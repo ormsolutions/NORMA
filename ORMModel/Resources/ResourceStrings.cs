@@ -321,7 +321,6 @@ namespace Northface.Tools.ORM
 		private const string ModelReadingEditorUnsupportedSelectionText_Id = "ModelReadingEditor.UnsupportedSelectionText";
 		private const string PackageOfficialName_Id = "Package.OfficialName";
 		private const string PackageProductDetails_Id = "Package.ProductDetails";
-
 		private const string ModelReferenceModeEditorAbbreviatedEntityTypeName_Id = "ModelReferenceModeEditor.AbbreviatedEntityTypeName";
 		private const string ModelReferenceModeEditorAbbreviatedReferenceModeName_Id = "ModelReferenceModeEditor.AbbreviatedReferenceModeName";
 		private const string ModelReferenceModeEditorAddCustomReferenceModeTransaction_Id = "ModelReferenceModeEditor.AddCustomReferenceModeTransaction";
@@ -344,9 +343,10 @@ namespace Northface.Tools.ORM
 		private const string ModelReferenceModeEditorFormatStringColumn_Id = "ModelReferenceModeEditor.FormatStringColumn";
 		private const string ModelReferenceModeEditorKindColumn_Id = "ModelReferenceModeEditor.KindColumn";
 		private const string ModelReferenceModeEditorNameColumn_Id = "ModelReferenceModeEditor.NameColumn";
-
 		private const string FactEditorToolWindowCaption_Id = "FactEditorToolWindow.Caption";
 		private const string FactEditorIntellisenseImageList_Id = "FactEditor.Intellisense.ImageList";
+		private const string ModelExceptionReferenceModeAmbiguousName_Id = "ModelException.ReferenceMode.AmbiguousName";
+		private const string ModelReferenceModePickerFormatString_Id = "ModelReferenceModePicker.FormatString";
 		#endregion // Private resource ids
 		#region Public accessor properties
 		/// <summary>
@@ -1196,12 +1196,33 @@ namespace Northface.Tools.ORM
 		/// <summary>
 		/// The images for the Intellisense drop down
 		/// </summary>
-		/// <value></value>
 		public static ImageListStreamer FactEditorIntellisenseImageList
 		{
 			get
 			{
 				return GetObject(ResourceManagers.Diagram, FactEditorIntellisenseImageList_Id) as ImageListStreamer;
+			}
+		}
+
+		/// <summary>
+		/// Exception message output when multiple reference modes are found with the same name
+		/// </summary>
+		public static string ModelExceptionReferenceModeAmbiguousName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelExceptionReferenceModeAmbiguousName_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns the format string for the display text for reference mode picker
+		/// </summary>
+		public static string ModelReferenceModePickerFormatString
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModePickerFormatString_Id);
 			}
 		}
 		#endregion // Public accessor properties

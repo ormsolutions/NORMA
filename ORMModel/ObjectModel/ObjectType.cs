@@ -62,31 +62,24 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			else if (attributeGuid == ObjectType.ReferenceModeDisplayMetaAttributeGuid)
 			{
-				InternalConstraint prefConstraint = this.PreferredIdentifier as InternalConstraint;
-
-				//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
-				// player is a value type then return the refence mode name.
-				if (prefConstraint != null)
-				{
-					ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
-					if (valueType != null)
-					{
-						Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueType.Name, this.Name, this.Model);
-
-						if (valueType.IsValueType)
-						{
-							if (refMode == null)
-							{
-								return valueType.Name;
-							}
-							else
-							{
-								return refMode.Name;
-							}
-						}
-					}
-				}
-				return "";
+				ReferenceMode refMode;
+				string referenceModeString;
+				this.GetReferenceMode(out refMode, out referenceModeString);
+				return (refMode != null) ? (object)refMode : referenceModeString;
+			}
+			else if (attributeGuid == ObjectType.ReferenceModeStringMetaAttributeGuid)
+			{
+				ReferenceMode refMode;
+				string referenceModeString;
+				this.GetReferenceMode(out refMode, out referenceModeString);
+				return referenceModeString;
+			}
+			else if (attributeGuid == ObjectType.ReferenceModeMetaAttributeGuid)
+			{
+				ReferenceMode refMode;
+				string referenceModeString;
+				GetReferenceMode(out refMode, out referenceModeString);
+				return refMode;
 			}
 			else if (attributeGuid == ObjectType.NestedFactTypeDisplayMetaAttributeGuid)
 			{
@@ -94,6 +87,33 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
+
+		/// <summary>
+		/// Determines whether to return the valuetype name as the reference mode or, if there
+		/// is a reference mode, it returns the reference mode name
+		/// </summary>
+		/// <param name="refMode"></param>
+		/// <param name="refModeString"></param>
+		private void GetReferenceMode(out ReferenceMode refMode, out string refModeString)
+		{
+			refMode = null;
+			refModeString = "";
+			InternalConstraint prefConstraint = this.PreferredIdentifier as InternalConstraint;
+
+			//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
+			// player is a value type then return the refence mode name.
+			if (prefConstraint != null)
+			{
+				ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
+				if (valueType.IsValueType)
+				{
+					string valueTypeName = valueType.Name;
+					refMode = ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueTypeName, this.Name, this.Model);
+					refModeString = (refMode == null) ? valueTypeName : refMode.Name;
+				}
+			}
+		}
+
 		/// <summary>
 		/// Standard override. Defer to GetValueForCustomStoredAttribute.
 		/// </summary>
@@ -122,6 +142,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			return goodLink as ValueTypeHasDataType;
 		}
+
 		/// <summary>
 		/// Standard override determine when derived attributes are
 		/// displayed in the property grid. Called for all attributes.
@@ -146,6 +167,23 @@ namespace Northface.Tools.ORM.ObjectModel
 				return !IsValueType && NestedFactType == null;
 			}
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
+		}
+
+		/// <summary>
+		/// Return a custom property descriptor for the ReferenceModeDisplay property
+		/// </summary>
+		/// <param name="modelElement"></param>
+		/// <param name="metaAttributeInfo"></param>
+		/// <param name="requestor"></param>
+		/// <param name="attributes"></param>
+		/// <returns></returns>
+		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes)
+		{
+			if (metaAttributeInfo.Id == ReferenceModeDisplayMetaAttributeGuid)
+			{
+				return new ReferenceModeDisplayPropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
+			}
+			return base.CreatePropertyDescriptor(modelElement, metaAttributeInfo, requestor, attributes);
 		}
 		/// <summary>
 		/// Standard override. Determines when derived properties are read-only. Called
@@ -246,8 +284,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			return null;
 		}
-
-
 		/// <summary>
 		///  Utility function to cahnge the name of an existing reference mode.
 		/// </summary>
@@ -337,7 +373,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Returns the Reference Mode for the given object if one exists
 		/// </summary>
 		/// <returns></returns>
-		public ReferenceMode  GetReferenceMode()
+		public ReferenceMode GetReferenceMode()
 		{
 			InternalConstraint prefConstraint = this.PreferredIdentifier as InternalConstraint;
 
@@ -454,7 +490,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						string oldValue = (string)e.OldValue;
 						string oldReferenceModeName = "";
 
-						ReferenceMode referenceMode = ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(objectType.ReferenceModeDisplay, oldValue, objectType.Model);
+						ReferenceMode referenceMode = ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(objectType.ReferenceModeString, oldValue, objectType.Model);
 
 						if (referenceMode != null)
 						{
@@ -472,34 +508,92 @@ namespace Northface.Tools.ORM.ObjectModel
 				else if (attributeGuid == ObjectType.ReferenceModeDisplayMetaAttributeGuid)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
-					Store store = objectType.Store;
-					InternalUniquenessConstraint prefConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint;
-					bool aggressivelyKillValueType = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.Contains(DeleteReferenceModeValueType);
+					SetReferenceMode(objectType, e.NewValue as ReferenceMode, e.OldValue as ReferenceMode, e.NewValue as string, e.OldValue as string);
+				}
+				else if (attributeGuid == ObjectType.ReferenceModeStringMetaAttributeGuid)
+				{
+					ObjectType objectType = e.ModelElement as ObjectType;
+					string newName = (string)e.NewValue;
 
-					string newValue = (string)e.NewValue;
-					string oldValue = (string)e.OldValue;
-
-					ICollection<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(newValue, objectType.Model);
-
-					//TODO: What if we get multiple back?
-					string name = newValue;
-					foreach (ReferenceMode referenceMode in referenceModes)
+					// Find the unique reference mode for this object type and reference mode string
+					IList<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(newName, objectType.Model);
+					ReferenceMode singleMode = null;
+					int modeCount = referenceModes.Count;
+					if (modeCount == 1)
 					{
-						name = referenceMode.GenerateValueTypeName(objectType.Name);
+						singleMode = referenceModes[0];
+						newName = null;
 					}
-
-					if (newValue.Length == 0 && oldValue.Length != 0)
+					else if (modeCount > 1)
 					{
-						objectType.KillReferenceMode(aggressivelyKillValueType);
+						throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeAmbiguousName);
 					}
-					else if (newValue.Length != 0 && oldValue.Length != 0)
+					SetReferenceMode(objectType, singleMode, null, newName, e.OldValue as string);
+				}
+				else if (attributeGuid == ObjectType.ReferenceModeMetaAttributeGuid) 
+				{
+					ObjectType objectType = e.ModelElement as ObjectType;
+					SetReferenceMode(objectType, (ReferenceMode)e.NewValue, (ReferenceMode)e.OldValue, null, null);
+				}
+			}
+			/// <summary>
+			/// Determines if the value type associated with the reference mode pattern needs to be 
+			/// removed, renamed, or created based on the new and old values of the property.
+			/// Value Type modifications won't be seen unless the object type is viewed in expanded mode.
+			/// </summary>
+			/// <param name="objectType">the selected object</param>
+			/// <param name="newMode">The new reference mode</param>
+			/// <param name="oldMode">The old reference mode</param>
+			/// <param name="newModeName">The new reference mode name</param>
+			/// <param name="oldModeName">The old reference mode name</param>
+			private static void SetReferenceMode(ObjectType objectType, ReferenceMode newMode, ReferenceMode oldMode, string newModeName, string oldModeName)
+			{
+				Store store = objectType.Store;
+				InternalUniquenessConstraint prefConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint;
+				bool aggressivelyKillValueType = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.Contains(DeleteReferenceModeValueType);
+
+				string newValue = newModeName;
+				if (newValue == null)
+				{
+					newValue = "";
+				}
+				string oldValue = oldModeName;
+				if (oldValue == null)
+				{
+					oldValue = "";
+				}
+
+				string name = newValue;
+				if (newMode != null)
+				{
+					if (name == "")
+					{
+						name = newMode.Name;
+					}
+					name = newMode.GenerateValueTypeName(objectType.Name);
+					newValue = newMode.Name;
+					if (oldMode != null)
+					{
+						oldValue = oldMode.Name;
+					}
+				}
+				bool haveNew = newMode != null || newValue.Length != 0;
+				bool hadOld = oldMode != null || oldValue.Length != 0;
+				if (hadOld)
+				{
+					if (haveNew)
 					{
 						objectType.RenameReferenceMode(name);
 					}
-					else if (newValue.Length != 0 && oldValue.Length == 0)
+					else
 					{
-						objectType.CreateReferenceMode(name);
+						objectType.KillReferenceMode(aggressivelyKillValueType);
 					}
+				}
+				else
+				{
+					Debug.Assert(haveNew);
+					objectType.CreateReferenceMode(name);
 				}
 			}
 		}
@@ -638,5 +732,90 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // CheckForIncompatibleRelationshipRule class
+		#region ReferenceModeDisplayPropertyDescriptor class
+		/// <summary>
+		/// A property descriptor that filters out some standard values from
+		/// the type converter.
+		/// </summary>
+		protected class ReferenceModeDisplayPropertyDescriptor : ElementPropertyDescriptor
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			/// <param name="modelElement">Passed to base</param>
+			/// <param name="metaAttributeInfo">Passed to base</param>
+			/// <param name="requestor">Passed to base</param>
+			/// <param name="attributes">Passed to base</param>
+			public ReferenceModeDisplayPropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes) : base(modelElement, metaAttributeInfo, requestor, attributes)
+			{
+			}
+			/// <summary>
+			/// Return a custom typeconverter that
+			/// limits the predefined values.
+			/// </summary>
+			/// <value></value>
+			public override TypeConverter Converter
+			{
+				get
+				{
+					return new ReferenceModeDisplayConverter();
+				}
+			}
+			#region ReferenceModeDisplayConverter class
+			private class ReferenceModeDisplayConverter : TypeConverter
+			{
+				public ReferenceModeDisplayConverter()
+				{
+				}
+
+				public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+				{
+					if (sourceType == typeof(string))
+					{
+						return true;
+					}
+					return false;
+				}
+				public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+				{
+					string refMode = value as string;
+					ObjectType instance = (ObjectType)Editors.EditorUtility.ResolveContextInstance(context.Instance, true);
+					IList<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(refMode, instance.Model);
+
+					int modeCount = referenceModes.Count;
+					if (modeCount == 0)
+					{
+						return refMode;
+					}
+					else if (modeCount == 1)
+					{
+						return referenceModes[0] as ReferenceMode;
+					}
+					else
+					{
+						throw new InvalidOperationException(ResourceStrings.ModelExceptionReferenceModeAmbiguousName);
+					}
+				}
+				public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+				{
+					if (destinationType == typeof(ReferenceMode))
+					{
+						return true;
+					}
+					return false;
+				}
+				public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+				{
+					if (destinationType == typeof(string))
+					{
+						ReferenceMode mode = value as ReferenceMode;
+						return (mode != null) ? mode.Name : value.ToString();
+					}
+					return null;
+				}
+			}
+			#endregion // ReferenceModeDisplayConverter class
+		}
+		#endregion // ReferenceModeDisplayPropertyDescriptor class
 	}
 }

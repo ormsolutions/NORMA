@@ -174,6 +174,10 @@
     <value xml:space="preserve">The new value is not valid for the current state of the reading.</value>
     <comment xml:space="preserve">Exception message when a change is made to the reading text and the new value is deemed invalid by IsValidReadingText.</comment>
   </data>
+  <data name="ModelException.ReferenceMode.AmbiguousName">
+    <value xml:space="preserve">Multiple reference modes found with the same name. Use the reference mode picker instead of setting the name directly.</value>
+    <comment xml:space="preserve">Exception message output when multiple reference modes are found with the same name</comment>
+  </data>
   <data name="ModelException.ReferenceMode.EnforceUniqueFormatString">
     <value xml:space="preserve">Format strings must be unique across all reference modes in the model.</value>
     <comment xml:space="preserve">Exception message when the unique format string rule is violated for modes</comment>
@@ -184,7 +188,7 @@
   </data>
   <data name="ModelException.ReferenceMode.ReferenceModesKindNotEmpty">
     <value xml:space="preserve">Reference mode kind cannot be empty.</value>
-    <comment xml:space="preserve">Exception messege when attempt is made to remove reference mode kind.</comment>
+    <comment xml:space="preserve">Exception message when attempt is made to remove reference mode kind.</comment>
   </data>
   <data name="ModelException.ReferenceModeKind.EnforceUniqueFormatString">
     <value xml:space="preserve">Format strings must be unique across all reference mode kinds in the model.</value>
@@ -301,6 +305,10 @@
   <data name="ModelReferenceModeEditor.ReferenceModeName">
     <value xml:space="preserve">ReferenceModeName</value>
     <comment xml:space="preserve">Text that names the reference mode.</comment>
+  </data>
+  <data name="ModelReferenceModePicker.FormatString">
+    <value xml:space="preserve">{0} ({1})</value>
+    <comment xml:space="preserve">The format string for the reference mode display text in the reference mode picker</comment>
   </data>
   <data name="ReferenceMode.PredicateInverseReading">
     <value xml:space="preserve">{0} is of {1}</value>

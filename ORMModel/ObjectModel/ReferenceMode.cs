@@ -452,13 +452,13 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="model">The containing model</param>
 		/// <returns>Always returns a collection, does not return null</returns>
 		[CLSCompliant(false)]
-		public static ICollection<ReferenceMode> FindReferenceModesByName(string referenceModeName, ORMModel model)
+		public static IList<ReferenceMode> FindReferenceModesByName(string referenceModeName, ORMModel model)
 		{
 			// Choice of implementation: We need to either make two passes to allocate the
 			// right size array, always create a Collection, or delay create the collection
 			// for the (relatively uncommon) case when we have multiple reference modes of the
 			// same name. Implement the third option.
-			Collection<ReferenceMode> multiples = null;
+			List<ReferenceMode> multiples = null;
 			ReferenceMode single = null;
 
 			foreach (ReferenceMode referenceMode in model.ReferenceModeCollection)
@@ -471,8 +471,9 @@ namespace Northface.Tools.ORM.ObjectModel
 					}
 					else if (single != null)
 					{
-						multiples = new Collection<ReferenceMode>();
+						multiples = new List<ReferenceMode>();
 						multiples.Add(single);
+						multiples.Add(referenceMode);
 						single = null;
 					}
 					else

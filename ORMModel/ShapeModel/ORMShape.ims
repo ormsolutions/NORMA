@@ -21,7 +21,7 @@ Information Contained Herein is Proprietary and Confidential.
               <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
               <stringdomain default="" max="2147483647" />
             </metaattribute>
-            <metaattribute name="ReferenceModeName" identity="55d073e6-a77b-4440-a881-b2a8222b6c8b" type="System.String" xpathexpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/ObjectType/SubjectHasPresentation.Presentation/Presentation" realattributename="ReferenceModeDisplay" proxyattributename="ReferenceModeDisplay" category="" description="" doccomment="" localize="false" tag="">
+            <metaattribute name="ReferenceModeName" identity="55d073e6-a77b-4440-a881-b2a8222b6c8b" type="System.String" xpathexpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/ObjectType/SubjectHasPresentation.Presentation/Presentation" realattributename="ReferenceModeString" proxyattributename="ReferenceModeString" category="" description="" doccomment="" localize="false" tag="">
               <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
               <stringdomain default="" max="2147483647" />
             </metaattribute>

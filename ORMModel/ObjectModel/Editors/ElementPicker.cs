@@ -265,7 +265,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 						listBox.DataSource = sourceList;
 						if (value != null)
 						{
-							myInitialSelectionValue = value;
+							myInitialSelectionValue = TranslateToDisplayObject(value, elements);
 						}
 						else if (nullList != null)
 						{
@@ -290,6 +290,9 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 								{
 									newObject = null;
 								}
+								// Give the caller the chance to change the type of the chosen object
+								newObject = TranslateFromDisplayObject((nullList == null) ? lastIndex : lastIndex - 1, newObject);
+
 							}
 						}
 					}
@@ -376,6 +379,37 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			{
 				myLastControlSize = value;
 			}
+		}
+		/// <summary>
+		/// Give a derived class with an opportunity to change the
+		/// chosen object from the dropdown list into a different type
+		/// of object. This allows the passed in candidate list to contain
+		/// objects that have a different type than the type of the property.
+		/// TranslateFromDisplayObject is called when the user selects an item
+		/// in the dropdown.
+		/// </summary>
+		/// <param name="newIndex">The index chosen from the list. If the null
+		/// item was chosen, then the newIndex will be -1</param>
+		/// <param name="newObject">The chosen object. Can be null.</param>
+		/// <returns>Default implementation returns newObject</returns>
+		protected virtual object TranslateFromDisplayObject(int newIndex, object newObject)
+		{
+			return newObject;
+		}
+		/// <summary>
+		/// Give a derived class with an opportunity to change the
+		/// chosen object from the dropdown list into a different type
+		/// of object. This allows the passed in candidate list to contain
+		/// objects that have a different type than the type of the property.
+		/// TranslateToDisplayObject is called to determine the initial selection
+		/// in the dropdown.
+		/// </summary>
+		/// <param name="initialObject">The starting value of the property</param>
+		/// <param name="contentList">The list returned from GetContentList</param>
+		/// <returns>Default implementation returns initialObject</returns>
+		protected virtual object TranslateToDisplayObject(object initialObject, IList contentList)
+		{
+			return initialObject;
 		}
 		#endregion // ElementPicker Specifics
 	}

@@ -45,6 +45,9 @@ namespace Northface.Tools.ORM.Shell
 	<xsl:template match=""om:Property[@Name='NestingTypeDisplay']"" />
 	<xsl:template match=""om:Property[@Name='IsPreferred']"" />
 	<xsl:template match=""om:Property[@Name='Multiplicity']"" />
+	<xsl:template match=""om:Property[@Name='ReferenceModeDisplay']"" />
+	<xsl:template match=""om:Property[@Name='ReferenceModeString']"" />
+	<xsl:template match=""om:Property[@Name='ReferenceMode']"" />
 </xsl:stylesheet>";
 		#endregion // Xsl transforms
 		#region Synchronized code to load transform into static variable

@@ -17,6 +17,8 @@ Information Contained Herein is Proprietary and Confidential.
       <simpleType name="FactType" identity="b81a75b4-e394-409d-b256-1dc613b70fe3" namespace="Northface.Tools.ORM.ObjectModel" id="ib81a75b4ze394z409dzb256z1dc613b70fe3" />
       <simpleType name="ObjectType" identity="eebf1f3a-fb67-498a-9542-369b2c1a3129" namespace="Northface.Tools.ORM.ObjectModel" id="ieebf1f3azfb67z498az9542z369b2c1a3129" />
       <simpleType name="ReferenceModeKind" identity="41e620f7-29b7-46df-96f0-af9cfe92a4d6" namespace="Northface.Tools.ORM.ObjectModel" id="i41e620f7z29b7z46dfz96f0zaf9cfe92a4d6" />
+      <simpleType name="Object" identity="ce71f148-bf6f-4a66-8155-903967ee3714" namespace="System" id="ice71f148zbf6fz4a66z8155z903967ee3714" />
+      <simpleType name="ReferenceMode" identity="a9344acd-0bb0-4c36-ba82-5feb86065fd0" namespace="Northface.Tools.ORM.ObjectModel" id="ia9344acdz0bb0z4c36zba82z5feb86065fd0" />
     </simpleTypes>
     <enumerations>
       <enumeration name="ExclusionType" identity="8f4db2db-8a63-43f8-a6ee-c856289c49ee" namespace="Northface.Tools.ORM.ObjectModel" id="i8f4db2dbz8a63z43f8za6eezc856289c49ee">
@@ -1327,6 +1329,14 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <property>i0212a64dzbaf9z42a1z890fz92b8d6b5ee2d</property>
           </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="a96e9961-22b6-4c55-a065-a00ce784b92f" id="ia96e9961z22b6z4c55za065za00ce784b92f">
+            <source />
+            <property>i9fe0a63ezfda6z47cbzaa43z2bd5ab99b0a5</property>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="376c3201-4ceb-49cb-bcd7-265df3ffe55c" id="i376c3201z4cebz49cbzbcd7z265df3ffe55c">
+            <source />
+            <property>ic33b225ezba4az4174z9231z527483fa289e</property>
+          </treeExpression>
         </expressions>
         <roots>
           <root name="ORMModel" identity="f231968d-acdd-4123-ba57-7b5e5075194c" id="if231968dzacddz4123zba57z7b5e5075194c">
@@ -1652,8 +1662,26 @@ Information Contained Herein is Proprietary and Confidential.
             </propertyInfo>
           </property>
           <property name="ReferenceModeDisplay" identity="4273a21b-afa2-4ba8-bdba-179b578a11b5" id="i4273a21bzafa2z4ba8zbdbaz179b578a11b5">
-            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="" />
-            <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="3e1c4372-15a7-4783-92c5-0e0f50a96dcc" default="" max="2147483647" />
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="true" readwritestate="readwrite" tag="">
+              <clrattribute name="System.ComponentModel.Editor" parametertext="typeof(Northface.Tools.ORM.ObjectModel.Editors.ReferenceModePicker), typeof(System.Drawing.Design.UITypeEditor)" />
+            </mdfmetadata>    
+            <propertyInfo xsi:type="SimplePropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000">
+              <simpleType>ice71f148zbf6fz4a66z8155z903967ee3714</simpleType>
+            </propertyInfo>
+          </property>
+          <property name="ReferenceModeString" identity="9fe0a63e-fda6-47cb-aa43-2bd5ab99b0a5" id="i9fe0a63ezfda6z47cbzaa43z2bd5ab99b0a5">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="">
+              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+            </mdfmetadata>
+            <propertyInfo xsi:type="StringPropertyInfo" name="" identity="84bca9fa-f5d8-44ef-9299-8965ccb43588" default="" max="2147483647" />
+          </property>
+          <property name="ReferenceMode" identity="c33b225e-ba4a-4174-9231-527483fa289e" id="ic33b225ezba4az4174z9231z527483fa289e">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="true" readwritestate="readwrite" tag="">
+              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+            </mdfmetadata>
+            <propertyInfo xsi:type="SimplePropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000">
+              <simpleType>ia9344acdz0bb0z4c36zba82z5feb86065fd0</simpleType>
+            </propertyInfo>
           </property>
         </valueProperties>
       </concept>

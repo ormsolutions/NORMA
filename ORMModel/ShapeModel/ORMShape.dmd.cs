@@ -522,7 +522,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/ObjectType/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="ReferenceModeDisplay", ProxyAttributeName="ReferenceModeDisplay", FieldHandlerType=typeof(ObjectTypeShapeReferenceModeNameFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/ObjectType/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="ReferenceModeString", ProxyAttributeName="ReferenceModeString", FieldHandlerType=typeof(ObjectTypeShapeReferenceModeNameFieldHandler))]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeName")]
 		public  System.String ReferenceModeName
 		{
