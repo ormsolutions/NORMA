@@ -66,13 +66,13 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 			else if (null != (objType = element as ObjectType))
 			{
-				if (objType.ReferenceModeDisplay.Length == 0)
+				if (objType.NestedFactType == null)
 				{
-					return objType.NestedFactType == null;
+					return ShouldDisplayPartOfReferenceMode(element);
 				}
 				else
 				{
-					return ShouldDisplayPartOfReferenceMode(element);
+					return false;
 				}
 			}
 			return base.ShouldAddShapeForElement(element);
@@ -155,7 +155,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					}
 				}				
 			}
-			if (entity != null && entity.ReferenceModeDisplay > 0)
+			if (entity != null && entity.ReferenceModeDisplay.Length > 0)
 			{
 				ShapeElement shapeElement = FindShapeForElement(entity);
 				ObjectTypeShape objectTypeShape = shapeElement as ObjectTypeShape;
