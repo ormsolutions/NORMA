@@ -11629,26 +11629,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
-		#region ValueTypeCollection's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String ValueTypeCollectionMetaRoleGuidString = "72598bd8-40da-4a90-8005-d7ef2acaf536";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid ValueTypeCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeCollection")]
-		public  Northface.Tools.ORM.ObjectModel.ObjectType ValueTypeCollection
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.ObjectType)this.GetRolePlayer(ValueTypeCollectionMetaRoleGuid); }
-			set { this.SetRolePlayer(ValueTypeCollectionMetaRoleGuid, value); }
-		}
-		#endregion
 		#region DataType's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
@@ -11667,6 +11647,26 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get { return (Northface.Tools.ORM.ObjectModel.DataType)this.GetRolePlayer(DataTypeMetaRoleGuid); }
 			set { this.SetRolePlayer(DataTypeMetaRoleGuid, value); }
+		}
+		#endregion
+		#region ValueTypeCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueTypeCollectionMetaRoleGuidString = "72598bd8-40da-4a90-8005-d7ef2acaf536";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueTypeCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeCollection")]
+		public  Northface.Tools.ORM.ObjectModel.ObjectType ValueTypeCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ObjectType)this.GetRolePlayer(ValueTypeCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueTypeCollectionMetaRoleGuid, value); }
 		}
 		#endregion
 	}
@@ -13569,26 +13569,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.MetaRelationshipGuidString);
 		#endregion
 
-		#region RoleCollection's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String RoleCollectionMetaRoleGuidString = "43f43911-662e-480d-b566-8025ccb1f673";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid RoleCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.RoleCollectionMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.RoleCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.RoleCollection")]
-		public  Northface.Tools.ORM.ObjectModel.Role RoleCollection
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.Role)this.GetRolePlayer(RoleCollectionMetaRoleGuid); }
-			set { this.SetRolePlayer(RoleCollectionMetaRoleGuid, value); }
-		}
-		#endregion
 		#region ConstraintRoleSetCollection's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
@@ -13607,6 +13587,26 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get { return (Northface.Tools.ORM.ObjectModel.ConstraintRoleSet)this.GetRolePlayer(ConstraintRoleSetCollectionMetaRoleGuid); }
 			set { this.SetRolePlayer(ConstraintRoleSetCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region RoleCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String RoleCollectionMetaRoleGuidString = "43f43911-662e-480d-b566-8025ccb1f673";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid RoleCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.RoleCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.RoleCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.RoleCollection")]
+		public  Northface.Tools.ORM.ObjectModel.Role RoleCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.Role)this.GetRolePlayer(RoleCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(RoleCollectionMetaRoleGuid, value); }
 		}
 		#endregion
 		#region FactConstraintCollection's Generated Accessor Code
