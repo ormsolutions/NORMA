@@ -90,6 +90,16 @@
       <DependentUpon>ReadingEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="ObjectModel\Editors\ReadingTextEditor.cs" />
+    <Compile Include="ObjectModel\Editors\CustomReferenceModeEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ObjectModel\Editors\CustomReferenceModeEditor.Designer.cs">
+      <DependentUpon>CustomReferenceModeEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectModel\Editors\CustomReferenceModesBranch.cs" />
+    <Compile Include="ObjectModel\Editors\IntrinsicReferenceModesBranch.cs" />
+    <Compile Include="ObjectModel\Editors\ReferenceModeHeaderBranch.cs" />
+    <Compile Include="ObjectModel\Editors\ReferenceModeKindsBranch.cs" />
     <Compile Include="ObjectModel\ModelError.cs" />
     <Compile Include="ObjectModel\NamedElementDictionary.cs" />
     <Compile Include="ObjectModel\Editors\ElementPicker.cs">
@@ -101,6 +111,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ORMCore.dmd.mdfomt</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectModel\Editors\ORMReferenceModeEditorWindow.cs">
     </Compile>
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />

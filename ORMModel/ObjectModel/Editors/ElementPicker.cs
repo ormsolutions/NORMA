@@ -21,6 +21,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		private class DropDownListBox : ListBox
 		{
 			private bool myEscapePressed = false;
+			private int myLastSelectedIndex = -1;
 			protected override bool IsInputKey(Keys keyData)
 			{
 				if ((keyData & Keys.KeyCode) == Keys.Escape)
@@ -35,6 +36,23 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				{
 					return myEscapePressed;
 				}
+			}
+			/// <summary>
+			/// For some reason, the base SelectedItem property
+			/// is null if the commit is made with an Enter instead
+			/// of a double click. Track the selected item index separately.
+			/// </summary>
+			public int LastSelectedIndex
+			{
+				get
+				{
+					return myLastSelectedIndex;
+				}
+			}
+			protected override void OnSelectedIndexChanged(EventArgs e)
+			{
+				myLastSelectedIndex = SelectedIndex;
+				base.OnSelectedIndexChanged(e);
 			}
 		}
 		#endregion // DropDownListBox class. Handles Escape key for ListBox
@@ -264,16 +282,20 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 						// back to null if necessary
 						if (!listBox.EscapePressed)
 						{
-							newObject = listBox.SelectedItem;
-							if (nullList != null && nullList.IsNullItem(newObject))
+							int lastIndex = listBox.LastSelectedIndex;
+							if (lastIndex != -1)
 							{
-								newObject = null;
+								newObject = sourceList[lastIndex];
+								if (nullList != null && nullList.IsNullItem(newObject))
+								{
+									newObject = null;
+								}
 							}
 						}
 					}
 					finally
 					{
-						if (listBox != null)
+						if (listBox != null && !listBox.IsDisposed)
 						{
 							listBox.Dispose();
 						}

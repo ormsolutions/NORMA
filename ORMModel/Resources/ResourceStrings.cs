@@ -270,6 +270,21 @@ namespace Northface.Tools.ORM
 		private const string ModelReadingEditorUnsupportedSelectionText_Id = "ModelReadingEditor.UnsupportedSelectionText";
 		private const string PackageOfficialName_Id = "Package.OfficialName";
 		private const string PackageProductDetails_Id = "Package.ProductDetails";
+
+		private const string ModelReferenceModeEditorAbbreviatedEntityTypeName_Id = "ModelReferenceModeEditor.AbbreviatedEntityTypeName";
+		private const string ModelReferenceModeEditorAbbreviatedReferenceModeName_Id = "ModelReferenceModeEditor.AbbreviatedReferenceModeName";
+		private const string ModelReferenceModeEditorAddCustomReferenceModeTransaction_Id = "ModelReferenceModeEditor.AddCustomReferenceModeTransaction";
+		private const string ModelReferenceModeEditorAddNewRowText_Id = "ModelReferenceModeEditor.AddNewRowText";
+		private const string ModelReferenceModeEditorChangeFormatStringTransaction_Id = "ModelReferenceModeEditor.ChangeFormatStringTransaction";
+		private const string ModelReferenceModeEditorChangeNameTransaction_Id = "ModelReferenceModeEditor.ChangeNameTransaction";
+		private const string ModelReferenceModeEditorCustomReferenceModesHeader_Id = "ModelReferenceModeEditor.CustomReferenceModesHeader";
+		private const string ModelReferenceModeEditorEntityTypeName_Id = "ModelReferenceModeEditor.EntityTypeName";
+		private const string ModelReferenceModeEditorIntrinsicReferenceModesHeader_Id = "ModelReferenceModeEditor.IntrinsicReferenceModesHeader";		                                                                                 
+		private const string ModelReferenceModeEditorReferenceModeKindHeader_Id = "ModelReferenceModeEditor.ReferenceModeKindHeader";
+		private const string ModelReferenceModeEditorReferenceModeName_Id = "ModelReferenceModeEditor.ReferenceModeName";
+		private const string ModelReferenceModeEditorEditorWindowTitle_Id = "ModelReferenceModeEditor.EditorWindowTitle";
+		
+ 
 		#endregion // Private resource ids
 		#region Public accessor properties
 		/// <summary>
@@ -709,6 +724,7 @@ namespace Northface.Tools.ORM
 		}
 		/// <summary>
 		/// Text that appears in the headers of the reading editor tool window for the reading text
+		/// Text that appears in the headers of the reading editor tool window for the reading text
 		/// </summary>
 		public static string ModelReadingEditorListColumnHeaderReadingText
 		{
@@ -811,7 +827,6 @@ namespace Northface.Tools.ORM
 		/// Text that will display in the middle of the tool window when 
 		/// the document view currently has an unsuppoted collection.
 		/// </summary>
-		/// <value></value>
 		public static string ModelReadingEditorUnsupportedSelectionText
 		{
 			get
@@ -841,6 +856,139 @@ namespace Northface.Tools.ORM
 				return GetString(ResourceManagers.Diagram, PackageProductDetails_Id);
 			}
 		}
+
+		/// <summary>
+		/// returns the Text that names the reference mode.
+		/// </summary>
+		public static string ModelReferenceModeEditorReferenceModeName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorReferenceModeName_Id);
+			}
+		}
+		
+		/// <summary>
+		/// returns the Text that names the Entity Type.
+		/// </summary>
+		public static string ModelReferenceModeEditorEntityTypeName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorEntityTypeName_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns the Text used to name the Reference Mode Kind column
+		/// </summary>
+		public static string ModelReferenceModeEditorReferenceModeKindHeader
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorReferenceModeKindHeader_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns the Text used to name the transaction the changes the name of a custom reference mode
+		/// </summary>
+		public static string ModelReferenceModeEditorChangeNameTransaction
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorChangeNameTransaction_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns the Text used to name the Custom Reference Modes column
+		/// </summary>
+		public static string ModelReferenceModeEditorCustomReferenceModesHeader
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorCustomReferenceModesHeader_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns the Text used to name the Intrinsic Reference Modes column
+		/// </summary>
+		public static string ModelReferenceModeEditorIntrinsicReferenceModesHeader
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorIntrinsicReferenceModesHeader_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns the abbreviated form of the entity type name
+		/// </summary>
+		public static string ModelReferenceModeEditorAbbreviatedEntityTypeName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorAbbreviatedEntityTypeName_Id);
+			}
+		}
+
+		/// <summary>
+		/// return the abbreviated form of the reference mode name
+		/// </summary>
+		public static string ModelReferenceModeEditorAbbreviatedReferenceModeName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorAbbreviatedReferenceModeName_Id);
+			}
+		}
+		
+		/// <summary>
+		/// returns the text used to name the transaction that adds a custom reference mode
+		/// </summary>
+		public static string ModelReferenceModeEditorAddCustomReferenceModeTransaction
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorAddCustomReferenceModeTransaction_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns the text to display the add a new row to the custom reference modes branch
+		/// </summary>
+		public static string ModelReferenceModeEditorAddNewRowText
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorAddNewRowText_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns the text used to name the transaction that changes the format string. 
+		/// </summary>
+		public static string ModelReferenceModeEditorChangeFormatStringTransaction
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorChangeFormatStringTransaction_Id);
+			}
+		}
+
+		/// <summary>
+		/// returns The text that displays the title of the editor window.
+		/// </summary>
+		public static string ModelReferenceModeEditorEditorWindowTitle
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelReferenceModeEditorEditorWindowTitle_Id);
+			}
+		}
+		
 		#endregion // Public accessor properties
 	}
 }

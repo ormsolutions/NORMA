@@ -227,4 +227,40 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		}
 	}
 	#endregion // NestedFactTypePicker class
+	#region ReferenceModeKindPicker class
+	/// <summary>
+	/// An element picker to select reference mode kinds. Associated with the ReferenceMode.KindDisplay property
+	/// </summary>
+	public class ReferenceModeKindPicker : ElementPicker
+	{
+		/// <summary>
+		/// Returns a list of role player candidates for a fact type.
+		/// The nesting type is filtered out of the list.
+		/// </summary>
+		/// <param name="context">ITypeDescriptorContext. Used to retrieve the selected instance</param>
+		/// <param name="value">The current value</param>
+		/// <returns>A list of candidates</returns>
+		protected override IList GetContentList(ITypeDescriptorContext context, object value)
+		{
+			ReferenceMode instance = (ReferenceMode)EditorUtility.ResolveContextInstance(context.Instance, true);
+			IList candidates = instance.Store.ElementDirectory.GetElements(ReferenceModeKind.MetaClassGuid);
+			if (candidates.Count > 1)
+			{
+				// Make sure we're sorted
+				List<ReferenceModeKind> kinds = new List<ReferenceModeKind>(candidates.Count);
+				foreach (ReferenceModeKind refKind in candidates)
+				{
+					kinds.Add(refKind);
+				}
+				kinds.Sort(delegate(ReferenceModeKind kind1, ReferenceModeKind kind2)
+				{
+					return string.Compare(kind1.Name, kind2.Name);
+				});
+				candidates = kinds;
+			}
+			return candidates;
+		}
+	}
+	#endregion // ReferenceModeKindPicker class
+	
 }

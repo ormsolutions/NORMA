@@ -10559,6 +10559,95 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReferenceMode.MetaClassGuidString);
 		#endregion
 
+		#region KindDisplay's Generated  Field Code
+		#region KindDisplay's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String KindDisplayMetaAttributeGuidString = "0212a64d-baf9-42a1-890f-92b8d6b5ee2d";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid KindDisplayMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReferenceMode.KindDisplayMetaAttributeGuidString);
+		#endregion
+
+		#region KindDisplay's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Editor(typeof(Northface.Tools.ORM.ObjectModel.Editors.ReferenceModeKindPicker), typeof(System.Drawing.Design.UITypeEditor))]
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, AllowNulls=true, FieldHandlerType=typeof(ReferenceModeKindDisplayFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReferenceMode.KindDisplayMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ReferenceMode.KindDisplay")]
+		public  Northface.Tools.ORM.ObjectModel.ReferenceModeKind KindDisplay
+		{
+			get
+			{
+				return referenceModeKindDisplayFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				referenceModeKindDisplayFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ReferenceModeKindDisplayFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ReferenceMode.KindDisplay field
+		/// </summary>
+		private static ReferenceModeKindDisplayFieldHandler	referenceModeKindDisplayFieldHandler	= ReferenceModeKindDisplayFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ReferenceMode.KindDisplay
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ReferenceModeKindDisplayFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ReferenceMode,Northface.Tools.ORM.ObjectModel.ReferenceModeKind>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ReferenceModeKindDisplayFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ReferenceMode.KindDisplay field handler
+			/// </summary>
+			/// <value>ReferenceModeKindDisplayFieldHandler</value>
+			public static ReferenceModeKindDisplayFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ReferenceMode.referenceModeKindDisplayFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ReferenceMode.referenceModeKindDisplayFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ReferenceMode will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ReferenceMode.referenceModeKindDisplayFieldHandler, so just instantiate one and return it
+						return new ReferenceModeKindDisplayFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ReferenceMode.KindDisplay field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ReferenceMode.KindDisplayMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
 		#region Model's Generated Accessor Code
 		/// <summary>
 		/// 

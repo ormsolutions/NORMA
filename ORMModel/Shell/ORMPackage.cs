@@ -95,6 +95,7 @@ namespace Northface.Tools.ORM.Shell
 				// Create tool window
 				AddToolWindow(new ORMBrowserToolWindow(this));
 				AddToolWindow(new ORMReadingEditorToolWindow(this));
+				AddToolWindow(new ORMReferenceModeEditorToolWindow(this));
 			}
 
 		}
@@ -141,9 +142,7 @@ namespace Northface.Tools.ORM.Shell
 		}
 
 		#endregion // Base overrides
-
 		#region IVsInstalledProduct Members
-
 		int IVsInstalledProduct.IdBmpSplash(out uint pIdBmp)
 		{
 			// UNDONE: implement splash screen here
@@ -178,7 +177,6 @@ namespace Northface.Tools.ORM.Shell
 		}
 
 #endregion
-
 		#region Tool Window properties
 		/// <summary>
 		/// Browser tool window.
@@ -199,6 +197,16 @@ namespace Northface.Tools.ORM.Shell
 			get
 			{
 				return (ORMReadingEditorToolWindow)mySingleton.GetToolWindow(typeof(ORMReadingEditorToolWindow));
+			}
+		}
+		/// <summary>
+		/// The reference mode editor window.
+		/// </summary>
+		public static ORMReferenceModeEditorToolWindow ReferenceModeEditorWindow
+		{
+			get
+			{
+				return (ORMReferenceModeEditorToolWindow)mySingleton.GetToolWindow(typeof(ORMReferenceModeEditorToolWindow));
 			}
 		}
 		#endregion

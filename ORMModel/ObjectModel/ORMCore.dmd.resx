@@ -204,17 +204,20 @@
   <data name="Northface.Tools.ORM.ObjectModel.Reading.Text">
     <value xml:space="preserve">Text</value>
   </data>
+  <data name="Northface.Tools.ORM.ObjectModel.ReferenceMode.KindDisplay">
+    <value xml:space="preserve">Kind</value>
+  </data>
   <data name="Northface.Tools.ORM.ObjectModel.RingConstraint">
     <value xml:space="preserve">RingConstraint</value>
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.Role">
     <value xml:space="preserve">Role</value>
   </data>
-  <data name="Northface.Tools.ORM.ObjectModel.Role.Multiplicity">
-    <value xml:space="preserve">Multiplicity</value>
-  </data>
   <data name="Northface.Tools.ORM.ObjectModel.Role.IsMandatory">
     <value xml:space="preserve">IsMandatory</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.Role.Multiplicity">
+    <value xml:space="preserve">Multiplicity</value>
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.Role.RolePlayerDisplay">
     <value xml:space="preserve">RolePlayer</value>

@@ -59,11 +59,16 @@ namespace Northface.Tools.ORM.Shell
 #if DEBUG
 				new MenuCommand(
 				new EventHandler(OnMenuDebugViewStore),
-				ORMDesignerCommandIds.DebugViewStore)
+				ORMDesignerCommandIds.DebugViewStore),
 #endif // DEBUG
-				,new DynamicStatusMenuCommand(
+				new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusReferenceModesWindow),
+				new EventHandler(OnMenuReferenceModesWindow),
+				ORMDesignerCommandIds.ViewReferenceModeEditor),
+
+				new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusDelete),
-				new EventHandler(OnMenuDelete),
+				new EventHandler(OnMenuDelete),				
 				StandardCommands.Delete)
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusReadingsWindow),
@@ -181,6 +186,10 @@ namespace Northface.Tools.ORM.Shell
 					docView.OnMenuDelete((sender as OleMenuCommand).Text);
 				}
 			}
+			private void OnStatusReferenceModesWindow(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayCustomReferenceModeWindow);
+			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
@@ -237,6 +246,16 @@ namespace Northface.Tools.ORM.Shell
 					docView.OnMenuInsertRole(false);
 				}
 			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuReferenceModesWindow(object sender, EventArgs e)
+			{
+				ORMDesignerPackage.ReferenceModeEditorWindow.Show();
+			}
+
 			/// <summary>
 			/// 
 			/// </summary>
@@ -314,8 +333,8 @@ namespace Northface.Tools.ORM.Shell
 					return MonitorSelection.CurrentDocumentView as ORMDesignerDocView;
 				}
 			}
-
 		}
+
 		/// <summary>
 		/// CommandIDs for the Application Designer package.
 		/// </summary>
@@ -349,6 +368,11 @@ namespace Northface.Tools.ORM.Shell
 			/// Insert a role before the selected role
 			/// </summary>
 			public static readonly CommandID InsertRoleBefore = new CommandID(guidORMDesignerCommandSet, cmdIdInsertRoleBefore);
+
+			/// <summary>
+			/// The Custom Reference Mode Editor Explorer item on the view menu
+			/// </summary>
+			public static readonly CommandID ViewReferenceModeEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewReferenceModeEditor);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -375,6 +399,10 @@ namespace Northface.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdViewReadingEditor = 0x2901;
 			/// <summary>
+			/// View the reference mode editor
+			/// </summary>
+			private const int cmdIdViewReferenceModeEditor = 0x2902;
+			/// <summary>
 			/// Insert a role after the selected role
 			/// </summary>
 			private const int cmdIdInsertRoleAfter = 0x2903;
@@ -382,7 +410,6 @@ namespace Northface.Tools.ORM.Shell
 			/// Insert a role before the selected role
 			/// </summary>
 			private const int cmdIdInsertRoleBefore = 0x2904;
-
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>

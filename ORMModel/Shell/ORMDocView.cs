@@ -40,6 +40,10 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		DisplayReadingsWindow = 8,
 		/// <summary>
+		/// Display the Custom Reference Mode window
+		/// </summary>
+		DisplayCustomReferenceModeWindow = 0x10,
+		/// <summary>
 		/// Insert a role before or after the current role
 		/// </summary>
 		InsertRole = 0x20,
@@ -208,7 +212,8 @@ namespace Northface.Tools.ORM.Shell
 			}
 			else if (element is ORMModel)
 			{
-				visibleCommands = ORMDesignerCommands.Delete;
+				visibleCommands = ORMDesignerCommands.Delete | ORMDesignerCommands.DisplayCustomReferenceModeWindow;
+				enabledCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow;
 			}
 			else if (null != (role = element as Role))
 			{

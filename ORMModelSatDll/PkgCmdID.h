@@ -18,6 +18,7 @@
 #define groupIdDeleteContext			0x1000
 #define groupIdFactCommands				0x1001
 #define groupIdRoleCommands				0x1002
+#define groupIdModelCommands			0x1003
 
 ///////////////////////////////////////////////////////////////////////////////
 // Command IDs       (0x2xxx)
@@ -27,6 +28,7 @@
 #endif
 #define cmdIdViewModelExplorer			0x2900
 #define cmdIdViewReadingEditor			0x2901
+#define cmdIdViewReferenceModeEditor	0x2902
 #define cmdIdInsertRoleAfter			0x2903
 #define cmdIdInsertRoleBefore			0x2904
 ///////////////////////////////////////////////////////////////////////////////

@@ -237,7 +237,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						{
 							string name = newValue;
 							oldReferenceModeName = referenceMode.Name;
-							name = referenceMode.GenerateValueTypeName(newValue);
+							name = referenceMode.GenerateValueTypeName(name);
 
 							if (name != oldReferenceModeName)
 							{

@@ -31,7 +31,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	}
 	#endregion // ReferenceModeType enum
 	#region ReferenceMode class
-	public abstract partial class ReferenceMode
+	public abstract partial class ReferenceMode : IComparable<ReferenceMode>
 	{
 		#region ReferenceMode specific
 		/// <summary>
@@ -44,7 +44,12 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				string retVal = this.Kind.FormatString;
+				string retVal = null;
+				ReferenceModeKind kind = this.Kind;
+				if (kind != null)
+				{
+					retVal = kind.FormatString;
+				}
 				return (retVal == null || retVal.Length == 0) ? Name : retVal;
 			}
 		}
@@ -59,6 +64,17 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			return string.Format(CultureInfo.InvariantCulture, this.FormatString, entityName, this.Name);
 		}
+		
+		/// <summary>
+		/// Overridden ToString for Reference Modes
+		/// </summary>
+		/// <returns>Returns Reference Mode name</returns>
+		public override string ToString()
+		{
+			return this.Name;
+		}
+
+
 		#endregion // ReferenceMode specific
 		#region Deserialization Fixup
 		/// <summary>
@@ -162,7 +178,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "USD");
 						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "AUD");
 						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "EUR");
-						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "CE");;
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "CE");
 						// UNDONE: Strongly consider extending this list
 					}
 				}
@@ -207,6 +223,7 @@ namespace Northface.Tools.ORM.ObjectModel
 					break;
 				}
 			}
+
 			return retVal;
 		}
 
@@ -225,6 +242,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			// same name. Implement the third option.
 			Collection<ReferenceMode> multiples = null;
 			ReferenceMode single = null;
+
 			foreach (ReferenceMode referenceMode in model.ReferenceModeCollection)
 			{
 				if (referenceMode.Name == referenceModeName)
@@ -259,18 +277,138 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion //Reference Mode Name Generation
+		#region CustomStorage handlers
+		/// <summary>
+		/// Standard override. All custom storage properties are derived, not
+		/// stored. Actual changes are handled in ObjectTypeChangeRule.
+		/// </summary>
+		/// <param name="attribute">MetaAttributeInfo</param>
+		/// <param name="newValue">object</param>
+		public override void SetValueForCustomStoredAttribute(MetaAttributeInfo attribute, object newValue)
+		{
+			Guid attributeGuid = attribute.Id;
+			if (attributeGuid == KindDisplayMetaAttributeGuid)
+			{
+				// Handled by ReferenceModeChangeRule
+				return;
+			}
+			base.SetValueForCustomStoredAttribute(attribute, newValue);
+		}
+		/// <summary>
+		/// Standard override. Retrieve values for calculated properties.
+		/// </summary>
+		/// <param name="attribute">MetaAttributeInfo</param>
+		/// <returns></returns>
+		public override object GetValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		{
+			Guid attributeGuid = attribute.Id;
+			if (attributeGuid == KindDisplayMetaAttributeGuid)
+			{
+				return Kind;
+			}
+			return base.GetValueForCustomStoredAttribute(attribute);
+		}
+
+
+		/// <summary>
+		/// Standard override. Defer to GetValueForCustomStoredAttribute.
+		/// </summary>
+		/// <param name="attribute">MetaAttributeInfo</param>
+		/// <returns></returns>
+		protected override object GetOldValueForCustomStoredAttribute(MetaAttributeInfo attribute)
+		{
+			return GetValueForCustomStoredAttribute(attribute);
+		}
+		#endregion // CustomStorage handlers
+		#region IComparable<ReferenceMode> Members
+
+		/// <summary>
+		/// Defines how to compare to ReferenceMode.  Used in sorting reference modes by name.
+		/// </summary>
+		/// <param name="other"></param>
+		/// <returns></returns>
+		public int CompareTo(ReferenceMode other)
+		{
+			return this.Name.CompareTo(other.Name);
+		}
+
+		/// <summary>
+		/// Reteurns true if the two elements are the same element
+		/// </summary>
+		/// <param name="other"></param>
+		/// <returns></returns>
+		public bool Equals(ReferenceMode other)
+		{
+			return this == other;
+		}
+
+		#endregion
+		#region ReferenceModeChangeRule class
+		/// <summary>
+		/// Rule to forward the KindDisplay property to the generated
+		/// Kind property
+		/// </summary>
+		[RuleOn(typeof(ReferenceMode))]
+		protected class ReferenceModeChangeRule : ChangeRule
+		{
+			/// <summary>
+			/// Forward KindDisplay change value to Kind
+			/// </summary>
+			/// <param name="e">ElementAttributeChangedEventArgs</param>
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == KindDisplayMetaAttributeGuid)
+				{
+					(e.ModelElement as ReferenceMode).Kind = (ReferenceModeKind)e.NewValue;
+				}
+			}
+
+		}
+		#endregion // ReferenceModeChangeRule class
+		#region ReferenceModeAddedRule class
+		/// <summary>
+		/// Make sure that every added reference mode has a valid
+		/// reference mode kind. Default to general.
+		/// </summary>
+		[RuleOn(typeof(ModelHasReferenceMode),FireTime = TimeToFire.LocalCommit)]
+		protected class ReferenceModeAddedRule : AddRule
+		{
+			/// <summary>
+			/// Verify the Kind relationship is set on a newly
+			/// added reference mode
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ModelHasReferenceMode link = e.ModelElement as ModelHasReferenceMode;
+				ReferenceMode mode = link.ReferenceModeCollection;
+				if (mode.Kind == null)
+				{
+					foreach (ReferenceModeKind kind in link.Model.ReferenceModeKindCollection)
+					{
+						if (kind.ReferenceModeType == ReferenceModeType.General)
+						{
+							mode.Kind = kind;
+							break;
+						}
+					}
+				}
+			}
+		}
+		#endregion // ReferenceModeAddedRule class
 	}
 	#endregion // ReferenceMode class
 	#region CustomReferenceMode class
-	public partial class CustomReferenceMode
+	public partial class CustomReferenceMode : IComparable<CustomReferenceMode>
 	{
 		/// <summary>
 		/// Allow an override of the virtual FormatString
 		/// property by setting the CustomFormatString property.
 		/// </summary>
-		public override string FormatString
+		public new string FormatString
 		{
-			get 
+			get
 			{
 				string custString = CustomFormatString;
 				if (custString != null && custString.Length > 0)
@@ -282,7 +420,59 @@ namespace Northface.Tools.ORM.ObjectModel
 					return base.FormatString;
 				}
 			}
+			set
+			{
+				this.CustomFormatString = value;
+			}
 		}
+
+		#region IComparable<CustomReferenceMode> Members
+
+		int IComparable<CustomReferenceMode>.CompareTo(CustomReferenceMode other)
+		{
+			return base.CompareTo(other);
+		}
+
+		bool IComparable<CustomReferenceMode>.Equals(CustomReferenceMode other)
+		{
+			return base.Equals(other);
+		}
+		#endregion
 	}
 	#endregion // CustomReferenceMode class
+	#region IntrinsicReferenceMode class
+	public partial class IntrinsicReferenceMode : IComparable<IntrinsicReferenceMode>
+	{
+		#region IComparable<IntrinsicReferenceMode> Members
+
+		int IComparable<IntrinsicReferenceMode>.CompareTo(IntrinsicReferenceMode other)
+		{
+			return base.CompareTo(other);
+		}
+
+		bool IComparable<IntrinsicReferenceMode>.Equals(IntrinsicReferenceMode other)
+		{
+			return base.Equals(other);
+		}
+
+		#endregion
+	}
+	#endregion // CustomReferenceMode class
+	#region ReferenceModeKind class
+	/// <summary>
+	/// Reference Mode Kind's ToString implementation
+	/// </summary>
+	public sealed partial class ReferenceModeKind
+	{
+		/// <summary>
+		/// Overriding ToString to return the Reference Mode Type name
+		/// </summary>
+		/// <returns>Reference Mode Type name as the string</returns>
+		public override string ToString()
+		{
+			return this.ReferenceModeType.ToString();
+		}
+
+	}
+	#endregion //ReferenceModeKind class
 }
