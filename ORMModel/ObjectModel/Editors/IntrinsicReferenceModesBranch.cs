@@ -41,7 +41,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (!object.ReferenceEquals(model, myModel))
 			{
 				Store newStore = (model == null) ? null : model.Store;
-				if (myStore != null && !object.ReferenceEquals(myStore, newStore))
+				if (myStore != null && !object.ReferenceEquals(myStore, newStore) && !myStore.Disposed)
 				{
 					this.RemoveStoreEvents(myStore);
 				}
@@ -79,7 +79,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (model != null)
 			{
 				this.myModel = model;
-				if (this.myStore != null && this.myStore != model.Store)
+				if (this.myStore != null && this.myStore != model.Store && !myStore.Disposed)
 				{
 					this.RemoveStoreEvents(model.Store);
 				}
