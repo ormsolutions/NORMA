@@ -209,6 +209,7 @@ namespace Northface.Tools.ORM.Shell
 		{
 			if (modelElement is ExternalFactConstraint ||
 				modelElement is ExternalRoleConstraint ||
+				modelElement is InternalFactConstraint ||
 				modelElement is ExternalConstraintLink ||
 				modelElement is RolePlayerLink)
 			{
