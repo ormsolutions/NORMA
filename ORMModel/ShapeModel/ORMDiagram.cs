@@ -353,6 +353,8 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 			return null;
 		}
+		#endregion // View Fixup Methods
+		#region Customize appearance
 		/// <summary>
 		/// The Brush to use when drawing the background of a sticky object.
 		/// </summary>
@@ -388,8 +390,17 @@ namespace Northface.Tools.ORM.ShapeModel
 			penSettings.Color = stickyForeColor;
 			classStyleSet.AddPen(StickyForegroundResource, DiagramPens.ShapeHighlightOutline, penSettings);
 		}
-
-		#endregion // View Fixup Methods
+		/// <summary>
+		/// Drop the grid size to make positioning easier.
+		/// </summary>
+		public override double DefaultGridSize
+		{
+			get
+			{
+				return .0125;
+			}
+		}
+		#endregion // Customize appearance
 		#region Toolbox initialization
 		/// <summary>
 		/// Initialize toolbox items. All items are thrown on the diagram (it doesn't

@@ -457,7 +457,6 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 				else
 				{
-					// UNDONE: Folding to rounded edges
 					double slope = vectorEndPoint.Y / vectorEndPoint.X;
 					// The intersecting line equation is y = mx. We can tell
 					// whether to use the vertical or horizontal lines by
@@ -465,29 +464,80 @@ namespace Northface.Tools.ORM.ShapeModel
 					// with the slope
 					double x;
 					double y;
+					double r = Radius;
+					double halfHeight = bounds.Height / 2;
+					double halfWidth = bounds.Width / 2;
+					bool cornerHit;
 					if (Math.Abs(slope) < (bounds.Height / bounds.Width))
 					{
 						// Attach to left/right edges
 						// Intersect with line x = +/- bounds.Width / 2
-						x = bounds.Width / 2;
+						x = halfWidth;
 						if (negativeX)
 						{
 							x = -x;
 						}
 						y = x * slope;
+						cornerHit = Math.Abs(y) > (halfHeight - r);
 					}
 					else
 					{
 						// Attach to top/bottom edges
 						// Intersect with line y = +/- bounds.Height / 2
-						y = bounds.Height / 2;
+						y = halfHeight;
 						if (negativeY)
 						{
 							y = -y;
 						}
 						x = y / slope;
+						cornerHit = Math.Abs(x) > (halfWidth - r);
 					}
-					return new PointD(x + bounds.Width / 2, y + bounds.Height / 2);
+					if (cornerHit)
+					{
+						// The equation here is significantly more complicated than
+						// other shapes because of the off center circle, which is
+						// centered at (ccx, ccy) in these equations. The raw equations are:
+						// (x - ccx)^2 + (y - ccy)^2 = r^2
+						// y = m*x where m is the slope
+						// Solving for x gives (algebra is non-trivial and ommitted):
+						// v1 = 1 + m*m
+						// v2 = m*ccx + ccy
+						// v3 = sqrt(r^2*v1 - v2^2)
+						// x = (+/-v3 + ccx-m*ccy)/v1
+						// Note that picking the correct center is absolutely necessary.
+						// Unlike the other shapes, where all lines will pass the ellipse/circle
+						// at some point, the off-center circle means that choosing the wrong
+						// center will result in an unsolvable equation (taking the square
+						// root will throw).
+						double ccx = halfWidth - r; // Corner center x value
+						double ccy = halfHeight - r; // Corner center y value
+						bool useNegativeSquareRoot = false;
+						if (negativeX) // Left quadrants
+						{
+							ccx = -ccx;
+							useNegativeSquareRoot = true;
+							if (!negativeY)
+							{
+								// Lower left quadrant
+								ccy = -ccy;
+							}
+						}
+						else if (!negativeY) // Right quadrants
+						{
+							// Lower right quadrant
+							ccy = -ccy;
+						}
+						double v1 = 1 + slope * slope;
+						double v2 = slope * ccx + ccy;
+						double v3 = Math.Sqrt(r * r * v1 - v2 * v2);
+						if (useNegativeSquareRoot)
+						{
+							v3 = -v3;
+						}
+						x = (v3 + ccx - slope * ccy) / v1;
+						y = slope * x;
+					}
+					return new PointD(x + halfWidth, y + halfHeight);
 				}
 			}
 		}
