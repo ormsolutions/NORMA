@@ -915,104 +915,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion // InternalUniquenessConstraintChangeRule class
 	}
 	#endregion // InternalUniquenessConstraint class
-	#region PreferredIdentifierAddedRule class
-	/// <summary>
-	/// Verify that all preconditions hold for adding a primary
-	/// identifier and extend modifiable conditions as needed.
-	/// </summary>
-	[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
-	public class PreferredIdentifierAddedRule : AddRule
-	{
-		/// <summary>
-		/// Check preconditions on an internal or external
-		/// constraint.
-		/// </summary>
-		/// <param name="e"></param>
-		public override void ElementAdded(ElementAddedEventArgs e)
-		{
-			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-
-			// Enforce that a preferred identifier is set only for unobjectified
-			// entity types. The other parts of this (don't allow this to be set
-			// for object types with preferred identifiers) is enforced in
-			// ObjectType.CheckForIncompatibleRelationshipRule
-			ObjectType entityType = link.PreferredIdentifierFor;
-			if (entityType.IsValueType || entityType.NestedFactType != null)
-			{
-				throw new InvalidOperationException(ResourceStrings.ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType);
-			}
-
-			Constraint constraint = link.PreferredIdentifier;
-			switch (constraint.ConstraintType)
-			{
-				case ConstraintType.InternalUniqueness:
-				{
-					InternalUniquenessConstraint iuc = constraint as InternalUniquenessConstraint;
-					iuc.TestAllowPreferred(link.PreferredIdentifierFor, true);
-
-					// TestAllowPreferred verifies that the types and arities and that
-					// no constraints need to be deleted to make this happen. Addition
-					// constraints that are automatically added all happen on the opposite
-					// role, so find tye, add constraints as needed, and then let this
-					// pass through to finish creating the preferred identifier link.
-					Role role = iuc.RoleSet.RoleCollection[0];
-					Role oppositeRole = null;
-					foreach (Role factRole in role.FactType.RoleCollection)
-					{
-						if (!object.ReferenceEquals(role, factRole))
-						{
-							oppositeRole = factRole;
-							break;
-						}
-					}
-					oppositeRole.IsMandatory = true; // Make sure it is mandatory
-					bool needOppositeConstraint = true;
-					foreach (ConstraintRoleSet roleSet in oppositeRole.ConstraintRoleSetCollection)
-					{
-						if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness &&
-							roleSet.RoleCollection.Count == 1)
-						{
-							needOppositeConstraint = false;
-							break;
-						}
-					}
-					if (needOppositeConstraint)
-					{
-						// Create a uniqueness constraint on the opposite role to make
-						// this a 1-1 binary fact type.
-						Store store = iuc.Store;
-						InternalUniquenessConstraint oppositeIuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-						InternalConstraintRoleSet roleSet = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
-						roleSet.RoleCollection.Add(oppositeRole);
-						oppositeIuc.RoleSet = roleSet;
-						oppositeIuc.Model = iuc.Model;
-					}
-					break;
-				}
-				case ConstraintType.ExternalUniqueness:
-					// UNDONE: Preferred external uniqueness. Requires path information.
-					break;
-				default:
-					throw new InvalidOperationException(ResourceStrings.ModelExceptionPreferredIdentifierMustBeUniquenessConstraint);
-			}
-		}
-		/// <summary>
-		/// This rule checkes preconditions for adding a primary
-		/// identifier link. Fire it before the link is added
-		/// to the transaction log.
-		/// </summary>
-		public override bool FireBefore
-		{
-			get
-			{
-				return true;
-			}
-		}
-	}
-	#endregion // PreferredIdentifierAddedRule class
-	#region Remove testing for preferred identifier
+	#region EntityTypeHasPreferredIdentifier pattern enforcement
 	public partial class EntityTypeHasPreferredIdentifier
 	{
+		#region Remove testing for preferred identifier
 		/// <summary>
 		/// Call from a Removing rule to determine if the
 		/// preferred identifier still fits all of the requirements.
@@ -1121,50 +1027,162 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
-	}
-	#endregion // Remove testing for preferred identifier
-	#region TestRemovePreferredIdentifierRule class
-	/// <summary>
-	/// A rule to determine if a mandatory condition for
-	/// a preferred identifier link has been eliminated.
-	/// Remove the rule if this happens.
-	/// </summary>
-	[RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(ModelHasConstraint))]
-	public class TestRemovePreferredIdentifierRule : RemovingRule
-	{
+		#endregion // Remove testing for preferred identifier
+		#region TestRemovePreferredIdentifierRule class
 		/// <summary>
-		/// See if a preferred identifier is still valid
+		/// A rule to determine if a mandatory condition for
+		/// a preferred identifier link has been eliminated.
+		/// Remove the rule if this happens.
 		/// </summary>
-		/// <param name="e"></param>
-		public override void ElementRemoving(ElementRemovingEventArgs e)
+		[RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(ConstraintRoleSetHasRole))]
+		private class TestRemovePreferredIdentifierRule : RemovingRule
 		{
-			ModelElement element = e.ModelElement;
-			ObjectTypePlaysRole roleLink;
-			ModelHasConstraint constraintLink;
-			if (null != (roleLink = element as ObjectTypePlaysRole))
+			/// <summary>
+			/// See if a preferred identifier is still valid
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementRemoving(ElementRemovingEventArgs e)
 			{
-				ObjectType rolePlayer = roleLink.RolePlayer;
-				if (!rolePlayer.IsRemoving)
+				ModelElement element = e.ModelElement;
+				ObjectTypePlaysRole rolePlayerLink;
+				ConstraintRoleSetHasRole roleConstraintLink;
+				ObjectType rolePlayer = null;
+				if (null != (rolePlayerLink = element as ObjectTypePlaysRole))
+				{
+					rolePlayer = rolePlayerLink.RolePlayer;
+				}
+				else if (null != (roleConstraintLink = element as ConstraintRoleSetHasRole))
+				{
+					InternalConstraintRoleSet internalRoleSet;
+					Constraint constraint;
+					if (null != (internalRoleSet = roleConstraintLink.ConstraintRoleSetCollection as InternalConstraintRoleSet) &&
+						null != (constraint = internalRoleSet.Constraint))
+					{
+						switch (constraint.ConstraintType)
+						{
+							case ConstraintType.InternalUniqueness:
+							case ConstraintType.Mandatory:
+								Role role = roleConstraintLink.RoleCollection;
+								if (role != null)
+								{
+									rolePlayer = role.RolePlayer;
+								}
+								break;
+						}
+					}
+				}
+				if (rolePlayer != null && !rolePlayer.IsRemoving)
 				{
 					IList links = rolePlayer.GetElementLinks(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
 					// Don't for each, the iterator doesn't like it when you remove elements
 					int linksCount = links.Count;
-					for (int i = 0; i < linksCount; ++i)
+					Debug.Assert(linksCount == 1); // Should be a 1-1 relationship
+					for (int i = linksCount - 1; i >= 0; --i)
 					{
 						EntityTypeHasPreferredIdentifier identifierLink = links[i] as EntityTypeHasPreferredIdentifier;
 						identifierLink.TestRemovePreferredIdentifier();
 					}
 				}
 			}
-			else if (null != (constraintLink = element as ModelHasConstraint))
+		}
+		#endregion // TestRemovePreferredIdentifierRule class
+		#region PreferredIdentifierAddedRule class
+		/// <summary>
+		/// Verify that all preconditions hold for adding a primary
+		/// identifier and extend modifiable conditions as needed.
+		/// </summary>
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
+		private class PreferredIdentifierAddedRule : AddRule
+		{
+			/// <summary>
+			/// Check preconditions on an internal or external
+			/// constraint.
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				// UNDONE: Handle delete code for constraint removal
-				// UNDONE: Note that a mandatory constraint needs to be ripped
-				// automatically when a note goes away.
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+
+				// Enforce that a preferred identifier is set only for unobjectified
+				// entity types. The other parts of this (don't allow this to be set
+				// for object types with preferred identifiers) is enforced in
+				// ObjectType.CheckForIncompatibleRelationshipRule
+				ObjectType entityType = link.PreferredIdentifierFor;
+				if (entityType.IsValueType || entityType.NestedFactType != null)
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType);
+				}
+
+				Constraint constraint = link.PreferredIdentifier;
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.InternalUniqueness:
+						{
+							InternalUniquenessConstraint iuc = constraint as InternalUniquenessConstraint;
+							iuc.TestAllowPreferred(link.PreferredIdentifierFor, true);
+
+							// TestAllowPreferred verifies that the types and arities and that
+							// no constraints need to be deleted to make this happen. Addition
+							// constraints that are automatically added all happen on the opposite
+							// role, so find tye, add constraints as needed, and then let this
+							// pass through to finish creating the preferred identifier link.
+							Role role = iuc.RoleSet.RoleCollection[0];
+							Role oppositeRole = null;
+							foreach (Role factRole in role.FactType.RoleCollection)
+							{
+								if (!object.ReferenceEquals(role, factRole))
+								{
+									oppositeRole = factRole;
+									break;
+								}
+							}
+							oppositeRole.IsMandatory = true; // Make sure it is mandatory
+							bool needOppositeConstraint = true;
+							foreach (ConstraintRoleSet roleSet in oppositeRole.ConstraintRoleSetCollection)
+							{
+								if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness &&
+									roleSet.RoleCollection.Count == 1)
+								{
+									needOppositeConstraint = false;
+									break;
+								}
+							}
+							if (needOppositeConstraint)
+							{
+								// Create a uniqueness constraint on the opposite role to make
+								// this a 1-1 binary fact type.
+								Store store = iuc.Store;
+								InternalUniquenessConstraint oppositeIuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
+								InternalConstraintRoleSet roleSet = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
+								roleSet.RoleCollection.Add(oppositeRole);
+								oppositeIuc.RoleSet = roleSet;
+								oppositeIuc.Model = iuc.Model;
+							}
+							break;
+						}
+					case ConstraintType.ExternalUniqueness:
+						// UNDONE: Preferred external uniqueness. Requires path information.
+						break;
+					default:
+						throw new InvalidOperationException(ResourceStrings.ModelExceptionPreferredIdentifierMustBeUniquenessConstraint);
+				}
+			}
+			/// <summary>
+			/// This rule checkes preconditions for adding a primary
+			/// identifier link. Fire it before the link is added
+			/// to the transaction log.
+			/// </summary>
+			public override bool FireBefore
+			{
+				get
+				{
+					return true;
+				}
 			}
 		}
+		#endregion // PreferredIdentifierAddedRule class
 	}
-	#endregion // TestRemovePreferredIdentifierRule class
+	#endregion // EntityTypeHasPreferredIdentifier pattern enforcement
 	#region ExternalUniquenessConstraint class
 	public partial class ExternalUniquenessConstraint
 	{
