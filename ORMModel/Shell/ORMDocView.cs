@@ -211,7 +211,7 @@ namespace Northface.Tools.ORM.Shell
 					commandText = null;
 					break;
 			}
-			if (commandText == null)
+			if (commandText != null)
 			{
 				command.Text = commandText;
 			}
