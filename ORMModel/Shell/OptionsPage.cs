@@ -123,22 +123,34 @@ namespace Northface.Tools.ORM.Shell
 		// If more settings are added, add a corresponding check in the OnApply override below
 		private const ObjectTypeShape ObjectTypeShape_Default = ObjectTypeShape.SoftRectangle;
 		private static ObjectTypeShape myCurrentObjectTypeShape = ObjectTypeShape_Default;
-		private ObjectTypeShape myObjectTypeShape;
+		private ObjectTypeShape myObjectTypeShape = ObjectTypeShape_Default;
 
 		private const ObjectifiedFactShape ObjectifiedFactShape_Default = ObjectifiedFactShape.SoftRectangle;
 		private static ObjectifiedFactShape myCurrentObjectifiedFactShape = ObjectifiedFactShape_Default;
-		private ObjectifiedFactShape myObjectifiedFactShape;
+		private ObjectifiedFactShape myObjectifiedFactShape = ObjectifiedFactShape_Default;
 
 		private const MandatoryDotPlacement MandatoryDotPlacement_Default = MandatoryDotPlacement.RoleBoxEnd;
 		private static MandatoryDotPlacement myCurrentMandatoryDotPlacement = MandatoryDotPlacement_Default;
-		private MandatoryDotPlacement myMandatoryDotPlacement;
+		private MandatoryDotPlacement myMandatoryDotPlacement = MandatoryDotPlacement_Default;
 
 		private const RoleNameDisplay RoleNameDisplay_Default = RoleNameDisplay.On;
 		private static RoleNameDisplay myCurrentRoleNameDisplay = RoleNameDisplay_Default;
-		private RoleNameDisplay myRoleNameDisplay;
+		private RoleNameDisplay myRoleNameDisplay = RoleNameDisplay_Default;
 
 		#endregion // Member variables
 		#region Base overrides
+		/// <summary>
+		/// Set the current values of the static properties
+		/// to match the cached settings
+		/// </summary>
+		public override void LoadSettingsFromStorage()
+		{
+			base.LoadSettingsFromStorage();
+			myCurrentObjectTypeShape = myObjectTypeShape;
+			myCurrentObjectifiedFactShape = myObjectifiedFactShape;
+			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
+			myCurrentRoleNameDisplay = myRoleNameDisplay;
+		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
 		/// settings have changed in the OnApply method.
