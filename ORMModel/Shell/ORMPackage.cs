@@ -105,11 +105,13 @@ namespace Northface.Tools.ORM.Shell
 				// setup commands
 				myCommandSet = ORMDesignerDocView.CreateCommandSet(this);
 
-
 				// Create tool windows
 				AddToolWindow(new ORMBrowserToolWindow(this));
 				AddToolWindow(new ORMReadingEditorToolWindow(this));
 				AddToolWindow(new ORMReferenceModeEditorToolWindow(this));
+				
+				// Make sure our options are loaded from the registry
+				GetDialogPage(typeof(OptionsPage));
 			}
 
 		}
