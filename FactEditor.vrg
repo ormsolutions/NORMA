@@ -1,0 +1,15 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Editors\{044DD982-9DD6-42AC-8C70-BA6A4565E0AE}]
+@="ORM Fact Editor"
+"DisplayName"="ORM Fact Editor"
+"Package"="{EFDDC549-1646-4451-8A51-E5A5E94D647C}"
+"ExcludeDefTextEditor"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Editors\{044DD982-9DD6-42AC-8C70-BA6A4565E0AE}\Extensions]
+"fct"=dword:00000032
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0Exp\InstalledProducts\ORM Designer]
+"Package"="{EFDDC549-1646-4451-8A51-E5A5E94D647C}"
+"UseInterface"=dword:00000001
+"DefaultProductAttribute"="ORM"

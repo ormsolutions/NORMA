@@ -205,6 +205,10 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\Resources\AboutBox.ico"
+			>
+		</File>
+		<File
 			RelativePath=".\Resources\ORM.ico"
 			>
 		</File>

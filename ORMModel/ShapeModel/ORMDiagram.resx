@@ -186,6 +186,14 @@
     <value xml:space="preserve">ORM Model Browser</value>
     <comment xml:space="preserve">The window title for the ORM model browser window</comment>
   </data>
+  <data name="Package.OfficialName">
+    <value xml:space="preserve">ORM Designer</value>
+    <comment xml:space="preserve">The official name of the package</comment>
+  </data>
+  <data name="Package.ProductDetails">
+    <value xml:space="preserve">Designer for Object Role Modeling (ORM) diagrams</value>
+    <comment xml:space="preserve">The extra information that appears in the about box of Visual Studio</comment>
+  </data>
   <data name="RoleConnectAction.TransactionName">
     <value xml:space="preserve">Set Role Player</value>
     <comment xml:space="preserve">The transaction name used by the role connect action. The text appears in the undo dropdown in the VS IDE.</comment>

@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>.\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;FACTEDITORPROTOTYPE</DefineConstants>
     <DocumentationFile>bin\Debug\Northface.Tools.ORM.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -58,6 +58,7 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.Package.LanguageService, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Shell, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -75,6 +76,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FactEditor\FactCodeWindowManager.cs" />
+    <Compile Include="FactEditor\FactColorizer.cs" />
+    <Compile Include="FactEditor\FactEditorFactory.cs" />
+    <Compile Include="FactEditor\FactGuidList.cs" />
+    <Compile Include="FactEditor\FactLanguageService.cs" />
+    <Compile Include="FactEditor\FactParser.cs" />
+    <Compile Include="FactEditor\FactTextViewFilter.cs" />
     <Compile Include="ObjectModel\Editors\ReadingEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -192,6 +200,7 @@
     <EmbeddedResource Include="ShapeModel\ORMShape.dmd.resx">
       <DependentUpon>ORMShape.dmd.cs</DependentUpon>
     </EmbeddedResource>
+    <Content Include="Resources\AboutBox.ico" />
     <Content Include="Resources\ORM.ico" />
     <None Include="Resources\Toolbox.RoleConnector.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ShapeModel\ConnectRoleAllowed.cur" />

@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.EnterpriseTools.Validation.UI;
+using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell;
 using Northface.Tools.ORM;
 using Northface.Tools.ORM.ObjectModel;

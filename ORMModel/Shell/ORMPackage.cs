@@ -1,11 +1,16 @@
 using System;
+using System.ComponentModel.Design;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Resources;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using VsShell = Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
+using Northface.Tools.ORM.FactEditor;
 namespace Northface.Tools.ORM.Shell
 {
 	/// <summary>
@@ -18,7 +23,8 @@ namespace Northface.Tools.ORM.Shell
 	// "ORM Designer" and "General" correspond and must be in sync with
 	// the VRG file and are defined also in ORMDesignerUI.rc
 	[ProvideOptionPage(typeof(OptionsPage), "ORM Designer", "General", 105, 106, false)]
-	public sealed class ORMDesignerPackage : ModelingPackage
+	[InstalledProductRegistration(UseInterface=true)]
+	public sealed class ORMDesignerPackage : ModelingPackage, IVsInstalledProduct
 	{
 		#region Member variables
 		/// <summary>
@@ -26,6 +32,10 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		private object myCommandSet;
 		private static ORMDesignerPackage mySingleton;
+		private FactEditorFactory factEditorFactory;
+#if FACTEDITORPROTOTYPE
+		private uint myLanguageInfoEditorCookie = 0;
+#endif // FACTEDITORPROTOTYPE
 		#endregion
 		#region Construction/destruction
 		/// <summary>
@@ -65,8 +75,20 @@ namespace Northface.Tools.ORM.Shell
 
 			// register the class designer editor factory
 			RegisterModelingEditorFactory(new ORMDesignerEditorFactory(this));
+
+#if FACTEDITORPROTOTYPE
+			factEditorFactory = new FactEditorFactory(this);
+			base.RegisterEditorFactory(factEditorFactory);
+#endif // FACTEDITORPROTOTYPE
+
 			if (!SetupMode)
 			{
+#if FACTEDITORPROTOTYPE
+				IProfferService proffer = (IProfferService)GetService(typeof(IProfferService));
+				Guid iid = typeof(FactLanguageService).GUID;
+				proffer.ProfferService(ref iid, new FactLanguageService(this), out myLanguageInfoEditorCookie);
+#endif // FACTEDITORPROTOTYPE
+
 				// setup commands
 				myCommandSet = ORMDesignerDocView.CreateCommandSet(this);
 
@@ -83,6 +105,16 @@ namespace Northface.Tools.ORM.Shell
 		{
 			if (disposing)
 			{
+#if FACTEDITORPROTOTYPE
+				if (myLanguageInfoEditorCookie != 0)
+				{
+					IProfferService proffer = (IProfferService)GetService(typeof(IProfferService));
+					if (proffer != null)
+					{
+						proffer.RevokeService(myLanguageInfoEditorCookie);
+					}
+				}
+#endif // FACTEDITORPROTOTYPE
 				// dispose of any private objects here
 			}
 			base.Dispose(disposing);
@@ -109,6 +141,43 @@ namespace Northface.Tools.ORM.Shell
 		}
 
 		#endregion // Base overrides
+
+		#region IVsInstalledProduct Members
+
+		int IVsInstalledProduct.IdBmpSplash(out uint pIdBmp)
+		{
+			// UNDONE: implement splash screen here
+			pIdBmp = 111;
+			return NativeMethods.S_OK;
+		}
+
+		int IVsInstalledProduct.IdIcoLogoForAboutbox(out uint pIdIco)
+		{
+			// UNDONE: replace hard-coded ID for AboutBox icon
+			pIdIco = 110;
+			return NativeMethods.S_OK;
+		}
+
+		int IVsInstalledProduct.OfficialName(out string pbstrName)
+		{
+			pbstrName = ResourceStrings.PackageOfficialName;
+			return NativeMethods.S_OK;
+		}
+
+		int IVsInstalledProduct.ProductDetails(out string pbstrProductDetails)
+		{
+			pbstrProductDetails = ResourceStrings.PackageProductDetails;
+			return NativeMethods.S_OK;
+		}
+
+		int IVsInstalledProduct.ProductID(out string pbstrPID)
+		{
+			// UNDONE: we need to sync the productID with the assembly
+			pbstrPID = "1.0";
+			return NativeMethods.S_OK;
+		}
+
+#endregion
 
 		#region Tool Window properties
 		/// <summary>

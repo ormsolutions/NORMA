@@ -267,6 +267,8 @@ namespace Northface.Tools.ORM
 		private const string ModelReadingEditorChangePrimaryReadingText_Id = "ModelReadingEditor.ChangePrimaryReadingText";
 		private const string ModelReadingEditorWindowTitle_Id = "ModelReadingEditor.WindowTitle";
 		private const string ModelReadingEditorUnsupportedSelectionText_Id = "ModelReadingEditor.UnsupportedSelectionText";
+		private const string PackageOfficialName_Id = "Package.OfficialName";
+		private const string PackageProductDetails_Id = "Package.ProductDetails";
 		#endregion // Private resource ids
 		#region Public accessor properties
 		/// <summary>
@@ -804,6 +806,28 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Model, ModelReadingEditorUnsupportedSelectionText_Id);
+			}
+		}
+		/// <summary>
+		/// The official name of the package used in the About dialog
+		/// </summary>
+		/// <value></value>
+		public static string PackageOfficialName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, PackageOfficialName_Id);
+			}
+		}
+		/// <summary>
+		/// The description of the package used in the About dialog
+		/// </summary>
+		/// <value></value>
+		public static string PackageProductDetails
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, PackageProductDetails_Id);
 			}
 		}
 		#endregion // Public accessor properties
