@@ -122,5 +122,22 @@ namespace Northface.Tools.ORM.ShapeModel
 			return (element != null) ? element.GetClassName() : base.GetClassName();
 		}
 		#endregion // Customize property display
+		#region Luminosity Modification
+		/// <summary>
+		/// Redirect all luminosity modification to the ORMDiagram.ModifyLuminosity
+		/// algorithm
+		/// </summary>
+		/// <param name="currentLuminosity">The luminosity to modify</param>
+		/// <param name="view">The view containing this item</param>
+		/// <returns>Modified luminosity value</returns>
+		protected override int ModifyLuminosity(int currentLuminosity, DiagramClientView view)
+		{
+			if (view.HighlightedShapes.Contains(new DiagramItem(this)))
+			{
+				return ORMDiagram.ModifyLuminosity(currentLuminosity);
+			}
+			return currentLuminosity;
+		}
+		#endregion // Luminosity Modification
 	}
 }

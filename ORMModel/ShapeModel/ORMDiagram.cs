@@ -627,9 +627,6 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // Display Properties
 		#region Utility Methods
-		// UNDONE: The framework should make this algorithm
-		// publicly available, along with a mechanism to modify
-		// the constants, so that all luminosity checks look the same
 		/// <summary>
 		/// Modify the luminosity for a given color. This
 		/// duplicates the algorithm in ShapeElement.GetShapeLuminosity,
@@ -640,15 +637,33 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <returns>The modified color</returns>
 		public static Color ModifyLuminosity(Color startColor)
 		{
-			const int luminosityCheck = 160;
-			const int luminosityDelta = 40;
-			const double luminosityFactor = 0.9;
 			HslColor hslColor = HslColor.FromRgbColor(startColor);
-			int startLuminosity = hslColor.Luminosity;
-			hslColor.Luminosity = (startLuminosity >= luminosityCheck) ?
-				(int)(startLuminosity * luminosityFactor) :
-				(startLuminosity + luminosityDelta);
+			hslColor.Luminosity = ModifyLuminosity(hslColor.Luminosity);
 			return hslColor.ToRgbColor();
+		}
+		/// <summary>
+		/// Modify a specific luminosity. 
+		/// </summary>
+		/// <param name="startLuminosity">Beginning luminosity value</param>
+		/// <returns>modified luminosity</returns>
+		public static int ModifyLuminosity(int startLuminosity)
+		{
+			// Base framework algorithm for reference
+			//const int luminosityCheck = 160;
+			//const int luminosityDelta = 40;
+			//const double luminosityFactor = 0.9;
+			//return (startLuminosity >= luminosityCheck) ?
+			//	(int)(startLuminosity * luminosityFactor) :
+			//	(startLuminosity + luminosityDelta);
+			
+			// Use a sliding scale to brighten colors
+			const int luminosityCheck = 160;
+			const int luminosityFixedDelta = 60;
+			const int luminosityIncrementalDelta = 30;
+			const double luminosityFactor = 0.9;
+			return (startLuminosity >= luminosityCheck) ?
+				(int)(startLuminosity * luminosityFactor) :
+				(startLuminosity + luminosityFixedDelta + (int)((double)(luminosityCheck - startLuminosity)/luminosityCheck * luminosityIncrementalDelta));
 		}
 		#endregion // Utility Methods
 		#region Deserialization Fixup
