@@ -358,6 +358,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="entityTypeName">The name of the entity type.</param>
 		/// <param name="formatString">Use this format string when finding the name.</param>
 		/// <param name="referenceModeName">Use this name when finding the name.</param>
+		/// <param name="oldReferenceModeName">Use this name when the name of the object
+		/// has changed, but you need to locate other elements with the old name</param>
 		/// <param name="model">The model that owns the reference modes</param>
 		/// <returns>A ReferenceMode instance, or null</returns>
 		public static ReferenceMode FindReferenceModeFromEnitityNameAndValueName(string valueTypeName, string entityTypeName, string formatString, string referenceModeName, string oldReferenceModeName, ORMModel model)
@@ -398,6 +400,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Finds all enity types using a given reference Mode
 		/// </summary>
 		/// <param name="mode"></param>
+		/// <param name="formatString"></param>
 		/// <param name="model"></param>
 		/// <returns></returns>
 		[CLSCompliant(false)]
@@ -422,7 +425,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="mode"></param>
 		/// <param name="formatString"></param>
-		/// <param name="referenceModeName"></param>
+		/// <param name="oldReferenceModeName"></param>
 		/// <param name="model"></param>
 		/// <returns></returns>
 		[CLSCompliant(false)]
