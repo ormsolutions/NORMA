@@ -253,7 +253,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid);
 	}
 	#endregion // INamedElementDictionaryOwner interface
-	#region INamedElementDictionaryParticipant interface
+	#region INamedElementDictionaryChild interface
 	/// <summary>
 	/// An interface to mark a child element as a participant
 	/// in a named element dictionary. This interface should
@@ -270,7 +270,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="childMetaRoleGuid"></param>
 		void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid);
 	}
-	#endregion // INamedElementDictionaryOwner interface
+	#endregion // INamedElementDictionaryChild interface
 	#region INamedElementDictionaryLink interface
 	/// <summary>
 	/// An interface to mark an ElementLink as the relationship
@@ -1188,7 +1188,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// attach handlers that correctly deal with undo and redo scenarios.
 		/// </summary>
 		/// <param name="store">The store to attach to</param>
-		public static void AttachedEventHandlers(Store store)
+		public static void AttachEventHandlers(Store store)
 		{
 			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
