@@ -560,7 +560,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				double yPosition = fullBounds.Y;
 				double xPosition = fullBounds.X;
 				double initialBottom = fullBounds.Bottom;
-
+				double offsetHeight = (parentFactTypeShape.ConstraintDisplayPosition == ConstraintDisplayPosition.Top) ? constraintHeight : -constraintHeight;
 				#region Compressing the ConstraintRoleBoxes of binary fact types.
 				if (factRoleCount == 2)
 				{
@@ -604,12 +604,11 @@ namespace Northface.Tools.ORM.ShapeModel
 							}
 						}
 						box.Bounds = bounds;
-						fullBounds.Offset(0, constraintHeight);
-
 						if (!boxUser(ref box))
 						{
 							break;
 						}
+						fullBounds.Offset(0, offsetHeight);
 					}
 				}
 				#endregion // Compressing the ConstraintRoleBoxes of binary fact types.
@@ -625,8 +624,7 @@ namespace Northface.Tools.ORM.ShapeModel
 						{
 							break;
 						}
-
-						fullBounds.Offset(0, constraintHeight);
+						fullBounds.Offset(0, offsetHeight);
 					}
 				}
 			}
@@ -676,9 +674,17 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				FactTypeShape factShape = parentShape as FactTypeShape;
 				if (factShape.IsObjectified)
+				{
 					return NestedFactVerticalMargin;
+				}
 				else
-					return 0;
+				{
+					// UNDONE: At the moment the pen width is a constant
+					// value, so this should just return a constant.
+					StyleSet styleSet = parentShape.StyleSet;
+					Pen pen = styleSet.GetPen(InternalFactConstraintPen);
+					return (Double)(pen.Width / 2);
+				}
 			}
 
 			// Nothing to paint for the spacer. So, no DoPaint override needed.
@@ -760,15 +766,31 @@ namespace Northface.Tools.ORM.ShapeModel
 		#region ConstraintShapeField : ShapeField
 		private class ConstraintShapeField : ShapeField
 		{
+			private ConstraintDisplayPosition myConstraintPosition;
+
 			/// <summary>
 			/// Construct a default ConstraintShapeField
 			/// </summary>
-			public ConstraintShapeField()
+			/// <param name="constraintPosition">Describes the position of this constraint field in relation to the role box(es).</param>
+			public ConstraintShapeField(ConstraintDisplayPosition constraintPosition)
 			{
 				DefaultFocusable = true;
 				DefaultSelectable = true;
 				DefaultVisibility = true;
+				myConstraintPosition = constraintPosition;
 			}
+
+			/// <summary>
+			/// Checks if constraint field is visible.
+			/// </summary>
+			/// <param name="parentShape">The parent FactTypeShape.</param>
+			/// <returns>True if the constraint position of this ConstraintShapeField matches the selected constraint position of the FactTypeShape.</returns>
+			public override bool GetVisible(ShapeElement parentShape)
+			{
+				FactTypeShape factTypeShape = parentShape as FactTypeShape;
+				return factTypeShape.ConstraintDisplayPosition == myConstraintPosition;
+			}
+
 
 			/// <summary>
 			/// Find the constraint sub shape at this location
@@ -837,6 +859,12 @@ namespace Northface.Tools.ORM.ShapeModel
 			/// <returns>The height of the ConstraintShapeField.</returns>
 			public override double GetMinimumHeight(ShapeElement parentShape)
 			{
+				FactTypeShape parent = parentShape as FactTypeShape;
+				if (parent.ConstraintDisplayPosition != myConstraintPosition)
+				{
+					return 0;
+				}
+
 				return ForMinimumHeight.CalculateMinimumHeight(parentShape);
 			}
 
@@ -875,6 +903,11 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				ForDrawing draw = new ForDrawing(e, parentShape as FactTypeShape);
 				FactTypeShape.WalkConstraintBoxes(parentShape, this, draw.DrawConstraint);
+
+//				//TODO: remove the following code after testing
+//				Graphics g = e.Graphics;
+//				System.Drawing.Brush myBrush = new System.Drawing.SolidBrush(Color.FromArgb(23, 255, 0, 0));
+//				g.FillRectangle(myBrush, RectangleD.ToRectangleF(this.GetBounds(parentShape)));
 			}
 
 			/// <summary>
@@ -1480,8 +1513,8 @@ namespace Northface.Tools.ORM.ShapeModel
 
 			// Initialize fields
 			RolesShapeField field = new RolesShapeField();
-			ConstraintShapeField topConstraintField = new ConstraintShapeField();
-			ConstraintShapeField bottomConstraintField = new ConstraintShapeField();
+			ConstraintShapeField topConstraintField = new ConstraintShapeField(ConstraintDisplayPosition.Top);
+			ConstraintShapeField bottomConstraintField = new ConstraintShapeField(ConstraintDisplayPosition.Bottom);
 			SpacerShapeField spacer = new SpacerShapeField();
 
 			// Add all shapes before modifying anchoring behavior
@@ -1560,31 +1593,30 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			get
 			{
+				// Margin is used to adjust the width and height of the content to incorporate the
+				// width of the pen being used and prevent the pen from being cropped at the edges
+				// of the content.
 				double margin = this.StyleSet.GetPen(FactTypeShape.RoleBoxOutlinePen).Width;
 				SizeD retVal = SizeD.Empty;
 				ShapeField rolesShape = RolesShape;
 				if (rolesShape != null)
 				{
 					double width, height;
-					width = rolesShape.GetMinimumWidth(this);
-					height = rolesShape.GetMinimumHeight(this);
+					width = rolesShape.GetMinimumWidth(this) + margin;
+					height = rolesShape.GetMinimumHeight(this) + margin;
 					if (IsObjectified)
 					{
-						height += myTopConstraintShapeField.GetMinimumHeight(this) + myBottomConstraintShapeField.GetMinimumHeight(this) + margin;
+						height += myTopConstraintShapeField.GetMinimumHeight(this) + myBottomConstraintShapeField.GetMinimumHeight(this);
 					}
 					else
 					{
 						if (this.ConstraintDisplayPosition == ConstraintDisplayPosition.Top)
 						{
-							myTopConstraintShapeField.DefaultVisibility = true;
-							myBottomConstraintShapeField.DefaultVisibility = false;
-							height += myTopConstraintShapeField.GetMinimumHeight(this) + margin;
+							height += myTopConstraintShapeField.GetMinimumHeight(this);
 						}
 						else
 						{
-							myTopConstraintShapeField.DefaultVisibility = false;
-							myBottomConstraintShapeField.DefaultVisibility = true;
-							height += myBottomConstraintShapeField.GetMinimumHeight(this) + margin;
+							height += myBottomConstraintShapeField.GetMinimumHeight(this);
 						}
 					}
 					retVal = new SizeD(width, height);
@@ -1604,14 +1636,6 @@ namespace Northface.Tools.ORM.ShapeModel
 				{
 					contentSize.Width += NestedFactHorizontalMargin + NestedFactHorizontalMargin;
 					contentSize.Height += NestedFactVerticalMargin + NestedFactVerticalMargin;
-				}
-				else
-				{
-					// Adjust the size of the content to incorporate the width of the pen being used
-					// and prevent the pen from being cropped at the edges of the content.
-					double margin = this.StyleSet.GetPen(FactTypeShape.RoleBoxOutlinePen).Width;
-					contentSize.Width += margin;
-					contentSize.Height += margin;
 				}
 			}
 			Size = contentSize;
@@ -1971,6 +1995,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				MetaDataDirectory metaDir = factType.Store.MetaDataDirectory;
 				return new PropertyDescriptorCollection(new PropertyDescriptor[]{
+					this.CreatePropertyDescriptor(metaDir.FindMetaAttribute(FactTypeShape.ConstraintDisplayPositionMetaAttributeGuid), this),
 					nestingType.CreatePropertyDescriptor(metaDir.FindMetaAttribute(NamedElement.NameMetaAttributeGuid), nestingType),
 					nestingType.CreatePropertyDescriptor(metaDir.FindMetaAttribute(ObjectType.IsIndependentMetaAttributeGuid), nestingType),
 					new HeaderDescriptor(factType, ObjectifiedFactPropertyConverter.Converter),
@@ -2253,6 +2278,25 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		#region ConstraintDisplayPositionChangeRule class
+		[RuleOn(typeof(FactTypeShape))]
+		private class ConstraintDisplayPositionChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == ConstraintDisplayPositionMetaAttributeGuid) // InternalUniquenessConstraint.IsPreferredMetaAttributeGuid)
+				{
+					FactTypeShape factTypeShape = e.ModelElement as FactTypeShape; //InternalUniquenessConstraint;
+					if (!factTypeShape.IsRemoved)
+					{
+						factTypeShape.AutoResize();
+						factTypeShape.Invalidate(true);
+					}
+				}
+			}
+		}
+		#endregion // ConstraintDisplayPositionChangeRule class
 		#endregion // Shape display update rules
 	}
 	#endregion // FactTypeShape class

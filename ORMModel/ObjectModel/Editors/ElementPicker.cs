@@ -355,6 +355,15 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				myLastControlSize = value;
 			}
 		}
+		#endregion // ElementPicker Specifics
+	}
+	/// <summary>
+	/// Static helper functions to use with UITypeEditor
+	/// implementations
+	/// </summary>
+	public static class EditorUtility
+	{
+		#region EditorUtility Specific
 		/// <summary>
 		/// Selection context is often based on a wrapper shape, such
 		/// as a NodeShape or a tree node in a model browser. Use this
@@ -364,7 +373,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		/// <param name="instance">The selected object returned by ITypeDescriptorContext.Instance</param>
 		/// <param name="pickAnyElement">If an array of elements is passed in, then any element will work as the context element.</param>
 		/// <returns>A resolved object, or the starting instance if the item is not wrapped.</returns>
-		protected static object ResolveContextInstance(object instance, bool pickAnyElement)
+		public static object ResolveContextInstance(object instance, bool pickAnyElement)
 		{
 			Microsoft.VisualStudio.Modeling.Diagrams.NodeShape shape;
 			Microsoft.VisualStudio.EnterpriseTools.Shell.ModelElementTreeNode treeNode;
@@ -382,6 +391,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			}
 			return instance;
 		}
-		#endregion // ElementPicker Specifics
+		#endregion // EditorUtility Specific
 	}
 }

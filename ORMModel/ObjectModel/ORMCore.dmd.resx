@@ -211,7 +211,7 @@
     <value xml:space="preserve">Role</value>
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.Role.Cardinality">
-    <value xml:space="preserve">Cardinality</value>
+    <value xml:space="preserve">Multiplicity</value>
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.Role.DefaultNamePattern">
     <value xml:space="preserve">Role{0}</value>
@@ -241,15 +241,15 @@
     <value xml:space="preserve">Indeterminate</value>
   </data>
   <data name="RoleCardinality.OneToMany">
-    <value xml:space="preserve">1...n</value>
+    <value xml:space="preserve">1..*</value>
   </data>
   <data name="RoleCardinality.Unspecified">
     <value xml:space="preserve">Unspecified</value>
   </data>
   <data name="RoleCardinality.ZeroToMany">
-    <value xml:space="preserve">0...n</value>
+    <value xml:space="preserve">*</value>
   </data>
   <data name="RoleCardinality.ZeroToOne">
-    <value xml:space="preserve">0...1</value>
+    <value xml:space="preserve">0..1</value>
   </data>
 </root>

@@ -23,7 +23,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		/// <returns>A list of candidates</returns>
 		protected override IList GetContentList(ITypeDescriptorContext context, object value)
 		{
-			Role instance = (Role)ResolveContextInstance(context.Instance, true);
+			Role instance = (Role)EditorUtility.ResolveContextInstance(context.Instance, true);
 			IList candidates = instance.Store.ElementDirectory.GetElements(ObjectType.MetaClassGuid);
 			if (candidates.Count > 1)
 			{
@@ -77,7 +77,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		protected override IList GetContentList(ITypeDescriptorContext context, object value)
 		{
 			Debug.Assert(!(value is object[]));
-			FactType instance = (FactType)ResolveContextInstance(context.Instance, false); // false indicates this should not be called in multiselect mode.
+			FactType instance = (FactType)EditorUtility.ResolveContextInstance(context.Instance, false); // false indicates this should not be called in multiselect mode.
 			IList<ObjectType> roleTypes = null;
 			IList candidates = instance.Store.ElementDirectory.GetElements(ObjectType.MetaClassGuid);
 			int count = candidates.Count;
@@ -162,7 +162,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		protected override IList GetContentList(ITypeDescriptorContext context, object value)
 		{
 			Debug.Assert(!(value is object[]));
-			ObjectType instance = (ObjectType)ResolveContextInstance(context.Instance, false); // false indicates this should not be called in multiselect mode.
+			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, false); // false indicates this should not be called in multiselect mode.
 			IList candidates = instance.Store.ElementDirectory.GetElements(FactType.MetaClassGuid);
 			IList<FactType> roleFacts = null;
 			int count = candidates.Count;

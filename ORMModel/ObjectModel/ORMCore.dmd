@@ -1762,7 +1762,9 @@ Information Contained Herein is Proprietary and Confidential.
             <propertyInfo xsi:type="BooleanPropertyInfo" name="BooleanPropertyInfo" identity="857c2937-c426-4bfe-9ff6-410cb39d2734" default="false" />
           </property>
           <property name="Cardinality" identity="91159767-f6ce-4591-aeb2-ff0ab25f1b44" id="i91159767zf6cez4591zaeb2zff0ab25f1b44">
-            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="" />
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="">
+              <clrattribute name="System.ComponentModel.MergableProperty" parametertext="false" />
+            </mdfmetadata>
             <propertyInfo xsi:type="EnumerationPropertyInfo" name="RoleCardinality" identity="4bd8bf10-c268-40ba-ba4f-931bb26270e3" default="Unspecified">
               <enumeration>i6a8706ebz4956z4503zaefaz614e0a68aeeb</enumeration>
             </propertyInfo>

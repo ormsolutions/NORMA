@@ -4405,7 +4405,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
-		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Northface.Tools.ORM.ObjectModel.RoleCardinality),DefaultEnumerationValueName="Unspecified")]
+		[System.ComponentModel.MergableProperty(false)]
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType = typeof(Northface.Tools.ORM.ObjectModel.RoleCardinality), DefaultEnumerationValueName = "Unspecified")]
 		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(RoleCardinalityFieldHandler))]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Role.CardinalityMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Role.Cardinality")]
 		public  Northface.Tools.ORM.ObjectModel.RoleCardinality Cardinality

@@ -66,6 +66,79 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			base.SetValueForCustomStoredAttribute(attribute, newValue);
 		}
+		private RoleCardinality GetReverseMultiplicity(FactType factType, RoleMoveableCollection roles)
+		{
+			RoleCardinality retVal = RoleCardinality.Unspecified;
+			bool haveMandatory = false;
+			bool haveUniqueness = false;
+			bool haveDoubleWideUniqueness = false;
+			bool tooManyUniquenessConstraints = false;
+			foreach (ConstraintRoleSequence roleSet in ConstraintRoleSequenceCollection)
+			{
+				IConstraint constraint = roleSet.Constraint;
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.SimpleMandatory:
+						// Ignore multiple mandatories. Unlike
+						// condition, and we ignore it in the IsMandatory
+						// getter anyway.
+						haveMandatory = true;
+						break;
+					case ConstraintType.InternalUniqueness:
+						if (haveUniqueness)
+						{
+							tooManyUniquenessConstraints = true;
+						}
+						else
+						{
+							haveUniqueness = true;
+							if (roleSet.RoleCollection.Count == 2)
+							{
+								haveDoubleWideUniqueness = true;
+							}
+						}
+						break;
+				}
+				if (tooManyUniquenessConstraints)
+				{
+					break;
+				}
+			}
+			if (tooManyUniquenessConstraints)
+			{
+				retVal = RoleCardinality.Indeterminate;
+			}
+			else if (!haveUniqueness)
+			{
+				bool haveOppositeUniqueness = false;
+				Role oppositeRole = roles[0];
+				if (object.ReferenceEquals(oppositeRole, this))
+				{
+					oppositeRole = roles[1];
+				}
+				foreach (ConstraintRoleSequence roleSet in oppositeRole.ConstraintRoleSequenceCollection)
+				{
+					if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+					{
+						haveOppositeUniqueness = true;
+						break;
+					}
+				}
+				if (haveOppositeUniqueness)
+				{
+					retVal = haveMandatory ? RoleCardinality.OneToMany : RoleCardinality.ZeroToMany;
+				}
+			}
+			else if (haveDoubleWideUniqueness)
+			{
+				retVal = haveMandatory ? RoleCardinality.OneToMany : RoleCardinality.ZeroToMany;
+			}
+			else
+			{
+				retVal = haveMandatory ? RoleCardinality.ExactlyOne : RoleCardinality.ZeroToOne;
+			}
+			return retVal;
+		}
 		/// <summary>
 		/// Standard override. Retrieve values for calculated properties.
 		/// </summary>
@@ -102,75 +175,12 @@ namespace Northface.Tools.ORM.ObjectModel
 					RoleMoveableCollection roles = fact.RoleCollection;
 					if (roles.Count == 2)
 					{
-						bool haveMandatory = false;
-						bool haveUniqueness = false;
-						bool haveDoubleWideUniqueness = false;
-						bool tooManyUniquenessConstraints = false;
-						foreach (ConstraintRoleSequence roleSequence in ConstraintRoleSequenceCollection)
+						Role oppositeRole = roles[0];
+						if (object.ReferenceEquals(oppositeRole, this))
 						{
-							IConstraint constraint = roleSequence.Constraint;
-							switch (constraint.ConstraintType)
-							{
-								case ConstraintType.SimpleMandatory:
-									// Ignore multiple mandatories. Unlike
-									// condition, and we ignore it in the IsMandatory
-									// getter anyway.
-									haveMandatory = true;
-									break;
-								case ConstraintType.InternalUniqueness:
-									if (haveUniqueness)
-									{
-										tooManyUniquenessConstraints = true;
-									}
-									else
-									{
-										haveUniqueness = true;
-										if (roleSequence.RoleCollection.Count == 2)
-										{
-											haveDoubleWideUniqueness = true;
-										}
-									}
-									break;
-							}
-							if (tooManyUniquenessConstraints)
-							{
-								break;
-							}
+							oppositeRole = roles[1];
 						}
-						if (tooManyUniquenessConstraints)
-						{
-							retVal = RoleCardinality.Indeterminate;
-						}
-						else if (!haveUniqueness)
-						{
-							bool haveOppositeUniqueness = false;
-							Role oppositeRole = roles[0];
-							if (object.ReferenceEquals(oppositeRole, this))
-							{
-								oppositeRole = roles[1];
-							}
-							foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
-							{
-								if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
-								{
-									haveOppositeUniqueness = true;
-									break;
-								}
-							}
-							if (haveOppositeUniqueness)
-							{
-								retVal = haveMandatory ? RoleCardinality.OneToMany : RoleCardinality.ZeroToMany;
-							}
-						}
-						else if (haveDoubleWideUniqueness)
-						{
-							retVal = haveMandatory ? RoleCardinality.OneToMany : RoleCardinality.ZeroToMany;
-						}
-						else
-						{
-							retVal = haveMandatory ? RoleCardinality.ExactlyOne : RoleCardinality.ZeroToOne;
-						}
-
+						retVal = oppositeRole.GetReverseMultiplicity(fact, roles);
 					}
 				}
 				return retVal;
@@ -253,7 +263,24 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
 				{
-					return new StandardValuesCollection(new RoleCardinality[] { RoleCardinality.ZeroToOne, RoleCardinality.ZeroToMany, RoleCardinality.ExactlyOne, RoleCardinality.OneToMany });
+					// We look at the role cardinality and modify the collection for StandardValuesCollection
+					// so double-clicking the properties list will work when the role cardinality is unspecified
+					// or indeterminate.
+					Role role = (Role)Editors.EditorUtility.ResolveContextInstance(context.Instance, false);
+					RoleCardinality[] roles;
+					switch (role.Cardinality)
+					{
+						case RoleCardinality.Unspecified:
+							roles = new RoleCardinality[] { RoleCardinality.Unspecified, RoleCardinality.ZeroToOne, RoleCardinality.ZeroToMany, RoleCardinality.ExactlyOne, RoleCardinality.OneToMany };
+							break;
+						case RoleCardinality.Indeterminate:
+							roles = new RoleCardinality[] { RoleCardinality.Indeterminate, RoleCardinality.ZeroToOne, RoleCardinality.ZeroToMany, RoleCardinality.ExactlyOne, RoleCardinality.OneToMany };
+							break;
+						default:
+							roles = new RoleCardinality[] { RoleCardinality.ZeroToOne, RoleCardinality.ZeroToMany, RoleCardinality.ExactlyOne, RoleCardinality.OneToMany };
+							break;
+					}
+					return new StandardValuesCollection(roles);
 				}
 			}
 		}
@@ -321,6 +348,16 @@ namespace Northface.Tools.ORM.ObjectModel
 						if (factType == null || factRoles.Count != 2)
 						{
 							return; // Ignore the request
+						}
+
+						// We implemented this backwards, so switch to the opposite role
+						if (object.ReferenceEquals(role, factRoles[0]))
+						{
+							role = factRoles[1];
+						}
+						else
+						{
+							role = factRoles[0];
 						}
 
 						// First take care of the mandatory setting. We
