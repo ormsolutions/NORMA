@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Northface.Tools.ORM;
 using Northface.Tools.ORM.ObjectModel;
 namespace Northface.Tools.ORM.ShapeModel
@@ -64,7 +65,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				switch (Shell.OptionsPage.CurrentObjectTypeShape)
 				{
 					case Shell.ObjectTypeShape.Ellipse:
-						useShape = ShapeGeometries.Ellipse; // EllipseShapeGeometryEx.ShapeGeometry
+						useShape = EllipseShapeGeometryEx.ShapeGeometry; // ShapeGeometries.Ellipse
 						break;
 					case Shell.ObjectTypeShape.HardRectangle:
 						useShape = ShapeGeometries.Rectangle;
@@ -237,6 +238,13 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <returns>A point on the ellipse border</returns>
 		public override PointD DoFoldToShape(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint)
 		{
+			// The vectorEndPoint value is coming in (negative, negative) for the lower
+			// right quadrant instead of (positive, positive). All other values are
+			// (positive, positive), so we switch the end point to make the rest of the work
+			// easier.
+			// UNDONE: Should this be considered a bug?
+			vectorEndPoint = new PointD(-vectorEndPoint.X, -vectorEndPoint.Y);
+
 			// The point returns needs to be relative to the upper left corner of the bounding
 			// box. The goal is to get a point on the ellipse that points to the center of the
 			// line. To do this, we translate the coordinate system to the center of the ellipse,
@@ -248,35 +256,52 @@ namespace Northface.Tools.ORM.ShapeModel
 			// The pertinent equations are:
 			// vectorEndPoint (relative point) = (xe, ye)
 			// center = (xc, yc)
+			// ellipse radii = xr, yr
 			// slope = m = (ye - yc)/(xe - xc)
 			// line equation: y = mx
-			// ellipse equation: x^2/xc^2 + y^2/xc^2 = 1
-			// solving gives us: x = +/-((yc*xc)/sqrt(yc^2 + m^2 * xc^2))
+			// ellipse equation (centered at origin): x^2/xr^2 + y^2/yr^2 = 1
+			// solving gives us: x = +/-((yr*xr)/sqrt(yr^2 + m^2 * xr^2))
 			// Plugging back into the line equation gives us a +/- y value
+			// Final point = (xc, yc) + (x, y)
 			// The quadrant is determined by the relative position of the vectorEndPoint
-			//
-			// UNDONE: The bad news here is that vectorEndPoint appears to contain bogus
-			// information. The slope is suspect, and the quadrant is always the same, regardless
-			// of where the connection is coming from. Without this information there is no way to
-			// finish this routine. Garbage in, garbage out.
 			RectangleD box = geometryHost.GeometryBoundingBox;
+			PointD boxCenter = box.Center;
 			double xRadius = box.Width / 2;
 			double yRadius = box.Height / 2;
 
-			// UNDONE: This is the wrong way to test quadrant. This won't work
-			// with some routing styles (center to center in particular), and
-			// rarely works now because the potential points are frequently in
-			// the middle of an edge. I can reliably get either the vertical or
-			// horizontal hemispheres right, but not both.
-			bool negativeX = potentialPoint.X < xRadius;
-			bool negativeY = potentialPoint.Y < yRadius;
+			if (VGConstants.FuzzEqual(vectorEndPoint.X, boxCenter.X, VGConstants.FuzzDistance))
+			{
+				return new PointD(xRadius, (vectorEndPoint.Y < boxCenter.Y) ? 0 : box.Height);
+			}
+			else if (VGConstants.FuzzEqual(vectorEndPoint.Y, boxCenter.Y, VGConstants.FuzzDistance))
+			{
+				return new PointD((vectorEndPoint.X < boxCenter.X) ? 0 : box.Width, yRadius);
+			}
+			else
+			{
+				bool negativeX = vectorEndPoint.X < boxCenter.X;
+				bool negativeY = vectorEndPoint.Y < boxCenter.Y;
 
-			double slope = (vectorEndPoint.Y - yRadius) / (vectorEndPoint.X - xRadius);
-			// UNDONE: Do 0/undefined slope specially. Use FuzzZero concept to check for 0
-			// UNDONE: Circle equation reduces to x=radius/sqrt(1+m^2). Use FuzzEquals to test.
-			double x = (xRadius * yRadius) / Math.Sqrt(yRadius * yRadius + slope * slope * xRadius * xRadius);
-			double y = slope * x;
-			return new PointD((negativeX ? -x : x) + xRadius, (negativeY ? -y : y) + yRadius);
+				double slope = (vectorEndPoint.Y - boxCenter.Y) / (vectorEndPoint.X - boxCenter.X);
+				double x = (xRadius * yRadius) / Math.Sqrt(yRadius * yRadius + slope * slope * xRadius * xRadius);
+				double y = slope * x;
+				x = Math.Abs(x);
+				y = Math.Abs(y);
+				if (negativeX)
+				{
+					x = -x;
+					if (negativeY)
+					{
+						y = -y;
+					}
+				}
+				else if (negativeY)
+				{
+					y = -y;
+				}
+				// Return a point relative to the shape
+				return new PointD(x + xRadius, y + yRadius);
+			}
 		}
 	}
 }
