@@ -48,7 +48,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static int RoleSequenceCountMinimum(IConstraint constraint)
 		{
 			int retVal = 1;
-			switch (constraint.RoleSequenceStyles & RoleSequenceStyles.SetMultiplicityMask)
+			switch (constraint.RoleSequenceStyles & RoleSequenceStyles.SequenceMultiplicityMask)
 			{
 				case RoleSequenceStyles.MultipleRowSequences:
 				case RoleSequenceStyles.TwoRoleSequences:
@@ -71,7 +71,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static int RoleSequenceCountMaximum(IConstraint constraint)
 		{
 			int retVal = 1;
-			switch (constraint.RoleSequenceStyles & RoleSequenceStyles.SetMultiplicityMask)
+			switch (constraint.RoleSequenceStyles & RoleSequenceStyles.SequenceMultiplicityMask)
 			{
 				case RoleSequenceStyles.MultipleRowSequences:
 					retVal = -1;
@@ -1695,9 +1695,9 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		MultipleRowSequences = 4,
 		/// <summary>
-		/// A mask to extract the set multiplicity values
+		/// A mask to extract the sequence multiplicity values
 		/// </summary>
-		SetMultiplicityMask = OneRoleSequence | TwoRoleSequences | MultipleRowSequences,
+		SequenceMultiplicityMask = OneRoleSequence | TwoRoleSequences | MultipleRowSequences,
 		/// <summary>
 		/// Each role sequence contains exactly one role
 		/// </summary>
