@@ -219,26 +219,22 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Update the link displays when a role set for a mandatory constraint is added
+		/// Update the link displays when a role sequence for a mandatory constraint is added
 		/// </summary>
-		[RuleOn(typeof(InternalConstraintHasRoleSet), FireTime = TimeToFire.TopLevelCommit)]
-		private class InternalConstraintRoleSetAdded : AddRule
+		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.TopLevelCommit)]
+		private class InternalConstraintRoleSequenceAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				InternalConstraintHasRoleSet link = e.ModelElement as InternalConstraintHasRoleSet;
-				InternalConstraint constraint = link.InternalConstraint;
-				if (constraint.ConstraintType == ConstraintType.Mandatory)
+				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
+				SimpleMandatoryConstraint constraint = link.InternalConstraintCollection as SimpleMandatoryConstraint;
+				if (constraint != null)
 				{
-					ConstraintRoleSet roleSet = link.RoleSet;
-					if (roleSet != null)
+					RoleMoveableCollection roles = constraint.RoleCollection;
+					if (roles.Count > 0)
 					{
-						RoleMoveableCollection roles = roleSet.RoleCollection;
-						if (roles.Count > 0)
-						{
-							Debug.Assert(roles.Count == 1); // Mandatory constraints have a single role only
-							UpdateDotDisplayOnMandatoryConstraintChange(roles[0]);
-						}
+						Debug.Assert(roles.Count == 1); // Mandatory constraints have a single role only
+						UpdateDotDisplayOnMandatoryConstraintChange(roles[0]);
 					}
 				}
 			}
@@ -246,19 +242,16 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Update the link display when a mandatory constraint role is removed
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSetHasRole))]
-		private class InternalConstraintRoleSetRoleRemoved : RemoveRule
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		private class InternalConstraintRoleSequenceRoleRemoved : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				ConstraintRoleSetHasRole link = e.ModelElement as ConstraintRoleSetHasRole;
-				ConstraintRoleSet roleSet;
-				Constraint constraint;
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				SimpleMandatoryConstraint constraint;
 				Role role;
-				if ((null != (roleSet = link.ConstraintRoleSetCollection)) &&
-					(null != (constraint = roleSet.Constraint)) &&
-					(constraint.ConstraintType == ConstraintType.Mandatory) &&
-					(null != (role = link.RoleCollection)))
+				if ((null != (constraint = link.ConstraintRoleSequenceCollection as SimpleMandatoryConstraint)) &&
+				    (null != (role = link.RoleCollection)))
 				{
 					UpdateDotDisplayOnMandatoryConstraintChange(role);
 				}

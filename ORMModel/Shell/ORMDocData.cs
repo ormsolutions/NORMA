@@ -134,10 +134,7 @@ namespace Northface.Tools.ORM.Shell
 				read.Text = "{0} possesses {1}";
 
 				InternalConstraint ic = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-				InternalConstraintRoleSet irs = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
-				irs.RoleCollection.Add(fact.RoleCollection[0]);
-				ic.RoleSet = irs;
-				ic.Model = model;
+				ic.RoleCollection.Add(fact.RoleCollection[0]); // Automatically sets FactType, setting it again will remove and delete the new constraint
 
 				// Create an objectified fact type with one role
 				FactType nestedFact = FactType.CreateFactType(store);
@@ -159,13 +156,13 @@ namespace Northface.Tools.ORM.Shell
 				ExclusionConstraint euc = ExclusionConstraint.CreateExclusionConstraint(store);
 				euc.Name = "Constraint1";
 				euc.Model = model;
-				ExternalConstraintRoleSetMoveableCollection roleSets = euc.RoleSetCollection;
-				ExternalConstraintRoleSet roleSet = ExternalConstraintRoleSet.CreateExternalConstraintRoleSet(store);
-				roleSet.RoleCollection.Add(fact.RoleCollection[1]);
-				roleSets.Add(roleSet);
-				roleSet = ExternalConstraintRoleSet.CreateExternalConstraintRoleSet(store);
-				roleSets.Add(roleSet);
-				roleSet.RoleCollection.Add(nestedFact.RoleCollection[0]);
+				MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = euc.RoleSequenceCollection;
+				MultiColumnExternalConstraintRoleSequence roleSequence = MultiColumnExternalConstraintRoleSequence.CreateMultiColumnExternalConstraintRoleSequence(store);
+				roleSequence.RoleCollection.Add(fact.RoleCollection[1]);
+				roleSequences.Add(roleSequence);
+				roleSequence = MultiColumnExternalConstraintRoleSequence.CreateMultiColumnExternalConstraintRoleSequence(store);
+				roleSequences.Add(roleSequence);
+				roleSequence.RoleCollection.Add(nestedFact.RoleCollection[0]);
 
 				// UNDONE: Need to verify that this ordering is handled as well
 				//fact.Model = model; // Done earlier to test shape generation

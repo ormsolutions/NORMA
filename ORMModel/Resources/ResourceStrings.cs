@@ -235,8 +235,8 @@ namespace Northface.Tools.ORM
 		private const string CommandDeleteFactTypeText_Id = "Command.DeleteFactType.Text";
 		private const string CommandDeleteObjectTypeText_Id = "Command.DeleteObjectType.Text";
 		private const string CommandDeleteConstraintText_Id = "Command.DeleteConstraint.Text";
-		private const string ModelErrorConstraintHasTooFewRoleSetsText_Id = "ModelError.Constraint.TooFewRoleSets.Text";
-		private const string ModelErrorConstraintHasTooManyRoleSetsText_Id = "ModelError.Constraint.TooManyRoleSets.Text";
+		private const string ModelErrorConstraintHasTooFewRoleSequencesText_Id = "ModelError.Constraint.TooFewRoleSequences.Text";
+		private const string ModelErrorConstraintHasTooManyRoleSequencesText_Id = "ModelError.Constraint.TooManyRoleSequences.Text";
 		private const string ModelErrorModelHasDuplicateConstraintNames_Id = "ModelError.Model.DuplicateConstraintNames.Text";
 		private const string ModelErrorModelHasDuplicateFactTypeNames_Id = "ModelError.Model.DuplicateFactTypeNames.Text";
 		private const string ModelErrorModelHasDuplicateObjectTypeNames_Id = "ModelError.Model.DuplicateObjectTypeNames.Text";
@@ -441,28 +441,28 @@ namespace Northface.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Model validation error shown when too few role sets are defined
+		/// Model validation error shown when too few role sequences are defined
 		/// for a constraint. This is a frequent occurrence as external constraints
 		/// are easily created in this state.
 		/// </summary>
-		public static string ModelErrorConstraintHasTooFewRoleSetsText
+		public static string ModelErrorConstraintHasTooFewRoleSequencesText
 		{
 			get
 			{
-				return GetString(ResourceManagers.Model, ModelErrorConstraintHasTooFewRoleSetsText_Id);
+				return GetString(ResourceManagers.Model, ModelErrorConstraintHasTooFewRoleSequencesText_Id);
 			}
 		}
 		/// <summary>
-		/// Model validation error shown when too many role sets are defined
+		/// Model validation error shown when too many role sequences are defined
 		/// for a constraint. This is an infrequent occurrence which should not
 		/// be attainable via the UI, but should be possible with a hand edit
 		/// of the model file.
 		/// </summary>
-		public static string ModelErrorConstraintHasTooManyRoleSetsText
+		public static string ModelErrorConstraintHasTooManyRoleSequencesText
 		{
 			get
 			{
-				return GetString(ResourceManagers.Model, ModelErrorConstraintHasTooManyRoleSetsText_Id);
+				return GetString(ResourceManagers.Model, ModelErrorConstraintHasTooManyRoleSequencesText_Id);
 			}
 		}
 		/// <summary>
@@ -585,7 +585,7 @@ namespace Northface.Tools.ORM
 		}
 		/// <summary>
 		/// Exception message when an attempt is made to add
-		/// roles from different fact types to a role set owned by an internal constraint.
+		/// roles from different fact types to a role sequence owned by an internal constraint.
 		/// </summary>
 		public static string ModelExceptionInternalConstraintInconsistentRoleOwners
 		{

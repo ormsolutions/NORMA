@@ -179,16 +179,17 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasRole.RoleCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasRole.RoleCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasFactType.FactTypeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasFactType.FactTypeCollectionMetaRoleGuid);
-			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollectionMetaRoleGuid);
-			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSetMetaRoleGuid, Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSetMetaRoleGuid);
-			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.RoleSetCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.RoleSetCollectionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuid);
-			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsErrorMetaRoleGuid);
-			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -332,15 +333,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			get { return new Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasFactType.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasFactType.FactTypeCollectionMetaRoleGuid); }
 		}
 		#endregion
-		#region ConstraintCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ConstraintMoveableCollection ConstraintCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.ConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollectionMetaRoleGuid); }
-		}
-		#endregion
 		#region ErrorCollection's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -366,6 +358,24 @@ namespace Northface.Tools.ORM.ObjectModel
 		public Northface.Tools.ORM.ObjectModel.ReferenceModeMoveableCollection ReferenceModeCollection
 		{
 			get { return new Northface.Tools.ORM.ObjectModel.ReferenceModeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region SingleColumnExternalConstraintCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintMoveableCollection SingleColumnExternalConstraintCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region MultiColumnExternalConstraintCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintMoveableCollection MultiColumnExternalConstraintCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -1818,7 +1828,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.Constraint PreferredIdentifier
+		public Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence PreferredIdentifier
 		{
 			get
 			{
@@ -1837,7 +1847,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
 				}
-				return (Northface.Tools.ORM.ObjectModel.Constraint)o;
+				return (Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence)o;
 			}
 			set
 			{
@@ -2523,13 +2533,22 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region ExternalConstraintCollection's Generated Accessor Code
+		#region MultiColumnExternalConstraintCollection's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ExternalConstraintMoveableCollection ExternalConstraintCollection
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintMoveableCollection MultiColumnExternalConstraintCollection
 		{
-			get { return new Northface.Tools.ORM.ObjectModel.ExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.FactTypeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuid); }
+			get { return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region SingleColumnExternalConstraintCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintMoveableCollection SingleColumnExternalConstraintCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid); }
 		}
 		#endregion
 		#region DuplicateNameError's Generated Accessor Code
@@ -2593,7 +2612,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public Northface.Tools.ORM.ObjectModel.InternalConstraintMoveableCollection InternalConstraintCollection
 		{
-			get { return new Northface.Tools.ORM.ObjectModel.InternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactTypeMetaRoleGuid, Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuid); }
+			get { return new Northface.Tools.ORM.ObjectModel.InternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.FactTypeMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -3008,31 +3027,49 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Constraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.Constraint")]
-	public abstract partial class Constraint : Microsoft.VisualStudio.Modeling.NamedElement
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint")]
+	public abstract partial class MultiColumnExternalConstraint : Microsoft.VisualStudio.Modeling.NamedElement
 	{
-		#region Constraint's Generated MetaClass Code
+		#region MultiColumnExternalConstraint's Generated MetaClass Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
-		public new const System.String MetaClassGuidString = "31230436-a925-46d9-b64c-24e028aa5d60";
+		public new const System.String MetaClassGuidString = "0d75242d-1462-4936-ad30-e1ce61a6ba3f";
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Constraint.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.MetaClassGuidString);
 		#endregion
 
-		#region Model's Generated Accessor Code
+		#region FactTypeCollection's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ORMModel Model
+		public Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection FactTypeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region RoleSequenceCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequenceMoveableCollection RoleSequenceCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequenceMoveableCollection(this, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.ExternalConstraintMetaRoleGuid, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region TooFewRoleSequencesError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesError TooFewRoleSequencesError
 		{
 			get
 			{
 				System.Object o = null;
 				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollectionMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -3043,13 +3080,13 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				if (goodLink != null)
 				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ModelMetaRoleGuid);
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
 				}
-				return (Northface.Tools.ORM.ObjectModel.ORMModel)o;
+				return (Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesError)o;
 			}
 			set
 			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollectionMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -3061,9 +3098,101 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (value != null)
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ModelMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollectionMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ModelHasConstraint), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region TooManyRoleSequencesError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesError TooManyRoleSequencesError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region Model's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ORMModel Model
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ORMModel)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint), newRoles);
 				}
 			}
 		}
@@ -3078,7 +3207,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				System.Object o = null;
 				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollectionMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -3089,13 +3218,13 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				if (goodLink != null)
 				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid);
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid);
 				}
 				return (Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError)o;
 			}
 			set
 			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollectionMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -3107,66 +3236,20 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (value != null)
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError), newRoles);
-				}
-			}
-		}
-		#endregion
-		#region PreferredIdentifierFor's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ObjectType PreferredIdentifierFor
-		{
-			get
-			{
-				System.Object o = null;
-				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						goodLink = link;
-						break;
-					}
-				}
-				if (goodLink != null)
-				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
-				}
-				return (Northface.Tools.ORM.ObjectModel.ObjectType)o;
-			}
-			set
-			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						link.Remove();
-						break;
-					}
-				}
-				if (value != null)
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError), newRoles);
 				}
 			}
 		}
 		#endregion
 	}
-	#region Collection Classes for Constraint
+	#region Collection Classes for MultiColumnExternalConstraint
 	/// <summary>
-	/// Northface.Tools.ORM.ObjectModel.Constraint Collection class, strongly-typed collection
+	/// Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint Collection class, strongly-typed collection
 	/// </summary>
 	[System.CLSCompliant(true)]
-	public sealed partial class ConstraintMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	public sealed partial class MultiColumnExternalConstraintMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
 	{
 		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
 		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
@@ -3198,7 +3281,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="counterpart">Counterpart to create relationship with</param>
 		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
 		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
-		public ConstraintMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		public MultiColumnExternalConstraintMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
 		{
 			this.counterpartMember = counterpart;
 			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
@@ -3270,7 +3353,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			set
 			{
-				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Constraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Constraint))))
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint))))
 				{
 					throw new System.InvalidCastException();
 				}
@@ -3285,7 +3368,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>index where object was added</returns>
 		System.Int32 System.Collections.IList.Add(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Constraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Constraint))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -3305,7 +3388,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>true if object is contained, false otherwise</returns>
 		System.Boolean System.Collections.IList.Contains(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Constraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Constraint))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -3318,7 +3401,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>index of object</returns>
 		System.Int32 System.Collections.IList.IndexOf(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Constraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Constraint))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -3331,7 +3414,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
 		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Constraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Constraint))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -3343,7 +3426,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
 		void System.Collections.IList.Remove(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Constraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Constraint))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -3364,7 +3447,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="newPosition">The position to move to</param>
 		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
 		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Constraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Constraint))))
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -3386,7 +3469,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="rolePlayer">The role player that will be inserted</param>
 		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
 		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Constraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Constraint))))
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -3397,7 +3480,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
 		/// <param name="index">The zero-based index in array at which copying begins</param>
-		public void CopyTo(Northface.Tools.ORM.ObjectModel.Constraint[] array, System.Int32 index)
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint[] array, System.Int32 index)
 		{
 			((System.Collections.ICollection)this).CopyTo(array, index);
 		}
@@ -3419,18 +3502,18 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Indexed accessor
 		/// </summary>
 		/// <param name="index">Index to access</param>
-		/// <returns>Northface.Tools.ORM.ObjectModel.Constraint at that index</returns>
-		public Northface.Tools.ORM.ObjectModel.Constraint this[System.Int32 index]
+		/// <returns>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint this[System.Int32 index]
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.Constraint)(((System.Collections.IList)this)[index]); }
+			get { return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)(((System.Collections.IList)this)[index]); }
 			set { ((System.Collections.IList)this)[index] = value as System.Object; }
 		}
 		/// <summary>
 		/// Adds an item to the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Constraint to add to the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint to add to the list</param>
 		/// <returns>index where object was added</returns>
-		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.Constraint value)
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint value)
 		{
 			return ((System.Collections.IList)this).Add(value as System.Object);
 		}
@@ -3444,18 +3527,18 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Determines whether the list has a specific value
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Constraint to locate in the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint to locate in the list</param>
 		/// <returns>true if object is contained, false otherwise</returns>
-		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.Constraint value)
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint value)
 		{
 			return ((System.Collections.IList)this).Contains(value as System.Object);
 		}
 		/// <summary>
 		/// Determines the index of a specific item in the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Constraint to locate in the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint to locate in the list</param>
 		/// <returns>index of object</returns>
-		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.Constraint value)
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint value)
 		{
 			return ((System.Collections.IList)this).IndexOf(value as System.Object);
 		}
@@ -3463,16 +3546,16 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Inserts an item to the list at the specified position
 		/// </summary>
 		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Constraint to insert into the list</param>
-		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.Constraint value)
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint value)
 		{
 			((System.Collections.IList)this).Insert(index, value as System.Object);
 		}
 		/// <summary>
 		/// Removes the first occurrence of a specific object from the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Constraint to remove from the list</param>
-		public void Remove(Northface.Tools.ORM.ObjectModel.Constraint value)
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint value)
 		{
 			((System.Collections.IList)this).Remove(value as System.Object);
 		}
@@ -3489,7 +3572,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="rolePlayer">The role player to move</param>
 		/// <param name="newPosition">The position to move to</param>
-		public void Move(Northface.Tools.ORM.ObjectModel.Constraint rolePlayer, System.Int32 newPosition)
+		public void Move(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint rolePlayer, System.Int32 newPosition)
 		{
 			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
 		}
@@ -3507,7 +3590,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
 		/// <param name="rolePlayer">The role player that will be inserted</param>
-		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.Constraint rolePlayer)
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint rolePlayer)
 		{
 			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
 		}
@@ -3515,1535 +3598,17 @@ namespace Northface.Tools.ORM.ObjectModel
 	}
 	#endregion
 
-	#region Constraint's Generated Constructor Code
-	public abstract partial class Constraint
+	#region MultiColumnExternalConstraint's Generated Constructor Code
+	public abstract partial class MultiColumnExternalConstraint
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		protected Constraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		protected MultiColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
 		{
 		}
 	}
 	#endregion
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.InternalConstraint")]
-	public abstract partial class InternalConstraint : Northface.Tools.ORM.ObjectModel.Constraint
-	{
-		#region InternalConstraint's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "e17dcd50-eefe-4960-b425-b87f246c6ea0";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalConstraint.MetaClassGuidString);
-		#endregion
-
-		#region RoleSet's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.InternalConstraintRoleSet RoleSet
-		{
-			get
-			{
-				System.Object o = null;
-				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.InternalConstraintMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						goodLink = link;
-						break;
-					}
-				}
-				if (goodLink != null)
-				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSetMetaRoleGuid);
-				}
-				return (Northface.Tools.ORM.ObjectModel.InternalConstraintRoleSet)o;
-			}
-			set
-			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.InternalConstraintMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						link.Remove();
-						break;
-					}
-				}
-				if (value != null)
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSetMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.InternalConstraintMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet), newRoles);
-				}
-			}
-		}
-		#endregion
-		#region FactType's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.FactType FactType
-		{
-			get
-			{
-				System.Object o = null;
-				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						goodLink = link;
-						break;
-					}
-				}
-				if (goodLink != null)
-				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactTypeMetaRoleGuid);
-				}
-				return (Northface.Tools.ORM.ObjectModel.FactType)o;
-			}
-			set
-			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						link.Remove();
-						break;
-					}
-				}
-				if (value != null)
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactTypeMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.InternalFactConstraint), newRoles);
-				}
-			}
-		}
-		#endregion
-	}
-	#region Collection Classes for InternalConstraint
-	/// <summary>
-	/// Northface.Tools.ORM.ObjectModel.InternalConstraint Collection class, strongly-typed collection
-	/// </summary>
-	[System.CLSCompliant(true)]
-	public sealed partial class InternalConstraintMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
-	{
-		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
-		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
-		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
-		/// <summary>
-		/// Counterpart
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
-		{
-			get { return this.counterpartMember; }
-		}
-		/// <summary>
-		/// Source Role
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
-		{
-			get { return this.sourceRoleMember; }
-		}
-		/// <summary>
-		/// Target Role
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
-		{
-			get { return this.targetRoleMember; }
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="counterpart">Counterpart to create relationship with</param>
-		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
-		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
-		public InternalConstraintMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
-		{
-			this.counterpartMember = counterpart;
-			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
-			this.targetRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
-		}
-		/// <summary>
-		/// Returns an enumerator that can iterate through a collection
-		/// </summary>
-		/// <returns>Enumerator</returns>
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
-		}
-		/// <summary>
-		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
-		/// </summary>
-		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
-		/// <param name="index">The zero-based index in array at which copying begins</param>
-		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
-		}
-		/// <summary>
-		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
-		/// </summary>
-		System.Int32 System.Collections.ICollection.Count
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
-		/// </summary>
-		System.Boolean System.Collections.ICollection.IsSynchronized
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
-		/// </summary>
-		System.Object System.Collections.ICollection.SyncRoot
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
-		/// </summary>
-		System.Boolean System.Collections.IList.IsFixedSize
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
-		/// </summary>
-		System.Boolean System.Collections.IList.IsReadOnly
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
-		}
-		/// <summary>
-		/// Indexed accessor
-		/// </summary>
-		/// <param name="index">Index to access</param>
-		/// <returns>object at that index</returns>
-		System.Object System.Collections.IList.this[System.Int32 index]
-		{
-			get
-			{
-				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
-				return list[index];
-			}
-			set
-			{
-				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
-				{
-					throw new System.InvalidCastException();
-				}
-				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
-				list[index] = value;
-			}
-		}
-		/// <summary>
-		/// When implemented by a class, adds an item to the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
-		/// <returns>index where object was added</returns>
-		System.Int32 System.Collections.IList.Add(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes all items from the System.Collections.IList
-		/// </summary>
-		void System.Collections.IList.Clear()
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
-		}
-		/// <summary>
-		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
-		/// </summary>
-		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
-		/// <returns>true if object is contained, false otherwise</returns>
-		System.Boolean System.Collections.IList.Contains(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
-		}
-		/// <summary>
-		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
-		/// <returns>index of object</returns>
-		System.Int32 System.Collections.IList.IndexOf(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
-		}
-		/// <summary>
-		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
-		/// </summary>
-		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
-		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
-		void System.Collections.IList.Remove(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes the System.Collections.IList item at the specified index
-		/// </summary>
-		/// <param name="index">The zero-based index of the item to remove</param>
-		void System.Collections.IList.RemoveAt(System.Int32 index)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="rolePlayer">The role player to move</param>
-		/// <param name="newPosition">The position to move to</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
-		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="oldPosition">The position of the role player to move from</param>
-		/// <param name="newPosition">The position of the role player to move to</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
-		}
-		/// <summary>
-		/// Insert a roleplayer in the specified location
-		/// </summary>
-		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
-		/// <param name="rolePlayer">The role player that will be inserted</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
-		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
-		}
-		/// <summary>
-		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
-		/// </summary>
-		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
-		/// <param name="index">The zero-based index in array at which copying begins</param>
-		public void CopyTo(Northface.Tools.ORM.ObjectModel.InternalConstraint[] array, System.Int32 index)
-		{
-			((System.Collections.ICollection)this).CopyTo(array, index);
-		}
-		/// <summary>
-		/// Gets the number of elements contained in the collection
-		/// </summary>
-		public System.Int32 Count
-		{
-			get { return ((System.Collections.ICollection)this).Count; }
-		}
-		/// <summary>
-		/// Gets a value indicating whether the list is read-only
-		/// </summary>
-		public System.Boolean IsReadOnly
-		{
-			get { return ((System.Collections.IList)this).IsReadOnly; }
-		}
-		/// <summary>
-		/// Indexed accessor
-		/// </summary>
-		/// <param name="index">Index to access</param>
-		/// <returns>Northface.Tools.ORM.ObjectModel.InternalConstraint at that index</returns>
-		public Northface.Tools.ORM.ObjectModel.InternalConstraint this[System.Int32 index]
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.InternalConstraint)(((System.Collections.IList)this)[index]); }
-			set { ((System.Collections.IList)this)[index] = value as System.Object; }
-		}
-		/// <summary>
-		/// Adds an item to the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to add to the list</param>
-		/// <returns>index where object was added</returns>
-		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
-		{
-			return ((System.Collections.IList)this).Add(value as System.Object);
-		}
-		/// <summary>
-		/// Removes all items from the list
-		/// </summary>
-		public void Clear()
-		{
-			((System.Collections.IList)this).Clear();
-		}
-		/// <summary>
-		/// Determines whether the list has a specific value
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to locate in the list</param>
-		/// <returns>true if object is contained, false otherwise</returns>
-		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
-		{
-			return ((System.Collections.IList)this).Contains(value as System.Object);
-		}
-		/// <summary>
-		/// Determines the index of a specific item in the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to locate in the list</param>
-		/// <returns>index of object</returns>
-		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
-		{
-			return ((System.Collections.IList)this).IndexOf(value as System.Object);
-		}
-		/// <summary>
-		/// Inserts an item to the list at the specified position
-		/// </summary>
-		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to insert into the list</param>
-		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.InternalConstraint value)
-		{
-			((System.Collections.IList)this).Insert(index, value as System.Object);
-		}
-		/// <summary>
-		/// Removes the first occurrence of a specific object from the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to remove from the list</param>
-		public void Remove(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
-		{
-			((System.Collections.IList)this).Remove(value as System.Object);
-		}
-		/// <summary>
-		/// Removes the list item at the specified index
-		/// </summary>
-		/// <param name="index">The zero-based index of the item to remove</param>
-		public void RemoveAt(System.Int32 index)
-		{
-			((System.Collections.IList)this).RemoveAt(index);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="rolePlayer">The role player to move</param>
-		/// <param name="newPosition">The position to move to</param>
-		public void Move(Northface.Tools.ORM.ObjectModel.InternalConstraint rolePlayer, System.Int32 newPosition)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="oldPosition">The position of the role player to move from</param>
-		/// <param name="newPosition">The position of the role player to move to</param>
-		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
-		}
-		/// <summary>
-		/// Insert a roleplayer in the specified location
-		/// </summary>
-		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
-		/// <param name="rolePlayer">The role player that will be inserted</param>
-		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.InternalConstraint rolePlayer)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
-		}
-
-	}
-	#endregion
-
-	#region InternalConstraint's Generated Constructor Code
-	public abstract partial class InternalConstraint
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		protected InternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-	}
-	#endregion
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MandatoryConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.MandatoryConstraint")]
-	public  partial class MandatoryConstraint : Northface.Tools.ORM.ObjectModel.InternalConstraint
-	{
-		#region MandatoryConstraint's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "b09e7a1f-184e-4e7f-88e3-6ca763ded9eb";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MandatoryConstraint.MetaClassGuidString);
-		#endregion
-
-	}
-	#region MandatoryConstraint's Generated Constructor Code
-	public  partial class MandatoryConstraint
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public MandatoryConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static MandatoryConstraint CreateMandatoryConstraint(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return (MandatoryConstraint)store.ElementFactory.CreateElement(typeof(MandatoryConstraint));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static MandatoryConstraint CreateAndInitializeMandatoryConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (MandatoryConstraint)store.ElementFactory.CreateElement(typeof(MandatoryConstraint), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for MandatoryConstraint
-	/// <summary>
-	/// MandatoryConstraint Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.MandatoryConstraint))]
-	public sealed class MandatoryConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public MandatoryConstraintElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.MandatoryConstraint(store, bag);
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RingConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.RingConstraint")]
-	public  partial class RingConstraint : Northface.Tools.ORM.ObjectModel.InternalConstraint
-	{
-		#region RingConstraint's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "c0f29d7a-f057-49a6-87df-7abcbb55d471";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.RingConstraint.MetaClassGuidString);
-		#endregion
-
-	}
-	#region RingConstraint's Generated Constructor Code
-	public  partial class RingConstraint
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public RingConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static RingConstraint CreateRingConstraint(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return (RingConstraint)store.ElementFactory.CreateElement(typeof(RingConstraint));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static RingConstraint CreateAndInitializeRingConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (RingConstraint)store.ElementFactory.CreateElement(typeof(RingConstraint), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for RingConstraint
-	/// <summary>
-	/// RingConstraint Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.RingConstraint))]
-	public sealed class RingConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public RingConstraintElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.RingConstraint(store, bag);
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint")]
-	public  partial class InternalUniquenessConstraint : Northface.Tools.ORM.ObjectModel.InternalConstraint
-	{
-		#region InternalUniquenessConstraint's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "9480cf96-adfd-45b6-967e-018dddf27b94";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.MetaClassGuidString);
-		#endregion
-
-		#region IsPreferred's Generated  Field Code
-		#region IsPreferred's Generated  MetaAttribute Code
-		/// <summary>
-		/// MetaAttribute Guid String
-		/// </summary>
-		public const System.String IsPreferredMetaAttributeGuidString = "c1ba5d02-a7e4-4cd5-ac9f-89ee1d811ee8";
-
-		/// <summary>
-		/// MetaAttribute Guid
-		/// </summary>
-		public static readonly System.Guid IsPreferredMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuidString);
-		#endregion
-
-		#region IsPreferred's Generated Property Code
-
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferTrue)]
-		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(InternalUniquenessConstraintIsPreferredFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferred")]
-		public  System.Boolean IsPreferred
-		{
-			get
-			{
-				return internalUniquenessConstraintIsPreferredFieldHandler.GetFieldValue(this);
-			}
-		
-			set
-			{
-				internalUniquenessConstraintIsPreferredFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
-			}
-		}
-		#endregion
-
-		#region InternalUniquenessConstraintIsPreferredFieldHandler Generated Code
-		/// <summary>
-		/// FieldHandler for InternalUniquenessConstraint.IsPreferred field
-		/// </summary>
-		private static InternalUniquenessConstraintIsPreferredFieldHandler	internalUniquenessConstraintIsPreferredFieldHandler	= InternalUniquenessConstraintIsPreferredFieldHandler.Instance;
-
-		/// <summary>
-		/// Implement the field handler for InternalUniquenessConstraint.IsPreferred
-		/// </summary>
-		[System.CLSCompliant(false)]
-		public sealed partial class InternalUniquenessConstraintIsPreferredFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint,System.Boolean>
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private InternalUniquenessConstraintIsPreferredFieldHandler() { }
-
-			/// <summary>
-			/// Returns the singleton instance of the InternalUniquenessConstraint.IsPreferred field handler
-			/// </summary>
-			/// <value>InternalUniquenessConstraintIsPreferredFieldHandler</value>
-			public static InternalUniquenessConstraintIsPreferredFieldHandler Instance
-			{
-				get
-				{
-					if (Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.internalUniquenessConstraintIsPreferredFieldHandler != null)
-					{
-						return Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.internalUniquenessConstraintIsPreferredFieldHandler;
-					}
-					else
-					{
-						// The static constructor in InternalUniquenessConstraint will assign this value to
-						// Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.internalUniquenessConstraintIsPreferredFieldHandler, so just instantiate one and return it
-						return new InternalUniquenessConstraintIsPreferredFieldHandler();
-					}
-				}
-			}
-
-			/// <summary>
-			/// Returns the meta attribute id for the InternalUniquenessConstraint.IsPreferred field handler
-			/// </summary>
-			/// <value>Guid</value>
-			public sealed override System.Guid Id
-			{
-				get
-				{
-					return Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuid;
-				}
-			}
-		}
-		#endregion
-		#endregion
-		
-	}
-	#region InternalUniquenessConstraint's Generated Constructor Code
-	public  partial class InternalUniquenessConstraint
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public InternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static InternalUniquenessConstraint CreateInternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return (InternalUniquenessConstraint)store.ElementFactory.CreateElement(typeof(InternalUniquenessConstraint));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static InternalUniquenessConstraint CreateAndInitializeInternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (InternalUniquenessConstraint)store.ElementFactory.CreateElement(typeof(InternalUniquenessConstraint), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for InternalUniquenessConstraint
-	/// <summary>
-	/// InternalUniquenessConstraint Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint))]
-	public sealed class InternalUniquenessConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public InternalUniquenessConstraintElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint(store, bag);
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FrequencyConstraint")]
-	public  partial class FrequencyConstraint : Northface.Tools.ORM.ObjectModel.InternalConstraint
-	{
-		#region FrequencyConstraint's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "cee1eaf8-155f-4646-acb3-bf2e87be032a";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MetaClassGuidString);
-		#endregion
-
-	}
-	#region FrequencyConstraint's Generated Constructor Code
-	public  partial class FrequencyConstraint
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FrequencyConstraint CreateFrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return (FrequencyConstraint)store.ElementFactory.CreateElement(typeof(FrequencyConstraint));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FrequencyConstraint CreateAndInitializeFrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (FrequencyConstraint)store.ElementFactory.CreateElement(typeof(FrequencyConstraint), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for FrequencyConstraint
-	/// <summary>
-	/// FrequencyConstraint Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint))]
-	public sealed class FrequencyConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FrequencyConstraintElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.FrequencyConstraint(store, bag);
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraint")]
-	public abstract partial class ExternalConstraint : Northface.Tools.ORM.ObjectModel.Constraint
-	{
-		#region ExternalConstraint's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "0d75242d-1462-4936-ad30-e1ce61a6ba3f";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraint.MetaClassGuidString);
-		#endregion
-
-		#region FactTypeCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection FactTypeCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.FactTypeCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region RoleSetCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSetMoveableCollection RoleSetCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSetMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.ExternalConstraintMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.RoleSetCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region TooFewRoleSetsError's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.TooFewRoleSetsError TooFewRoleSetsError
-		{
-			get
-			{
-				System.Object o = null;
-				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.ConstraintMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						goodLink = link;
-						break;
-					}
-				}
-				if (goodLink != null)
-				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsErrorMetaRoleGuid);
-				}
-				return (Northface.Tools.ORM.ObjectModel.TooFewRoleSetsError)o;
-			}
-			set
-			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.ConstraintMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						link.Remove();
-						break;
-					}
-				}
-				if (value != null)
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsErrorMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.ConstraintMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError), newRoles);
-				}
-			}
-		}
-		#endregion
-		#region TooManyRoleSetsError's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.TooManyRoleSetsError TooManyRoleSetsError
-		{
-			get
-			{
-				System.Object o = null;
-				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.ConstraintMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						goodLink = link;
-						break;
-					}
-				}
-				if (goodLink != null)
-				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuid);
-				}
-				return (Northface.Tools.ORM.ObjectModel.TooManyRoleSetsError)o;
-			}
-			set
-			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.ConstraintMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-				{
-					if (!link.IsRemoved)
-					{
-						link.Remove();
-						break;
-					}
-				}
-				if (value != null)
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.ConstraintMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError), newRoles);
-				}
-			}
-		}
-		#endregion
-	}
-	#region Collection Classes for ExternalConstraint
-	/// <summary>
-	/// Northface.Tools.ORM.ObjectModel.ExternalConstraint Collection class, strongly-typed collection
-	/// </summary>
-	[System.CLSCompliant(true)]
-	public sealed partial class ExternalConstraintMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
-	{
-		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
-		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
-		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
-		/// <summary>
-		/// Counterpart
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
-		{
-			get { return this.counterpartMember; }
-		}
-		/// <summary>
-		/// Source Role
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
-		{
-			get { return this.sourceRoleMember; }
-		}
-		/// <summary>
-		/// Target Role
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
-		{
-			get { return this.targetRoleMember; }
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="counterpart">Counterpart to create relationship with</param>
-		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
-		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
-		public ExternalConstraintMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
-		{
-			this.counterpartMember = counterpart;
-			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
-			this.targetRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
-		}
-		/// <summary>
-		/// Returns an enumerator that can iterate through a collection
-		/// </summary>
-		/// <returns>Enumerator</returns>
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
-		}
-		/// <summary>
-		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
-		/// </summary>
-		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
-		/// <param name="index">The zero-based index in array at which copying begins</param>
-		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
-		}
-		/// <summary>
-		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
-		/// </summary>
-		System.Int32 System.Collections.ICollection.Count
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
-		/// </summary>
-		System.Boolean System.Collections.ICollection.IsSynchronized
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
-		/// </summary>
-		System.Object System.Collections.ICollection.SyncRoot
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
-		/// </summary>
-		System.Boolean System.Collections.IList.IsFixedSize
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
-		/// </summary>
-		System.Boolean System.Collections.IList.IsReadOnly
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
-		}
-		/// <summary>
-		/// Indexed accessor
-		/// </summary>
-		/// <param name="index">Index to access</param>
-		/// <returns>object at that index</returns>
-		System.Object System.Collections.IList.this[System.Int32 index]
-		{
-			get
-			{
-				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
-				return list[index];
-			}
-			set
-			{
-				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint))))
-				{
-					throw new System.InvalidCastException();
-				}
-				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
-				list[index] = value;
-			}
-		}
-		/// <summary>
-		/// When implemented by a class, adds an item to the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
-		/// <returns>index where object was added</returns>
-		System.Int32 System.Collections.IList.Add(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes all items from the System.Collections.IList
-		/// </summary>
-		void System.Collections.IList.Clear()
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
-		}
-		/// <summary>
-		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
-		/// </summary>
-		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
-		/// <returns>true if object is contained, false otherwise</returns>
-		System.Boolean System.Collections.IList.Contains(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
-		}
-		/// <summary>
-		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
-		/// <returns>index of object</returns>
-		System.Int32 System.Collections.IList.IndexOf(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
-		}
-		/// <summary>
-		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
-		/// </summary>
-		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
-		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
-		void System.Collections.IList.Remove(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes the System.Collections.IList item at the specified index
-		/// </summary>
-		/// <param name="index">The zero-based index of the item to remove</param>
-		void System.Collections.IList.RemoveAt(System.Int32 index)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="rolePlayer">The role player to move</param>
-		/// <param name="newPosition">The position to move to</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
-		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="oldPosition">The position of the role player to move from</param>
-		/// <param name="newPosition">The position of the role player to move to</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
-		}
-		/// <summary>
-		/// Insert a roleplayer in the specified location
-		/// </summary>
-		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
-		/// <param name="rolePlayer">The role player that will be inserted</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
-		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraint))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
-		}
-		/// <summary>
-		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
-		/// </summary>
-		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
-		/// <param name="index">The zero-based index in array at which copying begins</param>
-		public void CopyTo(Northface.Tools.ORM.ObjectModel.ExternalConstraint[] array, System.Int32 index)
-		{
-			((System.Collections.ICollection)this).CopyTo(array, index);
-		}
-		/// <summary>
-		/// Gets the number of elements contained in the collection
-		/// </summary>
-		public System.Int32 Count
-		{
-			get { return ((System.Collections.ICollection)this).Count; }
-		}
-		/// <summary>
-		/// Gets a value indicating whether the list is read-only
-		/// </summary>
-		public System.Boolean IsReadOnly
-		{
-			get { return ((System.Collections.IList)this).IsReadOnly; }
-		}
-		/// <summary>
-		/// Indexed accessor
-		/// </summary>
-		/// <param name="index">Index to access</param>
-		/// <returns>Northface.Tools.ORM.ObjectModel.ExternalConstraint at that index</returns>
-		public Northface.Tools.ORM.ObjectModel.ExternalConstraint this[System.Int32 index]
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.ExternalConstraint)(((System.Collections.IList)this)[index]); }
-			set { ((System.Collections.IList)this)[index] = value as System.Object; }
-		}
-		/// <summary>
-		/// Adds an item to the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ExternalConstraint to add to the list</param>
-		/// <returns>index where object was added</returns>
-		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ExternalConstraint value)
-		{
-			return ((System.Collections.IList)this).Add(value as System.Object);
-		}
-		/// <summary>
-		/// Removes all items from the list
-		/// </summary>
-		public void Clear()
-		{
-			((System.Collections.IList)this).Clear();
-		}
-		/// <summary>
-		/// Determines whether the list has a specific value
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ExternalConstraint to locate in the list</param>
-		/// <returns>true if object is contained, false otherwise</returns>
-		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ExternalConstraint value)
-		{
-			return ((System.Collections.IList)this).Contains(value as System.Object);
-		}
-		/// <summary>
-		/// Determines the index of a specific item in the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ExternalConstraint to locate in the list</param>
-		/// <returns>index of object</returns>
-		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ExternalConstraint value)
-		{
-			return ((System.Collections.IList)this).IndexOf(value as System.Object);
-		}
-		/// <summary>
-		/// Inserts an item to the list at the specified position
-		/// </summary>
-		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ExternalConstraint to insert into the list</param>
-		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ExternalConstraint value)
-		{
-			((System.Collections.IList)this).Insert(index, value as System.Object);
-		}
-		/// <summary>
-		/// Removes the first occurrence of a specific object from the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ExternalConstraint to remove from the list</param>
-		public void Remove(Northface.Tools.ORM.ObjectModel.ExternalConstraint value)
-		{
-			((System.Collections.IList)this).Remove(value as System.Object);
-		}
-		/// <summary>
-		/// Removes the list item at the specified index
-		/// </summary>
-		/// <param name="index">The zero-based index of the item to remove</param>
-		public void RemoveAt(System.Int32 index)
-		{
-			((System.Collections.IList)this).RemoveAt(index);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="rolePlayer">The role player to move</param>
-		/// <param name="newPosition">The position to move to</param>
-		public void Move(Northface.Tools.ORM.ObjectModel.ExternalConstraint rolePlayer, System.Int32 newPosition)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="oldPosition">The position of the role player to move from</param>
-		/// <param name="newPosition">The position of the role player to move to</param>
-		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
-		}
-		/// <summary>
-		/// Insert a roleplayer in the specified location
-		/// </summary>
-		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
-		/// <param name="rolePlayer">The role player that will be inserted</param>
-		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ExternalConstraint rolePlayer)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
-		}
-
-	}
-	#endregion
-
-	#region ExternalConstraint's Generated Constructor Code
-	public abstract partial class ExternalConstraint
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		protected ExternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-	}
-	#endregion
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint")]
-	public  partial class ExternalUniquenessConstraint : Northface.Tools.ORM.ObjectModel.ExternalConstraint
-	{
-		#region ExternalUniquenessConstraint's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "c50782de-5fd3-4076-a062-dd8983367363";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.MetaClassGuidString);
-		#endregion
-
-		#region IsPreferred's Generated  Field Code
-		#region IsPreferred's Generated  MetaAttribute Code
-		/// <summary>
-		/// MetaAttribute Guid String
-		/// </summary>
-		public const System.String IsPreferredMetaAttributeGuidString = "81ceefc5-e227-4a8e-be95-1a63066bc9b7";
-
-		/// <summary>
-		/// MetaAttribute Guid
-		/// </summary>
-		public static readonly System.Guid IsPreferredMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuidString);
-		#endregion
-
-		#region IsPreferred's Generated Property Code
-
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferTrue)]
-		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ExternalUniquenessConstraintIsPreferredFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferred")]
-		public  System.Boolean IsPreferred
-		{
-			get
-			{
-				return externalUniquenessConstraintIsPreferredFieldHandler.GetFieldValue(this);
-			}
-		
-			set
-			{
-				externalUniquenessConstraintIsPreferredFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
-			}
-		}
-		#endregion
-
-		#region ExternalUniquenessConstraintIsPreferredFieldHandler Generated Code
-		/// <summary>
-		/// FieldHandler for ExternalUniquenessConstraint.IsPreferred field
-		/// </summary>
-		private static ExternalUniquenessConstraintIsPreferredFieldHandler	externalUniquenessConstraintIsPreferredFieldHandler	= ExternalUniquenessConstraintIsPreferredFieldHandler.Instance;
-
-		/// <summary>
-		/// Implement the field handler for ExternalUniquenessConstraint.IsPreferred
-		/// </summary>
-		[System.CLSCompliant(false)]
-		public sealed partial class ExternalUniquenessConstraintIsPreferredFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint,System.Boolean>
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private ExternalUniquenessConstraintIsPreferredFieldHandler() { }
-
-			/// <summary>
-			/// Returns the singleton instance of the ExternalUniquenessConstraint.IsPreferred field handler
-			/// </summary>
-			/// <value>ExternalUniquenessConstraintIsPreferredFieldHandler</value>
-			public static ExternalUniquenessConstraintIsPreferredFieldHandler Instance
-			{
-				get
-				{
-					if (Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintIsPreferredFieldHandler != null)
-					{
-						return Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintIsPreferredFieldHandler;
-					}
-					else
-					{
-						// The static constructor in ExternalUniquenessConstraint will assign this value to
-						// Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintIsPreferredFieldHandler, so just instantiate one and return it
-						return new ExternalUniquenessConstraintIsPreferredFieldHandler();
-					}
-				}
-			}
-
-			/// <summary>
-			/// Returns the meta attribute id for the ExternalUniquenessConstraint.IsPreferred field handler
-			/// </summary>
-			/// <value>Guid</value>
-			public sealed override System.Guid Id
-			{
-				get
-				{
-					return Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuid;
-				}
-			}
-		}
-		#endregion
-		#endregion
-		
-	}
-	#region ExternalUniquenessConstraint's Generated Constructor Code
-	public  partial class ExternalUniquenessConstraint
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ExternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ExternalUniquenessConstraint CreateExternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return (ExternalUniquenessConstraint)store.ElementFactory.CreateElement(typeof(ExternalUniquenessConstraint));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ExternalUniquenessConstraint CreateAndInitializeExternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (ExternalUniquenessConstraint)store.ElementFactory.CreateElement(typeof(ExternalUniquenessConstraint), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for ExternalUniquenessConstraint
-	/// <summary>
-	/// ExternalUniquenessConstraint Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint))]
-	public sealed class ExternalUniquenessConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ExternalUniquenessConstraintElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint(store, bag);
-		}
-	}
-	#endregion
-
 }
 namespace Northface.Tools.ORM.ObjectModel
 {
@@ -5054,7 +3619,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EqualityConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.EqualityConstraint")]
-	public  partial class EqualityConstraint : Northface.Tools.ORM.ObjectModel.ExternalConstraint
+	public  partial class EqualityConstraint : Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint
 	{
 		#region EqualityConstraint's Generated MetaClass Code
 		/// <summary>
@@ -5126,7 +3691,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExclusionConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ExclusionConstraint")]
-	public  partial class ExclusionConstraint : Northface.Tools.ORM.ObjectModel.ExternalConstraint
+	public  partial class ExclusionConstraint : Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint
 	{
 		#region ExclusionConstraint's Generated MetaClass Code
 		/// <summary>
@@ -5139,127 +3704,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExclusionConstraint.MetaClassGuidString);
 		#endregion
 
-		#region ExclusionType's Generated  Field Code
-		#region ExclusionType's Generated  MetaAttribute Code
-		/// <summary>
-		/// MetaAttribute Guid String
-		/// </summary>
-		public const System.String ExclusionTypeMetaAttributeGuidString = "0018bab8-a32d-4cc1-a12a-3a18626dc942";
-
-		/// <summary>
-		/// MetaAttribute Guid
-		/// </summary>
-		public static readonly System.Guid ExclusionTypeMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExclusionConstraint.ExclusionTypeMetaAttributeGuidString);
-		#endregion
-
-		#region ExclusionType's Generated Property Code
-
-		private Northface.Tools.ORM.ObjectModel.ExclusionType exclusionTypePropertyStorage = Northface.Tools.ORM.ObjectModel.ExclusionType.Exclusion;
-		
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Northface.Tools.ORM.ObjectModel.ExclusionType),DefaultEnumerationValueName="Exclusion")]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ExclusionConstraintExclusionTypeFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExclusionConstraint.ExclusionTypeMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ExclusionConstraint.ExclusionType")]
-		public  Northface.Tools.ORM.ObjectModel.ExclusionType ExclusionType
-		{
-			get
-			{
-				return exclusionTypePropertyStorage;
-			}
-		
-			set
-			{
-				exclusionConstraintExclusionTypeFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
-			}
-		}
-		#endregion
-
-		#region ExclusionConstraintExclusionTypeFieldHandler Generated Code
-		/// <summary>
-		/// FieldHandler for ExclusionConstraint.ExclusionType field
-		/// </summary>
-		private static ExclusionConstraintExclusionTypeFieldHandler	exclusionConstraintExclusionTypeFieldHandler	= ExclusionConstraintExclusionTypeFieldHandler.Instance;
-
-		/// <summary>
-		/// Implement the field handler for ExclusionConstraint.ExclusionType
-		/// </summary>
-		[System.CLSCompliant(false)]
-		public sealed partial class ExclusionConstraintExclusionTypeFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.ExclusionConstraint,Northface.Tools.ORM.ObjectModel.ExclusionType>
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private ExclusionConstraintExclusionTypeFieldHandler() { }
-
-			/// <summary>
-			/// Returns the singleton instance of the ExclusionConstraint.ExclusionType field handler
-			/// </summary>
-			/// <value>ExclusionConstraintExclusionTypeFieldHandler</value>
-			public static ExclusionConstraintExclusionTypeFieldHandler Instance
-			{
-				get
-				{
-					if (Northface.Tools.ORM.ObjectModel.ExclusionConstraint.exclusionConstraintExclusionTypeFieldHandler != null)
-					{
-						return Northface.Tools.ORM.ObjectModel.ExclusionConstraint.exclusionConstraintExclusionTypeFieldHandler;
-					}
-					else
-					{
-						// The static constructor in ExclusionConstraint will assign this value to
-						// Northface.Tools.ORM.ObjectModel.ExclusionConstraint.exclusionConstraintExclusionTypeFieldHandler, so just instantiate one and return it
-						return new ExclusionConstraintExclusionTypeFieldHandler();
-					}
-				}
-			}
-
-			/// <summary>
-			/// Returns the meta attribute id for the ExclusionConstraint.ExclusionType field handler
-			/// </summary>
-			/// <value>Guid</value>
-			public sealed override System.Guid Id
-			{
-				get
-				{
-					return Northface.Tools.ORM.ObjectModel.ExclusionConstraint.ExclusionTypeMetaAttributeGuid;
-				}
-			}
-			/// <summary>
-			/// Gets the value of the attribute as it exists in the element
-			/// </summary>
-			/// <param name="element">the ExclusionConstraint</param>
-			protected sealed override Northface.Tools.ORM.ObjectModel.ExclusionType GetValue(Northface.Tools.ORM.ObjectModel.ExclusionConstraint element)
-			{
-				return element.exclusionTypePropertyStorage;
-			}
-
-			/// <summary>
-			/// Sets the value into the element
-			/// </summary>
-			/// <param name="element">the element</param>
-			/// <param name="value">new value</param>
-			/// <param name="commandFactory">the command factory for this change</param>
-			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
-			/// <param name="oldValue">the old value before the change</param>
-			/// <returns>true if the value actually changed</returns>
-			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.ExclusionConstraint element, Northface.Tools.ORM.ObjectModel.ExclusionType value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Northface.Tools.ORM.ObjectModel.ExclusionType oldValue)
-			{
-				oldValue = element.exclusionTypePropertyStorage;
-				if (allowDuplicates || oldValue != value)
-				{
-					OnValueChanging(element, oldValue, value);
-					element.exclusionTypePropertyStorage = value;
-					OnValueChanged(element, oldValue, value);
-					return true;
-				}
-				return false;
-			}
-		
-		}
-		#endregion
-		#endregion
-		
 	}
 	#region ExclusionConstraint's Generated Constructor Code
 	public  partial class ExclusionConstraint
@@ -5319,7 +3763,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SubsetConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.SubsetConstraint")]
-	public  partial class SubsetConstraint : Northface.Tools.ORM.ObjectModel.ExternalConstraint
+	public  partial class SubsetConstraint : Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint
 	{
 		#region SubsetConstraint's Generated MetaClass Code
 		/// <summary>
@@ -6123,13 +4567,13 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region ConstraintRoleSetCollection's Generated Accessor Code
+		#region ConstraintRoleSequenceCollection's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ConstraintRoleSetMoveableCollection ConstraintRoleSetCollection
+		public Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceMoveableCollection ConstraintRoleSequenceCollection
 		{
-			get { return new Northface.Tools.ORM.ObjectModel.ConstraintRoleSetMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.RoleCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.ConstraintRoleSetCollectionMetaRoleGuid); }
+			get { return new Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -6544,10 +4988,10 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSet")]
-	public abstract partial class ConstraintRoleSet : Microsoft.VisualStudio.Modeling.NamedElement
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence")]
+	public abstract partial class ConstraintRoleSequence : Microsoft.VisualStudio.Modeling.NamedElement
 	{
-		#region ConstraintRoleSet's Generated MetaClass Code
+		#region ConstraintRoleSequence's Generated MetaClass Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -6555,7 +4999,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence.MetaClassGuidString);
 		#endregion
 
 		#region RoleCollection's Generated Accessor Code
@@ -6564,16 +5008,62 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public Northface.Tools.ORM.ObjectModel.RoleMoveableCollection RoleCollection
 		{
-			get { return new Northface.Tools.ORM.ObjectModel.RoleMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.ConstraintRoleSetCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.RoleCollectionMetaRoleGuid); }
+			get { return new Northface.Tools.ORM.ObjectModel.RoleMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region PreferredIdentifierFor's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ObjectType PreferredIdentifierFor
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ObjectType)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), newRoles);
+				}
+			}
 		}
 		#endregion
 	}
-	#region Collection Classes for ConstraintRoleSet
+	#region Collection Classes for ConstraintRoleSequence
 	/// <summary>
-	/// Northface.Tools.ORM.ObjectModel.ConstraintRoleSet Collection class, strongly-typed collection
+	/// Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence Collection class, strongly-typed collection
 	/// </summary>
 	[System.CLSCompliant(true)]
-	public sealed partial class ConstraintRoleSetMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	public sealed partial class ConstraintRoleSequenceMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
 	{
 		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
 		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
@@ -6605,7 +5095,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="counterpart">Counterpart to create relationship with</param>
 		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
 		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
-		public ConstraintRoleSetMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		public ConstraintRoleSequenceMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
 		{
 			this.counterpartMember = counterpart;
 			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
@@ -6677,7 +5167,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			set
 			{
-				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet))))
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence))))
 				{
 					throw new System.InvalidCastException();
 				}
@@ -6692,7 +5182,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>index where object was added</returns>
 		System.Int32 System.Collections.IList.Add(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -6712,7 +5202,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>true if object is contained, false otherwise</returns>
 		System.Boolean System.Collections.IList.Contains(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -6725,7 +5215,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>index of object</returns>
 		System.Int32 System.Collections.IList.IndexOf(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -6738,7 +5228,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
 		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -6750,7 +5240,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
 		void System.Collections.IList.Remove(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -6771,7 +5261,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="newPosition">The position to move to</param>
 		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
 		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet))))
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -6793,7 +5283,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="rolePlayer">The role player that will be inserted</param>
 		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
 		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet))))
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -6804,7 +5294,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
 		/// <param name="index">The zero-based index in array at which copying begins</param>
-		public void CopyTo(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet[] array, System.Int32 index)
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence[] array, System.Int32 index)
 		{
 			((System.Collections.ICollection)this).CopyTo(array, index);
 		}
@@ -6826,18 +5316,18 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Indexed accessor
 		/// </summary>
 		/// <param name="index">Index to access</param>
-		/// <returns>Northface.Tools.ORM.ObjectModel.ConstraintRoleSet at that index</returns>
-		public Northface.Tools.ORM.ObjectModel.ConstraintRoleSet this[System.Int32 index]
+		/// <returns>Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence this[System.Int32 index]
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.ConstraintRoleSet)(((System.Collections.IList)this)[index]); }
+			get { return (Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence)(((System.Collections.IList)this)[index]); }
 			set { ((System.Collections.IList)this)[index] = value as System.Object; }
 		}
 		/// <summary>
 		/// Adds an item to the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSet to add to the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence to add to the list</param>
 		/// <returns>index where object was added</returns>
-		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet value)
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence value)
 		{
 			return ((System.Collections.IList)this).Add(value as System.Object);
 		}
@@ -6851,18 +5341,18 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Determines whether the list has a specific value
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSet to locate in the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence to locate in the list</param>
 		/// <returns>true if object is contained, false otherwise</returns>
-		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet value)
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence value)
 		{
 			return ((System.Collections.IList)this).Contains(value as System.Object);
 		}
 		/// <summary>
 		/// Determines the index of a specific item in the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSet to locate in the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence to locate in the list</param>
 		/// <returns>index of object</returns>
-		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet value)
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence value)
 		{
 			return ((System.Collections.IList)this).IndexOf(value as System.Object);
 		}
@@ -6870,16 +5360,16 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Inserts an item to the list at the specified position
 		/// </summary>
 		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSet to insert into the list</param>
-		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ConstraintRoleSet value)
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence value)
 		{
 			((System.Collections.IList)this).Insert(index, value as System.Object);
 		}
 		/// <summary>
 		/// Removes the first occurrence of a specific object from the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSet to remove from the list</param>
-		public void Remove(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet value)
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence value)
 		{
 			((System.Collections.IList)this).Remove(value as System.Object);
 		}
@@ -6896,7 +5386,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="rolePlayer">The role player to move</param>
 		/// <param name="newPosition">The position to move to</param>
-		public void Move(Northface.Tools.ORM.ObjectModel.ConstraintRoleSet rolePlayer, System.Int32 newPosition)
+		public void Move(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence rolePlayer, System.Int32 newPosition)
 		{
 			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
 		}
@@ -6914,7 +5404,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
 		/// <param name="rolePlayer">The role player that will be inserted</param>
-		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ConstraintRoleSet rolePlayer)
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence rolePlayer)
 		{
 			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
 		}
@@ -6922,13 +5412,13 @@ namespace Northface.Tools.ORM.ObjectModel
 	}
 	#endregion
 
-	#region ConstraintRoleSet's Generated Constructor Code
-	public abstract partial class ConstraintRoleSet
+	#region ConstraintRoleSequence's Generated Constructor Code
+	public abstract partial class ConstraintRoleSequence
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		protected ConstraintRoleSet(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		protected ConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
 		{
 		}
 	}
@@ -6942,10 +5432,750 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet")]
-	public  partial class ExternalConstraintRoleSet : Northface.Tools.ORM.ObjectModel.ConstraintRoleSet
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.InternalConstraint")]
+	public abstract partial class InternalConstraint : Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence
 	{
-		#region ExternalConstraintRoleSet's Generated MetaClass Code
+		#region InternalConstraint's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "e17dcd50-eefe-4960-b425-b87f246c6ea0";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalConstraint.MetaClassGuidString);
+		#endregion
+
+		#region FactType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.FactTypeMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.FactType)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.FactTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region Collection Classes for InternalConstraint
+	/// <summary>
+	/// Northface.Tools.ORM.ObjectModel.InternalConstraint Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class InternalConstraintMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public InternalConstraintMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.InternalConstraint[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Northface.Tools.ORM.ObjectModel.InternalConstraint at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.InternalConstraint this[System.Int32 index]
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.InternalConstraint)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.InternalConstraint value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.InternalConstraint to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.InternalConstraint value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Northface.Tools.ORM.ObjectModel.InternalConstraint rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.InternalConstraint rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
+	#region InternalConstraint's Generated Constructor Code
+	public abstract partial class InternalConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected InternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SimpleMandatoryConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.SimpleMandatoryConstraint")]
+	public  partial class SimpleMandatoryConstraint : Northface.Tools.ORM.ObjectModel.InternalConstraint
+	{
+		#region SimpleMandatoryConstraint's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "b09e7a1f-184e-4e7f-88e3-6ca763ded9eb";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SimpleMandatoryConstraint.MetaClassGuidString);
+		#endregion
+
+	}
+	#region SimpleMandatoryConstraint's Generated Constructor Code
+	public  partial class SimpleMandatoryConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SimpleMandatoryConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SimpleMandatoryConstraint CreateSimpleMandatoryConstraint(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (SimpleMandatoryConstraint)store.ElementFactory.CreateElement(typeof(SimpleMandatoryConstraint));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SimpleMandatoryConstraint CreateAndInitializeSimpleMandatoryConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (SimpleMandatoryConstraint)store.ElementFactory.CreateElement(typeof(SimpleMandatoryConstraint), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for SimpleMandatoryConstraint
+	/// <summary>
+	/// SimpleMandatoryConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryConstraint))]
+	public sealed class SimpleMandatoryConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SimpleMandatoryConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.SimpleMandatoryConstraint(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint")]
+	public  partial class InternalUniquenessConstraint : Northface.Tools.ORM.ObjectModel.InternalConstraint
+	{
+		#region InternalUniquenessConstraint's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "9480cf96-adfd-45b6-967e-018dddf27b94";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.MetaClassGuidString);
+		#endregion
+
+		#region IsPreferred's Generated  Field Code
+		#region IsPreferred's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String IsPreferredMetaAttributeGuidString = "c1ba5d02-a7e4-4cd5-ac9f-89ee1d811ee8";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid IsPreferredMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuidString);
+		#endregion
+
+		#region IsPreferred's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferTrue)]
+		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(InternalUniquenessConstraintIsPreferredFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferred")]
+		public  System.Boolean IsPreferred
+		{
+			get
+			{
+				return internalUniquenessConstraintIsPreferredFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				internalUniquenessConstraintIsPreferredFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region InternalUniquenessConstraintIsPreferredFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for InternalUniquenessConstraint.IsPreferred field
+		/// </summary>
+		private static InternalUniquenessConstraintIsPreferredFieldHandler	internalUniquenessConstraintIsPreferredFieldHandler	= InternalUniquenessConstraintIsPreferredFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for InternalUniquenessConstraint.IsPreferred
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class InternalUniquenessConstraintIsPreferredFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint,System.Boolean>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private InternalUniquenessConstraintIsPreferredFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the InternalUniquenessConstraint.IsPreferred field handler
+			/// </summary>
+			/// <value>InternalUniquenessConstraintIsPreferredFieldHandler</value>
+			public static InternalUniquenessConstraintIsPreferredFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.internalUniquenessConstraintIsPreferredFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.internalUniquenessConstraintIsPreferredFieldHandler;
+					}
+					else
+					{
+						// The static constructor in InternalUniquenessConstraint will assign this value to
+						// Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.internalUniquenessConstraintIsPreferredFieldHandler, so just instantiate one and return it
+						return new InternalUniquenessConstraintIsPreferredFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the InternalUniquenessConstraint.IsPreferred field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+	}
+	#region InternalUniquenessConstraint's Generated Constructor Code
+	public  partial class InternalUniquenessConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public InternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static InternalUniquenessConstraint CreateInternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (InternalUniquenessConstraint)store.ElementFactory.CreateElement(typeof(InternalUniquenessConstraint));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static InternalUniquenessConstraint CreateAndInitializeInternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (InternalUniquenessConstraint)store.ElementFactory.CreateElement(typeof(InternalUniquenessConstraint), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for InternalUniquenessConstraint
+	/// <summary>
+	/// InternalUniquenessConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint))]
+	public sealed class InternalUniquenessConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public InternalUniquenessConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FrequencyConstraint")]
+	public  partial class FrequencyConstraint : Northface.Tools.ORM.ObjectModel.InternalConstraint
+	{
+		#region FrequencyConstraint's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "cee1eaf8-155f-4646-acb3-bf2e87be032a";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MetaClassGuidString);
+		#endregion
+
+	}
+	#region FrequencyConstraint's Generated Constructor Code
+	public  partial class FrequencyConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraint CreateFrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (FrequencyConstraint)store.ElementFactory.CreateElement(typeof(FrequencyConstraint));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraint CreateAndInitializeFrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FrequencyConstraint)store.ElementFactory.CreateElement(typeof(FrequencyConstraint), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FrequencyConstraint
+	/// <summary>
+	/// FrequencyConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint))]
+	public sealed class FrequencyConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FrequencyConstraint(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence")]
+	public  partial class MultiColumnExternalConstraintRoleSequence : Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence
+	{
+		#region MultiColumnExternalConstraintRoleSequence's Generated MetaClass Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -6953,20 +6183,20 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence.MetaClassGuidString);
 		#endregion
 
 		#region ExternalConstraint's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ExternalConstraint ExternalConstraint
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint ExternalConstraint
 		{
 			get
 			{
 				System.Object o = null;
 				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.RoleSetCollectionMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -6977,13 +6207,13 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				if (goodLink != null)
 				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.ExternalConstraintMetaRoleGuid);
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.ExternalConstraintMetaRoleGuid);
 				}
-				return (Northface.Tools.ORM.ObjectModel.ExternalConstraint)o;
+				return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)o;
 			}
 			set
 			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.RoleSetCollectionMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -6995,20 +6225,20 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (value != null)
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.ExternalConstraintMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.RoleSetCollectionMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.ExternalConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence), newRoles);
 				}
 			}
 		}
 		#endregion
 	}
-	#region Collection Classes for ExternalConstraintRoleSet
+	#region Collection Classes for MultiColumnExternalConstraintRoleSequence
 	/// <summary>
-	/// Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet Collection class, strongly-typed collection
+	/// Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence Collection class, strongly-typed collection
 	/// </summary>
 	[System.CLSCompliant(true)]
-	public sealed partial class ExternalConstraintRoleSetMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	public sealed partial class MultiColumnExternalConstraintRoleSequenceMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
 	{
 		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
 		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
@@ -7040,7 +6270,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="counterpart">Counterpart to create relationship with</param>
 		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
 		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
-		public ExternalConstraintRoleSetMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		public MultiColumnExternalConstraintRoleSequenceMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
 		{
 			this.counterpartMember = counterpart;
 			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
@@ -7112,7 +6342,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			set
 			{
-				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet))))
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence))))
 				{
 					throw new System.InvalidCastException();
 				}
@@ -7127,7 +6357,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>index where object was added</returns>
 		System.Int32 System.Collections.IList.Add(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -7147,7 +6377,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>true if object is contained, false otherwise</returns>
 		System.Boolean System.Collections.IList.Contains(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -7160,7 +6390,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>index of object</returns>
 		System.Int32 System.Collections.IList.IndexOf(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -7173,7 +6403,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
 		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -7185,7 +6415,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
 		void System.Collections.IList.Remove(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -7206,7 +6436,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="newPosition">The position to move to</param>
 		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
 		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet))))
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -7228,7 +6458,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="rolePlayer">The role player that will be inserted</param>
 		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
 		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet))))
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -7239,7 +6469,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
 		/// <param name="index">The zero-based index in array at which copying begins</param>
-		public void CopyTo(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet[] array, System.Int32 index)
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence[] array, System.Int32 index)
 		{
 			((System.Collections.ICollection)this).CopyTo(array, index);
 		}
@@ -7261,18 +6491,18 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Indexed accessor
 		/// </summary>
 		/// <param name="index">Index to access</param>
-		/// <returns>Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet at that index</returns>
-		public Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet this[System.Int32 index]
+		/// <returns>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence this[System.Int32 index]
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet)(((System.Collections.IList)this)[index]); }
+			get { return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence)(((System.Collections.IList)this)[index]); }
 			set { ((System.Collections.IList)this)[index] = value as System.Object; }
 		}
 		/// <summary>
 		/// Adds an item to the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet to add to the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence to add to the list</param>
 		/// <returns>index where object was added</returns>
-		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet value)
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence value)
 		{
 			return ((System.Collections.IList)this).Add(value as System.Object);
 		}
@@ -7286,18 +6516,18 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Determines whether the list has a specific value
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet to locate in the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence to locate in the list</param>
 		/// <returns>true if object is contained, false otherwise</returns>
-		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet value)
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence value)
 		{
 			return ((System.Collections.IList)this).Contains(value as System.Object);
 		}
 		/// <summary>
 		/// Determines the index of a specific item in the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet to locate in the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence to locate in the list</param>
 		/// <returns>index of object</returns>
-		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet value)
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence value)
 		{
 			return ((System.Collections.IList)this).IndexOf(value as System.Object);
 		}
@@ -7305,16 +6535,16 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Inserts an item to the list at the specified position
 		/// </summary>
 		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet to insert into the list</param>
-		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet value)
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence value)
 		{
 			((System.Collections.IList)this).Insert(index, value as System.Object);
 		}
 		/// <summary>
 		/// Removes the first occurrence of a specific object from the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet to remove from the list</param>
-		public void Remove(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet value)
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence value)
 		{
 			((System.Collections.IList)this).Remove(value as System.Object);
 		}
@@ -7331,7 +6561,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="rolePlayer">The role player to move</param>
 		/// <param name="newPosition">The position to move to</param>
-		public void Move(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet rolePlayer, System.Int32 newPosition)
+		public void Move(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence rolePlayer, System.Int32 newPosition)
 		{
 			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
 		}
@@ -7349,7 +6579,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
 		/// <param name="rolePlayer">The role player that will be inserted</param>
-		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet rolePlayer)
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence rolePlayer)
 		{
 			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
 		}
@@ -7357,42 +6587,42 @@ namespace Northface.Tools.ORM.ObjectModel
 	}
 	#endregion
 
-	#region ExternalConstraintRoleSet's Generated Constructor Code
-	public  partial class ExternalConstraintRoleSet
+	#region MultiColumnExternalConstraintRoleSequence's Generated Constructor Code
+	public  partial class MultiColumnExternalConstraintRoleSequence
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintRoleSet(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		public MultiColumnExternalConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintRoleSet CreateExternalConstraintRoleSet(Microsoft.VisualStudio.Modeling.Store store)
+		public static MultiColumnExternalConstraintRoleSequence CreateMultiColumnExternalConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			return (ExternalConstraintRoleSet)store.ElementFactory.CreateElement(typeof(ExternalConstraintRoleSet));
+			return (MultiColumnExternalConstraintRoleSequence)store.ElementFactory.CreateElement(typeof(MultiColumnExternalConstraintRoleSequence));
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintRoleSet CreateAndInitializeExternalConstraintRoleSet(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static MultiColumnExternalConstraintRoleSequence CreateAndInitializeMultiColumnExternalConstraintRoleSequence(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (ExternalConstraintRoleSet)store.ElementFactory.CreateElement(typeof(ExternalConstraintRoleSet), assignments);
+			return (MultiColumnExternalConstraintRoleSequence)store.ElementFactory.CreateElement(typeof(MultiColumnExternalConstraintRoleSequence), assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for ExternalConstraintRoleSet
+	#region Class Factory Creator for MultiColumnExternalConstraintRoleSequence
 	/// <summary>
-	/// ExternalConstraintRoleSet Class Factory Creator
+	/// MultiColumnExternalConstraintRoleSequence Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet))]
-	public sealed class ExternalConstraintRoleSetElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence))]
+	public sealed class MultiColumnExternalConstraintRoleSequenceElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintRoleSetElementFactoryCreator()
+		public MultiColumnExternalConstraintRoleSequenceElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -7400,7 +6630,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet(store, bag);
+			return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence(store, bag);
 		}
 	}
 	#endregion
@@ -7414,31 +6644,40 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalConstraintRoleSet.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.InternalConstraintRoleSet")]
-	public  partial class InternalConstraintRoleSet : Northface.Tools.ORM.ObjectModel.ConstraintRoleSet
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint")]
+	public abstract partial class SingleColumnExternalConstraint : Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence
 	{
-		#region InternalConstraintRoleSet's Generated MetaClass Code
+		#region SingleColumnExternalConstraint's Generated MetaClass Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
-		public new const System.String MetaClassGuidString = "8264311c-af73-4e80-ae8a-b312d6861a50";
+		public new const System.String MetaClassGuidString = "5b304d59-8d34-45c5-80fc-4a0fe122aa0a";
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalConstraintRoleSet.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.MetaClassGuidString);
 		#endregion
 
-		#region InternalConstraint's Generated Accessor Code
+		#region FactTypeCollection's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.InternalConstraint InternalConstraint
+		public Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection FactTypeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region Model's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ORMModel Model
 		{
 			get
 			{
 				System.Object o = null;
 				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSetMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -7449,13 +6688,13 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				if (goodLink != null)
 				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.InternalConstraintMetaRoleGuid);
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid);
 				}
-				return (Northface.Tools.ORM.ObjectModel.InternalConstraint)o;
+				return (Northface.Tools.ORM.ObjectModel.ORMModel)o;
 			}
 			set
 			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSetMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -7467,50 +6706,485 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (value != null)
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.InternalConstraintMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSetMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region DuplicateNameError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError DuplicateNameError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.SingleColumnExternalConstraintCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.SingleColumnExternalConstraintCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.SingleColumnExternalConstraintCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError), newRoles);
 				}
 			}
 		}
 		#endregion
 	}
-	#region InternalConstraintRoleSet's Generated Constructor Code
-	public  partial class InternalConstraintRoleSet
+	#region Collection Classes for SingleColumnExternalConstraint
+	/// <summary>
+	/// Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class SingleColumnExternalConstraintMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public SingleColumnExternalConstraintMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint this[System.Int32 index]
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
+	#region SingleColumnExternalConstraint's Generated Constructor Code
+	public abstract partial class SingleColumnExternalConstraint
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public InternalConstraintRoleSet(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		protected SingleColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
 		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static InternalConstraintRoleSet CreateInternalConstraintRoleSet(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return (InternalConstraintRoleSet)store.ElementFactory.CreateElement(typeof(InternalConstraintRoleSet));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static InternalConstraintRoleSet CreateAndInitializeInternalConstraintRoleSet(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (InternalConstraintRoleSet)store.ElementFactory.CreateElement(typeof(InternalConstraintRoleSet), assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for InternalConstraintRoleSet
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
 	/// <summary>
-	/// InternalConstraintRoleSet Class Factory Creator
+	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraintRoleSet))]
-	public sealed class InternalConstraintRoleSetElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RingConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.RingConstraint")]
+	public  partial class RingConstraint : Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint
+	{
+		#region RingConstraint's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "c0f29d7a-f057-49a6-87df-7abcbb55d471";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.RingConstraint.MetaClassGuidString);
+		#endregion
+
+	}
+	#region RingConstraint's Generated Constructor Code
+	public  partial class RingConstraint
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public InternalConstraintRoleSetElementFactoryCreator()
+		public RingConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraint CreateRingConstraint(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (RingConstraint)store.ElementFactory.CreateElement(typeof(RingConstraint));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraint CreateAndInitializeRingConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (RingConstraint)store.ElementFactory.CreateElement(typeof(RingConstraint), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for RingConstraint
+	/// <summary>
+	/// RingConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.RingConstraint))]
+	public sealed class RingConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RingConstraintElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -7518,7 +7192,240 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ObjectModel.InternalConstraintRoleSet(store, bag);
+			return new Northface.Tools.ORM.ObjectModel.RingConstraint(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint")]
+	public  partial class ExternalUniquenessConstraint : Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint
+	{
+		#region ExternalUniquenessConstraint's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "c50782de-5fd3-4076-a062-dd8983367363";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.MetaClassGuidString);
+		#endregion
+
+		#region IsPreferred's Generated  Field Code
+		#region IsPreferred's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String IsPreferredMetaAttributeGuidString = "81ceefc5-e227-4a8e-be95-1a63066bc9b7";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid IsPreferredMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuidString);
+		#endregion
+
+		#region IsPreferred's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferTrue)]
+		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ExternalUniquenessConstraintIsPreferredFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferred")]
+		public  System.Boolean IsPreferred
+		{
+			get
+			{
+				return externalUniquenessConstraintIsPreferredFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				externalUniquenessConstraintIsPreferredFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ExternalUniquenessConstraintIsPreferredFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ExternalUniquenessConstraint.IsPreferred field
+		/// </summary>
+		private static ExternalUniquenessConstraintIsPreferredFieldHandler	externalUniquenessConstraintIsPreferredFieldHandler	= ExternalUniquenessConstraintIsPreferredFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ExternalUniquenessConstraint.IsPreferred
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ExternalUniquenessConstraintIsPreferredFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint,System.Boolean>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ExternalUniquenessConstraintIsPreferredFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ExternalUniquenessConstraint.IsPreferred field handler
+			/// </summary>
+			/// <value>ExternalUniquenessConstraintIsPreferredFieldHandler</value>
+			public static ExternalUniquenessConstraintIsPreferredFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintIsPreferredFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintIsPreferredFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ExternalUniquenessConstraint will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.externalUniquenessConstraintIsPreferredFieldHandler, so just instantiate one and return it
+						return new ExternalUniquenessConstraintIsPreferredFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ExternalUniquenessConstraint.IsPreferred field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+	}
+	#region ExternalUniquenessConstraint's Generated Constructor Code
+	public  partial class ExternalUniquenessConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ExternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ExternalUniquenessConstraint CreateExternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (ExternalUniquenessConstraint)store.ElementFactory.CreateElement(typeof(ExternalUniquenessConstraint));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ExternalUniquenessConstraint CreateAndInitializeExternalUniquenessConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ExternalUniquenessConstraint)store.ElementFactory.CreateElement(typeof(ExternalUniquenessConstraint), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ExternalUniquenessConstraint
+	/// <summary>
+	/// ExternalUniquenessConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint))]
+	public sealed class ExternalUniquenessConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ExternalUniquenessConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint")]
+	public  partial class DisjunctiveMandatoryConstraint : Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint
+	{
+		#region DisjunctiveMandatoryConstraint's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "749901ac-66bb-4d86-a42c-127456eb5451";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint.MetaClassGuidString);
+		#endregion
+
+	}
+	#region DisjunctiveMandatoryConstraint's Generated Constructor Code
+	public  partial class DisjunctiveMandatoryConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DisjunctiveMandatoryConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DisjunctiveMandatoryConstraint CreateDisjunctiveMandatoryConstraint(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (DisjunctiveMandatoryConstraint)store.ElementFactory.CreateElement(typeof(DisjunctiveMandatoryConstraint));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DisjunctiveMandatoryConstraint CreateAndInitializeDisjunctiveMandatoryConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (DisjunctiveMandatoryConstraint)store.ElementFactory.CreateElement(typeof(DisjunctiveMandatoryConstraint), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for DisjunctiveMandatoryConstraint
+	/// <summary>
+	/// DisjunctiveMandatoryConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint))]
+	public sealed class DisjunctiveMandatoryConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DisjunctiveMandatoryConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint(store, bag);
 		}
 	}
 	#endregion
@@ -8812,10 +8719,10 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TooFewRoleSetsError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TooFewRoleSetsError")]
-	public  partial class TooFewRoleSetsError : Northface.Tools.ORM.ObjectModel.ModelError
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesError")]
+	public  partial class TooFewRoleSequencesError : Northface.Tools.ORM.ObjectModel.ModelError
 	{
-		#region TooFewRoleSetsError's Generated MetaClass Code
+		#region TooFewRoleSequencesError's Generated MetaClass Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -8823,20 +8730,20 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TooFewRoleSetsError.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesError.MetaClassGuidString);
 		#endregion
 
 		#region Constraint's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ExternalConstraint Constraint
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint Constraint
 		{
 			get
 			{
 				System.Object o = null;
 				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsErrorMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -8847,13 +8754,13 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				if (goodLink != null)
 				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.ConstraintMetaRoleGuid);
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid);
 				}
-				return (Northface.Tools.ORM.ObjectModel.ExternalConstraint)o;
+				return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)o;
 			}
 			set
 			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsErrorMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -8865,50 +8772,50 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (value != null)
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.ConstraintMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsErrorMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError), newRoles);
 				}
 			}
 		}
 		#endregion
 	}
-	#region TooFewRoleSetsError's Generated Constructor Code
-	public  partial class TooFewRoleSetsError
+	#region TooFewRoleSequencesError's Generated Constructor Code
+	public  partial class TooFewRoleSequencesError
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public TooFewRoleSetsError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		public TooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static TooFewRoleSetsError CreateTooFewRoleSetsError(Microsoft.VisualStudio.Modeling.Store store)
+		public static TooFewRoleSequencesError CreateTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			return (TooFewRoleSetsError)store.ElementFactory.CreateElement(typeof(TooFewRoleSetsError));
+			return (TooFewRoleSequencesError)store.ElementFactory.CreateElement(typeof(TooFewRoleSequencesError));
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static TooFewRoleSetsError CreateAndInitializeTooFewRoleSetsError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static TooFewRoleSequencesError CreateAndInitializeTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (TooFewRoleSetsError)store.ElementFactory.CreateElement(typeof(TooFewRoleSetsError), assignments);
+			return (TooFewRoleSequencesError)store.ElementFactory.CreateElement(typeof(TooFewRoleSequencesError), assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for TooFewRoleSetsError
+	#region Class Factory Creator for TooFewRoleSequencesError
 	/// <summary>
-	/// TooFewRoleSetsError Class Factory Creator
+	/// TooFewRoleSequencesError Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.TooFewRoleSetsError))]
-	public sealed class TooFewRoleSetsErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesError))]
+	public sealed class TooFewRoleSequencesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public TooFewRoleSetsErrorElementFactoryCreator()
+		public TooFewRoleSequencesErrorElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -8916,7 +8823,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ObjectModel.TooFewRoleSetsError(store, bag);
+			return new Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesError(store, bag);
 		}
 	}
 	#endregion
@@ -8930,10 +8837,10 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TooManyRoleSetsError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TooManyRoleSetsError")]
-	public  partial class TooManyRoleSetsError : Northface.Tools.ORM.ObjectModel.ModelError
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesError")]
+	public  partial class TooManyRoleSequencesError : Northface.Tools.ORM.ObjectModel.ModelError
 	{
-		#region TooManyRoleSetsError's Generated MetaClass Code
+		#region TooManyRoleSequencesError's Generated MetaClass Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -8941,20 +8848,20 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TooManyRoleSetsError.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesError.MetaClassGuidString);
 		#endregion
 
 		#region Constraint's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ExternalConstraint Constraint
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint Constraint
 		{
 			get
 			{
 				System.Object o = null;
 				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -8965,13 +8872,13 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				if (goodLink != null)
 				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.ConstraintMetaRoleGuid);
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid);
 				}
-				return (Northface.Tools.ORM.ObjectModel.ExternalConstraint)o;
+				return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)o;
 			}
 			set
 			{
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -8983,50 +8890,50 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (value != null)
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.ConstraintMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuid, this);
-					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError), newRoles);
 				}
 			}
 		}
 		#endregion
 	}
-	#region TooManyRoleSetsError's Generated Constructor Code
-	public  partial class TooManyRoleSetsError
+	#region TooManyRoleSequencesError's Generated Constructor Code
+	public  partial class TooManyRoleSequencesError
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public TooManyRoleSetsError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		public TooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static TooManyRoleSetsError CreateTooManyRoleSetsError(Microsoft.VisualStudio.Modeling.Store store)
+		public static TooManyRoleSequencesError CreateTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			return (TooManyRoleSetsError)store.ElementFactory.CreateElement(typeof(TooManyRoleSetsError));
+			return (TooManyRoleSequencesError)store.ElementFactory.CreateElement(typeof(TooManyRoleSequencesError));
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static TooManyRoleSetsError CreateAndInitializeTooManyRoleSetsError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static TooManyRoleSequencesError CreateAndInitializeTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (TooManyRoleSetsError)store.ElementFactory.CreateElement(typeof(TooManyRoleSetsError), assignments);
+			return (TooManyRoleSequencesError)store.ElementFactory.CreateElement(typeof(TooManyRoleSequencesError), assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for TooManyRoleSetsError
+	#region Class Factory Creator for TooManyRoleSequencesError
 	/// <summary>
-	/// TooManyRoleSetsError Class Factory Creator
+	/// TooManyRoleSequencesError Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.TooManyRoleSetsError))]
-	public sealed class TooManyRoleSetsErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesError))]
+	public sealed class TooManyRoleSequencesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public TooManyRoleSetsErrorElementFactoryCreator()
+		public TooManyRoleSequencesErrorElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -9034,7 +8941,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ObjectModel.TooManyRoleSetsError(store, bag);
+			return new Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesError(store, bag);
 		}
 	}
 	#endregion
@@ -9259,13 +9166,22 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError.MetaClassGuidString);
 		#endregion
 
-		#region ConstraintCollection's Generated Accessor Code
+		#region SingleColumnExternalConstraintCollection's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ConstraintMoveableCollection ConstraintCollection
+		public Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintMoveableCollection SingleColumnExternalConstraintCollection
 		{
-			get { return new Northface.Tools.ORM.ObjectModel.ConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuid); }
+			get { return new Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.SingleColumnExternalConstraintCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region MultiColumnExternalConstraintCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintMoveableCollection MultiColumnExternalConstraintCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -12632,120 +12548,8 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasConstraint")]
-	public  partial class ModelHasConstraint : Microsoft.VisualStudio.Modeling.ElementLink
-	{
-		#region ModelHasConstraint's Generated MetaRelationship Code
-		/// <summary>
-		/// MetaRelationship Guid String
-		/// </summary>
-		public new const System.String MetaRelationshipGuidString = "de71244e-4628-49b5-a566-8cfcfd71a3ba";
-		/// <summary>
-		/// MetaRelationship Guid
-		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.MetaRelationshipGuidString);
-		#endregion
-
-		#region Model's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String ModelMetaRoleGuidString = "96a03455-4e3d-4e68-9042-485a0ee2dd0d";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid ModelMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ModelMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=true, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ModelMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasConstraint.Model")]
-		public  Northface.Tools.ORM.ObjectModel.ORMModel Model
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.ORMModel)this.GetRolePlayer(ModelMetaRoleGuid); }
-			set { this.SetRolePlayer(ModelMetaRoleGuid, value); }
-		}
-		#endregion
-		#region ConstraintCollection's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String ConstraintCollectionMetaRoleGuidString = "3467caef-671f-42da-b72a-f47675ecbfc5";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid ConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollectionMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasConstraint.ConstraintCollection")]
-		public  Northface.Tools.ORM.ObjectModel.Constraint ConstraintCollection
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.Constraint)this.GetRolePlayer(ConstraintCollectionMetaRoleGuid); }
-			set { this.SetRolePlayer(ConstraintCollectionMetaRoleGuid, value); }
-		}
-		#endregion
-	}
-	#region ModelHasConstraint's Generated Constructor Code
-	public  partial class ModelHasConstraint
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ModelHasConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ModelHasConstraint CreateModelHasConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
-		{
-			return (ModelHasConstraint)store.ElementFactory.CreateElementLink(typeof(ModelHasConstraint), rolePlayers);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ModelHasConstraint CreateAndInitializeModelHasConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (ModelHasConstraint)store.ElementFactory.CreateElementLink(typeof(ModelHasConstraint), rolePlayers, assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for ModelHasConstraint
-	/// <summary>
-	/// ModelHasConstraint Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ModelHasConstraint))]
-	public sealed class ModelHasConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ModelHasConstraintElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.ModelHasConstraint(store, bag);
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ExternalFactConstraint")]
-	public  partial class ExternalFactConstraint : Microsoft.VisualStudio.Modeling.ElementLink
+	public abstract partial class ExternalFactConstraint : Microsoft.VisualStudio.Modeling.ElementLink
 	{
 		#region ExternalFactConstraint's Generated MetaRelationship Code
 		/// <summary>
@@ -12758,53 +12562,13 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.MetaRelationshipGuidString);
 		#endregion
 
-		#region ExternalConstraintCollection's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String ExternalConstraintCollectionMetaRoleGuidString = "b8e2c375-a1c8-408b-90bc-b4ce0ba65b6f";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid ExternalConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.ExternalConstraintCollection")]
-		public  Northface.Tools.ORM.ObjectModel.ExternalConstraint ExternalConstraintCollection
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.ExternalConstraint)this.GetRolePlayer(ExternalConstraintCollectionMetaRoleGuid); }
-			set { this.SetRolePlayer(ExternalConstraintCollectionMetaRoleGuid, value); }
-		}
-		#endregion
-		#region FactTypeCollection's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String FactTypeCollectionMetaRoleGuidString = "8eb5f466-0534-4d78-882f-b7e11d84d63e";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid FactTypeCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.FactTypeCollectionMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.FactTypeCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.FactTypeCollection")]
-		public  Northface.Tools.ORM.ObjectModel.FactType FactTypeCollection
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeCollectionMetaRoleGuid); }
-			set { this.SetRolePlayer(FactTypeCollectionMetaRoleGuid, value); }
-		}
-		#endregion
 		#region ConstrainedRoleCollection's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRoleMoveableCollection ConstrainedRoleCollection
+		public Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleMoveableCollection ConstrainedRoleCollection
 		{
-			get { return new Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRoleMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ExternalRoleConstraint.FactConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalRoleConstraint.ConstrainedRoleCollectionMetaRoleGuid); }
+			get { return new Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ExternalRoleConstraint.FactConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ExternalRoleConstraint.ConstrainedRoleCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -13163,41 +12927,116 @@ namespace Northface.Tools.ORM.ObjectModel
 	#endregion
 
 	#region ExternalFactConstraint's Generated Constructor Code
-	public  partial class ExternalFactConstraint
+	public abstract partial class ExternalFactConstraint
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		protected ExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
 		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ExternalFactConstraint CreateExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
-		{
-			return (ExternalFactConstraint)store.ElementFactory.CreateElementLink(typeof(ExternalFactConstraint), rolePlayers);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ExternalFactConstraint CreateAndInitializeExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (ExternalFactConstraint)store.ElementFactory.CreateElementLink(typeof(ExternalFactConstraint), rolePlayers, assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for ExternalFactConstraint
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
 	/// <summary>
-	/// ExternalFactConstraint Class Factory Creator
+	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint))]
-	public sealed class ExternalFactConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint")]
+	public  partial class MultiColumnExternalFactConstraint : Northface.Tools.ORM.ObjectModel.ExternalFactConstraint
+	{
+		#region MultiColumnExternalFactConstraint's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "6de34bee-23ca-4503-b451-0bf4f9623e88";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.MetaRelationshipGuidString);
+		#endregion
+
+		#region MultiColumnExternalConstraintCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String MultiColumnExternalConstraintCollectionMetaRoleGuidString = "00ab3368-d142-4d99-8457-afd56e639f5a";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid MultiColumnExternalConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollection")]
+		public  Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint MultiColumnExternalConstraintCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(MultiColumnExternalConstraintCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(MultiColumnExternalConstraintCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region FactTypeCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FactTypeCollectionMetaRoleGuidString = "6352e486-6683-4334-8c5c-9601fa3c07d7";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FactTypeCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint.FactTypeCollection")]
+		public  Northface.Tools.ORM.ObjectModel.FactType FactTypeCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(FactTypeCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region MultiColumnExternalFactConstraint's Generated Constructor Code
+	public  partial class MultiColumnExternalFactConstraint
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalFactConstraintElementFactoryCreator()
+		public MultiColumnExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MultiColumnExternalFactConstraint CreateMultiColumnExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (MultiColumnExternalFactConstraint)store.ElementFactory.CreateElementLink(typeof(MultiColumnExternalFactConstraint), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MultiColumnExternalFactConstraint CreateAndInitializeMultiColumnExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (MultiColumnExternalFactConstraint)store.ElementFactory.CreateElementLink(typeof(MultiColumnExternalFactConstraint), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for MultiColumnExternalFactConstraint
+	/// <summary>
+	/// MultiColumnExternalFactConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint))]
+	public sealed class MultiColumnExternalFactConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MultiColumnExternalFactConstraintElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -13205,7 +13044,119 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ObjectModel.ExternalFactConstraint(store, bag);
+			return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalFactConstraint(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint")]
+	public  partial class SingleColumnExternalFactConstraint : Northface.Tools.ORM.ObjectModel.ExternalFactConstraint
+	{
+		#region SingleColumnExternalFactConstraint's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "786eebce-120b-43c0-9622-e799943f4021";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.MetaRelationshipGuidString);
+		#endregion
+
+		#region SingleColumnExternalConstraintCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String SingleColumnExternalConstraintCollectionMetaRoleGuidString = "6045259d-a85e-40f6-bac3-744f03cef430";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid SingleColumnExternalConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollection")]
+		public  Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint SingleColumnExternalConstraintCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)this.GetRolePlayer(SingleColumnExternalConstraintCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(SingleColumnExternalConstraintCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region FactTypeCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FactTypeCollectionMetaRoleGuidString = "3330f860-0dd6-4178-b7e8-e89cec558389";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FactTypeCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint.FactTypeCollection")]
+		public  Northface.Tools.ORM.ObjectModel.FactType FactTypeCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(FactTypeCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region SingleColumnExternalFactConstraint's Generated Constructor Code
+	public  partial class SingleColumnExternalFactConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalFactConstraint CreateSingleColumnExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (SingleColumnExternalFactConstraint)store.ElementFactory.CreateElementLink(typeof(SingleColumnExternalFactConstraint), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalFactConstraint CreateAndInitializeSingleColumnExternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (SingleColumnExternalFactConstraint)store.ElementFactory.CreateElementLink(typeof(SingleColumnExternalFactConstraint), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for SingleColumnExternalFactConstraint
+	/// <summary>
+	/// SingleColumnExternalFactConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint))]
+	public sealed class SingleColumnExternalFactConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalFactConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.SingleColumnExternalFactConstraint(store, bag);
 		}
 	}
 	#endregion
@@ -13267,9 +13218,9 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalRoleConstraint.ConstrainedRoleCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalRoleConstraint.ConstrainedRoleCollection")]
-		public  Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole ConstrainedRoleCollection
+		public  Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole ConstrainedRoleCollection
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole)this.GetRolePlayer(ConstrainedRoleCollectionMetaRoleGuid); }
+			get { return (Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)this.GetRolePlayer(ConstrainedRoleCollectionMetaRoleGuid); }
 			set { this.SetRolePlayer(ConstrainedRoleCollectionMetaRoleGuid, value); }
 		}
 		#endregion
@@ -13331,122 +13282,10 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet")]
-	public  partial class InternalConstraintHasRoleSet : Microsoft.VisualStudio.Modeling.ElementLink
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence")]
+	public  partial class MultiColumnExternalConstraintHasRoleSequence : Microsoft.VisualStudio.Modeling.ElementLink
 	{
-		#region InternalConstraintHasRoleSet's Generated MetaRelationship Code
-		/// <summary>
-		/// MetaRelationship Guid String
-		/// </summary>
-		public new const System.String MetaRelationshipGuidString = "4f723a25-7972-4248-8893-a57a71f6d86c";
-		/// <summary>
-		/// MetaRelationship Guid
-		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.MetaRelationshipGuidString);
-		#endregion
-
-		#region RoleSet's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String RoleSetMetaRoleGuidString = "465d8a69-2608-4fa7-8fa2-68a310fb82a1";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid RoleSetMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSetMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSetMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.RoleSet")]
-		public  Northface.Tools.ORM.ObjectModel.InternalConstraintRoleSet RoleSet
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.InternalConstraintRoleSet)this.GetRolePlayer(RoleSetMetaRoleGuid); }
-			set { this.SetRolePlayer(RoleSetMetaRoleGuid, value); }
-		}
-		#endregion
-		#region InternalConstraint's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String InternalConstraintMetaRoleGuidString = "7ed4a1e7-75bd-46bc-a81c-66bd8184cc51";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid InternalConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.InternalConstraintMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.InternalConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet.InternalConstraint")]
-		public  Northface.Tools.ORM.ObjectModel.InternalConstraint InternalConstraint
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.InternalConstraint)this.GetRolePlayer(InternalConstraintMetaRoleGuid); }
-			set { this.SetRolePlayer(InternalConstraintMetaRoleGuid, value); }
-		}
-		#endregion
-	}
-	#region InternalConstraintHasRoleSet's Generated Constructor Code
-	public  partial class InternalConstraintHasRoleSet
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public InternalConstraintHasRoleSet(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static InternalConstraintHasRoleSet CreateInternalConstraintHasRoleSet(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
-		{
-			return (InternalConstraintHasRoleSet)store.ElementFactory.CreateElementLink(typeof(InternalConstraintHasRoleSet), rolePlayers);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static InternalConstraintHasRoleSet CreateAndInitializeInternalConstraintHasRoleSet(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (InternalConstraintHasRoleSet)store.ElementFactory.CreateElementLink(typeof(InternalConstraintHasRoleSet), rolePlayers, assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for InternalConstraintHasRoleSet
-	/// <summary>
-	/// InternalConstraintHasRoleSet Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet))]
-	public sealed class InternalConstraintHasRoleSetElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public InternalConstraintHasRoleSetElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.InternalConstraintHasRoleSet(store, bag);
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet")]
-	public  partial class ExternalConstraintHasRoleSet : Microsoft.VisualStudio.Modeling.ElementLink
-	{
-		#region ExternalConstraintHasRoleSet's Generated MetaRelationship Code
+		#region MultiColumnExternalConstraintHasRoleSequence's Generated MetaRelationship Code
 		/// <summary>
 		/// MetaRelationship Guid String
 		/// </summary>
@@ -13454,27 +13293,27 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRelationship Guid
 		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.MetaRelationshipGuidString);
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.MetaRelationshipGuidString);
 		#endregion
 
-		#region RoleSetCollection's Generated MetaRole Code
+		#region RoleSequenceCollection's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
 		/// </summary>
-		public const System.String RoleSetCollectionMetaRoleGuidString = "152a01ce-3754-4b69-9f9e-036762f25a58";
+		public const System.String RoleSequenceCollectionMetaRoleGuidString = "152a01ce-3754-4b69-9f9e-036762f25a58";
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid RoleSetCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.RoleSetCollectionMetaRoleGuidString);
+		public static readonly System.Guid RoleSequenceCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.RoleSetCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.RoleSetCollection")]
-		public  Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet RoleSetCollection
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollection")]
+		public  Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence RoleSequenceCollection
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSet)this.GetRolePlayer(RoleSetCollectionMetaRoleGuid); }
-			set { this.SetRolePlayer(RoleSetCollectionMetaRoleGuid, value); }
+			get { return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence)this.GetRolePlayer(RoleSequenceCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(RoleSequenceCollectionMetaRoleGuid, value); }
 		}
 		#endregion
 		#region ExternalConstraint's Generated MetaRole Code
@@ -13485,55 +13324,55 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ExternalConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.ExternalConstraintMetaRoleGuidString);
+		public static readonly System.Guid ExternalConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.ExternalConstraintMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.ExternalConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet.ExternalConstraint")]
-		public  Northface.Tools.ORM.ObjectModel.ExternalConstraint ExternalConstraint
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.ExternalConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.ExternalConstraint")]
+		public  Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint ExternalConstraint
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.ExternalConstraint)this.GetRolePlayer(ExternalConstraintMetaRoleGuid); }
+			get { return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(ExternalConstraintMetaRoleGuid); }
 			set { this.SetRolePlayer(ExternalConstraintMetaRoleGuid, value); }
 		}
 		#endregion
 	}
-	#region ExternalConstraintHasRoleSet's Generated Constructor Code
-	public  partial class ExternalConstraintHasRoleSet
+	#region MultiColumnExternalConstraintHasRoleSequence's Generated Constructor Code
+	public  partial class MultiColumnExternalConstraintHasRoleSequence
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasRoleSet(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		public MultiColumnExternalConstraintHasRoleSequence(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasRoleSet CreateExternalConstraintHasRoleSet(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static MultiColumnExternalConstraintHasRoleSequence CreateMultiColumnExternalConstraintHasRoleSequence(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return (ExternalConstraintHasRoleSet)store.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasRoleSet), rolePlayers);
+			return (MultiColumnExternalConstraintHasRoleSequence)store.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasRoleSequence), rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasRoleSet CreateAndInitializeExternalConstraintHasRoleSet(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static MultiColumnExternalConstraintHasRoleSequence CreateAndInitializeMultiColumnExternalConstraintHasRoleSequence(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (ExternalConstraintHasRoleSet)store.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasRoleSet), rolePlayers, assignments);
+			return (MultiColumnExternalConstraintHasRoleSequence)store.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasRoleSequence), rolePlayers, assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for ExternalConstraintHasRoleSet
+	#region Class Factory Creator for MultiColumnExternalConstraintHasRoleSequence
 	/// <summary>
-	/// ExternalConstraintHasRoleSet Class Factory Creator
+	/// MultiColumnExternalConstraintHasRoleSequence Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet))]
-	public sealed class ExternalConstraintHasRoleSetElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence))]
+	public sealed class MultiColumnExternalConstraintHasRoleSequenceElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasRoleSetElementFactoryCreator()
+		public MultiColumnExternalConstraintHasRoleSequenceElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -13541,7 +13380,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ObjectModel.ExternalConstraintHasRoleSet(store, bag);
+			return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence(store, bag);
 		}
 	}
 	#endregion
@@ -13555,10 +13394,10 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole")]
-	public  partial class ConstraintRoleSetHasRole : Microsoft.VisualStudio.Modeling.ElementLink
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole")]
+	public  partial class ConstraintRoleSequenceHasRole : Microsoft.VisualStudio.Modeling.ElementLink
 	{
-		#region ConstraintRoleSetHasRole's Generated MetaRelationship Code
+		#region ConstraintRoleSequenceHasRole's Generated MetaRelationship Code
 		/// <summary>
 		/// MetaRelationship Guid String
 		/// </summary>
@@ -13566,27 +13405,27 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRelationship Guid
 		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.MetaRelationshipGuidString);
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.MetaRelationshipGuidString);
 		#endregion
 
-		#region ConstraintRoleSetCollection's Generated MetaRole Code
+		#region ConstraintRoleSequenceCollection's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
 		/// </summary>
-		public const System.String ConstraintRoleSetCollectionMetaRoleGuidString = "dea36a6c-6706-41ee-bb34-61bc9a5416d2";
+		public const System.String ConstraintRoleSequenceCollectionMetaRoleGuidString = "dea36a6c-6706-41ee-bb34-61bc9a5416d2";
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ConstraintRoleSetCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.ConstraintRoleSetCollectionMetaRoleGuidString);
+		public static readonly System.Guid ConstraintRoleSequenceCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.ConstraintRoleSetCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.ConstraintRoleSetCollection")]
-		public  Northface.Tools.ORM.ObjectModel.ConstraintRoleSet ConstraintRoleSetCollection
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollection")]
+		public  Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence ConstraintRoleSequenceCollection
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.ConstraintRoleSet)this.GetRolePlayer(ConstraintRoleSetCollectionMetaRoleGuid); }
-			set { this.SetRolePlayer(ConstraintRoleSetCollectionMetaRoleGuid, value); }
+			get { return (Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence)this.GetRolePlayer(ConstraintRoleSequenceCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ConstraintRoleSequenceCollectionMetaRoleGuid, value); }
 		}
 		#endregion
 		#region RoleCollection's Generated MetaRole Code
@@ -13597,12 +13436,12 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid RoleCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.RoleCollectionMetaRoleGuidString);
+		public static readonly System.Guid RoleCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.RoleCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole.RoleCollection")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.RoleCollection")]
 		public  Northface.Tools.ORM.ObjectModel.Role RoleCollection
 		{
 			get { return (Northface.Tools.ORM.ObjectModel.Role)this.GetRolePlayer(RoleCollectionMetaRoleGuid); }
@@ -13619,12 +13458,12 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion
 	}
-	#region Collection Classes for ConstraintRoleSetHasRole
+	#region Collection Classes for ConstraintRoleSequenceHasRole
 	/// <summary>
-	/// Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole Collection class, strongly-typed collection
+	/// Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole Collection class, strongly-typed collection
 	/// </summary>
 	[System.CLSCompliant(true)]
-	public sealed partial class ConstraintRoleSetHasRoleMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	public sealed partial class ConstraintRoleSequenceHasRoleMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
 	{
 		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
 		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
@@ -13656,7 +13495,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="counterpart">Counterpart to create relationship with</param>
 		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
 		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
-		public ConstraintRoleSetHasRoleMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		public ConstraintRoleSequenceHasRoleMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
 		{
 			this.counterpartMember = counterpart;
 			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
@@ -13728,7 +13567,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			set
 			{
-				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole))))
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))))
 				{
 					throw new System.InvalidCastException();
 				}
@@ -13743,7 +13582,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>index where object was added</returns>
 		System.Int32 System.Collections.IList.Add(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -13763,7 +13602,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>true if object is contained, false otherwise</returns>
 		System.Boolean System.Collections.IList.Contains(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -13776,7 +13615,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns>index of object</returns>
 		System.Int32 System.Collections.IList.IndexOf(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -13789,7 +13628,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
 		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -13801,7 +13640,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
 		void System.Collections.IList.Remove(System.Object value)
 		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole))))
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -13822,7 +13661,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="newPosition">The position to move to</param>
 		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
 		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole))))
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -13844,7 +13683,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="rolePlayer">The role player that will be inserted</param>
 		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
 		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole))))
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))))
 			{
 				throw new System.InvalidCastException();
 			}
@@ -13855,7 +13694,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
 		/// <param name="index">The zero-based index in array at which copying begins</param>
-		public void CopyTo(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole[] array, System.Int32 index)
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole[] array, System.Int32 index)
 		{
 			((System.Collections.ICollection)this).CopyTo(array, index);
 		}
@@ -13877,18 +13716,18 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Indexed accessor
 		/// </summary>
 		/// <param name="index">Index to access</param>
-		/// <returns>Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole at that index</returns>
-		public Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole this[System.Int32 index]
+		/// <returns>Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole this[System.Int32 index]
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole)(((System.Collections.IList)this)[index]); }
+			get { return (Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole)(((System.Collections.IList)this)[index]); }
 			set { ((System.Collections.IList)this)[index] = value as System.Object; }
 		}
 		/// <summary>
 		/// Adds an item to the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole to add to the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole to add to the list</param>
 		/// <returns>index where object was added</returns>
-		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole value)
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole value)
 		{
 			return ((System.Collections.IList)this).Add(value as System.Object);
 		}
@@ -13902,18 +13741,18 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Determines whether the list has a specific value
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole to locate in the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole to locate in the list</param>
 		/// <returns>true if object is contained, false otherwise</returns>
-		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole value)
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole value)
 		{
 			return ((System.Collections.IList)this).Contains(value as System.Object);
 		}
 		/// <summary>
 		/// Determines the index of a specific item in the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole to locate in the list</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole to locate in the list</param>
 		/// <returns>index of object</returns>
-		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole value)
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole value)
 		{
 			return ((System.Collections.IList)this).IndexOf(value as System.Object);
 		}
@@ -13921,16 +13760,16 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Inserts an item to the list at the specified position
 		/// </summary>
 		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole to insert into the list</param>
-		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole value)
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole value)
 		{
 			((System.Collections.IList)this).Insert(index, value as System.Object);
 		}
 		/// <summary>
 		/// Removes the first occurrence of a specific object from the list
 		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole to remove from the list</param>
-		public void Remove(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole value)
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole value)
 		{
 			((System.Collections.IList)this).Remove(value as System.Object);
 		}
@@ -13947,7 +13786,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="rolePlayer">The role player to move</param>
 		/// <param name="newPosition">The position to move to</param>
-		public void Move(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole rolePlayer, System.Int32 newPosition)
+		public void Move(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole rolePlayer, System.Int32 newPosition)
 		{
 			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
 		}
@@ -13965,7 +13804,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
 		/// <param name="rolePlayer">The role player that will be inserted</param>
-		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole rolePlayer)
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole rolePlayer)
 		{
 			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
 		}
@@ -13973,42 +13812,42 @@ namespace Northface.Tools.ORM.ObjectModel
 	}
 	#endregion
 
-	#region ConstraintRoleSetHasRole's Generated Constructor Code
-	public  partial class ConstraintRoleSetHasRole
+	#region ConstraintRoleSequenceHasRole's Generated Constructor Code
+	public  partial class ConstraintRoleSequenceHasRole
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ConstraintRoleSetHasRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		public ConstraintRoleSequenceHasRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ConstraintRoleSetHasRole CreateConstraintRoleSetHasRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static ConstraintRoleSequenceHasRole CreateConstraintRoleSequenceHasRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return (ConstraintRoleSetHasRole)store.ElementFactory.CreateElementLink(typeof(ConstraintRoleSetHasRole), rolePlayers);
+			return (ConstraintRoleSequenceHasRole)store.ElementFactory.CreateElementLink(typeof(ConstraintRoleSequenceHasRole), rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ConstraintRoleSetHasRole CreateAndInitializeConstraintRoleSetHasRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static ConstraintRoleSequenceHasRole CreateAndInitializeConstraintRoleSequenceHasRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (ConstraintRoleSetHasRole)store.ElementFactory.CreateElementLink(typeof(ConstraintRoleSetHasRole), rolePlayers, assignments);
+			return (ConstraintRoleSequenceHasRole)store.ElementFactory.CreateElementLink(typeof(ConstraintRoleSequenceHasRole), rolePlayers, assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for ConstraintRoleSetHasRole
+	#region Class Factory Creator for ConstraintRoleSequenceHasRole
 	/// <summary>
-	/// ConstraintRoleSetHasRole Class Factory Creator
+	/// ConstraintRoleSequenceHasRole Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole))]
-	public sealed class ConstraintRoleSetHasRoleElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole))]
+	public sealed class ConstraintRoleSequenceHasRoleElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ConstraintRoleSetHasRoleElementFactoryCreator()
+		public ConstraintRoleSequenceHasRoleElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -14016,7 +13855,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ObjectModel.ConstraintRoleSetHasRole(store, bag);
+			return new Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole(store, bag);
 		}
 	}
 	#endregion
@@ -14254,10 +14093,10 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError")]
-	public  partial class ExternalConstraintHasTooFewRoleSetsError : Microsoft.VisualStudio.Modeling.ElementLink
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError")]
+	public  partial class ExternalConstraintHasTooFewRoleSequencesError : Microsoft.VisualStudio.Modeling.ElementLink
 	{
-		#region ExternalConstraintHasTooFewRoleSetsError's Generated MetaRelationship Code
+		#region ExternalConstraintHasTooFewRoleSequencesError's Generated MetaRelationship Code
 		/// <summary>
 		/// MetaRelationship Guid String
 		/// </summary>
@@ -14265,27 +14104,27 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRelationship Guid
 		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.MetaRelationshipGuidString);
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.MetaRelationshipGuidString);
 		#endregion
 
-		#region TooFewRoleSetsError's Generated MetaRole Code
+		#region TooFewRoleSequencesError's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
 		/// </summary>
-		public const System.String TooFewRoleSetsErrorMetaRoleGuidString = "438baa58-0cff-42b2-93f5-38dffa0544a1";
+		public const System.String TooFewRoleSequencesErrorMetaRoleGuidString = "438baa58-0cff-42b2-93f5-38dffa0544a1";
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid TooFewRoleSetsErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsErrorMetaRoleGuidString);
+		public static readonly System.Guid TooFewRoleSequencesErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.TooFewRoleSetsError")]
-		public  Northface.Tools.ORM.ObjectModel.TooFewRoleSetsError TooFewRoleSetsError
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesError")]
+		public  Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesError TooFewRoleSequencesError
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.TooFewRoleSetsError)this.GetRolePlayer(TooFewRoleSetsErrorMetaRoleGuid); }
-			set { this.SetRolePlayer(TooFewRoleSetsErrorMetaRoleGuid, value); }
+			get { return (Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesError)this.GetRolePlayer(TooFewRoleSequencesErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(TooFewRoleSequencesErrorMetaRoleGuid, value); }
 		}
 		#endregion
 		#region Constraint's Generated MetaRole Code
@@ -14296,55 +14135,55 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.ConstraintMetaRoleGuidString);
+		public static readonly System.Guid ConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.ConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError.Constraint")]
-		public  Northface.Tools.ORM.ObjectModel.ExternalConstraint Constraint
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.Constraint")]
+		public  Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint Constraint
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.ExternalConstraint)this.GetRolePlayer(ConstraintMetaRoleGuid); }
+			get { return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(ConstraintMetaRoleGuid); }
 			set { this.SetRolePlayer(ConstraintMetaRoleGuid, value); }
 		}
 		#endregion
 	}
-	#region ExternalConstraintHasTooFewRoleSetsError's Generated Constructor Code
-	public  partial class ExternalConstraintHasTooFewRoleSetsError
+	#region ExternalConstraintHasTooFewRoleSequencesError's Generated Constructor Code
+	public  partial class ExternalConstraintHasTooFewRoleSequencesError
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasTooFewRoleSetsError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		public ExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooFewRoleSetsError CreateExternalConstraintHasTooFewRoleSetsError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static ExternalConstraintHasTooFewRoleSequencesError CreateExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return (ExternalConstraintHasTooFewRoleSetsError)store.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooFewRoleSetsError), rolePlayers);
+			return (ExternalConstraintHasTooFewRoleSequencesError)store.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooFewRoleSequencesError), rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooFewRoleSetsError CreateAndInitializeExternalConstraintHasTooFewRoleSetsError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static ExternalConstraintHasTooFewRoleSequencesError CreateAndInitializeExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (ExternalConstraintHasTooFewRoleSetsError)store.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooFewRoleSetsError), rolePlayers, assignments);
+			return (ExternalConstraintHasTooFewRoleSequencesError)store.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooFewRoleSequencesError), rolePlayers, assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for ExternalConstraintHasTooFewRoleSetsError
+	#region Class Factory Creator for ExternalConstraintHasTooFewRoleSequencesError
 	/// <summary>
-	/// ExternalConstraintHasTooFewRoleSetsError Class Factory Creator
+	/// ExternalConstraintHasTooFewRoleSequencesError Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError))]
-	public sealed class ExternalConstraintHasTooFewRoleSetsErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError))]
+	public sealed class ExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasTooFewRoleSetsErrorElementFactoryCreator()
+		public ExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -14352,7 +14191,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSetsError(store, bag);
+			return new Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError(store, bag);
 		}
 	}
 	#endregion
@@ -14366,10 +14205,10 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError")]
-	public  partial class ExternalConstraintHasTooManyRoleSetsError : Microsoft.VisualStudio.Modeling.ElementLink
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError")]
+	public  partial class ExternalConstraintHasTooManyRoleSequencesError : Microsoft.VisualStudio.Modeling.ElementLink
 	{
-		#region ExternalConstraintHasTooManyRoleSetsError's Generated MetaRelationship Code
+		#region ExternalConstraintHasTooManyRoleSequencesError's Generated MetaRelationship Code
 		/// <summary>
 		/// MetaRelationship Guid String
 		/// </summary>
@@ -14377,27 +14216,27 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRelationship Guid
 		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.MetaRelationshipGuidString);
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.MetaRelationshipGuidString);
 		#endregion
 
-		#region TooManyRoleSetsError's Generated MetaRole Code
+		#region TooManyRoleSequencesError's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
 		/// </summary>
-		public const System.String TooManyRoleSetsErrorMetaRoleGuidString = "b65ff045-247b-4890-aa03-44d53c1832ad";
+		public const System.String TooManyRoleSequencesErrorMetaRoleGuidString = "b65ff045-247b-4890-aa03-44d53c1832ad";
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid TooManyRoleSetsErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuidString);
+		public static readonly System.Guid TooManyRoleSequencesErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.TooManyRoleSetsError")]
-		public  Northface.Tools.ORM.ObjectModel.TooManyRoleSetsError TooManyRoleSetsError
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesError")]
+		public  Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesError TooManyRoleSequencesError
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.TooManyRoleSetsError)this.GetRolePlayer(TooManyRoleSetsErrorMetaRoleGuid); }
-			set { this.SetRolePlayer(TooManyRoleSetsErrorMetaRoleGuid, value); }
+			get { return (Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesError)this.GetRolePlayer(TooManyRoleSequencesErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(TooManyRoleSequencesErrorMetaRoleGuid, value); }
 		}
 		#endregion
 		#region Constraint's Generated MetaRole Code
@@ -14408,55 +14247,55 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.ConstraintMetaRoleGuidString);
+		public static readonly System.Guid ConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.ConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError.Constraint")]
-		public  Northface.Tools.ORM.ObjectModel.ExternalConstraint Constraint
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.Constraint")]
+		public  Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint Constraint
 		{
-			get { return (Northface.Tools.ORM.ObjectModel.ExternalConstraint)this.GetRolePlayer(ConstraintMetaRoleGuid); }
+			get { return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(ConstraintMetaRoleGuid); }
 			set { this.SetRolePlayer(ConstraintMetaRoleGuid, value); }
 		}
 		#endregion
 	}
-	#region ExternalConstraintHasTooManyRoleSetsError's Generated Constructor Code
-	public  partial class ExternalConstraintHasTooManyRoleSetsError
+	#region ExternalConstraintHasTooManyRoleSequencesError's Generated Constructor Code
+	public  partial class ExternalConstraintHasTooManyRoleSequencesError
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasTooManyRoleSetsError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		public ExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooManyRoleSetsError CreateExternalConstraintHasTooManyRoleSetsError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static ExternalConstraintHasTooManyRoleSequencesError CreateExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return (ExternalConstraintHasTooManyRoleSetsError)store.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooManyRoleSetsError), rolePlayers);
+			return (ExternalConstraintHasTooManyRoleSequencesError)store.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooManyRoleSequencesError), rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooManyRoleSetsError CreateAndInitializeExternalConstraintHasTooManyRoleSetsError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static ExternalConstraintHasTooManyRoleSequencesError CreateAndInitializeExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (ExternalConstraintHasTooManyRoleSetsError)store.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooManyRoleSetsError), rolePlayers, assignments);
+			return (ExternalConstraintHasTooManyRoleSequencesError)store.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooManyRoleSequencesError), rolePlayers, assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for ExternalConstraintHasTooManyRoleSetsError
+	#region Class Factory Creator for ExternalConstraintHasTooManyRoleSequencesError
 	/// <summary>
-	/// ExternalConstraintHasTooManyRoleSetsError Class Factory Creator
+	/// ExternalConstraintHasTooManyRoleSequencesError Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError))]
-	public sealed class ExternalConstraintHasTooManyRoleSetsErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError))]
+	public sealed class ExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasTooManyRoleSetsErrorElementFactoryCreator()
+		public ExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -14464,7 +14303,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSetsError(store, bag);
+			return new Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError(store, bag);
 		}
 	}
 	#endregion
@@ -14689,230 +14528,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError(store, bag);
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError")]
-	public  partial class ConstraintHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
-	{
-		#region ConstraintHasDuplicateNameError's Generated MetaRelationship Code
-		/// <summary>
-		/// MetaRelationship Guid String
-		/// </summary>
-		public new const System.String MetaRelationshipGuidString = "462e847e-840d-4766-b251-d896a18fa599";
-		/// <summary>
-		/// MetaRelationship Guid
-		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.MetaRelationshipGuidString);
-		#endregion
-
-		#region DuplicateNameError's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String DuplicateNameErrorMetaRoleGuidString = "66386508-14ce-48b5-aa0c-ac971dca74a8";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid DuplicateNameErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.DuplicateNameError")]
-		public  Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError DuplicateNameError
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError)this.GetRolePlayer(DuplicateNameErrorMetaRoleGuid); }
-			set { this.SetRolePlayer(DuplicateNameErrorMetaRoleGuid, value); }
-		}
-		#endregion
-		#region ConstraintCollection's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String ConstraintCollectionMetaRoleGuidString = "9d5edc77-403f-47ef-a003-b56d7ad92bdb";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid ConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError.ConstraintCollection")]
-		public  Northface.Tools.ORM.ObjectModel.Constraint ConstraintCollection
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.Constraint)this.GetRolePlayer(ConstraintCollectionMetaRoleGuid); }
-			set { this.SetRolePlayer(ConstraintCollectionMetaRoleGuid, value); }
-		}
-		#endregion
-	}
-	#region ConstraintHasDuplicateNameError's Generated Constructor Code
-	public  partial class ConstraintHasDuplicateNameError
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ConstraintHasDuplicateNameError CreateConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
-		{
-			return (ConstraintHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(ConstraintHasDuplicateNameError), rolePlayers);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ConstraintHasDuplicateNameError CreateAndInitializeConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (ConstraintHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(ConstraintHasDuplicateNameError), rolePlayers, assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for ConstraintHasDuplicateNameError
-	/// <summary>
-	/// ConstraintHasDuplicateNameError Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError))]
-	public sealed class ConstraintHasDuplicateNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ConstraintHasDuplicateNameErrorElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.ConstraintHasDuplicateNameError(store, bag);
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier")]
-	public  partial class EntityTypeHasPreferredIdentifier : Microsoft.VisualStudio.Modeling.ElementLink
-	{
-		#region EntityTypeHasPreferredIdentifier's Generated MetaRelationship Code
-		/// <summary>
-		/// MetaRelationship Guid String
-		/// </summary>
-		public new const System.String MetaRelationshipGuidString = "515b27c0-e9c6-4c0d-a852-8edcf3a794d5";
-		/// <summary>
-		/// MetaRelationship Guid
-		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.MetaRelationshipGuidString);
-		#endregion
-
-		#region PreferredIdentifier's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String PreferredIdentifierMetaRoleGuidString = "ccfab332-362c-4ab4-bb0b-bfcb577bcaad";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid PreferredIdentifierMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifier")]
-		public  Northface.Tools.ORM.ObjectModel.Constraint PreferredIdentifier
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.Constraint)this.GetRolePlayer(PreferredIdentifierMetaRoleGuid); }
-			set { this.SetRolePlayer(PreferredIdentifierMetaRoleGuid, value); }
-		}
-		#endregion
-		#region PreferredIdentifierFor's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String PreferredIdentifierForMetaRoleGuidString = "37f4cab9-3ba7-44cb-a366-94ba8b2e020c";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid PreferredIdentifierForMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierFor")]
-		public  Northface.Tools.ORM.ObjectModel.ObjectType PreferredIdentifierFor
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.ObjectType)this.GetRolePlayer(PreferredIdentifierForMetaRoleGuid); }
-			set { this.SetRolePlayer(PreferredIdentifierForMetaRoleGuid, value); }
-		}
-		#endregion
-	}
-	#region EntityTypeHasPreferredIdentifier's Generated Constructor Code
-	public  partial class EntityTypeHasPreferredIdentifier
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public EntityTypeHasPreferredIdentifier(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static EntityTypeHasPreferredIdentifier CreateEntityTypeHasPreferredIdentifier(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
-		{
-			return (EntityTypeHasPreferredIdentifier)store.ElementFactory.CreateElementLink(typeof(EntityTypeHasPreferredIdentifier), rolePlayers);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static EntityTypeHasPreferredIdentifier CreateAndInitializeEntityTypeHasPreferredIdentifier(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (EntityTypeHasPreferredIdentifier)store.ElementFactory.CreateElementLink(typeof(EntityTypeHasPreferredIdentifier), rolePlayers, assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for EntityTypeHasPreferredIdentifier
-	/// <summary>
-	/// EntityTypeHasPreferredIdentifier Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier))]
-	public sealed class EntityTypeHasPreferredIdentifierElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public EntityTypeHasPreferredIdentifierElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier(store, bag);
 		}
 	}
 	#endregion
@@ -15262,118 +14877,6 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.InternalFactConstraint")]
-	public  partial class InternalFactConstraint : Microsoft.VisualStudio.Modeling.ElementLink
-	{
-		#region InternalFactConstraint's Generated MetaRelationship Code
-		/// <summary>
-		/// MetaRelationship Guid String
-		/// </summary>
-		public new const System.String MetaRelationshipGuidString = "e3b478ea-fe89-4367-a178-cce609e667b2";
-		/// <summary>
-		/// MetaRelationship Guid
-		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.MetaRelationshipGuidString);
-		#endregion
-
-		#region InternalConstraintCollection's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String InternalConstraintCollectionMetaRoleGuidString = "47c8046a-b913-4730-bd83-c30b188672a2";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid InternalConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.InternalFactConstraint.InternalConstraintCollection")]
-		public  Northface.Tools.ORM.ObjectModel.InternalConstraint InternalConstraintCollection
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.InternalConstraint)this.GetRolePlayer(InternalConstraintCollectionMetaRoleGuid); }
-			set { this.SetRolePlayer(InternalConstraintCollectionMetaRoleGuid, value); }
-		}
-		#endregion
-		#region FactType's Generated MetaRole Code
-		/// <summary>
-		/// MetaRole Guid String
-		/// </summary>
-		public const System.String FactTypeMetaRoleGuidString = "d0f8626a-095d-4a76-bbf1-389d9a62b1bc";
-		/// <summary>
-		/// MetaRole Guid
-		/// </summary>
-		public static readonly System.Guid FactTypeMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactTypeMetaRoleGuidString);
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactTypeMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.InternalFactConstraint.FactType")]
-		public  Northface.Tools.ORM.ObjectModel.FactType FactType
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeMetaRoleGuid); }
-			set { this.SetRolePlayer(FactTypeMetaRoleGuid, value); }
-		}
-		#endregion
-	}
-	#region InternalFactConstraint's Generated Constructor Code
-	public  partial class InternalFactConstraint
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public InternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static InternalFactConstraint CreateInternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
-		{
-			return (InternalFactConstraint)store.ElementFactory.CreateElementLink(typeof(InternalFactConstraint), rolePlayers);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static InternalFactConstraint CreateAndInitializeInternalFactConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (InternalFactConstraint)store.ElementFactory.CreateElementLink(typeof(InternalFactConstraint), rolePlayers, assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for InternalFactConstraint
-	/// <summary>
-	/// InternalFactConstraint Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.InternalFactConstraint))]
-	public sealed class InternalFactConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public InternalFactConstraintElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.InternalFactConstraint(store, bag);
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind")]
 	public  partial class ModelHasReferenceModeKind : Microsoft.VisualStudio.Modeling.ElementLink
 	{
@@ -15697,6 +15200,678 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint")]
+	public  partial class ModelHasSingleColumnExternalConstraint : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ModelHasSingleColumnExternalConstraint's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "c39ab93e-10fd-4629-a27a-b5560039f36c";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.MetaRelationshipGuidString);
+		#endregion
+
+		#region SingleColumnExternalConstraintCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String SingleColumnExternalConstraintCollectionMetaRoleGuidString = "e5a1060b-13ab-4ab1-8a12-c6aeeef6f8bf";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid SingleColumnExternalConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollection")]
+		public  Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint SingleColumnExternalConstraintCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)this.GetRolePlayer(SingleColumnExternalConstraintCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(SingleColumnExternalConstraintCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region Model's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ModelMetaRoleGuidString = "1769af74-7b45-4b04-b049-ec0b7fded9f0";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ModelMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.Model")]
+		public  Northface.Tools.ORM.ObjectModel.ORMModel Model
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ORMModel)this.GetRolePlayer(ModelMetaRoleGuid); }
+			set { this.SetRolePlayer(ModelMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ModelHasSingleColumnExternalConstraint's Generated Constructor Code
+	public  partial class ModelHasSingleColumnExternalConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ModelHasSingleColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ModelHasSingleColumnExternalConstraint CreateModelHasSingleColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ModelHasSingleColumnExternalConstraint)store.ElementFactory.CreateElementLink(typeof(ModelHasSingleColumnExternalConstraint), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ModelHasSingleColumnExternalConstraint CreateAndInitializeModelHasSingleColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ModelHasSingleColumnExternalConstraint)store.ElementFactory.CreateElementLink(typeof(ModelHasSingleColumnExternalConstraint), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ModelHasSingleColumnExternalConstraint
+	/// <summary>
+	/// ModelHasSingleColumnExternalConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint))]
+	public sealed class ModelHasSingleColumnExternalConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ModelHasSingleColumnExternalConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint")]
+	public  partial class ModelHasMultiColumnExternalConstraint : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ModelHasMultiColumnExternalConstraint's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "b4dc9ac8-f3f3-4280-bf70-32bd74695ea3";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MetaRelationshipGuidString);
+		#endregion
+
+		#region MultiColumnExternalConstraintCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String MultiColumnExternalConstraintCollectionMetaRoleGuidString = "d1aac147-a429-4d57-a8c7-e658130e1e74";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid MultiColumnExternalConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollection")]
+		public  Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint MultiColumnExternalConstraintCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(MultiColumnExternalConstraintCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(MultiColumnExternalConstraintCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region Model's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ModelMetaRoleGuidString = "8e41a69c-0797-4882-ac2a-2fd39cef5a18";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ModelMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.Model")]
+		public  Northface.Tools.ORM.ObjectModel.ORMModel Model
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ORMModel)this.GetRolePlayer(ModelMetaRoleGuid); }
+			set { this.SetRolePlayer(ModelMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ModelHasMultiColumnExternalConstraint's Generated Constructor Code
+	public  partial class ModelHasMultiColumnExternalConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ModelHasMultiColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ModelHasMultiColumnExternalConstraint CreateModelHasMultiColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ModelHasMultiColumnExternalConstraint)store.ElementFactory.CreateElementLink(typeof(ModelHasMultiColumnExternalConstraint), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ModelHasMultiColumnExternalConstraint CreateAndInitializeModelHasMultiColumnExternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ModelHasMultiColumnExternalConstraint)store.ElementFactory.CreateElementLink(typeof(ModelHasMultiColumnExternalConstraint), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ModelHasMultiColumnExternalConstraint
+	/// <summary>
+	/// ModelHasMultiColumnExternalConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint))]
+	public sealed class ModelHasMultiColumnExternalConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ModelHasMultiColumnExternalConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint")]
+	public  partial class FactTypeHasInternalConstraint : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region FactTypeHasInternalConstraint's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "c2f9b082-f991-4fbd-9945-d55032e7ce27";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.MetaRelationshipGuidString);
+		#endregion
+
+		#region InternalConstraintCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String InternalConstraintCollectionMetaRoleGuidString = "bee9d250-53f3-48b5-b63b-337f545bf988";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid InternalConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollection")]
+		public  Northface.Tools.ORM.ObjectModel.InternalConstraint InternalConstraintCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.InternalConstraint)this.GetRolePlayer(InternalConstraintCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(InternalConstraintCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region FactType's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FactTypeMetaRoleGuidString = "95904280-42fc-47ce-8ed3-40f58b2deec9";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FactTypeMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.FactTypeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.FactTypeMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.FactType")]
+		public  Northface.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeMetaRoleGuid); }
+			set { this.SetRolePlayer(FactTypeMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region FactTypeHasInternalConstraint's Generated Constructor Code
+	public  partial class FactTypeHasInternalConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasInternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasInternalConstraint CreateFactTypeHasInternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (FactTypeHasInternalConstraint)store.ElementFactory.CreateElementLink(typeof(FactTypeHasInternalConstraint), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasInternalConstraint CreateAndInitializeFactTypeHasInternalConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FactTypeHasInternalConstraint)store.ElementFactory.CreateElementLink(typeof(FactTypeHasInternalConstraint), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FactTypeHasInternalConstraint
+	/// <summary>
+	/// FactTypeHasInternalConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint))]
+	public sealed class FactTypeHasInternalConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasInternalConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError")]
+	public  partial class SingleColumnExternalConstraintHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region SingleColumnExternalConstraintHasDuplicateNameError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "36e3a440-8e08-4b01-91cb-9182ec03f621";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.MetaRelationshipGuidString);
+		#endregion
+
+		#region DuplicateNameError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String DuplicateNameErrorMetaRoleGuidString = "f16cdde1-b246-4528-a9c2-49ba4be7c288";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid DuplicateNameErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameError")]
+		public  Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError DuplicateNameError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError)this.GetRolePlayer(DuplicateNameErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(DuplicateNameErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region SingleColumnExternalConstraintCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String SingleColumnExternalConstraintCollectionMetaRoleGuidString = "2c19092d-87b2-4b01-90c3-ffac3a8b4828";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid SingleColumnExternalConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.SingleColumnExternalConstraintCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.SingleColumnExternalConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.SingleColumnExternalConstraintCollection")]
+		public  Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint SingleColumnExternalConstraintCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)this.GetRolePlayer(SingleColumnExternalConstraintCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(SingleColumnExternalConstraintCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region SingleColumnExternalConstraintHasDuplicateNameError's Generated Constructor Code
+	public  partial class SingleColumnExternalConstraintHasDuplicateNameError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasDuplicateNameError CreateSingleColumnExternalConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (SingleColumnExternalConstraintHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(SingleColumnExternalConstraintHasDuplicateNameError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasDuplicateNameError CreateAndInitializeSingleColumnExternalConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (SingleColumnExternalConstraintHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(SingleColumnExternalConstraintHasDuplicateNameError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for SingleColumnExternalConstraintHasDuplicateNameError
+	/// <summary>
+	/// SingleColumnExternalConstraintHasDuplicateNameError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError))]
+	public sealed class SingleColumnExternalConstraintHasDuplicateNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalConstraintHasDuplicateNameErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError")]
+	public  partial class MultiColumnExternalConstraintHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region MultiColumnExternalConstraintHasDuplicateNameError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "ed53d70d-b151-45bb-a0dd-13f50dc475c1";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.MetaRelationshipGuidString);
+		#endregion
+
+		#region DuplicateNameError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String DuplicateNameErrorMetaRoleGuidString = "83d48411-c26c-4755-a726-76ef2716998a";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid DuplicateNameErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameError")]
+		public  Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError DuplicateNameError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError)this.GetRolePlayer(DuplicateNameErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(DuplicateNameErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region MultiColumnExternalConstraintCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String MultiColumnExternalConstraintCollectionMetaRoleGuidString = "f2ee7a71-9202-4dc3-9843-ea3a7c1585e3";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid MultiColumnExternalConstraintCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollection")]
+		public  Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint MultiColumnExternalConstraintCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(MultiColumnExternalConstraintCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(MultiColumnExternalConstraintCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region MultiColumnExternalConstraintHasDuplicateNameError's Generated Constructor Code
+	public  partial class MultiColumnExternalConstraintHasDuplicateNameError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MultiColumnExternalConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MultiColumnExternalConstraintHasDuplicateNameError CreateMultiColumnExternalConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (MultiColumnExternalConstraintHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasDuplicateNameError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MultiColumnExternalConstraintHasDuplicateNameError CreateAndInitializeMultiColumnExternalConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (MultiColumnExternalConstraintHasDuplicateNameError)store.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasDuplicateNameError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for MultiColumnExternalConstraintHasDuplicateNameError
+	/// <summary>
+	/// MultiColumnExternalConstraintHasDuplicateNameError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError))]
+	public sealed class MultiColumnExternalConstraintHasDuplicateNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MultiColumnExternalConstraintHasDuplicateNameErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier")]
+	public  partial class EntityTypeHasPreferredIdentifier : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region EntityTypeHasPreferredIdentifier's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "4e07ae25-5acd-47b4-b3cd-f92fef621975";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.MetaRelationshipGuidString);
+		#endregion
+
+		#region PreferredIdentifier's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String PreferredIdentifierMetaRoleGuidString = "6d26f6c2-85d7-47e5-8bba-54824fbd5ee2";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid PreferredIdentifierMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifier")]
+		public  Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence PreferredIdentifier
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence)this.GetRolePlayer(PreferredIdentifierMetaRoleGuid); }
+			set { this.SetRolePlayer(PreferredIdentifierMetaRoleGuid, value); }
+		}
+		#endregion
+		#region PreferredIdentifierFor's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String PreferredIdentifierForMetaRoleGuidString = "2f929a15-e1d5-4486-81de-d43e7df45405";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid PreferredIdentifierForMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierFor")]
+		public  Northface.Tools.ORM.ObjectModel.ObjectType PreferredIdentifierFor
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ObjectType)this.GetRolePlayer(PreferredIdentifierForMetaRoleGuid); }
+			set { this.SetRolePlayer(PreferredIdentifierForMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region EntityTypeHasPreferredIdentifier's Generated Constructor Code
+	public  partial class EntityTypeHasPreferredIdentifier
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EntityTypeHasPreferredIdentifier(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EntityTypeHasPreferredIdentifier CreateEntityTypeHasPreferredIdentifier(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (EntityTypeHasPreferredIdentifier)store.ElementFactory.CreateElementLink(typeof(EntityTypeHasPreferredIdentifier), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EntityTypeHasPreferredIdentifier CreateAndInitializeEntityTypeHasPreferredIdentifier(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (EntityTypeHasPreferredIdentifier)store.ElementFactory.CreateElementLink(typeof(EntityTypeHasPreferredIdentifier), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for EntityTypeHasPreferredIdentifier
+	/// <summary>
+	/// EntityTypeHasPreferredIdentifier Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier))]
+	public sealed class EntityTypeHasPreferredIdentifierElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EntityTypeHasPreferredIdentifierElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier(store, bag);
 		}
 	}
 	#endregion

@@ -23,7 +23,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public const string ORMDiagramExternalConstraintFilterString = "ORMDiagramExternalConstraintFilterString";
 		/// <summary>
-		/// The filter string used to connect role sets to external constraints
+		/// The filter string used to connect role sequences to external constraints
 		/// </summary>
 		public const string ORMDiagramConnectExternalConstraintFilterString = "ORMDiagramConnectExternalConstraintFilterString";
 		#endregion // Toolbox filter strings
@@ -41,7 +41,8 @@ namespace Northface.Tools.ORM.ShapeModel
 			if (element is FactType ||
 				element is ObjectTypePlaysRole ||
 				element is ExternalFactConstraint ||
-				element is ExternalConstraint)
+				element is SingleColumnExternalConstraint ||
+				element is MultiColumnExternalConstraint)
 			{
 				return true;
 			}
@@ -132,12 +133,12 @@ namespace Northface.Tools.ORM.ShapeModel
 				// If we're already connected then walk away
 				if (constraintLink.FromShape == null && constraintLink.ToShape == null)
 				{
-					ExternalFactConstraint modelLink = constraintLink.ModelElement as ExternalFactConstraint;
-					FactType attachedFact = modelLink.FactTypeCollection;
-					Constraint constraint = modelLink.ExternalConstraintCollection;
+					IFactConstraint modelLink = constraintLink.ModelElement as IFactConstraint;
+					FactType attachedFact = modelLink.FactType;
+					IConstraint constraint = modelLink.Constraint;
 					NodeShape fromShape;
 					NodeShape toShape;
-					if (null != (fromShape = FindShapeForElement(constraint) as NodeShape) &&
+					if (null != (fromShape = FindShapeForElement(constraint as ModelElement) as NodeShape) &&
 						null != (toShape = FindShapeForElement(attachedFact) as NodeShape))
 					{
 						constraintLink.Connect(fromShape, toShape);
@@ -177,7 +178,6 @@ namespace Northface.Tools.ORM.ShapeModel
 			ElementGroup group = new ElementGroup(store);
 			ElementGroupPrototype retVal = null;
 			int roleArity = 0;
-			ExclusionType exclusionType = ExclusionType.Exclusion;
 			switch (itemId)
 			{
 				case ResourceStrings.ToolboxEntityTypeItemId:
@@ -213,19 +213,17 @@ namespace Northface.Tools.ORM.ShapeModel
 					break;
 				case ResourceStrings.ToolboxExclusionConstraintItemId:
 					ExclusionConstraint exc = ExclusionConstraint.CreateExclusionConstraint(store);
-					if (exclusionType != ExclusionType.Exclusion)
-					{
-						exc.ExclusionType = exclusionType;
-					}
 					group.AddGraph(exc);
 					retVal = group.CreatePrototype(exc);
 					break;
 				case ResourceStrings.ToolboxInclusiveOrConstraintItemId:
-					exclusionType = ExclusionType.InclusiveOr;
-					goto case ResourceStrings.ToolboxExclusionConstraintItemId;
+					DisjunctiveMandatoryConstraint dmc = DisjunctiveMandatoryConstraint.CreateDisjunctiveMandatoryConstraint(store);
+					group.AddGraph(dmc);
+					retVal = group.CreatePrototype(dmc);
+					break;
 				case ResourceStrings.ToolboxExclusiveOrConstraintItemId:
-					exclusionType = ExclusionType.ExclusiveOr;
-					goto case ResourceStrings.ToolboxExclusionConstraintItemId;
+					// Intentionally unprototyped item (for now)
+					break;
 				case ResourceStrings.ToolboxSubsetConstraintItemId:
 					SubsetConstraint sc = SubsetConstraint.CreateSubsetConstraint(store);
 					group.AddGraph(sc);

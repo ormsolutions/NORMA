@@ -114,13 +114,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ModelError.Constraint.TooFewRoleSets.Text">
-    <value xml:space="preserve">Constraint '{0}' does not have enough role sets.</value>
-    <comment xml:space="preserve">Model validation error text when too few role sets are specified for a constraint. This is a common condition when constraints are being created.</comment>
+  <data name="ModelError.Constraint.TooFewRoleSequences.Text">
+    <value xml:space="preserve">Constraint '{0}' does not have enough role sequences.</value>
+    <comment xml:space="preserve">Model validation error text when too few role sequences are specified for a constraint. This is a common condition when constraints are being created.</comment>
   </data>
-  <data name="ModelError.Constraint.TooManyRoleSets.Text">
-    <value xml:space="preserve">Constraint '{0}' has too many role sets.</value>
-    <comment xml:space="preserve">Model validation error text when too many role sets are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+  <data name="ModelError.Constraint.TooManyRoleSequences.Text">
+    <value xml:space="preserve">Constraint '{0}' has too many role sequences.</value>
+    <comment xml:space="preserve">Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
   </data>
   <data name="ModelError.Model.DuplicateConstraintNames.Text">
     <value xml:space="preserve">Model '{0}' contains multiple constraints named '{1}'. Constraint names must be unique in the model.</value>
@@ -148,7 +148,7 @@
   </data>
   <data name="ModelException.InternalConstraint.InconsistentRoleOwners">
     <value xml:space="preserve">All roles in an internal constraint must be owned by the same fact type.</value>
-    <comment xml:space="preserve">Exception message when an attempt is made to add roles from different fact types to a role set owned by an internal constraint.</comment>
+    <comment xml:space="preserve">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by an internal constraint.</comment>
   </data>
   <data name="ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions">
     <value xml:space="preserve">Conditions of the uniqueness constraint, other constraints on the owning fact type, or the types of attached role players are incompatible with making it the preferred uniqueness constraint.</value>

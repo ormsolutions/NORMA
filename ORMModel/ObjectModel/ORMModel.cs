@@ -94,10 +94,10 @@ namespace Northface.Tools.ORM.ObjectModel
 				return false;
 			}
 			MetaClassInfo classInfo = Store.MetaDataDirectory.FindMetaClass(protoElement.MetaClassId);
-			return classInfo.IsDerivedFrom(RootType.MetaClassGuid) || classInfo.IsDerivedFrom(ExternalConstraint.MetaClassGuid);
+			return classInfo.IsDerivedFrom(RootType.MetaClassGuid) || classInfo.IsDerivedFrom(MultiColumnExternalConstraint.MetaClassGuid) || classInfo.IsDerivedFrom(SingleColumnExternalConstraint.MetaClassGuid);
 		}
 		/// <summary>
-		/// Attach a deserialized ObjectType, FactType, or Constraint to the model.
+		/// Attach a deserialized ObjectType, FactType, or external constraint to the model.
 		/// Called after prototypes for these items are dropped onto the diagram
 		/// from the toolbox.
 		/// </summary>
@@ -108,7 +108,8 @@ namespace Northface.Tools.ORM.ObjectModel
 			base.MergeRelate(sourceElement, elementGroup);
 			ObjectType objectType;
 			FactType factType;
-			Constraint constraint;
+			SingleColumnExternalConstraint singleColumnConstraint;
+			MultiColumnExternalConstraint multiColumnConstraint;
 			if (null != (objectType = sourceElement as ObjectType))
 			{
 				objectType.Model = this;
@@ -117,9 +118,13 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				factType.Model = this;
 			}
-			else if (null != (constraint = sourceElement as Constraint))
+			else if (null != (singleColumnConstraint = sourceElement as SingleColumnExternalConstraint))
 			{
-				constraint.Model = this;
+				singleColumnConstraint.Model = this;
+			}
+			else if (null != (multiColumnConstraint = sourceElement as MultiColumnExternalConstraint))
+			{
+				multiColumnConstraint.Model = this;
 			}
 		}
 		#endregion // MergeContext functions
@@ -132,8 +137,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				yield return InternalConstraint.FixupListener;
-				yield return ExternalConstraint.FixupListener;
+				yield return MultiColumnExternalConstraint.FixupListener;
+				yield return SingleColumnExternalConstraint.FixupListener;
 				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.AddImplicitElements);
 				yield return ModelError.FixupListener;
 				yield return ReferenceMode.FixupListener;
@@ -213,7 +218,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				return myFactTypesDictionary;
 			}
-			else if (parentMetaRoleGuid == ModelHasConstraint.ModelMetaRoleGuid)
+			else if (parentMetaRoleGuid == ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid ||
+					 parentMetaRoleGuid == ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid)
 			{
 				if (myConstraintsDictionary == null)
 				{
@@ -272,16 +278,26 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ConstraintHasDuplicateNameError))]
+		[RuleOn(typeof(MultiColumnExternalConstraintHasDuplicateNameError)), RuleOn(typeof(SingleColumnExternalConstraintHasDuplicateNameError))]
 		private class RemoveDuplicateConstraintNameErrorRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				ConstraintHasDuplicateNameError link = e.ModelElement as ConstraintHasDuplicateNameError;
-				ConstraintDuplicateNameError error = link.DuplicateNameError;
-				if (!error.IsRemoved)
+				ModelElement link = e.ModelElement;
+				MultiColumnExternalConstraintHasDuplicateNameError mcLink;
+				SingleColumnExternalConstraintHasDuplicateNameError scLink;
+				ConstraintDuplicateNameError error = null;
+				if (null != (mcLink = link as MultiColumnExternalConstraintHasDuplicateNameError))
 				{
-					if (error.ConstraintCollection.Count < 2)
+					error = mcLink.DuplicateNameError;
+				}
+				else if (null != (scLink = link as SingleColumnExternalConstraintHasDuplicateNameError))
+				{
+					error = scLink.DuplicateNameError;
+				}
+				if (error != null && !error.IsRemoved)
+				{
+					if ((error.MultiColumnExternalConstraintCollection.Count + error.SingleColumnExternalConstraintCollection.Count) < 2)
 					{
 						error.Remove();
 					}
@@ -524,13 +540,15 @@ namespace Northface.Tools.ORM.ObjectModel
 				#region IDuplicateNameCollectionManager Implementation
 				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
-					Constraint constraint = (Constraint)element;
+					SingleColumnExternalConstraint scConstraint = element as SingleColumnExternalConstraint;
+					MultiColumnExternalConstraint mcConstraint = (scConstraint == null) ? (element as MultiColumnExternalConstraint) : null;
+					Debug.Assert(scConstraint != null || mcConstraint != null);
 					if (afterTransaction)
 					{
 						// We're not in a transaction, but the object model will be in
 						// the state we need it because we put it there during a transaction.
 						// Just return the collection from the current state of the object model.
-						ConstraintDuplicateNameError error = constraint.DuplicateNameError;
+						ConstraintDuplicateNameError error = (scConstraint != null) ? scConstraint.DuplicateNameError : mcConstraint.DuplicateNameError;
 						return (error != null) ? error.ConstraintCollection : null;
 					}
 					else
@@ -545,17 +563,25 @@ namespace Northface.Tools.ORM.ObjectModel
 								// may already be attached to the object. Track
 								// it down and verify that it is a legitimate error.
 								// If it is not legitimate, then generate a new one.
-								error = constraint.DuplicateNameError;
-								if (error != null && !error.ValidateDuplicates(constraint))
+								error = (scConstraint != null) ? scConstraint.DuplicateNameError : mcConstraint.DuplicateNameError;
+								if (error != null && !error.ValidateDuplicates(element))
 								{
 									error = null;
 								}
 							}
 							if (error == null)
 							{
-								error = ConstraintDuplicateNameError.CreateConstraintDuplicateNameError(constraint.Store);
-								constraint.DuplicateNameError = error;
-								error.Model = constraint.Model;
+								error = ConstraintDuplicateNameError.CreateConstraintDuplicateNameError(element.Store);
+								if (scConstraint != null)
+								{
+									scConstraint.DuplicateNameError = error;
+									error.Model = scConstraint.Model;
+								}
+								else
+								{
+									mcConstraint.DuplicateNameError = error;
+									error.Model = mcConstraint.Model;
+								}
 								error.GenerateErrorText();
 								if (notifyAdded != null)
 								{
@@ -568,10 +594,10 @@ namespace Northface.Tools.ORM.ObjectModel
 						{
 							// During deserialization fixup (notifyAdded != null), we need
 							// to make sure that the element is not already in the collection
-							ConstraintMoveableCollection typedCollection = (ConstraintMoveableCollection)elementCollection;
-							if (notifyAdded == null || !typedCollection.Contains(constraint))
+							IList typedCollection = (IList)elementCollection;
+							if (notifyAdded == null || !typedCollection.Contains(element))
 							{
-								typedCollection.Add(constraint);
+								typedCollection.Add(element);
 							}
 						}
 						return elementCollection;
@@ -583,7 +609,16 @@ namespace Northface.Tools.ORM.ObjectModel
 					{
 						// Just clear the error. A rule is used to remove the error
 						// object itself when there is not longer a duplicate.
-						((Constraint)element).DuplicateNameError = null;
+						MultiColumnExternalConstraint mcConstraint;
+						SingleColumnExternalConstraint scConstraint;
+						if (null != (scConstraint = element as SingleColumnExternalConstraint))
+						{
+							scConstraint.DuplicateNameError = null;
+						}
+						else if (null != (mcConstraint = element as MultiColumnExternalConstraint))
+						{
+							mcConstraint.DuplicateNameError = null;
+						}
 					}
 					return elementCollection;
 				}
@@ -605,7 +640,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// <returns>A base name string pattern</returns>
 			protected override string GetRootNamePattern(NamedElement element)
 			{
-				Debug.Assert(element is Constraint);
+				Debug.Assert(element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint);
 				// UNDONE: How explicit do we want to be on constraint naming?
 				return base.GetRootNamePattern(element);
 			}
@@ -681,7 +716,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public partial class ModelHasConstraint : INamedElementDictionaryLink
+	public partial class ModelHasMultiColumnExternalConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
 		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
@@ -702,15 +737,84 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		/// <summary>
 		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns ObjectTypeCollection.
+		/// Returns MultiColumnExternalConstraintCollection.
 		/// </summary>
 		protected INamedElementDictionaryChild ChildRolePlayer
 		{
-			get { return ConstraintCollection as Constraint; }
+			get { return MultiColumnExternalConstraintCollection; }
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
-	public abstract partial class DuplicateNameError :  IRepresentModelElements, IModelErrorOwner
+	public partial class MultiColumnExternalConstraint : INamedElementDictionaryChild
+	{
+		#region INamedElementDictionaryChild implementation
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+		}
+		/// <summary>
+		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
+		/// this child as participating in the 'ModelHasObjectType' naming set.
+		/// </summary>
+		/// <param name="parentMetaRoleGuid">Guid</param>
+		/// <param name="childMetaRoleGuid">Guid</param>
+		protected void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			parentMetaRoleGuid = ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid;
+			childMetaRoleGuid = ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid;
+		}
+		#endregion // INamedElementDictionaryChild implementation
+	}
+	public partial class ModelHasSingleColumnExternalConstraint : INamedElementDictionaryLink
+	{
+		#region INamedElementDictionaryLink implementation
+		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		{
+			get { return ParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ParentRolePlayer
+		/// Returns Model.
+		/// </summary>
+		protected INamedElementDictionaryParent ParentRolePlayer
+		{
+			get { return Model; }
+		}
+		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		{
+			get { return ChildRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ChildRolePlayer
+		/// Returns SingleColumnExternalConstraintCollection.
+		/// </summary>
+		protected INamedElementDictionaryChild ChildRolePlayer
+		{
+			get { return SingleColumnExternalConstraintCollection; }
+		}
+		#endregion // INamedElementDictionaryLink implementation
+	}
+	public partial class SingleColumnExternalConstraint : INamedElementDictionaryChild
+	{
+		#region INamedElementDictionaryChild implementation
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+		}
+		/// <summary>
+		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
+		/// this child as participating in the 'ModelHasObjectType' naming set.
+		/// </summary>
+		/// <param name="parentMetaRoleGuid">Guid</param>
+		/// <param name="childMetaRoleGuid">Guid</param>
+		protected void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			parentMetaRoleGuid = ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid;
+			childMetaRoleGuid = ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid;
+		}
+		#endregion // INamedElementDictionaryChild implementation
+	}
+	public abstract partial class DuplicateNameError : IRepresentModelElements, IModelErrorOwner
 	{
 		#region DuplicateNameError Specific
 		/// <summary>
@@ -950,6 +1054,158 @@ namespace Northface.Tools.ORM.ObjectModel
 				return ResourceStrings.ModelErrorModelHasDuplicateConstraintNames;
 			}
 		}
+		#region ConstraintCollection Implementation
+		private IList myCompositeList = null;
+		/// <summary>
+		/// Return a constraint collection encompassing
+		/// both single column and multi column external constraints
+		/// </summary>
+		/// <value></value>
+		public IList ConstraintCollection
+		{
+			get
+			{
+				IList retVal = myCompositeList;
+				if (retVal == null)
+				{
+					myCompositeList = retVal = new CompositeCollection(this);
+				}
+				return retVal;
+			}
+		}
+		private class CompositeCollection : IList
+		{
+			#region Member Variables
+			private IList myList1;
+			private IList myList2;
+			#endregion // Member Variables
+			#region Constructors
+			public CompositeCollection(ConstraintDuplicateNameError error)
+			{
+				myList1 = error.MultiColumnExternalConstraintCollection;
+				myList2 = error.SingleColumnExternalConstraintCollection;
+			}
+			#endregion // Constructors
+			#region ICollection Implementation
+			void ICollection.CopyTo(Array array, int index)
+			{
+				myList1.CopyTo(array, index);
+				myList2.CopyTo(array, index + myList1.Count);
+			}
+			int ICollection.Count
+			{
+				get
+				{
+					return myList1.Count + myList2.Count;
+				}
+			}
+			bool ICollection.IsSynchronized
+			{
+				get
+				{
+					return false;
+				}
+			}
+			object ICollection.SyncRoot
+			{
+				get
+				{
+					throw new NotImplementedException();
+				}
+			}
+			#endregion // ICollection Implementation
+			#region IEnumerable Implementation
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				foreach (object obj in myList1)
+				{
+					yield return obj;
+				}
+				foreach (object obj in myList2)
+				{
+					yield return obj;
+				}
+			}
+			#endregion // IEnumerable Implementation
+			#region IList Implementation
+			bool IList.Contains(object value)
+			{
+				if (myList1.Contains(value))
+				{
+					return true;
+				}
+				return myList2.Contains(value);
+			}
+			int IList.IndexOf(object value)
+			{
+				int retVal = myList1.IndexOf(value);
+				if (retVal == -1)
+				{
+					retVal = myList2.IndexOf(value);
+					if (retVal != -1)
+					{
+						retVal += myList1.Count;
+					}
+				}
+				return retVal;
+			}
+			bool IList.IsFixedSize
+			{
+				get
+				{
+					return false;
+				}
+			}
+			bool IList.IsReadOnly
+			{
+				get
+				{
+					return true;
+				}
+			}
+			object IList.this[int index]
+			{
+				get
+				{
+					int list1Count = myList1.Count;
+					return (index >= list1Count) ? myList2[index - list1Count] : myList1[index];
+				}
+				set
+				{
+					int list1Count = myList1.Count;
+					if (index >= list1Count)
+					{
+						myList2[index - list1Count] = value;
+					}
+					else
+					{
+						myList1[index] = value;
+					}
+				}
+			}
+			int IList.Add(object value)
+			{
+				throw new NotImplementedException(); // Not supported for readonly list
+			}
+			void IList.Clear()
+			{
+				throw new NotImplementedException(); // Not supported for readonly list
+			}
+			void IList.Insert(int index, object value)
+			{
+				throw new NotImplementedException(); // Not supported for readonly list
+			}
+			void IList.Remove(object value)
+			{
+				throw new NotImplementedException(); // Not supported for readonly list
+			}
+			void IList.RemoveAt(int index)
+			{
+				throw new NotImplementedException(); // Not supported for readonly list
+			}
+			#endregion // IList Implementation
+		}
+		#endregion // ConstraintCollection Implementation
 	}
 	#endregion // Relationship-specific derivations of DuplicateNameError
 	#endregion // NamedElementDictionary and DuplicateNameError integration

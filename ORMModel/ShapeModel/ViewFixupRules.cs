@@ -45,32 +45,45 @@ namespace Northface.Tools.ORM.ShapeModel
 		#endregion // FactTypeAdded class
 		#endregion // ModelHasFactType fixup
 		#region ModelHasConstraint fixup
-		#region ExternalConstraintAdded class
-		[RuleOn(typeof(ModelHasConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class ExternalConstraintAdded : AddRule
+		#region MultiColumnExternalConstraintAdded class
+		[RuleOn(typeof(ModelHasMultiColumnExternalConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		private class MultiColumnExternalConstraintAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ModelHasConstraint link = e.ModelElement as ModelHasConstraint;
-				if (link != null &&
-					link.ConstraintCollection is ExternalConstraint)
+				ModelHasMultiColumnExternalConstraint link = e.ModelElement as ModelHasMultiColumnExternalConstraint;
+				if (link != null)
 				{
-					Diagram.FixUpDiagram(link.Model, link.ConstraintCollection);
+					Diagram.FixUpDiagram(link.Model, link.MultiColumnExternalConstraintCollection);
 				}
 			}
 		}
-		#endregion // ExternalConstraintAdded class
-		#region InternalFactConstraint fixup
-		#region InternalConstraintAdded class
-		[RuleOn(typeof(InternalFactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class InternalFactConstraintAdded : AddRule
+		#endregion // MultiColumnExternalConstraintAdded class
+		#region SingleColumnExternalConstraintAdded class
+		[RuleOn(typeof(ModelHasSingleColumnExternalConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		private class SingleColumnExternalConstraintAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				InternalFactConstraint link;
+				ModelHasSingleColumnExternalConstraint link = e.ModelElement as ModelHasSingleColumnExternalConstraint;
+				if (link != null)
+				{
+					Diagram.FixUpDiagram(link.Model, link.SingleColumnExternalConstraintCollection);
+				}
+			}
+		}
+		#endregion // SingleColumnExternalConstraintAdded class
+		#region InternalConstraint fixup
+		#region FactTypeHasInternalConstraintAdded class
+		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class FactTypeHasInternalConstraintAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FactTypeHasInternalConstraint link;
 				FactType fact;
-				Constraint constraint;
-				if (null != (link = e.ModelElement as InternalFactConstraint) &&
+				InternalConstraint constraint;
+				if (null != (link = e.ModelElement as FactTypeHasInternalConstraint) &&
 					null != (fact = link.FactType) &&
 					null != (constraint = link.InternalConstraintCollection))
 				{
@@ -85,17 +98,17 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // InternalFactConstraintAdded class
-		#region InternalFactConstraintRemoved class
-		[RuleOn(typeof(InternalFactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class InternalFactConstraintRemoved : RemoveRule
+		#endregion // FactTypeHasInternalConstraintAdded class
+		#region FactTypeHasInternalConstraintRemoved class
+		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class FactTypeHasInternalConstraintRemoved : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				InternalFactConstraint link;
+				FactTypeHasInternalConstraint link;
 				FactType fact;
-				Constraint constraint;
-				if (null != (link = e.ModelElement as InternalFactConstraint) &&
+				InternalConstraint constraint;
+				if (null != (link = e.ModelElement as FactTypeHasInternalConstraint) &&
 					null != (fact = link.FactType) &&
 					null != (constraint = link.InternalConstraintCollection))
 				{
@@ -113,7 +126,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // InternalFactConstraintRemoved class
+		#endregion // FactTypeHasInternalConstraintRemoved class
 		#region PrimaryIdentifierAdded class
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
 		private class PrimaryIdentifierAdded : AddRule
@@ -163,7 +176,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // PrimaryIdentifierRemoved class
-		#endregion // InternalFactConstraint fixup
+		#endregion // InternalConstraint fixup
 		#endregion // ModelHasConstraint fixup
 		#region FactTypeHasRole fixup
 		#region RoleAdded class
@@ -286,13 +299,12 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				ExternalFactConstraint link;
-				Constraint constraint;
-				if (null != (link = e.ModelElement as ExternalFactConstraint) &&
-					null != (constraint = link.ExternalConstraintCollection))
+				IFactConstraint link;
+				IConstraint constraint;
+				if (null != (link = e.ModelElement as IFactConstraint) &&
+					null != (constraint = link.Constraint))
 				{
-					ExternalFactConstraint efc = e.ModelElement as ExternalFactConstraint;
-					FactType fact = efc.FactTypeCollection;
+					FactType fact = link.FactType;
 					if (!fact.IsRemoved)
 					{
 						foreach (PresentationElement pel in fact.PresentationRolePlayers)
@@ -308,7 +320,6 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ExternalFactConstraintRemoved class
-
 		#region DisplayExternalConstraintLinksFixupListener class
 		/// <summary>
 		/// A fixup class to display external constraint links for
@@ -342,15 +353,16 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			ExternalConstraint constraint = link.ExternalConstraintCollection;
-			FactType factType = link.FactTypeCollection;
+			IFactConstraint ifc = link as IFactConstraint;
+			IConstraint constraint = ifc.Constraint;
+			FactType factType = ifc.FactType;
 			if (factType != null)
 			{
 				ORMModel model = factType.Model;
 				if (model != null)
 				{
 					Debug.Assert(model == constraint.Model);
-					Diagram.FixUpDiagram(model, constraint);
+					Diagram.FixUpDiagram(model, constraint as ModelElement);
 					Diagram.FixUpDiagram(model, factType);
 					Diagram.FixUpDiagram(model, link);
 				}

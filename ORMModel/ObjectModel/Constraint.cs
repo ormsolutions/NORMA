@@ -7,86 +7,95 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 namespace Northface.Tools.ORM.ObjectModel
 {
-	#region Constraint class
-	public partial class Constraint : INamedElementDictionaryChild
+	#region IConstraint interface
+	/// <summary>
+	/// Generic information shared by all constraint
+	/// implementers. Constraints are model differently
+	/// depending on the RoleSequenceStyle and ownership
+	/// of the constraint (internal/external). External
+	/// constraints that conceptually have a single role
+	/// in multiple rolesets are modeled as a single role
+	/// set to reduce the object model size.
+	/// </summary>
+	[CLSCompliant(true)]
+	public interface IConstraint
 	{
-		#region Constraint specific
 		/// <summary>
-		/// The minimum number of required role sets
+		/// Get the type of this constraint
 		/// </summary>
-		public int RoleSetCountMinimum
+		ConstraintType ConstraintType { get; }
+		/// <summary>
+		/// Get the role settings for this constraint
+		/// </summary>
+		RoleSequenceStyles RoleSequenceStyles { get; }
+		/// <summary>
+		/// Retrieve the model for the current constraint
+		/// </summary>
+		ORMModel Model { get; }
+	}
+	#endregion // IConstraint interface
+	#region Constraint class
+	/// <summary>
+	/// A utility class with static helper methods
+	/// </summary>
+	public static class ConstraintUtility
+	{
+		#region ConstraintUtility specific
+		/// <summary>
+		/// The minimum number of required role sequences
+		/// </summary>
+		/// <param name="constraint">Constraint class to test</param>
+		public static int RoleSequenceCountMinimum(IConstraint constraint)
 		{
-			get
+			int retVal = 1;
+			switch (constraint.RoleSequenceStyles & RoleSequenceStyles.SetMultiplicityMask)
 			{
-				int retVal = 1;
-				switch (RoleSetStyles & RoleSetStyles.SetMultiplicityMask)
-				{
-					case RoleSetStyles.MultipleRowSets:
-					case RoleSetStyles.TwoRoleSets:
-						retVal = 2;
-						break;
+				case RoleSequenceStyles.MultipleRowSequences:
+				case RoleSequenceStyles.TwoRoleSequences:
+					retVal = 2;
+					break;
 #if DEBUG
-					case RoleSetStyles.OneRoleSet:
-						break;
-					default:
-						Debug.Assert(false); // Shouldn't be here
-						break;
+				case RoleSequenceStyles.OneRoleSequence:
+					break;
+				default:
+					Debug.Assert(false); // Shouldn't be here
+					break;
 #endif // DEBUG
-				}
-				return retVal;
 			}
+			return retVal;
 		}
 		/// <summary>
-		/// The maximum number of required role sets, or -1 if no max
+		/// The maximum number of required role sequences, or -1 if no max
 		/// </summary>
-		public int RoleSetCountMaximum
+		/// <param name="constraint">Constraint class to test</param>
+		public static int RoleSequenceCountMaximum(IConstraint constraint)
 		{
-			get
+			int retVal = 1;
+			switch (constraint.RoleSequenceStyles & RoleSequenceStyles.SetMultiplicityMask)
 			{
-				int retVal = 1;
-				switch (RoleSetStyles & RoleSetStyles.SetMultiplicityMask)
-				{
-					case RoleSetStyles.MultipleRowSets:
-						retVal = -1;
-						break;
-					case RoleSetStyles.TwoRoleSets:
-						retVal = 2;
-						break;
+				case RoleSequenceStyles.MultipleRowSequences:
+					retVal = -1;
+					break;
+				case RoleSequenceStyles.TwoRoleSequences:
+					retVal = 2;
+					break;
 #if DEBUG
-					case RoleSetStyles.OneRoleSet:
-						break;
-					default:
-						Debug.Assert(false); // Shouldn't be here
-						break;
+				case RoleSequenceStyles.OneRoleSequence:
+					break;
+				default:
+					Debug.Assert(false); // Shouldn't be here
+					break;
 #endif // DEBUG
-				}
-				return retVal;
 			}
+			return retVal;
 		}
-		#endregion // Constraint specific
-		#region INamedElementDictionaryChild implementation
-		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
-		{
-			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
-		}
+		#endregion // ConstraintUtility specific
+		#region ConstraintRoleSequenceHasRoleRemoved class
 		/// <summary>
-		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
-		/// this child as participating in the 'ModelHasConstraint' naming set.
+		/// Rule that fires when a constraint has a RoleSequence Removed
 		/// </summary>
-		/// <param name="parentMetaRoleGuid">Guid</param>
-		/// <param name="childMetaRoleGuid">Guid</param>
-		protected void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
-		{
-			parentMetaRoleGuid = ModelHasConstraint.ModelMetaRoleGuid;
-			childMetaRoleGuid = ModelHasConstraint.ConstraintCollectionMetaRoleGuid;
-		}
-		#endregion // INamedElementDictionaryChild implementation
-		#region ConstraintRoleSetHasRoleRemoved class
-		/// <summary>
-		/// Rule that fires when a constraint has a RoleSet Removed
-		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSetHasRole))]
-		private class ConstraintRoleSetHasRoleRemoved : RemoveRule
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		private class ConstraintRoleSequenceHasRoleRemoved : RemoveRule
 		{
 			/// <summary>
 			/// Runs when roleset element is removed.  If there are no more roles in the role collection
@@ -94,46 +103,24 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// </summary>
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				ConstraintRoleSetHasRole link = e.ModelElement as ConstraintRoleSetHasRole;
-				ConstraintRoleSet roleSet = link.ConstraintRoleSetCollection;
-				if (!roleSet.IsRemoved)
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence roleSequence = link.ConstraintRoleSequenceCollection;
+				if (!roleSequence.IsRemoved)
 				{
-					if (roleSet.RoleCollection.Count == 0)
+					if (roleSequence.RoleCollection.Count == 0)
 					{
-						roleSet.Remove();
+						roleSequence.Remove();
 					}
 				}
 			}
 		}
-			#endregion //ConstraintRoleSetHasRoleRemoved class
-		#region InternalConstraintHasRoleSetRemoved class
+		#endregion //ConstraintRoleSequenceHasRoleRemoved class
+		#region MultiColumnExternalConstraintHasRoleSequenceRemoved class
 		/// <summary>
-		/// Rule that fires when an internal constraint has a RoleSet Removed
+		/// Rule that fires when an external constraint has a RoleSequence Removed
 		/// </summary>
-		[RuleOn(typeof(InternalConstraintHasRoleSet))]
-		private class InternalConstraintHasRoleSetRemoved : RemoveRule
-		{
-			/// <summary>
-			/// Runs when roleset element is removed.  If there are no more roles in the role collection
-			/// then the entire roleset is removed
-			/// </summary>
-			public override void ElementRemoved(ElementRemovedEventArgs e)
-			{
-				InternalConstraintHasRoleSet link = e.ModelElement as InternalConstraintHasRoleSet;
-				InternalConstraint constraint = link.InternalConstraint;
-				if (!constraint.IsRemoved)
-				{
-					constraint.Remove();
-				}
-			}
-		}
-		#endregion //InternalConstraintHasRoleSetRemoved class
-		#region ExternalConstraintHasRoleSetRemoved class
-		/// <summary>
-		/// Rule that fires when an external constraint has a RoleSet Removed
-		/// </summary>
-		[RuleOn(typeof(ExternalConstraintHasRoleSet))]
-		private class ExternalConstraintHasRoleSetRemoved : RemoveRule
+		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence))]
+		private class MultiColumnExternalConstraintHasRoleSequenceRemoved : RemoveRule
 		{
 			/// <summary>
 			/// Runs then roleset element is removed.  If there are no more roles in the role collection
@@ -141,18 +128,18 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// </summary>
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				ExternalConstraintHasRoleSet link = e.ModelElement as ExternalConstraintHasRoleSet;
-				ExternalConstraint constraint = link.ExternalConstraint;
+				MultiColumnExternalConstraintHasRoleSequence link = e.ModelElement as MultiColumnExternalConstraintHasRoleSequence;
+				MultiColumnExternalConstraint constraint = link.ExternalConstraint;
 				if (!constraint.IsRemoved)
 				{
-					if (constraint.RoleSetCollection.Count == 0)
+					if (constraint.RoleSequenceCollection.Count == 0)
 					{
 						constraint.Remove();
 					}
 				}
 			}
 		}
-			#endregion //ExternalConstraintHasRoleSetRemoved class
+		#endregion //MultiColumnExternalConstraintHasRoleSequenceRemoved class
 	}
 	#endregion // Constraint class
 	#region InternalConstraint class
@@ -160,13 +147,13 @@ namespace Northface.Tools.ORM.ObjectModel
 	{
 		#region InternalConstraint Specific
 		/// <summary>
-		/// Ensure that the link directly from the
-		/// constraint to the fact type exists. This
-		/// method should be called from inside a transaction
+		/// Ensure that the role is owned by the same
+		/// fact type as the constraint. This method should
+		/// be called from inside a transaction
 		/// and will throw
 		/// </summary>
 		/// <param name="role"></param>
-		private void EnsureFactConstraintForRole(Role role)
+		private void EnsureConsistentRoleOwner(Role role)
 		{
 			FactType existingFactType = FactType;
 			FactType candidateFactType = role.FactType;
@@ -183,37 +170,135 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // InternalConstraint Specific
-		#region InternalFactConstraint synchronization rules
+		#region Role owner validation rules
 		/// <summary>
-		/// If a role is added after the role set is already attached,
-		/// then create the corresponding ExternalFactConstraint and ExternalRoleConstraint
+		/// If a role is added to an internal constraint then it must
+		/// have the same owning facttype as the constraint.
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSetHasRole))]
-		private class ConstraintRoleSetHasRoleAdded : AddRule
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		private class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ConstraintRoleSetHasRole link = e.ModelElement as ConstraintRoleSetHasRole;
-				InternalConstraint constraint = link.ConstraintRoleSetCollection.Constraint as InternalConstraint;
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				InternalConstraint constraint = link.ConstraintRoleSequenceCollection.Constraint as InternalConstraint;
 				if (constraint != null)
 				{
-					// Note that this will throw if the role owner
-					// is incorrect
-					constraint.EnsureFactConstraintForRole(link.RoleCollection);
+					constraint.EnsureConsistentRoleOwner(link.RoleCollection);
 				}
 			}
 		}
 		/// <summary>
-		/// If a role set is added that already contains roles, then
-		/// make sure the corresponding InternalFactConstraint
-		/// object is created for each role.
+		/// If an internal constraint with existing roles is added
+		/// to a fact type, then make sure that all of the roles
+		/// are parented to the same fact type
 		/// </summary>
-		[RuleOn(typeof(InternalConstraintHasRoleSet))]
-		private class ConstraintHasRoleSetAdded : AddRule
+		[RuleOn(typeof(FactTypeHasInternalConstraint))]
+		private class FactTypeHasInternalConstraintAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				EnsureFactConstraintForRoleSet(e.ModelElement as InternalConstraintHasRoleSet);
+				EnsureConsistentRoleOwnerForRoleSequence(e.ModelElement as FactTypeHasInternalConstraint);
+			}
+		}
+		/// <summary>
+		/// Helper function to support the same fact constraint fixup
+		/// during both deserialization and rules.
+		/// </summary>
+		/// <param name="link">An internal constraint added to a fact type</param>
+		private static void EnsureConsistentRoleOwnerForRoleSequence(FactTypeHasInternalConstraint link)
+		{
+			InternalConstraint roleSequence = link.InternalConstraintCollection;
+			RoleMoveableCollection roles = roleSequence.RoleCollection;
+			int roleCount = roles.Count;
+			if (roleCount != 0)
+			{
+				for (int i = 0; i < roleCount; ++i)
+				{
+					Role role = roles[i];
+					// Call for each role, not just the first. This
+					// enforces that all roles are in the same fact type.
+					roleSequence.EnsureConsistentRoleOwner(role);
+				}
+			}
+		}
+		#endregion // Role owner validation rules
+	}
+	#endregion // InternalConstraint class
+	#region SingleColumnExternalConstraint class
+	public partial class SingleColumnExternalConstraint
+	{
+		#region SingleColumnExternalConstraint Specific
+		/// <summary>
+		/// Ensure that an ExternalFactConstraint exists between the
+		/// fact type owning the passed in role and this constraint.
+		/// ExternalFactConstraint links are generated automatically
+		/// and should never be directly created.
+		/// </summary>
+		/// <param name="role">The role to attach</param>
+		/// <returns>The associated ExternalFactConstraint relationship</returns>
+		private ExternalFactConstraint EnsureFactConstraintForRole(Role role)
+		{
+			ExternalFactConstraint retVal = null;
+			FactType fact = role.FactType;
+			if (fact != null)
+			{
+				while (retVal == null) // Will run at most twice
+				{
+					IList existingFactConstraints = fact.GetElementLinks(SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid);
+					int listCount = existingFactConstraints.Count;
+					for (int i = 0; i < listCount; ++i)
+					{
+						SingleColumnExternalFactConstraint testFactConstraint = (SingleColumnExternalFactConstraint)existingFactConstraints[i];
+						if (testFactConstraint.SingleColumnExternalConstraintCollection == this)
+						{
+							retVal = testFactConstraint;
+							break;
+						}
+					}
+					if (retVal == null)
+					{
+						fact.SingleColumnExternalConstraintCollection.Add(this);
+					}
+				}
+			}
+			return retVal;
+		}
+		#endregion // SingleColumnExternalConstraint Specific
+		#region SingleColumnExternalConstraint synchronization rules
+		/// <summary>
+		/// If a role is added after the role sequence is already attached,
+		/// then create the corresponding ExternalFactConstraint and ExternalRoleConstraint
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		private class ConstraintRoleSequenceHasRoleAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				SingleColumnExternalConstraint constraint = link.ConstraintRoleSequenceCollection.Constraint as SingleColumnExternalConstraint;
+				if (constraint != null)
+				{
+					ExternalFactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.RoleCollection);
+					if (factConstraint != null)
+					{
+						factConstraint.ConstrainedRoleCollection.Add(link);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// If a role sequence is added that already contains roles, then
+		/// make sure the corresponding ExternalFactConstraint and ExternalRoleConstraint
+		/// objects are created for each role. Note that a single column external
+		/// constraint is a role sequence.
+		/// </summary>
+		[RuleOn(typeof(ModelHasSingleColumnExternalConstraint))]
+		private class ConstraintHasRoleSequenceAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				EnsureFactConstraintForRoleSequence(e.ModelElement as ModelHasSingleColumnExternalConstraint);
 			}
 		}
 		/// <summary>
@@ -221,80 +306,91 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// during both deserialization and rules.
 		/// </summary>
 		/// <param name="link">A roleset link added to the constraint</param>
-		private static void EnsureFactConstraintForRoleSet(InternalConstraintHasRoleSet link)
+		private static void EnsureFactConstraintForRoleSequence(ModelHasSingleColumnExternalConstraint link)
 		{
-			InternalConstraintRoleSet roleSet = link.RoleSet;
-			RoleMoveableCollection roles = roleSet.RoleCollection;
-			int roleCount = roles.Count;
+			SingleColumnExternalConstraint roleSequence = link.SingleColumnExternalConstraintCollection;
+			// The following line gets the links instead of the counterparts,
+			// which are provided by roleSequence.RoleCollection
+			IList roleLinks = roleSequence.GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
+			int roleCount = roleLinks.Count;
 			if (roleCount != 0)
 			{
-				InternalConstraint constraint = link.InternalConstraint;
 				for (int i = 0; i < roleCount; ++i)
 				{
-					Role role = roles[i];
-					// Call for each role, not just the first. This
-					// enforces that all roles are in the same fact type.
-					constraint.EnsureFactConstraintForRole(role);
+					ConstraintRoleSequenceHasRole roleLink = (ConstraintRoleSequenceHasRole)roleLinks[i];
+					ExternalFactConstraint factConstraint = roleSequence.EnsureFactConstraintForRole(roleLink.RoleCollection);
+					if (factConstraint != null)
+					{
+						factConstraint.ConstrainedRoleCollection.Add(roleLink);
+					}
 				}
 			}
 		}
-		#endregion // InternalFactConstraint synchronization rules
+		#endregion // SingleColumnExternalConstraint synchronization rules
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return a deserialization fixup listener. The listener
-		/// adds the implicit InternalFactConstraint elements.
+		/// adds the implicit ExternalFactConstraint elements.
 		/// </summary>
 		[CLSCompliant(false)]
 		public static IDeserializationFixupListener FixupListener
 		{
 			get
 			{
-				return new InternalConstraintFixupListener();
+				return new ExternalConstraintFixupListener();
 			}
 		}
 		/// <summary>
-		/// Fixup listener implementation. Adds implicit InternalFactConstraint relationships
+		/// Fixup listener implementation. Adds implicit ExternalFactConstraint relationships
 		/// </summary>
-		private class InternalConstraintFixupListener : DeserializationFixupListener<InternalConstraint>
+		private class ExternalConstraintFixupListener : DeserializationFixupListener<SingleColumnExternalConstraint>
 		{
 			/// <summary>
-			/// InternalFactConstraintFixupListener constructor
+			/// ExternalConstraintFixupListener constructor
 			/// </summary>
-			public InternalConstraintFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitElements)
+			public ExternalConstraintFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitElements)
 			{
 			}
 			/// <summary>
-			/// Process elements by added an InternalFactConstraint for
+			/// Process elements by added an ExternalFactConstraint for
 			/// each roleset
 			/// </summary>
-			/// <param name="element">An InternalConstraint element</param>
+			/// <param name="element">An ExternalConstraint element</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(InternalConstraint element, Store store, INotifyElementAdded notifyAdded)
+			protected override void ProcessElement(SingleColumnExternalConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
-				IList links = element.GetElementLinks(InternalConstraintHasRoleSet.InternalConstraintMetaRoleGuid);
+				IList links = element.GetElementLinks(ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
 				int linksCount = links.Count;
 				for (int i = 0; i < linksCount; ++i)
 				{
-					EnsureFactConstraintForRoleSet(links[i] as InternalConstraintHasRoleSet);
-					IList factLinks = element.GetElementLinks(InternalFactConstraint.InternalConstraintCollectionMetaRoleGuid);
+					EnsureFactConstraintForRoleSequence(links[i] as ModelHasSingleColumnExternalConstraint);
+					IList factLinks = element.GetElementLinks(SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
 					int factLinksCount = factLinks.Count;
 					for (int j = 0; j < factLinksCount; ++j)
 					{
-						// Notify that the link was added. Note that we don't set
-						// addLinks to true here because there should only be one element
-						notifyAdded.ElementAdded(factLinks[j] as ModelElement);
+						// Notify that the link was added. Note that we set
+						// addLinks to true here because we expect ExternalRoleConstraint
+						// links to be attached to each ExternalFactConstraint
+						notifyAdded.ElementAdded(factLinks[j] as ModelElement, true);
 					}
 				}
 			}
 		}
 		#endregion // Deserialization Fixup
+		#region Error synchronization rules
+		// UNDONE: MultiColumnExternalConstraint error checking rules need to be
+		// ported to act on single column as well. Single column needs to look like
+		// multiple role sets to the end user, except that only a single column is allowed
+		// in each row. There, it is appropriate to attach the TooFew/TooMany-RoleSequencesError
+		// objects here as well.
+		#endregion // Error synchronization rules
 	}
-	#endregion // InternalConstraint class
-	#region ExternalConstraint class
-	public partial class ExternalConstraint : IModelErrorOwner
+	#endregion // SingleColumnExternalConstraint class
+	#region MultiColumnExternalConstraint class
+	public partial class MultiColumnExternalConstraint : IModelErrorOwner
 	{
-		#region ExternalConstraint Specific
+		#region MultiColumnExternalConstraint Specific
 		/// <summary>
 		/// Get a read-only list of FactConstraint links. To get the
 		/// fact type from here, use the FactTypeCollection property on the returned
@@ -305,7 +401,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				IList untypedList = GetElementLinks(ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuid);
+				IList untypedList = GetElementLinks(MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid);
 				int elementCount = untypedList.Count;
 				ExternalFactConstraint[] typedList = new ExternalFactConstraint[elementCount];
 				untypedList.CopyTo(typedList, 0);
@@ -328,12 +424,12 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				while (retVal == null) // Will run at most twice
 				{
-					IList existingFactConstraints = fact.GetElementLinks(ExternalFactConstraint.FactTypeCollectionMetaRoleGuid);
+					IList existingFactConstraints = fact.GetElementLinks(MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid);
 					int listCount = existingFactConstraints.Count;
 					for (int i = 0; i < listCount; ++i)
 					{
-						ExternalFactConstraint testFactConstraint = (ExternalFactConstraint)existingFactConstraints[i];
-						if (testFactConstraint.ExternalConstraintCollection == this)
+						MultiColumnExternalFactConstraint testFactConstraint = (MultiColumnExternalFactConstraint)existingFactConstraints[i];
+						if (testFactConstraint.MultiColumnExternalConstraintCollection == this)
 						{
 							retVal = testFactConstraint;
 							break;
@@ -341,25 +437,25 @@ namespace Northface.Tools.ORM.ObjectModel
 					}
 					if (retVal == null)
 					{
-						fact.ExternalConstraintCollection.Add(this);
+						fact.MultiColumnExternalConstraintCollection.Add(this);
 					}
 				}
 			}
 			return retVal;
 		}
-		#endregion // ExternalConstraint Specific
-		#region ExternalFactConstraint synchronization rules
+		#endregion // MultiColumnExternalConstraint Specific
+		#region MultiColumnExternalConstraint synchronization rules
 		/// <summary>
-		/// If a role is added after the role set is already attached,
+		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding ExternalFactConstraint and ExternalRoleConstraint
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSetHasRole))]
-		private class ConstraintRoleSetHasRoleAdded : AddRule
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		private class ConstraintRoleSequenceHasRoleAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ConstraintRoleSetHasRole link = e.ModelElement as ConstraintRoleSetHasRole;
-				ExternalConstraint constraint = link.ConstraintRoleSetCollection.Constraint as ExternalConstraint;
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				MultiColumnExternalConstraint constraint = link.ConstraintRoleSequenceCollection.Constraint as MultiColumnExternalConstraint;
 				if (constraint != null)
 				{
 					ExternalFactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.RoleCollection);
@@ -371,16 +467,16 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// If a role set is added that already contains roles, then
+		/// If a role sequence is added that already contains roles, then
 		/// make sure the corresponding ExternalFactConstraint and ExternalRoleConstraint
 		/// objects are created for each role.
 		/// </summary>
-		[RuleOn(typeof(ExternalConstraintHasRoleSet))]
-		private class ConstraintHasRoleSetAdded : AddRule
+		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence))]
+		private class ConstraintHasRoleSequenceAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				EnsureFactConstraintForRoleSet(e.ModelElement as ExternalConstraintHasRoleSet);
+				EnsureFactConstraintForRoleSequence(e.ModelElement as MultiColumnExternalConstraintHasRoleSequence);
 			}
 		}
 		/// <summary>
@@ -388,19 +484,19 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// during both deserialization and rules.
 		/// </summary>
 		/// <param name="link">A roleset link added to the constraint</param>
-		private static void EnsureFactConstraintForRoleSet(ExternalConstraintHasRoleSet link)
+		private static void EnsureFactConstraintForRoleSequence(MultiColumnExternalConstraintHasRoleSequence link)
 		{
-			ExternalConstraintRoleSet roleSet = link.RoleSetCollection;
+			MultiColumnExternalConstraintRoleSequence roleSequence = link.RoleSequenceCollection;
 			// The following line gets the links instead of the counterparts,
-			// which are provided by roleSet.RoleCollection
-			IList roleLinks = roleSet.GetElementLinks(ConstraintRoleSetHasRole.ConstraintRoleSetCollectionMetaRoleGuid);
+			// which are provided by roleSequence.RoleCollection
+			IList roleLinks = roleSequence.GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
 			int roleCount = roleLinks.Count;
 			if (roleCount != 0)
 			{
-				ExternalConstraint constraint = link.ExternalConstraint;
+				MultiColumnExternalConstraint constraint = link.ExternalConstraint;
 				for (int i = 0; i < roleCount; ++i)
 				{
-					ConstraintRoleSetHasRole roleLink = (ConstraintRoleSetHasRole)roleLinks[i];
+					ConstraintRoleSequenceHasRole roleLink = (ConstraintRoleSequenceHasRole)roleLinks[i];
 					ExternalFactConstraint factConstraint = constraint.EnsureFactConstraintForRole(roleLink.RoleCollection);
 					if (factConstraint != null)
 					{
@@ -409,6 +505,11 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		/// <summary>
+		/// Rip an ExternalFactConstraint relationship when its last role
+		/// goes away. Note that this rule also affects single column external
+		/// constraints, but we only need to write it once.
+		/// </summary>
 		[RuleOn(typeof(ExternalRoleConstraint))]
 		private class ExternalRoleConstraintRemoved : RemoveRule
 		{
@@ -425,11 +526,11 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // ExternalFactConstraint synchronization rules
+		#endregion // MultiColumnExternalConstraint synchronization rules
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return a deserialization fixup listener. The listener
-		/// adds the implicit InternalFactConstraint elements.
+		/// adds the implicit ExternalFactConstraint elements.
 		/// </summary>
 		[CLSCompliant(false)]
 		public static IDeserializationFixupListener FixupListener
@@ -442,29 +543,29 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Fixup listener implementation. Adds implicit ExternalFactConstraint relationships
 		/// </summary>
-		private class ExternalConstraintFixupListener : DeserializationFixupListener<ExternalConstraint>
+		private class ExternalConstraintFixupListener : DeserializationFixupListener<MultiColumnExternalConstraint>
 		{
 			/// <summary>
-			/// InternalFactConstraintFixupListener constructor
+			/// ExternalConstraintFixupListener constructor
 			/// </summary>
 			public ExternalConstraintFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitElements)
 			{
 			}
 			/// <summary>
-			/// Process elements by added an InternalFactConstraint for
+			/// Process elements by added an ExternalFactConstraint for
 			/// each roleset
 			/// </summary>
 			/// <param name="element">An ExternalConstraint element</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(ExternalConstraint element, Store store, INotifyElementAdded notifyAdded)
+			protected override void ProcessElement(MultiColumnExternalConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
-				IList links = element.GetElementLinks(ExternalConstraintHasRoleSet.ExternalConstraintMetaRoleGuid);
+				IList links = element.GetElementLinks(MultiColumnExternalConstraintHasRoleSequence.ExternalConstraintMetaRoleGuid);
 				int linksCount = links.Count;
 				for (int i = 0; i < linksCount; ++i)
 				{
-					EnsureFactConstraintForRoleSet(links[i] as ExternalConstraintHasRoleSet);
-					IList factLinks = element.GetElementLinks(ExternalFactConstraint.ExternalConstraintCollectionMetaRoleGuid);
+					EnsureFactConstraintForRoleSequence(links[i] as MultiColumnExternalConstraintHasRoleSequence);
+					IList factLinks = element.GetElementLinks(MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid);
 					int factLinksCount = factLinks.Count;
 					for (int j = 0; j < factLinksCount; ++j)
 					{
@@ -485,23 +586,23 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded">If not null, this is being called during
 		/// load when rules are not in place. Any elements that are added
 		/// must be notified back to the caller.</param>
-		private void VerifyRoleSetCountForRule(INotifyElementAdded notifyAdded)
+		private void VerifyRoleSequenceCountForRule(INotifyElementAdded notifyAdded)
 		{
 			if (!IsRemoved)
 			{
-				int minCount = RoleSetCountMinimum;
+				int minCount = ConstraintUtility.RoleSequenceCountMinimum(this);
 				int maxCount;
-				int currentCount = RoleSetCollection.Count;
+				int currentCount = RoleSequenceCollection.Count;
 				Store store = Store;
-				TooFewRoleSetsError insufficientError;
-				TooManyRoleSetsError extraError;
+				TooFewRoleSequencesError insufficientError;
+				TooManyRoleSequencesError extraError;
 				bool removeTooFew = false;
 				bool removeTooMany = false;
 				if (currentCount < minCount)
 				{
-					if (null == TooFewRoleSetsError)
+					if (null == TooFewRoleSequencesError)
 					{
-						insufficientError = TooFewRoleSetsError.CreateTooFewRoleSetsError(store);
+						insufficientError = TooFewRoleSequencesError.CreateTooFewRoleSequencesError(store);
 						insufficientError.Model = Model;
 						insufficientError.Constraint = this;
 						insufficientError.GenerateErrorText();
@@ -515,9 +616,9 @@ namespace Northface.Tools.ORM.ObjectModel
 				else
 				{
 					removeTooFew = true;
-					if ((-1 != (maxCount = RoleSetCountMaximum)) && (currentCount > maxCount))
+					if ((-1 != (maxCount = ConstraintUtility.RoleSequenceCountMaximum(this))) && (currentCount > maxCount))
 					{
-						extraError = TooManyRoleSetsError.CreateTooManyRoleSetsError(store);
+						extraError = TooManyRoleSequencesError.CreateTooManyRoleSequencesError(store);
 						extraError.Model = Model;
 						extraError.Constraint = this;
 						extraError.GenerateErrorText();
@@ -531,45 +632,45 @@ namespace Northface.Tools.ORM.ObjectModel
 						removeTooMany = true;
 					}
 				}
-				if (removeTooFew && null != (insufficientError = TooFewRoleSetsError))
+				if (removeTooFew && null != (insufficientError = TooFewRoleSequencesError))
 				{
 					insufficientError.Remove();
 				}
-				if (removeTooMany && null != (extraError = TooManyRoleSetsError))
+				if (removeTooMany && null != (extraError = TooManyRoleSequencesError))
 				{
 					extraError.Remove();
 				}
 			}
 		}
-		[RuleOn(typeof(ExternalConstraintHasRoleSet), FireTime = TimeToFire.TopLevelCommit)]
-		private class EnforceRoleSetCardinalityForAdd : AddRule
+		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence), FireTime = TimeToFire.TopLevelCommit)]
+		private class EnforceRoleSequenceCardinalityForAdd : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ExternalConstraintHasRoleSet link = e.ModelElement as ExternalConstraintHasRoleSet;
-				link.ExternalConstraint.VerifyRoleSetCountForRule(null);
+				MultiColumnExternalConstraintHasRoleSequence link = e.ModelElement as MultiColumnExternalConstraintHasRoleSequence;
+				link.ExternalConstraint.VerifyRoleSequenceCountForRule(null);
 			}
 		}
-		[RuleOn(typeof(ModelHasConstraint), FireTime = TimeToFire.TopLevelCommit)]
-		private class EnforceRoleSetCardinalityForConstraintAdd : AddRule
+		[RuleOn(typeof(ModelHasMultiColumnExternalConstraint), FireTime = TimeToFire.TopLevelCommit)]
+		private class EnforceRoleSequenceCardinalityForConstraintAdd : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ModelHasConstraint link = e.ModelElement as ModelHasConstraint;
-				ExternalConstraint externalConstraint = link.ConstraintCollection as ExternalConstraint;
+				ModelHasMultiColumnExternalConstraint link = e.ModelElement as ModelHasMultiColumnExternalConstraint;
+				MultiColumnExternalConstraint externalConstraint = link.MultiColumnExternalConstraintCollection as MultiColumnExternalConstraint;
 				if (externalConstraint != null)
 				{
-					externalConstraint.VerifyRoleSetCountForRule(null);
+					externalConstraint.VerifyRoleSequenceCountForRule(null);
 				}
 			}
 		}
-		[RuleOn(typeof(ExternalConstraintHasRoleSet), FireTime = TimeToFire.TopLevelCommit)]
-		private class EnforceRoleSetCardinalityForRemove : RemoveRule
+		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence), FireTime = TimeToFire.TopLevelCommit)]
+		private class EnforceRoleSequenceCardinalityForRemove : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				ExternalConstraintHasRoleSet link = e.ModelElement as ExternalConstraintHasRoleSet;
-				link.ExternalConstraint.VerifyRoleSetCountForRule(null);
+				MultiColumnExternalConstraintHasRoleSequence link = e.ModelElement as MultiColumnExternalConstraintHasRoleSequence;
+				link.ExternalConstraint.VerifyRoleSequenceCountForRule(null);
 			}
 		}
 		#endregion // Error synchronization rules
@@ -589,13 +690,13 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				TooManyRoleSetsError tooMany;
-				TooFewRoleSetsError tooFew;
-				if (null != (tooMany = TooManyRoleSetsError))
+				TooManyRoleSequencesError tooMany;
+				TooFewRoleSequencesError tooFew;
+				if (null != (tooMany = TooManyRoleSequencesError))
 				{
 					yield return tooMany;
 				}
-				if (null != (tooFew = TooFewRoleSetsError))
+				if (null != (tooFew = TooFewRoleSequencesError))
 				{
 					yield return tooFew;
 				}
@@ -611,7 +712,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// the caller of all objects that are added.</param>
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
-			VerifyRoleSetCountForRule(notifyAdded);
+			VerifyRoleSequenceCountForRule(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -619,47 +720,92 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // IModelErrorOwner Implementation
 	}
-	#endregion // ExternalConstraint class
-	#region FactConstraint classes
-	public partial class InternalFactConstraint : IFactConstraint
+	public partial class MultiColumnExternalConstraint : IConstraint
 	{
-		#region IFactConstraint Implementation
-		Constraint IFactConstraint.Constraint
+		#region IConstraint Implementation
+		ORMModel IConstraint.Model
 		{
 			get
 			{
-				return Constraint;
+				return Model;
 			}
 		}
-		/// <summary>
-		/// Implements IFactConstraint.Constraint
-		/// </summary>
-		protected Constraint Constraint
+		ConstraintType IConstraint.ConstraintType
 		{
 			get
 			{
-				return InternalConstraintCollection;
+				Debug.Assert(false); // Implement on derived class
+				throw new NotImplementedException();
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				Debug.Assert(false); // Implement on derived class
+				throw new NotImplementedException();
+			}
+		}
+		#endregion // IConstraint Implementation
+	}
+	public partial class SingleColumnExternalConstraint : IConstraint
+	{
+		#region IConstraint Implementation
+		ORMModel IConstraint.Model
+		{
+			get
+			{
+				return Model;
+			}
+		}
+		ConstraintType IConstraint.ConstraintType
+		{
+			get
+			{
+				Debug.Assert(false); // Implement on derived class
+				throw new NotImplementedException();
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				Debug.Assert(false); // Implement on derived class
+				throw new NotImplementedException();
+			}
+		}
+		#endregion // IConstraint Implementation
+	}
+	#endregion // MultiColumnExternalConstraint class
+	#region FactConstraint classes
+	public partial class InternalConstraint : IFactConstraint, IConstraint
+	{
+		#region IFactConstraint Implementation
+		IConstraint IFactConstraint.Constraint
+		{
+			get
+			{
+				return Constraint; // Implemented for ConstraintRoleSequence
 			}
 		}
 		IList<Role> IFactConstraint.RoleCollection
 		{
 			get
 			{
-				return RoleCollection;
+				return IFactConstraintRoleCollection;
 			}
 		}
 		/// <summary>
 		/// Implements IFactConstraint.RoleCollection
 		/// </summary>
 		[CLSCompliant(false)]
-		protected IList<Role> RoleCollection
+		protected IList<Role> IFactConstraintRoleCollection
 		{
 			get
 			{
-				RoleMoveableCollection roles = InternalConstraintCollection.RoleSet.RoleCollection;
+				RoleMoveableCollection roles = RoleCollection;
 				int roleCount = roles.Count;
 				Role[] typedList = new Role[roleCount];
-				Debug.Assert(roleCount > 0); // This object should not exist otherwise
 				roles.CopyTo(typedList, 0);
 				return typedList;
 			}
@@ -673,27 +819,47 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // IFactConstraint Implementation
+		#region IConstraint Implementation
+		ORMModel IConstraint.Model
+		{
+			get
+			{
+				return Model;
+			}
+		}
+		/// <summary>
+		/// Implements IConstraint.Model. Defers to the
+		/// model of the owning fact type.
+		/// </summary>
+		protected ORMModel Model
+		{
+			get
+			{
+				FactType factType = FactType;
+				return (factType != null) ? factType.Model : null;
+			}
+		}
+		ConstraintType IConstraint.ConstraintType
+		{
+			get
+			{
+				Debug.Assert(false); // Implement on derived class
+				throw new NotImplementedException();
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				Debug.Assert(false); // Implement on derived class
+				throw new NotImplementedException();
+			}
+		}
+		#endregion // IConstraint Implementation
 	}
 	public partial class ExternalFactConstraint : IFactConstraint
 	{
 		#region IFactConstraint Implementation
-		Constraint IFactConstraint.Constraint
-		{
-			get
-			{
-				return Constraint;
-			}
-		}
-		/// <summary>
-		/// Implements IFactConstraint.Constraint
-		/// </summary>
-		protected Constraint Constraint
-		{
-			get
-			{
-				return ExternalConstraintCollection;
-			}
-		}
 		IList<Role> IFactConstraint.RoleCollection
 		{
 			get
@@ -709,12 +875,12 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				ConstraintRoleSetHasRoleMoveableCollection roleSetLinks = ConstrainedRoleCollection;
-				int roleSetLinksCount = roleSetLinks.Count;
-				Role[] typedList = new Role[roleSetLinksCount];
-				for (int i = 0; i < roleSetLinksCount; ++i)
+				ConstraintRoleSequenceHasRoleMoveableCollection roleSequenceLinks = ConstrainedRoleCollection;
+				int roleSequenceLinksCount = roleSequenceLinks.Count;
+				Role[] typedList = new Role[roleSequenceLinksCount];
+				for (int i = 0; i < roleSequenceLinksCount; ++i)
 				{
-					typedList[i] = roleSetLinks[i].RoleCollection;
+					typedList[i] = roleSequenceLinks[i].RoleCollection;
 				}
 				return typedList;
 			}
@@ -723,63 +889,171 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
+				// This is for the compiler, which doesn't like the protected FactType property.
+				// Overriding on the derived types enables IFactConstraint support without
+				// a double virtual call to get the data.
+				Debug.Assert(false);
 				return FactType;
 			}
 		}
+		IConstraint IFactConstraint.Constraint
+		{
+			get
+			{
+				// This is for the compiler, which doesn't like the protected FactType property.
+				// Overriding on the derived types enables IFactConstraint support without
+				// a double virtual call to get the data.
+				Debug.Assert(false);
+				return Constraint;
+			}
+		}
 		/// <summary>
-		/// Implements IFactConstraint.FactType
+		/// Retrieve the fact type from a derived class
 		/// </summary>
-		protected FactType FactType
+		protected abstract FactType FactType {get;}
+		/// <summary>
+		/// Retrieve the constraint from a derived class
+		/// </summary>
+		protected abstract IConstraint Constraint { get;}
+		#endregion // IFactConstraint Implementation
+	}
+	public partial class MultiColumnExternalFactConstraint : IFactConstraint
+	{
+		FactType IFactConstraint.FactType
+		{
+			get
+			{
+				return FactType;
+			}
+		}
+		IConstraint IFactConstraint.Constraint
+		{
+			get
+			{
+				return Constraint;
+			}
+		}
+		/// <summary>
+		/// Implements FactType for IFactConstraint and ExternalFactConstraint
+		/// by deferring to generated FactTypeCollection accessor
+		/// </summary>
+		protected sealed override FactType FactType
 		{
 			get
 			{
 				return FactTypeCollection;
 			}
 		}
-		#endregion // IFactConstraint Implementation
-	}
-	#endregion // FactConstraint classes
-	#region ConstraintRoleSet classes
-	public partial class ConstraintRoleSet
-	{
-		#region ConstraintRoleSet Specific
 		/// <summary>
-		/// Get the constraint that owns this role set
+		/// Implements Constraint for IFactConstraint and ExternalFactConstraint
+		/// by deferring to generated MultiColumnExternalConstraintCollection accessor
 		/// </summary>
-		public abstract Constraint Constraint { get;}
-		#endregion // ConstraintRoleSet Specific
-	}
-	public partial class InternalConstraintRoleSet
-	{
-		#region ConstraintRoleSet overrides
-		/// <summary>
-		/// Get the internal constraint that owns this role set
-		/// </summary>
-		public override Constraint Constraint
+		protected sealed override IConstraint Constraint
 		{
 			get
 			{
-				return InternalConstraint;
+				return MultiColumnExternalConstraintCollection;
 			}
 		}
-		#endregion // ConstraintRoleSet overrides
 	}
-	public partial class ExternalConstraintRoleSet
+	public partial class SingleColumnExternalFactConstraint : IFactConstraint
 	{
-		#region ConstraintRoleSet overrides
+		FactType IFactConstraint.FactType
+		{
+			get
+			{
+				return FactType;
+			}
+		}
+		IConstraint IFactConstraint.Constraint
+		{
+			get
+			{
+				return Constraint;
+			}
+		}
 		/// <summary>
-		/// Get the external constraint that owns this role set
+		/// Implements FactType for IFactConstraint and ExternalFactConstraint
+		/// by deferring to generated FactTypeCollection accessor
 		/// </summary>
-		public override Constraint Constraint
+		protected sealed override FactType FactType
+		{
+			get
+			{
+				return FactTypeCollection;
+			}
+		}
+		/// <summary>
+		/// Implements Constraint for IFactConstraint and ExternalFactConstraint
+		/// by deferring to generated SingleColumnExternalConstraintCollection accessor
+		/// </summary>
+		protected sealed override IConstraint Constraint
+		{
+			get
+			{
+				return SingleColumnExternalConstraintCollection;
+			}
+		}
+	}
+	#endregion // FactConstraint classes
+	#region ConstraintRoleSequence classes
+	public partial class ConstraintRoleSequence
+	{
+		#region ConstraintRoleSequence Specific
+		/// <summary>
+		/// Get the constraint that owns this role sequence
+		/// </summary>
+		public abstract IConstraint Constraint { get;}
+		#endregion // ConstraintRoleSequence Specific
+	}
+	public partial class InternalConstraint
+	{
+		#region ConstraintRoleSequence overrides
+		/// <summary>
+		/// An internal constraint is its own role sequence.
+		/// Return this.
+		/// </summary>
+		public override IConstraint Constraint
+		{
+			get
+			{
+				return this;
+			}
+		}
+		#endregion // ConstraintRoleSequence overrides
+	}
+	public partial class MultiColumnExternalConstraintRoleSequence
+	{
+		#region ConstraintRoleSequence overrides
+		/// <summary>
+		/// Get the external constraint that owns this role sequence
+		/// </summary>
+		public override IConstraint Constraint
 		{
 			get
 			{
 				return ExternalConstraint;
 			}
 		}
-		#endregion // ConstraintRoleSet overrides
+		#endregion // ConstraintRoleSequence overrides
 	}
-	#endregion // ConstraintRoleSet classes
+	public partial class SingleColumnExternalConstraint
+	{
+		#region ConstraintRoleSequence overrides
+		/// <summary>
+		/// A single column external constraint is its own role sequence.
+		/// Return this.
+		/// </summary>
+		public override IConstraint Constraint
+		{
+			get
+			{
+				return this;
+			}
+		}
+		#endregion // ConstraintRoleSequence overrides
+	}
+	#endregion // ConstraintRoleSequence classes
 	#region InternalUniquenessConstraint class
 	public partial class InternalUniquenessConstraint
 	{
@@ -867,7 +1141,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				// to the preferred constraint role. If the primary object is created for
 				// a RefMode object type, then a ValueType is required, but this is
 				// not a requirement for all role players on preferred identifier constraints.
-				RoleMoveableCollection constraintRoles = RoleSet.RoleCollection;
+				RoleMoveableCollection constraintRoles = RoleCollection;
 				if (constraintRoles.Count == 1) // Condition 1
 				{
 					Role role = constraintRoles[0];
@@ -916,7 +1190,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						// but this will be such a rare condition that I don't go
 						// out of my way to validate it. Calling code can always use
 						// the TestAllowPreferred method to get a cleaner exception.
-						Role role = constraint.RoleSet.RoleCollection[0];
+						Role role = constraint.RoleCollection[0];
 						Role oppositeRole = null;
 						foreach (Role factRole in role.FactType.RoleCollection)
 						{
@@ -959,7 +1233,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				// the generated property accessors unless they have
 				// remove propagation set on the opposite end.
 				bool remove = true;
-				Constraint constraint = PreferredIdentifier;
+				ConstraintRoleSequence constraint = PreferredIdentifier;
 				if (!constraint.IsRemoving && !constraint.IsRemoved)
 				{
 					ObjectType forType = PreferredIdentifierFor;
@@ -969,13 +1243,10 @@ namespace Northface.Tools.ORM.ObjectModel
 						ExternalUniquenessConstraint euc;
 						if (null != (iuc = constraint as InternalUniquenessConstraint))
 						{
-							ConstraintRoleSet roleSet;
 							RoleMoveableCollection roles;
 							Role constraintRole;
 							FactType factType;
-							if (null != (roleSet = iuc.RoleSet) &&
-								!roleSet.IsRemoving &&
-								1 == (roles = roleSet.RoleCollection).Count &&
+							if (1 == (roles = iuc.RoleCollection).Count &&
 								!(constraintRole = roles[0]).IsRemoving &&
 								null != (factType = constraintRole.FactType) &&
 								!factType.IsRemoving &&
@@ -1008,10 +1279,10 @@ namespace Northface.Tools.ORM.ObjectModel
 								{
 									bool haveOppositeUniqueness = false;
 									bool haveOppositeMandatory = false;
-									foreach (ConstraintRoleSet testRoleSet in oppositeRole.ConstraintRoleSetCollection)
+									foreach (ConstraintRoleSequence testRoleSequence in oppositeRole.ConstraintRoleSequenceCollection)
 									{
-										Constraint testConstraint = testRoleSet.Constraint;
-										if (testConstraint != null && !testConstraint.IsRemoving)
+										IConstraint testConstraint = testRoleSequence.Constraint;
+										if (testConstraint != null && !(testConstraint as ModelElement).IsRemoving)
 										{
 											switch (testConstraint.ConstraintType)
 											{
@@ -1022,12 +1293,12 @@ namespace Northface.Tools.ORM.ObjectModel
 														haveOppositeUniqueness = false;
 														break;
 													}
-													if (testRoleSet.RoleCollection.Count == 1)
+													if (testRoleSequence.RoleCollection.Count == 1)
 													{
 														haveOppositeUniqueness = true;
 													}
 													break;
-												case ConstraintType.Mandatory:
+												case ConstraintType.SimpleMandatory:
 													haveOppositeMandatory = true;
 													break;
 											}
@@ -1059,7 +1330,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// a preferred identifier link has been eliminated.
 		/// Remove the rule if this happens.
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(ConstraintRoleSetHasRole))]
+		[RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class TestRemovePreferredIdentifierRule : RemovingRule
 		{
 			/// <summary>
@@ -1070,23 +1341,23 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				ModelElement element = e.ModelElement;
 				ObjectTypePlaysRole rolePlayerLink;
-				ConstraintRoleSetHasRole roleConstraintLink;
+				ConstraintRoleSequenceHasRole roleConstraintLink;
 				ObjectType rolePlayer = null;
 				if (null != (rolePlayerLink = element as ObjectTypePlaysRole))
 				{
 					rolePlayer = rolePlayerLink.RolePlayer;
 				}
-				else if (null != (roleConstraintLink = element as ConstraintRoleSetHasRole))
+				else if (null != (roleConstraintLink = element as ConstraintRoleSequenceHasRole))
 				{
-					InternalConstraintRoleSet internalRoleSet;
-					Constraint constraint;
-					if (null != (internalRoleSet = roleConstraintLink.ConstraintRoleSetCollection as InternalConstraintRoleSet) &&
-						null != (constraint = internalRoleSet.Constraint))
+					InternalConstraint internalRoleSequence;
+					IConstraint constraint;
+					if (null != (internalRoleSequence = roleConstraintLink.ConstraintRoleSequenceCollection as InternalConstraint) &&
+						null != (constraint = internalRoleSequence.Constraint))
 					{
 						switch (constraint.ConstraintType)
 						{
 							case ConstraintType.InternalUniqueness:
-							case ConstraintType.Mandatory:
+							case ConstraintType.SimpleMandatory:
 								Role role = roleConstraintLink.RoleCollection;
 								if (role != null)
 								{
@@ -1138,7 +1409,7 @@ namespace Northface.Tools.ORM.ObjectModel
 					throw new InvalidOperationException(ResourceStrings.ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType);
 				}
 
-				Constraint constraint = link.PreferredIdentifier;
+				IConstraint constraint = link.PreferredIdentifier as IConstraint;
 				switch (constraint.ConstraintType)
 				{
 					case ConstraintType.InternalUniqueness:
@@ -1151,9 +1422,10 @@ namespace Northface.Tools.ORM.ObjectModel
 							// constraints that are automatically added all happen on the opposite
 							// role, so find tye, add constraints as needed, and then let this
 							// pass through to finish creating the preferred identifier link.
-							Role role = iuc.RoleSet.RoleCollection[0];
+							Role role = iuc.RoleCollection[0];
 							Role oppositeRole = null;
-							foreach (Role factRole in role.FactType.RoleCollection)
+							FactType factType = role.FactType;
+							foreach (Role factRole in factType.RoleCollection)
 							{
 								if (!object.ReferenceEquals(role, factRole))
 								{
@@ -1163,10 +1435,10 @@ namespace Northface.Tools.ORM.ObjectModel
 							}
 							oppositeRole.IsMandatory = true; // Make sure it is mandatory
 							bool needOppositeConstraint = true;
-							foreach (ConstraintRoleSet roleSet in oppositeRole.ConstraintRoleSetCollection)
+							foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
 							{
-								if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness &&
-									roleSet.RoleCollection.Count == 1)
+								if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness &&
+									roleSequence.RoleCollection.Count == 1)
 								{
 									needOppositeConstraint = false;
 									break;
@@ -1178,10 +1450,7 @@ namespace Northface.Tools.ORM.ObjectModel
 								// this a 1-1 binary fact type.
 								Store store = iuc.Store;
 								InternalUniquenessConstraint oppositeIuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-								InternalConstraintRoleSet roleSet = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
-								roleSet.RoleCollection.Add(oppositeRole);
-								oppositeIuc.RoleSet = roleSet;
-								oppositeIuc.Model = iuc.Model;
+								oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType, setting it again will remove and delete the new constraint
 							}
 							break;
 						}
@@ -1296,7 +1565,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	}
 	#endregion // ExternalUniquenessConstraint class
 	#region ModelError classes
-	public partial class TooManyRoleSetsError : IRepresentModelElements
+	public partial class TooManyRoleSequencesError : IRepresentModelElements
 	{
 		#region Base overrides
 		/// <summary>
@@ -1304,10 +1573,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			Constraint parent = Constraint;
+			MultiColumnExternalConstraint parent = Constraint;
 			string parentName = (parent != null) ? parent.Name : "";
 			string currentText = Name;
-			string newText = string.Format(ResourceStrings.ModelErrorConstraintHasTooManyRoleSetsText, parentName);
+			string newText = string.Format(ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText, parentName);
 			if (currentText != newText)
 			{
 				Name = newText;
@@ -1339,7 +1608,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
-	public partial class TooFewRoleSetsError : IRepresentModelElements
+	public partial class TooFewRoleSequencesError : IRepresentModelElements
 	{
 		#region Base overrides
 		/// <summary>
@@ -1347,10 +1616,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			Constraint parent = Constraint;
+			MultiColumnExternalConstraint parent = this.Constraint;
 			string parentName = (parent != null) ? parent.Name : "";
 			string currentText = Name;
-			string newText = string.Format(ResourceStrings.ModelErrorConstraintHasTooFewRoleSetsText, parentName);
+			string newText = string.Format(ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesText, parentName);
 			if (currentText != newText)
 			{
 				Name = newText;
@@ -1404,58 +1673,58 @@ namespace Northface.Tools.ORM.ObjectModel
 		ExclusiveOr,
 	}
 	#endregion // ExclustionType enum
-	#region RoleSetStyles enum
+	#region RoleSequenceStyles enum
 	/// <summary>
-	/// Flags describing the style of role sets required
+	/// Flags describing the style of role sequences required
 	/// by each type of constraint
 	/// </summary>
 	[Flags]
 	[CLSCompliant(true)]
-	public enum RoleSetStyles
+	public enum RoleSequenceStyles
 	{
 		/// <summary>
-		/// Constraint uses a single role set
+		/// Constraint uses a single role sequence
 		/// </summary>
-		OneRoleSet = 1,
+		OneRoleSequence = 1,
 		/// <summary>
-		/// Constraint uses exactly two role sets
+		/// Constraint uses exactly two role sequences
 		/// </summary>
-		TwoRoleSets = 2,
+		TwoRoleSequences = 2,
 		/// <summary>
-		/// Constraint uses >=2 role sets
+		/// Constraint uses >=2 role sequences
 		/// </summary>
-		MultipleRowSets = 4,
+		MultipleRowSequences = 4,
 		/// <summary>
 		/// A mask to extract the set multiplicity values
 		/// </summary>
-		SetMultiplicityMask = OneRoleSet | TwoRoleSets | MultipleRowSets,
+		SetMultiplicityMask = OneRoleSequence | TwoRoleSequences | MultipleRowSequences,
 		/// <summary>
-		/// Each role set contains exactly one role
+		/// Each role sequence contains exactly one role
 		/// </summary>
-		OneRolePerSet = 8,
+		OneRolePerSequence = 8,
 		/// <summary>
-		/// Each role set contains exactly two roles
+		/// Each role sequence contains exactly two roles
 		/// </summary>
-		TwoRolesPerSet = 0x10,
+		TwoRolesPerSequence = 0x10,
 		/// <summary>
-		/// Each role set can contain >=1 roles
+		/// Each role sequence can contain >=1 roles
 		/// </summary>
-		MultipleRolesPerSet = 0x20,
+		MultipleRolesPerSequence = 0x20,
 		/// <summary>
-		/// The role set must contain n or n-1 roles. Applicable
-		/// to OneRoleSet constraints only
+		/// The role sequence must contain n or n-1 roles. Applicable
+		/// to OneRoleSequence constraints only
 		/// </summary>
-		AtLeastCountMinusOneRolesPerSet = 0x40,
+		AtLeastCountMinusOneRolesPerSequence = 0x40,
 		/// <summary>
 		/// A mask to extract the row multiplicity values
 		/// </summary>
-		RoleMultiplicityMask = OneRolePerSet | TwoRolesPerSet | MultipleRolesPerSet | AtLeastCountMinusOneRolesPerSet,
+		RoleMultiplicityMask = OneRolePerSequence | TwoRolesPerSequence | MultipleRolesPerSequence | AtLeastCountMinusOneRolesPerSequence,
 		/// <summary>
-		/// The order of the role sets is significant
+		/// The order of the role sequences is significant
 		/// </summary>
-		OrderedRoleSets = 0x80,
+		OrderedRoleSequences = 0x80,
 	}
-	#endregion // RoleSetStyles enum
+	#endregion // RoleSequenceStyles enum
 	#region ConstraintType enum
 	/// <summary>
 	/// A list of constraint types.
@@ -1467,7 +1736,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// An mandatory constraint. Applied
 		/// to a single role.
 		/// </summary>
-		Mandatory,
+		SimpleMandatory,
 		/// <summary>
 		/// An internal uniqueness constraint. Applied to
 		/// one or more roles from the same fact type.
@@ -1499,214 +1768,368 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		Exclusion,
 		/// <summary>
+		/// An disjunctive mandatory constraint. Applied to
+		/// single-role sets of compatible roles from multiple fact types.
+		/// </summary>
+		DisjunctiveMandatory,
+		/// <summary>
 		/// An external subset constraint. Applied to 2
 		/// sets of compatible roles.
 		/// </summary>
 		Subset,
 	}
 	#endregion // ConstraintType enum
-	#region ConstraintType and RoleSetStyles implementation for all constraints
-	public partial class Constraint
+	#region ConstraintType and RoleSequenceStyles implementation for all constraints
+	public partial class SimpleMandatoryConstraint : IConstraint
 	{
+		#region IConstraint Implementation
 		/// <summary>
-		/// Get the type of this constraint
+		/// Implements IConstraint.ConstraintType. Returns ConstraintType.SimpleMandatory.
 		/// </summary>
-		public abstract ConstraintType ConstraintType { get; }
-		/// <summary>
-		/// Get the role settings for this constraint
-		/// </summary>
-		public abstract RoleSetStyles RoleSetStyles { get; }
-	}
-	public partial class MandatoryConstraint
-	{
-		/// <summary>
-		/// Required override. Returns ConstraintType.Mandatory.
-		/// </summary>
-		public override ConstraintType ConstraintType
+		protected ConstraintType ConstraintType
 		{
 			get
 			{
-				return ConstraintType.Mandatory;
+				return ConstraintType.SimpleMandatory;
 			}
 		}
-		/// <summary>
-		/// Required override. Returns {OneRoleSet, OneRolePerSet}.
-		/// </summary>
-		public override RoleSetStyles RoleSetStyles
+		ConstraintType IConstraint.ConstraintType
 		{
 			get
 			{
-				return RoleSetStyles.OneRoleSet | RoleSetStyles.OneRolePerSet;
+				return ConstraintType;
 			}
 		}
-	}
-	public partial class InternalUniquenessConstraint
-	{
 		/// <summary>
-		/// Required override. Returns ConstraintType.InternalUniqueness.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {OneRoleSequence, OneRolePerSequence}.
 		/// </summary>
-		public override ConstraintType ConstraintType
+		protected RoleSequenceStyles RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles.OneRoleSequence | RoleSequenceStyles.OneRolePerSequence;
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles;
+			}
+		}
+		#endregion // IConstraint Implementation
+	}
+	public partial class InternalUniquenessConstraint : IConstraint
+	{
+		#region IConstraint Implementation
+		/// <summary>
+		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
+		/// </summary>
+		protected ConstraintType ConstraintType
 		{
 			get
 			{
 				return ConstraintType.InternalUniqueness;
 			}
 		}
-		/// <summary>
-		/// Required override. Returns {OneRoleSet, AtLeastCountMinusOneRolesPerSet}.
-		/// </summary>
-		public override RoleSetStyles RoleSetStyles
+		ConstraintType IConstraint.ConstraintType
 		{
 			get
 			{
-				return RoleSetStyles.OneRoleSet | RoleSetStyles.AtLeastCountMinusOneRolesPerSet;
+				return ConstraintType;
 			}
 		}
-	}
-	public partial class FrequencyConstraint
-	{
 		/// <summary>
-		/// Required override. Returns ConstraintType.Frequency.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {OneRoleSequence, AtLeastCountMinusOneRolesPerSequence}.
 		/// </summary>
-		public override ConstraintType ConstraintType
+		protected RoleSequenceStyles RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles.OneRoleSequence | RoleSequenceStyles.AtLeastCountMinusOneRolesPerSequence;
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles;
+			}
+		}
+		#endregion // IConstraint Implementation
+	}
+	public partial class FrequencyConstraint : IConstraint
+	{
+		#region IConstraint Implementation
+		/// <summary>
+		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
+		/// </summary>
+		protected ConstraintType ConstraintType
 		{
 			get
 			{
 				return ConstraintType.Frequency;
 			}
 		}
-		/// <summary>
-		/// Required override. Returns {OneRoleSet, MultipleRolesPerSet}.
-		/// </summary>
-		public override RoleSetStyles RoleSetStyles
+		ConstraintType IConstraint.ConstraintType
 		{
 			get
 			{
-				return RoleSetStyles.OneRoleSet | RoleSetStyles.MultipleRolesPerSet;
+				return ConstraintType;
 			}
 		}
-	}
-	public partial class RingConstraint
-	{
 		/// <summary>
-		/// Required override. Returns ConstraintType.Ring.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {OneRoleSequence, MultipleRolesPerSequence}.
 		/// </summary>
-		public override ConstraintType ConstraintType
+		protected RoleSequenceStyles RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles.OneRoleSequence | RoleSequenceStyles.MultipleRolesPerSequence;
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles;
+			}
+		}
+		#endregion // IConstraint Implementation
+	}
+	public partial class RingConstraint : IConstraint
+	{
+		#region IConstraint Implementation
+		/// <summary>
+		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
+		/// </summary>
+		protected ConstraintType ConstraintType
 		{
 			get
 			{
 				return ConstraintType.Ring;
 			}
 		}
-		/// <summary>
-		/// Required override. Returns {OneRoleSet, TwoRolesPerSet}.
-		/// </summary>
-		public override RoleSetStyles RoleSetStyles
+		ConstraintType IConstraint.ConstraintType
 		{
 			get
 			{
-				return RoleSetStyles.OneRoleSet | RoleSetStyles.TwoRolesPerSet;
+				return ConstraintType;
 			}
 		}
-	}
-	public partial class ExternalUniquenessConstraint
-	{
 		/// <summary>
-		/// Required override. Returns ConstraintType.ExternalUniqueness.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {TwoRoleSequences, OneRolePerSequence}.
 		/// </summary>
-		public override ConstraintType ConstraintType
+		protected RoleSequenceStyles RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles.TwoRoleSequences | RoleSequenceStyles.OneRolePerSequence;
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles;
+			}
+		}
+		#endregion // IConstraint Implementation
+	}
+	public partial class ExternalUniquenessConstraint : IConstraint
+	{
+		#region IConstraint Implementation
+		/// <summary>
+		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
+		/// </summary>
+		protected ConstraintType ConstraintType
 		{
 			get
 			{
 				return ConstraintType.ExternalUniqueness;
 			}
 		}
-		/// <summary>
-		/// Required override. Returns {MultipleRowSets, OneRolePerSet}.
-		/// </summary>
-		public override RoleSetStyles RoleSetStyles
+		ConstraintType IConstraint.ConstraintType
 		{
 			get
 			{
-				return RoleSetStyles.MultipleRowSets | RoleSetStyles.OneRolePerSet;
+				return ConstraintType;
 			}
 		}
-	}
-	public partial class EqualityConstraint
-	{
 		/// <summary>
-		/// Required override. Returns ConstraintType.Equality.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, OneRolePerSequence}.
 		/// </summary>
-		public override ConstraintType ConstraintType
+		protected RoleSequenceStyles RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.OneRolePerSequence;
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles;
+			}
+		}
+		#endregion // IConstraint Implementation
+	}
+	public partial class EqualityConstraint : IConstraint
+	{
+		#region IConstraint Implementation
+		/// <summary>
+		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
+		/// </summary>
+		protected ConstraintType ConstraintType
 		{
 			get
 			{
 				return ConstraintType.Equality;
 			}
 		}
-		/// <summary>
-		/// Required override. Returns {MultipleRowSets, MultipleRolesPerSet}.
-		/// </summary>
-		public override RoleSetStyles RoleSetStyles
+		ConstraintType IConstraint.ConstraintType
 		{
 			get
 			{
-				return RoleSetStyles.MultipleRowSets | RoleSetStyles.MultipleRolesPerSet;
+				return ConstraintType;
 			}
 		}
-	}
-	public partial class ExclusionConstraint
-	{
 		/// <summary>
-		/// Required override. Returns ConstraintType.Exclusion.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, MultipleRolesPerSequence}.
 		/// </summary>
-		public override ConstraintType ConstraintType
+		protected RoleSequenceStyles RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.MultipleRolesPerSequence;
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles;
+			}
+		}
+		#endregion // IConstraint Implementation
+	}
+	public partial class ExclusionConstraint : IConstraint
+	{
+		#region IConstraint Implementation
+		/// <summary>
+		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
+		/// </summary>
+		protected ConstraintType ConstraintType
 		{
 			get
 			{
 				return ConstraintType.Exclusion;
 			}
 		}
-		/// <summary>
-		/// Required override. Returns {MultipleRowSets, MultipleRowSets} if ExclusiontType
-		/// is Exclusion, and  {MultipleRowSets, OneRolePerSet} otherwise.
-		/// </summary>
-		public override RoleSetStyles RoleSetStyles
+		ConstraintType IConstraint.ConstraintType
 		{
 			get
 			{
-				switch (ExclusionType)
-				{
-					case ExclusionType.Exclusion:
-						return RoleSetStyles.MultipleRowSets | RoleSetStyles.MultipleRolesPerSet;
-					default:
-						return RoleSetStyles.MultipleRowSets | RoleSetStyles.OneRolePerSet;
-				}
+				return ConstraintType;
 			}
 		}
-	}
-	public partial class SubsetConstraint
-	{
 		/// <summary>
-		/// Required override. Returns ConstraintType.Subset.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, MultipleRowSequences}.
 		/// </summary>
-		public override ConstraintType ConstraintType
+		protected RoleSequenceStyles RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.MultipleRolesPerSequence;
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles;
+			}
+		}
+		#endregion // IConstraint Implementation
+	}
+	public partial class DisjunctiveMandatoryConstraint : IConstraint
+	{
+		#region IConstraint Implementation
+		/// <summary>
+		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
+		/// </summary>
+		protected ConstraintType ConstraintType
+		{
+			get
+			{
+				return ConstraintType.DisjunctiveMandatory;
+			}
+		}
+		ConstraintType IConstraint.ConstraintType
+		{
+			get
+			{
+				return ConstraintType;
+			}
+		}
+		/// <summary>
+		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, OneRolePerSequence}.
+		/// </summary>
+		protected RoleSequenceStyles RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.OneRolePerSequence;
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles;
+			}
+		}
+		#endregion // IConstraint Implementation
+	}
+	public partial class SubsetConstraint : IConstraint
+	{
+		#region IConstraint Implementation
+		/// <summary>
+		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
+		/// </summary>
+		protected ConstraintType ConstraintType
 		{
 			get
 			{
 				return ConstraintType.Subset;
 			}
 		}
-		/// <summary>
-		/// Required override. Returns {TwoRoleSets, MultipleRolesPerSet, OrderedRoleSets}.
-		/// </summary>
-		public override RoleSetStyles RoleSetStyles
+		ConstraintType IConstraint.ConstraintType
 		{
 			get
 			{
-				return RoleSetStyles.TwoRoleSets | RoleSetStyles.MultipleRolesPerSet | RoleSetStyles.OrderedRoleSets;
+				return ConstraintType;
 			}
 		}
+		/// <summary>
+		/// Implements IConstraint.RoleSequenceStyles. Returns {TwoRoleSequences, MultipleRolesPerSequence, OrderedRoleSequences}.
+		/// </summary>
+		protected RoleSequenceStyles RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles.TwoRoleSequences | RoleSequenceStyles.MultipleRolesPerSequence | RoleSequenceStyles.OrderedRoleSequences;
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles;
+			}
+		}
+		#endregion // IConstraint Implementation
 	}
-	#endregion // ConstraintType and RoleSetStyles implementation for all constraints
+	#endregion // ConstraintType and RoleSequenceStyles implementation for all constraints
 }

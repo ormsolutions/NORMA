@@ -93,7 +93,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				Debug.Assert(factConstraint != null);
 				Debug.Assert(factRoleCount > 0 && factRoleCount >= factConstraint.RoleCollection.Count);
 				myBounds = new RectangleD();
-				Constraint constraint = factConstraint.Constraint;
+				IConstraint constraint = factConstraint.Constraint;
 				myConstraintType = constraint.ConstraintType;
 				myActiveRoles = new ConstraintBoxRoleActivity[factRoleCount];
 				myFactConstraint = factConstraint;
@@ -113,7 +113,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					Debug.Assert(factConstraint != null);
 					Debug.Assert(roleActivityCount > 0 && roleActivityCount >= factConstraint.RoleCollection.Count);
 					myBounds = new RectangleD();
-					Constraint constraint = factConstraint.Constraint;
+					IConstraint constraint = factConstraint.Constraint;
 					myConstraintType = constraint.ConstraintType;
 					myActiveRoles = roleActivity;
 					myFactConstraint = factConstraint;
@@ -122,7 +122,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				else
 				{
 					myBounds = new RectangleD();
-					Constraint constraint = factConstraint.Constraint;
+					IConstraint constraint = factConstraint.Constraint;
 					myConstraintType = constraint.ConstraintType;
 					myActiveRoles = roleActivity;
 					myFactConstraint = factConstraint;
@@ -304,11 +304,12 @@ namespace Northface.Tools.ORM.ShapeModel
 						retVal = 0;
 						break;
 					case ConstraintType.ExternalUniqueness:
+					case ConstraintType.DisjunctiveMandatory:
 					case ConstraintType.Ring:
 					case ConstraintType.Equality:
 					case ConstraintType.Exclusion:
 					case ConstraintType.Frequency:
-					case ConstraintType.Mandatory:
+					case ConstraintType.SimpleMandatory:
 					case ConstraintType.Subset:
 					default:
 						retVal = 1;
@@ -967,7 +968,7 @@ namespace Northface.Tools.ORM.ShapeModel
 							if (currentBoxActivity != ConstraintBoxRoleActivity.NotInBox)
 							{
 								endPos += roleWidth;
-								Constraint currentConstraint = constraintBox.FactConstraint.Constraint;
+								IConstraint currentConstraint = constraintBox.FactConstraint.Constraint;
 								if (currentBoxActivity != ConstraintBoxRoleActivity.Active)
 								{
 									if (!(i == 0 || i == numRoles - 1))
@@ -1044,14 +1045,14 @@ namespace Northface.Tools.ORM.ShapeModel
 		private class ConstraintSubField : ShapeSubField
 		{
 			#region Member variables
-			private Constraint myAssociatedConstraint;
+			private IConstraint myAssociatedConstraint;
 			#endregion // Member variables
 			#region Construction
 			/// <summary>
 			/// Default constructor
 			/// </summary>
 			/// <param name="associatedConstraint">The Constraint that this ConstraintSubfield will represent.</param>
-			public ConstraintSubField(Constraint associatedConstraint)
+			public ConstraintSubField(IConstraint associatedConstraint)
 			{
 				Debug.Assert(associatedConstraint != null);
 				myAssociatedConstraint = associatedConstraint;
@@ -1112,7 +1113,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Get the Constraint element associated with this sub field
 			/// </summary>
-			public Constraint AssociatedConstraint
+			public IConstraint AssociatedConstraint
 			{
 				get
 				{
@@ -1393,7 +1394,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			ConstraintSubField constraintSubField;
 			if (null != (constraintSubField = subField as ConstraintSubField))
 			{
-				return new ModelElement[] { constraintSubField.AssociatedConstraint };
+				return new ModelElement[] { (ModelElement)constraintSubField.AssociatedConstraint };
 			}
 			return null;
 		}
@@ -1620,7 +1621,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// is added or removed that is associated with this fact.
 		/// </summary>
 		/// <param name="constraint">The newly added or removed constraint</param>
-		public void ConstraintSetChanged(Constraint constraint)
+		public void ConstraintSetChanged(IConstraint constraint)
 		{
 			Debug.Assert(Store.TransactionManager.InTransaction);
 			bool resize = false;
@@ -2116,9 +2117,10 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <param name="constraint">Any constraint. In the core model, only uniqueness
 		/// constraints will be preferred</param>
 		/// <returns>true if the PreferredIdentifierFor property on the role is not null.</returns>
-		protected virtual bool ShouldDrawConstraintPreferred(Constraint constraint)
+		protected virtual bool ShouldDrawConstraintPreferred(IConstraint constraint)
 		{
-			return constraint.PreferredIdentifierFor != null;
+			ConstraintRoleSequence sequence = constraint as ConstraintRoleSequence;
+			return (sequence != null) ? (sequence.PreferredIdentifierFor != null) : false;
 		}
 		#endregion // FactTypeShape specific
 		#region Shape display update rules

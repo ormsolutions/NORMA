@@ -24,7 +24,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Get the constraint instance bound
 		/// to the context fact
 		/// </summary>
-		Constraint Constraint { get;}
+		IConstraint Constraint { get;}
 		/// <summary>
 		/// Get the roles associated with both the
 		/// constraint and the fact.
@@ -42,20 +42,16 @@ namespace Northface.Tools.ORM.ObjectModel
 	{
 		#region FactType Specific
 		/// <summary>
-		/// Get a read-only list of FactConstraint links. To get the
-		/// constraints from here, use the ConstraintCollection property on the returned
-		/// object. To get to the roles, use the ConstrainedRoleCollection property.
+		/// Get a read-only collection of FactConstraint links. Use the
+		/// appropriate methods on IFactConstraint to get to the Constraint
+		/// and RoleCollection values for each returned constraint.
 		/// </summary>
 		[CLSCompliant(false)]
-		public IList<ExternalFactConstraint> ExternalFactConstraintCollection
+		public ICollection<IFactConstraint> ExternalFactConstraintCollection
 		{
 			get
 			{
-				IList untypedList = GetElementLinks(ExternalFactConstraint.FactTypeCollectionMetaRoleGuid);
-				int elementCount = untypedList.Count;
-				ExternalFactConstraint[] typedList = new ExternalFactConstraint[elementCount];
-				untypedList.CopyTo(typedList, 0);
-				return typedList;
+				return new FactConstraintCollectionImpl(this, false, true);
 			}
 		}
 		/// <summary>
@@ -69,7 +65,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return new FactConstraintCollectionImpl(this);
+				return new FactConstraintCollectionImpl(this, true, true);
 			}
 		}
 		#endregion // FactType Specific
@@ -77,46 +73,84 @@ namespace Northface.Tools.ORM.ObjectModel
 		private class FactConstraintCollectionImpl : ICollection<IFactConstraint>
 		{
 			#region Member Variables
-			private FactType myFactType;
+			private IList[] myLists;
 			#endregion // Member Variables
 			#region Constructors
-			public FactConstraintCollectionImpl(FactType factType)
+			/// <summary>
+			/// Create a FactConstraint collection for the given fact type. Fact constraints
+			/// come from multiple links, this puts them all together.
+			/// </summary>
+			/// <param name="factType">The parent fact type</param>
+			/// <param name="includeInternalConstraints">true to include internal fact constraints</param>
+			/// <param name="includeExternalConstraints">true to include external fact constraints</param>
+			public FactConstraintCollectionImpl(FactType factType, bool includeInternalConstraints, bool includeExternalConstraints)
 			{
-				myFactType = factType;
+				Debug.Assert(includeExternalConstraints || includeExternalConstraints);
+				int total = 0;
+				if (includeInternalConstraints)
+				{
+					++total;
+				}
+				if (includeExternalConstraints)
+				{
+					total += 2;
+				}
+				myLists = new IList[total];
+				int externalIndex = 0;
+				if (includeInternalConstraints)
+				{
+					myLists[0] = factType.InternalConstraintCollection;
+					++externalIndex;
+				}
+				if (includeExternalConstraints)
+				{
+					myLists[externalIndex] = factType.GetElementLinks(SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid);
+					myLists[externalIndex + 1] = factType.GetElementLinks(MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid);
+				}
 			}
 			#endregion // Constructors
-			#region FactConstraintCollection specific
-			private IList InternalFactConstraints
-			{
-				get
-				{
-					return myFactType.GetElementLinks(InternalFactConstraint.FactTypeMetaRoleGuid);
-				}
-			}
-			private IList ExternalFactConstraints
-			{
-				get
-				{
-					return myFactType.GetElementLinks(ExternalFactConstraint.FactTypeCollectionMetaRoleGuid);
-				}
-			}
-			#endregion // FactConstraintCollection specific
 			#region ICollection<IFactConstraint> Implementation
 			bool ICollection<IFactConstraint>.Contains(IFactConstraint item)
 			{
-				return InternalFactConstraints.Contains(item) ? true : ExternalFactConstraints.Contains(item);
+				IList[] lists = myLists;
+				int listCount = lists.Length;
+				for (int i = 0; i < listCount; ++i)
+				{
+					if (lists[i].Contains(item))
+					{
+						return true;
+					}
+				}
+				return false;
 			}
 			void ICollection<IFactConstraint>.CopyTo(IFactConstraint[] array, int arrayIndex)
 			{
-				IList internals = InternalFactConstraints;
-				internals.CopyTo(array, arrayIndex);
-				ExternalFactConstraints.CopyTo(array, arrayIndex + internals.Count);
+				IList[] lists = myLists;
+				int listCount = lists.Length;
+				int prevTotal = 0;
+				for (int i = 0; i < listCount; ++i)
+				{
+					IList curList = lists[i];
+					int curTotal = curList.Count;
+					if (curTotal != 0)
+					{
+						curList.CopyTo(array, prevTotal);
+						prevTotal += curTotal;
+					}
+				}
 			}
 			int ICollection<IFactConstraint>.Count
 			{
 				get
 				{
-					return InternalFactConstraints.Count + ExternalFactConstraints.Count;
+					IList[] lists = myLists;
+					int listCount = lists.Length;
+					int total = 0;
+					for (int i = 0; i < listCount; ++i)
+					{
+						total += lists[i].Count;
+					}
+					return total;
 				}
 			}
 			bool ICollection<IFactConstraint>.IsReadOnly
@@ -142,13 +176,16 @@ namespace Northface.Tools.ORM.ObjectModel
 			#region IEnumerable<IFactConstraint> Implementation
 			IEnumerator<IFactConstraint> IEnumerable<IFactConstraint>.GetEnumerator()
 			{
-				foreach (IFactConstraint fc in InternalFactConstraints)
+				IList[] lists = myLists;
+				int listCount = lists.Length;
+				for (int i = 0; i < listCount; ++i)
 				{
-					yield return fc;
-				}
-				foreach (IFactConstraint fc in ExternalFactConstraints)
-				{
-					yield return fc;
+					IList curList = lists[i];
+					int curTotal = curList.Count;
+					for (int j = 0; j < curTotal; ++j)
+					{
+						yield return (IFactConstraint)curList[j];
+					}
 				}
 			}
 			#endregion // IEnumerable<IFactConstraint> Implementation

@@ -68,7 +68,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				// player is a value type then return the refence mode name.
 				if (prefConstraint != null)
 				{
-					ObjectType valueType = prefConstraint.RoleSet.RoleCollection[0].RolePlayer;
+					ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
 					Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueType.Name, this.Name, this.Model);
 
 					if (valueType.IsValueType)
@@ -311,10 +311,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				roleCollection.Add(valueTypeRole);
 
 				InternalUniquenessConstraint ic	= InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-				InternalConstraintRoleSet irs =	InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
-				irs.RoleCollection.Add(valueTypeRole);
-				ic.RoleSet = irs;				
-				ic.Model = objModel;						
+				ic.RoleCollection.Add(valueTypeRole); // Automatically sets FactType, setting it again will remove and delete the new constraint
 				objectType.PreferredIdentifier = ic;
 			}
 
@@ -353,7 +350,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				ObjectType valueType = FindValueType(valueTypeName, objModel);
 				if (!IsValueTypeShared(preferredConstraint, objModel) && valueType == null)
 				{
-					valueType = preferredConstraint.RoleSet.RoleCollection[0].RolePlayer;
+					valueType = preferredConstraint.RoleCollection[0].RolePlayer;
 					if (valueType.IsValueType)
 					{
 						valueType.Name = valueTypeName;
@@ -371,10 +368,10 @@ namespace Northface.Tools.ORM.ObjectModel
 
 					if (!IsValueTypeShared(preferredConstraint, objModel))
 					{
-						preferredConstraint.RoleSet.RoleCollection[0].RolePlayer.Remove();
+						preferredConstraint.RoleCollection[0].RolePlayer.Remove();
 					}
 
-					preferredConstraint.RoleSet.RoleCollection[0].RolePlayer = valueType;
+					preferredConstraint.RoleCollection[0].RolePlayer = valueType;
 				}
 			}
 
@@ -386,10 +383,10 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// <param name="aggressivelyKillValueType">Allow removing the value type along with the reference mode predicate</param>
 			private void KillReferenceMode(InternalUniquenessConstraint preferredConstraint, bool aggressivelyKillValueType)
 			{
-				ObjectType valueType = preferredConstraint.RoleSet.RoleCollection[0].RolePlayer;
+				ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
 				if (valueType.IsValueType)
 				{
-					FactType refFact = preferredConstraint.RoleSet.RoleCollection[0].FactType;
+					FactType refFact = preferredConstraint.RoleCollection[0].FactType;
 					if (!IsValueTypeShared(preferredConstraint, valueType.Model) && aggressivelyKillValueType)
 					{
 						valueType.Remove();
@@ -402,7 +399,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				if (preferredConstraint != null)
 				{
-					ObjectType valueType = preferredConstraint.RoleSet.RoleCollection[0].RolePlayer;
+					ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
 					if (valueType.IsValueType)
 					{
 						int count = 0;

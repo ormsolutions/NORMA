@@ -13,7 +13,7 @@ using Northface.Tools.ORM.ObjectModel;
 namespace Northface.Tools.ORM.ShapeModel
 {
 	/// <summary>
-	/// A ConnectAction to add role sets to an external constraint
+	/// A ConnectAction to add role sequences to an external constraint
 	/// </summary>
 	[CLSCompliant(true)]
 	public class ExternalConstraintConnectAction : ConnectAction
@@ -110,7 +110,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			public override void CreateConnection(ShapeElement sourceShapeElement, ShapeElement targetShapeElement, PaintFeedbackArgs paintFeedbackArgs)
 			{
 				ExternalConstraintShape constraintShape;
-				ExternalConstraint constraint;
+				IConstraint constraint;
 				ExternalConstraintConnectAction action;
 				IList<Role> selectedRoles;
 				int rolesCount;
@@ -120,15 +120,29 @@ namespace Northface.Tools.ORM.ShapeModel
 					(null != (selectedRoles = action.SelectedRoleCollection)) &&
 					(0 != (rolesCount = selectedRoles.Count)))
 				{
-					ExternalConstraintRoleSetMoveableCollection roleSets = constraint.RoleSetCollection;
-					ExternalConstraintRoleSet roleSet = ExternalConstraintRoleSet.CreateExternalConstraintRoleSet(constraint.Store);
-					RoleMoveableCollection roles = roleSet.RoleCollection;
-					for (int i = 0; i < rolesCount; ++i)
+					MultiColumnExternalConstraint mcConstraint;
+					SingleColumnExternalConstraint scConstraint;
+					if (null != (mcConstraint = constraint as MultiColumnExternalConstraint))
 					{
-						roles.Add(selectedRoles[i]);
+						// Add a new role set
+						MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = mcConstraint.RoleSequenceCollection;
+						MultiColumnExternalConstraintRoleSequence roleSequence = MultiColumnExternalConstraintRoleSequence.CreateMultiColumnExternalConstraintRoleSequence(mcConstraint.Store);
+						RoleMoveableCollection roles = roleSequence.RoleCollection;
+						for (int i = 0; i < rolesCount; ++i)
+						{
+							roles.Add(selectedRoles[i]);
+						}
+						roleSequences.Add(roleSequence);
 					}
-					roleSets.Add(roleSet);
-
+					else if (null != (scConstraint = constraint as SingleColumnExternalConstraint))
+					{
+						// The single-column constraint is its own role set, just add the roles
+						RoleMoveableCollection roles = scConstraint.RoleCollection;
+						for (int i = 0; i < rolesCount; ++i)
+						{
+							roles.Add(selectedRoles[i]);
+						}
+					}
 				}
 			}
 			/// <summary>
@@ -231,7 +245,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		private static extern short GetKeyState(Keys nVirtKey);
 		/// <summary>
 		/// Add a source shape or commit/cancel the action by forwarding the
-		/// click to the base class, or modify the current role set by handling
+		/// click to the base class, or modify the current role sequence by handling
 		/// the click locally.
 		/// </summary>
 		/// <param name="e">MouseActionEventArgs</param>

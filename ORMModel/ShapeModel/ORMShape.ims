@@ -34,7 +34,8 @@ Information Contained Herein is Proprietary and Confidential.
           <derivedshapes />
         </shape>
         <shape namespace="Northface.Tools.ORM.ShapeModel" name="ExternalConstraintShape" identity="00a08f56-73ba-4c8f-8fa1-ae61b8fc1cae" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.Constraint)" />
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)" />
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)" />
           <metaattributes />
           <derivedshapes />
         </shape>

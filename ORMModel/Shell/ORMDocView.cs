@@ -188,7 +188,7 @@ namespace Northface.Tools.ORM.Shell
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteObjectType;
 			}
-			else if (element is Constraint)
+			else if (element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint)
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint;
 			}

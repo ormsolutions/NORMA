@@ -80,13 +80,13 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			else if (attributeGuid == IsMandatoryMetaAttributeGuid)
 			{
-				ConstraintRoleSetMoveableCollection constraintRoleSets = ConstraintRoleSetCollection;
-				int roleSetCount = constraintRoleSets.Count;
-				for (int i = 0; i < roleSetCount; ++i)
+				ConstraintRoleSequenceMoveableCollection constraintRoleSequences = ConstraintRoleSequenceCollection;
+				int roleSequenceCount = constraintRoleSequences.Count;
+				for (int i = 0; i < roleSequenceCount; ++i)
 				{
-					ConstraintRoleSet roleSet = constraintRoleSets[i];
-					Constraint constraint = roleSet.Constraint;
-					if (constraint.ConstraintType == ConstraintType.Mandatory)
+					ConstraintRoleSequence roleSequence = constraintRoleSequences[i];
+					IConstraint constraint = roleSequence.Constraint;
+					if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
 					{
 						return true;
 					}
@@ -106,12 +106,12 @@ namespace Northface.Tools.ORM.ObjectModel
 						bool haveUniqueness = false;
 						bool haveDoubleWideUniqueness = false;
 						bool tooManyUniquenessConstraints = false;
-						foreach (ConstraintRoleSet roleSet in ConstraintRoleSetCollection)
+						foreach (ConstraintRoleSequence roleSequence in ConstraintRoleSequenceCollection)
 						{
-							Constraint constraint = roleSet.Constraint;
+							IConstraint constraint = roleSequence.Constraint;
 							switch (constraint.ConstraintType)
 							{
-								case ConstraintType.Mandatory:
+								case ConstraintType.SimpleMandatory:
 									// Ignore multiple mandatories. Unlike
 									// condition, and we ignore it in the IsMandatory
 									// getter anyway.
@@ -125,7 +125,7 @@ namespace Northface.Tools.ORM.ObjectModel
 									else
 									{
 										haveUniqueness = true;
-										if (roleSet.RoleCollection.Count == 2)
+										if (roleSequence.RoleCollection.Count == 2)
 										{
 											haveDoubleWideUniqueness = true;
 										}
@@ -149,9 +149,9 @@ namespace Northface.Tools.ORM.ObjectModel
 							{
 								oppositeRole = roles[1];
 							}
-							foreach (ConstraintRoleSet roleSet in oppositeRole.ConstraintRoleSetCollection)
+							foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
 							{
-								if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+								if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
 								{
 									haveOppositeUniqueness = true;
 									break;
@@ -288,23 +288,20 @@ namespace Northface.Tools.ORM.ObjectModel
 						{
 							throw new InvalidOperationException(ResourceStrings.ModelExceptionIsMandatoryRequiresAttachedFactType);
 						}
-						InternalConstraintRoleSet roleSet = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
-						roleSet.RoleCollection.Add(role);
-						InternalConstraint constraint = MandatoryConstraint.CreateMandatoryConstraint(store);
-						constraint.Model = model;
-						constraint.RoleSet = roleSet;
+						InternalConstraint constraint = SimpleMandatoryConstraint.CreateSimpleMandatoryConstraint(store);
+						constraint.RoleCollection.Add(role); // Automatically sets FactType, setting it again will remove and delete the new constraint
 					}
 					else
 					{
 						// Find and remove the mandatory constraint
-						ConstraintRoleSetMoveableCollection constraintRoleSets = role.ConstraintRoleSetCollection;
-						int roleSetCount = constraintRoleSets.Count;
-						for (int i = roleSetCount - 1; i >= 0; --i) // The indices may change, go backwards
+						ConstraintRoleSequenceMoveableCollection constraintRoleSequences = role.ConstraintRoleSequenceCollection;
+						int roleSequenceCount = constraintRoleSequences.Count;
+						for (int i = roleSequenceCount - 1; i >= 0; --i) // The indices may change, go backwards
 						{
-							Constraint constraint = constraintRoleSets[i].Constraint;
-							if (constraint.ConstraintType == ConstraintType.Mandatory)
+							IConstraint constraint = constraintRoleSequences[i].Constraint;
+							if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
 							{
-								constraint.Remove();
+								(constraint as ModelElement).Remove();
 								// Should only have one of these, but we might as well keep going
 								// because any of them would make the property appear to be true
 							}
@@ -397,19 +394,19 @@ namespace Northface.Tools.ORM.ObjectModel
 							// If there are multiple uniqueness constraints, then remove
 							// all but one. Prefer a single-role constraint to a double-role
 							// constraint and pretend that our old value is a many.
-							ConstraintRoleSetMoveableCollection roleSets = role.ConstraintRoleSetCollection;
-							int roleSetCount = roleSets.Count;
+							ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
+							int roleSequenceCount = roleSequences.Count;
 							// Go backwards so we can remove constraints
-							Constraint keepCandidate = null;
+							IConstraint keepCandidate = null;
 							int keepRoleCardinality = 0;
 							bool keepCandidateIsPreferred = false;
-							for (int i = roleSetCount - 1; i >= 0; --i) // The indices may change, go backwards
+							for (int i = roleSequenceCount - 1; i >= 0; --i) // The indices may change, go backwards
 							{
-								ConstraintRoleSet roleSet = roleSets[i];
-								Constraint constraint = roleSet.Constraint;
+								ConstraintRoleSequence roleSequence = roleSequences[i];
+								IConstraint constraint = roleSequence.Constraint;
 								if (constraint.ConstraintType == ConstraintType.InternalUniqueness)
 								{
-									int currentCardinality = roleSet.RoleCollection.Count;
+									int currentCardinality = roleSequence.RoleCollection.Count;
 									if (keepCandidate == null)
 									{
 										keepCandidate = constraint;
@@ -422,7 +419,7 @@ namespace Northface.Tools.ORM.ObjectModel
 									else if (currentCardinality < keepRoleCardinality)
 									{
 										keepRoleCardinality = currentCardinality;
-										keepCandidate.Remove();
+										(keepCandidate as ModelElement).Remove();
 										keepCandidate = constraint;
 									}
 									else
@@ -433,13 +430,13 @@ namespace Northface.Tools.ORM.ObjectModel
 											currentCardinality == 1 &&
 											(constraint as InternalUniquenessConstraint).IsPreferred)
 										{
-											keepCandidate.Remove();
+											(keepCandidate as ModelElement).Remove();
 											keepCandidate = constraint;
 											keepCandidateIsPreferred = true;
 										}
 										else
 										{
-											constraint.Remove();
+											(constraint as ModelElement).Remove();
 										}
 									}
 								}
@@ -463,13 +460,13 @@ namespace Northface.Tools.ORM.ObjectModel
 								// a zero-to-one or 1-to-1 cardinality on the opposite role,
 								// which is a change from the current zero-to-many or one-to-many
 								// cardinality it currently has.
-								foreach (ConstraintRoleSet roleSet in role.ConstraintRoleSetCollection)
+								foreach (ConstraintRoleSequence roleSequence in role.ConstraintRoleSequenceCollection)
 								{
-									Constraint spanningConstraint = roleSet.Constraint;
+									IConstraint spanningConstraint = roleSequence.Constraint;
 									if (spanningConstraint.ConstraintType == ConstraintType.InternalUniqueness)
 									{
-										Debug.Assert(roleSet.RoleCollection.Count == 2);
-										spanningConstraint.Remove();
+										Debug.Assert(roleSequence.RoleCollection.Count == 2);
+										(spanningConstraint as ModelElement).Remove();
 										// There will only be one of these because we
 										// already fixed any 'broken' states earlier.
 										break;
@@ -478,10 +475,7 @@ namespace Northface.Tools.ORM.ObjectModel
 
 								// Now create a new uniqueness constraint containing only this role
 								InternalUniquenessConstraint iuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-								iuc.Model = factType.Model;
-								InternalConstraintRoleSet newRoleSet = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
-								newRoleSet.RoleCollection.Add(role);
-								iuc.RoleSet = newRoleSet;
+								iuc.RoleCollection.Add(role);  // Automatically sets FactType, setting it again will remove and delete the new constraint
 							}
 							else
 							{
@@ -493,13 +487,13 @@ namespace Northface.Tools.ORM.ObjectModel
 									// this role. If the opposite role does not have an internal uniqueness constraint,
 									// then we need to automatically create a uniqueness constraint that spans both
 									// roles.
-									foreach (ConstraintRoleSet roleSet in role.ConstraintRoleSetCollection)
+									foreach (ConstraintRoleSequence roleSequence in role.ConstraintRoleSequenceCollection)
 									{
-										Constraint constraint = roleSet.Constraint;
+										IConstraint constraint = roleSequence.Constraint;
 										if (constraint.ConstraintType == ConstraintType.InternalUniqueness)
 										{
-											Debug.Assert(roleSet.RoleCollection.Count == 1);
-											constraint.Remove();
+											Debug.Assert(roleSequence.RoleCollection.Count == 1);
+											(constraint as ModelElement).Remove();
 											break;
 										}
 									}
@@ -512,12 +506,12 @@ namespace Northface.Tools.ORM.ObjectModel
 								// Unspecified checks the opposite role before saying unspecified, no need to look
 								if (!wasUnspecified)
 								{
-									foreach (ConstraintRoleSet roleSet in oppositeRole.ConstraintRoleSetCollection)
+									foreach (ConstraintRoleSequence roleSequence in oppositeRole.ConstraintRoleSequenceCollection)
 									{
-										if (roleSet.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+										if (roleSequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
 										{
 											oppositeHasUnique = true;
-											Debug.Assert(roleSet.RoleCollection.Count == 1);
+											Debug.Assert(roleSequence.RoleCollection.Count == 1);
 										}
 									}
 								}
@@ -525,12 +519,10 @@ namespace Northface.Tools.ORM.ObjectModel
 								{
 									// Now create a new uniqueness constraint containing both roles
 									InternalUniquenessConstraint iuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-									iuc.Model = factType.Model;
-									InternalConstraintRoleSet newRoleSet = InternalConstraintRoleSet.CreateInternalConstraintRoleSet(store);
-									RoleMoveableCollection setRoles = newRoleSet.RoleCollection;
-									setRoles.Add(role);
-									setRoles.Add(oppositeRole);
-									iuc.RoleSet = newRoleSet;
+									iuc.FactType = factType;
+									RoleMoveableCollection constraintRoles = iuc.RoleCollection;
+									constraintRoles.Add(role);
+									constraintRoles.Add(oppositeRole);
 								}
 							}
 						}

@@ -57,7 +57,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			// Keep the pen color in sync with the color being used for highlighting
 			Color startColor = UpdateGeometryLuminosity(e.View, pen);
 			bool restoreColor = startColor != pen.Color;
-			ExternalConstraint constraint = AssociatedConstraint;
+			IConstraint constraint = AssociatedConstraint;
 			RectangleD bounds = AbsoluteBounds;
 			Graphics g = e.Graphics;
 			switch (constraint.ConstraintType)
@@ -75,43 +75,39 @@ namespace Northface.Tools.ORM.ShapeModel
 					g.DrawLine(pen, xLeft, y, xRight, y);
 					break;
 				}
-				case ConstraintType.Exclusion:
+				case ConstraintType.DisjunctiveMandatory:
 				{
-					ExclusionConstraint ec = constraint as ExclusionConstraint;
-					const double cos45 = 0.70710678118654752440084436210485;
-					ExclusionType ecType = ec.ExclusionType;
-					if (ecType != ExclusionType.InclusiveOr)
+					// Draw the dot
+					bounds.Inflate(-Bounds.Width * .22, -Bounds.Height * .22);
+					Brush brush = StyleSet.GetBrush(MandatoryDotBrush);
+					SolidBrush coloredBrush = null;
+					if (restoreColor)
 					{
-						// Draw the X
-						double offset = (bounds.Width + pen.Width) * (1 - cos45) / 2;
-						float leftX = (float)(bounds.Left + offset);
-						float rightX = (float)(bounds.Right - offset);
-						float topY = (float)(bounds.Top + offset);
-						float bottomY = (float)(bounds.Bottom - offset);
-						g.DrawLine(pen, leftX, topY, rightX, bottomY);
-						g.DrawLine(pen, leftX, bottomY, rightX, topY);
-					}
-					if (ecType != ExclusionType.Exclusion)
-					{
-						// Draw the dot
-						bounds.Inflate(-Bounds.Width * .22, -Bounds.Height * .22);
-						Brush brush = StyleSet.GetBrush(MandatoryDotBrush);
-						SolidBrush coloredBrush = null;
-						if (restoreColor)
-						{
-							coloredBrush = brush as SolidBrush;
-							if (coloredBrush != null)
-							{
-								Debug.Assert(coloredBrush.Color == startColor); // Pen and brush should have the same base color
-								coloredBrush.Color = pen.Color;
-							}
-						}
-						g.FillEllipse(brush, RectangleD.ToRectangleF(bounds));
+						coloredBrush = brush as SolidBrush;
 						if (coloredBrush != null)
 						{
-							coloredBrush.Color = startColor;
+							Debug.Assert(coloredBrush.Color == startColor); // Pen and brush should have the same base color
+							coloredBrush.Color = pen.Color;
 						}
 					}
+					g.FillEllipse(brush, RectangleD.ToRectangleF(bounds));
+					if (coloredBrush != null)
+					{
+						coloredBrush.Color = startColor;
+					}
+					break;
+				}
+				case ConstraintType.Exclusion:
+				{
+					const double cos45 = 0.70710678118654752440084436210485;
+					// Draw the X
+					double offset = (bounds.Width + pen.Width) * (1 - cos45) / 2;
+					float leftX = (float)(bounds.Left + offset);
+					float rightX = (float)(bounds.Right - offset);
+					float topY = (float)(bounds.Top + offset);
+					float bottomY = (float)(bounds.Bottom - offset);
+					g.DrawLine(pen, leftX, topY, rightX, bottomY);
+					g.DrawLine(pen, leftX, bottomY, rightX, topY);
 					break;
 				}
 				case ConstraintType.ExternalUniqueness:
@@ -185,11 +181,11 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Get the typed model element associated with this shape
 		/// </summary>
-		public ExternalConstraint AssociatedConstraint
+		public IConstraint AssociatedConstraint
 		{
 			get
 			{
-				return ModelElement as ExternalConstraint;
+				return ModelElement as IConstraint;
 			}
 		}
 		#endregion // ExternalConstraintShape specific
@@ -203,21 +199,6 @@ namespace Northface.Tools.ORM.ShapeModel
 				if (attributeGuid == ExternalUniquenessConstraint.IsPreferredMetaAttributeGuid)
 				{
 					InvalidateElementPresentation(e.ModelElement);
-				}
-			}
-		}
-		[RuleOn(typeof(ExclusionConstraint), FireTime = TimeToFire.TopLevelCommit)]
-		private class ShapeChangeRule2 : ChangeRule
-		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
-			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == ExclusionConstraint.ExclusionTypeMetaAttributeGuid)
-				{
-					foreach (object obj in e.ModelElement.AssociatedPresentationElements)
-					{
-						InvalidateElementPresentation(e.ModelElement);
-					}
 				}
 			}
 		}
