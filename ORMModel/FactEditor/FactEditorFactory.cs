@@ -34,7 +34,6 @@ namespace Northface.Tools.ORM.FactEditor
 		public FactEditorFactory(ORMDesignerPackage package)
 		{
 			vsServiceProviderManaged = package;
-			Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering {0} constructor", this.ToString()));
 			myPackage = package;
 		}
 
@@ -96,8 +95,6 @@ namespace Northface.Tools.ORM.FactEditor
 						out Guid pguidCmdUI,
 						out int pgrfCDW)
 		{
-			Trace.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering {0} CreateEditorInstace()", this.ToString()));
-
 			// Initialize to null
 			ppunkDocView = new System.IntPtr();
 			ppunkDocData = new System.IntPtr();
