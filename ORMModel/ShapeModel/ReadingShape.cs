@@ -21,6 +21,152 @@ namespace Northface.Tools.ORM.ShapeModel
 		private const string ELLIPSIS = "\x2026";
 		private const char C_ELLIPSIS = '\x2026';
 
+		#region Model Event Hookup and Handlers
+
+		#region Event Hookup
+		/// <summary>
+		/// Attaches event listeners for the purpose of notifying the
+		/// ReadingShape to invalidate its cached data.
+		/// </summary>
+		public static void AttachEventHandlers(Store store)
+		{
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			// Track ElementLink changes
+			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasReading.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ReadingAddedEvent));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ReadingRemovedEvent));
+
+			classInfo = dataDirectory.FindMetaClass(Reading.MetaClassGuid);
+			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ReadingAttributeChangedEvent));
+
+			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(RoleAddedEvent));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(RoleRemovedEvent));
+		}
+
+		/// <summary>
+		/// Detaches event listeners for the purpose of notifying the
+		/// ReadingShape to invalidate its cached data.
+		/// </summary>
+		public static void DetachEventHandlers(Store store)
+		{
+			if (store == null || store.Disposed)
+			{
+				return;
+			}
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			// Track ElementLink changes
+			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasReading.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ReadingAddedEvent));
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(ReadingRemovedEvent));
+
+			classInfo = dataDirectory.FindMetaClass(Reading.MetaClassGuid);
+			eventDirectory.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(ReadingAttributeChangedEvent));
+
+			classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasRole.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(RoleAddedEvent));
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(RoleRemovedEvent));
+		}
+		#endregion
+
+		#region Reading Events
+		/// <summary>
+		/// Event handler that listens for when ReadingOrderHasReading link is being added
+		/// and then tells associated model elements to invalidate their cache
+		/// </summary>
+		public static void ReadingAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
+			if (link.ReadingCollection.IsPrimary)
+			{
+				RefreshPresentationElements(link.ReadingOrder.PresentationRolePlayers);
+			}
+		}
+
+		/// <summary>
+		/// Event handler that listens for when ReadingOrderHasReading link is being removed
+		/// and then tells associated model elements to invalidate their cache
+		/// </summary>
+		public static void ReadingRemovedEvent(object sender, ElementRemovedEventArgs e)
+		{
+			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
+			Reading read = link.ReadingCollection;
+			ReadingOrder ord = link.ReadingOrder;
+
+			if (!ord.IsRemoved && read.IsPrimary)
+			{
+				RefreshPresentationElements(ord.PresentationRolePlayers);
+			}
+		}
+
+		/// <summary>
+		/// Event handler that listens for when a Reading attribute is changed
+		/// and then tells associated model elements to invalidate their cache
+		/// </summary>
+		public static void ReadingAttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		{
+			Reading read = e.ModelElement as Reading;
+			Guid attrGuid = e.MetaAttribute.Id;
+
+			if (read.IsPrimary && (attrGuid == Reading.TextMetaAttributeGuid || attrGuid == Reading.IsPrimaryMetaAttributeGuid))
+			{
+				RefreshPresentationElements(read.ReadingOrder.PresentationRolePlayers);
+			}
+		}
+		#endregion
+
+		#region Role Events
+		/// <summary>
+		/// Event handler that listens for when ReadingOrderHasRole link is being added
+		/// and then tells associated model elements to invalidate their cache
+		/// </summary>
+		public static void RoleAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
+			ReadingOrder ord = link.ReadingOrder;
+
+			RefreshPresentationElements(ord.PresentationRolePlayers);
+		}
+
+		/// <summary>
+		/// Event handler that listens for when ReadingOrderHasRole link is being removed
+		/// and then tells associated model elements to invalidate their cache
+		/// </summary>
+		public static void RoleRemovedEvent(object sender, ElementRemovedEventArgs e)
+		{
+			ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
+			ReadingOrder ord = link.ReadingOrder;
+
+			if (!ord.IsRemoved)
+			{
+				RefreshPresentationElements(ord.PresentationRolePlayers);
+			}
+		}
+
+		/// <summary>
+		/// Used to invalidate caches on presentation elements.
+		/// </summary>
+		private static void RefreshPresentationElements(PresentationElementMoveableCollection pels)
+		{
+			ReadingShape rs;
+			int numPels = pels.Count;
+			for (int i = 0; i < numPels; ++i)
+			{
+				rs = pels[i] as ReadingShape;
+				if (rs != null)
+				{
+					rs.InvalidateDisplayText();
+				}
+			}
+		}
+		#endregion
+
+		#endregion
+
 		private string myDisplayText = null;
 
 		#region overrides
@@ -96,8 +242,11 @@ namespace Northface.Tools.ORM.ShapeModel
 		private void InvalidateDisplayText()
 		{
 			myDisplayText = null;
-//			this.Invalidate();
-			this.AutoResize();
+			//this is triggering code that needs a transaction
+			if (Store.TransactionManager.InTransaction)
+			{
+				this.AutoResize();
+			}
 		}
 		#endregion
 

@@ -308,6 +308,7 @@ namespace Northface.Tools.ORM.Shell
 		protected override void AddPostLoadModelingEventHandlers()
 		{
 			NamedElementDictionary.AttachEventHandlers(Store);
+			ReadingShape.AttachEventHandlers(Store);
 		}
 		/// <summary>
 		/// Attach event handlers to populate the task list
@@ -323,6 +324,7 @@ namespace Northface.Tools.ORM.Shell
 		protected override void RemoveModelingEventHandlers()
 		{
 			NamedElementDictionary.DetachEventHandlers(Store);
+			ReadingShape.DetachEventHandlers(Store);
 			RemoveErrorReportingEvents();
 		}
 		/// <summary>

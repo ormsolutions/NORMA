@@ -26,10 +26,61 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			IsPrimary = 1,
 		}
 
+		#region Static Members
+
+		/// <summary>
+		/// Tests if the ObjectType is the RolePlayer for any of Roles
+		/// </summary>
+		public static bool IsParticipant(ObjectType objectType, Role[] roleOrder)
+		{
+			int numRoles = roleOrder.Length;
+			for (int i = 0; i < numRoles; ++i)
+			{
+				if (object.ReferenceEquals(objectType, roleOrder[i].RolePlayer))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Tests if the ObjectType is the RolePlayer of the Role
+		/// </summary>
+		public static bool IsParticipant(ObjectType objectType, Role leadRole)
+		{
+			return object.ReferenceEquals(objectType, leadRole.RolePlayer);
+		}
+
+		/// <summary>
+		/// Tests if the ObjectType is the RolePlayer of any Role
+		/// contained in the ReadingOrder
+		/// </summary>
+		public static bool IsParticipant(ObjectType objectType, ReadingOrder readingOrder)
+		{
+			RoleMoveableCollection roles = readingOrder.RoleCollection;
+			foreach (Role role in roles)
+			{
+				if (object.ReferenceEquals(role.RolePlayer, objectType))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		#endregion
+
 		private FactType myFact = null;
 		private List<ReadingEntry> myReadingList = null;
-		private Role[] mySelectedRoleOrder = null;
 		private ReadingBranch myBranch = null;
+		//the role order of the tree item that is selected, will be null if
+		//leading role sub group is selected or the "All" node is selected.
+		private Role[] mySelectedRoleOrder = null;
+		//the leading role when a leading role sub group is selected,
+		//will be null if a specific reading order or the "All"
+		//node are currently selected
+		private Role mySelectedLeadRole = null;
 
 		#region construction
 		/// <summary>
@@ -167,6 +218,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			{
 				//a specific reading order node is selected
 				mySelectedRoleOrder = readingNode.RoleOrder;
+				mySelectedLeadRole = null;
 				ReadingOrderMoveableCollection readingOrders = myFact.ReadingOrderCollection;
 				foreach (ReadingOrder readingOrd in readingOrders)
 				{
@@ -183,6 +235,8 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				if (readingRootNode != null)
 				{
 					//start role root node is selected
+					mySelectedRoleOrder = null;
+					mySelectedLeadRole = readingRootNode.LeadRole;
 					ReadingOrderMoveableCollection readingOrders = myFact.ReadingOrderCollection;
 					foreach (ReadingOrder readingOrd in readingOrders)
 					{
@@ -194,6 +248,8 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				}
 				else
 				{
+					mySelectedLeadRole = null;
+					mySelectedRoleOrder = null;
 					//assuming "All" node is only other possibility
 					ReadingOrderMoveableCollection readingOrders = myFact.ReadingOrderCollection;
 					foreach (ReadingOrder readingOrd in readingOrders)
@@ -215,7 +271,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			ReadingMoveableCollection readings = readingOrder.ReadingCollection;
 			foreach (Reading read in readings)
 			{
-				readingList.Add(new ReadingEntry(read));
+				readingList.Add(new ReadingEntry(read, readingOrder));
 			}
 		}
 
@@ -239,6 +295,9 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		#endregion
 
 		#region model events and handlers
+
+		#region event handler attach/detach methods
+
 		/// <summary>
 		/// Attaches the event handlers to the store so that the tool window
 		/// contents can be updated to reflect any model changes.
@@ -249,12 +308,25 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasReading.MetaRelationshipGuid);
 
-			// Track ElementLink changes
-			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ElementLinkAddedEvent));
-			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ElementLinkRemovedEvent));
+			// Track Reading changes
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ReadingLinkAddedEvent));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ReadingLinkRemovedEvent));
 
 			classInfo = dataDirectory.FindMetaClass(Reading.MetaClassGuid);
-			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ElementAttributeChangedEvent));
+			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ReadingAttributeChangedEvent));
+
+			// Track ReadingOrder changes
+			classInfo = dataDirectory.FindMetaRelationship(FactTypeHasReadingOrder.MetaRelationshipGuid);
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ReadingOrderLinkRemovedEvent));
+
+			// Track Role changes
+			classInfo = dataDirectory.FindMetaClass(ObjectTypePlaysRole.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ObjectTypePlaysRoleAddedEvent));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ObjectTypePlaysRoleRemovedEvent));
+
+			// Track ObjectType changes
+			classInfo = dataDirectory.FindMetaClass(ObjectType.MetaClassGuid);
+			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ObjectTypeAttributeChangedEvent));
 		}
 
 		/// <summary>
@@ -271,74 +343,340 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(ReadingOrderHasReading.MetaRelationshipGuid);
 
-			// Track ElementLink changes
-			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ElementLinkAddedEvent));
-			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(ElementLinkRemovedEvent));
+			// Track Reading changes
+			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ReadingLinkAddedEvent));
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(ReadingLinkRemovedEvent));
 
 			classInfo = dataDirectory.FindMetaClass(Reading.MetaClassGuid);
-			eventDirectory.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(ElementAttributeChangedEvent));
+			eventDirectory.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(ReadingAttributeChangedEvent));
+
+			// Track ReadingOrder changes
+			classInfo = dataDirectory.FindMetaRelationship(FactTypeHasReadingOrder.MetaRelationshipGuid);
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(ReadingOrderLinkRemovedEvent));
+
+			// Track Role changes
+			classInfo = dataDirectory.FindMetaClass(ObjectTypePlaysRole.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(ObjectTypePlaysRoleAddedEvent));
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(ObjectTypePlaysRoleRemovedEvent));
+
+			// Track ObjectType changes
+			classInfo = dataDirectory.FindMetaClass(ObjectType.MetaClassGuid);
+			eventDirectory.ElementAttributeChanged.Remove(classInfo, new ElementAttributeChangedEventHandler(ObjectTypeAttributeChangedEvent));
 		}
 
-		private void ElementLinkAddedEvent(object sender, ElementAddedEventArgs e)
+		#endregion
+
+		#region Reading Event Handlers
+		//handling model events Related to changes in Readings and their
+		//connections so the reading editor can accurately reflect the model
+
+		private void ReadingLinkAddedEvent(object sender, ElementAddedEventArgs e)
 		{
 			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
 			Reading read = link.ReadingCollection;
 			ReadingOrder ord = link.ReadingOrder;
-			int index = ord.ReadingCollection.IndexOf(read);
-			Debug.Assert(index >= 0);
-			myReadingList.Insert(index, new ReadingEntry(read));
-			myBranch.ItemAdded(index);
+
+			if (!object.ReferenceEquals(ord.FactType, myFact))
+			{
+				return;
+			}
+
+			int index = -1;
+			//TODO:need to put more work into ordering Readings added to the model.
+			//they end up getting put in a different order than they appear when
+			//the list is constructed from scratch versus the order when the list
+			//is cleared via undo and redo. Might want to look into making
+			//the list a sorted list. Only appears when the Readings of more
+			//than one ReadingOrder are being shown at the same time.
+
+			//the all node is selected
+			if (mySelectedLeadRole == null && mySelectedRoleOrder == null)
+			{
+				index = ord.ReadingCollection.IndexOf(read);
+			}
+			//leadrole branch selected
+			else if (mySelectedLeadRole != null && IsMatchingLeadRole(mySelectedLeadRole, ord))
+			{
+				index = ord.ReadingCollection.IndexOf(read);
+			}
+			//specific order branch selected
+			else if (mySelectedRoleOrder != null && IsMatchingReadingOrder(mySelectedRoleOrder, ord))
+			{
+				index = ord.ReadingCollection.IndexOf(read);
+			}
+
+			if(index > -1)
+			{
+				myReadingList.Insert(index, new ReadingEntry(read, ord));
+				myBranch.ItemAdded(index);
+			}
 		}
 
-		private void ElementLinkRemovedEvent(object sender, ElementRemovedEventArgs e)
+		private void ReadingLinkRemovedEvent(object sender, ElementRemovedEventArgs e)
 		{
 			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
+			ReadingOrder ord = link.ReadingOrder;
 			Reading read = link.ReadingCollection;
-			int numEntries = myReadingList.Count;
-			int index = -1;
-			for (int i = 0; i < numEntries; ++i)
+
+			// Handled all at once by ReadingOrderLinkRemovedEvent if all
+			// are gone.
+			if (!ord.IsRemoved)
 			{
-				if (object.ReferenceEquals(myReadingList[i].Reading, read))
+				FactType f = ord.FactType;
+				if (object.ReferenceEquals(f, myFact))
 				{
-					index = i;
-					break;
+					RemoveReadingEntry(read);
 				}
 			}
-			Debug.Assert(index >= 0);
-			myReadingList.RemoveAt(index);
-			myBranch.ItemRemoved(index);
 		}
 
-		private void ElementAttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		private void ReadingAttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
 			Reading reading = e.ModelElement as Reading;
 			int numEntries = myReadingList.Count;
-			for (int i = 0; i < numEntries; ++i)
+			ReadingOrder ord = reading.ReadingOrder;
+
+			if (ord == null || !object.ReferenceEquals(ord.FactType, myFact))
 			{
-				ReadingEntry re = myReadingList[i];
-				if (object.ReferenceEquals(reading, re.Reading))
+				return;
+			}
+
+			int index = IndexOfReadingEntry(reading);
+			if (index > -1)
+			{
+				ReadingEntry re = myReadingList[index];
+				re.InvalidateText();
+				int column = -1;
+				Guid attrId = e.MetaAttribute.Id;
+				if (attrId.Equals(Reading.TextMetaAttributeGuid))
 				{
-					re.InvalidateText();
-					int column = -1;
-					Guid attrId = e.MetaAttribute.Id;
-					if (attrId.Equals(Reading.TextMetaAttributeGuid))
-					{
-						column = (int)ColumnIndex.ReadingText;
-					}
-					else if (attrId.Equals(Reading.IsPrimaryMetaAttributeGuid))
-					{
-						column = (int)ColumnIndex.ReadingText;
-					}
-					myBranch.ItemUpdate(i, column);
-					break;
+					column = (int)ColumnIndex.ReadingText;
 				}
+				else if (attrId.Equals(Reading.IsPrimaryMetaAttributeGuid))
+				{
+					column = (int)ColumnIndex.IsPrimary;
+				}
+				myBranch.ItemUpdate(index, column);
 			}
 		}
 
 		#endregion
 
+		#region ReadingOrder Event Handlers
+		//handle model events related to the ReadingOrder being removed in order to
+		//keep the editor window in sync with what is in the model.
+
+		private void ReadingOrderLinkRemovedEvent(object sender, ElementRemovedEventArgs e)
+		{
+
+			FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
+			ReadingOrder ord = link.ReadingOrderCollection;
+			FactType fact = link.FactType;
+
+			if (!object.ReferenceEquals(fact, myFact))
+			{
+				return;
+			}
+
+			if (!fact.IsRemoved)
+			{
+				RemoveReadingOrderRelatedEntries(ord);
+			}
+		}
+
+		#endregion
+
+		#region ObjectType Role Players Event Handlers
+		//handle model events related to changes in what Roles are associated with
+		//the reading editor and what the values of the RolePlayers text is
+		//so the editor can stay in sync with the model
+
+		//Currently checking everything, might be good to change it to only
+		//test the reading list if an affected selection tree item or one
+		//of its children were impacted by the change.
+
+		private void ObjectTypePlaysRoleAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+			Role role = link.PlayedRoleCollection;
+			ObjectTypeChangedHelper(role);
+		}
+
+		private void ObjectTypePlaysRoleRemovedEvent(object sender, ElementRemovedEventArgs e)
+		{
+			ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+			Role role = link.PlayedRoleCollection;
+			ObjectTypeChangedHelper(role);
+		}
+
+		private void ObjectTypeAttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		{
+			Guid attrGuid = e.MetaAttribute.Id;
+			if (attrGuid.Equals(ObjectType.NameMetaAttributeGuid) && EditingFactType != null)
+			{
+				ObjectType objectType = e.ModelElement as ObjectType;
+				Debug.Assert(objectType != null);
+				ObjectTypeChangedHelper(objectType);
+			}
+		}
+
+		private void ObjectTypeChangedHelper(Role changedRole)
+		{
+			bool wasImpacted = SetTextOnTreeNodes(changedRole, tvwReadingOrder.Nodes);
+			if (wasImpacted)
+			{
+				int numEntries = myReadingList.Count;
+				for (int i = 0; i < numEntries; ++i)
+				{
+					if (myReadingList[i].Contains(changedRole))
+					{
+						myBranch.ItemUpdate(i, (int)ColumnIndex.ReadingText);
+					}
+				}
+			}
+		}
+
+		private void ObjectTypeChangedHelper(ObjectType changedObjectType)
+		{
+			bool wasImpacted = SetTextOnTreeNodes(changedObjectType, tvwReadingOrder.Nodes);
+			if (wasImpacted)
+			{
+				int numEntries = myReadingList.Count;
+				for (int i = 0; i < numEntries; ++i)
+				{
+					if (ReadingEditor.IsParticipant(changedObjectType, myReadingList[i].ReadingOrder))
+					{
+						myBranch.ItemUpdate(i, (int)ColumnIndex.ReadingText);
+					}
+				}
+			}
+		}
+		#endregion
+
+		#region Helper methods
+
+		/// <summary>
+		/// Tests if any custom nodes that have values based on the changed ObjectType
+		/// are in the tree and initiates a text change if they are. Uses recursion
+		/// to handle child nodes. It returns true if the tree or one of its children
+		/// had to update its text because it was dependent on the object for its value.
+		/// </summary>
+		private bool SetTextOnTreeNodes(ObjectType changedObjectType, TreeNodeCollection nodes)
+		{
+			bool wasImpacted = false;
+			BaseReadingTreeNode node;
+			int numNodes = nodes.Count;
+			for (int i = 0; i < numNodes; ++i)
+			{
+				node = nodes[i] as BaseReadingTreeNode;
+				if (node != null)
+				{
+					if (node.IsImpactedBy(changedObjectType))
+					{
+						wasImpacted = true;
+						node.SetText();
+					}
+				}
+
+				wasImpacted = wasImpacted | SetTextOnTreeNodes(changedObjectType, nodes[i].Nodes);
+			}
+
+			return wasImpacted;
+		}
+
+		private bool SetTextOnTreeNodes(Role changedRole, TreeNodeCollection nodes)
+		{
+			bool wasImpacted = false;
+			BaseReadingTreeNode node;
+			int numNodes = nodes.Count;
+			for (int i = 0; i < numNodes; ++i)
+			{
+				node = nodes[i] as BaseReadingTreeNode;
+				if (node != null)
+				{
+					if (node.IsImpactedBy(changedRole))
+					{
+						wasImpacted = true;
+						node.SetText();
+					}
+				}
+
+				wasImpacted = wasImpacted | SetTextOnTreeNodes(changedRole, nodes[i].Nodes);
+			}
+
+			return wasImpacted;
+		}
+
+		/// <summary>
+		/// Removes any ReadingEntry items from the list that are related
+		/// to the indicated ReadingOrder
+		/// </summary>
+		private void RemoveReadingOrderRelatedEntries(ReadingOrder readingOrder)
+		{
+			int initNrEntries = myReadingList.Count;
+			if (initNrEntries > 0)
+			{
+				int i = initNrEntries - 1;
+				while (i >= 0)
+				{
+					if (object.ReferenceEquals(myReadingList[i].ReadingOrder, readingOrder))
+					{
+						myReadingList.RemoveAt(i);
+						myBranch.ItemRemoved(i);
+					}
+					--i;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Handles removing the ReadingEntry for the specified Reading
+		/// object and handles the branch update as well.
+		/// </summary>
+		/// <returns>Returns the index of the reading that was removed, -1 if it wasn't found.</returns>
+		private int RemoveReadingEntry(Reading reading)
+		{
+			int index = IndexOfReadingEntry(reading);
+			//should be a reading that was part of the currently displayed fact
+			if (index >= 0)
+			{
+				myReadingList.RemoveAt(index);
+				myBranch.ItemRemoved(index);
+			}
+			return index;
+		}
+
+		/// <summary>
+		/// Locate the index of the ReadingEntry that represents the specified Reading.
+		/// </summary>
+		private int IndexOfReadingEntry(Reading reading)
+		{
+			int numEntries = myReadingList.Count;
+			int index = -1;
+			for (int i = 0; i < numEntries; ++i)
+			{
+				if (object.ReferenceEquals(myReadingList[i].Reading, reading))
+				{
+					index = i;
+					break;
+				}
+			}
+			return index;
+		}
+		#endregion
+
+		#endregion
+
+		#region nested abstract class BaseReadingTreeNode
+		private abstract class BaseReadingTreeNode : TreeNode
+		{
+			public abstract void SetText();
+			public abstract bool IsImpactedBy(ObjectType objectType);
+			public abstract bool IsImpactedBy(Role role);
+		}
+		#endregion
 		#region nested class ReadingRootTreeNode
-		private class ReadingRootTreeNode : TreeNode
+		private class ReadingRootTreeNode : BaseReadingTreeNode
 		{
 			Role myLeadRole;
 
@@ -347,6 +685,11 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				Debug.Assert(leadRole != null);
 
 				myLeadRole = leadRole;
+				SetText();
+			}
+
+			public override void SetText()
+			{
 				ObjectType rolePlayer = myLeadRole.RolePlayer;
 				if (rolePlayer == null)
 				{
@@ -356,6 +699,16 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				{
 					this.Text = rolePlayer.Name;
 				}
+			}
+
+			public override bool IsImpactedBy(ObjectType objectType)
+			{
+				return ReadingEditor.IsParticipant(objectType, myLeadRole);
+			}
+
+			public override bool IsImpactedBy(Role role)
+			{
+				return object.ReferenceEquals(role, LeadRole);
 			}
 
 			public Role LeadRole
@@ -368,7 +721,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		}
 		#endregion
 		#region nested class ReadingTreeNode
-		private class ReadingTreeNode : TreeNode
+		private class ReadingTreeNode : BaseReadingTreeNode
 		{
 			Role[] myRoleOrder;
 
@@ -378,7 +731,11 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				Debug.Assert(roleOrder.Length > 0);
 
 				myRoleOrder = roleOrder;
+				SetText();
+			}
 
+			public override void SetText()
+			{
 				StringBuilder sb = new StringBuilder();
 				int roleCount = (myRoleOrder == null ? 0 : myRoleOrder.Length);
 				for (int i = 0; i < roleCount; ++i)
@@ -395,6 +752,24 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 					sb.Append(", ");
 				}
 				this.Text = sb.ToString(0, sb.Length - 2);
+			}
+
+			public override bool IsImpactedBy(ObjectType objectType)
+			{
+				return ReadingEditor.IsParticipant(objectType, myRoleOrder);
+			}
+
+			public override bool IsImpactedBy(Role role)
+			{
+				int numRoles = myRoleOrder.Length;
+				for (int i = 0; i < numRoles; ++i)
+				{
+					if (object.ReferenceEquals(role, myRoleOrder[i]))
+					{
+						return true;
+					}
+				}
+				return false;
 			}
 
 			public Role[] RoleOrder
@@ -414,6 +789,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			protected const char C_ELLIPSIS = '\x2026';
 
 			Reading myReading;
+			ReadingOrder myReadingOrder;
 			String myText;
 			int myRolePosition;
 
@@ -422,10 +798,14 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			{
 			}
 
-			public ReadingEntry(Reading reading)
+			public ReadingEntry(Reading reading, ReadingOrder readingOrder)
 			{
-				Debug.Assert(reading != null);
+				Debug.Assert(reading != null, "The associated Reading is required.");
+				Debug.Assert(readingOrder != null, "The associated ReadingOrder is required.");
+				Debug.Assert(readingOrder.ReadingCollection.Contains(reading), "The Reading must belong to the ReadingOrder");
+
 				myReading = reading;
+				myReadingOrder = readingOrder;
 			}
 			#endregion
 
@@ -433,10 +813,10 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			{
 				get
 				{
-					if (myText == null)
-					{
+//					if (myText == null)
+//					{
 						myText = GenerateDisplayText();
-					}
+//					}
 					return myText;
 				}
 			}
@@ -481,6 +861,14 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				}
 			}
 
+			public ReadingOrder ReadingOrder
+			{
+				get
+				{
+					return myReadingOrder;
+				}
+			}
+
 			/// <summary>
 			/// Notifies the class that the text to display for the underlying reading
 			/// needs to be regenerated.
@@ -488,6 +876,11 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			public void InvalidateText()
 			{
 				myText = null;
+			}
+
+			public bool Contains(Role role)
+			{
+				return myReadingOrder.RoleCollection.Contains(role);
 			}
 		}
 		#endregion
@@ -518,43 +911,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				get
 				{
 					return ResourceStrings.ModelReadingEditorNewItemText;
-				}
-			}
-		}
-		#endregion
-		#region nested class ReadingInfo
-		private class ReadingInfo
-		{
-			private Role[] myRoleSequence = null;
-			private String myReading = null;
-
-			public ReadingInfo(Role[] roleSequence, String reading)
-			{
-				myRoleSequence = roleSequence;
-				myReading = reading;
-			}
-
-			public Role[] RoleSequence
-			{
-				get
-				{
-					return myRoleSequence;
-				}
-				set
-				{
-					myRoleSequence = value;
-				}
-			}
-
-			public String Reading
-			{
-				get
-				{
-					return myReading;
-				}
-				set
-				{
-					myReading = value;
 				}
 			}
 		}

@@ -217,6 +217,13 @@ namespace Northface.Tools.ORM.ObjectModel
 				Role linkRole = link.RoleCollection;
 				ReadingOrder linkReadingOrder = link.ReadingOrder;
 
+				if (linkReadingOrder.IsRemoving)
+				{
+					// Don't validate if we're removing the reading order
+					return;
+				}
+				Debug.Assert(!linkReadingOrder.IsRemoved);
+
 				int pos = linkReadingOrder.RoleCollection.IndexOf(linkRole);
 				if (pos >= 0)
 				{
@@ -227,11 +234,17 @@ namespace Northface.Tools.ORM.ObjectModel
 					{
 						Reading linkReading = linkReadingOrder.ReadingCollection[iReading];
 
-						linkReading.Text = linkReading.Text.Replace("{" + pos.ToString() + "}", "{{deleted}}");
-						int roleCount = linkReading.ReadingOrder.RoleCollection.Count;
-						for (int i = pos + 1; i < roleCount; ++i)
+						if (!linkReading.IsRemoving)
 						{
-							linkReading.Text = linkReading.Text.Replace(string.Concat("{", i.ToString(), "}"), string.Concat("{", (i - 1).ToString(), "}"));
+							Debug.Assert(!linkReading.IsRemoved);
+							string text = linkReading.Text;
+							text = text.Replace("{" + pos.ToString() + "}", "{{deleted}}");
+							int roleCount = linkReading.ReadingOrder.RoleCollection.Count;
+							for (int i = pos + 1; i < roleCount; ++i)
+							{
+								text = text.Replace(string.Concat("{", i.ToString(), "}"), string.Concat("{", (i - 1).ToString(), "}"));
+							}
+							linkReading.Text = text;
 						}
 					}
 				}
