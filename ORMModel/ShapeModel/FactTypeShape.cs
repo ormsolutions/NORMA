@@ -10,6 +10,25 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
 namespace Northface.Tools.ORM.ShapeModel
 {
+	#region ConstraintDisplayPosition enum
+	/// <summary>
+	/// Determines where internal constraints are drawn
+	/// on a facttype
+	/// </summary>
+	[CLSCompliant(true)]
+	public enum ConstraintDisplayPosition
+	{
+		/// <summary>
+		/// Draw the constraints above the role boxes
+		/// </summary>
+		Top,
+		/// <summary>
+		/// Draw the constraints below the role boxes
+		/// </summary>
+		Bottom,
+	}
+	#endregion ConstraintDisplayPosition enum
+	#region FactTypeShape class
 	public partial class FactTypeShape
 	{
 		#region Size Constants
@@ -1013,6 +1032,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // Shape display update rules
 	}
+	#endregion // FactTypeShape class
 	#region ObjectifiedFactTypeNameShape class
 	/// <summary>
 	/// A specialized display of the nesting type as a relative

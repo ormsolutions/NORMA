@@ -26,7 +26,11 @@ Information Contained Herein is Proprietary and Confidential.
         </shape>
         <shape namespace="Northface.Tools.ORM.ShapeModel" name="FactTypeShape" identity="8e440a3b-275e-42f7-868b-d5d473158acd" accessmodifier="public" category="" description="" doccomment="" localize="false">
           <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.FactType)" />
-          <metaattributes />
+          <metaattributes>
+            <metaattribute name="ConstraintDisplayPosition" identity="802767fd-de7d-4541-b42b-90b613dfe22d" type="Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
+              <enumerationdomain type="Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition" default="ConstraintDisplayPosition.Top" />
+            </metaattribute>
+          </metaattributes>
           <derivedshapes />
         </shape>
         <shape namespace="Northface.Tools.ORM.ShapeModel" name="ExternalConstraintShape" identity="00a08f56-73ba-4c8f-8fa1-ae61b8fc1cae" accessmodifier="public" category="" description="" doccomment="" localize="false">

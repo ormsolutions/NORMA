@@ -613,6 +613,127 @@ namespace Northface.Tools.ORM.ShapeModel
 		#endregion
 		#endregion
 
+		#region ConstraintDisplayPosition's Generated  Field Code
+		#region ConstraintDisplayPosition's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ConstraintDisplayPositionMetaAttributeGuidString = "802767fd-de7d-4541-b42b-90b613dfe22d";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ConstraintDisplayPositionMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuidString);
+		#endregion
+
+		#region ConstraintDisplayPosition's Generated Property Code
+
+		private Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition constraintDisplayPositionPropertyStorage = Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition.Top;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition),DefaultEnumerationValueName="Top")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(FactTypeShapeConstraintDisplayPositionFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPosition")]
+		public  Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition ConstraintDisplayPosition
+		{
+			get
+			{
+				return constraintDisplayPositionPropertyStorage;
+			}
+		
+			set
+			{
+				factTypeShapeConstraintDisplayPositionFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region FactTypeShapeConstraintDisplayPositionFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for FactTypeShape.ConstraintDisplayPosition field
+		/// </summary>
+		private static FactTypeShapeConstraintDisplayPositionFieldHandler	factTypeShapeConstraintDisplayPositionFieldHandler	= FactTypeShapeConstraintDisplayPositionFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for FactTypeShape.ConstraintDisplayPosition
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class FactTypeShapeConstraintDisplayPositionFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ShapeModel.FactTypeShape,Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private FactTypeShapeConstraintDisplayPositionFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the FactTypeShape.ConstraintDisplayPosition field handler
+			/// </summary>
+			/// <value>FactTypeShapeConstraintDisplayPositionFieldHandler</value>
+			public static FactTypeShapeConstraintDisplayPositionFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeConstraintDisplayPositionFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeConstraintDisplayPositionFieldHandler;
+					}
+					else
+					{
+						// The static constructor in FactTypeShape will assign this value to
+						// Northface.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeConstraintDisplayPositionFieldHandler, so just instantiate one and return it
+						return new FactTypeShapeConstraintDisplayPositionFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the FactTypeShape.ConstraintDisplayPosition field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the FactTypeShape</param>
+			protected sealed override Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition GetValue(Northface.Tools.ORM.ShapeModel.FactTypeShape element)
+			{
+				return element.constraintDisplayPositionPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ShapeModel.FactTypeShape element, Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition oldValue)
+			{
+				oldValue = element.constraintDisplayPositionPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.constraintDisplayPositionPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
 	}
 	#region FactTypeShape's Generated Constructor Code
 	public  partial class FactTypeShape
