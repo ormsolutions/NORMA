@@ -66,13 +66,13 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 			else if (null != (objType = element as ObjectType))
 			{
-				if (objType.NestedFactType == null)
+				if (objType.ReferenceModeDisplay.Length == 0)
 				{
-					return ShouldDisplayPartOfReferenceMode(element);
+					return objType.NestedFactType == null;
 				}
 				else
 				{
-					return false;
+					return ShouldDisplayPartOfReferenceMode(element);
 				}
 			}
 			return base.ShouldAddShapeForElement(element);
