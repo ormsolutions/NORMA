@@ -56,7 +56,12 @@ namespace Northface.Tools.ORM.Shell
 				myCommands = new MenuCommand[]
 			{
 				// Commands
-				new DynamicStatusMenuCommand(
+#if DEBUG
+				new MenuCommand(
+				new EventHandler(OnMenuDebugViewStore),
+				ORMDesignerCommandIds.DebugViewStore)
+#endif // DEBUG
+				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusDelete),
 				new EventHandler(OnMenuDelete),
 				StandardCommands.Delete)
@@ -127,6 +132,17 @@ namespace Northface.Tools.ORM.Shell
 			{
 				BrowserWindow.Show();
 			}
+#if DEBUG
+			/// <summary>
+			/// Show a debug window displaying the contents of the current store
+			/// </summary>
+			/// <param name="sender"></param>
+			/// <param name="e"></param>
+			protected void OnMenuDebugViewStore(object sender, EventArgs e)
+			{
+				Microsoft.VisualStudio.Modeling.Diagnostics.Debug.Assert(((ModelingDocData)CurrentORMView.DocData).Store);
+			}
+#endif // DEBUG
 
 			/// <summary>
 			/// Status callback
@@ -259,31 +275,43 @@ namespace Northface.Tools.ORM.Shell
 			/// </summary>
 			public static readonly Guid guidORMDesignerCommandSet = new Guid("7C51C000-1EAD-4b39-89B5-42BC9F49EA24");    // keep in sync with SatDll\PkgCmd.ctc
 
-			#region CommandID objects
+			#region CommandID objects for commands
+#if DEBUG
+			/// <summary>
+			/// A command to view the current store contents in debug mode
+			/// </summary>
+			public static readonly CommandID DebugViewStore = new CommandID(guidORMDesignerCommandSet, cmdIdDebugViewStore);
+#endif // DEBUG
 			/// <summary>
 			/// The ORM Model Explorer item on the view menu
 			/// </summary>
 			public static readonly CommandID ViewModelExplorer = new CommandID(guidORMDesignerCommandSet, cmdIdViewModelExplorer);
-
+			#endregion // CommandID objects for commands
+			#region CommandID objects for menus
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>
 			public static readonly CommandID ViewContextMenu = new CommandID(guidORMDesignerCommandSet, menuIdContextMenu);
-
-			#endregion
+			#endregion //CommandID objects for menus
 
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with SatDll\PkgCmdID.h
 
+#if DEBUG
+			/// <summary>
+			/// A command to view the current store contents in debug mode
+			/// </summary>
+			private const int cmdIdDebugViewStore = 0x28FF;
+#endif // DEBUG
 			/// <summary>
 			/// The ORM Model Explorer item on the view menu
 			/// </summary>
-			public const int cmdIdViewModelExplorer = 0x2900;
+			private const int cmdIdViewModelExplorer = 0x2900;
 
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>
-			public const int menuIdContextMenu = 0x0100;
+			private const int menuIdContextMenu = 0x0100;
 
 			#endregion
 

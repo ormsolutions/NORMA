@@ -23,18 +23,22 @@
 CMDS_SECTION guidORMDesignerPackage
     MENUS_BEGIN
 		// Context menus
-		guidORMDesignerCommandSet:menuIdContextMenu,				guidORMDesignerCommandSet:0,				0x0000,     CONTEXT,				"Delete command",				"Delete command";
+		guidORMDesignerCommandSet:menuIdContextMenu,				guidORMDesignerCommandSet:0,				0x0000,     CONTEXT,				"ORM Designer Context Menu",				"ORMDesignerContextMenu";
 	MENUS_END
 
     NEWGROUPS_BEGIN
 	    // Command Macro Context Menu Groups
-        guidORMDesignerCommandSet:groupIdDeleteContext,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0008;
-	
-
+#ifdef DEBUG
+		guidORMDesignerCommandSet:groupIdDebugCommands,				guidORMDesignerCommandSet:menuIdContextMenu,	0x1000;
+#endif	
+		guidORMDesignerCommandSet:groupIdDeleteContext,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0008;
     NEWGROUPS_END
 
     BUTTONS_BEGIN
         // Button/Menu Item											Item Group											Priority	Icon                             Type		Flags			Text    
+#ifdef DEBUG
+		guidORMDesignerCommandSet:cmdIdDebugViewStore,				guidORMDesignerCommandSet:groupIdDebugCommands,		0x0010,   guidOfficeIcon:msotcidNoIcon,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,		"Debug: View Store";
+#endif
 		guidORMDesignerCommandSet:cmdIdViewModelExplorer,			guidSHLMainMenu:IDG_VS_VIEW_WINDOWS,				0x0600,		guidOfficeIcon:msotcidNoIcon,	 BUTTON,	0,				"ORM &Model Explorer";
     BUTTONS_END	
 
