@@ -133,17 +133,18 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="e"></param>
 		private void ReferenceModeKindChangeEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
-			ReferenceModeKind referenceModeKind = e.ModelElement as ReferenceModeKind;
-
-			if (referenceModeKind != null && referenceModeKind.Model == this.myModel)
+			if (myModify != null)
 			{
-				foreach (ReferenceMode refMode in referenceModeKind.ReferenceModeCollection)
+				ReferenceModeKind referenceModeKind = e.ModelElement as ReferenceModeKind;
+
+				if (referenceModeKind != null && referenceModeKind.Model == this.myModel)
 				{
-					if (refMode is IntrinsicReferenceMode)
+					foreach (ReferenceMode refMode in referenceModeKind.ReferenceModeCollection)
 					{
-						if (myModify != null)
+						IntrinsicReferenceMode intrinsicRefMode = refMode as IntrinsicReferenceMode;
+						if (intrinsicRefMode != null)
 						{
-							int row = this.FindReferenceMode((IntrinsicReferenceMode)refMode);
+							int row = this.FindReferenceMode(intrinsicRefMode);
 							myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.FormatString, 1)));
 						}
 					}

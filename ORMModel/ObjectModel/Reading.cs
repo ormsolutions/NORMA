@@ -407,14 +407,14 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// The reading the error belongs to
 		/// </summary>
-		protected ModelElement[] GetRepresentedEelements()
+		protected ModelElement[] GetRepresentedElements()
 		{
 			return new ModelElement[] { this.Reading };
 		}
 
 		ModelElement[]  IRepresentModelElements.GetRepresentedElements()
 		{
-			return GetRepresentedEelements();
+			return GetRepresentedElements();
 		}
 
 		#endregion

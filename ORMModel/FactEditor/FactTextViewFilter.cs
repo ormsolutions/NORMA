@@ -18,7 +18,7 @@ namespace Northface.Tools.ORM.FactEditor
 	/// <summary>
 	/// Filter the text view and look for specific package commands
 	/// </summary>
-	public class FactTextViewFilter : IOleCommandTarget, IVsTextViewEvents, IVsTextViewFilter
+	public class FactTextViewFilter : IOleCommandTarget, /*IVsTextViewEvents,*/ IVsTextViewFilter
 	{
 		private const int CmdCompleteWord = 107;		// ctrl+space
 		private const int CmdShowMemberList = 108;		// ctrl+j
@@ -348,7 +348,7 @@ namespace Northface.Tools.ORM.FactEditor
 		}
 
 		#endregion
-
+/* Removed for FxCop compliance, not currently used
 		#region IVsTextViewEvents Members
 
 		void IVsTextViewEvents.OnChangeCaretLine(IVsTextView pView, int iNewLine, int iOldLine)
@@ -377,7 +377,7 @@ namespace Northface.Tools.ORM.FactEditor
 		}
 
 #endregion
-
+Removed for FxCop compliance, not currently used */
 		#region IVsTextViewFilter Members
 
 		int IVsTextViewFilter.GetDataTipText(TextSpan[] pSpan, out string pbstrText)
@@ -431,6 +431,7 @@ namespace Northface.Tools.ORM.FactEditor
 
 #endregion
 
+/* Removed for FxCop compliance, not currently used
 		#region Private Methods
 
 		private int getCurrentLineText(out string pbstrLineText)
@@ -478,7 +479,7 @@ namespace Northface.Tools.ORM.FactEditor
 		}
 
 #endregion
-
+Removed for FxCop compliance, not currently used */
 		#region Properties
 
 		/// <summary>

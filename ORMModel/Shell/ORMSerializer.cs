@@ -103,7 +103,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// Ref Counter for suspending/resuming Modeling Rule Engine
 		/// </summary>
-		private int myRuleSuspendCount = 0;
+		private int myRuleSuspendCount;
 
 		/// <summary>
 		/// Track when we've seen a diagram. We only want

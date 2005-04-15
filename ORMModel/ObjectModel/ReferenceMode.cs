@@ -311,7 +311,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="entityTypeName">The name of the entity type.</param>
 		/// <param name="model">The model that owns the reference modes</param>
 		/// <returns>A ReferenceMode instance, or null</returns>
-		public static ReferenceMode FindReferenceModeFromEnitityNameAndValueName(string valueTypeName, string entityTypeName, ORMModel model)
+		public static ReferenceMode FindReferenceModeFromEntityNameAndValueName(string valueTypeName, string entityTypeName, ORMModel model)
 		{
 			ReferenceMode retVal = null;
 			foreach (ReferenceMode mode in model.ReferenceModeCollection)
@@ -335,7 +335,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="formatString">Use this format string when finding the name.</param>
 		/// <param name="model">The model that owns the reference modes</param>
 		/// <returns>A ReferenceMode instance, or null</returns>
-		public static ReferenceMode FindReferenceModeFromEnitityNameAndValueName(string valueTypeName, string entityTypeName, string formatString, ORMModel model)
+		public static ReferenceMode FindReferenceModeFromEntityNameAndValueName(string valueTypeName, string entityTypeName, string formatString, ORMModel model)
 		{
 			ReferenceMode retVal = null;
 			foreach (ReferenceMode mode in model.ReferenceModeCollection)
@@ -362,7 +362,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// has changed, but you need to locate other elements with the old name</param>
 		/// <param name="model">The model that owns the reference modes</param>
 		/// <returns>A ReferenceMode instance, or null</returns>
-		public static ReferenceMode FindReferenceModeFromEnitityNameAndValueName(string valueTypeName, string entityTypeName, string formatString, string referenceModeName, string oldReferenceModeName, ORMModel model)
+		public static ReferenceMode FindReferenceModeFromEntityNameAndValueName(string valueTypeName, string entityTypeName, string formatString, string referenceModeName, string oldReferenceModeName, ORMModel model)
 		{
 			ReferenceMode retVal = null;
 			foreach (ReferenceMode mode in model.ReferenceModeCollection)
@@ -746,12 +746,22 @@ namespace Northface.Tools.ORM.ObjectModel
 	{
 		#region IComparable<IntrinsicReferenceMode> Members
 
-		int IComparable<IntrinsicReferenceMode>.CompareTo(IntrinsicReferenceMode other)
+		/// <summary>
+		/// Implements IComparable&lt;IntrinsicReferenceMode&gt;.CompareTo
+		/// </summary>
+		protected int CompareTo(IntrinsicReferenceMode other)
 		{
 			return base.CompareTo(other);
 		}
+		int IComparable<IntrinsicReferenceMode>.CompareTo(IntrinsicReferenceMode other)
+		{
+			return CompareTo(other);
+		}
 
-		bool IComparable<IntrinsicReferenceMode>.Equals(IntrinsicReferenceMode other)
+		/// <summary>
+		/// Typed Equals method. Implements IComparable&lt;IntrinsicReferenceMode&gt;.Equals.
+		/// </summary>
+		public bool Equals(IntrinsicReferenceMode other)
 		{
 			return base.Equals(other);
 		}

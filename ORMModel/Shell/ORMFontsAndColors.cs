@@ -424,7 +424,7 @@ namespace Northface.Tools.ORM.Shell
 		private ColorItem[] myColors;
 		private LOGFONTW myLogFont = new LOGFONTW();
 		private FontInfo myFontInfo = new FontInfo();
-		private bool mySettingsChangePending = false; // Set to true on events, no effect until OnApply fires
+		private bool mySettingsChangePending; // Set to true on events, no effect until OnApply fires
 		/// <summary>
 		/// Retrieve font information. A new Font object is generated
 		/// on each call and must be disposed of properly by the caller.

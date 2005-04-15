@@ -108,7 +108,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (valueType.IsValueType)
 				{
 					string valueTypeName = valueType.Name;
-					refMode = ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueTypeName, this.Name, this.Model);
+					refMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueTypeName, this.Name, this.Model);
 					refModeString = (refMode == null) ? valueTypeName : refMode.Name;
 				}
 			}
@@ -400,7 +400,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (prefConstraint != null)
 			{
 				ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
-				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueType.Name, this.Name, this.Model);
+				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueType.Name, this.Name, this.Model);
 				return refMode;
 			}
 			return null;
@@ -420,7 +420,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (prefConstraint != null)
 			{
 				ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
-				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueType.Name, this.Name, formatString, this.Model);
+				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueType.Name, this.Name, formatString, this.Model);
 				return refMode;
 			}
 			return null;
@@ -441,7 +441,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (prefConstraint != null)
 			{
 				ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
-				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(valueType.Name, this.Name, formatString, referenceModeName, oldReferenceModeName, this.Model);
+				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueType.Name, this.Name, formatString, referenceModeName, oldReferenceModeName, this.Model);
 				return refMode;
 			}
 			return null;
@@ -508,7 +508,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						string oldValue = (string)e.OldValue;
 						string oldReferenceModeName = "";
 
-						ReferenceMode referenceMode = ReferenceMode.FindReferenceModeFromEnitityNameAndValueName(objectType.ReferenceModeString, oldValue, objectType.Model);
+						ReferenceMode referenceMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.ReferenceModeString, oldValue, objectType.Model);
 
 						if (referenceMode != null)
 						{

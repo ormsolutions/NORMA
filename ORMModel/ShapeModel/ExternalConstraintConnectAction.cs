@@ -289,6 +289,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				DiagramItem item = args.DiagramHitTestInfo.HitDiagramItem;
 				ModelElement currentElement = null;
+				ORMDiagram ormDiagram;
 				foreach (ModelElement elem in item.RepresentedElements)
 				{
 					currentElement = elem;
@@ -303,7 +304,6 @@ namespace Northface.Tools.ORM.ShapeModel
 						// Let the click through to the base to officially begin the drag action
 						base.OnClicked(e);
 						mySourceShape = constraintShape;
-						ORMDiagram ormDiagram;
 						if (null != (ormDiagram = mySourceShape.Diagram as ORMDiagram))
 						{
 							ormDiagram.StickyObject = constraintShape;
@@ -353,10 +353,10 @@ namespace Northface.Tools.ORM.ShapeModel
 						}
 					}
 				}
-				else if (mySourceShape != null && currentElement is ORMDiagram)
+				else if (mySourceShape != null && null != (ormDiagram = currentElement as ORMDiagram))
 				{
 					base.OnClicked(e); // Let through to allow a cancel
-					((ORMDiagram)currentElement).StickyObject = null;
+					ormDiagram.StickyObject = null;
 				}
 			}
 		}

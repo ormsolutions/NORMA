@@ -75,6 +75,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The StickyObject associated with this diagram.  
 		/// </summary>
+		[NonSerialized]
 		private IStickyObject mySticky;
 		/// <summary>
 		/// Get access to the diagram's StickyObject
@@ -588,7 +589,9 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#region External constraint action
+		[NonSerialized]
 		private ExternalConstraintConnectAction myExternalConstraintConnectAction;
+		[NonSerialized]
 		private ExternalConstraintAction myExternalConstraintAction;
 		/// <summary>
 		/// The connect action used to connect an external constraint to its role sequences
@@ -646,7 +649,9 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // External constraint action
 		#region Internal uniqueness constraint action
+		[NonSerialized]
 		private InternalUniquenessConstraintAction myInternalUniquenessConstraintAction;
+		[NonSerialized]
 		private InternalUniquenessConstraintConnectAction myInternalUniquenessConstraintConnectAction;
 		/// <summary>
 		/// The connect action used to connect an internal uniqueness constraint
@@ -706,7 +711,9 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion Internal uniqueness constraint action
 		#region Role drag action
+		[NonSerialized]
 		private RoleDragPendingAction myRoleDragPendingAction;
+		[NonSerialized]
 		private RoleConnectAction myRoleConnectAction;
 		/// <summary>
 		/// The drag action used by a role box to begin dragging.

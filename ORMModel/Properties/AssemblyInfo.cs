@@ -2,6 +2,7 @@
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 #endregion
 
@@ -16,6 +17,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Copyright @  2004")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: ComVisible(false)]
 
 // Version information for an assembly consists of the following four values:
 //

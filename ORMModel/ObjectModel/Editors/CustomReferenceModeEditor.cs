@@ -50,6 +50,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion
 
+/* Removed for FxCop compliance, not currently used
 		private void DeleteMenu_Click(object sender, EventArgs e)
 		{
 			Delete(sender as VirtualTreeControl);
@@ -67,6 +68,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
+Removed for FxCop compliance, not currently used */
 		/// <summary>
 		/// Get the tree control for this editor
 		/// </summary>

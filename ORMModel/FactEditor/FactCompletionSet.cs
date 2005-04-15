@@ -112,11 +112,6 @@ namespace Northface.Tools.ORM.FactEditor
 		/// *pdwFlags is set to contain one of the GBM_* flags the default 
 		/// matching in the view uses case sensitive comparison.
 		/// </summary>
-		/// <param name="pszSoFar"></param>
-		/// <param name="iLength"></param>
-		/// <param name="piIndex"></param>
-		/// <param name="pdwFlags"></param>
-		/// <returns></returns>
 		protected int GetBestMatch(string pszSoFar, int iLength, out int piIndex, out uint pdwFlags)
 		{
 			Debug.Assert(false); // Only called if UpdateCompletionFlags.CSF_CUSTOMMATCHING is set
@@ -239,7 +234,10 @@ namespace Northface.Tools.ORM.FactEditor
 			return (uint)UpdateCompletionFlags.CSF_HAVEDESCRIPTIONS;
 		}
 
-		int IVsCompletionSet.GetImageList(out IntPtr phImages)
+		/// <summary>
+		/// Implements IVsCompletionSet.GetImageList
+		/// </summary>
+		protected int GetImageList(out IntPtr phImages)
 		{
 			if (myImageList.HandleCreated)
 			{
@@ -251,8 +249,14 @@ namespace Northface.Tools.ORM.FactEditor
 			}
 			return NativeMethods.S_OK;
 		}
-
-		int IVsCompletionSet.GetInitialExtent(out int piLine, out int piStartCol, out int piEndCol)
+		int IVsCompletionSet.GetImageList(out IntPtr phImages)
+		{
+			return GetImageList(out phImages);
+		}
+		/// <summary>
+		/// Implements IVsCompletionSet.GetInitialExtent
+		/// </summary>
+		protected int GetInitialExtent(out int piLine, out int piStartCol, out int piEndCol)
 		{
 			Debug.Assert(false); // Only called if UpdateCompletionFlags.CSF_INITIALEXTENTKNOWN is set
 			piLine = piStartCol = piEndCol = 0;
@@ -267,28 +271,26 @@ namespace Northface.Tools.ORM.FactEditor
 			}
 			return hr;
 		}
-
-		int IVsCompletionSet.OnCommit(string pszSoFar, int iIndex, int fSelected, ushort cCommit, out string pbstrCompleteWord)
+		int IVsCompletionSet.GetInitialExtent(out int piLine, out int piStartCol, out int piEndCol)
 		{
-			return OnCommit(pszSoFar, iIndex, fSelected, cCommit, out pbstrCompleteWord);
+			return GetInitialExtent(out piLine, out piStartCol, out piEndCol);
 		}
+
 		/// <summary>
 		/// Implements IVsCompletionSet.OnCommit
 		/// </summary>
-		/// <param name="pszSoFar"></param>
-		/// <param name="iIndex"></param>
-		/// <param name="fSelected"></param>
-		/// <param name="cCommit"></param>
-		/// <param name="pbstrCompleteWord"></param>
-		/// <returns></returns>
 		protected int OnCommit(string pszSoFar, int iIndex, int fSelected, ushort cCommit, out string pbstrCompleteWord)
 		{
 			Debug.Assert(false); // Only called if UpdateCompletionFlags.CSF_CUSTOMCOMMIT is set
 			pbstrCompleteWord = pszSoFar;
 			return NativeMethods.S_OK;
 		}
+		int IVsCompletionSet.OnCommit(string pszSoFar, int iIndex, int fSelected, ushort cCommit, out string pbstrCompleteWord)
+		{
+			return OnCommit(pszSoFar, iIndex, fSelected, cCommit, out pbstrCompleteWord);
+		}
 
-		#endregion
+		#endregion // IVsCompletionSet Members
 
 		#region Properties
 		private ORMDesignerDocData CurrentDocument

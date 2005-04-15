@@ -33,7 +33,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		private Columns[] myEditable = new Columns[] { Columns.FormatString, Columns.Name, Columns.ReferenceModeKind };
 		private Store myStore;
 		private ORMModel myModel;
-		private bool myIDidIt = false;
+		private bool myIDidIt;
 
 		#endregion // Locals
 		#region Methods
@@ -139,22 +139,20 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="e"></param>
 		private void ReferenceModeKindChangeEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
+			if (myModify != null)
+			{
 				ReferenceModeKind referenceModeKind = e.ModelElement as ReferenceModeKind;
 
-				if (referenceModeKind != null && ! referenceModeKind.IsRemoved && referenceModeKind.Model == this.myModel)
+				if (referenceModeKind != null && !referenceModeKind.IsRemoved && referenceModeKind.Model == this.myModel)
 				{
 					foreach (ReferenceMode refMode in referenceModeKind.ReferenceModeCollection)
 					{
-						if (refMode is CustomReferenceMode)
-						{
-							if (myModify != null)
-							{
-								int row = this.FindReferenceMode((CustomReferenceMode)refMode);
-								myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.FormatString, 1)));
-							}
-						}
+						CustomReferenceMode custRefMode = refMode as CustomReferenceMode;
+						int row = this.FindReferenceMode(custRefMode);
+						myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.FormatString, 1)));
 					}
 				}
+			}
 		}
 		private void CustomReferenceModeChangeEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
@@ -238,19 +236,20 @@ namespace Northface.Tools.ORM.ObjectModel
 
 		private void ReferenceModeHasKindChangeEvent(object sender, RolePlayerChangedEventArgs e)
 		{
-			ReferenceModeHasReferenceModeKind link = e.ElementLink as ReferenceModeHasReferenceModeKind;
-			if (link != null)
+			if (myModify != null)
 			{
-				ReferenceModeKind referenceModeKind = link.Kind;
-				if (referenceModeKind.Model == this.myModel && !link.IsRemoved)
+				ReferenceModeHasReferenceModeKind link = e.ElementLink as ReferenceModeHasReferenceModeKind;
+				if (link != null)
 				{
-					foreach (ReferenceMode refMode in referenceModeKind.ReferenceModeCollection)
+					ReferenceModeKind referenceModeKind = link.Kind;
+					if (referenceModeKind.Model == this.myModel && !link.IsRemoved)
 					{
-						if (refMode is CustomReferenceMode)
+						foreach (ReferenceMode refMode in referenceModeKind.ReferenceModeCollection)
 						{
-							if (myModify != null)
+							CustomReferenceMode custRefMode = refMode as CustomReferenceMode;
+							if (custRefMode != null)
 							{
-								int row = this.FindReferenceMode((CustomReferenceMode)refMode);
+								int row = this.FindReferenceMode(custRefMode);
 								myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, -1, 1)));
 							}
 						}
@@ -261,16 +260,7 @@ namespace Northface.Tools.ORM.ObjectModel
 
 		private int FindReferenceMode(CustomReferenceMode custRefMode)
 		{
-			for(int i = 0; i < myCustomReferenceModesList.Count; i++)				
-			{
-				CustomReferenceMode mode = myCustomReferenceModesList[i];
-				if (mode == custRefMode)
-				{
-					return i;
-				}
-			}
-
-			return -1;
+			return myCustomReferenceModesList.IndexOf(custRefMode);
 		}
 
 		/// <summary>

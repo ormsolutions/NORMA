@@ -187,7 +187,7 @@ namespace Northface.Tools.ORM.Shell
 			/// </summary>
 			/// <param name="task"></param>
 			/// <returns></returns>
-			bool NavigateTo(IORMToolTaskItem task)
+			protected bool NavigateTo(IORMToolTaskItem task)
 			{
 				ModelElementLocator elementLocator = ORMDesignerDocView.ElementLocator;
 				if (elementLocator == null)

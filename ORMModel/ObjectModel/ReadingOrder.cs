@@ -12,7 +12,7 @@ namespace Northface.Tools.ORM.ObjectModel
 {
 	public partial class ReadingOrder
 	{
-		private Reading primaryReading = null;
+		private Reading primaryReading;
 
 		#region Reading facade method
 		/// <summary>

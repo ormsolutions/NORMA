@@ -98,7 +98,7 @@ namespace Northface.Tools.ORM.Shell
 	public class OptionsPage : DialogPage
 	{
 		#region Localized PropertyDescriptor attribute classes
-		private class LocalizedCategoryAttribute : CategoryAttribute
+		private sealed class LocalizedCategoryAttribute : CategoryAttribute
 		{
 			public LocalizedCategoryAttribute(string category) : base(category)
 			{
@@ -108,7 +108,7 @@ namespace Northface.Tools.ORM.Shell
 				return ResourceStrings.GetOptionsPageString(value);
 			}
 		}
-		private class LocalizedDescriptionAttribute : DescriptionAttribute
+		private sealed class LocalizedDescriptionAttribute : DescriptionAttribute
 		{
 			public LocalizedDescriptionAttribute(string description) : base(description)
 			{
@@ -119,7 +119,7 @@ namespace Northface.Tools.ORM.Shell
 				get { return ResourceStrings.GetOptionsPageString(base.Description); }
 			}
 		}
-		private class LocalizedDisplayNameAttribute : DisplayNameAttribute
+		private sealed class LocalizedDisplayNameAttribute : DisplayNameAttribute
 		{
 			public LocalizedDisplayNameAttribute(string displayName) : base(displayName)
 			{

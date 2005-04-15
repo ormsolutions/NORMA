@@ -150,9 +150,12 @@ namespace Northface.Tools.ORM.ObjectModel
 	public partial class ORMModel : INamedElementDictionaryParent
 	{
 		#region INamedElementDictionaryParent implementation
-		private NamedElementDictionary myObjectTypesDictionary = null;
-		private NamedElementDictionary myFactTypesDictionary = null;
-		private NamedElementDictionary myConstraintsDictionary = null;
+		[NonSerialized]
+		private NamedElementDictionary myObjectTypesDictionary;
+		[NonSerialized]
+		private NamedElementDictionary myFactTypesDictionary;
+		[NonSerialized]
+		private NamedElementDictionary myConstraintsDictionary;
 
 		/// <summary>
 		/// Returns the Object Types Dictionary
@@ -1055,6 +1058,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#region ConstraintCollection Implementation
+		[NonSerialized]
 		private IList myCompositeList = null;
 		/// <summary>
 		/// Return a constraint collection encompassing

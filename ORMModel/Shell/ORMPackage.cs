@@ -34,7 +34,7 @@ namespace Northface.Tools.ORM.Shell
 		/// The commands supported by this package
 		/// </summary>
 		private object myCommandSet;
-		private IVsWindowFrame myFactEditorToolWindow = null;
+		private IVsWindowFrame myFactEditorToolWindow;
 		private ORMDesignerFontsAndColors myFontAndColorService = null;
 		private static ORMDesignerPackage mySingleton;
 		#endregion

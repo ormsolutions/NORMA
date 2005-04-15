@@ -1023,8 +1023,9 @@ namespace Northface.Tools.ORM.ShapeModel
 			/// <param name="parentShape">ConstraintShapeField to draw to.</param>
 			public override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
 			{
-				ForDrawing draw = new ForDrawing(e, parentShape as FactTypeShape, myDisplayPosition);
-				((FactTypeShape)parentShape).WalkConstraintBoxes(this, myDisplayPosition, draw.DrawConstraint);
+				FactTypeShape factShape = parentShape as FactTypeShape;
+				ForDrawing draw = new ForDrawing(e, factShape, myDisplayPosition);
+				factShape.WalkConstraintBoxes(this, myDisplayPosition, draw.DrawConstraint);
 			}
 
 			/// <summary>
@@ -1139,10 +1140,12 @@ namespace Northface.Tools.ORM.ShapeModel
 					if (isInternalConstraint)
 					{
 						float startPos = boundsF.Left, endPos = startPos;
+						bool positionChanged = false;
 						bool drawConstraintPreffered = myParentShapeElement.ShouldDrawConstraintPreferred(currentConstraint);
 						if (constraintBox.IsSpanning || constraintBox.IsAntiSpanning)
 						{
 							endPos = boundsF.Right;
+							positionChanged = true;
 							//draw fully spanning constraint
 							DrawInternalConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos, drawConstraintPreffered);
 						}
@@ -1157,7 +1160,7 @@ namespace Northface.Tools.ORM.ShapeModel
 								if (currentActivity != currentBoxActivity)
 								{
 									//activity has changed; draw previous activity
-									if (startPos != endPos && currentActivity != ConstraintBoxRoleActivity.NotInBox)
+									if (positionChanged && currentActivity != ConstraintBoxRoleActivity.NotInBox)
 									{
 										if (currentActivity == ConstraintBoxRoleActivity.Active)
 										{

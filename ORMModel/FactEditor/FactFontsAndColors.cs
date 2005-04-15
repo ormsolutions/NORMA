@@ -139,14 +139,14 @@ namespace Northface.Tools.ORM.FactEditor
 		/// </summary>
 		/// <param name="piCount"></param>
 		/// <returns></returns>
-		protected int GetColorableItemCount(out int piCount)
+		protected int GetItemCount(out int piCount)
 		{
 			piCount = myDefaultColorSettings.Length;
 			return NativeMethods.S_OK;
 		}
 		int IVsProvideColorableItems.GetItemCount(out int piCount)
 		{
-			return GetColorableItemCount(out piCount);
+			return GetItemCount(out piCount);
 		}
 		#endregion // IVsProvideColorableItems Implementation
 	}
