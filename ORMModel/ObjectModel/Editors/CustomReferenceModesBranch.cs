@@ -148,8 +148,11 @@ namespace Northface.Tools.ORM.ObjectModel
 					foreach (ReferenceMode refMode in referenceModeKind.ReferenceModeCollection)
 					{
 						CustomReferenceMode custRefMode = refMode as CustomReferenceMode;
-						int row = this.FindReferenceMode(custRefMode);
-						myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.FormatString, 1)));
+						if (custRefMode != null)
+						{
+							int row = this.FindReferenceMode(custRefMode);
+							myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.FormatString, 1)));
+						}
 					}
 				}
 			}
