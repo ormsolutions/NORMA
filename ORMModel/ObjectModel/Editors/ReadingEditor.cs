@@ -563,7 +563,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
 			Role role = link.RoleCollection;
 			FactType roleFact = role.FactType;
-			if (myFact != null && object.ReferenceEquals(myFact, roleFact))
+			if (myFact != null && object.ReferenceEquals(myFact, roleFact) && !myBranch.IsAdding)
 			{
 				ReloadData();
 			}
@@ -1432,6 +1432,18 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			#endregion
 
 			#region branch update methods
+			/// <summary>
+			/// Used to find out if the branch is in the process of adding a new entry from
+			/// input into the branch.
+			/// </summary>
+			public bool IsAdding
+			{
+				get
+				{
+					return myInsertedRow != -1;
+				}
+			}
+
 			/// <summary>
 			/// Triggers the events notifying the tree that an item in the branch has been updated.
 			/// </summary>
