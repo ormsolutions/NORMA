@@ -1140,17 +1140,16 @@ namespace Northface.Tools.ORM.ShapeModel
 					if (isInternalConstraint)
 					{
 						float startPos = boundsF.Left, endPos = startPos;
-						bool positionChanged = false;
 						bool drawConstraintPreffered = myParentShapeElement.ShouldDrawConstraintPreferred(currentConstraint);
 						if (constraintBox.IsSpanning || constraintBox.IsAntiSpanning)
 						{
 							endPos = boundsF.Right;
-							positionChanged = true;
 							//draw fully spanning constraint
 							DrawInternalConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos, drawConstraintPreffered);
 						}
 						else
 						{
+							bool positionChanged = false;
 							bool constraintHasDrawn = false;
 							int i = 0;
 							ConstraintBoxRoleActivity currentActivity = rolePosToDraw[i];
@@ -1178,6 +1177,7 @@ namespace Northface.Tools.ORM.ShapeModel
 											DrawInternalConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos, drawConstraintPreffered);
 										}
 										startPos = endPos;
+										positionChanged = false;
 									}
 									currentActivity = currentBoxActivity;
 								}
@@ -1185,12 +1185,14 @@ namespace Northface.Tools.ORM.ShapeModel
 								if (currentActivity != ConstraintBoxRoleActivity.NotInBox)
 								{
 									endPos += roleWidth;
+									positionChanged = true;
 								}
 								else if (boundsF.Width > roleWidth)
 								{
 									// this covers BinaryRights when not compressing constraints
 									startPos += roleWidth;
 									endPos = startPos;
+									positionChanged = false;
 								}
 							}
 							// set DashStyle to original setting (solid)

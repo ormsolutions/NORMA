@@ -388,10 +388,8 @@ namespace Northface.Tools.ORM.ShapeModel
 		protected override void OnMouseActionDeactivated(DiagramEventArgs e)
 		{
 			base.OnMouseActionDeactivated(e);
-			IList<Role> roles = mySelectedRoles;
-			if (roles != null && roles.Count > 0)
+			if (mySourceShape != null)
 			{
-				Debug.Assert(mySourceShape != null); //source shape should have been set
 				mySourceShape.Invalidate(true);
 			}
 
@@ -510,6 +508,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				MouseMove(mouseEventArgs);
 
 				ORMDiagram.SelectToolboxItem(activeView, ResourceStrings.ToolboxInternalUniquenessConstraintItemId);
+				FactTypeShape.ActiveInternalUniquenessConstraintConnectAction = this;
 			}
 		}
 		#endregion // InternalUniquenessConstraintConnectAction specific
