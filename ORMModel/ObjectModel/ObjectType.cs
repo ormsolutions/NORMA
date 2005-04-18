@@ -499,7 +499,6 @@ namespace Northface.Tools.ORM.ObjectModel
 				else if (attributeGuid == ObjectType.NameMetaAttributeGuid)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
-					Store store = objectType.Store;
 					InternalUniquenessConstraint prefConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint;
 
 					if (prefConstraint != null)
@@ -567,7 +566,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			private static void SetReferenceMode(ObjectType objectType, ReferenceMode newMode, ReferenceMode oldMode, string newModeName, string oldModeName)
 			{
 				Store store = objectType.Store;
-				InternalUniquenessConstraint prefConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint;
 				bool aggressivelyKillValueType = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.Contains(DeleteReferenceModeValueType);
 
 				string newValue = newModeName;
@@ -584,7 +582,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				string name = newValue;
 				if (newMode != null)
 				{
-					if (name == "")
+					if (name.Length == 0)
 					{
 						name = newMode.Name;
 					}

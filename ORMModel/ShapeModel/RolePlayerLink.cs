@@ -272,9 +272,8 @@ namespace Northface.Tools.ORM.ShapeModel
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				SimpleMandatoryConstraint constraint;
 				Role role;
-				if ((null != (constraint = link.ConstraintRoleSequenceCollection as SimpleMandatoryConstraint)) &&
+				if ((null != (link.ConstraintRoleSequenceCollection as SimpleMandatoryConstraint)) &&
 				    (null != (role = link.RoleCollection)))
 				{
 					UpdateDotDisplayOnMandatoryConstraintChange(role);

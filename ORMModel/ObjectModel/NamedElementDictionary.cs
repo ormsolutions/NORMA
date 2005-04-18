@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 namespace Northface.Tools.ORM.ObjectModel
 {
@@ -460,10 +461,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="element">The element that could not be added due to the duplicate name</param>
 		/// <param name="requestedName"></param>
-		protected virtual void RaiseDuplicateNameException(NamedElement element, string requestedName)
+		protected virtual void ThrowDuplicateNameException(NamedElement element, string requestedName)
 		{
 			// UNDONE: Localize
-			throw new InvalidOperationException(string.Format("The name '{0}' is already used in this context.", requestedName));
+			throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, "The name '{0}' is already used in this context.", requestedName));
 		}
 		#endregion // Virtual methods
 		#region Unique name generation
@@ -486,7 +487,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			do
 			{
 				++i;
-				newKey = string.Format(rootName, i.ToString());
+				newKey = string.Format(CultureInfo.InvariantCulture, rootName, i.ToString(CultureInfo.InvariantCulture));
 			} while(dic.ContainsKey(newKey));
 			return newKey;
 		}
@@ -546,7 +547,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			else if (duplicateAction == DuplicateNameAction.ThrowOnDuplicateName)
 			{
-				RaiseDuplicateNameException(element, elementName);
+				ThrowDuplicateNameException(element, elementName);
 				// The return will only be hit if a derived class chooses
 				// to not throw an exception
 				return;

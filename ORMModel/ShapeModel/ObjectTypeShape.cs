@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM;
@@ -323,7 +324,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				if (objectType.ReferenceModeString.Length != 0)
 				{
-					return string.Format("({0})", base.GetDisplayText(parentShape));
+					return string.Format(CultureInfo.InvariantCulture, "({0})", base.GetDisplayText(parentShape));
 				}
 			}
 			return base.GetDisplayText(parentShape);

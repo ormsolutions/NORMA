@@ -283,7 +283,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				MultiColumnExternalConstraint mcec;
 				if (null != (mcec = AssociatedConstraint as MultiColumnExternalConstraint))
 				{
-					foreach (MultiColumnExternalConstraintRoleSequence roleSequence in ((AssociatedConstraint as MultiColumnExternalConstraint).RoleSequenceCollection))
+					foreach (MultiColumnExternalConstraintRoleSequence roleSequence in mcec.RoleSequenceCollection)
 					{
 						if (roleSequence.RoleCollection.IndexOf(r) >= 0)
 						{

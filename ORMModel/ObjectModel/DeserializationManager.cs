@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using System.Reflection;
 
@@ -219,7 +220,7 @@ namespace Northface.Tools.ORM.ObjectModel
 					IDeserializationFixupListener listener = listeners[i];
 					if (listener.HasElements(phase, store))
 					{
-						Debug.Fail(string.Format("A fixup phase after phase {0} added elements to an IDeserializationFixupListener of type {1}.", phase, listener.GetType().FullName));
+						Debug.Fail(string.Format(CultureInfo.InvariantCulture, "A fixup phase after phase {0} added elements to an IDeserializationFixupListener of type {1}.", phase, listener.GetType().FullName));
 					}
 				}
 			}

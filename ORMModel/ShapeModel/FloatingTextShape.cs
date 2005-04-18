@@ -9,14 +9,6 @@ namespace Northface.Tools.ORM.ShapeModel
 	public abstract partial class FloatingTextShape
 	{
 		/// <summary>
-		/// Make sure the shape fields are initialized early
-		/// so we can auto resize.
-		/// </summary>
-		public override void OnCreated()
-		{
-			ShapeFieldCollection shapes = ShapeFields;
-		}
-		/// <summary>
 		/// Retrieve or set the (singleton) shape field for the text
 		/// </summary>
 		[CLSCompliant(false)]

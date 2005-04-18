@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -507,7 +508,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		private void ReadingAttributeChangedEvent(object sender, ElementAttributeChangedEventArgs e)
 		{
 			Reading reading = e.ModelElement as Reading;
-			int numEntries = myReadingList.Count;
 			ReadingOrder ord = reading.ReadingOrder;
 
 			if (ord == null || !object.ReferenceEquals(ord.FactType, myFact))
@@ -572,9 +572,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		private void ReadingOrderHasRoleRemovedEvent(object sender, ElementRemovedEventArgs e)
 		{
 			ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
-			Role role = link.RoleCollection;
 			ReadingOrder ord = link.ReadingOrder;
-			FactType roleFact = role.FactType;
 			if (myFact != null && !myFact.IsRemoved)
 			{
 				if (myFact.ReadingOrderCollection.Contains(ord))
@@ -940,7 +938,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 
 			private String GenerateDisplayText()
 			{
-				RoleMoveableCollection roleSeq = myReading.ReadingOrder.RoleCollection;
 				String retval = regCountPlaces.Replace(myReading.Text, new MatchEvaluator(ReplacePlaceHolders));
 				return retval;
 			}
@@ -950,10 +947,10 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				string retval = null;
 				RoleMoveableCollection roles = myReading.ReadingOrder.RoleCollection;
 				string matchText = m.Value;
-				int rolePosition = int.Parse(matchText.Substring(1, matchText.Length - 2));
-				if (myReading.ReadingOrder.RoleCollection.Count > rolePosition)
+				int rolePosition = int.Parse(matchText.Substring(1, matchText.Length - 2), CultureInfo.InvariantCulture);
+				if (roles.Count > rolePosition)
 				{
-					ObjectType player = myReading.ReadingOrder.RoleCollection[rolePosition].RolePlayer;
+					ObjectType player = roles[rolePosition].RolePlayer;
 					if (player != null)
 					{
 						retval = player.Name;

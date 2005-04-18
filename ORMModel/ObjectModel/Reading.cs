@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
 using System.ComponentModel;
+using System.Globalization;
 
 #endregion
 
@@ -39,7 +40,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					roleNames[i] = roles[i].Name;
 				}
-				return string.Format(this.Text, roleNames);
+				return string.Format(CultureInfo.InvariantCulture, this.Text, roleNames);
 			}
 			else
 			{
@@ -72,7 +73,8 @@ namespace Northface.Tools.ORM.ObjectModel
 			ReadingOrder readOrd = ReadingOrder;
 			if (readOrd != null)
 			{
-				return string.Format("{0} {1}{2}", readOrd.FactType.Name, ResourceStrings.ReadingType, readOrd.ReadingCollection.IndexOf(this) + 1);
+				// UNDONE: Localize the format string
+				return string.Format(CultureInfo.InvariantCulture, "{0} {1}{2}", readOrd.FactType.Name, ResourceStrings.ReadingType, readOrd.ReadingCollection.IndexOf(this) + 1);
 			}
 			return base.GetComponentName();
 		}
@@ -121,7 +123,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			for (int i = 0; i < listCount; ++i)
 			{
 
-				nrList[i] = int.Parse(matches[i].Groups["placeHolderNr"].Value);
+				nrList[i] = int.Parse(matches[i].Groups["placeHolderNr"].Value, CultureInfo.InvariantCulture);
 			}
 			Array.Sort<int>(nrList);
 			int last = int.MinValue;
@@ -286,8 +288,6 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == Reading.TextMetaAttributeGuid)
 				{
-					string newVal = e.NewValue as string;
-					int roleCount = changedReading.ReadingOrder.RoleCollection.Count;
 					changedReading.ValidateRoleCountError(null);
 
 					TooFewReadingRolesError tooFew;
@@ -384,7 +384,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			string newText = string.Format(ResourceStrings.ModelErrorReadingTooFewRolesMessage, Reading.Text, Model.Name);
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooFewRolesMessage, Reading.Text, Model.Name);
 			if(Name != newText)
 			{
 				Name = newText;
@@ -432,7 +432,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			string newText = string.Format(ResourceStrings.ModelErrorReadingTooManyRolesMessage, Reading.Text, Model.Name);
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooManyRolesMessage, Reading.Text, Model.Name);
 			if (Name != newText)
 			{
 				Name = newText;

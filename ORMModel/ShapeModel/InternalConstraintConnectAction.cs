@@ -343,7 +343,6 @@ namespace Northface.Tools.ORM.ShapeModel
 						IList<Role> roles = SelectedRoleCollection;
 						int roleIndex = roles.IndexOf(role);
 						bool forceRedraw = false;
-						int redrawIndexBound = -1;
 						if (roleIndex >= 0)
 						{
 							// Only remove a role when the control key is down. Otherwise,
@@ -353,7 +352,6 @@ namespace Northface.Tools.ORM.ShapeModel
 							{
 								forceRedraw = true;
 								roles.RemoveAt(roleIndex);
-								redrawIndexBound = roles.Count;
 							}
 						}
 						else

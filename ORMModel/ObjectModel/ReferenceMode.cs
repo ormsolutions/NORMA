@@ -802,7 +802,6 @@ namespace Northface.Tools.ORM.ObjectModel
 				Guid attributeId = e.MetaAttribute.Id;
 				if (attributeId == FormatStringMetaAttributeGuid)
 				{
-					string newFormatString = (string)e.NewValue;
 					string oldFormatString = (string)e.OldValue;
 					ReferenceModeKind kind = e.ModelElement as ReferenceModeKind;
 					ORMModel model = kind.Model;

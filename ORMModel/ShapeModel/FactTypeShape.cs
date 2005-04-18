@@ -986,7 +986,6 @@ namespace Northface.Tools.ORM.ShapeModel
 			/// <returns>The height of the ConstraintShapeField.</returns>
 			public override double GetMinimumHeight(ShapeElement parentShape)
 			{
-				FactTypeShape parent = parentShape as FactTypeShape;
 				return ForMinimumHeight.CalculateMinimumHeight(parentShape, myDisplayPosition);
 			}
 
@@ -1290,7 +1289,6 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				DiagramClientView clientView = e.DiagramClientView;
 				ORMDiagram diagram = clientView.Diagram as ORMDiagram;
-				DiagramView activeView = diagram.ActiveDiagramView;
 				InternalUniquenessConstraint iuc = AssociatedConstraint as InternalUniquenessConstraint;
 				if (iuc != null)
 				{
@@ -1523,7 +1521,7 @@ namespace Northface.Tools.ORM.ShapeModel
 								{
 									connectActionBrush = styleSet.GetBrush(RolePickerForeground);
 								}
-								g.DrawString((activeRoleIndex + 1).ToString(), connectActionFont, connectActionBrush, roleBounds, stringFormat);
+								g.DrawString((activeRoleIndex + 1).ToString(CultureInfo.InvariantCulture), connectActionFont, connectActionBrush, roleBounds, stringFormat);
 							}
 							// There is an active InternalUniquenessConstraintConnectAction, and this role is currently in the action's role set.
 							else if (activeInternalAction != null && -1 != (activeRoleIndex = activeInternalAction.GetActiveRoleIndex(currentRole)))
@@ -1542,7 +1540,6 @@ namespace Northface.Tools.ORM.ShapeModel
 									&& null != (stickyConstraint = stickyConstraintShape.AssociatedConstraint))
 								{
 									ConstraintRoleSequence sequence = null;
-									RoleMoveableCollection roleCollection = null;
 									bool roleIsInStickyObject = false;
 
 									// Test to see if the diagram's StickyObject (which is an IConstraint) contains a reference to this role.
@@ -1551,7 +1548,6 @@ namespace Northface.Tools.ORM.ShapeModel
 										if (object.ReferenceEquals(c.Constraint, stickyConstraint))
 										{
 											sequence = c;
-											roleCollection = sequence.RoleCollection;
 											roleIsInStickyObject = true;
 											break;
 										}
@@ -1592,7 +1588,7 @@ namespace Northface.Tools.ORM.ShapeModel
 													if (y >= 0)
 													{
 														// Show 1-based position of the role in the MCEC.
-														s = string.Concat(s, (x + 1).ToString(), ".", (y + 1).ToString());
+														s = string.Concat(s, (x + 1).ToString(CultureInfo.InvariantCulture), ".", (y + 1).ToString(CultureInfo.InvariantCulture));
 														break;
 													}
 												}

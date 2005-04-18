@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 
 #endregion
@@ -239,10 +240,10 @@ namespace Northface.Tools.ORM.ObjectModel
 						{
 							Debug.Assert(!linkReading.IsRemoved);
 							string text = linkReading.Text;
-							text = text.Replace("{" + pos.ToString() + "}", ResourceStrings.ModelReadingRoleDeletedRoleText);
+							text = text.Replace("{" + pos.ToString(CultureInfo.InvariantCulture) + "}", ResourceStrings.ModelReadingRoleDeletedRoleText);
 							for (int i = pos + 1; i < roleCount; ++i)
 							{
-								text = text.Replace(string.Concat("{", i.ToString(), "}"), string.Concat("{", (i - 1).ToString(), "}"));
+								text = text.Replace(string.Concat("{", i.ToString(CultureInfo.InvariantCulture), "}"), string.Concat("{", (i - 1).ToString(CultureInfo.InvariantCulture), "}"));
 							}
 							linkReading.Text = text;
 							//UNDONE:add entry to task list service to let user know reading text might need some fixup

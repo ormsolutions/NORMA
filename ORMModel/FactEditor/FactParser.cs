@@ -261,7 +261,7 @@ namespace Northface.Tools.ORM.FactEditor
 			cbstrError = factLine.Error;
 
 			// what type of line ?   base on the parsed tokens	
-			if (hResult != NativeMethods.S_OK || cbstrError != "")
+			if (hResult != NativeMethods.S_OK || cbstrError.Length != 0)
 			{
 				// parse failed, so make comment the line text
 				lineType = FactLineType.Invalid;

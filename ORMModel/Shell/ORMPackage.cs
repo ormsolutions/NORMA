@@ -197,6 +197,10 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 
+			// assign our language service to the buffer
+			Guid langService = typeof(FactLanguageService).GUID;
+			NativeMethods.ThrowOnFailure(lines.SetLanguageServiceID(ref langService));
+
 			// Create a std code view (text)
 			IntPtr srpCodeWin = IntPtr.Zero;
 			iid = typeof(IVsCodeWindow).GUID;
@@ -223,7 +227,7 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 
-			codeWindow.SetBuffer(lines);
+			NativeMethods.ThrowOnFailure(codeWindow.SetBuffer(lines));
 
 			IVsWindowFrame windowFrame;
 			IVsUIShell shell = (IVsUIShell)GetService(typeof(IVsUIShell));
@@ -240,7 +244,7 @@ namespace Northface.Tools.ORM.Shell
 			// 7- tool window.windowTitle
 			// 8- int[] for position (empty array)
 			// 9- out IVsWindowFrame
-			shell.CreateToolWindow(
+			NativeMethods.ThrowOnFailure(shell.CreateToolWindow(
 				(uint)__VSCREATETOOLWIN.CTW_fInitNew, // tool window flags, default to init new
 				0,
 				(IVsWindowPane)codeWindow,
@@ -250,11 +254,8 @@ namespace Northface.Tools.ORM.Shell
 				null,
 				ResourceStrings.FactEditorToolWindowCaption,
 				null,
-				out windowFrame);
+				out windowFrame));
 
-			// assign our language service to the buffer
-			Guid langService = typeof(FactLanguageService).GUID;
-			int hr = lines.SetLanguageServiceID(ref langService);
 			return windowFrame;
 		}
 		#endregion FactEditorToolWindow Creation

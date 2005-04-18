@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 
 namespace Northface.Tools.ORM.ObjectModel
@@ -412,9 +413,9 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element we're attempting to name</param>
 			/// <param name="requestedName">The in-use requested name</param>
-			protected override void RaiseDuplicateNameException(NamedElement element, string requestedName)
+			protected override void ThrowDuplicateNameException(NamedElement element, string requestedName)
 			{
-				throw new InvalidOperationException(string.Format(ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
+				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
 			}
 			#endregion // Base overrides
 		}
@@ -522,9 +523,9 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element we're attempting to name</param>
 			/// <param name="requestedName">The in-use requested name</param>
-			protected override void RaiseDuplicateNameException(NamedElement element, string requestedName)
+			protected override void ThrowDuplicateNameException(NamedElement element, string requestedName)
 			{
-				throw new InvalidOperationException(string.Format(ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
+				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
 			}
 			#endregion // Base overrides
 		}
@@ -652,9 +653,9 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="element">Element we're attempting to name</param>
 			/// <param name="requestedName">The in-use requested name</param>
-			protected override void RaiseDuplicateNameException(NamedElement element, string requestedName)
+			protected override void ThrowDuplicateNameException(NamedElement element, string requestedName)
 			{
-				throw new InvalidOperationException(string.Format(ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
+				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelExceptionNameAlreadyUsedByModel, requestedName));
 			}
 			#endregion // Base overrides
 		}
@@ -886,7 +887,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			string elementName = (elements.Count != 0) ? ((NamedElement)elements[0]).Name : "";
 			ORMModel model = Model;
 			string modelName = (model != null) ? model.Name : "";
-			string newText = string.Format(ErrorFormatText, modelName, elementName);
+			string newText = string.Format(CultureInfo.InvariantCulture, ErrorFormatText, modelName, elementName);
 			string currentText = Name;
 			if (currentText != newText)
 			{

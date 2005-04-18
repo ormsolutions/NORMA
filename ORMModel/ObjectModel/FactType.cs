@@ -182,7 +182,9 @@ namespace Northface.Tools.ORM.ObjectModel
 		public int GetInternalConstraintsCount(ConstraintType filterType)
 		{
 			int retVal = 0;
-			foreach (InternalConstraint ic in GetInternalConstraints(filterType))
+			// Count the enumerator without foreach to satisfy FxCop
+			IEnumerator<InternalConstraint> ienum = GetInternalConstraints(filterType).GetEnumerator();
+			while (ienum.MoveNext())
 			{
 				++retVal;
 			}

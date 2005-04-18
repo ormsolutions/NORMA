@@ -3,6 +3,7 @@ using System.Collections;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
 using Northface.Tools.ORM.ObjectModel;
@@ -338,7 +339,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				for (int i = 0; i < modeCount; ++i)
 				{
 					ReferenceMode refMode = modes[i];
-					prettyStrings[i] = string.Format(formatString, refMode.Name, refMode.GenerateValueTypeName(instanceName));
+					prettyStrings[i] = string.Format(CultureInfo.InvariantCulture, formatString, refMode.Name, refMode.GenerateValueTypeName(instanceName));
 				}
 				candidates = prettyStrings;
 			}
@@ -346,7 +347,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			{
 				myModes = rawModes;
 				ReferenceMode refMode = (ReferenceMode)rawModes[0];
-				candidates = new string[] { string.Format(formatString, refMode.Name, refMode.GenerateValueTypeName(instanceName)) };
+				candidates = new string[] { string.Format(CultureInfo.InvariantCulture, formatString, refMode.Name, refMode.GenerateValueTypeName(instanceName)) };
 			}
 			return candidates;
 		}

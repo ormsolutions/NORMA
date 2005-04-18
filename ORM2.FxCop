@@ -433,35 +433,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="LoadModelElements():System.Void">
-            <Messages>
-             <Message Id="factList" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>FactCompletionSet.LoadModelElements():Void</Item>
-               <Item>factList</Item>
-               <Item>System.Collections.IList</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="ObjectTypeChangedEvent(System.Object,Microsoft.VisualStudio.Modeling.ElementAttributeChangedEventArgs):System.Void">
-            <Messages>
-             <Message Id="newName" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>FactCompletionSet.ObjectTypeChangedEvent(Object, ElementAttributeChangedEventArgs):Void</Item>
-               <Item>newName</Item>
-               <Item>System.String</Item>
-              </Issue>
-             </Message>
-             <Message Id="oldName" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>FactCompletionSet.ObjectTypeChangedEvent(Object, ElementAttributeChangedEventArgs):Void</Item>
-               <Item>oldName</Item>
-               <Item>System.String</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="OnCommit(System.String,System.Int32,System.Int32,System.UInt16,System.String&amp;):System.Int32">
             <Messages>
              <Message Id="cCommit" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
@@ -985,13 +956,6 @@
               <Issue Name="Parameter">
                <Item>Nr</Item>
                <Item>lineNr</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820" Created="2005-04-15 14:45:27Z">
-              <Issue Name="IsNullOrEmpty">
-               <Item>op_Inequality</Item>
-               <Item>""</Item>
-               <Item>FactParser.ParseLine(IVsTextLines, Int32, FactLineType&amp;, String&amp;):Int32</Item>
               </Issue>
              </Message>
              <Message Id="2#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-04-15 14:45:27Z">
@@ -1920,55 +1884,14 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="DeserializationFixupManager">
-          <Members>
-           <Member Name="DeserializationComplete():System.Void">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>DeserializationFixupManager.DeserializationComplete():Void</Item>
-               <Item>System.String.Format(System.String,System.Object,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="DuplicateNameError">
           <Members>
-           <Member Name="GenerateErrorText():System.Void">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>DuplicateNameError.GenerateErrorText():Void</Item>
-               <Item>System.String.Format(System.String,System.Object,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="ValidateErrors(Northface.Tools.ORM.ObjectModel.INotifyElementAdded):System.Void">
             <Messages>
              <Message Id="notifyAdded" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
               <Issue>
                <Item>notifyAdded</Item>
                <Item>DuplicateNameError.ValidateErrors(INotifyElementAdded):Void</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="EntityTypeHasPreferredIdentifier">
-          <Members>
-           <Member Name="TestRemovePreferredIdentifier():System.Void">
-            <Messages>
-             <Message Id="euc" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifier():Void</Item>
-               <Item>euc</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint</Item>
               </Issue>
              </Message>
             </Messages>
@@ -2129,17 +2052,6 @@
          </Type>
          <Type Name="FactType">
           <Members>
-           <Member Name="GetInternalConstraintsCount(Northface.Tools.ORM.ObjectModel.ConstraintType):System.Int32">
-            <Messages>
-             <Message Id="ic" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>FactType.GetInternalConstraintsCount(ConstraintType):Int32</Item>
-               <Item>ic</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.InternalConstraint</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="GetRoleGuids(System.Guid&amp;,System.Guid&amp;):System.Void">
             <Messages>
              <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2005-02-03 20:22:04Z">
@@ -3397,24 +3309,6 @@
            </Message>
           </Messages>
           <Members>
-           <Member Name="GenerateUniqueName(Microsoft.VisualStudio.Modeling.NamedElement):System.String">
-            <Messages>
-             <Message Id="System.Int32.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>NamedElementDictionary.GenerateUniqueName(NamedElement):String</Item>
-               <Item>System.Int32.ToString</Item>
-               <Item>System.Int32.ToString(System.IFormatProvider)</Item>
-              </Issue>
-             </Message>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>NamedElementDictionary.GenerateUniqueName(NamedElement):String</Item>
-               <Item>System.String.Format(System.String,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="Northface.Tools.ORM.ObjectModel.INamedElementDictionary.GetElement(System.String):Northface.Tools.ORM.ObjectModel.LocatedElement">
             <Messages>
              <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-02-03 20:22:04Z">
@@ -3431,22 +3325,6 @@
               <Issue>
                <Item>NamedElementDictionary</Item>
                <Item>INamedElementDictionary.RemoveElement(NamedElement, String, DuplicateNameAction):Boolean</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="RaiseDuplicateNameException(Microsoft.VisualStudio.Modeling.NamedElement,System.String):System.Void">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>NamedElementDictionary.RaiseDuplicateNameException(NamedElement, String):Void</Item>
-               <Item>System.String.Format(System.String,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="UseEventsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1030" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>RaiseDuplicateNameException</Item>
               </Issue>
              </Message>
             </Messages>
@@ -3623,13 +3501,6 @@
           <Members>
            <Member Name="ElementAttributeChanged(Microsoft.VisualStudio.Modeling.ElementAttributeChangedEventArgs):System.Void">
             <Messages>
-             <Message Id="store" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>ObjectTypeChangeRule.ElementAttributeChanged(ElementAttributeChangedEventArgs):Void</Item>
-               <Item>store</Item>
-               <Item>Microsoft.VisualStudio.Modeling.Store</Item>
-              </Issue>
-             </Message>
              <Message Id="Microsoft.VisualStudio.Modeling.ElementAttributeChangedEventArgs.get_NewValue" TypeName="AvoidCallsThatBoxValueTypes" Category="Microsoft.Performance" CheckId="CA1808" Status="Excluded" Created="2005-02-03 20:22:04Z">
               <Issue Name="DefaultConsiderGenerics">
                <Item>ObjectTypeChangeRule.ElementAttributeChanged(ElementAttributeChangedEventArgs):Void</Item>
@@ -3651,24 +3522,6 @@
                 <Note Id="0" />
                </User>
               </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="SetReferenceMode(Northface.Tools.ORM.ObjectModel.ObjectType,Northface.Tools.ORM.ObjectModel.ReferenceMode,Northface.Tools.ORM.ObjectModel.ReferenceMode,System.String,System.String):System.Void">
-            <Messages>
-             <Message Id="prefConstraint" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ObjectTypeChangeRule.SetReferenceMode(ObjectType, ReferenceMode, ReferenceMode, String, String):Void</Item>
-               <Item>prefConstraint</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820" Created="2005-04-15 14:45:27Z">
-              <Issue Name="IsNullOrEmpty">
-               <Item>op_Equality</Item>
-               <Item>""</Item>
-               <Item>ObjectTypeChangeRule.SetReferenceMode(ObjectType, ReferenceMode, ReferenceMode, String, String):Void</Item>
-              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -3938,24 +3791,6 @@
             </Issue>
            </Message>
           </Messages>
-          <Members>
-           <Member Name="RaiseDuplicateNameException(Microsoft.VisualStudio.Modeling.NamedElement,System.String):System.Void">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>ConstraintNamedElementDictionary.RaiseDuplicateNameException(NamedElement, String):Void</Item>
-               <Item>System.String.Format(System.String,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="UseEventsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1030" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>RaiseDuplicateNameException</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
          <Type Name="ORMModel+FactTypeNamedElementDictionary">
           <Messages>
@@ -3971,24 +3806,6 @@
             </Issue>
            </Message>
           </Messages>
-          <Members>
-           <Member Name="RaiseDuplicateNameException(Microsoft.VisualStudio.Modeling.NamedElement,System.String):System.Void">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>FactTypeNamedElementDictionary.RaiseDuplicateNameException(NamedElement, String):Void</Item>
-               <Item>System.String.Format(System.String,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="UseEventsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1030" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>RaiseDuplicateNameException</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
          <Type Name="ORMModel+ObjectTypeNamedElementDictionary">
           <Messages>
@@ -4004,24 +3821,6 @@
             </Issue>
            </Message>
           </Messages>
-          <Members>
-           <Member Name="RaiseDuplicateNameException(Microsoft.VisualStudio.Modeling.NamedElement,System.String):System.Void">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>ObjectTypeNamedElementDictionary.RaiseDuplicateNameException(NamedElement, String):Void</Item>
-               <Item>System.String.Format(System.String,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="UseEventsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1030" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>RaiseDuplicateNameException</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
          <Type Name="ORMModel+RemoveDuplicateConstraintNameErrorRule">
           <Messages>
@@ -4079,28 +3878,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="GetComponentName():System.String">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>Reading.GetComponentName():String</Item>
-               <Item>System.String.Format(System.String,System.Object,System.Object,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="IsValidReadingText(System.String,System.Int32):System.Boolean">
-            <Messages>
-             <Message Id="System.Int32.Parse(System.String)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>Reading.IsValidReadingText(String, Int32):Boolean</Item>
-               <Item>System.Int32.Parse(System.String)</Item>
-               <Item>System.Int32.Parse(System.String,System.IFormatProvider)</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="PlaceHolderCount(System.String):System.Int32">
             <Messages>
              <Message Id="PlaceHolder" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-04-15 14:45:27Z">
@@ -4109,17 +3886,6 @@
                <Item>method</Item>
                <Item>PlaceHolderCount</Item>
                <Item>Placeholder</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="ToString():System.String">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object[])" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>Reading.ToString():String</Item>
-               <Item>System.String.Format(System.String,System.Object[])</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
               </Issue>
              </Message>
             </Messages>
@@ -4261,20 +4027,6 @@
            </Member>
            <Member Name="ElementAttributeChanged(Microsoft.VisualStudio.Modeling.ElementAttributeChangedEventArgs):System.Void">
             <Messages>
-             <Message Id="newVal" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ReadingPropertiesChanged.ElementAttributeChanged(ElementAttributeChangedEventArgs):Void</Item>
-               <Item>newVal</Item>
-               <Item>System.String</Item>
-              </Issue>
-             </Message>
-             <Message Id="roleCount" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ReadingPropertiesChanged.ElementAttributeChanged(ElementAttributeChangedEventArgs):Void</Item>
-               <Item>roleCount</Item>
-               <Item>System.Int32</Item>
-              </Issue>
-             </Message>
              <Message Id="Microsoft.VisualStudio.Modeling.ElementAttributeChangedEventArgs.get_NewValue" TypeName="AvoidCallsThatBoxValueTypes" Category="Microsoft.Performance" CheckId="CA1808" Status="Excluded" Created="2005-04-15 14:45:27Z">
               <Issue Name="DefaultConsiderGenerics">
                <Item>ReadingPropertiesChanged.ElementAttributeChanged(ElementAttributeChangedEventArgs):Void</Item>
@@ -4410,29 +4162,6 @@
             </Notes>
            </Message>
           </Messages>
-          <Members>
-           <Member Name="ElementRemoving(Microsoft.VisualStudio.Modeling.ElementRemovingEventArgs):System.Void">
-            <Messages>
-             <Message Id="System.Int32.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>ReadingOrderHasRoleRemoving.ElementRemoving(ElementRemovingEventArgs):Void</Item>
-               <Item>System.Int32.ToString</Item>
-               <Item>System.Int32.ToString(System.IFormatProvider)</Item>
-              </Issue>
-              <Issue>
-               <Item>ReadingOrderHasRoleRemoving.ElementRemoving(ElementRemovingEventArgs):Void</Item>
-               <Item>System.Int32.ToString</Item>
-               <Item>System.Int32.ToString(System.IFormatProvider)</Item>
-              </Issue>
-              <Issue>
-               <Item>ReadingOrderHasRoleRemoving.ElementRemoving(ElementRemovingEventArgs):Void</Item>
-               <Item>System.Int32.ToString</Item>
-               <Item>System.Int32.ToString(System.IFormatProvider)</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
          <Type Name="ReadingOrder+ReadingOrderReadingTextFieldHandler">
           <Messages>
@@ -5205,17 +4934,6 @@
            </Message>
           </Messages>
           <Members>
-           <Member Name="ElementAttributeChanged(Microsoft.VisualStudio.Modeling.ElementAttributeChangedEventArgs):System.Void">
-            <Messages>
-             <Message Id="newFormatString" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ReferenceModeKindChangeRule.ElementAttributeChanged(ElementAttributeChangedEventArgs):Void</Item>
-               <Item>newFormatString</Item>
-               <Item>System.String</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="EnsureUnique(Northface.Tools.ORM.ObjectModel.ReferenceModeKind,Northface.Tools.ORM.ObjectModel.ORMModel):System.Void">
             <Messages>
              <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="NonBreaking">
@@ -5697,13 +5415,6 @@
           <Members>
            <Member Name="ElementAttributeChanged(Microsoft.VisualStudio.Modeling.ElementAttributeChangedEventArgs):System.Void">
             <Messages>
-             <Message Id="model" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>RoleChangeRule.ElementAttributeChanged(ElementAttributeChangedEventArgs):Void</Item>
-               <Item>model</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.ORMModel</Item>
-              </Issue>
-             </Message>
              <Message Id="Microsoft.VisualStudio.Modeling.ElementAttributeChangedEventArgs.get_NewValue" TypeName="AvoidCallsThatBoxValueTypes" Category="Microsoft.Performance" CheckId="CA1808" Status="Excluded" Created="2005-02-03 20:22:04Z">
               <Issue Name="DefaultConsiderGenerics">
                <Item>RoleChangeRule.ElementAttributeChanged(ElementAttributeChangedEventArgs):Void</Item>
@@ -5987,66 +5698,6 @@
             </Notes>
            </Message>
           </Messages>
-         </Type>
-         <Type Name="TooFewReadingRolesError">
-          <Members>
-           <Member Name="GenerateErrorText():System.Void">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>TooFewReadingRolesError.GenerateErrorText():Void</Item>
-               <Item>System.String.Format(System.String,System.Object,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="TooFewRoleSequencesError">
-          <Members>
-           <Member Name="GenerateErrorText():System.Void">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>TooFewRoleSequencesError.GenerateErrorText():Void</Item>
-               <Item>System.String.Format(System.String,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="TooManyReadingRolesError">
-          <Members>
-           <Member Name="GenerateErrorText():System.Void">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>TooManyReadingRolesError.GenerateErrorText():Void</Item>
-               <Item>System.String.Format(System.String,System.Object,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="TooManyRoleSequencesError">
-          <Members>
-           <Member Name="GenerateErrorText():System.Void">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>TooManyRoleSequencesError.GenerateErrorText():Void</Item>
-               <Item>System.String.Format(System.String,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
          <Type Name="TypeHasSubType">
           <Messages>
@@ -6364,28 +6015,6 @@
                <Item>1</Item>
                <Item>Control.set_Text(String):Void</Item>
                <Item>splitContainer1</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="ReadingAttributeChangedEvent(System.Object,Microsoft.VisualStudio.Modeling.ElementAttributeChangedEventArgs):System.Void">
-            <Messages>
-             <Message Id="numEntries" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ReadingEditor.ReadingAttributeChangedEvent(Object, ElementAttributeChangedEventArgs):Void</Item>
-               <Item>numEntries</Item>
-               <Item>System.Int32</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="ReadingOrderHasRoleRemovedEvent(System.Object,Microsoft.VisualStudio.Modeling.ElementRemovedEventArgs):System.Void">
-            <Messages>
-             <Message Id="roleFact" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ReadingEditor.ReadingOrderHasRoleRemovedEvent(Object, ElementRemovedEventArgs):Void</Item>
-               <Item>roleFact</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.FactType</Item>
               </Issue>
              </Message>
             </Messages>
@@ -6843,39 +6472,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ReadingEditor+ReadingEntry">
-          <Members>
-           <Member Name="GenerateDisplayText():System.String">
-            <Messages>
-             <Message Id="roleSeq" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ReadingEntry.GenerateDisplayText():String</Item>
-               <Item>roleSeq</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.RoleMoveableCollection</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="ReplacePlaceHolders(System.Text.RegularExpressions.Match):System.String">
-            <Messages>
-             <Message Id="roles" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ReadingEntry.ReplacePlaceHolders(Match):String</Item>
-               <Item>roles</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.RoleMoveableCollection</Item>
-              </Issue>
-             </Message>
-             <Message Id="System.Int32.Parse(System.String)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ReadingEntry.ReplacePlaceHolders(Match):String</Item>
-               <Item>System.Int32.Parse(System.String)</Item>
-               <Item>System.Int32.Parse(System.String,System.IFormatProvider)</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="ReadingEditor+ReadingRootTreeNode">
           <Members>
            <Member Name=".ctor(Northface.Tools.ORM.ObjectModel.Role)">
@@ -6930,26 +6526,6 @@ BaseReadingTreeNode.SetText():Void</Item>
                <Item>UITypeEditor.GetEditStyle(ITypeDescriptorContext):UITypeEditorEditStyle</Item>
                <Item>System.Drawing.Design.UITypeEditor</Item>
                <Item>ReadingTextEditor.GetEditStyle(ITypeDescriptorContext):UITypeEditorEditStyle</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ReferenceModePicker">
-          <Members>
-           <Member Name="GetContentList(System.ComponentModel.ITypeDescriptorContext,System.Object):System.Collections.IList">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ReferenceModePicker.GetContentList(ITypeDescriptorContext, Object):IList</Item>
-               <Item>System.String.Format(System.String,System.Object,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-              <Issue>
-               <Item>ReferenceModePicker.GetContentList(ITypeDescriptorContext, Object):IList</Item>
-               <Item>System.String.Format(System.String,System.Object,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
               </Issue>
              </Message>
             </Messages>
@@ -7226,21 +6802,6 @@ BaseReadingTreeNode.SetText():Void</Item>
            </Member>
           </Members>
          </Type>
-         <Type Name="ExternalConstraintShape">
-          <Members>
-           <Member Name="StickySelectable(Microsoft.VisualStudio.Modeling.ModelElement):System.Boolean">
-            <Messages>
-             <Message Id="mcec" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ExternalConstraintShape.StickySelectable(ModelElement):Boolean</Item>
-               <Item>mcec</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="ExternalConstraintShape+ShapeChangeRule1">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -7432,21 +6993,6 @@ BaseReadingTreeNode.SetText():Void</Item>
            </Message>
           </Messages>
          </Type>
-         <Type Name="FactTypeShape+ConstraintShapeField">
-          <Members>
-           <Member Name="GetMinimumHeight(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement):System.Double">
-            <Messages>
-             <Message Id="parent" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ConstraintShapeField.GetMinimumHeight(ShapeElement):Double</Item>
-               <Item>parent</Item>
-               <Item>Northface.Tools.ORM.ShapeModel.FactTypeShape</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="FactTypeShape+ConstraintShapeField+ForMinimumHeight">
           <Members>
            <Member Name=".ctor()">
@@ -7457,21 +7003,6 @@ BaseReadingTreeNode.SetText():Void</Item>
                <Item>wasVisited</Item>
                <Item>boolean</Item>
                <Item>false</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="FactTypeShape+ConstraintSubField">
-          <Members>
-           <Member Name="OnDoubleClick(Microsoft.VisualStudio.Modeling.Diagrams.DiagramPointEventArgs):System.Void">
-            <Messages>
-             <Message Id="activeView" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ConstraintSubField.OnDoubleClick(DiagramPointEventArgs):Void</Item>
-               <Item>activeView</Item>
-               <Item>Microsoft.VisualStudio.Modeling.Diagrams.DiagramView</Item>
               </Issue>
              </Message>
             </Messages>
@@ -7545,29 +7076,7 @@ BaseReadingTreeNode.SetText():Void</Item>
           <Members>
            <Member Name="DoPaint(Microsoft.VisualStudio.Modeling.Diagrams.DiagramPaintEventArgs,Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement):System.Void">
             <Messages>
-             <Message Id="roleCollection" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>RolesShapeField.DoPaint(DiagramPaintEventArgs, ShapeElement):Void</Item>
-               <Item>roleCollection</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.RoleMoveableCollection</Item>
-              </Issue>
-             </Message>
              <Message Id="System.Int32.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>RolesShapeField.DoPaint(DiagramPaintEventArgs, ShapeElement):Void</Item>
-               <Item>System.Int32.ToString</Item>
-               <Item>System.Int32.ToString(System.IFormatProvider)</Item>
-              </Issue>
-              <Issue>
-               <Item>RolesShapeField.DoPaint(DiagramPaintEventArgs, ShapeElement):Void</Item>
-               <Item>System.Int32.ToString</Item>
-               <Item>System.Int32.ToString(System.IFormatProvider)</Item>
-              </Issue>
-              <Issue>
-               <Item>RolesShapeField.DoPaint(DiagramPaintEventArgs, ShapeElement):Void</Item>
-               <Item>System.Int32.ToString</Item>
-               <Item>System.Int32.ToString(System.IFormatProvider)</Item>
-              </Issue>
               <Issue>
                <Item>RolesShapeField.DoPaint(DiagramPaintEventArgs, ShapeElement):Void</Item>
                <Item>System.Int32.ToString</Item>
@@ -7656,21 +7165,6 @@ BaseReadingTreeNode.SetText():Void</Item>
              <Message Id="0#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-04-15 14:45:27Z">
               <Issue Certainty="50">
                <Item>constraintBox</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="FloatingTextShape">
-          <Members>
-           <Member Name="OnCreated():System.Void">
-            <Messages>
-             <Message Id="shapes" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>FloatingTextShape.OnCreated():Void</Item>
-               <Item>shapes</Item>
-               <Item>Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection</Item>
               </Issue>
              </Message>
             </Messages>
@@ -7771,17 +7265,6 @@ BaseReadingTreeNode.SetText():Void</Item>
              <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA902" Created="2005-04-15 14:45:27Z">
               <Issue>
                <Item>InternalUniquenessConstraintConnectAction.GetKeyState(Keys):Int16</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="OnClicked(Microsoft.VisualStudio.Modeling.Diagrams.MouseActionEventArgs):System.Void">
-            <Messages>
-             <Message Id="redrawIndexBound" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>InternalUniquenessConstraintConnectAction.OnClicked(MouseActionEventArgs):Void</Item>
-               <Item>redrawIndexBound</Item>
-               <Item>System.Int32</Item>
               </Issue>
              </Message>
             </Messages>
@@ -7979,12 +7462,17 @@ BaseReadingTreeNode.SetText():Void</Item>
            </Member>
            <Member Name="OnCreated():System.Void">
             <Messages>
-             <Message Id="shapes" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-02-03 20:22:04Z">
+             <Message Id="shapes" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2005-02-03 20:22:04Z">
               <Issue>
                <Item>ORMBaseShape.OnCreated():Void</Item>
                <Item>shapes</Item>
                <Item>Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection</Item>
               </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="13" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -8501,21 +7989,6 @@ BaseReadingTreeNode.SetText():Void</Item>
            </Message>
           </Messages>
          </Type>
-         <Type Name="ReferenceModeAutoSizeTextField">
-          <Members>
-           <Member Name="GetDisplayText(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement):System.String">
-            <Messages>
-             <Message Id="System.String.Format(System.String,System.Object)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ReferenceModeAutoSizeTextField.GetDisplayText(ShapeElement):String</Item>
-               <Item>System.String.Format(System.String,System.Object)</Item>
-               <Item>System.String.Format(System.IFormatProvider,System.String,System.Object[])</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="RoleConnectAction">
           <Members>
            <Member Name="HitRole(Microsoft.VisualStudio.Modeling.Diagrams.DiagramMouseEventArgs):Northface.Tools.ORM.ObjectModel.Role">
@@ -8602,19 +8075,6 @@ BaseReadingTreeNode.SetText():Void</Item>
             </Notes>
            </Message>
           </Messages>
-          <Members>
-           <Member Name="ElementRemoved(Microsoft.VisualStudio.Modeling.ElementRemovedEventArgs):System.Void">
-            <Messages>
-             <Message Id="constraint" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>InternalConstraintRoleSequenceRoleRemoved.ElementRemoved(ElementRemovedEventArgs):Void</Item>
-               <Item>constraint</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.SimpleMandatoryConstraint</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
          <Type Name="RolePlayerLink+MandatoryDotDecorator">
           <Messages>
@@ -8727,17 +8187,6 @@ BaseReadingTreeNode.SetText():Void</Item>
              </Message>
             </Messages>
            </Member>
-           <Member Name="OnMenuBeginRoleSequenceOnExternalConstraint():System.Void">
-            <Messages>
-             <Message Id="constraint" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ORMDesignerDocView.OnMenuBeginRoleSequenceOnExternalConstraint():Void</Item>
-               <Item>constraint</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.IConstraint</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="OnMenuDeleteRoleSequence():System.Void">
             <Messages>
              <Message Id="System.NotImplementedException.#ctor(System.String)" TypeName="DoNotPassLiteralsAsLocalizedParameters" Category="Microsoft.Globalization" CheckId="CA1303" Created="2005-04-15 14:45:27Z">
@@ -8752,39 +8201,6 @@ BaseReadingTreeNode.SetText():Void</Item>
               <Issue>
                <Item>Multiselect</Item>
                <Item>Multiselect deletion of role sequences is not implemented.  If you see this message, decide if what you're doing is really a valid operation.  If it is, look in Shell\ORMCommandSet.cs, OnMenuDeleteRowSequence() to implement it.</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="OnMenuMoveRoleSequenceDown():System.Void">
-            <Messages>
-             <Message Id="roleConstraints" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ORMDesignerDocView.OnMenuMoveRoleSequenceDown():Void</Item>
-               <Item>roleConstraints</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceMoveableCollection</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="OnMenuMoveRoleSequenceUp():System.Void">
-            <Messages>
-             <Message Id="roleConstraints" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ORMDesignerDocView.OnMenuMoveRoleSequenceUp():Void</Item>
-               <Item>roleConstraints</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceMoveableCollection</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="OnSelectionChanged(System.EventArgs):System.Void">
-            <Messages>
-             <Message Id="stickyObject" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ORMDesignerDocView.OnSelectionChanged(EventArgs):Void</Item>
-               <Item>stickyObject</Item>
-               <Item>Northface.Tools.ORM.ShapeModel.IStickyObject</Item>
               </Issue>
              </Message>
             </Messages>
@@ -9478,17 +8894,6 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
              </Message>
             </Messages>
            </Member>
-           <Member Name="AddFactEditorToolWindow():Microsoft.VisualStudio.Shell.Interop.IVsWindowFrame">
-            <Messages>
-             <Message Id="hr" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ORMDesignerPackage.AddFactEditorToolWindow():IVsWindowFrame</Item>
-               <Item>hr</Item>
-               <Item>System.Int32</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
           </Members>
          </Type>
          <Type Name="ORMReadingEditorToolWindow">
@@ -9603,6 +9008,7 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="10" Modified="2005-04-15 17:15:22Z">Referenced object is immutable</Note>
     <Note Id="11" Modified="2005-04-15 17:59:24Z">FxCop bad. The equivalent casts are in different conditional blocks.</Note>
     <Note Id="12" Modified="2005-04-15 18:03:05Z">Duplicate cast is in assert statement</Note>
+    <Note Id="13" Modified="2005-04-18 16:06:48Z">Property called to trigger side effects</Note>
    </User>
   </Notes>
   <Rules>
@@ -10042,16 +9448,6 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <MessageLevel Certainty="95">Error</MessageLevel>
     <File Name="GlobalizationRules.dll" Version="1.312.0.0" />
    </Rule>
-   <Rule TypeName="TestForEmptyStringsUsingStringLength" Category="Microsoft.Performance" CheckId="CA1820">
-    <Name>Test for empty strings using string length</Name>
-    <Description>To test for empty strings, check if String.Length is equal to zero. Constructs such as "".Equals(someString) and String.Empty.Equals(someString) are less efficient than testing the string length. Replace these with checks for someString.Length == 0.</Description>
-    <Resolution Name="IsNullOrEmpty">Replace the call to String.{0}({1}) in '{2}' with a call to String.IsNullOrEmpty.</Resolution>
-    <Owner />
-    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Performance/TestForEmptyStringsUsingStringLength.html</Url>
-    <Email>askfxcop@microsoft.com</Email>
-    <MessageLevel Certainty="95">Warning</MessageLevel>
-    <File Name="PerformanceRules.dll" Version="1.312.0.0" />
-   </Rule>
    <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
     <Name>Types that own disposable fields should be disposable</Name>
     <Description>Types that declare disposable members should also implement IDisposable. If the type does not own any unmanaged resources, do not implement a finalizer on it.</Description>
@@ -10060,16 +9456,6 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Design/TypesThatOwnDisposableFieldsShouldBeDisposable.html</Url>
     <Email>askfxcop@microsoft.com</Email>
     <MessageLevel Certainty="95">CriticalError</MessageLevel>
-    <File Name="DesignRules.dll" Version="1.312.0.0" />
-   </Rule>
-   <Rule TypeName="UseEventsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1030">
-    <Name>Use events where appropriate</Name>
-    <Description>A method name suggestive of event functionality was encountered.</Description>
-    <Resolution Name="Default">Consider making '{0}' an event.</Resolution>
-    <Owner />
-    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Design/UseEventsWhereAppropriate.html</Url>
-    <Email>askfxcop@microsoft.com</Email>
-    <MessageLevel Certainty="75">Warning</MessageLevel>
     <File Name="DesignRules.dll" Version="1.312.0.0" />
    </Rule>
    <Rule TypeName="UseGenericsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1007">

@@ -67,7 +67,6 @@ namespace Northface.Tools.ORM.FactEditor
 		private void LoadModelElements()
 		{
 			IList objectList = myCurrentDocument.Store.ElementDirectory.GetElements(ObjectType.MetaClassGuid);
-			IList factList = myCurrentDocument.Store.ElementDirectory.GetElements(FactType.MetaClassGuid);			
 			myObjectEntries = new List<ObjectType>();
 			foreach (ObjectType ot in objectList)
 			{
@@ -392,8 +391,6 @@ namespace Northface.Tools.ORM.FactEditor
 			Guid attributeId = e.MetaAttribute.Id;
 			if (attributeId == ObjectType.NameMetaAttributeGuid)
 			{
-				string oldName = (string)e.OldValue;
-				string newName = (string)e.NewValue;
 				// UNDONE: We could do this a little better. Find the old index,
 				// compare the new string to the before/after elements, and RemoveAt
 				// followed by a BinarySearch and Insert if needed.

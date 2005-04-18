@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 namespace Northface.Tools.ORM.ObjectModel
@@ -1271,7 +1272,7 @@ namespace Northface.Tools.ORM.ObjectModel
 					if (!forType.IsRemoving && !forType.IsRemoved)
 					{
 						InternalUniquenessConstraint iuc;
-						ExternalUniquenessConstraint euc;
+						//ExternalUniquenessConstraint euc;
 						if (null != (iuc = constraint as InternalUniquenessConstraint))
 						{
 							RoleMoveableCollection roles;
@@ -1342,10 +1343,10 @@ namespace Northface.Tools.ORM.ObjectModel
 								}
 							}
 						}
-						else if (null != (euc = constraint as ExternalUniquenessConstraint))
-						{
-							// UNDONE: Preferred external uniqueness. Requires path information.
-						}
+						//else if (null != (euc = constraint as ExternalUniquenessConstraint))
+						//{
+						//	// UNDONE: Preferred external uniqueness. Requires path information.
+						//}
 					}
 				}
 				if (remove)
@@ -1607,7 +1608,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			MultiColumnExternalConstraint parent = Constraint;
 			string parentName = (parent != null) ? parent.Name : "";
 			string currentText = Name;
-			string newText = string.Format(ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText, parentName);
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText, parentName);
 			if (currentText != newText)
 			{
 				Name = newText;
@@ -1650,7 +1651,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			MultiColumnExternalConstraint parent = this.Constraint;
 			string parentName = (parent != null) ? parent.Name : "";
 			string currentText = Name;
-			string newText = string.Format(ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesText, parentName);
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesText, parentName);
 			if (currentText != newText)
 			{
 				Name = newText;

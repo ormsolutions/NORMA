@@ -240,7 +240,7 @@ namespace Northface.Tools.ORM.Shell
 						if (null != (stickyObject = ormDiagram.StickyObject))
 						{
 							// The currently selected item is not selection-compatible with the StickyObject.
-							if (!ormDiagram.StickyObject.StickySelectable(mel))
+							if (!stickyObject.StickySelectable(mel))
 							{
 								ormDiagram.StickyObject = null;
 							}
@@ -708,7 +708,6 @@ namespace Northface.Tools.ORM.Shell
 				&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
 				&& null != (mcec = ecs.AssociatedConstraint as MultiColumnExternalConstraint))
 			{
-				ConstraintRoleSequenceMoveableCollection roleConstraints = role.ConstraintRoleSequenceCollection;
 				MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = mcec.RoleSequenceCollection;
 				MultiColumnExternalConstraintRoleSequence sequenceToMove = null;
 				int sequenceOriginalPosition = 0;
@@ -769,7 +768,6 @@ namespace Northface.Tools.ORM.Shell
 				&& null != (mcec = ecs.AssociatedConstraint as MultiColumnExternalConstraint))
 			{
 
-				ConstraintRoleSequenceMoveableCollection roleConstraints = role.ConstraintRoleSequenceCollection;
 				MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = mcec.RoleSequenceCollection;
 				MultiColumnExternalConstraintRoleSequence sequenceToMove = null;
 				int sequenceOriginalPosition = 0;
@@ -827,7 +825,6 @@ namespace Northface.Tools.ORM.Shell
 				ExternalConstraintShape constraintShape;
 				if (null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape))
 				{
-					IConstraint constraint = constraintShape.AssociatedConstraint;
 					ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
 					connectAction.ChainMouseAction(constraintShape, ormDiagram.ActiveDiagramView.DiagramClientView);
 				}
