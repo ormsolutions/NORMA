@@ -70,21 +70,6 @@
        </Namespace>
        <Namespace Name="Northface.Tools.ORM.FactEditor">
         <Types>
-         <Type Name="FactCodeWindowManager">
-          <Members>
-           <Member Name="OnNewView(Microsoft.VisualStudio.TextManager.Interop.IVsTextView):System.Int32">
-            <Messages>
-             <Message Id="0#p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>FactCodeWindowManager.OnNewView(IVsTextView):Int32</Item>
-               <Item>p</Item>
-               <Item>pView</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="FactColorizer">
           <Members>
            <Member Name="ColorizeLine(System.Int32,System.Int32,System.IntPtr,System.Int32,System.UInt32[]):System.Int32">
@@ -7424,18 +7409,6 @@ BaseReadingTreeNode.SetText():Void</Item>
          </Type>
          <Type Name="ORMBaseShape">
           <Members>
-           <Member Name=".cctor()">
-            <Messages>
-             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ORMBaseShape..cctor()</Item>
-               <Item>ActiveShapeSubField</Item>
-               <Item>reference type</Item>
-               <Item>null</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="HasSubFieldHighlighting">
             <Messages>
              <Message Id="SubField" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-02-03 20:22:04Z">

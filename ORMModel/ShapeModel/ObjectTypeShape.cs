@@ -13,8 +13,8 @@ namespace Northface.Tools.ORM.ShapeModel
 	public partial class ObjectTypeShape
 	{
 		#region Member Variables
-		private static AutoSizeTextField myTextShapeField = null;
-		private static AutoSizeTextField myReferenceModeShapeField = null;
+		private static AutoSizeTextField myTextShapeField;
+		private static AutoSizeTextField myReferenceModeShapeField;
 		private const double HorizontalMargin = 0.2;
 		private const double VerticalMargin = 0.075;
 		private static readonly StyleSetResourceId DashedShapeOutlinePen = new StyleSetResourceId("Northface", "DashedShapeOutlinePen");

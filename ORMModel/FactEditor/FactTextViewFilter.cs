@@ -22,6 +22,7 @@ namespace Northface.Tools.ORM.FactEditor
 	{
 		private const int CmdCompleteWord = 107;		// ctrl+space
 		private const int CmdShowMemberList = 108;		// ctrl+j
+		private const int CmdControlEnter = 67;			// ctrl+enter
 		private const int CmdReturn = 3;				// dismiss tool tip
 		private const int CmdBackspace = 2;				// dismiss tool tip
 		private const int CmdTypeChar = 1;				// typeable character
@@ -41,6 +42,38 @@ namespace Northface.Tools.ORM.FactEditor
 //		CFigMethodData* m_pMethodData;
 //		CComPtr<IFigTaskManager> m_srpTaskManager;
 //		DWORD m_dwTextViewEventsCookie;	// for IVsTextViewEvents advise sink
+
+		private FactLine GetFactLine()
+		{
+			int hrLocal = NativeMethods.S_OK;
+
+			// get the current line where the cursor is
+			int nLine = 0;
+			int vc;
+			hrLocal = myTextView.GetCaretPos(out nLine, out vc);
+			if (hrLocal < 0)
+				return null;
+
+			// get the number of chars on the line
+			int nLineLength;
+			hrLocal = myTextLines.GetLengthOfLine(nLine, out nLineLength);
+			if (hrLocal < 0 || nLineLength == 0)
+				return null;
+
+			// see if current line contains "draw" (starting at the beggining of the line)
+			string bstrLine;
+			hrLocal = myTextLines.GetLineText(
+				nLine,          // starting line
+				0,              // starting character index within the line (must be <= length of line)
+				nLine,          // ending line
+				nLineLength,    // ending character index within the line (must be <= length of line)
+				out bstrLine);    // line text, if any
+			if (hrLocal < 0 || bstrLine.Length == 0)
+				return null;
+
+			// call the Line method on the parse object
+			return new FactLine(bstrLine);
+		}
 
 		/// <summary>
 		/// Create a text view on the editor
@@ -233,6 +266,19 @@ namespace Northface.Tools.ORM.FactEditor
 						hr = myNextCmdTarget.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
 						break;
 
+					case CmdControlEnter:
+						// Commit the fact to the model
+						fHandled = true;
+						//int hrCommit = NativeMethods.S_OK;
+
+						// call the Line method on the parse object
+						FactLine controlEnterLine = this.GetFactLine();
+						if (controlEnterLine == null)
+							break; 
+						myParser.Line(ref controlEnterLine);
+
+						// TODO: Hand off the factLine to the FactSaver
+						break;
 					case CmdTypeChar: // any character
 						fHandled = false;
 						// pass this character 'cmd' on to next in chain (the view so it will show up)
@@ -240,6 +286,7 @@ namespace Northface.Tools.ORM.FactEditor
 
 						// UNDONE: I don't know what to do with pvaIn (for IntelliSense)
 //							if (pvaIn[0].vt != VT_UI2)
+
 //								break;
 //							// did the user type a space after "draw" or "draw <type>" or is the 
 //							// tip window still displayed ?
@@ -248,33 +295,11 @@ namespace Northface.Tools.ORM.FactEditor
 
 						int hrLocal = NativeMethods.S_OK;
 
-						// get the current line where the cursor is
-						int nLine = 0;
-						int vc;
-						hrLocal = myTextView.GetCaretPos(out nLine, out vc);
-						if (hrLocal < 0)
-							break;
-
-						// get the number of chars on the line
-						int nLineLength;
-						hrLocal = myTextLines.GetLengthOfLine(nLine, out nLineLength);
-						if (hrLocal < 0 || nLineLength == 0)
-							break;
-
-						// see if current line contains "draw" (starting at the beggining of the line)
-						string bstrLine;
-						hrLocal = myTextLines.GetLineText(
-							nLine,          // starting line
-							0,              // starting character index within the line (must be <= length of line)
-							nLine,          // ending line
-							nLineLength,    // ending character index within the line (must be <= length of line)
-							out bstrLine);    // line text, if any
-						if (hrLocal < 0 || bstrLine.Length == 0)
-							break;
-
 						// call the Line method on the parse object
-						FactLine factLine = new FactLine(bstrLine);
-						hrLocal = myParser.Line(ref factLine);
+						FactLine typeCharLine = this.GetFactLine();
+						if (typeCharLine == null)
+							break;
+						hrLocal = myParser.Line(ref typeCharLine);
 
 						// check for any errors
 //						if (factLine.HasError)

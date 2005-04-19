@@ -78,21 +78,21 @@ namespace Northface.Tools.ORM.FactEditor
 			return hr;
 		}
 
-		int IVsCodeWindowManager.OnNewView(IVsTextView pView)
+		int IVsCodeWindowManager.OnNewView(IVsTextView view)
 		{
-			return OnNewView(pView);
+			return OnNewView(view);
 		}
 		/// <summary>
 		/// Implements IVsCodeWindowManager.OnNewView
 		/// </summary>
-		/// <param name="pView"></param>
+		/// <param name="view"></param>
 		/// <returns></returns>
-		protected int OnNewView(IVsTextView pView)
+		protected int OnNewView(IVsTextView view)
 		{
-			FactTextViewFilter pTextViewFilter;
-			pTextViewFilter = new FactTextViewFilter(myPackage, pView);
-			pTextViewFilter.Init();
-			myListViews.AddHead(pTextViewFilter);
+			FactTextViewFilter textViewFilter;
+			textViewFilter = new FactTextViewFilter(myPackage, view);
+			textViewFilter.Init();
+			myListViews.AddHead(textViewFilter);
 			return Microsoft.VisualStudio.NativeMethods.S_OK;
 		}
 
