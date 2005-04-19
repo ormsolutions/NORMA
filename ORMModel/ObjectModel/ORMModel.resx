@@ -118,6 +118,10 @@
     <value xml:space="preserve">{{deleted}}</value>
     <comment xml:space="preserve">Text used to replace a role place holder when the role is deleted</comment>
   </data>
+  <data name="ModelError.Constraint.ExternalConstraintArityMismatch.Text">
+    <value xml:space="preserve">Constraint '{0}' has role sequences with different numbers of roles.</value>
+    <comment xml:space="preserve">Model validation error text when role sequences in a multi column constraint have different role counts (arity).</comment>
+  </data>
   <data name="ModelError.Constraint.TooFewRoleSequences.Text">
     <value xml:space="preserve">Constraint '{0}' does not have enough role sequences.</value>
     <comment xml:space="preserve">Model validation error text when too few role sequences are specified for a constraint. This is a common condition when constraints are being created.</comment>

@@ -192,6 +192,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -3420,6 +3421,52 @@ namespace Northface.Tools.ORM.ObjectModel
 					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, value);
 					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollectionMetaRoleGuid, this);
 					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region ArityMismatchError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatch ArityMismatchError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ConstraintMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatch)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ConstraintMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ConstraintMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch), newRoles);
 				}
 			}
 		}
@@ -9739,6 +9786,124 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatch.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatch")]
+	public  partial class ExternalConstraintRoleSequenceArityMismatch : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region ExternalConstraintRoleSequenceArityMismatch's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "e7a403dd-6e87-4ae3-b985-6438fff37379";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatch.MetaClassGuidString);
+		#endregion
+
+		#region Constraint's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint Constraint
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ConstraintMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region ExternalConstraintRoleSequenceArityMismatch's Generated Constructor Code
+	public  partial class ExternalConstraintRoleSequenceArityMismatch
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ExternalConstraintRoleSequenceArityMismatch CreateExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (ExternalConstraintRoleSequenceArityMismatch)store.ElementFactory.CreateElement(typeof(ExternalConstraintRoleSequenceArityMismatch));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ExternalConstraintRoleSequenceArityMismatch CreateAndInitializeExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ExternalConstraintRoleSequenceArityMismatch)store.ElementFactory.CreateElement(typeof(ExternalConstraintRoleSequenceArityMismatch), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ExternalConstraintRoleSequenceArityMismatch
+	/// <summary>
+	/// ExternalConstraintRoleSequenceArityMismatch Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatch))]
+	public sealed class ExternalConstraintRoleSequenceArityMismatchElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ExternalConstraintRoleSequenceArityMismatchElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatch(store, bag);
 		}
 	}
 	#endregion
@@ -16650,6 +16815,118 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch")]
+	public  partial class MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "4d0d1805-bcf9-4026-91cc-e6d21b81bf3a";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.MetaRelationshipGuidString);
+		#endregion
+
+		#region ArityMismatchError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ArityMismatchErrorMetaRoleGuidString = "59b2a377-5b0e-455b-91ea-67be1e4c57ce";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ArityMismatchErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchError")]
+		public  Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatch ArityMismatchError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatch)this.GetRolePlayer(ArityMismatchErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(ArityMismatchErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region Constraint's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ConstraintMetaRoleGuidString = "4d9e7146-6f77-413e-afb4-d885bff9295e";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ConstraintMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.Constraint")]
+		public  Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint Constraint
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(ConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(ConstraintMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch's Generated Constructor Code
+	public  partial class MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch)store.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch)store.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch
+	/// <summary>
+	/// MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch))]
+	public sealed class MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(store, bag);
 		}
 	}
 	#endregion

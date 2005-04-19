@@ -626,8 +626,10 @@ namespace Northface.Tools.ORM.ObjectModel
 				TooManyRoleSequencesError extraError;
 				bool removeTooFew = false;
 				bool removeTooMany = false;
+				bool tooFewOrTooMany = false;
 				if (currentCount < minCount)
 				{
+					tooFewOrTooMany = true;
 					if (null == TooFewRoleSequencesError)
 					{
 						insufficientError = TooFewRoleSequencesError.CreateTooFewRoleSequencesError(store);
@@ -646,13 +648,17 @@ namespace Northface.Tools.ORM.ObjectModel
 					removeTooFew = true;
 					if ((-1 != (maxCount = ConstraintUtility.RoleSequenceCountMaximum(this))) && (currentCount > maxCount))
 					{
-						extraError = TooManyRoleSequencesError.CreateTooManyRoleSequencesError(store);
-						extraError.Model = Model;
-						extraError.Constraint = this;
-						extraError.GenerateErrorText();
-						if (notifyAdded != null)
+						tooFewOrTooMany = true;
+						if (null == TooManyRoleSequencesError)
 						{
-							notifyAdded.ElementAdded(extraError, true);
+							extraError = TooManyRoleSequencesError.CreateTooManyRoleSequencesError(store);
+							extraError.Model = Model;
+							extraError.Constraint = this;
+							extraError.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(extraError, true);
+							}
 						}
 					}
 					else
@@ -668,7 +674,86 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					extraError.Remove();
 				}
+
+				VerifyRoleSequenceArityForRule(notifyAdded, tooFewOrTooMany);
 			}
+		}
+
+		/// <summary>
+		/// Add, remove, and otherwise validate the current set of
+		/// errors for this constraint.
+		/// </summary>
+		/// <param name="notifyAdded">If not null, this is being called during
+		/// load when rules are not in place. Any elements that are added
+		/// must be notified back to the caller.</param>
+		private void VerifyRoleSequenceArityForRule(INotifyElementAdded notifyAdded)
+		{
+			if (null == TooFewRoleSequencesError && null == TooManyRoleSequencesError)
+			{
+				VerifyRoleSequenceArityForRule(notifyAdded, false);
+			}
+		}
+
+		/// <summary>
+		/// Add, remove, and otherwise validate the current set of
+		/// errors for this constraint.
+		/// </summary>
+		/// <param name="notifyAdded">If not null, this is being called during
+		/// load when rules are not in place. Any elements that are added
+		/// must be notified back to the caller.</param>
+		/// <param name="tooFewOrTooManySequences">Represents correct number of sequences
+		/// for current constraint.  If the constraint has too few or too many sequences, 
+		/// will remove this error if present.</param>
+		private void VerifyRoleSequenceArityForRule(INotifyElementAdded notifyAdded, bool tooFewOrTooManySequences)
+		{
+			ExternalConstraintRoleSequenceArityMismatch arityError;
+			bool arityValid = true;
+			int currentCount = RoleSequenceCollection.Count;
+			Store store = Store;
+
+			if (tooFewOrTooManySequences)
+			{
+				arityError = ArityMismatchError;
+				if (arityError != null)
+				{
+					arityError.Remove(); // Can't validate arity with the wrong number of role sequences
+				}
+			}
+			else
+			{
+				if (currentCount != 0)
+				{
+					IList sequences = RoleSequenceCollection;
+					int arity = ((ConstraintRoleSequence)sequences[0]).RoleCollection.Count;
+					for (int i = 1; i < currentCount; ++i)
+					{
+						if (arity != ((ConstraintRoleSequence)sequences[i]).RoleCollection.Count)
+						{
+							arityValid = false;
+							arityError = ArityMismatchError;
+							if (arityError == null)
+							{
+								arityError = ExternalConstraintRoleSequenceArityMismatch.CreateExternalConstraintRoleSequenceArityMismatch(store);
+								arityError.Model = Model;
+								arityError.Constraint = this;
+								arityError.GenerateErrorText();
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(arityError, true);
+								}
+							}
+							break;
+						}
+					}
+				}
+				if (arityValid)
+				{
+					if (null != (arityError = ArityMismatchError))
+					{
+						arityError.Remove();
+					}
+				}
+			}			
 		}
 		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence), FireTime = TimeToFire.TopLevelCommit)]
 		private class EnforceRoleSequenceCardinalityForAdd : AddRule
@@ -701,6 +786,32 @@ namespace Northface.Tools.ORM.ObjectModel
 				link.ExternalConstraint.VerifyRoleSequenceCountForRule(null);
 			}
 		}
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit)]
+		private class EnforceRoleSequenceArityForAdd : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				MultiColumnExternalConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection as MultiColumnExternalConstraintRoleSequence;
+				if (sequence != null)
+				{
+					sequence.ExternalConstraint.VerifyRoleSequenceArityForRule(null);
+				}
+			}
+		}
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit)]
+		private class EnforceRoleSequenceArityForRemove : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				MultiColumnExternalConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection as MultiColumnExternalConstraintRoleSequence;
+				if (sequence != null)
+				{
+					sequence.ExternalConstraint.VerifyRoleSequenceArityForRule(null);
+				}
+			}
+		}
 		#endregion // Error synchronization rules
 		#region IModelErrorOwner Implementation
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
@@ -720,6 +831,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				TooManyRoleSequencesError tooMany;
 				TooFewRoleSequencesError tooFew;
+				ExternalConstraintRoleSequenceArityMismatch arityMismatch;
 				if (null != (tooMany = TooManyRoleSequencesError))
 				{
 					yield return tooMany;
@@ -727,6 +839,10 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (null != (tooFew = TooFewRoleSequencesError))
 				{
 					yield return tooFew;
+				}
+				if (null != (arityMismatch = ArityMismatchError))
+				{
+					yield return arityMismatch;
 				}
 			}
 		}
@@ -1652,6 +1768,49 @@ namespace Northface.Tools.ORM.ObjectModel
 			string parentName = (parent != null) ? parent.Name : "";
 			string currentText = Name;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesText, parentName);
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { Constraint };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
+	public partial class ExternalConstraintRoleSequenceArityMismatch : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			MultiColumnExternalConstraint parent = this.Constraint;
+			string parentName = (parent != null) ? parent.Name : "";
+			string currentText = Name;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintExternalConstraintArityMismatch, parentName);
 			if (currentText != newText)
 			{
 				Name = newText;

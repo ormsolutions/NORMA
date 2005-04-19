@@ -2910,6 +2910,34 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceArityForAdd">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-19 22:08:46Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceArityForAdd</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="1" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceArityForRemove">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-19 22:08:46Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceArityForRemove</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="1" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceCardinalityForAdd">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
@@ -3047,6 +3075,56 @@
              <Item>MultiColumn</Item>
              <Item>class</Item>
              <Item>MultiColumnExternalConstraintHasDuplicateNameErrorElementFactoryCreator</Item>
+             <Item>Multicolumn</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch">
+          <Messages>
+           <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-04-19 22:13:15Z">
+            <Issue Name="ShouldBeDiscreteTerm">
+             <Item>MultiColumn</Item>
+             <Item>class</Item>
+             <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch</Item>
+             <Item>Multicolumn</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch">
+            <Messages>
+             <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-04-19 22:13:15Z">
+              <Issue Name="ShouldBeDiscreteTerm">
+               <Item>MultiColumn</Item>
+               <Item>method</Item>
+               <Item>CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch</Item>
+               <Item>Multicolumn</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch">
+            <Messages>
+             <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-04-19 22:13:15Z">
+              <Issue Name="ShouldBeDiscreteTerm">
+               <Item>MultiColumn</Item>
+               <Item>method</Item>
+               <Item>CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch</Item>
+               <Item>Multicolumn</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchElementFactoryCreator">
+          <Messages>
+           <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-04-19 22:13:15Z">
+            <Issue Name="ShouldBeDiscreteTerm">
+             <Item>MultiColumn</Item>
+             <Item>class</Item>
+             <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchElementFactoryCreator</Item>
              <Item>Multicolumn</Item>
             </Issue>
            </Message>
@@ -4179,6 +4257,22 @@
          </Type>
          <Type Name="ReferenceMode">
           <Members>
+           <Member Name="CompareTo(Northface.Tools.ORM.ObjectModel.ReferenceMode):System.Int32">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-04-19 22:08:46Z">
+              <Issue>
+               <Item>other</Item>
+               <Item>Northface.Tools.ORM.ObjectModel.ReferenceMode</Item>
+               <Item>Microsoft.VisualStudio.Modeling.NamedElement</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="FindObjectUsingReferenceModes(Northface.Tools.ORM.ObjectModel.ReferenceMode,System.String,Northface.Tools.ORM.ObjectModel.ORMModel):System.Collections.Generic.IEnumerable`1&lt;Northface.Tools.ORM.ObjectModel.ObjectType&gt;">
             <Messages>
              <Message Id="1#" TypeName="AvoidTypeNamesInParameters" Category="Microsoft.Naming" CheckId="CA1720" Created="2005-04-15 14:45:27Z">
@@ -8964,6 +9058,10 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
    </Target>
   </Targets>
   <Notes>
+   <User Name="bfrank">
+    <Note Id="0" Modified="2005-04-19 22:11:24Z">Intentionally explicitly type CompareTo override</Note>
+    <Note Id="1" Modified="2005-04-19 22:11:52Z">Internal rules instantiated via reflection</Note>
+   </User>
    <User Name="jewilde">
     <Note Id="0" Modified="2005-02-03 21:03:22Z">Doesn't apply</Note>
    </User>
