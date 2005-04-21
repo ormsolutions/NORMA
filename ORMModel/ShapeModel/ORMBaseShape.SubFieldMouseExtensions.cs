@@ -55,11 +55,11 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Set to null after a MouseLeave, PendingShapeSubField.Token between an enter or
 		/// move with no SubField set and a leave, and set to the last subfield otherwise.
 		/// </summary>
-		private static ShapeSubField ActiveShapeSubField = null;
+		private static ShapeSubField ActiveShapeSubField;
 		/// <summary>
 		/// Used with ActiveShapeSubField to give an accurate leave event.
 		/// </summary>
-		private static ShapeField ActiveShapeField = null;
+		private static ShapeField ActiveShapeField;
 		/// <summary>
 		/// A helper class to enable distinguishing between a null
 		/// and a pending shape field.

@@ -169,7 +169,7 @@ namespace Northface.Tools.ORM.FactEditor
 		{
 			// NOTE: pass on the commands we don't use to m_srpNextCmdTarg
 			// otherwise they wont show up in the view.  Cmd Targs are CHAINED.
-			int hr = 0;
+			int hr = NativeMethods.S_OK;
 			bool fHandled = true;
 
 			// CMDSETID_StandardCommandSet2K is in stdidcmd.h and vsshlids.h in VSIP sdk
@@ -277,7 +277,7 @@ namespace Northface.Tools.ORM.FactEditor
 							break; 
 						myParser.Line(ref controlEnterLine);
 
-						// TODO: Hand off the factLine to the FactSaver
+						FactSaver.AddFact(myCompletionSet.CurrentDocument, controlEnterLine);
 						break;
 					case CmdTypeChar: // any character
 						fHandled = false;

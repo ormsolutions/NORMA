@@ -967,6 +967,31 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="FactSaver">
+          <Messages>
+           <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Created="2005-04-21 19:22:34Z">
+            <Issue Name="Equals">
+             <Item>Northface.Tools.ORM.FactEditor.FactSaver</Item>
+            </Issue>
+            <Issue Name="op_Equality">
+             <Item>Northface.Tools.ORM.FactEditor.FactSaver</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="AddFactToModel():System.Void">
+            <Messages>
+             <Message Id="r" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-21 19:14:27Z">
+              <Issue>
+               <Item>FactSaver.AddFactToModel():Void</Item>
+               <Item>r</Item>
+               <Item>Northface.Tools.ORM.ObjectModel.Role</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="FactTextViewFilter">
           <Members>
            <Member Name="Exec(System.Guid&amp;,System.UInt32,System.UInt32,System.IntPtr,System.IntPtr):System.Int32">

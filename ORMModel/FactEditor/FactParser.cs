@@ -129,14 +129,25 @@ namespace Northface.Tools.ORM.FactEditor
 					FactTokenMark iterMark;
 					curWord = words[i];
 					curLen = curWord.Length;
+
+					// If we are dealing with an Object type.
 					if (curLen > 0 && char.IsUpper(curWord[0]))
 					{
 						// add a mark to make the whole word an object type
-						iterMark = new FactTokenMark();
-						iterMark.TokenType = FactTokenType.Object;
-						iterMark.nStart = runningStartPos;
-						iterMark.nEnd = runningStartPos + curWord.Length - 1;
-						factLine.Marks.Add(iterMark);
+						FactTokenMark iterMarkObj = new FactTokenMark();
+
+						Match refMatch = ReferenceModeRegEx.Match(curWord);
+						if (refMatch.Groups["refmode"].Value.Length != 0)
+						{
+							iterMarkObj.TokenType = FactTokenType.EntityType;
+						}
+						else
+						{
+							iterMarkObj.TokenType = FactTokenType.ValueType;
+						}
+						iterMarkObj.nStart = runningStartPos;
+						iterMarkObj.nEnd = runningStartPos + curWord.Length - 1;
+						factLine.Marks.Add(iterMarkObj);
 
 						// now, go through and add marks (some will overlap previous marks for reference modes
 						for (Match m = ReferenceModeRegEx.Match(curWord); m.Success; m = m.NextMatch())
@@ -149,10 +160,11 @@ namespace Northface.Tools.ORM.FactEditor
 							factLine.Marks.Add(iterMark);
 
 							// mark the reference mode, if there is one
-							int tmpLen = m.Groups["refmode"].Length;
+							Group refModeGroup = m.Groups["refmode"];
+							int tmpLen = refModeGroup.Length;
 							if (tmpLen > 0)
 							{
-								int refModeIndex = m.Groups["refmode"].Index;
+								int refModeIndex = refModeGroup.Index;
 								iterMark = new FactTokenMark();
 								iterMark.TokenType = FactTokenType.ReferenceMode;
 								iterMark.nStart = runningStartPos + refModeIndex;
@@ -272,10 +284,12 @@ namespace Northface.Tools.ORM.FactEditor
 			// make sure we have at least 1 object type
 			for(int i = 0; i < ncMarks; ++i)
 			{
-				if (pMks[i].TokenType == FactTokenType.Object)
+				switch (pMks[i].TokenType)
 				{
-					flt = FactLineType.ContainsObject;
-					break;
+					case FactTokenType.EntityType:
+					case FactTokenType.ValueType:
+						flt = FactLineType.ContainsObject;
+						break;
 				}
 			}
 			lineType = flt;

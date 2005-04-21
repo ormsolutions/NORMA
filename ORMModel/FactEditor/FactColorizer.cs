@@ -120,7 +120,8 @@ namespace Northface.Tools.ORM.FactEditor
 			{
 				switch (factLine.Marks[m].TokenType)
 				{
-					case FactTokenType.Object: type = (uint)FactEditorColorizableItem.ObjectName; break;
+					case FactTokenType.EntityType: type = (uint)FactEditorColorizableItem.ObjectName; break;
+					case FactTokenType.ValueType: type = (uint)FactEditorColorizableItem.ObjectName; break;
 					case FactTokenType.ReferenceMode: type = (uint)FactEditorColorizableItem.ReferenceModeName; break;
 					case FactTokenType.Parenthesis: type = (uint)FactEditorColorizableItem.Delimiter; break;
 					case FactTokenType.Predicate:

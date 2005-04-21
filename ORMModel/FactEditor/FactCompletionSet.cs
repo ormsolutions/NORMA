@@ -292,9 +292,16 @@ namespace Northface.Tools.ORM.FactEditor
 		#endregion // IVsCompletionSet Members
 
 		#region Properties
-		private ORMDesignerDocData CurrentDocument
+		/// <summary>
+		/// Get the FactCompletionSet's current DocData.
+		/// </summary>
+		public ORMDesignerDocData CurrentDocument
 		{
-			set
+			get
+			{
+				return myCurrentDocument;
+			}
+			private set
 			{
 				if (myCurrentDocument != null)
 				{
@@ -311,7 +318,7 @@ namespace Northface.Tools.ORM.FactEditor
 				}
 			}
 		}
-#endregion
+		#endregion
 
 		#region Event Handlers
 		private void DocumentWindowChangedEvent(object sender, MonitorSelectionEventArgs e)

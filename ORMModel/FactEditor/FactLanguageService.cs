@@ -55,7 +55,11 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <summary>
 		/// Object type
 		/// </summary>
-		Object,
+		EntityType,
+		/// <summary>
+		/// Object type
+		/// </summary>
+		ValueType,
 		/// <summary>
 		/// Predicate reading
 		/// </summary>

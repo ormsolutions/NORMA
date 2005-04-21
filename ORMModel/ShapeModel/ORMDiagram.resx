@@ -242,6 +242,10 @@
     <value xml:space="preserve">Add Constraint Role Sequence</value>
     <comment xml:space="preserve">The transaction name used by the internal uniqueness constraint connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="InterpretFactEditorLine.TransactionName">
+    <value xml:space="preserve">Interpret Fact Editor Line</value>
+    <comment xml:space="preserve">The transaction name used for changes made in response to committing a modified line in the fact editor. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
   <data name="MoveRoleSequenceDown.TransactionName">
     <value xml:space="preserve">Move Role Sequence Down</value>
     <comment xml:space="preserve">The transaction name used for moving a role sequence down in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>

@@ -298,6 +298,7 @@ namespace Northface.Tools.ORM
 		private const string DeleteRoleSequenceTransactionName_Id = "DeleteRoleSequence.TransactionName";
 		private const string MoveRoleSequenceDownTransactionName_Id = "MoveRoleSequenceDown.TransactionName";
 		private const string MoveRoleSequenceUpTransactionName_Id = "MoveRoleSequenceUp.TransactionName";
+		private const string InterpretFactEditorLineTransactionName_Id = "InterpretFactEditorLine.TransactionName";
 		private const string ModelBrowserWindowTitle_Id = "ORMModelBrowser.WindowTitle";
 		private const string ModelExceptionReadingIsPrimaryToFalse_Id = "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse";
 		private const string ModelExceptionReadingTextChangeInvalid_Id = "ModelException.Reading.Text.InvalidText";
@@ -598,6 +599,18 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Diagram, MoveRoleSequenceUpTransactionName_Id);
+			}
+		}
+		/// <summary>
+		/// The transaction name used for changes made in response
+		/// to committing a modified line in the fact editor. The
+		/// text appears in the undo dropdown in the VS IDE.
+		/// </summary>
+		public static string InterpretFactEditorLineTransactionName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, InterpretFactEditorLineTransactionName_Id);
 			}
 		}
 		/// <summary>
