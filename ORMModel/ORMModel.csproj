@@ -122,6 +122,7 @@
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
     <Compile Include="ShapeModel\CustomFoldShapeGeometries.cs" />
+    <Compile Include="ShapeModel\FrequencyConstraintShape.cs" />
     <Compile Include="ShapeModel\InternalConstraintConnectAction.cs" />
     <Compile Include="ShapeModel\ORMShape.dmd.cs">
       <AutoGen>True</AutoGen>
@@ -221,12 +222,14 @@
     </EmbeddedResource>
     <Content Include="Resources\AboutBox.ico" />
     <Content Include="Resources\ORM.ico" />
+    <None Include="Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.RoleConnector.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ShapeModel\ConnectRoleAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectRoleSearching.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectInternalConstraintAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectInternalConstraintSearching.cur" />
     <None Include="Resources\Toolbox.InternalUniquenessConstraint.Bitmap.Id.bmp" />
+    <None Include="Resources\Toolbox.SubsetConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.ValueType.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.BinaryFactType.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.TernaryFactType.Bitmap.Id.bmp" />
@@ -235,7 +238,6 @@
     <None Include="Resources\Toolbox.ExclusiveOrConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.ExternalUniquenessConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.InclusiveOrConstraint.Bitmap.Id.bmp" />
-    <None Include="Resources\Toolbox.SubsetConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.PreferredExternalUniquenessConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.EqualityConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.ExternalConstraintConnector.Bitmap.Id.bmp" />

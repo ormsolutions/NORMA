@@ -791,11 +791,6 @@ Information Contained Herein is Proprietary and Confidential.
             <superType>ie17dcd50zeefez4960zb425zb87f246c6ea0</superType>
             <subType>i9480cf96zadfdz45b6z967ez018dddf27b94</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FrequencyConstraint-InternalConstraint" identity="dc0c0438-be20-4c35-9770-b9c3addf834a" id="idc0c0438zbe20z4c35z9770zb9c3addf834a" definitionlevel="none">
-            <source />
-            <superType>ie17dcd50zeefez4960zb425zb87f246c6ea0</superType>
-            <subType>icee1eaf8z155fz4646zacb3zbf2e87be032a</subType>
-          </treeExpression>
           <treeExpression xsi:type="InheritanceExpression" name="EqualityConstraint-ExternalConstraint" identity="0d8e6ffc-814e-40af-b8fd-6e34b1f10e55" id="i0d8e6ffcz814ez40afzb8fdz6e34b1f10e55" definitionlevel="none">
             <source />
             <superType>i0d75242dz1462z4936zad30ze1ce61a6ba3f</superType>
@@ -1052,6 +1047,11 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <role>i59b2a377z5b0ez455bz91eaz67be1e4c57ce</role>
           </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FrequencyConstraint-SingleColumnExternalConstraint" identity="b0014e39-f7d6-487c-9651-3ee083095784" id="ib0014e39zf7d6z487cz9651z3ee083095784" definitionlevel="none">
+            <source />
+            <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
+            <subType>icee1eaf8z155fz4646zacb3zbf2e87be032a</subType>
+          </treeExpression>
         </expressions>
         <roots />
       </treenavigator>
@@ -1116,11 +1116,6 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="ValuePropertyExpression" name="IsPreferred" identity="0b228656-5fc8-4cfd-908c-9742e3351b31" id="i0b228656z5fc8z4cfdz908cz9742e3351b31">
             <source />
             <property>ic1ba5d02za7e4z4cd5zac9fz89ee1d811ee8</property>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="FrequencyConstraint-InternalConstraint" identity="d345133e-0ead-4865-a32d-04ac97b8f7d4" id="id345133ez0eadz4865za32dz04ac97b8f7d4" definitionlevel="definition">
-            <source>idc0c0438zbe20z4c35z9770zb9c3addf834a</source>
-            <superType>ie17dcd50zeefez4960zb425zb87f246c6ea0</superType>
-            <subType>icee1eaf8z155fz4646zacb3zbf2e87be032a</subType>
           </treeExpression>
           <treeExpression xsi:type="ValuePropertyExpression" name="IsPreferred" identity="08aa9901-15f8-4507-b494-5ff1e624554e" id="i08aa9901z15f8z4507zb494z5ff1e624554e">
             <source />
@@ -1453,6 +1448,19 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="RoleExpression" name="MultiColumnExternalConstraintHasExternalConstraintRoleSequencyArityMismatch.ExternalConstraintRoleSequencyArityMismatch" identity="94e306cd-60a4-49fc-9cf5-71706d05e750" id="i94e306cdz60a4z49fcz9cf5z71706d05e750" definitionlevel="use" containmentstyle="fromsource">
             <source>i65a219e3zfabaz4272zb26ez8a8fff9fa48e</source>
             <role>i59b2a377z5b0ez455bz91eaz67be1e4c57ce</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FrequencyConstraint-SingleColumnExternalConstraint" identity="4a9ebde2-b47b-4ddc-8604-3a7bb4f5124c" id="i4a9ebde2zb47bz4ddcz8604z3a7bb4f5124c" definitionlevel="definition">
+            <source>ib0014e39zf7d6z487cz9651z3ee083095784</source>
+            <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
+            <subType>icee1eaf8z155fz4646zacb3zbf2e87be032a</subType>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="1f6ce4d3-3bc6-401b-9d57-5c94a062df31" id="i1f6ce4d3z3bc6z401bz9d57z5c94a062df31">
+            <source />
+            <property>i473b1d1ez6848z45edz83ddz3def2334cf79</property>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="32242afb-170b-4a0a-a017-1e4ad874cba0" id="i32242afbz170bz4a0aza017z1e4ad874cba0">
+            <source />
+            <property>i7c65f145z1e17z4ea6z8863z2c3c6974b22c</property>
           </treeExpression>
         </expressions>
         <roots>
@@ -1870,7 +1878,17 @@ Information Contained Herein is Proprietary and Confidential.
       </concept>
       <concept name="FrequencyConstraint" identity="cee1eaf8-155f-4646-acb3-bf2e87be032a" namespace="Northface.Tools.ORM.ObjectModel" id="icee1eaf8z155fz4646zacb3zbf2e87be032a" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" />
-        <superType>ie17dcd50zeefez4960zb425zb87f246c6ea0</superType>
+        <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
+        <valueProperties>
+          <property name="MinFrequency" identity="473b1d1e-6848-45ed-83dd-3def2334cf79" id="i473b1d1ez6848z45edz83ddz3def2334cf79">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
+            <propertyInfo xsi:type="IntegerPropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000" default="1" max="2147483647" min="1" />
+          </property>
+          <property name="MaxFrequency" identity="7c65f145-1e17-4ea6-8863-2c3c6974b22c" id="i7c65f145z1e17z4ea6z8863z2c3c6974b22c">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
+            <propertyInfo xsi:type="IntegerPropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000" default="0" max="2147483647" min="0" />
+          </property>
+        </valueProperties>
       </concept>
       <concept name="InternalConstraint" identity="e17dcd50-eefe-4960-b425-b87f246c6ea0" namespace="Northface.Tools.ORM.ObjectModel" id="ie17dcd50zeefez4960zb425zb87f246c6ea0" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />

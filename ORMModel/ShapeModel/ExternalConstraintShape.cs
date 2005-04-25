@@ -1,6 +1,9 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
@@ -12,11 +15,14 @@ namespace Northface.Tools.ORM.ShapeModel
 	public partial class ExternalConstraintShape : IStickyObject, IModelErrorActivation
 	{
 		#region Customize appearance
-		private static readonly StyleSetResourceId MandatoryDotBrush = new StyleSetResourceId("Northface", "ExternalConstraintMandatoryDotBrush");
 		/// <summary>
-		/// Return a consistent size for all constraints
+		/// A brush used to draw portions of mandatory constraints
 		/// </summary>
-		protected override SizeD ContentSize
+		protected static readonly StyleSetResourceId ExternalConstraintBrush = new StyleSetResourceId("Northface", "ExternalConstraintBrush");
+		/// <summary>
+		/// Set the default size for this object.
+		/// </summary>
+		public override SizeD DefaultSize
 		{
 			get
 			{
@@ -47,7 +53,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			classStyleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
 			BrushSettings brushSettings = new BrushSettings();
 			brushSettings.Color = penSettings.Color;
-			classStyleSet.AddBrush(MandatoryDotBrush, DiagramBrushes.ShapeBackground, brushSettings);
+			classStyleSet.AddBrush(ExternalConstraintBrush, DiagramBrushes.ShapeBackground, brushSettings);
 
 			penSettings.Color = colorService.GetBackColor(ORMDesignerColor.ActiveConstraint);
 			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ShapeOutline, penSettings);
@@ -87,7 +93,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				{
 					// Draw the dot
 					bounds.Inflate(-Bounds.Width * .22, -Bounds.Height * .22);
-					Brush brush = StyleSet.GetBrush(MandatoryDotBrush);
+					Brush brush = StyleSet.GetBrush(ExternalConstraintBrush);
 					SolidBrush coloredBrush = null;
 					if (restoreColor)
 					{
@@ -162,7 +168,6 @@ namespace Northface.Tools.ORM.ShapeModel
 					break;
 				}
 			}
-
 			// Restore pen color
 			if (restoreColor)
 			{
@@ -219,11 +224,15 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // ExternalConstraintShape specific
 		#region Shape display update rules
+		#region ExternalUniquenessConstraint ShapeChangeRule1 class
 		[RuleOn(typeof(ExternalUniquenessConstraint), FireTime = TimeToFire.TopLevelCommit)]
 		private class ShapeChangeRule1 : ChangeRule
 		{
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
+				// UNDONE: Why is this here? A rule on a derived attribute
+				// is highly questionable. Any updates should be made based on
+				// changes to the underlying relationship.
 				Guid attributeGuid = e.MetaAttribute.Id;
 				if (attributeGuid == ExternalUniquenessConstraint.IsPreferredMetaAttributeGuid)
 				{
@@ -231,6 +240,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		#endregion // ExternalUniquenessConstraint ShapeChangeRule1 class
 		#endregion // Shape display update rules
 		#region IModelErrorActivation Implementation
 		/// <summary>

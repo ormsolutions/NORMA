@@ -44,7 +44,13 @@ Information Contained Herein is Proprietary and Confidential.
           <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)" />
           <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)" />
           <metaattributes />
-          <derivedshapes />
+          <derivedshapes>
+            <shape namespace="Northface.Tools.ORM.ShapeModel" name="FrequencyConstraintShape" identity="ec47cd7d-023b-4971-8b5b-1242dbc7356f" accessmodifier="public" category="" description="" doccomment="" localize="false">
+            <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint)" />
+            <metaattributes />
+            <derivedshapes />
+            </shape>
+          </derivedshapes>
         </shape>
         <shape namespace="Northface.Tools.ORM.ShapeModel" name="FloatingTextShape" identity="0904999f-d9c5-4c4e-a08f-f8dd4b2f29a3" accessmodifier="public" classmodifier="abstract" category="" description="" doccomment="" localize="false">
           <metaattributes />
@@ -99,6 +105,7 @@ Information Contained Herein is Proprietary and Confidential.
       <toolboxitem toolboxitemid="Toolbox.InclusiveOrConstraint.Item.Id" position="45" bitmapresourceid="Toolbox.InclusiveOrConstraint.Bitmap.Id" captionresourceid="Toolbox.InclusiveOrConstraint.Caption.Id" tooltipresourceid="Toolbox.InclusiveOrConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
       <toolboxitem toolboxitemid="Toolbox.ExclusiveOrConstraint.Item.Id" position="50" bitmapresourceid="Toolbox.ExclusiveOrConstraint.Bitmap.Id" captionresourceid="Toolbox.ExclusiveOrConstraint.Caption.Id" tooltipresourceid="Toolbox.ExclusiveOrConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
       <toolboxitem toolboxitemid="Toolbox.SubsetConstraint.Item.Id" position="55" bitmapresourceid="Toolbox.SubsetConstraint.Bitmap.Id" captionresourceid="Toolbox.SubsetConstraint.Caption.Id" tooltipresourceid="Toolbox.SubsetConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.FrequencyConstraint.Item.Id" position="57" bitmapresourceid="Toolbox.FrequencyConstraint.Bitmap.Id" captionresourceid="Toolbox.FrequencyConstraint.Caption.Id" tooltipresourceid="Toolbox.FrequencyConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
       <toolboxitem toolboxitemid="Toolbox.ExternalConstraintConnector.Item.Id" position="60" bitmapresourceid="Toolbox.ExternalConstraintConnector.Bitmap.Id" captionresourceid="Toolbox.ExternalConstraintConnector.Caption.Id" tooltipresourceid="Toolbox.ExternalConstraintConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
       <clrattribute name="System.ComponentModel.ToolboxItemFilterAttribute" parametertext="ORMDiagram.ORMDiagramDefaultFilterString, System.ComponentModel.ToolboxItemFilterType.Require" />
       <metaattributes />

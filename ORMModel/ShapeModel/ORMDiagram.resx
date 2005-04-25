@@ -230,6 +230,14 @@
     <value xml:space="preserve">Role Picker</value>
     <comment xml:space="preserve">Display name for the color used to draw the constraint box for role sequence editing</comment>
   </data>
+  <data name="FrequencyConstraint.Between.FormatString">
+    <value xml:space="preserve">{0}..{1}</value>
+    <comment xml:space="preserve">The format to be used in frequency constraints to represent a range of values (eg: Between {0} and {1}).</comment>
+  </data>
+  <data name="FrequencyConstraint.Minimum.FormatString">
+    <value xml:space="preserve">≥{0}</value>
+    <comment xml:space="preserve">The format to be used in frequency constraints for a minimum value (eg: Minimum of {0}).</comment>
+  </data>
   <data name="InsertRole.TransactionName">
     <value xml:space="preserve">Insert Role</value>
     <comment xml:space="preserve">The transaction name used by the InsertRoleBefore/InsertRoleAfter commands. The text appears in the undo dropdown in the VS IDE.</comment>

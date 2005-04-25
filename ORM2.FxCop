@@ -1501,11 +1501,6 @@
            </Member>
            <Member Name="SetValue(Northface.Tools.ORM.ObjectModel.CustomReferenceMode,System.String,Microsoft.VisualStudio.Modeling.CommandFactory,System.Boolean,System.String&amp;):System.Boolean">
             <Messages>
-             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-02-03 20:22:04Z">
-              <Issue Level="CriticalWarning">
-               <Item>oldValue</Item>
-              </Issue>
-             </Message>
              <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-02-03 20:22:04Z">
               <Issue>
                <Item>SetValue</Item>
@@ -1966,11 +1961,6 @@
            </Member>
            <Member Name="SetValue(Northface.Tools.ORM.ObjectModel.Expression,System.String,Microsoft.VisualStudio.Modeling.CommandFactory,System.Boolean,System.String&amp;):System.Boolean">
             <Messages>
-             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-02-03 20:22:04Z">
-              <Issue Level="CriticalWarning">
-               <Item>oldValue</Item>
-              </Issue>
-             </Message>
              <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-02-03 20:22:04Z">
               <Issue>
                <Item>SetValue</Item>
@@ -2193,6 +2183,55 @@
             <Notes>
              <User Name="mcurland">
               <Note Id="4" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FrequencyConstraint">
+          <Members>
+           <Member Name=".ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.ModelDataBag)">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Status="Excluded" Created="2005-04-25 20:11:06Z">
+              <Issue>
+               <Item>FrequencyConstraint..ctor(Store, ModelDataBag)</Item>
+               <Item>maxFrequencyPropertyStorage</Item>
+               <Item>Int32</Item>
+               <Item>0</Item>
+              </Issue>
+              <Notes>
+               <User Name="pewert">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FrequencyConstraint+FrequencyConstraintMaxFrequencyFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-04-25 20:11:06Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.FrequencyConstraint+FrequencyConstraintMaxFrequencyFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="2" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FrequencyConstraint+FrequencyConstraintMinFrequencyFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-04-25 20:11:06Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.FrequencyConstraint+FrequencyConstraintMinFrequencyFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="1" />
              </User>
             </Notes>
            </Message>
@@ -4054,11 +4093,6 @@
            </Member>
            <Member Name="SetValue(Northface.Tools.ORM.ObjectModel.Reading,System.String,Microsoft.VisualStudio.Modeling.CommandFactory,System.Boolean,System.String&amp;):System.Boolean">
             <Messages>
-             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-02-03 20:22:04Z">
-              <Issue Level="CriticalWarning">
-               <Item>oldValue</Item>
-              </Issue>
-             </Message>
              <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-02-03 20:22:04Z">
               <Issue>
                <Item>SetValue</Item>
@@ -4161,11 +4195,6 @@
            </Member>
            <Member Name="SetValue(Northface.Tools.ORM.ObjectModel.Reading,System.String,Microsoft.VisualStudio.Modeling.CommandFactory,System.Boolean,System.String&amp;):System.Boolean">
             <Messages>
-             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-02-03 20:22:04Z">
-              <Issue Level="CriticalWarning">
-               <Item>oldValue</Item>
-              </Issue>
-             </Message>
              <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-02-03 20:22:04Z">
               <Issue>
                <Item>SetValue</Item>
@@ -5079,11 +5108,6 @@
            </Member>
            <Member Name="SetValue(Northface.Tools.ORM.ObjectModel.ReferenceModeKind,System.String,Microsoft.VisualStudio.Modeling.CommandFactory,System.Boolean,System.String&amp;):System.Boolean">
             <Messages>
-             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-02-03 20:22:04Z">
-              <Issue Level="CriticalWarning">
-               <Item>oldValue</Item>
-              </Issue>
-             </Message>
              <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-02-03 20:22:04Z">
               <Issue>
                <Item>SetValue</Item>
@@ -5128,11 +5152,6 @@
            </Member>
            <Member Name="SetValue(Northface.Tools.ORM.ObjectModel.ReferenceModeKind,Northface.Tools.ORM.ObjectModel.ReferenceModeType,Microsoft.VisualStudio.Modeling.CommandFactory,System.Boolean,Northface.Tools.ORM.ObjectModel.ReferenceModeType&amp;):System.Boolean">
             <Messages>
-             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-02-03 20:22:04Z">
-              <Issue Certainty="50">
-               <Item>oldValue</Item>
-              </Issue>
-             </Message>
              <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-02-03 20:22:04Z">
               <Issue>
                <Item>SetValue</Item>
@@ -6906,6 +6925,25 @@ BaseReadingTreeNode.SetText():Void</Item>
            </Member>
           </Members>
          </Type>
+         <Type Name="ExternalConstraintShape">
+          <Members>
+           <Member Name="ExternalConstraintBrush">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2005-04-25 21:55:58Z">
+              <Issue>
+               <Item>ExternalConstraintShape.ExternalConstraintBrush</Item>
+               <Item>Microsoft.VisualStudio.Modeling.Diagrams.StyleSetResourceId</Item>
+              </Issue>
+              <Notes>
+               <User Name="pewert">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="ExternalConstraintShape+ShapeChangeRule1">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -7115,13 +7153,13 @@ BaseReadingTreeNode.SetText():Void</Item>
          </Type>
          <Type Name="FactTypeShape+ExternalConstraintShapeChangeRule">
           <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-25 21:55:58Z">
             <Issue>
              <Item>Northface.Tools.ORM.ShapeModel.FactTypeShape+ExternalConstraintShapeChangeRule</Item>
             </Issue>
             <Notes>
-             <User Name="mcurland">
-              <Note Id="7" />
+             <User Name="pewert">
+              <Note Id="4" />
              </User>
             </Notes>
            </Message>
@@ -7157,11 +7195,6 @@ BaseReadingTreeNode.SetText():Void</Item>
            </Member>
            <Member Name="SetValue(Northface.Tools.ORM.ShapeModel.FactTypeShape,Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition,Microsoft.VisualStudio.Modeling.CommandFactory,System.Boolean,Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition&amp;):System.Boolean">
             <Messages>
-             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-02-03 20:22:04Z">
-              <Issue Certainty="50">
-               <Item>oldValue</Item>
-              </Issue>
-             </Message>
              <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-02-03 20:22:04Z">
               <Issue>
                <Item>SetValue</Item>
@@ -7274,6 +7307,33 @@ BaseReadingTreeNode.SetText():Void</Item>
             </Messages>
            </Member>
           </Members>
+         </Type>
+         <Type Name="FrequencyConstraintShape">
+          <Members>
+           <Member Name="GetDesktopWindow():System.IntPtr">
+            <Messages>
+             <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA902" Created="2005-04-25 20:11:06Z">
+              <Issue>
+               <Item>FrequencyConstraintShape.GetDesktopWindow():IntPtr</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FrequencyConstraintShape+FrequencyConstraintAttributeChangeRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-25 20:11:06Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape+FrequencyConstraintAttributeChangeRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
          <Type Name="GeometryUtility">
           <Members>
@@ -9105,6 +9165,14 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="11" Modified="2005-04-15 17:59:24Z">FxCop bad. The equivalent casts are in different conditional blocks.</Note>
     <Note Id="12" Modified="2005-04-15 18:03:05Z">Duplicate cast is in assert statement</Note>
     <Note Id="13" Modified="2005-04-18 16:06:48Z">Property called to trigger side effects</Note>
+   </User>
+   <User Name="pewert">
+    <Note Id="0" Modified="2005-04-25 20:13:21Z">Defined in IMS-generated code</Note>
+    <Note Id="1" Modified="2005-04-25 20:18:07Z">Defined in IMS-generated code</Note>
+    <Note Id="2" Modified="2005-04-25 20:18:14Z">Defined in IMS-generated code</Note>
+    <Note Id="3" Modified="2005-04-25 20:24:00Z">Internal rules instantiated via reflection</Note>
+    <Note Id="4" Modified="2005-04-25 21:57:49Z">Internal rules instantiated via reflection</Note>
+    <Note Id="5" Modified="2005-04-25 21:58:32Z">Referenced object is immutable</Note>
    </User>
   </Notes>
   <Rules>

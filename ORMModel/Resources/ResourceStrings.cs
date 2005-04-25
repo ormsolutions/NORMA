@@ -187,6 +187,10 @@ namespace Northface.Tools.ORM
 		/// </summary>
 		public const string ToolboxRoleConnectorItemId = "Toolbox.RoleConnector.Item.Id";
 		/// <summary>
+		/// The identifier for a FrequencyConstraint toolbox item
+		/// </summary>
+		public const string ToolboxFrequencyConstraintItemId = "Toolbox.FrequencyConstraint.Item.Id";
+		/// <summary>
 		/// The identifier for an SubsetConstraint toolbox item
 		/// </summary>
 		public const string ToolboxSubsetConstraintItemId = "Toolbox.SubsetConstraint.Item.Id";
@@ -290,6 +294,8 @@ namespace Northface.Tools.ORM
 		private const string FactTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.FactType.DefaultNamePattern";
 		private const string ExternalConstraintConnectActionInstructions_Id = "ExternalConstraintConnectAction.Instructions";
 		private const string ExternalConstraintConnectActionTransactionName_Id = "ExternalConstraintConnectAction.TransactionName";
+		private const string FrequencyConstraintMinimumFormatString_Id = "FrequencyConstraint.Minimum.FormatString";
+		private const string FrequencyConstraintBetweenFormatString_Id = "FrequencyConstraint.Between.FormatString";
 		private const string InsertRoleTransactionName_Id = "InsertRole.TransactionName";
 		private const string InternalUniquenessConstraintConnectActionInstructions_Id = "InternalUniquenessConstraintConnectAction.Instructions";
 		private const string InternalUniquenessConstraintConnectActionTransactionName_Id = "InternalUniquenessConstraintConnectAction.TransactionName";
@@ -508,6 +514,27 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Diagram, ExternalConstraintConnectActionTransactionName_Id);
+			}
+		}
+		/// <summary>
+		/// The string used to represent a greater than symbol on a frequency constraint.
+		/// </summary>
+		public static string FrequencyConstraintMinimumFormatString
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, FrequencyConstraintMinimumFormatString_Id);
+			}
+		}
+		/// <summary>
+		/// The string used to represent 'between' on a frequency constraint (eg: 'Between 1 and 5'
+		/// would be represented as '1[this string]5'.
+		/// </summary>
+		public static string FrequencyConstraintBetweenFormatString
+		{
+			get
+			{
+				return GetString(ResourceManagers.Diagram, FrequencyConstraintBetweenFormatString_Id);
 			}
 		}
 		/// <summary>

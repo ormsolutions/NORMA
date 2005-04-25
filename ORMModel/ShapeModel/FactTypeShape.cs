@@ -3055,6 +3055,10 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // ConstraintDisplayPositionChangeRule class
 		#region ExternalConstraintShapeChangeRule class
+		/// <summary>
+		/// Class to force the external constraint link bars to redraw and/or reposition
+		/// when an external constraint shape is moved.
+		/// </summary>
 		[RuleOn(typeof(ExternalConstraintShape), FireTime = TimeToFire.LocalCommit)]
 		private class ExternalConstraintShapeChangeRule : ChangeRule
 		{

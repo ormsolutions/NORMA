@@ -6329,78 +6329,6 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FrequencyConstraint")]
-	public  partial class FrequencyConstraint : Northface.Tools.ORM.ObjectModel.InternalConstraint
-	{
-		#region FrequencyConstraint's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "cee1eaf8-155f-4646-acb3-bf2e87be032a";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MetaClassGuidString);
-		#endregion
-
-	}
-	#region FrequencyConstraint's Generated Constructor Code
-	public  partial class FrequencyConstraint
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FrequencyConstraint CreateFrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return (FrequencyConstraint)store.ElementFactory.CreateElement(typeof(FrequencyConstraint));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FrequencyConstraint CreateAndInitializeFrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (FrequencyConstraint)store.ElementFactory.CreateElement(typeof(FrequencyConstraint), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for FrequencyConstraint
-	/// <summary>
-	/// FrequencyConstraint Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint))]
-	public sealed class FrequencyConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FrequencyConstraintElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.FrequencyConstraint(store, bag);
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence")]
 	public  partial class MultiColumnExternalConstraintRoleSequence : Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence
 	{
@@ -7422,6 +7350,320 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.RingConstraint(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FrequencyConstraint")]
+	public  partial class FrequencyConstraint : Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint
+	{
+		#region FrequencyConstraint's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "cee1eaf8-155f-4646-acb3-bf2e87be032a";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MetaClassGuidString);
+		#endregion
+
+		#region MinFrequency's Generated  Field Code
+		#region MinFrequency's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String MinFrequencyMetaAttributeGuidString = "473b1d1e-6848-45ed-83dd-3def2334cf79";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid MinFrequencyMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MinFrequencyMetaAttributeGuidString);
+		#endregion
+
+		#region MinFrequency's Generated Property Code
+
+		private System.Int32 minFrequencyPropertyStorage = 1;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.IntegerDomainAttribute(MinValue=1,DefaultInt=1)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(FrequencyConstraintMinFrequencyFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MinFrequencyMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MinFrequency")]
+		public  System.Int32 MinFrequency
+		{
+			get
+			{
+				return minFrequencyPropertyStorage;
+			}
+		
+			set
+			{
+				frequencyConstraintMinFrequencyFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region FrequencyConstraintMinFrequencyFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for FrequencyConstraint.MinFrequency field
+		/// </summary>
+		private static FrequencyConstraintMinFrequencyFieldHandler	frequencyConstraintMinFrequencyFieldHandler	= FrequencyConstraintMinFrequencyFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for FrequencyConstraint.MinFrequency
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class FrequencyConstraintMinFrequencyFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.FrequencyConstraint,System.Int32>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private FrequencyConstraintMinFrequencyFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the FrequencyConstraint.MinFrequency field handler
+			/// </summary>
+			/// <value>FrequencyConstraintMinFrequencyFieldHandler</value>
+			public static FrequencyConstraintMinFrequencyFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.FrequencyConstraint.frequencyConstraintMinFrequencyFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.FrequencyConstraint.frequencyConstraintMinFrequencyFieldHandler;
+					}
+					else
+					{
+						// The static constructor in FrequencyConstraint will assign this value to
+						// Northface.Tools.ORM.ObjectModel.FrequencyConstraint.frequencyConstraintMinFrequencyFieldHandler, so just instantiate one and return it
+						return new FrequencyConstraintMinFrequencyFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the FrequencyConstraint.MinFrequency field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MinFrequencyMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the FrequencyConstraint</param>
+			protected sealed override System.Int32 GetValue(Northface.Tools.ORM.ObjectModel.FrequencyConstraint element)
+			{
+				return element.minFrequencyPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.FrequencyConstraint element, System.Int32 value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Int32 oldValue)
+			{
+				oldValue = element.minFrequencyPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.minFrequencyPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region MaxFrequency's Generated  Field Code
+		#region MaxFrequency's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String MaxFrequencyMetaAttributeGuidString = "7c65f145-1e17-4ea6-8863-2c3c6974b22c";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid MaxFrequencyMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequencyMetaAttributeGuidString);
+		#endregion
+
+		#region MaxFrequency's Generated Property Code
+
+		private System.Int32 maxFrequencyPropertyStorage = 0;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.IntegerDomainAttribute(MinValue=0)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(FrequencyConstraintMaxFrequencyFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequencyMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequency")]
+		public  System.Int32 MaxFrequency
+		{
+			get
+			{
+				return maxFrequencyPropertyStorage;
+			}
+		
+			set
+			{
+				frequencyConstraintMaxFrequencyFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region FrequencyConstraintMaxFrequencyFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for FrequencyConstraint.MaxFrequency field
+		/// </summary>
+		private static FrequencyConstraintMaxFrequencyFieldHandler	frequencyConstraintMaxFrequencyFieldHandler	= FrequencyConstraintMaxFrequencyFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for FrequencyConstraint.MaxFrequency
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class FrequencyConstraintMaxFrequencyFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.FrequencyConstraint,System.Int32>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private FrequencyConstraintMaxFrequencyFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the FrequencyConstraint.MaxFrequency field handler
+			/// </summary>
+			/// <value>FrequencyConstraintMaxFrequencyFieldHandler</value>
+			public static FrequencyConstraintMaxFrequencyFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.FrequencyConstraint.frequencyConstraintMaxFrequencyFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.FrequencyConstraint.frequencyConstraintMaxFrequencyFieldHandler;
+					}
+					else
+					{
+						// The static constructor in FrequencyConstraint will assign this value to
+						// Northface.Tools.ORM.ObjectModel.FrequencyConstraint.frequencyConstraintMaxFrequencyFieldHandler, so just instantiate one and return it
+						return new FrequencyConstraintMaxFrequencyFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the FrequencyConstraint.MaxFrequency field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequencyMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the FrequencyConstraint</param>
+			protected sealed override System.Int32 GetValue(Northface.Tools.ORM.ObjectModel.FrequencyConstraint element)
+			{
+				return element.maxFrequencyPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.FrequencyConstraint element, System.Int32 value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Int32 oldValue)
+			{
+				oldValue = element.maxFrequencyPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.maxFrequencyPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+	}
+	#region FrequencyConstraint's Generated Constructor Code
+	public  partial class FrequencyConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraint CreateFrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (FrequencyConstraint)store.ElementFactory.CreateElement(typeof(FrequencyConstraint));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraint CreateAndInitializeFrequencyConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FrequencyConstraint)store.ElementFactory.CreateElement(typeof(FrequencyConstraint), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FrequencyConstraint
+	/// <summary>
+	/// FrequencyConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint))]
+	public sealed class FrequencyConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FrequencyConstraint(store, bag);
 		}
 	}
 	#endregion

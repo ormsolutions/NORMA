@@ -472,6 +472,11 @@ namespace Northface.Tools.ORM.ShapeModel
 					group.AddGraph(sc);
 					retVal = group.CreatePrototype(sc);
 					break;
+				case ResourceStrings.ToolboxFrequencyConstraintItemId:
+					FrequencyConstraint fc = FrequencyConstraint.CreateFrequencyConstraint(store);
+					group.AddGraph(fc);
+					retVal = group.CreatePrototype(fc);
+					break;
 				case ResourceStrings.ToolboxRoleConnectorItemId:
 				case ResourceStrings.ToolboxExternalConstraintConnectorItemId:
 					// Intentionally unprototyped item

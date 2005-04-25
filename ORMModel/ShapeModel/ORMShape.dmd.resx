@@ -161,7 +161,7 @@
 </value>
   </data>
   <data name="Toolbox.EntityType.Caption.Id">
-    <value xml:space="preserve">EntityType</value>
+    <value xml:space="preserve">Entity Type</value>
   </data>
   <data name="Toolbox.EntityType.Item.Id">
     <value xml:space="preserve">Toolbox.EntityType.Item.Id</value>
@@ -179,7 +179,7 @@
 </value>
   </data>
   <data name="Toolbox.EqualityConstraint.Caption.Id">
-    <value xml:space="preserve">EqualityConstraint</value>
+    <value xml:space="preserve">Equality Constraint</value>
   </data>
   <data name="Toolbox.EqualityConstraint.Item.Id">
     <value xml:space="preserve">Toolbox.EqualityConstraint.Item.Id</value>
@@ -197,7 +197,7 @@
 </value>
   </data>
   <data name="Toolbox.ExclusionConstraint.Caption.Id">
-    <value xml:space="preserve">ExclusionConstraint</value>
+    <value xml:space="preserve">Exclusion Constraint</value>
   </data>
   <data name="Toolbox.ExclusionConstraint.Item.Id">
     <value xml:space="preserve">Toolbox.ExclusionConstraint.Item.Id</value>
@@ -215,7 +215,7 @@
 </value>
   </data>
   <data name="Toolbox.ExclusiveOrConstraint.Caption.Id">
-    <value xml:space="preserve">ExclusiveOrConstraint</value>
+    <value xml:space="preserve">Exclusive Or Constraint</value>
   </data>
   <data name="Toolbox.ExclusiveOrConstraint.Item.Id">
     <value xml:space="preserve">Toolbox.ExclusiveOrConstraint.Item.Id</value>
@@ -233,7 +233,7 @@
 </value>
   </data>
   <data name="Toolbox.ExternalConstraintConnector.Caption.Id">
-    <value xml:space="preserve">ConstraintConnector</value>
+    <value xml:space="preserve">Constraint Connector</value>
   </data>
   <data name="Toolbox.ExternalConstraintConnector.Item.Id">
     <value xml:space="preserve">Toolbox.ExternalConstraintConnector.Item.Id</value>
@@ -251,13 +251,26 @@
 </value>
   </data>
   <data name="Toolbox.ExternalUniquenessConstraint.Caption.Id">
-    <value xml:space="preserve">ExternalUniquenessConstraint</value>
+    <value xml:space="preserve">External Uniqueness Constraint</value>
   </data>
   <data name="Toolbox.ExternalUniquenessConstraint.Item.Id">
     <value xml:space="preserve">Toolbox.ExternalUniquenessConstraint.Item.Id</value>
   </data>
   <data name="Toolbox.ExternalUniquenessConstraint.Tooltip.Id">
     <value xml:space="preserve">New External Uniqueness Constraint</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Toolbox.FrequencyConstraint.Bitmap.Id" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Toolbox.FrequencyConstraint.Caption.Id">
+    <value xml:space="preserve">Frequency Constraint</value>
+  </data>
+  <data name="Toolbox.FrequencyConstraint.Item.Id">
+    <value xml:space="preserve">Toolbox.FrequencyConstraint.Item.Id</value>
+  </data>
+  <data name="Toolbox.FrequencyConstraint.Tooltip.Id">
+    <value xml:space="preserve">New Frequency Constraint</value>
   </data>
   <data name="Toolbox.InclusiveOrConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -269,7 +282,7 @@
 </value>
   </data>
   <data name="Toolbox.InclusiveOrConstraint.Caption.Id">
-    <value xml:space="preserve">InclusiveOrConstraint</value>
+    <value xml:space="preserve">Inclusive Or Constraint</value>
   </data>
   <data name="Toolbox.InclusiveOrConstraint.Item.Id">
     <value xml:space="preserve">Toolbox.InclusiveOrConstraint.Item.Id</value>
@@ -287,7 +300,7 @@
 </value>
   </data>
   <data name="Toolbox.InternalUniquenessConstraint.Caption.Id">
-    <value xml:space="preserve">InternalUniquenessConstraint</value>
+    <value xml:space="preserve">Internal Uniqueness Constraint</value>
   </data>
   <data name="Toolbox.InternalUniquenessConstraint.Item.Id">
     <value xml:space="preserve">Toolbox.InternalUniquenessConstraint.Item.Id</value>
@@ -305,7 +318,7 @@
 </value>
   </data>
   <data name="Toolbox.RoleConnector.Caption.Id">
-    <value xml:space="preserve">RoleConnector</value>
+    <value xml:space="preserve">Role Connector</value>
   </data>
   <data name="Toolbox.RoleConnector.Item.Id">
     <value xml:space="preserve">Toolbox.RoleConnector.Item.Id</value>
@@ -323,7 +336,7 @@
 </value>
   </data>
   <data name="Toolbox.SubsetConstraint.Caption.Id">
-    <value xml:space="preserve">SubsetConstraint</value>
+    <value xml:space="preserve">Subset Constraint</value>
   </data>
   <data name="Toolbox.SubsetConstraint.Item.Id">
     <value xml:space="preserve">Toolbox.SubsetConstraint.Item.Id</value>
@@ -377,7 +390,7 @@
 </value>
   </data>
   <data name="Toolbox.ValueType.Caption.Id">
-    <value xml:space="preserve">ValueType</value>
+    <value xml:space="preserve">Value Type</value>
   </data>
   <data name="Toolbox.ValueType.Item.Id">
     <value xml:space="preserve">Toolbox.ValueType.Item.Id</value>

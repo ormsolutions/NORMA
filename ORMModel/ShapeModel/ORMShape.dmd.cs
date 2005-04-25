@@ -1111,6 +1111,117 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// 
 	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint))]
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape")]
+	public  partial class FrequencyConstraintShape : Northface.Tools.ORM.ShapeModel.ExternalConstraintShape
+	{
+		#region FrequencyConstraintShape's Generated Shape Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "ec47cd7d-023b-4971-8b5b-1242dbc7356f";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape.MetaClassGuidString);
+		#region Boilerplate code for every Shape-derived class
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.StyleSet classStyleSet = null;
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection shapeFields = null;
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		protected override Microsoft.VisualStudio.Modeling.Diagrams.StyleSet ClassStyleSet
+		{
+			get
+			{
+				if (classStyleSet == null)
+				{
+					classStyleSet = CreateClassStyleSet();
+				}
+				return classStyleSet;
+			}
+		}
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection ShapeFields
+		{
+			get
+			{
+				if (shapeFields == null)
+				{
+					shapeFields = CreateShapeFields();
+				}
+				return shapeFields;
+			}
+		}
+		#endregion
+		#endregion
+
+	}
+	#region FrequencyConstraintShape's Generated Constructor Code
+	public  partial class FrequencyConstraintShape
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraintShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraintShape CreateFrequencyConstraintShape(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (FrequencyConstraintShape)store.ElementFactory.CreateElement(typeof(FrequencyConstraintShape));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraintShape CreateAndInitializeFrequencyConstraintShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FrequencyConstraintShape)store.ElementFactory.CreateElement(typeof(FrequencyConstraintShape), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FrequencyConstraintShape
+	/// <summary>
+	/// FrequencyConstraintShape Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape))]
+	public sealed class FrequencyConstraintShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraintShapeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ShapeModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
@@ -1821,6 +1932,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.InclusiveOrConstraint.Item.Id", 45, "Toolbox.InclusiveOrConstraint.Bitmap.Id", "Toolbox.InclusiveOrConstraint.Caption.Id", "Toolbox.InclusiveOrConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.ExclusiveOrConstraint.Item.Id", 50, "Toolbox.ExclusiveOrConstraint.Bitmap.Id", "Toolbox.ExclusiveOrConstraint.Caption.Id", "Toolbox.ExclusiveOrConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.SubsetConstraint.Item.Id", 55, "Toolbox.SubsetConstraint.Bitmap.Id", "Toolbox.SubsetConstraint.Caption.Id", "Toolbox.SubsetConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
+	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.FrequencyConstraint.Item.Id", 57, "Toolbox.FrequencyConstraint.Bitmap.Id", "Toolbox.FrequencyConstraint.Caption.Id", "Toolbox.FrequencyConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.ExternalConstraintConnector.Item.Id", 60, "Toolbox.ExternalConstraintConnector.Bitmap.Id", "Toolbox.ExternalConstraintConnector.Caption.Id", "Toolbox.ExternalConstraintConnector.Tooltip.Id", "Toolbox.DefaultTabName")][System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
