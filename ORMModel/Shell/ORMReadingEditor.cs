@@ -99,6 +99,17 @@ namespace Northface.Tools.ORM.Shell
 		{
 			myForm.ActivateReading(reading);
 		}
+
+		/// <summary>
+		/// Select the primary reading for the reading order
+		/// matching the role order of the fact, if there
+		/// isn't one activate the new entry for that order.
+		/// </summary>
+		/// <param name="fact">FactType</param>
+		public void ActivateReading(FactType fact)
+		{
+			myForm.ActivateReading(fact);
+		}
 		#endregion // Reading activation helper
 
 		#region properties
@@ -204,6 +215,17 @@ namespace Northface.Tools.ORM.Shell
 			public void ActivateReading(Reading reading)
 			{
 				myReadingEditor.ActivateReading(reading);
+			}
+
+			/// <summary>
+			/// Select the primary reading of the order matching
+			/// the display order of the fact, if one doesn't
+			/// exist select the new entry.
+			/// </summary>
+			/// <param name="fact"></param>
+			public void ActivateReading(FactType fact)
+			{
+				myReadingEditor.ActivateReading(fact);
 			}
 			#endregion // Reading activation helper
 		}

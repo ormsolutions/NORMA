@@ -342,6 +342,7 @@ namespace Northface.Tools.ORM
 		private const string PackageProductDetails_Id = "Package.ProductDetails";
 		private const string ModelErrorReadingTooFewRolesMessage_Id = "ModelError.Reading.TooFewRoles.Message";
 		private const string ModelErrorReadingTooManyRolesMessage_Id = "ModelError.Reading.TooManyRoles.Message";
+		private const string ModelErrorFactTypeRequiresReadingMessage_Id = "ModelError.FactType.RequiresReading.Message";
 		private const string ModelReadingRoleDeletedRoleText_Id = "Model.Reading.RoleDeletedText";
 
 		private const string ModelReferenceModeEditorAbbreviatedEntityTypeName_Id = "ModelReferenceModeEditor.AbbreviatedEntityTypeName";
@@ -1360,6 +1361,18 @@ namespace Northface.Tools.ORM
 			get
 			{
 				return GetString(ResourceManagers.Model, ModelReadingRoleDeletedRoleText_Id);
+			}
+		}
+
+		/// <summary>
+		/// Text displayed in the text of the FactTypeRequiresReadingError
+		/// </summary>
+		/// <value></value>
+		public static string ModelErrorFactTypeRequiresReadingMessage
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelErrorFactTypeRequiresReadingMessage_Id);
 			}
 		}
 		#endregion // Public accessor properties

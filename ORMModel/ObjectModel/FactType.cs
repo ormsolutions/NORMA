@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
+using System.Globalization;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
@@ -38,7 +39,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
-	public partial class FactType : INamedElementDictionaryChild
+	public partial class FactType : INamedElementDictionaryChild, IModelErrorOwner
 	{
 		#region ReadingOrder acquisition
 		/// <summary>
@@ -434,5 +435,212 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // RoleChangeRule class
+		#region IModelErrorOwner Members
+
+		/// <summary>
+		/// Returns the error associated with the fact.
+		/// </summary>
+		[CLSCompliant(false)]
+		protected IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				FactTypeRequiresReadingError error = this.ReadingRequiredError;
+				if (error != null)
+				{
+					yield return error;
+				}
+			}
+		}
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get 
+			{
+				return ErrorCollection;
+			}
+		}
+
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// </summary>
+		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateRequiresReading(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+
+		#region Validation Methods
+		private void ValidateRequiresReading(INotifyElementAdded notifyAdded)
+		{
+			if (!IsRemoved)
+			{
+				bool hasError = true;
+				Store theStore = Store;
+				ORMModel theModel = Model;
+				ReadingOrderMoveableCollection readingOrders = ReadingOrderCollection;
+				if (readingOrders.Count > 0)
+				{
+					foreach (ReadingOrder order in readingOrders)
+					{
+						if (order.ReadingCollection.Count > 0)
+						{
+							hasError = false;
+							break;
+						}
+					}
+				}
+
+				FactTypeRequiresReadingError noReadingError = ReadingRequiredError;
+				if (hasError)
+				{
+					if (noReadingError == null)
+					{
+						noReadingError = FactTypeRequiresReadingError.CreateFactTypeRequiresReadingError(theStore);
+						noReadingError.Model = theModel;
+						noReadingError.FactType = this;
+						noReadingError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(noReadingError, true);
+						}
+					}
+				}
+				else
+				{
+					if (noReadingError != null)
+					{
+						noReadingError.Remove();
+					}
+				}
+			}
+		}
+		#endregion
+		#region Reading Required Rules
+		[RuleOn(typeof(ModelHasFactType))]
+		private class ModelHasFactTypeAddRuleModelValidation : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ModelHasFactType link = e.ModelElement as ModelHasFactType;
+				FactType fact = link.FactTypeCollection;
+				fact.ValidateErrors(null);
+			}
+		}
+
+		[RuleOn(typeof(FactTypeHasReadingOrder))]
+		private class FactTypeHasReadingOrderAddRuleModelValidation : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
+				FactType fact = link.FactType;
+				if (fact.ReadingRequiredError != null)
+				{
+					fact.ValidateErrors(null);
+				}
+			}
+		}
+		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.LocalCommit)]
+		private class FactTypeHasReadingOrderRemovedRuleModelValidation : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
+				FactType fact = link.FactType;
+				if (!fact.IsRemoved)
+				{
+					fact.ValidateErrors(null);
+				}
+			}
+		}
+
+		[RuleOn(typeof(ReadingOrderHasReading))]
+		private class ReadingOrderHasReadingAddRuleModelValidation : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
+				ReadingOrder ord = link.ReadingOrder;
+				FactType fact = ord.FactType;
+				if (fact != null)
+				{
+					fact.ValidateErrors(null);
+				}
+			}
+		}
+		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)]
+		private class ReadingOrderHasReadingRemoveRuleModelValidation : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
+				ReadingOrder ord = link.ReadingOrder;
+				FactType fact;
+				if (!ord.IsRemoved &&
+					null != (fact = ord.FactType) &&
+					!fact.IsRemoved)
+				{
+					fact.ValidateErrors(null);
+				}
+			}
+		}
+		#endregion
+
+		#endregion
 	}
+
+	#region FactType Model Validation Errors
+	
+	#region class FactTypeRequiresReadingError
+	partial class FactTypeRequiresReadingError : IRepresentModelElements
+	{
+		#region overrides
+
+		/// <summary>
+		/// Creates error text for when a fact has no readings.
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresReadingMessage, FactType.Name, Model.Name);
+			if (Name != newText)
+			{
+				Name = newText;
+			}
+		}
+
+		/// <summary>
+		/// Sets regernate to ModelNameChange | OwnerNameChange
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get 
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+
+		#endregion
+
+		#region IRepresentModelElements Members
+
+		/// <summary>
+		/// The fact the error belongs to
+		/// </summary>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.FactType };
+		}
+
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion
+	}
+	#endregion // class FactTypeRequiresReadingError
+
+	#endregion // FactType Model Validation Errors
 }

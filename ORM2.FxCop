@@ -1511,6 +1511,16 @@
                </User>
               </Notes>
              </Message>
+             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Status="Excluded" Created="2005-04-26 20:40:23Z">
+              <Issue Level="CriticalWarning">
+               <Item>oldValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="jwilde">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
             </Messages>
            </Member>
           </Members>
@@ -1971,6 +1981,16 @@
                </User>
               </Notes>
              </Message>
+             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Status="Excluded" Created="2005-04-26 20:40:23Z">
+              <Issue Level="CriticalWarning">
+               <Item>oldValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="jwilde">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
             </Messages>
            </Member>
           </Members>
@@ -2099,6 +2119,34 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="FactType+FactTypeHasReadingOrderAddRuleModelValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-26 20:40:23Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.FactType+FactTypeHasReadingOrderAddRuleModelValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="jwilde">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FactType+FactTypeHasReadingOrderRemovedRuleModelValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-26 20:40:23Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.FactType+FactTypeHasReadingOrderRemovedRuleModelValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="jwilde">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="FactType+FactTypeNestingTypeDisplayFieldHandler">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -2108,6 +2156,48 @@
             <Notes>
              <User Name="mcurland">
               <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FactType+ModelHasFactTypeAddRuleModelValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-26 20:40:23Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.FactType+ModelHasFactTypeAddRuleModelValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="jwilde">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FactType+ReadingOrderHasReadingAddRuleModelValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-26 20:40:23Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.FactType+ReadingOrderHasReadingAddRuleModelValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="jwilde">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FactType+ReadingOrderHasReadingRemoveRuleModelValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-26 20:40:23Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.FactType+ReadingOrderHasReadingRemoveRuleModelValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="jwilde">
+              <Note Id="0" />
              </User>
             </Notes>
            </Message>
@@ -2222,6 +2312,36 @@
             </Notes>
            </Message>
           </Messages>
+          <Members>
+           <Member Name="GetValue(Northface.Tools.ORM.ObjectModel.FrequencyConstraint):System.Int32">
+            <Messages>
+             <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-04-26 20:40:23Z">
+              <Issue>
+               <Item>GetValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="jwilde">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="SetValue(Northface.Tools.ORM.ObjectModel.FrequencyConstraint,System.Int32,Microsoft.VisualStudio.Modeling.CommandFactory,System.Boolean,System.Int32&amp;):System.Boolean">
+            <Messages>
+             <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-04-26 20:40:23Z">
+              <Issue>
+               <Item>SetValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="jwilde">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
          <Type Name="FrequencyConstraint+FrequencyConstraintMinFrequencyFieldHandler">
           <Messages>
@@ -2236,6 +2356,36 @@
             </Notes>
            </Message>
           </Messages>
+          <Members>
+           <Member Name="GetValue(Northface.Tools.ORM.ObjectModel.FrequencyConstraint):System.Int32">
+            <Messages>
+             <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-04-26 20:40:23Z">
+              <Issue>
+               <Item>GetValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="jwilde">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="SetValue(Northface.Tools.ORM.ObjectModel.FrequencyConstraint,System.Int32,Microsoft.VisualStudio.Modeling.CommandFactory,System.Boolean,System.Int32&amp;):System.Boolean">
+            <Messages>
+             <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-04-26 20:40:23Z">
+              <Issue>
+               <Item>SetValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="jwilde">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
          <Type Name="INamedElementDictionary">
           <Messages>
@@ -4103,6 +4253,16 @@
                </User>
               </Notes>
              </Message>
+             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Status="Excluded" Created="2005-04-26 20:40:23Z">
+              <Issue Level="CriticalWarning">
+               <Item>oldValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="jwilde">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
             </Messages>
            </Member>
           </Members>
@@ -4202,6 +4362,16 @@
               <Notes>
                <User Name="mcurland">
                 <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Status="Excluded" Created="2005-04-26 20:40:23Z">
+              <Issue Level="CriticalWarning">
+               <Item>oldValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="jwilde">
+                <Note Id="1" />
                </User>
               </Notes>
              </Message>
@@ -5118,6 +5288,16 @@
                </User>
               </Notes>
              </Message>
+             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Status="Excluded" Created="2005-04-26 20:40:23Z">
+              <Issue Level="CriticalWarning">
+               <Item>oldValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="jwilde">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
             </Messages>
            </Member>
           </Members>
@@ -5159,6 +5339,16 @@
               <Notes>
                <User Name="mcurland">
                 <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Status="Excluded" Created="2005-04-26 20:40:23Z">
+              <Issue Certainty="50">
+               <Item>oldValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="jwilde">
+                <Note Id="1" />
                </User>
               </Notes>
              </Message>
@@ -7205,6 +7395,16 @@ BaseReadingTreeNode.SetText():Void</Item>
                </User>
               </Notes>
              </Message>
+             <Message Id="4#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Status="Excluded" Created="2005-04-26 20:40:23Z">
+              <Issue Certainty="50">
+               <Item>oldValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="jwilde">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
             </Messages>
            </Member>
           </Members>
@@ -9149,6 +9349,10 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
    </User>
    <User Name="jewilde">
     <Note Id="0" Modified="2005-02-03 21:03:22Z">Doesn't apply</Note>
+   </User>
+   <User Name="jwilde">
+    <Note Id="0" Modified="2005-04-26 20:54:13Z">Internal rules instantiated via reflection</Note>
+    <Note Id="1" Modified="2005-04-26 20:55:26Z">Errors in generated code</Note>
    </User>
    <User Name="mcurland">
     <Note Id="0" Modified="2005-04-15 14:57:36Z">There is no alternative method to retrieve old and new values.</Note>

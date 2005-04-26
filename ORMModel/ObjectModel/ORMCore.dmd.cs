@@ -193,6 +193,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -2795,6 +2796,52 @@ namespace Northface.Tools.ORM.ObjectModel
 		public Northface.Tools.ORM.ObjectModel.InternalConstraintMoveableCollection InternalConstraintCollection
 		{
 			get { return new Northface.Tools.ORM.ObjectModel.InternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.FactTypeMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ReadingRequiredError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingError ReadingRequiredError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.FactTypeMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.FactTypeMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.FactTypeMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError), newRoles);
+				}
+			}
 		}
 		#endregion
 	}
@@ -10159,6 +10206,124 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingError")]
+	public  partial class FactTypeRequiresReadingError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region FactTypeRequiresReadingError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "81bf4cab-ab44-4a83-9d4e-1399dbcb4719";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingError.MetaClassGuidString);
+		#endregion
+
+		#region FactType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.FactTypeMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.FactType)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.FactTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region FactTypeRequiresReadingError's Generated Constructor Code
+	public  partial class FactTypeRequiresReadingError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeRequiresReadingError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeRequiresReadingError CreateFactTypeRequiresReadingError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (FactTypeRequiresReadingError)store.ElementFactory.CreateElement(typeof(FactTypeRequiresReadingError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeRequiresReadingError CreateAndInitializeFactTypeRequiresReadingError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FactTypeRequiresReadingError)store.ElementFactory.CreateElement(typeof(FactTypeRequiresReadingError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FactTypeRequiresReadingError
+	/// <summary>
+	/// FactTypeRequiresReadingError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingError))]
+	public sealed class FactTypeRequiresReadingErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeRequiresReadingErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrder.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrder")]
 	public  partial class ReadingOrder : Microsoft.VisualStudio.Modeling.ModelElement
 	{
@@ -17169,6 +17334,118 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError")]
+	public  partial class FactTypeHasFactTypeRequiresReadingError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region FactTypeHasFactTypeRequiresReadingError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "91ed8d30-5100-4674-9cd8-9de09e885d5d";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.MetaRelationshipGuidString);
+		#endregion
+
+		#region ReadingRequiredError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ReadingRequiredErrorMetaRoleGuidString = "0726e39d-63eb-4fc5-8828-f40c2e35edaf";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ReadingRequiredErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredError")]
+		public  Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingError ReadingRequiredError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingError)this.GetRolePlayer(ReadingRequiredErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(ReadingRequiredErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region FactType's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FactTypeMetaRoleGuidString = "74c01faa-0605-41c6-90db-8a8b5ca8f47d";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FactTypeMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.FactTypeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.FactTypeMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.FactType")]
+		public  Northface.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeMetaRoleGuid); }
+			set { this.SetRolePlayer(FactTypeMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region FactTypeHasFactTypeRequiresReadingError's Generated Constructor Code
+	public  partial class FactTypeHasFactTypeRequiresReadingError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasFactTypeRequiresReadingError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasFactTypeRequiresReadingError CreateFactTypeHasFactTypeRequiresReadingError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (FactTypeHasFactTypeRequiresReadingError)store.ElementFactory.CreateElementLink(typeof(FactTypeHasFactTypeRequiresReadingError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasFactTypeRequiresReadingError CreateAndInitializeFactTypeHasFactTypeRequiresReadingError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FactTypeHasFactTypeRequiresReadingError)store.ElementFactory.CreateElementLink(typeof(FactTypeHasFactTypeRequiresReadingError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FactTypeHasFactTypeRequiresReadingError
+	/// <summary>
+	/// FactTypeHasFactTypeRequiresReadingError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError))]
+	public sealed class FactTypeHasFactTypeRequiresReadingErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasFactTypeRequiresReadingErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError(store, bag);
 		}
 	}
 	#endregion

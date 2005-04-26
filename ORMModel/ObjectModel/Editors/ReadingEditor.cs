@@ -305,6 +305,41 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		}
 		#endregion
 		#region Reading activation helper
+
+		/// <summary>
+		/// Looks for the tree node that has the same role sequence
+		/// as the one passed in, if found it will then select it.
+		/// </summary>
+		/// <param name="readingOrderRoles">The role sequence to match against</param>
+		/// <returns>true if a selection was made, false otherwise</returns>
+		private bool SelectNode(RoleMoveableCollection readingOrderRoles)
+		{
+			bool retval = false;
+			TreeNodeCollection nodes = tvwReadingOrder.Nodes;
+
+			// Find the root node
+			foreach (TreeNode node in nodes)
+			{
+				ReadingRootTreeNode rootNode = node as ReadingRootTreeNode;
+				if (rootNode != null && IsMatchingLeadRole(rootNode.LeadRole, readingOrderRoles))
+				{
+					// Find the child node
+					foreach (ReadingTreeNode childNode in rootNode.Nodes)
+					{
+						if (IsMatchingReadingOrder(childNode.RoleOrder, readingOrderRoles))
+						{
+							// Select to populate the grid
+							tvwReadingOrder.SelectedNode = childNode;
+							retval = true;
+							break;
+						}
+					}
+					break;
+				}
+			}
+			return retval;
+		}
+
 		/// <summary>
 		/// Select the current reading in the window. The
 		/// reading must be the child of the current fact.
@@ -318,32 +353,51 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				null != (factType = order.FactType) &&
 				object.ReferenceEquals(factType, myFact))
 			{
-				TreeNodeCollection nodes = tvwReadingOrder.Nodes;
 				RoleMoveableCollection readingOrderRoles = order.RoleCollection;
 
-				// Find the root node
-				foreach (TreeNode node in nodes)
+				if (SelectNode(readingOrderRoles))
 				{
-					ReadingRootTreeNode rootNode = node as ReadingRootTreeNode;
-					if (rootNode != null && IsMatchingLeadRole(rootNode.LeadRole, readingOrderRoles))
+					// Find the item in the grid
+					if (vtrReadings.SelectObject(null, reading, (int)ObjectStyle.TrackingObject, 0))
 					{
-						// Find the child node
-						foreach (ReadingTreeNode childNode in rootNode.Nodes)
-						{
-							if (IsMatchingReadingOrder(childNode.RoleOrder, readingOrderRoles))
-							{
-								// Select to populate the grid
-								tvwReadingOrder.SelectedNode = childNode;
+						vtrReadings.BeginLabelEdit();
+					}
+				}
+			}
+		}
 
-								// Find the item in the grid
-								if (vtrReadings.SelectObject(null, reading, (int)ObjectStyle.TrackingObject, 0))
-								{
-									vtrReadings.BeginLabelEdit();
-								}
-								break;
-							}
-						}
-						break;
+		/// <summary>
+		/// Select the primary reading of the reading order
+		/// matching the fact's role display order if one exists,
+		/// if not selects the new entry for the role
+		/// sequence matching the facts role display order.
+		/// </summary>
+		/// <param name="fact">FactType</param>
+		public void ActivateReading(FactType fact)
+		{
+			ReadingOrder order;
+			Reading reading;
+			if (null != (order = FactType.FindMatchingReadingOrder(fact))
+				&& null != (reading = order.PrimaryReading)
+				&& object.ReferenceEquals(fact, myFact))
+			{
+				RoleMoveableCollection readingOrderRoles = order.RoleCollection;
+				if (SelectNode(readingOrderRoles))
+				{
+					if (vtrReadings.SelectObject(null, reading, (int)ObjectStyle.TrackingObject, 0))
+					{
+						vtrReadings.BeginLabelEdit();
+					}
+				}
+			}
+			else
+			{
+				RoleMoveableCollection factRoles = fact.RoleCollection;
+				if (SelectNode(factRoles))
+				{
+					if (vtrReadings.SelectObject(null, NewReadingEntry.Singleton, (int)ObjectStyle.TrackingObject, 0))
+					{
+						vtrReadings.BeginLabelEdit();
 					}
 				}
 			}
@@ -1214,16 +1268,30 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				switch (style)
 				{
 					case ObjectStyle.TrackingObject:
-						Reading reading = obj as Reading;
-						if (reading != null)
+						//indicates desire to select the "New" item
+						NewReadingEntry newEntry = NewReadingEntry.Singleton;
+						if (object.ReferenceEquals(obj, newEntry))
 						{
 							List<ReadingEntry> list = myReadingList;
-							int listCount = list.Count;
-							for (int i = 0; i < listCount; ++i)
+							int listLoc;
+							if (-1 != (listLoc = list.IndexOf(newEntry)))
 							{
-								if (object.ReferenceEquals(reading, list[i].Reading))
+								return new LocateObjectData(listLoc, 0, (int)TrackingObjectAction.ThisLevel);
+							}
+						}
+						else
+						{
+							Reading reading = obj as Reading;
+							if (reading != null)
+							{
+								List<ReadingEntry> list = myReadingList;
+								int listCount = list.Count;
+								for (int i = 0; i < listCount; ++i)
 								{
-									return new LocateObjectData(i, 0, (int)TrackingObjectAction.ThisLevel);
+									if (object.ReferenceEquals(reading, list[i].Reading))
+									{
+										return new LocateObjectData(i, 0, (int)TrackingObjectAction.ThisLevel);
+									}
 								}
 							}
 						}

@@ -2703,6 +2703,8 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			TooFewReadingRolesError tooFew;
 			TooManyReadingRolesError tooMany;
+			FactTypeRequiresReadingError noReading;
+			FactType fact = null;
 			Reading reading = null;
 			if (null != (tooFew = error as TooFewReadingRolesError))
 			{
@@ -2712,6 +2714,10 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				reading = tooMany.Reading;
 			}
+			else if (null != (noReading = error as FactTypeRequiresReadingError))
+			{
+				fact = noReading.FactType;
+			}
 			if (reading != null)
 			{
 				// Open the reading editor window and activate the reading  
@@ -2719,6 +2725,12 @@ namespace Northface.Tools.ORM.ShapeModel
 				window.Show();
 				window.ActivateReading(reading);
 
+			}
+			else if (fact != null)
+			{
+				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
+				window.Show();
+				window.ActivateReading(fact);
 			}
 		}
 		void IModelErrorActivation.ActivateModelError(ModelError error)
