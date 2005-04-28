@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Collections;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
@@ -12,6 +14,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Northface.Tools.ORM.Shell;
 using Northface.Tools.ORM.ObjectModel;
+using Northface.Tools.ORM.ObjectModel.Editors;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -30,6 +33,8 @@ namespace Northface.Tools.ORM.FactEditor
 		private ORMDesignerDocData myCurrentDocument;
 		private ImageList myImageList;
 		private IComparer<ObjectType> myComparer;
+		private Reading myReading;
+		private FactType myEditFact;
 
 		/// <summary>
 		/// Construct a completion set
@@ -38,12 +43,12 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <param name="textView"></param>
 		public FactCompletionSet(ORMDesignerPackage package, IVsTextView textView)
 		{
-			myPackage = package;
 			myTextView = textView;
-
+			myPackage = package;
 			IServiceProvider serviceProvider = (IServiceProvider)myPackage;
 			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
 			monitor.DocumentWindowChanged += new MonitorSelectionEventHandler(DocumentWindowChangedEvent);
+			monitor.SelectionChanged += new MonitorSelectionEventHandler(SelectionChangedEvent);
 			CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;
 			
 			// initialize the comparer used for sorting
@@ -318,6 +323,21 @@ namespace Northface.Tools.ORM.FactEditor
 				}
 			}
 		}
+		/// <summary>
+		/// Get or set the selected fact we are editing.
+		/// </summary>
+		/// <value></value>
+		public FactType EditFact
+		{
+			get
+			{
+				return myEditFact;
+			}
+			private set
+			{
+				myEditFact = value;
+			}
+		}
 		#endregion
 
 		#region Event Handlers
@@ -336,7 +356,7 @@ namespace Northface.Tools.ORM.FactEditor
 			classInfo = dataDirectory.FindMetaRelationship(ModelHasObjectType.MetaRelationshipGuid);
 			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(ObjectTypeAddedEvent));
 			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(ObjectTypeRemovedEvent));
-
+			
 			classInfo = dataDirectory.FindMetaClass(ObjectType.MetaClassGuid);
 			eventDirectory.ElementAttributeChanged.Add(classInfo, new ElementAttributeChangedEventHandler(ObjectTypeChangedEvent));
 		}
@@ -407,6 +427,34 @@ namespace Northface.Tools.ORM.FactEditor
 				myObjectEntries.Insert(~newIndex, objectType);
 			}
 		}
+		void SelectionChangedEvent(object sender, MonitorSelectionEventArgs e)
+		{
+			IVsTextLines textLines = null;
+			NativeMethods.ThrowOnFailure(myTextView.GetBuffer(out textLines));
+
+			ORMDesignerDocView theView = e.NewValue as ORMDesignerDocView;
+			if (theView != null)
+			{
+				EditFact = ResolveUnderlyingFact(theView.PrimarySelection);
+			}
+
+			String fullReading = "";
+			if (myEditFact != null)
+			{
+				Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
+				ReadingOrder myReadingOrder = FactType.FindMatchingReadingOrder(myEditFact);
+				if (myReadingOrder != null)
+				{
+					myReading = myReadingOrder.PrimaryReading;
+					fullReading = regCountPlaces.Replace(myReading.Text, new MatchEvaluator(ReplacePlaceHolders));
+				}
+			}
+
+			IntPtr initialText = Marshal.StringToBSTR(fullReading);
+			int lineLength;
+			NativeMethods.ThrowOnFailure(textLines.GetLengthOfLine(0, out lineLength));
+			NativeMethods.ThrowOnFailure(textLines.ReplaceLines(0, 0, 0, lineLength, initialText, fullReading.Length, null));
+		}
 		#endregion // Event Handlers
 
 		#region ObjectTypeNameComparer private class
@@ -442,5 +490,82 @@ namespace Northface.Tools.ORM.FactEditor
 			#endregion // IComparer<ObjectType> Members
 		}
 		#endregion // ObjectTypeNameComparer private class
+
+		private static FactType ResolveUnderlyingFact(object instance)
+		{
+			instance = EditorUtility.ResolveContextInstance(instance, true);
+			FactType retval = null;
+			ModelElement elem;
+			Role role;
+			InternalConstraint internalConstraint;
+
+			if (null != (role = instance as Role))
+			{
+				//this one coming straight through on the selection so handling
+				//and returning here.
+				return role.FactType;
+			}
+			else if (null != (internalConstraint = instance as InternalConstraint))
+			{
+				return internalConstraint.FactType;
+			}
+			else
+			{
+				elem = instance as ModelElement;
+			}
+
+			if (elem != null)
+			{
+				FactType fact = elem as FactType;
+				if (fact != null)
+				{
+					return fact;
+				}
+
+				Reading reading = elem as Reading;
+				if (reading != null)
+				{
+					return reading.ReadingOrder.FactType;
+				}
+
+				ReadingOrder readingOrder = elem as ReadingOrder;
+				if (readingOrder != null)
+				{
+					return readingOrder.FactType;
+				}
+
+				ObjectType objType = elem as ObjectType;
+				if (objType != null)
+				{
+					return objType.NestedFactType;
+				}
+			}
+
+			return retval;
+		}
+		private string ReplacePlaceHolders(Match m)
+		{
+			string retval = null;
+			RoleMoveableCollection roles = myReading.ReadingOrder.RoleCollection;
+			string matchText = m.Value;
+			int rolePosition = int.Parse(matchText.Substring(1, matchText.Length - 2), CultureInfo.InvariantCulture);
+			if (roles.Count > rolePosition)
+			{
+				ObjectType player = roles[rolePosition].RolePlayer;
+				if (player != null)
+				{
+					retval = string.Format(CultureInfo.InvariantCulture, "{0}({1})", player.Name, player.ReferenceModeString);
+				}
+				else
+				{
+					retval = ResourceStrings.ModelReadingEditorMissingRolePlayerText;
+				}
+			}
+			else
+			{
+				retval = ResourceStrings.ModelReadingEditorMissingRolePlayerText;
+			}
+			return retval;
+		}
 	}
 }

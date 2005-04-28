@@ -91,6 +91,30 @@ namespace Northface.Tools.ORM.ObjectModel
 				return myElement;
 			}
 		}
+		/// <summary>
+		/// Get either the SingleElement or the first of the multiple elements
+		/// </summary>
+		public NamedElement FirstElement
+		{
+			get
+			{
+				NamedElement retVal = null;
+				object element = myElement;
+				if (element != null)
+				{
+					retVal = element as NamedElement;
+					if (retVal == null)
+					{
+						foreach (NamedElement multiElement in (ICollection)element)
+						{
+							retVal = multiElement;
+							break;
+						}
+					}
+				}
+				return retVal;
+			}
+		}
 	}
 	#endregion // LocatedElement structure
 	#region IDuplicateNameCollectionManager interface

@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
@@ -46,6 +48,7 @@ namespace Northface.Tools.ORM.ShapeModel
 						objectTypeShape.AutoResize();
 						InternalUniquenessConstraint preferredConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint;
 						ORMDiagram parentDiagram = objectTypeShape.Diagram as ORMDiagram;
+						Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
 
 						// View or Hide FactType
 						if (preferredConstraint != null)
@@ -58,6 +61,7 @@ namespace Northface.Tools.ORM.ShapeModel
 								{
 									Diagram.FixUpDiagram(factType, readingOrder);
 								}
+								shapeElements.Add(parentDiagram.FindShapeForElement(factType), true);
 							}
 							else
 							{
@@ -70,7 +74,13 @@ namespace Northface.Tools.ORM.ShapeModel
 							{
 								if (turnOn)
 								{
+									bool moveValueType = true;
+									if (parentDiagram.FindShapeForElement(valueType) != null)
+									{
+										moveValueType = false;
+									}
 									Diagram.FixUpDiagram(objectType.Model, valueType);
+									shapeElements.Add(parentDiagram.FindShapeForElement(valueType), moveValueType);
 								}
 								else
 								{
@@ -100,6 +110,7 @@ namespace Northface.Tools.ORM.ShapeModel
 									}
 								}
 							}
+							parentDiagram.AutoLayoutChildShapes(shapeElements);
 						}
 					}
 				}

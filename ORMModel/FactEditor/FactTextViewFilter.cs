@@ -277,7 +277,7 @@ namespace Northface.Tools.ORM.FactEditor
 							break; 
 						myParser.Line(ref controlEnterLine);
 
-						FactSaver.AddFact(myCompletionSet.CurrentDocument, controlEnterLine);
+						FactSaver.AddFact(myCompletionSet.CurrentDocument, controlEnterLine, myCompletionSet.EditFact);
 						break;
 					case CmdTypeChar: // any character
 						fHandled = false;

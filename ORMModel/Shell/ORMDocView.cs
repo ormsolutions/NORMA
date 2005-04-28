@@ -291,8 +291,8 @@ namespace Northface.Tools.ORM.Shell
 			}
 			else if (element is ORMModel)
 			{
-				visibleCommands = ORMDesignerCommands.Delete | ORMDesignerCommands.DisplayCustomReferenceModeWindow;
-				enabledCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow;
+				visibleCommands = ORMDesignerCommands.Delete | ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow;
+				enabledCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow;
 			}
 			else if (null != (role = element as Role))
 			{
