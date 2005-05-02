@@ -343,7 +343,9 @@ namespace Northface.Tools.ORM
 		private const string ModelErrorReadingTooFewRolesMessage_Id = "ModelError.Reading.TooFewRoles.Message";
 		private const string ModelErrorReadingTooManyRolesMessage_Id = "ModelError.Reading.TooManyRoles.Message";
 		private const string ModelErrorFactTypeRequiresReadingMessage_Id = "ModelError.FactType.RequiresReading.Message";
+		private const string ModelErrorFactTypeRequiresInternalUniquessConstraintMessage_Id = "ModelError.FactType.RequiresInternalUniquenessConstraint.Message";
 		private const string ModelReadingRoleDeletedRoleText_Id = "Model.Reading.RoleDeletedText";
+		private const string ModelErrorFactTypeRequiresIUCActivateTransactionName_Id = "ModelError.FactType.RequiresIUC.ActivateTransactionName";
 
 		private const string ModelReferenceModeEditorAbbreviatedEntityTypeName_Id = "ModelReferenceModeEditor.AbbreviatedEntityTypeName";
 		private const string ModelReferenceModeEditorAbbreviatedReferenceModeName_Id = "ModelReferenceModeEditor.AbbreviatedReferenceModeName";
@@ -1367,12 +1369,34 @@ namespace Northface.Tools.ORM
 		/// <summary>
 		/// Text displayed in the text of the FactTypeRequiresReadingError
 		/// </summary>
-		/// <value></value>
 		public static string ModelErrorFactTypeRequiresReadingMessage
 		{
 			get
 			{
 				return GetString(ResourceManagers.Model, ModelErrorFactTypeRequiresReadingMessage_Id);
+			}
+		}
+
+		/// <summary>
+		/// Text displayed in the text of the FactTypeRequiresInternalUniquessContraintError
+		/// </summary>
+		public static string ModelErrorFactTypeRequiresInternalUniquessConstraintMessage
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelErrorFactTypeRequiresInternalUniquessConstraintMessage_Id);
+			}
+		}
+
+		/// <summary>
+		/// The name given to the transaction used when adding an internal uniqueness constraint
+		/// to correct the error of lacking one.
+		/// </summary>
+		public static string ModelErrorFactTypeRequiresIUCActivateTransactionName
+		{
+			get
+			{
+				return GetString(ResourceManagers.Model, ModelErrorFactTypeRequiresIUCActivateTransactionName_Id);
 			}
 		}
 		#endregion // Public accessor properties

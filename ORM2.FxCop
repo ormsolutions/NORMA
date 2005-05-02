@@ -21,8 +21,8 @@
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
-   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
-   <Directory>C:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
+   <Directory>$(ProjectDir)/../../../../../../Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
+   <Directory>$(ProjectDir)/../../../../../../Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
   </AssemblyReferenceDirectories>
   <Target Name="$(ProjectDir)/ORMModel/bin/Debug/Northface.Tools.ORM.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
@@ -2170,6 +2170,34 @@
             <Notes>
              <User Name="jwilde">
               <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FactType+ModelHasInternalConstraintAddRuleModelValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-29 21:23:26Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.FactType+ModelHasInternalConstraintAddRuleModelValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="jwilde">
+              <Note Id="2" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FactType+ModelHasInternalConstraintRemoveRuleModelValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-29 21:23:26Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.FactType+ModelHasInternalConstraintRemoveRuleModelValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="jwilde">
+              <Note Id="2" />
              </User>
             </Notes>
            </Message>
@@ -7150,15 +7178,6 @@ BaseReadingTreeNode.SetText():Void</Item>
          </Type>
          <Type Name="FactTypeShape">
           <Members>
-           <Member Name="ActivateModelError(Northface.Tools.ORM.ObjectModel.ModelError):System.Void">
-            <Messages>
-             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>FactTypeShape.ActivateModelError(ModelError):Void</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="GetSubFieldRepresentedElements(Microsoft.VisualStudio.Modeling.Diagrams.ShapeField,Microsoft.VisualStudio.Modeling.Diagrams.ShapeSubField):System.Collections.ICollection">
             <Messages>
              <Message Id="subField" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-02-03 20:22:04Z">
@@ -9353,6 +9372,7 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
    <User Name="jwilde">
     <Note Id="0" Modified="2005-04-26 20:54:13Z">Internal rules instantiated via reflection</Note>
     <Note Id="1" Modified="2005-04-26 20:55:26Z">Errors in generated code</Note>
+    <Note Id="2" Modified="2005-04-29 21:24:32Z">Internal rules instantiated via reflection</Note>
    </User>
    <User Name="mcurland">
     <Note Id="0" Modified="2005-04-15 14:57:36Z">There is no alternative method to retrieve old and new values.</Note>

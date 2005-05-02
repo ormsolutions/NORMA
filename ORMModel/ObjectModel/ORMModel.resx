@@ -130,6 +130,14 @@
     <value xml:space="preserve">Constraint '{0}' has too many role sequences.</value>
     <comment xml:space="preserve">Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
   </data>
+  <data name="ModelError.FactType.RequiresInternalUniquenessConstraint.Message">
+    <value xml:space="preserve">Internal uniqueness constraint required for fact '{0}' in the model '{1}'.</value>
+    <comment xml:space="preserve">Text displayed in the text of the FactTypeRequiresInternalUniquessContraintError</comment>
+  </data>
+  <data name="ModelError.FactType.RequiresIUC.ActivateTransactionName">
+    <value xml:space="preserve">Adding Internal Uniqueness Constraint</value>
+    <comment xml:space="preserve">The name given to the transaction used when adding an internal uniqueness constraint to correct the error of lacking one.</comment>
+  </data>
   <data name="ModelError.FactType.RequiresReading.Message">
     <value xml:space="preserve">At least one reading is required for the fact '{0}' in the model '{1}'.</value>
     <comment xml:space="preserve">Text displayed in the text of the FactTypeRequiresReadingError</comment>

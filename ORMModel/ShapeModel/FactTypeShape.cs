@@ -2704,6 +2704,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			TooFewReadingRolesError tooFew;
 			TooManyReadingRolesError tooMany;
 			FactTypeRequiresReadingError noReading;
+			FactTypeRequiresInternalUniquenessConstraintError noUniqueness;
 			FactType fact = null;
 			Reading reading = null;
 			if (null != (tooFew = error as TooFewReadingRolesError))
@@ -2717,7 +2718,45 @@ namespace Northface.Tools.ORM.ShapeModel
 			else if (null != (noReading = error as FactTypeRequiresReadingError))
 			{
 				fact = noReading.FactType;
+				Debug.Assert(fact != null);
+				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
+				window.Show();
+				window.ActivateReading(fact);
 			}
+			else if (null != (noUniqueness = error as FactTypeRequiresInternalUniquenessConstraintError))
+			{
+				fact = noUniqueness.FactType;
+				Store theStore = fact.Store;
+				using (Transaction tran = theStore.TransactionManager.BeginTransaction(ResourceStrings.ModelErrorFactTypeRequiresIUCActivateTransactionName))
+				{
+					InternalUniquenessConstraint theConstraint = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(theStore);
+					theConstraint.FactType = fact;
+					tran.Commit();
+
+					ConstraintDisplayPosition displayPosition = this.ConstraintDisplayPosition;
+					ConstraintShapeField targetSubfield = null;
+					if (displayPosition == ConstraintDisplayPosition.Top)
+					{
+						targetSubfield = myTopConstraintShapeField;
+					}
+					else if (displayPosition == ConstraintDisplayPosition.Bottom)
+					{
+						targetSubfield = myBottomConstraintShapeField;
+					}
+					if (targetSubfield != null)
+					{
+						ORMDiagram ormDiagram = Diagram as ORMDiagram;
+						DiagramClientView clientView = ormDiagram.ActiveDiagramView.DiagramClientView;
+						DiagramItem diagramItem  = new DiagramItem(this, targetSubfield, new ConstraintSubField(theConstraint));
+						clientView.Selection.Set(diagramItem);
+						InternalUniquenessConstraintConnectAction connectAction = ormDiagram.InternalUniquenessConstraintConnectAction;
+						ActiveInternalUniquenessConstraintConnectAction = connectAction;
+						this.Invalidate(true);
+						connectAction.ChainMouseAction(this, theConstraint, clientView);
+					}
+				}
+			}
+
 			if (reading != null)
 			{
 				// Open the reading editor window and activate the reading  
@@ -2725,12 +2764,6 @@ namespace Northface.Tools.ORM.ShapeModel
 				window.Show();
 				window.ActivateReading(reading);
 
-			}
-			else if (fact != null)
-			{
-				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
-				window.Show();
-				window.ActivateReading(fact);
 			}
 		}
 		void IModelErrorActivation.ActivateModelError(ModelError error)

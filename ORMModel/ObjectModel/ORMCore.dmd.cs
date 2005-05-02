@@ -194,6 +194,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ArityMismatchErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -2840,6 +2841,52 @@ namespace Northface.Tools.ORM.ObjectModel
 					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid, value);
 					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.FactTypeMetaRoleGuid, this);
 					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region InternalUniquenessConstraintRequiredError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError InternalUniquenessConstraintRequiredError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError), newRoles);
 				}
 			}
 		}
@@ -10324,6 +10371,124 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError")]
+	public  partial class FactTypeRequiresInternalUniquenessConstraintError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region FactTypeRequiresInternalUniquenessConstraintError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "c0ede09d-e8cd-49d2-9cb6-cd1071e799f9";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError.MetaClassGuidString);
+		#endregion
+
+		#region FactType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.FactType)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region FactTypeRequiresInternalUniquenessConstraintError's Generated Constructor Code
+	public  partial class FactTypeRequiresInternalUniquenessConstraintError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeRequiresInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeRequiresInternalUniquenessConstraintError CreateFactTypeRequiresInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (FactTypeRequiresInternalUniquenessConstraintError)store.ElementFactory.CreateElement(typeof(FactTypeRequiresInternalUniquenessConstraintError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeRequiresInternalUniquenessConstraintError CreateAndInitializeFactTypeRequiresInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FactTypeRequiresInternalUniquenessConstraintError)store.ElementFactory.CreateElement(typeof(FactTypeRequiresInternalUniquenessConstraintError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FactTypeRequiresInternalUniquenessConstraintError
+	/// <summary>
+	/// FactTypeRequiresInternalUniquenessConstraintError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError))]
+	public sealed class FactTypeRequiresInternalUniquenessConstraintErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeRequiresInternalUniquenessConstraintErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrder.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrder")]
 	public  partial class ReadingOrder : Microsoft.VisualStudio.Modeling.ModelElement
 	{
@@ -17446,6 +17611,118 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError")]
+	public  partial class FactTypeHasFactTypeRequiresInternalUniquenessConstraintError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region FactTypeHasFactTypeRequiresInternalUniquenessConstraintError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "c9aaf11f-827f-44bd-9933-ccdbe24c65ee";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.MetaRelationshipGuidString);
+		#endregion
+
+		#region InternalUniquenessConstraintRequiredError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String InternalUniquenessConstraintRequiredErrorMetaRoleGuidString = "ee6e1fa4-7bcf-44a0-a3fa-57f7cc1deea9";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid InternalUniquenessConstraintRequiredErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredError")]
+		public  Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError InternalUniquenessConstraintRequiredError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError)this.GetRolePlayer(InternalUniquenessConstraintRequiredErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(InternalUniquenessConstraintRequiredErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region FactType's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FactTypeMetaRoleGuidString = "ad65ad56-50e9-4485-8997-efbe76216174";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FactTypeMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactType")]
+		public  Northface.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeMetaRoleGuid); }
+			set { this.SetRolePlayer(FactTypeMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region FactTypeHasFactTypeRequiresInternalUniquenessConstraintError's Generated Constructor Code
+	public  partial class FactTypeHasFactTypeRequiresInternalUniquenessConstraintError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasFactTypeRequiresInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasFactTypeRequiresInternalUniquenessConstraintError CreateFactTypeHasFactTypeRequiresInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (FactTypeHasFactTypeRequiresInternalUniquenessConstraintError)store.ElementFactory.CreateElementLink(typeof(FactTypeHasFactTypeRequiresInternalUniquenessConstraintError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasFactTypeRequiresInternalUniquenessConstraintError CreateAndInitializeFactTypeHasFactTypeRequiresInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FactTypeHasFactTypeRequiresInternalUniquenessConstraintError)store.ElementFactory.CreateElementLink(typeof(FactTypeHasFactTypeRequiresInternalUniquenessConstraintError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FactTypeHasFactTypeRequiresInternalUniquenessConstraintError
+	/// <summary>
+	/// FactTypeHasFactTypeRequiresInternalUniquenessConstraintError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError))]
+	public sealed class FactTypeHasFactTypeRequiresInternalUniquenessConstraintErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasFactTypeRequiresInternalUniquenessConstraintErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError(store, bag);
 		}
 	}
 	#endregion

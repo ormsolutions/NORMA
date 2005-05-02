@@ -445,10 +445,16 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				FactTypeRequiresReadingError error = this.ReadingRequiredError;
-				if (error != null)
+				FactTypeRequiresReadingError noReadingError = this.ReadingRequiredError;
+				if (noReadingError != null)
 				{
-					yield return error;
+					yield return noReadingError;
+				}
+
+				FactTypeRequiresInternalUniquenessConstraintError noUniquenessError = this.InternalUniquenessConstraintRequiredError;
+				if (noUniquenessError != null)
+				{
+					yield return noUniquenessError;
 				}
 			}
 		}
@@ -466,12 +472,13 @@ namespace Northface.Tools.ORM.ObjectModel
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateRequiresReading(notifyAdded);
+			ValidateRequiresInternalUniqueness(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateErrors(notifyAdded);
 		}
-
+		#endregion
 		#region Validation Methods
 		private void ValidateRequiresReading(INotifyElementAdded notifyAdded)
 		{
@@ -517,8 +524,83 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		private void ValidateRequiresInternalUniqueness(INotifyElementAdded notifyAdded)
+		{
+			if (!IsRemoved)
+			{
+				bool hasError = true;
+				Store theStore = Store;
+				ORMModel theModel = Model;
+				InternalConstraintMoveableCollection internalConstraints = InternalConstraintCollection;
+				foreach (InternalConstraint constraint in internalConstraints)
+				{
+					if (constraint is InternalUniquenessConstraint)
+					{
+						hasError = false;
+						break;
+					}
+				}
+
+				FactTypeRequiresInternalUniquenessConstraintError noUniquenessError = InternalUniquenessConstraintRequiredError;
+				if (hasError)
+				{
+					if (noUniquenessError == null)
+					{
+						noUniquenessError = FactTypeRequiresInternalUniquenessConstraintError.CreateFactTypeRequiresInternalUniquenessConstraintError(theStore);
+						noUniquenessError.Model = theModel;
+						noUniquenessError.FactType = this;
+						noUniquenessError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(noUniquenessError, true);
+						}
+					}
+				}
+				else
+				{
+					if (noUniquenessError != null)
+					{
+						noUniquenessError.Remove();
+					}
+				}
+			}
+		}
 		#endregion
-		#region Reading Required Rules
+		#region Model Validation Rules
+
+		/// <summary>
+		/// Only validates the InternalUniquenessConstraintRequired error
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasInternalConstraint))]
+		private class ModelHasInternalConstraintAddRuleModelValidation : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
+				FactType fact = link.FactType;
+				fact.ValidateRequiresInternalUniqueness(null);
+			}
+		}
+		/// <summary>
+		/// Only validates the InternalUniquenessConstraintRequired error
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
+		private class ModelHasInternalConstraintRemoveRuleModelValidation : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
+				FactType fact = link.FactType;
+				if (!fact.IsRemoved)
+				{
+					fact.ValidateRequiresInternalUniqueness(null);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Calls the validation of all FactType related errors
+		/// </summary>
 		[RuleOn(typeof(ModelHasFactType))]
 		private class ModelHasFactTypeAddRuleModelValidation : AddRule
 		{
@@ -530,6 +612,9 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 
+		/// <summary>
+		/// Only validates ReadingRequiredError
+		/// </summary>
 		[RuleOn(typeof(FactTypeHasReadingOrder))]
 		private class FactTypeHasReadingOrderAddRuleModelValidation : AddRule
 		{
@@ -539,10 +624,13 @@ namespace Northface.Tools.ORM.ObjectModel
 				FactType fact = link.FactType;
 				if (fact.ReadingRequiredError != null)
 				{
-					fact.ValidateErrors(null);
+					fact.ValidateRequiresReading(null);
 				}
 			}
 		}
+		/// <summary>
+		/// Only validates ReadingRequiredError
+		/// </summary>
 		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.LocalCommit)]
 		private class FactTypeHasReadingOrderRemovedRuleModelValidation : RemoveRule
 		{
@@ -552,11 +640,14 @@ namespace Northface.Tools.ORM.ObjectModel
 				FactType fact = link.FactType;
 				if (!fact.IsRemoved)
 				{
-					fact.ValidateErrors(null);
+					fact.ValidateRequiresReading(null);
 				}
 			}
 		}
 
+		/// <summary>
+		/// Only validates ReadingRequiredError
+		/// </summary>
 		[RuleOn(typeof(ReadingOrderHasReading))]
 		private class ReadingOrderHasReadingAddRuleModelValidation : AddRule
 		{
@@ -567,10 +658,13 @@ namespace Northface.Tools.ORM.ObjectModel
 				FactType fact = ord.FactType;
 				if (fact != null)
 				{
-					fact.ValidateErrors(null);
+					fact.ValidateRequiresReading(null);
 				}
 			}
 		}
+		/// <summary>
+		/// Only validates ReadingRequiredError
+		/// </summary>
 		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)]
 		private class ReadingOrderHasReadingRemoveRuleModelValidation : RemoveRule
 		{
@@ -583,12 +677,10 @@ namespace Northface.Tools.ORM.ObjectModel
 					null != (fact = ord.FactType) &&
 					!fact.IsRemoved)
 				{
-					fact.ValidateErrors(null);
+					fact.ValidateRequiresReading(null);
 				}
 			}
 		}
-		#endregion
-
 		#endregion
 	}
 
@@ -641,6 +733,54 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion
 	}
 	#endregion // class FactTypeRequiresReadingError
+
+	#region class FactTypeRequiresInternalUniquenessConstraintError
+	partial class FactTypeRequiresInternalUniquenessConstraintError : IRepresentModelElements
+	{
+		#region overrides
+
+		/// <summary>
+		/// Creates error text for when a fact lacks an internal uniqueness constraint.
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresInternalUniquessConstraintMessage, FactType.Name, Model.Name);
+			if (Name != newText)
+			{
+				Name = newText;
+			}
+		}
+
+		/// <summary>
+		/// Sets regernate to ModelNameChange | OwnerNameChange
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		#endregion
+
+		#region IRepresentModelElements Members
+
+		/// <summary>
+		/// The fact the error belongs to
+		/// </summary>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.FactType };
+		}
+
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+
+		#endregion
+	}
+	#endregion // class FactTypeRequiresInternalUniquenessConstraintError
 
 	#endregion // FactType Model Validation Errors
 }
