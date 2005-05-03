@@ -85,15 +85,20 @@ namespace Northface.Tools.ORM.Shell
 			if (fileName.EndsWith(@"\default.orm", true, CultureInfo.CurrentCulture))
 			{
 				#region Generate Test Object Model
+				DeserializationFixupManager fixupManager = new DeserializationFixupManager(DeserializationFixupPhaseType, store);
+				foreach (IDeserializationFixupListener listener in DeserializationFixupListeners)
+				{
+					fixupManager.AddListener(listener);
+				}
 				ORMModel model = ORMModel.CreateORMModel(store);
 				model.Name = "Model1";
+				fixupManager.DeserializationComplete();
 
 				// Create a ValueType
 				ObjectType valType = ObjectType.CreateObjectType(store);
 				valType.Name = "ValueType1";
 				valType.Model = model;
-				valType.DataType = DataType.CreateDataType(store);
-				valType.DataType.Name = "foo";
+				valType.DataType = model.DefaultDataType;
 
 				// Create an EntityType
 				ObjectType entType = ObjectType.CreateObjectType(store);

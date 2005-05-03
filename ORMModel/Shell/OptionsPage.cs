@@ -148,6 +148,9 @@ namespace Northface.Tools.ORM.Shell
 		private static RoleNameDisplay myCurrentRoleNameDisplay = RoleNameDisplay_Default;
 		private RoleNameDisplay myRoleNameDisplay = RoleNameDisplay_Default;
 
+		private const PortableDataType DefaultDataType_Default = PortableDataType.Unspecified;
+		private static PortableDataType myCurrentDefaultDataType = DefaultDataType_Default;
+		private PortableDataType myDefaultDataType = DefaultDataType_Default;
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -161,6 +164,7 @@ namespace Northface.Tools.ORM.Shell
 			myCurrentObjectifiedFactShape = myObjectifiedFactShape;
 			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
+			myCurrentDefaultDataType = myDefaultDataType;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -173,6 +177,7 @@ namespace Northface.Tools.ORM.Shell
 			myObjectifiedFactShape = myCurrentObjectifiedFactShape;
 			myMandatoryDotPlacement = myCurrentMandatoryDotPlacement;
 			myRoleNameDisplay = myCurrentRoleNameDisplay;
+			myDefaultDataType = myCurrentDefaultDataType;
 		}
 
 		/// <summary>
@@ -187,6 +192,8 @@ namespace Northface.Tools.ORM.Shell
 				myCurrentObjectTypeShape == myObjectTypeShape &&
 				myCurrentRoleNameDisplay == myRoleNameDisplay)
 			{
+				// Non-displayed setting, don't notify
+				myCurrentDefaultDataType = myDefaultDataType;
 				return;
 			}
 
@@ -195,6 +202,7 @@ namespace Northface.Tools.ORM.Shell
 			myCurrentObjectifiedFactShape = myObjectifiedFactShape;
 			myCurrentObjectTypeShape = myObjectTypeShape;
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
+			myCurrentDefaultDataType = myDefaultDataType;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			NotifySettingsChange(Site, FixupDocument);
@@ -367,6 +375,35 @@ namespace Northface.Tools.ORM.Shell
 		public static RoleNameDisplay CurrentRoleNameDisplay
 		{
 			get { return myCurrentRoleNameDisplay; }
+		}
+
+		/// <summary>
+		/// Default data type for value types
+		/// </summary>
+		[DefaultValue(DefaultDataType_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryDataTypesId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyDataTypeDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyDataTypeDisplayNameId)]
+		public PortableDataType DefaultDataType
+		{
+			get { return myDefaultDataType; }
+			set
+			{
+				// UNDONE: Figure out how to get this value out of the list
+				if (value != PortableDataType.UserDefined)
+				{
+					myDefaultDataType = value;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting default data type
+		/// when a new value type is added
+		/// </summary>
+		public static PortableDataType CurrentDefaultDataType
+		{
+			get { return myCurrentDefaultDataType; }
 		}
 		#endregion // Accessor properties
 	}

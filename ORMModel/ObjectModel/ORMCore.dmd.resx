@@ -114,6 +114,93 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.Text">
+    <value xml:space="preserve">Logical</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text">
+    <value xml:space="preserve">Logical: True or False</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text">
+    <value xml:space="preserve">Logical: Yes or No</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text">
+    <value xml:space="preserve">Numeric: Auto Counter</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text">
+    <value xml:space="preserve">Numeric: Decimal</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Text">
+    <value xml:space="preserve">Numeric: Floating Point</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text">
+    <value xml:space="preserve">Numeric: Money</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Text">
+    <value xml:space="preserve">Numeric: Signed Integer</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Text">
+    <value xml:space="preserve">Numeric</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.Text">
+    <value xml:space="preserve">Numeric: Unsigned Integer</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text">
+    <value xml:space="preserve">Other: Object ID</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text">
+    <value xml:space="preserve">Other: Row ID</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.Text">
+    <value xml:space="preserve">Other</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text">
+    <value xml:space="preserve">Raw Data: Fixed Length</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text">
+    <value xml:space="preserve">Raw Data: Large Length</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text">
+    <value xml:space="preserve">Raw Data: OLE Object</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text">
+    <value xml:space="preserve">Raw Data: Picture</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Text">
+    <value xml:space="preserve">Raw Data</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength.Text">
+    <value xml:space="preserve">Raw Data: Variable Length</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Text">
+    <value xml:space="preserve">Temporal: Auto Timestamp</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text">
+    <value xml:space="preserve">Temporal: Date</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text">
+    <value xml:space="preserve">Temporal: Date &amp; Time</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Text">
+    <value xml:space="preserve">Temporal</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text">
+    <value xml:space="preserve">Temporal: Time</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text">
+    <value xml:space="preserve">Text: Fixed Length</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text">
+    <value xml:space="preserve">Text: Large Length</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.Text">
+    <value xml:space="preserve">Text</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Text">
+    <value xml:space="preserve">Text: Variable Length</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text">
+    <value xml:space="preserve">&lt;Data Type Not Set&gt;</value>
+  </data>
   <data name="Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText">
     <value xml:space="preserve">&lt;Nested Fact Type Not Set&gt;</value>
   </data>
@@ -168,6 +255,9 @@
   <data name="Northface.Tools.ORM.ObjectModel.ObjectifiedFactType">
     <value xml:space="preserve">ObjectifiedFactType</value>
   </data>
+  <data name="Northface.Tools.ORM.ObjectModel.ObjectType.DataTypeDisplay">
+    <value xml:space="preserve">DataType</value>
+  </data>
   <data name="Northface.Tools.ORM.ObjectModel.ObjectType.IsIndependent">
     <value xml:space="preserve">IsIndependent</value>
   </data>
@@ -185,9 +275,6 @@
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.ObjectType.Scale">
     <value xml:space="preserve">Scale</value>
-  </data>
-  <data name="Northface.Tools.ORM.ObjectModel.ObjectType.TypeName">
-    <value xml:space="preserve">TypeName</value>
   </data>
   <data name="Northface.Tools.ORM.ObjectModel.ORMMetaModel">
     <value xml:space="preserve">ORMMetaModel</value>

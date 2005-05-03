@@ -113,6 +113,10 @@ namespace Northface.Tools.ORM.ObjectModel
 			MultiColumnExternalConstraint multiColumnConstraint;
 			if (null != (objectType = sourceElement as ObjectType))
 			{
+				if ("VALUETYPE" == (string) elementGroup.UserData)
+				{
+					objectType.DataType = DefaultDataType;
+				}
 				objectType.Model = this;
 			}
 			else if (null != (factType = sourceElement as FactType))
@@ -143,6 +147,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.AddImplicitElements);
 				yield return ModelError.FixupListener;
 				yield return ReferenceMode.FixupListener;
+				yield return ORMModel.DataTypesFixupListener;
 			}
 		}
 		#endregion // Deserialization Fixup

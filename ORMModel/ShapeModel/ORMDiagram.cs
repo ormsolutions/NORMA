@@ -425,9 +425,12 @@ namespace Northface.Tools.ORM.ShapeModel
 					break;
 				case ResourceStrings.ToolboxValueTypeItemId:
 					ObjectType valueType = ObjectType.CreateObjectType(store);
-					valueType.IsValueType = true;
 					group.AddGraph(valueType);
-					group.AddGraph(valueType.DataType);
+					// Do not try to set the IsValueType property here. IsValueType picks
+					// up the default data type for the model, which can only be done
+					// when the model is known. Instead, flag the element so that it
+					// can be set during MergeRelate on the model.
+					group.UserData = "VALUETYPE";
 					retVal = group.CreatePrototype(valueType);
 					break;
 				case ResourceStrings.ToolboxUnaryFactTypeItemId:

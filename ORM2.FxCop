@@ -1869,6 +1869,16 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="DataTypeMoveableCollection">
+          <Messages>
+           <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Created="2005-05-02 22:04:40Z">
+            <Issue>
+             <Item>DataTypeMoveableCollection</Item>
+             <Item>IList</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="DeserializationFixupListener`1">
           <Members>
            <Member Name="ElementAdded(Microsoft.VisualStudio.Modeling.ModelElement,System.Boolean):System.Void">
@@ -3678,6 +3688,41 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="NumericDataType">
+          <Members>
+           <Member Name=".ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.ModelDataBag)">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Status="Excluded" Created="2005-05-02 22:04:40Z">
+              <Issue>
+               <Item>NumericDataType..ctor(Store, ModelDataBag)</Item>
+               <Item>allowNumericPropertyStorage</Item>
+               <Item>boolean</Item>
+               <Item>false</Item>
+              </Issue>
+              <Notes>
+               <User Name="pewert">
+                <Note Id="8" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="NumericDataType+NumericDataTypeAllowNumericFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-02 22:04:40Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.NumericDataType+NumericDataTypeAllowNumericFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="6" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="ObjectType">
           <Members>
            <Member Name=".ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.ModelDataBag)">
@@ -3832,6 +3877,20 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="ObjectType+ObjectTypeDataTypeDisplayFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-02 22:04:40Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ObjectType+ObjectTypeDataTypeDisplayFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="7" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="ObjectType+ObjectTypeIsIndependentFieldHandler">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -3979,20 +4038,6 @@
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
              <Item>Northface.Tools.ORM.ObjectModel.ObjectType+ObjectTypeScaleFieldHandler</Item>
-            </Issue>
-            <Notes>
-             <User Name="mcurland">
-              <Note Id="3" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="ObjectType+ObjectTypeTypeNameFieldHandler">
-          <Messages>
-           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-02-03 20:22:04Z">
-            <Issue>
-             <Item>Northface.Tools.ORM.ObjectModel.ObjectType+ObjectTypeTypeNameFieldHandler</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -9397,6 +9442,9 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="3" Modified="2005-04-25 20:24:00Z">Internal rules instantiated via reflection</Note>
     <Note Id="4" Modified="2005-04-25 21:57:49Z">Internal rules instantiated via reflection</Note>
     <Note Id="5" Modified="2005-04-25 21:58:32Z">Referenced object is immutable</Note>
+    <Note Id="6" Modified="2005-05-02 22:15:31Z">Defined in IMS-generated code</Note>
+    <Note Id="7" Modified="2005-05-02 22:15:51Z">Defined in IMS-generated code</Note>
+    <Note Id="8" Modified="2005-05-02 22:18:28Z">Defined in IMS-generated code</Note>
    </User>
   </Notes>
   <Rules>

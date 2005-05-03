@@ -19,6 +19,7 @@ Information Contained Herein is Proprietary and Confidential.
       <simpleType name="ReferenceModeKind" identity="41e620f7-29b7-46df-96f0-af9cfe92a4d6" namespace="Northface.Tools.ORM.ObjectModel" id="i41e620f7z29b7z46dfz96f0zaf9cfe92a4d6" />
       <simpleType name="Object" identity="ce71f148-bf6f-4a66-8155-903967ee3714" namespace="System" id="ice71f148zbf6fz4a66z8155z903967ee3714" />
       <simpleType name="ReferenceMode" identity="a9344acd-0bb0-4c36-ba82-5feb86065fd0" namespace="Northface.Tools.ORM.ObjectModel" id="ia9344acdz0bb0z4c36zba82z5feb86065fd0" />
+      <simpleType name="DataType" identity="2df47333-c229-467f-b0bc-e0035402ce61" namespace="Northface.Tools.ORM.ObjectModel" id="i2df47333zc229z467fzb0bcze0035402ce61" />
     </simpleTypes>
     <enumerations>
       <enumeration name="ExclusionType" identity="8f4db2db-8a63-43f8-a6ee-c856289c49ee" namespace="Northface.Tools.ORM.ObjectModel" id="i8f4db2dbz8a63z43f8za6eezc856289c49ee">
@@ -788,6 +789,27 @@ Information Contained Herein is Proprietary and Confidential.
           </role>
         </roles>
       </relationship>
+      <relationship name="ModelHasDataType" identity="bdd7a7cc-78b3-4d9d-8fbe-f34e6d97b87f" namespace="Northface.Tools.ORM.ObjectModel" id="ibdd7a7ccz78b3z4d9dz8fbezf34e6d97b87f" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <roles>
+          <role name="DataTypeCollection" identity="a50a62f1-df7e-42fa-9d3e-9cebb1972892" id="ia50a62f1zdf7ez42faz9d3ez9cebb1972892" min="1" max="0" isUnbounded="true" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</source>
+            <type>i547d17bbz3dc9z4869zb280zff6be0f7dca9</type>
+            <generatedProperty name="DataTypeCollection" identity="41ada3d2-78c2-432b-85e5-3451df5282b6">
+              <referenceType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="Model" identity="02d46f20-fccc-45cf-a958-fb8c785400b8" id="i02d46f20zfcccz45cfza958zfb8c785400b8" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i547d17bbz3dc9z4869zb280zff6be0f7dca9</source>
+            <type>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</type>
+            <generatedProperty name="Model" identity="dc8c86d2-50b9-427a-809b-5c64d6213a8c">
+              <referenceType>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
       <relationship name="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" identity="c9aaf11f-827f-44bd-9933-ccdbe24c65ee" namespace="Northface.Tools.ORM.ObjectModel" id="ic9aaf11fz827fz44bdz9933zccdbe24c65ee" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <roles>
@@ -1103,6 +1125,160 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <role>i0726e39dz63ebz4fc5z8828zf40c2e35edaf</role>
           </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ORMModelHasDataType.DataType" identity="f425bf96-e633-46c8-812b-ec76f85b8c7d" id="if425bf96ze633z46c8z812bzec76f85b8c7d" definitionlevel="none" containmentstyle="embedding">
+            <source />
+            <role>ia50a62f1zdf7ez42faz9d3ez9cebb1972892</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="UnspecifiedDataType-DataType" identity="ae7b308c-8d6d-49f8-837e-b719c97c5761" id="iae7b308cz8d6dz49f8z837ezb719c97c5761" definitionlevel="none">
+            <source />
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i12a11e3fz7dafz4cedz8ca2z34d3250ad125</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="DataType-ModelElement" identity="c730701d-7e64-4e18-bc92-595a275aaead" id="ic730701dz7e64z4e18zbc92z595a275aaead" definitionlevel="none">
+            <source />
+            <superType>i6dc1eeefzd103z4d96z898ezcc873481834d</superType>
+            <subType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="TextDataType-DataType" identity="fcc1de89-d98c-4c2f-8493-447e00b3416d" id="ifcc1de89zd98cz4c2fz8493z447e00b3416d" definitionlevel="none">
+            <source />
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="NumericDataType-DataType" identity="e501924b-afbd-4f68-9c84-74f08eaf9ea8" id="ie501924bzafbdz4f68z9c84z74f08eaf9ea8" definitionlevel="none">
+            <source />
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i5d6c8146z073bz4f54zae4eze97620c42b2c</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="RawDataDataType-DataType" identity="7ab0495a-8605-4ceb-9b7c-f33add59c382" id="i7ab0495az8605z4cebz9b7czf33add59c382" definitionlevel="none">
+            <source />
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="TemporalDataType-DataType" identity="a9d973a1-8797-4316-a714-81172a26a741" id="ia9d973a1z8797z4316za714z81172a26a741" definitionlevel="none">
+            <source />
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i10027217z5978z4286zbf21z80738dc9a877</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="LogicalDataType-DataType" identity="2526be3e-91b1-45e5-8df8-078cb174034a" id="i2526be3ez91b1z45e5z8df8z078cb174034a" definitionlevel="none">
+            <source />
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i85881c27z24d8z4a89za81dz6031128ae967</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="OtherDataType-DataType" identity="35ee1123-8b25-43e5-90c2-1b7a3e4f0d13" id="i35ee1123z8b25z43e5z90c2z1b7a3e4f0d13" definitionlevel="none">
+            <source />
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i3efdcecezb2e0z45f0zaab1zca085144b933</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FixedLengthTextDataType-TextDataType" identity="0218d5ba-c1ac-4ee7-b72d-a6364f9b0734" id="i0218d5bazc1acz4ee7zb72dza6364f9b0734" definitionlevel="none">
+            <source />
+            <superType>i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450</superType>
+            <subType>i9de7b056z3e4dz4344za00cza9e81da805f6</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="VariableLengthTextDataType-TextDataType" identity="c6baa9aa-6be7-4256-b466-5ec01eb912a7" id="ic6baa9aaz6be7z4256zb466z5ec01eb912a7" definitionlevel="none">
+            <source />
+            <superType>i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450</superType>
+            <subType>i4498d0d4zf386z46c5za7efz6ee9abc14611</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="LargeLengthTextDataType-TextDataType" identity="869652a0-616e-428c-946e-9eae882a3cd9" id="i869652a0z616ez428cz946ez9eae882a3cd9" definitionlevel="none">
+            <source />
+            <superType>i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450</superType>
+            <subType>i42b4206dz7766z41f0z87d6z6ff23b10756e</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="SignedIntegerNumericDataType-NumericDataType" identity="344ed937-d011-4eb5-8fee-5520deacce3c" id="i344ed937zd011z4eb5z8feez5520deacce3c" definitionlevel="none">
+            <source />
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>i0a1d30c1za7cbz47bbzab4az36a89522e12a</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="UnsignedIntegerNumericDataType-NumericDataType" identity="bc729e9d-6072-40e2-aaac-5c1c4fdb3b89" id="ibc729e9dz6072z40e2zaaacz5c1c4fdb3b89" definitionlevel="none">
+            <source />
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>i773798ccz73bbz49b0zad72zcb145d0a5f14</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="AutoCounterNumericDataType-NumericDataType" identity="4b85fcd5-29ce-498d-9c4d-d3ac8776afdb" id="i4b85fcd5z29cez498dz9c4dzd3ac8776afdb" definitionlevel="none">
+            <source />
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>iff1b07d5ze8fcz44cbzaceczcb93f6e6e37a</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FloatingPointNumericDataType-NumericDataType" identity="3e996d7f-9e45-4188-a48a-7d00325bd5a5" id="i3e996d7fz9e45z4188za48az7d00325bd5a5" definitionlevel="none">
+            <source />
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>i2ead05d6zd343z43eaz8130zfc226751b1cf</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="DecimalNumericDataType-NumericDataType" identity="1091330a-0e1a-4acd-8a91-cd0a670abb1f" id="i1091330az0e1az4acdz8a91zcd0a670abb1f" definitionlevel="none">
+            <source />
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>i8e7c90d2z8c42z4932z8275zad4fed9227bb</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="MoneyNumericDataType-NumericDataType" identity="96046dd5-88ba-48b0-b614-f8a963810af2" id="i96046dd5z88baz48b0zb614zf8a963810af2" definitionlevel="none">
+            <source />
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>i67f4fed3z53a4z462fza050zc3de3055620f</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="LargeLengthRawDataDataType-RawDataDataType" identity="884eaaf5-9ca7-442e-8043-e5380f1902ea" id="i884eaaf5z9ca7z442ez8043ze5380f1902ea" definitionlevel="none">
+            <source />
+            <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+            <subType>i4133fda1z45bfz48c5zb3cez4f4a9d891066</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FixedLengthRawDataDataType-RawDataDataType" identity="e462b77d-5858-4b5d-afb7-88bb2fdb0647" id="ie462b77dz5858z4b5dzafb7z88bb2fdb0647" definitionlevel="none">
+            <source />
+            <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+            <subType>i44a46583ze878z4f70z90aczca08f37feba6</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="PictureRawDataDataType-RawDataDataType" identity="951f7f31-914c-4ce3-9ea7-bcf7b212ee21" id="i951f7f31z914cz4ce3z9ea7zbcf7b212ee21" definitionlevel="none">
+            <source />
+            <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+            <subType>i7e172f50z433bz4d89zacfaz5f1022c379a5</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="VariableLengthRawDataDataType-RawDataDataType" identity="0ae19761-c043-40f4-9bce-9a8f55ffdfa4" id="i0ae19761zc043z40f4z9bcez9a8f55ffdfa4" definitionlevel="none">
+            <source />
+            <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+            <subType>iac252d1ezc491z495fz988cz3e9649d00720</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="DateTemporalDataType-TemporalDataType" identity="73a99694-808c-4d46-898f-523fe9ecfbf0" id="i73a99694z808cz4d46z898fz523fe9ecfbf0" definitionlevel="none">
+            <source />
+            <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+            <subType>i905b8a13z7c5ez430fz8d7bz03e63356439b</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="DateAndTimeTemporalDataType-TemporalDataType" identity="f3afb8e8-2b8f-410d-aac7-9c33e4feee12" id="if3afb8e8z2b8fz410dzaac7z9c33e4feee12" definitionlevel="none">
+            <source />
+            <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+            <subType>ifacd55e1zc5a2z4d3dz93d2z7b651c05e7a2</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="OleObjectRawDataDataType-RawDataDataType" identity="d225c62e-8973-4117-93f0-4bd9eb89969e" id="id225c62ez8973z4117z93f0z4bd9eb89969e" definitionlevel="none">
+            <source />
+            <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+            <subType>i560297d3z6e91z4090z8daaz54784f85990d</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="AutoTimestampTemporalDataType-TemporalDataType" identity="337562f1-9832-42c1-8111-9917882141ad" id="i337562f1z9832z42c1z8111z9917882141ad" definitionlevel="none">
+            <source />
+            <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+            <subType>id3c4e6b2z79ccz4f09z8080z62ce74090fd1</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="TimeTemporalDataType-TemporalDataType" identity="cd1893a4-6ceb-488b-9064-d76644451f7c" id="icd1893a4z6cebz488bz9064zd76644451f7c" definitionlevel="none">
+            <source />
+            <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+            <subType>i4677814bz958dz4176za54ez8f70b7ca0d56</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="TrueOrFalseLogicalDataType-LogicalDataType" identity="0a320c69-1e23-41e7-bd1f-fa0ee86ba619" id="i0a320c69z1e23z41e7zbd1fzfa0ee86ba619" definitionlevel="none">
+            <source />
+            <superType>i85881c27z24d8z4a89za81dz6031128ae967</superType>
+            <subType>ia4c50357zf789z472cza94ez93af109f1056</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="YesOrNoLogicalDataType-LogicalDataType" identity="87bdca77-458a-4c60-916e-38b1894f0f3c" id="i87bdca77z458az4c60z916ez38b1894f0f3c" definitionlevel="none">
+            <source />
+            <superType>i85881c27z24d8z4a89za81dz6031128ae967</superType>
+            <subType>if6d6b7e4zc22bz47e1z8f30z2bcaee1d3c17</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectIdOtherDataType-OtherDataType" identity="faa58d1c-5c1f-4eb9-b261-47b8b0ee4375" id="ifaa58d1cz5c1fz4eb9zb261z47b8b0ee4375" definitionlevel="none">
+            <source />
+            <superType>i3efdcecezb2e0z45f0zaab1zca085144b933</superType>
+            <subType>i2ce276c0z607dz43f3zae1ez162be0c853ec</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="RowIdOtherDataType-OtherDataType" identity="4260498b-896b-4328-9a6e-c7d8ebbfecab" id="i4260498bz896bz4328z9a6ezc7d8ebbfecab" definitionlevel="none">
+            <source />
+            <superType>i3efdcecezb2e0z45f0zaab1zca085144b933</superType>
+            <subType>iccdd5096z8948z45ccz835bz321af2c8b656</subType>
+          </treeExpression>
           <treeExpression xsi:type="InheritanceExpression" name="FactTypeRequiresInternalUniquenessConstraintError-ModelError" identity="1b6e7b91-b606-4261-9577-2736a6e18fe6" id="i1b6e7b91zb606z4261z9577z2736a6e18fe6" definitionlevel="none">
             <source />
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
@@ -1141,10 +1317,6 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="ValuePropertyExpression" name="Length" identity="a2ac70ca-eb94-43e8-b295-29f0b40a7406" id="ia2ac70cazeb94z43e8zb295z29f0b40a7406">
             <source />
             <property>if3e0995dzb18ez4c42zaeddz28de749b6abd</property>
-          </treeExpression>
-          <treeExpression xsi:type="ValuePropertyExpression" name="TypeName" identity="b9e27420-8faa-463e-8580-c991f5f1ba8a" id="ib9e27420z8faaz463ez8580zc991f5f1ba8a">
-            <source />
-            <property>ie73bc8c8z8a49z41dcz84cfze13521ee476a</property>
           </treeExpression>
           <treeExpression xsi:type="ValuePropertyExpression" name="NestedFactTypeDisplay" identity="e08baa39-b8b8-4168-9008-5bf27e831019" id="ie08baa39zb8b8z4168z9008z5bf27e831019">
             <source />
@@ -1301,7 +1473,7 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <property>if5540418ze472z4b4czaf64z27aa6b41be29</property>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ValueTypeHasDataType.DataType" identity="9034f9ff-dea5-45e5-81f7-99e9cd18ed28" id="i9034f9ffzdea5z45e5z81f7z99e9cd18ed28" definitionlevel="definition" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="ValueTypeHasDataType.DataType" identity="9034f9ff-dea5-45e5-81f7-99e9cd18ed28" id="i9034f9ffzdea5z45e5z81f7z99e9cd18ed28" definitionlevel="use" containmentstyle="fromsource">
             <source>ied4d8df3zc31az4102z8b8czf213dd9bf328</source>
             <role>if428f909z8e22z4608zbef3z1f730fd1077f</role>
           </treeExpression>
@@ -1531,6 +1703,168 @@ Information Contained Herein is Proprietary and Confidential.
             <source>ic2b75ebbz6b13z483fzbf5eze526096c1cf0</source>
             <role>i0726e39dz63ebz4fc5z8828zf40c2e35edaf</role>
           </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ORMModelHasDataType.DataType" identity="39563320-27b2-4420-9a1a-e77cef46b942" id="i39563320z27b2z4420z9a1aze77cef46b942" definitionlevel="definition" containmentstyle="fromsource">
+            <source>if425bf96ze633z46c8z812bzec76f85b8c7d</source>
+            <role>ia50a62f1zdf7ez42faz9d3ez9cebb1972892</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="UnspecifiedDataType-DataType" identity="c475a463-e26f-403e-8f46-f5488e6a1218" id="ic475a463ze26fz403ez8f46zf5488e6a1218" definitionlevel="definition">
+            <source>iae7b308cz8d6dz49f8z837ezb719c97c5761</source>
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i12a11e3fz7dafz4cedz8ca2z34d3250ad125</subType>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="eac567e1-bc30-434b-988a-88b8a6b4ca0c" id="ieac567e1zbc30z434bz988az88b8a6b4ca0c">
+            <source />
+            <property>i23bccbcfz4effz4ae5za32bz36cf2267957e</property>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="DataType-ModelElement" identity="48513b65-288d-4143-b833-2c94e68426d2" id="i48513b65z288dz4143zb833z2c94e68426d2" definitionlevel="use">
+            <source>ic730701dz7e64z4e18zbc92z595a275aaead</source>
+            <superType>i6dc1eeefzd103z4d96z898ezcc873481834d</superType>
+            <subType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="TextDataType-DataType" identity="03cf541a-662f-4a26-9e9d-af2250d178e9" id="i03cf541az662fz4a26z9e9dzaf2250d178e9" definitionlevel="definition">
+            <source>ifcc1de89zd98cz4c2fz8493z447e00b3416d</source>
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="NumericDataType-DataType" identity="abf86815-56d1-4d0f-91f4-dd3121c97e21" id="iabf86815z56d1z4d0fz91f4zdd3121c97e21" definitionlevel="definition">
+            <source>ie501924bzafbdz4f68z9c84z74f08eaf9ea8</source>
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i5d6c8146z073bz4f54zae4eze97620c42b2c</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="RawDataDataType-DataType" identity="d04bb990-47dd-4cb1-89b7-5e871dad39c3" id="id04bb990z47ddz4cb1z89b7z5e871dad39c3" definitionlevel="definition">
+            <source>i7ab0495az8605z4cebz9b7czf33add59c382</source>
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="TemporalDataType-DataType" identity="acfb4427-b575-4efa-845a-a73385e6da27" id="iacfb4427zb575z4efaz845aza73385e6da27" definitionlevel="definition">
+            <source>ia9d973a1z8797z4316za714z81172a26a741</source>
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i10027217z5978z4286zbf21z80738dc9a877</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="LogicalDataType-DataType" identity="f05bb90a-78b5-4b58-ab01-3d483fb86cfc" id="if05bb90az78b5z4b58zab01z3d483fb86cfc" definitionlevel="definition">
+            <source>i2526be3ez91b1z45e5z8df8z078cb174034a</source>
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i85881c27z24d8z4a89za81dz6031128ae967</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="OtherDataType-DataType" identity="4821e783-f52c-4f86-b6d5-1e7d1292fe23" id="i4821e783zf52cz4f86zb6d5z1e7d1292fe23" definitionlevel="definition">
+            <source>i35ee1123z8b25z43e5z90c2z1b7a3e4f0d13</source>
+            <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+            <subType>i3efdcecezb2e0z45f0zaab1zca085144b933</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FixedLengthTextDataType-TextDataType" identity="f21e6fca-a723-4063-9cff-21694d5b0815" id="if21e6fcaza723z4063z9cffz21694d5b0815" definitionlevel="definition">
+            <source>i0218d5bazc1acz4ee7zb72dza6364f9b0734</source>
+            <superType>i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450</superType>
+            <subType>i9de7b056z3e4dz4344za00cza9e81da805f6</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="VariableLengthTextDataType-TextDataType" identity="cf827c8e-026b-4928-9e44-3b34e803acdd" id="icf827c8ez026bz4928z9e44z3b34e803acdd" definitionlevel="definition">
+            <source>ic6baa9aaz6be7z4256zb466z5ec01eb912a7</source>
+            <superType>i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450</superType>
+            <subType>i4498d0d4zf386z46c5za7efz6ee9abc14611</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="LargeLengthTextDataType-TextDataType" identity="dd38d8a9-8d93-4381-8a70-f89371b92dc3" id="idd38d8a9z8d93z4381z8a70zf89371b92dc3" definitionlevel="definition">
+            <source>i869652a0z616ez428cz946ez9eae882a3cd9</source>
+            <superType>i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450</superType>
+            <subType>i42b4206dz7766z41f0z87d6z6ff23b10756e</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="SignedIntegerNumericDataType-NumericDataType" identity="4696e81b-894c-4bae-82a3-b90b11cfa3d9" id="i4696e81bz894cz4baez82a3zb90b11cfa3d9" definitionlevel="definition">
+            <source>i344ed937zd011z4eb5z8feez5520deacce3c</source>
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>i0a1d30c1za7cbz47bbzab4az36a89522e12a</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="UnsignedIntegerNumericDataType-NumericDataType" identity="3ec8de8c-003d-4f2e-9a88-c9b9f38331ab" id="i3ec8de8cz003dz4f2ez9a88zc9b9f38331ab" definitionlevel="definition">
+            <source>ibc729e9dz6072z40e2zaaacz5c1c4fdb3b89</source>
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>i773798ccz73bbz49b0zad72zcb145d0a5f14</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="AutoCounterNumericDataType-NumericDataType" identity="097c372b-b153-45c7-a33c-f2ac0ed6e0c8" id="i097c372bzb153z45c7za33czf2ac0ed6e0c8" definitionlevel="definition">
+            <source>i4b85fcd5z29cez498dz9c4dzd3ac8776afdb</source>
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>iff1b07d5ze8fcz44cbzaceczcb93f6e6e37a</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FloatingPointNumericDataType-NumericDataType" identity="928397a0-fa89-4a7d-807e-cff8b1d7be1c" id="i928397a0zfa89z4a7dz807ezcff8b1d7be1c" definitionlevel="definition">
+            <source>i3e996d7fz9e45z4188za48az7d00325bd5a5</source>
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>i2ead05d6zd343z43eaz8130zfc226751b1cf</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="DecimalNumericDataType-NumericDataType" identity="0d367219-866c-416f-8775-6a5b1589b4cc" id="i0d367219z866cz416fz8775z6a5b1589b4cc" definitionlevel="definition">
+            <source>i1091330az0e1az4acdz8a91zcd0a670abb1f</source>
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>i8e7c90d2z8c42z4932z8275zad4fed9227bb</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="MoneyNumericDataType-NumericDataType" identity="24c847cf-5787-4544-9511-6d33ce44b216" id="i24c847cfz5787z4544z9511z6d33ce44b216" definitionlevel="definition">
+            <source>i96046dd5z88baz48b0zb614zf8a963810af2</source>
+            <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+            <subType>i67f4fed3z53a4z462fza050zc3de3055620f</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="LargeLengthRawDataDataType-RawDataDataType" identity="792bffab-b5e6-4390-a628-ded00aeb7731" id="i792bffabzb5e6z4390za628zded00aeb7731" definitionlevel="definition">
+            <source>i884eaaf5z9ca7z442ez8043ze5380f1902ea</source>
+            <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+            <subType>i4133fda1z45bfz48c5zb3cez4f4a9d891066</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FixedLengthRawDataDataType-RawDataDataType" identity="1ac8a218-c311-4a03-8c60-134870e52a39" id="i1ac8a218zc311z4a03z8c60z134870e52a39" definitionlevel="definition">
+            <source>ie462b77dz5858z4b5dzafb7z88bb2fdb0647</source>
+            <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+            <subType>i44a46583ze878z4f70z90aczca08f37feba6</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="PictureRawDataDataType-RawDataDataType" identity="d089436f-b308-458e-9486-eee27cf4511b" id="id089436fzb308z458ez9486zeee27cf4511b" definitionlevel="definition">
+            <source>i951f7f31z914cz4ce3z9ea7zbcf7b212ee21</source>
+            <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+            <subType>i7e172f50z433bz4d89zacfaz5f1022c379a5</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="VariableLengthRawDataDataType-RawDataDataType" identity="c554ee8e-1b55-4427-8db3-834950a7d3f2" id="ic554ee8ez1b55z4427z8db3z834950a7d3f2" definitionlevel="definition">
+            <source>i0ae19761zc043z40f4z9bcez9a8f55ffdfa4</source>
+            <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+            <subType>iac252d1ezc491z495fz988cz3e9649d00720</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="DateTemporalDataType-TemporalDataType" identity="fc0a2dae-a636-4688-a6d1-091a92fb018b" id="ifc0a2daeza636z4688za6d1z091a92fb018b" definitionlevel="definition">
+            <source>i73a99694z808cz4d46z898fz523fe9ecfbf0</source>
+            <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+            <subType>i905b8a13z7c5ez430fz8d7bz03e63356439b</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="DateAndTimeTemporalDataType-TemporalDataType" identity="4f124ee1-37e3-4058-8ed2-aee905a839a1" id="i4f124ee1z37e3z4058z8ed2zaee905a839a1" definitionlevel="definition">
+            <source>if3afb8e8z2b8fz410dzaac7z9c33e4feee12</source>
+            <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+            <subType>ifacd55e1zc5a2z4d3dz93d2z7b651c05e7a2</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="OleObjectRawDataDataType-RawDataDataType" identity="2b418216-c2c0-4402-904d-512fc4adcc14" id="i2b418216zc2c0z4402z904dz512fc4adcc14" definitionlevel="definition">
+            <source>id225c62ez8973z4117z93f0z4bd9eb89969e</source>
+            <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+            <subType>i560297d3z6e91z4090z8daaz54784f85990d</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="AutoTimestampTemporalDataType-TemporalDataType" identity="7670af74-e973-460c-ae84-735a4683ea47" id="i7670af74ze973z460czae84z735a4683ea47" definitionlevel="definition">
+            <source>i337562f1z9832z42c1z8111z9917882141ad</source>
+            <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+            <subType>id3c4e6b2z79ccz4f09z8080z62ce74090fd1</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="TimeTemporalDataType-TemporalDataType" identity="680e2e7b-d8b9-4d54-81a4-6230e5971268" id="i680e2e7bzd8b9z4d54z81a4z6230e5971268" definitionlevel="definition">
+            <source>icd1893a4z6cebz488bz9064zd76644451f7c</source>
+            <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+            <subType>i4677814bz958dz4176za54ez8f70b7ca0d56</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="TrueOrFalseLogicalDataType-LogicalDataType" identity="6a7539a1-b579-4ac8-bf92-cf71f32a143e" id="i6a7539a1zb579z4ac8zbf92zcf71f32a143e" definitionlevel="definition">
+            <source>i0a320c69z1e23z41e7zbd1fzfa0ee86ba619</source>
+            <superType>i85881c27z24d8z4a89za81dz6031128ae967</superType>
+            <subType>ia4c50357zf789z472cza94ez93af109f1056</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="YesOrNoLogicalDataType-LogicalDataType" identity="c6e42a51-3351-41cb-95d1-4ea1306ac543" id="ic6e42a51z3351z41cbz95d1z4ea1306ac543" definitionlevel="definition">
+            <source>i87bdca77z458az4c60z916ez38b1894f0f3c</source>
+            <superType>i85881c27z24d8z4a89za81dz6031128ae967</superType>
+            <subType>if6d6b7e4zc22bz47e1z8f30z2bcaee1d3c17</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectIdOtherDataType-OtherDataType" identity="0ed20aec-9b5d-4b34-881d-69c6ff112ade" id="i0ed20aecz9b5dz4b34z881dz69c6ff112ade" definitionlevel="definition">
+            <source>ifaa58d1cz5c1fz4eb9zb261z47b8b0ee4375</source>
+            <superType>i3efdcecezb2e0z45f0zaab1zca085144b933</superType>
+            <subType>i2ce276c0z607dz43f3zae1ez162be0c853ec</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="RowIdOtherDataType-OtherDataType" identity="f7941178-27f7-4180-858b-09dddb6dfbe7" id="if7941178z27f7z4180z858bz09dddb6dfbe7" definitionlevel="definition">
+            <source>i4260498bz896bz4328z9a6ezc7d8ebbfecab</source>
+            <superType>i3efdcecezb2e0z45f0zaab1zca085144b933</superType>
+            <subType>iccdd5096z8948z45ccz835bz321af2c8b656</subType>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="14f810f0-660d-408a-8964-2d115a8f0e16" id="i14f810f0z660dz408az8964z2d115a8f0e16">
+            <source />
+            <property>i53a10734z0950z4914zbc05z35ef7ec91b03</property>
+          </treeExpression>
           <treeExpression xsi:type="InheritanceExpression" name="FactTypeRequiresInternalUniquenessConstraintError-ModelError" identity="97069ed3-3818-45e4-a0db-a974c2f91c51" id="i97069ed3z3818z45e4za0dbza974c2f91c51" definitionlevel="definition">
             <source>i1b6e7b91zb606z4261z9577z2736a6e18fe6</source>
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
@@ -1567,7 +1901,12 @@ Information Contained Herein is Proprietary and Confidential.
       </treenavigator>
       <treenavigator xsi:type="ShadowTreeNavigator" name="serialization" identity="a3bb9f0a-cfe7-49cc-acf0-5aa4440b1125" id="ia3bb9f0azcfe7z49cczacf0z5aa4440b1125">
         <expressions />
-        <roots />
+        <roots>
+          <root name="ORMModel" identity="878cf14c-527d-486e-a459-276931b4746b" id="i878cf14cz527dz486eza459z276931b4746b">
+            <source />
+            <referencetype>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</referencetype>
+          </root>
+        </roots>
         <source>ie71eab56z58f2z48c1za61cze32a3f1bba22</source>
       </treenavigator>
       <treenavigator xsi:type="ShadowTreeNavigator" name="delete" identity="a231bcf5-a32d-457b-ac7b-a767d1040466" id="ia231bcf5za32dz457bzac7bza767d1040466">
@@ -1852,6 +2191,14 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <role>i74c01faaz0605z41c6z90dbz8a8b5ca8f47d</role>
           </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ORMModelHasDataType.DataType" identity="d1970609-2868-4777-9f67-c5c7e464e74e" id="id1970609z2868z4777z9f67zc5c7e464e74e" definitionlevel="none" containmentstyle="fromsource">
+            <source>if425bf96ze633z46c8z812bzec76f85b8c7d</source>
+            <role>ia50a62f1zdf7ez42faz9d3ez9cebb1972892</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ORMModelHasDataType.ORMModel" identity="9882f462-5d54-4df3-8586-b627d3d4e6ed" id="i9882f462z5d54z4df3z8586zb627d3d4e6ed" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i02d46f20zfcccz45cfza958zfb8c785400b8</role>
+          </treeExpression>
           <treeExpression xsi:type="RoleExpression" name="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeRequiresInternalUniquenessConstraintError" identity="c75ed9b4-1adb-49cb-9ba5-69706e6711da" id="ic75ed9b4z1adbz49cbz9ba5z69706e6711da" definitionlevel="none" containmentstyle="embedding">
             <source>i659185baze1aaz474bz88adzf67ce9fb7f11</source>
             <role>iee6e1fa4z7bcfz44a0za3faz57f7cc1deea9</role>
@@ -1891,10 +2238,6 @@ Information Contained Herein is Proprietary and Confidential.
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="" />
             <propertyInfo xsi:type="IntegerPropertyInfo" name="IntegerPropertyInfo" identity="dd83e2ff-7bce-4c93-bb34-c14f6b55cfab" default="0" max="2147483647" min="0" />
           </property>
-          <property name="TypeName" identity="e73bc8c8-8a49-41dc-84cf-e13521ee476a" id="ie73bc8c8z8a49z41dcz84cfze13521ee476a">
-            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="/ObjectType/ValueTypeHasDataType.DataType/DataType" reversexpathexpression="" realattributename="Name" proxyattributename="Name" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
-            <propertyInfo xsi:type="StringPropertyInfo" name="StringPropertyInfo" identity="5f53289f-1490-41f9-aac2-f76c6eb7cc2e" default="" max="2147483647" />
-          </property>
           <property name="NestedFactTypeDisplay" identity="d94fc8f5-22f2-4864-9be1-7eb74ba9193b" id="id94fc8f5z22f2z4864z9be1z7eb74ba9193b">
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="true" readwritestate="readwrite" tag="">
               <clrattribute name="System.ComponentModel.Editor" parametertext="typeof(Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker), typeof(System.Drawing.Design.UITypeEditor)" />
@@ -1924,6 +2267,14 @@ Information Contained Herein is Proprietary and Confidential.
             </mdfmetadata>
             <propertyInfo xsi:type="SimplePropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000">
               <simpleType>ia9344acdz0bb0z4c36zba82z5feb86065fd0</simpleType>
+            </propertyInfo>
+          </property>
+          <property name="DataTypeDisplay" identity="23bccbcf-4eff-4ae5-a32b-36cf2267957e" id="i23bccbcfz4effz4ae5za32bz36cf2267957e">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="true" readwritestate="readwrite" tag="">
+              <clrattribute name="System.ComponentModel.Editor" parametertext="typeof(Northface.Tools.ORM.ObjectModel.Editors.DataTypePicker), typeof(System.Drawing.Design.UITypeEditor)" />
+            </mdfmetadata>
+            <propertyInfo xsi:type="SimplePropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000">
+              <simpleType>i2df47333zc229z467fzb0bcze0035402ce61</simpleType>
             </propertyInfo>
           </property>
         </valueProperties>
@@ -2014,7 +2365,8 @@ Information Contained Herein is Proprietary and Confidential.
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
       </concept>
       <concept name="DataType" identity="547d17bb-3dc9-4869-b280-ff6be0f7dca9" namespace="Northface.Tools.ORM.ObjectModel" id="i547d17bbz3dc9z4869zb280zff6be0f7dca9" isLoaded="true" isAbstract="false">
-        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
+        <superType>i6dc1eeefzd103z4d96z898ezcc873481834d</superType>
       </concept>
       <concept name="Expression" identity="ddc5ef24-70bb-48aa-8481-2a76021581a3" namespace="Northface.Tools.ORM.ObjectModel" id="iddc5ef24z70bbz48aaz8481z2a76021581a3" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
@@ -2186,6 +2538,106 @@ Information Contained Herein is Proprietary and Confidential.
       <concept name="FactTypeRequiresReadingError" identity="81bf4cab-ab44-4a83-9d4e-1399dbcb4719" namespace="Northface.Tools.ORM.ObjectModel" id="i81bf4cabzab44z4a83z9d4ez1399dbcb4719" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+      </concept>
+      <concept name="UnspecifiedDataType" identity="12a11e3f-7daf-4ced-8ca2-34d3250ad125" namespace="Northface.Tools.ORM.ObjectModel" id="i12a11e3fz7dafz4cedz8ca2z34d3250ad125" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+      </concept>
+      <concept name="TextDataType" identity="8590bbf5-92b9-4a9d-98a0-7b7a0d01c450" namespace="Northface.Tools.ORM.ObjectModel" id="i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
+        <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+      </concept>
+      <concept name="NumericDataType" identity="5d6c8146-073b-4f54-ae4e-e97620c42b2c" namespace="Northface.Tools.ORM.ObjectModel" id="i5d6c8146z073bz4f54zae4eze97620c42b2c" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
+        <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+        <valueProperties>
+          <property name="AllowNumeric" identity="53a10734-0950-4914-bc05-35ef7ec91b03" id="i53a10734z0950z4914zbc05z35ef7ec91b03">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
+            <propertyInfo xsi:type="BooleanPropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000" default="false" />
+          </property>
+        </valueProperties>
+      </concept>
+      <concept name="RawDataDataType" identity="fdd0f0c5-33fe-408e-92ea-7fe3e17f80dd" namespace="Northface.Tools.ORM.ObjectModel" id="ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
+        <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+      </concept>
+      <concept name="TemporalDataType" identity="10027217-5978-4286-bf21-80738dc9a877" namespace="Northface.Tools.ORM.ObjectModel" id="i10027217z5978z4286zbf21z80738dc9a877" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
+        <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+      </concept>
+      <concept name="LogicalDataType" identity="85881c27-24d8-4a89-a81d-6031128ae967" namespace="Northface.Tools.ORM.ObjectModel" id="i85881c27z24d8z4a89za81dz6031128ae967" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
+        <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+      </concept>
+      <concept name="OtherDataType" identity="3efdcece-b2e0-45f0-aab1-ca085144b933" namespace="Northface.Tools.ORM.ObjectModel" id="i3efdcecezb2e0z45f0zaab1zca085144b933" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
+        <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
+      </concept>
+      <concept name="FixedLengthTextDataType" identity="9de7b056-3e4d-4344-a00c-a9e81da805f6" namespace="Northface.Tools.ORM.ObjectModel" id="i9de7b056z3e4dz4344za00cza9e81da805f6" isLoaded="true" isAbstract="false">
+        <superType>i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450</superType>
+      </concept>
+      <concept name="VariableLengthTextDataType" identity="4498d0d4-f386-46c5-a7ef-6ee9abc14611" namespace="Northface.Tools.ORM.ObjectModel" id="i4498d0d4zf386z46c5za7efz6ee9abc14611" isLoaded="true" isAbstract="false">
+        <superType>i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450</superType>
+      </concept>
+      <concept name="LargeLengthTextDataType" identity="42b4206d-7766-41f0-87d6-6ff23b10756e" namespace="Northface.Tools.ORM.ObjectModel" id="i42b4206dz7766z41f0z87d6z6ff23b10756e" isLoaded="true" isAbstract="false">
+        <superType>i8590bbf5z92b9z4a9dz98a0z7b7a0d01c450</superType>
+      </concept>
+      <concept name="SignedIntegerNumericDataType" identity="0a1d30c1-a7cb-47bb-ab4a-36a89522e12a" namespace="Northface.Tools.ORM.ObjectModel" id="i0a1d30c1za7cbz47bbzab4az36a89522e12a" isLoaded="true" isAbstract="false">
+        <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+      </concept>
+      <concept name="UnsignedIntegerNumericDataType" identity="773798cc-73bb-49b0-ad72-cb145d0a5f14" namespace="Northface.Tools.ORM.ObjectModel" id="i773798ccz73bbz49b0zad72zcb145d0a5f14" isLoaded="true" isAbstract="false">
+        <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+      </concept>
+      <concept name="AutoCounterNumericDataType" identity="ff1b07d5-e8fc-44cb-acec-cb93f6e6e37a" namespace="Northface.Tools.ORM.ObjectModel" id="iff1b07d5ze8fcz44cbzaceczcb93f6e6e37a" isLoaded="true" isAbstract="false">
+        <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+      </concept>
+      <concept name="FloatingPointNumericDataType" identity="2ead05d6-d343-43ea-8130-fc226751b1cf" namespace="Northface.Tools.ORM.ObjectModel" id="i2ead05d6zd343z43eaz8130zfc226751b1cf" isLoaded="true" isAbstract="false">
+        <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+      </concept>
+      <concept name="DecimalNumericDataType" identity="8e7c90d2-8c42-4932-8275-ad4fed9227bb" namespace="Northface.Tools.ORM.ObjectModel" id="i8e7c90d2z8c42z4932z8275zad4fed9227bb" isLoaded="true" isAbstract="false">
+        <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+      </concept>
+      <concept name="MoneyNumericDataType" identity="67f4fed3-53a4-462f-a050-c3de3055620f" namespace="Northface.Tools.ORM.ObjectModel" id="i67f4fed3z53a4z462fza050zc3de3055620f" isLoaded="true" isAbstract="false">
+        <superType>i5d6c8146z073bz4f54zae4eze97620c42b2c</superType>
+      </concept>
+      <concept name="FixedLengthRawDataDataType" identity="44a46583-e878-4f70-90ac-ca08f37feba6" namespace="Northface.Tools.ORM.ObjectModel" id="i44a46583ze878z4f70z90aczca08f37feba6" isLoaded="true" isAbstract="false">
+        <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+      </concept>
+      <concept name="VariableLengthRawDataDataType" identity="ac252d1e-c491-495f-988c-3e9649d00720" namespace="Northface.Tools.ORM.ObjectModel" id="iac252d1ezc491z495fz988cz3e9649d00720" isLoaded="true" isAbstract="false">
+        <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+      </concept>
+      <concept name="LargeLengthRawDataDataType" identity="4133fda1-45bf-48c5-b3ce-4f4a9d891066" namespace="Northface.Tools.ORM.ObjectModel" id="i4133fda1z45bfz48c5zb3cez4f4a9d891066" isLoaded="true" isAbstract="false">
+        <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+      </concept>
+      <concept name="PictureRawDataDataType" identity="7e172f50-433b-4d89-acfa-5f1022c379a5" namespace="Northface.Tools.ORM.ObjectModel" id="i7e172f50z433bz4d89zacfaz5f1022c379a5" isLoaded="true" isAbstract="false">
+        <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+      </concept>
+      <concept name="OleObjectRawDataDataType" identity="560297d3-6e91-4090-8daa-54784f85990d" namespace="Northface.Tools.ORM.ObjectModel" id="i560297d3z6e91z4090z8daaz54784f85990d" isLoaded="true" isAbstract="false">
+        <superType>ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd</superType>
+      </concept>
+      <concept name="AutoTimestampTemporalDataType" identity="d3c4e6b2-79cc-4f09-8080-62ce74090fd1" namespace="Northface.Tools.ORM.ObjectModel" id="id3c4e6b2z79ccz4f09z8080z62ce74090fd1" isLoaded="true" isAbstract="false">
+        <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+      </concept>
+      <concept name="TimeTemporalDataType" identity="4677814b-958d-4176-a54e-8f70b7ca0d56" namespace="Northface.Tools.ORM.ObjectModel" id="i4677814bz958dz4176za54ez8f70b7ca0d56" isLoaded="true" isAbstract="false">
+        <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+      </concept>
+      <concept name="DateTemporalDataType" identity="905b8a13-7c5e-430f-8d7b-03e63356439b" namespace="Northface.Tools.ORM.ObjectModel" id="i905b8a13z7c5ez430fz8d7bz03e63356439b" isLoaded="true" isAbstract="false">
+        <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+      </concept>
+      <concept name="DateAndTimeTemporalDataType" identity="facd55e1-c5a2-4d3d-93d2-7b651c05e7a2" namespace="Northface.Tools.ORM.ObjectModel" id="ifacd55e1zc5a2z4d3dz93d2z7b651c05e7a2" isLoaded="true" isAbstract="false">
+        <superType>i10027217z5978z4286zbf21z80738dc9a877</superType>
+      </concept>
+      <concept name="TrueOrFalseLogicalDataType" identity="a4c50357-f789-472c-a94e-93af109f1056" namespace="Northface.Tools.ORM.ObjectModel" id="ia4c50357zf789z472cza94ez93af109f1056" isLoaded="true" isAbstract="false">
+        <superType>i85881c27z24d8z4a89za81dz6031128ae967</superType>
+      </concept>
+      <concept name="YesOrNoLogicalDataType" identity="f6d6b7e4-c22b-47e1-8f30-2bcaee1d3c17" namespace="Northface.Tools.ORM.ObjectModel" id="if6d6b7e4zc22bz47e1z8f30z2bcaee1d3c17" isLoaded="true" isAbstract="false">
+        <superType>i85881c27z24d8z4a89za81dz6031128ae967</superType>
+      </concept>
+      <concept name="RowIdOtherDataType" identity="ccdd5096-8948-45cc-835b-321af2c8b656" namespace="Northface.Tools.ORM.ObjectModel" id="iccdd5096z8948z45ccz835bz321af2c8b656" isLoaded="true" isAbstract="false">
+        <superType>i3efdcecezb2e0z45f0zaab1zca085144b933</superType>
+      </concept>
+      <concept name="ObjectIdOtherDataType" identity="2ce276c0-607d-43f3-ae1e-162be0c853ec" namespace="Northface.Tools.ORM.ObjectModel" id="i2ce276c0z607dz43f3zae1ez162be0c853ec" isLoaded="true" isAbstract="false">
+        <superType>i3efdcecezb2e0z45f0zaab1zca085144b933</superType>
       </concept>
       <concept name="FactTypeRequiresInternalUniquenessConstraintError" identity="c0ede09d-e8cd-49d2-9cb6-cd1071e799f9" namespace="Northface.Tools.ORM.ObjectModel" id="ic0ede09dze8cdz49d2z9cb6zcd1071e799f9" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />

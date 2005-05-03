@@ -255,6 +255,56 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		}
 	}
 	#endregion // NestedFactTypePicker class
+	#region DataTypePicker class
+	/// <summary>
+	/// An element picker to select data types for a value type.
+	/// Associated with the ObjectType.DataTypeDisplay property
+	/// </summary>
+	public class DataTypePicker : ElementPicker
+	{
+		/// <summary>
+		/// Returns a list of data types that can be used by a value type.
+		/// </summary>
+		/// <param name="context">ITypeDescriptorContext. Used to retrieve the selected instance</param>
+		/// <param name="value">The current value</param>
+		/// <returns>A list of candidates</returns>
+		protected override IList GetContentList(ITypeDescriptorContext context, object value)
+		{
+			Debug.Assert(!(value is object[]));
+			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, false); // false indicates this should not be called in multiselect mode.
+			DataTypeMoveableCollection dataTypes = instance.Model.DataTypeCollection;
+			IList content = dataTypes;
+			// Let's use the order that the types appear in the DataType.PortableDataType enum.
+			// To change this, uncomment the lines in the region below.
+			#region Sort list
+//			int count = dataTypes.Count;
+//			if (count > 0)
+//			{
+//				DataType[] types = new DataType[count];
+//				for (int i = 0; i < count; ++i)
+//				{
+//					types[i] = dataTypes[i];
+//				}
+//				Array.Sort<DataType>(types, delegate(DataType type1, DataType type2)
+//				{
+//					return string.Compare(type1.ToString(), type2.ToString());
+//				});
+//				content = types;
+//			}
+			#endregion // Sort list
+			return content;
+		}
+		private static Size myLastControlSize = Size.Empty;
+		/// <summary>
+		/// Manage control size independently
+		/// </summary>
+		protected override Size LastControlSize
+		{
+			get { return myLastControlSize; }
+			set { myLastControlSize = value; }
+		}
+	}
+	#endregion // DataTypePicker class
 	#region ReferenceModeKindPicker class
 	/// <summary>
 	/// An element picker to select reference mode kinds. Associated with the ReferenceMode.KindDisplay property

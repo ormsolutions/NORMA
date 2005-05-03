@@ -45,6 +45,7 @@ namespace Northface.Tools.ORM.Shell
 	<xsl:template match=""om:Property[@Name='NestingTypeDisplay']"" />
 	<xsl:template match=""om:Property[@Name='IsPreferred']"" />
 	<xsl:template match=""om:Property[@Name='Multiplicity']"" />
+	<xsl:template match=""om:Property[@Name='DataTypeDisplay']"" />
 	<xsl:template match=""om:Property[@Name='ReferenceModeDisplay']"" />
 	<xsl:template match=""om:Property[@Name='ReferenceModeString']"" />
 	<xsl:template match=""om:Property[@Name='ReferenceMode']"" />
@@ -211,6 +212,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <returns>true</returns>
 		private bool ShouldSerialize(ModelElement modelElement)
 		{
+			DataType dataType;
 			if (modelElement is ExternalFactConstraint ||
 				modelElement is ExternalRoleConstraint ||
 				modelElement is ExternalConstraintLink ||
@@ -218,6 +220,14 @@ namespace Northface.Tools.ORM.Shell
 				modelElement is RolePlayerLink)
 			{
 				return false;
+			}
+			else if (null != (dataType = modelElement as DataType))
+			{
+				// If the only reference to this type is the aggregating
+				// object type, then don't bother to write it out. These
+				// are intrinsic types and will reappear when the model file
+				// is reloaded.
+				return dataType.GetElementLinks().Count > 1;
 			}
 			else if (modelElement is ORMDiagram)
 			{

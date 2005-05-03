@@ -88,6 +88,11 @@
     <Compile Include="FactEditor\FactSaver.cs" />
     <Compile Include="FactEditor\FactTextViewFilter.cs" />
     <Compile Include="ObjectModel\CustomSetStringPropertyDescriptor.cs" />
+    <Compile Include="ObjectModel\DataType.cs" />
+    <Compile Include="ObjectModel\DataTypesGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DataTypesGenerator.xml</DependentUpon>
+    </Compile>
     <Compile Include="ObjectModel\Editors\ReadingEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -121,6 +126,10 @@
     </Compile>
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
+    <Compile Include="Resources\ResourceStringsGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
+    </Compile>
     <Compile Include="ShapeModel\CustomFoldShapeGeometries.cs" />
     <Compile Include="ShapeModel\FrequencyConstraintShape.cs" />
     <Compile Include="ShapeModel\InternalConstraintConnectAction.cs" />
@@ -220,8 +229,18 @@
     <EmbeddedResource Include="ShapeModel\ORMShape.dmd.resx">
       <DependentUpon>ORMShape.dmd.cs</DependentUpon>
     </EmbeddedResource>
+    <Content Include="ObjectModel\DataTypesGenerator.xslt" />
+    <Content Include="ObjectModel\DataTypesGenerator.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>DataTypesGenerator.cs</LastGenOutput>
+    </Content>
     <Content Include="Resources\AboutBox.ico" />
     <Content Include="Resources\ORM.ico" />
+    <Content Include="Resources\ResourceStringsGenerator.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
+    </Content>
+    <Content Include="Resources\ResourceStringsGenerator.xslt" />
     <None Include="Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.RoleConnector.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ShapeModel\ConnectRoleAllowed.cur" />

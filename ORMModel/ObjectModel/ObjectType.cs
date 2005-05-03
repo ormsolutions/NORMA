@@ -29,6 +29,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			Guid attributeGuid = attribute.Id;
 			if (attributeGuid == IsValueTypeMetaAttributeGuid ||
 				attributeGuid == ScaleMetaAttributeGuid ||
+				attributeGuid == DataTypeDisplayMetaAttributeGuid ||
 				attributeGuid == LengthMetaAttributeGuid ||
 				attributeGuid == NestedFactTypeDisplayMetaAttributeGuid ||
 				attributeGuid == ReferenceModeDisplayMetaAttributeGuid)
@@ -59,6 +60,10 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				ValueTypeHasDataType link = GetDataTypeLink();
 				return (link == null) ? 0 : link.Length;
+			}
+			else if (attributeGuid == ObjectType.DataTypeDisplayMetaAttributeGuid)
+			{
+				return this.DataType;
 			}
 			else if (attributeGuid == ObjectType.ReferenceModeDisplayMetaAttributeGuid)
 			{
@@ -152,7 +157,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override bool ShouldCreatePropertyDescriptor(MetaAttributeInfo metaAttrInfo)
 		{
 			Guid attributeGuid = metaAttrInfo.Id;
-			if (attributeGuid == TypeNameMetaAttributeGuid ||
+			if (attributeGuid == DataTypeDisplayMetaAttributeGuid ||
 				attributeGuid == ScaleMetaAttributeGuid ||
 				attributeGuid == LengthMetaAttributeGuid)
 			{
@@ -230,9 +235,9 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (valueType == null)
 			{
 				valueType = ObjectType.CreateObjectType(store);
-				valueType.IsValueType = true;
 				valueType.Name = valueTypeName;
 				valueType.Model = model;
+				valueType.IsValueType = true;
 			}
 
 			Role objectTypeRole = Role.CreateRole(store);
@@ -307,9 +312,9 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					Store store = model.Store;
 					valueType = ObjectType.CreateObjectType(store);
-					valueType.IsValueType = true;
 					valueType.Name = valueTypeName;
 					valueType.Model = model;
+					valueType.IsValueType = true;
 				}
 
 				if (!IsValueTypeShared(preferredConstraint))
@@ -466,13 +471,14 @@ namespace Northface.Tools.ORM.ObjectModel
 				Guid attributeGuid = e.MetaAttribute.Id;
 				if (attributeGuid == ObjectType.IsValueTypeMetaAttributeGuid)
 				{
+					ObjectType objectType = e.ModelElement as ObjectType;
 					bool newValue = (bool)e.NewValue;
 					DataType dataType = null;
 					if (newValue)
 					{
-						dataType = DataType.CreateDataType(e.ModelElement.Store);
+						dataType = objectType.Model.DefaultDataType;
 					}
-					(e.ModelElement as ObjectType).DataType = dataType;
+					objectType.DataType = dataType;
 				}
 				else if (attributeGuid == ObjectType.ScaleMetaAttributeGuid)
 				{
@@ -482,6 +488,10 @@ namespace Northface.Tools.ORM.ObjectModel
 					{
 						link.Scale = (int)e.NewValue;
 					}
+				}
+				else if (attributeGuid == ObjectType.DataTypeDisplayMetaAttributeGuid)
+				{
+					(e.ModelElement as ObjectType).DataType = e.NewValue as DataType;
 				}
 				else if (attributeGuid == ObjectType.LengthMetaAttributeGuid)
 				{
