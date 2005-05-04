@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="XSLTFILE1.xslt"?>
+<ORM2>
+    <ORMModel id="DD1F4842-93EB-4F2B-9B3A-6A7458474974" Name="Model1">
+        <SubjectHasPresentation.ORMDiagram ref="39B3DB15-A024-4BD1-B007-1B5F66597BEE" />
+        <ErrorCollection>
+            <FactTypeRequiresReadingError id="17233365-6143-4EE1-9C7F-44EE14100CCF" Name="At least one reading is required for the fact 'ObjectifiedFact1' in the model 'Model1'.">
+                <FactTypeHasFactTypeRequiresReadingError.FactType ref="DF111761-465C-4AE5-8C40-D16E137E4EB3" />
+            </FactTypeRequiresReadingError>
+            <FactTypeRequiresReadingError id="5A6FF8D4-7D50-4978-B74C-F103F13C1119" Name="At least one reading is required for the fact 'FactType1' in the model 'Model1'.">
+                <FactTypeHasFactTypeRequiresReadingError.FactType ref="A77C4580-8FAC-4CA0-9077-1F52B659818C" />
+            </FactTypeRequiresReadingError>
+            <FactTypeRequiresReadingError id="C4E4C95D-575E-49BF-97F8-DBE118411B97" Name="At least one reading is required for the fact 'FactType2' in the model 'Model1'.">
+                <FactTypeHasFactTypeRequiresReadingError.FactType ref="0B220570-5223-45C4-8C96-409F0086D968" />
+            </FactTypeRequiresReadingError>
+            <FactTypeRequiresReadingError id="F43971CF-A848-4734-AA10-E23A2FB62515" Name="At least one reading is required for the fact 'FactType3' in the model 'Model1'.">
+                <FactTypeHasFactTypeRequiresReadingError.FactType ref="88FD55A9-4A75-42C8-9D04-514F9C3EDFD8" />
+            </FactTypeRequiresReadingError>
+        </ErrorCollection>
+        <ReferenceModeKindCollection>
+            <ReferenceModeKind id="8DC2145F-73E3-420F-B829-524A46440603" Name="" FormatString="{1}" ReferenceModeType="General" />
+            <ReferenceModeKind id="8D3F04D5-5A85-4A91-83EB-D1A04DFBD4DF" Name="" FormatString="{0}_{1}" ReferenceModeType="Popular">
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="E517A5DD-838B-4F96-A112-37273CAC5A1C" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="8F30D2F2-A651-4302-87AB-119AA4580025" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="4AB98477-E15D-4FDE-9FE6-7AC1307DCFE9" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="6E260AB2-1DDF-4929-B347-A1316E2A7919" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="09CF73E0-2A84-454D-9D2A-F1BFC0D44CE4" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="21B27695-6CB3-456C-9ED8-1997FF38C9F9" />
+            </ReferenceModeKind>
+            <ReferenceModeKind id="4856CD53-BAAA-4BFB-9A6F-79F37B4F87B6" Name="" FormatString="{1}Value" ReferenceModeType="UnitBased">
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="921206B7-938C-40FC-916B-A2919886EA97" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="1D2242E7-36D1-4A4B-A65A-F478864947EA" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="374D5865-3A91-405D-944D-B0D88582FC79" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="EA7D65EA-BC3F-4D23-A9DA-BE523CCC412F" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="7FD93E9E-DBDE-4E41-820F-B106D7037FB0" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="A1A62B5F-DEB4-4DC5-8C0D-AB46FE18B23A" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="1906D8E0-1B91-4191-B935-6CD39337196F" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="BD668EE0-D647-414D-8702-BCA42900632A" />
+                <ReferenceModeHasReferenceModeKind.IntrinsicReferenceMode ref="E5F8C474-F3C5-4306-850F-FE85B8D13CBE" />
+            </ReferenceModeKind>
+        </ReferenceModeKindCollection>
+        <ExternalConstraintCollection>
+            <ExternalUniquenessConstraint id="86858C17-65C0-4F8D-B4CC-46DB941698B1" Name="ExternalUniquenessConstraint1">
+                <SingleColumnExternalFactConstraint.FactType ref="0B220570-5223-45C4-8C96-409F0086D968" />
+                <SingleColumnExternalFactConstraint.FactType ref="88FD55A9-4A75-42C8-9D04-514F9C3EDFD8" />
+                <ConstraintRoleSequenceHasRole.Role ref="2DAE67C0-0952-4071-B105-2D9A5D0EA446" />
+                <ConstraintRoleSequenceHasRole.Role ref="AC0D0B14-1B9C-4B37-81BC-DED2DD49092A" />
+                <ConstraintRoleSequenceHasRole.Role ref="73E6E7F3-0846-4C45-B78E-06F13187F0E7" />
+                <SubjectHasPresentation.ExternalConstraintShape ref="F33B7922-4284-46F9-8952-C8CE29538B24" />
+            </ExternalUniquenessConstraint>
+            <ExclusionConstraint id="8968FB96-8F52-41FB-AF36-06FC3FEE0B1D" Name="Constraint1">
+                <MultiColumnExternalFactConstraint.FactType ref="DF111761-465C-4AE5-8C40-D16E137E4EB3" />
+                <MultiColumnExternalFactConstraint.FactType ref="335BBF70-2EE9-4B91-83CA-6AAA1CB4A212" />
+                <SubjectHasPresentation.ExternalConstraintShape ref="DF2B99F3-1AF4-4E61-97A3-BB30DF281D1D" />
+            </ExclusionConstraint>
+            <ExclusionConstraint id="148FA937-801F-4B5B-9193-3D50A93504F4" Name="ExclusionConstraint1">
+                <MultiColumnExternalFactConstraint.FactType ref="A77C4580-8FAC-4CA0-9077-1F52B659818C" />
+                <MultiColumnExternalFactConstraint.FactType ref="88FD55A9-4A75-42C8-9D04-514F9C3EDFD8" />
+                <SubjectHasPresentation.ExternalConstraintShape ref="B3FDC540-BD12-40F4-9F52-9B6F7B0A3E07" />
+            </ExclusionConstraint>
+        </ExternalConstraintCollection>
+        <FactTypeCollection>
+            <FactType id="335BBF70-2EE9-4B91-83CA-6AAA1CB4A212" Name="Fact1" IsExternal="False">
+                <MultiColumnExternalFactConstraint.ExclusionConstraint ref="8968FB96-8F52-41FB-AF36-06FC3FEE0B1D" />
+                <SubjectHasPresentation.FactTypeShape ref="78238F55-42D6-4CBD-AD14-BD5890D362AB" />
+                <RoleCollection>
+                    <Role id="EFA14A1F-F47E-48E4-995F-9C9D803A8336" Name="Role1">
+                        <ConstraintRoleSequenceHasRole.InternalUniquenessConstraint ref="AFB12811-FDDE-41B6-91AD-C40955C03CE4" />
+                        <ReadingOrderHasRole.ReadingOrder ref="2FEC2DF2-679B-48D9-BDD0-AE4423A978AA" />
+                        <ReadingOrderHasRole.ReadingOrder ref="AD425BFA-ECB3-48BA-8C3F-3ED7B4CB55C0" />
+                        <ObjectTypePlaysRole.ObjectType ref="2BD9C766-EC8C-4D16-8AB7-4E7D80A1DFD4" />
+                    </Role>
+                    <Role id="4913D49D-C61C-4779-91D5-610D1F3EDB8E" Name="Role2">
+                        <ReadingOrderHasRole.ReadingOrder ref="2FEC2DF2-679B-48D9-BDD0-AE4423A978AA" />
+                        <ReadingOrderHasRole.ReadingOrder ref="AD425BFA-ECB3-48BA-8C3F-3ED7B4CB55C0" />
+                        <ObjectTypePlaysRole.ObjectType ref="DC18533B-B765-48E7-ACAC-ECE990905296" />
+                    </Role>
+                    <Role id="11BF61A2-F306-4D81-80C0-EADE4A949C0B" Name="">
+                        <ConstraintRoleSequenceHasRole.MultiColumnExternalConstraintRoleSequence ref="24D9DEBF-C8F7-4D11-83CE-DEBD1DAA26E1" />
+                        <ConstraintRoleSequenceHasRole.MultiColumnExternalConstraintRoleSequence ref="EC60B415-9271-4FA2-8B7F-BE33EA3FE58C" />
+                        <ConstraintRoleSequenceHasRole.MultiColumnExternalConstraintRoleSequence ref="8D8CBC3C-F8A6-4937-B64D-A33BBE141117" />
+                        <ReadingOrderHasRole.ReadingOrder ref="2FEC2DF2-679B-48D9-BDD0-AE4423A978AA" />
+                        <ReadingOrderHasRole.ReadingOrder ref="AD425BFA-ECB3-48BA-8C3F-3ED7B4CB55C0" />
+                        <ObjectTypePlaysRole.ObjectType ref="A17378D0-5FBD-4849-8D99-D0E2AB33CFDA" />
+                    </Role>
+                </RoleCollection>
+                <ReadingOrderCollection>
+                    <ReadingOrder id="2FEC2DF2-679B-48D9-BDD0-AE4423A978AA">
+                        <ReadingOrderHasRole.Role ref="EFA14A1F-F47E-48E4-995F-9C9D803A8336" />
+                        <ReadingOrderHasRole.Role ref="4913D49D-C61C-4779-91D5-610D1F3EDB8E" />
+                        <ReadingOrderHasRole.Role ref="11BF61A2-F306-4D81-80C0-EADE4A949C0B" />
+                        <SubjectHasPresentation.ReadingShape ref="8F370285-C261-43E7-978F-958FB659EBF6" />
+                        <ReadingCollection>
+                            <Reading id="7C3807A7-DB7D-48A3-8A98-7FF9CBCC1F58" Text="{0} has {1}{2}" IsPrimary="True"
+								Language="" />
+                            <Reading id="F1E21802-3C63-493D-81A8-D7051680F6F8" Text="{0} owns {1}{2}" IsPrimary="False"
+								Language="" />
+                            <Reading id="7F6190C6-ECFF-4CC0-8BC8-4C18E516C64A" Text="{0} possesses {1}{2}" IsPrimary="False"
+								Language="" />
+                        </ReadingCollection>
+                    </ReadingOrder>
+                    <ReadingOrder id="AD425BFA-ECB3-48BA-8C3F-3ED7B4CB55C0">
+                        <ReadingOrderHasRole.Role ref="4913D49D-C61C-4779-91D5-610D1F3EDB8E" />
+                        <ReadingOrderHasRole.Role ref="EFA14A1F-F47E-48E4-995F-9C9D803A8336" />
+                        <ReadingOrderHasRole.Role ref="11BF61A2-F306-4D81-80C0-EADE4A949C0B" />
+                        <ReadingCollection>
+                            <Reading id="874E2E08-43EC-45FF-AE9C-18933D1091EE" Text="{0} is of {1}{2}" IsPrimary="True"
+								Language="" />
+                        </ReadingCollection>
+                    </ReadingOrder>
+                </ReadingOrderCollection>
+                <InternalConstraintCollection>
+                    <InternalUniquenessConstraint id="AFB12811-FDDE-41B6-91AD-C40955C03CE4" Name="">
+                        <ConstraintRoleSequenceHasRole.Role ref="EFA14A1F-F47E-48E4-995F-9C9D803A8336" />
+                    </InternalUniquenessConstraint>
+                </InternalConstraintCollection>
+                <DerivationRule />
+            </FactType>
+            <FactType id="DF111761-465C-4AE5-8C40-D16E137E4EB3" Name="ObjectifiedFact1" IsExternal="False">
+                <MultiColumnExternalFactConstraint.ExclusionConstraint ref="8968FB96-8F52-41FB-AF36-06FC3FEE0B1D" />
+                <FactTypeHasFactTypeRequiresReadingError.FactTypeRequiresReadingError ref="17233365-6143-4EE1-9C7F-44EE14100CCF" />
+                <NestingEntityTypeHasFactType.ObjectType ref="A17378D0-5FBD-4849-8D99-D0E2AB33CFDA" />
+                <SubjectHasPresentation.FactTypeShape ref="3430B461-0C55-4024-B37F-12285846CC5B" />
+                <RoleCollection>
+                    <Role id="A04F349B-D7E6-4E39-80E0-27B044D0E33A" Name="Role1">
+                        <ConstraintRoleSequenceHasRole.MultiColumnExternalConstraintRoleSequence ref="24D9DEBF-C8F7-4D11-83CE-DEBD1DAA26E1" />
+                        <ConstraintRoleSequenceHasRole.MultiColumnExternalConstraintRoleSequence ref="EC60B415-9271-4FA2-8B7F-BE33EA3FE58C" />
+                        <ConstraintRoleSequenceHasRole.MultiColumnExternalConstraintRoleSequence ref="8D8CBC3C-F8A6-4937-B64D-A33BBE141117" />
+                        <ObjectTypePlaysRole.ObjectType ref="A0D813AC-2590-491B-8232-9E999340B210" />
+                    </Role>
+                </RoleCollection>
+                <ReadingOrderCollection />
+                <InternalConstraintCollection />
+                <DerivationRule />
+            </FactType>
+            <FactType id="A77C4580-8FAC-4CA0-9077-1F52B659818C" Name="FactType1" IsExternal="False">
+                <MultiColumnExternalFactConstraint.ExclusionConstraint ref="148FA937-801F-4B5B-9193-3D50A93504F4" />
+                <FactTypeHasFactTypeRequiresReadingError.FactTypeRequiresReadingError ref="5A6FF8D4-7D50-4978-B74C-F103F13C1119" />
+                <SubjectHasPresentation.FactTypeShape ref="768CE3FD-BA78-4EAF-9E10-E60CB23AE2B7" />
+                <RoleCollection>
+                    <Role id="AE528C42-0B8C-4C28-A7AA-BD9DFD7EF76E" Name="">
+                        <ConstraintRoleSequenceHasRole.MultiColumnExternalConstraintRoleSequence ref="6CD4D9C1-2F20-41BE-8341-2865EE383CBB" />
+                        <ObjectTypePlaysRole.ObjectType ref="48531A6B-F95A-4B5B-A118-C2EB93A00623" />
+                    </Role>
+                    <Role id="ED79B0F7-02D4-42B5-98BD-31C78A8BA768" Name="">
+                        <ConstraintRoleSequenceHasRole.MultiColumnExternalConstraintRoleSequence ref="6CD4D9C1-2F20-41BE-8341-2865EE383CBB" />
+                        <ObjectTypePlaysRole.ObjectType ref="EE586469-B2F3-408F-8844-646644981D16" />
+                    </Role>
+                </RoleCollection>
+                <ReadingOrderCollection />
+                <InternalConstraintCollection />
+                <DerivationRule />
+            </FactType>
+            <FactType id="0B220570-5223-45C4-8C96-409F0086D968" Name="FactType2" IsExternal="False">
+                <FactTypeHasFactTypeRequiresReadingError.FactTypeRequiresReadingError ref="C4E4C95D-575E-49BF-97F8-DBE118411B97" />
+                <SingleColumnExternalFactConstraint.ExternalUniquenessConstraint ref="86858C17-65C0-4F8D-B4CC-46DB941698B1" />
+                <SubjectHasPresentation.FactTypeShape ref="D4ABE4C5-DF9F-47CB-BE95-3AE58BF1AEE8" />
+                <RoleCollection>
+                    <Role id="7A3C44D1-1A3B-4EA8-90D1-942ADC5E0BD7" Name="">
+                        <ConstraintRoleSequenceHasRole.InternalUniquenessConstraint ref="5F70D828-BE2D-4050-8954-D8F4BF5259F1" />
+                        <ObjectTypePlaysRole.ObjectType ref="48531A6B-F95A-4B5B-A118-C2EB93A00623" />
+                    </Role>
+                    <Role id="2DAE67C0-0952-4071-B105-2D9A5D0EA446" Name="">
+                        <ConstraintRoleSequenceHasRole.ExternalUniquenessConstraint ref="86858C17-65C0-4F8D-B4CC-46DB941698B1" />
+                        <ObjectTypePlaysRole.ObjectType ref="58164AEC-C62A-4DA9-B150-6187E1F55E0B" />
+                    </Role>
+                </RoleCollection>
+                <ReadingOrderCollection />
+                <InternalConstraintCollection>
+                    <SimpleMandatoryConstraint id="5F70D828-BE2D-4050-8954-D8F4BF5259F1" Name="">
+                        <ConstraintRoleSequenceHasRole.Role ref="7A3C44D1-1A3B-4EA8-90D1-942ADC5E0BD7" />
+                    </SimpleMandatoryConstraint>
+                </InternalConstraintCollection>
+                <DerivationRule />
+            </FactType>
+            <FactType id="88FD55A9-4A75-42C8-9D04-514F9C3EDFD8" Name="FactType3" IsExternal="False">
+                <MultiColumnExternalFactConstraint.ExclusionConstraint ref="148FA937-801F-4B5B-9193-3D50A93504F4" />
+                <FactTypeHasFactTypeRequiresReadingError.FactTypeRequiresReadingError ref="F43971CF-A848-4734-AA10-E23A2FB62515" />
+                <SingleColumnExternalFactConstraint.ExternalUniquenessConstraint ref="86858C17-65C0-4F8D-B4CC-46DB941698B1" />
+                <SubjectHasPresentation.FactTypeShape ref="C618C22C-0BB3-4729-9C5F-012DABC51E47" />
+                <RoleCollection>
+                    <Role id="73E6E7F3-0846-4C45-B78E-06F13187F0E7" Name="">
+                        <ConstraintRoleSequenceHasRole.ExternalUniquenessConstraint ref="86858C17-65C0-4F8D-B4CC-46DB941698B1" />
+                        <ConstraintRoleSequenceHasRole.MultiColumnExternalConstraintRoleSequence ref="55ADB534-2396-42E1-8BD9-09FC5730159E" />
+                        <ConstraintRoleSequenceHasRole.InternalUniquenessConstraint ref="5A019FF7-9D7E-41A5-BF4B-466B48D92B5B" />
+                        <ObjectTypePlaysRole.ObjectType ref="48531A6B-F95A-4B5B-A118-C2EB93A00623" />
+                    </Role>
+                    <Role id="AC0D0B14-1B9C-4B37-81BC-DED2DD49092A" Name="">
+                        <ConstraintRoleSequenceHasRole.ExternalUniquenessConstraint ref="86858C17-65C0-4F8D-B4CC-46DB941698B1" />
+                        <ConstraintRoleSequenceHasRole.MultiColumnExternalConstraintRoleSequence ref="55ADB534-2396-42E1-8BD9-09FC5730159E" />
+                        <ConstraintRoleSequenceHasRole.InternalUniquenessConstraint ref="5A019FF7-9D7E-41A5-BF4B-466B48D92B5B" />
+                        <ObjectTypePlaysRole.ObjectType ref="EE586469-B2F3-408F-8844-646644981D16" />
+                    </Role>
+                </RoleCollection>
+                <ReadingOrderCollection />
+                <InternalConstraintCollection>
+                    <InternalUniquenessConstraint id="5A019FF7-9D7E-41A5-BF4B-466B48D92B5B" Name="">
+                        <ConstraintRoleSequenceHasRole.Role ref="73E6E7F3-0846-4C45-B78E-06F13187F0E7" />
+                        <ConstraintRoleSequenceHasRole.Role ref="AC0D0B14-1B9C-4B37-81BC-DED2DD49092A" />
+                    </InternalUniquenessConstraint>
+                </InternalConstraintCollection>
+                <DerivationRule />
+            </FactType>
+        </FactTypeCollection>
+        <ObjectTypeCollection>
+            <ObjectType id="2BD9C766-EC8C-4D16-8AB7-4E7D80A1DFD4" Name="ValueType1" IsExternal="False" IsIndependent="True"
+				TypeName="byte">
+                <ObjectTypePlaysRole.Role ref="EFA14A1F-F47E-48E4-995F-9C9D803A8336" />
+                <ValueTypeHasDataType id="7DF055CB-F8F0-45A5-9FDF-D00D10584906" Scale="0" Length="0" />
+                <SubjectHasPresentation.ObjectTypeShape ref="097D53A3-0034-4653-8055-F3DDA39729AC" />
+            </ObjectType>
+            <ObjectType id="DC18533B-B765-48E7-ACAC-ECE990905296" Name="EntityType1" IsExternal="False"
+				IsIndependent="False" TypeName="">
+                <ObjectTypePlaysRole.Role ref="4913D49D-C61C-4779-91D5-610D1F3EDB8E" />
+                <SubjectHasPresentation.ObjectTypeShape ref="0CFA2D54-338A-4B93-9703-BCB22D494616" />
+            </ObjectType>
+            <ObjectType id="A17378D0-5FBD-4849-8D99-D0E2AB33CFDA" Name="ObjectifyFact1" IsExternal="False"
+				IsIndependent="False" TypeName="">
+                <ObjectTypePlaysRole.Role ref="11BF61A2-F306-4D81-80C0-EADE4A949C0B" />
+                <NestingEntityTypeHasFactType.FactType ref="DF111761-465C-4AE5-8C40-D16E137E4EB3" />
+                <SubjectHasPresentation.ObjectifiedFactTypeNameShape ref="1BBB92CD-0AAD-45BE-A161-C770D55FB68E" />
+            </ObjectType>
+            <ObjectType id="A0D813AC-2590-491B-8232-9E999340B210" Name="Person" IsExternal="False" IsIndependent="False"
+				TypeName="">
+                <ObjectTypePlaysRole.Role ref="A04F349B-D7E6-4E39-80E0-27B044D0E33A" />
+                <SubjectHasPresentation.ObjectTypeShape ref="CD9A79B7-ED51-4B2F-A575-642C3D2716DD" />
+            </ObjectType>
+            <ObjectType id="48531A6B-F95A-4B5B-A118-C2EB93A00623" Name="EntityType2" IsExternal="False"
+				IsIndependent="False" TypeName="">
+                <ObjectTypePlaysRole.Role ref="73E6E7F3-0846-4C45-B78E-06F13187F0E7" />
+                <ObjectTypePlaysRole.Role ref="7A3C44D1-1A3B-4EA8-90D1-942ADC5E0BD7" />
+                <ObjectTypePlaysRole.Role ref="AE528C42-0B8C-4C28-A7AA-BD9DFD7EF76E" />
+                <SubjectHasPresentation.ObjectTypeShape ref="3AE0C6FF-FF57-4CF4-B0C1-58A83DA5BB95" />
+            </ObjectType>
+            <ObjectType id="58164AEC-C62A-4DA9-B150-6187E1F55E0B" Name="EntityType3" IsExternal="False"
+				IsIndependent="False" TypeName="">
+                <ObjectTypePlaysRole.Role ref="2DAE67C0-0952-4071-B105-2D9A5D0EA446" />
+                <SubjectHasPresentation.ObjectTypeShape ref="447E995A-651B-40B8-A6E9-2907E5A6A0EE" />
+            </ObjectType>
+            <ObjectType id="EE586469-B2F3-408F-8844-646644981D16" Name="ValueType2" IsExternal="False" IsIndependent="False"
+				TypeName="">
+                <ObjectTypePlaysRole.Role ref="AC0D0B14-1B9C-4B37-81BC-DED2DD49092A" />
+                <ObjectTypePlaysRole.Role ref="ED79B0F7-02D4-42B5-98BD-31C78A8BA768" />
+                <ValueTypeHasDataType id="D6132C20-B45D-46F7-B000-26A445BED2AA" Scale="0" Length="0" />
+                <SubjectHasPresentation.ObjectTypeShape ref="11DE23E7-CE40-467D-A22B-46CA52D32177" />
+            </ObjectType>
+        </ObjectTypeCollection>
+        <ReferenceModeCollection>
+            <IntrinsicReferenceMode id="E517A5DD-838B-4F96-A112-37273CAC5A1C" Name="id">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="8D3F04D5-5A85-4A91-83EB-D1A04DFBD4DF" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="8F30D2F2-A651-4302-87AB-119AA4580025" Name="name">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="8D3F04D5-5A85-4A91-83EB-D1A04DFBD4DF" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="4AB98477-E15D-4FDE-9FE6-7AC1307DCFE9" Name="code">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="8D3F04D5-5A85-4A91-83EB-D1A04DFBD4DF" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="6E260AB2-1DDF-4929-B347-A1316E2A7919" Name="title">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="8D3F04D5-5A85-4A91-83EB-D1A04DFBD4DF" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="09CF73E0-2A84-454D-9D2A-F1BFC0D44CE4" Name="nr">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="8D3F04D5-5A85-4A91-83EB-D1A04DFBD4DF" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="21B27695-6CB3-456C-9ED8-1997FF38C9F9" Name="#">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="8D3F04D5-5A85-4A91-83EB-D1A04DFBD4DF" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="921206B7-938C-40FC-916B-A2919886EA97" Name="mm">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="4856CD53-BAAA-4BFB-9A6F-79F37B4F87B6" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="1D2242E7-36D1-4A4B-A65A-F478864947EA" Name="cm">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="4856CD53-BAAA-4BFB-9A6F-79F37B4F87B6" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="374D5865-3A91-405D-944D-B0D88582FC79" Name="kg">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="4856CD53-BAAA-4BFB-9A6F-79F37B4F87B6" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="EA7D65EA-BC3F-4D23-A9DA-BE523CCC412F" Name="mile">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="4856CD53-BAAA-4BFB-9A6F-79F37B4F87B6" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="7FD93E9E-DBDE-4E41-820F-B106D7037FB0" Name="Celsius">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="4856CD53-BAAA-4BFB-9A6F-79F37B4F87B6" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="A1A62B5F-DEB4-4DC5-8C0D-AB46FE18B23A" Name="USD">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="4856CD53-BAAA-4BFB-9A6F-79F37B4F87B6" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="1906D8E0-1B91-4191-B935-6CD39337196F" Name="AUD">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="4856CD53-BAAA-4BFB-9A6F-79F37B4F87B6" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="BD668EE0-D647-414D-8702-BCA42900632A" Name="EUR">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="4856CD53-BAAA-4BFB-9A6F-79F37B4F87B6" />
+            </IntrinsicReferenceMode>
+            <IntrinsicReferenceMode id="E5F8C474-F3C5-4306-850F-FE85B8D13CBE" Name="CE">
+                <ReferenceModeHasReferenceModeKind.ReferenceModeKind ref="4856CD53-BAAA-4BFB-9A6F-79F37B4F87B6" />
+            </IntrinsicReferenceMode>
+        </ReferenceModeCollection>
+    </ORMModel>
+    <ORMDiagram id="39B3DB15-A024-4BD1-B007-1B5F66597BEE" IsCompleteView="False" DiagramId="9d5d8ae1-c1f1-4b7f-9041-64a97182367a"
+		Name="" BaseFontName="Tahoma" BaseFontSize="0.138888895511627">
+        <SubjectHasPresentation.ORMModel ref="DD1F4842-93EB-4F2B-9B3A-6A7458474974" />
+    </ORMDiagram>
+    <DataType id="F360C4E4-A573-4D99-B7F8-0DFA2656CB9E" Name="byte">
+        <ValueTypeHasDataType ref="7DF055CB-F8F0-45A5-9FDF-D00D10584906" />
+    </DataType>
+    <DataType id="24520B51-6E82-405B-A832-971806532F6F" Name="">
+        <ValueTypeHasDataType ref="D6132C20-B45D-46F7-B000-26A445BED2AA" />
+    </DataType>
+</ORM2>
