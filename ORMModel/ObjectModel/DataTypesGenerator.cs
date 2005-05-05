@@ -11,59 +11,84 @@
 namespace Northface.Tools.ORM.ObjectModel
 {
     using System;
-///<summary></summary>
-[CLSCompliant(true)]//;
     
+    /// <summary>
+    ///</summary>
+    [System.CLSCompliant(true)]
     public enum PortableDataType
     {
-        ///<summary></summary>
-Unspecified,
-        ///<summary>A fixed length text data type</summary>
-TextFixedLength,
-        ///<summary>A variable length text data type</summary>
-TextVariableLength,
-        ///<summary>A large length text data type</summary>
-TextLargeLength,
-        ///<summary>A signed integer numeric data type</summary>
-NumericSignedInteger,
-        ///<summary>An unsigned integer numeric data type</summary>
-NumericUnsignedInteger,
-        ///<summary>An auto counter numeric data type</summary>
-NumericAutoCounter,
-        ///<summary>A floating point numeric data type</summary>
-NumericFloatingPoint,
-        ///<summary>A decimal numeric data type</summary>
-NumericDecimal,
-        ///<summary>A money numeric data type</summary>
-NumericMoney,
-        ///<summary>A fixed length raw data data type</summary>
-RawDataFixedLength,
-        ///<summary>A variable length raw data data type</summary>
-RawDataVariableLength,
-        ///<summary>A large length raw data data type</summary>
-RawDataLargeLength,
-        ///<summary>A picture raw data data type</summary>
-RawDataPicture,
-        ///<summary>An OLE object raw data data type</summary>
-RawDataOleObject,
-        ///<summary>An auto timestamp temporal data type</summary>
-TemporalAutoTimestamp,
-        ///<summary>A time temporal data type</summary>
-TemporalTime,
-        ///<summary>A date temporal data type</summary>
-TemporalDate,
-        ///<summary>A date and time temporal data type</summary>
-TemporalDateAndTime,
-        ///<summary>A true or false logical data type</summary>
-LogicalTrueOrFalse,
-        ///<summary>A yes or no logical data type</summary>
-LogicalYesOrNo,
-        ///<summary>A row id data type (can not be classified in any of the groups above)</summary>
-OtherRowId,
-        ///<summary>An object id data type (can not be classified in any of the groups above)</summary>
-OtherObjectId,
-        ///<summary></summary>
-UserDefined,
+        /// <summary>
+        ///</summary>
+        Unspecified,
+        /// <summary>
+        ///</summary>
+        TextFixedLength,
+        /// <summary>
+        ///</summary>
+        TextVariableLength,
+        /// <summary>
+        ///</summary>
+        TextLargeLength,
+        /// <summary>
+        ///</summary>
+        NumericSignedInteger,
+        /// <summary>
+        ///</summary>
+        NumericUnsignedInteger,
+        /// <summary>
+        ///</summary>
+        NumericAutoCounter,
+        /// <summary>
+        ///</summary>
+        NumericFloatingPoint,
+        /// <summary>
+        ///</summary>
+        NumericDecimal,
+        /// <summary>
+        ///</summary>
+        NumericMoney,
+        /// <summary>
+        ///</summary>
+        RawDataFixedLength,
+        /// <summary>
+        ///</summary>
+        RawDataVariableLength,
+        /// <summary>
+        ///</summary>
+        RawDataLargeLength,
+        /// <summary>
+        ///</summary>
+        RawDataPicture,
+        /// <summary>
+        ///</summary>
+        RawDataOleObject,
+        /// <summary>
+        ///</summary>
+        TemporalAutoTimestamp,
+        /// <summary>
+        ///</summary>
+        TemporalTime,
+        /// <summary>
+        ///</summary>
+        TemporalDate,
+        /// <summary>
+        ///</summary>
+        TemporalDateAndTime,
+        /// <summary>
+        ///</summary>
+        LogicalTrueOrFalse,
+        /// <summary>
+        ///</summary>
+        LogicalYesOrNo,
+        /// <summary>
+        ///</summary>
+        OtherRowId,
+        /// <summary>
+        ///</summary>
+        OtherObjectId,
+        /// <summary>
+        ///</summary>
+        UserDefined,
     }
     /// <summary>
     ///</summary>

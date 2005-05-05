@@ -5,12 +5,16 @@
     xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
     <xsl:template match="DataTypes">
         <plx:Root xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
-            <plx:Using name="System;&#13;&#10;///&lt;summary&gt;{comment}&lt;/summary&gt;&#13;&#10;[CLSCompliant(true)]//"/>
+            <plx:Using name="System"/>
             <plx:Namespace name="Northface.Tools.ORM.ObjectModel">
                 <plx:Enum name="PortableDataType" visibility="Public">
+					<plx:Attribute dataTypeName="CLSCompliant" dataTypeQualifier="System">
+						<plx:PassParam><plx:TrueKeyword/></plx:PassParam>
+					</plx:Attribute>
                     <xsl:for-each select="DataType">
                         <xsl:for-each select="SubType">
-                            <plx:EnumItem name="///&lt;summary&gt;{comment}&lt;/summary&gt;&#13;&#10;{../@name}{@name}"/>
+							<!-- UNDONE: Add comment text when comments are supported -->
+                            <plx:EnumItem name="{../@name}{@name}"/>
                         </xsl:for-each>
                     </xsl:for-each>
                 </plx:Enum>
