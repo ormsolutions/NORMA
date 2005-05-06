@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<?xml-stylesheet type="text/xsl" href="XSLTFILE1.xslt"?>
+<?xml-stylesheet type="text/xsl" href="ORM2XSL.xslt"?>
 <ORM2>
     <ORMModel id="DD1F4842-93EB-4F2B-9B3A-6A7458474974" Name="Model1">
         <SubjectHasPresentation.ORMDiagram ref="39B3DB15-A024-4BD1-B007-1B5F66597BEE" />

@@ -6,8 +6,8 @@
                 <orm:Data> Note info</orm:Data>
             </orm:ObjectNotes>
             <orm:PlayedRoles>
-                <orm:RoleRef>Role1</orm:RoleRef>
-                <orm:RoleRef>Role2</orm:RoleRef>
+                <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
             </orm:PlayedRoles>
             <orm:ReferenceMode></orm:ReferenceMode>
         </orm:EntityType>
@@ -45,8 +45,8 @@
                         </orm:Reading>
                     </orm:Readings>
                     <orm:RoleSequence>
-                        <orm:RoleRef>Role1</orm:RoleRef>
-                        <orm:RoleRef>Role2</orm:RoleRef>
+                        <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
                     </orm:RoleSequence>
                 </orm:ReadingOrder>
             </orm:ReadingOrders>
@@ -62,8 +62,8 @@
                         <orm:Data>Constraint note</orm:Data>
                     </orm:ConstraintNote>
                     <orm:RoleSequence>
-                        <orm:RoleRef>Role1</orm:RoleRef>
-                        <orm:RoleRef>Role2</orm:RoleRef>
+                        <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
                     </orm:RoleSequence>
                 </orm:InternalUniquenessConstraint>
                 <orm:SimpleMandatoryConstraint>
@@ -71,8 +71,8 @@
                         <orm:Data>Constraint note</orm:Data>
                     </orm:ConstraintNote>
                     <orm:RoleSequence>
-                        <orm:RoleRef>Role1</orm:RoleRef>
-                        <orm:RoleRef>Role2</orm:RoleRef>
+                        <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
                     </orm:RoleSequence>
                 </orm:SimpleMandatoryConstraint>
             </orm:InternalConstraints>
@@ -84,8 +84,8 @@
                 <orm:Data>Constraint Note Data</orm:Data>
             </orm:ConstraintNote>
             <orm:RoleSequence>
-                <orm:RoleRef>Role1</orm:RoleRef>
-                <orm:RoleRef>Role2</orm:RoleRef>
+                <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
             </orm:RoleSequence>
         </orm:DisjunctiveMandatoryConstraint>
         <orm:EqualityConstraint>
@@ -94,12 +94,12 @@
             </orm:ConstraintNote>
             <orm:RoleSequences>
                 <orm:RoleSequence>
-                    <orm:RoleRef>Role1</orm:RoleRef>
-                    <orm:RoleRef>Role2</orm:RoleRef>
+                    <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
                 </orm:RoleSequence>
                 <orm:RoleSequence>
-                    <orm:RoleRef>Role1</orm:RoleRef>
-                    <orm:RoleRef>Role2</orm:RoleRef>
+                    <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
                 </orm:RoleSequence>
             </orm:RoleSequences>
         </orm:EqualityConstraint>
@@ -109,12 +109,12 @@
             </orm:ConstraintNote>
             <orm:RoleSequences>
                 <orm:RoleSequence>
-                    <orm:RoleRef>Role1</orm:RoleRef>
-                    <orm:RoleRef>Role2</orm:RoleRef>
+                    <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
                 </orm:RoleSequence>
                 <orm:RoleSequence>
-                    <orm:RoleRef>Role1</orm:RoleRef>
-                    <orm:RoleRef>Role2</orm:RoleRef>
+                    <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
                 </orm:RoleSequence>
             </orm:RoleSequences>
         </orm:ExclusionConstraint>
@@ -123,8 +123,8 @@
                 <orm:Data>Constraint Note Data</orm:Data>
             </orm:ConstraintNote>
             <orm:RoleSequence>
-                <orm:RoleRef>Role1</orm:RoleRef>
-                <orm:RoleRef>Role2</orm:RoleRef>
+                <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
             </orm:RoleSequence>
         </orm:ExternalUniqunessConstraint>
         <orm:FrequencyConstraint  ID="FrequencyConstraint1">
@@ -132,8 +132,8 @@
                 <orm:Data>Constraint Note Data</orm:Data>
             </orm:ConstraintNote>
             <orm:RoleSequence>
-                <orm:RoleRef>Role1</orm:RoleRef>
-                <orm:RoleRef>Role2</orm:RoleRef>
+                <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
             </orm:RoleSequence>
         </orm:FrequencyConstraint>
         <orm:RingConstraint>
@@ -141,8 +141,8 @@
                 <orm:Data>Constraint Note Data</orm:Data>
             </orm:ConstraintNote>
             <orm:RoleSequence>
-                <orm:RoleRef>Role1</orm:RoleRef>
-                <orm:RoleRef>Role2</orm:RoleRef>
+                <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
             </orm:RoleSequence>
         </orm:RingConstraint>
         <orm:SubsetConstraint FromRole="RoleSequence1" ToRole="RoleSequence2">
@@ -151,12 +151,12 @@
             </orm:ConstraintNote>
             <orm:RoleSequences>
                 <orm:RoleSequence ID="RoleSequence1">
-                    <orm:RoleRef>Role1</orm:RoleRef>
-                    <orm:RoleRef>Role2</orm:RoleRef>
+                    <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
                 </orm:RoleSequence>
                 <orm:RoleSequence ID="RoleSequence2">
-                    <orm:RoleRef>Role1</orm:RoleRef>
-                    <orm:RoleRef>Role2</orm:RoleRef>
+                    <orm:RoleRef ref="Role1"/>
+                <orm:RoleRef ref="Role2"/>
                 </orm:RoleSequence>
             </orm:RoleSequences>
         </orm:SubsetConstraint>

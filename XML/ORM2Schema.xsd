@@ -123,15 +123,16 @@ If we don't serialize intrinsicreference modes how do a link to them? by Name?--
             <xs:element name ="RoleSequence" type ="RoleSequence" minOccurs="1" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
+    <!-- Scot Becker has Role SequenceItems inside a rolesequence which furhter breaks this down. Is this nessicary?-->
     <xs:complexType name ="RoleSequence">
         <xs:sequence minOccurs ="0" maxOccurs ="unbounded">
             <xs:element name ="RoleRef" type ="RoleRef" minOccurs="1" maxOccurs="1"/>
         </xs:sequence>
         <xs:attribute name ="ID" type ="xs:ID" use ="optional"/>
     </xs:complexType>
-    <xs:simpleType name ="RoleRef">
-        <xs:restriction base ="xs:IDREF"/>
-    </xs:simpleType>
+    <xs:complexType name ="RoleRef">
+        <xs:attribute name="ref" type="xs:IDREF"/>
+    </xs:complexType>
     <!--End SimpleTypes-->
     <!--DataType -->
     <xs:complexType name="Data">
@@ -197,6 +198,8 @@ If we don't serialize intrinsicreference modes how do a link to them? by Name?--
                 </xs:sequence>
                 <xs:attribute name="Name" type="xs:string" use="required"/>
                 <xs:attribute name="ID" type="xs:ID" use="required"/>
+                <!--Derived-->
+                <xs:attribute name="IsFunctional" type="xs:boolean"  default="false"/>
                 <!--Derived-->
                 <xs:attribute name="IsMandatory" type="xs:boolean"  default="false"/>
                 <!--Derived-->

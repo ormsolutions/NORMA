@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:output method="xml" indent ="yes" encoding="utf-8"/>
     <xsl:template match="/ORM2/ORMModel">
         <xsl:element name="ORMModel" namespace="http://schemas.northface.edu/orm/ormcore">
             <xsl:apply-templates select="ObjectTypeCollection"/>
@@ -7,7 +8,7 @@
         </xsl:element>
     </xsl:template>
     <xsl:template name="Objects" match="ObjectTypeCollection">
-        <xsl:element name="Objects" namespace="http://schemas.northface.edu/orm/ormcore">
+        <xsl:element name="Objects" namespace="http://schemas.northface.edu/orm/ormcore" >
             <xsl:apply-templates select="ObjectType"/>
         </xsl:element>
     </xsl:template>
@@ -49,9 +50,11 @@
             <xsl:apply-templates select="@ref"/>
         </xsl:element>
     </xsl:template>
-    <xsl:template match="ObjectTypePlaysRole.Role">
+    <xsl:template match="ObjectTypePlaysRole.Role|ConstraintRoleSequenceHasRole.Role|ReadingOrderHasRole.Role">
         <xsl:element name ="RoleRef" namespace="http://schemas.northface.edu/orm/ormcore">
-            <xsl:apply-templates select="@ref"/>
+            <xsl:attribute name="ref">
+                <xsl:apply-templates select="@ref"/>
+            </xsl:attribute>
         </xsl:element>
     </xsl:template>
     <xsl:template match="@ref">
@@ -140,11 +143,6 @@
             </xsl:element>
         </xsl:element>
     </xsl:template>
-    <xsl:template match="ConstraintRoleSequenceHasRole.Role">
-        <xsl:element name="RoleRef" namespace="http://schemas.northface.edu/orm/ormcore">
-            <xsl:apply-templates select="@ref"/>
-        </xsl:element>
-    </xsl:template>
     <xsl:template match="DerivationRule">
         <xsl:element name="DerivationRule" namespace="http://schemas.northface.edu/orm/ormcore">
             <xsl:element name="Data" namespace="http://schemas.northface.edu/orm/ormcore">
@@ -163,11 +161,6 @@
             <xsl:element name="RoleSequence" namespace="http://schemas.northface.edu/orm/ormcore">
                 <xsl:apply-templates select="ReadingOrderHasRole.Role"/>
             </xsl:element>
-        </xsl:element>
-    </xsl:template>
-    <xsl:template match="ReadingOrderHasRole.Role">
-        <xsl:element name="RoleRef" namespace="http://schemas.northface.edu/orm/ormcore">
-            <xsl:apply-templates select="@ref"/>
         </xsl:element>
     </xsl:template>
     <xsl:template match="ReadingCollection">

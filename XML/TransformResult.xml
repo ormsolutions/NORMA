@@ -1,48 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ORMModel xmlns="http://schemas.northface.edu/orm/ormcore">
     <Objects>
-        <ValueType ID="GUID_2BD9C766-EC8C-4D16-8AB7-4E7D80A1DFD4" Name="ValueType1" IsIndependent="True" xmlns="">
+        <ValueType ID="GUID_2BD9C766-EC8C-4D16-8AB7-4E7D80A1DFD4" Name="ValueType1" IsIndependent="True">
             <PlayedRoles>
-                <RoleRef>GUID_EFA14A1F-F47E-48E4-995F-9C9D803A8336</RoleRef>
+                <RoleRef ref="GUID_EFA14A1F-F47E-48E4-995F-9C9D803A8336" />
             </PlayedRoles>
-            <ConceptualDataType Type="byte" Scale="0" Length="0"></ConceptualDataType>
+            <ConceptualDataType Type="byte" Scale="0" Length="0" />
         </ValueType>
-        <EntityType ID="GUID_DC18533B-B765-48E7-ACAC-ECE990905296" Name="EntityType1" xmlns="">
+        <EntityType ID="GUID_DC18533B-B765-48E7-ACAC-ECE990905296" Name="EntityType1">
             <PlayedRoles>
-                <RoleRef>GUID_4913D49D-C61C-4779-91D5-610D1F3EDB8E</RoleRef>
+                <RoleRef ref="GUID_4913D49D-C61C-4779-91D5-610D1F3EDB8E" />
             </PlayedRoles>
         </EntityType>
-        <ObjectifiedType ID="GUID_A17378D0-5FBD-4849-8D99-D0E2AB33CFDA" Name="ObjectifyFact1" xmlns="">
+        <ObjectifiedType ID="GUID_A17378D0-5FBD-4849-8D99-D0E2AB33CFDA" Name="ObjectifyFact1">
             <PlayedRoles>
-                <RoleRef>GUID_11BF61A2-F306-4D81-80C0-EADE4A949C0B</RoleRef>
+                <RoleRef ref="GUID_11BF61A2-F306-4D81-80C0-EADE4A949C0B" />
             </PlayedRoles>
             <NestedPredicate>GUID_DF111761-465C-4AE5-8C40-D16E137E4EB3</NestedPredicate>
         </ObjectifiedType>
-        <EntityType ID="GUID_A0D813AC-2590-491B-8232-9E999340B210" Name="Person" xmlns="">
+        <EntityType ID="GUID_A0D813AC-2590-491B-8232-9E999340B210" Name="Person">
             <PlayedRoles>
-                <RoleRef>GUID_A04F349B-D7E6-4E39-80E0-27B044D0E33A</RoleRef>
+                <RoleRef ref="GUID_A04F349B-D7E6-4E39-80E0-27B044D0E33A" />
             </PlayedRoles>
         </EntityType>
-        <EntityType ID="GUID_48531A6B-F95A-4B5B-A118-C2EB93A00623" Name="EntityType2" xmlns="">
+        <EntityType ID="GUID_48531A6B-F95A-4B5B-A118-C2EB93A00623" Name="EntityType2">
             <PlayedRoles>
-                <RoleRef>GUID_73E6E7F3-0846-4C45-B78E-06F13187F0E7</RoleRef>
-                <RoleRef>GUID_7A3C44D1-1A3B-4EA8-90D1-942ADC5E0BD7</RoleRef>
-                <RoleRef>GUID_AE528C42-0B8C-4C28-A7AA-BD9DFD7EF76E</RoleRef>
+                <RoleRef ref="GUID_73E6E7F3-0846-4C45-B78E-06F13187F0E7" />
+                <RoleRef ref="GUID_7A3C44D1-1A3B-4EA8-90D1-942ADC5E0BD7" />
+                <RoleRef ref="GUID_AE528C42-0B8C-4C28-A7AA-BD9DFD7EF76E" />
             </PlayedRoles>
         </EntityType>
-        <EntityType ID="GUID_58164AEC-C62A-4DA9-B150-6187E1F55E0B" Name="EntityType3" xmlns="">
+        <EntityType ID="GUID_58164AEC-C62A-4DA9-B150-6187E1F55E0B" Name="EntityType3">
             <PlayedRoles>
-                <RoleRef>GUID_2DAE67C0-0952-4071-B105-2D9A5D0EA446</RoleRef>
+                <RoleRef ref="GUID_2DAE67C0-0952-4071-B105-2D9A5D0EA446" />
             </PlayedRoles>
         </EntityType>
-        <ValueType ID="GUID_EE586469-B2F3-408F-8844-646644981D16" Name="ValueType2" xmlns="">
+        <ValueType ID="GUID_EE586469-B2F3-408F-8844-646644981D16" Name="ValueType2">
             <PlayedRoles>
-                <RoleRef>GUID_AC0D0B14-1B9C-4B37-81BC-DED2DD49092A</RoleRef>
-                <RoleRef>GUID_ED79B0F7-02D4-42B5-98BD-31C78A8BA768</RoleRef>
+                <RoleRef ref="GUID_AC0D0B14-1B9C-4B37-81BC-DED2DD49092A" />
+                <RoleRef ref="GUID_ED79B0F7-02D4-42B5-98BD-31C78A8BA768" />
             </PlayedRoles>
         </ValueType>
     </Objects>
-    <Facts xmlns="">
+    <Facts>
         <Fact ID="GUID_335BBF70-2EE9-4B91-83CA-6AAA1CB4A212" Name="Fact1">
             <DerivationRule>
                 <Data></Data>
@@ -61,9 +61,9 @@
                         </Reading>
                     </Readings>
                     <RoleSequence>
-                        <RoleRef>GUID_EFA14A1F-F47E-48E4-995F-9C9D803A8336</RoleRef>
-                        <RoleRef>GUID_4913D49D-C61C-4779-91D5-610D1F3EDB8E</RoleRef>
-                        <RoleRef>GUID_11BF61A2-F306-4D81-80C0-EADE4A949C0B</RoleRef>
+                        <RoleRef ref="GUID_EFA14A1F-F47E-48E4-995F-9C9D803A8336" />
+                        <RoleRef ref="GUID_4913D49D-C61C-4779-91D5-610D1F3EDB8E" />
+                        <RoleRef ref="GUID_11BF61A2-F306-4D81-80C0-EADE4A949C0B" />
                     </RoleSequence>
                 </ReadingOrder>
                 <ReadingOrder>
@@ -73,9 +73,9 @@
                         </Reading>
                     </Readings>
                     <RoleSequence>
-                        <RoleRef>GUID_4913D49D-C61C-4779-91D5-610D1F3EDB8E</RoleRef>
-                        <RoleRef>GUID_EFA14A1F-F47E-48E4-995F-9C9D803A8336</RoleRef>
-                        <RoleRef>GUID_11BF61A2-F306-4D81-80C0-EADE4A949C0B</RoleRef>
+                        <RoleRef ref="GUID_4913D49D-C61C-4779-91D5-610D1F3EDB8E" />
+                        <RoleRef ref="GUID_EFA14A1F-F47E-48E4-995F-9C9D803A8336" />
+                        <RoleRef ref="GUID_11BF61A2-F306-4D81-80C0-EADE4A949C0B" />
                     </RoleSequence>
                 </ReadingOrder>
             </ReadingOrders>
@@ -93,7 +93,7 @@
             <InternalConstraints>
                 <InternalUniquenessConstraint ID="GUID_AFB12811-FDDE-41B6-91AD-C40955C03CE4" Name="">
                     <RoleSequence>
-                        <RoleRef>GUID_EFA14A1F-F47E-48E4-995F-9C9D803A8336</RoleRef>
+                        <RoleRef ref="GUID_EFA14A1F-F47E-48E4-995F-9C9D803A8336" />
                     </RoleSequence>
                 </InternalUniquenessConstraint>
             </InternalConstraints>
@@ -103,20 +103,20 @@
             <DerivationRule>
                 <Data></Data>
             </DerivationRule>
-            <ReadingOrders></ReadingOrders>
+            <ReadingOrders />
             <FactRoles>
                 <Role ID="GUID_A04F349B-D7E6-4E39-80E0-27B044D0E33A" Name="Role1">
                     <RolePlayer>GUID_A0D813AC-2590-491B-8232-9E999340B210</RolePlayer>
                 </Role>
             </FactRoles>
-            <InternalConstraints></InternalConstraints>
+            <InternalConstraints />
             <ExternalConstraints />
         </Fact>
         <Fact ID="GUID_A77C4580-8FAC-4CA0-9077-1F52B659818C" Name="FactType1">
             <DerivationRule>
                 <Data></Data>
             </DerivationRule>
-            <ReadingOrders></ReadingOrders>
+            <ReadingOrders />
             <FactRoles>
                 <Role ID="GUID_AE528C42-0B8C-4C28-A7AA-BD9DFD7EF76E" Name="">
                     <RolePlayer>GUID_48531A6B-F95A-4B5B-A118-C2EB93A00623</RolePlayer>
@@ -125,14 +125,14 @@
                     <RolePlayer>GUID_EE586469-B2F3-408F-8844-646644981D16</RolePlayer>
                 </Role>
             </FactRoles>
-            <InternalConstraints></InternalConstraints>
+            <InternalConstraints />
             <ExternalConstraints />
         </Fact>
         <Fact ID="GUID_0B220570-5223-45C4-8C96-409F0086D968" Name="FactType2">
             <DerivationRule>
                 <Data></Data>
             </DerivationRule>
-            <ReadingOrders></ReadingOrders>
+            <ReadingOrders />
             <FactRoles>
                 <Role ID="GUID_7A3C44D1-1A3B-4EA8-90D1-942ADC5E0BD7" Name="">
                     <RolePlayer>GUID_48531A6B-F95A-4B5B-A118-C2EB93A00623</RolePlayer>
@@ -144,7 +144,7 @@
             <InternalConstraints>
                 <SimpleMandatoryConstraint ID="GUID_5F70D828-BE2D-4050-8954-D8F4BF5259F1" Name="">
                     <RoleSequence>
-                        <RoleRef>GUID_7A3C44D1-1A3B-4EA8-90D1-942ADC5E0BD7</RoleRef>
+                        <RoleRef ref="GUID_7A3C44D1-1A3B-4EA8-90D1-942ADC5E0BD7" />
                     </RoleSequence>
                 </SimpleMandatoryConstraint>
             </InternalConstraints>
@@ -154,7 +154,7 @@
             <DerivationRule>
                 <Data></Data>
             </DerivationRule>
-            <ReadingOrders></ReadingOrders>
+            <ReadingOrders />
             <FactRoles>
                 <Role ID="GUID_73E6E7F3-0846-4C45-B78E-06F13187F0E7" Name="">
                     <RolePlayer>GUID_48531A6B-F95A-4B5B-A118-C2EB93A00623</RolePlayer>
@@ -166,8 +166,8 @@
             <InternalConstraints>
                 <InternalUniquenessConstraint ID="GUID_5A019FF7-9D7E-41A5-BF4B-466B48D92B5B" Name="">
                     <RoleSequence>
-                        <RoleRef>GUID_73E6E7F3-0846-4C45-B78E-06F13187F0E7</RoleRef>
-                        <RoleRef>GUID_AC0D0B14-1B9C-4B37-81BC-DED2DD49092A</RoleRef>
+                        <RoleRef ref="GUID_73E6E7F3-0846-4C45-B78E-06F13187F0E7" />
+                        <RoleRef ref="GUID_AC0D0B14-1B9C-4B37-81BC-DED2DD49092A" />
                     </RoleSequence>
                 </InternalUniquenessConstraint>
             </InternalConstraints>
