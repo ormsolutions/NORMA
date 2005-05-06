@@ -183,12 +183,13 @@ namespace Northface.Tools.ORM.FactEditor
 		protected int GetDisplayText(int iIndex, out string ppszText, int[] piGlyph)
 		{
 			int hr = NativeMethods.S_OK;
-			if (iIndex >= myObjectEntries.Count)
+			ppszText = null;
+			if (iIndex >= myObjectEntries.Count || iIndex < 0)
 			{
 				hr = NativeMethods.E_INVALIDARG;
-				ppszText = "";
+				return hr;
 			}
-			else
+			else if (myObjectEntries[iIndex] != null)
 			{
 				// is it objectified?
 				FactType nestedFact = myObjectEntries[iIndex].NestedFactType;
