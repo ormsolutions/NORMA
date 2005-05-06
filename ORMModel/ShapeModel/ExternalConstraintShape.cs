@@ -375,20 +375,26 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <param name="e">DiagramPointEventArgs</param>
 		public override void OnDoubleClick(DiagramPointEventArgs e)
 		{
-			ORMDiagram currentDiagram;
-			SingleColumnExternalConstraint scec;
-			if (null != (currentDiagram = this.Diagram as ORMDiagram))
+			ORMDiagram diagram;
+			IConstraint constraint;
+			if (null != (diagram = this.Diagram as ORMDiagram)
+				&& diagram.StickyObject == this
+				&& null != (constraint = this.AssociatedConstraint))
 			{
-				currentDiagram.StickyObject = this;
-				if (AssociatedConstraint.ConstraintStorageStyle == ConstraintStorageStyle.SingleColumnExternalConstraint
-					&& null != (scec = AssociatedConstraint as SingleColumnExternalConstraint))
+				ExternalConstraintConnectAction connectAction = diagram.ExternalConstraintConnectAction;
+
+				switch (constraint.ConstraintStorageStyle)
 				{
-					ExternalConstraintConnectAction connectAction = currentDiagram.ExternalConstraintConnectAction;
-					foreach (Role r in scec.RoleCollection)
-					{
-						connectAction.SelectedRoleCollection.Add(r);
-						connectAction.InitialRoles.Add(r);
-					}
+					case ConstraintStorageStyle.SingleColumnExternalConstraint:
+						Debug.Assert(this.AssociatedConstraint != null);
+						connectAction.ConstraintRoleSequenceToEdit = constraint as ConstraintRoleSequence;
+						break;
+					default:
+						break;
+				}
+
+				if (!connectAction.IsActive)
+				{
 					connectAction.ChainMouseAction(this, e.DiagramClientView);
 				}
 			}

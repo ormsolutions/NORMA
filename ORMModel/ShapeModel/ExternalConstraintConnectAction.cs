@@ -408,9 +408,27 @@ namespace Northface.Tools.ORM.ShapeModel
 			if (chainOnShape != null)
 			{
 				Shell.ORMDesignerDocView.RefreshCommandStatus(e.DiagramClientView);
-				// UNDONE: We should only do this if appropriate for the constraint type
-				// and the current condition of the constraint
-				ChainMouseAction(chainOnShape, e.DiagramClientView);
+				// Depending on the type of constraint you're editing, and possibly depending on the 
+				// state of the model at the moment, you may want to activate the ExternalConstraintConnectAction
+				// again.  If you want to do any fun tricks after a user's committed the action,
+				// this would be the place to do it.
+				IConstraint constraint = chainOnShape.AssociatedConstraint;
+				switch (constraint.ConstraintStorageStyle)
+				{
+					case ConstraintStorageStyle.MultiColumnExternalConstraint:
+						ChainMouseAction(chainOnShape, e.DiagramClientView);
+						break;
+					case ConstraintStorageStyle.SingleColumnExternalConstraint:
+						SingleColumnExternalConstraint scec = constraint as SingleColumnExternalConstraint;
+						if (scec != null
+							&& scec.RoleCollection.Count <= 1)
+						{
+							ChainMouseAction(chainOnShape, e.DiagramClientView);
+						}
+						break;
+					default:
+						break;
+				}
 			}
 		}
 		/// <summary>

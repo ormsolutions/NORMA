@@ -233,14 +233,18 @@ namespace Northface.Tools.ORM.Shell
 						// Checking for StickyObjects.  This needs to be done out here because when a role box is selected
 						// the pel will be null.
 						ORMDiagram ormDiagram;
-						ormDiagram = CurrentDiagram as ORMDiagram;
 						IStickyObject stickyObject;
 
 						// There is a sticky object on this diagram
-						if (null != (stickyObject = ormDiagram.StickyObject))
+						if (null != (ormDiagram = CurrentDiagram as ORMDiagram))
 						{
+							if (null != (stickyObject = pel as IStickyObject))
+							{
+								ormDiagram.StickyObject = stickyObject;
+							}
 							// The currently selected item is not selection-compatible with the StickyObject.
-							if (!stickyObject.StickySelectable(mel))
+							else if (null != (stickyObject = ormDiagram.StickyObject)
+								&& !stickyObject.StickySelectable(mel))
 							{
 								ormDiagram.StickyObject = null;
 							}
@@ -356,10 +360,6 @@ namespace Northface.Tools.ORM.Shell
 							break;
 						default:
 							break;
-					}
-					if (!thisRoleInConstraint)
-					{
-						ormDiagram.StickyObject = null;
 					}
 				}
 			}
@@ -603,7 +603,33 @@ namespace Northface.Tools.ORM.Shell
 			if (null != (ormDiagram = CurrentDiagram as ORMDiagram)
 				&& null != (ecs = SelectedElements[0] as ExternalConstraintShape))
 			{
-				ormDiagram.StickyObject = ecs;
+				IStickyObject sticky = ormDiagram.StickyObject;
+				if (sticky == null)
+				{
+					ormDiagram.StickyObject = ecs;
+				}
+				else
+				{
+					IConstraint constraint = ecs.AssociatedConstraint;
+					ExternalConstraintConnectAction connect = ormDiagram.ExternalConstraintConnectAction;
+					SingleColumnExternalConstraint scec;
+					MultiColumnExternalConstraint mcec;
+					if (null != (scec = constraint as SingleColumnExternalConstraint))
+					{
+						connect.ConstraintRoleSequenceToEdit = scec;
+					}
+					else if (null != (mcec = constraint as MultiColumnExternalConstraint))
+					{
+					}
+					if (!connect.IsActive)
+					{
+						connect.ChainMouseAction(ecs, (DiagramClientView)ormDiagram.ClientViews[0]);
+					}
+//					if (!connectAction.IsActive)
+//					{
+//						connectAction.ChainMouseAction(this, e.DiagramClientView);
+//					}
+				}
 			}
 		}
 		/// <summary>
