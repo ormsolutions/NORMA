@@ -418,14 +418,6 @@ namespace Northface.Tools.ORM.ShapeModel
 					case ConstraintStorageStyle.MultiColumnExternalConstraint:
 						ChainMouseAction(chainOnShape, e.DiagramClientView);
 						break;
-					case ConstraintStorageStyle.SingleColumnExternalConstraint:
-						SingleColumnExternalConstraint scec = constraint as SingleColumnExternalConstraint;
-						if (scec != null
-							&& scec.RoleCollection.Count <= 1)
-						{
-							ChainMouseAction(chainOnShape, e.DiagramClientView);
-						}
-						break;
 					default:
 						break;
 				}

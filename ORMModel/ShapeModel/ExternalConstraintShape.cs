@@ -94,21 +94,9 @@ namespace Northface.Tools.ORM.ShapeModel
 					// Draw the dot
 					bounds.Inflate(-Bounds.Width * .22, -Bounds.Height * .22);
 					Brush brush = StyleSet.GetBrush(ExternalConstraintBrush);
-					SolidBrush coloredBrush = null;
-					if (restoreColor)
-					{
-						coloredBrush = brush as SolidBrush;
-						if (coloredBrush != null)
-						{
-							Debug.Assert(coloredBrush.Color == startColor); // Pen and brush should have the same base color
-							coloredBrush.Color = pen.Color;
-						}
-					}
+					SolidBrush coloredBrush = brush as SolidBrush;
+					coloredBrush.Color = pen.Color;
 					g.FillEllipse(brush, RectangleD.ToRectangleF(bounds));
-					if (coloredBrush != null)
-					{
-						coloredBrush.Color = startColor;
-					}
 					break;
 				}
 				case ConstraintType.Exclusion:
