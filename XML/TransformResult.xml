@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ORMModel xmlns="http://schemas.northface.edu/orm/ormcore">
     <Objects>
-        <ValueType ID="GUID_2BD9C766-EC8C-4D16-8AB7-4E7D80A1DFD4" Name="ValueType1" IsIndependent="True">
+        <ValueType ID="GUID_2BD9C766-EC8C-4D16-8AB7-4E7D80A1DFD4" Name="ValueType1" IsIndependent="true">
             <PlayedRoles>
                 <RoleRef ref="GUID_EFA14A1F-F47E-48E4-995F-9C9D803A8336" />
             </PlayedRoles>
@@ -16,7 +16,7 @@
             <PlayedRoles>
                 <RoleRef ref="GUID_11BF61A2-F306-4D81-80C0-EADE4A949C0B" />
             </PlayedRoles>
-            <NestedPredicate>GUID_DF111761-465C-4AE5-8C40-D16E137E4EB3</NestedPredicate>
+            <NestedPredicate ref="GUID_DF111761-465C-4AE5-8C40-D16E137E4EB3"></NestedPredicate >
         </ObjectifiedType>
         <EntityType ID="GUID_A0D813AC-2590-491B-8232-9E999340B210" Name="Person">
             <PlayedRoles>
