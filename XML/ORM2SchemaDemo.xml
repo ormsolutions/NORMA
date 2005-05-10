@@ -47,14 +47,14 @@
                 <orm:ReadingOrder>
                     <orm:Readings>
                         <orm:Reading IsPrimary="true" >
-                            <orm:Data >Reading</orm:Data>
+                            <orm:Data >{0} is a {1}</orm:Data>
                         </orm:Reading>
                     </orm:Readings>
                     <orm:RoleSequence>
                         <orm:RoleRef ref="Role1"/>
                         <orm:RoleRef ref="Role2"/>
                     </orm:RoleSequence>
-                </orm:ReadingOrder>
+                </orm:ReadingOrder>              
             </orm:ReadingOrders>
             <orm:InternalConstraints>
                 <orm:InternalUniquenessConstraint IsPreferred ="true">
@@ -145,7 +145,7 @@
                 <orm:RoleRef ref="Role2"/>
             </orm:RoleSequence>
         </orm:RingConstraint>
-        <orm:SubsetConstraint FromRole="RoleSequence1" ToRole="RoleSequence2">
+        <orm:SubsetConstraint FromRoleSequence="RoleSequence1" ToRoleSequence="RoleSequence2">
             <orm:ConstraintNote>
                 <orm:Data>Constraint Note Data</orm:Data>
             </orm:ConstraintNote>
@@ -165,9 +165,6 @@
         <orm:DataType id="DataType1" Type="byte"></orm:DataType>
     </orm:DataTypes>
     <orm:ModelErrors >
-        <!--        <orm:ConstraintDuplicateNameError Constraint="Constraint1"/>
-        <orm:FactTypeDuplicateNameError FactType="Fact1"/>
-        <orm:ObjectTypeDuplicateNameError ObjectType="Object1"/>-->
         <orm:DuplicateNameError  ElementType="Fact" ElementRef ="Fact1"/>
         <orm:DuplicateNameError  ElementType="Object" ElementRef ="Object1"/>
         <orm:DuplicateNameError  ElementType="Constraint" ElementRef ="FrequencyConstraint1"/>

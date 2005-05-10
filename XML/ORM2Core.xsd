@@ -100,18 +100,7 @@
         </xs:complexContent>
     </xs:complexType>
     <!--End Objects and Object Types-->
-    <!--Data is a gereral purpose element wrapper to enclose data.  This helps make the schema more extendable.-->
-    <xs:complexType name="Data">
-        <xs:complexContent>
-            <xs:extension base="ExtendableElement">
-                <xs:sequence minOccurs="1" maxOccurs="1">
-                    <xs:element name="Data" minOccurs="1" maxOccurs="1" type="xs:string" />
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    <!--end data-->
-    <!--DataType -->
+        <!--DataType -->
     <!--DataTypeRef indicates a reference to a datatype -->
     <xs:simpleType name="DataTypeRef">
         <xs:restriction base="xs:IDREF" />
@@ -159,6 +148,17 @@
         </xs:restriction>
     </xs:simpleType>
     <!--End DataType -->
+    <!--Data is a gereral purpose element wrapper to enclose data.  This helps make the schema more extendable.-->
+    <xs:complexType name="Data">
+        <xs:complexContent>
+            <xs:extension base="ExtendableElement">
+                <xs:sequence minOccurs="1" maxOccurs="1">
+                    <xs:element name="Data" minOccurs="1" maxOccurs="1" type="xs:string" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <!--end data-->
     <!--Roles-->
     <!-- RoleRef, RoleSequence and  RoleSequences define references to roles and collections of roles and collections of collections of roles-->
     <xs:complexType name="RoleSequences">
@@ -202,6 +202,7 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    <!--Look up enum values.-->
     <xs:simpleType name="MultiplicityEnum">
         <xs:restriction base="xs:string">
             <xs:enumeration value="not set" />
@@ -305,8 +306,8 @@
     <xs:complexType name="SubsetConstraint">
         <xs:complexContent>
             <xs:extension base="MultiColumnExternalConstraint">
-                <xs:attribute name="FromRole" type="xs:IDREF" use="required" />
-                <xs:attribute name="ToRole" type="xs:IDREF" use="required" />
+                <xs:attribute name="FromRoleSequence" type="xs:IDREF" use="required" />
+                <xs:attribute name="ToRoleSequence" type="xs:IDREF" use="required" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
