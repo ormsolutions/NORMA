@@ -171,7 +171,12 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return myObjectTypesDictionary;
+				INamedElementDictionary retVal = myObjectTypesDictionary;
+				if (retVal == null)
+				{
+					retVal = myObjectTypesDictionary = new ObjectTypeNamedElementDictionary();
+				}
+				return retVal;
 			}
 		}
 
@@ -183,7 +188,12 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return myFactTypesDictionary;
+				INamedElementDictionary retVal = myFactTypesDictionary;
+				if (retVal == null)
+				{
+					retVal = myFactTypesDictionary = new FactTypeNamedElementDictionary();
+				}
+				return retVal;
 			}
 		}
 
@@ -195,7 +205,12 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return myConstraintsDictionary;
+				INamedElementDictionary retVal = myConstraintsDictionary;
+				if (retVal == null)
+				{
+					retVal = myConstraintsDictionary = new ConstraintNamedElementDictionary();
+				}
+				return retVal;
 			}
 		}
 
@@ -213,28 +228,16 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			if (parentMetaRoleGuid == ModelHasObjectType.ModelMetaRoleGuid)
 			{
-				if (myObjectTypesDictionary == null)
-				{
-					myObjectTypesDictionary = new ObjectTypeNamedElementDictionary();
-				}
-				return myObjectTypesDictionary;
+				return ObjectTypesDictionary;
 			}
 			else if (parentMetaRoleGuid == ModelHasFactType.ModelMetaRoleGuid)
 			{
-				if (myFactTypesDictionary == null)
-				{
-					myFactTypesDictionary = new FactTypeNamedElementDictionary();
-				}
-				return myFactTypesDictionary;
+				return FactTypesDictionary;
 			}
 			else if (parentMetaRoleGuid == ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid ||
 					 parentMetaRoleGuid == ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid)
 			{
-				if (myConstraintsDictionary == null)
-				{
-					myConstraintsDictionary = new ConstraintNamedElementDictionary();
-				}
-				return myConstraintsDictionary;
+				return ConstraintsDictionary;
 			}
 			return null;
 		}

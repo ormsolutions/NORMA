@@ -237,7 +237,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	/// </summary>
 	/// <typeparam name="ElementType">The type of element to watch out for.
 	/// Will frequently be an interface.</typeparam>
-	public abstract class DeserializationFixupListener<ElementType> : IDeserializationFixupListener // UNDONE: where ElementType : object
+	public abstract class DeserializationFixupListener<ElementType> : IDeserializationFixupListener where ElementType : class
 	{
 		#region Member Variables
 		private int myPhase;
@@ -325,7 +325,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="element">The element to add</param>
 		protected void ElementAdded(ModelElement element)
 		{
-			if (element is ElementType)
+			ElementType typedElement = element as ElementType;
+			if (typedElement != null)
 			{
 				ElementCollection.Add((ElementType)((object)element));
 			}

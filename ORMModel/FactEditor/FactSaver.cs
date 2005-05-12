@@ -21,6 +21,7 @@ namespace Northface.Tools.ORM.FactEditor
 	/// </summary>
 	public struct FactSaver
 	{
+		private ORMDesignerDocView myCurrentDocView;
 		private ORMDesignerDocData myCurrentDocument;
 		private FactLine myFactLine;
 		private FactType myEditFact;
@@ -30,16 +31,17 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <summary>
 		/// Add facts to the model
 		/// </summary>
-		/// <param name="docData">Curent document</param>
+		/// <param name="docView">Curent document view</param>
 		/// <param name="factLine">Parsed line</param>
 		/// <param name="fact">Editing fact</param>
-		public static void AddFact(ORMDesignerDocData docData, FactLine factLine, FactType fact)
+		public static void AddFact(ORMDesignerDocView docView, FactLine factLine, FactType fact)
 		{
-			(new FactSaver(docData, factLine, fact)).AddFactToModel();
+			(new FactSaver(docView, factLine, fact)).AddFactToModel();
 		}
-		private FactSaver(ORMDesignerDocData docData, FactLine factLine, FactType fact)
+		private FactSaver(ORMDesignerDocView docView, FactLine factLine, FactType fact)
 		{
-			myCurrentDocument = docData;
+			myCurrentDocView = docView;
+			myCurrentDocument = docView.DocData as ORMDesignerDocData;
 			myFactLine = factLine;
 			myEditFact = fact;
 		}
@@ -61,6 +63,7 @@ namespace Northface.Tools.ORM.FactEditor
 				// We've got a model, now lets start a transaction to add our fact to the model.
 				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
 				{
+					IDictionary topLevelTransactionContextInfo = t.TopLevelTransaction.Context.ContextInfo;
 					RoleMoveableCollection roles = null;
 					RoleMoveableCollection factRoles = null;
 					ReadingOrder readOrd;
@@ -91,13 +94,19 @@ namespace Northface.Tools.ORM.FactEditor
 							case FactTokenType.EntityType:
 							case FactTokenType.ValueType:
 							{
-								ObjectType objType;
+								ObjectType objType = null;
 								string preObjName = myFactLine.LineText.Substring(mark.nStart, mark.nEnd - mark.nStart + 1);
 								Match m = ReferenceModeRegEx.Match(preObjName);
 								string refModeText = m.Groups[RefModeGroupName].Value;
 								string objNameSansRef = preObjName.Replace(string.Concat("(", refModeText, ")"), "");
+
+
+								// figure out if there are any objects on the diagram
+								bool isEmptyElement = true;
+
 								LocatedElement existingElement = myModel.ObjectTypesDictionary.GetElement(objNameSansRef);
-								bool isEmptyElement = existingElement.IsEmpty;
+								isEmptyElement = existingElement.IsEmpty;
+
 								if (isEmptyElement)
 								{
 									objType = ObjectType.CreateObjectType(store);
@@ -108,7 +117,7 @@ namespace Northface.Tools.ORM.FactEditor
 									objType = (ObjectType)existingElement.FirstElement;
 								}
 
-								// If our mark is known to be a Value type object...
+									// If our mark is known to be a Value type object...
 								if (isEmptyElement)
 								{
 									objType.Model = myModel;
@@ -136,20 +145,67 @@ namespace Northface.Tools.ORM.FactEditor
 								}
 								else
 								{
-									if (mark.TokenType != FactTokenType.ValueType)
+									objType.Name = objNameSansRef;
+									modelElements.Add(objType, true);
+									bool convertingToValueType = false;
+									bool entityWasCollapsed = false;
+
+									// get a presentation element to work with for determine if the ref mode is expanded or collapsed
+									ShapeModel.ObjectTypeShape objShape = (myCurrentDocView.Diagram as ORMDiagram).FindShapeForElement<ShapeModel.ObjectTypeShape>(objType);
+
+									// convert this object to a entity type if it was a value type and if we are now adding a ref mode
+									if (refModeText.Length > 0 && objType.IsValueType)
 									{
-										objType.Name = objNameSansRef;
-										modelElements.Add(objType, true);
+										objType.IsValueType = false;
+										// Note: Don't change the ExpandRefMode property to false here. This is
+										// a user setting and we should respect the current value.
+									}
+									else if (refModeText.Length == 0 && !objType.IsValueType)
+									{
+										// Set the flag to indicate we are converting an entity to a value type
+										// so we need to kill the RefMode
+										convertingToValueType = true;
+										
+										// Set the flag to indicate if the old entity type was collapsed. If it
+										// was, then we are ok to agressively delete the ref mode
+										if (objShape != null)
+										{
+											entityWasCollapsed = !objShape.ExpandRefMode;
+										}
+									}
+
+									// UNDONE: make sure we don't set a RefMode on an objectified fact; don't make
+									// the objectification a value type either. Use squiggles with markers/regions
+									// to block the commit of invalid operations
+									if (objType.NestedFactType == null)
+									{
 										IList<ReferenceMode> modes = ReferenceMode.FindReferenceModesByName(refModeText, myModel);
 										if (modes.Count == 0)
 										{
+											// Add a "Delete" object to the transaction bucket to enable agressive RefMode deletion
+											if (convertingToValueType && entityWasCollapsed)
+											{
+												topLevelTransactionContextInfo[ObjectType.DeleteReferenceModeValueType] = null;
+											}
 											objType.ReferenceModeString = refModeText;
+											
+											// remove the "Delete" object from the transaction bucket
+											if (convertingToValueType && entityWasCollapsed)
+											{
+												topLevelTransactionContextInfo.Remove(ObjectType.DeleteReferenceModeValueType);
+											}
 										}
 										else
 										{
 											// UNDONE: Consider giving a warning here (after the transaction is
 											// completed, no UI during transactions) that the reference mode is ambiguous.
 											objType.ReferenceMode = modes[0];
+										}
+
+										// The object was an entity, but is now a value type
+										if (convertingToValueType)
+										{
+											objType.IsValueType = true;
 										}
 									}
 								}
@@ -159,14 +215,7 @@ namespace Northface.Tools.ORM.FactEditor
 								{
 									Role role = Role.CreateRole(store);
 									role.Name = "Role1";
-									if (isEmptyElement)
-									{
-										role.RolePlayer = objType;
-									}
-									else
-									{
-										role.RolePlayer = (ObjectType)existingElement.FirstElement;
-									}
+									role.RolePlayer = objType;
 									factRoles.Add(role);
 								}
 								break;
@@ -214,18 +263,17 @@ namespace Northface.Tools.ORM.FactEditor
 
 					if (null != factType)
 					{
-						if (factChanged)
+						if (factType.Model == null)
 						{
 							factType.Model = myModel;
 						}
 						modelElements.Add(factType, true);
 					}
 
-					currentRole = 0;
 					roles.Clear();
-					foreach (Role r in factRoles)
+					for(int i=0;i<factRoles.Count;++i)
 					{
-						roles.Add(factRoles[currentRole++]);
+						roles.Add(factRoles[i]);
 					}
 
 					if (myEditFact == null)

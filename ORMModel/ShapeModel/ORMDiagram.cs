@@ -354,6 +354,25 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 			return null;
 		}
+		/// <summary>
+		/// Locate an existing typed shape on this diagram corresponding to this element
+		/// </summary>
+		/// <typeparam name="ShapeType">The type of the shape to return</typeparam>
+		/// <param name="element">The element to search</param>
+		/// <returns>An existing shape, or null if not found</returns>
+		[CLSCompliant(false)]
+		public ShapeType FindShapeForElement<ShapeType>(ModelElement element) where ShapeType : ShapeElement
+		{
+			foreach (PresentationElement pel in element.AssociatedPresentationElements)
+			{
+				ShapeType shape = pel as ShapeType;
+				if (shape != null && shape.Diagram == this)
+				{
+					return shape;
+				}
+			}
+			return null;
+		}
 		#endregion // View Fixup Methods
 		#region Customize appearance
 		/// <summary>
