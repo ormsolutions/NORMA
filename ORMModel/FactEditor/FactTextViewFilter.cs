@@ -277,7 +277,7 @@ namespace Northface.Tools.ORM.FactEditor
 							break; 
 						myParser.Line(ref controlEnterLine);
 
-						FactSaver.AddFact(myCompletionSet.CurrentDocument, controlEnterLine, myCompletionSet.EditFact);
+						FactSaver.AddFact(myCompletionSet.CurrentDocumentView, controlEnterLine, myCompletionSet.EditFact);
 						break;
 					case CmdTypeChar: // any character
 						fHandled = false;
@@ -508,7 +508,7 @@ Removed for FxCop compliance, not currently used */
 		#region Properties
 
 		/// <summary>
-		/// Expse the text view so the window manager can remove command filters
+		/// Expose the text view so the window manager can remove command filters
 		/// </summary>
 		/// <value></value>
 		public IVsTextView TextView
