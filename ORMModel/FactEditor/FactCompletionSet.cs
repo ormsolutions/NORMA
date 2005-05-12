@@ -30,7 +30,7 @@ namespace Northface.Tools.ORM.FactEditor
 		private ORMDesignerPackage myPackage;
 		private IVsTextView myTextView;
 		private List<ObjectType> myObjectEntries;
-		private ORMDesignerDocData myCurrentDocument;
+		private ORMDesignerDocView myCurrentDocView;
 		private ImageList myImageList;
 		private IComparer<ObjectType> myComparer;
 		private Reading myReading;
@@ -49,7 +49,7 @@ namespace Northface.Tools.ORM.FactEditor
 			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
 			monitor.DocumentWindowChanged += new MonitorSelectionEventHandler(DocumentWindowChangedEvent);
 			monitor.SelectionChanged += new MonitorSelectionEventHandler(SelectionChangedEvent);
-			CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;
+			CurrentDocumentView = monitor.CurrentDocumentView as ORMDesignerDocView;
 			
 			// initialize the comparer used for sorting
 			myComparer = new ObjectTypeNameComparer();
@@ -71,7 +71,7 @@ namespace Northface.Tools.ORM.FactEditor
 
 		private void LoadModelElements()
 		{
-			IList objectList = myCurrentDocument.Store.ElementDirectory.GetElements(ObjectType.MetaClassGuid);
+			IList objectList = (myCurrentDocView.DocData as ModelingDocData).Store.ElementDirectory.GetElements(ObjectType.MetaClassGuid);
 			myObjectEntries = new List<ObjectType>();
 			foreach (ObjectType ot in objectList)
 			{
@@ -301,26 +301,26 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <summary>
 		/// Get the FactCompletionSet's current DocData.
 		/// </summary>
-		public ORMDesignerDocData CurrentDocument
+		public ORMDesignerDocView CurrentDocumentView
 		{
 			get
 			{
-				return myCurrentDocument;
+				return myCurrentDocView;
 			}
 			private set
 			{
-				if (myCurrentDocument != null)
+				if (myCurrentDocView != null)
 				{
-					if (value != null && object.ReferenceEquals(myCurrentDocument, value))
+					if (value != null && (object.ReferenceEquals(myCurrentDocView, value) || object.ReferenceEquals(myCurrentDocView.DocData, value.DocData)))
 					{
 						return;
 					}
-					DetachEventHandlers(myCurrentDocument.Store);
+					DetachEventHandlers((myCurrentDocView.DocData as ModelingDocData).Store);
 				}
-				myCurrentDocument = value;
+				myCurrentDocView = value;
 				if (value != null)
 				{
-					AttachEventHandlers(myCurrentDocument.Store);
+					AttachEventHandlers((myCurrentDocView.DocData as ModelingDocData).Store);
 				}
 			}
 		}
@@ -344,7 +344,7 @@ namespace Northface.Tools.ORM.FactEditor
 		#region Event Handlers
 		private void DocumentWindowChangedEvent(object sender, MonitorSelectionEventArgs e)
 		{
-			CurrentDocument = ((IMonitorSelectionService)sender).CurrentDocument as ORMDesignerDocData;
+			CurrentDocumentView = ((IMonitorSelectionService)sender).CurrentDocumentView as ORMDesignerDocView;
 		}
 
 		private void AttachEventHandlers(Store store)
@@ -415,6 +415,12 @@ namespace Northface.Tools.ORM.FactEditor
 		{
 			ObjectType objectType = e.ModelElement as ObjectType;
 			Debug.Assert(objectType != null);
+			// we don't want to process Removed objects because it will cause an exception
+			// with the undo stack
+			if (objectType.IsRemoved)
+			{
+				return;
+			}
 
 			Guid attributeId = e.MetaAttribute.Id;
 			if (attributeId == ObjectType.NameMetaAttributeGuid)
