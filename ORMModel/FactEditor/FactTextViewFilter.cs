@@ -251,7 +251,10 @@ namespace Northface.Tools.ORM.FactEditor
 						int completionStatusFlags = 0;
 						myCompletionSet.Reset(out completionStatusFlags);
 						completionStatusFlags = completionStatusFlags | (int)UpdateCompletionFlags.UCS_COMPLETEWORD;
-						myTextView.UpdateCompletionStatus(myCompletionSet, (uint)completionStatusFlags);
+						if (myCompletionSet.ObjectCount > 0)
+						{
+							myTextView.UpdateCompletionStatus(myCompletionSet, (uint)completionStatusFlags);
+						}
 						break;
 					case CmdReturn: // dismiss method tip window if it's displayed
 					case CmdBackspace: // dismiss method tip window if it's displayed

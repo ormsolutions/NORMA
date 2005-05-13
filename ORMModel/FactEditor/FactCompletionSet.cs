@@ -339,12 +339,21 @@ namespace Northface.Tools.ORM.FactEditor
 				myEditFact = value;
 			}
 		}
+
+		/// <summary>
+		/// Gets the number of objects in the completion set dropdown
+		/// </summary>		
+		public int ObjectCount
+		{
+			get { return myObjectEntries.Count; }
+		}
 		#endregion
 
 		#region Event Handlers
 		private void DocumentWindowChangedEvent(object sender, MonitorSelectionEventArgs e)
 		{
 			CurrentDocumentView = ((IMonitorSelectionService)sender).CurrentDocumentView as ORMDesignerDocView;
+			LoadModelElements();
 		}
 
 		private void AttachEventHandlers(Store store)
