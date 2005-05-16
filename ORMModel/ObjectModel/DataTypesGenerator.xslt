@@ -22,7 +22,7 @@
                     <plx:Class name="AddIntrinsicDataTypesFixupListener" visibility="Private" partial="true" sealed="true">
                         <plx:Variable name="typeArray" dataTypeName="Type" dataTypeQualifier="System" dataTypeIsSimpleArray="true" shared="true" visibility="Private">
                             <plx:Initialize>
-                                <plx:Call name="Type" qualifier="System" style="NewArray">
+                                <plx:CallNew dataTypeName="Type" dataTypeQualifier="System" dataTypeIsSimpleArray="true" style="New">
                                     <plx:ArrayInitializer>
                                         <xsl:for-each select="DataType">
                                             <xsl:if test="not(@enumOnly)">
@@ -34,7 +34,7 @@
                                             </xsl:if>
                                         </xsl:for-each>
                                     </plx:ArrayInitializer>
-                                </plx:Call>
+                                </plx:CallNew>
                             </plx:Initialize>
                         </plx:Variable>
                     </plx:Class>
@@ -49,14 +49,14 @@
                                                 <plx:Param name="" style="RetVal" dataTypeName="PortableDataType"/>
                                                 <plx:Get>
                                                     <plx:Return>
-                                                        <plx:Call name="{../@name}{@name}" qualifier="PortableDataType" style="Field"/>
+                                                        <plx:CallType name="{../@name}{@name}" dataTypeName="PortableDataType" style="Field"/>
                                                     </plx:Return>
                                                 </plx:Get>
                                             </plx:Property>
                                             <plx:Function override="true" name="ToString" visibility="Public">
                                                 <plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System"/>
                                                 <plx:Return>
-                                                    <plx:Call name="PortableDataType{../@name}{@name}" qualifier="ResourceStrings" style="Field"/>
+                                                    <plx:CallType name="PortableDataType{../@name}{@name}" dataTypeName="ResourceStrings" style="Property"/>
                                                 </plx:Return>
                                             </plx:Function>
                                         </plx:Class>
@@ -67,14 +67,14 @@
                                             <plx:Param name="" style="RetVal" dataTypeName="PortableDataType"/>
                                             <plx:Get>
                                                 <plx:Return>
-                                                    <plx:Call name="{../@name}" qualifier="PortableDataType" style="Field"/>
+                                                    <plx:CallType name="{../@name}" dataTypeName="PortableDataType" style="Property"/>
                                                 </plx:Return>
                                             </plx:Get>
                                         </plx:Property>
                                         <plx:Function override="true" name="ToString" visibility="Public">
                                             <plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System"/>
                                             <plx:Return>
-                                                <plx:Call name="PortableDataType{../@name}" qualifier="ResourceStrings" style="Field"/>
+                                                <plx:CallType name="PortableDataType{../@name}" dataTypeName="ResourceStrings" style="Property"/>
                                             </plx:Return>
                                         </plx:Function>
                         </plx:Class>

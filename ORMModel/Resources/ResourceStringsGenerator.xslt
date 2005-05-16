@@ -21,14 +21,14 @@
                             <plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System"></plx:Param>
                             <plx:Get>
                                 <plx:Return>
-                                    <plx:Call name="GetString" style="MethodCall" qualifier="ResourceStrings">
+                                    <plx:CallType name="GetString" style="MethodCall" dataTypeName="ResourceStrings">
                                         <plx:PassParam passStyle="In">
-                                            <plx:Call name="{@model}" qualifier="ResourceManagers" style="Field"/>
+                                            <plx:CallType name="{@model}" dataTypeName="ResourceManagers" style="Field"/>
                                         </plx:PassParam>
                                         <plx:PassParam passStyle="In">
-                                            <plx:Call name="{@name}_Id" qualifier="ResourceStrings" style="Field"/>
+                                            <plx:CallType name="{@name}_Id" dataTypeName="ResourceStrings" style="Field"/>
                                         </plx:PassParam>
-                                    </plx:Call>
+                                    </plx:CallType>
                                 </plx:Return>
                             </plx:Get>
                         </plx:Property>

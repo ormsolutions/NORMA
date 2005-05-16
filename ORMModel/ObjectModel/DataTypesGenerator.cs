@@ -96,7 +96,7 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         private sealed partial class AddIntrinsicDataTypesFixupListener
         {
-            private static System.Type[] typeArray = new Type[] {
+            private static System.Type[] typeArray = new System.Type[] {
                     typeof(UnspecifiedDataType),
                     typeof(FixedLengthTextDataType),
                     typeof(VariableLengthTextDataType),
