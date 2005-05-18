@@ -190,6 +190,10 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				List<FactType> types = new List<FactType>(count);
 				foreach (FactType factType in candidates)
 				{
+					if (factType is SubtypeFact)
+					{
+						continue;
+					}
 					ObjectType nestingType = factType.NestingType;
 					if (nestingType == null || object.ReferenceEquals(nestingType, instance))
 					{

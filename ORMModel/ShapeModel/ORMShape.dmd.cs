@@ -1806,6 +1806,117 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// 
 	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.SubtypeFact))]
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.SubtypeLink.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.SubtypeLink")]
+	public  partial class SubtypeLink : Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape
+	{
+		#region SubtypeLink's Generated Shape Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "87ddaeda-1fd8-4433-bb1e-7482c7f471a7";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.SubtypeLink.MetaClassGuidString);
+		#region Boilerplate code for every Shape-derived class
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.StyleSet classStyleSet = null;
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection shapeFields = null;
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		protected override Microsoft.VisualStudio.Modeling.Diagrams.StyleSet ClassStyleSet
+		{
+			get
+			{
+				if (classStyleSet == null)
+				{
+					classStyleSet = CreateClassStyleSet();
+				}
+				return classStyleSet;
+			}
+		}
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection ShapeFields
+		{
+			get
+			{
+				if (shapeFields == null)
+				{
+					shapeFields = CreateShapeFields();
+				}
+				return shapeFields;
+			}
+		}
+		#endregion
+		#endregion
+
+	}
+	#region SubtypeLink's Generated Constructor Code
+	public  partial class SubtypeLink
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SubtypeLink(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SubtypeLink CreateSubtypeLink(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (SubtypeLink)store.ElementFactory.CreateElement(typeof(SubtypeLink));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SubtypeLink CreateAndInitializeSubtypeLink(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (SubtypeLink)store.ElementFactory.CreateElement(typeof(SubtypeLink), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for SubtypeLink
+	/// <summary>
+	/// SubtypeLink Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.SubtypeLink))]
+	public sealed class SubtypeLinkElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SubtypeLinkElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ShapeModel.SubtypeLink(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ShapeModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
 	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
@@ -1924,7 +2035,8 @@ namespace Northface.Tools.ORM.ShapeModel
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.UnaryFactType.Item.Id", 10, "Toolbox.UnaryFactType.Bitmap.Id", "Toolbox.UnaryFactType.Caption.Id", "Toolbox.UnaryFactType.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.BinaryFactType.Item.Id", 15, "Toolbox.BinaryFactType.Bitmap.Id", "Toolbox.BinaryFactType.Caption.Id", "Toolbox.BinaryFactType.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.TernaryFactType.Item.Id", 20, "Toolbox.TernaryFactType.Bitmap.Id", "Toolbox.TernaryFactType.Caption.Id", "Toolbox.TernaryFactType.Tooltip.Id", "Toolbox.DefaultTabName")]
-	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.RoleConnector.Item.Id", 22, "Toolbox.RoleConnector.Bitmap.Id", "Toolbox.RoleConnector.Caption.Id", "Toolbox.RoleConnector.Tooltip.Id", "Toolbox.DefaultTabName")]
+	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.RoleConnector.Item.Id", 21, "Toolbox.RoleConnector.Bitmap.Id", "Toolbox.RoleConnector.Caption.Id", "Toolbox.RoleConnector.Tooltip.Id", "Toolbox.DefaultTabName")]
+	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.SubtypeConnector.Item.Id", 22, "Toolbox.SubtypeConnector.Bitmap.Id", "Toolbox.SubtypeConnector.Caption.Id", "Toolbox.SubtypeConnector.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.InternalUniquenessConstraint.Item.Id", 23, "Toolbox.InternalUniquenessConstraint.Bitmap.Id", "Toolbox.InternalUniquenessConstraint.Caption.Id", "Toolbox.InternalUniquenessConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.ExternalUniquenessConstraint.Item.Id", 25, "Toolbox.ExternalUniquenessConstraint.Bitmap.Id", "Toolbox.ExternalUniquenessConstraint.Caption.Id", "Toolbox.ExternalUniquenessConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.EqualityConstraint.Item.Id", 35, "Toolbox.EqualityConstraint.Bitmap.Id", "Toolbox.EqualityConstraint.Caption.Id", "Toolbox.EqualityConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]

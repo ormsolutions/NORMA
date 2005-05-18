@@ -613,14 +613,14 @@ namespace Northface.Tools.ORM.Shell
 					IConstraint constraint = ecs.AssociatedConstraint;
 					ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
 					SingleColumnExternalConstraint scec;
-					MultiColumnExternalConstraint mcec;
+					//MultiColumnExternalConstraint mcec;
 					if (null != (scec = constraint as SingleColumnExternalConstraint))
 					{
 						connectAction.ConstraintRoleSequenceToEdit = scec;
 					}
-					else if (null != (mcec = constraint as MultiColumnExternalConstraint))
-					{
-					}
+					//else if (null != (mcec = constraint as MultiColumnExternalConstraint))
+					//{
+					//}
 					if (!connectAction.IsActive)
 					{
 						connectAction.ChainMouseAction(ecs, (DiagramClientView)ormDiagram.ClientViews[0]);

@@ -330,4 +330,8 @@
     <value xml:space="preserve">Set Role Player</value>
     <comment xml:space="preserve">The transaction name used by the role connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="SubtypeConnectAction.TransactionName">
+    <value xml:space="preserve">Set Base Type</value>
+    <comment xml:space="preserve">The transaction name used by the subtype connect action. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
 </root>

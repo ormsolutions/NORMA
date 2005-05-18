@@ -223,8 +223,20 @@
     <comment xml:space="preserve">Exception message when the unique format string rule is violated for reference kinds</comment>
   </data>
   <data name="ModelException.Role.IsMandatoryRequiresAttachedFactType">
-    <value xml:space="preserve">A Role must be owned by a FactType that is owned by an ORMModel to set the IsMandatory property.</value>
-    <comment xml:space="preserve">Exception message when an attempt is made to set the IsMandatory property on a role of an unattached fact type. IsMandatory creates a constraint, which is owned by an ORMModel, so cannot be realized if the model is unknown.</comment>
+    <value xml:space="preserve">A Role must be owned by a FactType to set the IsMandatory property.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to set the IsMandatory property on an unattached role. IsMandatory creates an internal constraint, which is owned by an FactType, so cannot be realized if the parent fact is unknown.</comment>
+  </data>
+  <data name="ModelException.SubtypeFact.ConstraintAndRolePatternFixed">
+    <value xml:space="preserve">The role and constraint patterns of a subtype relationship cannot be modified.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to modify the roles collection or internal constraints of a SubtypeFact.</comment>
+  </data>
+  <data name="ModelException.SubtypeFact.Cycle">
+    <value xml:space="preserve">A cycle has been detected in a chain of subtype relationships. A subtype must not be the direct or indirect subtype of its supertype.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to add a subtype relationship where the subtype is a direct or indirect subtype of the supertype.</comment>
+  </data>
+  <data name="ModelException.SubtypeFact.NotNested">
+    <value xml:space="preserve">A SubtypeFact cannot be a nested fact type</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to nest a SubtypeFact.</comment>
   </data>
   <data name="ModelReadingEditor.AllReadingsNodeName">
     <value xml:space="preserve">All</value>
@@ -345,5 +357,17 @@
   <data name="ReferenceMode.PredicateReading">
     <value xml:space="preserve">{0} has {1}</value>
     <comment xml:space="preserve">The reading for the predicate created by setting the ref mode.</comment>
+  </data>
+  <data name="SubtypeFact.ComponentNameFormat">
+    <value xml:space="preserve">{1}-&gt;{0}</value>
+    <comment xml:space="preserve">String for generating a component name for a subtype. The {0} replacement field is used for the subtype component name; {1} for the supertype.</comment>
+  </data>
+  <data name="SubtypeFact.PredicateInverseReading">
+    <value xml:space="preserve">{0} is a supertype of {1}</value>
+    <comment xml:space="preserve">The inverse reading for the predicate created by creating a sub type relationship.</comment>
+  </data>
+  <data name="SubtypeFact.PredicateReading">
+    <value xml:space="preserve">{0} is a subtype of {1}</value>
+    <comment xml:space="preserve">The reading for the forward predicate created by creating a subtype relationship.</comment>
   </data>
 </root>

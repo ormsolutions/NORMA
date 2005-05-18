@@ -17,6 +17,7 @@ namespace Northface.Tools.ORM
         private const string ValueType_Id = "Northface.Tools.ORM.ObjectModel.ValueType";
         private const string EntityType_Id = "Northface.Tools.ORM.ObjectModel.EntityType";
         private const string FactType_Id = "Northface.Tools.ORM.ObjectModel.FactType";
+        private const string SubtypeFact_Id = "Northface.Tools.ORM.ObjectModel.SubtypeFact";
         private const string ObjectifiedFactType_Id = "Northface.Tools.ORM.ObjectModel.ObjectifiedFactType";
         private const string ReadingType_Id = "Northface.Tools.ORM.ObjectModel.Reading";
         private const string RolePlayerPickerNullItemText_Id = "Northface.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText";
@@ -59,6 +60,10 @@ namespace Northface.Tools.ORM
         private const string PortableDataTypeOtherObjectId_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text";
         private const string ValueTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern";
         private const string FactTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.FactType.DefaultNamePattern";
+        private const string SubtypeFactDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern";
+        private const string SubtypeFactPredicateInverseReading_Id = "SubtypeFact.PredicateInverseReading";
+        private const string SubtypeFactPredicateReading_Id = "SubtypeFact.PredicateReading";
+        private const string SubtypeFactComponentNameFormat_Id = "SubtypeFact.ComponentNameFormat";
         private const string ExternalConstraintConnectActionInstructions_Id = "ExternalConstraintConnectAction.Instructions";
         private const string ExternalConstraintConnectActionTransactionName_Id = "ExternalConstraintConnectAction.TransactionName";
         private const string FrequencyConstraintMinimumFormatString_Id = "FrequencyConstraint.Minimum.FormatString";
@@ -67,6 +72,7 @@ namespace Northface.Tools.ORM
         private const string InternalUniquenessConstraintConnectActionTransactionName_Id = "InternalUniquenessConstraintConnectAction.TransactionName";
         private const string InsertRoleTransactionName_Id = "InsertRole.TransactionName";
         private const string RoleConnectActionTransactionName_Id = "RoleConnectAction.TransactionName";
+        private const string SubtypeConnectActionTransactionName_Id = "SubtypeConnectAction.TransactionName";
         private const string OptionsPageChangeTransactionName_Id = "OptionsPageChange.TransactionName";
         private const string DeleteRoleSequenceTransactionName_Id = "DeleteRoleSequence.TransactionName";
         private const string MoveRoleSequenceDownTransactionName_Id = "MoveRoleSequenceDown.TransactionName";
@@ -132,6 +138,9 @@ namespace Northface.Tools.ORM
         private const string ModelReferenceModeEditorNameColumn_Id = "ModelReferenceModeEditor.NameColumn";
         private const string FactEditorToolWindowCaption_Id = "FactEditorToolWindow.Caption";
         private const string ModelExceptionReferenceModeAmbiguousName_Id = "ModelException.ReferenceMode.AmbiguousName";
+        private const string ModelExceptionSubtypeConstraintAndRolePatternFixed_Id = "ModelException.SubtypeFact.ConstraintAndRolePatternFixed";
+        private const string ModelExceptionSubtypeFactNotNested_Id = "ModelException.SubtypeFact.NotNested";
+        private const string ModelExceptionSubtypeFactCycle_Id = "ModelException.SubtypeFact.Cycle";
         private const string ModelReferenceModePickerFormatString_Id = "ModelReferenceModePicker.FormatString";
         private const string ModelErrorReadingTooFewRolesMessage_Id = "ModelError.Reading.TooFewRoles.Message";
         private const string ModelErrorReadingTooManyRolesMessage_Id = "ModelError.Reading.TooManyRoles.Message";
@@ -173,6 +182,15 @@ namespace Northface.Tools.ORM
             get
             {
                 return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.FactType_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string SubtypeFact
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.SubtypeFact_Id);
             }
         }
         /// <summary>
@@ -456,6 +474,42 @@ namespace Northface.Tools.ORM
         }
         /// <summary>
         ///</summary>
+        public static string SubtypeFactDefaultNamePattern
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.SubtypeFactDefaultNamePattern_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string SubtypeFactPredicateInverseReading
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.SubtypeFactPredicateInverseReading_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string SubtypeFactPredicateReading
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.SubtypeFactPredicateReading_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string SubtypeFactComponentNameFormat
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.SubtypeFactComponentNameFormat_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
         public static string ExternalConstraintConnectActionInstructions
         {
             get
@@ -524,6 +578,15 @@ namespace Northface.Tools.ORM
             get
             {
                 return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.RoleConnectActionTransactionName_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string SubtypeConnectActionTransactionName
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.SubtypeConnectActionTransactionName_Id);
             }
         }
         /// <summary>
@@ -1100,6 +1163,33 @@ namespace Northface.Tools.ORM
             get
             {
                 return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionReferenceModeAmbiguousName_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ModelExceptionSubtypeConstraintAndRolePatternFixed
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionSubtypeConstraintAndRolePatternFixed_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ModelExceptionSubtypeFactNotNested
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionSubtypeFactNotNested_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ModelExceptionSubtypeFactCycle
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionSubtypeFactCycle_Id);
             }
         }
         /// <summary>

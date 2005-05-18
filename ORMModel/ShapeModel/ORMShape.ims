@@ -84,6 +84,11 @@ Information Contained Herein is Proprietary and Confidential.
       <metaattributes />
       <derivedshapes />
     </shape>
+    <shape namespace="Northface.Tools.ORM.ShapeModel" name="SubtypeLink" identity="87ddaeda-1fd8-4433-bb1e-7482c7f471a7" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
+      <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.SubtypeFact)" />
+      <metaattributes />
+      <derivedshapes />
+    </shape>
     <shape namespace="Northface.Tools.ORM.ShapeModel" name="ExternalConstraintLink" identity="8815e6d8-238b-422c-a4b3-29fdc8de9ea5" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
       <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint)" />
       <metaattributes />
@@ -97,7 +102,8 @@ Information Contained Herein is Proprietary and Confidential.
       <toolboxitem toolboxitemid="Toolbox.UnaryFactType.Item.Id" position="10" bitmapresourceid="Toolbox.UnaryFactType.Bitmap.Id" captionresourceid="Toolbox.UnaryFactType.Caption.Id" tooltipresourceid="Toolbox.UnaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
       <toolboxitem toolboxitemid="Toolbox.BinaryFactType.Item.Id" position="15" bitmapresourceid="Toolbox.BinaryFactType.Bitmap.Id" captionresourceid="Toolbox.BinaryFactType.Caption.Id" tooltipresourceid="Toolbox.BinaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
       <toolboxitem toolboxitemid="Toolbox.TernaryFactType.Item.Id" position="20" bitmapresourceid="Toolbox.TernaryFactType.Bitmap.Id" captionresourceid="Toolbox.TernaryFactType.Caption.Id" tooltipresourceid="Toolbox.TernaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.RoleConnector.Item.Id" position="22" bitmapresourceid="Toolbox.RoleConnector.Bitmap.Id" captionresourceid="Toolbox.RoleConnector.Caption.Id" tooltipresourceid="Toolbox.RoleConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.RoleConnector.Item.Id" position="21" bitmapresourceid="Toolbox.RoleConnector.Bitmap.Id" captionresourceid="Toolbox.RoleConnector.Caption.Id" tooltipresourceid="Toolbox.RoleConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+      <toolboxitem toolboxitemid="Toolbox.SubtypeConnector.Item.Id" position="22" bitmapresourceid="Toolbox.SubtypeConnector.Bitmap.Id" captionresourceid="Toolbox.SubtypeConnector.Caption.Id" tooltipresourceid="Toolbox.SubtypeConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
       <toolboxitem toolboxitemid="Toolbox.InternalUniquenessConstraint.Item.Id" position="23" bitmapresourceid="Toolbox.InternalUniquenessConstraint.Bitmap.Id" captionresourceid="Toolbox.InternalUniquenessConstraint.Caption.Id" tooltipresourceid="Toolbox.InternalUniquenessConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
       <toolboxitem toolboxitemid="Toolbox.ExternalUniquenessConstraint.Item.Id" position="25" bitmapresourceid="Toolbox.ExternalUniquenessConstraint.Bitmap.Id" captionresourceid="Toolbox.ExternalUniquenessConstraint.Caption.Id" tooltipresourceid="Toolbox.ExternalUniquenessConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
       <toolboxitem toolboxitemid="Toolbox.EqualityConstraint.Item.Id" position="35" bitmapresourceid="Toolbox.EqualityConstraint.Bitmap.Id" captionresourceid="Toolbox.EqualityConstraint.Caption.Id" tooltipresourceid="Toolbox.EqualityConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />

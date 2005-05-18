@@ -21,8 +21,8 @@
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
-   <Directory>$(ProjectDir)/../../../../../../Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
-   <Directory>$(ProjectDir)/../../../../../../Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
+   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
+   <Directory>C:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
   </AssemblyReferenceDirectories>
   <Target Name="$(ProjectDir)/ORMModel/bin/Debug/Northface.Tools.ORM.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
@@ -978,19 +978,6 @@
             </Issue>
            </Message>
           </Messages>
-          <Members>
-           <Member Name="AddFactToModel():System.Void">
-            <Messages>
-             <Message Id="r" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-21 19:14:27Z">
-              <Issue>
-               <Item>FactSaver.AddFactToModel():Void</Item>
-               <Item>r</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.Role</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
          <Type Name="FactTextViewFilter">
           <Members>
@@ -3722,6 +3709,36 @@
             </Notes>
            </Message>
           </Messages>
+          <Members>
+           <Member Name="GetValue(Northface.Tools.ORM.ObjectModel.NumericDataType):System.Boolean">
+            <Messages>
+             <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-05-18 22:57:03Z">
+              <Issue>
+               <Item>GetValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="15" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="SetValue(Northface.Tools.ORM.ObjectModel.NumericDataType,System.Boolean,Microsoft.VisualStudio.Modeling.CommandFactory,System.Boolean,System.Boolean&amp;):System.Boolean">
+            <Messages>
+             <Message TypeName="DoNotDeclareProtectedMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1047" Status="Excluded" Created="2005-05-18 22:57:03Z">
+              <Issue>
+               <Item>SetValue</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="15" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
          <Type Name="ObjectType">
           <Members>
@@ -5918,18 +5935,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="SubTypeCollection">
-            <Messages>
-             <Message Id="SubType" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-02-03 20:22:04Z">
-              <Issue Name="ShouldBeDiscreteTerm">
-               <Item>SubType</Item>
-               <Item>property</Item>
-               <Item>SubTypeCollection</Item>
-               <Item>Subtype</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
           </Members>
          </Type>
          <Type Name="RootType+RootTypeIsExternalFieldHandler">
@@ -5975,21 +5980,6 @@
             </Messages>
            </Member>
           </Members>
-         </Type>
-         <Type Name="RootTypeMoveableCollection">
-          <Messages>
-           <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2005-02-03 20:22:04Z">
-            <Issue>
-             <Item>RootTypeMoveableCollection</Item>
-             <Item>IList</Item>
-            </Issue>
-            <Notes>
-             <User Name="mcurland">
-              <Note Id="4" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
          </Type>
          <Type Name="SingleColumnExternalConstraint">
           <Members>
@@ -6085,89 +6075,129 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="TypeHasSubType">
+         <Type Name="SubtypeFact+BlockCircularSubtypesAddRule">
           <Messages>
-           <Message Id="SubType" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-02-03 20:22:04Z">
-            <Issue Name="ShouldBeDiscreteTerm">
-             <Item>SubType</Item>
-             <Item>class</Item>
-             <Item>TypeHasSubType</Item>
-             <Item>Subtype</Item>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-18 22:57:03Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.SubtypeFact+BlockCircularSubtypesAddRule</Item>
             </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="14" />
+             </User>
+            </Notes>
            </Message>
           </Messages>
-          <Members>
-           <Member Name="CreateAndInitializeTypeHasSubType(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Northface.Tools.ORM.ObjectModel.TypeHasSubType">
-            <Messages>
-             <Message Id="SubType" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-02-03 20:22:04Z">
-              <Issue Name="ShouldBeDiscreteTerm">
-               <Item>SubType</Item>
-               <Item>method</Item>
-               <Item>CreateAndInitializeTypeHasSubType</Item>
-               <Item>Subtype</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="CreateTypeHasSubType(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Northface.Tools.ORM.ObjectModel.TypeHasSubType">
-            <Messages>
-             <Message Id="SubType" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-02-03 20:22:04Z">
-              <Issue Name="ShouldBeDiscreteTerm">
-               <Item>SubType</Item>
-               <Item>method</Item>
-               <Item>CreateTypeHasSubType</Item>
-               <Item>Subtype</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="SubTypeCollection">
-            <Messages>
-             <Message Id="SubType" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-02-03 20:22:04Z">
-              <Issue Name="ShouldBeDiscreteTerm">
-               <Item>SubType</Item>
-               <Item>property</Item>
-               <Item>SubTypeCollection</Item>
-               <Item>Subtype</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="SubTypeCollectionMetaRoleGuid">
-            <Messages>
-             <Message Id="SubType" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-02-03 20:22:04Z">
-              <Issue Name="ShouldBeDiscreteTerm">
-               <Item>SubType</Item>
-               <Item>field</Item>
-               <Item>SubTypeCollectionMetaRoleGuid</Item>
-               <Item>Subtype</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="SubTypeCollectionMetaRoleGuidString">
-            <Messages>
-             <Message Id="SubType" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-02-03 20:22:04Z">
-              <Issue Name="ShouldBeDiscreteTerm">
-               <Item>SubType</Item>
-               <Item>field</Item>
-               <Item>SubTypeCollectionMetaRoleGuidString</Item>
-               <Item>Subtype</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
-         <Type Name="TypeHasSubTypeElementFactoryCreator">
+         <Type Name="SubtypeFact+InitializeSubtypeAddRule">
           <Messages>
-           <Message Id="SubType" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-02-03 20:22:04Z">
-            <Issue Name="ShouldBeDiscreteTerm">
-             <Item>SubType</Item>
-             <Item>class</Item>
-             <Item>TypeHasSubTypeElementFactoryCreator</Item>
-             <Item>Subtype</Item>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-18 22:57:03Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.SubtypeFact+InitializeSubtypeAddRule</Item>
             </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="14" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SubtypeFact+LimitSubtypeConstraintRolesAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-18 22:57:03Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.SubtypeFact+LimitSubtypeConstraintRolesAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="14" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SubtypeFact+LimitSubtypeConstraintRolesRemoveRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-18 22:57:03Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.SubtypeFact+LimitSubtypeConstraintRolesRemoveRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="14" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SubtypeFact+LimitSubtypeConstraintsAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-18 22:57:03Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.SubtypeFact+LimitSubtypeConstraintsAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="14" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SubtypeFact+LimitSubtypeConstraintsRemoveRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-18 22:57:03Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.SubtypeFact+LimitSubtypeConstraintsRemoveRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="14" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SubtypeFact+LimitSubtypeRolesAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-18 22:57:03Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.SubtypeFact+LimitSubtypeRolesAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="14" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SubtypeFact+LimitSubtypeRolesRemoveRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-18 22:57:03Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.SubtypeFact+LimitSubtypeRolesRemoveRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="14" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SubtypeFact+RemoveSubtypeWhenRolePlayerRemoved">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-18 22:57:03Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.SubtypeFact+RemoveSubtypeWhenRolePlayerRemoved</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="14" />
+             </User>
+            </Notes>
            </Message>
           </Messages>
          </Type>
@@ -7958,6 +7988,44 @@ BaseReadingTreeNode.SetText():Void</Item>
          </Type>
          <Type Name="ORMDiagram">
           <Members>
+           <Member Name="FindShapeForElement(Microsoft.VisualStudio.Modeling.ModelElement):Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement">
+            <Messages>
+             <Message TypeName="MembersShouldDifferByMoreThanReturnType" Category="Microsoft.Usage" CheckId="CA2223" Status="Excluded" Created="2005-05-18 22:57:03Z">
+              <Issue>
+               <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram.FindShapeForElement(Microsoft.VisualStudio.Modeling.ModelElement)</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="FindShapeForElement(Microsoft.VisualStudio.Modeling.ModelElement):ShapeType">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Status="Excluded" Created="2005-05-18 22:57:03Z">
+              <Issue>
+               <Item>ORMDiagram.FindShapeForElement(ModelElement):ShapeType</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="19" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="MembersShouldDifferByMoreThanReturnType" Category="Microsoft.Usage" CheckId="CA2223" Status="Excluded" Created="2005-05-18 22:57:03Z">
+              <Issue>
+               <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram.FindShapeForElement(Microsoft.VisualStudio.Modeling.ModelElement)</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="20" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="StickyBackgroundResource">
             <Messages>
              <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2005-04-15 14:45:27Z">
@@ -8511,6 +8579,51 @@ BaseReadingTreeNode.SetText():Void</Item>
               <Notes>
                <User Name="mcurland">
                 <Note Id="10" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SubtypeConnectAction+SubtypeConnectionType">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-18 22:57:03Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.SubtypeConnectAction+SubtypeConnectionType</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="18" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="Instance">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2005-05-18 22:57:03Z">
+              <Issue>
+               <Item>SubtypeConnectionType.Instance</Item>
+               <Item>Northface.Tools.ORM.ShapeModel.SubtypeConnectAction+SubtypeConnectionType</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="17" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="InstanceArray">
+            <Messages>
+             <Message TypeName="ArrayFieldsShouldNotBeReadOnly" Category="Microsoft.Security" CheckId="CA2105" Status="Excluded" Created="2005-05-18 22:57:03Z">
+              <Issue>
+               <Item>SubtypeConnectionType.InstanceArray</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="16" />
                </User>
               </Notes>
              </Message>
@@ -9434,6 +9547,13 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="11" Modified="2005-04-15 17:59:24Z">FxCop bad. The equivalent casts are in different conditional blocks.</Note>
     <Note Id="12" Modified="2005-04-15 18:03:05Z">Duplicate cast is in assert statement</Note>
     <Note Id="13" Modified="2005-04-18 16:06:48Z">Property called to trigger side effects</Note>
+    <Note Id="14" Modified="2005-05-18 23:18:50Z">Internal rules instantiated via reflection</Note>
+    <Note Id="15" Modified="2005-05-18 23:21:02Z">Generated code</Note>
+    <Note Id="16" Modified="2005-05-18 23:23:54Z">Intentional declaration. Array does not ever need to be recreated here.</Note>
+    <Note Id="17" Modified="2005-05-18 23:24:14Z">Verified as immutable reference</Note>
+    <Note Id="18" Modified="2005-05-18 23:24:39Z">Nested protected classes should be OK</Note>
+    <Note Id="19" Modified="2005-05-18 23:27:41Z">Type param here is OK, corresponds to type of return value. Programmers have to specify type parameters all the type for generic types, there's little harm in passing them to methods. It is easier to pass them than figure out if the compiler will bind correctly.</Note>
+    <Note Id="20" Modified="2005-05-18 23:28:20Z">These are different, one has a type parameter, the other doesn't. That gives them a different signature.</Note>
    </User>
    <User Name="pewert">
     <Note Id="0" Modified="2005-04-25 20:13:21Z">Defined in IMS-generated code</Note>
@@ -9680,6 +9800,16 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <MessageLevel Certainty="90">Error</MessageLevel>
     <File Name="NamingRules.dll" Version="1.312.0.0" />
    </Rule>
+   <Rule TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004">
+    <Name>Generic methods should provide type parameter</Name>
+    <Description>Methods where the type parameter cannot be inferred from the parameters and therefore has to be defined in the method call are too difficult to understand. Methods with a formal parameter typed as the generic method type parameter support inference. Methods with no formal parameter typed as the generic method type parameter don't support inference.</Description>
+    <Resolution Name="Default">Consider a design where {0} doesn't need an explicit type parameter in any call to it.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Design/GenericMethodsShouldProvideTypeParameter.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="95">CriticalError</MessageLevel>
+    <File Name="DesignRules.dll" Version="1.312.0.0" />
+   </Rule>
    <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
     <Name>Identifiers should be cased correctly</Name>
     <Description>Type, namespace, and member identifiers are pascal-cased. Parameter identifiers are camel-cased. The pascal-casing convention capitalizes the first letter of each word, as in BackColor. The camel-casing convention formats the first letter of the first word in lowercase and capitalizes the first letter of all subsequent words, as in backgroundColor.</Description>
@@ -9741,6 +9871,16 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Email>askfxcop@microsoft.com</Email>
     <MessageLevel Certainty="85">Error</MessageLevel>
     <File Name="NamingRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="MembersShouldDifferByMoreThanReturnType" Category="Microsoft.Usage" CheckId="CA2223">
+    <Name>Members should differ by more than return type</Name>
+    <Description>Methods in the same type that differ only by return type can be difficult for developers and tools to properly recognize. When extending a type, be sure not to define new methods that differ from base type methods only by type.</Description>
+    <Resolution Name="Default">'{0}' should differ from other members by more than its return type.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Usage/MembersShouldDifferByMoreThanReturnType.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="90">Error</MessageLevel>
+    <File Name="UsageRules.dll" Version="1.312.0.0" />
    </Rule>
    <Rule TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA902">
     <Name>Move pinvokes to native methods class</Name>

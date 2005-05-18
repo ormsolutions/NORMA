@@ -226,6 +226,27 @@ namespace Northface.Tools.ORM.ShapeModel
 				return ModelElement as ObjectTypePlaysRole;
 			}
 		}
+		/// <summary>
+		/// Configuring this link after it has been added to the diagram
+		/// </summary>
+		/// <param name="diagram">The parent diagram</param>
+		public void ConfiguringAsChildOf(ORMDiagram diagram)
+		{
+			// If we're already connected then walk away
+			if (FromShape == null && ToShape == null)
+			{
+				ObjectTypePlaysRole modelLink = ModelElement as ObjectTypePlaysRole;
+				ObjectType rolePlayer = modelLink.RolePlayer;
+				FactType nestedFact = rolePlayer.NestedFactType;
+				NodeShape fromShape;
+				NodeShape toShape;
+				if (null != (fromShape = diagram.FindShapeForElement(modelLink.PlayedRoleCollection.FactType) as NodeShape) &&
+					null != (toShape = diagram.FindShapeForElement((nestedFact == null) ? rolePlayer as ModelElement : nestedFact) as NodeShape))
+				{
+					Connect(fromShape, toShape);
+				}
+			}
+		}
 		#endregion // RolePlayerLink specific
 		#region Shape display update rules
 		private static void UpdateDotDisplayOnMandatoryConstraintChange(Role role)

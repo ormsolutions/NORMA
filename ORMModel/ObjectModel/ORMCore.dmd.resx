@@ -315,6 +315,12 @@
   <data name="Northface.Tools.ORM.ObjectModel.SubsetConstraint">
     <value xml:space="preserve">SubsetConstraint</value>
   </data>
+  <data name="Northface.Tools.ORM.ObjectModel.SubtypeFact">
+    <value xml:space="preserve">Subtype</value>
+  </data>
+  <data name="Northface.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern">
+    <value xml:space="preserve">Subtype{0}</value>
+  </data>
   <data name="Northface.Tools.ORM.ObjectModel.ValueType">
     <value xml:space="preserve">ValueType</value>
   </data>

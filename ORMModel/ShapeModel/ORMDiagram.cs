@@ -57,6 +57,10 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public const string ORMDiagramConnectExternalConstraintFilterString = "ORMDiagramConnectExternalConstraintFilterString";
 		/// <summary>
+		/// The filter string used to create subtype relationships between object types
+		/// </summary>
+		public const string ORMDiagramCreateSubtypeFilterString = "ORMDiagramCreateSubtypeFilterString";
+		/// <summary>
 		/// The filter string used to create an internal constraint. Very similar to a
 		/// normal action, except the internal constraint connector is activated on completion
 		/// of the action.
@@ -127,10 +131,18 @@ namespace Northface.Tools.ORM.ShapeModel
 			ObjectTypePlaysRole objectTypePlaysRole;
 			if (null != (factType = element as FactType))
 			{
+				if (factType is SubtypeFact)
+				{
+					return true;
+				}
 				return ShouldDisplayPartOfReferenceMode(factType);
 			}
 			else if (null != (objectTypePlaysRole = element as ObjectTypePlaysRole))
 			{
+				if (objectTypePlaysRole.PlayedRoleCollection.FactType is SubtypeFact)
+				{
+					return false;
+				}
 				return ShouldDisplayPartOfReferenceMode(objectTypePlaysRole);
 			}
 			else if (element is ExternalFactConstraint ||
@@ -287,54 +299,22 @@ namespace Northface.Tools.ORM.ShapeModel
 			ORMBaseShape baseShape;
 			RolePlayerLink roleLink;
 			ExternalConstraintLink constraintLink;
+			SubtypeLink subtypeLink;
 			if (null != (baseShape = child as ORMBaseShape))
 			{
 				baseShape.ConfiguringAsChildOf(this);
 			}
 			else if (null != (roleLink = child as RolePlayerLink))
 			{
-				// UNDONE: Move this chunk of code elsewhere more specific
-				// to a roleplayer link
-
-				// If we're already connected then walk away
-				if (roleLink.FromShape == null && roleLink.ToShape == null)
-				{
-					ObjectTypePlaysRole modelLink = roleLink.ModelElement as ObjectTypePlaysRole;
-					ObjectType rolePlayer = modelLink.RolePlayer;
-					FactType nestedFact = rolePlayer.NestedFactType;
-					NodeShape fromShape;
-					NodeShape toShape;
-					if (null != (fromShape = FindShapeForElement(modelLink.PlayedRoleCollection.FactType) as NodeShape) &&
-						null != (toShape = FindShapeForElement((nestedFact == null) ? rolePlayer as ModelElement : nestedFact) as NodeShape))
-					{
-						roleLink.Connect(fromShape, toShape);
-					}
-				}
+				roleLink.ConfiguringAsChildOf(this);
 			}
 			else if (null != (constraintLink = child as ExternalConstraintLink))
 			{
-				// UNDONE: Move this chunk of code elsewhere more specific
-				// to a roleplayer link
-
-				// If we're already connected then walk away
-				if (constraintLink.FromShape == null && constraintLink.ToShape == null)
-				{
-					IFactConstraint modelLink = constraintLink.ModelElement as IFactConstraint;
-					FactType attachedFact = modelLink.FactType;
-					IConstraint constraint = modelLink.Constraint;
-					NodeShape fromShape;
-					NodeShape toShape;
-					if (null != (fromShape = FindShapeForElement(constraint as ModelElement) as NodeShape) &&
-						null != (toShape = FindShapeForElement(attachedFact) as NodeShape))
-					{
-						// Note that the from/to ordering reversal here is a hack so
-						// the fact type shape folding code can find the opposite constraint
-						// based on its center point. If both ends move the connection point,
-						// then only the first one passed in here can find the opposite shape.
-						// UNDONE: Slimy hack, should be removed if we get better framework support.
-						constraintLink.Connect(toShape, fromShape);
-					}
-				}
+				constraintLink.ConfiguringAsChildOf(this);
+			}
+			else if (null != (subtypeLink = child as SubtypeLink))
+			{
+				subtypeLink.ConfiguringAsChildOf(this);
 			}
 		}
 		/// <summary>
@@ -501,6 +481,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					break;
 				case ResourceStrings.ToolboxRoleConnectorItemId:
 				case ResourceStrings.ToolboxExternalConstraintConnectorItemId:
+				case ResourceStrings.ToolboxSubtypeConnectorItemId:
 					// Intentionally unprototyped item
 					break;
 				default:
@@ -557,6 +538,10 @@ namespace Northface.Tools.ORM.ShapeModel
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramConnectRoleFilterString))
 				{
 					action = RoleConnectAction;
+				}
+				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramCreateSubtypeFilterString))
+				{
+					action = SubtypeConnectAction;
 				}
 				else if (activeView.SelectedToolboxItemSupportsFilterString(ORMDiagram.ORMDiagramDefaultFilterString))
 				{
@@ -792,6 +777,33 @@ namespace Northface.Tools.ORM.ShapeModel
 			return new RoleConnectAction(this);
 		}
 		#endregion // Role drag action
+		#region Subtype create action
+		[NonSerialized]
+		private SubtypeConnectAction mySubtypeConnectAction;
+		/// <summary>
+		/// The connect action used to connect a base type to a derived type
+		/// </summary>
+		public SubtypeConnectAction SubtypeConnectAction
+		{
+			get
+			{
+				SubtypeConnectAction retVal = mySubtypeConnectAction;
+				if (retVal == null)
+				{
+					mySubtypeConnectAction = retVal = CreateSubtypeConnectAction();
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Create the connect action used to connect roles to their role players
+		/// </summary>
+		/// <returns>SubtypeConnectAction instance</returns>
+		protected virtual SubtypeConnectAction CreateSubtypeConnectAction()
+		{
+			return new SubtypeConnectAction(this);
+		}
+		#endregion // Subtype create action
 		#endregion // Toolbox support
 		#region Other base overrides
 		/// <summary>
@@ -841,6 +853,13 @@ namespace Northface.Tools.ORM.ShapeModel
 
 				disposeMe = myRoleConnectAction as IDisposable;
 				myRoleConnectAction = null;
+				if (disposeMe != null)
+				{
+					disposeMe.Dispose();
+				}
+
+				disposeMe = mySubtypeConnectAction as IDisposable;
+				mySubtypeConnectAction = null;
 				if (disposeMe != null)
 				{
 					disposeMe.Dispose();

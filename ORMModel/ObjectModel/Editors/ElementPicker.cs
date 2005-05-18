@@ -7,6 +7,8 @@ using System.Drawing.Design;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using Microsoft.VisualStudio.Modeling;
+using Microsoft.VisualStudio.Modeling.Diagrams;
 namespace Northface.Tools.ORM.ObjectModel.Editors
 {
 	/// <summary>
@@ -436,15 +438,15 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			{
 				return null;
 			}
-			Microsoft.VisualStudio.Modeling.Diagrams.NodeShape shape;
+			PresentationElement pel;
 			Microsoft.VisualStudio.EnterpriseTools.Shell.ModelElementTreeNode treeNode;
 			if (pickAnyElement && instance.GetType().IsArray)
 			{
 				instance = (instance as object[])[0];
 			}
-			if (null != (shape = instance as Microsoft.VisualStudio.Modeling.Diagrams.NodeShape))
+			if (null != (pel = instance as PresentationElement))
 			{
-				instance = shape.ModelElement;
+				instance = pel.ModelElement;
 			}
 			else if (null != (treeNode = instance as Microsoft.VisualStudio.EnterpriseTools.Shell.ModelElementTreeNode))
 			{

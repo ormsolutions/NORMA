@@ -310,8 +310,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						// Add a mandatory constraint
 						Store store = role.Store;
 						FactType factType;
-						if ((null == (factType = role.FactType)) ||
-							(null == factType.Model))
+						if (null == (factType = role.FactType))
 						{
 							throw new InvalidOperationException(ResourceStrings.ModelExceptionIsMandatoryRequiresAttachedFactType);
 						}

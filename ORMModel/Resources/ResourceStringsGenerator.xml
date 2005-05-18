@@ -12,6 +12,9 @@
     <ResourceString name="FactType" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.FactType">
         <comment type="Summary">The display name used for a simple FactType</comment>
     </ResourceString>
+    <ResourceString name="SubtypeFact" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.SubtypeFact">
+        <comment type="Summary">The display name used for a SubtypeFact</comment>
+    </ResourceString>
     <ResourceString name="ObjectifiedFactType" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.ObjectifiedFactType">
         <comment type="Summary">The display name used for an objectified (nested) FactType</comment>
     </ResourceString>
@@ -105,6 +108,18 @@
     <ResourceString name="FactTypeDefaultNamePattern" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.FactType.DefaultNamePattern">
         <comment type="Summary">The base name used to create a name for a new FactType. This is a format string with {0} being the placeholder for the number placement.</comment>
     </ResourceString>
+    <ResourceString name="SubtypeFactDefaultNamePattern" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern">
+        <comment type="Summary">The base name used to create a name for a new SubtypeFact. This is a format string with {0} being the placeholder for the number placement.</comment>
+    </ResourceString>
+    <ResourceString name="SubtypeFactPredicateInverseReading" model="Model" resourceName="SubtypeFact.PredicateInverseReading">
+        <comment type="Summary">The inverse reading for the predicate created by creating a sub type relationship.</comment>
+    </ResourceString>
+    <ResourceString name="SubtypeFactPredicateReading" model="Model" resourceName="SubtypeFact.PredicateReading">
+        <comment type="Summary">The reading for the forward predicate created by creating a subtype relationship.</comment>
+    </ResourceString>
+    <ResourceString name="SubtypeFactComponentNameFormat" model="Model" resourceName="SubtypeFact.ComponentNameFormat">
+        <comment type="Summary">String for generating a component name for a subtype. The {0} replacement field is used for the subtype component name; {1} for the supertype.</comment>
+    </ResourceString>
     <ResourceString name="ExternalConstraintConnectActionInstructions" model="Diagram" resourceName="ExternalConstraintConnectAction.Instructions">
         <comment type="Summary">The instructions shown when creating an external constraint</comment>
     </ResourceString>
@@ -128,6 +143,9 @@
     </ResourceString>
     <ResourceString name="RoleConnectActionTransactionName" model="Diagram" resourceName="RoleConnectAction.TransactionName">
         <comment type="Summary">The transaction name used by the role connect action. The text appears in the undo dropdown in the VS IDE.</comment>
+    </ResourceString>
+    <ResourceString name="SubtypeConnectActionTransactionName" model="Diagram" resourceName="SubtypeConnectAction.TransactionName">
+        <comment type="Summary">The transaction name used by the subtype connect action. The text appears in the undo dropdown in the VS IDE.</comment>
     </ResourceString>
     <ResourceString name="OptionsPageChangeTransactionName" model="Diagram" resourceName="OptionsPageChange.TransactionName">
         <comment type="Summary">The transaction name used when an options page change modifies diagram layout and connections. The text appears in the undo dropdown in the VS IDE.</comment>
@@ -187,7 +205,7 @@
         <comment type="Summary">Exception message when an attempt is made to set\ both a primary identifier and a value type or a nested fact type on the same object type.</comment>
     </ResourceString>
     <ResourceString name="ModelExceptionIsMandatoryRequiresAttachedFactType" model="Model" resourceName="ModelException.Role.IsMandatoryRequiresAttachedFactType">
-        <comment type="Summary">Exception message when an attempt is made to set the IsMandatory property on a role of an unattached fact type. IsMandatory creates a constraint</comment>
+        <comment type="Summary">Exception message when an attempt is made to set the IsMandatory property on an unattached role. IsMandatory creates an internal constraint, which is owned by an FactType, so cannot be realized if the parent fact is unknown.</comment>
     </ResourceString>
     <ResourceString name="ModelExceptionPreferredIdentifierMustBeUniquenessConstraint" model="Model" resourceName="ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint">
         <comment type="Summary">Exception message when an attempt is made to create a preferred identifier relationship with an incompatible constraint type.</comment>
@@ -320,6 +338,15 @@
     </ResourceString>
     <ResourceString name="ModelExceptionReferenceModeAmbiguousName" model="Model" resourceName="ModelException.ReferenceMode.AmbiguousName">
         <comment type="Summary">Exception message output when multiple reference modes are found with the same name</comment>
+    </ResourceString>
+    <ResourceString name="ModelExceptionSubtypeConstraintAndRolePatternFixed" model="Model" resourceName="ModelException.SubtypeFact.ConstraintAndRolePatternFixed">
+        <comment type="Summary">Exception message when an attempt is made to modify the roles collection or internal constraints of a SubtypeFact.</comment>
+    </ResourceString>
+    <ResourceString name="ModelExceptionSubtypeFactNotNested" model="Model" resourceName="ModelException.SubtypeFact.NotNested">
+        <comment type="Summary">Exception message when an attempt is made to nest a SubtypeFact.</comment>
+    </ResourceString>
+    <ResourceString name="ModelExceptionSubtypeFactCycle" model="Model" resourceName="ModelException.SubtypeFact.Cycle">
+        <comment type="Summary">Exception message when an attempt is made to add a subtype relationship where the subtype is a direct or indirect subtype of the supertype.</comment>
     </ResourceString>
     <ResourceString name="ModelReferenceModePickerFormatString" model="Model" resourceName="ModelReferenceModePicker.FormatString">
         <comment type="Summary">returns the format string for the display text for reference mode picker</comment>

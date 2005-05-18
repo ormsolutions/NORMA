@@ -92,7 +92,52 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
-
+		/// <summary>
+		/// Get the sub types for this type
+		/// </summary>
+		/// <returns>Enumeration of ObjectType</returns>
+		[CLSCompliant(false)]
+		public IEnumerable<ObjectType> SubtypeCollection
+		{
+			get
+			{
+				foreach (Role role in PlayedRoleCollection)
+				{
+					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
+					if (subtypeFact != null)
+					{
+						// If we're the derived type
+						if (subtypeFact.Supertype == this)
+						{
+							yield return subtypeFact.Subtype;
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Get the super types for this type
+		/// </summary>
+		/// <returns>Enumeration of ObjectType</returns>
+		[CLSCompliant(false)]
+		public IEnumerable<ObjectType> SupertypeCollection
+		{
+			get
+			{
+				foreach (Role role in PlayedRoleCollection)
+				{
+					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
+					if (subtypeFact != null)
+					{
+						// If we're the derived type
+						if (subtypeFact.Subtype == this)
+						{
+							yield return subtypeFact.Supertype;
+						}
+					}
+				}
+			}
+		}
 		/// <summary>
 		/// Determines whether to return the valuetype name as the reference mode or, if there
 		/// is a reference mode, it returns the reference mode name
@@ -557,7 +602,7 @@ namespace Northface.Tools.ORM.ObjectModel
 					}
 					SetReferenceMode(objectType, singleMode, null, newName, e.OldValue as string);
 				}
-				else if (attributeGuid == ObjectType.ReferenceModeMetaAttributeGuid) 
+				else if (attributeGuid == ObjectType.ReferenceModeMetaAttributeGuid)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					SetReferenceMode(objectType, (ReferenceMode)e.NewValue, (ReferenceMode)e.OldValue, null, null);
@@ -682,21 +727,29 @@ namespace Northface.Tools.ORM.ObjectModel
 				ModelElement element = e.ModelElement;
 				bool incompatibleValueTypeCombination = false;
 				bool incompatibleNestingAndRoleCombination = false;
+				bool subtypesNotNested = false;
 				// Note that the other portion of this condition is
 				// checked in a separate add rule for EntityTypeHasPreferredIdentifier
 				bool incompatiblePreferredIdentifierCombination = false;
 				if (null != (nester = element as NestingEntityTypeHasFactType))
 				{
-					ObjectType nestingType = nester.NestingType;
-					if (!(incompatibleValueTypeCombination = nestingType.IsValueType) &&
-						!(incompatiblePreferredIdentifierCombination = null != nestingType.PreferredIdentifier))
+					if (nester.NestedFactType is SubtypeFact)
 					{
-						foreach (Role role in nester.NestedFactType.RoleCollection)
+						subtypesNotNested = true;
+					}
+					else
+					{
+						ObjectType nestingType = nester.NestingType;
+						if (!(incompatibleValueTypeCombination = nestingType.IsValueType) &&
+							!(incompatiblePreferredIdentifierCombination = null != nestingType.PreferredIdentifier))
 						{
-							if (role.RolePlayer == nestingType)
+							foreach (Role role in nester.NestedFactType.RoleCollection)
 							{
-								incompatibleNestingAndRoleCombination = true;
-								break;
+								if (role.RolePlayer == nestingType)
+								{
+									incompatibleNestingAndRoleCombination = true;
+									break;
+								}
 							}
 						}
 					}
@@ -739,6 +792,10 @@ namespace Northface.Tools.ORM.ObjectModel
 				else if (incompatiblePreferredIdentifierCombination)
 				{
 					exceptionString = ResourceStrings.ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType;
+				}
+				else if (subtypesNotNested)
+				{
+					exceptionString = ResourceStrings.ModelExceptionSubtypeFactNotNested;
 				}
 				if (exceptionString != null)
 				{

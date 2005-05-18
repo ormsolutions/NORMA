@@ -344,6 +344,24 @@
   <data name="Toolbox.SubsetConstraint.Tooltip.Id">
     <value xml:space="preserve">New Subset Constraint</value>
   </data>
+  <data name="Toolbox.SubtypeConnector.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/8DAwP+AgID/AAD//wD/AP8A/////wAA//8A/////wD//////6qq
+        qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqzKqqqgqqqsz/yqqqAKqs///8qqqgCs////wAAAAA
+        z////AAAAADP///8qqqgCs///8qqqgCqrP/MqqqqCqqqzKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+        qqqqqqqq
+</value>
+  </data>
+  <data name="Toolbox.SubtypeConnector.Caption.Id">
+    <value xml:space="preserve">Subtype Connector</value>
+  </data>
+  <data name="Toolbox.SubtypeConnector.Item.Id">
+    <value xml:space="preserve">Toolbox.SubtypeConnector.Item.Id</value>
+  </data>
+  <data name="Toolbox.SubtypeConnector.Tooltip.Id">
+    <value xml:space="preserve">Subtype Creator Tool</value>
+  </data>
   <data name="Toolbox.TernaryFactType.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA

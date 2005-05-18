@@ -203,6 +203,10 @@ namespace Northface.Tools.ORM
 		/// </summary>
 		public const string ToolboxExternalConstraintConnectorItemId = "Toolbox.ExternalConstraintConnector.Item.Id";
 		/// <summary>
+		/// The identifier for an SubtypeConnector toolbox item
+		/// </summary>
+		public const string ToolboxSubtypeConnectorItemId = "Toolbox.SubtypeConnector.Item.Id";
+		/// <summary>
 		/// The identifier for an InternalUniquenessConstraintConnector toolbox item
 		/// </summary>
 		public const string ToolboxInternalUniquenessConstraintConnectorItemId = "Toolbox.InternalUniquenessConstraintConnector.Item.Id";

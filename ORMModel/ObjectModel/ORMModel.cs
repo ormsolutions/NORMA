@@ -524,7 +524,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			protected override string GetRootNamePattern(NamedElement element)
 			{
 				Debug.Assert(element is FactType);
-				return ResourceStrings.FactTypeDefaultNamePattern;
+				return (element is SubtypeFact) ? ResourceStrings.SubtypeFactDefaultNamePattern : ResourceStrings.FactTypeDefaultNamePattern;
 			}
 			/// <summary>
 			/// Raise an exception with text specific to a name in a model

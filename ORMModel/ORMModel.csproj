@@ -126,10 +126,13 @@
     </Compile>
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
+    <Compile Include="ObjectModel\SubtypeFact.cs" />
     <Compile Include="Resources\ResourceStringsGenerator.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
     </Compile>
+    <Compile Include="ShapeModel\SubtypeLink.cs" />
+    <Compile Include="ShapeModel\SubtypeConnectorAction.cs" />
     <Compile Include="ShapeModel\CustomFoldShapeGeometries.cs" />
     <Compile Include="ShapeModel\FrequencyConstraintShape.cs" />
     <Compile Include="ShapeModel\InternalConstraintConnectAction.cs" />
@@ -241,6 +244,9 @@
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
     </Content>
     <Content Include="Resources\ResourceStringsGenerator.xslt" />
+    <EmbeddedResource Include="ShapeModel\ConnectSubtypeSearching.cur" />
+    <EmbeddedResource Include="ShapeModel\ConnectSubtypeAllowed.cur" />
+    <None Include="Resources\Toolbox.SubtypeConnector.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.RoleConnector.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ShapeModel\ConnectRoleAllowed.cur" />
