@@ -20,7 +20,7 @@
                 </plx:Enum>
                 <plx:Class name="ORMModel" visibility="Public" partial="true">
                     <plx:Class name="AddIntrinsicDataTypesFixupListener" visibility="Private" partial="true" sealed="true">
-                        <plx:Variable name="typeArray" dataTypeName="Type" dataTypeQualifier="System" dataTypeIsSimpleArray="true" shared="true" visibility="Private">
+                        <plx:Field name="typeArray" dataTypeName="Type" dataTypeQualifier="System" dataTypeIsSimpleArray="true" shared="true" visibility="Private">
                             <plx:Initialize>
                                 <plx:CallNew dataTypeName="Type" dataTypeQualifier="System" dataTypeIsSimpleArray="true" style="New">
                                     <plx:ArrayInitializer>
@@ -36,7 +36,7 @@
                                     </plx:ArrayInitializer>
                                 </plx:CallNew>
                             </plx:Initialize>
-                        </plx:Variable>
+                        </plx:Field>
                     </plx:Class>
                 </plx:Class>
                 <xsl:for-each select="DataType">

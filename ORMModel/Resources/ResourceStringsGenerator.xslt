@@ -8,13 +8,13 @@
             <plx:Namespace name="Northface.Tools.ORM">
                 <plx:Class name="ResourceStrings" partial="true" visibility="Internal">
                     <xsl:for-each select="ResourceString">
-                        <plx:Variable const="true" visibility="Private" dataTypeName="String" dataTypeQualifier="System" name="{@name}_Id">
+                        <plx:Field const="true" visibility="Private" dataTypeName="String" dataTypeQualifier="System" name="{@name}_Id">
                             <plx:Initialize>
                                 <plx:String>
                                     <xsl:value-of select="@resourceName"/>
                                 </plx:String>
                             </plx:Initialize>
-                        </plx:Variable>
+                        </plx:Field>
                     </xsl:for-each>
                     <xsl:for-each select="ResourceString">
                         <plx:Property name="{@name}" shared="true" visibility="Public">
