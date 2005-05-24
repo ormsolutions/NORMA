@@ -45,7 +45,11 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// Custom link information is supported.
 		/// </summary>
-		CustomSerializedLinkInfo = 0x08
+		CustomSerializedLinkInfo = 0x08,
+		/// <summary>
+		/// The SortCustomSerializedChildRoles method is supported
+		/// </summary>
+		CustomSortChildRoles = 0x10,
 	}
 	/// <summary>
 	/// Write style for element custom serialization.
@@ -407,6 +411,11 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="rolePlayedInfo">The role played.</param>
 		/// <returns>Custom serialization information for links.</returns>
 		ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo);
+		/// <summary>
+		/// Sort custom role elements
+		/// </summary>
+		/// <param name="playedMetaRoles">Played meta roles to sort</param>
+		void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles);
 	}
 
 	/// <summary>
@@ -728,7 +737,9 @@ namespace Northface.Tools.ORM.Shell
 			IORMCustomSerializedElement customElement = element as IORMCustomSerializedElement;
 			IList attributes = classInfo.AllMetaAttributes;
 			IList rolesPlayed = classInfo.AllMetaRolesPlayed;
-			bool roleGrouping = false, isCustom = (customElement!=null);
+			bool roleGrouping = false;
+			bool isCustom = (customElement!=null);
+			int count;
 
 			//load custom information
 			if (isCustom)
@@ -759,7 +770,8 @@ namespace Northface.Tools.ORM.Shell
 			file.WriteAttributeString("id", element.Id.ToString().ToUpper());
 
 			//write attributes
-			for (int index = 0, count = attributes.Count; index < count; ++index)
+			count = attributes.Count;
+			for (int index = 0; index < count; ++index)
 			{
 				Microsoft.VisualStudio.Modeling.MetaAttributeInfo attribute = (Microsoft.VisualStudio.Modeling.MetaAttributeInfo)attributes[index];
 
@@ -785,8 +797,18 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 
+			count = rolesPlayed.Count;
+			if (0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles) &&
+				count != 0)
+			{
+				MetaRoleInfo[] sortedRoles = new MetaRoleInfo[count];
+				rolesPlayed.CopyTo(sortedRoles, 0);
+				customElement.SortCustomSerializedChildRoles(sortedRoles);
+				rolesPlayed = sortedRoles;
+			}
+
 			//write children
-			for (int index = 0, count = rolesPlayed.Count; index < count; ++index)
+			for (int index = 0; index < count; ++index)
 			{
 				MetaRoleInfo roleInfo = (MetaRoleInfo)rolesPlayed[index];
 				MetaRoleInfo oppositeRoleInfo = roleInfo.OppositeMetaRole;

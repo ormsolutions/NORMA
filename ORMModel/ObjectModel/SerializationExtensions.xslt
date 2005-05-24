@@ -7,6 +7,7 @@
         <plx:Root xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
             <plx:Using name="Microsoft.VisualStudio.Modeling"/>
             <plx:Using name="Northface.Tools.ORM.Shell"/>
+			<plx:Using name="System"/>
             <plx:Namespace name="Northface.Tools.ORM.ObjectModel">
                 <xsl:apply-templates/>
             </plx:Namespace>
@@ -15,9 +16,9 @@
     <xsl:template match="se:Element">
         <xsl:variable name="ClassName" select="@Class"/>
         <plx:Class name="{$ClassName}" visibility="Public" partial="true">
-            <plx:ImplementsInterface dataTypeName="Northface.Tools.ORM.Shell.IORMCustomSerializedElement"/>
+            <plx:ImplementsInterface dataTypeName="IORMCustomSerializedElement"/>
             <plx:Function visibility="Protected" name="GetSupportedOperations">
-                <plx:InterfaceMember dataTypeName="Northface.Tools.ORM.Shell.IORMCustomSerializedElement" member="GetSupportedOperations"/>
+                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetSupportedOperations"/>
                 <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementSupportedOperations" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
                 <xsl:variable name="supportedOperations">
                     <xsl:call-template name="ReturnORMCustomSerializedElementSupportedOperations">
@@ -41,7 +42,7 @@
                 </plx:Return>
             </plx:Function>
             <plx:Function visibility="Protected" name="HasMixedTypedAttributes">
-                <plx:InterfaceMember dataTypeName="Northface.Tools.ORM.Shell.IORMCustomSerializedElement" member="HasMixedTypedAttributes"/>
+                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="HasMixedTypedAttributes"/>
                 <plx:Param name="" style="RetVal" dataTypeName="Boolean" dataTypeQualifier="System"/>
                 <plx:Return>
                     <xsl:choose>
@@ -55,7 +56,7 @@
                 </plx:Return>
             </plx:Function>
             <plx:Function visibility="Protected" name="GetCustomSerializedCombinedElementInfo">
-                <plx:InterfaceMember dataTypeName="Northface.Tools.ORM.Shell.IORMCustomSerializedElement" member="GetCustomSerializedCombinedElementInfo"/>
+                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedCombinedElementInfo"/>
                 <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedCombinedElementInfo[]" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
                 <xsl:choose>
                     <xsl:when test="count(se:CombinedElement)">
@@ -146,7 +147,7 @@
                 </xsl:choose>
             </plx:Function>
             <plx:Function visibility="Protected" name="GetCustomSerializedElementInfo">
-                <plx:InterfaceMember dataTypeName="Northface.Tools.ORM.Shell.IORMCustomSerializedElement" member="GetCustomSerializedElementInfo"/>
+                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedElementInfo"/>
                 <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
                 <xsl:choose>
                     <xsl:when test="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)">
@@ -160,7 +161,7 @@
                 </xsl:choose>
             </plx:Function>
             <plx:Function visibility="Protected" name="GetCustomSerializedAttributeInfo">
-                <plx:InterfaceMember dataTypeName="Northface.Tools.ORM.Shell.IORMCustomSerializedElement" member="GetCustomSerializedAttributeInfo"/>
+                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedAttributeInfo"/>
                 <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedAttributeInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
                 <plx:Param name="attributeInfo" dataTypeName="MetaAttributeInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
                 <plx:Param name="rolePlayedInfo" dataTypeName="MetaRoleInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
@@ -220,7 +221,7 @@
                 </xsl:choose>
             </plx:Function>
             <plx:Function visibility="Protected" name="GetCustomSerializedLinkInfo">
-                <plx:InterfaceMember dataTypeName="Northface.Tools.ORM.Shell.IORMCustomSerializedElement" member="GetCustomSerializedLinkInfo"/>
+                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedLinkInfo"/>
                 <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
                 <plx:Param name="rolePlayedInfo" dataTypeName="MetaRoleInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
                 <xsl:choose>
@@ -257,13 +258,17 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </plx:Function>
+			<plx:Function visibility="Protected" name="SortCustomSerializedChildRoles">
+                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="SortCustomSerializedChildRoles"/>
+				<plx:Param name="playedMetaRoles" dataTypeName="MetaRoleInfo" dataTypeIsSimpleArray="true"/>
+			</plx:Function>
         </plx:Class>
     </xsl:template>
     <xsl:template match="se:Namespaces">
         <plx:Class name="{@Class}" visibility="Public" partial="true">
-            <plx:ImplementsInterface dataTypeName="Northface.Tools.ORM.Shell.IORMCustomElementNamespace"/>
+            <plx:ImplementsInterface dataTypeName="IORMCustomElementNamespace"/>
             <plx:Function visibility="Protected" name="GetCustomElementNamespaces">
-                <plx:InterfaceMember dataTypeName="Northface.Tools.ORM.Shell.IORMCustomElementNamespace" member="GetCustomElementNamespaces"/>
+                <plx:InterfaceMember dataTypeName="IORMCustomElementNamespace" member="GetCustomElementNamespaces"/>
                 <plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System">
                     <plx:ArrayDescriptor rank="2"/>
                 </plx:Param>
