@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SerializationExtensions" targetNamespace="http://Schemas.Northface.edu/Private/SerializationExtensions" elementFormDefault="qualified" xmlns="http://Schemas.Northface.edu/Private/SerializationExtensions" xmlns:mstns="http://Schemas.Northface.edu/Private/SerializationExtensions" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="unqualified">
+    <xs:simpleType name="ElementWriteStyle">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DontWrite">
+                <xs:annotation>
+                    <xs:documentation>Do not write.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Element">
+                <xs:annotation>
+                    <xs:documentation>Write as an element. [Default]</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DoubleTaggedElement">
+                <xs:annotation>
+                    <xs:documentation>Write as a double tagged element.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AttributeWriteStyle">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DontWrite">
+                <xs:annotation>
+                    <xs:documentation>Do not write.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Attribute">
+                <xs:annotation>
+                    <xs:documentation>Write as an attribute. [Default]</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Element">
+                <xs:annotation>
+                    <xs:documentation>Write as an element.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DoubleTaggedElement">
+                <xs:annotation>
+                    <xs:documentation>Write as a double tagged element.</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:attributeGroup name="ElementAttributes">
+        <xs:attribute name="Prefix" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>The new prefix.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Name" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>The new name.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Namespace" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>The new namespace.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="WriteStyle" type="ElementWriteStyle">
+            <xs:annotation>
+                <xs:documentation>How to write.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DoubleTagName" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>The name of the double tag. [WriteStyle=DoubleTaggedElement]</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="AttributeAttributes">
+        <xs:attribute name="ID" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>The ID to match.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Prefix" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>The new prefix.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Name" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>The new name.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Namespace" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>The new namespace.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="WriteCustomStorage" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation>true to write attributes that are custom storage.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="WriteStyle" type="AttributeWriteStyle">
+            <xs:annotation>
+                <xs:documentation>How to write.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DoubleTagName" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>The name of the double tag. [WriteStyle=DoubleTaggedElement]</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="LinkAttributes">
+        <xs:attribute name="RelationshipName" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>The relationship name.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="RoleName" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>The role name.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:element name="ConditionalName">
+        <xs:annotation>
+            <xs:documentation>Renames an element based on a PLIX condition.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:any namespace="http://Schemas.Northface.edu/CodeGeneration/Plix" processContents="lax" minOccurs="1"  maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute name="Name" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>The new name of the element.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="CustomSerializedElements">
+        <xs:annotation>
+            <xs:documentation>The root element.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="Namespaces">
+                    <xs:annotation>
+                        <xs:documentation>Add namespaces to the XML document.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Namespace" minOccurs="1" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>Defines a namespace.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:attribute name="Prefix" type="xs:string" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>The namespace prefix.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="URI" type="xs:string" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>The location of the schema.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="Class" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>The class to add the namespaces to.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Element">
+                    <xs:annotation>
+                        <xs:documentation>Customizes an element.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
+                            <xs:element name="CombinedElement" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>Combines one or more elements.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Link" minOccurs="1" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                                <xs:documentation>A link to combine.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:attributeGroup ref="LinkAttributes"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="Name" type="xs:string" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>The name of the combined element.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>Customizes an attribute on the current element.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="RolePlayed" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                                <xs:documentation>Matches the role played.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:attributeGroup ref="AttributeAttributes"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attributeGroup ref="AttributeAttributes"/>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="Link" minOccurs="0" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>Customizes a link.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
+                                    </xs:sequence>
+                                    <xs:attributeGroup ref="LinkAttributes"/>
+                                    <xs:attributeGroup ref="ElementAttributes"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="Class" type="xs:string" use="required">
+                            <xs:annotation>
+                                <xs:documentation>The class to add the element extensions to.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attribute name="HasMixedTypedAttributes" type="xs:boolean">
+                            <xs:annotation>
+                                <xs:documentation>true to sort the attributes by WriteStyle before writting them.</xs:documentation>
+                            </xs:annotation>
+                        </xs:attribute>
+                        <xs:attributeGroup ref="ElementAttributes"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

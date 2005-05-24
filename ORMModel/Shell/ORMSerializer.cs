@@ -15,12 +15,13 @@ using Microsoft.VisualStudio.Modeling.Diagnostics;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.ShapeModel;
+
 namespace Northface.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Read/write .orm files leveraging the default IMS serializer
 	/// </summary>
-	public class ORMSerializer
+	public partial class ORMSerializer
 	{
 		#region Xsl transforms
 		private const string TrimMdfOrmXsl =
@@ -204,6 +205,10 @@ namespace Northface.Tools.ORM.Shell
 			{
 				RulesSuspended = false;
 			}
+#if NEWSERIALIZE
+			NewSerialize(stream);
+#endif // NEWSERIALIZE
+			return;
 		}
 		/// <summary>
 		/// Determine if an element should be serialized
