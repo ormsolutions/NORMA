@@ -31,20 +31,20 @@
     <!--ObjectRef and  ObjectRefs define references to constrains and collections of constraints-->
     <xs:complexType name="ObjectRefs">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="ObjectRef" type="ObjectRef" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Object" type="ObjectRef" minOccurs="1" maxOccurs="1" />
         </xs:sequence>
     </xs:complexType>
-    <xs:simpleType name="ObjectRef">
-        <xs:restriction base="xs:IDREF" />
-    </xs:simpleType>
+    <xs:complexType name="ObjectRef">
+        <xs:attribute name="ref" type="xs:IDREF" />
+    </xs:complexType>
     <!--end ObjectRef and  ObjectRefs-->
     <xs:complexType name="Objects">
         <xs:complexContent>
             <xs:extension base="ExtendableElement">
                 <xs:sequence minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="EntityType" type="EntityType" minOccurs="0" maxOccurs="unbounded" />
-                    <xs:element name="ValueType" type="ValueType" minOccurs="0" maxOccurs="unbounded" />
                     <xs:element name="ObjectifiedType" type="ObjectifiedType" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="ValueType" type="ValueType" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -71,9 +71,7 @@
         <xs:complexContent>
             <xs:extension base="ObjectType">
                 <!--ReferenceMode is derived.-->
-                <xs:sequence>
-                    <xs:element name="ReferenceMode" type="xs:string" minOccurs="0" maxOccurs="1" />
-                </xs:sequence>
+                <xs:attribute name="ReferenceMode" type="xs:string"></xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -84,8 +82,6 @@
                 <xs:sequence>
                     <xs:element name="NestedPredicate" type="FactRef" minOccurs="1" maxOccurs="1" />
                 </xs:sequence>
-                <xs:attribute name="Name" use="required" type="xs:string" />
-                <xs:attribute name="id" use="required" type="xs:ID" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -100,53 +96,27 @@
         </xs:complexContent>
     </xs:complexType>
     <!--End Objects and Object Types-->
-        <!--DataType -->
+    <!--DataType -->
     <!--DataTypeRef indicates a reference to a datatype -->
-    <xs:simpleType name="DataTypeRef">
-        <xs:restriction base="xs:IDREF" />
-    </xs:simpleType>
+    <xs:complexType name="DataTypeRef">
+        <xs:attribute name="ref" type="xs:IDREF" />
+        <xs:attribute name="Scale" type="xs:int" />
+        <xs:attribute name="Length" type="xs:int" />
+    </xs:complexType>
     <!--end DataTypeRef-->
     <xs:complexType name="DataTypes">
-        <xs:sequence minOccurs ="0" maxOccurs ="unbounded">
-            <xs:element name ="DataType" type ="DataType"/>
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="DataType" type="DataType" />
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="DataType">
         <xs:complexContent>
             <xs:extension base="ExtendableElement">
                 <xs:attribute name="id" type="xs:ID" use="required" />
-                <xs:attribute name="Type" type="DataTypeEnum" use="required" />
-                <xs:attribute name="Scale" type="xs:int" />
-                <xs:attribute name="Length" type="xs:int" />
+                <xs:attribute name="Name" type="xs:string" use="required" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    <xs:simpleType name="DataTypeEnum">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="byte" />
-            <xs:enumeration value="date" />
-            <xs:enumeration value="dateTime" />
-            <xs:enumeration value="decimal" />
-            <xs:enumeration value="double" />
-            <xs:enumeration value="duration" />
-            <xs:enumeration value="float" />
-            <xs:enumeration value="int" />
-            <xs:enumeration value="integer" />
-            <xs:enumeration value="long" />
-            <xs:enumeration value="negativeInteger" />
-            <xs:enumeration value="nonNegativeInteger" />
-            <xs:enumeration value="nonPositiveInteger" />
-            <xs:enumeration value="normalizedString" />
-            <xs:enumeration value="positiveInteger" />
-            <xs:enumeration value="short" />
-            <xs:enumeration value="string" />
-            <xs:enumeration value="time" />
-            <xs:enumeration value="unsignedByte" />
-            <xs:enumeration value="unsignedInt" />
-            <xs:enumeration value="unsignedLong" />
-            <xs:enumeration value="unsignedShort" />
-        </xs:restriction>
-    </xs:simpleType>
     <!--End DataType -->
     <!--Data is a gereral purpose element wrapper to enclose data.  This helps make the schema more extendable.-->
     <xs:complexType name="Data">
@@ -168,7 +138,7 @@
     </xs:complexType>
     <xs:complexType name="RoleSequence">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="RoleRef" type="RoleRef" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Role" type="RoleRef" minOccurs="1" maxOccurs="1" />
         </xs:sequence>
         <xs:attribute name="id" type="xs:ID" use="optional" />
     </xs:complexType>
@@ -205,11 +175,12 @@
     <!--Look up enum values.-->
     <xs:simpleType name="MultiplicityEnum">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="not set" />
-            <xs:enumeration value="0..1" />
-            <xs:enumeration value="0..*" />
-            <xs:enumeration value="1..*" />
-            <xs:enumeration value="1" />
+            <xs:enumeration value="Unspecified" />
+            <xs:enumeration value="Indeterminate" />
+            <xs:enumeration value="ZeroToOne" />
+            <xs:enumeration value="ZeroToMany" />
+            <xs:enumeration value="ExactlyOne" />
+            <xs:enumeration value="OneToMany" />
         </xs:restriction>
     </xs:simpleType>
     <!--End Roles-->
@@ -250,12 +221,12 @@
     <!--ConstraintRef and  ConstraintRefs define references to constrains and collections of constraints-->
     <xs:complexType name="ConstraintRefs">
         <xs:sequence minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="ConstraintRef" type="ConstraintRef" minOccurs="1" maxOccurs="1" />
+            <xs:element name="Constraint" type="ConstraintRef" minOccurs="1" maxOccurs="1" />
         </xs:sequence>
     </xs:complexType>
-    <xs:simpleType name="ConstraintRef">
-        <xs:restriction base="xs:IDREF" />
-    </xs:simpleType>
+    <xs:complexType name="ConstraintRef">
+        <xs:attribute name="ref" type="xs:IDREF" />
+    </xs:complexType>
     <!--end ConstraintRef and  ConstraintRefs-->
     <xs:complexType name="ExternalConstraints">
         <xs:complexContent>
@@ -439,7 +410,7 @@
         <xs:complexContent>
             <xs:extension base="ExtendableElement">
                 <xs:attribute name="ElementType" type="xs:string" use="required" />
-                <xs:attribute name="ElementRef" type="xs:IDREF" use="required" />
+                <xs:attribute name="Element" type="xs:IDREF" use="required" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -466,9 +437,9 @@
     <!--End ModelErrors-->
     <!--Custrom Reference Modes-->
     <!--Reference Mdoes and Kinds-->
-    <xs:simpleType name="CustomReferenceModeRef">
-        <xs:restriction base="xs:IDREF"></xs:restriction>
-    </xs:simpleType>
+    <xs:complexType name="CustomReferenceModeRef">
+        <xs:attribute name="ref" type="xs:IDREF" />
+    </xs:complexType>
     <xs:complexType name="ReferenceMode"></xs:complexType>
     <!--Reference Mdoes and Kinds-->
     <xs:complexType name="CustomReferenceModes">
