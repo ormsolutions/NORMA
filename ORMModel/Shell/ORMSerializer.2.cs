@@ -622,7 +622,7 @@ namespace Northface.Tools.ORM.Shell
 
 			return;
 		}
-		private void SerializeLink(System.Xml.XmlWriter file, ModelElement link, ModelElement rolePlayer, ModelElement oppositeRolePlayer, MetaRoleInfo rolePlayedInfo, bool directLink)
+		private void SerializeLink(System.Xml.XmlWriter file, ElementLink link, ModelElement rolePlayer, ModelElement oppositeRolePlayer, MetaRoleInfo rolePlayedInfo, bool directLink)
 		{
 			ORMCustomSerializedElementSupportedOperations supportedOperations = ORMCustomSerializedElementSupportedOperations.None;
 			ORMCustomSerializedElementInfo customInfo = ORMCustomSerializedElementInfo.Default;
@@ -681,7 +681,18 @@ namespace Northface.Tools.ORM.Shell
 			if (!directLink && !myLinkGUIDs.Contains(keyId))
 			{
 				myLinkGUIDs.Add(keyId);
-				file.WriteAttributeString("id", keyId.ToString().ToUpper());
+				if (link == null || link.MetaClass.MetaRolesPlayed.Count != 0)
+				{
+					file.WriteAttributeString("id", keyId.ToString().ToUpper());
+				}
+				if (link != null)
+				{
+					if (oppositeRolePlayer == null)
+					{
+						oppositeRolePlayer = link.GetRolePlayer(rolePlayedInfo.OppositeMetaRole);
+					}
+					file.WriteAttributeString("ref", oppositeRolePlayer.Id.ToString().ToUpper());
+				}
 
 				for (int count = attributes.Count, index = 0; index < count; ++index)
 				{
@@ -774,11 +785,13 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 
+			//write children
 			for (int index = 0, count = rolesPlayed.Count; index < count; ++index)
 			{
 				MetaRoleInfo roleInfo = (MetaRoleInfo)rolesPlayed[index];
+				MetaRoleInfo oppositeRoleInfo = roleInfo.OppositeMetaRole;
 
-				if (!roleInfo.IsAggregate && !roleInfo.OppositeMetaRole.IsAggregate) //write link
+				if (!roleInfo.IsAggregate && !oppositeRoleInfo.IsAggregate) //write link
 				{
 					if (roleInfo.MetaRelationship.MetaAttributesCount > 0) //link has attributes
 					{
@@ -795,7 +808,7 @@ namespace Northface.Tools.ORM.Shell
 					}
 					else //link does not have attributes
 					{
-						IList oppositeElements = element.GetCounterpartRolePlayers(roleInfo, roleInfo.OppositeMetaRole);
+						IList oppositeElements = element.GetCounterpartRolePlayers(roleInfo, oppositeRoleInfo);
 
 						//write direct links
 						foreach (ModelElement oppositeElement in oppositeElements)
@@ -804,16 +817,16 @@ namespace Northface.Tools.ORM.Shell
 						}
 					}
 				}
-				else //write child
+				else if (roleInfo.IsAggregate) //write child
 				{
 					int combinedIndex;
 
-					if (!roleGrouping || (combinedIndex = FindGUID(combinedElementInfo, roleInfo.Id)) < 0)
+					if (!roleGrouping || (combinedIndex = FindGUID(combinedElementInfo, oppositeRoleInfo.Id)) < 0)
 					{
 						//write child element
-						SerializeChildElement(file, element, roleInfo, roleInfo.Name);
+						SerializeChildElement(file, element, oppositeRoleInfo, roleInfo.Name);
 					}
-					else if (combinedElementInfo[combinedIndex].PushElement(element, roleInfo)) //push until full
+					else if (combinedElementInfo[combinedIndex].PushElement(element, oppositeRoleInfo)) //push until full
 					{
 						ModelElement poppedElement;
 						MetaRoleInfo poppedRoleInfo;
