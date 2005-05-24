@@ -111,8 +111,8 @@ namespace Northface.Tools.ORM.ShapeModel
 				FactType nestedSuperFact = superType.NestedFactType;
 				NodeShape fromShape;
 				NodeShape toShape;
-				if (null != (fromShape = diagram.FindShapeForElement((nestedSuperFact == null) ? superType as ModelElement : nestedSuperFact) as NodeShape) &&
-					null != (toShape = diagram.FindShapeForElement((nestedSubFact == null) ? subType as ModelElement : nestedSubFact) as NodeShape))
+				if (null != (toShape = diagram.FindShapeForElement((nestedSuperFact == null) ? superType as ModelElement : nestedSuperFact) as NodeShape) &&
+					null != (fromShape = diagram.FindShapeForElement((nestedSubFact == null) ? subType as ModelElement : nestedSubFact) as NodeShape))
 				{
 					Connect(fromShape, toShape);
 				}

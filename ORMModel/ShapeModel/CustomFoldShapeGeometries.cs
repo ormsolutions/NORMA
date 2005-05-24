@@ -351,7 +351,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				if (VGConstants.FuzzZero(vectorEndPoint.X, VGConstants.FuzzDistance))
 				{
 					// Vertical line, skip slope calculations
-					return new PointD(bounds.Width / 2, negativeY ? bounds.Height : 0);
+					return new PointD(bounds.Width / 2, negativeY ? 0 : bounds.Height);
 				}
 				else if (VGConstants.FuzzZero(vectorEndPoint.Y, VGConstants.FuzzDistance))
 				{
@@ -448,7 +448,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				if (VGConstants.FuzzZero(vectorEndPoint.X, VGConstants.FuzzDistance))
 				{
 					// Vertical line, skip slope calculations
-					return new PointD(bounds.Width / 2, negativeY ? bounds.Height : 0);
+					return new PointD(bounds.Width / 2, negativeY ? 0 : bounds.Height);
 				}
 				else if (VGConstants.FuzzZero(vectorEndPoint.Y, VGConstants.FuzzDistance))
 				{

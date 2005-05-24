@@ -99,7 +99,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				if ((null != (sourceObjectType = action.mySourceObjectType)) &&
 					(null != (targetObjectType = ObjectTypeFromShape(targetShapeElement))))
 				{
-					SubtypeFact.Create(targetObjectType, sourceObjectType);
+					SubtypeFact.Create(sourceObjectType, targetObjectType);
 				}
 			}
 		}
