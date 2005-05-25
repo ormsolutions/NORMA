@@ -198,6 +198,16 @@
                                             <xs:documentation>The name of the combined element.</xs:documentation>
                                         </xs:annotation>
                                     </xs:attribute>
+                                    <xs:attribute name="SortChildElements" type="xs:boolean" default="false">
+                                        <xs:annotation>
+                                            <xs:documentation>If this is set, order the roles within the combined element along with the position of the combined element itself. Works with SortChildElements on the parent Element tag, which must be set for this to have any effect.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+									<xs:attribute name="NotSorted" type="xs:boolean" default="false">
+                                        <xs:annotation>
+                                            <xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
+                                        </xs:annotation>
+									</xs:attribute>
                                 </xs:complexType>
                             </xs:element>
                             <xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
@@ -226,6 +236,11 @@
                                     <xs:sequence>
                                         <xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
                                     </xs:sequence>
+									<xs:attribute name="NotSorted" type="xs:boolean" default="false">
+                                        <xs:annotation>
+                                            <xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
+                                        </xs:annotation>
+									</xs:attribute>
                                     <xs:attributeGroup ref="LinkAttributes"/>
                                     <xs:attributeGroup ref="ElementAttributes"/>
                                 </xs:complexType>
@@ -241,6 +256,11 @@
                                 <xs:documentation>true to sort the attributes by WriteStyle before writting them.</xs:documentation>
                             </xs:annotation>
                         </xs:attribute>
+						<xs:attribute name="SortChildElements" type="xs:boolean" default="false">
+							<xs:annotation>
+								<xs:documentation>All link and combined elements should be explicitly sorted to force them to write out in a fixed order.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
                         <xs:attributeGroup ref="ElementAttributes"/>
                     </xs:complexType>
                 </xs:element>

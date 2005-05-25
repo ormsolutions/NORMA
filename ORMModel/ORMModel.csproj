@@ -127,10 +127,6 @@
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
     <Compile Include="ObjectModel\SubtypeFact.cs" />
-    <Compile Include="ObjectModel\SerializationExtensions.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SerializationExtensions.xml</DependentUpon>
-    </Compile>
     <Compile Include="Resources\ResourceStringsGenerator.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
@@ -221,9 +217,6 @@
       <Generator>DmdFileCodeGenerator</Generator>
       <LastGenOutput>ORMCore.dmd.cs</LastGenOutput>
     </None>
-    <None Include="ObjectModel\SerializationExtensions.xsx">
-      <DependentUpon>SerializationExtensions.xsd</DependentUpon>
-    </None>
     <None Include="Resources\Toolbox.EntityType.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ObjectModel\ORMCore.dmd.resx">
       <DependentUpon>ORMCore.dmd.cs</DependentUpon>
@@ -244,12 +237,6 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>DataTypesGenerator.cs</LastGenOutput>
     </Content>
-    <Content Include="ObjectModel\SerializationExtensions.xml">
-      <Generator>NUPlixLoader</Generator>
-      <LastGenOutput>SerializationExtensions.cs</LastGenOutput>
-    </Content>
-    <Content Include="ObjectModel\SerializationExtensions.xsd" />
-    <Content Include="ObjectModel\SerializationExtensions.xslt" />
     <Content Include="Resources\AboutBox.ico" />
     <Content Include="Resources\ORM.ico" />
     <Content Include="Resources\ResourceStringsGenerator.xml">

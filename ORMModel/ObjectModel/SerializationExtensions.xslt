@@ -20,25 +20,14 @@
             <plx:Function visibility="Protected" name="GetSupportedOperations">
                 <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetSupportedOperations"/>
                 <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementSupportedOperations" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
-                <xsl:variable name="supportedOperations">
-                    <xsl:call-template name="ReturnORMCustomSerializedElementSupportedOperations">
-                        <xsl:with-param name="combinedElements" select="count(se:CombinedElement)"/>
-                        <xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
-                        <xsl:with-param name="attributes" select="count(se:Attribute)"/>
-                        <xsl:with-param name="links" select="count(se:Link)"/>
-                    </xsl:call-template>
-                </xsl:variable>
                 <plx:Return>
-                    <plx:Value type="Local">
-                        <xsl:for-each select="$supportedOperations">
-                            <xsl:for-each select="SupportedOperation">
-                                <xsl:value-of select="."/>
-                                <xsl:if test="not(position()=last())">
-                                    <xsl:text>|</xsl:text>
-                                </xsl:if>
-                            </xsl:for-each>
-                        </xsl:for-each>
-                    </plx:Value>
+					<xsl:call-template name="ReturnORMCustomSerializedElementSupportedOperations">
+						<xsl:with-param name="combinedElements" select="count(se:CombinedElement)"/>
+						<xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
+						<xsl:with-param name="attributes" select="count(se:Attribute)"/>
+						<xsl:with-param name="links" select="count(se:Link)"/>
+						<xsl:with-param name="customSort" select="@SortChildElements='true'"/>
+					</xsl:call-template>
                 </plx:Return>
             </plx:Function>
             <plx:Function visibility="Protected" name="HasMixedTypedAttributes">
@@ -345,27 +334,77 @@
         <xsl:param name="element" select="0"/>
         <xsl:param name="attributes" select="0"/>
         <xsl:param name="links" select="0"/>
-        <xsl:if test="$combinedElements">
-            <xsl:element name="SupportedOperation">
-                <xsl:text>ORMCustomSerializedElementSupportedOperations.CustomSerializedCombinedElementInfo</xsl:text>
-            </xsl:element>
-        </xsl:if>
-        <xsl:if test="$element">
-            <xsl:element name="SupportedOperation">
-                <xsl:text>ORMCustomSerializedElementSupportedOperations.CustomSerializedElementInfo</xsl:text>
-            </xsl:element>
-        </xsl:if>
-        <xsl:if test="$attributes">
-            <xsl:element name="SupportedOperation">
-                <xsl:text>ORMCustomSerializedElementSupportedOperations.CustomSerializedAttributeInfo</xsl:text>
-            </xsl:element>
-        </xsl:if>
-        <xsl:if test="$links">
-            <xsl:element name="SupportedOperation">
-                <xsl:text>ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo</xsl:text>
-            </xsl:element>
-        </xsl:if>
+		<xsl:param name="customSort" select="0"/>
+		<xsl:variable name="supportedOperations">
+			<xsl:if test="$combinedElements">
+				<xsl:element name="SupportedOperation">
+					<xsl:text>CustomSerializedCombinedElementInfo</xsl:text>
+				</xsl:element>
+			</xsl:if>
+			<xsl:if test="$element">
+				<xsl:element name="SupportedOperation">
+					<xsl:text>CustomSerializedElementInfo</xsl:text>
+				</xsl:element>
+			</xsl:if>
+			<xsl:if test="$attributes">
+				<xsl:element name="SupportedOperation">
+					<xsl:text>CustomSerializedAttributeInfo</xsl:text>
+				</xsl:element>
+			</xsl:if>
+			<xsl:if test="$links">
+				<xsl:element name="SupportedOperation">
+					<xsl:text>CustomSerializedLinkInfo</xsl:text>
+				</xsl:element>
+			</xsl:if>
+			<xsl:if test="$customSort">
+				<xsl:element name="SupportedOperation">
+					<xsl:text>CustomSortChildRoles</xsl:text>
+				</xsl:element>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="operationCount" select="count($supportedOperations/child::*)"/>
+		<xsl:choose>
+			<xsl:when test="$operationCount=0">
+				<plx:CallType dataTypeName="ORMCustomSerializedElementSupportedOperations" name="None" style="Field"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:for-each select="$supportedOperations/SupportedOperation">
+					<xsl:if test="position()=1">
+						<xsl:call-template name="OrTogetherEnumElements">
+							<xsl:with-param name="EnumType" select="'ORMCustomSerializedElementSupportedOperations'"></xsl:with-param>
+						</xsl:call-template>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:otherwise>
+		</xsl:choose>
     </xsl:template>
+	<!-- Or together enum values from the given type. The current state on the initial
+	     call should be the position()=1 element inside a for-each context where the elements
+		 contain the (unqualified) names of the enum values to or together -->
+	<xsl:template name="OrTogetherEnumElements">
+		<xsl:param name="EnumType"/>
+		<xsl:choose>
+			<xsl:when test="position()=last()">
+				<plx:CallType dataTypeName="{$EnumType}" name="{.}" style="Field"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<plx:Operator name="BitwiseOr">
+					<plx:Left>
+						<plx:CallType dataTypeName="{$EnumType}" name="{.}" style="Field"/>
+					</plx:Left>
+					<plx:Right>
+						<xsl:for-each select="following-sibling::*">
+							<xsl:if test="position()=1">
+								<xsl:call-template name="OrTogetherEnumElements">
+									<xsl:with-param name="EnumType" select="$EnumType"/>
+								</xsl:call-template>
+							</xsl:if>
+						</xsl:for-each>							
+					</plx:Right>
+				</plx:Operator>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
     <xsl:template name="ReturnORMCustomSerializedElementInfo">
         <xsl:if test="count(se:ConditionalName)">
             <plx:Variable dataTypeName="String" dataTypeQualifier="System" name="name">
