@@ -5,9 +5,11 @@
     xmlns:se="http://Schemas.Northface.edu/Private/SerializationExtensions">
     <xsl:template match="se:CustomSerializedElements">
         <plx:Root xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
+			<plx:Using name="System"/>
+			<plx:Using name="System.Collections.Generic"/>
+			<plx:Using name="System.Collections"/>
             <plx:Using name="Microsoft.VisualStudio.Modeling"/>
             <plx:Using name="Northface.Tools.ORM.Shell"/>
-			<plx:Using name="System"/>
             <plx:Namespace name="Northface.Tools.ORM.ObjectModel">
                 <xsl:apply-templates/>
             </plx:Namespace>
@@ -247,10 +249,224 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </plx:Function>
-			<plx:Function visibility="Protected" name="SortCustomSerializedChildRoles">
-                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="SortCustomSerializedChildRoles"/>
-				<plx:Param name="playedMetaRoles" dataTypeName="MetaRoleInfo" dataTypeIsSimpleArray="true"/>
-			</plx:Function>
+			<xsl:choose>
+				<xsl:when test="@SortChildElements='true'">
+					<plx:Field name="myCustomSortChildComparer" shared="true" visibility="Private" dataTypeName="IComparer"/>
+					<plx:Class name="CustomSortChildComparer" visibility="Private">
+						<plx:ImplementsInterface dataTypeName="IComparer"/>
+						<plx:Field name="myRoleOrderDictionary" visibility="Private" dataTypeName="Dictionary">
+							<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+							<plx:PassTypeParam dataTypeName="Int32" dataTypeQualifier="System"/>
+						</plx:Field>
+						<plx:Function ctor="true" name="" visibility="Public">
+							<plx:Param name="store" dataTypeName="Store" style="In"/>
+							<xsl:variable name="SortedLevels">
+								<!-- Define a variable with structure <SortLevel><Role/><SortLevel/> -->
+								<xsl:for-each select="se:Link | se:CombinedElement">
+									<xsl:if test="not(@NotSorted='true')">
+										<xsl:choose>
+											<xsl:when test="local-name()='Link'">
+												<SortLevel><Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/></SortLevel>
+											</xsl:when>
+											<xsl:when test="local-name()='CombinedElement'">
+												<xsl:choose>
+													<xsl:when test="@SortChildElements='true'">
+														<!-- Add one sort level for each child -->
+														<xsl:for-each select="se:Link">
+															<SortLevel><Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/></SortLevel>
+														</xsl:for-each>
+													</xsl:when>
+													<xsl:otherwise>
+														<!-- Add one sort level for all children -->
+														<SortLevel>
+															<xsl:for-each select="se:Link">
+																<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
+															</xsl:for-each>
+														</SortLevel>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:when>
+										</xsl:choose>
+									</xsl:if>
+								</xsl:for-each>
+							</xsl:variable>
+							<plx:Variable name="metaDataDir" dataTypeName="MetaDataDirectory">
+								<plx:Initialize>
+									<plx:CallInstance name="MetaDataDirectory" style="Property"><plx:CallObject><plx:Value type="Parameter">store</plx:Value></plx:CallObject></plx:CallInstance>
+								</plx:Initialize>
+							</plx:Variable>
+							<plx:Variable name="roleOrderDictionary" dataTypeName="Dictionary">
+								<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+								<plx:PassTypeParam dataTypeName="Int32" dataTypeQualifier="System"/>
+								<plx:Initialize>
+									<plx:CallNew dataTypeName="Dictionary">
+										<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+										<plx:PassTypeParam dataTypeName="Int32" dataTypeQualifier="System"/>
+									</plx:CallNew>
+								</plx:Initialize>
+							</plx:Variable>
+							<plx:Variable name="metaRole" dataTypeName="MetaRoleInfo"/>
+							<xsl:for-each select="$SortedLevels/SortLevel">
+								<xsl:variable name="level" select="position()-1"/>
+								<xsl:for-each select="Role">
+									<plx:Operator name="Assign">
+										<plx:Left><plx:Value type="Local">metaRole</plx:Value></plx:Left>
+										<plx:Right>
+											<plx:CallInstance name="FindMetaRole">
+												<plx:CallObject><plx:Value type="Local">metaDataDir</plx:Value></plx:CallObject>
+												<plx:PassParam>
+													<plx:CallType dataTypeName="{@RelationshipName}" name="{@RoleName}MetaRoleGuid" style="Field"/>
+												</plx:PassParam>
+											</plx:CallInstance>
+										</plx:Right>
+									</plx:Operator>
+									<plx:Operator name="Assign">
+										<plx:Left>
+											<plx:CallInstance name="" style="Indexer">
+												<plx:CallObject><plx:Value type="Local">roleOrderDictionary</plx:Value></plx:CallObject>
+												<plx:PassParam>
+													<plx:CallInstance name="OppositeMetaRole" style="Property">
+														<plx:CallObject><plx:Value type="Local">metaRole</plx:Value></plx:CallObject>
+													</plx:CallInstance>
+												</plx:PassParam>
+											</plx:CallInstance>
+										</plx:Left>
+										<plx:Right>
+											<plx:Value type="I4"><xsl:value-of select="$level"/></plx:Value>
+										</plx:Right>
+									</plx:Operator>
+								</xsl:for-each>
+							</xsl:for-each>
+							<plx:Operator name="Assign">
+								<plx:Left>
+									<plx:CallInstance name="myRoleOrderDictionary" style="Field"><plx:CallObject><plx:ThisKeyword/></plx:CallObject></plx:CallInstance>
+								</plx:Left>
+								<plx:Right>
+									<plx:Value type="Local">roleOrderDictionary</plx:Value>
+								</plx:Right>
+							</plx:Operator>
+						</plx:Function>
+						<plx:Function visibility="Private" name="Compare">
+							<plx:InterfaceMember dataTypeName="IComparer" member="Compare"/>
+							<plx:Param style="RetVal" name="" dataTypeName="Int32" dataTypeQualifier="System"/>
+							<plx:Param style="In" name="x" dataTypeName="Object" dataTypeQualifier="System"/>
+							<plx:Param style="In" name="y" dataTypeName="Object" dataTypeQualifier="System"/>
+							<xsl:variable name="paramVals">
+								<Value>x</Value>
+								<Value>y</Value>
+							</xsl:variable>
+							<xsl:for-each select="$paramVals/child::*">
+								<plx:Variable name="{.}Pos" dataTypeName="Int32" dataTypeQualifier="System"/>
+								<plx:Condition>
+									<plx:Test>
+										<plx:Operator name="BooleanNot">
+											<plx:CallInstance name="TryGetValue">
+												<plx:CallObject>
+													<plx:CallInstance name="myRoleOrderDictionary" style="Field">
+														<plx:CallObject>
+															<plx:ThisKeyword/>
+														</plx:CallObject>
+													</plx:CallInstance>
+												</plx:CallObject>
+												<plx:PassParam passStyle="In">
+													<plx:Cast style="TypeCastException">
+														<plx:TargetType dataTypeName="MetaRoleInfo"/>
+														<plx:CastExpression>
+															<plx:Value type="Parameter"><xsl:value-of select="."/></plx:Value>
+														</plx:CastExpression>
+													</plx:Cast>
+												</plx:PassParam>
+												<plx:PassParam passStyle="Out">
+													<plx:Value type="Local">
+														<xsl:value-of select="."/>
+														<xsl:text>Pos</xsl:text>
+													</plx:Value>
+												</plx:PassParam>
+											</plx:CallInstance>
+										</plx:Operator>
+									</plx:Test>
+									<plx:Body>
+										<plx:Operator name="Assign">
+											<plx:Left>
+												<plx:Value type="Local">
+													<xsl:value-of select="."/>
+													<xsl:text>Pos</xsl:text>
+												</plx:Value>
+											</plx:Left>
+											<plx:Right>
+												<plx:CallType dataTypeName="Int32" dataTypeQualifier="System" name="MaxValue" style="Field"/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Body>
+								</plx:Condition>
+							</xsl:for-each>
+							<plx:Condition>
+								<plx:Test>
+									<plx:Operator name="Equality">
+										<plx:Left><plx:Value type="Local">xPos</plx:Value></plx:Left>
+										<plx:Right><plx:Value type="Local">yPos</plx:Value></plx:Right>
+									</plx:Operator>
+								</plx:Test>
+								<plx:Body>
+									<plx:Return><plx:Value type="I4">0</plx:Value></plx:Return>
+								</plx:Body>
+								<plx:FallbackCondition>
+									<plx:Test>
+										<plx:Operator name="LessThan">
+											<plx:Left><plx:Value type="Local">xPos</plx:Value></plx:Left>
+											<plx:Right><plx:Value type="Local">yPos</plx:Value></plx:Right>
+										</plx:Operator>
+									</plx:Test>
+									<plx:Body>
+										<plx:Return><plx:Value type="I4">-1</plx:Value></plx:Return>
+									</plx:Body>
+								</plx:FallbackCondition>
+							</plx:Condition>
+							<plx:Return><plx:Value type="I4">1</plx:Value></plx:Return>
+						</plx:Function>
+					</plx:Class>
+					<plx:Function visibility="Protected" name="SortCustomSerializedChildRoles">
+						<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="SortCustomSerializedChildRoles"/>
+						<plx:Param name="playedMetaRoles" dataTypeName="MetaRoleInfo" dataTypeIsSimpleArray="true"/>
+						<plx:Condition>
+							<plx:Test>
+								<plx:Operator name="IdentityEquality">
+									<plx:Left><plx:NullObjectKeyword/></plx:Left>
+									<plx:Right><plx:CallType dataTypeName="{$ClassName}" name="myCustomSortChildComparer" style="Field"/></plx:Right>
+								</plx:Operator>
+							</plx:Test>
+							<plx:Body>
+								<plx:Operator name="Assign">
+									<plx:Left><plx:CallType dataTypeName="{$ClassName}" name="myCustomSortChildComparer" style="Field"/></plx:Left>
+									<plx:Right>
+										<plx:CallNew dataTypeName="CustomSortChildComparer">
+											<plx:PassParam>
+												<plx:CallInstance name="Store" style="Property">
+													<plx:CallObject><plx:ThisKeyword/></plx:CallObject>
+												</plx:CallInstance>
+											</plx:PassParam>
+										</plx:CallNew>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Body>
+						</plx:Condition>
+						<plx:CallType dataTypeName="Array" name="Sort">
+							<plx:PassParam>
+								<plx:Value type="Parameter">playedMetaRoles</plx:Value>
+							</plx:PassParam>
+							<plx:PassParam>
+								<plx:CallType dataTypeName="{$ClassName}" name="myCustomSortChildComparer" style="Field"></plx:CallType>
+							</plx:PassParam>
+						</plx:CallType>
+					</plx:Function>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:Function visibility="Protected" name="SortCustomSerializedChildRoles">
+						<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="SortCustomSerializedChildRoles"/>
+						<plx:Param name="playedMetaRoles" dataTypeName="MetaRoleInfo" dataTypeIsSimpleArray="true"/>
+					</plx:Function>
+				</xsl:otherwise>
+			</xsl:choose>
         </plx:Class>
     </xsl:template>
     <xsl:template match="se:Namespaces">
