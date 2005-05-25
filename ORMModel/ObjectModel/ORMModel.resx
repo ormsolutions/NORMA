@@ -359,7 +359,7 @@
     <comment xml:space="preserve">The reading for the predicate created by setting the ref mode.</comment>
   </data>
   <data name="SubtypeFact.ComponentNameFormat">
-    <value xml:space="preserve">{1}-&gt;{0}</value>
+    <value xml:space="preserve">{0}-&gt;{1}</value>
     <comment xml:space="preserve">String for generating a component name for a subtype. The {0} replacement field is used for the subtype component name; {1} for the supertype.</comment>
   </data>
   <data name="SubtypeFact.PredicateInverseReading">
