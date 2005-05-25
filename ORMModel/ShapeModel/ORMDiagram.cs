@@ -147,7 +147,8 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 			else if (element is ExternalFactConstraint ||
 					 element is SingleColumnExternalConstraint ||
-					 element is MultiColumnExternalConstraint)
+					 element is MultiColumnExternalConstraint ||
+					 element is RoleHasValueRangeDefinition)
 			{
 				return true;
 			}
@@ -299,6 +300,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			ORMBaseShape baseShape;
 			RolePlayerLink roleLink;
 			ExternalConstraintLink constraintLink;
+			ValueRangeLink valueRangeLink;
 			SubtypeLink subtypeLink;
 			if (null != (baseShape = child as ORMBaseShape))
 			{
@@ -307,6 +309,10 @@ namespace Northface.Tools.ORM.ShapeModel
 			else if (null != (roleLink = child as RolePlayerLink))
 			{
 				roleLink.ConfiguringAsChildOf(this);
+			}
+			else if (null != (valueRangeLink = child as ValueRangeLink))
+			{
+				valueRangeLink.ConfiguringAsChildOf(this);
 			}
 			else if (null != (constraintLink = child as ExternalConstraintLink))
 			{
@@ -966,6 +972,8 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				yield return new DisplayRolePlayersFixupListener();
 				yield return new DisplayExternalConstraintLinksFixupListener();
+				yield return new DisplayRoleValueRangeDefinitionFixupListener();
+				yield return new DisplayValueTypeValueRangeDefinitionFixupListener();
 				yield return new EliminateOrphanedShapesFixupListener();
 			}
 		}

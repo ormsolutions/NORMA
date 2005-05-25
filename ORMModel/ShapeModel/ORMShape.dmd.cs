@@ -1695,6 +1695,206 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// 
 	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.ValueRangeDefinition))]
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ValueRangeShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ValueRangeShape")]
+	public  partial class ValueRangeShape : Northface.Tools.ORM.ShapeModel.FloatingTextShape
+	{
+		#region ValueRangeShape's Generated Shape Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "b65f916a-06a5-4efe-bbf9-8d8e55b5c7eb";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ValueRangeShape.MetaClassGuidString);
+		#region Boilerplate code for every Shape-derived class
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.StyleSet classStyleSet = null;
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection shapeFields = null;
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		protected override Microsoft.VisualStudio.Modeling.Diagrams.StyleSet ClassStyleSet
+		{
+			get
+			{
+				if (classStyleSet == null)
+				{
+					classStyleSet = CreateClassStyleSet();
+				}
+				return classStyleSet;
+			}
+		}
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection ShapeFields
+		{
+			get
+			{
+				if (shapeFields == null)
+				{
+					shapeFields = CreateShapeFields();
+				}
+				return shapeFields;
+			}
+		}
+		#endregion
+		#endregion
+
+		#region ValueRangeText's Generated  Field Code
+		#region ValueRangeText's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ValueRangeTextMetaAttributeGuidString = "107e2630-8d2f-43fd-b58a-76577e85cdfa";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ValueRangeTextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuidString);
+		#endregion
+
+		#region ValueRangeText's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ValueRangeShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/ValueRangeDefinition/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="Text", ProxyAttributeName="Text", FieldHandlerType=typeof(ValueRangeShapeValueRangeTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeText")]
+		public  System.String ValueRangeText
+		{
+			get
+			{
+				return valueRangeShapeValueRangeTextFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				valueRangeShapeValueRangeTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ValueRangeShapeValueRangeTextFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ValueRangeShape.ValueRangeText field
+		/// </summary>
+		private static ValueRangeShapeValueRangeTextFieldHandler	valueRangeShapeValueRangeTextFieldHandler	= ValueRangeShapeValueRangeTextFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ValueRangeShape.ValueRangeText
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ValueRangeShapeValueRangeTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Northface.Tools.ORM.ShapeModel.ValueRangeShape,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ValueRangeShapeValueRangeTextFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ValueRangeShape.ValueRangeText field handler
+			/// </summary>
+			/// <value>ValueRangeShapeValueRangeTextFieldHandler</value>
+			public static ValueRangeShapeValueRangeTextFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ValueRangeShape will assign this value to
+						// Northface.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler, so just instantiate one and return it
+						return new ValueRangeShapeValueRangeTextFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ValueRangeShape.ValueRangeText field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+	}
+	#region ValueRangeShape's Generated Constructor Code
+	public  partial class ValueRangeShape
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeShape CreateValueRangeShape(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (ValueRangeShape)store.ElementFactory.CreateElement(typeof(ValueRangeShape));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeShape CreateAndInitializeValueRangeShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueRangeShape)store.ElementFactory.CreateElement(typeof(ValueRangeShape), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueRangeShape
+	/// <summary>
+	/// ValueRangeShape Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.ValueRangeShape))]
+	public sealed class ValueRangeShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeShapeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ShapeModel.ValueRangeShape(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ShapeModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
 	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypePlaysRole))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
@@ -2018,6 +2218,117 @@ namespace Northface.Tools.ORM.ShapeModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ShapeModel.ExternalConstraintLink(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ShapeModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition))]
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ValueRangeLink.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ValueRangeLink")]
+	public  partial class ValueRangeLink : Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape
+	{
+		#region ValueRangeLink's Generated Shape Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "374e43c3-c294-49c4-8a61-3c3ca5fc86e8";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ValueRangeLink.MetaClassGuidString);
+		#region Boilerplate code for every Shape-derived class
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.StyleSet classStyleSet = null;
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection shapeFields = null;
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		protected override Microsoft.VisualStudio.Modeling.Diagrams.StyleSet ClassStyleSet
+		{
+			get
+			{
+				if (classStyleSet == null)
+				{
+					classStyleSet = CreateClassStyleSet();
+				}
+				return classStyleSet;
+			}
+		}
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection ShapeFields
+		{
+			get
+			{
+				if (shapeFields == null)
+				{
+					shapeFields = CreateShapeFields();
+				}
+				return shapeFields;
+			}
+		}
+		#endregion
+		#endregion
+
+	}
+	#region ValueRangeLink's Generated Constructor Code
+	public  partial class ValueRangeLink
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeLink(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeLink CreateValueRangeLink(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (ValueRangeLink)store.ElementFactory.CreateElement(typeof(ValueRangeLink));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeLink CreateAndInitializeValueRangeLink(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueRangeLink)store.ElementFactory.CreateElement(typeof(ValueRangeLink), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueRangeLink
+	/// <summary>
+	/// ValueRangeLink Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.ValueRangeLink))]
+	public sealed class ValueRangeLinkElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeLinkElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ShapeModel.ValueRangeLink(store, bag);
 		}
 	}
 	#endregion

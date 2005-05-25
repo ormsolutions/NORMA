@@ -369,4 +369,22 @@
     <ResourceString name="ModelErrorFactTypeRequiresIUCActivateTransactionName" model="Model" resourceName="ModelError.FactType.RequiresIUC.ActivateTransactionName">
         <comment type="Summary">The name given to the transaction used when adding an internal uniqueness constraint to correct the error of lacking one.</comment>
     </ResourceString>
+    <ResourceString name="ValueRangeDefinitionDefinitionContainerPattern" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern">
+        <comment type="Summary">Pattern showing left- and right-string to use for containing a value range definition.</comment>
+    </ResourceString>
+    <ResourceString name="ValueRangeDefinitionRangeDelimiter" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter">
+        <comment type="Summary">String used to delimit sets of value ranges in a definition.</comment>
+    </ResourceString>
+    <ResourceString name="ValueRangeDefinitionValueDelimiter" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueDelimiter">
+        <comment type="Summary">String used to delimit the min- and max-values of a value range.</comment>
+    </ResourceString>
+    <ResourceString name="ValueRangeDefinitionStringContainerPattern" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern">
+        <comment type="Summary">Pattern showing left- and right-string to use for containing a value range as a string.</comment>
+    </ResourceString>
+    <ResourceString name="ValueRangeDefinitionOpenInclusionContainer" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern">
+        <comment type="Summary">Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</comment>
+    </ResourceString>
+    <ResourceString name="ValueRangeDefinitionClosedInclusionContainer" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern">
+        <comment type="Summary">Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
+    </ResourceString>
 </ResourceStrings>

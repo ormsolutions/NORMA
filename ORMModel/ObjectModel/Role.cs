@@ -59,7 +59,8 @@ namespace Northface.Tools.ORM.ObjectModel
 			Guid attributeGuid = attribute.Id;
 			if (attributeGuid == RolePlayerDisplayMetaAttributeGuid ||
 				attributeGuid == IsMandatoryMetaAttributeGuid ||
-				attributeGuid == MultiplicityMetaAttributeGuid)
+				attributeGuid == MultiplicityMetaAttributeGuid ||
+				attributeGuid == ValueRangeTextMetaAttributeGuid)
 			{
 				// Handled by RoleChangeRule
 				return;
@@ -185,6 +186,11 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				return retVal;
 			}
+			else if (attributeGuid == ValueRangeTextMetaAttributeGuid)
+			{
+				RoleValueRangeDefinition defn = ValueRangeDefinition;
+				return (defn == null) ? "" : defn.Text;
+			}
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
 		/// <summary>
@@ -212,6 +218,29 @@ namespace Northface.Tools.ORM.ObjectModel
 				return fact != null && fact.RoleCollection.Count == 2;
 			}
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
+		}
+		/// <summary>
+		/// Standard override. Determines when derived properties are read-only. Called
+		/// if the ReadOnly setting on the element is one of the SometimesUIReadOnly* values.
+		/// Currently, ValueRangeText is readonly if the role player is an entity type without
+		/// a reference mode.
+		/// </summary>
+		/// <param name="propertyDescriptor">PropertyDescriptor</param>
+		public override bool IsPropertyDescriptorReadOnly(PropertyDescriptor propertyDescriptor)
+		{
+			ElementPropertyDescriptor elemDesc = propertyDescriptor as ElementPropertyDescriptor;
+			if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == ValueRangeTextMetaAttributeGuid)
+			{
+				bool readOnly = true;
+				FactType fact = this.FactType;
+				ObjectType rolePlayer = RolePlayer;
+				if (fact != null && rolePlayer != null)
+				{
+					readOnly = !(rolePlayer.IsValueType || rolePlayer.ReferenceModeString.Length != 0);
+				}
+				return readOnly;
+			}
+			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
 		#endregion // CustomStorage handlers
 		#region Multiplicity Display
@@ -302,6 +331,17 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					(e.ModelElement as Role).RolePlayer = e.NewValue as ObjectType;
 				}
+				else if (attributeGuid == Role.ValueRangeTextMetaAttributeGuid)
+				{
+					Role role = e.ModelElement as Role;
+					RoleValueRangeDefinition defn = role.ValueRangeDefinition;
+					if (defn == null)
+					{
+						role.ValueRangeDefinition = defn = RoleValueRangeDefinition.CreateRoleValueRangeDefinition(role.Store);
+					}
+					defn.Text = (string)e.NewValue;
+				}
+				#region Handle IsMandatory attribute changes
 				else if (attributeGuid == Role.IsMandatoryMetaAttributeGuid)
 				{
 					Role role = e.ModelElement as Role;
@@ -334,6 +374,8 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 					}
 				}
+				#endregion // Handle IsMandatory attribute changes
+				#region Handle Multiplicity attribute changes
 				else if (attributeGuid == Role.MultiplicityMetaAttributeGuid)
 				{
 					RoleMultiplicity oldMultiplicity = (RoleMultiplicity)e.OldValue;
@@ -564,6 +606,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 					}
 				}
+				#endregion // Handle Multiplicity attribute changes
 			}
 		}
 		#endregion // RoleChangeRule class

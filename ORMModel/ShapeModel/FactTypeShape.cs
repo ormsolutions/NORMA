@@ -2198,6 +2198,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			Debug.Assert(
 					(element is ObjectType && ((ObjectType)element).NestedFactType == AssociatedFactType)
 					|| (element is ReadingOrder && ((ReadingOrder)element).FactType == AssociatedFactType)
+					|| (element is RoleValueRangeDefinition && ((RoleValueRangeDefinition)element).Role.FactType == AssociatedFactType)
 				);
 			ReadingOrder ord;
 			if (null != (ord = element as ReadingOrder))
@@ -2229,13 +2230,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			return base.ChooseShape(element, shapeTypes);
 		}
 		/// <summary>
-		/// Make an ObjectifiedFactTypeNameShape a relative child element
+		/// Makes an ObjectifiedFactTypeNameShape, ReadingShape, or ValueRangeShape a
+		/// relative child element.
 		/// </summary>
-		/// <param name="childShape"></param>
-		/// <returns></returns>
+		/// <param name="childShape">The ShapeElement to get the ReleationshipType for.</param>
+		/// <returns>RelationshipType.Relative</returns>
 		protected override RelationshipType ChooseRelationship(ShapeElement childShape)
 		{
-			Debug.Assert(childShape is ObjectifiedFactTypeNameShape || childShape is ReadingShape);
+			Debug.Assert(childShape is ObjectifiedFactTypeNameShape || childShape is ReadingShape || childShape is ValueRangeShape);
 			return RelationshipType.Relative;
 		}
 		#endregion // Customize appearance
@@ -2523,6 +2525,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			ObjectTypeShape objectShape;
 			FactTypeShape factShape;
 			ExternalConstraintShape constraintShape;
+			ValueRangeShape rangeShape;
 			FactType factType = null;
 			ObjectType objectType = null;
 			int factRoleCount = 0;
@@ -2541,6 +2544,13 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				factType = AssociatedFactType;
 				objectType = objectShape.AssociatedObjectType;
+			}
+			else if (null != (rangeShape = oppositeShape as ValueRangeShape))
+			{
+				factType = AssociatedFactType;
+				RoleMoveableCollection factRoles = factType.RoleCollection;
+				factRoleCount = factRoles.Count;
+				roleIndex = factRoles.IndexOf(((RoleValueRangeDefinition)rangeShape.AssociatedRangeDefinition).Role);
 			}
 			else if (null != (constraintShape = oppositeShape as ExternalConstraintShape))
 			{

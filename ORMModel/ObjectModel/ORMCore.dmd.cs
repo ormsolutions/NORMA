@@ -196,6 +196,9 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -1454,6 +1457,95 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
+		#region ValueRangeText's Generated  Field Code
+		#region ValueRangeText's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ValueRangeTextMetaAttributeGuidString = "6a594927-309d-48be-b52a-d600ae118131";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ValueRangeTextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectType.ValueRangeTextMetaAttributeGuidString);
+		#endregion
+
+		#region ValueRangeText's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferTrue)]
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ObjectTypeValueRangeTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectType.ValueRangeTextMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ObjectType.ValueRangeText")]
+		public  System.String ValueRangeText
+		{
+			get
+			{
+				return objectTypeValueRangeTextFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				objectTypeValueRangeTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ObjectTypeValueRangeTextFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ObjectType.ValueRangeText field
+		/// </summary>
+		private static ObjectTypeValueRangeTextFieldHandler	objectTypeValueRangeTextFieldHandler	= ObjectTypeValueRangeTextFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ObjectType.ValueRangeText
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ObjectTypeValueRangeTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ObjectType,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ObjectTypeValueRangeTextFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ObjectType.ValueRangeText field handler
+			/// </summary>
+			/// <value>ObjectTypeValueRangeTextFieldHandler</value>
+			public static ObjectTypeValueRangeTextFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeValueRangeTextFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeValueRangeTextFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ObjectType will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ObjectType.objectTypeValueRangeTextFieldHandler, so just instantiate one and return it
+						return new ObjectTypeValueRangeTextFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ObjectType.ValueRangeText field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ObjectType.ValueRangeTextMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
 		#region DataType's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -1689,6 +1781,52 @@ namespace Northface.Tools.ORM.ObjectModel
 					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, value);
 					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, this);
 					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region ValueRangeDefinition's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition ValueRangeDefinition
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition), newRoles);
 				}
 			}
 		}
@@ -6859,6 +6997,95 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
+		#region ValueRangeText's Generated  Field Code
+		#region ValueRangeText's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ValueRangeTextMetaAttributeGuidString = "cd66def6-4feb-4791-917d-e71ba634b2cd";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ValueRangeTextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Role.ValueRangeTextMetaAttributeGuidString);
+		#endregion
+
+		#region ValueRangeText's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferTrue)]
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(RoleValueRangeTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Role.ValueRangeTextMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Role.ValueRangeText")]
+		public  System.String ValueRangeText
+		{
+			get
+			{
+				return roleValueRangeTextFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				roleValueRangeTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region RoleValueRangeTextFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Role.ValueRangeText field
+		/// </summary>
+		private static RoleValueRangeTextFieldHandler	roleValueRangeTextFieldHandler	= RoleValueRangeTextFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Role.ValueRangeText
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class RoleValueRangeTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.Role,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private RoleValueRangeTextFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Role.ValueRangeText field handler
+			/// </summary>
+			/// <value>RoleValueRangeTextFieldHandler</value>
+			public static RoleValueRangeTextFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.Role.roleValueRangeTextFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.Role.roleValueRangeTextFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Role will assign this value to
+						// Northface.Tools.ORM.ObjectModel.Role.roleValueRangeTextFieldHandler, so just instantiate one and return it
+						return new RoleValueRangeTextFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Role.ValueRangeText field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.Role.ValueRangeTextMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
 		#region FactType's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -6958,6 +7185,52 @@ namespace Northface.Tools.ORM.ObjectModel
 		public Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceMoveableCollection ConstraintRoleSequenceCollection
 		{
 			get { return new Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ValueRangeDefinition's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition ValueRangeDefinition
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition), newRoles);
+				}
+			}
 		}
 		#endregion
 	}
@@ -14640,6 +14913,1418 @@ namespace Northface.Tools.ORM.ObjectModel
 	/// </summary>
 	[System.CLSCompliant(true)]
 	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRange.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ValueRange")]
+	public  partial class ValueRange : Microsoft.VisualStudio.Modeling.ModelElement
+	{
+		#region ValueRange's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "1d6eaad6-7c7f-4762-8e61-2755a063b2c2";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueRange.MetaClassGuidString);
+		#endregion
+
+		#region MinValue's Generated  Field Code
+		#region MinValue's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String MinValueMetaAttributeGuidString = "56a75fd4-b0e5-4744-afb6-00b4ae09b284";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid MinValueMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueRange.MinValueMetaAttributeGuidString);
+		#endregion
+
+		#region MinValue's Generated Property Code
+
+		private System.String minValuePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ValueRangeMinValueFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRange.MinValueMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ValueRange.MinValue")]
+		public  System.String MinValue
+		{
+			get
+			{
+				return minValuePropertyStorage;
+			}
+		
+			set
+			{
+				valueRangeMinValueFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ValueRangeMinValueFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ValueRange.MinValue field
+		/// </summary>
+		private static ValueRangeMinValueFieldHandler	valueRangeMinValueFieldHandler	= ValueRangeMinValueFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ValueRange.MinValue
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ValueRangeMinValueFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.ValueRange,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ValueRangeMinValueFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ValueRange.MinValue field handler
+			/// </summary>
+			/// <value>ValueRangeMinValueFieldHandler</value>
+			public static ValueRangeMinValueFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMinValueFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMinValueFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ValueRange will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMinValueFieldHandler, so just instantiate one and return it
+						return new ValueRangeMinValueFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ValueRange.MinValue field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ValueRange.MinValueMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the ValueRange</param>
+			protected sealed override System.String GetValue(Northface.Tools.ORM.ObjectModel.ValueRange element)
+			{
+				return element.minValuePropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.ValueRange element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
+			{
+				oldValue = element.minValuePropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.minValuePropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region MaxValue's Generated  Field Code
+		#region MaxValue's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String MaxValueMetaAttributeGuidString = "cf33a7ff-00d6-4c2c-9eac-30969ea6da0f";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid MaxValueMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueRange.MaxValueMetaAttributeGuidString);
+		#endregion
+
+		#region MaxValue's Generated Property Code
+
+		private System.String maxValuePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ValueRangeMaxValueFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRange.MaxValueMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ValueRange.MaxValue")]
+		public  System.String MaxValue
+		{
+			get
+			{
+				return maxValuePropertyStorage;
+			}
+		
+			set
+			{
+				valueRangeMaxValueFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ValueRangeMaxValueFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ValueRange.MaxValue field
+		/// </summary>
+		private static ValueRangeMaxValueFieldHandler	valueRangeMaxValueFieldHandler	= ValueRangeMaxValueFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ValueRange.MaxValue
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ValueRangeMaxValueFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.ValueRange,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ValueRangeMaxValueFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ValueRange.MaxValue field handler
+			/// </summary>
+			/// <value>ValueRangeMaxValueFieldHandler</value>
+			public static ValueRangeMaxValueFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMaxValueFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMaxValueFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ValueRange will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMaxValueFieldHandler, so just instantiate one and return it
+						return new ValueRangeMaxValueFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ValueRange.MaxValue field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ValueRange.MaxValueMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the ValueRange</param>
+			protected sealed override System.String GetValue(Northface.Tools.ORM.ObjectModel.ValueRange element)
+			{
+				return element.maxValuePropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.ValueRange element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
+			{
+				oldValue = element.maxValuePropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.maxValuePropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region Text's Generated  Field Code
+		#region Text's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String TextMetaAttributeGuidString = "acfc1745-a76b-4955-9157-71ba6e4f5446";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid TextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueRange.TextMetaAttributeGuidString);
+		#endregion
+
+		#region Text's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ValueRangeTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRange.TextMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ValueRange.Text")]
+		public  System.String Text
+		{
+			get
+			{
+				return valueRangeTextFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				valueRangeTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ValueRangeTextFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ValueRange.Text field
+		/// </summary>
+		private static ValueRangeTextFieldHandler	valueRangeTextFieldHandler	= ValueRangeTextFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ValueRange.Text
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ValueRangeTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ValueRange,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ValueRangeTextFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ValueRange.Text field handler
+			/// </summary>
+			/// <value>ValueRangeTextFieldHandler</value>
+			public static ValueRangeTextFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeTextFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeTextFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ValueRange will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeTextFieldHandler, so just instantiate one and return it
+						return new ValueRangeTextFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ValueRange.Text field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ValueRange.TextMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+		#region MinInclusion's Generated  Field Code
+		#region MinInclusion's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String MinInclusionMetaAttributeGuidString = "25c82411-21b3-4d03-9511-736479d5d487";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid MinInclusionMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueRange.MinInclusionMetaAttributeGuidString);
+		#endregion
+
+		#region MinInclusion's Generated Property Code
+
+		private Northface.Tools.ORM.ObjectModel.RangeInclusion minInclusionPropertyStorage = Northface.Tools.ORM.ObjectModel.RangeInclusion.NotSet;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Northface.Tools.ORM.ObjectModel.RangeInclusion),DefaultEnumerationValueName="NotSet")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ValueRangeMinInclusionFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRange.MinInclusionMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ValueRange.MinInclusion")]
+		public  Northface.Tools.ORM.ObjectModel.RangeInclusion MinInclusion
+		{
+			get
+			{
+				return minInclusionPropertyStorage;
+			}
+		
+			set
+			{
+				valueRangeMinInclusionFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ValueRangeMinInclusionFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ValueRange.MinInclusion field
+		/// </summary>
+		private static ValueRangeMinInclusionFieldHandler	valueRangeMinInclusionFieldHandler	= ValueRangeMinInclusionFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ValueRange.MinInclusion
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ValueRangeMinInclusionFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.ValueRange,Northface.Tools.ORM.ObjectModel.RangeInclusion>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ValueRangeMinInclusionFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ValueRange.MinInclusion field handler
+			/// </summary>
+			/// <value>ValueRangeMinInclusionFieldHandler</value>
+			public static ValueRangeMinInclusionFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMinInclusionFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMinInclusionFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ValueRange will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMinInclusionFieldHandler, so just instantiate one and return it
+						return new ValueRangeMinInclusionFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ValueRange.MinInclusion field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ValueRange.MinInclusionMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the ValueRange</param>
+			protected sealed override Northface.Tools.ORM.ObjectModel.RangeInclusion GetValue(Northface.Tools.ORM.ObjectModel.ValueRange element)
+			{
+				return element.minInclusionPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.ValueRange element, Northface.Tools.ORM.ObjectModel.RangeInclusion value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Northface.Tools.ORM.ObjectModel.RangeInclusion oldValue)
+			{
+				oldValue = element.minInclusionPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.minInclusionPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region MaxInclusion's Generated  Field Code
+		#region MaxInclusion's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String MaxInclusionMetaAttributeGuidString = "ac948ffb-8da6-4aff-ad60-40472c3cc868";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid MaxInclusionMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueRange.MaxInclusionMetaAttributeGuidString);
+		#endregion
+
+		#region MaxInclusion's Generated Property Code
+
+		private Northface.Tools.ORM.ObjectModel.RangeInclusion maxInclusionPropertyStorage = Northface.Tools.ORM.ObjectModel.RangeInclusion.NotSet;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Northface.Tools.ORM.ObjectModel.RangeInclusion),DefaultEnumerationValueName="NotSet")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ValueRangeMaxInclusionFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRange.MaxInclusionMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ValueRange.MaxInclusion")]
+		public  Northface.Tools.ORM.ObjectModel.RangeInclusion MaxInclusion
+		{
+			get
+			{
+				return maxInclusionPropertyStorage;
+			}
+		
+			set
+			{
+				valueRangeMaxInclusionFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ValueRangeMaxInclusionFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ValueRange.MaxInclusion field
+		/// </summary>
+		private static ValueRangeMaxInclusionFieldHandler	valueRangeMaxInclusionFieldHandler	= ValueRangeMaxInclusionFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ValueRange.MaxInclusion
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ValueRangeMaxInclusionFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.ValueRange,Northface.Tools.ORM.ObjectModel.RangeInclusion>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ValueRangeMaxInclusionFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ValueRange.MaxInclusion field handler
+			/// </summary>
+			/// <value>ValueRangeMaxInclusionFieldHandler</value>
+			public static ValueRangeMaxInclusionFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMaxInclusionFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMaxInclusionFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ValueRange will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ValueRange.valueRangeMaxInclusionFieldHandler, so just instantiate one and return it
+						return new ValueRangeMaxInclusionFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ValueRange.MaxInclusion field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ValueRange.MaxInclusionMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the ValueRange</param>
+			protected sealed override Northface.Tools.ORM.ObjectModel.RangeInclusion GetValue(Northface.Tools.ORM.ObjectModel.ValueRange element)
+			{
+				return element.maxInclusionPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.ValueRange element, Northface.Tools.ORM.ObjectModel.RangeInclusion value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Northface.Tools.ORM.ObjectModel.RangeInclusion oldValue)
+			{
+				oldValue = element.maxInclusionPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.maxInclusionPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region ValueRangeDefinition's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ValueRangeDefinition ValueRangeDefinition
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ValueRangeDefinition)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region Collection Classes for ValueRange
+	/// <summary>
+	/// Northface.Tools.ORM.ObjectModel.ValueRange Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class ValueRangeMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public ValueRangeMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ValueRange) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ValueRange))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ValueRange) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ValueRange))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ValueRange) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ValueRange))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ValueRange) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ValueRange))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ValueRange) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ValueRange))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ValueRange) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ValueRange))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ValueRange) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ValueRange))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ValueRange) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ValueRange))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.ValueRange[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Northface.Tools.ORM.ObjectModel.ValueRange at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.ValueRange this[System.Int32 index]
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ValueRange)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ValueRange to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ValueRange value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ValueRange to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ValueRange value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ValueRange to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ValueRange value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ValueRange to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ValueRange value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ValueRange to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.ValueRange value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Northface.Tools.ORM.ObjectModel.ValueRange rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ValueRange rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
+	#region ValueRange's Generated Constructor Code
+	public  partial class ValueRange
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRange(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRange CreateValueRange(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (ValueRange)store.ElementFactory.CreateElement(typeof(ValueRange));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRange CreateAndInitializeValueRange(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueRange)store.ElementFactory.CreateElement(typeof(ValueRange), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueRange
+	/// <summary>
+	/// ValueRange Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ValueRange))]
+	public sealed class ValueRangeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ValueRange(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition")]
+	public abstract partial class ValueRangeDefinition : Microsoft.VisualStudio.Modeling.ModelElement
+	{
+		#region ValueRangeDefinition's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "48ce9fde-500d-4066-bdcb-bb3cf7fb72f1";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.MetaClassGuidString);
+		#endregion
+
+		#region Text's Generated  Field Code
+		#region Text's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String TextMetaAttributeGuidString = "bcb9afd4-188c-4d98-9429-88544e85adaf";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid TextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.TextMetaAttributeGuidString);
+		#endregion
+
+		#region Text's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ValueRangeDefinitionTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.TextMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.Text")]
+		public  System.String Text
+		{
+			get
+			{
+				return valueRangeDefinitionTextFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				valueRangeDefinitionTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ValueRangeDefinitionTextFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ValueRangeDefinition.Text field
+		/// </summary>
+		private static ValueRangeDefinitionTextFieldHandler	valueRangeDefinitionTextFieldHandler	= ValueRangeDefinitionTextFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ValueRangeDefinition.Text
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ValueRangeDefinitionTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ValueRangeDefinition,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ValueRangeDefinitionTextFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ValueRangeDefinition.Text field handler
+			/// </summary>
+			/// <value>ValueRangeDefinitionTextFieldHandler</value>
+			public static ValueRangeDefinitionTextFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.valueRangeDefinitionTextFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.valueRangeDefinitionTextFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ValueRangeDefinition will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.valueRangeDefinitionTextFieldHandler, so just instantiate one and return it
+						return new ValueRangeDefinitionTextFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ValueRangeDefinition.Text field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.TextMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+		#region ValueRangeCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ValueRangeMoveableCollection ValueRangeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ValueRangeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid); }
+		}
+		#endregion
+	}
+	#region ValueRangeDefinition's Generated Constructor Code
+	public abstract partial class ValueRangeDefinition
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected ValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition")]
+	public  partial class ValueTypeValueRangeDefinition : Northface.Tools.ORM.ObjectModel.ValueRangeDefinition
+	{
+		#region ValueTypeValueRangeDefinition's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "05587b6c-d9e7-4717-b20c-93b4c0f60c38";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition.MetaClassGuidString);
+		#endregion
+
+		#region ValueType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ObjectType ValueType
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ObjectType)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region ValueTypeValueRangeDefinition's Generated Constructor Code
+	public  partial class ValueTypeValueRangeDefinition
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueTypeValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueTypeValueRangeDefinition CreateValueTypeValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (ValueTypeValueRangeDefinition)store.ElementFactory.CreateElement(typeof(ValueTypeValueRangeDefinition));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueTypeValueRangeDefinition CreateAndInitializeValueTypeValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueTypeValueRangeDefinition)store.ElementFactory.CreateElement(typeof(ValueTypeValueRangeDefinition), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueTypeValueRangeDefinition
+	/// <summary>
+	/// ValueTypeValueRangeDefinition Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition))]
+	public sealed class ValueTypeValueRangeDefinitionElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueTypeValueRangeDefinitionElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition")]
+	public  partial class RoleValueRangeDefinition : Northface.Tools.ORM.ObjectModel.ValueRangeDefinition
+	{
+		#region RoleValueRangeDefinition's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "588ce2ce-1025-4a7a-8964-6d99ccb2d2aa";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition.MetaClassGuidString);
+		#endregion
+
+		#region Role's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.Role Role
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.Role)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region RoleValueRangeDefinition's Generated Constructor Code
+	public  partial class RoleValueRangeDefinition
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RoleValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RoleValueRangeDefinition CreateRoleValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (RoleValueRangeDefinition)store.ElementFactory.CreateElement(typeof(RoleValueRangeDefinition));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RoleValueRangeDefinition CreateAndInitializeRoleValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (RoleValueRangeDefinition)store.ElementFactory.CreateElement(typeof(RoleValueRangeDefinition), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for RoleValueRangeDefinition
+	/// <summary>
+	/// RoleValueRangeDefinition Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition))]
+	public sealed class RoleValueRangeDefinitionElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RoleValueRangeDefinitionElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType")]
 	public  partial class ValueTypeHasDataType : Microsoft.VisualStudio.Modeling.ElementLink
@@ -19784,6 +21469,342 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition")]
+	public  partial class ValueTypeHasValueRangeDefinition : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ValueTypeHasValueRangeDefinition's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "1fa7d98b-ef7e-4dad-b5e7-94097daeb0f8";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.MetaRelationshipGuidString);
+		#endregion
+
+		#region ValueRangeDefinition's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueRangeDefinitionMetaRoleGuidString = "e96a260b-3621-44e6-ba61-9f1b8f929489";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueRangeDefinitionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinition")]
+		public  Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition ValueRangeDefinition
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition)this.GetRolePlayer(ValueRangeDefinitionMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueRangeDefinitionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region ValueType's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueTypeMetaRoleGuidString = "46c627dd-36f8-4223-b6ff-8a7f015e77ac";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueTypeMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueType")]
+		public  Northface.Tools.ORM.ObjectModel.ObjectType ValueType
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ObjectType)this.GetRolePlayer(ValueTypeMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueTypeMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ValueTypeHasValueRangeDefinition's Generated Constructor Code
+	public  partial class ValueTypeHasValueRangeDefinition
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueTypeHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueTypeHasValueRangeDefinition CreateValueTypeHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ValueTypeHasValueRangeDefinition)store.ElementFactory.CreateElementLink(typeof(ValueTypeHasValueRangeDefinition), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueTypeHasValueRangeDefinition CreateAndInitializeValueTypeHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueTypeHasValueRangeDefinition)store.ElementFactory.CreateElementLink(typeof(ValueTypeHasValueRangeDefinition), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueTypeHasValueRangeDefinition
+	/// <summary>
+	/// ValueTypeHasValueRangeDefinition Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition))]
+	public sealed class ValueTypeHasValueRangeDefinitionElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueTypeHasValueRangeDefinitionElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition")]
+	public  partial class RoleHasValueRangeDefinition : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region RoleHasValueRangeDefinition's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "45bc2557-b58c-44d6-81d1-f0f7ed6f524e";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.MetaRelationshipGuidString);
+		#endregion
+
+		#region ValueRangeDefinition's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueRangeDefinitionMetaRoleGuidString = "a58e8573-d27a-4529-83d0-cb9a9cbb6f71";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueRangeDefinitionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinition")]
+		public  Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition ValueRangeDefinition
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition)this.GetRolePlayer(ValueRangeDefinitionMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueRangeDefinitionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region Role's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String RoleMetaRoleGuidString = "18050dbe-6c56-4fe3-8427-14219ffec899";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid RoleMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.Role")]
+		public  Northface.Tools.ORM.ObjectModel.Role Role
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.Role)this.GetRolePlayer(RoleMetaRoleGuid); }
+			set { this.SetRolePlayer(RoleMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region RoleHasValueRangeDefinition's Generated Constructor Code
+	public  partial class RoleHasValueRangeDefinition
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RoleHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RoleHasValueRangeDefinition CreateRoleHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (RoleHasValueRangeDefinition)store.ElementFactory.CreateElementLink(typeof(RoleHasValueRangeDefinition), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RoleHasValueRangeDefinition CreateAndInitializeRoleHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (RoleHasValueRangeDefinition)store.ElementFactory.CreateElementLink(typeof(RoleHasValueRangeDefinition), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for RoleHasValueRangeDefinition
+	/// <summary>
+	/// RoleHasValueRangeDefinition Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition))]
+	public sealed class RoleHasValueRangeDefinitionElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RoleHasValueRangeDefinitionElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange")]
+	public  partial class ValueRangeDefinitionHasValueRange : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ValueRangeDefinitionHasValueRange's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "26e66737-a802-457e-bb69-f19005fca896";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.MetaRelationshipGuidString);
+		#endregion
+
+		#region ValueRangeCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueRangeCollectionMetaRoleGuidString = "ca257569-ac45-47eb-b670-2efcbe637104";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueRangeCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollection")]
+		public  Northface.Tools.ORM.ObjectModel.ValueRange ValueRangeCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ValueRange)this.GetRolePlayer(ValueRangeCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueRangeCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region ValueRangeDefinition's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueRangeDefinitionMetaRoleGuidString = "f406b051-c206-4535-8334-f39187e3362f";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueRangeDefinitionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinition")]
+		public  Northface.Tools.ORM.ObjectModel.ValueRangeDefinition ValueRangeDefinition
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ValueRangeDefinition)this.GetRolePlayer(ValueRangeDefinitionMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueRangeDefinitionMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ValueRangeDefinitionHasValueRange's Generated Constructor Code
+	public  partial class ValueRangeDefinitionHasValueRange
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeDefinitionHasValueRange(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeDefinitionHasValueRange CreateValueRangeDefinitionHasValueRange(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ValueRangeDefinitionHasValueRange)store.ElementFactory.CreateElementLink(typeof(ValueRangeDefinitionHasValueRange), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeDefinitionHasValueRange CreateAndInitializeValueRangeDefinitionHasValueRange(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueRangeDefinitionHasValueRange)store.ElementFactory.CreateElementLink(typeof(ValueRangeDefinitionHasValueRange), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueRangeDefinitionHasValueRange
+	/// <summary>
+	/// ValueRangeDefinitionHasValueRange Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange))]
+	public sealed class ValueRangeDefinitionHasValueRangeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeDefinitionHasValueRangeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange(store, bag);
 		}
 	}
 	#endregion

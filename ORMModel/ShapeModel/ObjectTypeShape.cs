@@ -80,7 +80,6 @@ namespace Northface.Tools.ORM.ShapeModel
 				return useShape;
 			}
 		}
-
 		/// <summary>
 		/// Size to ContentSize plus some margin padding.
 		/// </summary>
@@ -124,9 +123,8 @@ namespace Northface.Tools.ORM.ShapeModel
 				return myTextShapeField;
 			}
 		}
-
 		/// <summary>
-		/// Retrieve the (singleton) shape field for the text
+		/// Retrieve the (singleton) shape field for the reference mode text
 		/// </summary>
 		protected TextField ReferenceModeShapeField
 		{
@@ -167,7 +165,6 @@ namespace Northface.Tools.ORM.ShapeModel
 			referenceModeField.DefaultFontId = DiagramFonts.ShapeTitle;
 			referenceModeField.DefaultFocusable = true;
 			referenceModeField.DefaultText = "";
-
 			referenceModeField.DefaultStringFormat = fieldFormat;
 			referenceModeField.AssociateValueWith(Store, ObjectTypeShape.ReferenceModeNameMetaAttributeGuid, ObjectType.ReferenceModeDisplayMetaAttributeGuid);
 
@@ -175,12 +172,12 @@ namespace Northface.Tools.ORM.ShapeModel
 			shapeFields.Add(field);
 			shapeFields.Add(referenceModeField);
 
-			// Modify anchoring behavior
+			// Modify field anchoring behavior
 			AnchoringBehavior anchor = field.AnchoringBehavior;
 			anchor.SetTopAnchor(AnchoringBehavior.Edge.Top, VerticalMargin);
 			anchor.CenterHorizontally();
 
-			// Modify anchoring behavior
+			// Modify reference mode field anchoring behavior
 			AnchoringBehavior referenceModeAnchor = referenceModeField.AnchoringBehavior;
 			referenceModeAnchor.CenterHorizontally();
 			referenceModeAnchor.SetTopAnchor(field, AnchoringBehavior.Edge.Bottom, 0);
@@ -189,6 +186,19 @@ namespace Northface.Tools.ORM.ShapeModel
 			myTextShapeField = field;
 			Debug.Assert(myReferenceModeShapeField == null); // Only called once
 			myReferenceModeShapeField = referenceModeField;
+		}
+
+		/// <summary>
+		/// Add a shape element linked to this parent to display the value range
+		/// </summary>
+		/// <param name="element">ModelElement of type ObjectType</param>
+		/// <returns>true</returns>
+		protected override bool ShouldAddShapeForElement(ModelElement element)
+		{
+			Debug.Assert(
+				element is ValueTypeValueRangeDefinition && ((ValueTypeValueRangeDefinition)element).ValueType == AssociatedObjectType
+			);
+			return true;
 		}
 		#endregion // Customize appearance
 		#region ObjectTypeShape specific
@@ -202,6 +212,17 @@ namespace Northface.Tools.ORM.ShapeModel
 				return ModelElement as ObjectType;
 			}
 		}
+		/// <summary>
+		/// Makes a shape a relative child element.
+		/// </summary>
+		/// <param name="childShape">The ShapeElement to get the ReleationshipType for.</param>
+		/// <returns>RelationshipType.Relative</returns>
+		protected override RelationshipType ChooseRelationship(ShapeElement childShape)
+		{
+			Debug.Assert(childShape is ValueRangeShape);
+			return RelationshipType.Relative;
+		}
+
 		#endregion // ObjectTypeShape specific
 		#region Shape display update rules
 		[RuleOn(typeof(ObjectType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]

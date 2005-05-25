@@ -127,12 +127,15 @@
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
     <Compile Include="ObjectModel\SubtypeFact.cs" />
+    <Compile Include="ObjectModel\ValueRange.cs" />
     <Compile Include="Resources\ResourceStringsGenerator.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
     </Compile>
     <Compile Include="ShapeModel\SubtypeLink.cs" />
     <Compile Include="ShapeModel\SubtypeConnectorAction.cs" />
+    <Compile Include="ShapeModel\ValueRangeLink.cs" />
+    <Compile Include="ShapeModel\ValueRangeShape.cs" />
     <Compile Include="ShapeModel\CustomFoldShapeGeometries.cs" />
     <Compile Include="ShapeModel\FrequencyConstraintShape.cs" />
     <Compile Include="ShapeModel\InternalConstraintConnectAction.cs" />

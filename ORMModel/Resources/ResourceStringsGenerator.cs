@@ -148,6 +148,12 @@ namespace Northface.Tools.ORM
         private const string ModelErrorFactTypeRequiresInternalUniquessConstraintMessage_Id = "ModelError.FactType.RequiresInternalUniquenessConstraint.Message";
         private const string ModelErrorFactTypeRequiresReadingMessage_Id = "ModelError.FactType.RequiresReading.Message";
         private const string ModelErrorFactTypeRequiresIUCActivateTransactionName_Id = "ModelError.FactType.RequiresIUC.ActivateTransactionName";
+        private const string ValueRangeDefinitionDefinitionContainerPattern_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern";
+        private const string ValueRangeDefinitionRangeDelimiter_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter";
+        private const string ValueRangeDefinitionValueDelimiter_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueDelimiter";
+        private const string ValueRangeDefinitionStringContainerPattern_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern";
+        private const string ValueRangeDefinitionOpenInclusionContainer_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern";
+        private const string ValueRangeDefinitionClosedInclusionContainer_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern";
         /// <summary>
         ///</summary>
         public static string ToolboxDefaultTabName
@@ -1253,6 +1259,60 @@ namespace Northface.Tools.ORM
             get
             {
                 return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorFactTypeRequiresIUCActivateTransactionName_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ValueRangeDefinitionDefinitionContainerPattern
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionDefinitionContainerPattern_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ValueRangeDefinitionRangeDelimiter
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionRangeDelimiter_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ValueRangeDefinitionValueDelimiter
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionValueDelimiter_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ValueRangeDefinitionStringContainerPattern
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionStringContainerPattern_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ValueRangeDefinitionOpenInclusionContainer
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionOpenInclusionContainer_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ValueRangeDefinitionClosedInclusionContainer
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionClosedInclusionContainer_Id);
             }
         }
     }

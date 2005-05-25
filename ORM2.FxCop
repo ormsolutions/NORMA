@@ -21,8 +21,8 @@
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
-   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
-   <Directory>C:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
+   <Directory>$(ProjectDir)/../../../../../../Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
+   <Directory>$(ProjectDir)/../../../../../../Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
   </AssemblyReferenceDirectories>
   <Target Name="$(ProjectDir)/ORMModel/bin/Debug/Northface.Tools.ORM.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
@@ -1858,11 +1858,16 @@
          </Type>
          <Type Name="DataTypeMoveableCollection">
           <Messages>
-           <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Created="2005-05-02 22:04:40Z">
+           <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2005-05-02 22:04:40Z">
             <Issue>
              <Item>DataTypeMoveableCollection</Item>
              <Item>IList</Item>
             </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="9" />
+             </User>
+            </Notes>
            </Message>
           </Messages>
          </Type>
@@ -3960,7 +3965,7 @@
             </Issue>
             <Notes>
              <User Name="mcurland">
-              <Note Id="3" />
+              <Note Id="21" />
              </User>
             </Notes>
            </Message>
@@ -4059,6 +4064,20 @@
             <Notes>
              <User Name="mcurland">
               <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ObjectType+ObjectTypeValueRangeTextFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ObjectType+ObjectTypeValueRangeTextFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="12" />
              </User>
             </Notes>
            </Message>
@@ -5906,6 +5925,20 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="Role+RoleValueRangeTextFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.Role+RoleValueRangeTextFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="13" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="RoleMoveableCollection">
           <Messages>
            <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -6196,6 +6229,133 @@
             <Notes>
              <User Name="mcurland">
               <Note Id="14" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRange+ValueRangeChangeRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ValueRange+ValueRangeChangeRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="21" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRange+ValueRangeMaxInclusionFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ValueRange+ValueRangeMaxInclusionFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="14" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRange+ValueRangeMaxValueFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ValueRange+ValueRangeMaxValueFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="15" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRange+ValueRangeMinInclusionFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ValueRange+ValueRangeMinInclusionFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="20" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRange+ValueRangeMinValueFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ValueRange+ValueRangeMinValueFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="10" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRange+ValueRangeTextFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ValueRange+ValueRangeTextFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="17" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRangeDefinition+ValueRangeDefinitionChangeRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ValueRangeDefinition+ValueRangeDefinitionChangeRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="11" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRangeDefinition+ValueRangeDefinitionTextFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ValueRangeDefinition+ValueRangeDefinitionTextFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="16" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRangeMoveableCollection">
+          <Messages>
+           <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>ValueRangeMoveableCollection</Item>
+             <Item>IList</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="19" />
              </User>
             </Notes>
            </Message>
@@ -7351,6 +7511,12 @@ BaseReadingTreeNode.SetText():Void</Item>
                <Item>FactTypeShape.ShouldAddShapeForElement(ModelElement):Boolean</Item>
                <Item>isint</Item>
               </Issue>
+              <Issue Name="Parameter">
+               <Item>element</Item>
+               <Item>Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition</Item>
+               <Item>FactTypeShape.ShouldAddShapeForElement(ModelElement):Boolean</Item>
+               <Item>castclass</Item>
+              </Issue>
               <Notes>
                <User Name="mcurland">
                 <Note Id="12" />
@@ -7789,6 +7955,23 @@ BaseReadingTreeNode.SetText():Void</Item>
                <Item>boolean</Item>
                <Item>false</Item>
               </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="ShouldAddShapeForElement(Microsoft.VisualStudio.Modeling.ModelElement):System.Boolean">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2005-05-25 19:47:55Z">
+              <Issue Name="Parameter">
+               <Item>element</Item>
+               <Item>Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition</Item>
+               <Item>ObjectTypeShape.ShouldAddShapeForElement(ModelElement):Boolean</Item>
+               <Item>castclass</Item>
+              </Issue>
+              <Notes>
+               <User Name="pewert">
+                <Note Id="29" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -8286,6 +8469,20 @@ BaseReadingTreeNode.SetText():Void</Item>
            </Message>
           </Messages>
          </Type>
+         <Type Name="ORMDiagram+RoleHasValueRangeDefinitionRemoved">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+RoleHasValueRangeDefinitionRemoved</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="27" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="ORMDiagram+RolePlayerAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -8314,6 +8511,20 @@ BaseReadingTreeNode.SetText():Void</Item>
            </Message>
           </Messages>
          </Type>
+         <Type Name="ORMDiagram+RoleValueRangeDefinitionAdded">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+RoleValueRangeDefinitionAdded</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="ORMDiagram+SingleColumnExternalConstraintAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
@@ -8323,6 +8534,34 @@ BaseReadingTreeNode.SetText():Void</Item>
             <Notes>
              <User Name="mcurland">
               <Note Id="7" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ORMDiagram+ValueTypeHasValueRangeDefinitionRemoved">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+ValueTypeHasValueRangeDefinitionRemoved</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="28" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ORMDiagram+ValueTypeValueRangeDefinitionAdded">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+ValueTypeValueRangeDefinitionAdded</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="24" />
              </User>
             </Notes>
            </Message>
@@ -8630,6 +8869,62 @@ BaseReadingTreeNode.SetText():Void</Item>
             </Messages>
            </Member>
           </Members>
+         </Type>
+         <Type Name="ValueRangeShape+ValueRangeChanged">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.ValueRangeShape+ValueRangeChanged</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="25" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRangeShape+ValueRangeDefinitionAdded">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.ValueRangeShape+ValueRangeDefinitionAdded</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="22" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRangeShape+ValueRangeShapeValueRangeTextFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.ValueRangeShape+ValueRangeShapeValueRangeTextFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="18" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRangeShape+ValueTypeHasDataTypeAdded">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.ValueRangeShape+ValueTypeHasDataTypeAdded</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="26" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
         </Types>
        </Namespace>
@@ -9554,6 +9849,7 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="18" Modified="2005-05-18 23:24:39Z">Nested protected classes should be OK</Note>
     <Note Id="19" Modified="2005-05-18 23:27:41Z">Type param here is OK, corresponds to type of return value. Programmers have to specify type parameters all the type for generic types, there's little harm in passing them to methods. It is easier to pass them than figure out if the compiler will bind correctly.</Note>
     <Note Id="20" Modified="2005-05-18 23:28:20Z">These are different, one has a type parameter, the other doesn't. That gives them a different signature.</Note>
+    <Note Id="21" Modified="2005-05-25 19:53:40Z">Defined in IMS-generated code</Note>
    </User>
    <User Name="pewert">
     <Note Id="0" Modified="2005-04-25 20:13:21Z">Defined in IMS-generated code</Note>
@@ -9565,6 +9861,27 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="6" Modified="2005-05-02 22:15:31Z">Defined in IMS-generated code</Note>
     <Note Id="7" Modified="2005-05-02 22:15:51Z">Defined in IMS-generated code</Note>
     <Note Id="8" Modified="2005-05-02 22:18:28Z">Defined in IMS-generated code</Note>
+    <Note Id="9" Modified="2005-05-25 19:46:36Z">IMS-generated collections</Note>
+    <Note Id="10" Modified="2005-05-25 19:49:57Z">Defined in IMS-generated code</Note>
+    <Note Id="11" Modified="2005-05-25 19:52:17Z">Internal rules instantiated via reflection</Note>
+    <Note Id="12" Modified="2005-05-25 19:53:45Z">Defined in IMS-generated code</Note>
+    <Note Id="13" Modified="2005-05-25 19:53:54Z">Defined in IMS-generated code</Note>
+    <Note Id="14" Modified="2005-05-25 19:54:01Z">Defined in IMS-generated code</Note>
+    <Note Id="15" Modified="2005-05-25 19:54:06Z">Defined in IMS-generated code</Note>
+    <Note Id="16" Modified="2005-05-25 19:54:12Z">Defined in IMS-generated code</Note>
+    <Note Id="17" Modified="2005-05-25 19:54:46Z">Defined in IMS-generated code</Note>
+    <Note Id="18" Modified="2005-05-25 19:54:56Z">Defined in IMS-generated code</Note>
+    <Note Id="19" Modified="2005-05-25 19:55:53Z">IMS-generated collections</Note>
+    <Note Id="20" Modified="2005-05-25 20:13:45Z">Defined in IMS-generated code</Note>
+    <Note Id="21" Modified="2005-05-25 20:17:08Z">Internal rules instantiated via reflection</Note>
+    <Note Id="22" Modified="2005-05-25 20:17:17Z">Internal rules instantiated via reflection</Note>
+    <Note Id="23" Modified="2005-05-25 20:17:22Z">Internal rules instantiated via reflection</Note>
+    <Note Id="24" Modified="2005-05-25 20:17:26Z">Internal rules instantiated via reflection</Note>
+    <Note Id="25" Modified="2005-05-25 20:17:34Z">Internal rules instantiated via reflection</Note>
+    <Note Id="26" Modified="2005-05-25 20:17:47Z">Internal rules instantiated via reflection</Note>
+    <Note Id="27" Modified="2005-05-25 20:17:53Z">Internal rules instantiated via reflection</Note>
+    <Note Id="28" Modified="2005-05-25 20:17:57Z">Internal rules instantiated via reflection</Note>
+    <Note Id="29" Modified="2005-05-25 20:35:42Z">Duplicate cast is in assert statement</Note>
    </User>
   </Notes>
   <Rules>

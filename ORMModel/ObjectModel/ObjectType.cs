@@ -32,7 +32,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				attributeGuid == DataTypeDisplayMetaAttributeGuid ||
 				attributeGuid == LengthMetaAttributeGuid ||
 				attributeGuid == NestedFactTypeDisplayMetaAttributeGuid ||
-				attributeGuid == ReferenceModeDisplayMetaAttributeGuid)
+				attributeGuid == ReferenceModeDisplayMetaAttributeGuid ||
+				attributeGuid == ValueRangeTextMetaAttributeGuid)
 			{
 				// Handled by ObjectTypeChangeRule
 				return;
@@ -90,6 +91,11 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				return NestedFactType;
 			}
+			else if (attributeGuid == ValueRangeTextMetaAttributeGuid)
+			{
+				ValueTypeValueRangeDefinition defn = ValueRangeDefinition;
+				return (defn == null) ? "" : defn.Text;
+			}
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
 		/// <summary>
@@ -139,32 +145,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Determines whether to return the valuetype name as the reference mode or, if there
-		/// is a reference mode, it returns the reference mode name
-		/// </summary>
-		/// <param name="refMode"></param>
-		/// <param name="refModeString"></param>
-		private void GetReferenceMode(out ReferenceMode refMode, out string refModeString)
-		{
-			refMode = null;
-			refModeString = "";
-			InternalConstraint prefConstraint = this.PreferredIdentifier as InternalConstraint;
-
-			//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
-			// player is a value type then return the refence mode name.
-			if (prefConstraint != null)
-			{
-				ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
-				if (valueType.IsValueType)
-				{
-					string valueTypeName = valueType.Name;
-					refMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueTypeName, this.Name, this.Model);
-					refModeString = (refMode == null) ? valueTypeName : refMode.Name;
-				}
-			}
-		}
-
-		/// <summary>
 		/// Standard override. Defer to GetValueForCustomStoredAttribute.
 		/// </summary>
 		/// <param name="attribute">MetaAttributeInfo</param>
@@ -192,7 +172,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			return goodLink as ValueTypeHasDataType;
 		}
-
 		/// <summary>
 		/// Standard override determine when derived attributes are
 		/// displayed in the property grid. Called for all attributes.
@@ -215,6 +194,16 @@ namespace Northface.Tools.ORM.ObjectModel
 			else if (attributeGuid == ReferenceModeDisplayMetaAttributeGuid)
 			{
 				return !IsValueType && NestedFactType == null;
+			}
+			else if (attributeGuid == ValueRangeTextMetaAttributeGuid)
+			{
+				//UNDONE: The next line attempts to hide the value range property on
+				//entity types without a reference mode. Concept is that the property
+				//should be hidden on entity types where the ref mode is expanded and
+				//shown when the ref mode is collapsed. Thus, the value range can always
+				//be edited.
+//				return NestedFactType == null && (IsValueType || this.ReferenceModeString.Length != 0);
+				return NestedFactType == null;
 			}
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
@@ -248,6 +237,10 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == IsValueTypeMetaAttributeGuid)
 			{
 				return NestedFactType != null || PreferredIdentifier != null;
+			}
+			else if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == ValueRangeTextMetaAttributeGuid)
+			{
+				return !((IsValueType || ReferenceMode != null) && NestedFactType == null);
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
@@ -438,64 +431,95 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion
 
 		/// <summary>
+		/// Retrieves the role player on the preferred internal uniquiness constraint.
+		/// </summary>
+		/// <returns>The role player as an ObjectType if it exists; otherwise, null.</returns>
+		private ObjectType GetObjectTypeForPreferredConstraint()
+		{
+			InternalConstraint prefConstraint = this.PreferredIdentifier as InternalConstraint;
+
+			//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
+			// player is a value type then return the value type.
+			if (prefConstraint != null)
+			{
+				return prefConstraint.RoleCollection[0].RolePlayer;
+			}
+			return null;
+		}
+		/// <summary>
+		/// Retrieves the ValueType object representing this ObjectType's value type.
+		/// </summary>
+		/// <returns>The value type as an ObjectType if it exists; otherwise, null.</returns>
+		private ObjectType GetValueTypeForPreferredConstraint()
+		{
+			//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
+			// player is a value type then return the value type.
+			ObjectType valueTypeCandidate = GetObjectTypeForPreferredConstraint();
+			if (null != valueTypeCandidate && valueTypeCandidate.IsValueType)
+			{
+				return valueTypeCandidate;
+			}
+			return null;
+		}
+		/// <summary>
 		/// Returns the Reference Mode for the given object if one exists
 		/// </summary>
 		/// <returns></returns>
 		public ReferenceMode GetReferenceMode()
 		{
-			InternalConstraint prefConstraint = this.PreferredIdentifier as InternalConstraint;
-
-			//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
-			// player is a value type then return the refence mode name.
-			if (prefConstraint != null)
+			ObjectType objectType;
+			if (null != (objectType = GetObjectTypeForPreferredConstraint()))
 			{
-				ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
-				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueType.Name, this.Name, this.Model);
+				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, this.Model);
 				return refMode;
 			}
 			return null;
-
 		}
-
 		/// <summary>
 		/// Returns the Reference Mode for the given object if one exists
 		/// </summary>
 		/// <returns></returns>
 		public ReferenceMode GetReferenceMode(string formatString)
 		{
-			InternalConstraint prefConstraint = this.PreferredIdentifier as InternalConstraint;
-
-			//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
-			// player is a value type then return the refence mode name.
-			if (prefConstraint != null)
+			ObjectType objectType;
+			if (null != (objectType = GetObjectTypeForPreferredConstraint()))
 			{
-				ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
-				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueType.Name, this.Name, formatString, this.Model);
+				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, formatString, this.Model);
 				return refMode;
 			}
 			return null;
-
 		}
-
-
 		/// <summary>
 		/// Returns the Reference Mode for the given object if one exists
 		/// </summary>
 		/// <returns></returns>
 		public ReferenceMode GetReferenceMode(string formatString, string referenceModeName, string oldReferenceModeName)
 		{
-			InternalConstraint prefConstraint = this.PreferredIdentifier as InternalConstraint;
-
-			//If there is a preferred internal uniqueness constraint and that uniqueness constraint's role
-			// player is a value type then return the refence mode name.
-			if (prefConstraint != null)
+			ObjectType objectType;
+			if (null != (objectType = GetObjectTypeForPreferredConstraint()))
 			{
-				ObjectType valueType = prefConstraint.RoleCollection[0].RolePlayer;
-				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueType.Name, this.Name, formatString, referenceModeName, oldReferenceModeName, this.Model);
+				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, formatString, referenceModeName, oldReferenceModeName, this.Model);
 				return refMode;
 			}
 			return null;
-
+		}
+		/// <summary>
+		/// Determines whether to return the valuetype name as the reference mode or, if there
+		/// is a reference mode, it returns the reference mode name
+		/// </summary>
+		/// <param name="refMode"></param>
+		/// <param name="refModeString"></param>
+		private void GetReferenceMode(out ReferenceMode refMode, out string refModeString)
+		{
+			refMode = null;
+			refModeString = "";
+			ObjectType valueType;
+			if (null != (valueType = GetValueTypeForPreferredConstraint()))
+			{
+				string valueTypeName = valueType.Name;
+				refMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueTypeName, this.Name, this.Model);
+				refModeString = (refMode == null) ? valueTypeName : refMode.Name;
+			}
 		}
 		#endregion // Customize property display
 		#region ObjectTypeChangeRule class
@@ -606,6 +630,16 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
 					SetReferenceMode(objectType, (ReferenceMode)e.NewValue, (ReferenceMode)e.OldValue, null, null);
+				}
+				else if (attributeGuid == ObjectType.ValueRangeTextMetaAttributeGuid)
+				{
+					ObjectType objectType = e.ModelElement as ObjectType;
+					ValueTypeValueRangeDefinition defn = objectType.ValueRangeDefinition;
+					if (defn == null)
+					{
+						objectType.ValueRangeDefinition = defn = ValueTypeValueRangeDefinition.CreateValueTypeValueRangeDefinition(objectType.Store);
+					}
+					defn.Text = (string)e.NewValue;
 				}
 			}
 			/// <summary>

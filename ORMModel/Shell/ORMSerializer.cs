@@ -50,6 +50,17 @@ namespace Northface.Tools.ORM.Shell
 	<xsl:template match=""om:Property[@Name='ReferenceModeDisplay']"" />
 	<xsl:template match=""om:Property[@Name='ReferenceModeString']"" />
 	<xsl:template match=""om:Property[@Name='ReferenceMode']"" />
+	<xsl:template match=""om:Property[@Name='ValueRangeText']"" />
+	<xsl:template match=""om:Property[@Name='Text']"">
+		<xsl:choose>
+			<xsl:when test=""parent::om:ModelElement[@Type='Northface.Tools.ORM.ObjectModel.ValueRange']""/>
+			<xsl:when test=""parent::om:ModelElement[@Type='Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition']""/>
+			<xsl:when test=""parent::om:ModelElement[@Type='Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition']""/>
+			<xsl:otherwise>
+				<xsl:copy-of select="".""/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 </xsl:stylesheet>";
 		#endregion // Xsl transforms
 		#region Synchronized code to load transform into static variable
@@ -221,6 +232,7 @@ namespace Northface.Tools.ORM.Shell
 			if (modelElement is ExternalFactConstraint ||
 				modelElement is ExternalRoleConstraint ||
 				modelElement is ExternalConstraintLink ||
+				modelElement is ValueRangeLink ||
 				modelElement is IntrinsicReferenceMode ||
 				modelElement is RolePlayerLink)
 			{
