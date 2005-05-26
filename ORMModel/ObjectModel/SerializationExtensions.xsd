@@ -2,7 +2,7 @@
 <xs:schema id="SerializationExtensions" targetNamespace="http://Schemas.Northface.edu/Private/SerializationExtensions" elementFormDefault="qualified" xmlns="http://Schemas.Northface.edu/Private/SerializationExtensions" xmlns:mstns="http://Schemas.Northface.edu/Private/SerializationExtensions" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="unqualified">
     <xs:simpleType name="ElementWriteStyle">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="DontWrite">
+            <xs:enumeration value="NotWritten">
                 <xs:annotation>
                     <xs:documentation>Do not write.</xs:documentation>
                 </xs:annotation>
@@ -21,7 +21,7 @@
     </xs:simpleType>
     <xs:simpleType name="AttributeWriteStyle">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="DontWrite">
+            <xs:enumeration value="NotWritten">
                 <xs:annotation>
                     <xs:documentation>Do not write.</xs:documentation>
                 </xs:annotation>
@@ -178,29 +178,25 @@
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
-                            <xs:element name="CombinedElement" minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="ChildElement" minOccurs="0" maxOccurs="unbounded">
                                 <xs:annotation>
-                                    <xs:documentation>Combines one or more elements.</xs:documentation>
+                                    <xs:documentation>Creates a child element.</xs:documentation>
                                 </xs:annotation>
                                 <xs:complexType>
                                     <xs:sequence>
+                                        <xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
                                         <xs:element name="Link" minOccurs="1" maxOccurs="unbounded">
                                             <xs:annotation>
-                                                <xs:documentation>A link to combine.</xs:documentation>
+                                                <xs:documentation>An element of the child element.</xs:documentation>
                                             </xs:annotation>
                                             <xs:complexType>
                                                 <xs:attributeGroup ref="LinkAttributes"/>
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
-                                    <xs:attribute name="Name" type="xs:string" use="required">
-                                        <xs:annotation>
-                                            <xs:documentation>The name of the combined element.</xs:documentation>
-                                        </xs:annotation>
-                                    </xs:attribute>
                                     <xs:attribute name="SortChildElements" type="xs:boolean" default="false">
                                         <xs:annotation>
-                                            <xs:documentation>If this is set, order the roles within the combined element along with the position of the combined element itself. Works with SortChildElements on the parent Element tag, which must be set for this to have any effect.</xs:documentation>
+                                            <xs:documentation>If this is set, order the roles within the child element along with the position of the child element itself. Works with SortChildElements on the parent Element tag, which must be set for this to have any effect.</xs:documentation>
                                         </xs:annotation>
                                     </xs:attribute>
 									<xs:attribute name="NotSorted" type="xs:boolean" default="false">
@@ -208,6 +204,7 @@
                                             <xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
                                         </xs:annotation>
 									</xs:attribute>
+                                    <xs:attributeGroup ref="ElementAttributes"/>
                                 </xs:complexType>
                             </xs:element>
                             <xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
@@ -258,7 +255,7 @@
                         </xs:attribute>
 						<xs:attribute name="SortChildElements" type="xs:boolean" default="false">
 							<xs:annotation>
-								<xs:documentation>All link and combined elements should be explicitly sorted to force them to write out in a fixed order.</xs:documentation>
+								<xs:documentation>All link and child elements should be explicitly sorted to force them to write out in a fixed order.</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
                         <xs:attributeGroup ref="ElementAttributes"/>

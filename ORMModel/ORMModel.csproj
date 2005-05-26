@@ -27,7 +27,7 @@
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>.\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NEWSERIALIZE</DefineConstants>
     <DocumentationFile>bin\Release\Northface.Tools.ORM.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
@@ -208,7 +208,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Shell\ORMReadingEditor.cs" />
-    <Compile Include="Shell\ORMSerializer.2.cs" />
+    <Compile Include="Shell\ORMSerializer.2.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Shell\ORMSerializer.cs" />
     <Compile Include="SyncDoc\ORMElementProvider.cs">
       <SubType>Code</SubType>
@@ -225,6 +227,9 @@
       <Generator>DmdFileCodeGenerator</Generator>
       <LastGenOutput>ORMCore.dmd.cs</LastGenOutput>
     </None>
+    <None Include="ObjectModel\SerializationExtensions.xsx">
+      <DependentUpon>SerializationExtensions.xsd</DependentUpon>
+    </None>
     <None Include="Resources\Toolbox.EntityType.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ObjectModel\ORMCore.dmd.resx">
       <DependentUpon>ORMCore.dmd.cs</DependentUpon>
@@ -240,6 +245,10 @@
     <EmbeddedResource Include="ShapeModel\ORMShape.dmd.resx">
       <DependentUpon>ORMShape.dmd.cs</DependentUpon>
     </EmbeddedResource>
+    <Content Include="ObjectModel\SerializationExtensions.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>SerializationExtensions.cs</LastGenOutput>
+    </Content>
     <Content Include="ObjectModel\DataTypesGenerator.xslt" />
     <Content Include="ObjectModel\DataTypesGenerator.xml">
       <Generator>NUPlixLoader</Generator>

@@ -23,13 +23,13 @@
                 <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetSupportedOperations"/>
                 <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementSupportedOperations" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
                 <plx:Return>
-					<xsl:call-template name="ReturnORMCustomSerializedElementSupportedOperations">
-						<xsl:with-param name="combinedElements" select="count(se:CombinedElement)"/>
-						<xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
-						<xsl:with-param name="attributes" select="count(se:Attribute)"/>
-						<xsl:with-param name="links" select="count(se:Link)"/>
-						<xsl:with-param name="customSort" select="@SortChildElements='true'"/>
-					</xsl:call-template>
+                    <xsl:call-template name="ReturnORMCustomSerializedElementSupportedOperations">
+                        <xsl:with-param name="childElements" select="count(se:ChildElement)"/>
+                        <xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
+                        <xsl:with-param name="attributes" select="count(se:Attribute)"/>
+                        <xsl:with-param name="links" select="count(se:Link)"/>
+                        <xsl:with-param name="customSort" select="@SortChildElements='true'"/>
+                    </xsl:call-template>
                 </plx:Return>
             </plx:Function>
             <plx:Function visibility="Protected" name="HasMixedTypedAttributes">
@@ -46,24 +46,27 @@
                     </xsl:choose>
                 </plx:Return>
             </plx:Function>
-            <plx:Function visibility="Protected" name="GetCustomSerializedCombinedElementInfo">
-                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedCombinedElementInfo"/>
-                <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedCombinedElementInfo[]" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
+            <plx:Function visibility="Protected" name="GetCustomSerializedChildElementInfo">
+                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedChildElementInfo"/>
+                <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedChildElementInfo[]" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
                 <xsl:choose>
-                    <xsl:when test="count(se:CombinedElement)">
-                        <plx:Variable name="ret" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedCombinedElementInfo" dataTypeIsSimpleArray="true" const="true">
+                    <xsl:when test="count(se:ChildElement)">
+                        <plx:Variable name="ret" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true" const="true">
                             <plx:Initialize>
-                                <plx:CallNew style="New" dataTypeName="ORMCustomSerializedCombinedElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeIsSimpleArray="true">
+                                <plx:CallNew style="New" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeIsSimpleArray="true">
                                     <plx:PassParam>
                                         <plx:Value type="I4">
-                                            <xsl:value-of select="count(se:CombinedElement)"/>
+                                            <xsl:value-of select="count(se:ChildElement)"/>
                                         </plx:Value>
                                     </plx:PassParam>
                                 </plx:CallNew>
                             </plx:Initialize>
                         </plx:Variable>
-                        <xsl:for-each select="se:CombinedElement">
+                        <xsl:for-each select="se:ChildElement">
                             <xsl:variable name="index" select="position()-1"/>
+                            <xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable">
+                                <xsl:with-param name="modifier" select="$index"/>
+                            </xsl:call-template>
                             <plx:Variable name="guids{$index}" dataTypeQualifier="System" dataTypeName="Guid" dataTypeIsSimpleArray="true" const="true">
                                 <plx:Initialize>
                                     <plx:CallNew style="New" dataTypeName="Guid" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
@@ -113,12 +116,10 @@
                                     </plx:CallInstance>
                                 </plx:Left>
                                 <plx:Right>
-                                    <plx:CallNew style="New" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedCombinedElementInfo">
-                                        <plx:PassParam>
-                                            <plx:String>
-                                                <xsl:value-of select="@Name"/>
-                                            </plx:String>
-                                        </plx:PassParam>
+                                    <plx:CallNew style="New" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo">
+                                        <xsl:call-template name="PassORMCustomSerializedElementInfoParams">
+                                            <xsl:with-param name="modifier" select="$index"/>
+                                        </xsl:call-template>
                                         <plx:PassParam>
                                             <plx:Value type="Local">guids<xsl:value-of select="$index"/></plx:Value>
                                         </plx:PassParam>
@@ -262,13 +263,13 @@
 							<plx:Param name="store" dataTypeName="Store" style="In"/>
 							<xsl:variable name="SortedLevels">
 								<!-- Define a variable with structure <SortLevel><Role/><SortLevel/> -->
-								<xsl:for-each select="se:Link | se:CombinedElement">
+								<xsl:for-each select="se:Link | se:ChildElement">
 									<xsl:if test="not(@NotSorted='true')">
 										<xsl:choose>
 											<xsl:when test="local-name()='Link'">
 												<SortLevel><Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/></SortLevel>
 											</xsl:when>
-											<xsl:when test="local-name()='CombinedElement'">
+											<xsl:when test="local-name()='ChildElement'">
 												<xsl:choose>
 													<xsl:when test="@SortChildElements='true'">
 														<!-- Add one sort level for each child -->
@@ -546,84 +547,85 @@
         </plx:Class>
     </xsl:template>
     <xsl:template name="ReturnORMCustomSerializedElementSupportedOperations">
-        <xsl:param name="combinedElements" select="0"/>
+        <xsl:param name="childElements" select="0"/>
         <xsl:param name="element" select="0"/>
         <xsl:param name="attributes" select="0"/>
         <xsl:param name="links" select="0"/>
-		<xsl:param name="customSort" select="0"/>
-		<xsl:variable name="supportedOperations">
-			<xsl:if test="$combinedElements">
-				<xsl:element name="SupportedOperation">
-					<xsl:text>CustomSerializedCombinedElementInfo</xsl:text>
-				</xsl:element>
-			</xsl:if>
-			<xsl:if test="$element">
-				<xsl:element name="SupportedOperation">
-					<xsl:text>CustomSerializedElementInfo</xsl:text>
-				</xsl:element>
-			</xsl:if>
-			<xsl:if test="$attributes">
-				<xsl:element name="SupportedOperation">
-					<xsl:text>CustomSerializedAttributeInfo</xsl:text>
-				</xsl:element>
-			</xsl:if>
-			<xsl:if test="$links">
-				<xsl:element name="SupportedOperation">
-					<xsl:text>CustomSerializedLinkInfo</xsl:text>
-				</xsl:element>
-			</xsl:if>
-			<xsl:if test="$customSort">
-				<xsl:element name="SupportedOperation">
-					<xsl:text>CustomSortChildRoles</xsl:text>
-				</xsl:element>
-			</xsl:if>
-		</xsl:variable>
-		<xsl:variable name="operationCount" select="count($supportedOperations/child::*)"/>
-		<xsl:choose>
-			<xsl:when test="$operationCount=0">
-				<plx:CallType dataTypeName="ORMCustomSerializedElementSupportedOperations" name="None" style="Field"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:for-each select="$supportedOperations/SupportedOperation">
-					<xsl:if test="position()=1">
-						<xsl:call-template name="OrTogetherEnumElements">
-							<xsl:with-param name="EnumType" select="'ORMCustomSerializedElementSupportedOperations'"></xsl:with-param>
-						</xsl:call-template>
-					</xsl:if>
-				</xsl:for-each>
-			</xsl:otherwise>
-		</xsl:choose>
+        <xsl:param name="customSort" select="0"/>
+        <xsl:variable name="supportedOperations">
+            <xsl:if test="$childElements">
+                <xsl:element name="SupportedOperation">
+                    <xsl:text>CustomSerializedChildElementInfo</xsl:text>
+                </xsl:element>
+            </xsl:if>
+            <xsl:if test="$element">
+                <xsl:element name="SupportedOperation">
+                    <xsl:text>CustomSerializedElementInfo</xsl:text>
+                </xsl:element>
+            </xsl:if>
+            <xsl:if test="$attributes">
+                <xsl:element name="SupportedOperation">
+                    <xsl:text>CustomSerializedAttributeInfo</xsl:text>
+                </xsl:element>
+            </xsl:if>
+            <xsl:if test="$links">
+                <xsl:element name="SupportedOperation">
+                    <xsl:text>CustomSerializedLinkInfo</xsl:text>
+                </xsl:element>
+            </xsl:if>
+            <xsl:if test="$customSort">
+                <xsl:element name="SupportedOperation">
+                    <xsl:text>CustomSortChildRoles</xsl:text>
+                </xsl:element>
+            </xsl:if>
+        </xsl:variable>
+        <xsl:variable name="operationCount" select="count($supportedOperations/child::*)"/>
+        <xsl:choose>
+            <xsl:when test="$operationCount=0">
+                <plx:CallType dataTypeName="ORMCustomSerializedElementSupportedOperations" name="None" style="Field"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:for-each select="$supportedOperations/SupportedOperation">
+                    <xsl:if test="position()=1">
+                        <xsl:call-template name="OrTogetherEnumElements">
+                            <xsl:with-param name="EnumType" select="'ORMCustomSerializedElementSupportedOperations'"></xsl:with-param>
+                        </xsl:call-template>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
-	<!-- Or together enum values from the given type. The current state on the initial
+    <!-- Or together enum values from the given type. The current state on the initial
 	     call should be the position()=1 element inside a for-each context where the elements
 		 contain the (unqualified) names of the enum values to or together -->
-	<xsl:template name="OrTogetherEnumElements">
-		<xsl:param name="EnumType"/>
-		<xsl:choose>
-			<xsl:when test="position()=last()">
-				<plx:CallType dataTypeName="{$EnumType}" name="{.}" style="Field"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<plx:Operator name="BitwiseOr">
-					<plx:Left>
-						<plx:CallType dataTypeName="{$EnumType}" name="{.}" style="Field"/>
-					</plx:Left>
-					<plx:Right>
-						<xsl:for-each select="following-sibling::*">
-							<xsl:if test="position()=1">
-								<xsl:call-template name="OrTogetherEnumElements">
-									<xsl:with-param name="EnumType" select="$EnumType"/>
-								</xsl:call-template>
-							</xsl:if>
-						</xsl:for-each>							
-					</plx:Right>
-				</plx:Operator>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-    <xsl:template name="ReturnORMCustomSerializedElementInfo">
+    <xsl:template name="OrTogetherEnumElements">
+        <xsl:param name="EnumType"/>
+        <xsl:choose>
+            <xsl:when test="position()=last()">
+                <plx:CallType dataTypeName="{$EnumType}" name="{.}" style="Field"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <plx:Operator name="BitwiseOr">
+                    <plx:Left>
+                        <plx:CallType dataTypeName="{$EnumType}" name="{.}" style="Field"/>
+                    </plx:Left>
+                    <plx:Right>
+                        <xsl:for-each select="following-sibling::*">
+                            <xsl:if test="position()=1">
+                                <xsl:call-template name="OrTogetherEnumElements">
+                                    <xsl:with-param name="EnumType" select="$EnumType"/>
+                                </xsl:call-template>
+                            </xsl:if>
+                        </xsl:for-each>
+                    </plx:Right>
+                </plx:Operator>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    <xsl:template name="CreateORMCustomSerializedElementInfoNameVariable">
+        <xsl:param name="modifier"/>
         <xsl:if test="count(se:ConditionalName)">
-            <plx:Variable dataTypeName="String" dataTypeQualifier="System" name="name">
+            <plx:Variable dataTypeName="String" dataTypeQualifier="System" name="name{$modifier}">
                 <plx:Initialize>
                     <xsl:choose>
                         <xsl:when test="string-length(@Name)">
@@ -646,7 +648,7 @@
                         <plx:Body>
                             <plx:Operator name="Assign">
                                 <plx:Left>
-                                    <plx:Value type="Local">name</plx:Value>
+                                    <plx:Value type="Local">name<xsl:value-of select="$modifier"/></plx:Value>
                                 </plx:Left>
                                 <plx:Right>
                                     <plx:String>
@@ -663,7 +665,7 @@
                                 <plx:Body>
                                     <plx:Operator name="Assign">
                                         <plx:Left>
-                                            <plx:Value type="Local">name</plx:Value>
+                                            <plx:Value type="Local">name<xsl:value-of select="$modifier"/></plx:Value>
                                         </plx:Left>
                                         <plx:Right>
                                             <plx:String>
@@ -678,84 +680,91 @@
                 </xsl:if>
             </xsl:for-each>
         </xsl:if>
-        <plx:Return>
-            <plx:CallNew style="New" dataTypeName="ORMCustomSerializedElementInfo">
-                <plx:PassParam>
+    </xsl:template>
+    <xsl:template name="PassORMCustomSerializedElementInfoParams">
+        <xsl:param name="modifier"/>
+        <plx:PassParam>
+            <xsl:choose>
+                <xsl:when test="string-length(@Prefix)">
+                    <plx:String>
+                        <xsl:value-of select="@Prefix"/>
+                    </plx:String>
+                </xsl:when>
+                <xsl:otherwise>
+                    <plx:NullObjectKeyword/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </plx:PassParam>
+        <plx:PassParam>
+            <xsl:choose>
+                <xsl:when test="count(se:ConditionalName)">
+                    <plx:Value type="Local">name<xsl:value-of select="$modifier"/></plx:Value>
+                </xsl:when>
+                <xsl:otherwise>
                     <xsl:choose>
-                        <xsl:when test="string-length(@Prefix)">
+                        <xsl:when test="string-length(@Name)">
                             <plx:String>
-                                <xsl:value-of select="@Prefix"/>
+                                <xsl:value-of select="@Name"/>
                             </plx:String>
                         </xsl:when>
                         <xsl:otherwise>
                             <plx:NullObjectKeyword/>
                         </xsl:otherwise>
                     </xsl:choose>
-                </plx:PassParam>
-                <plx:PassParam>
-                    <xsl:choose>
-                        <xsl:when test="count(se:ConditionalName)">
-                            <plx:Value type="Local">name</plx:Value>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:choose>
-                                <xsl:when test="string-length(@Name)">
-                                    <plx:String>
-                                        <xsl:value-of select="@Name"/>
-                                    </plx:String>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <plx:NullObjectKeyword/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </plx:PassParam>
-                <plx:PassParam>
-                    <xsl:choose>
-                        <xsl:when test="string-length(@Namespace)">
-                            <plx:String>
-                                <xsl:value-of select="@Namespace"/>
-                            </plx:String>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <plx:NullObjectKeyword/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </plx:PassParam>
-                <plx:PassParam>
-                    <plx:CallType style="Field" dataTypeName="ORMCustomSerializedElementWriteStyle">
-                        <xsl:attribute name="name">
-                            <xsl:choose>
-                                <xsl:when test="string-length(@DoubleTagName)">
-                                    <xsl:text>DoubleTaggedElement</xsl:text>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:choose>
-                                        <xsl:when test="string-length(@WriteStyle)">
-                                            <xsl:value-of select="@WriteStyle"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:text>Element</xsl:text>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:attribute>
-                    </plx:CallType>
-                </plx:PassParam>
-                <plx:PassParam>
+                </xsl:otherwise>
+            </xsl:choose>
+        </plx:PassParam>
+        <plx:PassParam>
+            <xsl:choose>
+                <xsl:when test="string-length(@Namespace)">
+                    <plx:String>
+                        <xsl:value-of select="@Namespace"/>
+                    </plx:String>
+                </xsl:when>
+                <xsl:otherwise>
+                    <plx:NullObjectKeyword/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </plx:PassParam>
+        <plx:PassParam>
+            <plx:CallType style="Field" dataTypeName="ORMCustomSerializedElementWriteStyle">
+                <xsl:attribute name="name">
                     <xsl:choose>
                         <xsl:when test="string-length(@DoubleTagName)">
-                            <plx:String>
-                                <xsl:value-of select="@DoubleTagName"/>
-                            </plx:String>
+                            <xsl:text>DoubleTaggedElement</xsl:text>
                         </xsl:when>
                         <xsl:otherwise>
-                            <plx:NullObjectKeyword/>
+                            <xsl:choose>
+                                <xsl:when test="string-length(@WriteStyle)">
+                                    <xsl:value-of select="@WriteStyle"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:text>Element</xsl:text>
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </xsl:otherwise>
                     </xsl:choose>
-                </plx:PassParam>
+                </xsl:attribute>
+            </plx:CallType>
+        </plx:PassParam>
+        <plx:PassParam>
+            <xsl:choose>
+                <xsl:when test="string-length(@DoubleTagName)">
+                    <plx:String>
+                        <xsl:value-of select="@DoubleTagName"/>
+                    </plx:String>
+                </xsl:when>
+                <xsl:otherwise>
+                    <plx:NullObjectKeyword/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </plx:PassParam>
+    </xsl:template>
+    <xsl:template name="ReturnORMCustomSerializedElementInfo">
+        <xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable"/>
+        <plx:Return>
+            <plx:CallNew style="New" dataTypeName="ORMCustomSerializedElementInfo">
+                <xsl:call-template name="PassORMCustomSerializedElementInfoParams"/>
             </plx:CallNew>
         </plx:Return>
     </xsl:template>

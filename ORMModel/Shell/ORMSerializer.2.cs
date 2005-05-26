@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using SysDiag = System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -20,21 +21,22 @@ using Northface.Tools.ORM.ShapeModel;
 
 namespace Northface.Tools.ORM.Shell
 {
+	#region Public Enumerations
 	/// <summary>
 	/// Supported operations for element custom serialization.
 	/// </summary>
 	[Flags]
 	[CLSCompliant(true)]
-	public enum ORMCustomSerializedElementSupportedOperations : byte
+	public enum ORMCustomSerializedElementSupportedOperations
 	{
 		/// <summary>
 		/// No operations are supported.
 		/// </summary>
 		None = 0x00,
 		/// <summary>
-		/// Combined element information is supported.
+		/// Child element information is supported.
 		/// </summary>
-		CustomSerializedCombinedElementInfo = 0x01,
+		CustomSerializedChildElementInfo = 0x01,
 		/// <summary>
 		/// Custom element information is supported.
 		/// </summary>
@@ -56,12 +58,12 @@ namespace Northface.Tools.ORM.Shell
 	/// Write style for element custom serialization.
 	/// </summary>
 	[CLSCompliant(true)]
-	public enum ORMCustomSerializedElementWriteStyle : byte
+	public enum ORMCustomSerializedElementWriteStyle
 	{
 		/// <summary>
 		/// Dont write.
 		/// </summary>
-		DontWrite = 0xFF,
+		NotWritten = 0xFF,
 		/// <summary>
 		/// Write as an element.
 		/// </summary>
@@ -75,12 +77,12 @@ namespace Northface.Tools.ORM.Shell
 	/// Write style for attribute custom serialization.
 	/// </summary>
 	[CLSCompliant(true)]
-	public enum ORMCustomSerializedAttributeWriteStyle : byte
+	public enum ORMCustomSerializedAttributeWriteStyle
 	{
 		/// <summary>
 		/// Dont write.
 		/// </summary>
-		DontWrite = 0xFF,
+		NotWritten = 0xFF,
 		/// <summary>
 		/// Write as an attribute.
 		/// </summary>
@@ -94,91 +96,9 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		DoubleTaggedElement = 0x02
 	}
+	#endregion Public Enumerations
 
-	/// <summary>
-	/// Custom serialization information for combined elements.
-	/// </summary>
-	[CLSCompliant(true)]
-	public struct ORMCustomSerializedCombinedElementInfo
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="name">The combined element name.</param>
-		/// <param name="GUIDs">The combined element GUIDs.</param>
-		public ORMCustomSerializedCombinedElementInfo(string name, Guid[] GUIDs)
-		{
-			myName = name;
-			myGUIDs = GUIDs;
-			myCachedElements = new System.Collections.Generic.Stack<ModelElement>();
-			myCachedRoleInfo = new System.Collections.Generic.Stack<MetaRoleInfo>();
-		}
-
-		private string myName;
-		private Guid[] myGUIDs;
-		private System.Collections.Generic.Stack<ModelElement> myCachedElements;
-		private System.Collections.Generic.Stack<MetaRoleInfo> myCachedRoleInfo;
-
-		/// <summary>
-		/// The combined element name.
-		/// </summary>
-		/// <value>The combined element name.</value>
-		public string Name
-		{
-			get { return myName; }
-			set { myName = value; }
-		}
-		/// <summary>
-		/// The combined element GUIDs.
-		/// </summary>
-		/// <value>The combined element GUIDs.</value>
-		public Guid[] GUIDs
-		{
-			get { return myGUIDs; }
-			set { myGUIDs = value; }
-		}
-
-		/// <summary>
-		/// Checks to see if the GUID is part of the combined element.
-		/// </summary>
-		/// <param name="guid">The GUID to find.</param>
-		/// <returns>true if the GUID is part of the combined element.</returns>
-		public bool ContainsGUID(Guid guid)
-		{
-			return (myGUIDs as IList<Guid>).Contains(guid);
-		}
-		/// <summary>
-		/// Stores the element and returns true when the cached elements should be written.
-		/// </summary>
-		/// <returns>true when the cached elements should be written.</returns>
-		public bool PushElement(ModelElement element, MetaRoleInfo roleInfo)
-		{
-			myCachedElements.Push(element);
-			myCachedRoleInfo.Push(roleInfo);
-			return myCachedElements.Count >= myGUIDs.Length;
-		}
-		/// <summary>
-		/// Retrieves a stored element and returns true when the cache is empty.
-		/// </summary>
-		/// <param name="element">Returns the element that was retrieved.</param>
-		/// <param name="roleInfo">Returns the role information that was retrieved.</param>
-		/// <returns>true when the cache is empty.</returns>
-		public bool PopElement(out ModelElement element, out MetaRoleInfo roleInfo)
-		{
-			if (myCachedElements.Count < 1)
-			{
-				element = null;
-				roleInfo = null;
-				return false;
-			}
-
-			element = myCachedElements.Pop();
-			roleInfo = myCachedRoleInfo.Pop();
-
-			return true;
-		}
-	}
-
+	#region Public Classes
 	/// <summary>
 	/// Custom serialization information.
 	/// </summary>
@@ -188,7 +108,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// Default Constructor
 		/// </summary>
-		public ORMCustomSerializedInfo()
+		protected ORMCustomSerializedInfo()
 		{
 		}
 		/// <summary>
@@ -257,7 +177,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// Default Constructor
 		/// </summary>
-		private ORMCustomSerializedElementInfo()
+		protected ORMCustomSerializedElementInfo()
 		{
 		}
 		/// <summary>
@@ -307,7 +227,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// Default Constructor
 		/// </summary>
-		private ORMCustomSerializedAttributeInfo()
+		protected ORMCustomSerializedAttributeInfo()
 		{
 		}
 		/// <summary>
@@ -360,7 +280,74 @@ namespace Northface.Tools.ORM.Shell
 			set { myWriteStyle = value; }
 		}
 	}
+	/// <summary>
+	/// Custom serialization information for child elements.
+	/// </summary>
+	[CLSCompliant(true)]
+	public class ORMCustomSerializedChildElementInfo : ORMCustomSerializedElementInfo
+	{
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		protected ORMCustomSerializedChildElementInfo()
+		{
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="customName">The custom name to use.</param>
+		/// <param name="GUIDs">The child element GUIDs.</param>
+		public ORMCustomSerializedChildElementInfo(string customName, Guid[] GUIDs) : base(null, customName, null, ORMCustomSerializedElementWriteStyle.Element, null)
+		{
+			myGUIDs = GUIDs;
+			myGUIDList = (myGUIDs as IList<Guid>);
+		}
+		/// <summary>
+		/// Main Constructor
+		/// </summary>
+		/// <param name="customPrefix">The custom prefix to use.</param>
+		/// <param name="customName">The custom name to use.</param>
+		/// <param name="customNamespace">The custom namespace to use.</param>
+		/// <param name="writeStyle">The style to use when writting.</param>
+		/// <param name="doubleTagName">The name of the double tag.</param>
+		/// <param name="GUIDs">The child element GUIDs.</param>
+		public ORMCustomSerializedChildElementInfo(string customPrefix, string customName, string customNamespace, ORMCustomSerializedElementWriteStyle writeStyle, string doubleTagName, Guid[] GUIDs) : base(customPrefix, customName, customNamespace, writeStyle, doubleTagName)
+		{
+			myGUIDs = GUIDs;
+			myGUIDList = (myGUIDs as IList<Guid>);
+		}
 
+		private Guid[] myGUIDs;
+		private IList<Guid> myGUIDList;
+
+		/// <summary>
+		/// Default ORMCustomSerializedChildElementInfo
+		/// </summary>
+		public new static readonly ORMCustomSerializedChildElementInfo Default = new ORMCustomSerializedChildElementInfo();
+
+		/// <summary>
+		/// The child element GUIDs.
+		/// </summary>
+		/// <value>The child element GUIDs.</value>
+		public Guid[] GUIDs
+		{
+			get { return myGUIDs; }
+			set
+			{
+				myGUIDs = value;
+				myGUIDList = (myGUIDs as IList<Guid>);
+			}
+		}
+		/// <summary>
+		/// The child element GUIDs as an IList.
+		/// </summary>
+		/// <value>The child element GUIDs as an IList.</value>
+		[CLSCompliant(false)]
+		public IList<Guid> GUIDList { get { return myGUIDList; } }
+	}
+	#endregion Public Classes
+
+	#region Public Interfaces
 	/// <summary>
 	/// The interface for getting custom element namespaces.
 	/// </summary>
@@ -388,10 +375,10 @@ namespace Northface.Tools.ORM.Shell
 		/// <returns>true if some of the attributes are written as elements and others are written as attributes.</returns>
 		bool HasMixedTypedAttributes();
 		/// <summary>
-		/// Returns custom serialization information for combined elements.
+		/// Returns custom serialization information for child elements.
 		/// </summary>
-		/// <returns>Custom serialization information for combined elements.</returns>
-		ORMCustomSerializedCombinedElementInfo[] GetCustomSerializedCombinedElementInfo();
+		/// <returns>Custom serialization information for child elements.</returns>
+		ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo();
 		/// <summary>
 		/// Returns custom serialization information for elements.
 		/// </summary>
@@ -418,27 +405,91 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="playedMetaRoles">Played meta roles to sort</param>
 		void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles);
 	}
+	#endregion Public Interfaces
 
+	#region New Serialization
 	/// <summary>
-	/// Read/write .orm files leveraging the default IMS serializer
+	///New Serialization
 	/// </summary>
 	public partial class ORMSerializer
 	{
-		#region New Serialization
 		private System.Collections.Generic.List<Guid> myLinkGUIDs = new System.Collections.Generic.List<Guid>();
 
-		private int FindGUID(ORMCustomSerializedCombinedElementInfo[] combinedElementInfo, Guid guid)
+		/// <summary>
+		/// Used for sorting.
+		/// </summary>
+		/// <param name="writeStyle">An attribute write style.</param>
+		/// <returns>A number to sort with.</returns>
+		private byte ToByte(ORMCustomSerializedAttributeWriteStyle writeStyle)
 		{
-			int count = combinedElementInfo.Length;
+			switch (writeStyle)
+			{
+				case ORMCustomSerializedAttributeWriteStyle.Attribute:
+					return 0;
+				case ORMCustomSerializedAttributeWriteStyle.Element:
+					return 1;
+				case ORMCustomSerializedAttributeWriteStyle.DoubleTaggedElement:
+					return 2;
+			}
+			return 255;
+		}
+		/// <summary>
+		/// Used for serializing attributes.
+		/// </summary>
+		/// <param name="value">The attribute's value.</param>
+		/// <returns>A type converted string.</returns>
+		private string ToString(object value)
+		{
+			if (value == null)
+				return null;
+			object[] typeConverters = value.GetType().GetCustomAttributes(typeof(TypeConverterAttribute), false);
+
+			if (typeConverters != null && typeConverters.Length != 0)
+			{
+				Type converterType = Type.GetType(((TypeConverterAttribute)typeConverters[0]).ConverterTypeName, false, false);
+
+				if (converterType != null)
+				{
+					return ((TypeConverter)Activator.CreateInstance(converterType)).ConvertToInvariantString(value);
+				}
+			}
+
+			return value.ToString();
+		}
+		/// <summary>
+		/// Used for serializing child elements.
+		/// </summary>
+		/// <param name="childElementInfo">The child element info to search.</param>
+		/// <param name="guid">The GUID to find.</param>
+		/// <returns>An index or -1.</returns>
+		private int FindGUID(ORMCustomSerializedChildElementInfo[] childElementInfo, Guid guid)
+		{
+			int count = childElementInfo.Length;
 
 			for (int index = 0; index < count; ++index)
 			{
-				if (combinedElementInfo[index].ContainsGUID(guid))
+				if (childElementInfo[index].GUIDList!=null && childElementInfo[index].GUIDList.Contains(guid))
 					return index;
 			}
 
 			return -1;
 		}
+		/// <summary>
+		/// Used for serializing child elements.
+		/// </summary>
+		/// <param name="childElementInfo">The child element info to search.</param>
+		/// <param name="guid">The GUID to find.</param>
+		/// <returns>true if found.</returns>
+		private bool ContainsGUID(ORMCustomSerializedChildElementInfo childElementInfo, Guid guid)
+		{
+			return (childElementInfo.GUIDList!=null && childElementInfo.GUIDList.Contains(guid));
+		}
+		/// <summary>
+		/// Sorts mixed typed attributes.
+		/// </summary>
+		/// <param name="customElement">The element.</param>
+		/// <param name="rolePlayedInfo">The role being played.</param>
+		/// <param name="attributes">The element's attributes.</param>
 		private void SortAttributes(IORMCustomSerializedElement customElement, MetaRoleInfo rolePlayedInfo, ref IList attributes)
 		{
 			int attrCount = attributes.Count;
@@ -455,13 +506,20 @@ namespace Northface.Tools.ORM.Shell
 				{
 					ORMCustomSerializedAttributeInfo customInfo1 = customInfo[index1];
 					ORMCustomSerializedAttributeInfo customInfo2 = customInfo[index2];
+					byte ws0 = ToByte(customInfo1.WriteStyle), ws1 = ToByte(customInfo2.WriteStyle);
 
-					if (customInfo1.WriteStyle==customInfo2.WriteStyle)
-						return 0;
-					if (customInfo1.WriteStyle == ORMCustomSerializedAttributeWriteStyle.Attribute)
+					if (ws0>ws1)
+						return 1;
+					if (ws0<ws1)
 						return -1;
 
-					return 1;
+					//matt says dont do this:
+					/*if ((int)customInfo1.WriteStyle>(int)customInfo2.WriteStyle)
+						return 1;
+					if ((int)customInfo1.WriteStyle<(int)customInfo2.WriteStyle)
+						return -1;*/
+
+					return 0;
 				});
 				for (int i = 0; i < attrCount; ++i)
 				{
@@ -479,82 +537,115 @@ namespace Northface.Tools.ORM.Shell
 			}
 			return;
 		}
+		/// <summary>
+		/// Writes a customized begin element tag.
+		/// </summary>
+		/// <param name="file">The file to write to.</param>
+		/// <param name="customInfo">The customized tag info.</param>
+		/// <param name="defaultName">The default tag name.</param>
+		/// <returns>true if the begin element tag was written.</returns>
 		private bool WriteCustomizedStartElement(System.Xml.XmlWriter file, ORMCustomSerializedElementInfo customInfo, string defaultName)
 		{
-			switch (customInfo.WriteStyle)
+			if (customInfo!=null)
 			{
-				default:
+				switch (customInfo.WriteStyle)
 				{
-					file.WriteStartElement
-					(
-						customInfo.CustomPrefix,
-						customInfo.CustomName != null ? customInfo.CustomName : defaultName,
-						customInfo.CustomNamespace
-					);
-					return true;
-				}
-				case ORMCustomSerializedElementWriteStyle.DontWrite:
-				{
-					return false;
-				}
-				case ORMCustomSerializedElementWriteStyle.DoubleTaggedElement:
-				{
-					string name = (customInfo.CustomName != null ? customInfo.CustomName : defaultName);
+					case ORMCustomSerializedElementWriteStyle.NotWritten:
+					{
+						return false;
+					}
+					case ORMCustomSerializedElementWriteStyle.DoubleTaggedElement:
+					{
+						string name = (customInfo.CustomName != null ? customInfo.CustomName : defaultName);
 
-					file.WriteStartElement
-					(
-						customInfo.CustomPrefix,
-						name,
-						customInfo.CustomNamespace
-					);
-					file.WriteStartElement
-					(
-						customInfo.CustomPrefix,
-						customInfo.DoubleTagName != null ? customInfo.DoubleTagName : name,
-						customInfo.CustomNamespace
-					);
+						file.WriteStartElement
+						(
+							customInfo.CustomPrefix,
+							name,
+							customInfo.CustomNamespace
+						);
+						file.WriteStartElement
+						(
+							customInfo.CustomPrefix,
+							customInfo.DoubleTagName != null ? customInfo.DoubleTagName : name,
+							customInfo.CustomNamespace
+						);
 
-					return true;
+						return true;
+					}
 				}
+
+				file.WriteStartElement
+				(
+					customInfo.CustomPrefix,
+					customInfo.CustomName != null ? customInfo.CustomName : defaultName,
+					customInfo.CustomNamespace
+				);
 			}
+			else
+			{
+				file.WriteStartElement(defaultName);
+			}
+			return true;
 		}
+		/// <summary>
+		/// Writes a customized end element tag.
+		/// </summary>
+		/// <param name="file">The file to write to.</param>
+		/// <param name="customInfo">The customized tag info.</param>
 		private void WriteCustomizedEndElement(System.Xml.XmlWriter file, ORMCustomSerializedElementInfo customInfo)
 		{
-			switch (customInfo.WriteStyle)
+			if (customInfo!=null)
 			{
-				default:
+				switch (customInfo.WriteStyle)
 				{
-					file.WriteEndElement();
-					return;
-				}
 #if DEBUG
-				case ORMCustomSerializedElementWriteStyle.DontWrite:
-				{
-					System.Diagnostics.Debug.Fail("WriteCustomizedEndElement - ORMCustomSerializedElementWriteStyle.DontWrite");
-					throw new System.InvalidOperationException();
-				}
+					case ORMCustomSerializedElementWriteStyle.NotWritten:
+					{
+						System.Diagnostics.Debug.Fail("WriteCustomizedEndElement - ORMCustomSerializedElementWriteStyle.DontWrite");
+						throw new System.InvalidOperationException();
+					}
 #endif
-				case ORMCustomSerializedElementWriteStyle.DoubleTaggedElement:
-				{
-					file.WriteEndElement();
-					file.WriteEndElement();
-					return;
+					case ORMCustomSerializedElementWriteStyle.DoubleTaggedElement:
+					{
+						file.WriteEndElement();
+						break;
+					}
 				}
 			}
-		}
-		private void SerializeAttribute(System.Xml.XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, Microsoft.VisualStudio.Modeling.MetaAttributeInfo attribute, bool isCustomAttribute, MetaRoleInfo rolePlayedInfo)
-		{
-			ORMCustomSerializedAttributeInfo customInfo;
 
-			if (isCustomAttribute)
-				customInfo = customElement.GetCustomSerializedAttributeInfo(attribute, rolePlayedInfo);
-			else
-				customInfo = ORMCustomSerializedAttributeInfo.Default;
+			file.WriteEndElement();
+
+			return;
+		}
+		/// <summary>
+		/// Serializes an attribute.
+		/// </summary>
+		/// <param name="file">The file to write to.</param>
+		/// <param name="element">The element.</param>
+		/// <param name="customElement">The element as a custom element.</param>
+		/// <param name="rolePlayedInfo">The role being played.</param>
+		/// <param name="attribute">The element's attribute to write.</param>
+		/// <param name="isCustomAttribute">true if the attribute has custom info.</param>
+		private void SerializeAttribute(System.Xml.XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, MetaRoleInfo rolePlayedInfo, MetaAttributeInfo attribute, bool isCustomAttribute)
+		{
+			if (!isCustomAttribute)
+			{
+				if (!attribute.CustomStorage)
+				{
+					file.WriteAttributeString
+					(
+						attribute.Name,
+						ToString(element.GetAttributeValue(attribute))
+					);
+				}
+				return;
+			}
+
+			ORMCustomSerializedAttributeInfo customInfo = customElement.GetCustomSerializedAttributeInfo(attribute, rolePlayedInfo);
 
 			if (!attribute.CustomStorage || customInfo.WriteCustomStorage)
 			{
-				object value = element.GetAttributeValue(attribute);
-
 				if (customInfo.WriteStyle!=ORMCustomSerializedAttributeWriteStyle.Attribute || file.WriteState != System.Xml.WriteState.Element)
 				{
 					switch (customInfo.WriteStyle)
@@ -566,11 +657,11 @@ namespace Northface.Tools.ORM.Shell
 								customInfo.CustomPrefix,
 								customInfo.CustomName != null ? customInfo.CustomName : attribute.Name,
 								customInfo.CustomNamespace,
-								value != null ? value.ToString() : null
+								ToString(element.GetAttributeValue(attribute))
 							);
 							break;
 						}
-						case ORMCustomSerializedAttributeWriteStyle.DontWrite:
+						case ORMCustomSerializedAttributeWriteStyle.NotWritten:
 						{
 							break;
 						}
@@ -589,7 +680,7 @@ namespace Northface.Tools.ORM.Shell
 								customInfo.CustomPrefix,
 								customInfo.DoubleTagName != null ? customInfo.DoubleTagName : name,
 								customInfo.CustomNamespace,
-								value != null ? value.ToString() : null
+								ToString(element.GetAttributeValue(attribute))
 							);
 							file.WriteEndElement();
 
@@ -604,41 +695,58 @@ namespace Northface.Tools.ORM.Shell
 						customInfo.CustomPrefix,
 						customInfo.CustomName != null ? customInfo.CustomName : attribute.Name,
 						customInfo.CustomNamespace,
-						value != null ? value.ToString() : null
+						ToString(element.GetAttributeValue(attribute))
 					);
 				}
 			}
 
 			return;
 		}
-		private void SerializeChildElement(System.Xml.XmlWriter file, ModelElement element, MetaRoleInfo roleInfo, string name) //<*Collection/>
+		/// <summary>
+		/// Serializes all attributes of an element.
+		/// </summary>
+		/// <param name="file">The file to write to.</param>
+		/// <param name="element">The element.</param>
+		/// <param name="customElement">The element as a custom element.</param>
+		/// <param name="rolePlayedInfo">The role being played.</param>
+		/// <param name="attributes">The element's attributes.</param>
+		/// <param name="hasCustomAttributes">true if the element has attributes with custom info.</param>
+		private void SerializeAttributes(System.Xml.XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, MetaRoleInfo rolePlayedInfo, IList attributes, bool hasCustomAttributes)
 		{
-			IList children = element.GetCounterpartRolePlayers(roleInfo.OppositeMetaRole, roleInfo);
-			int childCount = children.Count;
-
-			if (childCount < 1)
-				return;
-			if (name != null)
-				if (!WriteCustomizedStartElement(file, ORMCustomSerializedElementInfo.Default, name)) return; //TODO change ORMCustomSerializedElementInfo.Default to a variable
-
-			for (int iChild = 0; iChild < childCount; ++iChild)
+			for (int index = 0, count = attributes.Count; index < count; ++index)
 			{
-				SerializeElement(file, (ModelElement)children[iChild]);
+				MetaAttributeInfo attribute = (MetaAttributeInfo)attributes[index];
+
+				SerializeAttribute
+				(
+					file,
+					element,
+					customElement,
+					rolePlayedInfo,
+					attribute,
+					hasCustomAttributes
+				);
 			}
-
-			if (name != null)
-				WriteCustomizedEndElement(file, ORMCustomSerializedElementInfo.Default); //TODO change ORMCustomSerializedElementInfo.Default to a variable
-
 			return;
 		}
+		/// <summary>
+		/// Serializes a link.
+		/// </summary>
+		/// <param name="file">The file to write to.</param>
+		/// <param name="link">The link.</param>
+		/// <param name="rolePlayer">The role player.</param>
+		/// <param name="oppositeRolePlayer">The opposite role player.</param>
+		/// <param name="rolePlayedInfo">The role being played.</param>
+		/// <param name="directLink">true to write as a direct link.</param>
 		private void SerializeLink(System.Xml.XmlWriter file, ElementLink link, ModelElement rolePlayer, ModelElement oppositeRolePlayer, MetaRoleInfo rolePlayedInfo, bool directLink)
 		{
 			ORMCustomSerializedElementSupportedOperations supportedOperations = ORMCustomSerializedElementSupportedOperations.None;
 			ORMCustomSerializedElementInfo customInfo = ORMCustomSerializedElementInfo.Default;
 			IORMCustomSerializedElement customElement;
 			IList attributes = null;
+			bool linkIsNotNull = (link!=null), hasCustomAttributes = false;
 
-			if (link != null)
+			if (linkIsNotNull)
 			{
 				if (!ShouldSerialize(link)) return;
 				customElement = link as IORMCustomSerializedElement;
@@ -650,8 +758,6 @@ namespace Northface.Tools.ORM.Shell
 				customElement = rolePlayer as IORMCustomSerializedElement;
 			}
 
-			bool isCustomAttribute = false;
-
 			if (customElement != null)
 			{
 				supportedOperations = customElement.GetSupportedOperations();
@@ -660,10 +766,10 @@ namespace Northface.Tools.ORM.Shell
 				{
 					SortAttributes(customElement, rolePlayedInfo, ref attributes);
 				}
-				isCustomAttribute = (supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSerializedAttributeInfo) != 0;
+				hasCustomAttributes = (supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSerializedAttributeInfo) != 0;
 
 				IORMCustomSerializedElement tagCustomElement = customElement;
-				if (link != null)
+				if (linkIsNotNull)
 				{
 					tagCustomElement = rolePlayer as IORMCustomSerializedElement;
 					if (tagCustomElement != null)
@@ -686,15 +792,15 @@ namespace Northface.Tools.ORM.Shell
 			name.Append(rolePlayedInfo.OppositeMetaRole.Name);
 			if (!WriteCustomizedStartElement(file, customInfo, name.ToString())) return;
 
-			Guid keyId = (link != null) ? link.Id : oppositeRolePlayer.Id;
+			Guid keyId = (linkIsNotNull) ? link.Id : oppositeRolePlayer.Id;
 			if (!directLink && !myLinkGUIDs.Contains(keyId))
 			{
 				myLinkGUIDs.Add(keyId);
-				if (link == null || link.MetaClass.MetaRolesPlayed.Count != 0)
+				if (!linkIsNotNull || link.MetaClass.MetaRolesPlayed.Count != 0)
 				{
 					file.WriteAttributeString("id", keyId.ToString().ToUpper(CultureInfo.InvariantCulture));
 				}
-				if (link != null)
+				if (linkIsNotNull)
 				{
 					if (oppositeRolePlayer == null)
 					{
@@ -703,20 +809,7 @@ namespace Northface.Tools.ORM.Shell
 					file.WriteAttributeString("ref", oppositeRolePlayer.Id.ToString().ToUpper(CultureInfo.InvariantCulture));
 				}
 
-				for (int count = attributes.Count, index = 0; index < count; ++index)
-				{
-					Microsoft.VisualStudio.Modeling.MetaAttributeInfo attribute = (Microsoft.VisualStudio.Modeling.MetaAttributeInfo)attributes[index];
-
-					SerializeAttribute
-					(
-						file,
-						link,
-						customElement,
-						attribute,
-						isCustomAttribute,
-						rolePlayedInfo
-					);
-				}
+				SerializeAttributes(file, link, customElement, rolePlayedInfo, attributes, hasCustomAttributes);
 			}
 			else
 			{
@@ -727,11 +820,96 @@ namespace Northface.Tools.ORM.Shell
 
 			return;
 		}
+		/// <summary>
+		/// Serializes a child element. (usually a Collection element)
+		/// </summary>
+		/// <param name="file">The file to write to.</param>
+		/// <param name="childElement">The child element.</param>
+		/// <param name="rolePlayedInfo">The role being played.</param>
+		/// <param name="customInfo">The custom element info.</param>
+		/// <param name="defaultName">The default element name.</param>
+		/// <returns>true if the begin element tag was written.</returns>
+		private bool SerializeChildElement(System.Xml.XmlWriter file, ModelElement childElement, MetaRoleInfo rolePlayedInfo, ORMCustomSerializedElementInfo customInfo, string defaultName)
+		{
+			IList children = childElement.GetCounterpartRolePlayers(rolePlayedInfo.OppositeMetaRole, rolePlayedInfo);
+			int childCount = children.Count;
+
+			if (childCount < 1)
+				return false;
+			bool startElement = (defaultName != null);
+
+			for (int iChild = 0; iChild < childCount; ++iChild)
+			{
+				ModelElement child = (ModelElement)children[iChild];
+
+				if (ShouldSerialize(child))
+				{
+					if (startElement)
+					{
+						if (!WriteCustomizedStartElement(file, customInfo, defaultName))
+							return false;
+						startElement = false;
+					}
+					SerializeElement(file, child);
+				}
+			}
+
+			return (!startElement && defaultName != null);
+		}
+		/// <summary>
+		/// Serializes a child element.
+		/// </summary>
+		/// <param name="file">The file to write to.</param>
+		/// <param name="childElement">The child element.</param>
+		/// <param name="rolePlayedInfo">The role being played.</param>
+		/// <param name="oppositeRoleInfo">The opposite role being played.</param>
+		/// <param name="customInfo">The custom element info.</param>
+		/// <param name="writeBeginElement">true to write the begin element tag.</param>
+		/// <returns>true if the begin element tag was written.</returns>
+		private bool SerializeChildElement(System.Xml.XmlWriter file, ModelElement childElement, MetaRoleInfo rolePlayedInfo, MetaRoleInfo oppositeRoleInfo, ORMCustomSerializedElementInfo customInfo, bool writeBeginElement)
+		{
+			if (!rolePlayedInfo.IsAggregate && !oppositeRoleInfo.IsAggregate) //write link
+			{
+				if (rolePlayedInfo.MetaRelationship.MetaAttributesCount > 0) //link has attributes
+				{
+					IList links = childElement.GetElementLinks(rolePlayedInfo);
+
+					foreach (ElementLink link in links)
+					{
+						if (link.MetaClass.Id == rolePlayedInfo.MetaRelationship.Id)
+						{
+							SerializeLink(file, link, childElement, null, rolePlayedInfo, false); //write indirect link
+							break;
+						}
+					}
+				}
+				else //link does not have attributes
+				{
+					IList oppositeElements = childElement.GetCounterpartRolePlayers(rolePlayedInfo, oppositeRoleInfo);
+
+					//write direct links
+					foreach (ModelElement oppositeElement in oppositeElements)
+					{
+						SerializeLink(file, null, childElement, oppositeElement, rolePlayedInfo, true);
+					}
+				}
+			}
+			else if (rolePlayedInfo.IsAggregate) //write child
+			{
+				return SerializeChildElement(file, childElement, oppositeRoleInfo, customInfo, writeBeginElement ? oppositeRoleInfo.Name : null);
+			}
+			return false;
+		}
+		/// <summary>
+		/// Recursivly serializes elements.
+		/// </summary>
+		/// <param name="file">The file to write to.</param>
+		/// <param name="element">The element.</param>
 		private void SerializeElement(System.Xml.XmlWriter file, ModelElement element)
 		{
 			if (!ShouldSerialize(element)) return;
 			ORMCustomSerializedElementSupportedOperations supportedOperations;
-			ORMCustomSerializedCombinedElementInfo[] combinedElementInfo = null;
+			ORMCustomSerializedChildElementInfo[] childElementInfo = null;
 			MetaClassInfo classInfo = element.MetaClass;
 			ORMCustomSerializedElementInfo customInfo;
 			IORMCustomSerializedElement customElement = element as IORMCustomSerializedElement;
@@ -751,8 +929,8 @@ namespace Northface.Tools.ORM.Shell
 					SortAttributes(customElement, null, ref attributes);
 				}
 
-				if (roleGrouping = (0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSerializedCombinedElementInfo)))
-					combinedElementInfo = customElement.GetCustomSerializedCombinedElementInfo();
+				if (roleGrouping = (0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSerializedChildElementInfo)))
+					childElementInfo = customElement.GetCustomSerializedChildElementInfo();
 
 				if ((supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSerializedElementInfo) != 0)
 					customInfo = customElement.GetCustomSerializedElementInfo();
@@ -770,32 +948,15 @@ namespace Northface.Tools.ORM.Shell
 			file.WriteAttributeString("id", element.Id.ToString().ToUpper(CultureInfo.InvariantCulture));
 
 			//write attributes
-			count = attributes.Count;
-			for (int index = 0; index < count; ++index)
-			{
-				Microsoft.VisualStudio.Modeling.MetaAttributeInfo attribute = (Microsoft.VisualStudio.Modeling.MetaAttributeInfo)attributes[index];
-
-				if (!isCustom)
-				{
-					if (!attribute.CustomStorage)
-					{
-						object value = element.GetAttributeValue(attribute);
-						file.WriteAttributeString(attribute.Name, value != null ? value.ToString() : null);
-					}
-				}
-				else
-				{
-					SerializeAttribute
-					(
-						file,
-						element,
-						customElement,
-						attribute,
-						(supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSerializedAttributeInfo) != 0,
-						null
-					);
-				}
-			}
+			SerializeAttributes
+			(
+				file,
+				element,
+				customElement,
+				null,
+				attributes,
+				(supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSerializedAttributeInfo) != 0
+			);
 
 			count = rolesPlayed.Count;
 			if (0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles) &&
@@ -808,59 +969,52 @@ namespace Northface.Tools.ORM.Shell
 			}
 
 			//write children
-			for (int index = 0; index < count; ++index)
+			bool[] written = new bool[count];
+
+			for (int index0 = 0; index0 < count; ++index0)
 			{
-				MetaRoleInfo roleInfo = (MetaRoleInfo)rolesPlayed[index];
-				MetaRoleInfo oppositeRoleInfo = roleInfo.OppositeMetaRole;
-
-				if (!roleInfo.IsAggregate && !oppositeRoleInfo.IsAggregate) //write link
+				if (!written[index0])
 				{
-					if (roleInfo.MetaRelationship.MetaAttributesCount > 0) //link has attributes
-					{
-						IList links = element.GetElementLinks(roleInfo);
+					MetaRoleInfo rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index0];
+					MetaRoleInfo oppositeRoleInfo = rolePlayedInfo.OppositeMetaRole;
+					ORMCustomSerializedChildElementInfo customChildInfo;
+					bool writeEndElement = false;
 
-						foreach (ElementLink link in links)
+					if (roleGrouping)
+					{
+						int childIndex = FindGUID(childElementInfo, oppositeRoleInfo.Id);
+						customChildInfo = (childIndex>=0?childElementInfo[childIndex]:null);
+					}
+					else
+					{
+						customChildInfo = null;
+					}
+
+					written[index0] = true;
+					if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, true))
+						writeEndElement = true;
+
+					if (roleGrouping && customChildInfo!=null)
+					{
+						for (int index1 = index0 + 1; index1 < count; ++index1)
 						{
-							if (link.MetaClass.Id == roleInfo.MetaRelationship.Id)
+							if (!written[index1])
 							{
-								SerializeLink(file, link, element, null, roleInfo, false); //write indirect link
-								break;
+								rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index1];
+								oppositeRoleInfo = rolePlayedInfo.OppositeMetaRole;
+
+								if (ContainsGUID(customChildInfo, oppositeRoleInfo.Id))
+								{
+									written[index1] = true;
+									if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, !writeEndElement))
+										writeEndElement = true;
+								}
 							}
 						}
 					}
-					else //link does not have attributes
-					{
-						IList oppositeElements = element.GetCounterpartRolePlayers(roleInfo, oppositeRoleInfo);
 
-						//write direct links
-						foreach (ModelElement oppositeElement in oppositeElements)
-						{
-							SerializeLink(file, null, element, oppositeElement, roleInfo, true);
-						}
-					}
-				}
-				else if (roleInfo.IsAggregate) //write child
-				{
-					int combinedIndex;
-
-					if (!roleGrouping || (combinedIndex = FindGUID(combinedElementInfo, oppositeRoleInfo.Id)) < 0)
-					{
-						//write child element
-						SerializeChildElement(file, element, oppositeRoleInfo, roleInfo.Name);
-					}
-					else if (combinedElementInfo[combinedIndex].PushElement(element, oppositeRoleInfo)) //push until full
-					{
-						ModelElement poppedElement;
-						MetaRoleInfo poppedRoleInfo;
-						string name = combinedElementInfo[combinedIndex].Name;
-
-						//write combined child element
-						while (combinedElementInfo[combinedIndex].PopElement(out poppedElement, out poppedRoleInfo))
-						{
-							SerializeChildElement(file, poppedElement, poppedRoleInfo, name);
-							name = null;
-						}
-					}
+					if (writeEndElement)
+						WriteCustomizedEndElement(file, customChildInfo);
 				}
 			}
 
@@ -921,14 +1075,6 @@ namespace Northface.Tools.ORM.Shell
 				SerializeElement(file, currentElements[i]);
 			}
 
-			//serialize data types
-			currentElements = GenerateElementArray(new IList[1] { store.ElementDirectory.GetElements(DataType.MetaClassGuid) });
-			count = currentElements.Length;
-			for (int i = 0; i < count; ++i)
-			{
-				SerializeElement(file, currentElements[i]);
-			}
-
 			file.WriteEndElement();
 			file.Close();
 
@@ -936,7 +1082,7 @@ namespace Northface.Tools.ORM.Shell
 
 			return;
 		}
-		#endregion //New Serialization
 	}
+	#endregion New Serialization
 }
 #endif // NEWSERIALIZE

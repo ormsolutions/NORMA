@@ -6,27 +6,27 @@
         <se:Namespace Prefix="orm" URI="http://Schemas.Northface.edu/ORM/ORMCore"/>
     </se:Namespaces>
     <se:Element Class="ORMModel" Name="Model" SortChildElements="true">
-        <se:CombinedElement Name="Objects">
+        <se:ChildElement Name="Objects">
             <se:Link RelationshipName="ModelHasObjectType" RoleName="ObjectTypeCollection"/>
-        </se:CombinedElement>
-        <se:CombinedElement Name="Facts">
+        </se:ChildElement>
+        <se:ChildElement Name="Facts">
             <se:Link RelationshipName="ModelHasFactType" RoleName="FactTypeCollection"/>
-        </se:CombinedElement>
-        <se:CombinedElement Name="ExternalConstraints">
+        </se:ChildElement>
+        <se:ChildElement Name="ExternalConstraints">
             <se:Link RelationshipName="ModelHasMultiColumnExternalConstraint" RoleName="MultiColumnExternalConstraintCollection"/>
             <se:Link RelationshipName="ModelHasSingleColumnExternalConstraint" RoleName="SingleColumnExternalConstraintCollection"/>
-        </se:CombinedElement>
-        <se:CombinedElement Name="DataTypes">
+        </se:ChildElement>
+        <se:ChildElement Name="DataTypes">
             <se:Link RelationshipName="ModelHasDataType" RoleName="DataTypeCollection"/>
-        </se:CombinedElement>
-        <se:CombinedElement Name="CustomReferenceModes">
+        </se:ChildElement>
+        <se:ChildElement Name="CustomReferenceModes">
             <se:Link RelationshipName="ModelHasReferenceMode" RoleName="ReferenceModeCollection"/>
-        </se:CombinedElement>
-        <se:CombinedElement Name="ModelErrors">
+        </se:ChildElement>
+        <se:ChildElement Name="ModelErrors">
             <se:Link RelationshipName="ModelHasError" RoleName="ErrorCollection"/>
-        </se:CombinedElement>
+        </se:ChildElement>
         <!--Don't think that we should serialize these.-->
-        <se:Link RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKindCollection" WriteStyle="DontWrite" />
+        <se:Link RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKindCollection" WriteStyle="NotWritten" />
     </se:Element>
     <se:Element Class="ObjectType" Name="EntityType">
         <se:ConditionalName Name="ValueType">
@@ -54,7 +54,7 @@
         <se:Attribute ID="ReferenceModeString"  Name="ReferenceMode" />
         <se:Link Name="PlayedRole" RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
         <se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" />
-        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="DontWrite"/>
+        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
         <se:Link Name="NestedPredicate" RelationshipName="NestingEntityTypeHasFactType" RoleName="NestedFactType" />
         <!--TODO:Subtypes-->
         <!--TODO:Supertypes-->
@@ -65,94 +65,94 @@
         </se:Attribute>
     </se:Element>
     <se:Element Class="DataType">
-        <se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueTypeCollection" WriteStyle="DontWrite"/>
+        <se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueTypeCollection" WriteStyle="NotWritten"/>
     </se:Element>
     <!--How do I do datatypes?  They all have their own tag currently but they all have the same tag in the XML side.-->
-    <se:Element Class="ReferenceModeKind" WriteStyle="DontWrite">
-        <se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceModeCollection" WriteStyle="DontWrite" />
+    <se:Element Class="ReferenceModeKind" WriteStyle="NotWritten">
+        <se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceModeCollection" WriteStyle="NotWritten" />
     </se:Element>
     <se:Element Class="FactType" Name="Fact">
         <!--TODO: FactNotes-->
         <!--TODO: Derivation Rule-->
-        <se:CombinedElement Name="FactRoles">
+        <se:ChildElement Name="FactRoles">
             <se:Link RelationshipName="FactTypeHasRole" RoleName="RoleCollection"/>
-        </se:CombinedElement>
-        <se:CombinedElement Name="ReadingOrders">
+        </se:ChildElement>
+        <se:ChildElement Name="ReadingOrders">
             <se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrderCollection"/>
-        </se:CombinedElement>
-        <se:Link RelationshipName="NestingEntityTypeHasFactType" RoleName="NestingType" WriteStyle="DontWrite"/>
-        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="DontWrite"/>
-        <se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="SingleColumnExternalConstraintCollection" WriteStyle="DontWrite"/>
-        <se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="MultiColumnExternalConstraintCollection" WriteStyle="DontWrite"/>
+        </se:ChildElement>
+        <se:Link RelationshipName="NestingEntityTypeHasFactType" RoleName="NestingType" WriteStyle="NotWritten"/>
+        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
+        <se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="SingleColumnExternalConstraintCollection" WriteStyle="NotWritten"/>
+        <se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="MultiColumnExternalConstraintCollection" WriteStyle="NotWritten"/>
     </se:Element>
     <se:Element Class="ReadingOrder">
-        <se:CombinedElement Name="Readings">
+        <se:ChildElement Name="Readings">
             <se:Link RelationshipName="ReadingOrderHasReading" RoleName="ReadingCollection"/>
-        </se:CombinedElement>
+        </se:ChildElement>
         <se:Link RelationshipName="ReadingOrderHasRole" RoleName="RoleCollection" Name="Role"/>
-        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="DontWrite"/>
+        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
     </se:Element>
     <se:Element Class="Reading" HasMixedTypedAttributes="true">
         <se:Attribute ID="Text" Name="Data" WriteStyle="Element"/>
-        <se:Attribute ID="Language" WriteStyle="DontWrite"/>
+        <se:Attribute ID="Language" WriteStyle="NotWritten"/>
     </se:Element>
     <se:Element Class="Role">
-        <se:CombinedElement Name="ReadingOrders">
+        <se:ChildElement Name="ReadingOrders">
             <se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrderCollection"/>
-        </se:CombinedElement>
+        </se:ChildElement>
         <!--Need to add this attribute as custom storage.-->
         <!--<se:Attribute ID="IsFunctional" Name ="IsFunctional" WriteCustomStorage="true"/>-->
         <se:Attribute ID="IsMandatory" Name ="IsMandatory" WriteCustomStorage="true"/>
         <se:Attribute ID="Multiplicity" Name ="Multiplicity" WriteCustomStorage="true"/>
         <se:Link Name="RolePlayer" RelationshipName="ObjectTypePlaysRole" RoleName="RolePlayer"/>
-        <se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequenceCollection" WriteStyle="DontWrite"/>
-        <se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="DontWrite"/>
+        <se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequenceCollection" WriteStyle="NotWritten"/>
+        <se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
     </se:Element>
     <se:Element Class ="EqualityConstraint">
-        <se:CombinedElement Name="RoleSequences">
+        <se:ChildElement Name="RoleSequences">
             <se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
-        </se:CombinedElement>
-        <se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="DontWrite"/>
-        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="DontWrite"/>
+        </se:ChildElement>
+        <se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
+        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
     </se:Element>
     <se:Element Class ="ExclusionConstraint">
-        <se:CombinedElement Name="RoleSequences">
+        <se:ChildElement Name="RoleSequences">
             <se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
-        </se:CombinedElement>
-        <se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="DontWrite"/>
-        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="DontWrite"/>
+        </se:ChildElement>
+        <se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
+        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
     </se:Element>
     <se:Element Class ="SubsetConstraint">
-        <se:CombinedElement Name="RoleSequences">
+        <se:ChildElement Name="RoleSequences">
             <se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
-        </se:CombinedElement>
-        <se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="DontWrite"/>
-        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="DontWrite"/>
+        </se:ChildElement>
+        <se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
+        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
     </se:Element>
     <se:Element Class="MultiColumnExternalConstraintRoleSequence" Name="RoleSequence">
         <se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
     </se:Element>
     <se:Element Class="FrequencyConstraint">
         <se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-        <se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="DontWrite"/>
-        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="DontWrite"/>
+        <se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
+        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
     </se:Element>
     <se:Element Class="DisjunctiveMandatoryConstraint">
         <se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-        <se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="DontWrite"/>
-        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="DontWrite"/>
+        <se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
+        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
     </se:Element>
     <se:Element Class="ExternalUniquenessConstraint">
         <se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-        <se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="DontWrite"/>
-        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="DontWrite"/>
+        <se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
+        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
     </se:Element>
     <se:Element Class="InternalUniquenessConstraint">
         <se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="DontWrite"/>
+        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
     </se:Element>
      <se:Element Class="SimpleMandatoryConstraint">
         <se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="DontWrite"/>
+        <se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
     </se:Element>    
 </se:CustomSerializedElements>
