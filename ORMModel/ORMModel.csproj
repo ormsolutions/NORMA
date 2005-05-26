@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>.\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;FACTEDITORPROTOTYPE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;FACTEDITORPROTOTYPE;NEWSERIALIZE</DefineConstants>
     <DocumentationFile>bin\Debug\Northface.Tools.ORM.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -126,6 +126,10 @@
     </Compile>
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
+    <Compile Include="ObjectModel\SerializationExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SerializationExtensions.xml</DependentUpon>
+    </Compile>
     <Compile Include="ObjectModel\SubtypeFact.cs" />
     <Compile Include="ObjectModel\ValueRange.cs" />
     <Compile Include="Resources\ResourceStringsGenerator.cs">
@@ -204,6 +208,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Shell\ORMReadingEditor.cs" />
+    <Compile Include="Shell\ORMSerializer.2.cs" />
     <Compile Include="Shell\ORMSerializer.cs" />
     <Compile Include="SyncDoc\ORMElementProvider.cs">
       <SubType>Code</SubType>
@@ -240,6 +245,12 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>DataTypesGenerator.cs</LastGenOutput>
     </Content>
+    <None Include="ObjectModel\SerializationExtensions.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>SerializationExtensions.cs</LastGenOutput>
+    </None>
+    <None Include="ObjectModel\SerializationExtensions.xsd" />
+    <Content Include="ObjectModel\SerializationExtensions.xslt" />
     <Content Include="Resources\AboutBox.ico" />
     <Content Include="Resources\ORM.ico" />
     <Content Include="Resources\ResourceStringsGenerator.xml">

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using SysDiag = System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -450,7 +451,6 @@ namespace Northface.Tools.ORM.Shell
 					indices[i] = i;
 					customInfo[i] = customElement.GetCustomSerializedAttributeInfo((MetaAttributeInfo)attributes[i], rolePlayedInfo);
 				}
-				IList attrs = attributes;
 				Array.Sort<int>(indices, delegate(int index1, int index2)
 				{
 					ORMCustomSerializedAttributeInfo customInfo1 = customInfo[index1];
@@ -692,7 +692,7 @@ namespace Northface.Tools.ORM.Shell
 				myLinkGUIDs.Add(keyId);
 				if (link == null || link.MetaClass.MetaRolesPlayed.Count != 0)
 				{
-					file.WriteAttributeString("id", keyId.ToString().ToUpper());
+					file.WriteAttributeString("id", keyId.ToString().ToUpper(CultureInfo.InvariantCulture));
 				}
 				if (link != null)
 				{
@@ -700,7 +700,7 @@ namespace Northface.Tools.ORM.Shell
 					{
 						oppositeRolePlayer = link.GetRolePlayer(rolePlayedInfo.OppositeMetaRole);
 					}
-					file.WriteAttributeString("ref", oppositeRolePlayer.Id.ToString().ToUpper());
+					file.WriteAttributeString("ref", oppositeRolePlayer.Id.ToString().ToUpper(CultureInfo.InvariantCulture));
 				}
 
 				for (int count = attributes.Count, index = 0; index < count; ++index)
@@ -720,7 +720,7 @@ namespace Northface.Tools.ORM.Shell
 			}
 			else
 			{
-				file.WriteAttributeString("ref", keyId.ToString().ToUpper());
+				file.WriteAttributeString("ref", keyId.ToString().ToUpper(CultureInfo.InvariantCulture));
 			}
 
 			WriteCustomizedEndElement(file, customInfo);
@@ -767,7 +767,7 @@ namespace Northface.Tools.ORM.Shell
 
 			//start new element
 			if (!WriteCustomizedStartElement(file, customInfo, classInfo.Name)) return;
-			file.WriteAttributeString("id", element.Id.ToString().ToUpper());
+			file.WriteAttributeString("id", element.Id.ToString().ToUpper(CultureInfo.InvariantCulture));
 
 			//write attributes
 			count = attributes.Count;
@@ -871,7 +871,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// New XML Serialization
 		/// </summary>
-		public void NewSerialize(Stream stream)
+		public void Save2(Stream stream)
 		{
 			System.Xml.XmlWriterSettings xmlSettings = new XmlWriterSettings();
 			System.Xml.XmlWriter file;
@@ -883,7 +883,7 @@ namespace Northface.Tools.ORM.Shell
 			xmlSettings.IndentChars = "\t";
 			xmlSettings.Indent = true;
 
-			file = System.Xml.XmlWriter.Create("C:\\orm2.xml", xmlSettings);
+			file = System.Xml.XmlWriter.Create(stream, xmlSettings);
 			file.WriteStartElement("orm", "ORM2", "http://Schemas.Northface.edu/ORM/ORMCore");
 			file.WriteAttributeString("xmlns", "http://Schemas.Northface.edu/ORM/ORMCore");
 
@@ -909,19 +909,25 @@ namespace Northface.Tools.ORM.Shell
 			currentElements = GenerateElementArray(new IList[1] { store.ElementDirectory.GetElements(ORMModel.MetaClassGuid) });
 			count = currentElements.Length;
 			for (int i = 0; i < count; ++i)
+			{
 				SerializeElement(file, currentElements[i]);
+			}
 
 			//serialize ORM diagram
 			currentElements = GenerateElementArray(new IList[1] { store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid) });
 			count = currentElements.Length;
 			for (int i = 0; i < count; ++i)
+			{
 				SerializeElement(file, currentElements[i]);
+			}
 
 			//serialize data types
 			currentElements = GenerateElementArray(new IList[1] { store.ElementDirectory.GetElements(DataType.MetaClassGuid) });
 			count = currentElements.Length;
 			for (int i = 0; i < count; ++i)
+			{
 				SerializeElement(file, currentElements[i]);
+			}
 
 			file.WriteEndElement();
 			file.Close();

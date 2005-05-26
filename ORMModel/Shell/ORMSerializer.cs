@@ -216,9 +216,6 @@ namespace Northface.Tools.ORM.Shell
 			{
 				RulesSuspended = false;
 			}
-#if NEWSERIALIZE
-			NewSerialize(stream);
-#endif // NEWSERIALIZE
 			return;
 		}
 		/// <summary>

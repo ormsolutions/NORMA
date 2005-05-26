@@ -258,6 +258,12 @@ namespace Northface.Tools.ORM.Shell
 			{
 				(new ORMSerializer(Store)).Save(fileStream);
 			}
+#if NEWSERIALIZE
+			using (FileStream fileStream = File.Create(fileName + '2'))
+			{
+				(new ORMSerializer(Store)).Save2(fileStream);
+			}
+#endif // NEWSERIALIZE
 		}
 
 		/// <summary>
