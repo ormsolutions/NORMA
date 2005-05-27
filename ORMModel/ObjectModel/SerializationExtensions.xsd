@@ -140,125 +140,144 @@
         </xs:annotation>
         <xs:complexType>
             <xs:choice maxOccurs="unbounded">
-                <xs:element name="Namespaces">
+                <xs:element name="Using">
                     <xs:annotation>
-                        <xs:documentation>Add namespaces to the XML document.</xs:documentation>
+                        <xs:documentation>The code namespace.</xs:documentation>
                     </xs:annotation>
                     <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Namespace" minOccurs="1" maxOccurs="unbounded">
+                        <xs:choice maxOccurs="unbounded">
+                            <xs:element name="Namespaces">
                                 <xs:annotation>
-                                    <xs:documentation>Defines a namespace.</xs:documentation>
+                                    <xs:documentation>Add namespaces to the XML document.</xs:documentation>
                                 </xs:annotation>
                                 <xs:complexType>
-                                    <xs:attribute name="Prefix" type="xs:string" use="required">
+                                    <xs:sequence>
+                                        <xs:element name="Namespace" minOccurs="1" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                                <xs:documentation>Defines a namespace.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:attribute name="Prefix" type="xs:string" use="required">
+                                                    <xs:annotation>
+                                                        <xs:documentation>The namespace prefix.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:attribute>
+                                                <xs:attribute name="URI" type="xs:string" use="required">
+                                                    <xs:annotation>
+                                                        <xs:documentation>The location of the schema.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:attribute>
+                                                <xs:attribute name="DefaultPrefix" type="xs:boolean" default="false">
+                                                    <xs:annotation>
+                                                        <xs:documentation>The default prefix for all elements in this substore</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:attribute>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="Class" type="xs:string" use="required">
                                         <xs:annotation>
-                                            <xs:documentation>The namespace prefix.</xs:documentation>
-                                        </xs:annotation>
-                                    </xs:attribute>
-                                    <xs:attribute name="URI" type="xs:string" use="required">
-                                        <xs:annotation>
-                                            <xs:documentation>The location of the schema.</xs:documentation>
+                                            <xs:documentation>The class to add the namespaces to.</xs:documentation>
                                         </xs:annotation>
                                     </xs:attribute>
                                 </xs:complexType>
                             </xs:element>
-                        </xs:sequence>
-                        <xs:attribute name="Class" type="xs:string" use="required">
-                            <xs:annotation>
-                                <xs:documentation>The class to add the namespaces to.</xs:documentation>
-                            </xs:annotation>
-                        </xs:attribute>
-                    </xs:complexType>
-                </xs:element>
-                <xs:element name="Element">
-                    <xs:annotation>
-                        <xs:documentation>Customizes an element.</xs:documentation>
-                    </xs:annotation>
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
-                            <xs:element name="ChildElement" minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="Element">
                                 <xs:annotation>
-                                    <xs:documentation>Creates a child element.</xs:documentation>
+                                    <xs:documentation>Customizes an element.</xs:documentation>
                                 </xs:annotation>
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
-                                        <xs:element name="Link" minOccurs="1" maxOccurs="unbounded">
+                                        <xs:element name="ChildElement" minOccurs="0" maxOccurs="unbounded">
                                             <xs:annotation>
-                                                <xs:documentation>An element of the child element.</xs:documentation>
+                                                <xs:documentation>Creates a child element.</xs:documentation>
                                             </xs:annotation>
                                             <xs:complexType>
-                                                <xs:attributeGroup ref="LinkAttributes"/>
+                                                <xs:sequence>
+                                                    <xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xs:element name="Link" minOccurs="1" maxOccurs="unbounded">
+                                                        <xs:annotation>
+                                                            <xs:documentation>An element of the child element.</xs:documentation>
+                                                        </xs:annotation>
+                                                        <xs:complexType>
+                                                            <xs:attributeGroup ref="LinkAttributes"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="SortChildElements" type="xs:boolean" default="false">
+                                                    <xs:annotation>
+                                                        <xs:documentation>If this is set, order the roles within the child element along with the position of the child element itself. Works with SortChildElements on the parent Element tag, which must be set for this to have any effect.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:attribute>
+                                                <xs:attribute name="NotSorted" type="xs:boolean" default="false">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:attribute>
+                                                <xs:attributeGroup ref="ElementAttributes"/>
                                             </xs:complexType>
                                         </xs:element>
-                                    </xs:sequence>
-                                    <xs:attribute name="SortChildElements" type="xs:boolean" default="false">
-                                        <xs:annotation>
-                                            <xs:documentation>If this is set, order the roles within the child element along with the position of the child element itself. Works with SortChildElements on the parent Element tag, which must be set for this to have any effect.</xs:documentation>
-                                        </xs:annotation>
-                                    </xs:attribute>
-									<xs:attribute name="NotSorted" type="xs:boolean" default="false">
-                                        <xs:annotation>
-                                            <xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
-                                        </xs:annotation>
-									</xs:attribute>
-                                    <xs:attributeGroup ref="ElementAttributes"/>
-                                </xs:complexType>
-                            </xs:element>
-                            <xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
-                                <xs:annotation>
-                                    <xs:documentation>Customizes an attribute on the current element.</xs:documentation>
-                                </xs:annotation>
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="RolePlayed" minOccurs="0" maxOccurs="unbounded">
+                                        <xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
                                             <xs:annotation>
-                                                <xs:documentation>Matches the role played.</xs:documentation>
+                                                <xs:documentation>Customizes an attribute on the current element.</xs:documentation>
                                             </xs:annotation>
                                             <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="RolePlayed" minOccurs="0" maxOccurs="unbounded">
+                                                        <xs:annotation>
+                                                            <xs:documentation>Matches the role played.</xs:documentation>
+                                                        </xs:annotation>
+                                                        <xs:complexType>
+                                                            <xs:attributeGroup ref="AttributeAttributes"/>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
                                                 <xs:attributeGroup ref="AttributeAttributes"/>
                                             </xs:complexType>
                                         </xs:element>
+                                        <xs:element name="Link" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                                <xs:documentation>Customizes a link.</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
+                                                </xs:sequence>
+                                                <xs:attribute name="NotSorted" type="xs:boolean" default="false">
+                                                    <xs:annotation>
+                                                        <xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
+                                                    </xs:annotation>
+                                                </xs:attribute>
+                                                <xs:attributeGroup ref="LinkAttributes"/>
+                                                <xs:attributeGroup ref="ElementAttributes"/>
+                                            </xs:complexType>
+                                        </xs:element>
                                     </xs:sequence>
-                                    <xs:attributeGroup ref="AttributeAttributes"/>
-                                </xs:complexType>
-                            </xs:element>
-                            <xs:element name="Link" minOccurs="0" maxOccurs="unbounded">
-                                <xs:annotation>
-                                    <xs:documentation>Customizes a link.</xs:documentation>
-                                </xs:annotation>
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
-                                    </xs:sequence>
-									<xs:attribute name="NotSorted" type="xs:boolean" default="false">
+                                    <xs:attribute name="Class" type="xs:string" use="required">
                                         <xs:annotation>
-                                            <xs:documentation>Set to true to ignore this element when Element.SortChildElements is true.</xs:documentation>
+                                            <xs:documentation>The class to add the element extensions to.</xs:documentation>
                                         </xs:annotation>
-									</xs:attribute>
-                                    <xs:attributeGroup ref="LinkAttributes"/>
+                                    </xs:attribute>
+                                    <xs:attribute name="HasMixedTypedAttributes" type="xs:boolean">
+                                        <xs:annotation>
+                                            <xs:documentation>true to sort the attributes by WriteStyle before writting them.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="SortChildElements" type="xs:boolean" default="false">
+                                        <xs:annotation>
+                                            <xs:documentation>All link and child elements should be explicitly sorted to force them to write out in a fixed order.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
                                     <xs:attributeGroup ref="ElementAttributes"/>
                                 </xs:complexType>
                             </xs:element>
-                        </xs:sequence>
-                        <xs:attribute name="Class" type="xs:string" use="required">
+                        </xs:choice>
+                        <xs:attribute name="Namespace" type="xs:string" use="required">
                             <xs:annotation>
-                                <xs:documentation>The class to add the element extensions to.</xs:documentation>
+                                <xs:documentation>The namespace to use.</xs:documentation>
                             </xs:annotation>
                         </xs:attribute>
-                        <xs:attribute name="HasMixedTypedAttributes" type="xs:boolean">
-                            <xs:annotation>
-                                <xs:documentation>true to sort the attributes by WriteStyle before writting them.</xs:documentation>
-                            </xs:annotation>
-                        </xs:attribute>
-						<xs:attribute name="SortChildElements" type="xs:boolean" default="false">
-							<xs:annotation>
-								<xs:documentation>All link and child elements should be explicitly sorted to force them to write out in a fixed order.</xs:documentation>
-							</xs:annotation>
-						</xs:attribute>
-                        <xs:attributeGroup ref="ElementAttributes"/>
                     </xs:complexType>
                 </xs:element>
             </xs:choice>

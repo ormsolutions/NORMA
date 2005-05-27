@@ -6,13 +6,15 @@
     <xsl:template match="se:CustomSerializedElements">
         <plx:Root xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
 			<plx:Using name="System"/>
+            <plx:Using name="System.Collections"/>
 			<plx:Using name="System.Collections.Generic"/>
-			<plx:Using name="System.Collections"/>
             <plx:Using name="Microsoft.VisualStudio.Modeling"/>
             <plx:Using name="Northface.Tools.ORM.Shell"/>
-            <plx:Namespace name="Northface.Tools.ORM.ObjectModel">
-                <xsl:apply-templates/>
-            </plx:Namespace>
+            <xsl:for-each select="se:Using">
+                <plx:Namespace name="{@Namespace}">
+                    <xsl:apply-templates select="child::*"/>
+                </plx:Namespace>
+            </xsl:for-each>
         </plx:Root>
     </xsl:template>
     <xsl:template match="se:Element">
@@ -513,6 +515,23 @@
     <xsl:template match="se:Namespaces">
         <plx:Class name="{@Class}" visibility="Public" partial="true">
             <plx:ImplementsInterface dataTypeName="IORMCustomElementNamespace"/>
+            <plx:Property visibility="Protected" name="DefaultElementPrefix">
+                <plx:InterfaceMember dataTypeName="IORMCustomElementNamespace" member="DefaultElementPrefix"/>
+				<plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System"/>
+				<plx:Get>
+					<plx:Return>
+						<xsl:variable name="defaultElement" select="se:Namespace[@DefaultPrefix='true']"/>
+						<xsl:choose>
+							<xsl:when test="count($defaultElement)">
+								<plx:String><xsl:value-of select="$defaultElement/@Prefix"/></plx:String>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:NullObjectKeyword/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:Return>
+				</plx:Get>
+			</plx:Property>
             <plx:Function visibility="Protected" name="GetCustomElementNamespaces">
                 <plx:InterfaceMember dataTypeName="IORMCustomElementNamespace" member="GetCustomElementNamespaces"/>
                 <plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System">

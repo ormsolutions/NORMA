@@ -347,6 +347,11 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		/// <returns>Custom element namespaces.</returns>
 		string[,] GetCustomElementNamespaces();
+		/// <summary>
+		/// Return the default element prefix for elements where the
+		/// prefix is not specified
+		/// </summary>
+		string DefaultElementPrefix { get;}
 	}
 	/// <summary>
 	/// The interface for getting element custom serialization information.
@@ -517,9 +522,10 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
 		/// <param name="customInfo">The customized tag info.</param>
+		/// <param name="defaultPrefix">The default prefix.</param>
 		/// <param name="defaultName">The default tag name.</param>
 		/// <returns>true if the begin element tag was written.</returns>
-		private static bool WriteCustomizedStartElement(System.Xml.XmlWriter file, ORMCustomSerializedElementInfo customInfo, string defaultName)
+		private static bool WriteCustomizedStartElement(System.Xml.XmlWriter file, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, string defaultName)
 		{
 			if (customInfo!=null)
 			{
@@ -531,17 +537,18 @@ namespace Northface.Tools.ORM.Shell
 					}
 					case ORMCustomSerializedElementWriteStyle.DoubleTaggedElement:
 					{
+						string prefix = (customInfo.CustomPrefix != null ? customInfo.CustomPrefix : defaultPrefix);
 						string name = (customInfo.CustomName != null ? customInfo.CustomName : defaultName);
 
 						file.WriteStartElement
 						(
-							customInfo.CustomPrefix,
+							prefix,
 							name,
 							customInfo.CustomNamespace
 						);
 						file.WriteStartElement
 						(
-							customInfo.CustomPrefix,
+							prefix,
 							customInfo.DoubleTagName != null ? customInfo.DoubleTagName : name,
 							customInfo.CustomNamespace
 						);
@@ -552,14 +559,14 @@ namespace Northface.Tools.ORM.Shell
 
 				file.WriteStartElement
 				(
-					customInfo.CustomPrefix,
+					customInfo.CustomPrefix != null ? customInfo.CustomPrefix : defaultPrefix,
 					customInfo.CustomName != null ? customInfo.CustomName : defaultName,
 					customInfo.CustomNamespace
 				);
 			}
 			else
 			{
-				file.WriteStartElement(defaultName);
+				file.WriteStartElement(defaultPrefix, defaultName, null);
 			}
 			return true;
 		}
@@ -592,6 +599,19 @@ namespace Northface.Tools.ORM.Shell
 			file.WriteEndElement();
 
 			return;
+		}
+		/// <summary>
+		/// Get the default prefix for an element from the meta model containing the element
+		/// </summary>
+		private string DefaultElementPrefix(ModelElement element)
+		{
+			string retVal = null;
+			IORMCustomElementNamespace parentModel = element.Store.SubStores[element.MetaClass.MetaModel.Id] as IORMCustomElementNamespace;
+			if (parentModel != null)
+			{
+				retVal = parentModel.DefaultElementPrefix;
+			}
+			return retVal;
 		}
 		/// <summary>
 		/// Serializes an attribute.
@@ -719,6 +739,7 @@ namespace Northface.Tools.ORM.Shell
 			ORMCustomSerializedElementInfo customInfo = ORMCustomSerializedElementInfo.Default;
 			IORMCustomSerializedElement customElement;
 			IList attributes = null;
+			string defaultPrefix;
 			bool hasCustomAttributes = false;
 
 			if (link != null)
@@ -726,11 +747,13 @@ namespace Northface.Tools.ORM.Shell
 				if (!ShouldSerialize(link)) return;
 				customElement = link as IORMCustomSerializedElement;
 				attributes = link.MetaClass.MetaAttributes;
+				defaultPrefix = DefaultElementPrefix(link);
 			}
 			else
 			{
 				if (!ShouldSerialize(rolePlayer)) return;
 				customElement = rolePlayer as IORMCustomSerializedElement;
+				defaultPrefix = DefaultElementPrefix(rolePlayer);
 			}
 
 			if (customElement != null)
@@ -765,7 +788,7 @@ namespace Northface.Tools.ORM.Shell
 			name.Append(rolePlayedInfo.MetaRelationship.Name);
 			name.Append('.');
 			name.Append(rolePlayedInfo.OppositeMetaRole.Name);
-			if (!WriteCustomizedStartElement(file, customInfo, name.ToString())) return;
+			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, name.ToString())) return;
 
 			Guid keyId = (link != null) ? link.Id : oppositeRolePlayer.Id;
 			if (!directLink && !myLinkGUIDs.Contains(keyId))
@@ -802,9 +825,10 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="childElement">The child element.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
 		/// <param name="customInfo">The custom element info.</param>
+		/// <param name="defaultPrefix">The default prefix.</param>
 		/// <param name="defaultName">The default element name.</param>
 		/// <returns>true if the begin element tag was written.</returns>
-		private bool SerializeChildElement(System.Xml.XmlWriter file, ModelElement childElement, MetaRoleInfo rolePlayedInfo, ORMCustomSerializedElementInfo customInfo, string defaultName)
+		private bool SerializeChildElement(System.Xml.XmlWriter file, ModelElement childElement, MetaRoleInfo rolePlayedInfo, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, string defaultName)
 		{
 			IList children = childElement.GetCounterpartRolePlayers(rolePlayedInfo.OppositeMetaRole, rolePlayedInfo);
 			int childCount = children.Count;
@@ -821,7 +845,11 @@ namespace Northface.Tools.ORM.Shell
 				{
 					if (startElement)
 					{
-						if (!WriteCustomizedStartElement(file, customInfo, defaultName))
+						if (customInfo == null)
+						{
+							defaultPrefix = DefaultElementPrefix(child);
+						}
+						if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, defaultName))
 							return false;
 						startElement = false;
 					}
@@ -839,9 +867,10 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="rolePlayedInfo">The role being played.</param>
 		/// <param name="oppositeRoleInfo">The opposite role being played.</param>
 		/// <param name="customInfo">The custom element info.</param>
+		/// <param name="defaultPrefix">The default prefix.</param>
 		/// <param name="writeBeginElement">true to write the begin element tag.</param>
 		/// <returns>true if the begin element tag was written.</returns>
-		private bool SerializeChildElement(System.Xml.XmlWriter file, ModelElement childElement, MetaRoleInfo rolePlayedInfo, MetaRoleInfo oppositeRoleInfo, ORMCustomSerializedElementInfo customInfo, bool writeBeginElement)
+		private bool SerializeChildElement(System.Xml.XmlWriter file, ModelElement childElement, MetaRoleInfo rolePlayedInfo, MetaRoleInfo oppositeRoleInfo, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, bool writeBeginElement)
 		{
 			if (!rolePlayedInfo.IsAggregate && !oppositeRoleInfo.IsAggregate) //write link
 			{
@@ -871,7 +900,7 @@ namespace Northface.Tools.ORM.Shell
 			}
 			else if (rolePlayedInfo.IsAggregate) //write child
 			{
-				return SerializeChildElement(file, childElement, oppositeRoleInfo, customInfo, writeBeginElement ? oppositeRoleInfo.Name : null);
+				return SerializeChildElement(file, childElement, oppositeRoleInfo, customInfo, defaultPrefix, writeBeginElement ? oppositeRoleInfo.Name : null);
 			}
 			return false;
 		}
@@ -890,6 +919,7 @@ namespace Northface.Tools.ORM.Shell
 			IORMCustomSerializedElement customElement = element as IORMCustomSerializedElement;
 			IList attributes = classInfo.AllMetaAttributes;
 			IList rolesPlayed = classInfo.AllMetaRolesPlayed;
+			string defaultPrefix = DefaultElementPrefix(element);
 			bool roleGrouping = false;
 			bool isCustom = (customElement != null);
 			int count;
@@ -919,7 +949,7 @@ namespace Northface.Tools.ORM.Shell
 			}
 
 			//start new element
-			if (!WriteCustomizedStartElement(file, customInfo, classInfo.Name)) return;
+			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, classInfo.Name)) return;
 			file.WriteAttributeString("id", element.Id.ToString().ToUpper(CultureInfo.InvariantCulture));
 
 			//write attributes
@@ -963,9 +993,10 @@ namespace Northface.Tools.ORM.Shell
 
 						int childIndex = FindGuid(childElementInfo, oppositeRoleInfo.Id);
 						customChildInfo = (childIndex >= 0) ? childElementInfo[childIndex] : null;
+						string defaultChildPrefix = (customChildInfo != null) ? defaultPrefix : null;
 
 						written[index0] = true;
-						if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, true))
+						if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, defaultChildPrefix, true))
 						{
 							writeEndElement = true;
 						}
@@ -982,7 +1013,7 @@ namespace Northface.Tools.ORM.Shell
 									if (customChildInfo.ContainsGuid(oppositeRoleInfo.Id))
 									{
 										written[index1] = true;
-										if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, !writeEndElement))
+										if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, defaultChildPrefix, !writeEndElement))
 										{
 											writeEndElement = true;
 										}
@@ -1003,7 +1034,7 @@ namespace Northface.Tools.ORM.Shell
 				for (int index = 0; index < count; ++index)
 				{
 					MetaRoleInfo rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index];
-					if (SerializeChildElement(file, element, rolePlayedInfo, rolePlayedInfo.OppositeMetaRole, null, true))
+					if (SerializeChildElement(file, element, rolePlayedInfo, rolePlayedInfo.OppositeMetaRole, null, null, true))
 					{
 						WriteCustomizedEndElement(file, null);
 					}

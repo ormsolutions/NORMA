@@ -11,8 +11,8 @@
 namespace Northface.Tools.ORM.ObjectModel
 {
     using System;
-    using System.Collections.Generic;
     using System.Collections;
+    using System.Collections.Generic;
     using Microsoft.VisualStudio.Modeling;
     using Northface.Tools.ORM.Shell;
     
@@ -22,11 +22,29 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
+        protected string DefaultElementPrefix
+        {
+            get
+            {
+                return "orm";
+            }
+        }
+        string IORMCustomElementNamespace.DefaultElementPrefix
+        {
+            get
+            {
+                return this.DefaultElementPrefix;
+            }
+        }
+        /// <summary>
+        ///</summary>
         protected string[,] GetCustomElementNamespaces()
         {
-            string[,] ret = new string[1, 2];
+            string[,] ret = new string[2, 2];
             ret[0, 0] = "orm";
             ret[0, 1] = "http://Schemas.Northface.edu/ORM/ORMCore";
+            ret[1, 0] = "ormDerived";
+            ret[1, 1] = "http://Schemas.Northface.edu/ORM/ORMDerived";
             return ret;
         }
         string[,] IORMCustomElementNamespace.GetCustomElementNamespaces()
@@ -1855,6 +1873,49 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+        }
+    }
+}
+namespace Northface.Tools.ORM.ShapeModel
+{
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using Microsoft.VisualStudio.Modeling;
+    using Northface.Tools.ORM.Shell;
+    
+    /// <summary>
+    ///</summary>
+    public partial class ORMShapeModel : IORMCustomElementNamespace
+    {
+        /// <summary>
+        ///</summary>
+        protected string DefaultElementPrefix
+        {
+            get
+            {
+                return "ormDiagram";
+            }
+        }
+        string IORMCustomElementNamespace.DefaultElementPrefix
+        {
+            get
+            {
+                return this.DefaultElementPrefix;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        protected string[,] GetCustomElementNamespaces()
+        {
+            string[,] ret = new string[1, 2];
+            ret[0, 0] = "ormDiagram";
+            ret[0, 1] = "http://Schemas.Northface.edu/ORM/ORMDiagram";
+            return ret;
+        }
+        string[,] IORMCustomElementNamespace.GetCustomElementNamespaces()
+        {
+            return this.GetCustomElementNamespaces();
         }
     }
 }
