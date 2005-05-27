@@ -19,33 +19,22 @@
         <xsl:variable name="ClassName" select="@Class"/>
         <plx:Class name="{$ClassName}" visibility="Public" partial="true">
             <plx:ImplementsInterface dataTypeName="IORMCustomSerializedElement"/>
-            <plx:Function visibility="Protected" name="GetSupportedOperations">
-                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetSupportedOperations"/>
-                <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementSupportedOperations" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
-                <plx:Return>
-                    <xsl:call-template name="ReturnORMCustomSerializedElementSupportedOperations">
-                        <xsl:with-param name="childElements" select="count(se:ChildElement)"/>
-                        <xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
-                        <xsl:with-param name="attributes" select="count(se:Attribute)"/>
-                        <xsl:with-param name="links" select="count(se:Link)"/>
-                        <xsl:with-param name="customSort" select="@SortChildElements='true'"/>
-                    </xsl:call-template>
-                </plx:Return>
-            </plx:Function>
-            <plx:Function visibility="Protected" name="HasMixedTypedAttributes">
-                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="HasMixedTypedAttributes"/>
-                <plx:Param name="" style="RetVal" dataTypeName="Boolean" dataTypeQualifier="System"/>
-                <plx:Return>
-                    <xsl:choose>
-                        <xsl:when test="@HasMixedTypedAttributes='true'">
-                            <plx:TrueKeyword/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <plx:FalseKeyword/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </plx:Return>
-            </plx:Function>
+			<plx:Property visibility="Protected" name="SupportedCustomSerializedOperations">
+				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="SupportedCustomSerializedOperations"/>
+				<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementSupportedOperations" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
+				<plx:Get>
+					<plx:Return>
+						<xsl:call-template name="ReturnORMCustomSerializedElementSupportedOperations">
+							<xsl:with-param name="childElements" select="count(se:ChildElement)"/>
+							<xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
+							<xsl:with-param name="attributes" select="count(se:Attribute)"/>
+							<xsl:with-param name="links" select="count(se:Link)"/>
+							<xsl:with-param name="customSort" select="@SortChildElements='true'"/>
+							<xsl:with-param name="mixedTypedAttributes" select="@HasMixedTypedAttributes='true'"/>
+						</xsl:call-template>
+					</plx:Return>
+				</plx:Get>
+			</plx:Property>
             <plx:Function visibility="Protected" name="GetCustomSerializedChildElementInfo">
                 <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedChildElementInfo"/>
                 <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedChildElementInfo[]" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
@@ -138,20 +127,22 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </plx:Function>
-            <plx:Function visibility="Protected" name="GetCustomSerializedElementInfo">
-                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedElementInfo"/>
+            <plx:Property visibility="Protected" name="CustomSerializedElementInfo">
+                <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="CustomSerializedElementInfo"/>
                 <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
-                <xsl:choose>
-                    <xsl:when test="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)">
-                        <xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <plx:Throw>
-                            <plx:CallNew style="New" dataTypeQualifier="System" dataTypeName="NotSupportedException"/>
-                        </plx:Throw>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </plx:Function>
+				<plx:Get>
+					<xsl:choose>
+						<xsl:when test="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)">
+							<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:Throw>
+								<plx:CallNew style="New" dataTypeQualifier="System" dataTypeName="NotSupportedException"/>
+							</plx:Throw>
+						</xsl:otherwise>
+					</xsl:choose>
+				</plx:Get>
+            </plx:Property>
             <plx:Function visibility="Protected" name="GetCustomSerializedAttributeInfo">
                 <plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedAttributeInfo"/>
                 <plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedAttributeInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
@@ -252,9 +243,13 @@
             </plx:Function>
 			<xsl:choose>
 				<xsl:when test="@SortChildElements='true'">
-					<plx:Field name="myCustomSortChildComparer" shared="true" visibility="Private" dataTypeName="IComparer"/>
+					<plx:Field name="myCustomSortChildComparer" shared="true" visibility="Private" dataTypeName="IComparer">
+						<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+					</plx:Field>
 					<plx:Class name="CustomSortChildComparer" visibility="Private">
-						<plx:ImplementsInterface dataTypeName="IComparer"/>
+						<plx:ImplementsInterface dataTypeName="IComparer">
+							<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+						</plx:ImplementsInterface>
 						<plx:Field name="myRoleOrderDictionary" visibility="Private" dataTypeName="Dictionary">
 							<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
 							<plx:PassTypeParam dataTypeName="Int32" dataTypeQualifier="System"/>
@@ -347,11 +342,15 @@
 								</plx:Right>
 							</plx:Operator>
 						</plx:Function>
-						<plx:Function visibility="Private" name="Compare">
-							<plx:InterfaceMember dataTypeName="IComparer" member="Compare"/>
+						<plx:Function visibility="Public" name="Compare">
+							<!-- UNDONE: I'd prefer the following block, but Beta1 CodeDom isn't
+								spitting type arguments for private implementation types
+							<plx:InterfaceMember dataTypeName="IComparer" member="Compare">
+								<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+							</plx:InterfaceMember>-->
 							<plx:Param style="RetVal" name="" dataTypeName="Int32" dataTypeQualifier="System"/>
-							<plx:Param style="In" name="x" dataTypeName="Object" dataTypeQualifier="System"/>
-							<plx:Param style="In" name="y" dataTypeName="Object" dataTypeQualifier="System"/>
+							<plx:Param style="In" name="x" dataTypeName="MetaRoleInfo"/>
+							<plx:Param style="In" name="y" dataTypeName="MetaRoleInfo"/>
 							<xsl:variable name="paramVals">
 								<Value>x</Value>
 								<Value>y</Value>
@@ -370,12 +369,7 @@
 													</plx:CallInstance>
 												</plx:CallObject>
 												<plx:PassParam passStyle="In">
-													<plx:Cast style="TypeCastException">
-														<plx:TargetType dataTypeName="MetaRoleInfo"/>
-														<plx:CastExpression>
-															<plx:Value type="Parameter"><xsl:value-of select="."/></plx:Value>
-														</plx:CastExpression>
-													</plx:Cast>
+													<plx:Value type="Parameter"><xsl:value-of select="."/></plx:Value>
 												</plx:PassParam>
 												<plx:PassParam passStyle="Out">
 													<plx:Value type="Local">
@@ -425,47 +419,93 @@
 							</plx:Condition>
 							<plx:Return><plx:Value type="I4">1</plx:Value></plx:Return>
 						</plx:Function>
+						<plx:Function visibility="Public" name="Equals">
+							<!-- UNDONE: See comments on Compare
+							<plx:InterfaceMember dataTypeName="IComparer" member="Equals">
+								<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+							</plx:InterfaceMember> -->
+							<plx:Param style="RetVal" name="" dataTypeName="Boolean" dataTypeQualifier="System"/>
+							<plx:Param style="In" name="x" dataTypeName="MetaRoleInfo"/>
+							<plx:Param style="In" name="y" dataTypeName="MetaRoleInfo"/>
+							<plx:Return>
+								<plx:CallType dataTypeName="Object" dataTypeQualifier="System" name="ReferenceEquals">
+									<plx:PassParam><plx:Value type="Local">x</plx:Value></plx:PassParam>
+									<plx:PassParam><plx:Value type="Local">y</plx:Value></plx:PassParam>
+								</plx:CallType>
+							</plx:Return>
+						</plx:Function>
+						<plx:Function visibility="Public" name="GetHashCode">
+							<!-- UNDONE: See comments on Compare
+							<plx:InterfaceMember dataTypeName="IComparer" member="GetHashCode">
+								<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+							</plx:InterfaceMember> -->
+							<plx:Param style="RetVal" name="" dataTypeName="Int32" dataTypeQualifier="System"/>
+							<plx:Param style="In" name="obj" dataTypeName="MetaRoleInfo"/>
+							<plx:Return>
+								<plx:CallInstance name="GetHashCode">
+									<plx:CallObject><plx:Value type="Local">obj</plx:Value></plx:CallObject>
+								</plx:CallInstance>
+							</plx:Return>
+						</plx:Function>
 					</plx:Class>
-					<plx:Function visibility="Protected" name="SortCustomSerializedChildRoles">
-						<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="SortCustomSerializedChildRoles"/>
-						<plx:Param name="playedMetaRoles" dataTypeName="MetaRoleInfo" dataTypeIsSimpleArray="true"/>
-						<plx:Condition>
-							<plx:Test>
-								<plx:Operator name="IdentityEquality">
-									<plx:Left><plx:NullObjectKeyword/></plx:Left>
-									<plx:Right><plx:CallType dataTypeName="{$ClassName}" name="myCustomSortChildComparer" style="Field"/></plx:Right>
-								</plx:Operator>
-							</plx:Test>
-							<plx:Body>
-								<plx:Operator name="Assign">
-									<plx:Left><plx:CallType dataTypeName="{$ClassName}" name="myCustomSortChildComparer" style="Field"/></plx:Left>
-									<plx:Right>
-										<plx:CallNew dataTypeName="CustomSortChildComparer">
-											<plx:PassParam>
-												<plx:CallInstance name="Store" style="Property">
-													<plx:CallObject><plx:ThisKeyword/></plx:CallObject>
-												</plx:CallInstance>
-											</plx:PassParam>
-										</plx:CallNew>
-									</plx:Right>
-								</plx:Operator>
-							</plx:Body>
-						</plx:Condition>
-						<plx:CallType dataTypeName="Array" name="Sort">
-							<plx:PassParam>
-								<plx:Value type="Parameter">playedMetaRoles</plx:Value>
-							</plx:PassParam>
-							<plx:PassParam>
-								<plx:CallType dataTypeName="{$ClassName}" name="myCustomSortChildComparer" style="Field"></plx:CallType>
-							</plx:PassParam>
-						</plx:CallType>
-					</plx:Function>
+					<plx:Property visibility="Protected" name="CustomSerializedChildRoleComparer">
+						<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="CustomSerializedChildRoleComparer"/>
+						<plx:Attribute dataTypeName="CLSCompliant">
+							<plx:PassParam><plx:FalseKeyword/></plx:PassParam>
+						</plx:Attribute>
+						<plx:Param dataTypeName="IComparer" style="RetVal" name="">
+							<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+						</plx:Param>
+						<plx:Get>
+							<plx:Variable name="retVal" dataTypeName="IComparer">
+								<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+								<plx:Initialize>
+									<plx:CallType dataTypeName="{$ClassName}" name="myCustomSortChildComparer" style="Field"/>
+								</plx:Initialize>
+							</plx:Variable>
+							<plx:Condition>
+								<plx:Test>
+									<plx:Operator name="IdentityEquality">
+										<plx:Left><plx:NullObjectKeyword/></plx:Left>
+										<plx:Right><plx:Value type="Local">retVal</plx:Value></plx:Right>
+									</plx:Operator>
+								</plx:Test>
+								<plx:Body>
+									<plx:Operator name="Assign">
+										<plx:Left><plx:Value type="Local">retVal</plx:Value></plx:Left>
+										<plx:Right>
+											<plx:CallNew dataTypeName="CustomSortChildComparer">
+												<plx:PassParam>
+													<plx:CallInstance name="Store" style="Property">
+														<plx:CallObject><plx:ThisKeyword/></plx:CallObject>
+													</plx:CallInstance>
+												</plx:PassParam>
+											</plx:CallNew>
+										</plx:Right>
+									</plx:Operator>
+									<plx:Operator name="Assign">
+										<plx:Left><plx:CallType dataTypeName="{$ClassName}" name="myCustomSortChildComparer" style="Field"/></plx:Left>
+										<plx:Right><plx:Value type="Local">retVal</plx:Value></plx:Right>
+									</plx:Operator>
+								</plx:Body>
+							</plx:Condition>
+							<plx:Return><plx:Value type="Local">retVal</plx:Value></plx:Return>
+						</plx:Get>
+					</plx:Property>
 				</xsl:when>
 				<xsl:otherwise>
-					<plx:Function visibility="Protected" name="SortCustomSerializedChildRoles">
-						<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="SortCustomSerializedChildRoles"/>
-						<plx:Param name="playedMetaRoles" dataTypeName="MetaRoleInfo" dataTypeIsSimpleArray="true"/>
-					</plx:Function>
+					<plx:Property visibility="Protected" name="CustomSerializedChildRoleComparer">
+						<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="CustomSerializedChildRoleComparer"/>
+						<plx:Attribute dataTypeName="CLSCompliant">
+							<plx:PassParam><plx:FalseKeyword/></plx:PassParam>
+						</plx:Attribute>
+						<plx:Param dataTypeName="IComparer" style="RetVal" name="">
+							<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+						</plx:Param>
+						<plx:Get>
+							<plx:Return><plx:NullObjectKeyword/></plx:Return>
+						</plx:Get>
+					</plx:Property>
 				</xsl:otherwise>
 			</xsl:choose>
         </plx:Class>
@@ -547,35 +587,41 @@
         </plx:Class>
     </xsl:template>
     <xsl:template name="ReturnORMCustomSerializedElementSupportedOperations">
-        <xsl:param name="childElements" select="0"/>
-        <xsl:param name="element" select="0"/>
-        <xsl:param name="attributes" select="0"/>
-        <xsl:param name="links" select="0"/>
-        <xsl:param name="customSort" select="0"/>
+        <xsl:param name="childElements"/>
+        <xsl:param name="element"/>
+        <xsl:param name="attributes"/>
+        <xsl:param name="links"/>
+        <xsl:param name="customSort"/>
+        <xsl:param name="mixedTypedAttributes"/>
         <xsl:variable name="supportedOperations">
             <xsl:if test="$childElements">
                 <xsl:element name="SupportedOperation">
-                    <xsl:text>CustomSerializedChildElementInfo</xsl:text>
+                    <xsl:text>ChildElementInfo</xsl:text>
                 </xsl:element>
             </xsl:if>
             <xsl:if test="$element">
                 <xsl:element name="SupportedOperation">
-                    <xsl:text>CustomSerializedElementInfo</xsl:text>
+                    <xsl:text>ElementInfo</xsl:text>
                 </xsl:element>
             </xsl:if>
             <xsl:if test="$attributes">
                 <xsl:element name="SupportedOperation">
-                    <xsl:text>CustomSerializedAttributeInfo</xsl:text>
+                    <xsl:text>AttributeInfo</xsl:text>
                 </xsl:element>
             </xsl:if>
             <xsl:if test="$links">
                 <xsl:element name="SupportedOperation">
-                    <xsl:text>CustomSerializedLinkInfo</xsl:text>
+                    <xsl:text>LinkInfo</xsl:text>
                 </xsl:element>
             </xsl:if>
             <xsl:if test="$customSort">
                 <xsl:element name="SupportedOperation">
                     <xsl:text>CustomSortChildRoles</xsl:text>
+                </xsl:element>
+            </xsl:if>
+            <xsl:if test="$mixedTypedAttributes">
+                <xsl:element name="SupportedOperation">
+                    <xsl:text>MixedTypedAttributes</xsl:text>
                 </xsl:element>
             </xsl:if>
         </xsl:variable>

@@ -245,10 +245,10 @@
     <EmbeddedResource Include="ShapeModel\ORMShape.dmd.resx">
       <DependentUpon>ORMShape.dmd.cs</DependentUpon>
     </EmbeddedResource>
-    <Content Include="ObjectModel\SerializationExtensions.xml">
+    <None Include="ObjectModel\SerializationExtensions.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>SerializationExtensions.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="ObjectModel\DataTypesGenerator.xslt" />
     <Content Include="ObjectModel\DataTypesGenerator.xml">
       <Generator>NUPlixLoader</Generator>
@@ -259,7 +259,7 @@
       <LastGenOutput>SerializationExtensions.cs</LastGenOutput>
     </None>
     <None Include="ObjectModel\SerializationExtensions.xsd" />
-    <Content Include="ObjectModel\SerializationExtensions.xslt" />
+    <None Include="ObjectModel\SerializationExtensions.xslt" />
     <Content Include="Resources\AboutBox.ico" />
     <Content Include="Resources\ORM.ico" />
     <Content Include="Resources\ResourceStringsGenerator.xml">

@@ -38,28 +38,63 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ORMModel : IORMCustomSerializedElement
     {
-        private static IComparer myCustomSortChildComparer;
+        private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return (ORMCustomSerializedElementSupportedOperations.CustomSerializedChildElementInfo 
-                        | (ORMCustomSerializedElementSupportedOperations.CustomSerializedElementInfo 
-                        | (ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.ElementInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                return new ORMCustomSerializedElementInfo(null, "Model", null, ORMCustomSerializedElementWriteStyle.Element, null);
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                IComparer<MetaRoleInfo> retVal = ORMModel.myCustomSortChildComparer;
+                if ((null == retVal))
+                {
+                    retVal = new CustomSortChildComparer(this.Store);
+                    ORMModel.myCustomSortChildComparer = retVal;
+                }
+                return retVal;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -93,16 +128,6 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            return new ORMCustomSerializedElementInfo(null, "Model", null, ORMCustomSerializedElementWriteStyle.Element, null);
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
-        }
-        /// <summary>
-        ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             throw new System.NotSupportedException();
@@ -125,21 +150,7 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            if ((null == ORMModel.myCustomSortChildComparer))
-            {
-                ORMModel.myCustomSortChildComparer = new CustomSortChildComparer(this.Store);
-            }
-            Array.Sort(playedMetaRoles, ORMModel.myCustomSortChildComparer);
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
-        }
-        private class CustomSortChildComparer : IComparer
+        private class CustomSortChildComparer : IComparer<MetaRoleInfo>
         {
             private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
             /// <summary>
@@ -167,15 +178,17 @@ namespace Northface.Tools.ORM.ObjectModel
                 roleOrderDictionary[metaRole.OppositeMetaRole] = 6;
                 this.myRoleOrderDictionary = roleOrderDictionary;
             }
-            int IComparer.Compare(object x, object y)
+            /// <summary>
+            ///</summary>
+            public int Compare(MetaRoleInfo x, MetaRoleInfo y)
             {
                 int xPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(((MetaRoleInfo)(x)), out xPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
                 {
                     xPos = int.MaxValue;
                 }
                 int yPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(((MetaRoleInfo)(y)), out yPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
                 {
                     yPos = int.MaxValue;
                 }
@@ -192,6 +205,18 @@ namespace Northface.Tools.ORM.ObjectModel
                 }
                 return 1;
             }
+            /// <summary>
+            ///</summary>
+            public bool Equals(MetaRoleInfo x, MetaRoleInfo y)
+            {
+                return object.ReferenceEquals(x, y);
+            }
+            /// <summary>
+            ///</summary>
+            public int GetHashCode(MetaRoleInfo obj)
+            {
+                return obj.GetHashCode();
+            }
         }
     }
     /// <summary>
@@ -200,24 +225,65 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return (ORMCustomSerializedElementSupportedOperations.CustomSerializedElementInfo 
-                        | (ORMCustomSerializedElementSupportedOperations.CustomSerializedAttributeInfo | ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo));
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.ElementInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.AttributeInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo));
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                string name = "EntityType";
+                if (this.IsValueType)
+                {
+                    name = "ValueType";
+                }
+                else
+                {
+                    if ((this.NestedFactType != null))
+                    {
+                        name = "ObjectifiedType";
+                    }
+                }
+                return new ORMCustomSerializedElementInfo(null, name, null, ORMCustomSerializedElementWriteStyle.Element, null);
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -228,28 +294,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            string name = "EntityType";
-            if (this.IsValueType)
-            {
-                name = "ValueType";
-            }
-            else
-            {
-                if ((this.NestedFactType != null))
-                {
-                    name = "ObjectifiedType";
-                }
-            }
-            return new ORMCustomSerializedElementInfo(null, name, null, ORMCustomSerializedElementWriteStyle.Element, null);
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -291,15 +335,6 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
-        }
     }
     /// <summary>
     ///</summary>
@@ -307,23 +342,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return ORMCustomSerializedElementSupportedOperations.CustomSerializedAttributeInfo;
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.AttributeInfo | ORMCustomSerializedElementSupportedOperations.MixedTypedAttributes);
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return true;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -334,16 +398,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -373,15 +427,6 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
-        }
     }
     /// <summary>
     ///</summary>
@@ -389,23 +434,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo;
+            get
+            {
+                return ORMCustomSerializedElementSupportedOperations.LinkInfo;
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -416,16 +490,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -451,15 +515,6 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
-        }
     }
     /// <summary>
     ///</summary>
@@ -467,23 +522,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return (ORMCustomSerializedElementSupportedOperations.CustomSerializedElementInfo | ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo);
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.ElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -494,16 +578,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -529,15 +603,6 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
-        }
     }
     /// <summary>
     ///</summary>
@@ -545,24 +610,53 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return (ORMCustomSerializedElementSupportedOperations.CustomSerializedChildElementInfo 
-                        | (ORMCustomSerializedElementSupportedOperations.CustomSerializedElementInfo | ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo));
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.ElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo));
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                return new ORMCustomSerializedElementInfo(null, "Fact", null, ORMCustomSerializedElementWriteStyle.Element, null);
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -580,16 +674,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            return new ORMCustomSerializedElementInfo(null, "Fact", null, ORMCustomSerializedElementWriteStyle.Element, null);
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -627,15 +711,6 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
-        }
     }
     /// <summary>
     ///</summary>
@@ -643,23 +718,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return (ORMCustomSerializedElementSupportedOperations.CustomSerializedChildElementInfo | ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo);
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -674,16 +778,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -713,15 +807,6 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
-        }
     }
     /// <summary>
     ///</summary>
@@ -729,23 +814,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return ORMCustomSerializedElementSupportedOperations.CustomSerializedAttributeInfo;
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.AttributeInfo | ORMCustomSerializedElementSupportedOperations.MixedTypedAttributes);
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return true;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -756,16 +870,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -795,15 +899,6 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
-        }
     }
     /// <summary>
     ///</summary>
@@ -811,24 +906,53 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return (ORMCustomSerializedElementSupportedOperations.CustomSerializedChildElementInfo 
-                        | (ORMCustomSerializedElementSupportedOperations.CustomSerializedAttributeInfo | ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo));
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.AttributeInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo));
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -843,16 +967,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -894,15 +1008,6 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
-        }
     }
     /// <summary>
     ///</summary>
@@ -910,23 +1015,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return (ORMCustomSerializedElementSupportedOperations.CustomSerializedChildElementInfo | ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo);
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -941,16 +1075,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -979,15 +1103,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
         }
     }
     /// <summary>
@@ -996,23 +1111,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return (ORMCustomSerializedElementSupportedOperations.CustomSerializedChildElementInfo | ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo);
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -1027,16 +1171,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -1065,15 +1199,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
         }
     }
     /// <summary>
@@ -1082,23 +1207,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return (ORMCustomSerializedElementSupportedOperations.CustomSerializedChildElementInfo | ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo);
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -1113,16 +1267,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -1152,15 +1296,6 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
-        }
     }
     /// <summary>
     ///</summary>
@@ -1168,23 +1303,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return (ORMCustomSerializedElementSupportedOperations.CustomSerializedElementInfo | ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo);
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.ElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                return new ORMCustomSerializedElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null);
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -1195,16 +1359,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            return new ORMCustomSerializedElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null);
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -1229,15 +1383,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
         }
     }
     /// <summary>
@@ -1246,23 +1391,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo;
+            get
+            {
+                return ORMCustomSerializedElementSupportedOperations.LinkInfo;
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -1273,16 +1447,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -1315,15 +1479,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
         }
     }
     /// <summary>
@@ -1332,23 +1487,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo;
+            get
+            {
+                return ORMCustomSerializedElementSupportedOperations.LinkInfo;
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -1359,16 +1543,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -1401,15 +1575,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
         }
     }
     /// <summary>
@@ -1418,23 +1583,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo;
+            get
+            {
+                return ORMCustomSerializedElementSupportedOperations.LinkInfo;
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -1445,16 +1639,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -1488,15 +1672,6 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
-        }
     }
     /// <summary>
     ///</summary>
@@ -1504,23 +1679,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo;
+            get
+            {
+                return ORMCustomSerializedElementSupportedOperations.LinkInfo;
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -1531,16 +1735,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -1569,15 +1763,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
         }
     }
     /// <summary>
@@ -1586,23 +1771,52 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations GetSupportedOperations()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
-            return ORMCustomSerializedElementSupportedOperations.CustomSerializedLinkInfo;
+            get
+            {
+                return ORMCustomSerializedElementSupportedOperations.LinkInfo;
+            }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.GetSupportedOperations()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
-            return this.GetSupportedOperations();
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
         }
         /// <summary>
         ///</summary>
-        protected bool HasMixedTypedAttributes()
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
-            return false;
+            get
+            {
+                throw new System.NotSupportedException();
+            }
         }
-        bool IORMCustomSerializedElement.HasMixedTypedAttributes()
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
-            return this.HasMixedTypedAttributes();
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
         }
         /// <summary>
         ///</summary>
@@ -1613,16 +1827,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedElementInfo()
-        {
-            return this.GetCustomSerializedElementInfo();
         }
         /// <summary>
         ///</summary>
@@ -1651,15 +1855,6 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected void SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-        }
-        void IORMCustomSerializedElement.SortCustomSerializedChildRoles(MetaRoleInfo[] playedMetaRoles)
-        {
-            this.SortCustomSerializedChildRoles(playedMetaRoles);
         }
     }
 }
