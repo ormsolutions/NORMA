@@ -45,7 +45,7 @@
             <orm:ReadingOrders>
                 <orm:ReadingOrder>
                     <orm:Readings>
-                        <orm:Reading IsPrimary="true" >
+                        <orm:Reading id="Reading1" IsPrimary="true" >
                             <orm:Data >{0} is a {1}</orm:Data>
                         </orm:Reading>
                     </orm:Readings>
@@ -117,7 +117,7 @@
                 </orm:RoleSequence>
             </orm:RoleSequences>
         </orm:ExclusionConstraint>
-        <orm:ExternalUniqunessConstraint>
+        <orm:ExternalUniquenessConstraint>
             <orm:ConstraintNote>
                 <orm:Data>Constraint Note Data</orm:Data>
             </orm:ConstraintNote>
@@ -125,7 +125,7 @@
                 <orm:Role ref="Role1"/>
                 <orm:Role ref="Role2"/>
             </orm:RoleSequence>
-        </orm:ExternalUniqunessConstraint>
+        </orm:ExternalUniquenessConstraint>
         <orm:FrequencyConstraint  id="FrequencyConstraint1">
             <orm:ConstraintNote>
                 <orm:Data>Constraint Note Data</orm:Data>
@@ -144,7 +144,7 @@
                 <orm:Role ref="Role2"/>
             </orm:RoleSequence>
         </orm:RingConstraint>
-        <orm:SubsetConstraint FromRoleSequence="RoleSequence1" ToRoleSequence="RoleSequence2">
+        <orm:SubsetConstraint id="c1" FromRoleSequence="RoleSequence1" ToRoleSequence="RoleSequence2">
             <orm:ConstraintNote>
                 <orm:Data>Constraint Note Data</orm:Data>
             </orm:ConstraintNote>
@@ -161,13 +161,27 @@
         </orm:SubsetConstraint>
     </orm:ExternalConstraints>
     <orm:DataTypes>
-        <orm:DataType id="DataType1" Name="byte"></orm:DataType>
+        <orm:FixedLengthTextDataType id="DataType1"/>
     </orm:DataTypes>
     <orm:ModelErrors >
-        <orm:DuplicateNameError  ElementType="Fact" Element ="Fact1"/>
-        <orm:DuplicateNameError  ElementType="Object" Element ="Object1"/>
-        <orm:DuplicateNameError  ElementType="Constraint" Element ="FrequencyConstraint1"/>
-        <orm:TooFewReadingRolesError />
+        <orm:ConstraintDuplicateNameError>
+            <orm:Constraints>
+                <orm:Constraint ref ="c1"/>                            
+            </orm:Constraints>            
+        </orm:ConstraintDuplicateNameError>
+        <orm:FactTypeDuplicateNameError>
+            <orm:Facts>
+                <orm:Fact ref ="Fact1"/>
+                <orm:Fact ref ="Fact1"/>
+            </orm:Facts>
+        </orm:FactTypeDuplicateNameError>
+        <orm:ObjectTypeDuplicateNameError>
+            <orm:Objects>
+                <orm:Object ref ="Object1"/>
+                <orm:Object ref ="Object2"/>
+            </orm:Objects>
+        </orm:ObjectTypeDuplicateNameError>
+        <orm:TooFewReadingRolesError />        
         <orm:TooFewRoleSequencesError />
         <orm:TooManyReadingRolesError />
         <orm:TooManyRoleSequenceError />
