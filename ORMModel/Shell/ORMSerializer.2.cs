@@ -834,7 +834,9 @@ namespace Northface.Tools.ORM.Shell
 			int childCount = children.Count;
 
 			if (childCount < 1)
+			{
 				return false;
+			}
 			bool startElement = (defaultName != null);
 
 			for (int iChild = 0; iChild < childCount; ++iChild)
@@ -850,7 +852,9 @@ namespace Northface.Tools.ORM.Shell
 							defaultPrefix = DefaultElementPrefix(child);
 						}
 						if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, defaultName))
+						{
 							return false;
+						}
 						startElement = false;
 					}
 					SerializeElement(file, child);
@@ -872,6 +876,8 @@ namespace Northface.Tools.ORM.Shell
 		/// <returns>true if the begin element tag was written.</returns>
 		private bool SerializeChildElement(System.Xml.XmlWriter file, ModelElement childElement, MetaRoleInfo rolePlayedInfo, MetaRoleInfo oppositeRoleInfo, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, bool writeBeginElement)
 		{
+			bool ret = false;
+
 			if (!rolePlayedInfo.IsAggregate && !oppositeRoleInfo.IsAggregate) //write link
 			{
 				if (rolePlayedInfo.MetaRelationship.MetaAttributesCount > 0) //link has attributes
@@ -882,6 +888,14 @@ namespace Northface.Tools.ORM.Shell
 					{
 						if (link.MetaClass.Id == rolePlayedInfo.MetaRelationship.Id)
 						{
+							if (writeBeginElement && customInfo != null)
+							{
+								if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, customInfo.CustomName))
+								{
+									return false;
+								}
+								ret = true;
+							}
 							SerializeLink(file, link, childElement, null, rolePlayedInfo, false); //write indirect link
 							break;
 						}
@@ -892,9 +906,20 @@ namespace Northface.Tools.ORM.Shell
 					IList oppositeElements = childElement.GetCounterpartRolePlayers(rolePlayedInfo, oppositeRoleInfo);
 
 					//write direct links
-					foreach (ModelElement oppositeElement in oppositeElements)
+					if (oppositeElements.Count != 0)
 					{
-						SerializeLink(file, null, childElement, oppositeElement, rolePlayedInfo, true);
+						if (writeBeginElement && customInfo != null)
+						{
+							if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, customInfo.CustomName))
+							{
+								return false;
+							}
+							ret = true;
+						}
+						foreach (ModelElement oppositeElement in oppositeElements)
+						{
+							SerializeLink(file, null, childElement, oppositeElement, rolePlayedInfo, true);
+						}
 					}
 				}
 			}
@@ -902,7 +927,8 @@ namespace Northface.Tools.ORM.Shell
 			{
 				return SerializeChildElement(file, childElement, oppositeRoleInfo, customInfo, defaultPrefix, writeBeginElement ? oppositeRoleInfo.Name : null);
 			}
-			return false;
+
+			return ret;
 		}
 		/// <summary>
 		/// Recursivly serializes elements.
