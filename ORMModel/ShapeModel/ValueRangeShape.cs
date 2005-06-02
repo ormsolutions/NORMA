@@ -1,5 +1,4 @@
 ﻿#region Using directives
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,7 +6,7 @@ using System.Text;
 using Northface.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-
+using Northface.Tools.ORM.Shell;
 #endregion
 
 namespace Northface.Tools.ORM.ShapeModel
@@ -17,6 +16,24 @@ namespace Northface.Tools.ORM.ShapeModel
 		private static AutoSizeTextField myTextShapeField;
 		private string myDisplayText;
 
+		#region Customize appearance
+		/// <summary>
+		/// A brush used to draw portions of mandatory constraints
+		/// </summary>
+		protected static readonly StyleSetResourceId ValueRangeTextBrush = new StyleSetResourceId("Northface", "ValueRangeTextBrush");
+		/// <summary>
+		/// Initialize a pen and a brush for drawing the constraint
+		/// outlines and contents.
+		/// </summary>
+		/// <param name="classStyleSet">StyleSet</param>
+		protected override void InitializeResources(StyleSet classStyleSet)
+		{
+			ORMDesignerFontsAndColors colorService = ORMDesignerPackage.FontAndColorService;
+			BrushSettings brushSettings = new BrushSettings();
+			brushSettings.Color = colorService.GetForeColor(ORMDesignerColor.Constraint);
+			classStyleSet.AddBrush(ValueRangeTextBrush, DiagramBrushes.ShapeBackground, brushSettings);
+		}
+		#endregion // Customize appearance
 		#region overrides
 		/// <summary>
 		/// Associate the value range text with this shape
@@ -46,6 +63,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				Debug.Assert(myTextShapeField == null); // This should only be called once per type
 				myTextShapeField = value;
+				myTextShapeField.DefaultTextBrushId = ValueRangeTextBrush;
 			}
 		}
 		/// <summary>

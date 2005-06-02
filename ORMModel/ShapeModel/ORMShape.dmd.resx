@@ -259,9 +259,14 @@
   <data name="Toolbox.ExternalUniquenessConstraint.Tooltip.Id">
     <value xml:space="preserve">New External Uniqueness Constraint</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Toolbox.FrequencyConstraint.Bitmap.Id" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Toolbox.FrequencyConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/8DAwP+AgID/AAD//wD/AP8A/////wAA//8A/////wD//////6qq
+        rd3d2qqqqqrd3d3dqqqq3dqqqq3dqqrdqqqqqt2qrdqqqqqqrdrdqqqqqqqq3d2qraqqqqrd3aqq2q3d
+        qt3dqqqtqqqq3d2qqtqt3ard3aqtqqqqqt2t2qqqqqqt2qrdqqqqqt2qqt3aqqqt3aqqqt3d3d2qqqqq
+        rd3d2qqq
+</value>
   </data>
   <data name="Toolbox.FrequencyConstraint.Caption.Id">
     <value xml:space="preserve">Frequency Constraint</value>
