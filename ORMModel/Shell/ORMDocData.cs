@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Modeling.ArtifactMapper;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.ShapeModel;
+using EnvDTE;
 #if ATTACHELEMENTPROVIDERS
 using Northface.Tools.ORM.DocumentSynchronization;
 #endif // ATTACHELEMENTPROVIDERS
@@ -19,7 +20,7 @@ namespace Northface.Tools.ORM.Shell
 	/// <summary>
 	/// DocData object for the ORM Designer editor
 	/// </summary>
-	public partial class ORMDesignerDocData : ModelingDocData
+	public partial class ORMDesignerDocData : ModelingDocData, IExtensibleObject
 	{
 		#region Member variables
 		#endregion // Member variables
@@ -450,6 +451,30 @@ namespace Northface.Tools.ORM.Shell
 			}
 		}
 		#endregion // ORMDesignerDocData specific
+		#region Automation support
+		/// <summary>
+		/// Implements IExtensibleObject.GetAutomationObject. Returns the ORM2 stream for
+		/// the "ORM2Stream" object name and the this object for everything else.
+		/// </summary>
+		protected void GetAutomationObject(string name, IExtensibleObjectSite parent, out object result)
+		{
+#if NEWSERIALIZE
+			if ("ORM2Stream" == name)
+			{
+				MemoryStream stream = new MemoryStream();
+				(new ORMSerializer(Store)).Save2(stream);
+				stream.Position = 0;
+				result = stream;
+				return;
+			}
+#endif // NEWSERIALIZE
+			result = this;
+		}
+		void IExtensibleObject.GetAutomationObject(string name, IExtensibleObjectSite pParent, out object ppDisp)
+		{
+			GetAutomationObject(name, pParent, out ppDisp);
+		}
+		#endregion // Automation support
 	}
 	#endregion // ORMDesignerDocData class
 }

@@ -21,8 +21,8 @@
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
-   <Directory>c:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
-   <Directory>c:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
+   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
+   <Directory>C:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
   </AssemblyReferenceDirectories>
   <Target Name="$(ProjectDir)/ORMModel/bin/Debug/Northface.Tools.ORM.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
@@ -11197,6 +11197,55 @@ BaseReadingTreeNode.SetText():Void</Item>
              </Message>
             </Messages>
            </Member>
+           <Member Name="EnvDTE.IExtensibleObject.GetAutomationObject(System.String,EnvDTE.IExtensibleObjectSite,System.Object&amp;):System.Void">
+            <Messages>
+             <Message TypeName="UseGenericsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1007" Status="Excluded" Created="2005-06-03 18:06:39Z">
+              <Issue>
+               <Item>ORMDesignerDocData.EnvDTE.IExtensibleObject.GetAutomationObject(String, IExtensibleObjectSite, Object&amp;):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="29" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetAutomationObject(System.String,EnvDTE.IExtensibleObjectSite,System.Object&amp;):System.Void">
+            <Messages>
+             <Message Id="2#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-06-03 18:06:39Z">
+              <Issue>
+               <Item>result</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="29" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="parent" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-03 18:06:39Z" FixCategory="Breaking">
+              <Issue>
+               <Item>parent</Item>
+               <Item>ORMDesignerDocData.GetAutomationObject(String, IExtensibleObjectSite, Object&amp;):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="29" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="UseGenericsWhereAppropriate" Category="Microsoft.Design" CheckId="CA1007" Status="Excluded" Created="2005-06-03 18:06:39Z">
+              <Issue>
+               <Item>ORMDesignerDocData.GetAutomationObject(String, IExtensibleObjectSite, Object&amp;):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="29" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="LoadDocData(System.String,System.Boolean):System.Int32">
             <Messages>
              <Message TypeName="CatchNonClsCompliantExceptionsInGeneralHandlers" Category="Microsoft.Security" CheckId="CA2102" Created="2005-02-03 20:22:04Z">
@@ -12141,6 +12190,7 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="26" Modified="2005-05-27 18:59:16Z">IMS-generated code</Note>
     <Note Id="27" Modified="2005-05-27 18:59:36Z">IMS-generated code</Note>
     <Note Id="28" Modified="2005-05-27 19:00:06Z">Signatures match interface methods</Note>
+    <Note Id="29" Modified="2005-06-03 18:10:59Z">Function signature matches definition of externally-defined interface IExtensibleObject interface.</Note>
    </User>
    <User Name="pewert">
     <Note Id="0" Modified="2005-04-25 20:13:21Z">Defined in IMS-generated code</Note>
