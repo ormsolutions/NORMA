@@ -18,7 +18,7 @@ namespace Northface.Tools.ORM.ShapeModel
 
 		#region Customize appearance
 		/// <summary>
-		/// A brush used to draw portions of mandatory constraints
+		/// A brush used to draw the value range text
 		/// </summary>
 		protected static readonly StyleSetResourceId ValueRangeTextBrush = new StyleSetResourceId("Northface", "ValueRangeTextBrush");
 		/// <summary>

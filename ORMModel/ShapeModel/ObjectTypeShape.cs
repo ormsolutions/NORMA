@@ -343,7 +343,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			ObjectType objectType = parentShape.ModelElement as ObjectType;
 			if (objectType != null)
 			{
-				if (objectType.ReferenceModeString.Length != 0)
+				if (objectType.HasReferenceMode)
 				{
 					return string.Format(CultureInfo.InvariantCulture, "({0})", base.GetDisplayText(parentShape));
 				}

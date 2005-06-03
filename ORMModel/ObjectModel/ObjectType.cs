@@ -202,7 +202,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				//should be hidden on entity types where the ref mode is expanded and
 				//shown when the ref mode is collapsed. Thus, the value range can always
 				//be edited.
-//				return NestedFactType == null && (IsValueType || this.ReferenceModeString.Length != 0);
+//				return NestedFactType == null && (IsValueType || HasReferenceMode);
 				return NestedFactType == null;
 			}
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
@@ -240,7 +240,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			else if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == ValueRangeTextMetaAttributeGuid)
 			{
-				return !((IsValueType || ReferenceMode != null) && NestedFactType == null);
+				return !((IsValueType || HasReferenceMode) && NestedFactType == null);
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
@@ -427,6 +427,16 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 			return false;
+		}
+		/// <summary>
+		/// Indicates whether this ObjectType has a reference mode set.
+		/// </summary>
+		public bool HasReferenceMode
+		{
+			get
+			{
+				return ReferenceModeString.Length > 0;
+			}
 		}
 		#endregion
 

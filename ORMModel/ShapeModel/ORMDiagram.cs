@@ -247,7 +247,11 @@ namespace Northface.Tools.ORM.ShapeModel
 			ObjectTypeShape objectTypeShape = shapeElement as ObjectTypeShape;
 			if (objectTypeShape != null)
 			{
-				return !objectTypeShape.ExpandRefMode;
+				ObjectType obj = objectTypeShape.AssociatedObjectType;
+				if (obj.HasReferenceMode)
+				{
+					return !objectTypeShape.ExpandRefMode;
+				}
 			}
 			return false;
 		}

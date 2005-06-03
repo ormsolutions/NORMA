@@ -236,7 +236,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				ObjectType rolePlayer = RolePlayer;
 				if (fact != null && rolePlayer != null)
 				{
-					readOnly = !(rolePlayer.IsValueType || rolePlayer.ReferenceModeString.Length != 0);
+					readOnly = !(rolePlayer.IsValueType || rolePlayer.HasReferenceMode);
 				}
 				return readOnly;
 			}
