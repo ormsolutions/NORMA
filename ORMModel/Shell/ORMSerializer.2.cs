@@ -423,27 +423,116 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// Used for serializing attributes.
 		/// </summary>
+		/// <param name="guid">The GUID to convert.</param>
+		/// <returns>An XML encoded string.</returns>
+		private static string ToXML(System.Guid guid)
+		{
+			return '_'+System.Xml.XmlConvert.ToString(guid).ToUpper(CultureInfo.InvariantCulture);
+		}
+		/// <summary>
+		/// Used for serializing attributes.
+		/// </summary>
 		/// <param name="value">The attribute's value.</param>
-		/// <returns>A type converted string.</returns>
-		private static string ToString(object value)
+		/// <param name="typeConvert">true to type convert the value (value is an object type).</param>
+		/// <returns>An XML encoded string.</returns>
+		private static string ToXML(object value, bool typeConvert)
 		{
 			if (value == null)
 			{
 				return null;
 			}
-			object[] typeConverters = value.GetType().GetCustomAttributes(typeof(TypeConverterAttribute), false);
-
-			if (typeConverters != null && typeConverters.Length != 0)
+			else if (typeConvert)
 			{
-				Type converterType = Type.GetType(((TypeConverterAttribute)typeConverters[0]).ConverterTypeName, false, false);
+				object[] typeConverters = value.GetType().GetCustomAttributes(typeof(TypeConverterAttribute), false);
 
-				if (converterType != null)
+				if (typeConverters != null && typeConverters.Length != 0)
 				{
-					return ((TypeConverter)Activator.CreateInstance(converterType)).ConvertToInvariantString(value);
+					Type converterType = Type.GetType(((TypeConverterAttribute)typeConverters[0]).ConverterTypeName, false, false);
+
+					if (converterType != null)
+					{
+						return ((TypeConverter)Activator.CreateInstance(converterType)).ConvertToInvariantString(value);
+					}
 				}
 			}
 
-			return value.ToString();
+			Type type = value.GetType();
+
+			switch (Type.GetTypeCode(type))
+			{
+				case TypeCode.Empty:
+				case TypeCode.DBNull:
+				{
+					return null;
+				}
+				case TypeCode.DateTime:
+				{
+					return System.Xml.XmlConvert.ToString((System.DateTime)value);
+				}
+				case TypeCode.UInt64:
+				{
+					return System.Xml.XmlConvert.ToString((ulong)value);
+				}
+				case TypeCode.Int64:
+				{
+					return System.Xml.XmlConvert.ToString((long)value);
+				}
+				case TypeCode.UInt32:
+				{
+					return System.Xml.XmlConvert.ToString((uint)value);
+				}
+				case TypeCode.Int32:
+				{
+					return System.Xml.XmlConvert.ToString((int)value);
+				}
+				case TypeCode.UInt16:
+				{
+					return System.Xml.XmlConvert.ToString((ushort)value);
+				}
+				case TypeCode.Int16:
+				{
+					return System.Xml.XmlConvert.ToString((short)value);
+				}
+				case TypeCode.Byte:
+				{
+					return System.Xml.XmlConvert.ToString((byte)value);
+				}
+				case TypeCode.SByte:
+				{
+					return System.Xml.XmlConvert.ToString((sbyte)value);
+				}
+				case TypeCode.Char:
+				{
+					return System.Xml.XmlConvert.ToString((char)value);
+				}
+				case TypeCode.Boolean:
+				{
+					return System.Xml.XmlConvert.ToString((bool)value);
+				}
+				case TypeCode.Decimal:
+				{
+					return System.Xml.XmlConvert.ToString((decimal)value);
+				}
+				case TypeCode.Double:
+				{
+					return System.Xml.XmlConvert.ToString((double)value);
+				}
+				case TypeCode.Single:
+				{
+					return System.Xml.XmlConvert.ToString((float)value);
+				}
+			}
+
+			if (type==typeof(System.Guid))
+			{
+				return ToXML((System.Guid)value);
+			}
+			else if (type==typeof(System.TimeSpan))
+			{
+				return System.Xml.XmlConvert.ToString((System.TimeSpan)value);
+			}
+
+			return System.Xml.XmlConvert.EncodeName(value.ToString());
 		}
 		/// <summary>
 		/// Used for serializing child elements.
@@ -631,7 +720,7 @@ namespace Northface.Tools.ORM.Shell
 					file.WriteAttributeString
 					(
 						attribute.Name,
-						ToString(element.GetAttributeValue(attribute))
+						ToXML(element.GetAttributeValue(attribute), false)
 					);
 				}
 				return;
@@ -652,7 +741,7 @@ namespace Northface.Tools.ORM.Shell
 								customInfo.CustomPrefix,
 								customInfo.CustomName != null ? customInfo.CustomName : attribute.Name,
 								customInfo.CustomNamespace,
-								ToString(element.GetAttributeValue(attribute))
+								ToXML(element.GetAttributeValue(attribute), attribute.CustomStorage)
 							);
 							break;
 						}
@@ -675,7 +764,7 @@ namespace Northface.Tools.ORM.Shell
 								customInfo.CustomPrefix,
 								customInfo.DoubleTagName != null ? customInfo.DoubleTagName : name,
 								customInfo.CustomNamespace,
-								ToString(element.GetAttributeValue(attribute))
+								ToXML(element.GetAttributeValue(attribute), attribute.CustomStorage)
 							);
 							file.WriteEndElement();
 
@@ -690,7 +779,7 @@ namespace Northface.Tools.ORM.Shell
 						customInfo.CustomPrefix,
 						customInfo.CustomName != null ? customInfo.CustomName : attribute.Name,
 						customInfo.CustomNamespace,
-						ToString(element.GetAttributeValue(attribute))
+						ToXML(element.GetAttributeValue(attribute), attribute.CustomStorage)
 					);
 				}
 			}
@@ -796,7 +885,7 @@ namespace Northface.Tools.ORM.Shell
 				myLinkGUIDs.Add(keyId);
 				if ((link == null) || link.MetaClass.MetaRolesPlayed.Count != 0)
 				{
-					file.WriteAttributeString("id", keyId.ToString().ToUpper(CultureInfo.InvariantCulture));
+					file.WriteAttributeString("id", ToXML(keyId));
 				}
 				if (link != null)
 				{
@@ -804,14 +893,14 @@ namespace Northface.Tools.ORM.Shell
 					{
 						oppositeRolePlayer = link.GetRolePlayer(rolePlayedInfo.OppositeMetaRole);
 					}
-					file.WriteAttributeString("ref", oppositeRolePlayer.Id.ToString().ToUpper(CultureInfo.InvariantCulture));
+					file.WriteAttributeString("ref", ToXML(oppositeRolePlayer.Id));
 				}
 
 				SerializeAttributes(file, link, customElement, rolePlayedInfo, attributes, hasCustomAttributes);
 			}
 			else
 			{
-				file.WriteAttributeString("ref", keyId.ToString().ToUpper(CultureInfo.InvariantCulture));
+				file.WriteAttributeString("ref", ToXML(keyId));
 			}
 
 			WriteCustomizedEndElement(file, customInfo);
@@ -976,7 +1065,7 @@ namespace Northface.Tools.ORM.Shell
 
 			//start new element
 			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, classInfo.Name)) return;
-			file.WriteAttributeString("id", element.Id.ToString().ToUpper(CultureInfo.InvariantCulture));
+			file.WriteAttributeString("id", ToXML(element.Id));
 
 			//write attributes
 			SerializeAttributes
@@ -1087,8 +1176,7 @@ namespace Northface.Tools.ORM.Shell
 			xmlSettings.Indent = true;
 
 			file = System.Xml.XmlWriter.Create(stream, xmlSettings);
-			file.WriteStartElement("orm", "ORM2", "http://Schemas.Northface.edu/ORM/ORMCore");
-			file.WriteAttributeString("xmlns", "http://Schemas.Northface.edu/ORM/ORMCore");
+			file.WriteStartElement("ormRoot", "ORM2", "http://Schemas.Northface.edu/ORM/ORMRoot");
 
 			//serialize namespaces
 			foreach (object value in values)
