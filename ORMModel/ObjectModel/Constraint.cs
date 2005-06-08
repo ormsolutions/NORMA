@@ -808,7 +808,11 @@ namespace Northface.Tools.ORM.ObjectModel
 				MultiColumnExternalConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection as MultiColumnExternalConstraintRoleSequence;
 				if (sequence != null)
 				{
-					sequence.ExternalConstraint.VerifyRoleSequenceArityForRule(null);
+					MultiColumnExternalConstraint externalConstraint = sequence.ExternalConstraint;
+					if (externalConstraint != null && !externalConstraint.IsRemoved)
+					{
+						externalConstraint.VerifyRoleSequenceArityForRule(null);
+					}
 				}
 			}
 		}

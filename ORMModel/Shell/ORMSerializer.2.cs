@@ -457,82 +457,88 @@ namespace Northface.Tools.ORM.Shell
 			}
 
 			Type type = value.GetType();
-
-			switch (Type.GetTypeCode(type))
+			if (type.IsEnum)
 			{
-				case TypeCode.Empty:
-				case TypeCode.DBNull:
-				{
-					return null;
-				}
-				case TypeCode.DateTime:
-				{
-					return System.Xml.XmlConvert.ToString((System.DateTime)value);
-				}
-				case TypeCode.UInt64:
-				{
-					return System.Xml.XmlConvert.ToString((ulong)value);
-				}
-				case TypeCode.Int64:
-				{
-					return System.Xml.XmlConvert.ToString((long)value);
-				}
-				case TypeCode.UInt32:
-				{
-					return System.Xml.XmlConvert.ToString((uint)value);
-				}
-				case TypeCode.Int32:
-				{
-					return System.Xml.XmlConvert.ToString((int)value);
-				}
-				case TypeCode.UInt16:
-				{
-					return System.Xml.XmlConvert.ToString((ushort)value);
-				}
-				case TypeCode.Int16:
-				{
-					return System.Xml.XmlConvert.ToString((short)value);
-				}
-				case TypeCode.Byte:
-				{
-					return System.Xml.XmlConvert.ToString((byte)value);
-				}
-				case TypeCode.SByte:
-				{
-					return System.Xml.XmlConvert.ToString((sbyte)value);
-				}
-				case TypeCode.Char:
-				{
-					return System.Xml.XmlConvert.ToString((char)value);
-				}
-				case TypeCode.Boolean:
-				{
-					return System.Xml.XmlConvert.ToString((bool)value);
-				}
-				case TypeCode.Decimal:
-				{
-					return System.Xml.XmlConvert.ToString((decimal)value);
-				}
-				case TypeCode.Double:
-				{
-					return System.Xml.XmlConvert.ToString((double)value);
-				}
-				case TypeCode.Single:
-				{
-					return System.Xml.XmlConvert.ToString((float)value);
-				}
+				return Enum.GetName(type, value);
 			}
-
-			if (type==typeof(System.Guid))
+			else
 			{
-				return ToXML((System.Guid)value);
-			}
-			else if (type==typeof(System.TimeSpan))
-			{
-				return System.Xml.XmlConvert.ToString((System.TimeSpan)value);
-			}
+				switch (Type.GetTypeCode(type))
+				{
+					case TypeCode.Empty:
+					case TypeCode.DBNull:
+					{
+						return null;
+					}
+					case TypeCode.DateTime:
+					{
+						return System.Xml.XmlConvert.ToString((System.DateTime)value);
+					}
+					case TypeCode.UInt64:
+					{
+						return System.Xml.XmlConvert.ToString((ulong)value);
+					}
+					case TypeCode.Int64:
+					{
+						return System.Xml.XmlConvert.ToString((long)value);
+					}
+					case TypeCode.UInt32:
+					{
+						return System.Xml.XmlConvert.ToString((uint)value);
+					}
+					case TypeCode.Int32:
+					{
+						return System.Xml.XmlConvert.ToString((int)value);
+					}
+					case TypeCode.UInt16:
+					{
+						return System.Xml.XmlConvert.ToString((ushort)value);
+					}
+					case TypeCode.Int16:
+					{
+						return System.Xml.XmlConvert.ToString((short)value);
+					}
+					case TypeCode.Byte:
+					{
+						return System.Xml.XmlConvert.ToString((byte)value);
+					}
+					case TypeCode.SByte:
+					{
+						return System.Xml.XmlConvert.ToString((sbyte)value);
+					}
+					case TypeCode.Char:
+					{
+						return System.Xml.XmlConvert.ToString((char)value);
+					}
+					case TypeCode.Boolean:
+					{
+						return System.Xml.XmlConvert.ToString((bool)value);
+					}
+					case TypeCode.Decimal:
+					{
+						return System.Xml.XmlConvert.ToString((decimal)value);
+					}
+					case TypeCode.Double:
+					{
+						return System.Xml.XmlConvert.ToString((double)value);
+					}
+					case TypeCode.Single:
+					{
+						return System.Xml.XmlConvert.ToString((float)value);
+					}
+				}
 
-			return System.Xml.XmlConvert.EncodeName(value.ToString());
+				if (type==typeof(System.Guid))
+				{
+					return ToXML((System.Guid)value);
+				}
+				else if (type==typeof(System.TimeSpan))
+				{
+					return System.Xml.XmlConvert.ToString((System.TimeSpan)value);
+				}
+
+				return value.ToString();
+			}
 		}
 		/// <summary>
 		/// Used for serializing child elements.

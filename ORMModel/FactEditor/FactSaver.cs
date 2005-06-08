@@ -146,7 +146,7 @@ namespace Northface.Tools.ORM.FactEditor
 								else
 								{
 									objType.Name = objNameSansRef;
-									modelElements.Add(objType, true);
+									modelElements.Add(objType, false);
 									bool convertingToValueType = false;
 									bool entityWasCollapsed = false;
 
@@ -214,7 +214,6 @@ namespace Northface.Tools.ORM.FactEditor
 								if (null != factRoles)
 								{
 									Role role = Role.CreateRole(store);
-									role.Name = "Role1";
 									role.RolePlayer = objType;
 									factRoles.Add(role);
 								}
@@ -267,7 +266,7 @@ namespace Northface.Tools.ORM.FactEditor
 						{
 							factType.Model = myModel;
 						}
-						modelElements.Add(factType, true);
+						modelElements.Add(factType, myEditFact == null);
 					}
 
 					roles.Clear();

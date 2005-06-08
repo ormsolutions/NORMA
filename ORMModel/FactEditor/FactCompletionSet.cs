@@ -49,7 +49,6 @@ namespace Northface.Tools.ORM.FactEditor
 			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
 			monitor.DocumentWindowChanged += new MonitorSelectionEventHandler(DocumentWindowChangedEvent);
 			monitor.SelectionChanged += new MonitorSelectionEventHandler(SelectionChangedEvent);
-			CurrentDocumentView = monitor.CurrentDocumentView as ORMDesignerDocView;
 			
 			// initialize the comparer used for sorting
 			myComparer = new ObjectTypeNameComparer();
@@ -57,8 +56,8 @@ namespace Northface.Tools.ORM.FactEditor
 			// create image list for intellisense
 			InitializeImageList();
 
-			// Create the list of object types in the model
-			LoadModelElements();
+			// Initial the document. This needs to be called last so that model elements load correctly
+			CurrentDocumentView = monitor.CurrentDocumentView as ORMDesignerDocView;
 		}
 
 		private void InitializeImageList()
@@ -321,6 +320,7 @@ namespace Northface.Tools.ORM.FactEditor
 				if (value != null)
 				{
 					AttachEventHandlers((myCurrentDocView.DocData as ModelingDocData).Store);
+					LoadModelElements();
 				}
 			}
 		}
@@ -353,7 +353,6 @@ namespace Northface.Tools.ORM.FactEditor
 		private void DocumentWindowChangedEvent(object sender, MonitorSelectionEventArgs e)
 		{
 			CurrentDocumentView = ((IMonitorSelectionService)sender).CurrentDocumentView as ORMDesignerDocView;
-			LoadModelElements();
 		}
 
 		private void AttachEventHandlers(Store store)

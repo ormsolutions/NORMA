@@ -335,46 +335,49 @@ namespace Northface.Tools.ORM.ShapeModel
 						myIUC = internalUniquenessConstraint;
 					}
 				}
-				else if (null != (role = currentElement as Role))
+				else if (mySourceShape != null)
 				{
-					if (object.ReferenceEquals(role.FactType, mySourceShape.AssociatedFactType))
+					if (null != (role = currentElement as Role))
 					{
-						// Add or remove the role
-						IList<Role> roles = SelectedRoleCollection;
-						int roleIndex = roles.IndexOf(role);
-						bool forceRedraw = false;
-						if (roleIndex >= 0)
+						if (object.ReferenceEquals(role.FactType, mySourceShape.AssociatedFactType))
 						{
-							// Only remove a role when the control key is down. Otherwise,
-							// there is no way to double-click on a previously selected
-							// role without turning it off, and this is a natural gesture.
-							if (0 != (0xff00 & GetKeyState(Keys.ControlKey)))
+							// Add or remove the role
+							IList<Role> roles = SelectedRoleCollection;
+							int roleIndex = roles.IndexOf(role);
+							bool forceRedraw = false;
+							if (roleIndex >= 0)
+							{
+								// Only remove a role when the control key is down. Otherwise,
+								// there is no way to double-click on a previously selected
+								// role without turning it off, and this is a natural gesture.
+								if (0 != (0xff00 & GetKeyState(Keys.ControlKey)))
+								{
+									forceRedraw = true;
+									roles.RemoveAt(roleIndex);
+								}
+							}
+							else
 							{
 								forceRedraw = true;
-								roles.RemoveAt(roleIndex);
+								roles.Add(role);
+							}
+							if (mySourceShape != null)
+							{
+								myPendingOnClickedAction = OnClickedAction.CheckForCommit;
+							}
+
+							if (forceRedraw)
+							{
+								// Force the shape to redraw
+								Debug.Assert(mySourceShape != null); //source shape should have been set
+								mySourceShape.Invalidate(true);
 							}
 						}
-						else
-						{
-							forceRedraw = true;
-							roles.Add(role);
-						}
-						if (mySourceShape != null)
-						{
-							myPendingOnClickedAction = OnClickedAction.CheckForCommit;
-						}
-
-						if (forceRedraw)
-						{
-							// Force the shape to redraw
-							Debug.Assert(mySourceShape != null); //source shape should have been set
-							mySourceShape.Invalidate(true);
-						}
 					}
-				}
-				else if (mySourceShape != null && currentElement is ORMDiagram)
-				{
-					base.OnClicked(e); // Let through to allow a cancel
+					else if (currentElement is ORMDiagram)
+					{
+						base.OnClicked(e); // Let through to allow a cancel
+					}
 				}
 			}
 		}
