@@ -147,6 +147,7 @@ namespace Northface.Tools.ORM
         private const string ModelReadingRoleDeletedRoleText_Id = "Model.Reading.RoleDeletedText";
         private const string ModelErrorFactTypeRequiresInternalUniquessConstraintMessage_Id = "ModelError.FactType.RequiresInternalUniquenessConstraint.Message";
         private const string ModelErrorFactTypeRequiresReadingMessage_Id = "ModelError.FactType.RequiresReading.Message";
+        private const string ModelErrorValueTypeDataTypeNotSpecifiedMessage_Id = "ModelError.ValueType.DataTypeNotSpecified.Message";
         private const string ModelErrorFactTypeRequiresIUCActivateTransactionName_Id = "ModelError.FactType.RequiresIUC.ActivateTransactionName";
         private const string ValueRangeDefinitionDefinitionContainerPattern_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern";
         private const string ValueRangeDefinitionRangeDelimiter_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter";
@@ -1250,6 +1251,15 @@ namespace Northface.Tools.ORM
             get
             {
                 return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorFactTypeRequiresReadingMessage_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ModelErrorValueTypeDataTypeNotSpecifiedMessage
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorValueTypeDataTypeNotSpecifiedMessage_Id);
             }
         }
         /// <summary>

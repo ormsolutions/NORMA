@@ -202,6 +202,9 @@
 		<se:Element Class="TooManyRoleSequenceError">
 			<se:Link RelationshipName="ExternalConstraintHasTooManyRoleSequencesError" RoleName="Constraint" Name="Constraint"/>
 		</se:Element>
+		<se:Element Class="DataTypeNotSpecifiedError">
+			<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="ValueTypeHasDataType" Name="ConceptualDataType"/>
+		</se:Element>
 	</se:Using>
 	<se:Using Namespace="Northface.Tools.ORM.ShapeModel">
 		<se:Namespaces Class="ORMShapeModel">

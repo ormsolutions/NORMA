@@ -61,6 +61,8 @@ namespace Northface.Tools.ORM.Shell
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+	<!-- DataTypeNotSpecifiedError spits as a link to a link, which won't deserialize, so don't save it -->
+	<xsl:template match=""om:ModelElement[@Type='Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError']""/>
 </xsl:stylesheet>";
 		#endregion // Xsl transforms
 		#region Synchronized code to load transform into static variable

@@ -368,6 +368,9 @@
     <xs:complexType name="ConstraintRef">
         <xs:attribute name="ref" type="xs:IDREF" />
     </xs:complexType>
+    <xs:complexType name="ConceptualDataTypeRef">
+        <xs:attribute name="ref" type="xs:IDREF" />
+    </xs:complexType>
     <!--end ConstraintRef and  ConstraintRefs-->
     <xs:complexType name="ExternalConstraints">
         <xs:complexContent>
@@ -647,6 +650,15 @@
                     <xs:extension base="ModelError">
                         <xs:sequence minOccurs ="1" maxOccurs ="1">
                             <xs:element name ="Constraint" type="ConstraintRef"></xs:element>
+                        </xs:sequence>
+                    </xs:extension >
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="DataTypeNotSpecifiedError">
+               <xs:complexContent>
+                    <xs:extension base="ModelError">
+                        <xs:sequence minOccurs="1" maxOccurs ="1">
+                            <xs:element name="ConceptualDataType" type="ConceptualDataTypeRef"/>
                         </xs:sequence>
                     </xs:extension >
                 </xs:complexContent>

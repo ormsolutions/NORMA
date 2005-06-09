@@ -366,6 +366,9 @@
     <ResourceString name="ModelErrorFactTypeRequiresReadingMessage" model="Model" resourceName="ModelError.FactType.RequiresReading.Message">
         <comment type="Summary">Text displayed in the text of the FactTypeRequiresInternalUniquessContraintError</comment>
     </ResourceString>
+    <ResourceString name="ModelErrorValueTypeDataTypeNotSpecifiedMessage" model="Model" resourceName="ModelError.ValueType.DataTypeNotSpecified.Message">
+        <comment type="Summary">Text displayed for an unspecified data type.</comment>
+    </ResourceString>
     <ResourceString name="ModelErrorFactTypeRequiresIUCActivateTransactionName" model="Model" resourceName="ModelError.FactType.RequiresIUC.ActivateTransactionName">
         <comment type="Summary">The name given to the transaction used when adding an internal uniqueness constraint to correct the error of lacking one.</comment>
     </ResourceString>

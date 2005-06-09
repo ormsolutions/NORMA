@@ -8,7 +8,7 @@ using Northface.Tools.ORM;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
-	public partial class ObjectType : INamedElementDictionaryChild
+	public partial class ObjectType : INamedElementDictionaryChild, IModelErrorOwner
 	{
 		#region Public token values
 		/// <summary>
@@ -309,23 +309,7 @@ namespace Northface.Tools.ORM.ObjectModel
 
 		private ObjectType FindValueType(string name, ORMModel objModel)
 		{
-
-			LocatedElement element = objModel.ObjectTypesDictionary.GetElement(name);
-			if (!element.IsEmpty)
-			{
-				if (element.SingleElement != null)
-				{
-					return (ObjectType)element.SingleElement;
-				}
-				else if (element.MultipleElements.Count > 0)
-				{
-					foreach (ObjectType objectType in element.MultipleElements)
-					{
-						return objectType;
-					}
-				}
-			}
-			return null;
+			return objModel.ObjectTypesDictionary.GetElement(name).FirstElement as ObjectType;
 		}
 		/// <summary>
 		///  Utility function to cahnge the name of an existing reference mode.
@@ -749,6 +733,97 @@ namespace Northface.Tools.ORM.ObjectModel
 			childMetaRoleGuid = ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid;
 		}
 		#endregion // INamedElementDictionaryChild implementation
+		#region DataTypeNotSpecifiedError retrieval and validation
+		/// <summary>
+		/// Returns an error object if the data type is the unspecified data
+		/// type. The UnspecifiedDataType is different than a null DataType, which
+		/// is simply implying that this ObjectType is not a ValueType.
+		/// </summary>
+		public DataTypeNotSpecifiedError DataTypeNotSpecifiedError
+		{
+			get
+			{
+				IList list = GetElementLinks(ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuid);
+				if (list.Count != 0)
+				{
+					ValueTypeHasDataType link = (ValueTypeHasDataType)list[0];
+					UnspecifiedDataType dataType = link.DataType as UnspecifiedDataType;
+					if (dataType != null)
+					{
+						return link.DataTypeNotSpecifiedError;
+					}
+				}
+				return null;
+			}
+		}
+		/// <summary>
+		/// Validate that a DataTypeNotSpecifiedError is present if neede, and that
+		/// the data type is an unspecified type instance if the error is present.
+		/// </summary>
+		private void ValidateDataTypeNotSpecifiedError(INotifyElementAdded notifyAdded)
+		{
+			IList list = GetElementLinks(ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuid);
+			if (list.Count != 0)
+			{
+				ValueTypeHasDataType link = (ValueTypeHasDataType)list[0];
+				DataTypeNotSpecifiedError error = link.DataTypeNotSpecifiedError;
+				UnspecifiedDataType dataType = link.DataType as UnspecifiedDataType;
+				if (dataType == null)
+				{
+					if (error != null)
+					{
+						error.Remove();
+					}
+				}
+				else if (error == null)
+				{
+					error = DataTypeNotSpecifiedError.CreateDataTypeNotSpecifiedError(Store);
+					error.Model = Model;
+					link.DataTypeNotSpecifiedError = error;
+					error.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(error, true);
+					}
+				}
+			}
+		}
+		#endregion // DataTypeNotSpecifiedError retrieval and validation
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Returns the errors associated with the object.
+		/// </summary>
+		[CLSCompliant(false)]
+		protected IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				DataTypeNotSpecifiedError unspecifiedDataTypeError = DataTypeNotSpecifiedError;
+				if (unspecifiedDataTypeError != null)
+				{
+					yield return unspecifiedDataTypeError;
+				}
+			}
+		}
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// </summary>
+		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateDataTypeNotSpecifiedError(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		#endregion // IModelErrorOwner implementation
 		#region CheckForIncompatibleRelationshipRule class
 		/// <summary>
 		/// Ensure consistency among relationships attached to ObjectType roles.

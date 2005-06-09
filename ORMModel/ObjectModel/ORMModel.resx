@@ -162,6 +162,10 @@
     <value xml:space="preserve">Too many roles for the reading with text '{0}' in model '{1}'</value>
     <comment xml:space="preserve">Text displayed in the text of the TooManyRolesError</comment>
   </data>
+  <data name="ModelError.ValueType.DataTypeNotSpecified.Message">
+    <value xml:space="preserve">A data type must be specified for value type '{0}' in model '{1}'.</value>
+    <comment xml:space="preserve">Text displayed for an unspecified data type</comment>
+  </data>
   <data name="ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint">
     <value xml:space="preserve">A preferred identifier must have a ConstraintType of InternalUniqueness or ExternalUniqueness.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to create a preferred identifier relationship with an incompatible constraint type.</comment>

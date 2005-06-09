@@ -199,6 +199,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -12823,6 +12824,124 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError")]
+	public  partial class DataTypeNotSpecifiedError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region DataTypeNotSpecifiedError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "d28dadd0-133b-419a-927b-c7189f4344f1";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError.MetaClassGuidString);
+		#endregion
+
+		#region ValueTypeHasDataType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType ValueTypeHasDataType
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region DataTypeNotSpecifiedError's Generated Constructor Code
+	public  partial class DataTypeNotSpecifiedError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DataTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DataTypeNotSpecifiedError CreateDataTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (DataTypeNotSpecifiedError)store.ElementFactory.CreateElement(typeof(DataTypeNotSpecifiedError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DataTypeNotSpecifiedError CreateAndInitializeDataTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (DataTypeNotSpecifiedError)store.ElementFactory.CreateElement(typeof(DataTypeNotSpecifiedError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for DataTypeNotSpecifiedError
+	/// <summary>
+	/// DataTypeNotSpecifiedError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError))]
+	public sealed class DataTypeNotSpecifiedErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DataTypeNotSpecifiedErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrder.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrder")]
 	public  partial class ReadingOrder : Microsoft.VisualStudio.Modeling.ModelElement
 	{
@@ -16620,6 +16739,52 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get { return (Northface.Tools.ORM.ObjectModel.ObjectType)this.GetRolePlayer(ValueTypeCollectionMetaRoleGuid); }
 			set { this.SetRolePlayer(ValueTypeCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region DataTypeNotSpecifiedError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError DataTypeNotSpecifiedError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError), newRoles);
+				}
+			}
 		}
 		#endregion
 	}
@@ -21805,6 +21970,118 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError")]
+	public  partial class ValueTypeHasUnspecifiedDataTypeError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ValueTypeHasUnspecifiedDataTypeError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "8bba1a0e-d440-4952-858e-d98be57a86a5";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.MetaRelationshipGuidString);
+		#endregion
+
+		#region DataTypeNotSpecifiedError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String DataTypeNotSpecifiedErrorMetaRoleGuidString = "4260983a-5da6-4598-b6fb-f0e015c431a6";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid DataTypeNotSpecifiedErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedError")]
+		public  Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError DataTypeNotSpecifiedError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError)this.GetRolePlayer(DataTypeNotSpecifiedErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(DataTypeNotSpecifiedErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region ValueTypeHasDataType's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueTypeHasDataTypeMetaRoleGuidString = "18a22f2c-e949-4384-be3e-6c5684f47358";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueTypeHasDataTypeMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataType")]
+		public  Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType ValueTypeHasDataType
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType)this.GetRolePlayer(ValueTypeHasDataTypeMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueTypeHasDataTypeMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region ValueTypeHasUnspecifiedDataTypeError's Generated Constructor Code
+	public  partial class ValueTypeHasUnspecifiedDataTypeError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueTypeHasUnspecifiedDataTypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueTypeHasUnspecifiedDataTypeError CreateValueTypeHasUnspecifiedDataTypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ValueTypeHasUnspecifiedDataTypeError)store.ElementFactory.CreateElementLink(typeof(ValueTypeHasUnspecifiedDataTypeError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueTypeHasUnspecifiedDataTypeError CreateAndInitializeValueTypeHasUnspecifiedDataTypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueTypeHasUnspecifiedDataTypeError)store.ElementFactory.CreateElementLink(typeof(ValueTypeHasUnspecifiedDataTypeError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueTypeHasUnspecifiedDataTypeError
+	/// <summary>
+	/// ValueTypeHasUnspecifiedDataTypeError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError))]
+	public sealed class ValueTypeHasUnspecifiedDataTypeErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueTypeHasUnspecifiedDataTypeErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError(store, bag);
 		}
 	}
 	#endregion
