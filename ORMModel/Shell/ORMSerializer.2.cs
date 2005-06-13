@@ -698,7 +698,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// Get the default prefix for an element from the meta model containing the element
 		/// </summary>
-		private string DefaultElementPrefix(ModelElement element)
+		private static string DefaultElementPrefix(ModelElement element)
 		{
 			string retVal = null;
 			IORMCustomElementNamespace parentModel = element.Store.SubStores[element.MetaClass.MetaModel.Id] as IORMCustomElementNamespace;
@@ -744,7 +744,7 @@ namespace Northface.Tools.ORM.Shell
 						{
 							file.WriteElementString
 							(
-								customInfo.CustomPrefix,
+								customInfo.CustomPrefix != null ? customInfo.CustomPrefix : DefaultElementPrefix(element),
 								customInfo.CustomName != null ? customInfo.CustomName : attribute.Name,
 								customInfo.CustomNamespace,
 								ToXML(element.GetAttributeValue(attribute), attribute.CustomStorage)
@@ -757,17 +757,18 @@ namespace Northface.Tools.ORM.Shell
 						}
 						case ORMCustomSerializedAttributeWriteStyle.DoubleTaggedElement:
 						{
-							string name = (customInfo.CustomName != null ? customInfo.CustomName : attribute.Name);
+							string prefix = (customInfo.CustomPrefix!= null?customInfo.CustomPrefix:DefaultElementPrefix(element));
+							string name = (customInfo.CustomName!= null?customInfo.CustomName:attribute.Name);
 
 							file.WriteStartElement
 							(
-								customInfo.CustomPrefix,
+								prefix,
 								name,
 								customInfo.CustomNamespace
 							);
 							file.WriteElementString
 							(
-								customInfo.CustomPrefix,
+								prefix,
 								customInfo.DoubleTagName != null ? customInfo.DoubleTagName : name,
 								customInfo.CustomNamespace,
 								ToXML(element.GetAttributeValue(attribute), attribute.CustomStorage)

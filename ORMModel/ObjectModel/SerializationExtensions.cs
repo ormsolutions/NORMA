@@ -81,7 +81,7 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             get
             {
-                return new ORMCustomSerializedElementInfo(null, "Model", null, ORMCustomSerializedElementWriteStyle.Element, null);
+                return new ORMCustomSerializedElementInfo(null, "ORMModel", null, ORMCustomSerializedElementWriteStyle.Element, null);
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
@@ -247,6 +247,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ObjectType : IORMCustomSerializedElement
     {
+        private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -255,7 +256,8 @@ namespace Northface.Tools.ORM.ObjectModel
             {
                 return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
                             | (ORMCustomSerializedElementSupportedOperations.ElementInfo 
-                            | (ORMCustomSerializedElementSupportedOperations.AttributeInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo)));
+                            | (ORMCustomSerializedElementSupportedOperations.AttributeInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles))));
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -300,7 +302,13 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             get
             {
-                return null;
+                IComparer<MetaRoleInfo> retVal = ObjectType.myCustomSortChildComparer;
+                if ((null == retVal))
+                {
+                    retVal = new CustomSortChildComparer(this.Store);
+                    ObjectType.myCustomSortChildComparer = retVal;
+                }
+                return retVal;
             }
         }
         IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
@@ -344,7 +352,7 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             if ((rolePlayedInfo.Id == ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
             {
-                return new ORMCustomSerializedElementInfo(null, "PlayedRole", null, ORMCustomSerializedElementWriteStyle.Element, null);
+                return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
             }
             if ((rolePlayedInfo.Id == ValueTypeHasDataType.DataTypeMetaRoleGuid))
             {
@@ -358,11 +366,79 @@ namespace Northface.Tools.ORM.ObjectModel
             {
                 return new ORMCustomSerializedElementInfo(null, "NestedPredicate", null, ORMCustomSerializedElementWriteStyle.Element, null);
             }
+            if ((rolePlayedInfo.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid))
+            {
+                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+            }
             return ORMCustomSerializedElementInfo.Default;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+        }
+        private class CustomSortChildComparer : IComparer<MetaRoleInfo>
+        {
+            private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
+            /// <summary>
+            ///</summary>
+            public CustomSortChildComparer(Store store)
+            {
+                MetaDataDirectory metaDataDir = store.MetaDataDirectory;
+                Dictionary<MetaRoleInfo, int> roleOrderDictionary = new Dictionary<MetaRoleInfo, int>();
+                MetaRoleInfo metaRole;
+                metaRole = metaDataDir.FindMetaRole(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
+                metaRole = metaDataDir.FindMetaRole(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
+                metaRole = metaDataDir.FindMetaRole(ValueTypeHasDataType.DataTypeMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
+                metaRole = metaDataDir.FindMetaRole(SubjectHasPresentation.PresentationMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 3;
+                metaRole = metaDataDir.FindMetaRole(NestingEntityTypeHasFactType.NestedFactTypeMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 4;
+                metaRole = metaDataDir.FindMetaRole(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 5;
+                this.myRoleOrderDictionary = roleOrderDictionary;
+            }
+            /// <summary>
+            ///</summary>
+            public int Compare(MetaRoleInfo x, MetaRoleInfo y)
+            {
+                int xPos;
+                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
+                {
+                    xPos = int.MaxValue;
+                }
+                int yPos;
+                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
+                {
+                    yPos = int.MaxValue;
+                }
+                if ((xPos == yPos))
+                {
+                    return 0;
+                }
+                else
+                {
+                    if ((xPos < yPos))
+                    {
+                        return -1;
+                    }
+                }
+                return 1;
+            }
+            /// <summary>
+            ///</summary>
+            public bool Equals(MetaRoleInfo x, MetaRoleInfo y)
+            {
+                return object.ReferenceEquals(x, y);
+            }
+            /// <summary>
+            ///</summary>
+            public int GetHashCode(MetaRoleInfo obj)
+            {
+                return obj.GetHashCode();
+            }
         }
     }
     /// <summary>
@@ -721,6 +797,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class FactType : IORMCustomSerializedElement
     {
+        private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -728,7 +805,8 @@ namespace Northface.Tools.ORM.ObjectModel
             get
             {
                 return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
-                            | (ORMCustomSerializedElementSupportedOperations.ElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo));
+                            | (ORMCustomSerializedElementSupportedOperations.ElementInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -761,7 +839,13 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             get
             {
-                return null;
+                IComparer<MetaRoleInfo> retVal = FactType.myCustomSortChildComparer;
+                if ((null == retVal))
+                {
+                    retVal = new CustomSortChildComparer(this.Store);
+                    FactType.myCustomSortChildComparer = retVal;
+                }
+                return retVal;
             }
         }
         IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
@@ -775,13 +859,19 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[4];
             System.Guid[] guids0 = new System.Guid[1];
             guids0[0] = FactTypeHasRole.RoleCollectionMetaRoleGuid;
             ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "FactRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
             System.Guid[] guids1 = new System.Guid[1];
             guids1[0] = FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid;
             ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, guids1);
+            System.Guid[] guids2 = new System.Guid[1];
+            guids2[0] = FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid;
+            ret[2] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, guids2);
+            System.Guid[] guids3 = new System.Guid[1];
+            guids3[0] = FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid;
+            ret[3] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "InternalConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, guids3);
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -831,6 +921,78 @@ namespace Northface.Tools.ORM.ObjectModel
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+        }
+        private class CustomSortChildComparer : IComparer<MetaRoleInfo>
+        {
+            private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
+            /// <summary>
+            ///</summary>
+            public CustomSortChildComparer(Store store)
+            {
+                MetaDataDirectory metaDataDir = store.MetaDataDirectory;
+                Dictionary<MetaRoleInfo, int> roleOrderDictionary = new Dictionary<MetaRoleInfo, int>();
+                MetaRoleInfo metaRole;
+                metaRole = metaDataDir.FindMetaRole(FactTypeHasRole.RoleCollectionMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
+                metaRole = metaDataDir.FindMetaRole(FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
+                metaRole = metaDataDir.FindMetaRole(FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
+                metaRole = metaDataDir.FindMetaRole(FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 3;
+                metaRole = metaDataDir.FindMetaRole(NestingEntityTypeHasFactType.NestingTypeMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 4;
+                metaRole = metaDataDir.FindMetaRole(SubjectHasPresentation.PresentationMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 5;
+                metaRole = metaDataDir.FindMetaRole(SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 6;
+                metaRole = metaDataDir.FindMetaRole(MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 7;
+                metaRole = metaDataDir.FindMetaRole(FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 8;
+                metaRole = metaDataDir.FindMetaRole(FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 9;
+                this.myRoleOrderDictionary = roleOrderDictionary;
+            }
+            /// <summary>
+            ///</summary>
+            public int Compare(MetaRoleInfo x, MetaRoleInfo y)
+            {
+                int xPos;
+                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
+                {
+                    xPos = int.MaxValue;
+                }
+                int yPos;
+                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
+                {
+                    yPos = int.MaxValue;
+                }
+                if ((xPos == yPos))
+                {
+                    return 0;
+                }
+                else
+                {
+                    if ((xPos < yPos))
+                    {
+                        return -1;
+                    }
+                }
+                return 1;
+            }
+            /// <summary>
+            ///</summary>
+            public bool Equals(MetaRoleInfo x, MetaRoleInfo y)
+            {
+                return object.ReferenceEquals(x, y);
+            }
+            /// <summary>
+            ///</summary>
+            public int GetHashCode(MetaRoleInfo obj)
+            {
+                return obj.GetHashCode();
+            }
         }
     }
     /// <summary>
@@ -890,10 +1052,13 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
             System.Guid[] guids0 = new System.Guid[1];
             guids0[0] = ReadingOrderHasReading.ReadingCollectionMetaRoleGuid;
             ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Readings", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+            System.Guid[] guids1 = new System.Guid[1];
+            guids1[0] = ReadingOrderHasRole.RoleCollectionMetaRoleGuid;
+            ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids1);
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
