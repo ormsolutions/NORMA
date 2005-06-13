@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <se:CustomSerializedElements
-	xmlns:se="http://Schemas.Northface.edu/Private/SerializationExtensions"
-	xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
+    xmlns:se="http://Schemas.Northface.edu/Private/SerializationExtensions"
+    xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
 	<se:Using Namespace="Northface.Tools.ORM.ObjectModel">
 		<se:Namespaces Class="ORMMetaModel">
 				<se:Namespace Prefix="orm" URI="http://Schemas.Northface.edu/ORM/ORMCore" DefaultPrefix="true"/>
 				<se:Namespace Prefix="ormDerived" URI="http://Schemas.Northface.edu/ORM/ORMDerived"/>
 		</se:Namespaces>
 		<!--Model-->
-		<se:Element Class="ORMModel" Name="Model" SortChildElements="true">
+		<se:Element Class="ORMModel" Name="ORMModel" SortChildElements="true">
 			<se:ChildElement Name="Objects">
 				<se:Link RelationshipName="ModelHasObjectType" RoleName="ObjectTypeCollection"/>
 			</se:ChildElement>
@@ -33,7 +33,7 @@
 			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
 		<!--Object Types-->
-		<se:Element Class="ObjectType" Name="EntityType">
+		<se:Element Class="ObjectType" Name="EntityType" SortChildElements="true">
 			<se:ConditionalName Name="ValueType">
 				<plx:CallInstance name="IsValueType" style="Property">
 					<plx:CallObject>
@@ -56,14 +56,15 @@
 				</plx:Operator>
 			</se:ConditionalName>
 			<!--TODO:Need the Played roles containter teg-->
-			<se:ChildElement Name="PlayedRoles">
-				<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
-			</se:ChildElement>		
+			<se:ChildElement Name ="PlayedRoles">
+				<se:Link  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
+			</se:ChildElement>
 			<se:Attribute ID="ReferenceModeString"  Name="ReferenceMode" WriteCustomStorage="true"/>
-			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection" Name="PlayedRole"/>
+			<se:Link Name ="Role"  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
 			<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" />
 			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 			<se:Link Name="NestedPredicate" RelationshipName="NestingEntityTypeHasFactType" RoleName="NestedFactType" />
+			<se:Link RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"  WriteStyle="NotWritten"/>
 			<!--TODO:Subtypes-->
 			<!--TODO:Supertypes-->
 		</se:Element>
@@ -81,7 +82,7 @@
 			<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceModeCollection" WriteStyle="NotWritten" />
 		</se:Element>
 		<!--Facts-->
-		<se:Element Class="FactType" Name="Fact">
+		<se:Element Class="FactType" Name="Fact" SortChildElements="true">
 			<!--TODO: FactNotes-->
 			<!--TODO: Derivation Rule-->
 			<se:ChildElement Name="FactRoles">
@@ -89,6 +90,12 @@
 			</se:ChildElement>
 			<se:ChildElement Name="ReadingOrders">
 				<se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrderCollection"/>
+			</se:ChildElement>
+			<se:ChildElement Name="ReadingOrders">
+				<se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrderCollection"/>
+			</se:ChildElement>
+			<se:ChildElement Name="InternalConstraints">
+				<se:Link RelationshipName="FactTypeHasInternalConstraint" RoleName="InternalConstraintCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="NestingEntityTypeHasFactType" RoleName="NestingType" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
@@ -102,6 +109,9 @@
 			<se:ChildElement Name="Readings">
 				<se:Link RelationshipName="ReadingOrderHasReading" RoleName="ReadingCollection"/>
 			</se:ChildElement>
+			<se:ChildElement Name="RoleSequence">
+				<se:Link RelationshipName="ReadingOrderHasRole" RoleName="RoleCollection"/>
+			</se:ChildElement>			
 			<se:Link RelationshipName="ReadingOrderHasRole" RoleName="RoleCollection" Name="Role"/>
 			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
@@ -170,7 +180,7 @@
 		<se:Element Class="SimpleMandatoryConstraint">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
-		</se:Element>    
+		</se:Element>
 		<!--Errors-->
 		<se:Element Class="ConstraintDuplicateNameError">
 			<se:Link RelationshipName="MultiColumnExternalConstraintHasDuplicateNameError" RoleName="MultiColumnExternalConstraintCollection" Name="Constraint"/>
