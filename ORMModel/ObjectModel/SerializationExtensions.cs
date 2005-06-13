@@ -338,6 +338,14 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             if ((attributeInfo.Id == ObjectType.ReferenceModeStringMetaAttributeGuid))
             {
+                if (this.IsValueType)
+                {
+                    return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+                }
+                if ((this.NestedFactType != null))
+                {
+                    return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+                }
                 return new ORMCustomSerializedAttributeInfo(null, "ReferenceMode", null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
             }
             return ORMCustomSerializedAttributeInfo.Default;

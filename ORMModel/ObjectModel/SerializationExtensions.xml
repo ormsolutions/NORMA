@@ -4,8 +4,8 @@
     xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
 	<se:Using Namespace="Northface.Tools.ORM.ObjectModel">
 		<se:Namespaces Class="ORMMetaModel">
-				<se:Namespace Prefix="orm" URI="http://Schemas.Northface.edu/ORM/ORMCore" DefaultPrefix="true"/>
-				<se:Namespace Prefix="ormDerived" URI="http://Schemas.Northface.edu/ORM/ORMDerived"/>
+			<se:Namespace Prefix="orm" URI="http://Schemas.Northface.edu/ORM/ORMCore" DefaultPrefix="true"/>
+			<se:Namespace Prefix="ormDerived" URI="http://Schemas.Northface.edu/ORM/ORMDerived"/>
 		</se:Namespaces>
 		<!--Model-->
 		<se:Element Class="ORMModel" Name="ORMModel" SortChildElements="true">
@@ -59,7 +59,29 @@
 			<se:ChildElement Name ="PlayedRoles">
 				<se:Link  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
 			</se:ChildElement>
-			<se:Attribute ID="ReferenceModeString"  Name="ReferenceMode" WriteCustomStorage="true"/>
+			<se:Attribute ID="ReferenceModeString"  Name="ReferenceMode" WriteCustomStorage="true">
+				<se:Condition WriteStyle="NotWritten">
+					<plx:CallInstance name="IsValueType" style="Property">
+						<plx:CallObject>
+							<plx:ThisKeyword/>
+						</plx:CallObject>
+					</plx:CallInstance>
+				</se:Condition>
+				<se:Condition WriteStyle="NotWritten">
+					<plx:Operator name="IdentityInequality">
+						<plx:Left>
+							<plx:CallInstance name="NestedFactType" style="Property">
+								<plx:CallObject>
+									<plx:ThisKeyword/>
+								</plx:CallObject>
+							</plx:CallInstance>
+						</plx:Left>
+						<plx:Right>
+							<plx:NullObjectKeyword/>
+						</plx:Right>
+					</plx:Operator>
+				</se:Condition>
+			</se:Attribute>
 			<se:Link Name ="Role"  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
 			<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" />
 			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
@@ -111,7 +133,7 @@
 			</se:ChildElement>
 			<se:ChildElement Name="RoleSequence">
 				<se:Link RelationshipName="ReadingOrderHasRole" RoleName="RoleCollection"/>
-			</se:ChildElement>			
+			</se:ChildElement>
 			<se:Link RelationshipName="ReadingOrderHasRole" RoleName="RoleCollection" Name="Role"/>
 			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>

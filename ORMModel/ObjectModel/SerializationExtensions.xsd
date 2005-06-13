@@ -71,11 +71,6 @@
         </xs:attribute>
     </xs:attributeGroup>
     <xs:attributeGroup name="AttributeAttributes">
-        <xs:attribute name="ID" type="xs:string" use="required">
-            <xs:annotation>
-                <xs:documentation>The ID to match.</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
         <xs:attribute name="Prefix" type="xs:string">
             <xs:annotation>
                 <xs:documentation>The new prefix.</xs:documentation>
@@ -224,15 +219,36 @@
                                             </xs:annotation>
                                             <xs:complexType>
                                                 <xs:sequence>
+													<xs:element name="Condition" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+                                                            <xs:documentation>Use different attribute properties based on a PLIX condition.</xs:documentation>
+                                                        </xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:any namespace="http://Schemas.Northface.edu/CodeGeneration/Plix" processContents="lax" minOccurs="1"  maxOccurs="1"/>
+															</xs:sequence>
+                                                            <xs:attributeGroup ref="AttributeAttributes"/>
+                                                        </xs:complexType>
+													</xs:element>
                                                     <xs:element name="RolePlayed" minOccurs="0" maxOccurs="unbounded">
                                                         <xs:annotation>
                                                             <xs:documentation>Matches the role played.</xs:documentation>
                                                         </xs:annotation>
                                                         <xs:complexType>
+															<xs:attribute name="ID" type="xs:string" use="required">
+																<xs:annotation>
+																	<xs:documentation>The ID to match.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
                                                             <xs:attributeGroup ref="AttributeAttributes"/>
                                                         </xs:complexType>
                                                     </xs:element>
                                                 </xs:sequence>
+												<xs:attribute name="ID" type="xs:string" use="required">
+													<xs:annotation>
+														<xs:documentation>The ID to match.</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
                                                 <xs:attributeGroup ref="AttributeAttributes"/>
                                             </xs:complexType>
                                         </xs:element>
