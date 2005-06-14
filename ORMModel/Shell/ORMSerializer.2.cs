@@ -889,8 +889,12 @@ namespace Northface.Tools.ORM.Shell
 			Guid keyId = (link != null) ? link.Id : oppositeRolePlayer.Id;
 			if (!directLink && !myLinkGUIDs.Contains(keyId))
 			{
+				IList rolesPlayed = link.MetaClass.MetaRolesPlayed;
+				bool writeChildren;
+
 				myLinkGUIDs.Add(keyId);
-				if ((link == null) || link.MetaClass.MetaRolesPlayed.Count != 0)
+
+				if (writeChildren=((link == null) || rolesPlayed.Count != 0))
 				{
 					file.WriteAttributeString("id", ToXML(keyId));
 				}
@@ -904,6 +908,17 @@ namespace Northface.Tools.ORM.Shell
 				}
 
 				SerializeAttributes(file, link, customElement, rolePlayedInfo, attributes, hasCustomAttributes);
+
+				if (writeChildren)
+				{
+					ORMCustomSerializedChildElementInfo[] childElementInfo;
+					bool groupRoles;
+
+					childElementInfo = ((groupRoles = (0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.ChildElementInfo))) ? customElement.GetCustomSerializedChildElementInfo() : null);
+
+					//write children
+					SerializeChildElements(file, link, customElement, childElementInfo, rolesPlayed, 0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles), groupRoles, defaultPrefix);
+				}
 			}
 			else
 			{
@@ -1021,6 +1036,89 @@ namespace Northface.Tools.ORM.Shell
 
 			return ret;
 		}
+		private void SerializeChildElements(System.Xml.XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, ORMCustomSerializedChildElementInfo[] childElementInfo, IList rolesPlayed, bool sortRoles, bool groupRoles, string defaultPrefix)
+		{
+			int rolesPlayedCount = rolesPlayed.Count;
+
+			//sort played roles
+			if (sortRoles && rolesPlayedCount != 0)
+			{
+				IComparer<MetaRoleInfo> comparer = customElement.CustomSerializedChildRoleComparer;
+				if (comparer != null)
+				{
+					MetaRoleInfo[] sortedRoles = new MetaRoleInfo[rolesPlayedCount];
+					rolesPlayed.CopyTo(sortedRoles, 0);
+					Array.Sort(sortedRoles, comparer);
+					rolesPlayed = sortedRoles;
+				}
+			}
+
+			//write children
+			if (groupRoles)
+			{
+				bool[] written = new bool[rolesPlayedCount];
+
+				for (int index0 = 0; index0 < rolesPlayedCount; ++index0)
+				{
+					if (!written[index0])
+					{
+						MetaRoleInfo rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index0];
+						MetaRoleInfo oppositeRoleInfo = rolePlayedInfo.OppositeMetaRole;
+						ORMCustomSerializedChildElementInfo customChildInfo;
+						bool writeEndElement = false;
+
+						int childIndex = FindGuid(childElementInfo, oppositeRoleInfo.Id);
+						customChildInfo = (childIndex >= 0) ? childElementInfo[childIndex] : null;
+						string defaultChildPrefix = (customChildInfo != null) ? defaultPrefix : null;
+
+						written[index0] = true;
+						if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, defaultChildPrefix, true))
+						{
+							writeEndElement = true;
+						}
+
+						if (customChildInfo != null)
+						{
+							for (int index1 = index0 + 1; index1 < rolesPlayedCount; ++index1)
+							{
+								if (!written[index1])
+								{
+									rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index1];
+									oppositeRoleInfo = rolePlayedInfo.OppositeMetaRole;
+
+									if (customChildInfo.ContainsGuid(oppositeRoleInfo.Id))
+									{
+										written[index1] = true;
+										if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, defaultChildPrefix, !writeEndElement))
+										{
+											writeEndElement = true;
+										}
+									}
+								}
+							}
+						}
+
+						if (writeEndElement)
+						{
+							WriteCustomizedEndElement(file, customChildInfo);
+						}
+					}
+				}
+			}
+			else
+			{
+				for (int index = 0; index < rolesPlayedCount; ++index)
+				{
+					MetaRoleInfo rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index];
+					if (SerializeChildElement(file, element, rolePlayedInfo, rolePlayedInfo.OppositeMetaRole, null, null, true))
+					{
+						WriteCustomizedEndElement(file, null);
+					}
+				}
+			}
+
+			return;
+		}
 		/// <summary>
 		/// Recursivly serializes elements.
 		/// </summary>
@@ -1043,7 +1141,6 @@ namespace Northface.Tools.ORM.Shell
 			string defaultPrefix = DefaultElementPrefix(element);
 			bool roleGrouping = false;
 			bool isCustom = (customElement != null);
-			int count;
 
 			//load custom information
 			if (isCustom)
@@ -1084,7 +1181,7 @@ namespace Northface.Tools.ORM.Shell
 				containerName = null;
 			}
 
-			//start new element
+			//write begin element tag
 			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, classInfo.Name)) return true;
 			file.WriteAttributeString("id", ToXML(element.Id));
 
@@ -1099,84 +1196,10 @@ namespace Northface.Tools.ORM.Shell
 				(supportedOperations & ORMCustomSerializedElementSupportedOperations.AttributeInfo) != 0
 			);
 
-			count = rolesPlayed.Count;
-			if (0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles) &&
-				count != 0)
-			{
-				IComparer<MetaRoleInfo> comparer = customElement.CustomSerializedChildRoleComparer;
-				if (comparer != null)
-				{
-					MetaRoleInfo[] sortedRoles = new MetaRoleInfo[count];
-					rolesPlayed.CopyTo(sortedRoles, 0);
-					Array.Sort(sortedRoles, comparer);
-					rolesPlayed = sortedRoles;
-				}
-			}
-
 			//write children
-			if (roleGrouping)
-			{
-				bool[] written = new bool[count];
+			SerializeChildElements(file, element, customElement, childElementInfo, rolesPlayed, 0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles), roleGrouping, defaultPrefix);
 
-				for (int index0 = 0; index0 < count; ++index0)
-				{
-					if (!written[index0])
-					{
-						MetaRoleInfo rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index0];
-						MetaRoleInfo oppositeRoleInfo = rolePlayedInfo.OppositeMetaRole;
-						ORMCustomSerializedChildElementInfo customChildInfo;
-						bool writeEndElement = false;
-
-						int childIndex = FindGuid(childElementInfo, oppositeRoleInfo.Id);
-						customChildInfo = (childIndex >= 0) ? childElementInfo[childIndex] : null;
-						string defaultChildPrefix = (customChildInfo != null) ? defaultPrefix : null;
-
-						written[index0] = true;
-						if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, defaultChildPrefix, true))
-						{
-							writeEndElement = true;
-						}
-
-						if (customChildInfo != null)
-						{
-							for (int index1 = index0 + 1; index1 < count; ++index1)
-							{
-								if (!written[index1])
-								{
-									rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index1];
-									oppositeRoleInfo = rolePlayedInfo.OppositeMetaRole;
-
-									if (customChildInfo.ContainsGuid(oppositeRoleInfo.Id))
-									{
-										written[index1] = true;
-										if (SerializeChildElement(file, element, rolePlayedInfo, oppositeRoleInfo, customChildInfo, defaultChildPrefix, !writeEndElement))
-										{
-											writeEndElement = true;
-										}
-									}
-								}
-							}
-						}
-
-						if (writeEndElement)
-						{
-							WriteCustomizedEndElement(file, customChildInfo);
-						}
-					}
-				}
-			}
-			else
-			{
-				for (int index = 0; index < count; ++index)
-				{
-					MetaRoleInfo rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index];
-					if (SerializeChildElement(file, element, rolePlayedInfo, rolePlayedInfo.OppositeMetaRole, null, null, true))
-					{
-						WriteCustomizedEndElement(file, null);
-					}
-				}
-			}
-
+			//write end element tag
 			WriteCustomizedEndElement(file, customInfo);
 
 			return true;
