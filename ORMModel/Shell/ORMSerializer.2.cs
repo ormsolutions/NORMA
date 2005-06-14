@@ -933,7 +933,7 @@ namespace Northface.Tools.ORM.Shell
 			{
 				return false;
 			}
-			bool startElement = (defaultName != null);
+			bool writeStartElement = (defaultName != null);
 
 			for (int iChild = 0; iChild < childCount; ++iChild)
 			{
@@ -941,23 +941,18 @@ namespace Northface.Tools.ORM.Shell
 
 				if (ShouldSerialize(child))
 				{
-					if (startElement)
+					if (customInfo == null)
 					{
-						if (customInfo == null)
-						{
-							defaultPrefix = DefaultElementPrefix(child);
-						}
-						if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, defaultName))
-						{
-							return false;
-						}
-						startElement = false;
+						defaultPrefix = DefaultElementPrefix(child);
 					}
-					SerializeElement(file, child);
+					if (!SerializeElement(file, child, customInfo, defaultPrefix, ref defaultName))
+					{
+						return false;
+					}
 				}
 			}
 
-			return (!startElement && defaultName != null);
+			return (writeStartElement && defaultName==null);
 		}
 		/// <summary>
 		/// Serializes a child element.
@@ -1031,9 +1026,13 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
 		/// <param name="element">The element.</param>
-		private void SerializeElement(System.Xml.XmlWriter file, ModelElement element)
+		/// <param name="containerCustomInfo">The container element's custom serialization information.</param>
+		/// <param name="containerPrefix">The container element's prefix.</param>
+		/// <param name="containerName">The container element's name.</param>
+		/// <returns>false if the container element was not written.</returns>
+		private bool SerializeElement(System.Xml.XmlWriter file, ModelElement element, ORMCustomSerializedElementInfo containerCustomInfo, string containerPrefix, ref string containerName)
 		{
-			if (!ShouldSerialize(element)) return;
+			if (!ShouldSerialize(element)) return true;
 			ORMCustomSerializedElementSupportedOperations supportedOperations;
 			ORMCustomSerializedChildElementInfo[] childElementInfo = null;
 			MetaClassInfo classInfo = element.MetaClass;
@@ -1055,14 +1054,19 @@ namespace Northface.Tools.ORM.Shell
 				{
 					SortAttributes(customElement, null, ref attributes);
 				}
-
 				if (roleGrouping = (0 != (supportedOperations & ORMCustomSerializedElementSupportedOperations.ChildElementInfo)))
+				{
 					childElementInfo = customElement.GetCustomSerializedChildElementInfo();
-
+				}
 				if ((supportedOperations & ORMCustomSerializedElementSupportedOperations.ElementInfo) != 0)
+				{
 					customInfo = customElement.CustomSerializedElementInfo;
+					if (customInfo.WriteStyle == ORMCustomSerializedElementWriteStyle.NotWritten) return true;
+				}
 				else
+				{
 					customInfo = ORMCustomSerializedElementInfo.Default;
+				}
 			}
 			else
 			{
@@ -1070,8 +1074,18 @@ namespace Northface.Tools.ORM.Shell
 				customInfo = ORMCustomSerializedElementInfo.Default;
 			}
 
+			//write container begin element
+			if (containerName != null)
+			{
+				if (!WriteCustomizedStartElement(file, containerCustomInfo, containerPrefix, containerName))
+				{
+					return false;
+				}
+				containerName = null;
+			}
+
 			//start new element
-			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, classInfo.Name)) return;
+			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, classInfo.Name)) return true;
 			file.WriteAttributeString("id", ToXML(element.Id));
 
 			//write attributes
@@ -1165,6 +1179,17 @@ namespace Northface.Tools.ORM.Shell
 
 			WriteCustomizedEndElement(file, customInfo);
 
+			return true;
+		}
+		/// <summary>
+		/// Recursivly serializes elements.
+		/// </summary>
+		/// <param name="file">The file to write to.</param>
+		/// <param name="element">The element.</param>
+		private void SerializeElement(System.Xml.XmlWriter file, ModelElement element)
+		{
+			string containerName = null;
+			SerializeElement(file, element, null, null, ref containerName);
 			return;
 		}
 		/// <summary>

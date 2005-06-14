@@ -28,6 +28,9 @@
 			<se:ChildElement Name="ModelErrors">
 				<se:Link RelationshipName="ModelHasError" RoleName="ErrorCollection"/>
 			</se:ChildElement>
+			<!--<se:ChildElement WriteStyle="NotWritten">
+				<se:Link RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKindCollection" />
+			</se:ChildElement>-->
 			<!--Don't think that we should serialize these.-->
 			<se:Link RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKindCollection" WriteStyle="NotWritten" />
 			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
@@ -99,7 +102,6 @@
 			<se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueTypeCollection" WriteStyle="NotWritten"/>
 		</se:Element>
 		<!--How do I do datatypes?  They all have their own tag currently but they all have the same tag in the XML side.-->
-		<se:Element Class="ReferenceModeKindCollection" WriteStyle="NotWritten"/>
 		<se:Element Class="ReferenceModeKind" WriteStyle="NotWritten">
 			<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceModeCollection" WriteStyle="NotWritten" />
 		</se:Element>
