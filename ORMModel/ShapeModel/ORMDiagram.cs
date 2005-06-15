@@ -976,6 +976,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				yield return new DisplayRolePlayersFixupListener();
 				yield return new DisplayExternalConstraintLinksFixupListener();
+				yield return new DisplaySubtypeLinkFixupListener();
 				yield return new DisplayRoleValueRangeDefinitionFixupListener();
 				yield return new DisplayValueTypeValueRangeDefinitionFixupListener();
 				yield return new EliminateOrphanedShapesFixupListener();

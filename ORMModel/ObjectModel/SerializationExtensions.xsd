@@ -12,6 +12,11 @@
                     <xs:documentation>Write as an element. [Default]</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
+			<xs:enumeration value="PrimaryLinkElement">
+                <xs:annotation>
+                    <xs:documentation>Write as the primary definition for a link. A link that has attributes or serialized links that reference it must have exactly one primary link element.</xs:documentation>
+                </xs:annotation>
+			</xs:enumeration>
             <xs:enumeration value="DoubleTaggedElement">
                 <xs:annotation>
                     <xs:documentation>Write as a double tagged element.</xs:documentation>
@@ -141,34 +146,86 @@
                     </xs:annotation>
                     <xs:complexType>
                         <xs:choice maxOccurs="unbounded">
-                            <xs:element name="Namespaces">
+                            <xs:element name="MetaModel">
                                 <xs:annotation>
-                                    <xs:documentation>Add namespaces to the XML document.</xs:documentation>
+                                    <xs:documentation>Add model-level custom serialization settings.</xs:documentation>
                                 </xs:annotation>
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="Namespace" minOccurs="1" maxOccurs="unbounded">
-                                            <xs:annotation>
-                                                <xs:documentation>Defines a namespace.</xs:documentation>
-                                            </xs:annotation>
-                                            <xs:complexType>
-                                                <xs:attribute name="Prefix" type="xs:string" use="required">
-                                                    <xs:annotation>
-                                                        <xs:documentation>The namespace prefix.</xs:documentation>
-                                                    </xs:annotation>
-                                                </xs:attribute>
-                                                <xs:attribute name="URI" type="xs:string" use="required">
-                                                    <xs:annotation>
-                                                        <xs:documentation>The location of the schema.</xs:documentation>
-                                                    </xs:annotation>
-                                                </xs:attribute>
-                                                <xs:attribute name="DefaultPrefix" type="xs:boolean" default="false">
-                                                    <xs:annotation>
-                                                        <xs:documentation>The default prefix for all elements in this substore</xs:documentation>
-                                                    </xs:annotation>
-                                                </xs:attribute>
-                                            </xs:complexType>
-                                        </xs:element>
+										<xs:element name="Namespaces">
+											<xs:annotation>
+												<xs:documentation>Add namespaces to the XML document.</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Namespace" minOccurs="1" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Defines a namespace.</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:attribute name="Prefix" type="xs:string" use="required">
+																<xs:annotation>
+																	<xs:documentation>The namespace prefix.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="URI" type="xs:string" use="required">
+																<xs:annotation>
+																	<xs:documentation>The location of the schema.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="DefaultPrefix" type="xs:boolean" default="false">
+																<xs:annotation>
+																	<xs:documentation>The default prefix for all elements in this substore</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="OmittedMetaElements" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Block elements and links from serializating at the meta level.</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:choice minOccurs="0" maxOccurs="unbounded">
+													<xs:element name="OmitClass">
+														<xs:annotation>
+															<xs:documentation>Stop all classes of this type from being serialized in the model.</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:attribute name="Class" type="xs:string" use="required">
+																<xs:annotation>
+																	<xs:documentation>The class name to block.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="Namespace" type="xs:string" use="optional">
+																<xs:annotation>
+																	<xs:documentation>An alternate namespace for the class. If this is not specified, the class is assumed to be in the namespace specified by the containing Using element.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="OmitRelationship">
+														<xs:annotation>
+															<xs:documentation>Stop all relationships of this type from being serialized in the model.</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:attribute name="Class" type="xs:string" use="required">
+																<xs:annotation>
+																	<xs:documentation>The relationship name to block.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="Namespace" type="xs:string" use="optional">
+																<xs:annotation>
+																	<xs:documentation>An alternate namespace for the relationship. If this is not specified, the relationship is assumed to be in the namespace specified by the containing Using element.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+														</xs:complexType>
+													</xs:element>
+												</xs:choice>
+											</xs:complexType>
+										</xs:element>
                                     </xs:sequence>
                                     <xs:attribute name="Class" type="xs:string" use="required">
                                         <xs:annotation>
@@ -291,7 +348,7 @@
                         </xs:choice>
                         <xs:attribute name="Namespace" type="xs:string" use="required">
                             <xs:annotation>
-                                <xs:documentation>The namespace to use.</xs:documentation>
+                                <xs:documentation>The .NET namespace to use.</xs:documentation>
                             </xs:annotation>
                         </xs:attribute>
                     </xs:complexType>

@@ -229,12 +229,16 @@ namespace Northface.Tools.ORM.Shell
 		private bool ShouldSerialize(ModelElement modelElement)
 		{
 			DataType dataType;
+			// UNDONE: For the new serialization engine, all of these elements
+			// will be eliminated at the type level 
 			if (modelElement is ExternalFactConstraint ||
 				modelElement is ExternalRoleConstraint ||
 				modelElement is ExternalConstraintLink ||
 				modelElement is ValueRangeLink ||
 				modelElement is IntrinsicReferenceMode ||
-				modelElement is RolePlayerLink)
+				modelElement is RolePlayerLink ||
+				modelElement is SubtypeLink ||
+				modelElement is LinkConnectsToNode)
 			{
 				return false;
 			}

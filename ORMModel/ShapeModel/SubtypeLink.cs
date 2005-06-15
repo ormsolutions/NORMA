@@ -137,4 +137,35 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // Luminosity Modification
 	}
+	public partial class ORMDiagram
+	{
+		#region  DisplaySubtypeLinkFixupListener
+		/// <summary>
+		/// A fixup class to display subtype links
+		/// </summary>
+		private class DisplaySubtypeLinkFixupListener : DeserializationFixupListener<ModelHasFactType>
+		{
+			/// <summary>
+			/// Create a new DisplayRolePlayersFixupListener
+			/// </summary>
+			public DisplaySubtypeLinkFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Add subtype links when possible
+			/// </summary>
+			/// <param name="element">An ModelHasFactType instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(ModelHasFactType element, Store store, INotifyElementAdded notifyAdded)
+			{
+				SubtypeFact subTypeFact = element.FactTypeCollection as SubtypeFact;
+				if (subTypeFact != null)
+				{
+					FixUpDiagram(subTypeFact.Model, subTypeFact);
+				}
+			}
+		}
+		#endregion // DisplaySubtypeLinkFixupListener class
+	}
 }

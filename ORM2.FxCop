@@ -1489,6 +1489,69 @@
          </Type>
          <Type Name="CustomReferenceMode">
           <Members>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>CustomReferenceMode.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>CustomReferenceMode.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-15 19:53:08Z">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaAttributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>CustomReferenceMode.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-15 19:53:08Z">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="System.IComparable&lt;Northface.Tools.ORM.ObjectModel.CustomReferenceMode&gt;.CompareTo(Northface.Tools.ORM.ObjectModel.CustomReferenceMode):System.Int32">
             <Messages>
              <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-04-15 14:45:27Z">
@@ -5247,6 +5310,20 @@
          </Type>
          <Type Name="ORMMetaModel">
           <Members>
+           <Member Name="BuildCustomSerializationOmissions(Microsoft.VisualStudio.Modeling.Store):System.Collections.Generic.Dictionary`2&lt;Microsoft.VisualStudio.Modeling.MetaClassInfo,System.Object&gt;">
+            <Messages>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="NonBreaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ORMMetaModel.BuildCustomSerializationOmissions(Store):Dictionary`2&lt;Microsoft.VisualStudio.Modeling.MetaClassInfo,System.Object&gt;</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="GetCustomElementNamespaces():System.String[,]">
             <Messages>
              <Message TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-05-27 18:50:05Z">
@@ -5282,16 +5359,16 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="Northface.Tools.ORM.Shell.IORMCustomElementNamespace.GetCustomElementNamespaces():System.String[,]">
+           <Member Name="Northface.Tools.ORM.Shell.IORMCustomSerializedMetaModel.GetCustomElementNamespaces():System.String[,]">
             <Messages>
-             <Message TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-05-27 18:50:05Z">
+             <Message TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-06-15 19:53:08Z">
               <Issue Name="ReturnType">
-               <Item>ORMMetaModel.Northface.Tools.ORM.Shell.IORMCustomElementNamespace.GetCustomElementNamespaces():String[,]</Item>
+               <Item>ORMMetaModel.Northface.Tools.ORM.Shell.IORMCustomSerializedMetaModel.GetCustomElementNamespaces():String[,]</Item>
                <Item>System.String[,]</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="24" />
+                <Note Id="32" />
                </User>
               </Notes>
              </Message>
@@ -5370,6 +5447,17 @@
            </Member>
            <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
             <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>ORMModel.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
              <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-05-27 18:50:05Z" FixCategory="Breaking">
               <Issue Name="MarkAsStatic">
                <Item>ORMModel.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
@@ -9587,6 +9675,68 @@ BaseReadingTreeNode.SetText():Void</Item>
              </Message>
             </Messages>
            </Member>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>ExternalConstraintShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ExternalConstraintShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-15 19:53:08Z">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaAttributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>ExternalConstraintShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ExternalConstraintShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
           </Members>
          </Type>
          <Type Name="ExternalConstraintShape+ShapeChangeRule1">
@@ -9605,6 +9755,68 @@ BaseReadingTreeNode.SetText():Void</Item>
          </Type>
          <Type Name="FactTypeShape">
           <Members>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>FactTypeShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>FactTypeShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-15 19:53:08Z">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaAttributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>FactTypeShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>FactTypeShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="GetSubFieldRepresentedElements(Microsoft.VisualStudio.Modeling.Diagrams.ShapeField,Microsoft.VisualStudio.Modeling.Diagrams.ShapeSubField):System.Collections.ICollection">
             <Messages>
              <Message Id="subField" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-02-03 20:22:04Z">
@@ -10122,6 +10334,72 @@ BaseReadingTreeNode.SetText():Void</Item>
            </Member>
           </Members>
          </Type>
+         <Type Name="ObjectifiedFactTypeNameShape">
+          <Members>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>ObjectifiedFactTypeNameShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ObjectifiedFactTypeNameShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-15 19:53:08Z">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaAttributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>ObjectifiedFactTypeNameShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ObjectifiedFactTypeNameShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="ObjectifiedFactTypeNameShape+ObjectifiedFactTypeNameShapeObjectTypeNameFieldHandler">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -10147,6 +10425,94 @@ BaseReadingTreeNode.SetText():Void</Item>
                <Item>boolean</Item>
                <Item>false</Item>
               </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="ActivateModelError(Northface.Tools.ORM.ObjectModel.ModelError):System.Void">
+            <Messages>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ObjectTypeShape.ActivateModelError(ModelError):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="dataTypeError" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2005-06-15 19:53:08Z">
+              <Issue>
+               <Item>ObjectTypeShape.ActivateModelError(ModelError):Void</Item>
+               <Item>dataTypeError</Item>
+               <Item>Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>ObjectTypeShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ObjectTypeShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-15 19:53:08Z">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaAttributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>ObjectTypeShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ObjectTypeShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -10761,6 +11127,20 @@ BaseReadingTreeNode.SetText():Void</Item>
          </Type>
          <Type Name="ORMShapeModel">
           <Members>
+           <Member Name="BuildCustomSerializationOmissions(Microsoft.VisualStudio.Modeling.Store):System.Collections.Generic.Dictionary`2&lt;Microsoft.VisualStudio.Modeling.MetaClassInfo,System.Object&gt;">
+            <Messages>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="NonBreaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ORMShapeModel.BuildCustomSerializationOmissions(Store):Dictionary`2&lt;Microsoft.VisualStudio.Modeling.MetaClassInfo,System.Object&gt;</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="GetCustomElementNamespaces():System.String[,]">
             <Messages>
              <Message TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-06-02 21:00:35Z">
@@ -10788,16 +11168,16 @@ BaseReadingTreeNode.SetText():Void</Item>
              </Message>
             </Messages>
            </Member>
-           <Member Name="Northface.Tools.ORM.Shell.IORMCustomElementNamespace.GetCustomElementNamespaces():System.String[,]">
+           <Member Name="Northface.Tools.ORM.Shell.IORMCustomSerializedMetaModel.GetCustomElementNamespaces():System.String[,]">
             <Messages>
-             <Message TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-06-02 21:00:35Z">
+             <Message TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-06-15 19:53:08Z">
               <Issue Name="ReturnType">
-               <Item>ORMShapeModel.Northface.Tools.ORM.Shell.IORMCustomElementNamespace.GetCustomElementNamespaces():String[,]</Item>
+               <Item>ORMShapeModel.Northface.Tools.ORM.Shell.IORMCustomSerializedMetaModel.GetCustomElementNamespaces():String[,]</Item>
                <Item>System.String[,]</Item>
               </Issue>
               <Notes>
-               <User Name="pewert">
-                <Note Id="30" />
+               <User Name="mcurland">
+                <Note Id="32" />
                </User>
               </Notes>
              </Message>
@@ -10816,6 +11196,68 @@ BaseReadingTreeNode.SetText():Void</Item>
                <Item>reference type</Item>
                <Item>null</Item>
               </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>ReadingShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ReadingShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-15 19:53:08Z">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaAttributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>ReadingShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ReadingShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -11110,6 +11552,68 @@ BaseReadingTreeNode.SetText():Void</Item>
          </Type>
          <Type Name="ValueRangeShape">
           <Members>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>ValueRangeShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ValueRangeShape.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-15 19:53:08Z">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaAttributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>ValueRangeShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ValueRangeShape.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="ValueRangeTextBrush">
             <Messages>
              <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2005-06-02 21:00:35Z">
@@ -11187,18 +11691,18 @@ BaseReadingTreeNode.SetText():Void</Item>
        </Namespace>
        <Namespace Name="Northface.Tools.ORM.Shell">
         <Types>
-         <Type Name="IORMCustomElementNamespace">
+         <Type Name="IORMCustomSerializedMetaModel">
           <Members>
            <Member Name="GetCustomElementNamespaces():System.String[,]">
             <Messages>
-             <Message TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-05-27 18:50:05Z">
+             <Message TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-06-15 19:53:08Z">
               <Issue Name="ReturnType">
-               <Item>IORMCustomElementNamespace.GetCustomElementNamespaces():String[,]</Item>
+               <Item>IORMCustomSerializedMetaModel.GetCustomElementNamespaces():String[,]</Item>
                <Item>System.String[,]</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="24" />
+                <Note Id="32" />
                </User>
               </Notes>
              </Message>
@@ -12187,23 +12691,6 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
              </Message>
             </Messages>
            </Member>
-           <Member Name="SerializeLink(System.Xml.XmlWriter,Microsoft.VisualStudio.Modeling.ElementLink,Microsoft.VisualStudio.Modeling.ModelElement,Microsoft.VisualStudio.Modeling.ModelElement,Microsoft.VisualStudio.Modeling.MetaRoleInfo,System.Boolean):System.Void">
-            <Messages>
-             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2005-05-27 18:50:05Z">
-              <Issue Name="Parameter">
-               <Item>rolePlayer</Item>
-               <Item>Northface.Tools.ORM.Shell.IORMCustomSerializedElement</Item>
-               <Item>ORMSerializer.SerializeLink(XmlWriter, ElementLink, ModelElement, ModelElement, MetaRoleInfo, Boolean):Void</Item>
-               <Item>isint</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="23" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
           </Members>
          </Type>
         </Types>
@@ -12264,7 +12751,6 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="20" Modified="2005-05-18 23:28:20Z">These are different, one has a type parameter, the other doesn't. That gives them a different signature.</Note>
     <Note Id="21" Modified="2005-05-25 19:53:40Z">Defined in IMS-generated code</Note>
     <Note Id="22" Modified="2005-05-27 18:54:31Z">Returned types are immutable</Note>
-    <Note Id="23" Modified="2005-05-27 18:55:03Z">Casts are mutually exclusive when conditional paths are accounted for</Note>
     <Note Id="24" Modified="2005-05-27 18:56:51Z">Returned data is not sparse, multidimensional is OK</Note>
     <Note Id="25" Modified="2005-05-27 18:58:49Z">Spit code matches regular private interface implementation/protected member pattern</Note>
     <Note Id="26" Modified="2005-05-27 18:59:16Z">IMS-generated code</Note>
@@ -12273,6 +12759,7 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="29" Modified="2005-06-03 18:10:59Z">Function signature matches definition of externally-defined interface IExtensibleObject interface.</Note>
     <Note Id="30" Modified="2005-06-09 13:53:40Z">Generated code, matches interface patterns</Note>
     <Note Id="31" Modified="2005-06-09 13:54:39Z">Rule class instantiated via reflection</Note>
+    <Note Id="32" Modified="2005-06-15 19:54:13Z">Generated code matching interface implementation pattern</Note>
    </User>
    <User Name="pewert">
     <Note Id="0" Modified="2005-04-25 20:13:21Z">Defined in IMS-generated code</Note>

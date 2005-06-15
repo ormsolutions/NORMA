@@ -3,10 +3,18 @@
     xmlns:se="http://Schemas.Northface.edu/Private/SerializationExtensions"
     xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
 	<se:Using Namespace="Northface.Tools.ORM.ObjectModel">
-		<se:Namespaces Class="ORMMetaModel">
-			<se:Namespace Prefix="orm" URI="http://Schemas.Northface.edu/ORM/ORMCore" DefaultPrefix="true"/>
-			<se:Namespace Prefix="ormDerived" URI="http://Schemas.Northface.edu/ORM/ORMDerived"/>
-		</se:Namespaces>
+		<se:MetaModel Class="ORMMetaModel">
+			<se:Namespaces>
+				<se:Namespace Prefix="orm" URI="http://Schemas.Northface.edu/ORM/ORMCore" DefaultPrefix="true"/>
+				<se:Namespace Prefix="ormDerived" URI="http://Schemas.Northface.edu/ORM/ORMDerived"/>
+			</se:Namespaces>
+			<se:OmittedMetaElements>
+				<se:OmitRelationship Class="ExternalFactConstraint"/>
+				<se:OmitRelationship Class="ExternalRoleConstraint"/>
+				<se:OmitClass Class="IntrinsicReferenceMode"/>
+				<se:OmitRelationship Class="SubjectHasPresentation" Namespace="Microsoft.VisualStudio.Modeling"/>
+			</se:OmittedMetaElements>
+		</se:MetaModel>
 		<!--Model-->
 		<se:Element Class="ORMModel" Name="ORMModel" SortChildElements="true">
 			<se:ChildElement Name="Objects">
@@ -31,8 +39,6 @@
 			<se:ChildElement Name="ReferenceModeKinds">
 				<se:Link RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKindCollection" />
 			</se:ChildElement>
-			<!--Don't think that we should serialize these.-->
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
 		<!--Object Types-->
 		<se:Element Class="ObjectType" Name="EntityType" SortChildElements="true">
@@ -85,8 +91,7 @@
 				</se:Condition>
 			</se:Attribute>
 			<se:Link Name ="Role"  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
-			<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" />
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
+			<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" WriteStyle="PrimaryLinkElement" />
 			<se:Link Name="NestedPredicate" RelationshipName="NestingEntityTypeHasFactType" RoleName="NestedFactType" />
 			<se:Link RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"  WriteStyle="NotWritten"/>
 			<!--TODO:Subtypes-->
@@ -100,12 +105,6 @@
 			<se:Attribute ID="Scale">
 				<se:RolePlayed ID="ValueTypeCollection" Name="Scale"/>
 			</se:Attribute>
-		</se:Element>
-		<se:Element Class="ValueTypeValueRangeDefinition">
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
-		</se:Element>
-		<se:Element Class="RoleValueRangeDefinition">
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="DataType">
 			<se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueTypeCollection" WriteStyle="NotWritten"/>
@@ -131,7 +130,6 @@
 				<se:Link RelationshipName="FactTypeHasInternalConstraint" RoleName="InternalConstraintCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="NestingEntityTypeHasFactType" RoleName="NestingType" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="SingleColumnExternalConstraintCollection" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="MultiColumnExternalConstraintCollection" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
@@ -146,7 +144,6 @@
 				<se:Link RelationshipName="ReadingOrderHasRole" RoleName="RoleCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="ReadingOrderHasRole" RoleName="RoleCollection" Name="Role"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="Reading" HasMixedTypedAttributes="true">
 			<se:Attribute ID="Text" Name="Data" WriteStyle="Element"/>
@@ -171,21 +168,18 @@
 				<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class ="ExclusionConstraint">
 			<se:ChildElement Name="RoleSequences">
 				<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class ="SubsetConstraint">
 			<se:ChildElement Name="RoleSequences">
 				<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="MultiColumnExternalConstraintRoleSequence" Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
@@ -196,7 +190,6 @@
 			</se:ChildElement>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 			<se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="DisjunctiveMandatoryConstraint">
 			<se:ChildElement Name="RoleSequence">
@@ -204,7 +197,6 @@
 			</se:ChildElement>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 			<se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="ExternalUniquenessConstraint">
 			<se:ChildElement Name="RoleSequence">
@@ -212,7 +204,6 @@
 			</se:ChildElement>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 			<se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="InternalUniquenessConstraint">
 			<se:ChildElement Name="RoleSequence">
@@ -220,7 +211,6 @@
 			</se:ChildElement>
 			<se:Attribute ID="Name" Name="Name" WriteStyle="NotWritten"></se:Attribute>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="SimpleMandatoryConstraint">
@@ -228,7 +218,6 @@
 				<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Presentation" WriteStyle="NotWritten"/>
 		</se:Element>
 		<!--Errors-->
 		<se:Element Class="ConstraintDuplicateNameError">
@@ -266,48 +255,41 @@
 		</se:Element>
 	</se:Using>
 	<se:Using Namespace="Northface.Tools.ORM.ShapeModel">
-		<se:Namespaces Class="ORMShapeModel">
-			<se:Namespace Prefix="ormDiagram" URI="http://Schemas.Northface.edu/ORM/ORMDiagram" DefaultPrefix="true"/>
-		</se:Namespaces>
-		<se:Element Class="ORMDiagram">
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Subject" WriteStyle="NotWritten"/>
-		</se:Element>
+		<se:MetaModel Class="ORMShapeModel">
+			<se:Namespaces>
+				<se:Namespace Prefix="ormDiagram" URI="http://Schemas.Northface.edu/ORM/ORMDiagram" DefaultPrefix="true"/>
+			</se:Namespaces>
+			<se:OmittedMetaElements>
+				<se:OmitClass Class="ExternalConstraintLink"/>
+				<se:OmitClass Class="ValueRangeLink"/>
+				<se:OmitClass Class="RolePlayerLink"/>
+				<se:OmitClass Class="SubtypeLink"/>
+				<se:OmitRelationship Class="LinkConnectsToNode" Namespace="Microsoft.VisualStudio.Modeling.Diagrams"/>
+			</se:OmittedMetaElements>
+		</se:MetaModel>
 		<se:Element Class="ObjectTypeShape">
 			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
 			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
-			<se:Link RelationshipName="LinkConnectsToNode" RoleName="Link" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Subject" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="FactTypeShape">
 			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
 			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
-			<se:Link RelationshipName="LinkConnectsToNode" RoleName="Link" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Subject" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="ObjectifiedFactTypeNameShape">
 			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
 			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
-			<se:Link RelationshipName="LinkConnectsToNode" RoleName="Link" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Subject" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="ReadingShape">
 			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
 			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
-			<se:Link RelationshipName="LinkConnectsToNode" RoleName="Link" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Subject" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="ExternalConstraintShape">
 			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
 			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
-			<se:Link RelationshipName="LinkConnectsToNode" RoleName="Link" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Subject" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="ValueRangeShape">
 			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
 			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
-			<se:Link RelationshipName="LinkConnectsToNode" RoleName="Link" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SubjectHasPresentation" RoleName="Subject" WriteStyle="NotWritten"/>
 		</se:Element>
-		<se:Element Class="SubtypeLink" WriteStyle="NotWritten"/>
 	</se:Using>
 </se:CustomSerializedElements>

@@ -75,7 +75,12 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// Write as a double tagged element.
 		/// </summary>
-		DoubleTaggedElement = 0x01
+		DoubleTaggedElement = 0x01,
+		/// <summary>
+		/// Used for links. Write as an element, but write the link
+		/// id, attributes, and referencing child elements at this location.
+		/// </summary>
+		PrimaryLinkElement = 0x02,
 	}
 	/// <summary>
 	/// Write style for attribute custom serialization.
@@ -340,18 +345,27 @@ namespace Northface.Tools.ORM.Shell
 	/// <summary>
 	/// The interface for getting custom element namespaces.
 	/// </summary>
-	public interface IORMCustomElementNamespace
+	public interface IORMCustomSerializedMetaModel
 	{
 		/// <summary>
-		/// Returns custom element namespaces.
+		/// Return all namespaces used by custom elements in this model.
 		/// </summary>
-		/// <returns>Custom element namespaces.</returns>
+		/// <returns>Custom element namespaces. return value [*, 0] contains
+		/// the prefix and [*, 1] contains the associated xml namespace</returns>
 		string[,] GetCustomElementNamespaces();
 		/// <summary>
 		/// Return the default element prefix for elements where the
 		/// prefix is not specified
 		/// </summary>
 		string DefaultElementPrefix { get;}
+		/// <summary>
+		/// Determine if a class or relationship should be serialized. This checks
+		/// at the meta level before retrieving elements.
+		/// </summary>
+		/// <param name="store">The store to check</param>
+		/// <param name="classInfo">The class or relationship to test</param>
+		/// <returns>true if the element should be serialized</returns>
+		bool ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo);
 	}
 	/// <summary>
 	/// The interface for getting element custom serialization information.
@@ -400,8 +414,6 @@ namespace Northface.Tools.ORM.Shell
 	/// </summary>
 	public partial class ORMSerializer
 	{
-		private System.Collections.Generic.List<Guid> myLinkGUIDs = new System.Collections.Generic.List<Guid>();
-
 		/// <summary>
 		/// Used for sorting.
 		/// </summary>
@@ -696,12 +708,37 @@ namespace Northface.Tools.ORM.Shell
 			return;
 		}
 		/// <summary>
+		/// Find the parent model for this element.
+		/// </summary>
+		/// <param name="element">A ModelElement being serialized</param>
+		/// <returns>IORMCustomSerializedMetaModel, or null</returns>
+		private static IORMCustomSerializedMetaModel GetParentModel(ModelElement element)
+		{
+			return element.Store.SubStores[element.MetaClass.MetaModel.Id] as IORMCustomSerializedMetaModel;
+		}
+		/// <summary>
+		/// Determine based on the type of role and opposite role player if any elements of
+		/// the given type should be serialized.
+		/// </summary>
+		/// <param name="parentModel">The parent model of an element</param>
+		/// <param name="role">The role played</param>
+		/// <returns>true if serialization should continue</returns>
+		private static bool ShouldSerializeMetaRole(IORMCustomSerializedMetaModel parentModel, MetaRoleInfo role)
+		{
+			if (parentModel == null)
+			{
+				return true;
+			}
+			Store store = ((SubStore)parentModel).Store;
+			return parentModel.ShouldSerializeMetaClass(store, role.MetaRelationship) && parentModel.ShouldSerializeMetaClass(store, role.OppositeMetaRole.RolePlayer);
+		}
+		/// <summary>
 		/// Get the default prefix for an element from the meta model containing the element
 		/// </summary>
 		private static string DefaultElementPrefix(ModelElement element)
 		{
 			string retVal = null;
-			IORMCustomElementNamespace parentModel = element.Store.SubStores[element.MetaClass.MetaModel.Id] as IORMCustomElementNamespace;
+			IORMCustomSerializedMetaModel parentModel = GetParentModel(element);
 			if (parentModel != null)
 			{
 				retVal = parentModel.DefaultElementPrefix;
@@ -826,29 +863,34 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="file">The file to write to.</param>
 		/// <param name="link">The link.</param>
 		/// <param name="rolePlayer">The role player.</param>
-		/// <param name="oppositeRolePlayer">The opposite role player.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
-		/// <param name="directLink">true to write as a direct link.</param>
-		private void SerializeLink(System.Xml.XmlWriter file, ElementLink link, ModelElement rolePlayer, ModelElement oppositeRolePlayer, MetaRoleInfo rolePlayedInfo, bool directLink)
+		private void SerializeLink(System.Xml.XmlWriter file, ElementLink link, ModelElement rolePlayer, MetaRoleInfo rolePlayedInfo)
 		{
+			ModelElement oppositeRolePlayer = link.GetRolePlayer(rolePlayedInfo.OppositeMetaRole);
 			ORMCustomSerializedElementSupportedOperations supportedOperations = ORMCustomSerializedElementSupportedOperations.None;
 			ORMCustomSerializedElementInfo customInfo = ORMCustomSerializedElementInfo.Default;
-			IORMCustomSerializedElement customElement;
 			IList attributes = null;
 			string defaultPrefix;
 			bool hasCustomAttributes = false;
 
-			if (link != null)
+			if (!ShouldSerialize(link) || !ShouldSerialize(rolePlayer))
 			{
-				if (!ShouldSerialize(link)) return;
+				return;
+			}
+			IORMCustomSerializedElement rolePlayerCustomElement = rolePlayer as IORMCustomSerializedElement;
+			IORMCustomSerializedElement customElement = rolePlayerCustomElement;
+			bool writeContents = customElement != null &&
+				0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo) &&
+				customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole).WriteStyle == ORMCustomSerializedElementWriteStyle.PrimaryLinkElement;
+
+			if (writeContents)
+			{
 				customElement = link as IORMCustomSerializedElement;
 				attributes = link.MetaClass.MetaAttributes;
 				defaultPrefix = DefaultElementPrefix(link);
 			}
 			else
 			{
-				if (!ShouldSerialize(rolePlayer)) return;
-				customElement = rolePlayer as IORMCustomSerializedElement;
 				defaultPrefix = DefaultElementPrefix(rolePlayer);
 			}
 
@@ -863,9 +905,9 @@ namespace Northface.Tools.ORM.Shell
 				hasCustomAttributes = (supportedOperations & ORMCustomSerializedElementSupportedOperations.AttributeInfo) != 0;
 
 				IORMCustomSerializedElement tagCustomElement = customElement;
-				if (link != null)
+				if (writeContents)
 				{
-					tagCustomElement = rolePlayer as IORMCustomSerializedElement;
+					tagCustomElement = rolePlayerCustomElement;
 					if (tagCustomElement != null)
 					{
 						if (0 != (tagCustomElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo))
@@ -880,32 +922,21 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 
-			System.Text.StringBuilder name = new System.Text.StringBuilder();
-			name.Append(rolePlayedInfo.MetaRelationship.Name);
-			name.Append('.');
-			name.Append(rolePlayedInfo.OppositeMetaRole.Name);
-			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, name.ToString())) return;
+			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, string.Concat(rolePlayedInfo.MetaRelationship.Name, ".", rolePlayedInfo.OppositeMetaRole.Name))) return;
 
-			Guid keyId = (link != null) ? link.Id : oppositeRolePlayer.Id;
-			if (!directLink && !myLinkGUIDs.Contains(keyId))
+			Guid keyId = writeContents ? link.Id : oppositeRolePlayer.Id;
+			if (writeContents)
 			{
 				IList rolesPlayed = link.MetaClass.MetaRolesPlayed;
-				bool writeChildren;
+				bool writeChildren = rolesPlayed.Count != 0;
 
-				myLinkGUIDs.Add(keyId);
-
-				if (writeChildren=((link == null) || rolesPlayed.Count != 0))
+				if (writeChildren)
 				{
+					// UNDONE: Be smarter here. If none of the relationships for the played
+					// roles are actually serialized, then we don't need this at all.
 					file.WriteAttributeString("id", ToXML(keyId));
 				}
-				if (link != null)
-				{
-					if (oppositeRolePlayer == null)
-					{
-						oppositeRolePlayer = link.GetRolePlayer(rolePlayedInfo.OppositeMetaRole);
-					}
-					file.WriteAttributeString("ref", ToXML(oppositeRolePlayer.Id));
-				}
+				file.WriteAttributeString("ref", ToXML(oppositeRolePlayer.Id));
 
 				SerializeAttributes(file, link, customElement, rolePlayedInfo, attributes, hasCustomAttributes);
 
@@ -986,47 +1017,19 @@ namespace Northface.Tools.ORM.Shell
 
 			if (!rolePlayedInfo.IsAggregate && !oppositeRoleInfo.IsAggregate) //write link
 			{
-				if (rolePlayedInfo.MetaRelationship.MetaAttributesCount > 0) //link has attributes
-				{
-					IList links = childElement.GetElementLinks(rolePlayedInfo);
+				IList links = childElement.GetElementLinks(rolePlayedInfo);
 
-					foreach (ElementLink link in links)
-					{
-						if (link.MetaClass.Id == rolePlayedInfo.MetaRelationship.Id)
-						{
-							if (writeBeginElement && customInfo != null)
-							{
-								if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, customInfo.CustomName))
-								{
-									return false;
-								}
-								ret = true;
-							}
-							SerializeLink(file, link, childElement, null, rolePlayedInfo, false); //write indirect link
-							break;
-						}
-					}
-				}
-				else //link does not have attributes
+				foreach (ElementLink link in links)
 				{
-					IList oppositeElements = childElement.GetCounterpartRolePlayers(rolePlayedInfo, oppositeRoleInfo);
-
-					//write direct links
-					if (oppositeElements.Count != 0)
+					if (writeBeginElement && !ret && customInfo != null)
 					{
-						if (writeBeginElement && customInfo != null)
+						if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, customInfo.CustomName))
 						{
-							if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, customInfo.CustomName))
-							{
-								return false;
-							}
-							ret = true;
+							return false;
 						}
-						foreach (ModelElement oppositeElement in oppositeElements)
-						{
-							SerializeLink(file, null, childElement, oppositeElement, rolePlayedInfo, true);
-						}
+						ret = true;
 					}
+					SerializeLink(file, link, childElement, rolePlayedInfo);
 				}
 			}
 			else if (rolePlayedInfo.IsAggregate) //write child
@@ -1039,6 +1042,7 @@ namespace Northface.Tools.ORM.Shell
 		private void SerializeChildElements(System.Xml.XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, ORMCustomSerializedChildElementInfo[] childElementInfo, IList rolesPlayed, bool sortRoles, bool groupRoles, string defaultPrefix)
 		{
 			int rolesPlayedCount = rolesPlayed.Count;
+			IORMCustomSerializedMetaModel parentModel = GetParentModel(element);
 
 			//sort played roles
 			if (sortRoles && rolesPlayedCount != 0)
@@ -1063,6 +1067,11 @@ namespace Northface.Tools.ORM.Shell
 					if (!written[index0])
 					{
 						MetaRoleInfo rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index0];
+						if (!ShouldSerializeMetaRole(parentModel, rolePlayedInfo))
+						{
+							written[index0] = true;
+							continue;
+						}
 						MetaRoleInfo oppositeRoleInfo = rolePlayedInfo.OppositeMetaRole;
 						ORMCustomSerializedChildElementInfo customChildInfo;
 						bool writeEndElement = false;
@@ -1084,6 +1093,11 @@ namespace Northface.Tools.ORM.Shell
 								if (!written[index1])
 								{
 									rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index1];
+									if (!ShouldSerializeMetaRole(parentModel, rolePlayedInfo))
+									{
+										written[index1] = true;
+										continue;
+									}
 									oppositeRoleInfo = rolePlayedInfo.OppositeMetaRole;
 
 									if (customChildInfo.ContainsGuid(oppositeRoleInfo.Id))
@@ -1110,6 +1124,10 @@ namespace Northface.Tools.ORM.Shell
 				for (int index = 0; index < rolesPlayedCount; ++index)
 				{
 					MetaRoleInfo rolePlayedInfo = (MetaRoleInfo)rolesPlayed[index];
+					if (!ShouldSerializeMetaRole(parentModel, rolePlayedInfo))
+					{
+						continue;
+					}
 					if (SerializeChildElement(file, element, rolePlayedInfo, rolePlayedInfo.OppositeMetaRole, null, null, true))
 					{
 						WriteCustomizedEndElement(file, null);
@@ -1236,7 +1254,7 @@ namespace Northface.Tools.ORM.Shell
 			//serialize namespaces
 			foreach (object value in values)
 			{
-				IORMCustomElementNamespace ns = value as IORMCustomElementNamespace;
+				IORMCustomSerializedMetaModel ns = value as IORMCustomSerializedMetaModel;
 
 				if (ns!=null)
 				{
@@ -1269,8 +1287,6 @@ namespace Northface.Tools.ORM.Shell
 
 			file.WriteEndElement();
 			file.Close();
-
-			myLinkGUIDs.Clear();
 
 			return;
 		}

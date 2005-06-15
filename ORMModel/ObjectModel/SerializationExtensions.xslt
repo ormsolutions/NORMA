@@ -577,98 +577,249 @@
 			</xsl:choose>
 		</plx:Class>
 	</xsl:template>
-	<xsl:template match="se:Namespaces">
+	<xsl:template match="se:MetaModel">
 		<plx:Class name="{@Class}" visibility="Public" partial="true">
-			<plx:ImplementsInterface dataTypeName="IORMCustomElementNamespace"/>
-			<plx:Property visibility="Protected" name="DefaultElementPrefix">
-				<plx:InterfaceMember dataTypeName="IORMCustomElementNamespace" member="DefaultElementPrefix"/>
-				<plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System"/>
-				<plx:Get>
-					<plx:Return>
-						<xsl:variable name="defaultElement" select="se:Namespace[@DefaultPrefix='true']"/>
-						<xsl:choose>
-							<xsl:when test="count($defaultElement)">
+			<plx:ImplementsInterface dataTypeName="IORMCustomSerializedMetaModel"/>
+			<xsl:for-each select="se:Namespaces">
+				<plx:Property visibility="Protected" name="DefaultElementPrefix">
+					<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="DefaultElementPrefix"/>
+					<plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System"/>
+					<plx:Get>
+						<plx:Return>
+							<xsl:variable name="defaultElement" select="se:Namespace[@DefaultPrefix='true']"/>
+							<xsl:choose>
+								<xsl:when test="count($defaultElement)">
+									<plx:String>
+										<xsl:value-of select="$defaultElement/@Prefix"/>
+									</plx:String>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:NullObjectKeyword/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:Return>
+					</plx:Get>
+				</plx:Property>
+				<plx:Function visibility="Protected" name="GetCustomElementNamespaces">
+					<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="GetCustomElementNamespaces"/>
+					<plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System">
+						<plx:ArrayDescriptor rank="2"/>
+					</plx:Param>
+					<plx:Variable name="ret" dataTypeQualifier="System" dataTypeName="String" const="true">
+						<plx:ArrayDescriptor rank="2"/>
+						<plx:Initialize>
+							<plx:CallNew style="New" dataTypeName="String" dataTypeQualifier="System">
+								<plx:ArrayDescriptor rank="2"/>
+								<plx:PassParam>
+									<plx:Value type="I4">
+										<xsl:value-of select="count(se:Namespace)"/>
+									</plx:Value>
+								</plx:PassParam>
+								<plx:PassParam>
+									<plx:Value type="I4">2</plx:Value>
+								</plx:PassParam>
+							</plx:CallNew>
+						</plx:Initialize>
+					</plx:Variable>
+					<xsl:for-each select="se:Namespace">
+						<plx:Operator name="Assign">
+							<plx:Left>
+								<plx:CallInstance name="" style="ArrayIndexer">
+									<plx:CallObject>
+										<plx:Value type="Local">ret</plx:Value>
+									</plx:CallObject>
+									<plx:PassParam>
+										<plx:Value type="Local">
+											<xsl:value-of select="position()-1"/>
+										</plx:Value>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:Value type="Local">0</plx:Value>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</plx:Left>
+							<plx:Right>
 								<plx:String>
-									<xsl:value-of select="$defaultElement/@Prefix"/>
+									<xsl:value-of select="@Prefix"/>
 								</plx:String>
-							</xsl:when>
-							<xsl:otherwise>
-								<plx:NullObjectKeyword/>
-							</xsl:otherwise>
-						</xsl:choose>
+							</plx:Right>
+						</plx:Operator>
+						<plx:Operator name="Assign">
+							<plx:Left>
+								<plx:CallInstance name="" style="ArrayIndexer">
+									<plx:CallObject>
+										<plx:Value type="Local">ret</plx:Value>
+									</plx:CallObject>
+									<plx:PassParam>
+										<plx:Value type="Local">
+											<xsl:value-of select="position()-1"/>
+										</plx:Value>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:Value type="Local">1</plx:Value>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</plx:Left>
+							<plx:Right>
+								<plx:String>
+									<xsl:value-of select="@URI"/>
+								</plx:String>
+							</plx:Right>
+						</plx:Operator>
+					</xsl:for-each>
+					<plx:Return>
+						<plx:Value type="Local">ret</plx:Value>
 					</plx:Return>
-				</plx:Get>
-			</plx:Property>
-			<plx:Function visibility="Protected" name="GetCustomElementNamespaces">
-				<plx:InterfaceMember dataTypeName="IORMCustomElementNamespace" member="GetCustomElementNamespaces"/>
-				<plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System">
-					<plx:ArrayDescriptor rank="2"/>
-				</plx:Param>
-				<plx:Variable name="ret" dataTypeQualifier="System" dataTypeName="String" const="true">
-					<plx:ArrayDescriptor rank="2"/>
-					<plx:Initialize>
-						<plx:CallNew style="New" dataTypeName="String" dataTypeQualifier="System">
-							<plx:ArrayDescriptor rank="2"/>
-							<plx:PassParam>
-								<plx:Value type="I4">
-									<xsl:value-of select="count(se:Namespace)"/>
-								</plx:Value>
-							</plx:PassParam>
-							<plx:PassParam>
-								<plx:Value type="I4">2</plx:Value>
-							</plx:PassParam>
-						</plx:CallNew>
-					</plx:Initialize>
-				</plx:Variable>
-				<xsl:for-each select="se:Namespace">
-					<plx:Operator name="Assign">
-						<plx:Left>
-							<plx:CallInstance name="" style="ArrayIndexer">
+				</plx:Function>
+			</xsl:for-each>
+			<xsl:variable name="hasOmittedElements" select="0!=count(se:OmittedMetaElements/child::se:*)"/>
+			<xsl:if test="$hasOmittedElements">
+				<plx:Field name="myCustomSerializationOmissions" dataTypeName="Dictionary" visibility="Private">
+					<plx:PassTypeParam dataTypeName="MetaClassInfo"/>
+					<plx:PassTypeParam dataTypeName="Object" dataTypeQualifier="System"/>
+				</plx:Field>
+				<plx:Function name="BuildCustomSerializationOmissions" visibility="Private">
+					<plx:Param name="" style="RetVal" dataTypeName="Dictionary">
+						<plx:PassTypeParam dataTypeName="MetaClassInfo"/>
+						<plx:PassTypeParam dataTypeName="Object" dataTypeQualifier="System"/>
+					</plx:Param>
+					<plx:Param name="store" dataTypeName="Store"/>
+					<plx:Variable name="retVal" dataTypeName="Dictionary">
+						<plx:PassTypeParam dataTypeName="MetaClassInfo"/>
+						<plx:PassTypeParam dataTypeName="Object" dataTypeQualifier="System"/>
+						<plx:Initialize>
+							<plx:CallNew style="New" dataTypeName="Dictionary">
+								<plx:PassTypeParam dataTypeName="MetaClassInfo"/>
+								<plx:PassTypeParam dataTypeName="Object" dataTypeQualifier="System"/>
+							</plx:CallNew>
+						</plx:Initialize>
+					</plx:Variable>
+					<plx:Variable name="dataDir" dataTypeName="MetaDataDirectory">
+						<plx:Initialize>
+							<plx:CallInstance name="MetaDataDirectory" style="Property">
 								<plx:CallObject>
-									<plx:Value type="Local">ret</plx:Value>
+									<plx:Value type="Parameter">store</plx:Value>
 								</plx:CallObject>
-								<plx:PassParam>
-									<plx:Value type="Local">
-										<xsl:value-of select="position()-1"/>
-									</plx:Value>
-								</plx:PassParam>
-								<plx:PassParam>
-									<plx:Value type="Local">0</plx:Value>
-								</plx:PassParam>
 							</plx:CallInstance>
-						</plx:Left>
-						<plx:Right>
-							<plx:String>
-								<xsl:value-of select="@Prefix"/>
-							</plx:String>
-						</plx:Right>
-					</plx:Operator>
-					<plx:Operator name="Assign">
-						<plx:Left>
-							<plx:CallInstance name="" style="ArrayIndexer">
-								<plx:CallObject>
-									<plx:Value type="Local">ret</plx:Value>
-								</plx:CallObject>
-								<plx:PassParam>
-									<plx:Value type="Local">
-										<xsl:value-of select="position()-1"/>
-									</plx:Value>
-								</plx:PassParam>
-								<plx:PassParam>
-									<plx:Value type="Local">1</plx:Value>
-								</plx:PassParam>
-							</plx:CallInstance>
-						</plx:Left>
-						<plx:Right>
-							<plx:String>
-								<xsl:value-of select="@URI"/>
-							</plx:String>
-						</plx:Right>
-					</plx:Operator>
-				</xsl:for-each>
-				<plx:Return>
-					<plx:Value type="Local">ret</plx:Value>
-				</plx:Return>
+						</plx:Initialize>
+					</plx:Variable>
+					<xsl:for-each select="se:OmittedMetaElements/child::se:*">
+						<xsl:variable name="classOrRelationship">
+							<xsl:choose>
+								<xsl:when test="local-name()='OmitClass'">
+									<xsl:text>Class</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:text>Relationship</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<plx:Operator name="Assign">
+							<plx:Left>
+								<plx:CallInstance name="" style="Indexer">
+									<plx:CallObject>
+										<plx:Value type="Local">retVal</plx:Value>
+									</plx:CallObject>
+									<plx:PassParam>
+										<plx:CallInstance name="FindMeta{$classOrRelationship}">
+											<plx:CallObject>
+												<plx:Value type="Local">dataDir</plx:Value>
+											</plx:CallObject>
+											<plx:PassParam>
+												<plx:CallType name="Meta{$classOrRelationship}Guid" style="Field" dataTypeName="{@Class}" dataTypeQualifier="{@Namespace}"/>
+											</plx:PassParam>
+										</plx:CallInstance>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</plx:Left>
+							<plx:Right>
+								<plx:NullObjectKeyword/>
+							</plx:Right>
+						</plx:Operator>
+					</xsl:for-each>
+					<plx:Return>
+						<plx:Value type="Local">retVal</plx:Value>
+					</plx:Return>
+				</plx:Function>
+			</xsl:if>
+			<plx:Function visibility="Protected" name="ShouldSerializeMetaClass">
+				<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="ShouldSerializeMetaClass"/>
+				<plx:Param name="" style="RetVal" dataTypeName="Boolean" dataTypeQualifier="System"/>
+				<plx:Param name="store" dataTypeName="Store"/>
+				<plx:Param name="classInfo" dataTypeName="MetaClassInfo"/>
+				<xsl:choose>
+					<xsl:when test="$hasOmittedElements">
+						<plx:Variable name="omissions" dataTypeName="Dictionary">
+							<plx:PassTypeParam dataTypeName="MetaClassInfo"/>
+							<plx:PassTypeParam dataTypeName="Object" dataTypeQualifier="System"/>
+							<plx:Initialize>
+								<plx:CallInstance name="myCustomSerializationOmissions" style="Field">
+									<plx:CallObject>
+										<plx:ThisKeyword/>
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:Initialize>
+						</plx:Variable>
+						<plx:Condition>
+							<plx:Test>
+								<plx:Operator name="IdentityEquality">
+									<plx:Left>
+										<plx:Value type="Local">omissions</plx:Value>
+									</plx:Left>
+									<plx:Right>
+										<plx:NullObjectKeyword/>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Test>
+							<plx:Body>
+								<plx:Operator name="Assign">
+									<plx:Left>
+										<plx:Value type="Local">omissions</plx:Value>
+									</plx:Left>
+									<plx:Right>
+										<plx:CallInstance name="BuildCustomSerializationOmissions">
+											<plx:CallObject>
+												<plx:ThisKeyword/>
+											</plx:CallObject>
+											<plx:PassParam>
+												<plx:Value type="Parameter">store</plx:Value>
+											</plx:PassParam>
+										</plx:CallInstance>
+									</plx:Right>
+								</plx:Operator>
+								<plx:Operator name="Assign">
+									<plx:Left>
+										<plx:CallInstance name="myCustomSerializationOmissions" style="Field">
+											<plx:CallObject>
+												<plx:ThisKeyword/>
+											</plx:CallObject>
+										</plx:CallInstance>
+									</plx:Left>
+									<plx:Right>
+										<plx:Value type="Local">omissions</plx:Value>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Body>
+						</plx:Condition>
+						<plx:Return>
+							<plx:Operator name="BooleanNot">
+								<plx:CallInstance name="ContainsKey">
+									<plx:CallObject>
+										<plx:Value type="Local">omissions</plx:Value>
+									</plx:CallObject>
+									<plx:PassParam>
+										<plx:Value type="Parameter">classInfo</plx:Value>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</plx:Operator>
+						</plx:Return>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:Return>
+							<plx:TrueKeyword/>
+						</plx:Return>
+					</xsl:otherwise>
+				</xsl:choose>
 			</plx:Function>
 		</plx:Class>
 	</xsl:template>

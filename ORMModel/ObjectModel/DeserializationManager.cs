@@ -328,7 +328,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			ElementType typedElement = element as ElementType;
 			if (typedElement != null)
 			{
-				ElementCollection.Add((ElementType)((object)element));
+				ElementCollection.Add(typedElement);
 			}
 		}
 		void INotifyElementAdded.ElementAdded(ModelElement element)
