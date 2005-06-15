@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://Schemas.Northface.edu/ORM/ORMDiagram" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns="http://Schemas.Northface.edu/ORM/ORMDiagram" xmlns:mstns="http://tempur.org/XMLSchema.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:derived="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="ORMDiagram" type="ORMDiagram"/>
+	<xs:complexType name="Shape" abstract="true">
+		<xs:attribute name="id" type="xs:string" use="required" />
+		<xs:attribute name="IsExpanded" type="xs:boolean" />
+		<xs:attribute name="AbsoluteBounds" type="xs:string"  />
+		<xs:attribute name="ShapeName" type="xs:string"  />
+	</xs:complexType>
+	<xs:complexType name="ORMDiagram">
+		<xs:sequence>
+			<xs:element name="NestedChildShapes">
+				<xs:complexType>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="ObjectTypeShape" type="ObjectTypeShape" minOccurs="0" maxOccurs="unbounded"></xs:element>
+						<xs:element name="FactTypeShape" type="FactTypeShape" minOccurs="0"  maxOccurs="unbounded"></xs:element>
+						<xs:element name="ExternalConstraintShape" type="ExternalConstraintShape" minOccurs="0"  maxOccurs="unbounded"></xs:element>						
+						<xs:element name="FrequencyConstraintShape" type="FrequencyConstraintShape" minOccurs="0"  maxOccurs="unbounded"></xs:element>						
+						
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="required" />
+		<xs:attribute name="IsCompleteView" type="xs:boolean" use="required" />
+		<xs:attribute name="DiagramId" type="xs:string" use="required" />
+		<xs:attribute name="Name" type="xs:string" use="required" />
+		<xs:attribute name="BaseFontName" type="xs:string" use="required" />
+		<xs:attribute name="BaseFontSize" type="xs:decimal" use="required" />
+	</xs:complexType>
+	<xs:complexType name="ObjectTypeShape">
+		<xs:complexContent>
+			<xs:extension base="Shape">
+				<xs:sequence>
+					<xs:element name="RelativeChildShapes" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence >
+								<xs:element name="ValueRangeShape" type="ValueRangeShape" minOccurs="0"  maxOccurs="unbounded"></xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="ReferenceModeName" type="xs:string" use="required" />
+				<xs:attribute name="ExpandRefMode" type="xs:boolean" use="required" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="FactTypeShape">
+		<xs:complexContent>
+			<xs:extension base="Shape">
+				<xs:sequence>
+					<xs:element name="RelativeChildShapes" minOccurs="0"  maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ObjectifiedFactTypeNameShape" type="ObjectifiedFactTypeNameShape" minOccurs="0"  maxOccurs="unbounded"></xs:element>
+								<xs:element name="ReadingShape" type="ReadingShape" minOccurs="0"  maxOccurs="unbounded"></xs:element>
+								<xs:element name="ValueRangeShape" type="ValueRangeShape" minOccurs="0"  maxOccurs="unbounded"></xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="ConstraintDisplayPosition" type="xs:string" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ObjectifiedFactTypeNameShape">
+		<xs:complexContent>
+			<xs:extension base="Shape">
+				<xs:attribute name="ObjectTypeName" type="xs:string" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ReadingShape">
+		<xs:complexContent>
+			<xs:extension base="Shape">
+				<xs:attribute name="ReadingText" type="xs:string" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ExternalConstraintShape">
+		<xs:complexContent>
+			<xs:extension base="Shape"></xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ValueRangeShape">
+		<xs:complexContent>
+			<xs:extension base="Shape">
+				<xs:attribute name ="ValueRangeText" type ="xs:string"></xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+		<xs:complexType name="FrequencyConstraintShape">
+		<xs:complexContent>
+			<xs:extension base="Shape">
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

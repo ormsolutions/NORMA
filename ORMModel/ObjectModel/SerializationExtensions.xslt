@@ -9,6 +9,7 @@
 			<plx:Using name="System.Collections"/>
 			<plx:Using name="System.Collections.Generic"/>
 			<plx:Using name="Microsoft.VisualStudio.Modeling"/>
+			<plx:Using name="Microsoft.VisualStudio.Modeling.Diagrams"/>
 			<plx:Using name="Northface.Tools.ORM.Shell"/>
 			<xsl:for-each select="se:Using">
 				<plx:Namespace name="{@Namespace}">

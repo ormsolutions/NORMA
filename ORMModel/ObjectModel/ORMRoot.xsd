@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ormDiagram="http://Schemas.Northface.edu/ORM/ORMDiagram" xmlns:orm="http://Schemas.Northface.edu/ORM/ORMCore" xmlns:ormRoot="http://Schemas.Northface.edu/ORM/ORMRoot" xmlns:ormDerived="http://Schemas.Northface.edu/ORM/ORMDerived" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://Schemas.Northface.edu/ORM/ORMRoot" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:import namespace="http://Schemas.Northface.edu/ORM/ORMCore" />
+	<xs:import namespace="http://Schemas.Northface.edu/ORM/ORMDiagram" />
+	<xs:element name="ORM2">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="orm:ORMModel" />
+				<xs:element ref="ormDiagram:ORMDiagram" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
