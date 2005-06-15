@@ -288,17 +288,20 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == Reading.TextMetaAttributeGuid)
 				{
-					changedReading.ValidateRoleCountError(null);
+					if (!changedReading.IsRemoved)
+					{
+						changedReading.ValidateRoleCountError(null);
 
-					TooFewReadingRolesError tooFew;
-					TooManyReadingRolesError tooMany;
-					if (null != (tooFew = changedReading.TooFewRolesError))
-					{
-						tooFew.GenerateErrorText();
-					}
-					if (null != (tooMany = changedReading.TooManyRolesError))
-					{
-						tooMany.GenerateErrorText();
+						TooFewReadingRolesError tooFew;
+						TooManyReadingRolesError tooMany;
+						if (null != (tooFew = changedReading.TooFewRolesError))
+						{
+							tooFew.GenerateErrorText();
+						}
+						if (null != (tooMany = changedReading.TooManyRolesError))
+						{
+							tooMany.GenerateErrorText();
+						}
 					}
 				}
 			}
@@ -312,20 +315,23 @@ namespace Northface.Tools.ORM.ObjectModel
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
-				ReadingOrder ord = link.ReadingOrder;
-				if (!ord.IsRemoved)
+				if (!link.IsRemoved)
 				{
-					ReadingMoveableCollection readings = ord.ReadingCollection;
-					foreach (Reading read in readings)
+					ReadingOrder ord = link.ReadingOrder;
+					if (!ord.IsRemoved)
 					{
-						read.ValidateRoleCountError(null);
+						ReadingMoveableCollection readings = ord.ReadingCollection;
+						foreach (Reading read in readings)
+						{
+							read.ValidateRoleCountError(null);
+						}
 					}
 				}
 			}
 		}
 		#endregion
 
-		#endregion ReadingIsPrimaryChanged
+		#endregion // rule classes and helpers
 
 		#region IModelErrorOwner implementation
 

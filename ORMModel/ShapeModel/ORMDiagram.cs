@@ -374,9 +374,8 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public static readonly StyleSetResourceId StickyForegroundResource = new StyleSetResourceId("Northface", "StickyForegroundResource");
 		/// <summary>
-		/// 
+		/// Standard override to populate the style set for the shape type
 		/// </summary>
-		/// <param name="classStyleSet"></param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
 			base.InitializeResources(classStyleSet);

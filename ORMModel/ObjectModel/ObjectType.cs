@@ -64,6 +64,13 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			else if (attributeGuid == ObjectType.DataTypeDisplayMetaAttributeGuid)
 			{
+				//If this objectype has a reference mode, return the datatype corresponding
+				//to the ref mode's datatype.
+				ObjectType refModeRolePlayer = GetValueTypeForPreferredConstraint();
+				if (refModeRolePlayer != null)
+				{
+					return refModeRolePlayer.DataType;
+				}
 				return this.DataType;
 			}
 			else if (attributeGuid == ObjectType.ReferenceModeDisplayMetaAttributeGuid)
@@ -93,7 +100,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			else if (attributeGuid == ValueRangeTextMetaAttributeGuid)
 			{
-				ValueTypeValueRangeDefinition defn = ValueRangeDefinition;
+				ValueRangeDefinition defn = FindValueRangeDefinition(false);
 				return (defn == null) ? "" : defn.Text;
 			}
 			return base.GetValueForCustomStoredAttribute(attribute);
@@ -181,11 +188,27 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override bool ShouldCreatePropertyDescriptor(MetaAttributeInfo metaAttrInfo)
 		{
 			Guid attributeGuid = metaAttrInfo.Id;
-			if (attributeGuid == DataTypeDisplayMetaAttributeGuid ||
-				attributeGuid == ScaleMetaAttributeGuid ||
+			if (attributeGuid == ScaleMetaAttributeGuid ||
 				attributeGuid == LengthMetaAttributeGuid)
 			{
 				return IsValueType;
+			}
+			else if (attributeGuid == DataTypeDisplayMetaAttributeGuid ||
+				attributeGuid == ValueRangeTextMetaAttributeGuid)
+			{
+				if (!IsValueType && HasReferenceMode)
+				{
+					ArrayList pels = this.AssociatedPresentationElements;
+					foreach (object obj in pels)
+					{
+						ShapeModel.ObjectTypeShape objectShape;
+						if (null != (objectShape = obj as ShapeModel.ObjectTypeShape))
+						{
+							return !objectShape.ExpandRefMode;
+						}
+					}
+				}
+				return NestedFactType == null && (IsValueType || HasReferenceMode);
 			}
 			else if (attributeGuid == NestedFactTypeDisplayMetaAttributeGuid)
 			{
@@ -194,16 +217,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			else if (attributeGuid == ReferenceModeDisplayMetaAttributeGuid)
 			{
 				return !IsValueType && NestedFactType == null;
-			}
-			else if (attributeGuid == ValueRangeTextMetaAttributeGuid)
-			{
-				//UNDONE: The next line attempts to hide the value range property on
-				//entity types without a reference mode. Concept is that the property
-				//should be hidden on entity types where the ref mode is expanded and
-				//shown when the ref mode is collapsed. Thus, the value range can always
-				//be edited.
-//				return NestedFactType == null && (IsValueType || HasReferenceMode);
-				return NestedFactType == null;
 			}
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
@@ -240,7 +253,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			else if (elemDesc != null && elemDesc.MetaAttributeInfo.Id == ValueRangeTextMetaAttributeGuid)
 			{
-				return !((IsValueType || HasReferenceMode) && NestedFactType == null);
+				return !(NestedFactType == null && (IsValueType || HasReferenceMode));
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
@@ -254,7 +267,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			return IsValueType ? ResourceStrings.ValueType : ResourceStrings.EntityType;
 		}
-
 
 		#region UtilityMethods
 		/// <summary>
@@ -419,7 +431,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return ReferenceModeString.Length > 0;
+				return GetValueTypeForPreferredConstraint() != null;
 			}
 		}
 		#endregion
@@ -515,6 +527,37 @@ namespace Northface.Tools.ORM.ObjectModel
 				refModeString = (refMode == null) ? valueTypeName : refMode.Name;
 			}
 		}
+		/// <summary>
+		/// Retrieves the ValueRangeDefinition to use for this ObjectType.
+		/// </summary>
+		/// <param name="autoCreate">If the ValueRangeDefinition is null, should one be created?
+		/// This should be false if we're simply reading the definition.</param>
+		/// <returns>For ObjectTypes with a ref mode, this returns the ValueRangeDefinition
+		/// found on the ObjectType's preferred identifier role.</returns>
+		public ValueRangeDefinition FindValueRangeDefinition(bool autoCreate)
+		{
+			if (HasReferenceMode)
+			{
+				ConstraintRoleSequence sequence = PreferredIdentifier;
+				RoleMoveableCollection roleCollection = sequence.RoleCollection;
+				if (roleCollection.Count == 1)
+				{
+					Role role = roleCollection[0];
+					RoleValueRangeDefinition defn = role.ValueRangeDefinition;
+					if (defn == null && autoCreate)
+					{
+						role.ValueRangeDefinition = defn = RoleValueRangeDefinition.CreateRoleValueRangeDefinition(role.Store);
+					}
+					return defn as ValueRangeDefinition;
+				}
+			}
+			ValueTypeValueRangeDefinition valueDefn = this.ValueRangeDefinition;
+			if (valueDefn == null && autoCreate)
+			{
+				this.ValueRangeDefinition = valueDefn = ValueTypeValueRangeDefinition.CreateValueTypeValueRangeDefinition(this.Store);
+			}
+			return valueDefn as ValueRangeDefinition;
+		}
 		#endregion // Customize property display
 		#region ObjectTypeChangeRule class
 
@@ -554,7 +597,15 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				else if (attributeGuid == ObjectType.DataTypeDisplayMetaAttributeGuid)
 				{
-					(e.ModelElement as ObjectType).DataType = e.NewValue as DataType;
+					ObjectType objectType = e.ModelElement as ObjectType;
+					//If this objectype has a reference mode, return the datatype corresponding
+					//to the ref mode's datatype.
+					ObjectType refModeRolePlayer = objectType.GetValueTypeForPreferredConstraint();
+					if (refModeRolePlayer != null)
+					{
+						objectType = refModeRolePlayer;
+					}
+					objectType.DataType = e.NewValue as DataType;
 				}
 				else if (attributeGuid == ObjectType.LengthMetaAttributeGuid)
 				{
@@ -628,11 +679,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				else if (attributeGuid == ObjectType.ValueRangeTextMetaAttributeGuid)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
-					ValueTypeValueRangeDefinition defn = objectType.ValueRangeDefinition;
-					if (defn == null)
-					{
-						objectType.ValueRangeDefinition = defn = ValueTypeValueRangeDefinition.CreateValueTypeValueRangeDefinition(objectType.Store);
-					}
+					ValueRangeDefinition defn = objectType.FindValueRangeDefinition(true);
 					defn.Text = (string)e.NewValue;
 				}
 			}

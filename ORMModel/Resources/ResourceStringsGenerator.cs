@@ -155,6 +155,9 @@ namespace Northface.Tools.ORM
         private const string ValueRangeDefinitionStringContainerPattern_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern";
         private const string ValueRangeDefinitionOpenInclusionContainer_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern";
         private const string ValueRangeDefinitionClosedInclusionContainer_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern";
+        private const string ReadingShapeReadingSeparator_Id = "ReadingShape.ReadingSeparator";
+        private const string ReadingShapeEllipsis_Id = "ReadingShape.Ellipsis";
+        private const string ReadingShapeInverseReading_Id = "ReadingShape.InverseReading";
         /// <summary>
         ///</summary>
         public static string ToolboxDefaultTabName
@@ -1323,6 +1326,33 @@ namespace Northface.Tools.ORM
             get
             {
                 return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionClosedInclusionContainer_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ReadingShapeReadingSeparator
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeReadingSeparator_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ReadingShapeEllipsis
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeEllipsis_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ReadingShapeInverseReading
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeInverseReading_Id);
             }
         }
     }

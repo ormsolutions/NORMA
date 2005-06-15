@@ -195,9 +195,35 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <returns>true</returns>
 		protected override bool ShouldAddShapeForElement(ModelElement element)
 		{
+#if DEBUG
+			//RoleValueRangeDefinitions added should be for a role opposite of
+			//this object's role player. The test below allows a RoleValueRangeDefinition
+			//to be added on the opposite role even if that opposite role is played
+			//by the same ObjectType as the RoleValueRangeDefinition's role (i.e. allows
+			//for ring constraints).
+			bool isRoleValueRangeDefn = false;
+			RoleValueRangeDefinition roleDefn;
+			if (null != (roleDefn = element as RoleValueRangeDefinition))
+			{
+				Role roleInDefn = roleDefn.Role;
+				FactType factType = roleInDefn.FactType;
+				foreach (Role r in factType.RoleCollection)
+				{
+					if (!object.ReferenceEquals(roleInDefn, r))
+					{
+						if (object.ReferenceEquals(r.RolePlayer, AssociatedObjectType))
+						{
+							isRoleValueRangeDefn = true;
+							break;
+						}
+					}
+				}
+			}
 			Debug.Assert(
-				element is ValueTypeValueRangeDefinition && ((ValueTypeValueRangeDefinition)element).ValueType == AssociatedObjectType
+				(element is ValueTypeValueRangeDefinition && ((ValueTypeValueRangeDefinition)element).ValueType == AssociatedObjectType) ||
+				isRoleValueRangeDefn
 			);
+#endif // DEBUG
 			return true;
 		}
 		#endregion // Customize appearance

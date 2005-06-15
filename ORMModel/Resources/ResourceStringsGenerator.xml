@@ -390,4 +390,13 @@
     <ResourceString name="ValueRangeDefinitionClosedInclusionContainer" model="ObjectModel" resourceName="Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern">
         <comment type="Summary">Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
     </ResourceString>
+    <ResourceString name="ReadingShapeReadingSeparator" model="Diagram" resourceName="ReadingShape.ReadingSeparator">
+        <comment type="Summary">The string used to divide multiple readings shown in a ReadingShape.</comment>
+    </ResourceString>
+    <ResourceString name="ReadingShapeEllipsis" model="Diagram" resourceName="ReadingShape.Ellipsis">
+        <comment type="Summary">The character to use as the object placeholder in a ReadingShape (an ellipsis).</comment>
+    </ResourceString>
+    <ResourceString name="ReadingShapeInverseReading" model="Diagram" resourceName="ReadingShape.InverseReading">
+        <comment type="Summary">The string to use to indicate that a reading goes in the opposite direction. The preferred string (per Terry Halpin) is "\u25C4 ", but the unicode character is not available in that Tahoma font.</comment>
+    </ResourceString>
 </ResourceStrings>

@@ -187,15 +187,19 @@ namespace Northface.Tools.ORM.ObjectModel
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				//TODO:test
+				
 				ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
 				ReadingOrder readOrd = link.ReadingOrder;
-				Reading read = link.ReadingCollection;
-				if (read.IsPrimary)
+				if (readOrd.FactType != null)
 				{
-					ReadingMoveableCollection allReadings = readOrd.ReadingCollection;
-					if (allReadings.Count > 0)
+					Reading read = link.ReadingCollection;
+					if (read.IsPrimary)
 					{
-						allReadings[0].IsPrimary = true;
+						ReadingMoveableCollection allReadings = readOrd.ReadingCollection;
+						if (allReadings.Count > 0)
+						{
+							allReadings[0].IsPrimary = true;
+						}
 					}
 				}
 			}
@@ -212,7 +216,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			//UNDONE:a role being removed creates the possibility of there being two ReadingOrders with the same Role sequences, they should be merged
 			
-			public override void  ElementRemoving(ElementRemovingEventArgs e)
+			public override void ElementRemoving(ElementRemovingEventArgs e)
 			{
 				ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
 				Role linkRole = link.RoleCollection;
@@ -255,7 +259,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion ReadingHasRoleRemoving
 		#region FactTypeHasRoleAddedRule
 		/// <summary>
-		/// Common place for code ot deal with roles that exist in a fact
+		/// Common place for code to deal with roles that exist in a fact
 		/// but do not exist in the ReadingOrder objects that it contains.
 		/// This allows it to be used by both the rule and to be called
 		/// during post load model fixup.
@@ -265,6 +269,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			Debug.Assert(theFact.Store.TransactionManager.InTransaction);
 
 			ReadingOrderMoveableCollection readingOrders = theFact.ReadingOrderCollection;
+			string deletedText = ResourceStrings.ModelReadingRoleDeletedRoleText;
 			foreach (ReadingOrder ord in readingOrders)
 			{
 				RoleMoveableCollection roles = ord.RoleCollection;
@@ -275,7 +280,6 @@ namespace Northface.Tools.ORM.ObjectModel
 					foreach (Reading read in readings)
 					{
 						string readingText = read.Text;
-						string deletedText = ResourceStrings.ModelReadingRoleDeletedRoleText;
 						int pos = readingText.IndexOf(deletedText);
 						string newText;
 						if (pos < 0)

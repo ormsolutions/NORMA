@@ -105,7 +105,9 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion // ReferenceMode specific
 		#region Kind's Generated Accessor Code
 		/// <summary>
-		/// 
+		/// Property to change the reference mode kind. Modification of
+		/// standard code spit to generate a role player change instead of
+		/// a delete/add when the property is changed.
 		/// </summary>
 		public Northface.Tools.ORM.ObjectModel.ReferenceModeKind Kind
 		{

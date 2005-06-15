@@ -955,8 +955,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		private class ReadingEntry
 		{
 			protected static Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
-			protected const string ELLIPSIS = "\x2026";
-			protected const char C_ELLIPSIS = '\x2026';
 
 			Reading myReading;
 			ReadingOrder myReadingOrder;

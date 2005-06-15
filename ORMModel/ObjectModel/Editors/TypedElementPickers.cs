@@ -275,7 +275,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		protected override IList GetContentList(ITypeDescriptorContext context, object value)
 		{
 			Debug.Assert(!(value is object[]));
-			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, false); // false indicates this should not be called in multiselect mode.
+			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, true); // true to pick any element. We can use any element to get at the datatypes on the model
 			DataTypeMoveableCollection dataTypes = instance.Model.DataTypeCollection;
 			IList content = dataTypes;
 			// Let's use the order that the types appear in the DataType.PortableDataType enum.

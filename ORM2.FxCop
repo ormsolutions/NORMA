@@ -21,8 +21,8 @@
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
-   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
-   <Directory>C:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
+   <Directory>c:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
+   <Directory>c:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
   </AssemblyReferenceDirectories>
   <Target Name="$(ProjectDir)/ORMModel/bin/Debug/Northface.Tools.ORM.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
@@ -6994,14 +6994,14 @@
          </Type>
          <Type Name="ReferenceModeKindCollection">
           <Messages>
-           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Status="Excluded" Created="2005-06-02 21:00:35Z">
+           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Status="Excluded" Created="2005-06-15 21:15:01Z">
             <Issue>
              <Item>Northface.Tools.ORM.ObjectModel.ReferenceModeKindCollection</Item>
              <Item>Collection</Item>
             </Issue>
             <Notes>
              <User Name="pewert">
-              <Note Id="30" />
+              <Note Id="11" />
              </User>
             </Notes>
            </Message>
@@ -7009,35 +7009,35 @@
           <Members>
            <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
             <Messages>
-             <Message Id="attributeInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-02 21:00:35Z" FixCategory="Breaking">
+             <Message Id="attributeInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 21:15:01Z" FixCategory="Breaking">
               <Issue>
                <Item>attributeInfo</Item>
                <Item>ReferenceModeKindCollection.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
               </Issue>
               <Notes>
                <User Name="pewert">
-                <Note Id="30" />
+                <Note Id="11" />
                </User>
               </Notes>
              </Message>
-             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-02 21:00:35Z" FixCategory="Breaking">
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 21:15:01Z" FixCategory="Breaking">
               <Issue>
                <Item>rolePlayedInfo</Item>
                <Item>ReferenceModeKindCollection.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
               </Issue>
               <Notes>
                <User Name="pewert">
-                <Note Id="30" />
+                <Note Id="11" />
                </User>
               </Notes>
              </Message>
-             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-02 21:00:35Z" FixCategory="Breaking">
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 21:15:01Z" FixCategory="Breaking">
               <Issue Name="MarkAsStatic">
                <Item>ReferenceModeKindCollection.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
               </Issue>
               <Notes>
                <User Name="pewert">
-                <Note Id="30" />
+                <Note Id="11" />
                </User>
               </Notes>
              </Message>
@@ -7045,24 +7045,24 @@
            </Member>
            <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
             <Messages>
-             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-02 21:00:35Z" FixCategory="Breaking">
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 21:15:01Z" FixCategory="Breaking">
               <Issue>
                <Item>rolePlayedInfo</Item>
                <Item>ReferenceModeKindCollection.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
               </Issue>
               <Notes>
                <User Name="pewert">
-                <Note Id="30" />
+                <Note Id="11" />
                </User>
               </Notes>
              </Message>
-             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-02 21:00:35Z" FixCategory="Breaking">
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 21:15:01Z" FixCategory="Breaking">
               <Issue Name="MarkAsStatic">
                <Item>ReferenceModeKindCollection.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
               </Issue>
               <Notes>
                <User Name="pewert">
-                <Note Id="30" />
+                <Note Id="11" />
                </User>
               </Notes>
              </Message>
@@ -7617,6 +7617,20 @@
             <Notes>
              <User Name="mcurland">
               <Note Id="4" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="RoleValueRangeDefinition+RoleValueRangeDefinitionChangeRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-14 21:05:02Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition+RoleValueRangeDefinitionChangeRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="32" />
              </User>
             </Notes>
            </Message>
@@ -8542,20 +8556,6 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ValueRangeDefinition+ValueRangeDefinitionChangeRule">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
-            <Issue>
-             <Item>Northface.Tools.ORM.ObjectModel.ValueRangeDefinition+ValueRangeDefinitionChangeRule</Item>
-            </Issue>
-            <Notes>
-             <User Name="pewert">
-              <Note Id="11" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
          <Type Name="ValueRangeDefinition+ValueRangeDefinitionTextFieldHandler">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-05-25 19:47:55Z">
@@ -8750,6 +8750,20 @@
             </Messages>
            </Member>
           </Members>
+         </Type>
+         <Type Name="ValueTypeValueRangeDefinition+ValueTypeValueRangeDefinitionChangeRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-14 21:05:02Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition+ValueTypeValueRangeDefinitionChangeRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="33" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
         </Types>
        </Namespace>
@@ -10428,32 +10442,6 @@ BaseReadingTreeNode.SetText():Void</Item>
              </Message>
             </Messages>
            </Member>
-           <Member Name="ActivateModelError(Northface.Tools.ORM.ObjectModel.ModelError):System.Void">
-            <Messages>
-             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>ObjectTypeShape.ActivateModelError(ModelError):Void</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="32" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="dataTypeError" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2005-06-15 19:53:08Z">
-              <Issue>
-               <Item>ObjectTypeShape.ActivateModelError(ModelError):Void</Item>
-               <Item>dataTypeError</Item>
-               <Item>Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="32" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
             <Messages>
              <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="Breaking">
@@ -11359,6 +11347,20 @@ BaseReadingTreeNode.SetText():Void</Item>
             <Notes>
              <User Name="mcurland">
               <Note Id="7" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ReadingShape+ReadingOrderRemoved">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-14 21:05:02Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.ReadingShape+ReadingOrderRemoved</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="31" />
              </User>
             </Notes>
            </Message>
@@ -12773,7 +12775,7 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="8" Modified="2005-05-02 22:18:28Z">Defined in IMS-generated code</Note>
     <Note Id="9" Modified="2005-05-25 19:46:36Z">IMS-generated collections</Note>
     <Note Id="10" Modified="2005-05-25 19:49:57Z">Defined in IMS-generated code</Note>
-    <Note Id="11" Modified="2005-05-25 19:52:17Z">Internal rules instantiated via reflection</Note>
+    <Note Id="11" Modified="2005-06-15 21:20:13Z">Generated code</Note>
     <Note Id="12" Modified="2005-05-25 19:53:45Z">Defined in IMS-generated code</Note>
     <Note Id="13" Modified="2005-05-25 19:53:54Z">Defined in IMS-generated code</Note>
     <Note Id="14" Modified="2005-05-25 19:54:01Z">Defined in IMS-generated code</Note>
@@ -12793,6 +12795,9 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="28" Modified="2005-05-25 20:17:57Z">Internal rules instantiated via reflection</Note>
     <Note Id="29" Modified="2005-05-25 20:35:42Z">Duplicate cast is in assert statement</Note>
     <Note Id="30" Modified="2005-06-02 21:11:48Z">Serialization generated code.</Note>
+    <Note Id="31" Modified="2005-06-14 21:18:17Z">Internal rules instantiated via reflection</Note>
+    <Note Id="32" Modified="2005-06-14 21:18:24Z">Internal rules instantiated via reflection</Note>
+    <Note Id="33" Modified="2005-06-14 21:18:29Z">Internal rules instantiated via reflection</Note>
    </User>
   </Notes>
   <Rules>

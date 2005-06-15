@@ -41,6 +41,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				if (objectTypeShape != null)
 				{
 					Guid attributeId = e.MetaAttribute.Id;
+					#region ExpandRefMode
 					if (attributeId == ObjectTypeShape.ExpandRefModeMetaAttributeGuid)
 					{
 						bool turnOn = (bool)e.NewValue;
@@ -50,9 +51,9 @@ namespace Northface.Tools.ORM.ShapeModel
 						ORMDiagram parentDiagram = objectTypeShape.Diagram as ORMDiagram;
 						Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
 
-						// View or Hide FactType
 						if (preferredConstraint != null)
 						{
+							// View or Hide FactType
 							FactType factType = preferredConstraint.FactType;
 							if (turnOn)
 							{
@@ -67,7 +68,6 @@ namespace Northface.Tools.ORM.ShapeModel
 							{
 								RemoveShapesFromDiagram(factType, parentDiagram);
 							}
-
 							//View or Hide value type
 							ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
 							if (valueType != null)
@@ -117,6 +117,7 @@ namespace Northface.Tools.ORM.ShapeModel
 									}
 									else
 									{
+										FixupValueTypeValueRangeDefinitionLink(link, null);
 										RemoveShapesFromDiagram(link, parentDiagram);
 									}
 								}
@@ -124,6 +125,7 @@ namespace Northface.Tools.ORM.ShapeModel
 							parentDiagram.AutoLayoutChildShapes(shapeElements);
 						}
 					}
+					#endregion //ExpandRefMode
 				}
 			}
 			/// <summary>
@@ -479,7 +481,19 @@ namespace Northface.Tools.ORM.ShapeModel
 				RoleHasValueRangeDefinition link = e.ModelElement as RoleHasValueRangeDefinition;
 				if (link != null)
 				{
-					FixupRoleValueRangeDefinitionLink(link, null);
+					Role r = link.Role;
+					FactType factType = r.FactType;
+					IList links = factType.GetElementLinks(SubjectHasPresentation.SubjectMetaRoleGuid);
+					//If the factType has no presentation elements, it must be hidden. In which case,
+					//we need to fixup the ValueTypeValueRangeDefinition with this link.
+					if (links.Count > 0)
+					{
+						FixupRoleValueRangeDefinitionLink(link, null);
+					}
+					else
+					{
+						FixupValueTypeValueRangeDefinitionLink(link, null);
+					}
 				}
 			}
 		}
@@ -545,8 +559,8 @@ namespace Northface.Tools.ORM.ShapeModel
 				{
 					if (notifyAdded == null) // These elements will already exist during fixup
 					{
-						Diagram.FixUpDiagram(factType, roleValueRangeDefn);
 						Diagram.FixUpDiagram(model, factType);
+						Diagram.FixUpDiagram(factType, roleValueRangeDefn);
 					}
 					Diagram.FixUpDiagram(model, link);
 				}
@@ -592,7 +606,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayValueTypeValueRangeDefinitionFixupListener class
-		#region ValueTypeHasValueRangeDefinition class
+		#region ValueTypeHasValueRangeDefinitionRemoved class
 		[RuleOn(typeof(ValueTypeHasValueRangeDefinition), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
 		private class ValueTypeHasValueRangeDefinitionRemoved : RemoveRule
 		{
@@ -635,6 +649,41 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		/// <summary>
+		/// Helper function to display value type value ranges.
+		/// </summary>
+		/// <param name="link">A ValueTypeHasValueRangeDefinition element</param>
+		/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+		private static void FixupValueTypeValueRangeDefinitionLink(RoleHasValueRangeDefinition link, INotifyElementAdded notifyAdded)
+		{
+			// Make sure the object type, fact type, and link
+			// are displayed on the diagram
+			RoleValueRangeDefinition roleValueRangeDefn = link.ValueRangeDefinition;
+			Role role = roleValueRangeDefn.Role;
+			FactType factType = role.FactType;
+			ObjectType objectType = null;
+			foreach (Role r in factType.RoleCollection)
+			{
+				if (!Object.ReferenceEquals(r, role))
+				{
+					objectType = r.RolePlayer;
+				}
+			}
+			if (objectType != null)
+			{
+				ORMModel model = objectType.Model;
+				if (model != null)
+				{
+					if (notifyAdded == null)
+					{
+						Diagram.FixUpDiagram(objectType, roleValueRangeDefn);
+						Diagram.FixUpDiagram(model, objectType);
+					}
+					Diagram.FixUpDiagram(model, link);
+				}
+			}
+		}
+
 		#endregion // ValueTypeHasValueRangeDefinition fixup
 		#region ExternalFactConstraint fixup
 		#region ExternalFactConstraintAdded class

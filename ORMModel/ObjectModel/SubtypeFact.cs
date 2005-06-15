@@ -13,7 +13,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Set the derived type as a subtype of the base type
 		/// </summary>
-		/// 
 		/// <param name="subtype">The object type to use as the subtype (base type)</param>
 		/// <param name="supertype">The object type to use as the supertype (derived type)</param>
 		/// <returns>Subtype object</returns>

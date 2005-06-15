@@ -67,7 +67,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Get the ObjectType associated with this shape
+		/// Get the ValueRangeDefinition associated with this shape
 		/// </summary>s
 		public ValueRangeDefinition AssociatedRangeDefinition
 		{
@@ -94,7 +94,8 @@ namespace Northface.Tools.ORM.ShapeModel
 			if (fixupState != BoundsFixupState.Invalid)
 			{
 				SizeD size = Size;
-				Location = new PointD(0, -1.5 * size.Height);
+				RectangleD parentBounds = ParentShape.AbsoluteBoundingBox;
+				Location = new PointD(parentBounds.Width, -1 * size.Height);
 			}
 		}
 		/// <summary>
@@ -264,7 +265,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	}
 	#region ValueRangeAutoSizeTextField class
 	/// <summary>
-	/// Contains code to replace RolePlayer place holders with an ellipsis.
+	/// Contains code to create a value range text field.
 	/// </summary>
 	public class ValueRangeAutoSizeTextField : AutoSizeTextField
 	{
@@ -297,7 +298,6 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 			return retval;
 		}
-
 		/// <summary>
 		/// Changed to return true to get multiple line support.
 		/// </summary>

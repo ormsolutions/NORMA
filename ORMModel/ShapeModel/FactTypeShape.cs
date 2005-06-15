@@ -2200,14 +2200,15 @@ namespace Northface.Tools.ORM.ShapeModel
 					|| (element is ReadingOrder && ((ReadingOrder)element).FactType == AssociatedFactType)
 					|| (element is RoleValueRangeDefinition && ((RoleValueRangeDefinition)element).Role.FactType == AssociatedFactType)
 				);
-			ReadingOrder ord;
-			if (null != (ord = element as ReadingOrder))
+			if (element is ReadingOrder)
 			{
-				//prevent reading orders that are different from the currently displayed one
-				//from being added to the view.
-				if (!object.ReferenceEquals(FactType.FindMatchingReadingOrder(AssociatedFactType), ord))
+				foreach (ShapeElement shape in this.RelativeChildShapes)
 				{
-					return false;
+					ReadingShape readingShape = shape as ReadingShape;
+					if (readingShape != null && !readingShape.IsRemoved)
+					{
+						return false;
+					}
 				}
 			}
 			return true;

@@ -43,7 +43,7 @@ namespace Northface.Tools.ORM.Shell
 			private MenuCommand[] myCommands;
 
 			/// <summary>
-			/// 
+			/// ORMDesignerCommandSet constructor
 			/// </summary>
 			/// <param name="serviceProvider"></param>
 			public ORMDesignerCommandSet(IServiceProvider serviceProvider)
@@ -155,7 +155,7 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 			/// <summary>
-			/// 
+			/// Cleanup code 
 			/// </summary>
 			public virtual void Dispose()
 			{
@@ -423,7 +423,8 @@ namespace Northface.Tools.ORM.Shell
 			#endregion // Menu actions
 			#endregion // External Constraint editing menu options
 			/// <summary>
-			/// 
+			/// Retrieve the menu service from the service provider
+			/// specified in the constructor
 			/// </summary>
 			protected IMenuCommandService MenuService
 			{
@@ -507,7 +508,7 @@ namespace Northface.Tools.ORM.Shell
 		public class ORMDesignerCommandIds
 		{
 			/// <summary>
-			/// 
+			/// The global identifier for the command set used by the ORM designer.
 			/// </summary>
 			public static readonly Guid guidORMDesignerCommandSet = new Guid("7C51C000-1EAD-4b39-89B5-42BC9F49EA24");    // keep in sync with SatDll\PkgCmd.ctc
 

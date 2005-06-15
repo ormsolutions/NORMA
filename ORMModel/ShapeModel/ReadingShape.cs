@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Globalization;
 using Northface.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
@@ -18,8 +19,8 @@ namespace Northface.Tools.ORM.ShapeModel
 	{
 		private static AutoSizeTextField myTextShapeField;
 		private static Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
-		private const string ELLIPSIS = "\x2026";
-		private const char C_ELLIPSIS = '\x2026';
+		private static string ellipsis = ResourceStrings.ReadingShapeEllipsis;
+		private static char c_ellipsis = ellipsis.ToCharArray()[0];
 
 		#region Model Event Hookup and Handlers
 
@@ -112,7 +113,9 @@ namespace Northface.Tools.ORM.ShapeModel
 			Reading read = e.ModelElement as Reading;
 			Guid attrGuid = e.MetaAttribute.Id;
 
-			if (read.IsPrimary && (attrGuid == Reading.TextMetaAttributeGuid || attrGuid == Reading.IsPrimaryMetaAttributeGuid))
+			if (read.IsPrimary &&
+				(attrGuid == Reading.TextMetaAttributeGuid || attrGuid == Reading.IsPrimaryMetaAttributeGuid) &&
+				!read.IsRemoved)
 			{
 				RefreshPresentationElements(read.ReadingOrder.PresentationRolePlayers);
 			}
@@ -258,29 +261,67 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				String retval = null;
+				StringBuilder retval = new StringBuilder();
 				if (myDisplayText == null)
 				{
 					ReadingOrder readingOrd = this.ModelElement as ReadingOrder;
 					Debug.Assert(readingOrd != null);
 
-					string textVal = readingOrd.ReadingText;
-					retval = regCountPlaces.Replace(textVal, ELLIPSIS).Trim();
-
-					if (readingOrd.RoleCollection.Count == 2)
+					FactType factType = readingOrd.FactType;
+					ReadingOrderMoveableCollection readingCollection = factType.ReadingOrderCollection;
+					int numReadings = readingCollection.Count;
+					for (int i = 0; i < numReadings; ++i)
 					{
-						if (retval.IndexOf(C_ELLIPSIS) == 0 && retval.LastIndexOf(C_ELLIPSIS) == retval.Length - 1)
+						if (i > 0)
 						{
-							retval = retval.Replace(ELLIPSIS, String.Empty).Trim();
+							retval.Append(ResourceStrings.ReadingShapeReadingSeparator);
+							if (numReadings > 2)
+							{
+								retval.Append("\u000A\u000D");
+							}
 						}
+						ReadingOrder readingOrder = readingCollection[i];
+						string aReading = readingOrder.ReadingText;
+						RoleMoveableCollection roleCollection = readingOrder.RoleCollection;
+						if (roleCollection.Count <= 2 || (numReadings > 1 && i == 0))
+						{
+							aReading = regCountPlaces.Replace(aReading, ellipsis).Trim();
+							if (i == 0 && roleCollection[0] != factType.RoleCollection[0])
+							{
+								//Terry's preffered character to append is \u25C4 which can
+								//be found in the "Arial Unicode MS" font
+								retval.Append(ResourceStrings.ReadingShapeInverseReading);
+							}
+							if (numReadings <= 2 && roleCollection.Count <= 2 &&
+								aReading.IndexOf(c_ellipsis) == 0 &&
+								aReading.LastIndexOf(c_ellipsis) == aReading.Length - 1)
+							{
+								aReading = aReading.Replace(ellipsis, String.Empty).Trim();
+							}
+						}
+						else
+						{
+							RoleMoveableCollection factRoleCollection = factType.RoleCollection;
+							//UNDONE: the roleCount should be factRoleCollection.Count. However, this causes
+							//an error when a role is added to a factType because the factType attempts to
+							//update the ReadingShape before the ReadingOrders have had the role added to them.
+							//Check the order of execution to see if the ReadingOrders can have the role added
+							//to them before the ReadingShape is updated.
+							int roleCount = roleCollection.Count;
+							Debug.Assert(roleCount == roleCollection.Count);
+							string[] roleTranslator = new string[roleCount];
+							for (int readRoleNum = 0; readRoleNum < roleCount; ++readRoleNum)
+							{
+								int factRoleNum = factRoleCollection.IndexOf(roleCollection[readRoleNum]) + 1;
+								roleTranslator[readRoleNum] = "{" + factRoleNum.ToString(CultureInfo.InvariantCulture) + "}";
+							}
+							aReading = string.Format(CultureInfo.InvariantCulture, aReading, roleTranslator);
+						}
+						retval.Append(aReading);
 					}
-					myDisplayText = retval;
+					myDisplayText = retval.ToString();
 				}
-				else
-				{
-					retval = myDisplayText;
-				}
-				return retval;
+				return myDisplayText;
 			}
 		}
 		#endregion
@@ -298,6 +339,39 @@ namespace Northface.Tools.ORM.ShapeModel
 				Diagram.FixUpDiagram(fact, readingOrd);
 			}
 		}
+		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		private class ReadingOrderRemoved : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
+				FactType factType = link.FactType;
+				ReadingOrder readingOrder = link.ReadingOrderCollection;
+				if (readingOrder.FactType == null)
+				{
+					ReadingOrderMoveableCollection newReadingOrders = factType.ReadingOrderCollection;
+					if (newReadingOrders.Count > 0)
+					{
+						readingOrder = newReadingOrders[0];
+					}
+				}
+				foreach (PresentationElement pel in factType.AssociatedPresentationElements)
+				{
+					FactTypeShape factShape = pel as FactTypeShape;
+					if (factShape != null)
+					{
+						foreach (ShapeElement shape in factShape.RelativeChildShapes)
+						{
+							ReadingShape readingShape = shape as ReadingShape;
+							if (readingShape != null)
+							{
+								readingShape.InvalidateDisplayText();
+							}
+						}
+					}
+				}
+			}
+		}
 		#endregion
 
 		#region nested class ReadingAutoSizeTextField
@@ -306,6 +380,15 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		private class ReadingAutoSizeTextField : AutoSizeTextField
 		{
+			/// <summary>
+			/// Initialize a ReadingAutoSizeTextField
+			/// </summary>
+			public ReadingAutoSizeTextField()
+			{
+				StringFormat format = new StringFormat();
+				format.Alignment = StringAlignment.Near;
+				DefaultStringFormat = format;
+			}
 			/// <summary>
 			/// Code that handles the displaying of ellipsis in place of place holders and also
 			/// their suppression if the are on the outside of a binary fact.
@@ -385,16 +468,39 @@ namespace Northface.Tools.ORM.ShapeModel
 				Guid attrId = e.MetaAttribute.Id;
 				Reading read = e.ModelElement as Reading;
 				Debug.Assert(read != null);
+				ReadingOrder readingOrder = read.ReadingOrder;
 				if (attrId == Reading.TextMetaAttributeGuid || attrId == Reading.IsPrimaryMetaAttributeGuid)
 				{
-					Debug.Assert(read.ReadingOrder != null);
-					PresentationElementMoveableCollection pelList = read.ReadingOrder.PresentationRolePlayers;
+					Debug.Assert(readingOrder != null);
+					PresentationElementMoveableCollection pelList = readingOrder.FactType.PresentationRolePlayers;
 					foreach (ShapeElement pel in pelList)
 					{
-						ReadingShape readShape = pel as ReadingShape;
-						if (readShape != null)
+						foreach (ShapeElement pel2 in pel.RelativeChildShapes)
 						{
-							readShape.InvalidateDisplayText();
+							ReadingShape readShape = pel2 as ReadingShape;
+							if (readShape != null)
+							{
+								readShape.InvalidateDisplayText();
+							}
+						}
+					}
+				}
+				if(attrId == Reading.TextMetaAttributeGuid){
+					string newValue = (string)e.NewValue;
+					if (newValue.Length == 0)
+					{
+						ReadingMoveableCollection readingColl = readingOrder.ReadingCollection;
+						if (readingColl.Count > 1)
+						{
+							read.Remove();
+						}
+						else
+						{
+							//UNDONE: Removing the reading order when it is the one that the
+							//shape is based on causes the shape to be removed. The shape should
+							//remain if there are other reading orders available and it should
+							//display those reading orders.
+							readingOrder.Remove();
 						}
 					}
 				}

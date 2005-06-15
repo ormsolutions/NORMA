@@ -331,7 +331,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// to the ValueRangeCollection.
 		/// </summary>
 		/// <param name="newDefinition">The string containing a value range definition.</param>
-		private void ParseDefintion(string newDefinition)
+		protected void ParseDefinition(string newDefinition)
 		{
 			ValueRangeMoveableCollection vrColl = this.ValueRangeCollection;
 			// First, remove the container strings from the ends of the definition string
@@ -370,33 +370,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			return definition;
 		}
 		#endregion //ValueRangeDefinition specific
-		#region ValueRangeDefinitionChangeRule class
-		[RuleOn(typeof(ValueRangeDefinition))]
-		private class ValueRangeDefinitionChangeRule : ChangeRule
-		{
-			/// <summary>
-			/// Translate the Text property
-			/// </summary>
-			/// <param name="e"></param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
-			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == ValueRangeDefinition.TextMetaAttributeGuid)
-				{
-					ValueRangeDefinition valueRangeDefn = e.ModelElement as ValueRangeDefinition;
-					string newText = (string)e.NewValue;
-					if (newText.Length == 0)
-					{
-						valueRangeDefn.Remove();
-					}
-					else
-					{
-						valueRangeDefn.ParseDefintion((string)e.NewValue);
-					}
-				}
-			}
-		}
-		#endregion // ValueRangeDefinitionChangeRule class
 	}
 	#region ValueTypeValueRangeDefinition class
 	public partial class ValueTypeValueRangeDefinition
@@ -412,6 +385,34 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			return ValueType.DataType is TextDataType;
 		}
+		#region ValueTypeValueRangeDefinitionChangeRule class
+		[RuleOn(typeof(ValueTypeValueRangeDefinition))]
+		private class ValueTypeValueRangeDefinitionChangeRule : ChangeRule
+		{
+			/// <summary>
+			/// Translate the Text property
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeGuid = e.MetaAttribute.Id;
+				if (attributeGuid == ValueTypeValueRangeDefinition.TextMetaAttributeGuid)
+				{
+					ValueTypeValueRangeDefinition valueRangeDefn = e.ModelElement as ValueTypeValueRangeDefinition;
+					//Set the new definition
+					string newText = (string)e.NewValue;
+					if (newText.Length == 0)
+					{
+						valueRangeDefn.Remove();
+					}
+					else
+					{
+						valueRangeDefn.ParseDefinition((string)e.NewValue);
+					}
+				}
+			}
+		}
+		#endregion // ValueTypeValueRangeDefinitionChangeRule class
 	}
 	#endregion // ValueTypeValueRangeDefinition class
 	#region RoleValueRangeDefinition class
@@ -434,6 +435,33 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			return false;
 		}
+		#region RoleValueRangeDefinitionChangeRule class
+		[RuleOn(typeof(RoleValueRangeDefinition))]
+		private class RoleValueRangeDefinitionChangeRule : ChangeRule
+		{
+			/// <summary>
+			/// Translate the Text property
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeGuid = e.MetaAttribute.Id;
+				if (attributeGuid == ValueRangeDefinition.TextMetaAttributeGuid)
+				{
+					RoleValueRangeDefinition valueRangeDefn = e.ModelElement as RoleValueRangeDefinition;
+					string newText = (string)e.NewValue;
+					if (newText.Length == 0)
+					{
+						valueRangeDefn.Remove();
+					}
+					else
+					{
+						valueRangeDefn.ParseDefinition((string)e.NewValue);
+					}
+				}
+			}
+		}
+		#endregion // RoleValueRangeDefinitionChangeRule class
 	}
 	#endregion // RoleValueRangeDefinition class
 }

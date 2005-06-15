@@ -326,6 +326,18 @@
     <value xml:space="preserve">Designer for Object Role Modeling (ORM) diagrams</value>
     <comment xml:space="preserve">The extra information that appears in the about box of Visual Studio</comment>
   </data>
+  <data name="ReadingShape.Ellipsis">
+    <value xml:space="preserve">…</value>
+    <comment xml:space="preserve">The character to use as the object placeholder in a ReadingShape.</comment>
+  </data>
+  <data name="ReadingShape.InverseReading">
+    <value xml:space="preserve">« </value>
+    <comment xml:space="preserve">The string to use to indicate that a reading goes in the opposite direction. The preferred string (per Terry Halpin) is "\u25C4 ", but the unicode character is not available in that Tahoma font.</comment>
+  </data>
+  <data name="ReadingShape.ReadingSeparator">
+    <value xml:space="preserve"> / </value>
+    <comment xml:space="preserve">The string used to divide multiple readings shown in a ReadingShape.</comment>
+  </data>
   <data name="RoleConnectAction.TransactionName">
     <value xml:space="preserve">Set Role Player</value>
     <comment xml:space="preserve">The transaction name used by the role connect action. The text appears in the undo dropdown in the VS IDE.</comment>
