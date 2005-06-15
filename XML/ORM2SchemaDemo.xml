@@ -1,192 +1,194 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<orm:ORMModel xmlns:orm="http://schemas.northface.edu/orm/ormcore">
-    <orm:Objects>
-        <orm:EntityType Name="Object1" id="Object1" ReferenceMode="#" >
-            <orm:ObjectNotes>
-                <orm:Data> Note info</orm:Data>
-            </orm:ObjectNotes>
-            <orm:PlayedRoles>
-                <orm:Role ref="Role1"/>
-                <orm:Role ref="Role2"/>
-            </orm:PlayedRoles>
-        </orm:EntityType>
-        <orm:ValueType Name="Object2" id="Object2" IsIndependent="true">
-            <orm:ObjectNotes>
-                <orm:Data> Note info</orm:Data>
-            </orm:ObjectNotes>
-            <orm:Subtypes>
-                <orm:Object ref="Object1"/>
-                <orm:Object ref="Object3"/>
-            </orm:Subtypes>
-            <orm:ConceptualDataType ref="DataType1"/>
-        </orm:ValueType>
-        <!--There is a problems enforcing the type of the NestedPredicate.-->
-        <orm:ObjectifiedType Name ="Object3" id="Object3">
-            <orm:ObjectNotes>
-                <orm:Data> Note info</orm:Data>
-            </orm:ObjectNotes>
-            <orm:NestedPredicate ref ="Fact1"/>
-        </orm:ObjectifiedType>
-    </orm:Objects>
-    <orm:Facts>
-        <orm:Fact Name="Fact1" id="Fact1">
-            <orm:FactNotes>
-                <orm:Data>asdff fdsa dsaf fds dsf</orm:Data>
-            </orm:FactNotes>
-            <orm:DerivationRule >
-                <orm:Data>Derivation Rule</orm:Data>
-            </orm:DerivationRule>
-            <orm:FactRoles>
-                <orm:Role Name="Role1" id="Role1" Multiplicity="ZeroToOne" IsMandatory="false">
-                    <orm:RolePlayer ref ="Object1"/>
-                </orm:Role>
-                <orm:Role Name="Role2" id="Role2" Multiplicity="OneToMany" IsMandatory="false"/>
-            </orm:FactRoles>
-            <orm:ReadingOrders>
-                <orm:ReadingOrder>
-                    <orm:Readings>
-                        <orm:Reading id="Reading1" IsPrimary="true" >
-                            <orm:Data >{0} is a {1}</orm:Data>
-                        </orm:Reading>
-                    </orm:Readings>
-                    <orm:RoleSequence>
-                        <orm:Role ref="Role1"/>
-                        <orm:Role ref="Role2"/>
-                    </orm:RoleSequence>
-                </orm:ReadingOrder>              
-            </orm:ReadingOrders>
-            <orm:InternalConstraints>
-                <orm:InternalUniquenessConstraint IsPreferred ="true">
-                    <orm:ConstraintNote>
-                        <orm:Data>Constraint note</orm:Data>
-                    </orm:ConstraintNote>
-                    <orm:RoleSequence>
-                        <orm:Role ref="Role1"/>
-                        <orm:Role ref="Role2"/>
-                    </orm:RoleSequence>
-                </orm:InternalUniquenessConstraint>
-                <orm:SimpleMandatoryConstraint>
-                    <orm:ConstraintNote>
-                        <orm:Data>Constraint note</orm:Data>
-                    </orm:ConstraintNote>
-                    <orm:RoleSequence>
-                        <orm:Role ref="Role1"/>
-                        <orm:Role ref="Role2"/>
-                    </orm:RoleSequence>
-                </orm:SimpleMandatoryConstraint>
-            </orm:InternalConstraints>
-        </orm:Fact>
-    </orm:Facts>
-    <orm:ExternalConstraints>
-        <orm:DisjunctiveMandatoryConstraint>
-            <orm:ConstraintNote>
-                <orm:Data>Constraint Note Data</orm:Data>
-            </orm:ConstraintNote>
-            <orm:RoleSequence>
-                <orm:Role ref="Role1"/>
-                <orm:Role ref="Role2"/>
-            </orm:RoleSequence>
-        </orm:DisjunctiveMandatoryConstraint>
-        <orm:EqualityConstraint>
-            <orm:ConstraintNote>
-                <orm:Data>Constraint Note Data</orm:Data>
-            </orm:ConstraintNote>
-            <orm:RoleSequences>
-                <orm:RoleSequence>
-                    <orm:Role ref="Role1"/>
-                    <orm:Role ref="Role2"/>
-                </orm:RoleSequence>
-                <orm:RoleSequence>
-                    <orm:Role ref="Role1"/>
-                    <orm:Role ref="Role2"/>
-                </orm:RoleSequence>
-            </orm:RoleSequences>
-        </orm:EqualityConstraint>
-        <orm:ExclusionConstraint>
-            <orm:ConstraintNote>
-                <orm:Data>Constraint Note Data</orm:Data>
-            </orm:ConstraintNote>
-            <orm:RoleSequences>
-                <orm:RoleSequence>
-                    <orm:Role ref="Role1"/>
-                    <orm:Role ref="Role2"/>
-                </orm:RoleSequence>
-                <orm:RoleSequence>
-                    <orm:Role ref="Role1"/>
-                    <orm:Role ref="Role2"/>
-                </orm:RoleSequence>
-            </orm:RoleSequences>
-        </orm:ExclusionConstraint>
-        <orm:ExternalUniquenessConstraint>
-            <orm:ConstraintNote>
-                <orm:Data>Constraint Note Data</orm:Data>
-            </orm:ConstraintNote>
-            <orm:RoleSequence>
-                <orm:Role ref="Role1"/>
-                <orm:Role ref="Role2"/>
-            </orm:RoleSequence>
-        </orm:ExternalUniquenessConstraint>
-        <orm:FrequencyConstraint  id="FrequencyConstraint1">
-            <orm:ConstraintNote>
-                <orm:Data>Constraint Note Data</orm:Data>
-            </orm:ConstraintNote>
-            <orm:RoleSequence>
-                <orm:Role ref="Role1"/>
-                <orm:Role ref="Role2"/>
-            </orm:RoleSequence>
-        </orm:FrequencyConstraint>
-        <orm:RingConstraint>
-            <orm:ConstraintNote>
-                <orm:Data>Constraint Note Data</orm:Data>
-            </orm:ConstraintNote>
-            <orm:RoleSequence>
-                <orm:Role ref="Role1"/>
-                <orm:Role ref="Role2"/>
-            </orm:RoleSequence>
-        </orm:RingConstraint>
-        <orm:SubsetConstraint id="c1" FromRoleSequence="RoleSequence1" ToRoleSequence="RoleSequence2">
-            <orm:ConstraintNote>
-                <orm:Data>Constraint Note Data</orm:Data>
-            </orm:ConstraintNote>
-            <orm:RoleSequences>
-                <orm:RoleSequence id="RoleSequence1">
-                    <orm:Role ref="Role1"/>
-                    <orm:Role ref="Role2"/>
-                </orm:RoleSequence>
-                <orm:RoleSequence id="RoleSequence2">
-                    <orm:Role ref="Role1"/>
-                    <orm:Role ref="Role2"/>
-                </orm:RoleSequence>
-            </orm:RoleSequences>
-        </orm:SubsetConstraint>
-    </orm:ExternalConstraints>
-    <orm:DataTypes>
-        <orm:FixedLengthTextDataType id="DataType1"/>
-    </orm:DataTypes>
-    <orm:ModelErrors >
-        <orm:ConstraintDuplicateNameError>
-            <orm:Constraints>
-                <orm:Constraint ref ="c1"/>                            
-            </orm:Constraints>            
-        </orm:ConstraintDuplicateNameError>
-        <orm:FactTypeDuplicateNameError>
-            <orm:Facts>
-                <orm:Fact ref ="Fact1"/>
-                <orm:Fact ref ="Fact1"/>
-            </orm:Facts>
-        </orm:FactTypeDuplicateNameError>
-        <orm:ObjectTypeDuplicateNameError>
-            <orm:Objects>
-                <orm:Object ref ="Object1"/>
-                <orm:Object ref ="Object2"/>
-            </orm:Objects>
-        </orm:ObjectTypeDuplicateNameError>
-        <orm:TooFewReadingRolesError />        
-        <orm:TooFewRoleSequencesError />
-        <orm:TooManyReadingRolesError />
-        <orm:TooManyRoleSequenceError />
-    </orm:ModelErrors>
-    <orm:CustomReferenceModes>
-        <orm:CustomReferenceMode id="CustomReferenceMode1" Name ="CustomReferenceMode1"></orm:CustomReferenceMode>
-    </orm:CustomReferenceModes>
-</orm:ORMModel>
+<orm:ORM2 xmlns:orm="http://schemas.northface.edu/orm/ormcore">
+	<orm:ORMModel>
+		<orm:Objects>
+			<orm:EntityType Name="Object1" id="Object1" ReferenceMode="#" >
+				<orm:ObjectNotes>
+					<orm:Data> Note info</orm:Data>
+				</orm:ObjectNotes>
+				<orm:PlayedRoles>
+					<orm:Role ref="Role1"/>
+					<orm:Role ref="Role2"/>
+				</orm:PlayedRoles>
+			</orm:EntityType>
+			<orm:ValueType Name="Object2" id="Object2" IsIndependent="true">
+				<orm:ObjectNotes>
+					<orm:Data> Note info</orm:Data>
+				</orm:ObjectNotes>
+				<orm:Subtypes>
+					<orm:Object ref="Object1"/>
+					<orm:Object ref="Object3"/>
+				</orm:Subtypes>
+				<orm:ConceptualDataType ref="DataType1"/>
+			</orm:ValueType>
+			<!--There is a problems enforcing the type of the NestedPredicate.-->
+			<orm:ObjectifiedType Name ="Object3" id="Object3">
+				<orm:ObjectNotes>
+					<orm:Data> Note info</orm:Data>
+				</orm:ObjectNotes>
+				<orm:NestedPredicate ref ="Fact1"/>
+			</orm:ObjectifiedType>
+		</orm:Objects>
+		<orm:Facts>
+			<orm:Fact Name="Fact1" id="Fact1">
+				<orm:FactNotes>
+					<orm:Data>asdff fdsa dsaf fds dsf</orm:Data>
+				</orm:FactNotes>
+				<orm:DerivationRule >
+					<orm:Data>Derivation Rule</orm:Data>
+				</orm:DerivationRule>
+				<orm:FactRoles>
+					<orm:Role Name="Role1" id="Role1" Multiplicity="ZeroToOne" IsMandatory="false">
+						<orm:RolePlayer ref ="Object1"/>
+					</orm:Role>
+					<orm:Role Name="Role2" id="Role2" Multiplicity="OneToMany" IsMandatory="false"/>
+				</orm:FactRoles>
+				<orm:ReadingOrders>
+					<orm:ReadingOrder>
+						<orm:Readings>
+							<orm:Reading id="Reading1" IsPrimary="true" >
+								<orm:Data >{0} is a {1}</orm:Data>
+							</orm:Reading>
+						</orm:Readings>
+						<orm:RoleSequence>
+							<orm:Role ref="Role1"/>
+							<orm:Role ref="Role2"/>
+						</orm:RoleSequence>
+					</orm:ReadingOrder>
+				</orm:ReadingOrders>
+				<orm:InternalConstraints>
+					<orm:InternalUniquenessConstraint IsPreferred ="true">
+						<orm:ConstraintNote>
+							<orm:Data>Constraint note</orm:Data>
+						</orm:ConstraintNote>
+						<orm:RoleSequence>
+							<orm:Role ref="Role1"/>
+							<orm:Role ref="Role2"/>
+						</orm:RoleSequence>
+					</orm:InternalUniquenessConstraint>
+					<orm:SimpleMandatoryConstraint>
+						<orm:ConstraintNote>
+							<orm:Data>Constraint note</orm:Data>
+						</orm:ConstraintNote>
+						<orm:RoleSequence>
+							<orm:Role ref="Role1"/>
+							<orm:Role ref="Role2"/>
+						</orm:RoleSequence>
+					</orm:SimpleMandatoryConstraint>
+				</orm:InternalConstraints>
+			</orm:Fact>
+		</orm:Facts>
+		<orm:ExternalConstraints>
+			<orm:DisjunctiveMandatoryConstraint>
+				<orm:ConstraintNote>
+					<orm:Data>Constraint Note Data</orm:Data>
+				</orm:ConstraintNote>
+				<orm:RoleSequence>
+					<orm:Role ref="Role1"/>
+					<orm:Role ref="Role2"/>
+				</orm:RoleSequence>
+			</orm:DisjunctiveMandatoryConstraint>
+			<orm:EqualityConstraint>
+				<orm:ConstraintNote>
+					<orm:Data>Constraint Note Data</orm:Data>
+				</orm:ConstraintNote>
+				<orm:RoleSequences>
+					<orm:RoleSequence>
+						<orm:Role ref="Role1"/>
+						<orm:Role ref="Role2"/>
+					</orm:RoleSequence>
+					<orm:RoleSequence>
+						<orm:Role ref="Role1"/>
+						<orm:Role ref="Role2"/>
+					</orm:RoleSequence>
+				</orm:RoleSequences>
+			</orm:EqualityConstraint>
+			<orm:ExclusionConstraint>
+				<orm:ConstraintNote>
+					<orm:Data>Constraint Note Data</orm:Data>
+				</orm:ConstraintNote>
+				<orm:RoleSequences>
+					<orm:RoleSequence>
+						<orm:Role ref="Role1"/>
+						<orm:Role ref="Role2"/>
+					</orm:RoleSequence>
+					<orm:RoleSequence>
+						<orm:Role ref="Role1"/>
+						<orm:Role ref="Role2"/>
+					</orm:RoleSequence>
+				</orm:RoleSequences>
+			</orm:ExclusionConstraint>
+			<orm:ExternalUniquenessConstraint>
+				<orm:ConstraintNote>
+					<orm:Data>Constraint Note Data</orm:Data>
+				</orm:ConstraintNote>
+				<orm:RoleSequence>
+					<orm:Role ref="Role1"/>
+					<orm:Role ref="Role2"/>
+				</orm:RoleSequence>
+			</orm:ExternalUniquenessConstraint>
+			<orm:FrequencyConstraint  id="FrequencyConstraint1">
+				<orm:ConstraintNote>
+					<orm:Data>Constraint Note Data</orm:Data>
+				</orm:ConstraintNote>
+				<orm:RoleSequence>
+					<orm:Role ref="Role1"/>
+					<orm:Role ref="Role2"/>
+				</orm:RoleSequence>
+			</orm:FrequencyConstraint>
+			<orm:RingConstraint>
+				<orm:ConstraintNote>
+					<orm:Data>Constraint Note Data</orm:Data>
+				</orm:ConstraintNote>
+				<orm:RoleSequence>
+					<orm:Role ref="Role1"/>
+					<orm:Role ref="Role2"/>
+				</orm:RoleSequence>
+			</orm:RingConstraint>
+			<orm:SubsetConstraint id="c1" FromRoleSequence="RoleSequence1" ToRoleSequence="RoleSequence2">
+				<orm:ConstraintNote>
+					<orm:Data>Constraint Note Data</orm:Data>
+				</orm:ConstraintNote>
+				<orm:RoleSequences>
+					<orm:RoleSequence id="RoleSequence1">
+						<orm:Role ref="Role1"/>
+						<orm:Role ref="Role2"/>
+					</orm:RoleSequence>
+					<orm:RoleSequence id="RoleSequence2">
+						<orm:Role ref="Role1"/>
+						<orm:Role ref="Role2"/>
+					</orm:RoleSequence>
+				</orm:RoleSequences>
+			</orm:SubsetConstraint>
+		</orm:ExternalConstraints>
+		<orm:DataTypes>
+			<orm:FixedLengthTextDataType id="DataType1"/>
+		</orm:DataTypes>
+		<orm:ModelErrors >
+			<orm:ConstraintDuplicateNameError>
+				<orm:Constraints>
+					<orm:Constraint ref ="c1"/>
+				</orm:Constraints>
+			</orm:ConstraintDuplicateNameError>
+			<orm:FactTypeDuplicateNameError>
+				<orm:Facts>
+					<orm:Fact ref ="Fact1"/>
+					<orm:Fact ref ="Fact1"/>
+				</orm:Facts>
+			</orm:FactTypeDuplicateNameError>
+			<orm:ObjectTypeDuplicateNameError>
+				<orm:Objects>
+					<orm:Object ref ="Object1"/>
+					<orm:Object ref ="Object2"/>
+				</orm:Objects>
+			</orm:ObjectTypeDuplicateNameError>
+			<orm:TooFewReadingRolesError />
+			<orm:TooFewRoleSequencesError />
+			<orm:TooManyReadingRolesError />
+			<orm:TooManyRoleSequenceError />
+		</orm:ModelErrors>
+		<orm:CustomReferenceModes>
+			<orm:CustomReferenceMode id="CustomReferenceMode1" Name ="CustomReferenceMode1"></orm:CustomReferenceMode>
+		</orm:CustomReferenceModes>
+	</orm:ORMModel>
+</orm:ORM2>

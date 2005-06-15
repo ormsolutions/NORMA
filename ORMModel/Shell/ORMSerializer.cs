@@ -51,6 +51,7 @@ namespace Northface.Tools.ORM.Shell
 	<xsl:template match=""om:Property[@Name='ReferenceModeString']"" />
 	<xsl:template match=""om:Property[@Name='ReferenceMode']"" />
 	<xsl:template match=""om:Property[@Name='ValueRangeText']"" />
+	<xsl:template match=""om:Property[@Name='KindDisplay']"" />
 	<xsl:template match=""om:Property[@Name='Text']"">
 		<xsl:choose>
 			<xsl:when test=""parent::om:ModelElement[@Type='Northface.Tools.ORM.ObjectModel.ValueRange']""/>
