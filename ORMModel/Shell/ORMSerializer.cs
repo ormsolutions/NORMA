@@ -271,7 +271,6 @@ namespace Northface.Tools.ORM.Shell
 				return GenerateElementArray(new IList[]
 					{
 						elementDir.GetElements(ORMModel.MetaClassGuid),
-						elementDir.GetElements(DataType.MetaClassGuid),
 						elementDir.GetElements(ORMDiagram.MetaClassGuid)
 					});
 			}

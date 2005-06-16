@@ -1269,16 +1269,8 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 
-			//serialize ORM model
-			currentElements = GenerateElementArray(new IList[1] { store.ElementDirectory.GetElements(ORMModel.MetaClassGuid) });
-			count = currentElements.Length;
-			for (int i = 0; i < count; ++i)
-			{
-				SerializeElement(file, currentElements[i]);
-			}
-
-			//serialize ORM diagram
-			currentElements = GenerateElementArray(new IList[1] { store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid) });
+			//serialize all root elements
+			currentElements = RootElements;
 			count = currentElements.Length;
 			for (int i = 0; i < count; ++i)
 			{
