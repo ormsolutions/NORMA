@@ -84,6 +84,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ORMModel : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
         /// <summary>
         ///</summary>
@@ -145,29 +146,34 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[7];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Objects", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-            System.Guid[] guids1 = new System.Guid[1];
-            guids1[0] = ModelHasFactType.FactTypeCollectionMetaRoleGuid;
-            ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Facts", null, ORMCustomSerializedElementWriteStyle.Element, null, guids1);
-            System.Guid[] guids2 = new System.Guid[2];
-            guids2[0] = ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid;
-            guids2[1] = ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid;
-            ret[2] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ExternalConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, guids2);
-            System.Guid[] guids3 = new System.Guid[1];
-            guids3[0] = ModelHasDataType.DataTypeCollectionMetaRoleGuid;
-            ret[3] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "DataTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, guids3);
-            System.Guid[] guids4 = new System.Guid[1];
-            guids4[0] = ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid;
-            ret[4] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "CustomReferenceModes", null, ORMCustomSerializedElementWriteStyle.Element, null, guids4);
-            System.Guid[] guids5 = new System.Guid[1];
-            guids5[0] = ModelHasError.ErrorCollectionMetaRoleGuid;
-            ret[5] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ModelErrors", null, ORMCustomSerializedElementWriteStyle.Element, null, guids5);
-            System.Guid[] guids6 = new System.Guid[1];
-            guids6[0] = ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid;
-            ret[6] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReferenceModeKinds", null, ORMCustomSerializedElementWriteStyle.Element, null, guids6);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ORMModel.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[7];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Objects", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                System.Guid[] guids1 = new System.Guid[1];
+                guids1[0] = ModelHasFactType.FactTypeCollectionMetaRoleGuid;
+                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Facts", null, ORMCustomSerializedElementWriteStyle.Element, null, guids1);
+                System.Guid[] guids2 = new System.Guid[2];
+                guids2[0] = ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid;
+                guids2[1] = ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid;
+                ret[2] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ExternalConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, guids2);
+                System.Guid[] guids3 = new System.Guid[1];
+                guids3[0] = ModelHasDataType.DataTypeCollectionMetaRoleGuid;
+                ret[3] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "DataTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, guids3);
+                System.Guid[] guids4 = new System.Guid[1];
+                guids4[0] = ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid;
+                ret[4] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "CustomReferenceModes", null, ORMCustomSerializedElementWriteStyle.Element, null, guids4);
+                System.Guid[] guids5 = new System.Guid[1];
+                guids5[0] = ModelHasError.ErrorCollectionMetaRoleGuid;
+                ret[5] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ModelErrors", null, ORMCustomSerializedElementWriteStyle.Element, null, guids5);
+                System.Guid[] guids6 = new System.Guid[1];
+                guids6[0] = ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid;
+                ret[6] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReferenceModeKinds", null, ORMCustomSerializedElementWriteStyle.Element, null, guids6);
+                ORMModel.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -267,6 +273,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ObjectType : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
         /// <summary>
         ///</summary>
@@ -342,10 +349,15 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "PlayedRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ObjectType.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "PlayedRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                ObjectType.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -912,6 +924,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class FactType : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
         /// <summary>
         ///</summary>
@@ -974,19 +987,24 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[4];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = FactTypeHasRole.RoleCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "FactRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-            System.Guid[] guids1 = new System.Guid[1];
-            guids1[0] = FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid;
-            ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, guids1);
-            System.Guid[] guids2 = new System.Guid[1];
-            guids2[0] = FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid;
-            ret[2] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, guids2);
-            System.Guid[] guids3 = new System.Guid[1];
-            guids3[0] = FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid;
-            ret[3] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "InternalConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, guids3);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = FactType.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[4];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = FactTypeHasRole.RoleCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "FactRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                System.Guid[] guids1 = new System.Guid[1];
+                guids1[0] = FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid;
+                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, guids1);
+                System.Guid[] guids2 = new System.Guid[1];
+                guids2[0] = FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid;
+                ret[2] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, guids2);
+                System.Guid[] guids3 = new System.Guid[1];
+                guids3[0] = FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid;
+                ret[3] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "InternalConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, guids3);
+                FactType.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -1108,6 +1126,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ReadingOrder : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -1161,13 +1180,18 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = ReadingOrderHasReading.ReadingCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Readings", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-            System.Guid[] guids1 = new System.Guid[1];
-            guids1[0] = ReadingOrderHasRole.RoleCollectionMetaRoleGuid;
-            ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids1);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ReadingOrder.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = ReadingOrderHasReading.ReadingCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Readings", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                System.Guid[] guids1 = new System.Guid[1];
+                guids1[0] = ReadingOrderHasRole.RoleCollectionMetaRoleGuid;
+                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids1);
+                ReadingOrder.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -1295,6 +1319,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class Role : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -1349,10 +1374,15 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = Role.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                Role.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -1404,6 +1434,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class EqualityConstraint : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -1457,10 +1488,15 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequences", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = EqualityConstraint.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequences", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                EqualityConstraint.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -1496,6 +1532,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ExclusionConstraint : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -1549,10 +1586,15 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequences", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ExclusionConstraint.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequences", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                ExclusionConstraint.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -1588,6 +1630,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class SubsetConstraint : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -1641,10 +1684,15 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequences", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = SubsetConstraint.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequences", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                SubsetConstraint.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -1768,6 +1816,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class FrequencyConstraint : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -1821,10 +1870,15 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = FrequencyConstraint.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                FrequencyConstraint.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -1864,6 +1918,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class DisjunctiveMandatoryConstraint : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -1917,10 +1972,15 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = DisjunctiveMandatoryConstraint.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                DisjunctiveMandatoryConstraint.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -1960,6 +2020,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ExternalUniquenessConstraint : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -2013,10 +2074,15 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ExternalUniquenessConstraint.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                ExternalUniquenessConstraint.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -2056,6 +2122,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class InternalUniquenessConstraint : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -2110,10 +2177,15 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = InternalUniquenessConstraint.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                InternalUniquenessConstraint.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
@@ -2157,6 +2229,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class SimpleMandatoryConstraint : IORMCustomSerializedElement
     {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -2210,10 +2283,15 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-            System.Guid[] guids0 = new System.Guid[1];
-            guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
-            ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = SimpleMandatoryConstraint.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                System.Guid[] guids0 = new System.Guid[1];
+                guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                SimpleMandatoryConstraint.myCustomSerializedChildElementInfo = ret;
+            }
             return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()

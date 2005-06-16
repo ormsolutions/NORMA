@@ -260,6 +260,7 @@
     </None>
     <None Include="ObjectModel\SerializationExtensions.xsd" />
     <None Include="ObjectModel\SerializationExtensions.xslt" />
+    <Content Include="ObjectModel\XSDtoHTML.xslt" />
     <Content Include="Resources\AboutBox.ico" />
     <Content Include="Resources\ORM.ico" />
     <Content Include="Resources\ResourceStringsGenerator.xml">

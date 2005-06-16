@@ -1243,7 +1243,6 @@ namespace Northface.Tools.ORM.Shell
 			Store store = myStore;
 			ModelElement[] currentElements;
 			ICollection values = store.SubStores.Values;
-			int count;
 
 			xmlSettings.IndentChars = "\t";
 			xmlSettings.Indent = true;
@@ -1260,8 +1259,7 @@ namespace Northface.Tools.ORM.Shell
 				{
 					string[,] namespaces = ns.GetCustomElementNamespaces();
 
-					count = namespaces.GetLength(0);
-					for (int index = 0; index < count; ++index)
+					for (int index = 0, count = namespaces.GetLength(0); index < count; ++index)
 					{
 						//if (/*namespaces[index].Length==2 && */namespaces[index,0] != null && namespaces[index,1] != null)
 						file.WriteAttributeString("xmlns", namespaces[index,0], null, namespaces[index,1]);
@@ -1271,8 +1269,7 @@ namespace Northface.Tools.ORM.Shell
 
 			//serialize all root elements
 			currentElements = RootElements;
-			count = currentElements.Length;
-			for (int i = 0; i < count; ++i)
+			for (int i = 0, count = currentElements.Length; i < count; ++i)
 			{
 				SerializeElement(file, currentElements[i]);
 			}

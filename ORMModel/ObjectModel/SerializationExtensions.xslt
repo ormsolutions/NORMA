@@ -38,87 +38,120 @@
 					</plx:Return>
 				</plx:Get>
 			</plx:Property>
+			<xsl:if test="count(se:ChildElement)">
+				<plx:Field visibility="Private" shared="true" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo[]" name="myCustomSerializedChildElementInfo"/>
+			</xsl:if>
 			<plx:Function visibility="Protected" name="GetCustomSerializedChildElementInfo">
 				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedChildElementInfo"/>
-				<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedChildElementInfo[]" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
+				<plx:Param name="" style="RetVal" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo[]"/>
 				<xsl:choose>
 					<xsl:when test="count(se:ChildElement)">
-						<plx:Variable name="ret" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true" const="true">
+						<plx:Variable dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true" name="ret">
 							<plx:Initialize>
-								<plx:CallNew style="New" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeIsSimpleArray="true">
-									<plx:PassParam>
-										<plx:Value type="I4">
-											<xsl:value-of select="count(se:ChildElement)"/>
-										</plx:Value>
-									</plx:PassParam>
-								</plx:CallNew>
+								<plx:CallType dataTypeName="{$ClassName}" name="myCustomSerializedChildElementInfo" style="Field"/>
 							</plx:Initialize>
 						</plx:Variable>
-						<xsl:for-each select="se:ChildElement">
-							<xsl:variable name="index" select="position()-1"/>
-							<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable">
-								<xsl:with-param name="modifier" select="$index"/>
-							</xsl:call-template>
-							<plx:Variable name="guids{$index}" dataTypeQualifier="System" dataTypeName="Guid" dataTypeIsSimpleArray="true" const="true">
-								<plx:Initialize>
-									<plx:CallNew style="New" dataTypeName="Guid" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-										<plx:PassParam>
-											<plx:Value type="I4">
-												<xsl:value-of select="count(se:Link)"/>
-											</plx:Value>
-										</plx:PassParam>
-									</plx:CallNew>
-								</plx:Initialize>
-							</plx:Variable>
-							<xsl:for-each select="se:Link">
-								<plx:Operator name="Assign">
+						<plx:Condition>
+							<plx:Test>
+								<plx:Operator name="IdentityEquality">
 									<plx:Left>
-										<plx:CallInstance name="" style="ArrayIndexer">
-											<plx:CallObject>
-												<plx:Value type="Local">guids<xsl:value-of select="$index"/></plx:Value>
-											</plx:CallObject>
-											<plx:PassParam>
-												<plx:Value type="Local">
-													<xsl:value-of select="position()-1"/>
-												</plx:Value>
-											</plx:PassParam>
-										</plx:CallInstance>
+										<plx:Value type="Local">ret</plx:Value>
 									</plx:Left>
 									<plx:Right>
-										<plx:Value type="Local">
-											<xsl:value-of select="@RelationshipName"/>
-											<xsl:text>.</xsl:text>
-											<xsl:value-of select="@RoleName"/>
-											<xsl:text>MetaRoleGuid</xsl:text>
-										</plx:Value>
+										<plx:NullObjectKeyword/>
 									</plx:Right>
 								</plx:Operator>
-							</xsl:for-each>
-							<plx:Operator name="Assign">
-								<plx:Left>
-									<plx:CallInstance name="" style="ArrayIndexer">
-										<plx:CallObject>
-											<plx:Value type="Local">ret</plx:Value>
-										</plx:CallObject>
-										<plx:PassParam>
-											<plx:Value type="Local">
-												<xsl:value-of select="$index"/>
-											</plx:Value>
-										</plx:PassParam>
-									</plx:CallInstance>
-								</plx:Left>
-								<plx:Right>
-									<plx:CallNew style="New" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo">
-										<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
-											<xsl:with-param name="modifier" select="$index"/>
-										</xsl:call-template>
-										<plx:PassParam>
-											<plx:Value type="Local">guids<xsl:value-of select="$index"/></plx:Value>
-										</plx:PassParam>
-									</plx:CallNew>
-								</plx:Right>
-							</plx:Operator>
-						</xsl:for-each>
+							</plx:Test>
+							<plx:Body>
+								<plx:Operator name="Assign">
+									<plx:Left>
+										<plx:Value type="Local">ret</plx:Value>
+									</plx:Left>
+									<plx:Right>
+										<plx:CallNew style="New" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeIsSimpleArray="true">
+											<plx:PassParam>
+												<plx:Value type="I4">
+													<xsl:value-of select="count(se:ChildElement)"/>
+												</plx:Value>
+											</plx:PassParam>
+										</plx:CallNew>
+									</plx:Right>
+								</plx:Operator>
+								<xsl:for-each select="se:ChildElement">
+									<xsl:variable name="index" select="position()-1"/>
+									<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable">
+										<xsl:with-param name="modifier" select="$index"/>
+									</xsl:call-template>
+									<plx:Variable name="guids{$index}" dataTypeQualifier="System" dataTypeName="Guid" dataTypeIsSimpleArray="true" const="true">
+										<plx:Initialize>
+											<plx:CallNew style="New" dataTypeName="Guid" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+												<plx:PassParam>
+													<plx:Value type="I4">
+														<xsl:value-of select="count(se:Link)"/>
+													</plx:Value>
+												</plx:PassParam>
+											</plx:CallNew>
+										</plx:Initialize>
+									</plx:Variable>
+									<xsl:for-each select="se:Link">
+										<plx:Operator name="Assign">
+											<plx:Left>
+												<plx:CallInstance name="" style="ArrayIndexer">
+													<plx:CallObject>
+														<plx:Value type="Local">guids<xsl:value-of select="$index"/></plx:Value>
+													</plx:CallObject>
+													<plx:PassParam>
+														<plx:Value type="Local">
+															<xsl:value-of select="position()-1"/>
+														</plx:Value>
+													</plx:PassParam>
+												</plx:CallInstance>
+											</plx:Left>
+											<plx:Right>
+												<plx:Value type="Local">
+													<xsl:value-of select="@RelationshipName"/>
+													<xsl:text>.</xsl:text>
+													<xsl:value-of select="@RoleName"/>
+													<xsl:text>MetaRoleGuid</xsl:text>
+												</plx:Value>
+											</plx:Right>
+										</plx:Operator>
+									</xsl:for-each>
+									<plx:Operator name="Assign">
+										<plx:Left>
+											<plx:CallInstance name="" style="ArrayIndexer">
+												<plx:CallObject>
+													<plx:Value type="Local">ret</plx:Value>
+												</plx:CallObject>
+												<plx:PassParam>
+													<plx:Value type="Local">
+														<xsl:value-of select="$index"/>
+													</plx:Value>
+												</plx:PassParam>
+											</plx:CallInstance>
+										</plx:Left>
+										<plx:Right>
+											<plx:CallNew style="New" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo">
+												<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
+													<xsl:with-param name="modifier" select="$index"/>
+												</xsl:call-template>
+												<plx:PassParam>
+													<plx:Value type="Local">guids<xsl:value-of select="$index"/></plx:Value>
+												</plx:PassParam>
+											</plx:CallNew>
+										</plx:Right>
+									</plx:Operator>
+								</xsl:for-each>
+								<plx:Operator name="Assign">
+									<plx:Left>
+										<plx:CallType dataTypeName="{$ClassName}" name="myCustomSerializedChildElementInfo" style="Field"/>
+									</plx:Left>
+									<plx:Right>
+										<plx:Value type="Local">ret</plx:Value>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Body>
+						</plx:Condition>
 						<plx:Return>
 							<plx:Value type="Local">ret</plx:Value>
 						</plx:Return>

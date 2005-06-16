@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="XSDtoHTML.xslt"?>
 <xs:schema id="SerializationExtensions" targetNamespace="http://Schemas.Northface.edu/Private/SerializationExtensions" elementFormDefault="qualified" xmlns="http://Schemas.Northface.edu/Private/SerializationExtensions" xmlns:mstns="http://Schemas.Northface.edu/Private/SerializationExtensions" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="unqualified">
     <xs:simpleType name="ElementWriteStyle">
         <xs:restriction base="xs:string">
