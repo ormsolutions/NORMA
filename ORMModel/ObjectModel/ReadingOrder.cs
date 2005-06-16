@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
@@ -268,8 +269,11 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			Debug.Assert(theFact.Store.TransactionManager.InTransaction);
 
-			ReadingOrderMoveableCollection readingOrders = theFact.ReadingOrderCollection;
 			string deletedText = ResourceStrings.ModelReadingRoleDeletedRoleText;
+			// TODO: escape the deletedText for any Regex text, since it's localizable
+			Regex regExDeleted = new Regex(deletedText, RegexOptions.Compiled);
+
+			ReadingOrderMoveableCollection readingOrders = theFact.ReadingOrderCollection;
 			foreach (ReadingOrder ord in readingOrders)
 			{
 				RoleMoveableCollection roles = ord.RoleCollection;
@@ -280,6 +284,7 @@ namespace Northface.Tools.ORM.ObjectModel
 					foreach (Reading read in readings)
 					{
 						string readingText = read.Text;
+						
 						int pos = readingText.IndexOf(deletedText);
 						string newText;
 						if (pos < 0)
@@ -288,7 +293,7 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 						else
 						{
-							newText = readingText.Replace(deletedText, string.Concat("{", roles.Count - 1, "}"));
+							newText = regExDeleted.Replace(readingText, string.Concat("{", roles.Count - 1, "}"), 1);
 						}
 						//UNDONE:add entries to the task list service to let user know the reading might need some correction
 

@@ -91,7 +91,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			ReadingOrder readOrd = ReadingOrder;
 			RoleMoveableCollection roles = readOrd.RoleCollection;
-			Debug.Assert(readOrd.FactType.RoleCollection.Count == roles.Count);
+//			Debug.Assert(readOrd.FactType.RoleCollection.Count == roles.Count);
 			return IsValidReadingText(Text, roles.Count);
 		}
 
