@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Todo: Is external on object type?  What am I supposed to do with object shapes and data types? -->
-<xs:schema targetNamespace="http://Schemas.Northface.edu/ORM/ORMCore" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns="http://Schemas.Northface.edu/ORM/ORMCore" xmlns:mstns="http://tempur.org/XMLSchema.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:derived="http://www.w3.org/2001/XMLSchema">
-	<!--xmlns:derived="http://schemas.northface.edu/orm/ormcorederived"-->
+<xs:schema targetNamespace="http://Schemas.Northface.edu/ORM/ORMCore" 
+	elementFormDefault="qualified" attributeFormDefault="unqualified" 
+	xmlns="http://Schemas.Northface.edu/ORM/ORMCore" 
+	xmlns:mstns="http://tempur.org/XMLSchema.xsd" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:derived="http://Schemas.Northface.edu/ORM/ORMDerived">
+
+	<xs:import namespace="http://Schemas.Northface.edu/ORM/ORMDerived" />
 	<!--ExtendableElement the thought here is to define all the any's once and then have Extendable Element extend this-->
 	<xs:complexType name="ExtendableElement" abstract="true">
 		<xs:annotation>
@@ -65,7 +71,9 @@
 					<xs:element name="ObjectNotes" type="Data" minOccurs="0" maxOccurs="1"/>
 					<xs:element name="PlayedRoles" type="RoleSequence" minOccurs="0" maxOccurs="unbounded"/>
 					<!--Subtypes is derived.-->
-					<xs:element name="Subtypes" type="ObjectRefs" minOccurs="0" maxOccurs="unbounded"/>
+					<!--We need to be able to reference elements from the derived schema without introducing ambiguity.-->
+					<!--<xs:element ref="derived:test"></xs:element>-->
+<!--					<xs:element ref="derived:Subtypes"/>-->
 					<!--Supertypes is derived.-->
 					<xs:element name="Supertypes" type="ObjectRefs" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:sequence>
