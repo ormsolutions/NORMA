@@ -111,32 +111,11 @@ namespace Northface.Tools.ORM.FactEditor
 			// call the Line method on the parse object
 			string s = Marshal.PtrToStringUni(pszText);
 
-			FactLine factLine = new FactLine(s);
-			(myParser as IFactParser).Line(ref factLine);
-
-			uint type; 
-			int totalMarks = factLine.Marks.Count;
-			for (int m = 0; m < totalMarks; ++m)
+			ParsedFact parsedFact = (myParser as IFactParser).ParseLine(s);
+			for (int a = 0; a < pAttributes.Length; ++a)
 			{
-				switch (factLine.Marks[m].TokenType)
-				{
-					case FactTokenType.EntityType: type = (uint)FactEditorColorizableItem.ObjectName; break;
-					case FactTokenType.ValueType: type = (uint)FactEditorColorizableItem.ObjectName; break;
-					case FactTokenType.ReferenceMode: type = (uint)FactEditorColorizableItem.ReferenceModeName; break;
-					case FactTokenType.Parenthesis: type = (uint)FactEditorColorizableItem.Delimiter; break;
-					case FactTokenType.Predicate:
-					default: type = (uint)FactEditorColorizableItem.PredicateText; break;
-				}
-
-				// color the token
-				int iStart = factLine.Marks[m].nStart;
-				int iEnd = factLine.Marks[m].nEnd;
-				for (int i = iStart; i <= iEnd; i++)
-				{
-					pAttributes[i] = type;
-				}
+				pAttributes[a] = parsedFact.ColorAttributes[a];
 			}
-
 			pAttributes[iLength] = pAttributes[iLength - 1];
 			return NativeMethods.S_OK;
 		}

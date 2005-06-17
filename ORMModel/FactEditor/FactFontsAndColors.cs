@@ -14,21 +14,25 @@ namespace Northface.Tools.ORM.FactEditor
 	public enum FactEditorColorizableItem
 	{
 		/// <summary>
+		/// The PredicateText color category
+		/// </summary>
+		PredicateText = 1,
+		/// <summary>
 		/// The ObjectName color category
 		/// </summary>
-		ObjectName = 1,
+		ObjectName,
 		/// <summary>
 		/// The ReferenceModeName color category
 		/// </summary>
 		ReferenceModeName,
 		/// <summary>
-		/// The PredicateText color category
-		/// </summary>
-		PredicateText,
-		/// <summary>
 		/// The Delimiter color category
 		/// </summary>
 		Delimiter,
+		/// <summary>
+		/// The Quantifier color category
+		/// </summary>
+		Quantifier,
 		// Any order change here needs to be reflected in the myDefaultColorSettings array below
 	}
 	#endregion // FactEditorColorizableItem Enum
@@ -68,23 +72,28 @@ namespace Northface.Tools.ORM.FactEditor
 		/// </summary>
 		private static readonly DefaultColorSetting[] myDefaultColorSettings = {
 			new DefaultColorSetting(
+			ResourceStrings.FactEditorColorsPredicateTextId,
+			(uint)COLORINDEX.CI_BLUE | StandardColorPaletteBit,
+			(uint)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardColorPaletteBit,
+			false)
+			,new DefaultColorSetting(
 			ResourceStrings.FactEditorColorsObjectNameId,
-			(int)COLORINDEX.CI_BLUE | StandardColorPaletteBit,
+			(int)COLORINDEX.CI_RED | StandardColorPaletteBit,
 			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardColorPaletteBit,
 			true)
 			,new DefaultColorSetting(
 			ResourceStrings.FactEditorColorsReferenceModeNameId,
-			(uint)COLORINDEX.CI_MAROON | StandardColorPaletteBit,
+			(uint)COLORINDEX.CI_PURPLE | StandardColorPaletteBit,
 			(uint)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardColorPaletteBit,
-			false)
-			,new DefaultColorSetting(
-			ResourceStrings.FactEditorColorsPredicateTextId,
-			(uint)COLORINDEX.CI_SYSPLAINTEXT_FG | StandardColorPaletteBit,
-			(uint)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardColorPaletteBit,
-			false)
+			true)
 			,new DefaultColorSetting(
 			ResourceStrings.FactEditorColorsDelimiterId,
 			(uint)COLORINDEX.CI_BLACK | StandardColorPaletteBit,
+			(uint)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardColorPaletteBit,
+			true)
+			,new DefaultColorSetting(
+			ResourceStrings.FactEditorColorsQuantifierId,
+			(uint)COLORINDEX.CI_DARKGREEN | StandardColorPaletteBit,
 			(uint)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardColorPaletteBit,
 			true)
 		};

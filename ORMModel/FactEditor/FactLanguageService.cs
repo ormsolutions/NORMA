@@ -101,31 +101,6 @@ namespace Northface.Tools.ORM.FactEditor
 
 	#endregion
 
-	#region IFactParser
-
-	/// <summary>
-	/// Setup a Face Parser interface to ensure line markup
-	/// </summary>
-	public interface IFactParser
-	{
-		/// <summary>
-		/// Implement the parsing of line text
-		/// </summary>
-		/// <param name="factLine">An object containing the markings and source line text</param>
-		/// <returns>HRESULT</returns>
-		int Line(ref FactLine factLine);
-		/// <summary>
-		/// Parse a line and determine what type of line it is. Currently this method is not being used
-		/// </summary>
-		/// <param name="textLines"></param>
-		/// <param name="lineNr"></param>
-		/// <param name="lineType"></param>
-		/// <param name="comment"></param>
-		/// <returns></returns>
-		int ParseLine(IVsTextLines textLines, int lineNr, out FactLineType lineType, out string comment);
-	}
-	#endregion
-
 	/// <summary>
 	/// Language service to provide colorization
 	/// </summary>

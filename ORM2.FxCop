@@ -908,65 +908,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="FactParser">
-          <Members>
-           <Member Name="Line(Northface.Tools.ORM.FactEditor.FactLine&amp;):System.Int32">
-            <Messages>
-             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>FactParser.Line(FactLine&amp;):Int32</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="CatchNonClsCompliantExceptionsInGeneralHandlers" Category="Microsoft.Security" CheckId="CA2102" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>FactParser.Line(FactLine&amp;):Int32</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>FactParser.Line(FactLine&amp;):Int32</Item>
-               <Item>System.Exception</Item>
-              </Issue>
-             </Message>
-             <Message Id="0#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-04-15 14:45:27Z">
-              <Issue Level="CriticalWarning">
-               <Item>factLine</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="ParseLine(Microsoft.VisualStudio.TextManager.Interop.IVsTextLines,System.Int32,Northface.Tools.ORM.FactEditor.FactLineType&amp;,System.String&amp;):System.Int32">
-            <Messages>
-             <Message Id="1#" TypeName="ShortAcronymsShouldBeUppercase" Category="Microsoft.Naming" CheckId="CA1706" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>Nr</Item>
-               <Item>lineNr</Item>
-              </Issue>
-             </Message>
-             <Message Id="2#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>lineType</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="6" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="3#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>comment</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="6" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="FactSaver">
           <Messages>
            <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Created="2005-04-21 19:22:34Z">
@@ -1290,42 +1231,27 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="IFactParser">
+         <Type Name="ParsedFact">
           <Members>
-           <Member Name="Line(Northface.Tools.ORM.FactEditor.FactLine&amp;):System.Int32">
+           <Member Name="ColorAttributes">
             <Messages>
-             <Message Id="0#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-04-15 14:45:27Z">
-              <Issue Level="CriticalWarning">
-               <Item>factLine</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="ParseLine(Microsoft.VisualStudio.TextManager.Interop.IVsTextLines,System.Int32,Northface.Tools.ORM.FactEditor.FactLineType&amp;,System.String&amp;):System.Int32">
-            <Messages>
-             <Message Id="1#" TypeName="ShortAcronymsShouldBeUppercase" Category="Microsoft.Naming" CheckId="CA1706" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>Nr</Item>
-               <Item>lineNr</Item>
-              </Issue>
-             </Message>
-             <Message Id="2#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-04-15 14:45:27Z">
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Excluded" Created="2005-06-17 22:02:52Z">
               <Issue>
-               <Item>lineType</Item>
+               <Item>ColorAttributes</Item>
               </Issue>
               <Notes>
-               <User Name="mcurland">
-                <Note Id="6" />
+               <User Name="sbaldwin">
+                <Note Id="1" />
                </User>
               </Notes>
              </Message>
-             <Message Id="3#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-04-15 14:45:27Z">
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Status="Excluded" Created="2005-06-17 22:02:52Z">
               <Issue>
-               <Item>comment</Item>
+               <Item>ParsedFact.ColorAttributes:UInt32[]</Item>
               </Issue>
               <Notes>
-               <User Name="mcurland">
-                <Note Id="6" />
+               <User Name="sbaldwin">
+                <Note Id="0" />
                </User>
               </Notes>
              </Message>
@@ -12798,6 +12724,10 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
     <Note Id="31" Modified="2005-06-14 21:18:17Z">Internal rules instantiated via reflection</Note>
     <Note Id="32" Modified="2005-06-14 21:18:24Z">Internal rules instantiated via reflection</Note>
     <Note Id="33" Modified="2005-06-14 21:18:29Z">Internal rules instantiated via reflection</Note>
+   </User>
+   <User Name="sbaldwin">
+    <Note Id="0" Modified="2005-06-17 22:03:30Z">We need the arrays to assign to the shell methods for colorization</Note>
+    <Note Id="1" Modified="2005-06-17 22:03:33Z">We need the arrays to assign to the shell methods for colorization</Note>
    </User>
   </Notes>
   <Rules>

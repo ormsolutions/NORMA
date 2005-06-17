@@ -23,27 +23,28 @@ namespace Northface.Tools.ORM.FactEditor
 	{
 		private ORMDesignerDocView myCurrentDocView;
 		private ORMDesignerDocData myCurrentDocument;
-		private FactLine myFactLine;
 		private FactType myEditFact;
 		private const string RefModeGroupName = "refmode";
 		private static Regex ReferenceModeRegEx = new Regex(@"\((?<refmode>[^\(\)]+)\)", RegexOptions.Singleline | RegexOptions.Compiled);
+		private ParsedFact myParsedFact;
 
 		/// <summary>
 		/// Add facts to the model
 		/// </summary>
 		/// <param name="docView">Curent document view</param>
-		/// <param name="factLine">Parsed line</param>
+		/// <param name="parsedFact">Parsed fact</param>
 		/// <param name="fact">Editing fact</param>
-		public static void AddFact(ORMDesignerDocView docView, FactLine factLine, FactType fact)
+		public static void AddFact(ORMDesignerDocView docView, ParsedFact parsedFact, FactType fact)
 		{
-			(new FactSaver(docView, factLine, fact)).AddFactToModel();
+			(new FactSaver(docView, parsedFact, fact)).AddFactToModel();
 		}
-		private FactSaver(ORMDesignerDocView docView, FactLine factLine, FactType fact)
+
+		private FactSaver(ORMDesignerDocView docView, ParsedFact parsedFact, FactType fact)
 		{
 			myCurrentDocView = docView;
 			myCurrentDocument = docView.DocData as ORMDesignerDocData;
-			myFactLine = factLine;
 			myEditFact = fact;
+			myParsedFact = parsedFact;
 		}
 
 		private void AddFactToModel()
@@ -58,237 +59,242 @@ namespace Northface.Tools.ORM.FactEditor
 				ORMDesignerDocView docView = (ORMDesignerDocView)myCurrentDocument.DocViews[0];
 				ORMDiagram diagram = docView.Diagram as ORMDiagram;
 				Dictionary<ModelElement, bool> modelElements = new Dictionary<ModelElement, bool>();
-				bool factChanged = false;
+				bool newObjectsCreated = false;
 
 				// We've got a model, now lets start a transaction to add our fact to the model.
 				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
 				{
 					IDictionary topLevelTransactionContextInfo = t.TopLevelTransaction.Context.ContextInfo;
-					RoleMoveableCollection roles = null;
 					RoleMoveableCollection factRoles = null;
 					ReadingOrder readOrd;
-					Reading read = null;
-					FactType factType;
+					Reading primaryReading = null;
+					FactType currentFact;
+					Dictionary<string, ObjectType> newlyCreatedObjects = new Dictionary<string, ObjectType>();
+
+					// Get the fact if it exists, otherwise create a new one.
 					if (myEditFact == null)
 					{
-						factType = FactType.CreateFactType(store);
+						currentFact = FactType.CreateFactType(store);
 						readOrd = ReadingOrder.CreateReadingOrder(store);
+						// assign the fact to this reading order to setup the reference
+						// between role collectionsreadOrd.FactType = currentFact;
+						readOrd.FactType = currentFact;
+						currentFact.Model = myModel;
 					}
 					else
 					{
-						factType = myEditFact;
-						readOrd = FactType.FindMatchingReadingOrder(factType);
-						read = readOrd.PrimaryReading;
+						currentFact = myEditFact;
+						readOrd = FactType.FindMatchingReadingOrder(currentFact);
+						primaryReading = readOrd.PrimaryReading;
 					}
-					roles = readOrd.RoleCollection;
-					roles.Clear();
 
-					factRoles = factType.RoleCollection;
+
+					factRoles = currentFact.RoleCollection;
 					factRoles.Clear();
 
-					foreach (FactTokenMark mark in myFactLine.Marks)
+					// Loop the FactObjectCollection and create new objects or update existing objects
+					// (this means assign refmodes and change between entity/value types.
+					foreach (FactObject o in myParsedFact.FactObjects)
 					{
-						// Check to see if the mark is an ObjectType (either entity or value).
-						switch (mark.TokenType)
+						string objectName = o.Name;
+						bool isEmptyElement = true;
+						bool forceValueType = (o.RefMode.Length == 0 && o.RefModeHasParenthesis);
+						ObjectType currentObject = null;
+
+						// Get the object if it already exists.
+						LocatedElement existingElement = myModel.ObjectTypesDictionary.GetElement(objectName);
+						isEmptyElement = existingElement.IsEmpty;
+
+						// If the object was not found, create a new one.
+						// Or if the object exists and the names are different, create a new one
+						if (isEmptyElement)
 						{
-							case FactTokenType.EntityType:
-							case FactTokenType.ValueType:
+							currentObject = ObjectType.CreateObjectType(store);
+							currentObject.Name = objectName;
+							currentObject.Model = myModel;
+							newObjectsCreated = true;
+							newlyCreatedObjects.Add(objectName, currentObject);
+
+							// If the object DOES NOT already exist AND it's a value type
+							if (forceValueType)
 							{
-								ObjectType objType = null;
-								string preObjName = myFactLine.LineText.Substring(mark.nStart, mark.nEnd - mark.nStart + 1);
-								Match m = ReferenceModeRegEx.Match(preObjName);
-								string refModeText = m.Groups[RefModeGroupName].Value;
-								string objNameSansRef = preObjName.Replace(string.Concat("(", refModeText, ")"), "");
-
-
-								// figure out if there are any objects on the diagram
-								bool isEmptyElement = true;
-
-								LocatedElement existingElement = myModel.ObjectTypesDictionary.GetElement(objNameSansRef);
-								isEmptyElement = existingElement.IsEmpty;
-
-								if (isEmptyElement)
-								{
-									objType = ObjectType.CreateObjectType(store);
-									factChanged = true;
-								}
-								else
-								{
-									objType = (ObjectType)existingElement.FirstElement;
-								}
-
-									// If our mark is known to be a Value type object...
-								if (isEmptyElement)
-								{
-									objType.Model = myModel;
-									if (mark.TokenType == FactTokenType.ValueType)
-									{
-										objType.IsValueType = true;
-										modelElements.Add(objType, true);
-									}
-									else
-									{
-										objType.Name = objNameSansRef;
-										modelElements.Add(objType, true);
-										IList<ReferenceMode> modes = ReferenceMode.FindReferenceModesByName(refModeText, myModel);
-										if (modes.Count == 0)
-										{
-											objType.ReferenceModeString = refModeText;
-										}
-										else
-										{
-											// UNDONE: Consider giving a warning here (after the transaction is
-											// completed, no UI during transactions) that the reference mode is ambiguous.
-											objType.ReferenceMode = modes[0];
-										}
-									}
-								}
-								else
-								{
-									objType.Name = objNameSansRef;
-									modelElements.Add(objType, false);
-									bool convertingToValueType = false;
-									bool entityWasCollapsed = false;
-
-									// get a presentation element to work with for determine if the ref mode is expanded or collapsed
-									ShapeModel.ObjectTypeShape objShape = (myCurrentDocView.Diagram as ORMDiagram).FindShapeForElement<ShapeModel.ObjectTypeShape>(objType);
-
-									// convert this object to a entity type if it was a value type and if we are now adding a ref mode
-									if (refModeText.Length > 0 && objType.IsValueType)
-									{
-										objType.IsValueType = false;
-										// Note: Don't change the ExpandRefMode property to false here. This is
-										// a user setting and we should respect the current value.
-									}
-									else if (refModeText.Length == 0 && !objType.IsValueType)
-									{
-										// Set the flag to indicate we are converting an entity to a value type
-										// so we need to kill the RefMode
-										convertingToValueType = true;
-										
-										// Set the flag to indicate if the old entity type was collapsed. If it
-										// was, then we are ok to agressively delete the ref mode
-										if (objShape != null)
-										{
-											entityWasCollapsed = !objShape.ExpandRefMode;
-										}
-									}
-
-									// UNDONE: make sure we don't set a RefMode on an objectified fact; don't make
-									// the objectification a value type either. Use squiggles with markers/regions
-									// to block the commit of invalid operations
-									if (objType.NestedFactType == null)
-									{
-										IList<ReferenceMode> modes = ReferenceMode.FindReferenceModesByName(refModeText, myModel);
-										if (modes.Count == 0)
-										{
-											// Add a "Delete" object to the transaction bucket to enable agressive RefMode deletion
-											if (convertingToValueType && entityWasCollapsed)
-											{
-												topLevelTransactionContextInfo[ObjectType.DeleteReferenceModeValueType] = null;
-											}
-											objType.ReferenceModeString = refModeText;
-											
-											// remove the "Delete" object from the transaction bucket
-											if (convertingToValueType && entityWasCollapsed)
-											{
-												topLevelTransactionContextInfo.Remove(ObjectType.DeleteReferenceModeValueType);
-											}
-										}
-										else
-										{
-											// UNDONE: Consider giving a warning here (after the transaction is
-											// completed, no UI during transactions) that the reference mode is ambiguous.
-											objType.ReferenceMode = modes[0];
-										}
-
-										// The object was an entity, but is now a value type
-										if (convertingToValueType)
-										{
-											objType.IsValueType = true;
-										}
-									}
-								}
-								objType.Name = objNameSansRef;
-
-								if (null != factRoles)
-								{
-									Role role = Role.CreateRole(store);
-									role.RolePlayer = objType;
-									factRoles.Add(role);
-								}
-								break;
+								currentObject.IsValueType = true;
 							}
-						}
-					}
-
-					int currentRole = 0;
-					StringBuilder reading = new StringBuilder();
-					// Loop the predicate marks
-					bool inPredicate = false;
-					bool firstPredicate = true;
-					foreach (FactTokenMark mark in myFactLine.Marks)
-					{
-						if (mark.TokenType == FactTokenType.Predicate)
-						{
-							string innerText = myFactLine.LineText.Substring(mark.nStart, mark.nEnd - mark.nStart + 1);
-							if (inPredicate)
+							// If the object DOES NOT already exist AND it's an entity type
+							else if (o.RefMode.Length > 0)
 							{
-								reading.AppendFormat(" {0}", innerText);
+								IList<ReferenceMode> modes = ReferenceMode.FindReferenceModesByName(o.RefMode, myModel);
+								if (modes.Count == 0)
+								{
+									currentObject.ReferenceModeString = o.RefMode;
+								}
+								else
+								{
+									// UNDONE: Consider giving a warning here (after the transaction is
+									// completed, no UI during transactions) that the reference mode is ambiguous.
+									currentObject.ReferenceMode = modes[0];
+								}
+							}
+						} // Otherwise, use the existing object.
+						else
+						{
+							if (newlyCreatedObjects.ContainsKey(objectName))
+							{
+								currentObject = newlyCreatedObjects[objectName];
 							}
 							else
 							{
-								if (firstPredicate)
-								{
-									reading.AppendFormat("{{{0}}} {1}", currentRole++, innerText);
-									firstPredicate = false;
-								}
-								else
-								{
-									reading.AppendFormat(" {0}", innerText);
-								}
-								inPredicate = true;
+								currentObject = existingElement.FirstElement as ObjectType;
+								currentObject.Name = objectName;
 							}
-						}
-						else
-						{
-							if (inPredicate)
+							bool convertingToValueType = false;
+							bool entityWasCollapsed = false;
+							string refModeText = o.RefMode;
+							int refModeLength = refModeText.Length;
+							bool currentObjectIsValueType = currentObject.IsValueType;
+
+							// get a presentation element to work with for determine if the ref mode is expanded or collapsed
+							ShapeModel.ObjectTypeShape objShape = (myCurrentDocView.Diagram as ORMDiagram).FindShapeForElement<ShapeModel.ObjectTypeShape>(currentObject);
+
+							// convert this object to a entity type if it was a value type and if we are now adding a ref mode
+							if (refModeLength > 0 && currentObjectIsValueType)
 							{
-								reading.AppendFormat(" {{{0}}}", currentRole++);
-								inPredicate = false;
+								currentObject.IsValueType = false;
+								// Note: Don't change the ExpandRefMode property to false here. This is
+								// a user setting and we should respect the current value.
 							}
-						}
-					}
+							else if (refModeLength == 0 && !currentObjectIsValueType && o.RefModeHasParenthesis)
+							{
+								// Set the flag to indicate we are converting an entity to a value type
+								// so we need to kill the RefMode
+								convertingToValueType = true;
 
-					if (null != factType)
-					{
-						if (factType.Model == null)
+								// Set the flag to indicate if the old entity type was collapsed. If it
+								// was, then we are ok to agressively delete the ref mode
+								if (objShape != null)
+								{
+									entityWasCollapsed = !objShape.ExpandRefMode;
+								}
+							}
+
+							// UNDONE: make sure we don't set a RefMode on an objectified fact; don't make
+							// the objectification a value type either. Use squiggles with markers/regions
+							// to block the commit of invalid operations
+
+							if (currentObject.NestedFactType == null)
+							{
+								// if convertingToValueType, then we know we have parens and 0 length ref mode - force value type
+								// if we have a ref mode and it's different than the old one, change it
+								if (convertingToValueType || (!currentObject.IsValueType && refModeLength > 0 && currentObject.ReferenceModeString != refModeText))
+								{
+									IList<ReferenceMode> modes = ReferenceMode.FindReferenceModesByName(refModeText, myModel);
+									if (modes.Count == 0)
+									{
+										// Add a "Delete" object to the transaction bucket to enable agressive RefMode deletion
+										if (convertingToValueType && entityWasCollapsed)
+										{
+											topLevelTransactionContextInfo[ObjectType.DeleteReferenceModeValueType] = null;
+										}
+										currentObject.ReferenceModeString = refModeText;
+
+										// remove the "Delete" object from the transaction bucket
+										if (convertingToValueType && entityWasCollapsed)
+										{
+											topLevelTransactionContextInfo.Remove(ObjectType.DeleteReferenceModeValueType);
+										}
+									}
+									else
+									{
+										// UNDONE: Consider giving a warning here (after the transaction is
+										// completed, no UI during transactions) that the reference mode is ambiguous.
+										currentObject.ReferenceMode = modes[0];
+									}
+
+									// The object was an entity, but is now a value type
+									if (convertingToValueType)
+									{
+										currentObject.IsValueType = true;
+									}
+								}
+								// ELSE:
+								// if we have a ref mode and it's the same ignore it.
+								// if ref mode is blank and !convertingToValueType, then we need to ignore the ref mode all together
+
+
+							} // end of if (currentObject.NestedFactType == null)
+						} // end of use existing object
+						if (!modelElements.ContainsKey(currentObject))
 						{
-							factType.Model = myModel;
+							modelElements.Add(currentObject, true);
 						}
-						modelElements.Add(factType, myEditFact == null);
-					}
 
-					roles.Clear();
-					for(int i=0;i<factRoles.Count;++i)
-					{
-						roles.Add(factRoles[i]);
-					}
+						// Add this object to the fact role collection, default the role name to the object name
+						Role role = Role.CreateRole(store);
+						role.RolePlayer = currentObject;
+						factRoles.Add(role);
+						// add the role to the reading order's role collection
+						if (myEditFact == null)
+						{
+//							roles.Add(role);
+						}
 
+					} // end foreach (FactObject o in myParsedFact.FactObjects)
+
+//					if (currentFact.Model == null)
+//					{
+//						currentFact.Model = myModel;
+//					}
+					modelElements.Add(currentFact, true);
+
+					// If we're creating a new fact, add the reading to the reading collection
 					if (myEditFact == null)
 					{
-						factType.ReadingOrderCollection.Add(readOrd);
-						read = Reading.CreateReading(store);
-						readOrd.ReadingCollection.Add(read);
+						primaryReading = Reading.CreateReading(store);
+						primaryReading.ReadingOrder = readOrd;
 					}
-					read.Text = reading.ToString();
+					primaryReading.Text = myParsedFact.ReadingText;
+
+					// FACT-QUANTIFIERS: This is for the new quantifier implementation using the "." delimiters
+					// Apply a mandatory dot to the opposite role
+//					for (int i = 0; i < factRoles.Count; i++)
+//					{
+//						Role currentRole = factRoles[i];
+//						FactObject currentObject = myParsedFact.FactObjects[i];
+//
+//						foreach (FactQuantifier fq in currentObject.RoleQuantifiers)
+//						{
+//							// AtLeast means MANDATORY ONLY
+//							if (fq.QuantifierType == LogicalQuantifierType.AtLeast)
+//							{
+//								// apply the mandatory dot to the opposite role
+//								Role oppositeRole = currentRole.OppositeRole;
+//								if (oppositeRole != null)
+//								{
+//									oppositeRole.IsMandatory = true;
+//								}
+//								
+//							}
+//							else if (fq.QuantifierType == LogicalQuantifierType.Exactly)
+//							{
+//								currentRole.Multiplicity = RoleMultiplicity.ExactlyOne;
+//							}
+//							else if (fq.QuantifierType == LogicalQuantifierType.AtMost)
+//							{
+//								currentRole.Multiplicity = RoleMultiplicity.ZeroToOne;
+//							}
+//						}
+//					}
 
 					// Commit the changes to the model.
 					t.Commit();
-				}
+				} // end transaction
 
-				if (factChanged)
+				#region Autolayout
+				// Only perform autlayout if new objects have been created AND there are objects
+				// in the modelElements collection.
+				if (newObjectsCreated && modelElements.Count > 0)
 				{
+					// Create a new transaction to perform autolayout (You cannot do this inside the same transaction)
 					using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.InterpretFactEditorLineTransactionName))
 					{
 						// New stuff for autolayout
@@ -306,6 +312,7 @@ namespace Northface.Tools.ORM.FactEditor
 						t.Commit();
 					}
 				}
+				#endregion // Autolayout
 			}
 		}
 	}

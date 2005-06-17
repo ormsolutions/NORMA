@@ -43,7 +43,7 @@ namespace Northface.Tools.ORM.FactEditor
 //		CComPtr<IFigTaskManager> m_srpTaskManager;
 //		DWORD m_dwTextViewEventsCookie;	// for IVsTextViewEvents advise sink
 
-		private FactLine GetFactLine()
+		private string GetFactLine()
 		{
 			int hrLocal = NativeMethods.S_OK;
 
@@ -72,7 +72,7 @@ namespace Northface.Tools.ORM.FactEditor
 				return null;
 
 			// call the Line method on the parse object
-			return new FactLine(bstrLine);
+			return bstrLine;
 		}
 
 		/// <summary>
@@ -275,12 +275,9 @@ namespace Northface.Tools.ORM.FactEditor
 						//int hrCommit = NativeMethods.S_OK;
 
 						// call the Line method on the parse object
-						FactLine controlEnterLine = this.GetFactLine();
-						if (controlEnterLine == null)
-							break; 
-						myParser.Line(ref controlEnterLine);
-
-						FactSaver.AddFact(myCompletionSet.CurrentDocumentView, controlEnterLine, myCompletionSet.EditFact);
+						string factText = this.GetFactLine();
+						ParsedFact parsedFact = myParser.ParseLine(factText);
+						FactSaver.AddFact(myCompletionSet.CurrentDocumentView, parsedFact, myCompletionSet.EditFact);
 						break;
 					case CmdTypeChar: // any character
 						fHandled = false;
@@ -298,14 +295,14 @@ namespace Northface.Tools.ORM.FactEditor
 
 						int hrLocal = NativeMethods.S_OK;
 
-						// call the Line method on the parse object
-						FactLine typeCharLine = this.GetFactLine();
-						if (typeCharLine == null)
-							break;
-						hrLocal = myParser.Line(ref typeCharLine);
+						// call the ParseLine method on the parse object to determine if
+						// there were errors, e.g. 0 objects. or 1 object, no predicate, etc...
+						// TODO: When we're ready to check for parse errors, here's the code to parse the line
+//						string factText2 = this.GetFactLine();
+//						ParsedFact parsedFact2 = myParser.ParseLine(factText2);
 
 						// check for any errors
-//						if (factLine.HasError)
+//						if (HAS_ERRORS_TEST)
 //						{
 //							FactTextMarkerClient client = new FactTextMarkerClient();
 //							// UNDONE: You were putting in red squiggles here

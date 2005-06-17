@@ -315,6 +315,39 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Multiplicity Display
+		#region Properties
+		/// <summary>
+		/// Used as a shortcut to find the opposite role in a binary fact.
+		/// Returns null if the fact is not a binary
+		/// </summary>
+		/// <value></value>
+		public Role OppositeRole
+		{
+			get
+			{
+				// Only do this if it's a binary fact
+				RoleMoveableCollection roles = this.FactType.RoleCollection;
+				if (roles.Count == 2)
+				{
+					// loop over the collection and get the other role
+					Role oppositeRole = null;
+					foreach (Role r in roles)
+					{
+						if (!r.Equals(this))
+						{
+							oppositeRole = r;
+							break;
+						}
+					}
+					return oppositeRole;
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+		#endregion
 		#region RoleChangeRule class
 		[RuleOn(typeof(Role))]
 		private class RoleChangeRule : ChangeRule

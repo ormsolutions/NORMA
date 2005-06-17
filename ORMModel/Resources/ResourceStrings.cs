@@ -294,6 +294,10 @@ namespace Northface.Tools.ORM
 		/// Display name for the color used to draw the constraint box for role sequence editing
 		/// </summary>
 		public const string FontsAndColorsRolePickerColorId = "FontsAndColors.RolePickerColor";
+		/// <summary>
+		/// Display Name of the Quantifier color
+		/// </summary>
+		public const string FactEditorColorsQuantifierId = "FactEditorColors.Quantifier";
 		#endregion // Public resource ids
 		#region Private resource ids
 		private const string FactEditorIntellisenseImageList_Id = "FactEditor.Intellisense.ImageList";

@@ -202,7 +202,11 @@
     <value xml:space="preserve">ORM Fact Predicate</value>
     <comment xml:space="preserve">Display Name of the Predicate Text color</comment>
   </data>
-  <data name="FactEditorColors.ReferenceModeName">
+  <data name="FactEditorColors.Quantifier">
+    <value xml:space="preserve">ORM Fact Quantifier</value>
+    <comment xml:space="preserve">Display name for color setting for logical and existential quantifiers in the fact editor.</comment>
+  </data>
+    <data name="FactEditorColors.ReferenceModeName">
     <value xml:space="preserve">ORM Fact Reference Mode</value>
     <comment xml:space="preserve">Display Name of the Reference Mode Name color</comment>
   </data>
