@@ -2716,8 +2716,11 @@ namespace Northface.Tools.ORM.ShapeModel
 			TooManyReadingRolesError tooMany;
 			FactTypeRequiresReadingError noReading;
 			FactTypeRequiresInternalUniquenessConstraintError noUniqueness;
-			FactType fact = null;
+			NMinusOneError nMinusOne;
+			FactType fact;
 			Reading reading = null;
+			InternalUniquenessConstraint activateConstraint = null;
+			bool addActiveRoles = false;
 			if (null != (tooFew = error as TooFewReadingRolesError))
 			{
 				reading = tooFew.Reading;
@@ -2741,31 +2744,15 @@ namespace Northface.Tools.ORM.ShapeModel
 				using (Transaction tran = theStore.TransactionManager.BeginTransaction(ResourceStrings.ModelErrorFactTypeRequiresIUCActivateTransactionName))
 				{
 					InternalUniquenessConstraint theConstraint = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(theStore);
+					activateConstraint = theConstraint;
 					theConstraint.FactType = fact;
 					tran.Commit();
-
-					ConstraintDisplayPosition displayPosition = this.ConstraintDisplayPosition;
-					ConstraintShapeField targetSubfield = null;
-					if (displayPosition == ConstraintDisplayPosition.Top)
-					{
-						targetSubfield = myTopConstraintShapeField;
-					}
-					else if (displayPosition == ConstraintDisplayPosition.Bottom)
-					{
-						targetSubfield = myBottomConstraintShapeField;
-					}
-					if (targetSubfield != null)
-					{
-						ORMDiagram ormDiagram = Diagram as ORMDiagram;
-						DiagramClientView clientView = ormDiagram.ActiveDiagramView.DiagramClientView;
-						DiagramItem diagramItem  = new DiagramItem(this, targetSubfield, new ConstraintSubField(theConstraint));
-						clientView.Selection.Set(diagramItem);
-						InternalUniquenessConstraintConnectAction connectAction = ormDiagram.InternalUniquenessConstraintConnectAction;
-						ActiveInternalUniquenessConstraintConnectAction = connectAction;
-						this.Invalidate(true);
-						connectAction.ChainMouseAction(this, theConstraint, clientView);
-					}
 				}
+			}
+			else if (null != (nMinusOne = error as NMinusOneError))
+			{
+				activateConstraint = nMinusOne.Constraint;
+				addActiveRoles = true;
 			}
 
 			if (reading != null)
@@ -2775,6 +2762,43 @@ namespace Northface.Tools.ORM.ShapeModel
 				window.Show();
 				window.ActivateReading(reading);
 
+			}
+			else if (activateConstraint != null)
+			{
+				ConstraintShapeField targetSubfield = null;
+				switch (ConstraintDisplayPosition)
+				{
+					case ConstraintDisplayPosition.Top:
+						targetSubfield = myTopConstraintShapeField;
+						break;
+					case ConstraintDisplayPosition.Bottom:
+						targetSubfield = myBottomConstraintShapeField;
+						break;
+				}
+				Debug.Assert(targetSubfield != null);
+				if (targetSubfield != null)
+				{
+					ORMDiagram ormDiagram = Diagram as ORMDiagram;
+					DiagramClientView clientView = ormDiagram.ActiveDiagramView.DiagramClientView;
+					DiagramItem diagramItem = new DiagramItem(this, targetSubfield, new ConstraintSubField(activateConstraint));
+					clientView.Selection.Set(diagramItem);
+					InternalUniquenessConstraintConnectAction connectAction = ormDiagram.InternalUniquenessConstraintConnectAction;
+					ActiveInternalUniquenessConstraintConnectAction = connectAction;
+					if (addActiveRoles)
+					{
+						RoleMoveableCollection roleColl = activateConstraint.RoleCollection;
+						if (roleColl.Count != 0)
+						{
+							IList<Role> selectedRoles = connectAction.SelectedRoleCollection;
+							foreach (Role r in roleColl)
+							{
+								selectedRoles.Add(r);
+							}
+						}
+					}
+					this.Invalidate(true);
+					connectAction.ChainMouseAction(this, activateConstraint, clientView);
+				}
 			}
 		}
 		void IModelErrorActivation.ActivateModelError(ModelError error)

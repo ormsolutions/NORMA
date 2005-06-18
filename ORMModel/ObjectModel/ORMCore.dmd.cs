@@ -200,6 +200,9 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -3413,6 +3416,15 @@ namespace Northface.Tools.ORM.ObjectModel
 					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch), newRoles);
 				}
 			}
+		}
+		#endregion
+		#region CompatibleRolePlayerTypeErrorCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeErrorMoveableCollection CompatibleRolePlayerTypeErrorCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeErrorMoveableCollection(this, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MultiColumnExternalConstraintMetaRoleGuid, Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid); }
 		}
 		#endregion
 	}
@@ -8700,6 +8712,52 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
+		#region NMinusOneError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.NMinusOneError NMinusOneError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.ConstraintMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.NMinusOneError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.ConstraintMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.ConstraintMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region InternalUniquenessConstraint's Generated Constructor Code
 	public  partial class InternalUniquenessConstraint
@@ -9341,6 +9399,52 @@ namespace Northface.Tools.ORM.ObjectModel
 					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, value);
 					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.SingleColumnExternalConstraintCollectionMetaRoleGuid, this);
 					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region CompatibleRolePlayerTypeError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError CompatibleRolePlayerTypeError
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.SingleColumnExternalConstraintMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.SingleColumnExternalConstraintMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.SingleColumnExternalConstraintMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError), newRoles);
 				}
 			}
 		}
@@ -12929,6 +13033,642 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.NMinusOneError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.NMinusOneError")]
+	public  partial class NMinusOneError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region NMinusOneError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "c47f58f9-5d4d-442f-ad88-fefc94d63250";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.NMinusOneError.MetaClassGuidString);
+		#endregion
+
+		#region Constraint's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint Constraint
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.ConstraintMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.ConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region NMinusOneError's Generated Constructor Code
+	public  partial class NMinusOneError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public NMinusOneError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static NMinusOneError CreateNMinusOneError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (NMinusOneError)store.ElementFactory.CreateElement(typeof(NMinusOneError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static NMinusOneError CreateAndInitializeNMinusOneError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (NMinusOneError)store.ElementFactory.CreateElement(typeof(NMinusOneError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for NMinusOneError
+	/// <summary>
+	/// NMinusOneError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.NMinusOneError))]
+	public sealed class NMinusOneErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public NMinusOneErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.NMinusOneError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError")]
+	public  partial class CompatibleRolePlayerTypeError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region CompatibleRolePlayerTypeError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "edfc4b63-9538-4ae4-9dc3-0e8d0594bf35";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError.MetaClassGuidString);
+		#endregion
+
+		#region MultiColumnExternalConstraint's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint MultiColumnExternalConstraint
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MultiColumnExternalConstraintMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MultiColumnExternalConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region SingleColumnExternalConstraint's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint SingleColumnExternalConstraint
+		{
+			get
+			{
+				System.Object o = null;
+				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						goodLink = link;
+						break;
+					}
+				}
+				if (goodLink != null)
+				{
+					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.SingleColumnExternalConstraintMetaRoleGuid);
+				}
+				return (Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)o;
+			}
+			set
+			{
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid);
+				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				{
+					if (!link.IsRemoved)
+					{
+						link.Remove();
+						break;
+					}
+				}
+				if (value != null)
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.SingleColumnExternalConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid, this);
+					this.Store.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region Collection Classes for CompatibleRolePlayerTypeError
+	/// <summary>
+	/// Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class CompatibleRolePlayerTypeErrorMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public CompatibleRolePlayerTypeErrorMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Store.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError this[System.Int32 index]
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
+	#region CompatibleRolePlayerTypeError's Generated Constructor Code
+	public  partial class CompatibleRolePlayerTypeError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public CompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static CompatibleRolePlayerTypeError CreateCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return (CompatibleRolePlayerTypeError)store.ElementFactory.CreateElement(typeof(CompatibleRolePlayerTypeError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static CompatibleRolePlayerTypeError CreateAndInitializeCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (CompatibleRolePlayerTypeError)store.ElementFactory.CreateElement(typeof(CompatibleRolePlayerTypeError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for CompatibleRolePlayerTypeError
+	/// <summary>
+	/// CompatibleRolePlayerTypeError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError))]
+	public sealed class CompatibleRolePlayerTypeErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public CompatibleRolePlayerTypeErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError(store, bag);
 		}
 	}
 	#endregion
@@ -22082,6 +22822,342 @@ namespace Northface.Tools.ORM.ObjectModel
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
 			return new Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError")]
+	public  partial class MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "f9f003bb-7296-4ae9-9dde-08d0018f8aed";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MetaRelationshipGuidString);
+		#endregion
+
+		#region CompatibleRolePlayerTypeErrorCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String CompatibleRolePlayerTypeErrorCollectionMetaRoleGuidString = "dc5071d8-d878-4821-990e-3bb8792e5a3a";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollection")]
+		public  Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError CompatibleRolePlayerTypeErrorCollection
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError)this.GetRolePlayer(CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid, value); }
+		}
+		#endregion
+		#region MultiColumnExternalConstraint's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String MultiColumnExternalConstraintMetaRoleGuidString = "0730fc3b-4254-4546-b607-0cd96a428a3e";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid MultiColumnExternalConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MultiColumnExternalConstraintMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MultiColumnExternalConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MultiColumnExternalConstraint")]
+		public  Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint MultiColumnExternalConstraint
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(MultiColumnExternalConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(MultiColumnExternalConstraintMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError's Generated Constructor Code
+	public  partial class MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError CreateMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError)store.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError CreateAndInitializeMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError)store.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError
+	/// <summary>
+	/// MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError))]
+	public sealed class MultiColumnExternalConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MultiColumnExternalConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError")]
+	public  partial class SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "be96de91-b789-468a-8140-fc083adc13b7";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.MetaRelationshipGuidString);
+		#endregion
+
+		#region CompatibleRolePlayerTypeError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String CompatibleRolePlayerTypeErrorMetaRoleGuidString = "0fa1d625-2370-4adc-b0af-57266b0370c6";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid CompatibleRolePlayerTypeErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeError")]
+		public  Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError CompatibleRolePlayerTypeError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError)this.GetRolePlayer(CompatibleRolePlayerTypeErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(CompatibleRolePlayerTypeErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region SingleColumnExternalConstraint's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String SingleColumnExternalConstraintMetaRoleGuidString = "d8a3c296-8f3f-4a14-b198-ade11de6a48a";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid SingleColumnExternalConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.SingleColumnExternalConstraintMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.SingleColumnExternalConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.SingleColumnExternalConstraint")]
+		public  Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint SingleColumnExternalConstraint
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)this.GetRolePlayer(SingleColumnExternalConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(SingleColumnExternalConstraintMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError's Generated Constructor Code
+	public  partial class SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError CreateSingleColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError)store.ElementFactory.CreateElementLink(typeof(SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError CreateAndInitializeSingleColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError)store.ElementFactory.CreateElementLink(typeof(SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError
+	/// <summary>
+	/// SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError))]
+	public sealed class SingleColumnExternalConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError(store, bag);
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError")]
+	public  partial class InternalUniquenessConstraintHasNMinusOneError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region InternalUniquenessConstraintHasNMinusOneError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = "3813d2d2-a6cc-4f26-a5ff-24b6c05e0cc5";
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.MetaRelationshipGuidString);
+		#endregion
+
+		#region NMinusOneError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String NMinusOneErrorMetaRoleGuidString = "c5b85dae-aaba-40b1-b300-a9c2cf03e91e";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid NMinusOneErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneError")]
+		public  Northface.Tools.ORM.ObjectModel.NMinusOneError NMinusOneError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.NMinusOneError)this.GetRolePlayer(NMinusOneErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(NMinusOneErrorMetaRoleGuid, value); }
+		}
+		#endregion
+		#region Constraint's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ConstraintMetaRoleGuidString = "df179dfc-8827-46b7-a19a-b3428ceb09ce";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.ConstraintMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.ConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.Constraint")]
+		public  Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint Constraint
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint)this.GetRolePlayer(ConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(ConstraintMetaRoleGuid, value); }
+		}
+		#endregion
+	}
+	#region InternalUniquenessConstraintHasNMinusOneError's Generated Constructor Code
+	public  partial class InternalUniquenessConstraintHasNMinusOneError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public InternalUniquenessConstraintHasNMinusOneError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static InternalUniquenessConstraintHasNMinusOneError CreateInternalUniquenessConstraintHasNMinusOneError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (InternalUniquenessConstraintHasNMinusOneError)store.ElementFactory.CreateElementLink(typeof(InternalUniquenessConstraintHasNMinusOneError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static InternalUniquenessConstraintHasNMinusOneError CreateAndInitializeInternalUniquenessConstraintHasNMinusOneError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (InternalUniquenessConstraintHasNMinusOneError)store.ElementFactory.CreateElementLink(typeof(InternalUniquenessConstraintHasNMinusOneError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for InternalUniquenessConstraintHasNMinusOneError
+	/// <summary>
+	/// InternalUniquenessConstraintHasNMinusOneError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError))]
+	public sealed class InternalUniquenessConstraintHasNMinusOneErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public InternalUniquenessConstraintHasNMinusOneErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError(store, bag);
 		}
 	}
 	#endregion

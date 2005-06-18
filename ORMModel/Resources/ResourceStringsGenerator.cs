@@ -158,6 +158,8 @@ namespace Northface.Tools.ORM
         private const string ReadingShapeReadingSeparator_Id = "ReadingShape.ReadingSeparator";
         private const string ReadingShapeEllipsis_Id = "ReadingShape.Ellipsis";
         private const string ReadingShapeInverseReading_Id = "ReadingShape.InverseReading";
+        private const string NMinusOneRuleInternalSpan_Id = "ModelError.FactType.NMinusOneRule.Text";
+        private const string ModelErrorConstraintCompatibleRolePlayerTypeError_Id = "ModelError.Constraint.CompatibleRolePlayerTypeError.Text";
         /// <summary>
         ///</summary>
         public static string ToolboxDefaultTabName
@@ -1353,6 +1355,24 @@ namespace Northface.Tools.ORM
             get
             {
                 return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeInverseReading_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string NMinusOneRuleInternalSpan
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.NMinusOneRuleInternalSpan_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ModelErrorConstraintCompatibleRolePlayerTypeError
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorConstraintCompatibleRolePlayerTypeError_Id);
             }
         }
     }

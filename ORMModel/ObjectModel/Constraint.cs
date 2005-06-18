@@ -401,6 +401,188 @@ namespace Northface.Tools.ORM.ObjectModel
 		// multiple role sets to the end user, except that only a single column is allowed
 		// in each row. There, it is appropriate to attach the TooFew/TooMany-RoleSequencesError
 		// objects here as well.
+
+
+		/*
+
+		TODO:  This code is really close to completion.  Time just ran out.  It is very similar to the Multi-Column 
+			   VerifyCompatibleRolePlayerTypeForRule.  Some small modifications need to be made to get this code working.
+				
+				
+
+		/// <summary>
+		/// Verify CompatibleRolePlayertypeForRule Used to verify compatibility for single column constraints.
+		/// </summary>
+		/// <param name="notifyAdded">If not null, this is being called during
+		/// load when rules are not in place. Any elements that are added
+		/// must be notified back to the caller.</param>
+		private void VerifyCompatibleRolePlayerTypeForRule(INotifyElementAdded notifyAdded)
+		{
+			CompatibleRolePlayerTypeError compatibleError;
+			int currentCount = DuplicateNameError.SingleColumnExternalConstraintCollection.Count;
+			Store store = Store;
+			bool isCompatible = true;
+
+			if (currentCount != 0)
+			{
+				IList sequences = DuplicateNameError.SingleColumnExternalConstraintCollection;
+				int RolePlayersCount = ((ConstraintRoleSequence)sequences[0]).RoleCollection.Count;
+				for (int i = 0; i + 1 < currentCount; i++)
+				{
+					for (int j = 0; j < RolePlayersCount; j++)
+					{
+						ObjectType A = ((ConstraintRoleSequence)sequences[i]).RoleCollection[j].RolePlayer;
+						ObjectType B = ((ConstraintRoleSequence)sequences[i + 1]).RoleCollection[j].RolePlayer;
+
+						//Checks the each sequence at the given position for the same ID (the same ObjectType)
+						if (A != B)
+						{
+							isCompatible = false;
+
+							//Finds if the parent elements are compatible or not
+							isCompatible = RecurseThroughSuperTypes(A, B);
+						}
+
+						//Iterates through the supertypes for compatibility
+						if (!isCompatible)
+						{
+							//If the error is not present, add it to the model
+							if (null == CompatibleRolePlayerTypeError)
+							{
+								compatibleError = CompatibleRolePlayerTypeError.CreateCompatibleRolePlayerTypeError(store);
+								compatibleError.Model = Model;
+								compatibleError.SingleColumnExternalConstraint = this;
+								compatibleError.GenerateErrorText();
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(compatibleError, true);
+								}
+							}
+							return;
+						}
+					}
+				}
+			}
+			//If the matches are compatible, then remove any errors that may be present
+			if (isCompatible)
+			{
+				if (null != (compatibleError = CompatibleRolePlayerTypeError))
+				{
+						compatibleError.Remove();
+				}					
+			}
+		}
+
+		#region Helper recursive methods for VerifyCompatibleRolePlayerTypeForRule
+
+		/// <summary>
+		/// Recurses through the ObjectType A and ObjectType B to find all the parents of the ObjectTypes, and then compares them for compatible fact types
+		/// </summary>
+		/// <param name="A">ObjectType being compared</param>
+		/// <param name="B">ObjectType being compared</param>
+		/// <returns>The two ObjectTypes are compatible</returns>
+		private bool RecurseThroughSuperTypes(ObjectType A, ObjectType B)
+		{
+
+			ArrayList arryA = FindSuperParent(A);
+			ArrayList arryB = FindSuperParent(B);
+
+			foreach (Object itr in arryA)
+			{
+				if (arryB.Contains(itr))
+					return true;
+			}
+			return false;
+		}
+
+
+		/// <summary>
+		/// Recurses through the ObjectType to find the list of Top-Level ObjectType Objects for the parameter passed in.  Default function which is recommended for use.
+		/// </summary>
+		/// <param name="myObjectType">ObjectType which top elements are to be found</param>
+		/// <returns>ArrayList consisting of all Top-Level ObjectType Objects</returns>
+		private ArrayList FindSuperParent(ObjectType myObjectType)
+		{
+			ArrayList myList = new ArrayList();
+			FindSuperParent(myObjectType, myList);
+
+			return myList;
+		}
+
+		/// <summary>
+		/// Actual recursive function. Populates the ResultSet with Top-Level ObjectType Objects.
+		/// </summary>
+		/// <param name="myObjectType">ObjectType which top elements are to be found</param>
+		/// <param name="ResultSet">ArrayList cinsisting of current discovered Top-Level ObjectType Objects</param>
+		private void FindSuperParent(ObjectType myObjectType, ArrayList ResultSet)
+		{
+			if (!myObjectType.SupertypeCollection.GetEnumerator().MoveNext())
+			{
+				ResultSet.Add(myObjectType);
+			}
+			else
+			{
+				foreach (ObjectType super in myObjectType.SupertypeCollection)
+				{
+					FindSuperParent(super, ResultSet);
+				}
+			}
+		}
+		#endregion		//end  Helper recursive methods for VerifyCompatibleRolePlayerTypeForRule  */
+
+
+		/*		Add and Remove Rules for a Single Column Constraint to enforce the Compatibility between fact types
+
+
+		/// <summary>
+		/// Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit)]
+		private class EnforceRoleSequenceValidityForFactTypeAdd : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				Role role = link.PlayedRoleCollection;
+				ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
+				int count = roleSequences.Count;
+				for (int i = 0; i < count; ++i)
+				{
+					SingleColumnExternalConstraint sequence = roleSequences[i] as SingleColumnExternalConstraint;
+					if (sequence != null)
+					{
+						sequence.VerifyCompatibleRolePlayerTypeForRule(null);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		///Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit)]
+		private class EnforceRoleSequenceValidityForFactTypeRemove : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				Role role = link.PlayedRoleCollection;
+				ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
+				int count = roleSequences.Count;
+				for (int i = 0; i < count; ++i)
+				{
+
+					SingleColumnExternalConstraint sequence = roleSequences[i] as SingleColumnExternalConstraint;
+					if (sequence != null)
+					{
+						sequence.VerifyCompatibleRolePlayerTypeForRule(null);
+					}
+				}
+			}
+		}
+
+		*/
+
 		#endregion // Error synchronization rules
 	}
 	#endregion // SingleColumnExternalConstraint class
@@ -607,6 +789,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // Deserialization Fixup
 		#region Error synchronization rules
+
+		#region VerifyRoleSequenceCountForRule
 		/// <summary>
 		/// Add, remove, and otherwise validate the current set of
 		/// errors for this constraint.
@@ -678,7 +862,9 @@ namespace Northface.Tools.ORM.ObjectModel
 				VerifyRoleSequenceArityForRule(notifyAdded, tooFewOrTooMany);
 			}
 		}
+		#endregion
 
+		#region VerifyRoleSequenceArityForRule
 		/// <summary>
 		/// Add, remove, and otherwise validate the current set of
 		/// errors for this constraint.
@@ -753,8 +939,173 @@ namespace Northface.Tools.ORM.ObjectModel
 						arityError.Remove();
 					}
 				}
-			}			
+			}
+			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
 		}
+		#endregion
+
+		#region VerifyCompatibleRolePlayerTypeForRule
+		/// <summary>
+		/// Add, remove, and otherwise validate the current CompatibleRolePlayerType
+		/// errors
+		/// </summary>
+		/// <param name="notifyAdded">If not null, this is being called during
+		/// load when rules are not in place. Any elements that are added
+		/// must be notified back to the caller.</param>
+		/// <param name="tooFewOrTooManySequencesOrArity">Represents correct number of sequences
+		/// for current constraint.  If the constraint has too few, too many, or the wrong arity of 
+		/// sequences, it will remove this error if present.</param>
+		private void VerifyCompatibleRolePlayerTypeForRule(INotifyElementAdded notifyAdded, bool tooFewOrTooManySequencesOrArity)
+		{
+			CompatibleRolePlayerTypeError compatibleError;
+			int currentCount = RoleSequenceCollection.Count;
+			Store store = Store;
+			bool isCompatible = true;
+
+			//We don't want to display the error if arity error present or toofeworTooMany sequence errors are present
+			if (tooFewOrTooManySequencesOrArity)
+			{
+				for (int i = 0; i < CompatibleRolePlayerTypeErrorCollection.Count; i++)
+				{
+					compatibleError = CompatibleRolePlayerTypeErrorCollection[i];
+					if (compatibleError != null)
+					{
+						compatibleError.Remove(); // We don't want to validate compatibility with the wrong number of role sequences
+					}
+				}
+			}
+			else
+			{
+				if (currentCount != 0)
+				{
+					IList sequences = RoleSequenceCollection;
+					int RolePlayersCount = ((ConstraintRoleSequence)sequences[0]).RoleCollection.Count;
+					RoleMoveableCollection collection0 = null;
+					RoleMoveableCollection collection1;
+					for (int i = 0; i + 1 < currentCount; ++i)
+					{
+						collection1 = (i == 0) ? ((ConstraintRoleSequence)sequences[1]).RoleCollection : collection0;
+						collection0 = ((ConstraintRoleSequence)sequences[i]).RoleCollection;
+						for (int j = 0; j < RolePlayersCount; ++j)
+						{
+							ObjectType A = collection0[j].RolePlayer;
+							ObjectType B = collection1[j].RolePlayer;
+
+							//Checks the each sequence at the given position for the same ID (the same ObjectType)
+							if (A != null && B != null && A != B)
+							{
+								//Finds if the parent elements are compatible or not
+								isCompatible = RecurseThroughSuperTypes(A, B);								
+							}
+
+							//Iterates through the supertypes for compatibility
+							if (!isCompatible)
+							{
+								//If the error is not present, add it to the model
+								if (CompatibleRolePlayerTypeErrorCollection.Count == 0)
+								{
+									compatibleError = CompatibleRolePlayerTypeError.CreateCompatibleRolePlayerTypeError(store);
+									compatibleError.Model = Model;
+									compatibleError.MultiColumnExternalConstraint = this;
+									compatibleError.GenerateErrorText();
+									if (notifyAdded != null)
+									{
+										notifyAdded.ElementAdded(compatibleError, true);
+									}
+								}
+								return;
+							}
+						}
+					}
+				}
+				//If the matches are compatible, then remove any errors that may be present
+				if (isCompatible)
+				{
+					for (int i = 0; i < CompatibleRolePlayerTypeErrorCollection.Count; i++)
+					{
+						if (null != (compatibleError = CompatibleRolePlayerTypeErrorCollection[i]))
+						{
+							compatibleError.Remove();
+						}
+					}
+				}
+			}
+		}
+
+		#region Helper recursive methods for VerifyCompatibleRolePlayerTypeForRule
+
+		/// <summary>
+		/// Recurses through the ObjectType A and ObjectType B to find all the parents of the ObjectTypes, and then compares them for compatible fact types
+		/// </summary>
+		/// <param name="typeA">ObjectType being compared</param>
+		/// <param name="typeB">ObjectType being compared</param>
+		/// <returns>The two ObjectTypes are compatible</returns>
+		private bool RecurseThroughSuperTypes(ObjectType typeA, ObjectType typeB)
+		{
+
+			Collection<ObjectType> arryA = FindSuperParent(typeA);
+			Collection<ObjectType> arryB = FindSuperParent(typeB);
+
+			foreach (ObjectType itr in arryA)
+			{
+				if (arryB.Contains(itr))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+
+		/// <summary>
+		/// Recurses through the ObjectType to find the list of Top-Level ObjectType Objects for the parameter passed in.  Default function which is recommended for use.
+		/// </summary>
+		/// <param name="parentType">ObjectType which top elements are to be found</param>
+		/// <returns>Collection consisting of all Top-Level ObjectType Objects</returns>
+		private Collection<ObjectType> FindSuperParent(ObjectType parentType)
+		{
+			Collection<ObjectType> retVal = new Collection<ObjectType>();
+			FindSuperParent(parentType, retVal);
+			return retVal;
+		}
+
+		/// <summary>
+		/// Actual recursive function. Populates the ResultSet with Top-Level ObjectType Objects.
+		/// </summary>
+		/// <param name="parentType">ObjectType which top elements are to be found</param>
+		/// <param name="superParents">Collection consisting of current discovered Top-Level ObjectType Objects</param>
+		private void FindSuperParent(ObjectType parentType, Collection<ObjectType> superParents)
+		{
+			if (!parentType.SupertypeCollection.GetEnumerator().MoveNext())
+			{
+				superParents.Add(parentType);
+			}
+			else
+			{
+				foreach (ObjectType super in parentType.SupertypeCollection)
+				{
+					FindSuperParent(super, superParents);
+				}
+			}
+		}
+		#endregion		//end  Helper recursive methods for VerifyCompatibleRolePlayerTypeForRule
+
+		private void VerifyCompatibleRolePlayerTypeForRule(INotifyElementAdded notifyAdded)
+		{
+			if (null == TooFewRoleSequencesError && null == TooManyRoleSequencesError && null == ArityMismatchError)
+			{
+				VerifyCompatibleRolePlayerTypeForRule(notifyAdded, false);
+			}
+			else
+			{
+				VerifyCompatibleRolePlayerTypeForRule(notifyAdded, true);
+			}
+		}
+
+		#endregion
+
+		#region Add/Remove Rules
+
 		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence), FireTime = TimeToFire.TopLevelCommit)]
 		private class EnforceRoleSequenceCardinalityForAdd : AddRule
 		{
@@ -777,7 +1128,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence), FireTime = TimeToFire.TopLevelCommit)]
+		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence), FireTime = TimeToFire.LocalCommit)]
 		private class EnforceRoleSequenceCardinalityForRemove : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -786,7 +1137,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				link.ExternalConstraint.VerifyRoleSequenceCountForRule(null);
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
 		private class EnforceRoleSequenceArityForAdd : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -799,7 +1150,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
 		private class EnforceRoleSequenceArityForRemove : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -816,6 +1167,89 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
+
+		//Add Rule for VerifyCompatibleRolePlayer when ExternalConstraints roles are added
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class EnforceRoleSequenceValidityForAdd : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				MultiColumnExternalConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection as MultiColumnExternalConstraintRoleSequence;
+				if (sequence != null)
+				{
+					sequence.ExternalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
+				}
+			}
+		}
+
+		//Remove Rule for VerifyCompatibleRolePlayer when ExternalConstraints roles are removed
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class EnforceRoleSequenceValidityForRemove : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				MultiColumnExternalConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection as MultiColumnExternalConstraintRoleSequence;
+				if (sequence != null)
+				{
+					MultiColumnExternalConstraint externalConstraint = sequence.ExternalConstraint;
+					if (externalConstraint != null && !externalConstraint.IsRemoved)
+					{
+						externalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
+					}
+				}
+			}
+		}
+
+		//Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		private class EnforceRoleSequenceValidityForFactTypeAdd : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				Role role = link.PlayedRoleCollection;
+				ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
+				int count = roleSequences.Count;
+				for (int i = 0; i < count; ++i)
+				{
+					MultiColumnExternalConstraintRoleSequence sequence = roleSequences[i] as MultiColumnExternalConstraintRoleSequence;
+					if (sequence != null)
+					{
+						sequence.ExternalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
+					}
+				}
+			}
+		}
+
+		//Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		private class EnforceRoleSequenceValidityForFactTypeRemove : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				Role role = link.PlayedRoleCollection;
+				ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
+				int count = roleSequences.Count;
+				for (int i = 0; i < count; ++i)
+				{
+					MultiColumnExternalConstraintRoleSequence sequence = roleSequences[i] as MultiColumnExternalConstraintRoleSequence;
+					if (sequence != null && !sequence.IsRemoved)
+					{
+						MultiColumnExternalConstraint externalConstraint = sequence.ExternalConstraint;
+						if (externalConstraint != null && !externalConstraint.IsRemoved)
+						{
+							externalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
+						}
+					}
+				}
+			}
+		}
+
+		#endregion 
+
 		#endregion // Error synchronization rules
 		#region IModelErrorOwner Implementation
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
@@ -848,6 +1282,10 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					yield return arityMismatch;
 				}
+				foreach (CompatibleRolePlayerTypeError compatibleTypeError in CompatibleRolePlayerTypeErrorCollection)
+				{
+					yield return compatibleTypeError;
+				}
 			}
 		}
 		/// <summary>
@@ -861,6 +1299,8 @@ namespace Northface.Tools.ORM.ObjectModel
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			VerifyRoleSequenceCountForRule(notifyAdded);
+			VerifyRoleSequenceArityForRule(notifyAdded);
+			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -1206,7 +1646,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	}
 	#endregion // ConstraintRoleSequence classes
 	#region InternalUniquenessConstraint class
-	public partial class InternalUniquenessConstraint
+	public partial class InternalUniquenessConstraint : IModelErrorOwner
 	{
 		#region CustomStorage handlers
 		/// <summary>
@@ -1364,6 +1804,207 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // InternalUniquenessConstraintChangeRule class
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Returns the error associated with the constraint.
+		/// </summary>
+		[CLSCompliant(false)]
+		protected IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				NMinusOneError nMinusOneError = NMinusOneError;
+				if (nMinusOneError != null)
+				{
+					yield return nMinusOneError;
+				}
+			}
+		}
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// </summary>
+		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			VerifyNMinusOneForRule(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		#endregion // IModelErrorOwner Implementation
+		#region NMinusOneError Validation
+		/// <summary>
+		/// Add, remove, and otherwise validate the current NMinusOne errors
+		/// </summary>
+		/// <param name="notifyAdded">If not null, this is being called during
+		/// load when rules are not in place. Any elements that are added
+		/// must be notified back to the caller.</param>
+		private void VerifyNMinusOneForRule(INotifyElementAdded notifyAdded)
+		{
+			if (!IsRemoved)
+			{
+				FactType theFactType = FactType;
+				if (theFactType != null && !theFactType.IsRemoved)
+				{
+					if (null != theFactType.InternalUniquenessConstraintRequiredError)
+					{
+						if (NMinusOneError != null)
+						{
+							NMinusOneError.Remove();
+						}
+					}
+					else
+					{
+						bool hasError = RoleCollection.Count < theFactType.RoleCollection.Count - 1;
+
+						NMinusOneError noNMinusOneError = NMinusOneError;
+						if (hasError)
+						{
+							//Adding the Error to the model
+							if (noNMinusOneError == null)
+							{
+								noNMinusOneError = NMinusOneError.CreateNMinusOneError(Store);
+								noNMinusOneError.Model = theFactType.Model;
+								noNMinusOneError.Constraint = this;
+								noNMinusOneError.GenerateErrorText();
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(noNMinusOneError, true);
+								}
+							}
+							else
+							{
+								//Error is already present, but the number of facts in the sequence could have changed, so we
+								//need to regenerate the error text so the correct number of roles is present.
+								noNMinusOneError.GenerateErrorText();
+							}
+						}
+						else if (noNMinusOneError != null)
+						{
+							//Removing error
+							noNMinusOneError.Remove();
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Only validates NMinusOneError
+		/// Checks when Internal constraint is added
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
+		private class NMinusOneAddRuleModelValidation : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
+				InternalUniquenessConstraint constraint = link.InternalConstraintCollection as InternalUniquenessConstraint;
+				if (constraint != null)
+				{
+					constraint.VerifyNMinusOneForRule(null);
+				}
+			}
+		}
+		/// <summary>
+		/// Only validates NMinusOneError
+		/// Checks when Internal constraint is removed
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
+		private class NMinusOneRemoveRuleModelValidation : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
+				InternalUniquenessConstraint constraint = link.InternalConstraintCollection as InternalUniquenessConstraint;
+				if (constraint != null)
+				{
+					constraint.VerifyNMinusOneForRule(null);
+				}
+			}
+		}
+		/// <summary>
+		/// Only validates NMinusOneError
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class NMinusOneAddRuleModelConstraintAddValidation : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				InternalUniquenessConstraint constraint = link.ConstraintRoleSequenceCollection as InternalUniquenessConstraint;
+				if (constraint != null)
+				{
+					constraint.VerifyNMinusOneForRule(null);
+				}
+			}
+		}
+		/// <summary>
+		/// Only validates NMinusOneError
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class NMinusOneRemoveRuleModelConstraintRemoveValidation : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				InternalUniquenessConstraint constraint = link.ConstraintRoleSequenceCollection as InternalUniquenessConstraint;
+				if (constraint != null)
+				{
+					constraint.VerifyNMinusOneForRule(null);
+				}
+			}
+		}
+		/// <summary>
+		/// Only validates NMinusOneError
+		/// Used for Adding roles to the role sequence check
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class NMinusOneAddRuleModelFactAddValidation : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+				FactType fact = link.FactType;
+				if (fact != null)
+				{
+					foreach (InternalUniquenessConstraint constraint in fact.GetInternalConstraints<InternalUniquenessConstraint>())
+					{
+						constraint.VerifyNMinusOneForRule(null);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Only validates NMinusOneError
+		/// Used for Removing roles to the role sequence check
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class NMinusOneRemoveRuleModelFactRemoveValidation : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+				FactType fact = link.FactType;
+				if (fact != null && !fact.IsRemoved)
+				{
+					foreach (InternalUniquenessConstraint constraint in fact.GetInternalConstraints<InternalUniquenessConstraint>())
+					{
+						if (!constraint.IsRemoved)
+						{
+							constraint.VerifyNMinusOneForRule(null);
+						}
+					}
+				}
+			}
+		}
+		#endregion // NMinusOneError Validation
 	}
 	#endregion // InternalUniquenessConstraint class
 	#region EntityTypeHasPreferredIdentifier pattern enforcement
@@ -1846,6 +2487,52 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
+
+	public partial class CompatibleRolePlayerTypeError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			MultiColumnExternalConstraint parent = this.MultiColumnExternalConstraint;
+			string parentName = (parent != null) ? parent.Name : "";
+			string currentText = Name;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintCompatibleRolePlayerTypeError, parentName, this.Model.Name);
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { MultiColumnExternalConstraint };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
+
+
 	#endregion // ModelError classes
 	#region ExclusionType enum
 	/// <summary>

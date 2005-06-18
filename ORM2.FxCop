@@ -21,8 +21,8 @@
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
-   <Directory>c:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
-   <Directory>c:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
+   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
+   <Directory>C:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
   </AssemblyReferenceDirectories>
   <Target Name="$(ProjectDir)/ORMModel/bin/Debug/Northface.Tools.ORM.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
@@ -1263,6 +1263,99 @@
        </Namespace>
        <Namespace Name="Northface.Tools.ORM.ObjectModel">
         <Types>
+         <Type Name="CompatibleRolePlayerTypeError">
+          <Members>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message Id="attributeInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-18 04:08:11Z" FixCategory="Breaking">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>CompatibleRolePlayerTypeError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-18 04:08:11Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>CompatibleRolePlayerTypeError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-18 04:08:11Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>CompatibleRolePlayerTypeError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-18 04:08:11Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>CompatibleRolePlayerTypeError.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-18 04:08:11Z">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MultiColumnExternalConstraint">
+            <Messages>
+             <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-06-18 04:08:11Z">
+              <Issue Name="ShouldBeDiscreteTerm">
+               <Item>MultiColumn</Item>
+               <Item>property</Item>
+               <Item>MultiColumnExternalConstraint</Item>
+               <Item>Multicolumn</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CompatibleRolePlayerTypeErrorMoveableCollection">
+          <Messages>
+           <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2005-06-18 04:08:11Z">
+            <Issue>
+             <Item>CompatibleRolePlayerTypeErrorMoveableCollection</Item>
+             <Item>IList</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="4" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="ConstraintDuplicateNameError">
           <Members>
            <Member Name=".ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.ModelDataBag)">
@@ -2663,6 +2756,20 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="GetInternalConstraints():System.Collections.Generic.IEnumerable`1&lt;T&gt;">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Status="Excluded" Created="2005-06-18 04:08:11Z">
+              <Issue>
+               <Item>FactType.GetInternalConstraints():IEnumerable`1&lt;T&gt;</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="GetRoleGuids(System.Guid&amp;,System.Guid&amp;):System.Void">
             <Messages>
              <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2005-02-03 20:22:04Z">
@@ -3522,6 +3629,90 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="InternalUniquenessConstraint+NMinusOneAddRuleModelConstraintAddValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneAddRuleModelConstraintAddValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="InternalUniquenessConstraint+NMinusOneAddRuleModelFactAddValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneAddRuleModelFactAddValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="InternalUniquenessConstraint+NMinusOneAddRuleModelValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneAddRuleModelValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="InternalUniquenessConstraint+NMinusOneRemoveRuleModelConstraintRemoveValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneRemoveRuleModelConstraintRemoveValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="InternalUniquenessConstraint+NMinusOneRemoveRuleModelFactRemoveValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneRemoveRuleModelFactRemoveValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="InternalUniquenessConstraint+NMinusOneRemoveRuleModelValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint+NMinusOneRemoveRuleModelValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="IntrinsicReferenceMode">
           <Members>
            <Member Name="CompareTo(Northface.Tools.ORM.ObjectModel.IntrinsicReferenceMode):System.Int32">
@@ -4151,6 +4342,62 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceValidityForAdd">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceValidityForAdd</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeAdd">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeAdd</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeRemove">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeRemove</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="MultiColumnExternalConstraint+EnforceRoleSequenceValidityForRemove">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-06-18 04:08:11Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint+EnforceRoleSequenceValidityForRemove</Item>
+            </Issue>
+            <Notes>
+             <User Name="bfrank">
+              <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="MultiColumnExternalConstraint+ExternalRoleConstraintRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
@@ -4162,6 +4409,92 @@
               <Note Id="7" />
              </User>
             </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError">
+          <Messages>
+           <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-06-18 04:08:11Z">
+            <Issue Name="ShouldBeDiscreteTerm">
+             <Item>MultiColumn</Item>
+             <Item>class</Item>
+             <Item>MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError</Item>
+             <Item>Multicolumn</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError">
+            <Messages>
+             <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-06-18 04:08:11Z">
+              <Issue Name="ShouldBeDiscreteTerm">
+               <Item>MultiColumn</Item>
+               <Item>method</Item>
+               <Item>CreateAndInitializeMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError</Item>
+               <Item>Multicolumn</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="CreateMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError">
+            <Messages>
+             <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-06-18 04:08:11Z">
+              <Issue Name="ShouldBeDiscreteTerm">
+               <Item>MultiColumn</Item>
+               <Item>method</Item>
+               <Item>CreateMultiColumnExternalConstraintHasCompatibleRolePlayerTypeError</Item>
+               <Item>Multicolumn</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MultiColumnExternalConstraint">
+            <Messages>
+             <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-06-18 04:08:11Z">
+              <Issue Name="ShouldBeDiscreteTerm">
+               <Item>MultiColumn</Item>
+               <Item>property</Item>
+               <Item>MultiColumnExternalConstraint</Item>
+               <Item>Multicolumn</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MultiColumnExternalConstraintMetaRoleGuid">
+            <Messages>
+             <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-06-18 04:08:11Z">
+              <Issue Name="ShouldBeDiscreteTerm">
+               <Item>MultiColumn</Item>
+               <Item>field</Item>
+               <Item>MultiColumnExternalConstraintMetaRoleGuid</Item>
+               <Item>Multicolumn</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MultiColumnExternalConstraintMetaRoleGuidString">
+            <Messages>
+             <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-06-18 04:08:11Z">
+              <Issue Name="ShouldBeDiscreteTerm">
+               <Item>MultiColumn</Item>
+               <Item>field</Item>
+               <Item>MultiColumnExternalConstraintMetaRoleGuidString</Item>
+               <Item>Multicolumn</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator">
+          <Messages>
+           <Message Id="MultiColumn" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Created="2005-06-18 04:08:11Z">
+            <Issue Name="ShouldBeDiscreteTerm">
+             <Item>MultiColumn</Item>
+             <Item>class</Item>
+             <Item>MultiColumnExternalConstraintHasCompatibleRolePlayerTypeErrorElementFactoryCreator</Item>
+             <Item>Multicolumn</Item>
+            </Issue>
            </Message>
           </Messages>
          </Type>
@@ -4668,6 +5001,72 @@
             </Notes>
            </Message>
           </Messages>
+         </Type>
+         <Type Name="NMinusOneError">
+          <Members>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message Id="attributeInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-18 04:08:11Z" FixCategory="Breaking">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>NMinusOneError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="rolePlayedInfo" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-18 04:08:11Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>NMinusOneError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-18 04:08:11Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>NMinusOneError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Status="Excluded" Created="2005-06-18 04:08:11Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>NMinusOneError.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-18 04:08:11Z">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="bfrank">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
          <Type Name="NumericDataType">
           <Members>
@@ -12646,6 +13045,9 @@ ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
    <User Name="bfrank">
     <Note Id="0" Modified="2005-04-19 22:11:24Z">Intentionally explicitly type CompareTo override</Note>
     <Note Id="1" Modified="2005-04-19 22:11:52Z">Internal rules instantiated via reflection</Note>
+    <Note Id="2" Modified="2005-06-18 04:10:11Z">Typing in a type parameter is good exercise. Programmer's who use generic types do it all the time.</Note>
+    <Note Id="3" Modified="2005-06-18 04:11:44Z">Private rules instantiated via reflection</Note>
+    <Note Id="4" Modified="2005-06-18 04:15:11Z">Generated code patterns matching standard interface implementation pattern</Note>
    </User>
    <User Name="jewilde">
     <Note Id="0" Modified="2005-02-03 21:03:22Z">Doesn't apply</Note>

@@ -118,6 +118,10 @@
     <value xml:space="preserve">{{deleted}}</value>
     <comment xml:space="preserve">Text used to replace a role place holder when the role is deleted</comment>
   </data>
+  <data name="ModelError.Constraint.CompatibleRolePlayerTypeError.Text">
+    <value xml:space="preserve">Constraint '{0}' has role players with incompatible types in model '{1}'.</value>
+    <comment xml:space="preserve">The role players in an external constraint must have compatible types.</comment>
+  </data>
   <data name="ModelError.Constraint.ExternalConstraintArityMismatch.Text">
     <value xml:space="preserve">Constraint '{0}' has role sequences with different numbers of roles.</value>
     <comment xml:space="preserve">Model validation error text when role sequences in a multi column constraint have different role counts (arity).</comment>
@@ -129,6 +133,10 @@
   <data name="ModelError.Constraint.TooManyRoleSequences.Text">
     <value xml:space="preserve">Constraint '{0}' has too many role sequences.</value>
     <comment xml:space="preserve">Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+  </data>
+  <data name="ModelError.FactType.NMinusOneRule.Text">
+    <value xml:space="preserve">Fact type '{0}' requires uniqueness constraint spanning &gt;= {1} roles in model '{2}'.</value>
+    <comment xml:space="preserve">Internal uniqueness constraint must span at least the arity of the fact type - 1.</comment>
   </data>
   <data name="ModelError.FactType.RequiresInternalUniquenessConstraint.Message">
     <value xml:space="preserve">Internal uniqueness constraint required for fact '{0}' in the model '{1}'.</value>

@@ -176,6 +176,25 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Get an enumeration of constraints of the given type using generics
+		/// </summary>
+		/// <typeparam name="T">An internal constraint type</typeparam>
+		/// <returns>IEnumerable</returns>
+		[CLSCompliant(false)]
+		public IEnumerable<T> GetInternalConstraints<T>() where T : InternalConstraint
+		{
+			IList constraints = InternalConstraintCollection;
+			int constraintCount = constraints.Count;
+			for (int i = 0; i < constraintCount; ++i)
+			{
+				T ic = constraints[i] as T;
+				if (ic != null)
+				{
+					yield return ic;
+				}
+			}
+		}
+		/// <summary>
 		/// Get the number of internal constraints of the specified constraint type
 		/// </summary>
 		/// <param name="filterType">The type of constraint to count</param>
@@ -456,6 +475,17 @@ namespace Northface.Tools.ORM.ObjectModel
 				{
 					yield return noUniquenessError;
 				}
+
+				// NMinusOneError is parented off InternalConstraint, but it doesn't have
+				// a name, so we show the FactType as an owner.
+				foreach (InternalUniquenessConstraint ic in GetInternalConstraints<InternalUniquenessConstraint>())
+				{
+					NMinusOneError nMinusOneError = ic.NMinusOneError;
+					if (nMinusOneError != null)
+					{
+						yield return nMinusOneError;
+					}
+				}
 			}
 		}
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
@@ -480,6 +510,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Validation Methods
+
 		private void ValidateRequiresReading(INotifyElementAdded notifyAdded)
 		{
 			if (!IsRemoved)
@@ -556,12 +587,9 @@ namespace Northface.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				else
+				else if (noUniquenessError != null)
 				{
-					if (noUniquenessError != null)
-					{
-						noUniquenessError.Remove();
-					}
+					noUniquenessError.Remove();
 				}
 			}
 		}
@@ -781,6 +809,51 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion
 	}
 	#endregion // class FactTypeRequiresInternalUniquenessConstraintError
+
+	#region class NMinusOneError
+
+	public partial class NMinusOneError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			FactType factType = Constraint.FactType;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.NMinusOneRuleInternalSpan, factType.Name, factType.RoleCollection.Count - 1, factType.Model.Name);
+			if (Name != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { Constraint };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
+	#endregion //class NMinusOneError
 
 	#endregion // FactType Model Validation Errors
 }

@@ -168,18 +168,21 @@
 				<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
+			<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class ="ExclusionConstraint">
 			<se:ChildElement Name="RoleSequences">
 				<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
+			<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class ="SubsetConstraint">
 			<se:ChildElement Name="RoleSequences">
 				<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
+			<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="MultiColumnExternalConstraintRoleSequence" Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
@@ -212,6 +215,7 @@
 			<se:Attribute ID="Name" Name="Name" WriteStyle="NotWritten"></se:Attribute>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 			<se:Link RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor" WriteStyle="NotWritten"/>
+			<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="NMinusOneError" WriteStyle="NotWritten"/>        
 		</se:Element>
 		<se:Element Class="SimpleMandatoryConstraint">
 			<se:ChildElement Name="RoleSequence">
@@ -252,6 +256,12 @@
 		</se:Element>
 		<se:Element Class="DataTypeNotSpecifiedError">
 			<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="ValueTypeHasDataType" Name="ConceptualDataType"/>
+		</se:Element>
+		<se:Element Class="NMinusOneError">
+			<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="InternalUniquenessConstraint"/>
+		</se:Element>
+		<se:Element Class="CompatibleRolePlayerTypeError">
+			<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="MultiColumnExternalConstraint" Name="Constraint"/>
 		</se:Element>
 	</se:Using>
 	<se:Using Namespace="Northface.Tools.ORM.ShapeModel">
