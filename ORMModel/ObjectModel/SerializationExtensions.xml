@@ -8,6 +8,9 @@
 				<se:Namespace Prefix="orm" URI="http://Schemas.Northface.edu/ORM/ORMCore" DefaultPrefix="true"/>
 				<se:Namespace Prefix="ormDerived" URI="http://Schemas.Northface.edu/ORM/ORMDerived"/>
 			</se:Namespaces>
+			<se:RootElements>
+				<se:RootElement Class="ORMModel"/>
+			</se:RootElements>
 			<se:OmittedMetaElements>
 				<se:OmitRelationship Class="ExternalFactConstraint"/>
 				<se:OmitRelationship Class="ExternalRoleConstraint"/>
@@ -65,7 +68,7 @@
 			</se:ConditionalName>
 			<!--TODO:Need the Played roles containter teg-->
 			<se:ChildElement Name ="PlayedRoles">
-				<se:Link  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
+				<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
 			</se:ChildElement>
 			<se:Attribute ID="ReferenceModeString"  Name="ReferenceMode" WriteCustomStorage="true">
 				<se:Condition WriteStyle="NotWritten">
@@ -99,7 +102,7 @@
 		</se:Element>
 		<se:Element Class="CustomReferenceMode" HasMixedTypedAttributes="true">
 			<se:Attribute ID="CustomFormatString" WriteStyle="Element"></se:Attribute>
-			<se:Link Name ="Kind"  RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="Kind"/>
+			<se:Link Name="Kind" RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="Kind"/>
 		</se:Element>
 		<se:Element Class="ValueTypeHasDataType" HasMixedTypedAttributes="true">
 			<se:Attribute ID="Scale">
@@ -109,7 +112,6 @@
 		<se:Element Class="DataType">
 			<se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueTypeCollection" WriteStyle="NotWritten"/>
 		</se:Element>
-		<se:Element Class="ReferenceModeKindCollection" Name="ReferenceModeKinds"></se:Element>
 		<se:Element Class="ReferenceModeKind" Name="ReferenceModeKind">
 			<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceModeCollection" WriteStyle="NotWritten" />
 		</se:Element>
@@ -251,7 +253,7 @@
 		<se:Element Class="TooManyReadingRolesError">
 			<se:Link RelationshipName="ReadingHasTooManyRolesError" RoleName="Reading" Name="Reading"/>
 		</se:Element>
-		<se:Element Class="TooManyRoleSequenceError">
+		<se:Element Class="TooManyRoleSequencesError">
 			<se:Link RelationshipName="ExternalConstraintHasTooManyRoleSequencesError" RoleName="Constraint" Name="Constraint"/>
 		</se:Element>
 		<se:Element Class="DataTypeNotSpecifiedError">
@@ -269,6 +271,9 @@
 			<se:Namespaces>
 				<se:Namespace Prefix="ormDiagram" URI="http://Schemas.Northface.edu/ORM/ORMDiagram" DefaultPrefix="true"/>
 			</se:Namespaces>
+			<se:RootElements>
+				<se:RootElement Class="ORMDiagram"/>
+			</se:RootElements>
 			<se:OmittedMetaElements>
 				<se:OmitClass Class="ExternalConstraintLink"/>
 				<se:OmitClass Class="ValueRangeLink"/>

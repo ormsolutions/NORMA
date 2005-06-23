@@ -608,7 +608,535 @@
 					</plx:Property>
 				</xsl:otherwise>
 			</xsl:choose>
+			<xsl:variable name="mapChildElementBody">
+				<xsl:variable name="namespaces" select="parent::se:Using/se:MetaModel/se:Namespaces/se:Namespace"/>
+				<xsl:variable name="namespace">
+					<xsl:call-template name="ResolveNamespace">
+						<xsl:with-param name="namespaces" select="$namespaces"/>
+						<!-- Use default for prefix parameter -->
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="linksInChildElement">
+					<xsl:for-each select="se:ChildElement/se:Link">
+						<xsl:copy>
+							<xsl:copy-of select="@*"/>
+							<xsl:for-each select="parent::se:ChildElement">
+								<xsl:attribute name="ContainerName">
+									<xsl:value-of select="@Name"/>
+								</xsl:attribute>
+								<xsl:attribute name="ContainerPrefix">
+									<xsl:value-of select="@Prefix"/>
+								</xsl:attribute>
+							</xsl:for-each>
+						</xsl:copy>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:variable name="childElements" select="se:ChildElement"/>
+				<xsl:variable name="allLinksTemp">
+					<xsl:for-each select="se:Link[not(@WriteStyle='NotWritten')]">
+						<xsl:variable name="relationship" select="@RelationshipName"/>
+						<xsl:variable name="role" select="@RoleName"/>
+						<xsl:choose>
+							<xsl:when test="count($linksInChildElement/child::*[@RelationshipName=$relationship and @RoleName=$role]) > 0">
+								<xsl:copy>
+									<xsl:copy-of select="@*"/>
+									<xsl:attribute name="contained">
+										<xsl:value-of select="true()"/>
+									</xsl:attribute>
+								</xsl:copy>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:copy>
+									<xsl:copy-of select="@*"/>
+									<xsl:attribute name="uncontained">
+										<xsl:value-of select="true()"/>
+									</xsl:attribute>
+								</xsl:copy>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:variable name="allLinks" select="$allLinksTemp/child::*"/>
+				
+				<xsl:for-each select="$allLinks">
+					<xsl:choose>
+						<!-- Walk the $allLinks, then add the ones that are
+						NOT contained in $linksInChildElement -->
+						<xsl:when test="@uncontained">
+							<plx:CallInstance name="InitializeRoles">
+								<plx:CallObject>
+									<plx:Value type="Local">match</plx:Value>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:CallType name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" style="Property"/>
+								</plx:PassParam>
+							</plx:CallInstance>
+							<plx:CallInstance name="Add">
+								<plx:CallObject>
+									<plx:Value type="Local">childElementMappings</plx:Value>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:String>
+										<plx:String>||</plx:String>
+										<plx:String>
+											<xsl:call-template name="ResolveNamespace">
+												<xsl:with-param name="namespaces" select="$namespaces"/>
+												<!-- Use default for prefix parameter -->
+											</xsl:call-template>
+										</plx:String>
+										<plx:String>|</plx:String>
+										<plx:String><xsl:value-of select="@Name"/></plx:String>
+									</plx:String>
+								</plx:PassParam>
+								<plx:PassParam>
+									<plx:Value type="Local">match</plx:Value>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:for-each>
+				<!-- Walk $linksInChildElements, then add the ones that
+				INTERSECT with the $allLinks list to the dictionary. -->
+				<xsl:for-each select="$childElements">
+					<xsl:variable name="localLinks">
+						<xsl:for-each select="se:Link">
+							<xsl:variable name="relationshipName" select="@RelationshipName"/>
+							<xsl:variable name="roleName" select="@RoleName"/>
+							<xsl:variable name="namedLinks" select="$allLinks[@RelationshipName=$relationshipName and @RoleName=$roleName]"/>
+							<xsl:if test="count($namedLinks)">
+								<xsl:copy>
+									<xsl:copy-of select="@*"/>
+									<xsl:for-each select="$namedLinks[1]">
+										<xsl:choose>
+											<xsl:when test="string-length(@Name)">
+												<xsl:copy-of select="@Name"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:attribute name="Name">
+													<xsl:value-of select="@RelationshipName"/>
+													<xsl:text>.</xsl:text>
+													<xsl:value-of select="@RoleName"/>
+												</xsl:attribute>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:for-each>
+								</xsl:copy>
+							</xsl:if>	
+						</xsl:for-each>	
+					</xsl:variable>			
+					<xsl:variable name="PLiXedLinks">
+						<xsl:for-each select="$localLinks/child::*">
+							<plx:PassParam>
+								<plx:CallType name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" style="Field"/>
+							</plx:PassParam>	
+						</xsl:for-each>
+					</xsl:variable>
+					<xsl:if test="count($localLinks/child::*)">
+						<plx:CallInstance name="InitializeRoles">
+							<plx:CallObject>
+								<plx:Value type="Local">match</plx:Value>
+							</plx:CallObject>
+							<xsl:copy-of select="$PLiXedLinks/child::*"/>
+						</plx:CallInstance>		
+						<xsl:variable name="containerName" select="@Name"/>
+						<xsl:for-each select="$localLinks/child::*">
+							<plx:CallInstance name="Add">
+								<plx:CallObject>
+									<plx:Value type="Local">childElementMappings</plx:Value>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:String>
+										<plx:String>
+											<xsl:call-template name="ResolveNamespace">
+												<xsl:with-param name="namespaces" select="$namespaces"/>
+												<!-- Use default for prefix parameter -->
+											</xsl:call-template>
+										</plx:String>
+										<plx:String>|</plx:String>
+										<plx:String>
+											<plx:String><xsl:value-of select="$containerName"/></plx:String>
+										</plx:String>
+										<plx:String>|</plx:String>
+										<plx:String>
+											<xsl:call-template name="ResolveNamespace">
+												<xsl:with-param name="namespaces" select="$namespaces"/>
+												<!-- Use default for prefix parameter -->
+											</xsl:call-template>
+										</plx:String>
+										<plx:String>|</plx:String>
+										<plx:String>
+											<xsl:value-of select="@Name"/>
+										</plx:String>
+									</plx:String>
+								</plx:PassParam>
+								<plx:PassParam>
+									<plx:Value type="Local">match</plx:Value>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</xsl:for-each>
+					</xsl:if>
+				</xsl:for-each>
+				
+				<!-- Walk $linksInChildElements, then add the ones that are
+				NOT in the $allLinks list to the dictionary. -->
+				<xsl:for-each select="$childElements">
+					<xsl:variable name="links">
+						<xsl:for-each select="se:Link">
+							<xsl:variable name="relationshipName" select="@RelationshipName"/>
+							<xsl:variable name="roleName" select="@RoleName"/>
+							<xsl:variable name="containerName" select="@ContainerName"/>
+							<xsl:variable name="containerPrefix" select="@ContainerPrefix"/>
+							<xsl:if test="count($allLinks[@RelationshipName=$relationshipName and @RoleName=$roleName]) = 0">
+								<plx:PassParam>
+									<plx:CallType name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" style="Property"/>
+								</plx:PassParam>					
+							</xsl:if>	
+						</xsl:for-each>	
+					</xsl:variable>							
+					<plx:CallInstance name="InitializeRoles">
+						<plx:CallObject>
+							<plx:Value type="Local">match</plx:Value>
+						</plx:CallObject>
+						<xsl:copy-of select="$links/child::*"/>
+					</plx:CallInstance>		
+					<plx:CallInstance name="Add">
+						<plx:CallObject>
+							<plx:Value type="Local">childElementMappings</plx:Value>
+						</plx:CallObject>
+						<plx:PassParam>
+							<plx:String>
+								<plx:String>
+									<xsl:call-template name="ResolveNamespace">
+										<xsl:with-param name="namespaces" select="$namespaces"/>
+										<!-- Use default for prefix parameter -->
+									</xsl:call-template>
+								</plx:String>
+								<plx:String>|</plx:String>
+								<plx:String>
+									<plx:String><xsl:value-of select="@Name"/></plx:String>
+								</plx:String>
+								<plx:String>||</plx:String>
+							</plx:String>
+						</plx:PassParam>
+						<plx:PassParam>
+							<plx:Value type="Local">match</plx:Value>
+						</plx:PassParam>
+					</plx:CallInstance>	
+				</xsl:for-each>
+				
+				
+				<xsl:for-each select="se:ChildElement">
+					<xsl:choose>
+						<!-- It's a relationship -->
+						<xsl:when test="se:Link">
+							<xsl:for-each select="se:Link">
+	<!--										<xsl:if test="@RelationshipName = parent::parent::se:Element/se:Link"></xsl:if>-->
+							</xsl:for-each>
+						</xsl:when>
+						<!-- It's a something that I don't find an example for-->
+						<xsl:otherwise>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+
+				<!-- Add reverse mapping for attributes serialized as elements -->
+				<xsl:for-each select="se:Attribute[@WriteStyle='Element' or @WriteStyle='DoubleTaggedElement']">
+					<plx:CallInstance name="InitializeAttribute">
+						<plx:CallObject>
+							<plx:Value type="Local">match</plx:Value>
+						</plx:CallObject>
+						<plx:PassParam>
+							<plx:CallType name="{@ID}MetaAttributeGuid" dataTypeName="{$ClassName}" style="Field"/>
+						</plx:PassParam>
+						<plx:PassParam>
+							<xsl:choose>
+								<xsl:when test="string-length(@DoubleTagName)">
+									<plx:String>
+										<xsl:value-of select="@DoubleTagName"/>
+									</plx:String>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:NullObjectKeyword/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:PassParam>
+					</plx:CallInstance>
+					<plx:CallInstance name="Add">
+						<plx:CallObject>
+							<plx:Value type="Local">childElementMappings</plx:Value>
+						</plx:CallObject>
+						<plx:PassParam>
+							<plx:String>
+								<plx:String>||</plx:String>
+								<plx:String>
+									<xsl:call-template name="ResolveNamespace">
+										<xsl:with-param name="namespaces" select="$namespaces"/>
+										<!-- Use default for prefix parameter -->
+									</xsl:call-template>
+								</plx:String>
+								<plx:String>|</plx:String>
+								<plx:String>
+									<xsl:choose>
+										<xsl:when test="string-length(@Name)">
+											<xsl:value-of select="@Name"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="@ID"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</plx:String>
+							</plx:String>
+						</plx:PassParam>
+						<plx:PassParam>
+							<plx:Value type="Local">match</plx:Value>
+						</plx:PassParam>
+					</plx:CallInstance>
+				</xsl:for-each>
+				<plx:Operator name="Assign">
+					<plx:Left>
+						<plx:Value type="Local">myChildElementMappings</plx:Value>
+					</plx:Left>
+					<plx:Right>
+						<plx:Value type="Local">childElementMappings</plx:Value>
+					</plx:Right>
+				</plx:Operator>
+			</xsl:variable>
+			<xsl:variable name="hasMappedChildElements" select="0!=count($mapChildElementBody/child::*)"/>
+			<xsl:if test="$hasMappedChildElements">
+				<plx:Field name="myChildElementMappings" dataTypeName="Dictionary" visibility="Private" shared="true">
+					<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+					<plx:PassTypeParam dataTypeName="ORMCustomSerializedElementMatch"/>
+					<plx:Initialize>
+						<plx:NullObjectKeyword/>
+					</plx:Initialize>
+				</plx:Field>
+			</xsl:if>
+			<plx:Function visibility="Public" name="MapChildElement">
+				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="MapChildElement"/>
+				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="elementNamespace"/>
+				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="elementName"/>
+				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="containerNamespace"/>
+				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="containerName"/>
+				<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementMatch"/>
+				<xsl:choose>
+					<xsl:when test="$hasMappedChildElements">
+						<plx:Variable name="childElementMappings" dataTypeName="Dictionary">
+							<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+							<plx:PassTypeParam dataTypeName="ORMCustomSerializedElementMatch"/>
+							<plx:Initialize>
+								<plx:Value type="Local">myChildElementMappings</plx:Value>
+							</plx:Initialize>
+						</plx:Variable>
+						<plx:Condition>
+							<plx:Test>
+								<plx:Operator name="IdentityEquality">
+									<plx:Left>
+										<plx:Value type="Local">childElementMappings</plx:Value>
+									</plx:Left>
+									<plx:Right>
+										<plx:NullObjectKeyword/>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Test>
+							<plx:Body>
+								<plx:Operator name="Assign">
+									<plx:Left>
+										<plx:Value type="Local">childElementMappings</plx:Value>
+									</plx:Left>
+									<plx:Right>
+										<plx:CallNew dataTypeName="Dictionary">
+											<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+											<plx:PassTypeParam dataTypeName="ORMCustomSerializedElementMatch"/>
+										</plx:CallNew>
+									</plx:Right>
+								</plx:Operator>
+								<plx:Variable name="match" dataTypeName="ORMCustomSerializedElementMatch">
+									<plx:Initialize>
+										<plx:CallNew dataTypeName="ORMCustomSerializedElementMatch"/>
+									</plx:Initialize>
+								</plx:Variable>
+								<xsl:copy-of select="$mapChildElementBody/child::*"/>
+							</plx:Body>
+						</plx:Condition>	
+						<xsl:if test="se:Link | se:Attribute[@WriteStyle='Element']">
+						</xsl:if>
+						<plx:Variable name="rVal" dataTypeName="ORMCustomSerializedElementMatch"/>
+						<plx:CallInstance name="TryGetValue">
+							<plx:CallObject>
+								<plx:Value type="Local">childElementMappings</plx:Value>
+							</plx:CallObject>
+							<plx:PassParam>
+								<plx:CallType name="Concat" dataTypeName="String" dataTypeQualifier="System" style="MethodCall">
+									<plx:PassParam>
+										<plx:Value type="Local">containerNamespace</plx:Value>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:String>|</plx:String>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:Value type="Local">containerName</plx:Value>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:String>|</plx:String>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:Value type="Local">elementNamespace</plx:Value>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:String>|</plx:String>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:Value type="Local">elementName</plx:Value>
+									</plx:PassParam>
+								</plx:CallType>
+							</plx:PassParam>
+							<plx:PassParam passStyle="Out">
+								<plx:Value type="Local">rVal</plx:Value>
+							</plx:PassParam>
+						</plx:CallInstance>
+						<plx:Return>
+							<plx:Value type="Local">rVal</plx:Value>
+						</plx:Return>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:Return>
+							<plx:DefaultValueOf dataTypeName="ORMCustomSerializedElementMatch"/>
+						</plx:Return>
+					</xsl:otherwise>
+				</xsl:choose>
+			</plx:Function>
+			<xsl:variable name="attributes" select="se:Attribute[@WriteStyle='Attribute' or not(@WriteStyle)]"/>
+			<xsl:if test="$attributes">
+				<plx:Field name="myCustomSerializedAttributes" dataTypeName="Dictionary" visibility="Private" shared="true">
+					<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+					<plx:PassTypeParam dataTypeName="Guid"/>
+				</plx:Field>
+			</xsl:if>
+			<plx:Function visibility="Public" name="MapAttribute">
+				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="MapAttribute"/>
+				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="xmlNamespace"/>
+				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="attributeName"/>
+				<plx:Param name="" style="RetVal" dataTypeName="Guid"/>
+				<xsl:choose>
+					<xsl:when test="$attributes">
+						<xsl:variable name="namespaces" select="../se:MetaModel/se:Namespaces/se:Namespace"/>
+						<plx:Variable name="customSerializedAttributes" dataTypeName="Dictionary">
+							<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+							<plx:PassTypeParam dataTypeName="Guid"/>
+							<plx:Initialize>
+								<plx:CallType name="myCustomSerializedAttributes" dataTypeName="{$ClassName}" style="Field"/>
+							</plx:Initialize>
+						</plx:Variable>
+						<plx:Condition>
+							<plx:Test>
+								<plx:Operator name="IdentityEquality">
+									<plx:Left>
+										<plx:Value type="Local">customSerializedAttributes</plx:Value>
+									</plx:Left>
+									<plx:Right>
+										<plx:NullObjectKeyword/>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Test>
+							<plx:Body>
+								<plx:Operator name="Assign">
+									<plx:Left>
+										<plx:Value type="Local">customSerializedAttributes</plx:Value>
+									</plx:Left>
+									<plx:Right>
+										<plx:CallNew dataTypeName="Dictionary">
+											<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+											<plx:PassTypeParam dataTypeName="Guid"/>
+										</plx:CallNew>
+									</plx:Right>
+								</plx:Operator>
+								<xsl:for-each select="$attributes">
+									<plx:CallInstance name="Add">
+										<plx:CallObject>
+											<plx:Value type="Local">customSerializedAttributes</plx:Value>
+										</plx:CallObject>
+										<plx:PassParam>
+											<plx:String>
+												<plx:String>
+													<xsl:call-template name="ResolveNamespace">
+														<xsl:with-param name="namespaces" select="$namespaces"/>
+														<!-- Use default for prefix parameter -->
+													</xsl:call-template>
+												</plx:String>
+												<plx:String>|</plx:String>
+												<plx:String>
+													<xsl:choose>
+														<xsl:when test="string-length(@Name)">
+															<xsl:value-of select="@Name"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:value-of select="@ID"/>
+														</xsl:otherwise>
+													</xsl:choose>
+												</plx:String>
+											</plx:String>
+										</plx:PassParam>
+										<plx:PassParam>
+											<plx:CallType name="{@ID}MetaAttributeGuid" dataTypeName="{$ClassName}" style="Field"/>
+										</plx:PassParam>
+									</plx:CallInstance>
+								</xsl:for-each>
+								<plx:Operator name="Assign">
+									<plx:Left>
+										<plx:CallType name="myCustomSerializedAttributes" dataTypeName="{$ClassName}" style="Field"/>
+									</plx:Left>
+									<plx:Right>
+										<plx:Value type="Local">customSerializedAttributes</plx:Value>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Body>
+						</plx:Condition>
+						<plx:Variable name="rVal" dataTypeName="Guid"/>
+						<plx:CallInstance name="TryGetValue">
+							<plx:CallObject>
+								<plx:Value type="Local">customSerializedAttributes</plx:Value>
+							</plx:CallObject>
+							<plx:PassParam>
+								<plx:CallType name="Concat" dataTypeName="String" dataTypeQualifier="System">
+									<plx:PassParam>
+										<plx:Value type="Parameter">xmlNamespace</plx:Value>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:String>|</plx:String>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:Value type="Parameter">attributeName</plx:Value>
+									</plx:PassParam>
+								</plx:CallType>
+							</plx:PassParam>
+							<plx:PassParam passStyle="Out">
+								<plx:Value type="Local">rVal</plx:Value>
+							</plx:PassParam>
+						</plx:CallInstance>
+						<plx:Return>
+							<plx:Value type="Local">rVal</plx:Value>
+						</plx:Return>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:Return>
+							<plx:DefaultValueOf dataTypeName="Guid"/>
+						</plx:Return>
+					</xsl:otherwise>
+				</xsl:choose>
+			</plx:Function>
 		</plx:Class>
+	</xsl:template>
+	<xsl:template name="ResolveNamespace">
+		<xsl:param name="namespaces"/>
+		<xsl:param name="prefix" select="@Prefix"/>
+		<xsl:choose>
+			<xsl:when test="string-length($prefix)">
+				<xsl:value-of select="$namespaces[@Prefix=$prefix]/@URI"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$namespaces[@DefaultPrefix='true']/@URI"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="se:MetaModel">
 		<plx:Class name="{@Class}" visibility="Public" partial="true">
@@ -775,6 +1303,19 @@
 					</plx:Return>
 				</plx:Function>
 			</xsl:if>
+			<plx:Field name="myClassNameMap" dataTypeName="Dictionary" visibility="Private" shared="true">
+				<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+				<plx:PassTypeParam dataTypeName="Guid"/>
+				<plx:Initialize>
+					<plx:NullObjectKeyword/>
+				</plx:Initialize>
+			</plx:Field>
+			<plx:Field name="myValidNamespaces" dataTypeName="Collection" visibility="Private" shared="true">
+				<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+				<plx:Initialize>
+					<plx:NullObjectKeyword/>
+				</plx:Initialize>
+			</plx:Field>
 			<plx:Function visibility="Protected" name="ShouldSerializeMetaClass">
 				<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="ShouldSerializeMetaClass"/>
 				<plx:Param name="" style="RetVal" dataTypeName="Boolean" dataTypeQualifier="System"/>
@@ -853,6 +1394,243 @@
 						</plx:Return>
 					</xsl:otherwise>
 				</xsl:choose>
+			</plx:Function>
+			<plx:Function visibility="Protected" name="MapRootElement">
+				<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="MapRootElement"/>
+				<plx:Param style="RetVal" name="" dataTypeName="Guid"/>
+				<plx:Param name="xmlNamespace" dataTypeName="String" dataTypeQualifier="System"/>
+				<plx:Param name="elementName" dataTypeName="String" dataTypeQualifier="System"/>
+				<xsl:variable name="namespaces" select="se:Namespaces/se:Namespace"/>
+				<xsl:for-each select="se:RootElements/se:RootElement">
+					<xsl:variable name="className" select="@Class"/>
+					<xsl:variable name="tagName">
+						<xsl:choose>
+							<xsl:when test="string-length(@Name)">
+								<xsl:value-of select="@Name"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$className"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<xsl:variable name="namespace">
+						<xsl:call-template name="ResolveNamespace">
+							<xsl:with-param name="namespaces" select="$namespaces"/>
+							<!-- Use default for prefix parameter -->
+						</xsl:call-template>
+					</xsl:variable>
+					<plx:Condition>
+						<plx:Test>
+							<plx:Operator name="BooleanAnd">
+								<plx:Left>
+									<plx:Operator name="Equality">
+										<plx:Left>
+											<plx:Value type="Parameter">elementName</plx:Value>
+										</plx:Left>
+										<plx:Right>
+											<plx:String><xsl:value-of select="$tagName"/></plx:String>
+										</plx:Right>
+									</plx:Operator>
+								</plx:Left>
+								<plx:Right>
+									<plx:Operator name="Equality">
+										<plx:Left>
+											<plx:Value type="Parameter">xmlNamespace</plx:Value>
+										</plx:Left>
+										<plx:Right>
+											<plx:String><xsl:value-of select="$namespace"/></plx:String>
+										</plx:Right>
+									</plx:Operator>
+								</plx:Right>
+							</plx:Operator>
+						</plx:Test>
+						<plx:Body>
+							<plx:Return>
+								<plx:CallType dataTypeName="{$className}" name="MetaClassGuid" style="Field"/>
+							</plx:Return>
+						</plx:Body>
+					</plx:Condition>
+				</xsl:for-each>
+				<plx:Return>
+					<plx:DefaultValueOf dataTypeName="Guid"/>
+				</plx:Return>
+			</plx:Function>			
+			<plx:Function visibility="Protected" name="MapClassName">
+				<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="MapClassName"/>
+				<plx:Param style="RetVal" name="" dataTypeName="Guid"/>
+				<plx:Param name="xmlNamespace" dataTypeName="String" dataTypeQualifier="System"/>
+				<plx:Param name="elementName" dataTypeName="String" dataTypeQualifier="System"/>
+				<plx:Variable name="validNamespaces" dataTypeName="Collection">
+					<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+					<plx:Initialize>
+						<plx:Value type="Local">myValidNamespaces</plx:Value>
+					</plx:Initialize>
+				</plx:Variable>
+				<plx:Variable name="classNameMap" dataTypeName="Dictionary">
+					<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+					<plx:PassTypeParam dataTypeName="Guid"/>
+					<plx:Initialize>
+						<plx:Value type="Local">myClassNameMap</plx:Value>
+					</plx:Initialize>
+				</plx:Variable>
+				<plx:Condition>
+					<plx:Test>
+						<plx:Operator name="IdentityEquality">
+							<plx:Left>
+								<plx:Value type="Local">validNamespaces</plx:Value>
+							</plx:Left>
+							<plx:Right>
+								<plx:NullObjectKeyword/>
+							</plx:Right>
+						</plx:Operator>
+					</plx:Test>
+					<plx:Body>
+						<plx:Operator name="Assign">
+							<plx:Left>
+								<plx:Value type="Local">validNamespaces</plx:Value>
+							</plx:Left>
+							<plx:Right>
+								<plx:CallNew dataTypeName="Collection">
+									<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+								</plx:CallNew>
+							</plx:Right>
+						</plx:Operator>
+						<xsl:for-each select="se:Namespaces/se:Namespace">
+							<plx:CallInstance name="Add" style="MethodCall">
+								<plx:CallObject>
+									<plx:Value type="Local">validNamespaces</plx:Value>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:String>
+										<xsl:value-of select="@URI"/>
+									</plx:String>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</xsl:for-each>
+						<plx:Operator name="Assign">
+							<plx:Left>
+								<plx:Value type="Local">myValidNamespaces</plx:Value>
+							</plx:Left>
+							<plx:Right>
+								<plx:Value type="Local">validNamespaces</plx:Value>
+							</plx:Right>
+						</plx:Operator>
+					</plx:Body>
+				</plx:Condition>
+				<plx:Condition>
+					<plx:Test>
+						<plx:Operator name="Equality">
+							<plx:Left>
+								<plx:Value type="Local">classNameMap</plx:Value>
+							</plx:Left>
+							<plx:Right>
+								<plx:NullObjectKeyword/>
+							</plx:Right>
+						</plx:Operator>
+					</plx:Test>
+					<plx:Body>
+						<plx:Operator name="Assign">
+							<plx:Left>
+								<plx:Value type="Local">classNameMap</plx:Value>
+							</plx:Left>
+							<plx:Right>
+								<plx:CallNew dataTypeName="Dictionary">
+									<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+									<plx:PassTypeParam dataTypeName="Guid"/>
+								</plx:CallNew>
+							</plx:Right>
+						</plx:Operator>
+						<xsl:variable name="LocalNamespace" select="parent::se:Using/@Namespace"/>
+						<xsl:for-each select="parent::se:Using/se:Element">
+							<plx:CallInstance name="Add">
+								<plx:CallObject>
+									<plx:Value type="Local">classNameMap</plx:Value>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:String>
+									<xsl:choose>
+										<xsl:when test="string-length(@Name) > 0">
+											<xsl:value-of select="@Name"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="@Class"/>
+										</xsl:otherwise>
+									</xsl:choose>
+									</plx:String>
+								</plx:PassParam>
+								<plx:PassParam>
+									<plx:CallType name="MetaClassGuid" dataTypeName="{@Class}" style="Property"/>
+								</plx:PassParam>
+							</plx:CallInstance>
+							<xsl:variable name="ClassName" select="@Class"></xsl:variable>
+							<!-- Handle the less obvious Conditional Names -->
+							<xsl:for-each select="se:ConditionalName">
+								<plx:CallInstance name="Add">
+									<plx:CallObject>
+										<plx:Value type="Local">classNameMap</plx:Value>
+									</plx:CallObject>
+									<plx:PassParam>
+										<plx:String>
+											<xsl:value-of select="@Name"/>
+										</plx:String>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:CallType name="MetaClassGuid" dataTypeName="{$ClassName}" style="Property"/>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</xsl:for-each>
+						</xsl:for-each>
+						<plx:Operator name="Assign">
+							<plx:Left>
+								<plx:Value type="Local">myClassNameMap</plx:Value>
+							</plx:Left>
+							<plx:Right>
+								<plx:Value type="Local">classNameMap</plx:Value>
+							</plx:Right>
+						</plx:Operator>
+					</plx:Body>
+				</plx:Condition>
+				<plx:Condition>
+					<plx:Test>
+						<plx:Operator name="BooleanAnd">
+							<plx:Left>
+								<plx:CallInstance name="Contains" style="MethodCall">
+									<plx:CallObject>
+										<plx:Value type="Local">validNamespaces</plx:Value>
+									</plx:CallObject>
+									<plx:PassParam>
+										<plx:Value type="Local">xmlNamespace</plx:Value>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</plx:Left>
+							<plx:Right>
+								<plx:CallInstance name="ContainsKey" style="MethodCall">
+									<plx:CallObject>
+										<plx:Value type="Local">classNameMap</plx:Value>
+									</plx:CallObject>
+									<plx:PassParam>
+										<plx:Value type="Local">elementName</plx:Value>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</plx:Right>
+						</plx:Operator>
+					</plx:Test>
+					<plx:Body>
+						<plx:Return>
+							<plx:CallInstance name="" style="Indexer">
+								<plx:CallObject>
+									<plx:Value type="Local">classNameMap</plx:Value>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:Value type="Local">elementName</plx:Value>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</plx:Return>
+					</plx:Body>
+				</plx:Condition>
+				<plx:Return>
+					<plx:DefaultValueOf dataTypeName="Guid"/>
+				</plx:Return>
 			</plx:Function>
 		</plx:Class>
 	</xsl:template>
@@ -1043,7 +1821,7 @@
 			</xsl:choose>
 		</plx:PassParam>
 		<plx:PassParam>
-			<plx:CallType style="Field" dataTypeName="ORMCustomSerializedElementWriteStyle">
+			<plx:CallType name="pending" style="Field" dataTypeName="ORMCustomSerializedElementWriteStyle">
 				<xsl:attribute name="name">
 					<xsl:choose>
 						<xsl:when test="string-length(@DoubleTagName)">
@@ -1144,7 +1922,7 @@
 					</xsl:choose>
 				</plx:PassParam>
 				<plx:PassParam>
-					<plx:CallType style="Field" dataTypeName="ORMCustomSerializedAttributeWriteStyle">
+					<plx:CallType name="pending" style="Field" dataTypeName="ORMCustomSerializedAttributeWriteStyle">
 						<xsl:attribute name="name">
 							<xsl:choose>
 								<xsl:when test="string-length(@DoubleTagName)">

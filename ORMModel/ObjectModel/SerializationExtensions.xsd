@@ -184,6 +184,34 @@
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
+										<xs:element name="RootElements" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Elements that appear as top-level xml nodes inside the ORM2 tag.</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence minOccurs="0" maxOccurs="unbounded">
+													<xs:element name="RootElement">
+														<xs:complexType>
+															<xs:attribute name="Class" type="xs:string" use="required">
+																<xs:annotation>
+																	<xs:documentation>The name of a class that corresponds to an xml root element for this meta model</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="Name" type="xs:string" use="optional">
+																<xs:annotation>
+																	<xs:documentation>The tag name representing the class. The value of the Class attribute is assumed if Name is not specified.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="Prefix" type="xs:string" use="optional">
+																<xs:annotation>
+																	<xs:documentation>A prefix chosen from the list of supported Namespace prefixes. The default prefix is used if Prefix is not specified.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
 										<xs:element name="OmittedMetaElements" minOccurs="0">
 											<xs:annotation>
 												<xs:documentation>Block elements and links from serializating at the meta level.</xs:documentation>
