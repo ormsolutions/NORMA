@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
+using Northface.Tools.ORM.Shell;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
@@ -18,6 +19,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Retrieve the service for adding and removing tasks
 		/// </summary>
 		IORMToolTaskProvider TaskProvider { get;}
+		/// <summary>
+		/// Retrieve the service for getting current font and color information
+		/// </summary>
+		IORMFontAndColorService FontAndColorService { get;}
 	}
 	#endregion // IORMToolServices interface
 	#region IRepresentedModelElements interface

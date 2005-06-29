@@ -1082,7 +1082,7 @@ namespace Northface.Tools.ORM.ShapeModel
 						//test if constraint is valid and apply appropriate pen
 						if (!constraintBox.IsValid)
 						{
-							myConstraintPen.Color = ConstraintErrorForeColor;
+							myConstraintPen.Color = myParentShapeElement.ConstraintErrorForeColor;
 						}
 						if (constraintBox.IsAntiSpanning)
 						{
@@ -1838,10 +1838,6 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Pen to draw the active part of an internal uniqueness constraint.
 		/// </summary>
 		protected static readonly StyleSetResourceId InternalFactConstraintPen = new StyleSetResourceId("Northface", "InternalFactConstraintPen");
-		/// <summary>
-		/// The color to use when drawing constraint errors.
-		/// </summary>
-		protected static readonly Color ConstraintErrorForeColor = ORMDesignerPackage.FontAndColorService.GetForeColor(ORMDesignerColor.ConstraintError);
 		private static ExternalConstraintConnectAction myActiveExternalConstraintConnectAction;
 		private static InternalUniquenessConstraintConnectAction myActiveInternalUniquenessConstraintConnectAction;
 		#endregion // Member Variables
@@ -1879,6 +1875,16 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // RoleSubField integration
 		#region Customize appearance
+		/// <summary>
+		/// The color to use when drawing constraint errors.
+		/// </summary>
+		protected Color ConstraintErrorForeColor
+		{
+			get
+			{
+				return (Store as IORMToolServices).FontAndColorService.GetForeColor(ORMDesignerColor.ConstraintError);
+			}
+		}
 		/// <summary>
 		/// Standard method to draw a consistent highlight within the FactTypeShape.
 		/// </summary>
@@ -1944,7 +1950,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <param name="classStyleSet">The style set to modify</param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
-			ORMDesignerFontsAndColors fontsAndColors = ORMDesignerPackage.FontAndColorService;
+			IORMFontAndColorService fontsAndColors = (Store as IORMToolServices).FontAndColorService;
 			Color constraintForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.Constraint);
 			Color rolePickerForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.RolePicker);
 			Color rolePickerBackColor = fontsAndColors.GetBackColor(ORMDesignerColor.RolePicker);

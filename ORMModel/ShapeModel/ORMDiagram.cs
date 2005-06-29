@@ -380,7 +380,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			base.InitializeResources(classStyleSet);
 
-			ORMDesignerFontsAndColors colorService = ORMDesignerPackage.FontAndColorService;
+			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
 			Color stickyBackColor = colorService.GetBackColor(ORMDesignerColor.ActiveConstraint);
 			Color stickyForeColor = colorService.GetForeColor(ORMDesignerColor.ActiveConstraint);
 			BrushSettings brushSettings = new BrushSettings();
@@ -883,7 +883,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return ORMDesignerPackage.FontAndColorService.GetFont();
+				return (this.Store as ObjectModel.IORMToolServices).FontAndColorService.GetFont();
 			}
 		}
 		#endregion // Other base overrides

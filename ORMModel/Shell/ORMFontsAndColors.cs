@@ -38,11 +38,43 @@ namespace Northface.Tools.ORM.Shell
 		// update NameFromItemIndex when adding/removing items here.
 	}
 	#endregion // ORMDesignerColor Enum
+	#region IORMFontAndColorService
+	/// <summary>
+	/// Abstract 
+	/// </summary>
+	public interface IORMFontAndColorService
+	{
+		/// <summary>
+		/// Retrieve forecolor information for the specified index
+		/// </summary>
+		/// <param name="colorIndex">Item to retrieve</param>
+		/// <returns>Color</returns>
+		Color GetForeColor(ORMDesignerColor colorIndex);
+		/// <summary>
+		/// Retrieve background color information for the specified index
+		/// </summary>
+		/// <param name="colorIndex">Item to retrieve</param>
+		/// <returns>Color</returns>
+		Color GetBackColor(ORMDesignerColor colorIndex);
+		/// <summary>
+		/// Retrieve font information. A new Font object is generated
+		/// on each call and must be disposed of properly by the caller.
+		/// </summary>
+		/// <returns>A new font object</returns>
+		Font GetFont();
+		/// <summary>
+		/// Retrieve font flag information for the specified index
+		/// </summary>
+		/// <param name="colorIndex">Item to retrieve</param>
+		/// <returns>FONTFLAGS</returns>
+		FONTFLAGS GetFontFlags(ORMDesignerColor colorIndex);
+	}
+	#endregion // IORMFontAndColorService interface
 	/// <summary>
 	/// The class to create the ORM Designer category in the tools/options/environment/fonts and colors page
 	/// </summary>
 	[Guid("C5AA80F8-F730-4809-AAB1-8D925E36F9F5")]
-	public partial class ORMDesignerFontsAndColors : IVsFontAndColorDefaultsProvider, IVsFontAndColorDefaults, IVsFontAndColorEvents
+	public partial class ORMDesignerFontsAndColors : IVsFontAndColorDefaultsProvider, IVsFontAndColorDefaults, IVsFontAndColorEvents, IORMFontAndColorService
 	{
 		#region Constant definitions
 		/// <summary>
@@ -425,48 +457,70 @@ namespace Northface.Tools.ORM.Shell
 		private LOGFONTW myLogFont = new LOGFONTW();
 		private FontInfo myFontInfo = new FontInfo();
 		private bool mySettingsChangePending; // Set to true on events, no effect until OnApply fires
+		#region IORMFontAndColorService implementation
 		/// <summary>
 		/// Retrieve font information. A new Font object is generated
 		/// on each call and must be disposed of properly by the caller.
+		/// Implements IORMFontAndColorService.GetFont
 		/// </summary>
 		/// <returns>A new font object</returns>
-		public Font GetFont()
+		protected Font GetFont()
 		{
 			EnsureCache();
 			FontInfo fontInfo = myFontInfo;
 			Debug.Assert(fontInfo.bFaceNameValid != 0 && fontInfo.bCharSetValid != 0 && fontInfo.bPointSizeValid != 0);
 			return new Font(fontInfo.bstrFaceName, fontInfo.wPointSize / 72.0f, FontStyle.Regular, GraphicsUnit.World, fontInfo.iCharSet);
 		}
+		Font IORMFontAndColorService.GetFont()
+		{
+			return GetFont();
+		}
 		/// <summary>
-		/// Retrieve forecolor information for the specified index
+		/// Retrieve forecolor information for the specified index.
+		/// Implements IORMFontAndColorService.GetForeColor
 		/// </summary>
 		/// <param name="colorIndex">Item to retrieve</param>
 		/// <returns>Color</returns>
-		public Color GetForeColor(ORMDesignerColor colorIndex)
+		protected Color GetForeColor(ORMDesignerColor colorIndex)
 		{
 			EnsureCache();
 			return myColors[(int)colorIndex].ForeColor;
 		}
+		Color IORMFontAndColorService.GetForeColor(ORMDesignerColor colorIndex)
+		{
+			return GetForeColor(colorIndex);
+		}
 		/// <summary>
-		/// Retrieve background color information for the specified index
+		/// Retrieve background color information for the specified index.
+		/// Implements IORMFontAndColorService.GetBackColor
 		/// </summary>
 		/// <param name="colorIndex">Item to retrieve</param>
 		/// <returns>Color</returns>
-		public Color GetBackColor(ORMDesignerColor colorIndex)
+		protected Color GetBackColor(ORMDesignerColor colorIndex)
 		{
 			EnsureCache();
 			return myColors[(int)colorIndex].BackColor;
 		}
+		Color IORMFontAndColorService.GetBackColor(ORMDesignerColor colorIndex)
+		{
+			return GetBackColor(colorIndex);
+		}
 		/// <summary>
-		/// Retrieve background color information for the specified index
+		/// Retrieve font flag information for the specified index.
+		/// Implements IORMFontAndColorService.GetFontFlags
 		/// </summary>
 		/// <param name="colorIndex">Item to retrieve</param>
-		/// <returns>Color</returns>
-		public FONTFLAGS GetFontFlags(ORMDesignerColor colorIndex)
+		/// <returns>FONTFLAGS</returns>
+		protected FONTFLAGS GetFontFlags(ORMDesignerColor colorIndex)
 		{
 			EnsureCache();
 			return myColors[(int)colorIndex].FontFlags;
 		}
+		FONTFLAGS IORMFontAndColorService.GetFontFlags(ORMDesignerColor colorIndex)
+		{
+			return GetFontFlags(colorIndex);
+		}
+		#endregion // IORMFontAndColorService implementation
 		private void EnsureCache()
 		{
 			if (myColors == null)

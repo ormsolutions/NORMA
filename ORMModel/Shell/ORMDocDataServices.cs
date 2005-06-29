@@ -68,6 +68,24 @@ namespace Northface.Tools.ORM.Shell
 					return TaskProvider;
 				}
 			}
+			/// <summary>
+			/// Defer to ColorService on the document. Implements
+			/// IORMToolServices.ColorService
+			/// </summary>
+			protected IORMFontAndColorService FontAndColorService
+			{
+				get
+				{
+					return myServices.FontAndColorService;
+				}
+			}
+			IORMFontAndColorService IORMToolServices.FontAndColorService
+			{
+				get
+				{
+					return FontAndColorService;
+				}
+			}
 			#endregion // IORMToolServices Implementation
 		}
 		#endregion // Store services passthrough
@@ -95,6 +113,25 @@ namespace Northface.Tools.ORM.Shell
 			get
 			{
 				return TaskProvider;
+			}
+		}
+		/// <summary>
+		/// Get the color service for this document Defers to
+		/// the packages color service. Implements
+		/// IORMToolServices.ColorService
+		/// </summary>
+		protected IORMFontAndColorService FontAndColorService
+		{
+			get
+			{
+				return ORMDesignerPackage.FontAndColorService;
+			}
+		}
+		IORMFontAndColorService IORMToolServices.FontAndColorService
+		{
+			get
+			{
+				return FontAndColorService;
 			}
 		}
 		#endregion // IORMToolServices Implementation
@@ -171,6 +208,7 @@ namespace Northface.Tools.ORM.Shell
 			{
 				RemoveTask(task);
 			}
+
 			/// <summary>
 			/// Implements IORMToolTaskProvider.RemoveAllTasks
 			/// </summary>

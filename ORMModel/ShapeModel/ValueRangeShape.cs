@@ -28,7 +28,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <param name="classStyleSet">StyleSet</param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
-			ORMDesignerFontsAndColors colorService = ORMDesignerPackage.FontAndColorService;
+			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
 			BrushSettings brushSettings = new BrushSettings();
 			brushSettings.Color = colorService.GetForeColor(ORMDesignerColor.Constraint);
 			classStyleSet.AddBrush(ValueRangeTextBrush, DiagramBrushes.ShapeBackground, brushSettings);

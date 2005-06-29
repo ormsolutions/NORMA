@@ -20,7 +20,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <param name="classStyleSet">The style set to modify</param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
-			ORMDesignerFontsAndColors colorService = ORMDesignerPackage.FontAndColorService;
+			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
 			PenSettings settings = new PenSettings();
 			settings.Color = colorService.GetForeColor(ORMDesignerColor.Constraint);
 			settings.DashStyle = DashStyle.Dash;

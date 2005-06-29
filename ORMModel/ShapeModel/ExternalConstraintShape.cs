@@ -47,7 +47,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
 			PenSettings penSettings = new PenSettings();
-			ORMDesignerFontsAndColors colorService = ORMDesignerPackage.FontAndColorService;
+			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
 			penSettings.Color = colorService.GetForeColor(ORMDesignerColor.Constraint);
 			penSettings.Width = 1.35F / 72.0F; // 1.35 Point.
 			classStyleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
