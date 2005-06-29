@@ -2054,10 +2054,6 @@ Information Contained Herein is Proprietary and Confidential.
             <superType>i3efdcecezb2e0z45f0zaab1zca085144b933</superType>
             <subType>iccdd5096z8948z45ccz835bz321af2c8b656</subType>
           </treeExpression>
-          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="14f810f0-660d-408a-8964-2d115a8f0e16" id="i14f810f0z660dz408az8964z2d115a8f0e16">
-            <source />
-            <property>i53a10734z0950z4914zbc05z35ef7ec91b03</property>
-          </treeExpression>
           <treeExpression xsi:type="InheritanceExpression" name="FactTypeRequiresInternalUniquenessConstraintError-ModelError" identity="97069ed3-3818-45e4-a0db-a974c2f91c51" id="i97069ed3z3818z45e4za0dbza974c2f91c51" definitionlevel="definition">
             <source>i1b6e7b91zb606z4261z9577z2736a6e18fe6</source>
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
@@ -2903,12 +2899,6 @@ Information Contained Herein is Proprietary and Confidential.
       <concept name="NumericDataType" identity="5d6c8146-073b-4f54-ae4e-e97620c42b2c" namespace="Northface.Tools.ORM.ObjectModel" id="i5d6c8146z073bz4f54zae4eze97620c42b2c" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
         <superType>i547d17bbz3dc9z4869zb280zff6be0f7dca9</superType>
-        <valueProperties>
-          <property name="AllowNumeric" identity="53a10734-0950-4914-bc05-35ef7ec91b03" id="i53a10734z0950z4914zbc05z35ef7ec91b03">
-            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
-            <propertyInfo xsi:type="BooleanPropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000" default="false" />
-          </property>
-        </valueProperties>
       </concept>
       <concept name="RawDataDataType" identity="fdd0f0c5-33fe-408e-92ea-7fe3e17f80dd" namespace="Northface.Tools.ORM.ObjectModel" id="ifdd0f0c5z33fez408ez92eaz7fe3e17f80dd" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />

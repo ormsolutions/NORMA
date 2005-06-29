@@ -260,6 +260,9 @@
     </None>
     <None Include="ObjectModel\SerializationExtensions.xsd" />
     <None Include="ObjectModel\SerializationExtensions.xslt" />
+    <EmbeddedResource Include="ObjectModel\ORM2Core.xsd" />
+    <EmbeddedResource Include="ObjectModel\ORM2Diagram.xsd" />
+    <EmbeddedResource Include="ObjectModel\ORMRoot.xsd" />
     <Content Include="ObjectModel\XSDtoHTML.xslt" />
     <Content Include="Resources\AboutBox.ico" />
     <Content Include="Resources\ORM.ico" />

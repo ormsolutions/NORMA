@@ -9,6 +9,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Query;
 using System.Xml.Xsl;
 using System.Xml.XPath;
@@ -337,7 +338,7 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="customName">The custom name to use.</param>
 		/// <param name="childGuids">The child element guids.</param>
-		public ORMCustomSerializedChildElementInfo(string customName, Guid[] childGuids) : base(null, customName, null, ORMCustomSerializedElementWriteStyle.Element, null)
+		public ORMCustomSerializedChildElementInfo(string customName, params Guid[] childGuids) : base(null, customName, null, ORMCustomSerializedElementWriteStyle.Element, null)
 		{
 			myGuidList = childGuids;
 		}
@@ -350,7 +351,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="writeStyle">The style to use when writting.</param>
 		/// <param name="doubleTagName">The name of the double tag.</param>
 		/// <param name="childGuids">The child element guids.</param>
-		public ORMCustomSerializedChildElementInfo(string customPrefix, string customName, string customNamespace, ORMCustomSerializedElementWriteStyle writeStyle, string doubleTagName, Guid[] childGuids) : base(customPrefix, customName, customNamespace, writeStyle, doubleTagName)
+		public ORMCustomSerializedChildElementInfo(string customPrefix, string customName, string customNamespace, ORMCustomSerializedElementWriteStyle writeStyle, string doubleTagName, params Guid[] childGuids) : base(customPrefix, customName, customNamespace, writeStyle, doubleTagName)
 		{
 			myGuidList = childGuids;
 		}
@@ -411,6 +412,17 @@ namespace Northface.Tools.ORM.Shell
 				myMatchStyle = ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRoles;
 			}
 			myDoubleTagName = null;
+		}
+		/// <summary>
+		/// The element was recognized as an opposite role player. Optimized overload
+		/// for 1 element.
+		/// </summary>
+		/// <param name="oppositeMetaRoleGuid">The opposite meta role guids</param>
+		public void InitializeRoles(Guid oppositeMetaRoleGuid)
+		{
+			mySingleGuid = oppositeMetaRoleGuid;
+			myMultiGuids = null;
+			myMatchStyle = ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole;
 		}
 		/// <summary>
 		/// The guid identifying the meta attribute. Valid for a match
@@ -634,16 +646,10 @@ namespace Northface.Tools.ORM.Shell
 			}
 			else if (typeConvert)
 			{
-				object[] typeConverters = value.GetType().GetCustomAttributes(typeof(TypeConverterAttribute), false);
-
-				if (typeConverters != null && typeConverters.Length != 0)
+				TypeConverter converter = GetTypeConverter(value.GetType());
+				if (converter != null)
 				{
-					Type converterType = Type.GetType(((TypeConverterAttribute)typeConverters[0]).ConverterTypeName, false, false);
-
-					if (converterType != null)
-					{
-						return ((TypeConverter)Activator.CreateInstance(converterType)).ConvertToInvariantString(value);
-					}
+					return converter.ConvertToInvariantString(value);
 				}
 			}
 
@@ -1101,7 +1107,10 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 
-			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, string.Concat(rolePlayedInfo.MetaRelationship.Name, ".", rolePlayedInfo.OppositeMetaRole.Name))) return;
+			if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, string.Concat(rolePlayedInfo.MetaRelationship.Name, ".", rolePlayedInfo.OppositeMetaRole.Name)))
+			{
+				return;
+			}
 
 			Guid keyId = writeContents ? link.Id : oppositeRolePlayer.Id;
 			if (writeContents)
@@ -1140,46 +1149,6 @@ namespace Northface.Tools.ORM.Shell
 			return;
 		}
 		/// <summary>
-		/// Serializes a child element. (usually a Collection element)
-		/// </summary>
-		/// <param name="file">The file to write to.</param>
-		/// <param name="childElement">The child element.</param>
-		/// <param name="rolePlayedInfo">The role being played.</param>
-		/// <param name="customInfo">The custom element info.</param>
-		/// <param name="defaultPrefix">The default prefix.</param>
-		/// <param name="defaultName">The default element name.</param>
-		/// <returns>true if the begin element tag was written.</returns>
-		private bool SerializeChildElement(System.Xml.XmlWriter file, ModelElement childElement, MetaRoleInfo rolePlayedInfo, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, string defaultName)
-		{
-			IList children = childElement.GetCounterpartRolePlayers(rolePlayedInfo.OppositeMetaRole, rolePlayedInfo);
-			int childCount = children.Count;
-
-			if (childCount < 1)
-			{
-				return false;
-			}
-			bool writeStartElement = (defaultName != null);
-
-			for (int iChild = 0; iChild < childCount; ++iChild)
-			{
-				ModelElement child = (ModelElement)children[iChild];
-
-				if (ShouldSerialize(child))
-				{
-					if (customInfo == null)
-					{
-						defaultPrefix = DefaultElementPrefix(child);
-					}
-					if (!SerializeElement(file, child, customInfo, defaultPrefix, ref defaultName))
-					{
-						return false;
-					}
-				}
-			}
-
-			return (writeStartElement && defaultName == null);
-		}
-		/// <summary>
 		/// Serializes a child element.
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
@@ -1213,9 +1182,38 @@ namespace Northface.Tools.ORM.Shell
 			}
 			else if (rolePlayedInfo.IsAggregate) //write child
 			{
-				return SerializeChildElement(file, childElement, oppositeRoleInfo, customInfo, defaultPrefix, writeBeginElement ? oppositeRoleInfo.Name : null);
-			}
+				IList children = childElement.GetCounterpartRolePlayers(rolePlayedInfo, oppositeRoleInfo);
+				int childCount = children.Count;
 
+				if (childCount != 0)
+				{
+					string containerName = null;
+					bool initializedContainerName = !writeBeginElement;
+
+					for (int iChild = 0; iChild < childCount; ++iChild)
+					{
+						ModelElement child = (ModelElement)children[iChild];
+
+						if (ShouldSerialize(child))
+						{
+							if (customInfo == null)
+							{
+								defaultPrefix = DefaultElementPrefix(child);
+							}
+							if (!initializedContainerName)
+							{
+								containerName = string.Concat(rolePlayedInfo.MetaRelationship.Name, ".", rolePlayedInfo.OppositeMetaRole.Name);
+								initializedContainerName = true;
+							}
+							if (!SerializeElement(file, child, customInfo, defaultPrefix, ref containerName))
+							{
+								return false;
+							}
+						}
+					}
+					ret = writeBeginElement && initializedContainerName && containerName == null;
+				}
+			}
 			return ret;
 		}
 		private void SerializeChildElements(System.Xml.XmlWriter file, ModelElement element, IORMCustomSerializedElement customElement, ORMCustomSerializedChildElementInfo[] childElementInfo, IList rolesPlayed, bool sortRoles, bool groupRoles, string defaultPrefix)
@@ -1463,8 +1461,180 @@ namespace Northface.Tools.ORM.Shell
 	#region New Deserialization
 	public partial class ORMSerializer
 	{
+		/// <summary>
+		/// Structure used to map a guid to one or multiple
+		/// placeholder elements. Because the type to create
+		/// is not known until the placeholder is no longer
+		/// needed, it is possible to choose different opposite
+		/// placeholder types for the same Guid, so we need
+		/// to be prepared to have more than one placeholder
+		/// in the store for a single element.
+		/// </summary>
+		private struct PlaceholderElement
+		{
+			private ModelElement mySingleElement;
+			private Collection<ModelElement> myMultipleElements;
+			/// <summary>
+			/// Call to create a placeholder element of the given type
+			/// in the store. A placeholder is always created with a new
+			/// Guid.
+			/// </summary>
+			/// <param name="store">Context store</param>
+			/// <param name="classInfo">The classInfo of the role player. Note
+			/// that it is very possible that the classInfo will be abstract. The
+			/// descendants are searched to find the first non-abstract class</param>
+			/// <returns>A new model element, or an existing placeholder.</returns>
+			public ModelElement CreatePlaceholderElement(Store store, MetaClassInfo classInfo)
+			{
+				ModelElement retVal = FindElementOfType(classInfo);
+				if (retVal == null)
+				{
+					Type implClass = classInfo.ImplementationClass;
+					if (implClass.IsAbstract || implClass == typeof(ModelElement)) // The class factory won't create a raw model element
+					{
+						MetaClassInfo descendantInfo = FindCreatableClass(classInfo.Descendants); // Try the cheap search first
+						if (descendantInfo != null)
+						{
+							descendantInfo = FindCreatableClass(classInfo.AllDescendants);
+						}
+						Debug.Assert(descendantInfo != null); // Some descendant should always be creatable, otherwise there could not be a valid link
+						classInfo = descendantInfo;
+					}
+					retVal = store.ElementFactory.CreateElement(false, classInfo.ImplementationClass);
+					if (myMultipleElements != null)
+					{
+						myMultipleElements.Add(retVal);
+					}
+					else if (mySingleElement != null)
+					{
+						myMultipleElements = new Collection<ModelElement>();
+						myMultipleElements.Add(mySingleElement);
+						myMultipleElements.Add(retVal);
+						mySingleElement = null;
+					}
+					else
+					{
+						mySingleElement = retVal;
+					}
+				}
+				return retVal;
+			}
+			private static MetaClassInfo FindCreatableClass(IList classInfos)
+			{
+				MetaClassInfo retVal = null;
+				int count = classInfos.Count;
+				if (count != 0)
+				{
+					for (int i = 0; i < count; ++i)
+					{
+						MetaClassInfo testInfo = (MetaClassInfo)classInfos[i];
+						if (!testInfo.ImplementationClass.IsAbstract)
+						{
+							retVal = testInfo;
+							break;
+						}
+					}
+				}
+				return retVal;
+			}
+			/// <summary>
+			/// Find a placeholder instance with the specified meta type
+			/// </summary>
+			/// <param name="classInfo">The type to search for</param>
+			/// <returns>The matching element, or null</returns>
+			private ModelElement FindElementOfType(MetaClassInfo classInfo)
+			{
+				MetaRelationshipInfo relInfo = classInfo as MetaRelationshipInfo;
+				if (relInfo != null)
+				{
+					ElementLink link;
+					if (mySingleElement != null)
+					{
+						if (null != (link = mySingleElement as ElementLink) &&
+							link.MetaRelationship == relInfo)
+						{
+							return mySingleElement;
+						}
+					}
+					else if (myMultipleElements != null)
+					{
+						foreach (ModelElement mel in myMultipleElements)
+						{
+							if (null != (link = mel as ElementLink) &&
+								link.MetaRelationship == relInfo)
+							{
+								return mel;
+							}
+						}
+					}
+				}
+				else
+				{
+					if (mySingleElement != null)
+					{
+						if (mySingleElement.MetaClass == classInfo)
+						{
+							return mySingleElement;
+						}
+					}
+					else if (myMultipleElements != null)
+					{
+						foreach (ModelElement mel in myMultipleElements)
+						{
+							if (mel.MetaClass == classInfo)
+							{
+								return mel;
+							}
+						}
+					}
+				}
+				return null;
+			}
+			/// <summary>
+			/// Take all placeholder elements, transfer all roles to the
+			/// realElement, and then remove the placeholder element from the
+			/// store.
+			/// </summary>
+			/// <param name="realElement">An element created with the real
+			/// identity and type.</param>
+			public void FulfilPlaceholderRoles(ModelElement realElement)
+			{
+				if (mySingleElement != null)
+				{
+					FulfilPlaceholderRoles(realElement, mySingleElement);
+				}
+				else
+				{
+					Debug.Assert(myMultipleElements != null);
+					foreach (ModelElement placeholder in myMultipleElements)
+					{
+						FulfilPlaceholderRoles(realElement, placeholder);
+					}
+				}
+			}
+			private static void FulfilPlaceholderRoles(ModelElement realElement, ModelElement placeholder)
+			{
+				IList links = placeholder.GetElementLinks();
+				int linkCount = links.Count;
+				for (int i = linkCount - 1; i >= 0; --i) // Walk backwards, we're messing with the list contents
+				{
+					ElementLink link = (ElementLink)links[i];
+					foreach (MetaRoleInfo metaRole in link.MetaRelationship.MetaRoles)
+					{
+						if (object.ReferenceEquals(link.GetRolePlayer(metaRole), placeholder))
+						{
+							link.SetRolePlayer(metaRole, realElement);
+						}
+					}
+				}
+				placeholder.Remove();
+			}
+		}
 		private Dictionary<string, Guid> myCustomIdToGuidMap;
 		private INotifyElementAdded myNotifyAdded;
+		private Dictionary<Guid, PlaceholderElement> myPlaceholderElementMap;
+		private Dictionary<string, IORMCustomSerializedMetaModel> myXmlNamespaceToModelMap;
+		private static Dictionary<Type, TypeConverter> myTypeConverterCache;
 		/// <summary>
 		/// Load the stream contents into the current store
 		/// </summary>
@@ -1479,10 +1649,31 @@ namespace Northface.Tools.ORM.Shell
 			{
 				myNotifyAdded = fixupManager as INotifyElementAdded;
 				ICollection substores = myStore.SubStores.Values;
+				Dictionary<string, IORMCustomSerializedMetaModel> namespaceToModelMap = new Dictionary<string, IORMCustomSerializedMetaModel>();
+				foreach (object substore in substores)
+				{
+					IORMCustomSerializedMetaModel metaModel = substore as IORMCustomSerializedMetaModel;
+					if (metaModel != null)
+					{
+						string[,] namespaces = metaModel.GetCustomElementNamespaces();
+						int namespaceCount = namespaces.GetLength(0);
+						for (int i = 0; i < namespaceCount; ++i)
+						{
+							namespaceToModelMap.Add(namespaces[i, 1], metaModel);
+						}
+					}
+				}
+				myXmlNamespaceToModelMap = namespaceToModelMap;
 				NameTable nameTable = new NameTable();
 				XmlReaderSettings settings = new XmlReaderSettings();
 				settings.NameTable = nameTable;
-				// UNDONE: Set XsdValidate and add schemas here
+				settings.XsdValidate = true;
+				XmlSchemaSet schemas = settings.Schemas;
+				Type coreModel = typeof(ORMModel);
+				Assembly assembly = coreModel.Assembly;
+				schemas.Add("http://Schemas.Northface.edu/ORM/ORMCore", new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORM2Core.xsd")));
+				schemas.Add("http://Schemas.Northface.edu/ORM/ORMDiagram", new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORM2Diagram.xsd")));
+				schemas.Add(RootXmlNamespace, new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORMRoot.xsd")));
 				using (XmlTextReader xmlReader = new XmlTextReader(new StreamReader(stream), nameTable))
 				{
 					using (XmlReader reader = XmlReader.Create(xmlReader, settings))
@@ -1500,18 +1691,14 @@ namespace Northface.Tools.ORM.Shell
 										if (nodeType == XmlNodeType.Element)
 										{
 											bool processedRootElement = false;
-											foreach (object substore in substores)
+											IORMCustomSerializedMetaModel metaModel;
+											if (namespaceToModelMap.TryGetValue(reader.NamespaceURI, out metaModel))
 											{
-												IORMCustomSerializedMetaModel metaModel = substore as IORMCustomSerializedMetaModel;
-												if (metaModel != null)
+												Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
+												if (!classGuid.Equals(Guid.Empty))
 												{
-													Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
-													if (!classGuid.Equals(Guid.Empty))
-													{
-														processedRootElement = true;
-														ProcessClassElement(reader, metaModel, CreateElement(reader.GetAttribute("id"), null, classGuid));
-														break;
-													}
+													processedRootElement = true;
+													ProcessClassElement(reader, metaModel, CreateElement(reader.GetAttribute("id"), null, classGuid));
 												}
 											}
 											if (!processedRootElement)
@@ -1529,13 +1716,6 @@ namespace Northface.Tools.ORM.Shell
 						}
 					}
 				}
-//				XmlSerialization.DeserializeStore(
-//					myStore,
-//					stream,
-//					MajorVersion,
-//					MinorVersion,
-//					new XmlSerialization.UpgradeFileFormat(UpgradeFileFormat),
-//					(fixupManager == null) ? null : new XmlSerialization.Deserialized((fixupManager as INotifyElementAdded).ElementAdded));
 				if (fixupManager != null)
 				{
 					fixupManager.DeserializationComplete();
@@ -1589,17 +1769,23 @@ namespace Northface.Tools.ORM.Shell
 					}
 				} while (reader.MoveToNextAttribute());
 			}
+			reader.MoveToElement();
 			#endregion // Attribute processing
-			//PassEndElement(reader); // UNDONE: Now temporary, rip this
-			ProcessChildElements(reader, customModel, element, customElement, true);
+			ProcessChildElements(reader, customModel, element, customElement);
 		}
-		private void ProcessChildElements(XmlReader reader, IORMCustomSerializedMetaModel customModel, ModelElement element, IORMCustomSerializedElement customElement, bool allowIgnoreContainer)
+		private void ProcessChildElements(XmlReader reader, IORMCustomSerializedMetaModel customModel, ModelElement element, IORMCustomSerializedElement customElement)
 		{
+			if (reader.IsEmptyElement)
+			{
+				return;
+			}
 			MetaDataDirectory dataDir = myStore.MetaDataDirectory;
 			string elementName;
 			string namespaceName;
 			string containerName = null;
 			string containerNamespace = null;
+			IORMCustomSerializedMetaModel containerRestoreCustomModel = null;
+			MetaRoleInfo containerOppositeMetaRole = null;
 			while (reader.Read())
 			{
 				XmlNodeType outerNodeType = reader.NodeType;
@@ -1612,7 +1798,10 @@ namespace Northface.Tools.ORM.Shell
 					bool aggregatedClass = idValue != null && refValue == null;
 					MetaRoleInfo oppositeMetaRole = null;
 					MetaClassInfo oppositeMetaClass = null;
+					bool oppositeMetaClassFullyDeterministic = false;
+					bool resolveOppositeMetaClass = false;
 					IList<Guid> oppositeMetaRoleGuids = null;
+					IORMCustomSerializedMetaModel restoreCustomModel = null;
 					bool nodeProcessed = false;
 					if (aggregatedClass && containerName == null)
 					{
@@ -1627,69 +1816,59 @@ namespace Northface.Tools.ORM.Shell
 						}
 						if (oppositeMetaClass == null)
 						{
-							oppositeMetaClass = dataDir.FindMetaClass(elementName);
+							Type namespaceType = (customModel != null) ? customModel.GetType() : element.GetType();
+							oppositeMetaClass = dataDir.FindMetaClass(string.Concat(namespaceType.Namespace, ".", elementName));
 						}
 						if (oppositeMetaClass != null)
 						{
 							// Find the aggregating role that maps to this class
 							IList aggregatedRoles = element.MetaClass.AggregatedRoles;
-							MetaRoleInfo aggregatedRole = null;
 							int rolesCount = aggregatedRoles.Count;
 							for (int i = 0; i < rolesCount; ++i)
 							{
 								MetaRoleInfo testRole = (MetaRoleInfo)aggregatedRoles[i];
 								if (testRole.RolePlayer == oppositeMetaClass)
 								{
-									aggregatedRole = testRole;
+									oppositeMetaRole = testRole;
 									break;
 								}
 							}
 						}
 					}
-					else if (customElement != null)
+					else
 					{
-						ORMCustomSerializedElementMatch match = default(ORMCustomSerializedElementMatch);
-						if (aggregatedClass)
+						bool handledByCustomElement = false;
+						if (customElement != null)
 						{
-							// The meta role information should be available from the container name only
-							match = customElement.MapChildElement(null, null, containerNamespace, containerName);
-						}
-						else if (refValue != null)
-						{
-							// Only go for a match if we have an id or a ref. Otherwise, this must be a container node,
-							// so there is no point in looking it up.
-							match = customElement.MapChildElement(namespaceName, elementName, containerNamespace, containerName);
-						}
-						switch (match.MatchStyle)
-						{
-							case ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole:
-								{
+							handledByCustomElement = true;
+							ORMCustomSerializedElementMatch match = default(ORMCustomSerializedElementMatch);
+							if (aggregatedClass)
+							{
+								// The meta role information should be available from the container name only
+								match = customElement.MapChildElement(null, null, containerNamespace, containerName);
+							}
+							else
+							{
+								match = customElement.MapChildElement(namespaceName, elementName, containerNamespace, containerName);
+							}
+							switch (match.MatchStyle)
+							{
+								case ORMCustomSerializedElementMatchStyle.SingleOppositeMetaRole:
 									oppositeMetaRole = dataDir.FindMetaRole(match.SingleOppositeMetaRoleGuid);
-									if (oppositeMetaRole.RolePlayer.Descendants.Count == 0)
-									{
-										// The opposite element can only be of one type, which means
-										// we can create the relationship with no additional information
-										oppositeMetaClass = oppositeMetaRole.RolePlayer;
-									}
-									else
-									{
-										// It is possible that there are multiple types associated with the opposite
-										// end point, we don't know what type to create at this point
-									}
+									resolveOppositeMetaClass = true;
 									break;
-								}
-							case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRoles:
+								case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRoles:
 								{
 									oppositeMetaRoleGuids = match.OppositeMetaRoleGuidCollection;
 									break;
 								}
-							case ORMCustomSerializedElementMatchStyle.Attribute:
+								case ORMCustomSerializedElementMatchStyle.Attribute:
 								{
 									MetaAttributeInfo attributeInfo = dataDir.FindMetaAttribute(match.MetaAttributeGuid);
 									if (match.DoubleTagName == null)
 									{
 										// Reader the value off directly
-										SetAttributeValue(element, attributeInfo, reader.Value);
+										SetAttributeValue(element, attributeInfo, reader.ReadString());
 										nodeProcessed = true;
 									}
 									else
@@ -1703,8 +1882,12 @@ namespace Northface.Tools.ORM.Shell
 											{
 												if (reader.LocalName == matchName && reader.NamespaceURI == namespaceName)
 												{
-													SetAttributeValue(element, attributeInfo, reader.Value);
+													SetAttributeValue(element, attributeInfo, reader.ReadString());
 													nodeProcessed = true;
+												}
+												else
+												{
+													PassEndElement(reader);
 												}
 											}
 											else if (innerType == XmlNodeType.EndElement)
@@ -1713,98 +1896,257 @@ namespace Northface.Tools.ORM.Shell
 											}
 										}
 									}
+									break;
 								}
-								break;
-							case ORMCustomSerializedElementMatchStyle.None:
+								case ORMCustomSerializedElementMatchStyle.None:
+									handledByCustomElement = false;
+									break;
+							}
+						}
+						if (!handledByCustomElement)
+						{
+							if (aggregatedClass)
+							{
+								if (containerOppositeMetaRole != null)
+								{
+									oppositeMetaRole = containerOppositeMetaRole;
+									resolveOppositeMetaClass = true;
+								}
+							}
+							else if (refValue != null)
+							{
+								IORMCustomSerializedMetaModel childModel;
+								if (elementName.IndexOf('.') > 0 && myXmlNamespaceToModelMap.TryGetValue(namespaceName, out childModel))
+								{
+									if (childModel != customModel && customModel != null)
+									{
+										restoreCustomModel = customModel;
+										customModel = childModel;
+									}
+									MetaRoleInfo metaRole = dataDir.FindMetaRole(string.Concat(childModel.GetType().Namespace, ".", elementName));
+									// Fallback on the two standard meta models
+									if (metaRole == null)
+									{
+										metaRole = dataDir.FindMetaRole(string.Concat(typeof(ModelElement).Namespace, ".", elementName));
+										if (metaRole == null)
+										{
+											metaRole = dataDir.FindMetaRole(string.Concat(typeof(Diagram).Namespace, ".", elementName));
+										}
+									}
+									if (metaRole != null)
+									{
+										oppositeMetaRole = metaRole;
+										resolveOppositeMetaClass = true;
+									}
+								}
+							}
+							else if (containerName == null)
+							{
+								// The tag name should have the format Rel.Role. Assume the relationship
+								// is in the same namespace as the model associated with the xml namespace.
+								// Models can nest elements inside base models, so we can't assume the node
+								// is in the same code namespace as the parent. Also, if the implementation
+								// class of the parent element has been upgraded (with MetaClassInfo.UpgradeImplementationClass)
+								// then the ImplemtationClass of the parent node will be in the wrong namespace.
+								// The model elements themselves are more stable, use them.
+								IORMCustomSerializedMetaModel childModel;
+								if (elementName.IndexOf('.') > 0 && myXmlNamespaceToModelMap.TryGetValue(namespaceName, out childModel))
+								{
+									MetaRoleInfo metaRole = dataDir.FindMetaRole(string.Concat(childModel.GetType().Namespace, ".", elementName));
+									// Fallback on the two standard meta models
+									if (metaRole == null)
+									{
+										metaRole = dataDir.FindMetaRole(string.Concat(typeof(ModelElement).Namespace, ".", elementName));
+										if (metaRole == null)
+										{
+											metaRole = dataDir.FindMetaRole(string.Concat(typeof(Diagram).Namespace, ".", elementName));
+										}
+									}
+									if (metaRole != null)
+									{
+										containerOppositeMetaRole = metaRole;
+										containerRestoreCustomModel = customModel;
+										customModel = childModel;
+									}
+								}
 								// If this is an unrecognized node without an id or ref then push
 								// the container node (we only allow container depth of 1)
 								// and continue to loop.
-								if (containerName == null && idValue == null && refValue == null)
-								{
-									containerName = elementName;
-									containerNamespace = namespaceName;
-									nodeProcessed = true;
-								}
-								break;
+								containerName = elementName;
+								containerNamespace = namespaceName;
+								nodeProcessed = true;
+							}
 						}
-					}
-					else if (aggregatedClass)
-					{
-						// UNDONE: Now This may be very similar to the first case (aggregate with no container)
-						// The default spit adds the opposite role player name
-					}
-					else if (refValue != null)
-					{
 					}
 					if (!nodeProcessed)
 					{
 						if (oppositeMetaRole != null)
 						{
-							if (oppositeMetaClass != null)
+							if (resolveOppositeMetaClass)
 							{
-								// Create a new element and make sure the relationship
-								// to this element does not already exist. This obviously requires one
-								// relationship of each type between any two objects, which is a reasonable assumption
-								// for a well-formed model.
-								bool isNewElement;
-								string elementId = aggregatedClass ? idValue : refValue;
-								ModelElement oppositeElement = CreateElement(elementId, oppositeMetaClass, Guid.Empty, out isNewElement);
-								bool createLink = true;
-								if (isNewElement)
+								oppositeMetaClass = oppositeMetaRole.RolePlayer;
+								// If the opposite role player does not have any derived class in
+								// the model then we know what type of element to create. Otherwise,
+								// we need to create the element as a pending element if it doesn't exist
+								// already.
+								oppositeMetaClassFullyDeterministic = oppositeMetaClass.Descendants.Count == 0;
+								if (aggregatedClass && !oppositeMetaClassFullyDeterministic)
 								{
-									if (aggregatedClass)
+									MetaClassInfo testMetaClass = null;
+									if (customModel != null)
 									{
-										ProcessChildElements(reader, customModel, oppositeElement, oppositeElement as IORMCustomSerializedElement, true);
-									}
-									else
-									{
-										// UNDONE: Now handle PrimaryDefinition links here
-									}
-								}
-								else
-								{
-									IList oppositeRolePlayers = oppositeElement.GetElementLinks(oppositeMetaRole);
-									int oppositeCount = oppositeRolePlayers.Count;
-									for (int i = 0; i < oppositeCount; ++i)
-									{
-										if (object.ReferenceEquals(element, oppositeRolePlayers[i]))
+										Guid mappedGuid = customModel.MapClassName(namespaceName, elementName);
+										if (!mappedGuid.Equals(Guid.Empty))
 										{
-											createLink = false;
-											break;
+											testMetaClass = dataDir.FindMetaClass(mappedGuid);
 										}
 									}
-								}
-								if (createLink)
-								{
-									ElementLink newLink = CreateElementLink(idValue, element, oppositeElement, oppositeMetaRole);
-									if (aggregatedClass)
+									if (testMetaClass == null)
 									{
-										ProcessChildElements(reader, customModel, oppositeElement, oppositeElement as IORMCustomSerializedElement, true);
+										Type namespaceType = (customModel != null) ? customModel.GetType() : element.GetType();
+										testMetaClass = dataDir.FindMetaClass(string.Concat(namespaceType.Namespace, ".", elementName));
 									}
-									else if (idValue != null)
-									{
-										ProcessChildElements(reader, customModel, newLink, newLink as IORMCustomSerializedElement, true);
-									}
+									oppositeMetaClass = testMetaClass;
+									oppositeMetaClassFullyDeterministic = true;
 								}
 							}
 						}
 						else if (oppositeMetaRoleGuids != null)
 						{
-							PassEndElement(reader);
+							// In this case we have multiple opposite meta role guids, so we
+							// always have to rely on the aggregated element to find the data
+							Debug.Assert(aggregatedClass);
+							if (customModel != null)
+							{
+								Guid mappedGuid = customModel.MapClassName(namespaceName, elementName);
+								if (!mappedGuid.Equals(Guid.Empty))
+								{
+									oppositeMetaClass = dataDir.FindMetaClass(mappedGuid);
+								}
+							}
+							if (oppositeMetaClass == null)
+							{
+								Type namespaceType = (customModel != null) ? customModel.GetType() : element.GetType();
+								oppositeMetaClass = dataDir.FindMetaClass(string.Concat(namespaceType.Namespace, ".", elementName));
+							}
+							if (oppositeMetaClass != null)
+							{
+								oppositeMetaClassFullyDeterministic = true;
+								int roleGuidCount = oppositeMetaRoleGuids.Count;
+								for (int i = 0; i < roleGuidCount; ++i)
+								{
+									MetaRoleInfo testRoleInfo = dataDir.FindMetaRole(oppositeMetaRoleGuids[i]);
+									if (oppositeMetaClass.IsDerivedFrom(testRoleInfo.RolePlayer.Id))
+									{
+										oppositeMetaRole = testRoleInfo;
+#if DEBUG
+										for (int j = i + 1; j < roleGuidCount; ++j)
+										{
+											testRoleInfo = dataDir.FindMetaRole(oppositeMetaRoleGuids[j]);
+											Debug.Assert(testRoleInfo == null || !oppositeMetaClass.IsDerivedFrom(testRoleInfo.RolePlayer.Id), "Custom serialization data does not provide a unique deserialization map for a combined element.");
+										}
+#endif // DEBUG
+										break;
+									}
+								}
+							}
+						}
+						if (oppositeMetaClass != null)
+						{
+							Debug.Assert(oppositeMetaRole != null);
+							// Create a new element and make sure the relationship
+							// to this element does not already exist. This obviously requires one
+							// relationship of each type between any two objects, which is a reasonable assumption
+							// for a well-formed model.
+							bool isNewElement;
+							string elementId = aggregatedClass ? idValue : refValue;
+							ModelElement oppositeElement = CreateElement(elementId, oppositeMetaClass, Guid.Empty, !oppositeMetaClassFullyDeterministic, out isNewElement);
+							bool createLink = true;
+							if (aggregatedClass)
+							{
+								ProcessClassElement(reader, customModel, oppositeElement);
+							}
+							if (!isNewElement)
+							{
+								IList oppositeRolePlayers = oppositeElement.GetCounterpartRolePlayers(oppositeMetaRole, oppositeMetaRole.OppositeMetaRole);
+								int oppositeCount = oppositeRolePlayers.Count;
+								for (int i = 0; i < oppositeCount; ++i)
+								{
+									if (object.ReferenceEquals(element, oppositeRolePlayers[i]))
+									{
+										createLink = false;
+										break;
+									}
+								}
+							}
+							if (createLink)
+							{
+								ElementLink newLink = CreateElementLink(aggregatedClass ? null : idValue, element, oppositeElement, oppositeMetaRole);
+								if (!aggregatedClass && idValue != null)
+								{
+									ProcessClassElement(reader, customModel, newLink);
+								}
+							}
 						}
 						else
 						{
 							PassEndElement(reader);
 						}
 					}
+					if (restoreCustomModel != null)
+					{
+						customModel = restoreCustomModel;
+					}
 				}
-				else if (outerNodeType == XmlNodeType.EndElement && containerName != null)
+				else if (outerNodeType == XmlNodeType.EndElement)
 				{
-					// Pop the container node
-					containerName = null;
-					containerNamespace = null;
+					if (containerName != null)
+					{
+						// Pop the container node
+						containerName = null;
+						containerNamespace = null;
+						containerOppositeMetaRole = null;
+						if (containerRestoreCustomModel != null)
+						{
+							customModel = containerRestoreCustomModel;
+							containerRestoreCustomModel = null;
+						}
+					}
+					else
+					{
+						break;
+					}
 				}
 			}
+		}
+		/// <summary>
+		/// Retrieve a type converter for the specified type
+		/// </summary>
+		/// <param name="propertyType">The type of the property to convert</param>
+		/// <returns>TypeConverter, or null</returns>
+		private static TypeConverter GetTypeConverter(Type propertyType)
+		{
+			TypeConverter retVal = null;
+			if (myTypeConverterCache == null)
+			{
+				myTypeConverterCache = new Dictionary<Type, TypeConverter>();
+			}
+			else if (myTypeConverterCache.TryGetValue(propertyType, out retVal))
+			{
+				return retVal;
+			}
+			object[] typeConverters = propertyType.GetCustomAttributes(typeof(TypeConverterAttribute), false);
+
+			if (typeConverters != null && typeConverters.Length != 0)
+			{
+				Type converterType = Type.GetType(((TypeConverterAttribute)typeConverters[0]).ConverterTypeName, false, false);
+				if (converterType != null)
+				{
+					retVal = (TypeConverter)Activator.CreateInstance(converterType);
+				}
+			}
+			myTypeConverterCache[propertyType] = retVal;
+			return retVal;
 		}
 		/// <summary>
 		/// Set the value of the specified attribute on the model element
@@ -1812,7 +2154,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="element">The element to modify</param>
 		/// <param name="attributeInfo">The meta attribute to set</param>
 		/// <param name="stringValue">The new value of the attribute</param>
-		private void SetAttributeValue(ModelElement element, MetaAttributeInfo attributeInfo, string stringValue)
+		private static void SetAttributeValue(ModelElement element, MetaAttributeInfo attributeInfo, string stringValue)
 		{
 			PropertyInfo propertyInfo = attributeInfo.PropertyInfo;
 			Type propertyType = propertyInfo.PropertyType;
@@ -1882,15 +2224,19 @@ namespace Northface.Tools.ORM.Shell
 							}
 							else
 							{
-								Debug.Assert(false); // UNDONE: Now Use TypeConverter
+								TypeConverter converter = GetTypeConverter(propertyType);
+								if (converter != null)
+								{
+									objectValue = converter.ConvertFromInvariantString(stringValue);
+								}
 							}
 							break;
 						}
 				}
-				if (objectValue != null)
-				{
-					element.SetAttributeValue(attributeInfo, objectValue);
-				}
+			}
+			if (objectValue != null)
+			{
+				element.SetAttributeValue(attributeInfo, objectValue);
 			}
 		}
 		/// <summary>
@@ -1908,8 +2254,9 @@ namespace Northface.Tools.ORM.Shell
 			Guid id = (idValue == null) ? Guid.NewGuid() : GetElementId(idValue);
 			Debug.Assert(null == myStore.ElementDirectory.FindElement(id));
 			ElementLink retVal = myStore.ElementFactory.CreateElementLink(
-				false,
+				// false, // UNDONE: Report Microsoft Beta1 bug, missing overload to pass both initialize=false and a guid for CreateElementLink
 				oppositeMetaRoleInfo.MetaRelationship.ImplementationClass,
+				id,
 				new RoleAssignment[]{
 					new RoleAssignment(oppositeMetaRoleInfo.OppositeMetaRole, rolePlayer),
 					new RoleAssignment(oppositeMetaRoleInfo, oppositeRolePlayer)});
@@ -1930,7 +2277,7 @@ namespace Northface.Tools.ORM.Shell
 		private ModelElement CreateElement(string idValue, MetaClassInfo metaClassInfo, Guid metaClassId)
 		{
 			bool isNewElement;
-			return CreateElement(idValue, metaClassInfo, metaClassId, out isNewElement);
+			return CreateElement(idValue, metaClassInfo, metaClassId, false, out isNewElement);
 		}
 		/// <summary>
 		/// Create a class element with the id specified in the reader
@@ -1939,10 +2286,14 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="metaClassInfo">The meta class info of the element to create. If null,
 		/// the metaClassId is used to find the class info</param>
 		/// <param name="metaClassId">The identifier for the class</param>
+		/// <param name="createAsPlaceholder">The provided meta class information is not unique.
+		/// If this element is not already created then add it with a separate tracked id so it can
+		/// be replaced later by the fully resolved type. All role players will be automatically
+		/// moved from the pending placeholder when the real element is created</param>
 		/// <param name="isNewElement">true if the element is actually created, as opposed
 		/// to being identified as an existing element</param>
 		/// <returns>A new ModelElement</returns>
-		private ModelElement CreateElement(string idValue, MetaClassInfo metaClassInfo, Guid metaClassId, out bool isNewElement)
+		private ModelElement CreateElement(string idValue, MetaClassInfo metaClassInfo, Guid metaClassId, bool createAsPlaceholder, out bool isNewElement)
 		{
 			isNewElement = false;
 
@@ -1953,17 +2304,36 @@ namespace Northface.Tools.ORM.Shell
 			ModelElement retVal = myStore.ElementDirectory.FindElement(id);
 			if (retVal == null)
 			{
+				PlaceholderElement placeholder = default(PlaceholderElement);
+				bool existingPlaceholder = myPlaceholderElementMap != null && myPlaceholderElementMap.TryGetValue(id, out placeholder);
 				// The false parameter indicates that OnInitialize should not be called, which
 				// is standard fare for deserialization routines.
 				if (metaClassInfo == null)
 				{
 					metaClassInfo = myStore.MetaDataDirectory.FindMetaClass(metaClassId);
 				}
-				retVal = myStore.ElementFactory.CreateElement(false, metaClassInfo.ImplementationClass, id);
-				isNewElement = true;
-				if (myNotifyAdded != null)
+				if (createAsPlaceholder)
 				{
-					myNotifyAdded.ElementAdded(retVal);
+					if (!existingPlaceholder && myPlaceholderElementMap == null)
+					{
+						myPlaceholderElementMap = new Dictionary<Guid, PlaceholderElement>();
+					}
+					retVal = placeholder.CreatePlaceholderElement(myStore, metaClassInfo);
+					myPlaceholderElementMap[id] = placeholder;
+				}
+				else
+				{
+					retVal = myStore.ElementFactory.CreateElement(false, metaClassInfo.ImplementationClass, id);
+					isNewElement = true;
+					if (myNotifyAdded != null)
+					{
+						myNotifyAdded.ElementAdded(retVal);
+					}
+					if (existingPlaceholder)
+					{
+						placeholder.FulfilPlaceholderRoles(retVal);
+						myPlaceholderElementMap.Remove(id);
+					}
 				}
 			}
 			return retVal;

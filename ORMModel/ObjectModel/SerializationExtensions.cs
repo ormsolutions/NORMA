@@ -22,8 +22,8 @@ namespace Northface.Tools.ORM.ObjectModel
     public partial class ORMMetaModel : IORMCustomSerializedMetaModel
     {
         private Dictionary<MetaClassInfo, object> myCustomSerializationOmissions;
-        private static Dictionary<string, Guid> myClassNameMap = null;
-        private static Collection<string> myValidNamespaces = null;
+        private static Dictionary<string, Guid> myClassNameMap;
+        private static Collection<string> myValidNamespaces;
         /// <summary>
         ///</summary>
         protected string DefaultElementPrefix
@@ -59,7 +59,8 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             Dictionary<MetaClassInfo, object> retVal = new Dictionary<MetaClassInfo, object>();
             MetaDataDirectory dataDir = store.MetaDataDirectory;
-            retVal[dataDir.FindMetaRelationship(ExternalFactConstraint.MetaRelationshipGuid)] = null;
+            retVal[dataDir.FindMetaRelationship(MultiColumnExternalFactConstraint.MetaRelationshipGuid)] = null;
+            retVal[dataDir.FindMetaRelationship(SingleColumnExternalFactConstraint.MetaRelationshipGuid)] = null;
             retVal[dataDir.FindMetaRelationship(ExternalRoleConstraint.MetaRelationshipGuid)] = null;
             retVal[dataDir.FindMetaClass(IntrinsicReferenceMode.MetaClassGuid)] = null;
             retVal[dataDir.FindMetaRelationship(Microsoft.VisualStudio.Modeling.SubjectHasPresentation.MetaRelationshipGuid)] = null;
@@ -100,14 +101,14 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Guid MapClassName(string xmlNamespace, string elementName)
         {
-            Collection<string> validNamespaces = myValidNamespaces;
-            Dictionary<string, Guid> classNameMap = myClassNameMap;
+            Collection<string> validNamespaces = ORMMetaModel.myValidNamespaces;
+            Dictionary<string, Guid> classNameMap = ORMMetaModel.myClassNameMap;
             if ((validNamespaces == null))
             {
                 validNamespaces = new Collection<string>();
                 validNamespaces.Add("http://Schemas.Northface.edu/ORM/ORMCore");
                 validNamespaces.Add("http://Schemas.Northface.edu/ORM/ORMDerived");
-                myValidNamespaces = validNamespaces;
+                ORMMetaModel.myValidNamespaces = validNamespaces;
             }
             if ((classNameMap == null))
             {
@@ -120,16 +121,16 @@ namespace Northface.Tools.ORM.ObjectModel
                 classNameMap.Add("ValueTypeHasDataType", ValueTypeHasDataType.MetaClassGuid);
                 classNameMap.Add("DataType", DataType.MetaClassGuid);
                 classNameMap.Add("ReferenceModeKind", ReferenceModeKind.MetaClassGuid);
+                classNameMap.Add("BaseValueRangeDefinition", ValueRangeDefinition.MetaClassGuid);
+                classNameMap.Add("ValueRangeDefinition", ValueTypeValueRangeDefinition.MetaClassGuid);
+                classNameMap.Add("RoleValueRangeDefinition", RoleValueRangeDefinition.MetaClassGuid);
                 classNameMap.Add("Fact", FactType.MetaClassGuid);
                 classNameMap.Add("ReadingOrder", ReadingOrder.MetaClassGuid);
                 classNameMap.Add("Reading", Reading.MetaClassGuid);
                 classNameMap.Add("Role", Role.MetaClassGuid);
-                classNameMap.Add("EqualityConstraint", EqualityConstraint.MetaClassGuid);
-                classNameMap.Add("ExclusionConstraint", ExclusionConstraint.MetaClassGuid);
-                classNameMap.Add("SubsetConstraint", SubsetConstraint.MetaClassGuid);
+                classNameMap.Add("MultiColumnExternalConstraint", MultiColumnExternalConstraint.MetaClassGuid);
                 classNameMap.Add("RoleSequence", MultiColumnExternalConstraintRoleSequence.MetaClassGuid);
-                classNameMap.Add("FrequencyConstraint", FrequencyConstraint.MetaClassGuid);
-                classNameMap.Add("DisjunctiveMandatoryConstraint", DisjunctiveMandatoryConstraint.MetaClassGuid);
+                classNameMap.Add("SingleColumnExternalConstraint", SingleColumnExternalConstraint.MetaClassGuid);
                 classNameMap.Add("ExternalUniquenessConstraint", ExternalUniquenessConstraint.MetaClassGuid);
                 classNameMap.Add("InternalUniquenessConstraint", InternalUniquenessConstraint.MetaClassGuid);
                 classNameMap.Add("SimpleMandatoryConstraint", SimpleMandatoryConstraint.MetaClassGuid);
@@ -146,7 +147,7 @@ namespace Northface.Tools.ORM.ObjectModel
                 classNameMap.Add("DataTypeNotSpecifiedError", DataTypeNotSpecifiedError.MetaClassGuid);
                 classNameMap.Add("NMinusOneError", NMinusOneError.MetaClassGuid);
                 classNameMap.Add("CompatibleRolePlayerTypeError", CompatibleRolePlayerTypeError.MetaClassGuid);
-                myClassNameMap = classNameMap;
+                ORMMetaModel.myClassNameMap = classNameMap;
             }
             if ((validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName)))
             {
@@ -165,7 +166,7 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -230,28 +231,13 @@ namespace Northface.Tools.ORM.ObjectModel
             if ((ret == null))
             {
                 ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[7];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Objects", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-                System.Guid[] guids1 = new System.Guid[1];
-                guids1[0] = ModelHasFactType.FactTypeCollectionMetaRoleGuid;
-                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Facts", null, ORMCustomSerializedElementWriteStyle.Element, null, guids1);
-                System.Guid[] guids2 = new System.Guid[2];
-                guids2[0] = ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid;
-                guids2[1] = ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid;
-                ret[2] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ExternalConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, guids2);
-                System.Guid[] guids3 = new System.Guid[1];
-                guids3[0] = ModelHasDataType.DataTypeCollectionMetaRoleGuid;
-                ret[3] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "DataTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, guids3);
-                System.Guid[] guids4 = new System.Guid[1];
-                guids4[0] = ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid;
-                ret[4] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "CustomReferenceModes", null, ORMCustomSerializedElementWriteStyle.Element, null, guids4);
-                System.Guid[] guids5 = new System.Guid[1];
-                guids5[0] = ModelHasError.ErrorCollectionMetaRoleGuid;
-                ret[5] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ModelErrors", null, ORMCustomSerializedElementWriteStyle.Element, null, guids5);
-                System.Guid[] guids6 = new System.Guid[1];
-                guids6[0] = ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid;
-                ret[6] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReferenceModeKinds", null, ORMCustomSerializedElementWriteStyle.Element, null, guids6);
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Objects", null, ORMCustomSerializedElementWriteStyle.Element, null, ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid);
+                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Facts", null, ORMCustomSerializedElementWriteStyle.Element, null, ModelHasFactType.FactTypeCollectionMetaRoleGuid);
+                ret[2] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ExternalConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid, ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
+                ret[3] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "DataTypes", null, ORMCustomSerializedElementWriteStyle.Element, null, ModelHasDataType.DataTypeCollectionMetaRoleGuid);
+                ret[4] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "CustomReferenceModes", null, ORMCustomSerializedElementWriteStyle.Element, null, ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid);
+                ret[5] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ModelErrors", null, ORMCustomSerializedElementWriteStyle.Element, null, ModelHasError.ErrorCollectionMetaRoleGuid);
+                ret[6] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReferenceModeKinds", null, ORMCustomSerializedElementWriteStyle.Element, null, ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid);
                 ORMModel.myCustomSerializedChildElementInfo = ret;
             }
             return ret;
@@ -282,9 +268,9 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ORMModel.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
@@ -303,7 +289,7 @@ namespace Northface.Tools.ORM.ObjectModel
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|ModelErrors||", match);
                 match.InitializeRoles(ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid);
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|ReferenceModeKinds||", match);
-                myChildElementMappings = childElementMappings;
+                ORMModel.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -315,7 +301,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -398,7 +384,7 @@ namespace Northface.Tools.ORM.ObjectModel
     {
         private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         private static Dictionary<string, Guid> myCustomSerializedAttributes;
         /// <summary>
         ///</summary>
@@ -477,10 +463,9 @@ namespace Northface.Tools.ORM.ObjectModel
             Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ObjectType.myCustomSerializedChildElementInfo;
             if ((ret == null))
             {
-                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "PlayedRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "PlayedRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
+                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ValueConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null, ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
                 ObjectType.myCustomSerializedChildElementInfo = ret;
             }
             return ret;
@@ -515,13 +500,13 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            if ((rolePlayedInfo.Id == ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
-            }
             if ((rolePlayedInfo.Id == ValueTypeHasDataType.DataTypeMetaRoleGuid))
             {
                 return new ORMCustomSerializedElementInfo(null, "ConceptualDataType", null, ORMCustomSerializedElementWriteStyle.PrimaryLinkElement, null);
+            }
+            if ((rolePlayedInfo.Id == ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
+            {
+                return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
             }
             if ((rolePlayedInfo.Id == NestingEntityTypeHasFactType.NestedFactTypeMetaRoleGuid))
             {
@@ -529,7 +514,7 @@ namespace Northface.Tools.ORM.ObjectModel
             }
             if ((rolePlayedInfo.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid))
             {
-                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+                return new ORMCustomSerializedElementInfo(null, "PreferredIdentifier", null, ORMCustomSerializedElementWriteStyle.Element, null);
             }
             return ORMCustomSerializedElementInfo.Default;
         }
@@ -539,9 +524,9 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ObjectType.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
@@ -550,12 +535,14 @@ namespace Northface.Tools.ORM.ObjectModel
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|ConceptualDataType", match);
                 match.InitializeRoles(NestingEntityTypeHasFactType.NestedFactTypeMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|NestedPredicate", match);
+                match.InitializeRoles(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
+                childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|PreferredIdentifier", match);
                 match.InitializeRoles(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|PlayedRoles|http://Schemas.Northface.edu" +
                         "/ORM/ORMCore|Role", match);
-                match.InitializeRoles();
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|PlayedRoles||", match);
-                myChildElementMappings = childElementMappings;
+                match.InitializeRoles(ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|ValueConstraint||", match);
+                ObjectType.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -567,17 +554,22 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             Dictionary<string, Guid> customSerializedAttributes = ObjectType.myCustomSerializedAttributes;
             if ((customSerializedAttributes == null))
             {
                 customSerializedAttributes = new Dictionary<string, Guid>();
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMCore|ReferenceMode", ObjectType.ReferenceModeStringMetaAttributeGuid);
+                customSerializedAttributes.Add("ReferenceMode", ObjectType.ReferenceModeStringMetaAttributeGuid);
                 ObjectType.myCustomSerializedAttributes = customSerializedAttributes;
             }
             Guid rVal;
-            customSerializedAttributes.TryGetValue(string.Concat(xmlNamespace, "|", attributeName), out rVal);
+            string key = attributeName;
+            if (!((xmlNamespace.Length == 0)))
+            {
+                key = string.Concat(xmlNamespace, "|", attributeName);
+            }
+            customSerializedAttributes.TryGetValue(key, out rVal);
             return rVal;
         }
         Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
@@ -596,9 +588,9 @@ namespace Northface.Tools.ORM.ObjectModel
                 MetaRoleInfo metaRole;
                 metaRole = metaDataDir.FindMetaRole(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
                 roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
-                metaRole = metaDataDir.FindMetaRole(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
                 metaRole = metaDataDir.FindMetaRole(ValueTypeHasDataType.DataTypeMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
+                metaRole = metaDataDir.FindMetaRole(ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
                 roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
                 metaRole = metaDataDir.FindMetaRole(NestingEntityTypeHasFactType.NestedFactTypeMetaRoleGuid);
                 roleOrderDictionary[metaRole.OppositeMetaRole] = 3;
@@ -651,7 +643,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class CustomReferenceMode : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -742,9 +734,9 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = CustomReferenceMode.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
@@ -753,7 +745,7 @@ namespace Northface.Tools.ORM.ObjectModel
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Kind", match);
                 match.InitializeAttribute(CustomReferenceMode.CustomFormatStringMetaAttributeGuid, null);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|CustomFormatString", match);
-                myChildElementMappings = childElementMappings;
+                CustomReferenceMode.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -765,7 +757,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -778,7 +770,6 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ValueTypeHasDataType : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
         private static Dictionary<string, Guid> myCustomSerializedAttributes;
         /// <summary>
         ///</summary>
@@ -869,18 +860,9 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
+            return default(ORMCustomSerializedElementMatch);
         }
         ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
@@ -888,17 +870,22 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             Dictionary<string, Guid> customSerializedAttributes = ValueTypeHasDataType.myCustomSerializedAttributes;
             if ((customSerializedAttributes == null))
             {
                 customSerializedAttributes = new Dictionary<string, Guid>();
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMCore|Scale", ValueTypeHasDataType.ScaleMetaAttributeGuid);
+                customSerializedAttributes.Add("Scale", ValueTypeHasDataType.ScaleMetaAttributeGuid);
                 ValueTypeHasDataType.myCustomSerializedAttributes = customSerializedAttributes;
             }
             Guid rVal;
-            customSerializedAttributes.TryGetValue(string.Concat(xmlNamespace, "|", attributeName), out rVal);
+            string key = attributeName;
+            if (!((xmlNamespace.Length == 0)))
+            {
+                key = string.Concat(xmlNamespace, "|", attributeName);
+            }
+            customSerializedAttributes.TryGetValue(key, out rVal);
             return rVal;
         }
         Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
@@ -910,7 +897,6 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class DataType : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -996,18 +982,9 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
+            return default(ORMCustomSerializedElementMatch);
         }
         ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
@@ -1015,7 +992,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -1028,14 +1005,14 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ReferenceModeKind : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
-                return (ORMCustomSerializedElementSupportedOperations.ElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+                return (ORMCustomSerializedElementSupportedOperations.ElementInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.AttributeInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo));
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -1092,7 +1069,11 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            throw new System.NotSupportedException();
+            if ((attributeInfo.Id == ReferenceModeKind.NameMetaAttributeGuid))
+            {
+                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+            }
+            return ORMCustomSerializedAttributeInfo.Default;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
@@ -1114,14 +1095,129 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            return default(ORMCustomSerializedElementMatch);
+        }
+        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        {
+            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+        }
+        /// <summary>
+        ///</summary>
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
+        {
+            return default(Guid);
+        }
+        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+        {
+            return this.MapAttribute(xmlNamespace, attributeName);
+        }
+    }
+    /// <summary>
+    ///</summary>
+    public partial class ValueRangeDefinition : IORMCustomSerializedElement
+    {
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+        /// <summary>
+        ///</summary>
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.ElementInfo);
+            }
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+        {
+            get
+            {
+                return new ORMCustomSerializedElementInfo(null, "BaseValueRangeDefinition", null, ORMCustomSerializedElementWriteStyle.Element, null);
+            }
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+        {
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+        {
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ValueRangeDefinition.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ValueRanges", null, ORMCustomSerializedElementWriteStyle.Element, null, ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid);
+                ValueRangeDefinition.myCustomSerializedChildElementInfo = ret;
+            }
+            return ret;
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+        {
+            return this.GetCustomSerializedChildElementInfo();
+        }
+        /// <summary>
+        ///</summary>
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            throw new System.NotSupportedException();
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+        }
+        /// <summary>
+        ///</summary>
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            throw new System.NotSupportedException();
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+        }
+        /// <summary>
+        ///</summary>
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        {
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ValueRangeDefinition.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                myChildElementMappings = childElementMappings;
+                match.InitializeRoles(ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid);
+                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|ValueRanges||", match);
+                ValueRangeDefinition.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -1133,7 +1229,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -1144,11 +1240,85 @@ namespace Northface.Tools.ORM.ObjectModel
     }
     /// <summary>
     ///</summary>
+    public partial class ValueTypeValueRangeDefinition : IORMCustomSerializedElement
+    {
+        /// <summary>
+        ///</summary>
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.ElementInfo);
+            }
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+        {
+            get
+            {
+                return new ORMCustomSerializedElementInfo(null, "ValueRangeDefinition", null, ORMCustomSerializedElementWriteStyle.Element, null);
+            }
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+        {
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+    }
+    /// <summary>
+    ///</summary>
+    public partial class RoleValueRangeDefinition : IORMCustomSerializedElement
+    {
+        /// <summary>
+        ///</summary>
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.ElementInfo);
+            }
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+        {
+            get
+            {
+                return new ORMCustomSerializedElementInfo(null, "RoleValueRangeDefinition", null, ORMCustomSerializedElementWriteStyle.Element, null);
+            }
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+        {
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+    }
+    /// <summary>
+    ///</summary>
     public partial class FactType : IORMCustomSerializedElement
     {
         private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -1213,19 +1383,10 @@ namespace Northface.Tools.ORM.ObjectModel
             Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = FactType.myCustomSerializedChildElementInfo;
             if ((ret == null))
             {
-                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[4];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = FactTypeHasRole.RoleCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "FactRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-                System.Guid[] guids1 = new System.Guid[1];
-                guids1[0] = FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid;
-                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, guids1);
-                System.Guid[] guids2 = new System.Guid[1];
-                guids2[0] = FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid;
-                ret[2] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, guids2);
-                System.Guid[] guids3 = new System.Guid[1];
-                guids3[0] = FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid;
-                ret[3] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "InternalConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, guids3);
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[3];
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "FactRoles", null, ORMCustomSerializedElementWriteStyle.Element, null, FactTypeHasRole.RoleCollectionMetaRoleGuid);
+                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
+                ret[2] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "InternalConstraints", null, ORMCustomSerializedElementWriteStyle.Element, null, FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid);
                 FactType.myCustomSerializedChildElementInfo = ret;
             }
             return ret;
@@ -1252,14 +1413,6 @@ namespace Northface.Tools.ORM.ObjectModel
             {
                 return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
             }
-            if ((rolePlayedInfo.Id == SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-            }
-            if ((rolePlayedInfo.Id == MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-            }
             if ((rolePlayedInfo.Id == FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid))
             {
                 return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
@@ -1276,9 +1429,9 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = FactType.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
@@ -1287,11 +1440,9 @@ namespace Northface.Tools.ORM.ObjectModel
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|FactRoles||", match);
                 match.InitializeRoles(FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|ReadingOrders||", match);
-                match.InitializeRoles(FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|ReadingOrders||", match);
                 match.InitializeRoles(FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid);
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|InternalConstraints||", match);
-                myChildElementMappings = childElementMappings;
+                FactType.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -1303,7 +1454,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -1325,20 +1476,14 @@ namespace Northface.Tools.ORM.ObjectModel
                 roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
                 metaRole = metaDataDir.FindMetaRole(FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
                 roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
-                metaRole = metaDataDir.FindMetaRole(FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
                 metaRole = metaDataDir.FindMetaRole(FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 3;
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
                 metaRole = metaDataDir.FindMetaRole(NestingEntityTypeHasFactType.NestingTypeMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 4;
-                metaRole = metaDataDir.FindMetaRole(SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 5;
-                metaRole = metaDataDir.FindMetaRole(MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 6;
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 3;
                 metaRole = metaDataDir.FindMetaRole(FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 7;
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 4;
                 metaRole = metaDataDir.FindMetaRole(FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 8;
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 5;
                 this.myRoleOrderDictionary = roleOrderDictionary;
             }
             /// <summary>
@@ -1387,7 +1532,7 @@ namespace Northface.Tools.ORM.ObjectModel
     public partial class ReadingOrder : IORMCustomSerializedElement
     {
         private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -1445,12 +1590,8 @@ namespace Northface.Tools.ORM.ObjectModel
             if ((ret == null))
             {
                 ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = ReadingOrderHasReading.ReadingCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Readings", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-                System.Guid[] guids1 = new System.Guid[1];
-                guids1[0] = ReadingOrderHasRole.RoleCollectionMetaRoleGuid;
-                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids1);
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Readings", null, ORMCustomSerializedElementWriteStyle.Element, null, ReadingOrderHasReading.ReadingCollectionMetaRoleGuid);
+                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, ReadingOrderHasRole.RoleCollectionMetaRoleGuid);
                 ReadingOrder.myCustomSerializedChildElementInfo = ret;
             }
             return ret;
@@ -1485,9 +1626,9 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ReadingOrder.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
@@ -1497,9 +1638,7 @@ namespace Northface.Tools.ORM.ObjectModel
                         "u/ORM/ORMCore|Role", match);
                 match.InitializeRoles(ReadingOrderHasReading.ReadingCollectionMetaRoleGuid);
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|Readings||", match);
-                match.InitializeRoles();
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequence||", match);
-                myChildElementMappings = childElementMappings;
+                ReadingOrder.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -1511,7 +1650,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -1524,7 +1663,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class Reading : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -1614,16 +1753,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = Reading.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeAttribute(Reading.TextMetaAttributeGuid, null);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Data", match);
-                myChildElementMappings = childElementMappings;
+                Reading.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -1635,7 +1774,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -1649,7 +1788,7 @@ namespace Northface.Tools.ORM.ObjectModel
     public partial class Role : IORMCustomSerializedElement
     {
         private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         private static Dictionary<string, Guid> myCustomSerializedAttributes;
         /// <summary>
         ///</summary>
@@ -1708,10 +1847,9 @@ namespace Northface.Tools.ORM.ObjectModel
             Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = Role.myCustomSerializedChildElementInfo;
             if ((ret == null))
             {
-                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ValueConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null, RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "ReadingOrders", null, ORMCustomSerializedElementWriteStyle.Element, null, FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
                 Role.myCustomSerializedChildElementInfo = ret;
             }
             return ret;
@@ -1762,18 +1900,20 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = Role.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(ObjectTypePlaysRole.RolePlayerMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|RolePlayer", match);
+                match.InitializeRoles(RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|ValueConstraint||", match);
                 match.InitializeRoles(FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|ReadingOrders||", match);
-                myChildElementMappings = childElementMappings;
+                Role.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -1785,18 +1925,23 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             Dictionary<string, Guid> customSerializedAttributes = Role.myCustomSerializedAttributes;
             if ((customSerializedAttributes == null))
             {
                 customSerializedAttributes = new Dictionary<string, Guid>();
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMCore|IsMandatory", Role.IsMandatoryMetaAttributeGuid);
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMCore|Multiplicity", Role.MultiplicityMetaAttributeGuid);
+                customSerializedAttributes.Add("IsMandatory", Role.IsMandatoryMetaAttributeGuid);
+                customSerializedAttributes.Add("Multiplicity", Role.MultiplicityMetaAttributeGuid);
                 Role.myCustomSerializedAttributes = customSerializedAttributes;
             }
             Guid rVal;
-            customSerializedAttributes.TryGetValue(string.Concat(xmlNamespace, "|", attributeName), out rVal);
+            string key = attributeName;
+            if (!((xmlNamespace.Length == 0)))
+            {
+                key = string.Concat(xmlNamespace, "|", attributeName);
+            }
+            customSerializedAttributes.TryGetValue(key, out rVal);
             return rVal;
         }
         Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
@@ -1806,10 +1951,10 @@ namespace Northface.Tools.ORM.ObjectModel
     }
     /// <summary>
     ///</summary>
-    public partial class EqualityConstraint : IORMCustomSerializedElement
+    public partial class MultiColumnExternalConstraint : IORMCustomSerializedElement
     {
         private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -1863,14 +2008,12 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = EqualityConstraint.myCustomSerializedChildElementInfo;
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = MultiColumnExternalConstraint.myCustomSerializedChildElementInfo;
             if ((ret == null))
             {
                 ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequences", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-                EqualityConstraint.myCustomSerializedChildElementInfo = ret;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequences", null, ORMCustomSerializedElementWriteStyle.Element, null, MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
+                MultiColumnExternalConstraint.myCustomSerializedChildElementInfo = ret;
             }
             return ret;
         }
@@ -1892,10 +2035,6 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            if ((rolePlayedInfo.Id == MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-            }
             if ((rolePlayedInfo.Id == MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid))
             {
                 return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
@@ -1908,16 +2047,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = MultiColumnExternalConstraint.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequences||", match);
-                myChildElementMappings = childElementMappings;
+                MultiColumnExternalConstraint.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -1929,275 +2068,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return default(Guid);
-        }
-        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return this.MapAttribute(xmlNamespace, attributeName);
-        }
-    }
-    /// <summary>
-    ///</summary>
-    public partial class ExclusionConstraint : IORMCustomSerializedElement
-    {
-        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
-            }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return this.SupportedCustomSerializedOperations;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
-        {
-            get
-            {
-                throw new System.NotSupportedException();
-            }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-        {
-            get
-            {
-                return this.CustomSerializedElementInfo;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        [CLSCompliant(false)]
-        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return null;
-            }
-        }
-        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return this.CustomSerializedChildRoleComparer;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-        {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ExclusionConstraint.myCustomSerializedChildElementInfo;
-            if ((ret == null))
-            {
-                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequences", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-                ExclusionConstraint.myCustomSerializedChildElementInfo = ret;
-            }
-            return ret;
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-        {
-            return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((rolePlayedInfo.Id == MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-            }
-            if ((rolePlayedInfo.Id == MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-            }
-            return ORMCustomSerializedElementInfo.Default;
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                match.InitializeRoles(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequences||", match);
-                myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
-        }
-        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-        }
-        /// <summary>
-        ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return default(Guid);
-        }
-        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return this.MapAttribute(xmlNamespace, attributeName);
-        }
-    }
-    /// <summary>
-    ///</summary>
-    public partial class SubsetConstraint : IORMCustomSerializedElement
-    {
-        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
-            }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return this.SupportedCustomSerializedOperations;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
-        {
-            get
-            {
-                throw new System.NotSupportedException();
-            }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-        {
-            get
-            {
-                return this.CustomSerializedElementInfo;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        [CLSCompliant(false)]
-        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return null;
-            }
-        }
-        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return this.CustomSerializedChildRoleComparer;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-        {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = SubsetConstraint.myCustomSerializedChildElementInfo;
-            if ((ret == null))
-            {
-                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequences", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-                SubsetConstraint.myCustomSerializedChildElementInfo = ret;
-            }
-            return ret;
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-        {
-            return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((rolePlayedInfo.Id == MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-            }
-            if ((rolePlayedInfo.Id == MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-            }
-            return ORMCustomSerializedElementInfo.Default;
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                match.InitializeRoles(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequences||", match);
-                myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
-        }
-        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-        }
-        /// <summary>
-        ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -2210,7 +2081,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class MultiColumnExternalConstraintRoleSequence : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -2296,16 +2167,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = MultiColumnExternalConstraintRoleSequence.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Role", match);
-                myChildElementMappings = childElementMappings;
+                MultiColumnExternalConstraintRoleSequence.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -2317,7 +2188,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -2328,10 +2199,10 @@ namespace Northface.Tools.ORM.ObjectModel
     }
     /// <summary>
     ///</summary>
-    public partial class FrequencyConstraint : IORMCustomSerializedElement
+    public partial class SingleColumnExternalConstraint : IORMCustomSerializedElement
     {
         private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -2385,14 +2256,12 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = FrequencyConstraint.myCustomSerializedChildElementInfo;
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = SingleColumnExternalConstraint.myCustomSerializedChildElementInfo;
             if ((ret == null))
             {
                 ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-                FrequencyConstraint.myCustomSerializedChildElementInfo = ret;
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
+                SingleColumnExternalConstraint.myCustomSerializedChildElementInfo = ret;
             }
             return ret;
         }
@@ -2418,10 +2287,6 @@ namespace Northface.Tools.ORM.ObjectModel
             {
                 return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
             }
-            if ((rolePlayedInfo.Id == SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-            }
             return ORMCustomSerializedElementInfo.Default;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
@@ -2430,9 +2295,9 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = SingleColumnExternalConstraint.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
@@ -2440,9 +2305,7 @@ namespace Northface.Tools.ORM.ObjectModel
                 match.InitializeRoles(ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequence|http://Schemas.Northface.ed" +
                         "u/ORM/ORMCore|Role", match);
-                match.InitializeRoles();
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequence||", match);
-                myChildElementMappings = childElementMappings;
+                SingleColumnExternalConstraint.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -2454,144 +2317,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return default(Guid);
-        }
-        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return this.MapAttribute(xmlNamespace, attributeName);
-        }
-    }
-    /// <summary>
-    ///</summary>
-    public partial class DisjunctiveMandatoryConstraint : IORMCustomSerializedElement
-    {
-        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
-            }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return this.SupportedCustomSerializedOperations;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
-        {
-            get
-            {
-                throw new System.NotSupportedException();
-            }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-        {
-            get
-            {
-                return this.CustomSerializedElementInfo;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        [CLSCompliant(false)]
-        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return null;
-            }
-        }
-        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return this.CustomSerializedChildRoleComparer;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-        {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = DisjunctiveMandatoryConstraint.myCustomSerializedChildElementInfo;
-            if ((ret == null))
-            {
-                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-                DisjunctiveMandatoryConstraint.myCustomSerializedChildElementInfo = ret;
-            }
-            return ret;
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-        {
-            return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((rolePlayedInfo.Id == ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
-            }
-            if ((rolePlayedInfo.Id == SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
-            }
-            return ORMCustomSerializedElementInfo.Default;
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                match.InitializeRoles(ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequence|http://Schemas.Northface.ed" +
-                        "u/ORM/ORMCore|Role", match);
-                match.InitializeRoles();
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequence||", match);
-                myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
-        }
-        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-        }
-        /// <summary>
-        ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -2604,15 +2330,13 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ExternalUniquenessConstraint : IORMCustomSerializedElement
     {
-        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
-                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.LinkInfo);
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2624,77 +2348,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            get
-            {
-                throw new System.NotSupportedException();
-            }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-        {
-            get
-            {
-                return this.CustomSerializedElementInfo;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        [CLSCompliant(false)]
-        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return null;
-            }
-        }
-        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return this.CustomSerializedChildRoleComparer;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-        {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ExternalUniquenessConstraint.myCustomSerializedChildElementInfo;
-            if ((ret == null))
-            {
-                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
-                ExternalUniquenessConstraint.myCustomSerializedChildElementInfo = ret;
-            }
-            return ret;
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-        {
-            return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((rolePlayedInfo.Id == ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, "Role", null, ORMCustomSerializedElementWriteStyle.Element, null);
-            }
-            if ((rolePlayedInfo.Id == SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid))
+            if ((rolePlayedInfo.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid))
             {
                 return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+            }
+            if (!((0 
+            == (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))))
+            {
+                return base.GetCustomSerializedLinkInfo(rolePlayedInfo);
             }
             return ORMCustomSerializedElementInfo.Default;
         }
@@ -2702,47 +2365,13 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
-        /// <summary>
-        ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                match.InitializeRoles(ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequence|http://Schemas.Northface.ed" +
-                        "u/ORM/ORMCore|Role", match);
-                match.InitializeRoles();
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequence||", match);
-                myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
-        }
-        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-        }
-        /// <summary>
-        ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return default(Guid);
-        }
-        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return this.MapAttribute(xmlNamespace, attributeName);
-        }
     }
     /// <summary>
     ///</summary>
     public partial class InternalUniquenessConstraint : IORMCustomSerializedElement
     {
         private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -2801,9 +2430,7 @@ namespace Northface.Tools.ORM.ObjectModel
             if ((ret == null))
             {
                 ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
                 InternalUniquenessConstraint.myCustomSerializedChildElementInfo = ret;
             }
             return ret;
@@ -2818,7 +2445,7 @@ namespace Northface.Tools.ORM.ObjectModel
         {
             if ((attributeInfo.Id == InternalUniquenessConstraint.NameMetaAttributeGuid))
             {
-                return new ORMCustomSerializedAttributeInfo(null, "Name", null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
             }
             return ORMCustomSerializedAttributeInfo.Default;
         }
@@ -2850,9 +2477,9 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = InternalUniquenessConstraint.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
@@ -2860,9 +2487,7 @@ namespace Northface.Tools.ORM.ObjectModel
                 match.InitializeRoles(ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequence|http://Schemas.Northface.ed" +
                         "u/ORM/ORMCore|Role", match);
-                match.InitializeRoles();
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequence||", match);
-                myChildElementMappings = childElementMappings;
+                InternalUniquenessConstraint.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -2874,7 +2499,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -2888,14 +2513,15 @@ namespace Northface.Tools.ORM.ObjectModel
     public partial class SimpleMandatoryConstraint : IORMCustomSerializedElement
     {
         private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
-                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.AttributeInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo));
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -2946,9 +2572,7 @@ namespace Northface.Tools.ORM.ObjectModel
             if ((ret == null))
             {
                 ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                System.Guid[] guids0 = new System.Guid[1];
-                guids0[0] = ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid;
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, guids0);
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RoleSequence", null, ORMCustomSerializedElementWriteStyle.Element, null, ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
                 SimpleMandatoryConstraint.myCustomSerializedChildElementInfo = ret;
             }
             return ret;
@@ -2961,7 +2585,11 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            throw new System.NotSupportedException();
+            if ((attributeInfo.Id == SimpleMandatoryConstraint.NameMetaAttributeGuid))
+            {
+                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+            }
+            return ORMCustomSerializedAttributeInfo.Default;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
@@ -2983,9 +2611,9 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = SimpleMandatoryConstraint.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
@@ -2993,9 +2621,7 @@ namespace Northface.Tools.ORM.ObjectModel
                 match.InitializeRoles(ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
                 childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequence|http://Schemas.Northface.ed" +
                         "u/ORM/ORMCore|Role", match);
-                match.InitializeRoles();
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMCore|RoleSequence||", match);
-                myChildElementMappings = childElementMappings;
+                SimpleMandatoryConstraint.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -3007,7 +2633,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -3020,7 +2646,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ConstraintDuplicateNameError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -3106,16 +2732,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ConstraintDuplicateNameError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(MultiColumnExternalConstraintHasDuplicateNameError.MultiColumnExternalConstraintCollectionMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Constraint", match);
-                myChildElementMappings = childElementMappings;
+                ConstraintDuplicateNameError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -3127,7 +2753,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -3140,7 +2766,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class FactTypeDuplicateNameError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -3226,16 +2852,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = FactTypeDuplicateNameError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(FactTypeHasDuplicateNameError.FactTypeCollectionMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Facts", match);
-                myChildElementMappings = childElementMappings;
+                FactTypeDuplicateNameError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -3247,7 +2873,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -3260,7 +2886,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ObjectTypeDuplicateNameError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -3346,16 +2972,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ObjectTypeDuplicateNameError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(ObjectTypeHasDuplicateNameError.ObjectTypeCollectionMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Objects", match);
-                myChildElementMappings = childElementMappings;
+                ObjectTypeDuplicateNameError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -3367,7 +2993,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -3380,7 +3006,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class ExternalConstraintRoleSequenceArityMismatch : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -3466,16 +3092,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ExternalConstraintRoleSequenceArityMismatch.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.ConstraintMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Constraint", match);
-                myChildElementMappings = childElementMappings;
+                ExternalConstraintRoleSequenceArityMismatch.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -3487,7 +3113,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -3500,7 +3126,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class FactTypeRequiresInternalUniquenessConstraintError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -3586,16 +3212,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = FactTypeRequiresInternalUniquenessConstraintError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Fact", match);
-                myChildElementMappings = childElementMappings;
+                FactTypeRequiresInternalUniquenessConstraintError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -3607,7 +3233,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -3620,7 +3246,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class FactTypeRequiresReadingError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -3706,16 +3332,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = FactTypeRequiresReadingError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(FactTypeHasFactTypeRequiresReadingError.FactTypeMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Fact", match);
-                myChildElementMappings = childElementMappings;
+                FactTypeRequiresReadingError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -3727,7 +3353,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -3740,7 +3366,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class TooFewReadingRolesError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -3826,16 +3452,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = TooFewReadingRolesError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(ReadingHasTooFewRolesError.ReadingMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Reading", match);
-                myChildElementMappings = childElementMappings;
+                TooFewReadingRolesError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -3847,7 +3473,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -3860,7 +3486,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class TooFewRoleSequencesError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -3946,16 +3572,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = TooFewRoleSequencesError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Constraint", match);
-                myChildElementMappings = childElementMappings;
+                TooFewRoleSequencesError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -3967,7 +3593,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -3980,7 +3606,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class TooManyReadingRolesError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -4066,16 +3692,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = TooManyReadingRolesError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(ReadingHasTooManyRolesError.ReadingMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Reading", match);
-                myChildElementMappings = childElementMappings;
+                TooManyReadingRolesError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -4087,7 +3713,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -4100,7 +3726,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class TooManyRoleSequencesError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -4186,16 +3812,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = TooManyRoleSequencesError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Constraint", match);
-                myChildElementMappings = childElementMappings;
+                TooManyRoleSequencesError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -4207,7 +3833,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -4220,7 +3846,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class DataTypeNotSpecifiedError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -4306,16 +3932,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = DataTypeNotSpecifiedError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|ConceptualDataType", match);
-                myChildElementMappings = childElementMappings;
+                DataTypeNotSpecifiedError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -4327,7 +3953,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -4340,7 +3966,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class NMinusOneError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -4426,16 +4052,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = NMinusOneError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(InternalUniquenessConstraintHasNMinusOneError.ConstraintMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|InternalUniquenessConstraint", match);
-                myChildElementMappings = childElementMappings;
+                NMinusOneError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -4447,7 +4073,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -4460,7 +4086,7 @@ namespace Northface.Tools.ORM.ObjectModel
     ///</summary>
     public partial class CompatibleRolePlayerTypeError : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
@@ -4546,16 +4172,16 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = CompatibleRolePlayerTypeError.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MultiColumnExternalConstraintMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|Constraint", match);
-                myChildElementMappings = childElementMappings;
+                CompatibleRolePlayerTypeError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -4567,7 +4193,7 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
             return default(Guid);
         }
@@ -4591,8 +4217,8 @@ namespace Northface.Tools.ORM.ShapeModel
     public partial class ORMShapeModel : IORMCustomSerializedMetaModel
     {
         private Dictionary<MetaClassInfo, object> myCustomSerializationOmissions;
-        private static Dictionary<string, Guid> myClassNameMap = null;
-        private static Collection<string> myValidNamespaces = null;
+        private static Dictionary<string, Guid> myClassNameMap;
+        private static Collection<string> myValidNamespaces;
         /// <summary>
         ///</summary>
         protected string DefaultElementPrefix
@@ -4668,24 +4294,24 @@ namespace Northface.Tools.ORM.ShapeModel
         ///</summary>
         protected Guid MapClassName(string xmlNamespace, string elementName)
         {
-            Collection<string> validNamespaces = myValidNamespaces;
-            Dictionary<string, Guid> classNameMap = myClassNameMap;
+            Collection<string> validNamespaces = ORMShapeModel.myValidNamespaces;
+            Dictionary<string, Guid> classNameMap = ORMShapeModel.myClassNameMap;
             if ((validNamespaces == null))
             {
                 validNamespaces = new Collection<string>();
                 validNamespaces.Add("http://Schemas.Northface.edu/ORM/ORMDiagram");
-                myValidNamespaces = validNamespaces;
+                ORMShapeModel.myValidNamespaces = validNamespaces;
             }
             if ((classNameMap == null))
             {
                 classNameMap = new Dictionary<string, Guid>();
+                classNameMap.Add("ORMDiagram", ORMDiagram.MetaClassGuid);
+                classNameMap.Add("ORMBaseShape", ORMBaseShape.MetaClassGuid);
                 classNameMap.Add("ObjectTypeShape", ObjectTypeShape.MetaClassGuid);
-                classNameMap.Add("FactTypeShape", FactTypeShape.MetaClassGuid);
                 classNameMap.Add("ObjectifiedFactTypeNameShape", ObjectifiedFactTypeNameShape.MetaClassGuid);
                 classNameMap.Add("ReadingShape", ReadingShape.MetaClassGuid);
-                classNameMap.Add("ExternalConstraintShape", ExternalConstraintShape.MetaClassGuid);
                 classNameMap.Add("ValueRangeShape", ValueRangeShape.MetaClassGuid);
-                myClassNameMap = classNameMap;
+                ORMShapeModel.myClassNameMap = classNameMap;
             }
             if ((validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName)))
             {
@@ -4700,17 +4326,19 @@ namespace Northface.Tools.ORM.ShapeModel
     }
     /// <summary>
     ///</summary>
-    public partial class ObjectTypeShape : IORMCustomSerializedElement
+    public partial class ORMDiagram : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
-        private static Dictionary<string, Guid> myCustomSerializedAttributes;
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
+        private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
-                return ORMCustomSerializedElementSupportedOperations.AttributeInfo;
+                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles));
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -4743,7 +4371,13 @@ namespace Northface.Tools.ORM.ShapeModel
         {
             get
             {
-                return null;
+                IComparer<MetaRoleInfo> retVal = ORMDiagram.myCustomSortChildComparer;
+                if ((null == retVal))
+                {
+                    retVal = new CustomSortChildComparer(this.Store);
+                    ORMDiagram.myCustomSortChildComparer = retVal;
+                }
+                return retVal;
             }
         }
         IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
@@ -4757,7 +4391,14 @@ namespace Northface.Tools.ORM.ShapeModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            throw new System.NotSupportedException();
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ORMDiagram.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Shapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+                ORMDiagram.myCustomSerializedChildElementInfo = ret;
+            }
+            return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
@@ -4767,15 +4408,7 @@ namespace Northface.Tools.ORM.ShapeModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            if ((attributeInfo.Id == ObjectTypeShape.IsExpandedMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
-            }
-            if ((attributeInfo.Id == ObjectTypeShape.AbsoluteBoundsMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
-            }
-            return ORMCustomSerializedAttributeInfo.Default;
+            throw new System.NotSupportedException();
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
@@ -4785,7 +4418,11 @@ namespace Northface.Tools.ORM.ShapeModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            throw new System.NotSupportedException();
+            if ((rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid))
+            {
+                return new ORMCustomSerializedElementInfo(null, "Subject", null, ORMCustomSerializedElementWriteStyle.Element, null);
+            }
+            return ORMCustomSerializedElementInfo.Default;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
@@ -4793,14 +4430,18 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ORMDiagram.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                myChildElementMappings = childElementMappings;
+                match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
+                childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMDiagram|Subject", match);
+                match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|Shapes||", match);
+                ORMDiagram.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -4812,30 +4453,78 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
-            Dictionary<string, Guid> customSerializedAttributes = ObjectTypeShape.myCustomSerializedAttributes;
-            if ((customSerializedAttributes == null))
-            {
-                customSerializedAttributes = new Dictionary<string, Guid>();
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|IsExpanded", ObjectTypeShape.IsExpandedMetaAttributeGuid);
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|AbsoluteBounds", ObjectTypeShape.AbsoluteBoundsMetaAttributeGuid);
-                ObjectTypeShape.myCustomSerializedAttributes = customSerializedAttributes;
-            }
-            Guid rVal;
-            customSerializedAttributes.TryGetValue(string.Concat(xmlNamespace, "|", attributeName), out rVal);
-            return rVal;
+            return default(Guid);
         }
         Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
         {
             return this.MapAttribute(xmlNamespace, attributeName);
+        }
+        private class CustomSortChildComparer : IComparer<MetaRoleInfo>
+        {
+            private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
+            /// <summary>
+            ///</summary>
+            public CustomSortChildComparer(Store store)
+            {
+                MetaDataDirectory metaDataDir = store.MetaDataDirectory;
+                Dictionary<MetaRoleInfo, int> roleOrderDictionary = new Dictionary<MetaRoleInfo, int>();
+                MetaRoleInfo metaRole;
+                metaRole = metaDataDir.FindMetaRole(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
+                metaRole = metaDataDir.FindMetaRole(SubjectHasPresentation.SubjectMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
+                this.myRoleOrderDictionary = roleOrderDictionary;
+            }
+            /// <summary>
+            ///</summary>
+            public int Compare(MetaRoleInfo x, MetaRoleInfo y)
+            {
+                int xPos;
+                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
+                {
+                    xPos = int.MaxValue;
+                }
+                int yPos;
+                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
+                {
+                    yPos = int.MaxValue;
+                }
+                if ((xPos == yPos))
+                {
+                    return 0;
+                }
+                else
+                {
+                    if ((xPos < yPos))
+                    {
+                        return -1;
+                    }
+                }
+                return 1;
+            }
+            /// <summary>
+            ///</summary>
+            public bool Equals(MetaRoleInfo x, MetaRoleInfo y)
+            {
+                return object.ReferenceEquals(x, y);
+            }
+            /// <summary>
+            ///</summary>
+            public int GetHashCode(MetaRoleInfo obj)
+            {
+                return obj.GetHashCode();
+            }
         }
     }
     /// <summary>
     ///</summary>
-    public partial class FactTypeShape : IORMCustomSerializedElement
+    public partial class ORMBaseShape : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
+        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
+        private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         private static Dictionary<string, Guid> myCustomSerializedAttributes;
         /// <summary>
         ///</summary>
@@ -4843,7 +4532,9 @@ namespace Northface.Tools.ORM.ShapeModel
         {
             get
             {
-                return ORMCustomSerializedElementSupportedOperations.AttributeInfo;
+                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.AttributeInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -4876,7 +4567,13 @@ namespace Northface.Tools.ORM.ShapeModel
         {
             get
             {
-                return null;
+                IComparer<MetaRoleInfo> retVal = ORMBaseShape.myCustomSortChildComparer;
+                if ((null == retVal))
+                {
+                    retVal = new CustomSortChildComparer(this.Store);
+                    ORMBaseShape.myCustomSortChildComparer = retVal;
+                }
+                return retVal;
             }
         }
         IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
@@ -4890,7 +4587,15 @@ namespace Northface.Tools.ORM.ShapeModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            throw new System.NotSupportedException();
+            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ORMBaseShape.myCustomSerializedChildElementInfo;
+            if ((ret == null))
+            {
+                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
+                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RelativeShapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
+                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "NestedShapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+                ORMBaseShape.myCustomSerializedChildElementInfo = ret;
+            }
+            return ret;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
@@ -4900,11 +4605,11 @@ namespace Northface.Tools.ORM.ShapeModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            if ((attributeInfo.Id == FactTypeShape.IsExpandedMetaAttributeGuid))
+            if ((attributeInfo.Id == ORMBaseShape.IsExpandedMetaAttributeGuid))
             {
                 return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
             }
-            if ((attributeInfo.Id == FactTypeShape.AbsoluteBoundsMetaAttributeGuid))
+            if ((attributeInfo.Id == ORMBaseShape.AbsoluteBoundsMetaAttributeGuid))
             {
                 return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
             }
@@ -4918,7 +4623,11 @@ namespace Northface.Tools.ORM.ShapeModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            throw new System.NotSupportedException();
+            if ((rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid))
+            {
+                return new ORMCustomSerializedElementInfo(null, "Subject", null, ORMCustomSerializedElementWriteStyle.Element, null);
+            }
+            return ORMCustomSerializedElementInfo.Default;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
@@ -4926,14 +4635,20 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
         {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ORMBaseShape.myChildElementMappings;
             if ((childElementMappings == null))
             {
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                myChildElementMappings = childElementMappings;
+                match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
+                childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMDiagram|Subject", match);
+                match.InitializeRoles(ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
+                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|RelativeShapes||", match);
+                match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|NestedShapes||", match);
+                ORMBaseShape.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
@@ -4945,38 +4660,143 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
-            Dictionary<string, Guid> customSerializedAttributes = FactTypeShape.myCustomSerializedAttributes;
+            Dictionary<string, Guid> customSerializedAttributes = ORMBaseShape.myCustomSerializedAttributes;
             if ((customSerializedAttributes == null))
             {
                 customSerializedAttributes = new Dictionary<string, Guid>();
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|IsExpanded", FactTypeShape.IsExpandedMetaAttributeGuid);
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|AbsoluteBounds", FactTypeShape.AbsoluteBoundsMetaAttributeGuid);
-                FactTypeShape.myCustomSerializedAttributes = customSerializedAttributes;
+                customSerializedAttributes.Add("IsExpanded", ORMBaseShape.IsExpandedMetaAttributeGuid);
+                customSerializedAttributes.Add("AbsoluteBounds", ORMBaseShape.AbsoluteBoundsMetaAttributeGuid);
+                ORMBaseShape.myCustomSerializedAttributes = customSerializedAttributes;
             }
             Guid rVal;
-            customSerializedAttributes.TryGetValue(string.Concat(xmlNamespace, "|", attributeName), out rVal);
+            string key = attributeName;
+            if (!((xmlNamespace.Length == 0)))
+            {
+                key = string.Concat(xmlNamespace, "|", attributeName);
+            }
+            customSerializedAttributes.TryGetValue(key, out rVal);
             return rVal;
         }
         Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
         {
             return this.MapAttribute(xmlNamespace, attributeName);
+        }
+        private class CustomSortChildComparer : IComparer<MetaRoleInfo>
+        {
+            private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
+            /// <summary>
+            ///</summary>
+            public CustomSortChildComparer(Store store)
+            {
+                MetaDataDirectory metaDataDir = store.MetaDataDirectory;
+                Dictionary<MetaRoleInfo, int> roleOrderDictionary = new Dictionary<MetaRoleInfo, int>();
+                MetaRoleInfo metaRole;
+                metaRole = metaDataDir.FindMetaRole(ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
+                metaRole = metaDataDir.FindMetaRole(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
+                metaRole = metaDataDir.FindMetaRole(SubjectHasPresentation.SubjectMetaRoleGuid);
+                roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
+                this.myRoleOrderDictionary = roleOrderDictionary;
+            }
+            /// <summary>
+            ///</summary>
+            public int Compare(MetaRoleInfo x, MetaRoleInfo y)
+            {
+                int xPos;
+                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
+                {
+                    xPos = int.MaxValue;
+                }
+                int yPos;
+                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
+                {
+                    yPos = int.MaxValue;
+                }
+                if ((xPos == yPos))
+                {
+                    return 0;
+                }
+                else
+                {
+                    if ((xPos < yPos))
+                    {
+                        return -1;
+                    }
+                }
+                return 1;
+            }
+            /// <summary>
+            ///</summary>
+            public bool Equals(MetaRoleInfo x, MetaRoleInfo y)
+            {
+                return object.ReferenceEquals(x, y);
+            }
+            /// <summary>
+            ///</summary>
+            public int GetHashCode(MetaRoleInfo obj)
+            {
+                return obj.GetHashCode();
+            }
+        }
+    }
+    /// <summary>
+    ///</summary>
+    public partial class ObjectTypeShape : IORMCustomSerializedElement
+    {
+        /// <summary>
+        ///</summary>
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
+            }
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            if ((attributeInfo.Id == ObjectTypeShape.ShapeNameMetaAttributeGuid))
+            {
+                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+            }
+            if ((attributeInfo.Id == ObjectTypeShape.ReferenceModeNameMetaAttributeGuid))
+            {
+                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+            }
+            if (!((0 
+            == (ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations))))
+            {
+                return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+            }
+            return ORMCustomSerializedAttributeInfo.Default;
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
         }
     }
     /// <summary>
     ///</summary>
     public partial class ObjectifiedFactTypeNameShape : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
-        private static Dictionary<string, Guid> myCustomSerializedAttributes;
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
-                return ORMCustomSerializedElementSupportedOperations.AttributeInfo;
+                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -4988,128 +4808,35 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            get
+            if ((attributeInfo.Id == ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid))
             {
-                throw new System.NotSupportedException();
+                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
             }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-        {
-            get
+            if (!((0 
+            == (ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations))))
             {
-                return this.CustomSerializedElementInfo;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        [CLSCompliant(false)]
-        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return null;
-            }
-        }
-        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return this.CustomSerializedChildRoleComparer;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-        {
-            return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((attributeInfo.Id == ObjectifiedFactTypeNameShape.IsExpandedMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
-            }
-            if ((attributeInfo.Id == ObjectifiedFactTypeNameShape.AbsoluteBoundsMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+                return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
             }
             return ORMCustomSerializedAttributeInfo.Default;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
-        }
-        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-        }
-        /// <summary>
-        ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
-        {
-            Dictionary<string, Guid> customSerializedAttributes = ObjectifiedFactTypeNameShape.myCustomSerializedAttributes;
-            if ((customSerializedAttributes == null))
-            {
-                customSerializedAttributes = new Dictionary<string, Guid>();
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|IsExpanded", ObjectifiedFactTypeNameShape.IsExpandedMetaAttributeGuid);
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|AbsoluteBounds", ObjectifiedFactTypeNameShape.AbsoluteBoundsMetaAttributeGuid);
-                ObjectifiedFactTypeNameShape.myCustomSerializedAttributes = customSerializedAttributes;
-            }
-            Guid rVal;
-            customSerializedAttributes.TryGetValue(string.Concat(xmlNamespace, "|", attributeName), out rVal);
-            return rVal;
-        }
-        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return this.MapAttribute(xmlNamespace, attributeName);
         }
     }
     /// <summary>
     ///</summary>
     public partial class ReadingShape : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
-        private static Dictionary<string, Guid> myCustomSerializedAttributes;
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
-                return ORMCustomSerializedElementSupportedOperations.AttributeInfo;
+                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5121,261 +4848,35 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            get
+            if ((attributeInfo.Id == ReadingShape.ReadingTextMetaAttributeGuid))
             {
-                throw new System.NotSupportedException();
+                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
             }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-        {
-            get
+            if (!((0 
+            == (ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations))))
             {
-                return this.CustomSerializedElementInfo;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        [CLSCompliant(false)]
-        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return null;
-            }
-        }
-        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return this.CustomSerializedChildRoleComparer;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-        {
-            return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((attributeInfo.Id == ReadingShape.IsExpandedMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
-            }
-            if ((attributeInfo.Id == ReadingShape.AbsoluteBoundsMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+                return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
             }
             return ORMCustomSerializedAttributeInfo.Default;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
-        }
-        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-        }
-        /// <summary>
-        ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
-        {
-            Dictionary<string, Guid> customSerializedAttributes = ReadingShape.myCustomSerializedAttributes;
-            if ((customSerializedAttributes == null))
-            {
-                customSerializedAttributes = new Dictionary<string, Guid>();
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|IsExpanded", ReadingShape.IsExpandedMetaAttributeGuid);
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|AbsoluteBounds", ReadingShape.AbsoluteBoundsMetaAttributeGuid);
-                ReadingShape.myCustomSerializedAttributes = customSerializedAttributes;
-            }
-            Guid rVal;
-            customSerializedAttributes.TryGetValue(string.Concat(xmlNamespace, "|", attributeName), out rVal);
-            return rVal;
-        }
-        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return this.MapAttribute(xmlNamespace, attributeName);
-        }
-    }
-    /// <summary>
-    ///</summary>
-    public partial class ExternalConstraintShape : IORMCustomSerializedElement
-    {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
-        private static Dictionary<string, Guid> myCustomSerializedAttributes;
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return ORMCustomSerializedElementSupportedOperations.AttributeInfo;
-            }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return this.SupportedCustomSerializedOperations;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
-        {
-            get
-            {
-                throw new System.NotSupportedException();
-            }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-        {
-            get
-            {
-                return this.CustomSerializedElementInfo;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        [CLSCompliant(false)]
-        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return null;
-            }
-        }
-        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return this.CustomSerializedChildRoleComparer;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-        {
-            return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((attributeInfo.Id == ExternalConstraintShape.IsExpandedMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
-            }
-            if ((attributeInfo.Id == ExternalConstraintShape.AbsoluteBoundsMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
-            }
-            return ORMCustomSerializedAttributeInfo.Default;
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
-        }
-        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-        }
-        /// <summary>
-        ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
-        {
-            Dictionary<string, Guid> customSerializedAttributes = ExternalConstraintShape.myCustomSerializedAttributes;
-            if ((customSerializedAttributes == null))
-            {
-                customSerializedAttributes = new Dictionary<string, Guid>();
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|IsExpanded", ExternalConstraintShape.IsExpandedMetaAttributeGuid);
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|AbsoluteBounds", ExternalConstraintShape.AbsoluteBoundsMetaAttributeGuid);
-                ExternalConstraintShape.myCustomSerializedAttributes = customSerializedAttributes;
-            }
-            Guid rVal;
-            customSerializedAttributes.TryGetValue(string.Concat(xmlNamespace, "|", attributeName), out rVal);
-            return rVal;
-        }
-        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return this.MapAttribute(xmlNamespace, attributeName);
         }
     }
     /// <summary>
     ///</summary>
     public partial class ValueRangeShape : IORMCustomSerializedElement
     {
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings = null;
-        private static Dictionary<string, Guid> myCustomSerializedAttributes;
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
-                return ORMCustomSerializedElementSupportedOperations.AttributeInfo;
+                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5387,113 +4888,22 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            get
+            if ((attributeInfo.Id == ValueRangeShape.ValueRangeTextMetaAttributeGuid))
             {
-                throw new System.NotSupportedException();
+                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
             }
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-        {
-            get
+            if (!((0 
+            == (ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations))))
             {
-                return this.CustomSerializedElementInfo;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        [CLSCompliant(false)]
-        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return null;
-            }
-        }
-        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return this.CustomSerializedChildRoleComparer;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-        {
-            return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((attributeInfo.Id == ValueRangeShape.IsExpandedMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
-            }
-            if ((attributeInfo.Id == ValueRangeShape.AbsoluteBoundsMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+                return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
             }
             return ORMCustomSerializedAttributeInfo.Default;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            throw new System.NotSupportedException();
-        }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        public ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
-        }
-        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-        }
-        /// <summary>
-        ///</summary>
-        public Guid MapAttribute(string xmlNamespace, string attributeName)
-        {
-            Dictionary<string, Guid> customSerializedAttributes = ValueRangeShape.myCustomSerializedAttributes;
-            if ((customSerializedAttributes == null))
-            {
-                customSerializedAttributes = new Dictionary<string, Guid>();
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|IsExpanded", ValueRangeShape.IsExpandedMetaAttributeGuid);
-                customSerializedAttributes.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|AbsoluteBounds", ValueRangeShape.AbsoluteBoundsMetaAttributeGuid);
-                ValueRangeShape.myCustomSerializedAttributes = customSerializedAttributes;
-            }
-            Guid rVal;
-            customSerializedAttributes.TryGetValue(string.Concat(xmlNamespace, "|", attributeName), out rVal);
-            return rVal;
-        }
-        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return this.MapAttribute(xmlNamespace, attributeName);
         }
     }
 }

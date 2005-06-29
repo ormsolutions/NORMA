@@ -3,16 +3,12 @@
 <xs:schema targetNamespace="http://Schemas.Northface.edu/ORM/ORMCore" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified" 
 	xmlns="http://Schemas.Northface.edu/ORM/ORMCore" 
-	xmlns:mstns="http://tempur.org/XMLSchema.xsd" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
 	xmlns:derived="http://Schemas.Northface.edu/ORM/ORMDerived">
 
-	<xs:import namespace="http://Schemas.Northface.edu/ORM/ORMDerived" />
+	<!-- <xs:import namespace="http://Schemas.Northface.edu/ORM/ORMDerived" /> -->
 	<!--ExtendableElement the thought here is to define all the any's once and then have Extendable Element extend this-->
 	<xs:complexType name="ExtendableElement" abstract="true">
-		<xs:annotation>
-			<xs:documentation>My comment here.</xs:documentation>
-		</xs:annotation>
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
@@ -22,9 +18,6 @@
 	<!--ORMModel-->
 	<xs:element name="ORMModel" type="ORMModel"/>
 	<xs:complexType name="ORMModel">
-		<xs:annotation>
-			<xs:documentation>My comment here.</xs:documentation>
-		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ExtendableElement">
 				<xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -85,13 +78,13 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="EntityType">
-		<xs:annotation>
-			<xs:documentation>My comment here.</xs:documentation>
-		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ObjectType">
+				<xs:sequence>
+					<xs:element name="PreferredIdentifier" type="ConstraintRef" minOccurs="0"/>
+				</xs:sequence>
 				<!--ReferenceMode is derived.-->
-				<xs:attribute name="ReferenceMode" type="xs:string"></xs:attribute>
+				<xs:attribute name="ReferenceMode" type="xs:string"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -111,7 +104,7 @@
 			<xs:extension base="ObjectType">
 				<xs:sequence>
 					<xs:element name="ConceptualDataType" type="DataTypeRef" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="ValueRangeDefinition" type="ValueRangeDefinition" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="ValueConstraint" type="ValueRangeDefinition" minOccurs="0" maxOccurs="1"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -125,9 +118,12 @@
 		<xs:attribute name="Scale" type="xs:int"/>
 		<xs:attribute name="Length" type="xs:int"/>
 	</xs:complexType>
+	<xs:complexType name="DataTypeRefRef">
+		<xs:attribute name="ref" type="xs:IDREF" />
+	</xs:complexType>
 	<!--end DataTypeRef-->
 	<xs:complexType name="DataTypes">
-		<xs:choice>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="UnspecifiedDataType" type="UnspecifiedDataType"/>
 			<xs:element name="FixedLengthTextDataType" type="FixedLengthTextDataType"/>
 			<xs:element name="VariableLengthTextDataType" type="VariableLengthTextDataType"/>
@@ -313,7 +309,7 @@
 			<xs:extension base="ExtendableElement">
 				<xs:sequence>
 					<xs:element name="RolePlayer" type="ObjectRef" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="ValueRangeDefinition" type="ValueRangeDefinition" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="ValueConstraint" type="RoleValueRangeDefinition" minOccurs="0" maxOccurs="1"/>
 				</xs:sequence>
 				<xs:attribute name="Name" type="xs:string" use="required"/>
 				<xs:attribute name="id" type="xs:ID" use="required"/>
@@ -390,15 +386,15 @@
 	<xs:complexType name="ExternalConstraints">
 		<xs:complexContent>
 			<xs:extension base="ExtendableElement">
-				<xs:sequence minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="EqualityConstraint" type="EqualityConstraint" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="ExclusionConstraint" type="ExclusionConstraint" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="SubsetConstraint" type="SubsetConstraint" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="FrequencyConstraint" type="FrequencyConstraint" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="DisjunctiveMandatoryConstraint" type="DisjunctiveMandatoryConstraint" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="ExternalUniquenessConstraint" type="ExternalUniquenessConstraint" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="RingConstraint" type="RingConstraint" minOccurs="0" maxOccurs="unbounded"/>
-				</xs:sequence>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="EqualityConstraint" type="EqualityConstraint"/>
+					<xs:element name="ExclusionConstraint" type="ExclusionConstraint"/>
+					<xs:element name="SubsetConstraint" type="SubsetConstraint"/>
+					<xs:element name="FrequencyConstraint" type="FrequencyConstraint"/>
+					<xs:element name="DisjunctiveMandatoryConstraint" type="DisjunctiveMandatoryConstraint"/>
+					<xs:element name="ExternalUniquenessConstraint" type="ExternalUniquenessConstraint"/>
+					<xs:element name="RingConstraint" type="RingConstraint"/>
+				</xs:choice>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -442,6 +438,9 @@
 				<!-- use="required"/>  should be here-->
 			</xs:extension>
 		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MultiColumnConstraintRef">
+		<xs:attribute name="ref" type="xs:IDREF" />
 	</xs:complexType>
 	<!-- end Multicolumn constraints-->
 	<!--Singlecolumn constraints-->
@@ -505,6 +504,9 @@
 					<xs:attribute name="IsPreferred" default="false" type="xs:boolean"/>
 				</xs:extension>
 			</xs:complexContent>
+		</xs:complexType>
+		<xs:complexType name="InternalUniquenessConstraintRef">
+			<xs:attribute name="ref" type="xs:IDREF" />
 		</xs:complexType>
 		<xs:complexType name="SimpleMandatoryConstraint">
 			<xs:complexContent>
@@ -570,8 +572,10 @@
 						<xs:element name="TooFewReadingRolesError" type="TooFewReadingRolesError" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element name="TooFewRoleSequencesError" type="TooFewRoleSequencesError" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element name="TooManyReadingRolesError" type="TooManyReadingRolesError" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="TooManyRoleSequenceError" type="TooManyRoleSequenceError" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="TooManyRoleSequencesError" type="TooManyRoleSequencesError" minOccurs="0" maxOccurs="unbounded"/>
 						<xs:element name="DataTypeNotSpecifiedError" type="DataTypeNotSpecifiedError" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="NMinusOneError" type="NMinusOneError" minOccurs="0" maxOccurs="unbounded" />
+						<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeError" minOccurs="0" maxOccurs="unbounded" />
 					</xs:choice>
 				</xs:extension>
 			</xs:complexContent>
@@ -674,18 +678,36 @@
 			<xs:complexContent>
 				<xs:extension base="ModelError">
 					<xs:sequence>
-						<xs:element name ="ConceptualDataType" type ="DataTypeRef"></xs:element>
+						<xs:element name ="ConceptualDataType" type="DataTypeRefRef"></xs:element>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
-		<xs:complexType name="TooManyRoleSequenceError">
+		<xs:complexType name="TooManyRoleSequencesError">
 			<xs:complexContent>
 				<xs:extension base="ModelError">
 					<xs:sequence minOccurs ="1" maxOccurs ="1">
 						<xs:element name ="Constraint" type="ConstraintRef"></xs:element>
 					</xs:sequence>
 				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:complexType name="CompatibleRolePlayerTypeError">
+			<xs:complexContent>
+				<xs:extension base="ModelError">
+					<xs:sequence>
+						<xs:element name="Constraint" type="MultiColumnConstraintRef"></xs:element>
+					</xs:sequence>
+				</xs:extension >
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:complexType name="NMinusOneError">
+			<xs:complexContent>
+				<xs:extension base="ModelError">
+					<xs:sequence>
+						<xs:element name="InternalUniquenessConstraint" type="InternalUniquenessConstraintRef"></xs:element>
+					</xs:sequence>
+				</xs:extension >
 			</xs:complexContent>
 		</xs:complexType>
 		<!--End ModelErrors-->
@@ -701,7 +723,6 @@
 		</xs:complexType>
 		<xs:complexType name="ReferenceModeKind">
 			<xs:attribute name="id" type="xs:ID" use="required"/>
-			<xs:attribute name="Name" type="xs:string" use="required"/>
 			<xs:attribute name="FormatString" type="xs:string" use="required"/>
 			<xs:attribute name="ReferenceModeType" type="xs:string" use="required"/>
 		</xs:complexType>
@@ -738,29 +759,48 @@
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
-		<!--End Custrom Reference Modes-->
+		<!--End Custom Reference Modes-->
 		<xs:complexType name="ValueRangeDefinition">
-			<xs:choice>
-				<xs:element name="ValueTypeValueRangeDefinition" type="ValueTypeValueRangeDefinition"/>
-				<xs:element name="RoleValueRangeDefinition" type="ValueTypeValueRangeDefinition"/>
-			</xs:choice>
-		</xs:complexType>
-		<xs:complexType name="ValueTypeValueRangeDefinition">
 			<xs:sequence>
-				<xs:element name="ValueRangeCollection" type ="ValueRangeCollection"/>
+				<xs:element name="ValueRangeDefinition">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ValueRanges" type="ValueRangeCollection"/>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:ID" use="required" />
+					</xs:complexType>
+				</xs:element>
 			</xs:sequence>
-			<xs:attribute name="id" type="xs:string" use="required" />
+		</xs:complexType>
+		<xs:complexType name="RoleValueRangeDefinition">
+			<xs:sequence>
+				<xs:element name="RoleValueRangeDefinition">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ValueRanges" type="ValueRangeCollection"/>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:ID" use="required" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
 		</xs:complexType>
 		<xs:complexType name="ValueRangeCollection">
-			<xs:sequence>
+			<xs:sequence maxOccurs="unbounded">
 				<xs:element name="ValueRange" type="ValueRange"/>
 			</xs:sequence>
 		</xs:complexType>
-		<xs:complexType name ="ValueRange">
-			<xs:attribute name="id" type="xs:string" use="required" />
-			<xs:attribute name="MinValue" type="xs:unsignedByte" use="required" />
-			<xs:attribute name="MaxValue" type="xs:unsignedByte" use="required" />
-			<xs:attribute name="MinInclusion" type="xs:string" use="required" />
-			<xs:attribute name="MaxInclusion" type="xs:string" use="required" />
+		<xs:simpleType name="RangeInclusion">
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="NotSet"/>
+				<xs:enumeration value="Open"/>
+				<xs:enumeration value="Closed"/>
+			</xs:restriction>
+		</xs:simpleType>
+		<xs:complexType name="ValueRange">
+			<xs:attribute name="id" type="xs:ID" use="required" />
+			<xs:attribute name="MinValue" type="xs:string" use="required" />
+			<xs:attribute name="MaxValue" type="xs:string" use="required" />
+			<xs:attribute name="MinInclusion" type="RangeInclusion" default="NotSet" />
+			<xs:attribute name="MaxInclusion" type="RangeInclusion" default="NotSet" />
 		</xs:complexType>
 	</xs:schema>

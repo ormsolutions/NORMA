@@ -20,13 +20,14 @@
 	</xsl:template>
 	<xsl:template match="se:Element">
 		<xsl:variable name="ClassName" select="@Class"/>
+		<xsl:variable name="ClassOverride" select="@Override='true'"/>
 		<plx:Class name="{$ClassName}" visibility="Public" partial="true">
 			<plx:ImplementsInterface dataTypeName="IORMCustomSerializedElement"/>
-			<plx:Property visibility="Protected" name="SupportedCustomSerializedOperations">
+			<plx:Property visibility="Protected" name="SupportedCustomSerializedOperations" shadow="{$ClassOverride}">
 				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="SupportedCustomSerializedOperations"/>
 				<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementSupportedOperations" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
 				<plx:Get>
-					<plx:Return>
+					<xsl:variable name="currentSupport">
 						<xsl:call-template name="ReturnORMCustomSerializedElementSupportedOperations">
 							<xsl:with-param name="childElements" select="count(se:ChildElement)"/>
 							<xsl:with-param name="element" select="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)"/>
@@ -35,141 +36,241 @@
 							<xsl:with-param name="customSort" select="@SortChildElements='true'"/>
 							<xsl:with-param name="mixedTypedAttributes" select="@HasMixedTypedAttributes='true'"/>
 						</xsl:call-template>
+					</xsl:variable>
+					<plx:Return>
+						<xsl:choose>
+							<xsl:when test="$ClassOverride">
+								<plx:Operator name="BitwiseOr">
+									<plx:Left>
+										<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
+											<plx:CallObject>
+												<plx:BaseKeyword/>
+											</plx:CallObject>
+										</plx:CallInstance>
+									</plx:Left>
+									<plx:Right>
+										<xsl:copy-of select="$currentSupport"/>
+									</plx:Right>
+								</plx:Operator>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:copy-of select="$currentSupport"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</plx:Return>
 				</plx:Get>
 			</plx:Property>
-			<xsl:if test="count(se:ChildElement)">
+			<xsl:variable name="childElementCount" select="count(se:ChildElement)"/>
+			<xsl:variable name="haveCustomChildInfo" select="0!=$childElementCount"/>
+			<xsl:if test="$haveCustomChildInfo">
 				<plx:Field visibility="Private" shared="true" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo[]" name="myCustomSerializedChildElementInfo"/>
 			</xsl:if>
-			<plx:Function visibility="Protected" name="GetCustomSerializedChildElementInfo">
-				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedChildElementInfo"/>
-				<plx:Param name="" style="RetVal" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo[]"/>
-				<xsl:choose>
-					<xsl:when test="count(se:ChildElement)">
-						<plx:Variable dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true" name="ret">
-							<plx:Initialize>
-								<plx:CallType dataTypeName="{$ClassName}" name="myCustomSerializedChildElementInfo" style="Field"/>
-							</plx:Initialize>
-						</plx:Variable>
-						<plx:Condition>
-							<plx:Test>
-								<plx:Operator name="IdentityEquality">
-									<plx:Left>
-										<plx:Value type="Local">ret</plx:Value>
-									</plx:Left>
-									<plx:Right>
-										<plx:NullObjectKeyword/>
-									</plx:Right>
-								</plx:Operator>
-							</plx:Test>
-							<plx:Body>
-								<plx:Operator name="Assign">
-									<plx:Left>
-										<plx:Value type="Local">ret</plx:Value>
-									</plx:Left>
-									<plx:Right>
-										<plx:CallNew style="New" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeIsSimpleArray="true">
-											<plx:PassParam>
-												<plx:Value type="I4">
-													<xsl:value-of select="count(se:ChildElement)"/>
-												</plx:Value>
-											</plx:PassParam>
-										</plx:CallNew>
-									</plx:Right>
-								</plx:Operator>
-								<xsl:for-each select="se:ChildElement">
-									<xsl:variable name="index" select="position()-1"/>
-									<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable">
-										<xsl:with-param name="modifier" select="$index"/>
-									</xsl:call-template>
-									<plx:Variable name="guids{$index}" dataTypeQualifier="System" dataTypeName="Guid" dataTypeIsSimpleArray="true" const="true">
-										<plx:Initialize>
-											<plx:CallNew style="New" dataTypeName="Guid" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
+			<xsl:if test="$haveCustomChildInfo or not($ClassOverride)">
+				<plx:Function visibility="Protected" name="GetCustomSerializedChildElementInfo" shadow="{$ClassOverride}">
+					<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedChildElementInfo"/>
+					<plx:Param name="" style="RetVal" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo[]"/>
+					<xsl:choose>
+						<xsl:when test="$haveCustomChildInfo">
+							<plx:Variable dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true" name="ret">
+								<plx:Initialize>
+									<plx:CallType dataTypeName="{$ClassName}" name="myCustomSerializedChildElementInfo" style="Field"/>
+								</plx:Initialize>
+							</plx:Variable>
+							<plx:Condition>
+								<plx:Test>
+									<plx:Operator name="IdentityEquality">
+										<plx:Left>
+											<plx:Value type="Local">ret</plx:Value>
+										</plx:Left>
+										<plx:Right>
+											<plx:NullObjectKeyword/>
+										</plx:Right>
+									</plx:Operator>
+								</plx:Test>
+								<plx:Body>
+									<xsl:if test="$ClassOverride">
+										<plx:Variable name="baseInfo" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true">
+											<plx:Initialize>
+												<plx:NullObjectKeyword/>
+											</plx:Initialize>
+										</plx:Variable>
+										<plx:Variable name="baseInfoCount" dataTypeName="Int32" dataTypeQualifier="System">
+											<plx:Initialize>
+												<plx:Value type="I4">0</plx:Value>
+											</plx:Initialize>
+										</plx:Variable>
+										<plx:Condition>
+											<plx:Test>
+												<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix game for CodeDomProvider -->
+													<plx:Operator name="Equality">
+														<plx:Left>
+															<plx:Value type="I4">0</plx:Value>
+														</plx:Left>
+														<plx:Right>
+															<plx:Operator name="BitwiseAnd">
+																<plx:Left>
+																	<plx:CallType name="ChildElementInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
+																</plx:Left>
+																<plx:Right>
+																	<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
+																		<plx:CallObject>
+																			<plx:BaseKeyword/>
+																		</plx:CallObject>
+																	</plx:CallInstance>
+																</plx:Right>
+															</plx:Operator>
+														</plx:Right>
+													</plx:Operator>
+												</plx:Operator>
+											</plx:Test>
+											<plx:Body>
+												<plx:Operator name="Assign">
+													<plx:Left>
+														<plx:Value type="Local">baseInfo</plx:Value>
+													</plx:Left>
+													<plx:Right>
+														<plx:CallInstance name="GetCustomSerializedChildElementInfo">
+															<plx:CallObject>
+																<plx:BaseKeyword/>
+															</plx:CallObject>
+														</plx:CallInstance>
+													</plx:Right>
+												</plx:Operator>
+												<plx:Condition>
+													<plx:Test>
+														<plx:Operator name="IdentityInequality">
+															<plx:Left>
+																<plx:Value type="Local">baseInfo</plx:Value>
+															</plx:Left>
+															<plx:Right>
+																<plx:NullObjectKeyword/>
+															</plx:Right>
+														</plx:Operator>
+													</plx:Test>
+													<plx:Body>
+														<plx:Operator name="Assign">
+															<plx:Left>
+																<plx:Value type="Local">baseInfoCount</plx:Value>
+															</plx:Left>
+															<plx:Right>
+																<plx:CallInstance name="Length" style="Property">
+																	<plx:CallObject>
+																		<plx:Value type="Local">baseInfo</plx:Value>
+																	</plx:CallObject>
+																</plx:CallInstance>
+															</plx:Right>
+														</plx:Operator>
+													</plx:Body>
+												</plx:Condition>
+											</plx:Body>
+										</plx:Condition>
+									</xsl:if>
+									<plx:Operator name="Assign">
+										<plx:Left>
+											<plx:Value type="Local">ret</plx:Value>
+										</plx:Left>
+										<plx:Right>
+											<plx:CallNew style="New" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeIsSimpleArray="true">
 												<plx:PassParam>
-													<plx:Value type="I4">
-														<xsl:value-of select="count(se:Link)"/>
-													</plx:Value>
+													<xsl:choose>
+														<xsl:when test="$ClassOverride">
+															<plx:Operator name="Add">
+																<plx:Left>
+																	<plx:Value type="Local">baseInfoCount</plx:Value>
+																</plx:Left>
+																<plx:Right>
+																	<plx:Value type="I4">
+																		<xsl:value-of select="$childElementCount"/>
+																	</plx:Value>
+																</plx:Right>
+															</plx:Operator>
+														</xsl:when>
+														<xsl:otherwise>
+															<plx:Value type="I4">
+																<xsl:value-of select="$childElementCount"/>
+															</plx:Value>
+														</xsl:otherwise>
+													</xsl:choose>
 												</plx:PassParam>
 											</plx:CallNew>
-										</plx:Initialize>
-									</plx:Variable>
-									<xsl:for-each select="se:Link">
+										</plx:Right>
+									</plx:Operator>
+									<xsl:if test="$ClassOverride">
+										<plx:Condition>
+											<plx:Test>
+												<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix CodeDom game -->
+													<plx:Operator name="Equality">
+														<plx:Left>
+															<plx:Value type="Local">baseInfoCount</plx:Value>
+														</plx:Left>
+														<plx:Right>
+															<plx:Value type="I4">0</plx:Value>
+														</plx:Right>
+													</plx:Operator>
+												</plx:Operator>
+											</plx:Test>
+											<plx:Body>
+												<plx:CallInstance name="CopyTo">
+													<plx:CallObject>
+														<plx:Value type="Local">baseInfo</plx:Value>
+													</plx:CallObject>
+													<plx:PassParam>
+														<plx:Value type="Local">ret</plx:Value>
+													</plx:PassParam>
+													<plx:PassParam>
+														<plx:Value type="I4">
+															<xsl:value-of select="$childElementCount"/>
+														</plx:Value>
+													</plx:PassParam>
+												</plx:CallInstance>
+											</plx:Body>
+										</plx:Condition>
+									</xsl:if>
+									<xsl:for-each select="se:ChildElement">
+										<xsl:variable name="index" select="position()-1"/>
+										<xsl:call-template name="CreateORMCustomSerializedElementInfoNameVariable">
+											<xsl:with-param name="modifier" select="$index"/>
+										</xsl:call-template>
 										<plx:Operator name="Assign">
 											<plx:Left>
 												<plx:CallInstance name="" style="ArrayIndexer">
 													<plx:CallObject>
-														<plx:Value type="Local">guids<xsl:value-of select="$index"/></plx:Value>
+														<plx:Value type="Local">ret</plx:Value>
 													</plx:CallObject>
 													<plx:PassParam>
 														<plx:Value type="Local">
-															<xsl:value-of select="position()-1"/>
+															<xsl:value-of select="$index"/>
 														</plx:Value>
 													</plx:PassParam>
 												</plx:CallInstance>
 											</plx:Left>
 											<plx:Right>
-												<plx:Value type="Local">
-													<xsl:value-of select="@RelationshipName"/>
-													<xsl:text>.</xsl:text>
-													<xsl:value-of select="@RoleName"/>
-													<xsl:text>MetaRoleGuid</xsl:text>
-												</plx:Value>
+												<plx:CallNew style="New" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo">
+													<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
+														<xsl:with-param name="modifier" select="$index"/>
+													</xsl:call-template>
+													<xsl:for-each select="se:Link">
+														<plx:PassParam>
+															<plx:CallType name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" style="Field"/>
+														</plx:PassParam>
+													</xsl:for-each>
+												</plx:CallNew>
 											</plx:Right>
 										</plx:Operator>
 									</xsl:for-each>
 									<plx:Operator name="Assign">
 										<plx:Left>
-											<plx:CallInstance name="" style="ArrayIndexer">
-												<plx:CallObject>
-													<plx:Value type="Local">ret</plx:Value>
-												</plx:CallObject>
-												<plx:PassParam>
-													<plx:Value type="Local">
-														<xsl:value-of select="$index"/>
-													</plx:Value>
-												</plx:PassParam>
-											</plx:CallInstance>
+											<plx:CallType dataTypeName="{$ClassName}" name="myCustomSerializedChildElementInfo" style="Field"/>
 										</plx:Left>
 										<plx:Right>
-											<plx:CallNew style="New" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo">
-												<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
-													<xsl:with-param name="modifier" select="$index"/>
-												</xsl:call-template>
-												<plx:PassParam>
-													<plx:Value type="Local">guids<xsl:value-of select="$index"/></plx:Value>
-												</plx:PassParam>
-											</plx:CallNew>
+											<plx:Value type="Local">ret</plx:Value>
 										</plx:Right>
 									</plx:Operator>
-								</xsl:for-each>
-								<plx:Operator name="Assign">
-									<plx:Left>
-										<plx:CallType dataTypeName="{$ClassName}" name="myCustomSerializedChildElementInfo" style="Field"/>
-									</plx:Left>
-									<plx:Right>
-										<plx:Value type="Local">ret</plx:Value>
-									</plx:Right>
-								</plx:Operator>
-							</plx:Body>
-						</plx:Condition>
-						<plx:Return>
-							<plx:Value type="Local">ret</plx:Value>
-						</plx:Return>
-					</xsl:when>
-					<xsl:otherwise>
-						<plx:Throw>
-							<plx:CallNew style="New" dataTypeQualifier="System" dataTypeName="NotSupportedException"/>
-						</plx:Throw>
-					</xsl:otherwise>
-				</xsl:choose>
-			</plx:Function>
-			<plx:Property visibility="Protected" name="CustomSerializedElementInfo">
-				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="CustomSerializedElementInfo"/>
-				<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
-				<plx:Get>
-					<xsl:choose>
-						<xsl:when test="count(@Prefix)+count(@Name)+count(@Namespace)+count(@WriteStyle)+count(@DoubleTagName)+count(se:ConditionalName)">
-							<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+								</plx:Body>
+							</plx:Condition>
+							<plx:Return>
+								<plx:Value type="Local">ret</plx:Value>
+							</plx:Return>
 						</xsl:when>
 						<xsl:otherwise>
 							<plx:Throw>
@@ -177,106 +278,212 @@
 							</plx:Throw>
 						</xsl:otherwise>
 					</xsl:choose>
-				</plx:Get>
-			</plx:Property>
-			<plx:Function visibility="Protected" name="GetCustomSerializedAttributeInfo">
-				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedAttributeInfo"/>
-				<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedAttributeInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
-				<plx:Param name="attributeInfo" dataTypeName="MetaAttributeInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
-				<plx:Param name="rolePlayedInfo" dataTypeName="MetaRoleInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
-				<xsl:choose>
-					<xsl:when test="count(se:Attribute)">
-						<xsl:for-each select="se:Attribute">
-							<plx:Condition>
-								<plx:Test>
-									<plx:Operator name="Equality">
-										<plx:Left>
-											<plx:CallInstance style="Property" name="Id">
+				</plx:Function>
+			</xsl:if>
+			<xsl:variable name="haveCustomElementInfo" select="0!=(string-length(@Prefix)+string-length(@Name)+string-length(@Namespace)+string-length(@WriteStyle)+string-length(@DoubleTagName)+count(se:ConditionalName))"/>
+			<xsl:if test="$haveCustomElementInfo or not($ClassOverride)">
+				<plx:Property visibility="Protected" name="CustomSerializedElementInfo" shadow="{$ClassOverride}">
+					<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="CustomSerializedElementInfo"/>
+					<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
+					<plx:Get>
+						<xsl:choose>
+							<xsl:when test="$haveCustomElementInfo">
+								<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:Throw>
+									<plx:CallNew style="New" dataTypeQualifier="System" dataTypeName="NotSupportedException"/>
+								</plx:Throw>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:Get>
+				</plx:Property>
+			</xsl:if>
+			<xsl:variable name="haveCustomAttributeInfo" select="0!=count(se:Attribute)"/>
+			<xsl:if test="$haveCustomAttributeInfo or not($ClassOverride)">
+				<plx:Function visibility="Protected" name="GetCustomSerializedAttributeInfo" shadow="{$ClassOverride}">
+					<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedAttributeInfo"/>
+					<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedAttributeInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
+					<plx:Param name="attributeInfo" dataTypeName="MetaAttributeInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
+					<plx:Param name="rolePlayedInfo" dataTypeName="MetaRoleInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
+					<xsl:choose>
+						<xsl:when test="count(se:Attribute)">
+							<xsl:for-each select="se:Attribute">
+								<plx:Condition>
+									<plx:Test>
+										<plx:Operator name="Equality">
+											<plx:Left>
+												<plx:CallInstance style="Property" name="Id">
+													<plx:CallObject>
+														<plx:Value type="Parameter">attributeInfo</plx:Value>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:Left>
+											<plx:Right>
+												<plx:CallType style="Field" name="{@ID}MetaAttributeGuid" dataTypeName="{$ClassName}" />
+											</plx:Right>
+										</plx:Operator>
+									</plx:Test>
+									<plx:Body>
+										<xsl:for-each select="se:RolePlayed">
+											<plx:Condition>
+												<plx:Test>
+													<plx:Operator name="Equality">
+														<plx:Left>
+															<plx:CallInstance style="Property" name="Id">
+																<plx:CallObject>
+																	<plx:Value type="Parameter">rolePlayedInfo</plx:Value>
+																</plx:CallObject>
+															</plx:CallInstance>
+														</plx:Left>
+														<plx:Right>
+															<plx:CallType style="Field" name="{@ID}MetaRoleGuid" dataTypeName="{$ClassName}" />
+														</plx:Right>
+													</plx:Operator>
+												</plx:Test>
+												<plx:Body>
+													<xsl:call-template name="ReturnORMCustomSerializedAttributeInfo"/>
+												</plx:Body>
+											</plx:Condition>
+										</xsl:for-each>
+										<xsl:call-template name="ReturnORMCustomSerializedAttributeInfo"/>
+									</plx:Body>
+								</plx:Condition>
+							</xsl:for-each>
+							<xsl:if test="$ClassOverride">
+								<plx:Condition>
+									<plx:Test>
+										<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix game for CodeDomProvider -->
+											<plx:Operator name="Equality">
+												<plx:Left>
+													<plx:Value type="I4">0</plx:Value>
+												</plx:Left>
+												<plx:Right>
+													<plx:Operator name="BitwiseAnd">
+														<plx:Left>
+															<plx:CallType name="AttributeInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
+														</plx:Left>
+														<plx:Right>
+															<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
+																<plx:CallObject>
+																	<plx:BaseKeyword/>
+																</plx:CallObject>
+															</plx:CallInstance>
+														</plx:Right>
+													</plx:Operator>
+												</plx:Right>
+											</plx:Operator>
+										</plx:Operator>
+									</plx:Test>
+									<plx:Body>
+										<plx:Return>
+											<plx:CallInstance name="GetCustomSerializedAttributeInfo">
 												<plx:CallObject>
+													<plx:BaseKeyword/>
+												</plx:CallObject>
+												<plx:PassParam>
 													<plx:Value type="Parameter">attributeInfo</plx:Value>
-												</plx:CallObject>
-											</plx:CallInstance>
-										</plx:Left>
-										<plx:Right>
-											<plx:CallType style="Field" name="{@ID}MetaAttributeGuid" dataTypeName="{$ClassName}" />
-										</plx:Right>
-									</plx:Operator>
-								</plx:Test>
-								<plx:Body>
-									<xsl:for-each select="se:RolePlayed">
-										<plx:Condition>
-											<plx:Test>
-												<plx:Operator name="Equality">
-													<plx:Left>
-														<plx:CallInstance style="Property" name="Id">
-															<plx:CallObject>
-																<plx:Value type="Parameter">rolePlayedInfo</plx:Value>
-															</plx:CallObject>
-														</plx:CallInstance>
-													</plx:Left>
-													<plx:Right>
-														<plx:CallType style="Field" name="{@ID}MetaRoleGuid" dataTypeName="{$ClassName}" />
-													</plx:Right>
-												</plx:Operator>
-											</plx:Test>
-											<plx:Body>
-												<xsl:call-template name="ReturnORMCustomSerializedAttributeInfo"/>
-											</plx:Body>
-										</plx:Condition>
-									</xsl:for-each>
-									<xsl:call-template name="ReturnORMCustomSerializedAttributeInfo"/>
-								</plx:Body>
-							</plx:Condition>
-						</xsl:for-each>
-						<plx:Return>
-							<plx:Value type="Local">ORMCustomSerializedAttributeInfo.Default</plx:Value>
-						</plx:Return>
-					</xsl:when>
-					<xsl:otherwise>
-						<plx:Throw>
-							<plx:CallNew style="New" dataTypeQualifier="System" dataTypeName="NotSupportedException"/>
-						</plx:Throw>
-					</xsl:otherwise>
-				</xsl:choose>
-			</plx:Function>
-			<plx:Function visibility="Protected" name="GetCustomSerializedLinkInfo">
-				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedLinkInfo"/>
-				<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
-				<plx:Param name="rolePlayedInfo" dataTypeName="MetaRoleInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
-				<xsl:choose>
-					<xsl:when test="count(se:Link)">
-						<xsl:for-each select="se:Link">
-							<plx:Condition>
-								<plx:Test>
-									<plx:Operator name="Equality">
-										<plx:Left>
-											<plx:CallInstance style="Property" name="Id">
-												<plx:CallObject>
+												</plx:PassParam>
+												<plx:PassParam>
 													<plx:Value type="Parameter">rolePlayedInfo</plx:Value>
-												</plx:CallObject>
+												</plx:PassParam>
 											</plx:CallInstance>
-										</plx:Left>
-										<plx:Right>
-											<plx:CallType style="Field" name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" />
-										</plx:Right>
-									</plx:Operator>
-								</plx:Test>
-								<plx:Body>
-									<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
-								</plx:Body>
-							</plx:Condition>
-						</xsl:for-each>
-						<plx:Return>
-							<plx:Value type="Local">ORMCustomSerializedElementInfo.Default</plx:Value>
-						</plx:Return>
-					</xsl:when>
-					<xsl:otherwise>
-						<plx:Throw>
-							<plx:CallNew style="New" dataTypeQualifier="System" dataTypeName="NotSupportedException"/>
-						</plx:Throw>
-					</xsl:otherwise>
-				</xsl:choose>
-			</plx:Function>
+										</plx:Return>
+									</plx:Body>
+								</plx:Condition>
+							</xsl:if>
+							<plx:Return>
+								<plx:CallType dataTypeName="ORMCustomSerializedAttributeInfo" name="Default" style="Field"/>
+							</plx:Return>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:Throw>
+								<plx:CallNew style="New" dataTypeQualifier="System" dataTypeName="NotSupportedException"/>
+							</plx:Throw>
+						</xsl:otherwise>
+					</xsl:choose>
+				</plx:Function>
+			</xsl:if>
+			<xsl:variable name="haveCustomLinkInfo" select="0!=count(se:Link)"/>
+			<xsl:if test="$haveCustomLinkInfo or not($ClassOverride)">
+				<plx:Function visibility="Protected" name="GetCustomSerializedLinkInfo" shadow="{$ClassOverride}">
+					<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedLinkInfo"/>
+					<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
+					<plx:Param name="rolePlayedInfo" dataTypeName="MetaRoleInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
+					<xsl:choose>
+						<xsl:when test="$haveCustomLinkInfo">
+							<xsl:for-each select="se:Link">
+								<plx:Condition>
+									<plx:Test>
+										<plx:Operator name="Equality">
+											<plx:Left>
+												<plx:CallInstance style="Property" name="Id">
+													<plx:CallObject>
+														<plx:Value type="Parameter">rolePlayedInfo</plx:Value>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:Left>
+											<plx:Right>
+												<plx:CallType style="Field" name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" />
+											</plx:Right>
+										</plx:Operator>
+									</plx:Test>
+									<plx:Body>
+										<xsl:call-template name="ReturnORMCustomSerializedElementInfo"/>
+									</plx:Body>
+								</plx:Condition>
+							</xsl:for-each>
+							<xsl:if test="$ClassOverride">
+								<plx:Condition>
+									<plx:Test>
+										<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix game for CodeDomProvider -->
+											<plx:Operator name="Equality">
+												<plx:Left>
+													<plx:Value type="I4">0</plx:Value>
+												</plx:Left>
+												<plx:Right>
+													<plx:Operator name="BitwiseAnd">
+														<plx:Left>
+															<plx:CallType name="LinkInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
+														</plx:Left>
+														<plx:Right>
+															<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
+																<plx:CallObject>
+																	<plx:BaseKeyword/>
+																</plx:CallObject>
+															</plx:CallInstance>
+														</plx:Right>
+													</plx:Operator>
+												</plx:Right>
+											</plx:Operator>
+										</plx:Operator>
+									</plx:Test>
+									<plx:Body>
+										<plx:Return>
+											<plx:CallInstance name="GetCustomSerializedLinkInfo">
+												<plx:CallObject>
+													<plx:BaseKeyword/>
+												</plx:CallObject>
+												<plx:PassParam>
+													<plx:Value type="Parameter">rolePlayedInfo</plx:Value>
+												</plx:PassParam>
+											</plx:CallInstance>
+										</plx:Return>
+									</plx:Body>
+								</plx:Condition>
+							</xsl:if>
+							<plx:Return>
+								<plx:CallType dataTypeName="ORMCustomSerializedElementInfo" name="Default" style="Field"/>
+							</plx:Return>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:Throw>
+								<plx:CallNew style="New" dataTypeQualifier="System" dataTypeName="NotSupportedException"/>
+							</plx:Throw>
+						</xsl:otherwise>
+					</xsl:choose>
+				</plx:Function>
+			</xsl:if>
 			<xsl:choose>
 				<xsl:when test="@SortChildElements='true'">
 					<plx:Field name="myCustomSortChildComparer" shared="true" visibility="Private" dataTypeName="IComparer">
@@ -290,17 +497,46 @@
 							<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
 							<plx:PassTypeParam dataTypeName="Int32" dataTypeQualifier="System"/>
 						</plx:Field>
+						<xsl:if test="$ClassOverride">
+							<plx:Field name="myBaseComparer" visibility="Private" dataTypeName="IComparer">
+								<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+							</plx:Field>
+						</xsl:if>
 						<plx:Function ctor="true" name="" visibility="Public">
 							<plx:Param name="store" dataTypeName="Store" style="In"/>
+							<xsl:if test="$ClassOverride">
+								<plx:Param name="baseComparer" dataTypeName="IComparer">
+									<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+								</plx:Param>
+								<plx:Operator name="Assign">
+									<plx:Left>
+										<plx:CallInstance name="myBaseComparer" style="Field">
+											<plx:CallObject>
+												<plx:ThisKeyword/>
+											</plx:CallObject>
+										</plx:CallInstance>
+									</plx:Left>
+									<plx:Right>
+										<plx:Value type="Parameter">baseComparer</plx:Value>
+									</plx:Right>
+								</plx:Operator>
+							</xsl:if>
 							<xsl:variable name="SortedLevels">
+								<!-- ChildElement/Link links may have more information in Link. Just use
+								     the ChildElement one. -->
+								<xsl:variable name="childLinks" select="se:ChildElement[not(@NotSorted='true')]/se:Link"/>
 								<!-- Define a variable with structure <SortLevel><Role/><SortLevel/> -->
 								<xsl:for-each select="se:Link | se:ChildElement">
 									<xsl:if test="not(@NotSorted='true')">
 										<xsl:choose>
 											<xsl:when test="local-name()='Link'">
-												<SortLevel>
-													<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
-												</SortLevel>
+												<xsl:variable name="relName" select="@RelationshipName"/>
+												<xsl:variable name="roleName" select="@RoleName"/>
+												<xsl:if test="0=count($childLinks[@RelationshipName=$relName and @RoleName=$roleName])">
+													<SortLevel>
+														<Role RelationshipName="{@RelationshipName}" RoleName="{@RoleName}"/>
+													</SortLevel>
+												</xsl:if>
 											</xsl:when>
 											<xsl:when test="local-name()='ChildElement'">
 												<xsl:choose>
@@ -409,6 +645,65 @@
 							<plx:Param style="RetVal" name="" dataTypeName="Int32" dataTypeQualifier="System"/>
 							<plx:Param style="In" name="x" dataTypeName="MetaRoleInfo"/>
 							<plx:Param style="In" name="y" dataTypeName="MetaRoleInfo"/>
+							<xsl:if test="$ClassOverride">
+								<!-- Give the base the first shot, we want base elements displayed before derived elements -->
+								<plx:Condition>
+									<plx:Test>
+										<plx:Operator name="IdentityInequality">
+											<plx:Left>
+												<plx:CallInstance name="myBaseComparer" style="Field">
+													<plx:CallObject>
+														<plx:ThisKeyword/>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:Left>
+											<plx:Right>
+												<plx:NullObjectKeyword/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Test>
+									<plx:Body>
+										<plx:Variable name="baseOpinion" dataTypeName="Int32" dataTypeQualifier="System">
+											<plx:Initialize>
+												<plx:CallInstance name="Compare">
+													<plx:CallObject>
+														<plx:CallInstance name="myBaseComparer" style="Field">
+															<plx:CallObject>
+																<plx:ThisKeyword/>
+															</plx:CallObject>
+														</plx:CallInstance>
+													</plx:CallObject>
+													<plx:PassParam>
+														<plx:Value type="Parameter">x</plx:Value>
+													</plx:PassParam>
+													<plx:PassParam>
+														<plx:Value type="Parameter">y</plx:Value>
+													</plx:PassParam>
+												</plx:CallInstance>
+											</plx:Initialize>
+										</plx:Variable>
+										<plx:Condition>
+											<plx:Test>
+												<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix game for CodeDom -->
+													<plx:Operator name="Equality">
+														<plx:Left>
+															<plx:Value type="I4">0</plx:Value>
+														</plx:Left>
+														<plx:Right>
+															<plx:Value type="Local">baseOpinion</plx:Value>
+														</plx:Right>
+													</plx:Operator>
+												</plx:Operator>
+											</plx:Test>
+											<plx:Body>
+												<plx:Return>
+													<plx:Value type="Local">baseOpinion</plx:Value>
+												</plx:Return>
+											</plx:Body>
+										</plx:Condition>
+									</plx:Body>
+								</plx:Condition>
+							</xsl:if>
 							<xsl:variable name="paramVals">
 								<Value>x</Value>
 								<Value>y</Value>
@@ -528,7 +823,7 @@
 							</plx:Return>
 						</plx:Function>
 					</plx:Class>
-					<plx:Property visibility="Protected" name="CustomSerializedChildRoleComparer">
+					<plx:Property visibility="Protected" name="CustomSerializedChildRoleComparer" shadow="{$ClassOverride}">
 						<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="CustomSerializedChildRoleComparer"/>
 						<plx:Attribute dataTypeName="CLSCompliant">
 							<plx:PassParam>
@@ -557,6 +852,53 @@
 									</plx:Operator>
 								</plx:Test>
 								<plx:Body>
+									<xsl:if test="$ClassOverride">
+										<plx:Variable name="baseComparer" dataTypeName="IComparer">
+											<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+											<plx:Initialize>
+												<plx:NullObjectKeyword/>
+											</plx:Initialize>
+										</plx:Variable>
+										<plx:Condition>
+											<plx:Test>
+												<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix game for CodeDomProvider -->
+													<plx:Operator name="Equality">
+														<plx:Left>
+															<plx:Value type="I4">0</plx:Value>
+														</plx:Left>
+														<plx:Right>
+															<plx:Operator name="BitwiseAnd">
+																<plx:Left>
+																	<plx:CallType name="CustomSortChildRoles" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
+																</plx:Left>
+																<plx:Right>
+																	<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
+																		<plx:CallObject>
+																			<plx:BaseKeyword/>
+																		</plx:CallObject>
+																	</plx:CallInstance>
+																</plx:Right>
+															</plx:Operator>
+														</plx:Right>
+													</plx:Operator>
+												</plx:Operator>
+											</plx:Test>
+											<plx:Body>
+												<plx:Operator name="Assign">
+													<plx:Left>
+														<plx:Value type="Local">baseComparer</plx:Value>
+													</plx:Left>
+													<plx:Right>
+														<plx:CallInstance name="CustomSerializedChildRoleComparer" style="Property">
+															<plx:CallObject>
+																<plx:BaseKeyword/>
+															</plx:CallObject>
+														</plx:CallInstance>
+													</plx:Right>
+												</plx:Operator>
+											</plx:Body>
+										</plx:Condition>
+									</xsl:if>
 									<plx:Operator name="Assign">
 										<plx:Left>
 											<plx:Value type="Local">retVal</plx:Value>
@@ -570,6 +912,11 @@
 														</plx:CallObject>
 													</plx:CallInstance>
 												</plx:PassParam>
+												<xsl:if test="$ClassOverride">
+													<plx:PassParam>
+														<plx:Value type="Local">baseComparer</plx:Value>
+													</plx:PassParam>
+												</xsl:if>
 											</plx:CallNew>
 										</plx:Right>
 									</plx:Operator>
@@ -589,7 +936,7 @@
 						</plx:Get>
 					</plx:Property>
 				</xsl:when>
-				<xsl:otherwise>
+				<xsl:when test="not($ClassOverride)">
 					<plx:Property visibility="Protected" name="CustomSerializedChildRoleComparer">
 						<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="CustomSerializedChildRoleComparer"/>
 						<plx:Attribute dataTypeName="CLSCompliant">
@@ -606,7 +953,7 @@
 							</plx:Return>
 						</plx:Get>
 					</plx:Property>
-				</xsl:otherwise>
+				</xsl:when>
 			</xsl:choose>
 			<xsl:variable name="mapChildElementBody">
 				<xsl:variable name="namespaces" select="parent::se:Using/se:MetaModel/se:Namespaces/se:Namespace"/>
@@ -789,39 +1136,41 @@
 							<xsl:if test="count($allLinks[@RelationshipName=$relationshipName and @RoleName=$roleName]) = 0">
 								<plx:PassParam>
 									<plx:CallType name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" style="Property"/>
-								</plx:PassParam>					
-							</xsl:if>	
-						</xsl:for-each>	
-					</xsl:variable>							
-					<plx:CallInstance name="InitializeRoles">
-						<plx:CallObject>
-							<plx:Value type="Local">match</plx:Value>
-						</plx:CallObject>
-						<xsl:copy-of select="$links/child::*"/>
-					</plx:CallInstance>		
-					<plx:CallInstance name="Add">
-						<plx:CallObject>
-							<plx:Value type="Local">childElementMappings</plx:Value>
-						</plx:CallObject>
-						<plx:PassParam>
-							<plx:String>
+								</plx:PassParam>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:variable>
+					<xsl:if test="count($links/child::*)">
+						<plx:CallInstance name="InitializeRoles">
+							<plx:CallObject>
+								<plx:Value type="Local">match</plx:Value>
+							</plx:CallObject>
+							<xsl:copy-of select="$links/child::*"/>
+						</plx:CallInstance>		
+						<plx:CallInstance name="Add">
+							<plx:CallObject>
+								<plx:Value type="Local">childElementMappings</plx:Value>
+							</plx:CallObject>
+							<plx:PassParam>
 								<plx:String>
-									<xsl:call-template name="ResolveNamespace">
-										<xsl:with-param name="namespaces" select="$namespaces"/>
-										<!-- Use default for prefix parameter -->
-									</xsl:call-template>
+									<plx:String>
+										<xsl:call-template name="ResolveNamespace">
+											<xsl:with-param name="namespaces" select="$namespaces"/>
+											<!-- Use default for prefix parameter -->
+										</xsl:call-template>
+									</plx:String>
+									<plx:String>|</plx:String>
+									<plx:String>
+										<plx:String><xsl:value-of select="@Name"/></plx:String>
+									</plx:String>
+									<plx:String>||</plx:String>
 								</plx:String>
-								<plx:String>|</plx:String>
-								<plx:String>
-									<plx:String><xsl:value-of select="@Name"/></plx:String>
-								</plx:String>
-								<plx:String>||</plx:String>
-							</plx:String>
-						</plx:PassParam>
-						<plx:PassParam>
-							<plx:Value type="Local">match</plx:Value>
-						</plx:PassParam>
-					</plx:CallInstance>	
+							</plx:PassParam>
+							<plx:PassParam>
+								<plx:Value type="Local">match</plx:Value>
+							</plx:PassParam>
+						</plx:CallInstance>	
+					</xsl:if>
 				</xsl:for-each>
 				
 				
@@ -892,119 +1241,172 @@
 						</plx:PassParam>
 					</plx:CallInstance>
 				</xsl:for-each>
-				<plx:Operator name="Assign">
-					<plx:Left>
-						<plx:Value type="Local">myChildElementMappings</plx:Value>
-					</plx:Left>
-					<plx:Right>
-						<plx:Value type="Local">childElementMappings</plx:Value>
-					</plx:Right>
-				</plx:Operator>
 			</xsl:variable>
 			<xsl:variable name="hasMappedChildElements" select="0!=count($mapChildElementBody/child::*)"/>
 			<xsl:if test="$hasMappedChildElements">
 				<plx:Field name="myChildElementMappings" dataTypeName="Dictionary" visibility="Private" shared="true">
 					<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
 					<plx:PassTypeParam dataTypeName="ORMCustomSerializedElementMatch"/>
-					<plx:Initialize>
-						<plx:NullObjectKeyword/>
-					</plx:Initialize>
 				</plx:Field>
 			</xsl:if>
-			<plx:Function visibility="Public" name="MapChildElement">
-				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="MapChildElement"/>
-				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="elementNamespace"/>
-				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="elementName"/>
-				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="containerNamespace"/>
-				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="containerName"/>
-				<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementMatch"/>
-				<xsl:choose>
-					<xsl:when test="$hasMappedChildElements">
-						<plx:Variable name="childElementMappings" dataTypeName="Dictionary">
-							<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
-							<plx:PassTypeParam dataTypeName="ORMCustomSerializedElementMatch"/>
-							<plx:Initialize>
-								<plx:Value type="Local">myChildElementMappings</plx:Value>
-							</plx:Initialize>
-						</plx:Variable>
-						<plx:Condition>
-							<plx:Test>
-								<plx:Operator name="IdentityEquality">
-									<plx:Left>
-										<plx:Value type="Local">childElementMappings</plx:Value>
-									</plx:Left>
-									<plx:Right>
-										<plx:NullObjectKeyword/>
-									</plx:Right>
-								</plx:Operator>
-							</plx:Test>
-							<plx:Body>
-								<plx:Operator name="Assign">
-									<plx:Left>
-										<plx:Value type="Local">childElementMappings</plx:Value>
-									</plx:Left>
-									<plx:Right>
-										<plx:CallNew dataTypeName="Dictionary">
-											<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
-											<plx:PassTypeParam dataTypeName="ORMCustomSerializedElementMatch"/>
-										</plx:CallNew>
-									</plx:Right>
-								</plx:Operator>
-								<plx:Variable name="match" dataTypeName="ORMCustomSerializedElementMatch">
-									<plx:Initialize>
-										<plx:CallNew dataTypeName="ORMCustomSerializedElementMatch"/>
-									</plx:Initialize>
-								</plx:Variable>
-								<xsl:copy-of select="$mapChildElementBody/child::*"/>
-							</plx:Body>
-						</plx:Condition>	
-						<xsl:if test="se:Link | se:Attribute[@WriteStyle='Element']">
+			<xsl:if test="$hasMappedChildElements or not($ClassOverride)">
+				<plx:Function visibility="Protected" name="MapChildElement" shadow="{$ClassOverride}">
+					<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="MapChildElement"/>
+					<plx:Param dataTypeName="String" dataTypeQualifier="System" name="elementNamespace"/>
+					<plx:Param dataTypeName="String" dataTypeQualifier="System" name="elementName"/>
+					<plx:Param dataTypeName="String" dataTypeQualifier="System" name="containerNamespace"/>
+					<plx:Param dataTypeName="String" dataTypeQualifier="System" name="containerName"/>
+					<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementMatch"/>
+					<xsl:variable name="forwardToBase">
+						<xsl:if test="$ClassOverride">
+							<plx:CallInstance name="MapChildElement">
+								<plx:CallObject>
+									<plx:BaseKeyword/>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:Value type="Parameter">elementNamespace</plx:Value>
+								</plx:PassParam>
+								<plx:PassParam>
+									<plx:Value type="Parameter">elementName</plx:Value>
+								</plx:PassParam>
+								<plx:PassParam>
+									<plx:Value type="Parameter">containerNamespace</plx:Value>
+								</plx:PassParam>
+								<plx:PassParam>
+									<plx:Value type="Parameter">containerName</plx:Value>
+								</plx:PassParam>
+							</plx:CallInstance>
 						</xsl:if>
-						<plx:Variable name="rVal" dataTypeName="ORMCustomSerializedElementMatch"/>
-						<plx:CallInstance name="TryGetValue">
-							<plx:CallObject>
-								<plx:Value type="Local">childElementMappings</plx:Value>
-							</plx:CallObject>
-							<plx:PassParam>
-								<plx:CallType name="Concat" dataTypeName="String" dataTypeQualifier="System" style="MethodCall">
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="$hasMappedChildElements">
+							<plx:Variable name="childElementMappings" dataTypeName="Dictionary">
+								<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+								<plx:PassTypeParam dataTypeName="ORMCustomSerializedElementMatch"/>
+								<plx:Initialize>
+									<plx:CallType dataTypeName="{$ClassName}" name="myChildElementMappings" style="Field"/>
+								</plx:Initialize>
+							</plx:Variable>
+							<plx:Condition>
+								<plx:Test>
+									<plx:Operator name="IdentityEquality">
+										<plx:Left>
+											<plx:Value type="Local">childElementMappings</plx:Value>
+										</plx:Left>
+										<plx:Right>
+											<plx:NullObjectKeyword/>
+										</plx:Right>
+									</plx:Operator>
+								</plx:Test>
+								<plx:Body>
+									<plx:Operator name="Assign">
+										<plx:Left>
+											<plx:Value type="Local">childElementMappings</plx:Value>
+										</plx:Left>
+										<plx:Right>
+											<plx:CallNew dataTypeName="Dictionary">
+												<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+												<plx:PassTypeParam dataTypeName="ORMCustomSerializedElementMatch"/>
+											</plx:CallNew>
+										</plx:Right>
+									</plx:Operator>
+									<plx:Variable name="match" dataTypeName="ORMCustomSerializedElementMatch">
+										<plx:Initialize>
+											<plx:CallNew dataTypeName="ORMCustomSerializedElementMatch"/>
+										</plx:Initialize>
+									</plx:Variable>
+									<xsl:copy-of select="$mapChildElementBody"/>
+									<plx:Operator name="Assign">
+										<plx:Left>
+											<plx:CallType dataTypeName="{$ClassName}" name="myChildElementMappings" style="Field"/>
+										</plx:Left>
+										<plx:Right>
+											<plx:Value type="Local">childElementMappings</plx:Value>
+										</plx:Right>
+									</plx:Operator>
+								</plx:Body>
+							</plx:Condition>	
+							<xsl:if test="se:Link | se:Attribute[@WriteStyle='Element']">
+							</xsl:if>
+							<plx:Variable name="rVal" dataTypeName="ORMCustomSerializedElementMatch"/>
+							<xsl:variable name="lookupCall">
+								<plx:CallInstance name="TryGetValue">
+									<plx:CallObject>
+										<plx:Value type="Local">childElementMappings</plx:Value>
+									</plx:CallObject>
 									<plx:PassParam>
-										<plx:Value type="Local">containerNamespace</plx:Value>
+										<plx:CallType name="Concat" dataTypeName="String" dataTypeQualifier="System" style="MethodCall">
+											<plx:PassParam>
+												<plx:Value type="Local">containerNamespace</plx:Value>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:String>|</plx:String>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:Value type="Local">containerName</plx:Value>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:String>|</plx:String>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:Value type="Local">elementNamespace</plx:Value>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:String>|</plx:String>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:Value type="Local">elementName</plx:Value>
+											</plx:PassParam>
+										</plx:CallType>
 									</plx:PassParam>
-									<plx:PassParam>
-										<plx:String>|</plx:String>
+									<plx:PassParam passStyle="Out">
+										<plx:Value type="Local">rVal</plx:Value>
 									</plx:PassParam>
-									<plx:PassParam>
-										<plx:Value type="Local">containerName</plx:Value>
-									</plx:PassParam>
-									<plx:PassParam>
-										<plx:String>|</plx:String>
-									</plx:PassParam>
-									<plx:PassParam>
-										<plx:Value type="Local">elementNamespace</plx:Value>
-									</plx:PassParam>
-									<plx:PassParam>
-										<plx:String>|</plx:String>
-									</plx:PassParam>
-									<plx:PassParam>
-										<plx:Value type="Local">elementName</plx:Value>
-									</plx:PassParam>
-								</plx:CallType>
-							</plx:PassParam>
-							<plx:PassParam passStyle="Out">
+								</plx:CallInstance>
+							</xsl:variable>
+							<xsl:choose>
+								<xsl:when test="$ClassOverride">
+									<plx:Condition>
+										<plx:Test>
+											<plx:Operator name="BooleanNot">
+												<xsl:copy-of select="$lookupCall"/>
+											</plx:Operator>
+										</plx:Test>
+										<plx:Body>
+											<plx:Operator name="Assign">
+												<plx:Left>
+													<plx:Value type="Local">rVal</plx:Value>
+												</plx:Left>
+												<plx:Right>
+													<xsl:copy-of select="$forwardToBase"/>
+												</plx:Right>
+											</plx:Operator>
+										</plx:Body>
+									</plx:Condition>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:copy-of select="$lookupCall"/>
+								</xsl:otherwise>
+							</xsl:choose>
+							<plx:Return>
 								<plx:Value type="Local">rVal</plx:Value>
-							</plx:PassParam>
-						</plx:CallInstance>
-						<plx:Return>
-							<plx:Value type="Local">rVal</plx:Value>
-						</plx:Return>
-					</xsl:when>
-					<xsl:otherwise>
-						<plx:Return>
-							<plx:DefaultValueOf dataTypeName="ORMCustomSerializedElementMatch"/>
-						</plx:Return>
-					</xsl:otherwise>
-				</xsl:choose>
-			</plx:Function>
+							</plx:Return>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:Return>
+								<xsl:choose>
+									<xsl:when test="$ClassOverride">
+										<xsl:copy-of select="$forwardToBase"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:DefaultValueOf dataTypeName="ORMCustomSerializedElementMatch"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</plx:Return>
+						</xsl:otherwise>
+					</xsl:choose>
+				</plx:Function>
+			</xsl:if>
 			<xsl:variable name="attributes" select="se:Attribute[@WriteStyle='Attribute' or not(@WriteStyle)]"/>
 			<xsl:if test="$attributes">
 				<plx:Field name="myCustomSerializedAttributes" dataTypeName="Dictionary" visibility="Private" shared="true">
@@ -1012,118 +1414,204 @@
 					<plx:PassTypeParam dataTypeName="Guid"/>
 				</plx:Field>
 			</xsl:if>
-			<plx:Function visibility="Public" name="MapAttribute">
-				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="MapAttribute"/>
-				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="xmlNamespace"/>
-				<plx:Param dataTypeName="String" dataTypeQualifier="System" name="attributeName"/>
-				<plx:Param name="" style="RetVal" dataTypeName="Guid"/>
-				<xsl:choose>
-					<xsl:when test="$attributes">
-						<xsl:variable name="namespaces" select="../se:MetaModel/se:Namespaces/se:Namespace"/>
-						<plx:Variable name="customSerializedAttributes" dataTypeName="Dictionary">
-							<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
-							<plx:PassTypeParam dataTypeName="Guid"/>
-							<plx:Initialize>
-								<plx:CallType name="myCustomSerializedAttributes" dataTypeName="{$ClassName}" style="Field"/>
-							</plx:Initialize>
-						</plx:Variable>
-						<plx:Condition>
-							<plx:Test>
-								<plx:Operator name="IdentityEquality">
-									<plx:Left>
-										<plx:Value type="Local">customSerializedAttributes</plx:Value>
-									</plx:Left>
-									<plx:Right>
-										<plx:NullObjectKeyword/>
-									</plx:Right>
-								</plx:Operator>
-							</plx:Test>
-							<plx:Body>
-								<plx:Operator name="Assign">
-									<plx:Left>
-										<plx:Value type="Local">customSerializedAttributes</plx:Value>
-									</plx:Left>
-									<plx:Right>
-										<plx:CallNew dataTypeName="Dictionary">
-											<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
-											<plx:PassTypeParam dataTypeName="Guid"/>
-										</plx:CallNew>
-									</plx:Right>
-								</plx:Operator>
-								<xsl:for-each select="$attributes">
-									<plx:CallInstance name="Add">
-										<plx:CallObject>
+			<xsl:if test="$attributes or not($ClassOverride)">
+				<plx:Function visibility="Protected" name="MapAttribute" shadow="{$ClassOverride}">
+					<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="MapAttribute"/>
+					<plx:Param dataTypeName="String" dataTypeQualifier="System" name="xmlNamespace"/>
+					<plx:Param dataTypeName="String" dataTypeQualifier="System" name="attributeName"/>
+					<plx:Param name="" style="RetVal" dataTypeName="Guid"/>
+					<xsl:variable name="forwardToBase">
+						<xsl:if test="$ClassOverride">
+							<plx:CallInstance name="MapAttribute">
+								<plx:CallObject>
+									<plx:BaseKeyword/>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:Value type="Parameter">xmlNamespace</plx:Value>
+								</plx:PassParam>
+								<plx:PassParam>
+									<plx:Value type="Parameter">attributeName</plx:Value>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</xsl:if>
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="$attributes">
+							<xsl:variable name="namespaces" select="../se:MetaModel/se:Namespaces/se:Namespace"/>
+							<plx:Variable name="customSerializedAttributes" dataTypeName="Dictionary">
+								<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+								<plx:PassTypeParam dataTypeName="Guid"/>
+								<plx:Initialize>
+									<plx:CallType name="myCustomSerializedAttributes" dataTypeName="{$ClassName}" style="Field"/>
+								</plx:Initialize>
+							</plx:Variable>
+							<plx:Condition>
+								<plx:Test>
+									<plx:Operator name="IdentityEquality">
+										<plx:Left>
 											<plx:Value type="Local">customSerializedAttributes</plx:Value>
-										</plx:CallObject>
-										<plx:PassParam>
-											<plx:String>
+										</plx:Left>
+										<plx:Right>
+											<plx:NullObjectKeyword/>
+										</plx:Right>
+									</plx:Operator>
+								</plx:Test>
+								<plx:Body>
+									<plx:Operator name="Assign">
+										<plx:Left>
+											<plx:Value type="Local">customSerializedAttributes</plx:Value>
+										</plx:Left>
+										<plx:Right>
+											<plx:CallNew dataTypeName="Dictionary">
+												<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
+												<plx:PassTypeParam dataTypeName="Guid"/>
+											</plx:CallNew>
+										</plx:Right>
+									</plx:Operator>
+									<xsl:for-each select="$attributes">
+										<plx:CallInstance name="Add">
+											<plx:CallObject>
+												<plx:Value type="Local">customSerializedAttributes</plx:Value>
+											</plx:CallObject>
+											<plx:PassParam>
 												<plx:String>
-													<xsl:call-template name="ResolveNamespace">
-														<xsl:with-param name="namespaces" select="$namespaces"/>
-														<!-- Use default for prefix parameter -->
-													</xsl:call-template>
+													<xsl:if test="string-length(@Prefix)">
+														<!-- For attributes, the lack of a prefix means unqualified. Only concatenate if a namespace is explicitly specified -->
+														<plx:String>
+															<xsl:call-template name="ResolveNamespace">
+																<xsl:with-param name="namespaces" select="$namespaces"/>
+																<!-- Use default for prefix parameter -->
+															</xsl:call-template>
+														</plx:String>
+														<plx:String>|</plx:String>
+													</xsl:if>
+													<plx:String>
+														<xsl:choose>
+															<xsl:when test="string-length(@Name)">
+																<xsl:value-of select="@Name"/>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:value-of select="@ID"/>
+															</xsl:otherwise>
+														</xsl:choose>
+													</plx:String>
 												</plx:String>
-												<plx:String>|</plx:String>
-												<plx:String>
-													<xsl:choose>
-														<xsl:when test="string-length(@Name)">
-															<xsl:value-of select="@Name"/>
-														</xsl:when>
-														<xsl:otherwise>
-															<xsl:value-of select="@ID"/>
-														</xsl:otherwise>
-													</xsl:choose>
-												</plx:String>
-											</plx:String>
-										</plx:PassParam>
-										<plx:PassParam>
-											<plx:CallType name="{@ID}MetaAttributeGuid" dataTypeName="{$ClassName}" style="Field"/>
-										</plx:PassParam>
-									</plx:CallInstance>
-								</xsl:for-each>
-								<plx:Operator name="Assign">
-									<plx:Left>
-										<plx:CallType name="myCustomSerializedAttributes" dataTypeName="{$ClassName}" style="Field"/>
-									</plx:Left>
-									<plx:Right>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:CallType name="{@ID}MetaAttributeGuid" dataTypeName="{$ClassName}" style="Field"/>
+											</plx:PassParam>
+										</plx:CallInstance>
+									</xsl:for-each>
+									<plx:Operator name="Assign">
+										<plx:Left>
+											<plx:CallType name="myCustomSerializedAttributes" dataTypeName="{$ClassName}" style="Field"/>
+										</plx:Left>
+										<plx:Right>
+											<plx:Value type="Local">customSerializedAttributes</plx:Value>
+										</plx:Right>
+									</plx:Operator>
+								</plx:Body>
+							</plx:Condition>
+							<plx:Variable name="rVal" dataTypeName="Guid"/>
+							<plx:Variable name="key" dataTypeName="String" dataTypeQualifier="System">
+								<plx:Initialize>
+									<plx:Value type="Parameter">attributeName</plx:Value>
+								</plx:Initialize>
+							</plx:Variable>
+							<plx:Condition>
+								<plx:Test>
+									<plx:Operator name="BooleanNot"> <!-- UNDONE: Play games from Plix until CodeDom can do != -->
+										<plx:Operator name="Equality">
+											<plx:Left>
+												<plx:CallInstance name="Length" style="Property">
+													<plx:CallObject>
+														<plx:Value type="Parameter">xmlNamespace</plx:Value>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:Left>
+											<plx:Right>
+												<plx:Value type="I4">0</plx:Value>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Operator>
+								</plx:Test>
+								<plx:Body>
+									<plx:Operator name="Assign">
+										<plx:Left>
+											<plx:Value type="Local">key</plx:Value>
+										</plx:Left>
+										<plx:Right>
+											<plx:CallType name="Concat" dataTypeName="String" dataTypeQualifier="System">
+												<plx:PassParam>
+													<plx:Value type="Parameter">xmlNamespace</plx:Value>
+												</plx:PassParam>
+												<plx:PassParam>
+													<plx:String>|</plx:String>
+												</plx:PassParam>
+												<plx:PassParam>
+													<plx:Value type="Parameter">attributeName</plx:Value>
+												</plx:PassParam>
+											</plx:CallType>
+										</plx:Right>
+									</plx:Operator>
+								</plx:Body>
+							</plx:Condition>
+							<xsl:variable name="lookupCall">
+								<plx:CallInstance name="TryGetValue">
+									<plx:CallObject>
 										<plx:Value type="Local">customSerializedAttributes</plx:Value>
-									</plx:Right>
-								</plx:Operator>
-							</plx:Body>
-						</plx:Condition>
-						<plx:Variable name="rVal" dataTypeName="Guid"/>
-						<plx:CallInstance name="TryGetValue">
-							<plx:CallObject>
-								<plx:Value type="Local">customSerializedAttributes</plx:Value>
-							</plx:CallObject>
-							<plx:PassParam>
-								<plx:CallType name="Concat" dataTypeName="String" dataTypeQualifier="System">
+									</plx:CallObject>
 									<plx:PassParam>
-										<plx:Value type="Parameter">xmlNamespace</plx:Value>
+										<plx:Value type="Local">key</plx:Value>
 									</plx:PassParam>
-									<plx:PassParam>
-										<plx:String>|</plx:String>
+									<plx:PassParam passStyle="Out">
+										<plx:Value type="Local">rVal</plx:Value>
 									</plx:PassParam>
-									<plx:PassParam>
-										<plx:Value type="Parameter">attributeName</plx:Value>
-									</plx:PassParam>
-								</plx:CallType>
-							</plx:PassParam>
-							<plx:PassParam passStyle="Out">
+								</plx:CallInstance>
+							</xsl:variable>
+							<xsl:choose>
+								<xsl:when test="$ClassOverride">
+									<plx:Condition>
+										<plx:Test>
+											<plx:Operator name="BooleanNot">
+												<xsl:copy-of select="$lookupCall"/>
+											</plx:Operator>
+										</plx:Test>
+										<plx:Body>
+											<plx:Operator name="Assign">
+												<plx:Left>
+													<plx:Value type="Local">rVal</plx:Value>
+												</plx:Left>
+												<plx:Right>
+													<xsl:copy-of select="$forwardToBase"/>
+												</plx:Right>
+											</plx:Operator>
+										</plx:Body>
+									</plx:Condition>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:copy-of select="$lookupCall"/>
+								</xsl:otherwise>
+							</xsl:choose>
+							<plx:Return>
 								<plx:Value type="Local">rVal</plx:Value>
-							</plx:PassParam>
-						</plx:CallInstance>
-						<plx:Return>
-							<plx:Value type="Local">rVal</plx:Value>
-						</plx:Return>
-					</xsl:when>
-					<xsl:otherwise>
-						<plx:Return>
-							<plx:DefaultValueOf dataTypeName="Guid"/>
-						</plx:Return>
-					</xsl:otherwise>
-				</xsl:choose>
-			</plx:Function>
+							</plx:Return>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:Return>
+								<xsl:choose>
+									<xsl:when test="$ClassOverride">
+										<xsl:copy-of select="$forwardToBase"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:DefaultValueOf dataTypeName="Guid"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</plx:Return>
+						</xsl:otherwise>
+					</xsl:choose>
+				</plx:Function>
+			</xsl:if>
 		</plx:Class>
 	</xsl:template>
 	<xsl:template name="ResolveNamespace">
@@ -1139,7 +1627,8 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="se:MetaModel">
-		<plx:Class name="{@Class}" visibility="Public" partial="true">
+		<xsl:variable name="ModelName" select="@Class"/>
+		<plx:Class name="{$ModelName}" visibility="Public" partial="true">
 			<plx:ImplementsInterface dataTypeName="IORMCustomSerializedMetaModel"/>
 			<xsl:for-each select="se:Namespaces">
 				<plx:Property visibility="Protected" name="DefaultElementPrefix">
@@ -1190,12 +1679,12 @@
 										<plx:Value type="Local">ret</plx:Value>
 									</plx:CallObject>
 									<plx:PassParam>
-										<plx:Value type="Local">
+										<plx:Value type="I4">
 											<xsl:value-of select="position()-1"/>
 										</plx:Value>
 									</plx:PassParam>
 									<plx:PassParam>
-										<plx:Value type="Local">0</plx:Value>
+										<plx:Value type="I4">0</plx:Value>
 									</plx:PassParam>
 								</plx:CallInstance>
 							</plx:Left>
@@ -1212,12 +1701,12 @@
 										<plx:Value type="Local">ret</plx:Value>
 									</plx:CallObject>
 									<plx:PassParam>
-										<plx:Value type="Local">
+										<plx:Value type="I4">
 											<xsl:value-of select="position()-1"/>
 										</plx:Value>
 									</plx:PassParam>
 									<plx:PassParam>
-										<plx:Value type="Local">1</plx:Value>
+										<plx:Value type="I4">1</plx:Value>
 									</plx:PassParam>
 								</plx:CallInstance>
 							</plx:Left>
@@ -1306,15 +1795,9 @@
 			<plx:Field name="myClassNameMap" dataTypeName="Dictionary" visibility="Private" shared="true">
 				<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
 				<plx:PassTypeParam dataTypeName="Guid"/>
-				<plx:Initialize>
-					<plx:NullObjectKeyword/>
-				</plx:Initialize>
 			</plx:Field>
 			<plx:Field name="myValidNamespaces" dataTypeName="Collection" visibility="Private" shared="true">
 				<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
-				<plx:Initialize>
-					<plx:NullObjectKeyword/>
-				</plx:Initialize>
 			</plx:Field>
 			<plx:Function visibility="Protected" name="ShouldSerializeMetaClass">
 				<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="ShouldSerializeMetaClass"/>
@@ -1463,14 +1946,14 @@
 				<plx:Variable name="validNamespaces" dataTypeName="Collection">
 					<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
 					<plx:Initialize>
-						<plx:Value type="Local">myValidNamespaces</plx:Value>
+						<plx:CallType dataTypeName="{$ModelName}" name="myValidNamespaces" style="Field"/>
 					</plx:Initialize>
 				</plx:Variable>
 				<plx:Variable name="classNameMap" dataTypeName="Dictionary">
 					<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
 					<plx:PassTypeParam dataTypeName="Guid"/>
 					<plx:Initialize>
-						<plx:Value type="Local">myClassNameMap</plx:Value>
+						<plx:CallType dataTypeName="{$ModelName}" name="myClassNameMap" style="Field"/>
 					</plx:Initialize>
 				</plx:Variable>
 				<plx:Condition>
@@ -1509,7 +1992,7 @@
 						</xsl:for-each>
 						<plx:Operator name="Assign">
 							<plx:Left>
-								<plx:Value type="Local">myValidNamespaces</plx:Value>
+								<plx:CallType dataTypeName="{$ModelName}" name="myValidNamespaces" style="Field"/>
 							</plx:Left>
 							<plx:Right>
 								<plx:Value type="Local">validNamespaces</plx:Value>
@@ -1562,8 +2045,8 @@
 									<plx:CallType name="MetaClassGuid" dataTypeName="{@Class}" style="Property"/>
 								</plx:PassParam>
 							</plx:CallInstance>
-							<xsl:variable name="ClassName" select="@Class"></xsl:variable>
 							<!-- Handle the less obvious Conditional Names -->
+							<xsl:variable name="className" select="@Class"/>
 							<xsl:for-each select="se:ConditionalName">
 								<plx:CallInstance name="Add">
 									<plx:CallObject>
@@ -1575,14 +2058,14 @@
 										</plx:String>
 									</plx:PassParam>
 									<plx:PassParam>
-										<plx:CallType name="MetaClassGuid" dataTypeName="{$ClassName}" style="Property"/>
+										<plx:CallType name="MetaClassGuid" dataTypeName="{$className}" style="Property"/>
 									</plx:PassParam>
 								</plx:CallInstance>
 							</xsl:for-each>
 						</xsl:for-each>
 						<plx:Operator name="Assign">
 							<plx:Left>
-								<plx:Value type="Local">myClassNameMap</plx:Value>
+								<plx:CallType dataTypeName="{$ModelName}" name="myClassNameMap" style="Field"/>
 							</plx:Left>
 							<plx:Right>
 								<plx:Value type="Local">classNameMap</plx:Value>

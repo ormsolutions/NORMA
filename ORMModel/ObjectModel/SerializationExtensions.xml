@@ -12,7 +12,8 @@
 				<se:RootElement Class="ORMModel"/>
 			</se:RootElements>
 			<se:OmittedMetaElements>
-				<se:OmitRelationship Class="ExternalFactConstraint"/>
+				<se:OmitRelationship Class="MultiColumnExternalFactConstraint"/>
+				<se:OmitRelationship Class="SingleColumnExternalFactConstraint"/>
 				<se:OmitRelationship Class="ExternalRoleConstraint"/>
 				<se:OmitClass Class="IntrinsicReferenceMode"/>
 				<se:OmitRelationship Class="SubjectHasPresentation" Namespace="Microsoft.VisualStudio.Modeling"/>
@@ -66,10 +67,6 @@
 					</plx:Right>
 				</plx:Operator>
 			</se:ConditionalName>
-			<!--TODO:Need the Played roles containter teg-->
-			<se:ChildElement Name ="PlayedRoles">
-				<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
-			</se:ChildElement>
 			<se:Attribute ID="ReferenceModeString"  Name="ReferenceMode" WriteCustomStorage="true">
 				<se:Condition WriteStyle="NotWritten">
 					<plx:CallInstance name="IsValueType" style="Property">
@@ -93,10 +90,16 @@
 					</plx:Operator>
 				</se:Condition>
 			</se:Attribute>
-			<se:Link Name ="Role"  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
+			<se:ChildElement Name="PlayedRoles">
+				<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
+			</se:ChildElement>
 			<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" WriteStyle="PrimaryLinkElement" />
+			<se:ChildElement Name="ValueConstraint">
+				<se:Link RelationshipName="ValueTypeHasValueRangeDefinition" RoleName="ValueRangeDefinition"/>
+			</se:ChildElement>
+			<se:Link Name="Role"  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
 			<se:Link Name="NestedPredicate" RelationshipName="NestingEntityTypeHasFactType" RoleName="NestedFactType" />
-			<se:Link RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"  WriteStyle="NotWritten"/>
+			<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
 			<!--TODO:Subtypes-->
 			<!--TODO:Supertypes-->
 		</se:Element>
@@ -113,8 +116,16 @@
 			<se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueTypeCollection" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="ReferenceModeKind" Name="ReferenceModeKind">
+			<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceModeCollection" WriteStyle="NotWritten" />
 		</se:Element>
+		<se:Element Name="BaseValueRangeDefinition" Class="ValueRangeDefinition">
+			<se:ChildElement Name="ValueRanges">
+				<se:Link RelationshipName="ValueRangeDefinitionHasValueRange" RoleName="ValueRangeCollection"/>
+			</se:ChildElement>
+		</se:Element>
+		<se:Element Class="ValueTypeValueRangeDefinition" Name="ValueRangeDefinition" Override="true"/>
+		<se:Element Class="RoleValueRangeDefinition" Name="RoleValueRangeDefinition" Override="true"/>
 		<!--Facts-->
 		<se:Element Class="FactType" Name="Fact" SortChildElements="true">
 			<!--TODO: FactNotes-->
@@ -125,15 +136,10 @@
 			<se:ChildElement Name="ReadingOrders">
 				<se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrderCollection"/>
 			</se:ChildElement>
-			<se:ChildElement Name="ReadingOrders">
-				<se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrderCollection"/>
-			</se:ChildElement>
 			<se:ChildElement Name="InternalConstraints">
 				<se:Link RelationshipName="FactTypeHasInternalConstraint" RoleName="InternalConstraintCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="NestingEntityTypeHasFactType" RoleName="NestingType" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="SingleColumnExternalConstraintCollection" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="MultiColumnExternalConstraintCollection" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="ReadingRequiredError" WriteStyle="NotWritten"/>
 		</se:Element>
@@ -153,73 +159,50 @@
 		</se:Element>
 		<!--Role-->
 		<se:Element Class="Role">
+			<se:Attribute ID="IsMandatory" Name ="IsMandatory" WriteCustomStorage="true"/>
+			<se:Attribute ID="Multiplicity" Name ="Multiplicity" WriteCustomStorage="true"/>
+			<se:ChildElement Name="ValueConstraint">
+				<se:Link RelationshipName="RoleHasValueRangeDefinition" RoleName="ValueRangeDefinition"/>
+			</se:ChildElement>
 			<se:ChildElement Name="ReadingOrders">
 				<se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrderCollection"/>
 			</se:ChildElement>
 			<!--Need to add this attribute as custom storage.-->
 			<!--<se:Attribute ID="IsFunctional" Name ="IsFunctional" WriteCustomStorage="true"/>-->
-			<se:Attribute ID="IsMandatory" Name ="IsMandatory" WriteCustomStorage="true"/>
-			<se:Attribute ID="Multiplicity" Name ="Multiplicity" WriteCustomStorage="true"/>
 			<se:Link Name="RolePlayer" RelationshipName="ObjectTypePlaysRole" RoleName="RolePlayer"/>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequenceCollection" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
 		</se:Element>
 		<!--Constraints-->
-		<se:Element Class ="EqualityConstraint">
+		<se:Element Class="MultiColumnExternalConstraint">
 			<se:ChildElement Name="RoleSequences">
 				<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 			</se:ChildElement>
-			<se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
-		</se:Element>
-		<se:Element Class ="ExclusionConstraint">
-			<se:ChildElement Name="RoleSequences">
-				<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
-			</se:ChildElement>
-			<se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
-			<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
-		</se:Element>
-		<se:Element Class ="SubsetConstraint">
-			<se:ChildElement Name="RoleSequences">
-				<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
-			</se:ChildElement>
-			<se:Link RelationshipName="MultiColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="MultiColumnExternalConstraintRoleSequence" Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 		</se:Element>
-		<se:Element Class="FrequencyConstraint">
+		<se:Element Class="SingleColumnExternalConstraint">
 			<se:ChildElement Name="RoleSequence">
 				<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-			<se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
 		</se:Element>
-		<se:Element Class="DisjunctiveMandatoryConstraint">
-			<se:ChildElement Name="RoleSequence">
-				<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
-			</se:ChildElement>
-			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-			<se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
-		</se:Element>
-		<se:Element Class="ExternalUniquenessConstraint">
-			<se:ChildElement Name="RoleSequence">
-				<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
-			</se:ChildElement>
-			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-			<se:Link RelationshipName="SingleColumnExternalFactConstraint" RoleName="FactTypeCollection" WriteStyle="NotWritten"/>
+		<se:Element Class="ExternalUniquenessConstraint" Override="true">
+			<se:Link RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="InternalUniquenessConstraint">
+			<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 			<se:ChildElement Name="RoleSequence">
 				<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 			</se:ChildElement>
-			<se:Attribute ID="Name" Name="Name" WriteStyle="NotWritten"></se:Attribute>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 			<se:Link RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="NMinusOneError" WriteStyle="NotWritten"/>        
 		</se:Element>
 		<se:Element Class="SimpleMandatoryConstraint">
+			<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 			<se:ChildElement Name="RoleSequence">
 				<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 			</se:ChildElement>
@@ -282,29 +265,35 @@
 				<se:OmitRelationship Class="LinkConnectsToNode" Namespace="Microsoft.VisualStudio.Modeling.Diagrams"/>
 			</se:OmittedMetaElements>
 		</se:MetaModel>
-		<se:Element Class="ObjectTypeShape">
-			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
-			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
+		<se:Element Class="ORMDiagram" SortChildElements="true">
+			<se:ChildElement Name="Shapes">
+				<se:Link RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
+			</se:ChildElement>
+			<se:Link Name="Subject" RelationshipName="SubjectHasPresentation" RoleName="Subject"/>
 		</se:Element>
-		<se:Element Class="FactTypeShape">
+		<se:Element Class="ORMBaseShape" SortChildElements="true">
 			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
 			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
+			<se:ChildElement Name="RelativeShapes">
+				<se:Link RelationshipName="ParentShapeHasRelativeChildShapes" RoleName="RelativeChildShapes"/>
+			</se:ChildElement>
+			<se:ChildElement Name="NestedShapes">
+				<se:Link RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
+			</se:ChildElement>
+			<se:Link Name="Subject" RelationshipName="SubjectHasPresentation" RoleName="Subject"/>
 		</se:Element>
-		<se:Element Class="ObjectifiedFactTypeNameShape">
-			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
-			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
+		<se:Element Class="ObjectTypeShape" Override="true">
+			<se:Attribute ID="ShapeName" WriteStyle="NotWritten"/>
+			<se:Attribute ID="ReferenceModeName" WriteStyle="NotWritten"/>
 		</se:Element>
-		<se:Element Class="ReadingShape">
-			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
-			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
+		<se:Element Class="ObjectifiedFactTypeNameShape" Override="true">
+			<se:Attribute ID="ObjectTypeName" WriteStyle="NotWritten"/>
 		</se:Element>
-		<se:Element Class="ExternalConstraintShape">
-			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
-			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
+		<se:Element Class="ReadingShape" Override="true">
+			<se:Attribute ID="ReadingText" WriteStyle="NotWritten"/>
 		</se:Element>
-		<se:Element Class="ValueRangeShape">
-			<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
-			<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
+		<se:Element Class="ValueRangeShape" Override="true">
+			<se:Attribute ID="ValueRangeText" WriteStyle="NotWritten"/>
 		</se:Element>
 	</se:Using>
 </se:CustomSerializedElements>
