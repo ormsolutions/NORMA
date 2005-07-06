@@ -171,9 +171,6 @@
     <ResourceString name="ModelExceptionFactAddReadingInvalidReadingText" model="Model" resourceName="ModelException.Fact.AddReading.InvalidReadingText">
         <comment type="Summary">The error message that is returned when attempting to add a new reading to a fact and the text is not valid.  It needs to have a number of place holders equal to the number of roles in the fact and they need to have their positions identified by number using the replacement syntax of String.Format. For example: "{0} has {1}"</comment>
     </ResourceString>
-    <ResourceString name="ModelExceptionReadingTextChangeInvalid" model="Model" resourceName="ModelException.Reading.Text.InvalidText">
-        <comment type="Summary">Error message thrown when the Text of a reading is changed to something that is not valid for the current state of the Reading.</comment>
-    </ResourceString>
     <ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text">
         <comment type="Summary">Model validation error shown when too few role sequences are defined for a constraint. This is a frequent occurrence as external constraints are easily created in this state.</comment>
     </ResourceString>

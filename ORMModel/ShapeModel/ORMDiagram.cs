@@ -603,7 +603,7 @@ namespace Northface.Tools.ORM.ShapeModel
 					if (modelingItem != null && modelingItem.Id == itemId)
 					{
 						// UNDONE: See comments on side effect in ORMDiagram.OnViewMouseEnter
-						//toolbox.SetSelectedToolboxItem(item); // UNDONE: Crashes, not sure why
+						//toolbox.SetSelectedToolboxItem(item); // UNDONE: MSBUG Gives 'Value does not fall within expected range' error message, not sure why
 						break;
 					}
 				}
@@ -821,58 +821,65 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <param name="disposing">Do stuff if true</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing)
+			try
 			{
-				// Use a somewhat paranoid pattern here to protect against reentrancy
-				IDisposable disposeMe;
-				disposeMe = myExternalConstraintAction as IDisposable;
-				myExternalConstraintAction = null;
-				if (disposeMe != null)
+				if (disposing)
 				{
-					disposeMe.Dispose();
-				}
+					// Use a somewhat paranoid pattern here to protect against reentrancy
+					IDisposable disposeMe;
+					disposeMe = myExternalConstraintAction as IDisposable;
+					myExternalConstraintAction = null;
+					if (disposeMe != null)
+					{
+						disposeMe.Dispose();
+					}
 
-				disposeMe = myExternalConstraintConnectAction as IDisposable;
-				myExternalConstraintConnectAction = null;
-				if (disposeMe != null)
-				{
-					disposeMe.Dispose();
-				}
+					disposeMe = myExternalConstraintConnectAction as IDisposable;
+					myExternalConstraintConnectAction = null;
+					if (disposeMe != null)
+					{
+						disposeMe.Dispose();
+					}
 
-				disposeMe = myInternalUniquenessConstraintAction as IDisposable;
-				myInternalUniquenessConstraintAction = null;
-				if (disposeMe != null)
-				{
-					disposeMe.Dispose();
-				}
+					disposeMe = myInternalUniquenessConstraintAction as IDisposable;
+					myInternalUniquenessConstraintAction = null;
+					if (disposeMe != null)
+					{
+						disposeMe.Dispose();
+					}
 
-				disposeMe = myInternalUniquenessConstraintConnectAction as IDisposable;
-				myInternalUniquenessConstraintConnectAction = null;
-				if (disposeMe != null)
-				{
-					disposeMe.Dispose();
-				}
+					disposeMe = myInternalUniquenessConstraintConnectAction as IDisposable;
+					myInternalUniquenessConstraintConnectAction = null;
+					if (disposeMe != null)
+					{
+						disposeMe.Dispose();
+					}
 
-				disposeMe = myRoleDragPendingAction as IDisposable;
-				myRoleDragPendingAction = null;
-				if (disposeMe != null)
-				{
-					disposeMe.Dispose();
-				}
+					disposeMe = myRoleDragPendingAction as IDisposable;
+					myRoleDragPendingAction = null;
+					if (disposeMe != null)
+					{
+						disposeMe.Dispose();
+					}
 
-				disposeMe = myRoleConnectAction as IDisposable;
-				myRoleConnectAction = null;
-				if (disposeMe != null)
-				{
-					disposeMe.Dispose();
-				}
+					disposeMe = myRoleConnectAction as IDisposable;
+					myRoleConnectAction = null;
+					if (disposeMe != null)
+					{
+						disposeMe.Dispose();
+					}
 
-				disposeMe = mySubtypeConnectAction as IDisposable;
-				mySubtypeConnectAction = null;
-				if (disposeMe != null)
-				{
-					disposeMe.Dispose();
+					disposeMe = mySubtypeConnectAction as IDisposable;
+					mySubtypeConnectAction = null;
+					if (disposeMe != null)
+					{
+						disposeMe.Dispose();
+					}
 				}
+			}
+			finally
+			{
+				base.Dispose(disposing);
 			}
 		}
 		/// <summary>

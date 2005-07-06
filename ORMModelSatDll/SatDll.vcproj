@@ -224,7 +224,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="&quot;C:\Program Files\VSIP 8.0\EnvSDK\tools\bin\x86\ctc&quot; -nologo .\pkgcmd.ctc .\pkgcmd.cto -Ccl -IC:\PROGRA~1\VSIP8~1.0\EnvSDK\common\inc -IC:\PROGRA~1\VSIP8~1.0\EnvSDK\common\inc\office10&#x0D;&#x0A;"
+					CommandLine="&quot;C:\Program Files\VSIP 8.0\EnvSDK\tools\bin\ctc&quot; -nologo .\pkgcmd.ctc .\pkgcmd.cto -Ccl -I&quot;C:\Program Files\VSIP 8.0\EnvSDK\common\inc&quot; -I&quot;C:\Program Files\VSIP 8.0\EnvSDK\common\inc\office10&quot;  &#x0D;&#x0A;"
 					Outputs=".\pkgcmd.cto"
 				/>
 			</FileConfiguration>
@@ -233,7 +233,7 @@
 				>
 				<Tool
 					Name="VCCustomBuildTool"
-					CommandLine="&quot;C:\Program Files\VSIP 8.0\EnvSDK\tools\bin\x86\ctc&quot; -nologo .\pkgcmd.ctc .\pkgcmd.cto -Ccl -DDEBUG -IC:\PROGRA~1\VSIP8~1.0\EnvSDK\common\inc -IC:\PROGRA~1\VSIP8~1.0\EnvSDK\common\inc\office10&#x0D;&#x0A;"
+					CommandLine="&quot;C:\Program Files\VSIP 8.0\EnvSDK\tools\bin\ctc&quot; -nologo .\pkgcmd.ctc .\pkgcmd.cto -Ccl -DDEBUG -I&quot;C:\Program Files\VSIP 8.0\EnvSDK\common\inc&quot; -I&quot;C:\Program Files\VSIP 8.0\EnvSDK\common\inc\office10&quot;  &#x0D;&#x0A;"
 					Outputs=".\pkgcmd.cto"
 				/>
 			</FileConfiguration>

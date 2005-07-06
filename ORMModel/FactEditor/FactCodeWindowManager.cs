@@ -59,7 +59,7 @@ namespace Northface.Tools.ORM.FactEditor
 			Guid tempGuid = typeof(IVsWindowFrame).GUID;
 			IntPtr pFrame = IntPtr.Zero;
 			int hr = sp.QueryService(ref tempGuid, ref tempGuid, out pFrame);
-			if (hr == NativeMethods.S_OK)
+			if (hr == VSConstants.S_OK)
 			{
 				try
 				{
@@ -78,9 +78,9 @@ namespace Northface.Tools.ORM.FactEditor
 			return hr;
 		}
 
-		int IVsCodeWindowManager.OnNewView(IVsTextView view)
+		int IVsCodeWindowManager.OnNewView(IVsTextView pView)
 		{
-			return OnNewView(view);
+			return OnNewView(pView);
 		}
 		/// <summary>
 		/// Implements IVsCodeWindowManager.OnNewView
@@ -92,8 +92,8 @@ namespace Northface.Tools.ORM.FactEditor
 			FactTextViewFilter textViewFilter;
 			textViewFilter = new FactTextViewFilter(myPackage, view);
 			textViewFilter.Init();
-			myListViews.AddHead(textViewFilter);
-			return Microsoft.VisualStudio.NativeMethods.S_OK;
+			myListViews.AddFirst(textViewFilter);
+			return VSConstants.S_OK;
 		}
 
 		int IVsCodeWindowManager.RemoveAdornments()
@@ -111,7 +111,7 @@ namespace Northface.Tools.ORM.FactEditor
 			{
 				ftvf.TextView.RemoveCommandFilter(ftvf);
 			}
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		#endregion

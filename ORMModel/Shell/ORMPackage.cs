@@ -26,7 +26,9 @@ namespace Northface.Tools.ORM.Shell
 	// "ORM Designer" and "General" correspond and must be in sync with
 	// the VRG file and are defined also in ORMDesignerUI.rc
 	[ProvideOptionPage(typeof(OptionsPage), "ORM Designer", "General", 105, 106, false)]
-	[InstalledProductRegistration(UseInterface=true)]
+	[ProvideToolboxItems(1, true)]
+	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
+	[InstalledProductRegistration(false, "#103", "#103", "1.0", IconResourceID=101)]
 	public sealed class ORMDesignerPackage : ModelingPackage, IVsInstalledProduct
 	{
 		#region Member variables
@@ -35,7 +37,7 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		private object myCommandSet;
 		private IVsWindowFrame myFactEditorToolWindow;
-		private ORMDesignerFontsAndColors myFontAndColorService = null;
+		private ORMDesignerFontsAndColors myFontAndColorService;
 		private static ORMDesignerPackage mySingleton;
 		#endregion
 		#region Construction/destruction
@@ -106,12 +108,14 @@ namespace Northface.Tools.ORM.Shell
 				myCommandSet = ORMDesignerDocView.CreateCommandSet(this);
 
 				// Create tool windows
-				AddToolWindow(new ORMBrowserToolWindow(this));
-				AddToolWindow(new ORMReadingEditorToolWindow(this));
-				AddToolWindow(new ORMReferenceModeEditorToolWindow(this));
+				AddToolWindow(typeof(ORMBrowserToolWindow));
+				AddToolWindow(typeof(ORMReadingEditorToolWindow));
+				AddToolWindow(typeof(ORMReferenceModeEditorToolWindow));
 				
 				// Make sure our options are loaded from the registry
 				GetDialogPage(typeof(OptionsPage));
+
+				SetupDynamicToolbox(); // UNDONE: MSBUG We should not need this, but the toolbox is not being initialized
 			}
 
 		}
@@ -173,7 +177,7 @@ namespace Northface.Tools.ORM.Shell
 			ILocalRegistry3 locReg = (ILocalRegistry3)this.GetService(typeof(ILocalRegistry));
 			IntPtr pBuf = IntPtr.Zero;
 			Guid iid = typeof(IVsTextLines).GUID;
-			NativeMethods.ThrowOnFailure(locReg.CreateInstance(
+			ErrorHandler.ThrowOnFailure(locReg.CreateInstance(
 				typeof(VsTextBufferClass).GUID,
 				null,
 				ref iid,
@@ -199,14 +203,14 @@ namespace Northface.Tools.ORM.Shell
 
 			// assign our language service to the buffer
 			Guid langService = typeof(FactLanguageService).GUID;
-			NativeMethods.ThrowOnFailure(lines.SetLanguageServiceID(ref langService));
+			ErrorHandler.ThrowOnFailure(lines.SetLanguageServiceID(ref langService));
 
 			// Create a std code view (text)
 			IntPtr srpCodeWin = IntPtr.Zero;
 			iid = typeof(IVsCodeWindow).GUID;
 
 			// create code view (does CoCreateInstance if not in shell's registry)
-			NativeMethods.ThrowOnFailure(locReg.CreateInstance(
+			ErrorHandler.ThrowOnFailure(locReg.CreateInstance(
 				typeof(VsCodeWindowClass).GUID,
 				null,
 				ref iid,
@@ -227,7 +231,7 @@ namespace Northface.Tools.ORM.Shell
 				}
 			}
 
-			NativeMethods.ThrowOnFailure(codeWindow.SetBuffer(lines));
+			ErrorHandler.ThrowOnFailure(codeWindow.SetBuffer(lines));
 
 			IVsWindowFrame windowFrame;
 			IVsUIShell shell = (IVsUIShell)GetService(typeof(IVsUIShell));
@@ -244,7 +248,7 @@ namespace Northface.Tools.ORM.Shell
 			// 7- tool window.windowTitle
 			// 8- int[] for position (empty array)
 			// 9- out IVsWindowFrame
-			NativeMethods.ThrowOnFailure(shell.CreateToolWindow(
+			ErrorHandler.ThrowOnFailure(shell.CreateToolWindow(
 				(uint)__VSCREATETOOLWIN.CTW_fInitNew, // tool window flags, default to init new
 				0,
 				(IVsWindowPane)codeWindow,
@@ -264,33 +268,33 @@ namespace Northface.Tools.ORM.Shell
 		{
 			// UNDONE: implement splash screen here
 			pIdBmp = 111;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		int IVsInstalledProduct.IdIcoLogoForAboutbox(out uint pIdIco)
 		{
 			// UNDONE: replace hard-coded ID for AboutBox icon
 			pIdIco = 110;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		int IVsInstalledProduct.OfficialName(out string pbstrName)
 		{
 			pbstrName = ResourceStrings.PackageOfficialName;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		int IVsInstalledProduct.ProductDetails(out string pbstrProductDetails)
 		{
 			pbstrProductDetails = ResourceStrings.PackageProductDetails;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		int IVsInstalledProduct.ProductID(out string pbstrPID)
 		{
 			// UNDONE: we need to sync the productID with the assembly
 			pbstrPID = "1.0";
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 #endregion

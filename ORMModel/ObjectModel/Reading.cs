@@ -164,7 +164,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Determines how many role placeholders are indicated in the indicated text
 		/// and returns the count.
 		/// </summary>
-		public static int PlaceHolderCount(string textText)
+		public static int PlaceholderCount(string textText)
 		{
 			return regCountPlaces.Matches(textText).Count;
 		}
@@ -187,7 +187,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				ORMModel theModel = ReadingOrder.FactType.Model;
 				Store store = Store;
 				int numRoles = ReadingOrder.RoleCollection.Count;
-				int numPlaces = Reading.PlaceHolderCount(Text);
+				int numPlaces = Reading.PlaceholderCount(Text);
 
 				if (numRoles == numPlaces)
 				{
@@ -248,7 +248,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		private class ReadingPropertiesChanged : ChangeRule
 		{
 			//so we know when not to run code when items are being set to false
-			bool mySettingNewPrimary = false;
+			bool mySettingNewPrimary;
 
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{

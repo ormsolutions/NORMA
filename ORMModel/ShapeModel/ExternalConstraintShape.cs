@@ -212,9 +212,9 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // ExternalConstraintShape specific
 		#region Shape display update rules
-		#region ExternalUniquenessConstraint ShapeChangeRule1 class
+		#region ExternalUniquenessConstraint ShapeChangeRule class
 		[RuleOn(typeof(ExternalUniquenessConstraint), FireTime = TimeToFire.TopLevelCommit)]
-		private class ShapeChangeRule1 : ChangeRule
+		private class ShapeChangeRule : ChangeRule
 		{
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
@@ -228,7 +228,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // ExternalUniquenessConstraint ShapeChangeRule1 class
+		#endregion // ExternalUniquenessConstraint ShapeChangeRule class
 		#endregion // Shape display update rules
 		#region IModelErrorActivation Implementation
 		/// <summary>

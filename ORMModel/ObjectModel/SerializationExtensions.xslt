@@ -2,11 +2,13 @@
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix"
-    xmlns:se="http://Schemas.Northface.edu/Private/SerializationExtensions">
+    xmlns:se="http://Schemas.Northface.edu/Private/SerializationExtensions"
+	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<xsl:template match="se:CustomSerializedElements">
 		<plx:Root xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
 			<plx:Using name="System"/>
 			<plx:Using name="System.Collections"/>
+			<plx:Using name="System.Collections.ObjectModel"/>
 			<plx:Using name="System.Collections.Generic"/>
 			<plx:Using name="Microsoft.VisualStudio.Modeling"/>
 			<plx:Using name="Microsoft.VisualStudio.Modeling.Diagrams"/>
@@ -101,7 +103,8 @@
 										</plx:Variable>
 										<plx:Condition>
 											<plx:Test>
-												<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix game for CodeDomProvider -->
+												<plx:Operator name="BooleanNot">
+													<!-- UNDONE: Plix game for CodeDomProvider -->
 													<plx:Operator name="Equality">
 														<plx:Left>
 															<plx:Value type="I4">0</plx:Value>
@@ -198,7 +201,8 @@
 									<xsl:if test="$ClassOverride">
 										<plx:Condition>
 											<plx:Test>
-												<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix CodeDom game -->
+												<plx:Operator name="BooleanNot">
+													<!-- UNDONE: Plix CodeDom game -->
 													<plx:Operator name="Equality">
 														<plx:Left>
 															<plx:Value type="Local">baseInfoCount</plx:Value>
@@ -353,7 +357,8 @@
 							<xsl:if test="$ClassOverride">
 								<plx:Condition>
 									<plx:Test>
-										<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix game for CodeDomProvider -->
+										<plx:Operator name="BooleanNot">
+											<!-- UNDONE: Plix game for CodeDomProvider -->
 											<plx:Operator name="Equality">
 												<plx:Left>
 													<plx:Value type="I4">0</plx:Value>
@@ -436,7 +441,8 @@
 							<xsl:if test="$ClassOverride">
 								<plx:Condition>
 									<plx:Test>
-										<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix game for CodeDomProvider -->
+										<plx:Operator name="BooleanNot">
+											<!-- UNDONE: Plix game for CodeDomProvider -->
 											<plx:Operator name="Equality">
 												<plx:Left>
 													<plx:Value type="I4">0</plx:Value>
@@ -521,7 +527,7 @@
 									</plx:Right>
 								</plx:Operator>
 							</xsl:if>
-							<xsl:variable name="SortedLevels">
+							<xsl:variable name="SortedLevelsFragment">
 								<!-- ChildElement/Link links may have more information in Link. Just use
 								     the ChildElement one. -->
 								<xsl:variable name="childLinks" select="se:ChildElement[not(@NotSorted='true')]/se:Link"/>
@@ -562,6 +568,7 @@
 									</xsl:if>
 								</xsl:for-each>
 							</xsl:variable>
+							<xsl:variable name="SortedLevels" select="msxsl:node-set($SortedLevelsFragment)"/>
 							<plx:Variable name="metaDataDir" dataTypeName="MetaDataDirectory">
 								<plx:Initialize>
 									<plx:CallInstance name="MetaDataDirectory" style="Property">
@@ -684,7 +691,8 @@
 										</plx:Variable>
 										<plx:Condition>
 											<plx:Test>
-												<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix game for CodeDom -->
+												<plx:Operator name="BooleanNot">
+													<!-- UNDONE: Plix game for CodeDom -->
 													<plx:Operator name="Equality">
 														<plx:Left>
 															<plx:Value type="I4">0</plx:Value>
@@ -708,7 +716,7 @@
 								<Value>x</Value>
 								<Value>y</Value>
 							</xsl:variable>
-							<xsl:for-each select="$paramVals/child::*">
+							<xsl:for-each select="msxsl:node-set($paramVals)/child::*">
 								<plx:Variable name="{.}Pos" dataTypeName="Int32" dataTypeQualifier="System"/>
 								<plx:Condition>
 									<plx:Test>
@@ -788,40 +796,6 @@
 								<plx:Value type="I4">1</plx:Value>
 							</plx:Return>
 						</plx:Function>
-						<plx:Function visibility="Public" name="Equals">
-							<!-- UNDONE: See comments on Compare
-							<plx:InterfaceMember dataTypeName="IComparer" member="Equals">
-								<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
-							</plx:InterfaceMember> -->
-							<plx:Param style="RetVal" name="" dataTypeName="Boolean" dataTypeQualifier="System"/>
-							<plx:Param style="In" name="x" dataTypeName="MetaRoleInfo"/>
-							<plx:Param style="In" name="y" dataTypeName="MetaRoleInfo"/>
-							<plx:Return>
-								<plx:CallType dataTypeName="Object" dataTypeQualifier="System" name="ReferenceEquals">
-									<plx:PassParam>
-										<plx:Value type="Local">x</plx:Value>
-									</plx:PassParam>
-									<plx:PassParam>
-										<plx:Value type="Local">y</plx:Value>
-									</plx:PassParam>
-								</plx:CallType>
-							</plx:Return>
-						</plx:Function>
-						<plx:Function visibility="Public" name="GetHashCode">
-							<!-- UNDONE: See comments on Compare
-							<plx:InterfaceMember dataTypeName="IComparer" member="GetHashCode">
-								<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
-							</plx:InterfaceMember> -->
-							<plx:Param style="RetVal" name="" dataTypeName="Int32" dataTypeQualifier="System"/>
-							<plx:Param style="In" name="obj" dataTypeName="MetaRoleInfo"/>
-							<plx:Return>
-								<plx:CallInstance name="GetHashCode">
-									<plx:CallObject>
-										<plx:Value type="Local">obj</plx:Value>
-									</plx:CallObject>
-								</plx:CallInstance>
-							</plx:Return>
-						</plx:Function>
 					</plx:Class>
 					<plx:Property visibility="Protected" name="CustomSerializedChildRoleComparer" shadow="{$ClassOverride}">
 						<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="CustomSerializedChildRoleComparer"/>
@@ -861,7 +835,8 @@
 										</plx:Variable>
 										<plx:Condition>
 											<plx:Test>
-												<plx:Operator name="BooleanNot"> <!-- UNDONE: Plix game for CodeDomProvider -->
+												<plx:Operator name="BooleanNot">
+													<!-- UNDONE: Plix game for CodeDomProvider -->
 													<plx:Operator name="Equality">
 														<plx:Left>
 															<plx:Value type="I4">0</plx:Value>
@@ -955,7 +930,7 @@
 					</plx:Property>
 				</xsl:when>
 			</xsl:choose>
-			<xsl:variable name="mapChildElementBody">
+			<xsl:variable name="mapChildElementBodyFragment">
 				<xsl:variable name="namespaces" select="parent::se:Using/se:MetaModel/se:Namespaces/se:Namespace"/>
 				<xsl:variable name="namespace">
 					<xsl:call-template name="ResolveNamespace">
@@ -963,7 +938,7 @@
 						<!-- Use default for prefix parameter -->
 					</xsl:call-template>
 				</xsl:variable>
-				<xsl:variable name="linksInChildElement">
+				<xsl:variable name="linksInChildElementFragment">
 					<xsl:for-each select="se:ChildElement/se:Link">
 						<xsl:copy>
 							<xsl:copy-of select="@*"/>
@@ -978,13 +953,14 @@
 						</xsl:copy>
 					</xsl:for-each>
 				</xsl:variable>
+				<xsl:variable name="linksInChildElement" select="msxsl:node-set($linksInChildElementFragment)/child::*"/>
 				<xsl:variable name="childElements" select="se:ChildElement"/>
 				<xsl:variable name="allLinksTemp">
 					<xsl:for-each select="se:Link[not(@WriteStyle='NotWritten')]">
 						<xsl:variable name="relationship" select="@RelationshipName"/>
 						<xsl:variable name="role" select="@RoleName"/>
 						<xsl:choose>
-							<xsl:when test="count($linksInChildElement/child::*[@RelationshipName=$relationship and @RoleName=$role]) > 0">
+							<xsl:when test="count($linksInChildElement[@RelationshipName=$relationship and @RoleName=$role]) > 0">
 								<xsl:copy>
 									<xsl:copy-of select="@*"/>
 									<xsl:attribute name="contained">
@@ -1003,8 +979,8 @@
 						</xsl:choose>
 					</xsl:for-each>
 				</xsl:variable>
-				<xsl:variable name="allLinks" select="$allLinksTemp/child::*"/>
-				
+				<xsl:variable name="allLinks" select="msxsl:node-set($allLinksTemp)/child::*"/>
+
 				<xsl:for-each select="$allLinks">
 					<xsl:choose>
 						<!-- Walk the $allLinks, then add the ones that are
@@ -1032,7 +1008,9 @@
 											</xsl:call-template>
 										</plx:String>
 										<plx:String>|</plx:String>
-										<plx:String><xsl:value-of select="@Name"/></plx:String>
+										<plx:String>
+											<xsl:value-of select="@Name"/>
+										</plx:String>
 									</plx:String>
 								</plx:PassParam>
 								<plx:PassParam>
@@ -1045,7 +1023,7 @@
 				<!-- Walk $linksInChildElements, then add the ones that
 				INTERSECT with the $allLinks list to the dictionary. -->
 				<xsl:for-each select="$childElements">
-					<xsl:variable name="localLinks">
+					<xsl:variable name="localLinksFragment">
 						<xsl:for-each select="se:Link">
 							<xsl:variable name="relationshipName" select="@RelationshipName"/>
 							<xsl:variable name="roleName" select="@RoleName"/>
@@ -1068,25 +1046,27 @@
 										</xsl:choose>
 									</xsl:for-each>
 								</xsl:copy>
-							</xsl:if>	
-						</xsl:for-each>	
-					</xsl:variable>			
-					<xsl:variable name="PLiXedLinks">
-						<xsl:for-each select="$localLinks/child::*">
-							<plx:PassParam>
-								<plx:CallType name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" style="Field"/>
-							</plx:PassParam>	
+							</xsl:if>
 						</xsl:for-each>
 					</xsl:variable>
-					<xsl:if test="count($localLinks/child::*)">
+					<xsl:variable name="localLinks" select="msxsl:node-set($localLinksFragment)/child::*"/>
+					<xsl:variable name="PLiXedLinksFragment">
+						<xsl:for-each select="$localLinks">
+							<plx:PassParam>
+								<plx:CallType name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" style="Field"/>
+							</plx:PassParam>
+						</xsl:for-each>
+					</xsl:variable>
+					<xsl:variable name="PLiXedLinks" select="msxsl:node-set($PLiXedLinksFragment)/child::*"/>
+					<xsl:if test="count($localLinks)">
 						<plx:CallInstance name="InitializeRoles">
 							<plx:CallObject>
 								<plx:Value type="Local">match</plx:Value>
 							</plx:CallObject>
-							<xsl:copy-of select="$PLiXedLinks/child::*"/>
-						</plx:CallInstance>		
+							<xsl:copy-of select="$PLiXedLinks"/>
+						</plx:CallInstance>
 						<xsl:variable name="containerName" select="@Name"/>
-						<xsl:for-each select="$localLinks/child::*">
+						<xsl:for-each select="$localLinks">
 							<plx:CallInstance name="Add">
 								<plx:CallObject>
 									<plx:Value type="Local">childElementMappings</plx:Value>
@@ -1101,7 +1081,9 @@
 										</plx:String>
 										<plx:String>|</plx:String>
 										<plx:String>
-											<plx:String><xsl:value-of select="$containerName"/></plx:String>
+											<plx:String>
+												<xsl:value-of select="$containerName"/>
+											</plx:String>
 										</plx:String>
 										<plx:String>|</plx:String>
 										<plx:String>
@@ -1123,11 +1105,11 @@
 						</xsl:for-each>
 					</xsl:if>
 				</xsl:for-each>
-				
+
 				<!-- Walk $linksInChildElements, then add the ones that are
 				NOT in the $allLinks list to the dictionary. -->
 				<xsl:for-each select="$childElements">
-					<xsl:variable name="links">
+					<xsl:variable name="linksFragment">
 						<xsl:for-each select="se:Link">
 							<xsl:variable name="relationshipName" select="@RelationshipName"/>
 							<xsl:variable name="roleName" select="@RoleName"/>
@@ -1140,13 +1122,14 @@
 							</xsl:if>
 						</xsl:for-each>
 					</xsl:variable>
-					<xsl:if test="count($links/child::*)">
+					<xsl:variable name="links" select="msxsl:node-set($linksFragment)/child::*"/>
+					<xsl:if test="count($links)">
 						<plx:CallInstance name="InitializeRoles">
 							<plx:CallObject>
 								<plx:Value type="Local">match</plx:Value>
 							</plx:CallObject>
-							<xsl:copy-of select="$links/child::*"/>
-						</plx:CallInstance>		
+							<xsl:copy-of select="$links"/>
+						</plx:CallInstance>
 						<plx:CallInstance name="Add">
 							<plx:CallObject>
 								<plx:Value type="Local">childElementMappings</plx:Value>
@@ -1161,7 +1144,9 @@
 									</plx:String>
 									<plx:String>|</plx:String>
 									<plx:String>
-										<plx:String><xsl:value-of select="@Name"/></plx:String>
+										<plx:String>
+											<xsl:value-of select="@Name"/>
+										</plx:String>
 									</plx:String>
 									<plx:String>||</plx:String>
 								</plx:String>
@@ -1169,17 +1154,17 @@
 							<plx:PassParam>
 								<plx:Value type="Local">match</plx:Value>
 							</plx:PassParam>
-						</plx:CallInstance>	
+						</plx:CallInstance>
 					</xsl:if>
 				</xsl:for-each>
-				
-				
+
+
 				<xsl:for-each select="se:ChildElement">
 					<xsl:choose>
 						<!-- It's a relationship -->
 						<xsl:when test="se:Link">
 							<xsl:for-each select="se:Link">
-	<!--										<xsl:if test="@RelationshipName = parent::parent::se:Element/se:Link"></xsl:if>-->
+								<!--										<xsl:if test="@RelationshipName = parent::parent::se:Element/se:Link"></xsl:if>-->
 							</xsl:for-each>
 						</xsl:when>
 						<!-- It's a something that I don't find an example for-->
@@ -1242,7 +1227,8 @@
 					</plx:CallInstance>
 				</xsl:for-each>
 			</xsl:variable>
-			<xsl:variable name="hasMappedChildElements" select="0!=count($mapChildElementBody/child::*)"/>
+			<xsl:variable name="mapChildElementBody" select="msxsl:node-set($mapChildElementBodyFragment)/child::*"/>
+			<xsl:variable name="hasMappedChildElements" select="0!=count($mapChildElementBody)"/>
 			<xsl:if test="$hasMappedChildElements">
 				<plx:Field name="myChildElementMappings" dataTypeName="Dictionary" visibility="Private" shared="true">
 					<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
@@ -1325,7 +1311,7 @@
 										</plx:Right>
 									</plx:Operator>
 								</plx:Body>
-							</plx:Condition>	
+							</plx:Condition>
 							<xsl:if test="se:Link | se:Attribute[@WriteStyle='Element']">
 							</xsl:if>
 							<plx:Variable name="rVal" dataTypeName="ORMCustomSerializedElementMatch"/>
@@ -1520,7 +1506,8 @@
 							</plx:Variable>
 							<plx:Condition>
 								<plx:Test>
-									<plx:Operator name="BooleanNot"> <!-- UNDONE: Play games from Plix until CodeDom can do != -->
+									<plx:Operator name="BooleanNot">
+										<!-- UNDONE: Play games from Plix until CodeDom can do != -->
 										<plx:Operator name="Equality">
 											<plx:Left>
 												<plx:CallInstance name="Length" style="Property">
@@ -1631,7 +1618,7 @@
 		<plx:Class name="{$ModelName}" visibility="Public" partial="true">
 			<plx:ImplementsInterface dataTypeName="IORMCustomSerializedMetaModel"/>
 			<xsl:for-each select="se:Namespaces">
-				<plx:Property visibility="Protected" name="DefaultElementPrefix">
+				<plx:Property visibility="Protected" name="DefaultElementPrefix" shared="true">
 					<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="DefaultElementPrefix"/>
 					<plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System"/>
 					<plx:Get>
@@ -1650,7 +1637,7 @@
 						</plx:Return>
 					</plx:Get>
 				</plx:Property>
-				<plx:Function visibility="Protected" name="GetCustomElementNamespaces">
+				<plx:Function visibility="Protected" name="GetCustomElementNamespaces" shared="true">
 					<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="GetCustomElementNamespaces"/>
 					<plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System">
 						<plx:ArrayDescriptor rank="2"/>
@@ -1728,7 +1715,7 @@
 					<plx:PassTypeParam dataTypeName="MetaClassInfo"/>
 					<plx:PassTypeParam dataTypeName="Object" dataTypeQualifier="System"/>
 				</plx:Field>
-				<plx:Function name="BuildCustomSerializationOmissions" visibility="Private">
+				<plx:Function name="BuildCustomSerializationOmissions" visibility="Private" shared="true">
 					<plx:Param name="" style="RetVal" dataTypeName="Dictionary">
 						<plx:PassTypeParam dataTypeName="MetaClassInfo"/>
 						<plx:PassTypeParam dataTypeName="Object" dataTypeQualifier="System"/>
@@ -1834,14 +1821,11 @@
 										<plx:Value type="Local">omissions</plx:Value>
 									</plx:Left>
 									<plx:Right>
-										<plx:CallInstance name="BuildCustomSerializationOmissions">
-											<plx:CallObject>
-												<plx:ThisKeyword/>
-											</plx:CallObject>
+										<plx:CallType name="BuildCustomSerializationOmissions" dataTypeName="{$ModelName}">
 											<plx:PassParam>
 												<plx:Value type="Parameter">store</plx:Value>
 											</plx:PassParam>
-										</plx:CallInstance>
+										</plx:CallType>
 									</plx:Right>
 								</plx:Operator>
 								<plx:Operator name="Assign">
@@ -1878,7 +1862,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</plx:Function>
-			<plx:Function visibility="Protected" name="MapRootElement">
+			<plx:Function visibility="Protected" name="MapRootElement" shared="true">
 				<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="MapRootElement"/>
 				<plx:Param style="RetVal" name="" dataTypeName="Guid"/>
 				<plx:Param name="xmlNamespace" dataTypeName="String" dataTypeQualifier="System"/>
@@ -1911,7 +1895,9 @@
 											<plx:Value type="Parameter">elementName</plx:Value>
 										</plx:Left>
 										<plx:Right>
-											<plx:String><xsl:value-of select="$tagName"/></plx:String>
+											<plx:String>
+												<xsl:value-of select="$tagName"/>
+											</plx:String>
 										</plx:Right>
 									</plx:Operator>
 								</plx:Left>
@@ -1921,7 +1907,9 @@
 											<plx:Value type="Parameter">xmlNamespace</plx:Value>
 										</plx:Left>
 										<plx:Right>
-											<plx:String><xsl:value-of select="$namespace"/></plx:String>
+											<plx:String>
+												<xsl:value-of select="$namespace"/>
+											</plx:String>
 										</plx:Right>
 									</plx:Operator>
 								</plx:Right>
@@ -1937,8 +1925,8 @@
 				<plx:Return>
 					<plx:DefaultValueOf dataTypeName="Guid"/>
 				</plx:Return>
-			</plx:Function>			
-			<plx:Function visibility="Protected" name="MapClassName">
+			</plx:Function>
+			<plx:Function visibility="Protected" name="MapClassName" shared="true">
 				<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="MapClassName"/>
 				<plx:Param style="RetVal" name="" dataTypeName="Guid"/>
 				<plx:Param name="xmlNamespace" dataTypeName="String" dataTypeQualifier="System"/>
@@ -2031,14 +2019,14 @@
 								</plx:CallObject>
 								<plx:PassParam>
 									<plx:String>
-									<xsl:choose>
-										<xsl:when test="string-length(@Name) > 0">
-											<xsl:value-of select="@Name"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="@Class"/>
-										</xsl:otherwise>
-									</xsl:choose>
+										<xsl:choose>
+											<xsl:when test="string-length(@Name) > 0">
+												<xsl:value-of select="@Name"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="@Class"/>
+											</xsl:otherwise>
+										</xsl:choose>
 									</plx:String>
 								</plx:PassParam>
 								<plx:PassParam>
@@ -2124,7 +2112,7 @@
 		<xsl:param name="links"/>
 		<xsl:param name="customSort"/>
 		<xsl:param name="mixedTypedAttributes"/>
-		<xsl:variable name="supportedOperations">
+		<xsl:variable name="supportedOperationsFragment">
 			<xsl:if test="$childElements">
 				<xsl:element name="SupportedOperation">
 					<xsl:text>ChildElementInfo</xsl:text>
@@ -2156,6 +2144,7 @@
 				</xsl:element>
 			</xsl:if>
 		</xsl:variable>
+		<xsl:variable name="supportedOperations" select="msxsl:node-set($supportedOperationsFragment)"/>
 		<xsl:variable name="operationCount" select="count($supportedOperations/child::*)"/>
 		<xsl:choose>
 			<xsl:when test="$operationCount=0">
@@ -2225,7 +2214,9 @@
 						<plx:Body>
 							<plx:Operator name="Assign">
 								<plx:Left>
-									<plx:Value type="Local">name<xsl:value-of select="$modifier"/></plx:Value>
+									<plx:Value type="Local">
+										name<xsl:value-of select="$modifier"/>
+									</plx:Value>
 								</plx:Left>
 								<plx:Right>
 									<plx:String>
@@ -2242,7 +2233,9 @@
 								<plx:Body>
 									<plx:Operator name="Assign">
 										<plx:Left>
-											<plx:Value type="Local">name<xsl:value-of select="$modifier"/></plx:Value>
+											<plx:Value type="Local">
+												name<xsl:value-of select="$modifier"/>
+											</plx:Value>
 										</plx:Left>
 										<plx:Right>
 											<plx:String>
@@ -2275,7 +2268,9 @@
 		<plx:PassParam>
 			<xsl:choose>
 				<xsl:when test="count(se:ConditionalName)">
-					<plx:Value type="Local">name<xsl:value-of select="$modifier"/></plx:Value>
+					<plx:Value type="Local">
+						name<xsl:value-of select="$modifier"/>
+					</plx:Value>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:choose>

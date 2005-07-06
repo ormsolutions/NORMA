@@ -248,13 +248,13 @@ namespace Northface.Tools.ORM.Shell
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)serviceProvider.GetService(typeof(IVsRunningDocumentTable));
 			IEnumRunningDocuments docIter;
-			NativeMethods.ThrowOnFailure(docTable.GetRunningDocumentsEnum(out docIter));
+			ErrorHandler.ThrowOnFailure(docTable.GetRunningDocumentsEnum(out docIter));
 			int hrIter;
 			uint[] currentDocs = new uint[1];
 			uint fetched = 0;
 			do
 			{
-				NativeMethods.ThrowOnFailure(hrIter = docIter.Next(1, currentDocs, out fetched));
+				ErrorHandler.ThrowOnFailure(hrIter = docIter.Next(1, currentDocs, out fetched));
 				if (hrIter == 0)
 				{
 					uint grfRDTFlags;
@@ -264,7 +264,7 @@ namespace Northface.Tools.ORM.Shell
 					IVsHierarchy pHier;
 					uint itemId;
 					IntPtr punkDocData = IntPtr.Zero;
-					NativeMethods.ThrowOnFailure(docTable.GetDocumentInfo(
+					ErrorHandler.ThrowOnFailure(docTable.GetDocumentInfo(
 						currentDocs[0],
 						out grfRDTFlags,
 						out dwReadLocks,

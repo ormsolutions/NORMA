@@ -116,7 +116,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Retrieve the (singleton) shape field for the text
 		/// </summary>
-		protected TextField TextShapeField
+		protected static TextField TextShapeField
 		{
 			get
 			{
@@ -126,7 +126,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Retrieve the (singleton) shape field for the reference mode text
 		/// </summary>
-		protected TextField ReferenceModeShapeField
+		protected static TextField ReferenceModeShapeField
 		{
 			get
 			{

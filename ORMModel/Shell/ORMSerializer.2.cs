@@ -1,6 +1,7 @@
 #if NEWSERIALIZE
 using System;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -10,7 +11,6 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
-using System.Xml.Query;
 using System.Xml.Xsl;
 using System.Xml.XPath;
 using System.Threading;
@@ -669,7 +669,7 @@ namespace Northface.Tools.ORM.Shell
 						}
 					case TypeCode.DateTime:
 						{
-							return System.Xml.XmlConvert.ToString((System.DateTime)value);
+							return System.Xml.XmlConvert.ToString((System.DateTime)value, XmlDateTimeSerializationMode.Utc);
 						}
 					case TypeCode.UInt64:
 						{
@@ -1667,58 +1667,66 @@ namespace Northface.Tools.ORM.Shell
 				NameTable nameTable = new NameTable();
 				XmlReaderSettings settings = new XmlReaderSettings();
 				settings.NameTable = nameTable;
-				settings.XsdValidate = true;
+				settings.ValidationType = ValidationType.Schema;
 				XmlSchemaSet schemas = settings.Schemas;
 				Type coreModel = typeof(ORMModel);
 				Assembly assembly = coreModel.Assembly;
 				schemas.Add("http://Schemas.Northface.edu/ORM/ORMCore", new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORM2Core.xsd")));
 				schemas.Add("http://Schemas.Northface.edu/ORM/ORMDiagram", new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORM2Diagram.xsd")));
-				schemas.Add(RootXmlNamespace, new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORMRoot.xsd")));
-				using (XmlTextReader xmlReader = new XmlTextReader(new StreamReader(stream), nameTable))
+				schemas.Add(RootXmlNamespace, new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORM2Root.xsd")));
+				// UNDONE: MSBUG Figure out why this transaction is needed. If it is ommitted then the EdgePointCollection
+				// for each of the lines on the diagram is not initialized during Diagram.HandleLineRouting and none of the lines
+				// are drawn. This behavior appears to be related to the diagram.GraphWrapper.IsLoading setting, which changes with
+				// an extra transaction. However, the interactions between deserialization and diagram initialization are extremely
+				// complex, so I'm not sure exactly what is happening here.
+				using (Transaction t = myStore.TransactionManager.BeginTransaction())
 				{
-					using (XmlReader reader = XmlReader.Create(xmlReader, settings))
+					using (XmlTextReader xmlReader = new XmlTextReader(new StreamReader(stream), nameTable))
 					{
-						while (reader.Read())
+						using (XmlReader reader = XmlReader.Create(xmlReader, settings))
 						{
-							if (reader.NodeType == XmlNodeType.Element)
+							while (reader.Read())
 							{
-								// UNDONE: The name check will go away if a validating reader is loaded
-								if (!reader.IsEmptyElement && reader.NamespaceURI == RootXmlNamespace && reader.LocalName == RootXmlElementName)
+								if (reader.NodeType == XmlNodeType.Element)
 								{
-									while (reader.Read())
+									if (!reader.IsEmptyElement && reader.NamespaceURI == RootXmlNamespace && reader.LocalName == RootXmlElementName)
 									{
-										XmlNodeType nodeType = reader.NodeType;
-										if (nodeType == XmlNodeType.Element)
+										while (reader.Read())
 										{
-											bool processedRootElement = false;
-											IORMCustomSerializedMetaModel metaModel;
-											if (namespaceToModelMap.TryGetValue(reader.NamespaceURI, out metaModel))
+											XmlNodeType nodeType = reader.NodeType;
+											if (nodeType == XmlNodeType.Element)
 											{
-												Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
-												if (!classGuid.Equals(Guid.Empty))
+												bool processedRootElement = false;
+												IORMCustomSerializedMetaModel metaModel;
+												if (namespaceToModelMap.TryGetValue(reader.NamespaceURI, out metaModel))
 												{
-													processedRootElement = true;
-													ProcessClassElement(reader, metaModel, CreateElement(reader.GetAttribute("id"), null, classGuid));
+													Guid classGuid = metaModel.MapRootElement(reader.NamespaceURI, reader.LocalName);
+													if (!classGuid.Equals(Guid.Empty))
+													{
+														processedRootElement = true;
+														ProcessClassElement(reader, metaModel, CreateElement(reader.GetAttribute("id"), null, classGuid));
+													}
+												}
+												if (!processedRootElement)
+												{
+													PassEndElement(reader);
 												}
 											}
-											if (!processedRootElement)
+											else if (nodeType == XmlNodeType.EndElement)
 											{
-												PassEndElement(reader);
+												break;
 											}
-										}
-										else if (nodeType == XmlNodeType.EndElement)
-										{
-											break;
 										}
 									}
 								}
 							}
 						}
 					}
-				}
-				if (fixupManager != null)
-				{
-					fixupManager.DeserializationComplete();
+					if (fixupManager != null)
+					{
+						fixupManager.DeserializationComplete();
+					}
+					t.Commit();
 				}
 			}
 			finally
@@ -2168,7 +2176,7 @@ namespace Northface.Tools.ORM.Shell
 				switch (Type.GetTypeCode(propertyType))
 				{
 					case TypeCode.DateTime:
-						objectValue = XmlConvert.ToDateTime(stringValue);
+						objectValue = XmlConvert.ToDateTime(stringValue, XmlDateTimeSerializationMode.Utc);
 						break;
 					case TypeCode.UInt64:
 						objectValue = XmlConvert.ToUInt64(stringValue);
@@ -2254,7 +2262,7 @@ namespace Northface.Tools.ORM.Shell
 			Guid id = (idValue == null) ? Guid.NewGuid() : GetElementId(idValue);
 			Debug.Assert(null == myStore.ElementDirectory.FindElement(id));
 			ElementLink retVal = myStore.ElementFactory.CreateElementLink(
-				// false, // UNDONE: Report Microsoft Beta1 bug, missing overload to pass both initialize=false and a guid for CreateElementLink
+				false,
 				oppositeMetaRoleInfo.MetaRelationship.ImplementationClass,
 				id,
 				new RoleAssignment[]{

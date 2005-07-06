@@ -1,0 +1,15 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0\CLSID\{a4febd86-790b-43a9-a6e7-2813886ab0d5}]
+@="Northface.Tools.Converters.ImsToDmdCustomTool"
+"Assembly"="Northface.Tools.Converters, Version=1.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+"Class"="Northface.Tools.Converters.ImsToDmdCustomTool"
+"InprocServer32"="C:\\WINDOWS\\System32\\mscoree.dll"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0\Generators]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0\Generators\{fae04ec1-301f-11d3-bf4b-00c04f79efbc}]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0\Generators\{fae04ec1-301f-11d3-bf4b-00c04f79efbc}\NUImsToDmdGenerator]
+@="Northface C# Ims to Dmd Converter"
+"CLSID"="{a4febd86-790b-43a9-a6e7-2813886ab0d5}"

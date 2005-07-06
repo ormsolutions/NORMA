@@ -120,7 +120,7 @@ namespace Northface.Tools.ORM.Shell
 		/// the packages color service. Implements
 		/// IORMToolServices.ColorService
 		/// </summary>
-		protected IORMFontAndColorService FontAndColorService
+		protected static IORMFontAndColorService FontAndColorService
 		{
 			get
 			{
@@ -225,7 +225,7 @@ namespace Northface.Tools.ORM.Shell
 			/// </summary>
 			/// <param name="task"></param>
 			/// <returns></returns>
-			protected bool NavigateTo(IORMToolTaskItem task)
+			protected static bool NavigateTo(IORMToolTaskItem task)
 			{
 				ModelElementLocator elementLocator = ORMDesignerDocView.ElementLocator;
 				if (elementLocator == null)

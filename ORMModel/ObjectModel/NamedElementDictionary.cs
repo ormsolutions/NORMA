@@ -1135,7 +1135,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (forEvent)
 			{
 				UndoManager undoMgr = element.Store.UndoManager;
-				if (!undoMgr.InUndoRedo)
+				if (!(undoMgr.InUndo || undoMgr.InRedo))
 				{
 					return;
 				}
@@ -1262,7 +1262,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			if (forEvent)
 			{
 				UndoManager undoMgr = element.Store.UndoManager;
-				if (!undoMgr.InUndoRedo)
+				if (!(undoMgr.InUndo || undoMgr.InRedo))
 				{
 					return;
 				}

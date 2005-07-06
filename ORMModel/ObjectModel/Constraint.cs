@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -965,9 +966,11 @@ namespace Northface.Tools.ORM.ObjectModel
 			//We don't want to display the error if arity error present or toofeworTooMany sequence errors are present
 			if (tooFewOrTooManySequencesOrArity)
 			{
-				for (int i = 0; i < CompatibleRolePlayerTypeErrorCollection.Count; i++)
+				CompatibleRolePlayerTypeErrorMoveableCollection compatibleErrors = CompatibleRolePlayerTypeErrorCollection;
+				int compatibleErrorCount = compatibleErrors.Count;
+				for (int i = 0; i < compatibleErrorCount; ++i)
 				{
-					compatibleError = CompatibleRolePlayerTypeErrorCollection[i];
+					compatibleError = compatibleErrors[i];
 					if (compatibleError != null)
 					{
 						compatibleError.Remove(); // We don't want to validate compatibility with the wrong number of role sequences
@@ -1134,41 +1137,16 @@ namespace Northface.Tools.ORM.ObjectModel
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				MultiColumnExternalConstraintHasRoleSequence link = e.ModelElement as MultiColumnExternalConstraintHasRoleSequence;
-				link.ExternalConstraint.VerifyRoleSequenceCountForRule(null);
-			}
-		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
-		private class EnforceRoleSequenceArityForAdd : AddRule
-		{
-			public override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				MultiColumnExternalConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection as MultiColumnExternalConstraintRoleSequence;
-				if (sequence != null)
+				MultiColumnExternalConstraint externalConstraint = link.ExternalConstraint;
+				if (externalConstraint != null && !externalConstraint.IsRemoved)
 				{
-					sequence.ExternalConstraint.VerifyRoleSequenceArityForRule(null);
+					externalConstraint.VerifyRoleSequenceCountForRule(null);
 				}
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
-		private class EnforceRoleSequenceArityForRemove : RemoveRule
-		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
-			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				MultiColumnExternalConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection as MultiColumnExternalConstraintRoleSequence;
-				if (sequence != null)
-				{
-					MultiColumnExternalConstraint externalConstraint = sequence.ExternalConstraint;
-					if (externalConstraint != null && !externalConstraint.IsRemoved)
-					{
-						externalConstraint.VerifyRoleSequenceArityForRule(null);
-					}
-				}
-			}
-		}
-
-		//Add Rule for VerifyCompatibleRolePlayer when ExternalConstraints roles are added
+		/// <summary>
+		/// Add Rule for arity and compatibility checking when ExternalConstraints roles are added
+		/// </summary>
 		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
 		private class EnforceRoleSequenceValidityForAdd : AddRule
 		{
@@ -1178,7 +1156,12 @@ namespace Northface.Tools.ORM.ObjectModel
 				MultiColumnExternalConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection as MultiColumnExternalConstraintRoleSequence;
 				if (sequence != null)
 				{
-					sequence.ExternalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
+					MultiColumnExternalConstraint constraint = sequence.ExternalConstraint;
+					if (constraint != null)
+					{
+						sequence.ExternalConstraint.VerifyRoleSequenceArityForRule(null);
+						sequence.ExternalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
+					}
 				}
 			}
 		}
@@ -1196,6 +1179,7 @@ namespace Northface.Tools.ORM.ObjectModel
 					MultiColumnExternalConstraint externalConstraint = sequence.ExternalConstraint;
 					if (externalConstraint != null && !externalConstraint.IsRemoved)
 					{
+						externalConstraint.VerifyRoleSequenceArityForRule(null);
 						externalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
 					}
 				}
@@ -2694,7 +2678,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.SimpleMandatory.
 		/// </summary>
-		protected ConstraintType ConstraintType
+		protected static ConstraintType ConstraintType
 		{
 			get
 			{
@@ -2711,7 +2695,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.RoleSequenceStyles. Returns {OneRoleSequence, OneRolePerSequence}.
 		/// </summary>
-		protected RoleSequenceStyles RoleSequenceStyles
+		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
@@ -2733,7 +2717,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
 		/// </summary>
-		protected ConstraintType ConstraintType
+		protected static ConstraintType ConstraintType
 		{
 			get
 			{
@@ -2750,7 +2734,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.RoleSequenceStyles. Returns {OneRoleSequence, AtLeastCountMinusOneRolesPerSequence}.
 		/// </summary>
-		protected RoleSequenceStyles RoleSequenceStyles
+		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
@@ -2772,7 +2756,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
 		/// </summary>
-		protected ConstraintType ConstraintType
+		protected static ConstraintType ConstraintType
 		{
 			get
 			{
@@ -2789,7 +2773,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.RoleSequenceStyles. Returns {OneRoleSequence, MultipleRolesPerSequence}.
 		/// </summary>
-		protected RoleSequenceStyles RoleSequenceStyles
+		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
@@ -2811,7 +2795,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
 		/// </summary>
-		protected ConstraintType ConstraintType
+		protected static ConstraintType ConstraintType
 		{
 			get
 			{
@@ -2828,7 +2812,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.RoleSequenceStyles. Returns {TwoRoleSequences, OneRolePerSequence}.
 		/// </summary>
-		protected RoleSequenceStyles RoleSequenceStyles
+		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
@@ -2850,7 +2834,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
 		/// </summary>
-		protected ConstraintType ConstraintType
+		protected static ConstraintType ConstraintType
 		{
 			get
 			{
@@ -2867,7 +2851,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, OneRolePerSequence}.
 		/// </summary>
-		protected RoleSequenceStyles RoleSequenceStyles
+		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
@@ -2889,7 +2873,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
 		/// </summary>
-		protected ConstraintType ConstraintType
+		protected static ConstraintType ConstraintType
 		{
 			get
 			{
@@ -2906,7 +2890,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, MultipleRolesPerSequence}.
 		/// </summary>
-		protected RoleSequenceStyles RoleSequenceStyles
+		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
@@ -2928,7 +2912,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
 		/// </summary>
-		protected ConstraintType ConstraintType
+		protected static ConstraintType ConstraintType
 		{
 			get
 			{
@@ -2945,7 +2929,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, MultipleRowSequences}.
 		/// </summary>
-		protected RoleSequenceStyles RoleSequenceStyles
+		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
@@ -2967,7 +2951,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
 		/// </summary>
-		protected ConstraintType ConstraintType
+		protected static ConstraintType ConstraintType
 		{
 			get
 			{
@@ -2984,7 +2968,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, OneRolePerSequence}.
 		/// </summary>
-		protected RoleSequenceStyles RoleSequenceStyles
+		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
@@ -3006,7 +2990,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.ConstraintType. Returns ConstraintType.InternalUniqueness.
 		/// </summary>
-		protected ConstraintType ConstraintType
+		protected static ConstraintType ConstraintType
 		{
 			get
 			{
@@ -3023,7 +3007,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IConstraint.RoleSequenceStyles. Returns {TwoRoleSequences, MultipleRolesPerSequence, OrderedRoleSequences}.
 		/// </summary>
-		protected RoleSequenceStyles RoleSequenceStyles
+		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{

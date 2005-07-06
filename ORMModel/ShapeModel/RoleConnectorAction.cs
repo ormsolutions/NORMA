@@ -346,7 +346,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		/// <param name="e"></param>
 		/// <returns>Hit role, or null</returns>
-		private Role HitRole(DiagramMouseEventArgs e)
+		private static Role HitRole(DiagramMouseEventArgs e)
 		{
 			Role retVal = null;
 			DiagramItem item = e.DiagramHitTestInfo.HitDiagramItem;

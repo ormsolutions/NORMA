@@ -45,7 +45,7 @@ namespace Northface.Tools.ORM.FactEditor
 
 		private string GetFactLine()
 		{
-			int hrLocal = NativeMethods.S_OK;
+			int hrLocal = VSConstants.S_OK;
 
 			// get the current line where the cursor is
 			int nLine = 0;
@@ -95,9 +95,9 @@ namespace Northface.Tools.ORM.FactEditor
 		public int Init()
 		{
 			// keep a ptr to the text buffer
-			int hr = NativeMethods.S_OK;
+			int hr = VSConstants.S_OK;
 			hr = myTextView.GetBuffer(out myTextLines);
-			if (hr != NativeMethods.S_OK)
+			if (hr != VSConstants.S_OK)
 				return hr;
 			
 			myTextView.AddCommandFilter(this, out myNextCmdTarget);
@@ -169,7 +169,7 @@ namespace Northface.Tools.ORM.FactEditor
 		{
 			// NOTE: pass on the commands we don't use to m_srpNextCmdTarg
 			// otherwise they wont show up in the view.  Cmd Targs are CHAINED.
-			int hr = NativeMethods.S_OK;
+			int hr = VSConstants.S_OK;
 			bool fHandled = true;
 
 			// CMDSETID_StandardCommandSet2K is in stdidcmd.h and vsshlids.h in VSIP sdk
@@ -249,7 +249,7 @@ namespace Northface.Tools.ORM.FactEditor
 					// fall through
 					case CmdShowMemberList: // Ctrl-j drops the statement completion box           
 						int completionStatusFlags = 0;
-						myCompletionSet.Reset(out completionStatusFlags);
+						FactCompletionSet.Reset(out completionStatusFlags);
 						completionStatusFlags = completionStatusFlags | (int)UpdateCompletionFlags.UCS_COMPLETEWORD;
 						if (myCompletionSet.ObjectCount > 0)
 						{
@@ -272,7 +272,7 @@ namespace Northface.Tools.ORM.FactEditor
 					case CmdControlEnter:
 						// Commit the fact to the model
 						fHandled = true;
-						//int hrCommit = NativeMethods.S_OK;
+						//int hrCommit = VSConstants.S_OK;
 
 						// call the Line method on the parse object
 						string factText = this.GetFactLine();
@@ -293,7 +293,7 @@ namespace Northface.Tools.ORM.FactEditor
 //							if (pvaIn[0].uiVal != ' ' && !m_fTipWinDisplayed)
 //								break;
 
-						int hrLocal = NativeMethods.S_OK;
+						int hrLocal = VSConstants.S_OK;
 
 						// call the ParseLine method on the parse object to determine if
 						// there were errors, e.g. 0 objects. or 1 object, no predicate, etc...
@@ -360,12 +360,12 @@ namespace Northface.Tools.ORM.FactEditor
 			{
 				// enable/disable only commands which differ for us from the default
 				prgCmds[0].cmdf = (uint)(OLECMDF.OLECMDF_DEFHIDEONCTXTMENU | OLECMDF.OLECMDF_SUPPORTED | OLECMDF.OLECMDF_INVISIBLE);
-				return NativeMethods.S_OK;
+				return VSConstants.S_OK;
 			}
 			else if (FactGuidList.StandardCommandSet2K == pguidCmdGroup)
 			{
 				prgCmds[0].cmdf = (uint)(OLECMDF.OLECMDF_SUPPORTED | OLECMDF.OLECMDF_ENABLED);
-				return NativeMethods.S_OK;
+				return VSConstants.S_OK;
 			}
 
 			// pass this cmd on to next in chain (the view so it will show up)
@@ -403,7 +403,7 @@ namespace Northface.Tools.ORM.FactEditor
 
 #endregion
 Removed for FxCop compliance, not currently used */
-		#region IVsTextViewFilter Members
+		#region IVsTextViewFilter Implementation
 
 		int IVsTextViewFilter.GetDataTipText(TextSpan[] pSpan, out string pbstrText)
 		{
@@ -415,10 +415,10 @@ Removed for FxCop compliance, not currently used */
 		/// <param name="pSpan"></param>
 		/// <param name="pbstrText"></param>
 		/// <returns></returns>
-		protected int GetDataTipText(TextSpan[] pSpan, out string pbstrText)
+		protected static int GetDataTipText(TextSpan[] pSpan, out string pbstrText)
 		{
 			pbstrText = null;
-			return NativeMethods.E_NOTIMPL;
+			return VSConstants.E_NOTIMPL;
 		}
 
 		int IVsTextViewFilter.GetPairExtents(int iLine, int iIndex, TextSpan[] pSpan)
@@ -432,9 +432,9 @@ Removed for FxCop compliance, not currently used */
 		/// <param name="iIndex"></param>
 		/// <param name="pSpan"></param>
 		/// <returns></returns>
-		protected int GetPairExtents(int iLine, int iIndex, TextSpan[] pSpan)
+		protected static int GetPairExtents(int iLine, int iIndex, TextSpan[] pSpan)
 		{
-			return NativeMethods.E_NOTIMPL;
+			return VSConstants.E_NOTIMPL;
 		}
 
 		int IVsTextViewFilter.GetWordExtent(int iLine, int iIndex, uint dwFlags, TextSpan[] pSpan)
@@ -449,14 +449,14 @@ Removed for FxCop compliance, not currently used */
 		/// <param name="dwFlags"></param>
 		/// <param name="pSpan"></param>
 		/// <returns></returns>
-		protected int GetWordExtent(int iLine, int iIndex, uint dwFlags, TextSpan[] pSpan)
+		protected static int GetWordExtent(int iLine, int iIndex, uint dwFlags, TextSpan[] pSpan)
 		{
-			return NativeMethods.E_NOTIMPL;
+			return VSConstants.E_NOTIMPL;
 		}
 
-#endregion
+		#endregion IVsTextViewFilter Implementation
 
-/* Removed for FxCop compliance, not currently used
+		/* Removed for FxCop compliance, not currently used
 		#region Private Methods
 
 		private int getCurrentLineText(out string pbstrLineText)
@@ -500,7 +500,7 @@ Removed for FxCop compliance, not currently used */
 
 			pnTokens = factLine.Marks.Count;
 
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 #endregion
@@ -529,17 +529,17 @@ Removed for FxCop compliance, not currently used */
 //
 //			int IVsTextMarkerClient.ExecMarkerCommand(IVsTextMarker pMarker, int iItem)
 //			{
-//				return NativeMethods.E_NOTIMPL;
+//				return VSConstants.E_NOTIMPL;
 //			}
 //
 //			int IVsTextMarkerClient.GetMarkerCommandInfo(IVsTextMarker pMarker, int iItem, string[] pbstrText, uint[] pcmdf)
 //			{
-//				return NativeMethods.E_NOTIMPL;
+//				return VSConstants.E_NOTIMPL;
 //			}
 //
 //			int IVsTextMarkerClient.GetTipText(IVsTextMarker pMarker, string[] pbstrText)
 //			{
-//				return NativeMethods.E_NOTIMPL;
+//				return VSConstants.E_NOTIMPL;
 //			}
 //
 //			void IVsTextMarkerClient.MarkerInvalidated()
@@ -549,7 +549,7 @@ Removed for FxCop compliance, not currently used */
 //
 //			int IVsTextMarkerClient.OnAfterMarkerChange(IVsTextMarker pMarker)
 //			{
-//				return NativeMethods.E_NOTIMPL;
+//				return VSConstants.E_NOTIMPL;
 //			}
 //
 //			void IVsTextMarkerClient.OnAfterSpanReload()

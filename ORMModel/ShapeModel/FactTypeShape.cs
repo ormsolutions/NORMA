@@ -975,8 +975,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			/// <returns>The width of the ConstraintShapeField.</returns>
 			public override double GetMinimumWidth(ShapeElement parentShape)
 			{
-				FactTypeShape parent = parentShape as FactTypeShape;
-				return parent.RolesShape.GetMinimumWidth(parentShape);
+				return RolesShape.GetMinimumWidth(parentShape);
 			}
 
 			/// <summary>
@@ -996,7 +995,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				private double minY = double.MaxValue;
 				private double maxY = double.MinValue;
-				private bool wasVisited = false;
+				private bool wasVisited;
 
 				private ForMinimumHeight() { }
 				public static double CalculateMinimumHeight(ShapeElement parentShape, ConstraintDisplayPosition displayPosition)
@@ -1308,7 +1307,11 @@ namespace Northface.Tools.ORM.ShapeModel
 					factShape.Invalidate(true);
 					iucca.ChainMouseAction(factShape, iuc, clientView);
 				}
-				e.Handled = true;
+				// UNDONE: MSBUG Report Microsoft bug DiagramClientView.OnDoubleClick is checking
+				// for an active mouse action after the double click and clearing it if it is set.
+				// This may be appropriate if the mouse action was set before the subfield double
+				// click and did not change during the callback, then it may be appropriate to clear it.
+				//e.Handled = true;
 				base.OnDoubleClick(e);
 			}
 			#region Member variables
@@ -1683,10 +1686,10 @@ namespace Northface.Tools.ORM.ShapeModel
 			/// <param name="styleSet">The StyleSet of the shape we are drawing to.</param>
 			/// <param name="bounds">The bounds to draw as the highlight.</param>
 			/// <param name="active">Boolean indicating whether or not to draw highlight as active (ex: the mouse is currently over this highlight).</param>
-			protected void DrawHighlight(Graphics g, StyleSet styleSet, RectangleF bounds, bool active)
+			protected static void DrawHighlight(Graphics g, StyleSet styleSet, RectangleF bounds, bool active)
 			{
 				Brush brush = styleSet.GetBrush(RoleBoxResource);
-				Color startColor;
+				Color startColor = default(Color);
 				SolidBrush coloredBrush = null;
 				if (!SystemInformation.HighContrast && active)
 				{
@@ -1714,7 +1717,6 @@ namespace Northface.Tools.ORM.ShapeModel
 			#region Construction
 			public RoleSubField()
 			{
-				myAssociatedRole = null; // Set later
 			}
 			public RoleSubField(Role associatedRole)
 			{
@@ -1822,10 +1824,10 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // RoleSubField class
 		#region Member Variables
-		private static RolesShapeField myRolesShapeField = null;
-		private static ConstraintShapeField myTopConstraintShapeField = null;
-		private static ConstraintShapeField myBottomConstraintShapeField = null;
-		private static SpacerShapeField mySpacerShapeField = null;
+		private static RolesShapeField myRolesShapeField;
+		private static ConstraintShapeField myTopConstraintShapeField;
+		private static ConstraintShapeField myBottomConstraintShapeField;
+		private static SpacerShapeField mySpacerShapeField;
 		/// <summary>
 		/// Pen to draw a role box outline
 		/// </summary>
@@ -1845,10 +1847,10 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Get the role corresponding to the given subField
 		/// </summary>
-		/// <param name="shapeField">The containing shape field (will always be the RolesShapeField)</param>
+		/// <param name="field">The containing shape field (will always be the RolesShapeField)</param>
 		/// <param name="subField">A RoleSubField</param>
 		/// <returns>A Role element</returns>
-		public override ICollection GetSubFieldRepresentedElements(ShapeField shapeField, ShapeSubField subField)
+		public override ICollection GetSubFieldRepresentedElements(ShapeField field, ShapeSubField subField)
 		{
 			RoleSubField roleField;
 			if (null != (roleField = subField as RoleSubField))
@@ -1904,7 +1906,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				brush = StyleSet.GetBrush(DiagramBrushes.ShapeBackground);
 			}
-			Color startColor;
+			Color startColor = default(Color);
 			SolidBrush coloredBrush = null;
 			if (!SystemInformation.HighContrast && isHighlighted)
 			{
@@ -2037,7 +2039,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The shape field used to display roles
 		/// </summary>
-		protected ShapeField RolesShape
+		protected static ShapeField RolesShape
 		{
 			get
 			{

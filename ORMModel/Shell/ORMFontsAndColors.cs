@@ -272,7 +272,7 @@ namespace Northface.Tools.ORM.Shell
 				EnsureStorage();
 				ColorableItemInfo item = new ColorableItemInfo();
 				myGetItemParam[0] = item;
-				NativeMethods.ThrowOnFailure(myStorage.GetItem(myIndexConverter(itemIndex), myGetItemParam));
+				ErrorHandler.ThrowOnFailure(myStorage.GetItem(myIndexConverter(itemIndex), myGetItemParam));
 				item = myGetItemParam[0];
 				retVal.FontFlags = (item.bFontFlagsValid != 0) ? (FONTFLAGS)item.dwFontFlags : FONTFLAGS.FF_DEFAULT;
 				retVal.ForeColor = (item.bForegroundValid != 0) ? TranslateColorValue(item.crForeground) : Color.Empty;
@@ -289,7 +289,7 @@ namespace Northface.Tools.ORM.Shell
 				EnsureStorage();
 				LOGFONTW[] logFontParam = new LOGFONTW[1];
 				FontInfo[] fontInfoParam = new FontInfo[1];
-				NativeMethods.ThrowOnFailure(myStorage.GetFont(logFontParam, fontInfoParam));
+				ErrorHandler.ThrowOnFailure(myStorage.GetFont(logFontParam, fontInfoParam));
 				logFont = logFontParam[0];
 				fontInfo = fontInfoParam[0];
 			}
@@ -301,7 +301,7 @@ namespace Northface.Tools.ORM.Shell
 					{
 						myStorage = (IVsFontAndColorStorage)myServiceProvider.GetService(typeof(IVsFontAndColorStorage));
 					}
-					NativeMethods.ThrowOnFailure(myStorage.OpenCategory(ref myCategoryGuid, (uint)(__FCSTORAGEFLAGS.FCSF_READONLY | __FCSTORAGEFLAGS.FCSF_LOADDEFAULTS)));
+					ErrorHandler.ThrowOnFailure(myStorage.OpenCategory(ref myCategoryGuid, (uint)(__FCSTORAGEFLAGS.FCSF_READONLY | __FCSTORAGEFLAGS.FCSF_LOADDEFAULTS)));
 					myStorageOpen = true;
 				}
 			}
@@ -316,7 +316,7 @@ namespace Northface.Tools.ORM.Shell
 					}
 					Debug.Assert(myStorage != null); // All paths to this lead through EnsureStore
 					Guid textCategory = TextEditorCategory;
-					NativeMethods.ThrowOnFailure(myStorage.OpenCategory(ref textCategory, (uint)(__FCSTORAGEFLAGS.FCSF_READONLY | __FCSTORAGEFLAGS.FCSF_LOADDEFAULTS)));
+					ErrorHandler.ThrowOnFailure(myStorage.OpenCategory(ref textCategory, (uint)(__FCSTORAGEFLAGS.FCSF_READONLY | __FCSTORAGEFLAGS.FCSF_LOADDEFAULTS)));
 					try
 					{
 						ColorableItemInfo item = new ColorableItemInfo();
@@ -434,18 +434,18 @@ namespace Northface.Tools.ORM.Shell
 							{
 								myShell = (IVsUIShell2)myServiceProvider.GetService(typeof(IVsUIShell));
 							}
-							NativeMethods.ThrowOnFailure(myShell.GetVSSysColorEx((VSSYSCOLOREX)coreColorValue, out colorValue));
+							ErrorHandler.ThrowOnFailure(myShell.GetVSSysColorEx((int)coreColorValue, out colorValue));
 							break;
 						case TrackForegroundColorBit:
 							{
 								ColorableItemInfo[] myGetItemParam = new ColorableItemInfo[1];
-								NativeMethods.ThrowOnFailure(myStorage.GetItem(myIndexConverter((int)coreColorValue), myGetItemParam));
+								ErrorHandler.ThrowOnFailure(myStorage.GetItem(myIndexConverter((int)coreColorValue), myGetItemParam));
 								return TranslateColorValue(myGetItemParam[0].crForeground);
 							}
 						case TrackBackgroundColorBit:
 							{
 								ColorableItemInfo[] myGetItemParam = new ColorableItemInfo[1];
-								NativeMethods.ThrowOnFailure(myStorage.GetItem(myIndexConverter((int)coreColorValue), myGetItemParam));
+								ErrorHandler.ThrowOnFailure(myStorage.GetItem(myIndexConverter((int)coreColorValue), myGetItemParam));
 								return TranslateColorValue(myGetItemParam[0].crBackground);
 							}
 					}
@@ -601,10 +601,10 @@ namespace Northface.Tools.ORM.Shell
 			if (rguidCategory == FontAndColorCategory)
 			{
 				ppObj = this as IVsFontAndColorDefaults;
-				return NativeMethods.S_OK;
+				return VSConstants.S_OK;
 			}
 			ppObj = null;
-			return NativeMethods.E_NOINTERFACE;
+			return VSConstants.E_NOINTERFACE;
 		}
 		int IVsFontAndColorDefaultsProvider.GetObject(ref Guid rguidCategory, out object ppObj)
 		{
@@ -617,10 +617,10 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="pguidBase"></param>
 		/// <returns></returns>
-		protected int GetBaseCategory(out Guid pguidBase)
+		protected static int GetBaseCategory(out Guid pguidBase)
 		{
 			pguidBase = Guid.Empty;
-			return NativeMethods.E_NOTIMPL;
+			return VSConstants.E_NOTIMPL;
 		}
 		int IVsFontAndColorDefaults.GetBaseCategory(out Guid pguidBase)
 		{
@@ -631,10 +631,10 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="pbstrName"></param>
 		/// <returns></returns>
-		protected int GetCategoryName(out string pbstrName)
+		protected static int GetCategoryName(out string pbstrName)
 		{
 			pbstrName = ResourceStrings.GetColorNameString(ResourceStrings.FontsAndColorsCategoryNameId);
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsFontAndColorDefaults.GetCategoryName(out string pbstrName)
 		{
@@ -645,11 +645,11 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="dwFlags"></param>
 		/// <returns></returns>
-		protected int GetFlags(out uint dwFlags)
+		protected static int GetFlags(out uint dwFlags)
 		{
 			// Pull values from the __FONTCOLORFLAGS enum
 			dwFlags = (uint)(__FONTCOLORFLAGS.FCF_MUSTRESTART);
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsFontAndColorDefaults.GetFlags(out uint dwFlags)
 		{
@@ -660,7 +660,7 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="pInfo"></param>
 		/// <returns></returns>
-		protected int GetFont(FontInfo[] pInfo)
+		protected static int GetFont(FontInfo[] pInfo)
 		{
 			FontInfo info = new FontInfo();
 			info.bstrFaceName = "Tahoma";
@@ -670,7 +670,7 @@ namespace Northface.Tools.ORM.Shell
 			info.iCharSet = (byte)EnvDTE.vsFontCharSet.vsFontCharSetDefault;
 			info.bCharSetValid = 1;
 			pInfo[0] = info;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsFontAndColorDefaults.GetFont(FontInfo[] pInfo)
 		{
@@ -682,7 +682,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="iItem"></param>
 		/// <param name="pInfo"></param>
 		/// <returns></returns>
-		protected int GetItem(int iItem, AllColorableItemInfo[] pInfo)
+		protected static int GetItem(int iItem, AllColorableItemInfo[] pInfo)
 		{
 			AllColorableItemInfo allInfo = new AllColorableItemInfo();
 			DefaultColorSetting setting = myDefaultColorSettings[iItem];
@@ -699,7 +699,7 @@ namespace Northface.Tools.ORM.Shell
 			allInfo.Info.dwFontFlags = (setting.DefaultBold) ? (uint)FONTFLAGS.FF_BOLD : 0;
 			allInfo.Info.bFontFlagsValid = 1;
 			pInfo[0] = allInfo;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsFontAndColorDefaults.GetItem(int iItem, AllColorableItemInfo[] pInfo)
 		{
@@ -711,7 +711,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="szItem"></param>
 		/// <param name="pInfo"></param>
 		/// <returns></returns>
-		protected int GetItemByName(string szItem, AllColorableItemInfo[] pInfo)
+		protected static int GetItemByName(string szItem, AllColorableItemInfo[] pInfo)
 		{
 			DefaultColorSetting[] settings = myDefaultColorSettings;
 			int settingsCount = settings.Length;
@@ -722,7 +722,7 @@ namespace Northface.Tools.ORM.Shell
 					return GetItem(i, pInfo);
 				}
 			}
-			return NativeMethods.E_INVALIDARG;
+			return VSConstants.E_INVALIDARG;
 		}
 		int IVsFontAndColorDefaults.GetItemByName(string szItem, AllColorableItemInfo[] pInfo)
 		{
@@ -733,10 +733,10 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="pcItems"></param>
 		/// <returns></returns>
-		protected int GetItemCount(out int pcItems)
+		protected static int GetItemCount(out int pcItems)
 		{
 			pcItems = myDefaultColorSettings.Length;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsFontAndColorDefaults.GetItemCount(out int pcItems)
 		{
@@ -747,10 +747,10 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="pPriority"></param>
 		/// <returns></returns>
-		protected int GetPriority(out ushort pPriority)
+		protected static int GetPriority(out ushort pPriority)
 		{
 			pPriority = (ushort)__FCPRIORITY.FCP_CLIENTS;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsFontAndColorDefaults.GetPriority(out ushort pPriority)
 		{
@@ -786,7 +786,7 @@ namespace Northface.Tools.ORM.Shell
 				ClearCache();
 				OptionsPage.NotifySettingsChange(myServiceProvider, ChangeDocumentFontAndColors);
 			}
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsFontAndColorEvents.OnApply()
 		{
@@ -817,7 +817,7 @@ namespace Northface.Tools.ORM.Shell
 		protected int OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT, uint HFONT)
 		{
 			OnChange(ref rguidCategory);
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsFontAndColorEvents.OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT, uint HFONT)
 		{
@@ -829,7 +829,7 @@ namespace Northface.Tools.ORM.Shell
 		protected int OnItemChanged(ref Guid rguidCategory, string szItem, int iItem, ColorableItemInfo[] pInfo, uint crLiteralForeground, uint crLiteralBackground)
 		{
 			OnChange(ref rguidCategory);
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsFontAndColorEvents.OnItemChanged(ref Guid rguidCategory, string szItem, int iItem, ColorableItemInfo[] pInfo, uint crLiteralForeground, uint crLiteralBackground)
 		{
@@ -842,7 +842,7 @@ namespace Northface.Tools.ORM.Shell
 		protected int OnReset(ref Guid rguidCategory)
 		{
 			OnChange(ref rguidCategory);
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsFontAndColorEvents.OnReset(ref Guid rguidCategory)
 		{
@@ -854,7 +854,7 @@ namespace Northface.Tools.ORM.Shell
 		protected int OnResetToBaseCategory(ref Guid rguidCategory)
 		{
 			OnChange(ref rguidCategory);
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsFontAndColorEvents.OnResetToBaseCategory(ref Guid rguidCategory)
 		{

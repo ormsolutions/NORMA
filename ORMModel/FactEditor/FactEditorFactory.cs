@@ -23,7 +23,6 @@ namespace Northface.Tools.ORM.FactEditor
 	[CLSCompliant(false)]
 	public class FactEditorFactory : IVsEditorFactory
 	{
-		private ORMDesignerPackage myPackage;
 		private IOleServiceProvider vsServiceProvider;
 		private System.IServiceProvider vsServiceProviderManaged;
 
@@ -34,7 +33,6 @@ namespace Northface.Tools.ORM.FactEditor
 		public FactEditorFactory(ORMDesignerPackage package)
 		{
 			vsServiceProviderManaged = package;
-			myPackage = package;
 		}
 
 		#region IVsEditorFactory Members
@@ -47,9 +45,9 @@ namespace Northface.Tools.ORM.FactEditor
 		/// Implements IVsEditorFactory.Close
 		/// </summary>
 		/// <returns></returns>
-		protected int Close()
+		protected static int Close()
 		{
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		int IVsEditorFactory.CreateEditorInstance(
@@ -103,13 +101,13 @@ namespace Northface.Tools.ORM.FactEditor
 			pbstrEditorCaption = null;
 
 			// Validate inputs
-			if ((grfCreateDoc & (NativeMethods.CEF_OPENFILE | NativeMethods.CEF_SILENT)) == 0)
+			if ((grfCreateDoc & (VSConstants.CEF_OPENFILE | VSConstants.CEF_SILENT)) == 0)
 			{
 				throw new ArgumentException("Only Open or Silent is valid");
 			}
 			if (punkDocDataExisting != IntPtr.Zero)
 			{
-				return NativeMethods.VS_E_INCOMPATIBLEDOCDATA;
+				return VSConstants.VS_E_INCOMPATIBLEDOCDATA;
 			}
 
 			// Create a text buffer if one is not passed to us
@@ -124,7 +122,7 @@ namespace Northface.Tools.ORM.FactEditor
 			ILocalRegistry3 locReg = (ILocalRegistry3)vsServiceProviderManaged.GetService(typeof(ILocalRegistry));
 			IntPtr pBuf = IntPtr.Zero;
 			Guid iid = typeof(IVsTextLines).GUID;
-			NativeMethods.ThrowOnFailure(locReg.CreateInstance(
+			ErrorHandler.ThrowOnFailure(locReg.CreateInstance(
 				typeof(VsTextBufferClass).GUID,
 				null,
 				ref iid,
@@ -153,7 +151,7 @@ namespace Northface.Tools.ORM.FactEditor
 			iid = typeof(IVsCodeWindow).GUID;
 
 			// create code view (does CoCreateInstance if not in shell's registry)
-			NativeMethods.ThrowOnFailure(locReg.CreateInstance(
+			ErrorHandler.ThrowOnFailure(locReg.CreateInstance(
 				typeof(VsCodeWindowClass).GUID,
 				null,
 				ref iid,
@@ -180,7 +178,7 @@ namespace Northface.Tools.ORM.FactEditor
 			ppunkDocData = Marshal.GetIUnknownForObject(lines);
 			ppunkDocView = Marshal.GetIUnknownForObject(codeWindow);
 
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		int IVsEditorFactory.MapLogicalView(ref Guid rguidLogicalView, out string pbstrPhysicalView)
@@ -193,11 +191,11 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <param name="rguidLogicalView"></param>
 		/// <param name="pbstrPhysicalView"></param>
 		/// <returns></returns>
-		protected int MapLogicalView(ref Guid rguidLogicalView, out string pbstrPhysicalView)
+		protected static int MapLogicalView(ref Guid rguidLogicalView, out string pbstrPhysicalView)
 		{
 			// We only support 1 phisical view, so return null
 			pbstrPhysicalView = null;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		int IVsEditorFactory.SetSite(Microsoft.VisualStudio.OLE.Interop.IServiceProvider psp)
@@ -212,7 +210,7 @@ namespace Northface.Tools.ORM.FactEditor
 		protected int SetSite(Microsoft.VisualStudio.OLE.Interop.IServiceProvider psp)
 		{
 			vsServiceProvider = psp;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 #endregion

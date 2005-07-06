@@ -360,10 +360,10 @@
 				<xs:sequence minOccurs="0" maxOccurs="1">
 					<xs:element name="FactNotes" type="Data" minOccurs="0" maxOccurs="1"/>
 					<xs:element name="DerivationRule" type="Data" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="FactRoles" type="Roles" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="ExternalConstraints" type="ConstraintRefs" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="FactRoles" type="Roles" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="ExternalConstraints" type="ConstraintRefs" minOccurs="0" maxOccurs="1"/>
 				</xs:sequence>
 				<xs:attribute name="Name" use="required" type="xs:string"/>
 				<xs:attribute name="id" use="required" type="xs:ID"/>
@@ -468,7 +468,11 @@
 		</xs:complexType>
 		<xs:complexType name="ExternalUniquenessConstraint">
 			<xs:complexContent>
-				<xs:extension base="SingleColumnExternalConstraint"/>
+				<xs:extension base="SingleColumnExternalConstraint">
+					<xs:sequence>
+						<xs:element name="PreferredIdentifierFor" type="ObjectRef" minOccurs="0"/>
+					</xs:sequence>
+				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
 		<xs:complexType name="RingConstraint">
@@ -500,8 +504,9 @@
 		<xs:complexType name="InternalUniquenessConstraint">
 			<xs:complexContent>
 				<xs:extension base="InternalConstraint">
-					<!--IsPreferred is derived-->
-					<xs:attribute name="IsPreferred" default="false" type="xs:boolean"/>
+					<xs:sequence>
+						<xs:element name="PreferredIdentifierFor" type="ObjectRef" minOccurs="0"/>
+					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>

@@ -189,16 +189,16 @@
 			</se:ChildElement>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 		</se:Element>
-		<se:Element Class="ExternalUniquenessConstraint" Override="true">
-			<se:Link RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor" WriteStyle="NotWritten"/>
+		<se:Element Class="ExternalUniquenessConstraint" Override="true" SortChildElements="true">
+			<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 		</se:Element>
-		<se:Element Class="InternalUniquenessConstraint">
+		<se:Element Class="InternalUniquenessConstraint" SortChildElements="true">
 			<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 			<se:ChildElement Name="RoleSequence">
 				<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
-			<se:Link RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor" WriteStyle="NotWritten"/>
+			<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 			<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="NMinusOneError" WriteStyle="NotWritten"/>        
 		</se:Element>
 		<se:Element Class="SimpleMandatoryConstraint">

@@ -19,7 +19,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	///	</summary>
 	public partial class CustomReferenceModeEditor : UserControl
 	{
-		private ReferenceModeHeaderBranch myHeaders = null;
+		private ReferenceModeHeaderBranch myHeaders;
 
 		/// <summary>
 		/// Default constructor

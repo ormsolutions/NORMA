@@ -251,7 +251,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <param name="parentMetaRoleGuid">Guid</param>
 		/// <param name="childMetaRoleGuid">Guid</param>
 		/// <returns></returns>
-		protected object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		protected static object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
 		{
 			// Use the default settings (allow duplicates during load time only)
 			return null;
@@ -770,7 +770,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="parentMetaRoleGuid">Guid</param>
 		/// <param name="childMetaRoleGuid">Guid</param>
-		protected void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
 		{
 			parentMetaRoleGuid = ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid;
 			childMetaRoleGuid = ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid;
@@ -819,7 +819,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="parentMetaRoleGuid">Guid</param>
 		/// <param name="childMetaRoleGuid">Guid</param>
-		protected void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
 		{
 			parentMetaRoleGuid = ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid;
 			childMetaRoleGuid = ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid;
@@ -1068,7 +1068,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#region ConstraintCollection Implementation
 		[NonSerialized]
-		private IList myCompositeList = null;
+		private IList myCompositeList;
 		/// <summary>
 		/// Return a constraint collection encompassing
 		/// both single column and multi column external constraints

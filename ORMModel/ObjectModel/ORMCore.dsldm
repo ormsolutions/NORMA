@@ -6,7 +6,7 @@
 Copyright (c) Northface University. All Rights Reserved.
 Information Contained Herein is Proprietary and Confidential.
 ------------------------------------------------------------------------------</copyright>
-      <stringtable resxfile="ORMCore.dmd.resx" resourcesfile="Northface.Tools.ORM.ObjectModel.ORMMetaModel" usefullyqualifiedname="true" />
+      <stringtable resxfile="ORMCore.dsldm.resx" resourcesfile="Northface.Tools.ORM.ObjectModel.ORMMetaModel" usefullyqualifiedname="true" />
       <copyclosure name="ORMMetaModelCopyClosure" classmodifier="sealed" doccomment="Copy closure visitor filter" />
       <removeclosure name="ORMMetaModelRemoveClosure" classmodifier="sealed" doccomment="Remove closure visitor filter" />
     </mdfmetadata>

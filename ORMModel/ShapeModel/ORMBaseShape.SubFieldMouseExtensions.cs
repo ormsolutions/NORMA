@@ -112,16 +112,16 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// the Enter/Leave/Hover events along with a stock implementation to help implement it.
 		/// </summary>
 		/// <param name="field">The parent ShapeField</param>
-		/// <param name="subfield">The subfield being entered</param>
+		/// <param name="subField">The subfield being entered</param>
 		/// <param name="e">Forwarded from the OnMouseEnter event</param>
-		public virtual void OnSubFieldMouseEnter(ShapeField field, ShapeSubField subfield, DiagramPointEventArgs e)
+		public virtual void OnSubFieldMouseEnter(ShapeField field, ShapeSubField subField, DiagramPointEventArgs e)
 		{
 			if (this.HasSubFieldHighlighting)
 			{
 				DiagramClientView view = e.DiagramClientView;
 				if (view != null)
 				{
-					view.HighlightedShapes.Set(new DiagramItem(this, field, subfield));
+					view.HighlightedShapes.Set(new DiagramItem(this, field, subField));
 				}
 			}
 		}
@@ -142,13 +142,13 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// the Enter/Leave/Hover events along with a stock implementation to help implement it.
 		/// </summary>
 		/// <param name="field">The parent ShapeField</param>
-		/// <param name="subfield">The subfield being left</param>
+		/// <param name="subField">The subfield being left</param>
 		/// <param name="e">Forwarded from the OnMouseLeave event</param>
-		public virtual void OnSubFieldMouseLeave(ShapeField field, ShapeSubField subfield, DiagramPointEventArgs e)
+		public virtual void OnSubFieldMouseLeave(ShapeField field, ShapeSubField subField, DiagramPointEventArgs e)
 		{
 			if (this.HasSubFieldHighlighting)
 			{
-				e.DiagramClientView.HighlightedShapes.Remove(new DiagramItem(this, field, subfield));
+				e.DiagramClientView.HighlightedShapes.Remove(new DiagramItem(this, field, subField));
 			}
 		}
 		/// <summary>
@@ -164,9 +164,9 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// the Enter/Leave/Hover events along with a stock implementation to help implement it.
 		/// </summary>
 		/// <param name="field">The parent ShapeField</param>
-		/// <param name="subfield">The subfield being hovered over</param>
+		/// <param name="subField">The subfield being hovered over</param>
 		/// <param name="e">Forwarded from the OnMouseHover event</param>
-		public virtual void OnSubFieldMouseHover(ShapeField field, ShapeSubField subfield, DiagramPointEventArgs e)
+		public virtual void OnSubFieldMouseHover(ShapeField field, ShapeSubField subField, DiagramPointEventArgs e)
 		{
 		}
 		/// <summary>
@@ -174,9 +174,9 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// events
 		/// </summary>
 		/// <param name="field"></param>
-		/// <param name="subfield"></param>
+		/// <param name="subField"></param>
 		/// <param name="e"></param>
-		public override void OnSubFieldMouseMove(ShapeField field, ShapeSubField subfield, DiagramMouseEventArgs e)
+		public override void OnSubFieldMouseMove(ShapeField field, ShapeSubField subField, DiagramMouseEventArgs e)
 		{
 			if (HasSubFieldMouseEnterLeaveHover)
 			{
@@ -185,27 +185,27 @@ namespace Northface.Tools.ORM.ShapeModel
 				{
 					if (PendingShapeSubField.Token.SubFieldEquals(oldSubField))
 					{
-						ActiveShapeSubField = subfield;
+						ActiveShapeSubField = subField;
 						ActiveShapeField = field;
 						base.OnMouseLeave(e);
-						OnSubFieldMouseEnter(field, subfield, e);
+						OnSubFieldMouseEnter(field, subField, e);
 					}
-					else if (!oldSubField.SubFieldEquals(subfield))
+					else if (!oldSubField.SubFieldEquals(subField))
 					{
 						OnSubFieldMouseLeave(ActiveShapeField, oldSubField, e);
-						ActiveShapeSubField = subfield;
+						ActiveShapeSubField = subField;
 						ActiveShapeField = field;
-						OnSubFieldMouseEnter(field, subfield, e);
+						OnSubFieldMouseEnter(field, subField, e);
 					}
 				}
 				else
 				{
-					ActiveShapeSubField = subfield;
+					ActiveShapeSubField = subField;
 					ActiveShapeField = field;
-					OnSubFieldMouseEnter(field, subfield, e);
+					OnSubFieldMouseEnter(field, subField, e);
 				}
 			}
-			base.OnSubFieldMouseMove(field, subfield, e);
+			base.OnSubFieldMouseMove(field, subField, e);
 		}
 		/// <summary>
 		/// Translate mouse events into OnSubFieldMouseEnter/OnSubFieldMouseLeave events

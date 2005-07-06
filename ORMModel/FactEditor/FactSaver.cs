@@ -24,8 +24,6 @@ namespace Northface.Tools.ORM.FactEditor
 		private ORMDesignerDocView myCurrentDocView;
 		private ORMDesignerDocData myCurrentDocument;
 		private FactType myEditFact;
-		private const string RefModeGroupName = "refmode";
-		private static Regex ReferenceModeRegEx = new Regex(@"\((?<refmode>[^\(\)]+)\)", RegexOptions.Singleline | RegexOptions.Compiled);
 		private ParsedFact myParsedFact;
 
 		/// <summary>

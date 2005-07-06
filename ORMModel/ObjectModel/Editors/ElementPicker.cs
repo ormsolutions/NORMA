@@ -22,7 +22,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		#region DropDownListBox class. Handles Escape key for ListBox
 		private class DropDownListBox : ListBox
 		{
-			private bool myEscapePressed = false;
+			private bool myEscapePressed;
 			private int myLastSelectedIndex = -1;
 			protected override bool IsInputKey(Keys keyData)
 			{

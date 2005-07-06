@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
     xmlns:orm="http://Schemas.Northface.edu/ORM/ORMCore"
     xmlns:ormRoot="http://Schemas.Northface.edu/ORM/ORMRoot"
     xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
@@ -13,19 +14,21 @@
 	2. not enforcing any constraints, nothing to prevent objects of identical values
 	3. and certainly many other things
 	-->
-	
+
 	<!-- All binary facts in the model -->
-	<xsl:variable name="UnaryFacts">
-		<xsl:apply-templates mode="CollectUnaryFacts" select="ormRoot:ORM2/orm:Model/orm:Facts/orm:Fact"/>
+	<xsl:variable name="UnaryFactsFragment">
+		<xsl:apply-templates mode="CollectUnaryFacts" select="ormRoot:ORM2/orm:ORMModel/orm:Facts/orm:Fact"/>
 	</xsl:variable>
+	<xsl:variable name="UnaryFacts" select="msxsl:node-set($UnaryFactsFragment)/child::*"/>
 	<xsl:template match="orm:Fact" mode="CollectUnaryFacts">
 		<xsl:if test="1=count(orm:FactRoles/orm:Role)">
 			<xsl:copy-of select="."/>
 		</xsl:if>
 	</xsl:template>
-	<xsl:variable name="BinaryFacts">
-		<xsl:apply-templates mode="CollectBinaryFacts" select="ormRoot:ORM2/orm:Model/orm:Facts/orm:Fact"/>
+	<xsl:variable name="BinaryFactsFragment">
+		<xsl:apply-templates mode="CollectBinaryFacts" select="ormRoot:ORM2/orm:ORMModel/orm:Facts/orm:Fact"/>
 	</xsl:variable>
+	<xsl:variable name="BinaryFacts" select="msxsl:node-set($BinaryFactsFragment)/child::*"/>
 	<xsl:template match="orm:Fact" mode="CollectBinaryFacts">
 		<xsl:if test="2=count(orm:FactRoles/orm:Role)">
 			<xsl:copy-of select="."/>
@@ -33,30 +36,23 @@
 	</xsl:template>
 	<!-- All functional binary facts (at least on single-role internal uniqueness constraint on the fact). Add
          functionalRolesCount attribute to the fact and a functionalRole attribute to the role. -->
-	<xsl:variable name="FunctionalBinaryFacts">
-		<xsl:for-each select="$BinaryFacts/child::*">
-			<xsl:variable name="HasUniqueRoles">
-				<xsl:for-each select="orm:InternalConstraintCollection/orm:InternalUniquenessConstraint">
-					<xsl:if test="1=count(orm:Role)">
-						<xsl:text>x</xsl:text>
-					</xsl:if>
+	<xsl:variable name="FunctionalBinaryFactsFragment">
+		<xsl:for-each select="$BinaryFacts">
+			<xsl:variable name="UniqueRolesFragment">
+				<xsl:for-each select="orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[1=count(orm:Role)]/orm:Role">
+					<UniqueRole ref="{@ref}" />
 				</xsl:for-each>
 			</xsl:variable>
-			<xsl:if test="string-length($HasUniqueRoles)">
-				<xsl:variable name="UniqueRoles">
-					<xsl:for-each select="orm:InternalConstraintCollection/orm:InternalUniquenessConstraint">
-						<xsl:if test="1=count(orm:Role)">
-							<UniqueRole ref="{orm:Role[1]/@ref}" />
-						</xsl:if>
-					</xsl:for-each>
-				</xsl:variable>
+			<xsl:variable name="UniqueRoles" select="msxsl:node-set($UniqueRolesFragment)/child::*"/>
+			<xsl:if test="$UniqueRoles">
 				<xsl:apply-templates select="." mode="ForFunctionalBinaryFacts">
-					<xsl:with-param name="UniqueRolesCount" select="string-length($HasUniqueRoles)"/>
-					<xsl:with-param name="UniqueRoles" select="$UniqueRoles/child::*"/>
+					<xsl:with-param name="UniqueRolesCount" select="count($UniqueRoles)"/>
+					<xsl:with-param name="UniqueRoles" select="$UniqueRoles"/>
 				</xsl:apply-templates>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:variable>
+	<xsl:variable name="FunctionalBinaryFacts" select="msxsl:node-set($FunctionalBinaryFactsFragment)/child::*"/>
 	<!-- Copy template for the FunctionalyBinaryFacts variable generation. Matches a Fact -->
 	<xsl:template match="orm:Fact" mode="ForFunctionalBinaryFacts">
 		<xsl:param name="UniqueRolesCount"/>
@@ -107,26 +103,24 @@
 			a binary fact where the role is the only role player in an internal uniqueness
 			constraint. -->
 		<xsl:variable name="AllObjects">
-			<xsl:for-each select="$FunctionalBinaryFacts/child::*">
-				<xsl:variable name="Roles" select="orm:FactRoles"/>
-				<xsl:for-each select="orm:InternalConstraintCollection/orm:InternalUniquenessConstraint">
-					<xsl:if test="1=count(orm:Role)">
-						<xsl:variable name="roleId" select="orm:Role[1]/@ref"/>
-						<xsl:for-each select="$Roles/orm:Role[@id=$roleId]/orm:RolePlayer">
-							<RolePlayer id="{@ref}"/>
-						</xsl:for-each>
-					</xsl:if>
+			<xsl:for-each select="$FunctionalBinaryFacts">
+				<xsl:variable name="Roles" select="orm:FactRoles/orm:Role"/>
+				<xsl:for-each select="orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[1=count(orm:Role)]/orm:Role">
+					<xsl:variable name="roleId" select="@ref"/>
+					<xsl:for-each select="$Roles[@id=$roleId]/orm:RolePlayer">
+						<RolePlayer id="{@ref}"/>
+					</xsl:for-each>
 				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:variable>
 		<!-- All candidate objects sort so that the duplicates are adjacent -->
 		<xsl:variable name="SortedObjects">
-			<xsl:for-each select="$AllObjects/child::*">
+			<xsl:for-each select="msxsl:node-set($AllObjects)/child::*">
 				<xsl:sort select="@id" data-type="text"/>
 				<xsl:copy-of select="."/>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:for-each select="$SortedObjects/child::*">
+		<xsl:for-each select="msxsl:node-set($SortedObjects)/child::*">
 			<xsl:choose>
 				<xsl:when test="position()=last()">
 					<xsl:choose>
@@ -161,7 +155,7 @@
 	</xsl:variable>
 	<!-- A set of FunctionalObject elements with a ref attribute (referencing the target object) and
 		    nested FunctionalRole elements, also with a ref attribute (referencing the attached role) -->
-	<xsl:variable name="FunctionalObjects">
+	<xsl:variable name="FunctionalObjectsFragment">
 		<xsl:variable name="AllFunctionalObjects">
 			<!-- The algorithm here first picks all roles with one candidate role only (1), falling back on
 				then the roles opposite a preferred uniqueness constraint (2), falling back on the only mandatory
@@ -171,63 +165,52 @@
 				elements with attributes ref (pointing to the object type) and roleRef (indicating the attaching role).
 				These are then transformed into FunctionalObject/FunctionalRole elements to handle the case where an
 				object is functional in more than one fact type. -->
-			<xsl:for-each select="$FunctionalBinaryFacts/child::*">
-				<xsl:variable name="Roles" select="orm:FactRoles"/>
+			<xsl:for-each select="$FunctionalBinaryFacts">
+				<xsl:variable name="Roles" select="orm:FactRoles/orm:Role"/>
 				<xsl:choose>
 					<xsl:when test="@functionalRolesCount=1">
 						<!-- There is only one candidate role (1) -->
-						<xsl:for-each select="orm:InternalConstraintCollection/orm:InternalUniquenessConstraint">
-							<xsl:if test="1=count(orm:Role)">
-								<xsl:variable name="roleId" select="orm:Role[1]/@ref"/>
-								<xsl:for-each select="$Roles/orm:Role[@id=$roleId]/orm:RolePlayer">
-									<FunctionalObject ref="{@ref}" roleRef="{$roleId}"/>
-								</xsl:for-each>
-							</xsl:if>
+						<xsl:for-each select="orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[1=count(orm:Role)]/orm:Role">
+							<xsl:variable name="roleId" select="@ref"/>
+							<xsl:for-each select="$Roles[@id=$roleId]/orm:RolePlayer">
+								<FunctionalObject ref="{@ref}" roleRef="{$roleId}"/>
+							</xsl:for-each>
 						</xsl:for-each>
 					</xsl:when>
 					<xsl:otherwise>
 						<!-- Roles that are not attached to preferred uniqueness constraints -->
-						<xsl:variable name="OppositePreferredCandidateRoles">
-							<xsl:for-each select="orm:InternalConstraintCollection">
-								<xsl:if test="count(orm:InternalUniquenessConstraint/orm:EntityTypeHasPreferredIdentifier.PreferredIdentifierFor)">
-									<xsl:for-each select="orm:InternalUniquenessConstraint">
-										<xsl:if test="0=count(EntityTypeHasPreferredIdentifier.PreferredIdentifierFor)">
-											<xsl:if test="1=count(orm:Role)">
-												<xsl:copy-of select="orm:Role[1]"/>
-											</xsl:if>
-										</xsl:if>
+						<xsl:variable name="OppositePreferredCandidateRolesFragment">
+							<xsl:for-each select="orm:InternalConstraints">
+								<xsl:if test="count(orm:InternalUniquenessConstraint/orm:PreferredIdentifierFor)">
+									<xsl:for-each select="orm:InternalUniquenessConstraint[not(orm:PreferredIdentifierFor) and (1=count(orm:RoleSequence/orm:Role))]/orm:RoleSequence/orm:Role">
+										<xsl:copy-of select="."/>
 									</xsl:for-each>
 								</xsl:if>
 							</xsl:for-each>
 						</xsl:variable>
+						<xsl:variable name="OppositePreferredCandidateRoles" select="msxsl:node-set($OppositePreferredCandidateRolesFragment)/child::*"/>
 						<xsl:choose>
-							<xsl:when test="count($OppositePreferredCandidateRoles/child::*)=1">
+							<xsl:when test="count($OppositePreferredCandidateRoles)=1">
 								<!-- The roles is opposite a preferred uniqueness constraint (2) -->
-								<xsl:variable name="roleId" select="$OppositePreferredCandidateRoles/child::*[1]/@ref"/>
-								<xsl:for-each select="$Roles/orm:Role[@id=$roleId]/orm:RolePlayer">
+								<xsl:variable name="roleId" select="$OppositePreferredCandidateRoles[1]/@ref"/>
+								<xsl:for-each select="$Roles[@id=$roleId]/orm:RolePlayer">
 									<FunctionalObject ref="{@ref}" roleRef="{$roleId}"/>
 								</xsl:for-each>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:variable name="MandatoryRoles">
-									<xsl:for-each select="$Roles/child::*">
-										<xsl:if test="@functionalRole and @IsMandatory='true'">
-											<!-- UNDONE: Also, this should be in the derived namespace -->
-											<xsl:copy-of select="."/>
-										</xsl:if>
-									</xsl:for-each>
-								</xsl:variable>
+								<!-- UNDONE: Also, IsMandatory should be in the derived namespace -->
+								<xsl:variable name="MandatoryRoles" select="$Roles[@functionalRole and @IsMandatory='true']"/>
 								<xsl:choose>
-									<xsl:when test="1=count($MandatoryRoles/child::*)">
+									<xsl:when test="1=count($MandatoryRoles)">
 										<!-- The role is the only mandatory role (3) -->
-										<xsl:for-each select="$MandatoryRoles/child::*">
+										<xsl:for-each select="$MandatoryRoles">
 											<FunctionalObject ref="{orm:RolePlayer/@ref}" roleRef="{@id}"/>
 										</xsl:for-each>
 									</xsl:when>
 									<xsl:otherwise>
 										<!-- Use the object for the role with the most role players (4) -->
 										<xsl:variable name="RolesWithPlayerCounts">
-											<xsl:for-each select="$Roles/child::*">
+											<xsl:for-each select="$Roles">
 												<xsl:if test="@functionalRole">
 													<xsl:variable name="rolePlayerId" select="orm:RolePlayer/@ref"/>
 													<xsl:copy>
@@ -246,7 +229,7 @@
 											<xsl:if test="position()=1">
 												<!-- Note this also picks up the fallback case (5) (a tie on the most) -->
 												<xsl:variable name="roleId" select="@id"/>
-												<xsl:for-each select="$Roles/orm:Role[@id=$roleId]/orm:RolePlayer">
+												<xsl:for-each select="$Roles[@id=$roleId]/orm:RolePlayer">
 													<FunctionalObject ref="{@ref}" roleRef="{$roleId}"/>
 												</xsl:for-each>
 											</xsl:if>
@@ -260,12 +243,12 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="SortedFunctionalObjects">
-			<xsl:for-each select="$AllFunctionalObjects/child::*">
+			<xsl:for-each select="msxsl:node-set($AllFunctionalObjects)/child::*">
 				<xsl:sort select="@ref" data-type="text"/>
 				<xsl:copy-of select="."/>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:for-each select="$SortedFunctionalObjects/child::*">
+		<xsl:for-each select="msxsl:node-set($SortedFunctionalObjects)/child::*">
 			<xsl:choose>
 				<xsl:when test="position()=last()">
 					<xsl:choose>
@@ -298,41 +281,55 @@
 			</xsl:choose>
 		</xsl:for-each>
 	</xsl:variable>
-	<xsl:variable name="DominantFunctionalRoles">
-		<xsl:for-each select="$FunctionalObjects/child::*">
+	<xsl:variable name="FunctionalObjects" select="msxsl:node-set($FunctionalObjectsFragment)/child::*"/>
+	<xsl:variable name="DominantFunctionalRolesFragment">
+		<xsl:for-each select="$FunctionalObjects">
 			<xsl:copy-of select="FunctionalRole"/>
 		</xsl:for-each>
 	</xsl:variable>
+	<xsl:variable name="DominantFunctionalRoles" select="msxsl:node-set($DominantFunctionalRolesFragment)/child::*"/>
 	<xsl:template name="IsDominantFunctionalRole">
 		<xsl:param name="RoleRef"/>
-		<xsl:value-of select="0!=count($DominantFunctionalRoles/child::*[@ref=$RoleRef])"/>
+		<xsl:value-of select="0!=count($DominantFunctionalRoles[@ref=$RoleRef])"/>
 	</xsl:template>
-	<xsl:variable name="AbsorbedObjects">
-		<xsl:for-each select="//orm:Model">
+	<xsl:variable name="AbsorbedObjectsFragment">
+		<xsl:for-each select="ormRoot:ORM2/orm:ORMModel">
 			<xsl:variable name="RawFacts" select="orm:Facts/child::orm:*"/>
 			<xsl:variable name="RawObjects" select="orm:Objects/child::orm:*"/>
-			<xsl:variable name="BinaryAbsorbedObjects">
+			<xsl:variable name="BinaryAbsorbedObjectsFragment">
 				<xsl:call-template name="BinaryAbsorbObjects">
 					<xsl:with-param name="Objects">
 						<xsl:for-each select="$RawObjects">
 							<Object type="{local-name()}" id="{@id}" name="{@Name}">
-								<xsl:for-each select="orm:PlayedRoles/orm:PlayedRole">
+								<xsl:for-each select="orm:PlayedRoles/orm:Role">
 									<xsl:variable name="roleId" select="@ref"/>
 									<xsl:for-each select="$RawFacts//orm:Role[@id=$roleId]">
 										<xsl:variable name="parentFact" select="ancestor::*[2]"/>
 										<RelatedObject factRef="{$parentFact/@id}" roleRef="{$roleId}" roleName="{$parentFact/orm:FactRoles/orm:Role[@id=$roleId]/@Name}">
 											<xsl:variable name="oppositeRoles" select="$parentFact/orm:FactRoles/child::*[@id!=$roleId]"/>
-											<xsl:attribute name="arity"><xsl:value-of select="count($parentFact/orm:FactRoles/orm:Role)"/></xsl:attribute>
+											<xsl:attribute name="arity">
+												<xsl:value-of select="count($parentFact/orm:FactRoles/orm:Role)"/>
+											</xsl:attribute>
 											<xsl:if test="1=count($oppositeRoles)">
 												<xsl:for-each select="$oppositeRoles">
-													<xsl:attribute name="multiplicity"><xsl:value-of select="@Multiplicity"/></xsl:attribute>
+													<xsl:attribute name="multiplicity">
+														<xsl:value-of select="@Multiplicity"/>
+													</xsl:attribute>
 													<xsl:variable name="oppositeRoleId" select="@id"/>
-													<xsl:attribute name="oppositeRoleRef"><xsl:value-of select="$oppositeRoleId"/></xsl:attribute>
+													<xsl:attribute name="oppositeRoleRef">
+														<xsl:value-of select="$oppositeRoleId"/>
+													</xsl:attribute>
 													<xsl:variable name="oppositeObjectId" select="orm:RolePlayer/@ref"/>
-													<xsl:attribute name="oppositeObjectRef"><xsl:value-of select="$oppositeObjectId"/></xsl:attribute>
+													<xsl:attribute name="oppositeObjectRef">
+														<xsl:value-of select="$oppositeObjectId"/>
+													</xsl:attribute>
 													<xsl:variable name="oppositeObject" select="$RawObjects[@id=$oppositeObjectId]"/>
-													<xsl:attribute name="oppositeObjectName"><xsl:value-of select="$oppositeObject/@Name"/></xsl:attribute>
-													<xsl:attribute name="oppositeRoleName"><xsl:value-of select="$RawFacts//orm:Role[@id=$oppositeRoleId]/@Name"/></xsl:attribute>
+													<xsl:attribute name="oppositeObjectName">
+														<xsl:value-of select="$oppositeObject/@Name"/>
+													</xsl:attribute>
+													<xsl:attribute name="oppositeRoleName">
+														<xsl:value-of select="$RawFacts//orm:Role[@id=$oppositeRoleId]/@Name"/>
+													</xsl:attribute>
 												</xsl:for-each>
 											</xsl:if>
 										</RelatedObject>
@@ -343,6 +340,7 @@
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:variable>
+			<xsl:variable name="BinaryAbsorbedObjects" select="msxsl:node-set($BinaryAbsorbedObjectsFragment)/child::*"/>
 			<xsl:variable name="AssociationFacts">
 				<xsl:variable name="AllAssociations" select="$BinaryAbsorbedObjects//RelatedObject[not(@oppositeRoleRef)]"/>
 				<xsl:variable name="SortedAssociations">
@@ -351,7 +349,7 @@
 						<xsl:copy-of select="."/>
 					</xsl:for-each>
 				</xsl:variable>
-				<xsl:for-each select="$SortedAssociations/child::*">
+				<xsl:for-each select="msxsl:node-set($SortedAssociations)/child::*">
 					<xsl:variable name="factId" select="@factRef"/>
 					<xsl:choose>
 						<xsl:when test="position()=last()">
@@ -366,11 +364,12 @@
 				</xsl:for-each>
 			</xsl:variable>
 			<xsl:call-template name="AbsorbAssociationFacts">
-				<xsl:with-param name="Objects" select="$BinaryAbsorbedObjects/child::*"/>
-				<xsl:with-param name="AssociationFacts" select="$AssociationFacts/child::*"/>
+				<xsl:with-param name="Objects" select="$BinaryAbsorbedObjects"/>
+				<xsl:with-param name="AssociationFacts" select="msxsl:node-set($AssociationFacts)/child::*"/>
 			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:variable>
+	<xsl:variable name="AbsorbedObjects" select="msxsl:node-set($AbsorbedObjectsFragment)/child::*"/>
 	<xsl:template name="AbsorbAssociationFacts">
 		<xsl:param name="Objects"/>
 		<xsl:param name="AssociationFacts"/>
@@ -381,7 +380,7 @@
 				<xsl:when test="$relatedObjectCount=1">
 					<xsl:choose>
 						<!-- I'm being absorbed, don't copy -->
-						<xsl:when test="($relatedAssociationCount=1 and count(AbsorbedObject)&lt;=1) or @type='ValueType'"/> 
+						<xsl:when test="($relatedAssociationCount=1 and count(AbsorbedObject)&lt;=1) or @type='ValueType'"/>
 						<!-- no absorbtion, so copy -->
 						<xsl:otherwise>
 							<xsl:copy-of select="."/>
@@ -399,8 +398,8 @@
 			<xsl:choose>
 				<!-- unary fact putting them in their own tag for custom handling -->
 				<!-- just stop output of unary fact, object code will output unary facts -->
-				<xsl:when test="count($UnaryFacts/orm:Fact[@id=$factId])&gt;0">
-<!--					<Unary name="{@Name}" id="{@id}">
+				<xsl:when test="count($UnaryFacts[@id=$factId])&gt;0">
+					<!--					<Unary name="{@Name}" id="{@id}">
 						<xsl:for-each select="orm:FactRoles/orm:Role">
 							<xsl:variable name="roleId" select="@id"/>
 							<xsl:variable name="roleName" select="@Name"/>
@@ -417,7 +416,7 @@
 					<Association name="{@Name}" id="{@id}">
 						<xsl:for-each select="orm:FactRoles/orm:Role">
 							<xsl:variable name="roleId" select="@id"/>
-							<xsl:variable name="hasMany" select="0=count($currentFact/orm:InternalConstraintCollection/orm:InternalUniquenessConstraint/orm:Role[@ref=$roleId])"/>
+							<xsl:variable name="hasMany" select="0=count($currentFact/orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence/orm:Role[@ref=$roleId])"/>
 							<xsl:variable name="roleName" select="@Name"></xsl:variable>
 							<xsl:variable name="objectId" select="orm:RolePlayer/@ref"/>
 							<xsl:variable name="rolePlayerObject" select="$Objects[@id=$objectId]"/>
@@ -436,7 +435,7 @@
 											<!--<xsl:if test="$hasMany">
 												<xsl:attribute name="multiplicity">Many</xsl:attribute>
 											</xsl:if>-->
-										</RelatedObject>	
+										</RelatedObject>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:for-each>
@@ -448,8 +447,9 @@
 	</xsl:template>
 	<xsl:template name="BinaryAbsorbObjects">
 		<xsl:param name="Objects"/>
-		<xsl:variable name="ThisPass">
-			<xsl:for-each select="$Objects">
+		<xsl:variable name="ObjectsSet" select="msxsl:node-set($Objects)"/>
+		<xsl:variable name="ThisPassFragment">
+			<xsl:for-each select="$ObjectsSet">
 				<xsl:variable name="relatedObjectCount" select="count(RelatedObject)"/>
 				<xsl:choose>
 					<xsl:when test="$relatedObjectCount=1">
@@ -458,7 +458,8 @@
 						<xsl:variable name="isValueType" select="@type='ValueType'"/>
 						<xsl:for-each select="RelatedObject">
 							<xsl:choose>
-								<xsl:when test="@type='ValueType' and @oppositeRoleRef"/> <!-- Value type role players in binary relationships are always absorbed -->
+								<xsl:when test="@type='ValueType' and @oppositeRoleRef"/>
+								<!-- Value type role players in binary relationships are always absorbed -->
 								<xsl:otherwise>
 									<xsl:variable name="oppositeObjectId" select="@oppositeObjectRef"/>
 									<xsl:variable name="isDominantFunctional">
@@ -470,7 +471,7 @@
 									</xsl:variable>
 									<xsl:variable name="oppositeObjectTemp">
 										<xsl:if test="string-length($oppositeObjectId)">
-											<xsl:value-of select="$Objects[@id=$oppositeObjectId]"/>											
+											<xsl:value-of select="$ObjectsSet[@id=$oppositeObjectId]"/>
 										</xsl:if>
 									</xsl:variable>
 									<xsl:variable name="oppositeObject" select="oppositeObjectTemp/child::*"/>
@@ -527,7 +528,7 @@
 								<xsl:variable name="oppositeObjectId" select="@oppositeObjectRef"/>
 								<xsl:choose>
 									<xsl:when test="string-length($oppositeObjectId)">
-										<xsl:variable name="oppositeObject" select="$Objects[@id=$oppositeObjectId]"/>
+										<xsl:variable name="oppositeObject" select="$ObjectsSet[@id=$oppositeObjectId]"/>
 										<xsl:variable name="shouldAbsorb">
 											<xsl:choose>
 												<xsl:when test="$oppositeObject/@type='ValueType'">x</xsl:when>
@@ -571,15 +572,16 @@
 				</xsl:choose>
 			</xsl:for-each>
 		</xsl:variable>
+		<xsl:variable name="ThisPass" select="msxsl:node-set($ThisPassFragment)/child::*"/>
 		<xsl:choose>
-			<xsl:when test="count($Objects)=count($ThisPass/child::*)">
+			<xsl:when test="count($ObjectsSet)=count($ThisPass)">
 				<xsl:call-template name="AbsorbBinaryValueTypes">
-					<xsl:with-param name="Objects" select="$ThisPass/child::*"/>
+					<xsl:with-param name="Objects" select="$ThisPass"/>
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="BinaryAbsorbObjects">
-					<xsl:with-param name="Objects" select="$ThisPass/child::*"/>
+					<xsl:with-param name="Objects" select="$ThisPass"/>
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -591,19 +593,20 @@
 		<xsl:for-each select="$Objects">
 			<xsl:choose>
 				<xsl:when test="@type='ValueType'">
-					<xsl:variable name="newRelatedObjects">
+					<xsl:variable name="newRelatedObjectsFragment">
 						<xsl:for-each select="RelatedObject">
 							<xsl:if test="not(@oppositeRoleRef)">
 								<xsl:copy-of select="."/>
 							</xsl:if>
 						</xsl:for-each>
 					</xsl:variable>
+					<xsl:variable name="newRelatedObjects" select="msxsl:node-set($newRelatedObjectsFragment)/child::*"/>
 					<xsl:choose>
-						<xsl:when test="count($newRelatedObjects/child::*)">
+						<xsl:when test="count($newRelatedObjects)">
 							<xsl:copy>
 								<xsl:copy-of select="@*"/>
 								<xsl:copy-of select="AbsorbedObject"/>
-								<xsl:copy-of select="$newRelatedObjects/child::*"/>
+								<xsl:copy-of select="$newRelatedObjects"/>
 							</xsl:copy>
 						</xsl:when>
 					</xsl:choose>
@@ -641,7 +644,7 @@
 							<xsl:copy>
 								<xsl:copy-of select="@*"/>
 								<xsl:copy-of select="AbsorbedObject"/>
-								<xsl:copy-of select="$newRelatedObjects/child::*"/>
+								<xsl:copy-of select="msxsl:node-set($newRelatedObjects)/child::*"/>
 							</xsl:copy>
 						</xsl:when>
 						<xsl:otherwise>
@@ -716,7 +719,9 @@
 			<plx:Get>
 				<plx:Return>
 					<plx:CallInstance name="my{@name}" style="Field">
-						<plx:CallObject><plx:ThisKeyword/></plx:CallObject>
+						<plx:CallObject>
+							<plx:ThisKeyword/>
+						</plx:CallObject>
 					</plx:CallInstance>
 				</plx:Return>
 			</plx:Get>
@@ -731,53 +736,51 @@
 		</plx:Param>
 	</xsl:template>
 	<xsl:template name="GenerateConstructorAssignment">
-		<plx:Statement>
-			<plx:Operator name="Assign">
-				<plx:Left>
-					<plx:Value type="Local">
-						my<xsl:value-of select="@name"/>
-					</plx:Value>
-				</plx:Left>
-				<plx:Right>
-					<plx:Value type="Parameter">
-						<xsl:value-of select="@name"/>
-					</plx:Value>
-				</plx:Right>
-			</plx:Operator>
-		</plx:Statement>
+		<plx:Operator name="Assign">
+			<plx:Left>
+				<plx:CallInstance name="my{@name}" style="Field">
+					<plx:CallObject>
+						<plx:ThisKeyword/>
+					</plx:CallObject>
+				</plx:CallInstance>
+			</plx:Left>
+			<plx:Right>
+				<plx:Value type="Parameter">
+					<xsl:value-of select="@name"/>
+				</plx:Value>
+			</plx:Right>
+		</plx:Operator>
 	</xsl:template>
 	<xsl:template name="GenerateFactoryMethod">
 		<xsl:param name="property"/>
 		<xsl:param name="objectName"/>
 		<plx:Function name="CreateInstance" visibility="Public" virtual="true" shared="true">
-				<xsl:for-each select="$property">
-					<xsl:call-template name="GenerateParameters"/>
-				</xsl:for-each>
+			<xsl:for-each select="$property">
+				<xsl:call-template name="GenerateParameters"/>
+			</xsl:for-each>
 			<plx:Param name="" style="RetVal" dataTypeName="{$objectName}"/>
-			<plx:Statement>
-				<plx:Return>
-					<plx:CallNew dataTypeName="{$objectName}">
-						<xsl:for-each select="$property">
-							<plx:PassParam>
-								<plx:Value type="Local">
-									<xsl:value-of select="@name"/>
-								</plx:Value>
-							</plx:PassParam>
-						</xsl:for-each>
-					</plx:CallNew>
-				</plx:Return>
-			</plx:Statement>
+			<plx:Return>
+				<plx:CallNew dataTypeName="{$objectName}">
+					<xsl:for-each select="$property">
+						<plx:PassParam>
+							<plx:Value type="Parameter">
+								<xsl:value-of select="@name"/>
+							</plx:Value>
+						</plx:PassParam>
+					</xsl:for-each>
+				</plx:CallNew>
+			</plx:Return>
 		</plx:Function>
 	</xsl:template>
 	<xsl:template match="ormRoot:ORM2">
-		<xsl:apply-templates mode="Main" select="orm:Model"/>
+		<xsl:apply-templates mode="Main" select="orm:ORMModel"/>
 	</xsl:template>
-	<xsl:template match="orm:Model" mode="Main">
+	<xsl:template match="orm:ORMModel" mode="Main">
 		<plx:Root>
 			<plx:Using name="System" />
 			<plx:Using name="System.Collections.Generic" />
 			<plx:Namespace name="{$CustomToolNamespace}">
-				<xsl:apply-templates mode="WalkAbsorbedObjects" select="$AbsorbedObjects/child::*">
+				<xsl:apply-templates mode="WalkAbsorbedObjects" select="$AbsorbedObjects">
 					<xsl:with-param name="Model" select="."/>
 				</xsl:apply-templates>
 			</plx:Namespace>
@@ -786,28 +789,29 @@
 	<xsl:template match="Object" mode="WalkAbsorbedObjects">
 		<xsl:param name="Model"/>
 		<xsl:if test="@type='EntityType'">
-			<xsl:variable name="property">
+			<xsl:variable name="propertyFragment">
 				<xsl:apply-templates mode="WalkAbsorbedObjects" select="child::*">
 					<xsl:with-param name="Model" select="$Model"/>
 				</xsl:apply-templates>
 			</xsl:variable>
+			<xsl:variable name="property" select="msxsl:node-set($propertyFragment)/child::*"/>
 			<plx:Class visibility="Public" partial="true" name="{@name}">
 				<plx:Function ctor="true" visibility="Protected">
-					<xsl:for-each select="$property/child::*">
+					<xsl:for-each select="$property">
 						<xsl:call-template name="GenerateParameters"/>
 					</xsl:for-each>
-					<xsl:for-each select="$property/child::*">
+					<xsl:for-each select="$property">
 						<xsl:call-template name="GenerateConstructorAssignment"/>
 					</xsl:for-each>
 				</plx:Function>
 				<!-- TODO: make version with parameters based on required roles -->
-				<xsl:for-each select="$property/child::*">
+				<xsl:for-each select="$property">
 					<xsl:call-template name="GenerateBackedProperty">
 						<xsl:with-param name="initializeFields" select="true()"/>
 					</xsl:call-template>
 				</xsl:for-each>
 				<xsl:call-template name="GenerateFactoryMethod">
-					<xsl:with-param name="property" select="$property/child::*"/>
+					<xsl:with-param name="property" select="$property"/>
 					<xsl:with-param name="objectName" select="@name"/>
 				</xsl:call-template>
 			</plx:Class>
@@ -819,27 +823,28 @@
 			<xsl:value-of select="@name"/>
 			<xsl:value-of select="$AssociationClassDecorator"/>
 		</xsl:variable>
-		<xsl:variable name="property">
+		<xsl:variable name="propertyFragment">
 			<xsl:apply-templates mode="WalkAbsorbedObjects" select="child::*">
 				<xsl:with-param name="Model" select="$Model"/>
 			</xsl:apply-templates>
 		</xsl:variable>
+		<xsl:variable name="property" select="msxsl:node-set($propertyFragment)/child::*"/>
 		<plx:Structure visibility="Public" partial="true" name="{$structName}">
 			<plx:Function ctor="true" visibility="Protected">
-				<xsl:for-each select="$property/child::*">
+				<xsl:for-each select="$property">
 					<xsl:call-template name="GenerateParameters"/>
 				</xsl:for-each>
-				<xsl:for-each select="$property/child::*">
+				<xsl:for-each select="$property">
 					<xsl:call-template name="GenerateConstructorAssignment"/>
 				</xsl:for-each>
 			</plx:Function>
-			<xsl:for-each select="$property/child::*">
+			<xsl:for-each select="$property">
 				<xsl:call-template name="GenerateBackedProperty">
 					<xsl:with-param name="initializeFields" select="false()"/>
 				</xsl:call-template>
 			</xsl:for-each>
 			<xsl:call-template name="GenerateFactoryMethod">
-				<xsl:with-param name="property" select="$property/child::*"/>
+				<xsl:with-param name="property" select="$property"/>
 				<xsl:with-param name="objectName" select="$structName"/>
 			</xsl:call-template>
 		</plx:Structure>
@@ -850,64 +855,66 @@
 		     association objects. Build a Property element with a name attribute and
 			 DataType element for all both cases, then spit the property and its backing field
 			 using the GenerateBackedProperty template. -->
-<!--		<xsl:variable name="property">-->
-			<Property>
-				<xsl:choose>
-					<xsl:when test="@oppositeObjectRef">
-						<!-- Related to an object by a binary fact -->
-						<xsl:attribute name="name">
-							<xsl:choose>
-								<xsl:when test="string-length(@oppositeRoleName)">
-									<xsl:value-of select="@oppositeRoleName"/>
-								</xsl:when>
-								<xsl:otherwise>
+		<!--		<xsl:variable name="property">-->
+		<Property>
+			<xsl:choose>
+				<xsl:when test="@oppositeObjectRef">
+					<!-- Related to an object by a binary fact -->
+					<xsl:attribute name="name">
+						<xsl:choose>
+							<xsl:when test="string-length(@oppositeRoleName)">
+								<xsl:value-of select="@oppositeRoleName"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@oppositeObjectName"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+					<DataType>
+						<xsl:choose>
+							<xsl:when test="contains(@multiplicity, 'Many')">
+								<xsl:attribute name="dataTypeName">ICollection</xsl:attribute>
+								<plx:PassTypeParam dataTypeName="{@oppositeObjectName}"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="dataTypeName">
 									<xsl:value-of select="@oppositeObjectName"/>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:attribute>
-						<DataType>
-							<xsl:choose>
-								<xsl:when test="contains(@multiplicity, 'Many')">
-									<xsl:attribute name="dataTypeName">ICollection</xsl:attribute>
-									<plx:PassTypeParam dataTypeName="{@oppositeObjectName}"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:attribute name="dataTypeName"><xsl:value-of select="@oppositeObjectName"/></xsl:attribute>
-								</xsl:otherwise>
-							</xsl:choose>
-						</DataType>
-					</xsl:when>
-					<xsl:otherwise>
-						<!-- Related to an association object -->
-						<xsl:variable name="factId" select="@factRef"/>
-						<xsl:variable name="relatedFact" select="$Model/orm:Facts/orm:Fact[@id=$factId]"/>
-						<xsl:variable name="factName" select="$relatedFact/@Name"/>
-						<xsl:attribute name="name">
-							<xsl:choose>
-								<xsl:when test="string-length(@roleName)">
-									<xsl:value-of select="@roleName"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="$factName"/>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:attribute>
-						<DataType>
-							<xsl:choose>
-								<xsl:when test="@arity=1">
-									<xsl:attribute name="dataTypeName">Nullable&lt;bool&gt;</xsl:attribute>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:attribute name="dataTypeName">ICollection</xsl:attribute>
-									<plx:PassTypeParam dataTypeName="{$factName}{$AssociationClassDecorator}"/>
-								</xsl:otherwise>
-							</xsl:choose>
-						</DataType>
-					</xsl:otherwise>
-				</xsl:choose>
-			</Property>
-<!--		</xsl:variable>-->
-<!--		<xsl:for-each select="$property/child::*">
+								</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
+					</DataType>
+				</xsl:when>
+				<xsl:otherwise>
+					<!-- Related to an association object -->
+					<xsl:variable name="factId" select="@factRef"/>
+					<xsl:variable name="relatedFact" select="$Model/orm:Facts/orm:Fact[@id=$factId]"/>
+					<xsl:variable name="factName" select="$relatedFact/@Name"/>
+					<xsl:attribute name="name">
+						<xsl:choose>
+							<xsl:when test="string-length(@roleName)">
+								<xsl:value-of select="@roleName"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$factName"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+					<DataType>
+						<xsl:choose>
+							<xsl:when test="@arity=1">
+								<xsl:attribute name="dataTypeName">Nullable&lt;bool&gt;</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="dataTypeName">ICollection</xsl:attribute>
+								<plx:PassTypeParam dataTypeName="{$factName}{$AssociationClassDecorator}"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</DataType>
+				</xsl:otherwise>
+			</xsl:choose>
+		</Property>
+		<!--		</xsl:variable>-->
+		<!--		<xsl:for-each select="$property/child::*">
 			<xsl:call-template name="GenerateBackedProperty"/>
 		</xsl:for-each>-->
 	</xsl:template>
@@ -916,12 +923,12 @@
 		<!-- Absorbed objects can also absorb other objects. Use the deepest defined role name
 		     and the deepest fact to get names for the generated property. The data type
 			 for the property will always be type of the deepest absorbed object. -->
-<!--		<xsl:variable name="absorbedData">-->
-			<xsl:apply-templates select="." mode="InterpretAbsorbed">
-				<xsl:with-param name="Model" select="$Model"/>
-			</xsl:apply-templates>
-<!--		</xsl:variable>-->
-<!--		<xsl:for-each select="$absorbedData/child::*">
+		<!--		<xsl:variable name="absorbedData">-->
+		<xsl:apply-templates select="." mode="InterpretAbsorbed">
+			<xsl:with-param name="Model" select="$Model"/>
+		</xsl:apply-templates>
+		<!--		</xsl:variable>-->
+		<!--		<xsl:for-each select="$absorbedData/child::*">
 			<xsl:variable name="property">
 				<Property name="{@roleName}">
 					<xsl:copy-of select="DataType"/>
@@ -934,90 +941,94 @@
 	</xsl:template>
 	<xsl:template match="AbsorbedObject" mode="InterpretAbsorbed">
 		<xsl:param name="Model"/>
-			<xsl:choose>
-				<xsl:when test="count(AbsorbedObject)">
-					<xsl:variable name="nestedTemp">
-						<xsl:apply-templates select="AbsorbedObject" mode="InterpretAbsorbed">
-							<xsl:with-param name="Model" select="$Model"/>
-						</xsl:apply-templates>
-					</xsl:variable>
-					<xsl:variable name="nested" select="$nestedTemp/child::*"/>
-					<Property multiplicity="{@multiplicity}">
+		<xsl:choose>
+			<xsl:when test="count(AbsorbedObject)">
+				<xsl:variable name="nestedTemp">
+					<xsl:apply-templates select="AbsorbedObject" mode="InterpretAbsorbed">
+						<xsl:with-param name="Model" select="$Model"/>
+					</xsl:apply-templates>
+				</xsl:variable>
+				<xsl:variable name="nested" select="msxsl:node-set($nestedTemp)/child::*"/>
+				<Property multiplicity="{@multiplicity}">
+					<xsl:attribute name="name">
+						<xsl:choose>
+							<xsl:when test="string-length(@roleName)">
+								<xsl:value-of select="@roleName"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@name"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:value-of select="$nested/@roleName"/>
+					</xsl:attribute>
+					<xsl:copy-of select="$nested/DataType"/>
+				</Property>
+			</xsl:when>
+			<xsl:otherwise>
+				<Property name="{@roleName}" multiplicity="{@multiplicity}">
+					<xsl:if test="0=string-length(@roleName)">
 						<xsl:attribute name="name">
-							<xsl:choose>
-								<xsl:when test="string-length(@roleName)">
-									<xsl:value-of select="@roleName"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="@name"/>
-								</xsl:otherwise>
-							</xsl:choose>
-							<xsl:value-of select="$nested/@roleName"/>
+							<xsl:value-of select="@name"/>
 						</xsl:attribute>
-						<xsl:copy-of select="$nested/DataType"/>
-					</Property>
-				</xsl:when>
-				<xsl:otherwise>
-					<Property name="{@roleName}" multiplicity="{@multiplicity}">
-						<xsl:if test="0=string-length(@roleName)">
-							<xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
-						</xsl:if>
-						<xsl:if test="@type='ValueType'">
-							<xsl:variable name="objectId" select="@ref"/>
-							<xsl:variable name="valueObject" select="$Model/orm:Objects/orm:ValueType[@id=$objectId]"/>
-							<xsl:variable name="dataTypeId" select="$valueObject/orm:ConceptualDataType/@ref"/>
-							<xsl:for-each select="$Model/orm:DataTypes/child::*[@id=$dataTypeId]">
-								<xsl:call-template name="MapDataType"/>
-							</xsl:for-each>
-						</xsl:if>
-					</Property>
-				</xsl:otherwise>
-			</xsl:choose>
+					</xsl:if>
+					<xsl:if test="@type='ValueType'">
+						<xsl:variable name="objectId" select="@ref"/>
+						<xsl:variable name="valueObject" select="$Model/orm:Objects/orm:ValueType[@id=$objectId]"/>
+						<xsl:variable name="dataTypeId" select="$valueObject/orm:ConceptualDataType/@ref"/>
+						<xsl:for-each select="$Model/orm:DataTypes/child::*[@id=$dataTypeId]">
+							<xsl:call-template name="MapDataType"/>
+						</xsl:for-each>
+					</xsl:if>
+				</Property>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="Association/RelatedObject" mode="WalkAbsorbedObjects">
 		<xsl:param name="Model"/>
-<!--		<RelatedObject type="{@type}" objectRef="{@id}" roleRef="{$roleId}" roleName="{$roleName}" objectName="{@name}">
+		<!--		<RelatedObject type="{@type}" objectRef="{@id}" roleRef="{$roleId}" roleName="{$roleName}" objectName="{@name}">
 			<xsl:if test="$hasMany">
 				<xsl:attribute name="multiplicity">Many</xsl:attribute>
 			</xsl:if>
 		</RelatedObject>	-->
-<!--		<xsl:variable name="property">-->
-			<Property>
-				<xsl:attribute name="name">
-					<xsl:choose>
-						<xsl:when test="string-length(@roleName)">
-							<xsl:value-of select="@roleName"/>
-						</xsl:when>
-						<xsl:otherwise>
+		<!--		<xsl:variable name="property">-->
+		<Property>
+			<xsl:attribute name="name">
+				<xsl:choose>
+					<xsl:when test="string-length(@roleName)">
+						<xsl:value-of select="@roleName"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="@objectName"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			<DataType>
+				<xsl:choose>
+					<xsl:when test="contains(@multiplicity, 'Many')">
+						<xsl:attribute name="dataTypeName">ICollection</xsl:attribute>
+						<plx:PassTypeParam dataTypeName="{@objectName}"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:attribute name="dataTypeName">
 							<xsl:value-of select="@objectName"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:attribute>
-				<DataType>
-					<xsl:choose>
-						<xsl:when test="contains(@multiplicity, 'Many')">
-							<xsl:attribute name="dataTypeName">ICollection</xsl:attribute>
-							<plx:PassTypeParam dataTypeName="{@objectName}"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:attribute name="dataTypeName"><xsl:value-of select="@objectName"/></xsl:attribute>
-						</xsl:otherwise>
-					</xsl:choose>
-				</DataType>
-			</Property>
-<!--		</xsl:variable>-->
-<!--		<xsl:for-each select="$property/child::*">
+						</xsl:attribute>
+					</xsl:otherwise>
+				</xsl:choose>
+			</DataType>
+		</Property>
+		<!--		</xsl:variable>-->
+		<!--		<xsl:for-each select="$property/child::*">
 			<xsl:call-template name="GenerateBackedProperty"/>
 		</xsl:for-each>-->
 	</xsl:template>
 	<xsl:template match="Association/AbsorbedObject" mode="WalkAbsorbedObjects">
 		<xsl:param name="Model"/>
-<!--		<xsl:variable name="absorbedData">-->
-			<xsl:apply-templates select="." mode="InterpretAbsorbed">
-				<xsl:with-param name="Model" select="$Model"/>
-			</xsl:apply-templates>
-<!--		</xsl:variable>-->
-<!--		<xsl:for-each select="$absorbedData/child::*">
+		<!--		<xsl:variable name="absorbedData">-->
+		<xsl:apply-templates select="." mode="InterpretAbsorbed">
+			<xsl:with-param name="Model" select="$Model"/>
+		</xsl:apply-templates>
+		<!--		</xsl:variable>-->
+		<!--		<xsl:for-each select="$absorbedData/child::*">
 			<xsl:variable name="dataTypeTemp">
 				<DataType>
 					<xsl:choose>

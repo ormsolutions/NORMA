@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="">
-    <LastOpenVersion>8.0.40607</LastOpenVersion>
+    <LastOpenVersion>8.0.50215</LastOpenVersion>
     <ProjectView>ShowAllFiles</ProjectView>
     <ProjectTrust>0</ProjectTrust>
   </PropertyGroup>

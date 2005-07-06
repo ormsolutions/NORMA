@@ -5,7 +5,6 @@ using SysDiag = System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Xml;
-using System.Xml.Query;
 using System.Xml.Xsl;
 using System.Xml.XPath;
 using System.Threading;
@@ -68,7 +67,7 @@ namespace Northface.Tools.ORM.Shell
 		#endregion // Xsl transforms
 		#region Synchronized code to load transform into static variable
 		private static object myLockObject;
-		private static XsltCommand myTrimMdfOrmTransform;
+		private static XslCompiledTransform myTrimMdfOrmTransform;
 		private static object LockObject
 		{
 			get
@@ -80,7 +79,7 @@ namespace Northface.Tools.ORM.Shell
 				return myLockObject;
 			}
 		}
-		private static XsltCommand EnsureTransform(ref XsltCommand transform, string xsl)
+		private static XslCompiledTransform EnsureTransform(ref XslCompiledTransform transform, string xsl)
 		{
 			if (transform == null)
 			{
@@ -88,16 +87,16 @@ namespace Northface.Tools.ORM.Shell
 				{
 					if (transform == null)
 					{
-						XsltCommand newTrans = new XsltCommand();
-						newTrans = new XsltCommand();
-						newTrans.Compile(new XmlTextReader(new StringReader(xsl)));
+						XslCompiledTransform newTrans = new XslCompiledTransform();
+						newTrans = new XslCompiledTransform();
+						newTrans.Load(new XmlTextReader(new StringReader(xsl)));
 						transform = newTrans;
 					}
 				}
 			}
 			return transform;
 		}
-		private XsltCommand TrimMdfOrmTransform
+		private static XslCompiledTransform TrimMdfOrmTransform
 		{
 			get
 			{
@@ -127,7 +126,7 @@ namespace Northface.Tools.ORM.Shell
 		/// a diagram to keep the object and shape portions
 		/// of the model separate.
 		/// </summary>
-		private bool mySeenDiagram = false;
+		private bool mySeenDiagram;
 
 		/// <summary>
 		/// Current store object. Set in constructor
@@ -189,11 +188,11 @@ namespace Northface.Tools.ORM.Shell
 			{
 				MemoryStream tempStream = new MemoryStream();
 				// Write out the MDF format to a temporary string stream
-				XmlSerialization.SerializeStore(myStore, RootElements, tempStream, false, false, MajorVersion, MinorVersion, new XmlSerialization.ShouldSerialize(ShouldSerialize));
+				XmlSerialization.SerializeStore(myStore, /*RootElements,*/ tempStream, false, false, MajorVersion, MinorVersion, new XmlSerialization.ShouldSerialize(ShouldSerialize));
 
 				// Strip unwanted elements that won't reload
 				tempStream.Position = 0;
-				XsltCommand transform = TrimMdfOrmTransform;
+				XslCompiledTransform transform = TrimMdfOrmTransform;
 
 				Stream rawStream = stream;
 				if (onDiskFormat)
@@ -201,7 +200,7 @@ namespace Northface.Tools.ORM.Shell
 					rawStream = new MemoryStream();
 				}
 				XmlTextWriter xmlTextWriter = new XmlTextWriter(rawStream, Encoding.UTF8);
-				transform.Execute(new XPathDocument(new XmlTextReader(new StreamReader(tempStream)), XmlSpace.None), null, null, xmlTextWriter);
+				transform.Transform(new XPathDocument(new XmlTextReader(new StreamReader(tempStream)), XmlSpace.None), null, xmlTextWriter);
 				if (onDiskFormat)
 				{
 					rawStream.Position = 0;
@@ -275,7 +274,7 @@ namespace Northface.Tools.ORM.Shell
 					});
 			}
 		}
-		private ModelElement[] GenerateElementArray(IList[] elementLists)
+		private static ModelElement[] GenerateElementArray(IList[] elementLists)
 		{
 			int listCount = elementLists.Length;
 			int elementCount = 0;

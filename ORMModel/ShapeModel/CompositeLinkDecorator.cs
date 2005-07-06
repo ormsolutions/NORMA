@@ -13,7 +13,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// </summary>
 	public abstract class CompositeLinkDecorator : LinkDecorator
 	{
-		private IList<LinkDecorator> myDecorators = null;
+		private IList<LinkDecorator> myDecorators;
 		/// <summary>
 		/// Create a new CompositeLinkDecorator.
 		/// </summary>

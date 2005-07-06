@@ -349,12 +349,18 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="disposing"></param>
 		protected override void Dispose(bool disposing)
 		{
-			if (myTaskProvider != null)
+			try
 			{
-				myTaskProvider.RemoveAllTasks();
-				myTaskProvider = null;
+				if (myTaskProvider != null)
+				{
+					myTaskProvider.RemoveAllTasks();
+					myTaskProvider = null;
+				}
 			}
-			base.Dispose(disposing);
+			finally
+			{
+				base.Dispose(disposing);
+			}
 		}
 		/// <summary>
 		/// Support the default/only (GUID_NULL) view
@@ -470,9 +476,9 @@ namespace Northface.Tools.ORM.Shell
 #endif // NEWSERIALIZE
 			result = this;
 		}
-		void IExtensibleObject.GetAutomationObject(string name, IExtensibleObjectSite pParent, out object ppDisp)
+		void IExtensibleObject.GetAutomationObject(string Name, IExtensibleObjectSite pParent, out object ppDisp)
 		{
-			GetAutomationObject(name, pParent, out ppDisp);
+			GetAutomationObject(Name, pParent, out ppDisp);
 		}
 		#endregion // Automation support
 	}

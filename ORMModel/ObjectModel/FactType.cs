@@ -330,6 +330,10 @@ namespace Northface.Tools.ORM.ObjectModel
 					}
 				}
 			}
+			IEnumerator IEnumerable.GetEnumerator()
+			{
+				return (this as IEnumerable<IFactConstraint>).GetEnumerator();
+			}
 			#endregion // IEnumerable<IFactConstraint> Implementation
 		}
 		#endregion // FactConstraintCollection implementation
@@ -429,7 +433,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="parentMetaRoleGuid">Guid</param>
 		/// <param name="childMetaRoleGuid">Guid</param>
-		protected void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
 		{
 			parentMetaRoleGuid = ModelHasFactType.ModelMetaRoleGuid;
 			childMetaRoleGuid = ModelHasFactType.FactTypeCollectionMetaRoleGuid;

@@ -51,14 +51,14 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// Create a view on an ORMDesignerDocData
 		/// </summary>
-		/// <param name="data">The document, created by CreateDocData</param>
+		/// <param name="docData">The document, created by CreateDocData</param>
 		/// <param name="physicalView">The name of the view to created</param>
 		/// <param name="editorCaption">The editor caption</param>
 		/// <returns>ORMDesignerDocView</returns>
-		protected override DocView CreateDocView(DocData data, string physicalView, out string editorCaption)
+		protected override DocView CreateDocView(DocData docData, string physicalView, out string editorCaption)
 		{
 			editorCaption = "";
-			return new ORMDesignerDocView(data, this.ServiceProvider);
+			return new ORMDesignerDocView(docData, this.ServiceProvider);
 		}
 		/// <summary>
 		/// Retrieve toolbox items. Called during devenv /setup or
@@ -122,7 +122,7 @@ namespace Northface.Tools.ORM.Shell
 		/// to an index in the items array</param>
 		/// <param name="itemId">The name of the item to modify</param>
 		/// <param name="attribute">The filter attribute to add</param>
-		private void AddFilterAttribute(ModelingToolboxItem[] items, Dictionary<string, int> itemIndexDictionary, string itemId, ToolboxItemFilterAttribute attribute)
+		private static void AddFilterAttribute(ModelingToolboxItem[] items, Dictionary<string, int> itemIndexDictionary, string itemId, ToolboxItemFilterAttribute attribute)
 		{
 			int itemIndex;
 			if (itemIndexDictionary.TryGetValue(itemId, out itemIndex))
@@ -141,6 +141,7 @@ namespace Northface.Tools.ORM.Shell
 					itemBase.TabNameId,
 					itemBase.TabName,
 					itemBase.ContextSensitiveHelpKeyword,
+					itemBase.Description,
 					itemBase.Prototype,
 					newFilters);
 			}

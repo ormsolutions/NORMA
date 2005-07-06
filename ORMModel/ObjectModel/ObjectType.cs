@@ -319,7 +319,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			readingOrder2.FactType = refFact;
 		}
 
-		private ObjectType FindValueType(string name, ORMModel objModel)
+		private static ObjectType FindValueType(string name, ORMModel objModel)
 		{
 			return objModel.ObjectTypesDictionary.GetElement(name).FirstElement as ObjectType;
 		}
@@ -391,7 +391,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				return (preferredConstraint != null) ? IsValueTypeShared(preferredConstraint) : false;
 			}
 		}
-		private bool IsValueTypeShared(InternalUniquenessConstraint preferredConstraint)
+		private static bool IsValueTypeShared(InternalUniquenessConstraint preferredConstraint)
 		{
 			if (preferredConstraint != null)
 			{
@@ -774,7 +774,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="parentMetaRoleGuid">Guid</param>
 		/// <param name="childMetaRoleGuid">Guid</param>
-		protected void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
 		{
 			parentMetaRoleGuid = ModelHasObjectType.ModelMetaRoleGuid;
 			childMetaRoleGuid = ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid;

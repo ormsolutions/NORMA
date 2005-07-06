@@ -360,7 +360,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		private void RedrawOwningFactType(Role role)
+		private static void RedrawOwningFactType(Role role)
 		{
 			PresentationElementMoveableCollection pels = role.FactType.PresentationRolePlayers;
 			int pelsCount = pels.Count;

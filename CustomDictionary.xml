@@ -3,6 +3,9 @@
  <Words>
   <Unrecognized>
    <Word>cb</Word>
+   <Word>Multicolumn</Word>
+   <Word>Subfield</Word>
+   <Word>Endpoint</Word>
   </Unrecognized>
   <Recognized>
    <Word>contravariant</Word>
@@ -11,6 +14,7 @@
    <Word>Guids</Word>
    <Word>Colorizer</Word>
    <Word>Arity</Word>
+   <Word>Multi</Word>
   </Recognized>
   <Deprecated/>
   <Inappropriate/>

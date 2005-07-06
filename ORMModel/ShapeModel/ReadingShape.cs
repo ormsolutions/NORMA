@@ -170,7 +170,7 @@ namespace Northface.Tools.ORM.ShapeModel
 
 		#endregion
 
-		private string myDisplayText = null;
+		private string myDisplayText;
 
 		#region overrides
 		/// <summary>

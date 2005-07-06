@@ -1,0 +1,2 @@
+﻿<#@ include file="DomainModel\DomainModel.dsldm.dsldmi" #>
+<#@ model processor="DMDirectiveProcessor" requires="fileName='ORMCore.dsldm'" #>

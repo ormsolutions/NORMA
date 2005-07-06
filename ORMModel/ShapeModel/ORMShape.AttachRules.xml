@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<arg:Rules xmlns:arg="http://Schemas.Northface.edu/Private/AttachRulesGenerator">
+	<arg:Model class="ORMShapeModel">
+		<arg:Rule class="ExternalConstraintShape.ShapeChangeRule"/>
+		<arg:Rule class="FactTypeShape.ConstraintDisplayPositionChangeRule"/>
+		<arg:Rule class="FactTypeShape.ExternalConstraintShapeChangeRule"/>
+		<arg:Rule class="FactTypeShape.SwitchFromNestedFact"/>
+		<arg:Rule class="FactTypeShape.SwitchToNestedFact"/>
+		<arg:Rule class="FrequencyConstraintShape.FrequencyConstraintAttributeChangeRule"/>
+		<arg:Rule class="ObjectTypeShape.ShapeChangeRule"/>
+		<arg:Rule class="ORMDiagram.ConstraintRoleSequenceRoleAdded"/>
+		<arg:Rule class="ORMDiagram.ConstraintRoleSequenceRoleRemoved"/>
+		<arg:Rule class="ORMDiagram.ExternalFactConstraintAdded"/>
+		<arg:Rule class="ORMDiagram.ExternalFactConstraintRemoved"/>
+		<arg:Rule class="ORMDiagram.FactTypedAdded"/>
+		<arg:Rule class="ORMDiagram.FactTypeHasInternalConstraintAdded"/>
+		<arg:Rule class="ORMDiagram.FactTypeHasInternalConstraintRemoved"/>
+		<arg:Rule class="ORMDiagram.MultiColumnExternalConstraintAdded"/>
+		<arg:Rule class="ORMDiagram.ObjectTypedAdded"/>
+		<arg:Rule class="ORMDiagram.ObjectTypePlaysRoleRemoved"/>
+		<arg:Rule class="ORMDiagram.ObjectTypeShapeChangeRule"/>
+		<arg:Rule class="ORMDiagram.PresentationLinkRemoved"/>
+		<arg:Rule class="ORMDiagram.PrimaryIdentifierAdded"/>
+		<arg:Rule class="ORMDiagram.PrimaryIdentifierRemoved"/>
+		<arg:Rule class="ORMDiagram.RoleAdded"/>
+		<arg:Rule class="ORMDiagram.RolePlayerAdded"/>
+		<arg:Rule class="ORMDiagram.RoleRemoved"/>
+		<arg:Rule class="ORMDiagram.RoleValueRangeDefinitionAdded"/>
+		<arg:Rule class="ORMDiagram.RoleValueRangeDefinitionRemoved"/>
+		<arg:Rule class="ORMDiagram.SingleColumnExternalConstraintAdded"/>
+		<arg:Rule class="ORMDiagram.ValueTypeValueRangeDefinitionAdded"/>
+		<arg:Rule class="ORMDiagram.ValueTypeValueRangeDefinitionRemoved"/>
+		<arg:Rule class="ReadingShape.ReadingOrderAdded"/>
+		<arg:Rule class="ReadingShape.ReadingOrderReadingTextChanged"/>
+		<arg:Rule class="ReadingShape.ReadingOrderRemoved"/>
+		<arg:Rule class="ReadingShape.ReadingTextChanged"/>
+		<arg:Rule class="RolePlayerLink.InternalConstraintRoleSequenceAdded"/>
+		<arg:Rule class="RolePlayerLink.InternalConstraintRoleSequenceRoleRemoved"/>
+		<arg:Rule class="ValueRangeShape.ValueRangeChanged"/>
+		<arg:Rule class="ValueRangeShape.ValueRangeDefinitionAdded"/>
+		<arg:Rule class="ValueRangeShape.ValueTypeHasDataTypeAdded"/>
+	</arg:Model>
+</arg:Rules>

@@ -18,18 +18,14 @@ namespace Northface.Tools.ORM.FactEditor
 	public class FactColorizer : IVsColorizer
 	{
 		private FactParser myParser;
-		private IVsTextLines myTextLines;
-
 
 		/// <summary>
 		/// Create a new colorizer object
 		/// </summary>
 		/// <param name="parser">The parser that knows how to parse the lines</param>
-		/// <param name="textLines">The data source of lines to parse</param>
-		public FactColorizer(FactParser parser, IVsTextLines textLines)
+		public FactColorizer(FactParser parser)
 		{
 			myParser = parser;
-			myTextLines = textLines;
 		}
 
 		#region IVsColorizer Members
@@ -41,7 +37,7 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <summary>
 		/// Implements IVsColorizer.CloseColorizer
 		/// </summary>
-		protected void CloseColorizer()
+		protected static void CloseColorizer()
 		{
 
 		}
@@ -84,7 +80,7 @@ namespace Northface.Tools.ORM.FactEditor
 		{
 			if (null == pAttributes)
 			{
-				return NativeMethods.E_INVALIDARG;
+				return VSConstants.E_INVALIDARG;
 			}
 
 			// set all colors to default or shell crashes
@@ -96,15 +92,15 @@ namespace Northface.Tools.ORM.FactEditor
 
 			if (pszText == IntPtr.Zero)
 			{
-				return NativeMethods.S_OK;
+				return VSConstants.S_OK;
 			}
 			if (iLength <= 0)
 			{
-				return NativeMethods.S_OK;
+				return VSConstants.S_OK;
 			}
 			if (myParser == null)
 			{
-				return NativeMethods.S_OK;
+				return VSConstants.S_OK;
 			}
 			
 			// Create a string from the "const" IntPtr param
@@ -117,7 +113,7 @@ namespace Northface.Tools.ORM.FactEditor
 				pAttributes[a] = parsedFact.ColorAttributes[a];
 			}
 			pAttributes[iLength] = pAttributes[iLength - 1];
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		int IVsColorizer.GetStartState(out int piStartState)
@@ -129,10 +125,10 @@ namespace Northface.Tools.ORM.FactEditor
 		/// </summary>
 		/// <param name="piStartState"></param>
 		/// <returns></returns>
-		protected int GetStartState(out int piStartState)
+		protected static int GetStartState(out int piStartState)
 		{
 			piStartState = 0;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		int IVsColorizer.GetStateAtEndOfLine(int iLine, int iLength, IntPtr pText, int iState)
@@ -147,7 +143,7 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <param name="pText"></param>
 		/// <param name="iState"></param>
 		/// <returns></returns>
-		protected int GetStateAtEndOfLine(int iLine, int iLength, IntPtr pText, int iState)
+		protected static int GetStateAtEndOfLine(int iLine, int iLength, IntPtr pText, int iState)
 		{
 			return 0;
 		}
@@ -161,10 +157,10 @@ namespace Northface.Tools.ORM.FactEditor
 		/// </summary>
 		/// <param name="pfFlag"></param>
 		/// <returns></returns>
-		protected int GetStateMaintenanceFlag(out int pfFlag)
+		protected static int GetStateMaintenanceFlag(out int pfFlag)
 		{
 			pfFlag = 0;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		#endregion

@@ -157,7 +157,7 @@ namespace Northface.Tools.ORM.Shell
 			/// <summary>
 			/// Cleanup code 
 			/// </summary>
-			public virtual void Dispose()
+			public void Dispose()
 			{
 				if (myCommands != null)
 				{

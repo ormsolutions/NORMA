@@ -210,10 +210,6 @@
     <value xml:space="preserve">The IsPrimary property cannot be set to false, set it to true for the new primary reading and this will occur automatically</value>
     <comment xml:space="preserve">Exception message output when an attempt is made to set the IsPrimary property of a Reading to false.</comment>
   </data>
-  <data name="ModelException.Reading.Text.InvalidText">
-    <value xml:space="preserve">The new value is not valid for the current state of the reading.</value>
-    <comment xml:space="preserve">Exception message when a change is made to the reading text and the new value is deemed invalid by IsValidReadingText.</comment>
-  </data>
   <data name="ModelException.ReferenceMode.AmbiguousName">
     <value xml:space="preserve">Multiple reference modes found with the same name. Use the reference mode picker instead of setting the name directly.</value>
     <comment xml:space="preserve">Exception message output when multiple reference modes are found with the same name</comment>

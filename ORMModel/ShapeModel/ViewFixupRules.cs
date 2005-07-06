@@ -522,9 +522,9 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayValueRangeDefinitionFixupListener class
-		#region RoleHasValueRangeDefinitionRemoved class
+		#region RoleValueRangeDefinitionRemoved class
 		[RuleOn(typeof(RoleHasValueRangeDefinition), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class RoleHasValueRangeDefinitionRemoved : RemoveRule
+		private class RoleValueRangeDefinitionRemoved : RemoveRule
 		{
 			/// <summary>
 			/// Remove presentation elements when the associated ValueRange link is removed
@@ -539,7 +539,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // RoleHasValueRangeDefinitionRemoved class
+		#endregion // RoleValueRangeDefinitionRemoved class
 		/// <summary>
 		/// Helper function to display role player links.
 		/// </summary>
@@ -606,9 +606,9 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayValueTypeValueRangeDefinitionFixupListener class
-		#region ValueTypeHasValueRangeDefinitionRemoved class
+		#region ValueTypeValueRangeDefinitionRemoved class
 		[RuleOn(typeof(ValueTypeHasValueRangeDefinition), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class ValueTypeHasValueRangeDefinitionRemoved : RemoveRule
+		private class ValueTypeValueRangeDefinitionRemoved : RemoveRule
 		{
 			/// <summary>
 			/// Remove presentation elements when the associated ValueRange link is removed
@@ -623,7 +623,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // ValueTypeHasValueRangeDefinitionRemoved class
+		#endregion // ValueTypeValueRangeDefinitionRemoved class
 		/// <summary>
 		/// Helper function to display value type value ranges.
 		/// </summary>

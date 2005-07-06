@@ -108,7 +108,6 @@ namespace Northface.Tools.ORM.FactEditor
 	public partial class FactLanguageService : IVsLanguageInfo
 	{
 		private ORMDesignerPackage myPackage;
-		private System.IServiceProvider vsIServiceProvider;
 		private FactParser myParser;
 
 		/// <summary>
@@ -118,7 +117,6 @@ namespace Northface.Tools.ORM.FactEditor
 		public FactLanguageService(ORMDesignerPackage package)
 		{
 			myPackage = package;
-			vsIServiceProvider = package;
 		}
 
 		void InitFactParser()
@@ -144,7 +142,7 @@ namespace Northface.Tools.ORM.FactEditor
 		protected int GetCodeWindowManager(IVsCodeWindow pCodeWin, out IVsCodeWindowManager ppCodeWinMgr)
 		{
 			ppCodeWinMgr = new FactCodeWindowManager(myPackage, pCodeWin);
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		int IVsLanguageInfo.GetColorizer(IVsTextLines pBuffer, out IVsColorizer ppColorizer)
@@ -160,8 +158,8 @@ namespace Northface.Tools.ORM.FactEditor
 		protected int GetColorizer(IVsTextLines pBuffer, out IVsColorizer ppColorizer)
 		{
 			InitFactParser();
-			ppColorizer = new FactColorizer(myParser, pBuffer);
-			return NativeMethods.S_OK;
+			ppColorizer = new FactColorizer(myParser);
+			return VSConstants.S_OK;
 		}
 
 		int IVsLanguageInfo.GetFileExtensions(out string pbstrExtensions)
@@ -173,11 +171,11 @@ namespace Northface.Tools.ORM.FactEditor
 		/// </summary>
 		/// <param name="pbstrExtensions"></param>
 		/// <returns></returns>
-		protected int GetFileExtensions(out string pbstrExtensions)
+		protected static int GetFileExtensions(out string pbstrExtensions)
 		{
 			// TODO: change hard-coded file extension
 			pbstrExtensions = ".fct";
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		int IVsLanguageInfo.GetLanguageName(out string bstrName)
@@ -189,11 +187,11 @@ namespace Northface.Tools.ORM.FactEditor
 		/// </summary>
 		/// <param name="bstrName"></param>
 		/// <returns></returns>
-		protected int GetLanguageName(out string bstrName)
+		protected static int GetLanguageName(out string bstrName)
 		{
 			// TODO: get a localized string for the language name
 			bstrName = "ORM Fact Editor";
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 
 		#endregion

@@ -71,16 +71,16 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		}
 		#endregion // Static Methods
 		#region Member Variables
-		private FactType myFact = null;
-		private List<ReadingEntry> myReadingList = null;
-		private ReadingBranch myBranch = null;
+		private FactType myFact;
+		private List<ReadingEntry> myReadingList;
+		private ReadingBranch myBranch;
 		//the role order of the tree item that is selected, will be null if
 		//leading role sub group is selected or the "All" node is selected.
-		private Role[] mySelectedRoleOrder = null;
+		private Role[] mySelectedRoleOrder;
 		//the leading role when a leading role sub group is selected,
 		//will be null if a specific reading order or the "All"
 		//node are currently selected
-		private Role mySelectedLeadRole = null;
+		private Role mySelectedLeadRole;
 		#endregion // Member Variables
 		#region construction
 		/// <summary>
@@ -193,7 +193,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			return retval;
 		}
 
-		private TreeNode[] CreateAutoFilledRootNodes()
+		private static TreeNode[] CreateAutoFilledRootNodes()
 		{
 			TreeNode[] retval = new TreeNode[1];
 			retval[0] = new TreeNode(ResourceStrings.ModelReadingEditorAllReadingsNodeName);
@@ -260,7 +260,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			}
 			myReadingList = readingList;
 
-			ReadingBranch branch = new ReadingBranch(myReadingList, mySelectedRoleOrder, myFact, this);
+			ReadingBranch branch = new ReadingBranch(myReadingList, mySelectedRoleOrder, myFact);
 			myBranch = branch;
 			ReadingVirtualTree tree = new ReadingVirtualTree(branch);
 			this.vtrReadings.MultiColumnTree = tree;
@@ -990,11 +990,11 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 
 			private String GenerateDisplayText()
 			{
-				String retval = regCountPlaces.Replace(myReading.Text, new MatchEvaluator(ReplacePlaceHolders));
+				String retval = regCountPlaces.Replace(myReading.Text, new MatchEvaluator(ReplacePlaceholders));
 				return retval;
 			}
 
-			private string ReplacePlaceHolders(Match m)
+			private string ReplacePlaceholders(Match m)
 			{
 				string retval = null;
 				RoleMoveableCollection roles = myReading.ReadingOrder.RoleCollection;
@@ -1057,7 +1057,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		#region nested class NewReadingEntry
 		private class NewReadingEntry : ReadingEntry
 		{
-			private static NewReadingEntry mySingleton = null;
+			private static NewReadingEntry mySingleton;
 
 			private NewReadingEntry()
 			{
@@ -1094,11 +1094,10 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			BranchModificationEventHandler myModificationEvents;
 			Role[] myRoleOrder;
 			FactType myFact;
-			ReadingEditor myParent;
 			int myInsertedRow = -1;
 
 			#region Construction
-			public ReadingBranch(List<ReadingEntry> readingList, Role[] roleOrder, FactType fact, ReadingEditor parent)
+			public ReadingBranch(List<ReadingEntry> readingList, Role[] roleOrder, FactType fact)
 			{
 				Debug.Assert(readingList != null);
 				Debug.Assert(fact != null);
@@ -1106,7 +1105,6 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				myRoleOrder = roleOrder;
 				myReadingList = readingList;
 				myFact = fact;
-				myParent = parent;
 			}
 			#endregion
 
@@ -1198,7 +1196,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				return LabelEditResult.AcceptEdit;
 			}
 
-			BranchFeatures Features
+			static BranchFeatures Features
 			{
 				get
 				{
@@ -1206,7 +1204,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				}
 			}
 
-			VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
+			static VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
 			{
 				return VirtualTreeAccessibilityData.Empty;
 			}
@@ -1247,7 +1245,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				return retval;
 			}
 
-			string GetTipText(int row, int column, ToolTipType tipType)
+			static string GetTipText(int row, int column, ToolTipType tipType)
 			{
 				if (column == (int) ColumnIndex.IsPrimary)
 				{
@@ -1256,7 +1254,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				return null;
 			}
 
-			bool IsExpandable(int row, int column)
+			static bool IsExpandable(int row, int column)
 			{
 				return false;
 			}
@@ -1310,19 +1308,19 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				}
 			}
 
-			void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+			static void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
 			{
 			}
 
-			void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
+			static void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
 			{
 			}
 
-			void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
+			static void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
 			{
 			}
 
-			VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
+			static VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
 			{
 				return VirtualTreeStartDragData.Empty;
 			}
@@ -1346,7 +1344,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				return retval;
 			}
 
-			int UpdateCounter
+			static int UpdateCounter
 			{
 				get
 				{
@@ -1454,7 +1452,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			#endregion
 
 			#region IMultiColumnBranch Member Mirror/Implementation
-			int ColumnCount
+			static int ColumnCount
 			{
 				get
 				{
@@ -1462,7 +1460,7 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				}
 			}
 
-			SubItemCellStyles ColumnStyles(int column)
+			static SubItemCellStyles ColumnStyles(int column)
 			{
 				return SubItemCellStyles.Simple;
 			}

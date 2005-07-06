@@ -1,13 +1,13 @@
 ﻿#region Using directives
-
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.TextManager.Interop;
-
 #endregion
 
 namespace Northface.Tools.ORM.FactEditor
@@ -92,9 +92,8 @@ namespace Northface.Tools.ORM.FactEditor
 	/// </summary>
 	public class FactParser : IFactParser
 	{
-		private static Regex ReferenceModeRegEx = new Regex(@"\((?<refmode>[^\(\)]+)\)", RegexOptions.Singleline | RegexOptions.Compiled);
-		private string myObjectWithBracketsPattern = @"\[(?<objectName>\w+(\s+\w+)*)(?<refModeWithParens>(\((?<refMode>.*?)?\))?)?\]";
-		private string myObjectSansBracketsPattern = @"(?<objectName>[A-Z]\w*)(?<refModeWithParens>(\((?<refMode>.*?)?\))?)?";
+		private const string myObjectWithBracketsPattern = @"\[(?<objectName>\w+(\s+\w+)*)(?<refModeWithParens>(\((?<refMode>.*?)?\))?)?\]";
+		private const string myObjectSansBracketsPattern = @"(?<objectName>[A-Z]\w*)(?<refModeWithParens>(\((?<refMode>.*?)?\))?)?";
 
 		/// <summary>
 		/// Default constructor
@@ -113,7 +112,7 @@ namespace Northface.Tools.ORM.FactEditor
 		/// </summary>
 		/// <param name="factText">The source of the line text to examine</param>
 		/// <returns>ParsedFact</returns>
-		protected ParsedFact ParseLine(string factText)
+		protected static ParsedFact ParseLine(string factText)
 		{
 			return ParseFactFromLine(factText);
 		}
@@ -122,7 +121,7 @@ namespace Northface.Tools.ORM.FactEditor
 		/// Parse the fact into a collection of objects with quantifiers
 		/// </summary>
 		/// <returns>A ParsedFact</returns>
-		private ParsedFact ParseFactFromLine(string factText)
+		private static ParsedFact ParseFactFromLine(string factText)
 		{
 			ParsedFact parsedFact = new ParsedFact(factText);
 			// Setup the default colorization to predicate text
@@ -623,7 +622,7 @@ namespace Northface.Tools.ORM.FactEditor
 		/// Implements ICollection.IsReadOnly
 		/// </summary>
 		/// <value></value>
-		protected bool IsReadOnly
+		protected static bool IsReadOnly
 		{
 			get { return false; }
 		}
@@ -651,7 +650,10 @@ namespace Northface.Tools.ORM.FactEditor
 		{
 			return GetEnumerator();
 		}
-
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
 		/// <summary>
 		/// Implements IEnumerable.GetEnumerator()
 		/// </summary>

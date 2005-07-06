@@ -552,17 +552,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			return this.Name.CompareTo(other.Name);
 		}
-
-		/// <summary>
-		/// Reteurns true if the two elements are the same element
-		/// </summary>
-		/// <param name="other"></param>
-		/// <returns></returns>
-		public bool Equals(ReferenceMode other)
-		{
-			return this == other;
-		}
-
 		#endregion
 		#region ReferenceModeChangeRule class
 		/// <summary>
@@ -730,15 +719,9 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion // CustomReferenceModeChangeRule class
 
 		#region IComparable<CustomReferenceMode> Members
-
 		int IComparable<CustomReferenceMode>.CompareTo(CustomReferenceMode other)
 		{
 			return base.CompareTo(other);
-		}
-
-		bool IComparable<CustomReferenceMode>.Equals(CustomReferenceMode other)
-		{
-			return base.Equals(other);
 		}
 		#endregion
 	}
@@ -759,15 +742,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			return CompareTo(other);
 		}
-
-		/// <summary>
-		/// Typed Equals method. Implements IComparable&lt;IntrinsicReferenceMode&gt;.Equals.
-		/// </summary>
-		public bool Equals(IntrinsicReferenceMode other)
-		{
-			return base.Equals(other);
-		}
-
 		#endregion
 	}
 	#endregion // CustomReferenceMode class
@@ -833,7 +807,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// </summary>
 			/// <param name="newKind"></param>
 			/// <param name="model"></param>
-			private void EnsureUnique(ReferenceModeKind newKind,ORMModel model)
+			private static void EnsureUnique(ReferenceModeKind newKind, ORMModel model)
 			{
 				string newFormatString = newKind.FormatString;
 				foreach (ReferenceModeKind kind in model.ReferenceModeKindCollection)

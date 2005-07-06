@@ -6,7 +6,7 @@ Information Contained Herein is Proprietary and Confidential.
 ------------------------------------------------------------------------------</copyright>
   <extendsmetamodel model="2b131234-7959-458d-834f-2dc0769ce683" />
   <extendsmetamodel model="91d59b16-e488-4a28-8d51-59273ad5bf2e" />
-  <stringtable resxfile="ORMShape.dmd.resx" resourcesfile="Northface.Tools.ORM.ShapeModel.ORMShapeModel" usefullyqualifiedname="true" />
+  <stringtable resxfile="ORMShape.dsldm.resx" resourcesfile="Northface.Tools.ORM.ShapeModel.ORMShapeModel" usefullyqualifiedname="true" />
   <copyclosure name="ORMShapeModelCopyClosure" classmodifier="sealed" doccomment="Copy closure visitor filter" />
   <removeclosure name="ORMShapeModelRemoveClosure" classmodifier="sealed" doccomment="Remove closure visitor filter" />
   <metaclasses />

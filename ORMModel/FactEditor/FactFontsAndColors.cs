@@ -111,17 +111,17 @@ namespace Northface.Tools.ORM.FactEditor
 			{
 				piForeground[0] = (COLORINDEX)mySetting.ForegroundColor;
 				piBackground[0] = (COLORINDEX)mySetting.BackgroundColor;
-				return NativeMethods.S_OK;
+				return VSConstants.S_OK;
 			}
 			int IVsColorableItem.GetDefaultFontFlags(out uint pdwFontFlags)
 			{
 				pdwFontFlags = (mySetting.DefaultBold) ? (uint)FONTFLAGS.FF_BOLD : 0;
-				return NativeMethods.S_OK;
+				return VSConstants.S_OK;
 			}
 			int IVsColorableItem.GetDisplayName(out string pbstrName)
 			{
 				pbstrName = ResourceStrings.GetColorNameString(mySetting.LocalizedNameId);
-				return NativeMethods.S_OK;
+				return VSConstants.S_OK;
 			}
 			#endregion // IVsColorableItem Implementation
 		}
@@ -133,11 +133,11 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <param name="iIndex"></param>
 		/// <param name="ppItem"></param>
 		/// <returns></returns>
-		protected int GetColorableItem(int iIndex, out IVsColorableItem ppItem)
+		protected static int GetColorableItem(int iIndex, out IVsColorableItem ppItem)
 		{
 			Debug.Assert(iIndex > 0); // Appears to make all calls 1-based
 			ppItem = new ColorableItemImpl(myDefaultColorSettings[iIndex - 1]);
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsProvideColorableItems.GetColorableItem(int iIndex, out IVsColorableItem ppItem)
 		{
@@ -148,10 +148,10 @@ namespace Northface.Tools.ORM.FactEditor
 		/// </summary>
 		/// <param name="piCount"></param>
 		/// <returns></returns>
-		protected int GetItemCount(out int piCount)
+		protected static int GetItemCount(out int piCount)
 		{
 			piCount = myDefaultColorSettings.Length;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsProvideColorableItems.GetItemCount(out int piCount)
 		{

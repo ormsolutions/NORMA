@@ -57,7 +57,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.BeginLabelEdit
 		/// </summary>
-		protected VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
+		protected static VirtualTreeLabelEditData BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 		{
 			return VirtualTreeLabelEditData.Invalid;
 		}
@@ -68,7 +68,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.CommitLabelEdit
 		/// </summary>
-		protected LabelEditResult CommitLabelEdit(int row, int column, string newText)
+		protected static LabelEditResult CommitLabelEdit(int row, int column, string newText)
 		{
 			return LabelEditResult.CancelEdit;
 		}
@@ -79,7 +79,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.Features
 		/// </summary>
-		protected BranchFeatures Features
+		protected static BranchFeatures Features
 		{
 			get { return BranchFeatures.Expansions | BranchFeatures.Realigns; }
 		}
@@ -90,7 +90,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.GetAccssibilityData
 		/// </summary>
-		protected VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
+		protected static VirtualTreeAccessibilityData GetAccessibilityData(int row, int column)
 		{
 			return VirtualTreeAccessibilityData.Empty;
 		}
@@ -101,7 +101,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.GetDisplayData
 		/// </summary>
-		protected VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
+		protected static VirtualTreeDisplayData GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 		{
 			VirtualTreeDisplayData retVal = new VirtualTreeDisplayData();
 			retVal.BackColor = SystemColors.ControlLight;
@@ -150,7 +150,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.GetTipText
 		/// </summary>
-		protected string GetTipText(int row, int column, ToolTipType tipType)
+		protected static string GetTipText(int row, int column, ToolTipType tipType)
 		{
 			return null;
 		}
@@ -161,7 +161,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.IsExpandable
 		/// </summary>
-		protected bool IsExpandable(int row, int column)
+		protected static bool IsExpandable(int row, int column)
 		{
 			return true;
 		}
@@ -172,7 +172,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.LocateObject
 		/// </summary>
-		protected LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
+		protected static LocateObjectData LocateObject(object obj, ObjectStyle style, int locateOptions)
 		{
 			switch (style)
 			{
@@ -199,7 +199,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.OnDragEvent
 		/// </summary>
-		protected void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
+		protected static void OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
 		{
 		}
 		void IBranch.OnDragEvent(object sender, int row, int column, DragEventType eventType, DragEventArgs args)
@@ -209,7 +209,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.OnGiveFeedback
 		/// </summary>
-		protected void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
+		protected static void OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
 		{
 		}
 		void IBranch.OnGiveFeedback(GiveFeedbackEventArgs args, int row, int column)
@@ -219,7 +219,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.OnQueryContinueDrag
 		/// </summary>
-		protected void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
+		protected static void OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
 		{
 		}
 		void IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs args, int row, int column)
@@ -229,7 +229,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.OnStartDrag
 		/// </summary>
-		protected VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
+		protected static VirtualTreeStartDragData OnStartDrag(object sender, int row, int column, DragReason reason)
 		{
 			return VirtualTreeStartDragData.Empty;
 		}
@@ -240,7 +240,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.ToggleState
 		/// </summary>
-		protected StateRefreshChanges ToggleState(int row, int column)
+		protected static StateRefreshChanges ToggleState(int row, int column)
 		{
 			return StateRefreshChanges.None;
 		}
@@ -251,7 +251,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IBranch.UpdateCounter
 		/// </summary>
-		protected int UpdateCounter
+		protected static int UpdateCounter
 		{
 			get
 			{

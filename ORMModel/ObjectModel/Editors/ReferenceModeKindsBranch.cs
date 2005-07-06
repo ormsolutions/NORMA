@@ -75,15 +75,21 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 
 		/// <summary>
+		/// Replacement string to prettify the {0} numeric placeholder fields in a format string
+		/// </summary>
+		private static readonly string EntityTypeNameReplacement = string.Concat("{", ResourceStrings.ModelReferenceModeEditorEntityTypeName, "}");
+		/// <summary>
+		/// Replacement string to prettify the {1} numeric placeholder fields in a format string
+		/// </summary>
+		private static readonly string ReferenceModeNameReplacement = string.Concat("{", ResourceStrings.ModelReferenceModeEditorReferenceModeName, "}");
+		/// <summary>
 		/// Replaces the {0} and {1} with entityTypeName and referenceModeName
 		/// </summary>
 		/// <param name="uglyFormatString"></param>
 		/// <returns></returns>
-		private string PrettyFormatString(string uglyFormatString)
+		private static string PrettyFormatString(string uglyFormatString)
 		{
-			string entityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorEntityTypeName + "}";
-			string referenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorReferenceModeName + "}";
-			return uglyFormatString.Replace("{0}", entityTypeName).Replace("{1}", referenceModeName);
+			return uglyFormatString.Replace("{0}", EntityTypeNameReplacement).Replace("{1}", ReferenceModeNameReplacement);
 		}
 
 		/// <summary>
@@ -91,12 +97,9 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="prettyFormatString"></param>
 		/// <returns></returns>
-		private string UglyFormatString(string prettyFormatString)
+		private static string UglyFormatString(string prettyFormatString)
 		{
-			string entityTypeName = "{" + ResourceStrings.ModelReferenceModeEditorEntityTypeName + "}";
-			string referenceModeName = "{" + ResourceStrings.ModelReferenceModeEditorReferenceModeName + "}";
-
-			return prettyFormatString.Replace(entityTypeName, "{0}").Replace(referenceModeName, "{1}");
+			return prettyFormatString.Replace(EntityTypeNameReplacement, "{0}").Replace(ReferenceModeNameReplacement, "{1}");
 		}
 		#endregion //Methods
 
@@ -233,7 +236,7 @@ namespace Northface.Tools.ORM.ObjectModel
 					string changeFormatStringTransaction = ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction;
 					using (Transaction t = myStore.TransactionManager.BeginTransaction(changeFormatStringTransaction))
 					{
-						myReferenceModeKindsList[row].FormatString = this.UglyFormatString(newText);
+						myReferenceModeKindsList[row].FormatString = UglyFormatString(newText);
 						if (t.HasPendingChanges)
 						{
 							t.Commit();
@@ -308,8 +311,7 @@ namespace Northface.Tools.ORM.ObjectModel
 
 		LocateObjectData IBranch.LocateObject(object obj, ObjectStyle style, int locateOptions)
 		{
-			LocateObjectData empty;
-			return empty;
+			return default(LocateObjectData);
 		}
 
 		private BranchModificationEventHandler myModify;

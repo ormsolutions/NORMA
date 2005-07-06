@@ -5,7 +5,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Microsoft.VisualStudio.EnterpriseTools.Designer;
+//using Microsoft.VisualStudio.EnterpriseTools.Designer;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.EnterpriseTools.Validation.UI;
 using Microsoft.VisualStudio.Package;

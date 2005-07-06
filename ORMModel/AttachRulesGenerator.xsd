@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet type="text/xsl" href="ObjectModel/XSDtoHTML.xslt"?>
+<xs:schema
+	id="AttachRulesGenerator"
+	targetNamespace="http://Schemas.Northface.edu/Private/AttachRulesGenerator"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	xmlns="http://Schemas.Northface.edu/Private/AttachRulesGenerator"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+	<xs:element name="Rules" type="RulesType"/>
+	<xs:complexType name="RulesType">
+		<xs:annotation>
+			<xs:documentation>The root node. Contains Model nodes.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="Model" type="ModelType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ModelType">
+		<xs:annotation>
+			<xs:documentation>The meta model to generate rules for.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="Rule" type="RuleType"/>
+		</xs:sequence>
+		<xs:attribute name="class" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The simple name of the SubStore-derived class that contains the list of generated rules. This should be a simple name (no namespace)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="namespace" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>(optional) The namespace of the meta model. The default namespace is based on the location of the xml file in the project and can be modified with the 'Custom Tool Namespace' value in the property grid.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="RuleType">
+		<xs:attribute name="class" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The simple name of the class without a namespace to treat as a rule class. If the class name contains delimiters (. or +), then the delimited names are treated as nested classes.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="namespace" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>(optional) The namespace of the rule class. The default namespace is based on the location of the xml file in the project and can be modified with the 'Custom Tool Namespace' value in the property grid.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>
+

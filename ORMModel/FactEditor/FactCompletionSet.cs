@@ -85,12 +85,11 @@ namespace Northface.Tools.ORM.FactEditor
 		/// </summary>
 		/// <param name="completionStatusFlags"></param>
 		/// <returns></returns>
-		public int Reset(out int completionStatusFlags)
+		public static int Reset(out int completionStatusFlags)
 		{
 			completionStatusFlags = (int)UpdateCompletionFlags.UCS_NAMESCHANGED;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
-
 		#region IVsCompletionSet Members
 
 		void IVsCompletionSet.Dismiss()
@@ -100,7 +99,7 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <summary>
 		/// Implements IVsCompletionSet.Dismiss
 		/// </summary>
-		protected void Dismiss()
+		protected static void Dismiss()
 		{
 		}
 
@@ -116,12 +115,12 @@ namespace Northface.Tools.ORM.FactEditor
 		/// *pdwFlags is set to contain one of the GBM_* flags the default 
 		/// matching in the view uses case sensitive comparison.
 		/// </summary>
-		protected int GetBestMatch(string pszSoFar, int iLength, out int piIndex, out uint pdwFlags)
+		protected static int GetBestMatch(string pszSoFar, int iLength, out int piIndex, out uint pdwFlags)
 		{
 			Debug.Assert(false); // Only called if UpdateCompletionFlags.CSF_CUSTOMMATCHING is set
 			piIndex = 0;
 			pdwFlags = 0;
-			return NativeMethods.E_NOTIMPL;
+			return VSConstants.E_NOTIMPL;
 		}
 
 		int IVsCompletionSet.GetCount()
@@ -151,10 +150,10 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <returns></returns>
 		protected int GetDescriptionText(int iIndex, out string pbstrDescription)
 		{
-			int hr = NativeMethods.S_OK;
+			int hr = VSConstants.S_OK;
 			if (iIndex >= myObjectEntries.Count)
 			{
-				hr = NativeMethods.E_INVALIDARG;
+				hr = VSConstants.E_INVALIDARG;
 				pbstrDescription = "";
 			}
 			else
@@ -182,11 +181,11 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <returns></returns>
 		protected int GetDisplayText(int iIndex, out string ppszText, int[] piGlyph)
 		{
-			int hr = NativeMethods.S_OK;
+			int hr = VSConstants.S_OK;
 			ppszText = null;
 			if (iIndex >= myObjectEntries.Count || iIndex < 0)
 			{
-				hr = NativeMethods.E_INVALIDARG;
+				hr = VSConstants.E_INVALIDARG;
 				return hr;
 			}
 			else if (myObjectEntries[iIndex] != null)
@@ -234,7 +233,7 @@ namespace Northface.Tools.ORM.FactEditor
 		/// Flags indicating specific behaviors of this completion set (CSF_* in textmgr.idl)
 		/// </summary>
 		/// <returns></returns>
-		protected uint GetFlags()
+		protected static uint GetFlags()
 		{
 			return (uint)UpdateCompletionFlags.CSF_HAVEDESCRIPTIONS;
 		}
@@ -252,7 +251,7 @@ namespace Northface.Tools.ORM.FactEditor
 			{
 				phImages = IntPtr.Zero;
 			}
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsCompletionSet.GetImageList(out IntPtr phImages)
 		{
@@ -266,11 +265,11 @@ namespace Northface.Tools.ORM.FactEditor
 			Debug.Assert(false); // Only called if UpdateCompletionFlags.CSF_INITIALEXTENTKNOWN is set
 			piLine = piStartCol = piEndCol = 0;
 
-			int hr = NativeMethods.S_OK;
+			int hr = VSConstants.S_OK;
 
 			// get the current line where the cursor is
 			hr = myTextView.GetCaretPos(out piLine, out piStartCol);
-			if (NativeMethods.Succeeded(hr))
+			if (ErrorHandler.Succeeded(hr))
 			{
 				piEndCol = piStartCol;
 			}
@@ -284,11 +283,11 @@ namespace Northface.Tools.ORM.FactEditor
 		/// <summary>
 		/// Implements IVsCompletionSet.OnCommit
 		/// </summary>
-		protected int OnCommit(string pszSoFar, int iIndex, int fSelected, ushort cCommit, out string pbstrCompleteWord)
+		protected static int OnCommit(string pszSoFar, int iIndex, int fSelected, ushort cCommit, out string pbstrCompleteWord)
 		{
 			Debug.Assert(false); // Only called if UpdateCompletionFlags.CSF_CUSTOMCOMMIT is set
 			pbstrCompleteWord = pszSoFar;
-			return NativeMethods.S_OK;
+			return VSConstants.S_OK;
 		}
 		int IVsCompletionSet.OnCommit(string pszSoFar, int iIndex, int fSelected, ushort cCommit, out string pbstrCompleteWord)
 		{
@@ -446,7 +445,7 @@ namespace Northface.Tools.ORM.FactEditor
 		void SelectionChangedEvent(object sender, MonitorSelectionEventArgs e)
 		{
 			IVsTextLines textLines = null;
-			NativeMethods.ThrowOnFailure(myTextView.GetBuffer(out textLines));
+			ErrorHandler.ThrowOnFailure(myTextView.GetBuffer(out textLines));
 
 			ORMDesignerDocView theView = e.NewValue as ORMDesignerDocView;
 			if (theView != null)
@@ -462,14 +461,14 @@ namespace Northface.Tools.ORM.FactEditor
 				if (myReadingOrder != null)
 				{
 					myReading = myReadingOrder.PrimaryReading;
-					fullReading = regCountPlaces.Replace(myReading.Text, new MatchEvaluator(ReplacePlaceHolders));
+					fullReading = regCountPlaces.Replace(myReading.Text, new MatchEvaluator(ReplacePlaceholders));
 				}
 			}
 
 			IntPtr initialText = Marshal.StringToBSTR(fullReading);
 			int lineLength;
-			NativeMethods.ThrowOnFailure(textLines.GetLengthOfLine(0, out lineLength));
-			NativeMethods.ThrowOnFailure(textLines.ReplaceLines(0, 0, 0, lineLength, initialText, fullReading.Length, null));
+			ErrorHandler.ThrowOnFailure(textLines.GetLengthOfLine(0, out lineLength));
+			ErrorHandler.ThrowOnFailure(textLines.ReplaceLines(0, 0, 0, lineLength, initialText, fullReading.Length, null));
 		}
 		#endregion // Event Handlers
 
@@ -487,22 +486,10 @@ namespace Northface.Tools.ORM.FactEditor
 			}
 
 			#region IComparer<ObjectType> Members
-
 			int IComparer<ObjectType>.Compare(ObjectType x, ObjectType y)
 			{
 				return x.Name.CompareTo(y.Name);
 			}
-
-			bool IComparer<ObjectType>.Equals(ObjectType x, ObjectType y)
-			{
-				return object.ReferenceEquals(x, y);
-			}
-
-			int IComparer<ObjectType>.GetHashCode(ObjectType obj)
-			{
-				return obj.GetHashCode();
-			}
-
 			#endregion // IComparer<ObjectType> Members
 		}
 		#endregion // ObjectTypeNameComparer private class
@@ -559,7 +546,7 @@ namespace Northface.Tools.ORM.FactEditor
 
 			return retval;
 		}
-		private string ReplacePlaceHolders(Match m)
+		private string ReplacePlaceholders(Match m)
 		{
 			string retval = null;
 			RoleMoveableCollection roles = myReading.ReadingOrder.RoleCollection;
