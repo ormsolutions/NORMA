@@ -20,10 +20,10 @@
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
-   <Directory>$(ProjectDir)/../../../../../../Program Files/Microsoft Visual Studio 8/Common7/IDE/DSLTools/</Directory>
-   <Directory>$(ProjectDir)/../../../../../../Program Files/Microsoft Visual Studio 8/Common7/IDE/PrivateAssemblies/</Directory>
-   <Directory>$(ProjectDir)/../../../../../../Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
-   <Directory>$(ProjectDir)/../../../../../../Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
+   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/DSLTools/</Directory>
+   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PrivateAssemblies/</Directory>
+   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
+   <Directory>C:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
   </AssemblyReferenceDirectories>
   <Target Name="$(ProjectDir)/ORMModel/bin/Debug/Northface.Tools.ORM.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
