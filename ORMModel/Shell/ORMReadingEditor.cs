@@ -30,9 +30,9 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// Creates a new instance of the reading editor tool window.
 		/// </summary>
-		public ORMReadingEditorToolWindow(IServiceProvider serviceProvder) : base(serviceProvder)
+		public ORMReadingEditorToolWindow(IServiceProvider serviceProvider) : base(serviceProvider)
 		{
-			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvder.GetService(typeof(IMonitorSelectionService));
+			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
 			monitor.DocumentWindowChanged += new MonitorSelectionEventHandler(DocumentWindowChangedEvent);
 			monitor.SelectionChanged += new MonitorSelectionEventHandler(SelectionChangedEvent);
 			CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;

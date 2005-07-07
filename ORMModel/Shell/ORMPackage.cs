@@ -306,7 +306,7 @@ namespace Northface.Tools.ORM.Shell
 		{
 			get
 			{
-				return (ORMBrowserToolWindow)mySingleton.GetToolWindow(typeof(ORMBrowserToolWindow));
+				return (ORMBrowserToolWindow)mySingleton.GetToolWindow(typeof(ORMBrowserToolWindow), true);
 			}
 		}
 
@@ -317,7 +317,7 @@ namespace Northface.Tools.ORM.Shell
 		{
 			get
 			{
-				return (ORMReadingEditorToolWindow)mySingleton.GetToolWindow(typeof(ORMReadingEditorToolWindow));
+				return (ORMReadingEditorToolWindow)mySingleton.GetToolWindow(typeof(ORMReadingEditorToolWindow), true);
 			}
 		}
 		/// <summary>
@@ -327,7 +327,7 @@ namespace Northface.Tools.ORM.Shell
 		{
 			get
 			{
-				return (ORMReferenceModeEditorToolWindow)mySingleton.GetToolWindow(typeof(ORMReferenceModeEditorToolWindow));
+				return (ORMReferenceModeEditorToolWindow)mySingleton.GetToolWindow(typeof(ORMReferenceModeEditorToolWindow), true);
 			}
 		}
 

@@ -249,6 +249,17 @@ namespace Northface.Tools.ORM.ObjectModel
 			return ToggleState(row, column);
 		}
 		/// <summary>
+		/// Implements IBranch.SynchronizeState
+		/// </summary>
+		protected static StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+		{
+			return StateRefreshChanges.None;
+		}
+		StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+		{
+			return SynchronizeState(row, column, matchBranch, matchRow, matchColumn);
+		}
+		/// <summary>
 		/// Implements IBranch.UpdateCounter
 		/// </summary>
 		protected static int UpdateCounter

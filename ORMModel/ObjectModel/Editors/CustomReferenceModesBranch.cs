@@ -638,6 +638,10 @@ namespace Northface.Tools.ORM.ObjectModel
 		{
 			return StateRefreshChanges.None;
 		}
+		StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+		{
+			return StateRefreshChanges.None;
+		}
 		int IBranch.UpdateCounter
 		{
 			get { return 0; }

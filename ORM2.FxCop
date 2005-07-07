@@ -21,7 +21,6 @@
  <Targets>
   <AssemblyReferenceDirectories>
    <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/DSLTools/</Directory>
-   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PrivateAssemblies/</Directory>
    <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
    <Directory>C:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
   </AssemblyReferenceDirectories>
@@ -2357,6 +2356,16 @@
               <Issue>
                <Item>CustomReferenceModesBranch</Item>
                <Item>IBranch.OnStartDrag(Object, Int32, Int32, DragReason):VirtualTreeStartDragData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.SynchronizeState(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.IBranch,System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-07 00:40:55Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
               </Issue>
              </Message>
             </Messages>
@@ -5915,6 +5924,16 @@
               <Issue>
                <Item>IntrinsicReferenceModesBranch</Item>
                <Item>IBranch.OnStartDrag(Object, Int32, Int32, DragReason):VirtualTreeStartDragData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.SynchronizeState(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.IBranch,System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-07 00:40:55Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
               </Issue>
              </Message>
             </Messages>
@@ -11166,6 +11185,65 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="SynchronizeState(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.IBranch,System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
+            <Messages>
+             <Message Id="column" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-07 00:40:55Z" FixCategory="Breaking">
+              <Issue>
+               <Item>column</Item>
+               <Item>ReferenceModeHeaderBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="matchBranch" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-07 00:40:55Z" FixCategory="Breaking">
+              <Issue>
+               <Item>matchBranch</Item>
+               <Item>ReferenceModeHeaderBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="matchColumn" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-07 00:40:55Z" FixCategory="Breaking">
+              <Issue>
+               <Item>matchColumn</Item>
+               <Item>ReferenceModeHeaderBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="matchRow" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-07 00:40:55Z" FixCategory="Breaking">
+              <Issue>
+               <Item>matchRow</Item>
+               <Item>ReferenceModeHeaderBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="row" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-07 00:40:55Z" FixCategory="Breaking">
+              <Issue>
+               <Item>row</Item>
+               <Item>ReferenceModeHeaderBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="ToggleState(System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
             <Messages>
              <Message Id="column" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-04-15 15:56:51Z" FixCategory="Breaking">
@@ -11808,6 +11886,16 @@
               <Issue>
                <Item>ReferenceModeKindsBranch</Item>
                <Item>IBranch.OnStartDrag(Object, Int32, Int32, DragReason):VirtualTreeStartDragData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.SynchronizeState(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.IBranch,System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-07 00:40:55Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
               </Issue>
              </Message>
             </Messages>
@@ -15803,6 +15891,65 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="SynchronizeState(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.IBranch,System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
+            <Messages>
+             <Message Id="column" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-07 00:40:55Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>column</Item>
+               <Item>ReadingBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="matchBranch" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-07 00:40:55Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>matchBranch</Item>
+               <Item>ReadingBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="matchColumn" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-07 00:40:55Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>matchColumn</Item>
+               <Item>ReadingBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="matchRow" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-07 00:40:55Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>matchRow</Item>
+               <Item>ReadingBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="row" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-07 00:40:55Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>row</Item>
+               <Item>ReadingBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="ToggleState(System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
             <Messages>
              <Message Id="column" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-04-15 14:45:27Z" FixCategory="NonBreaking">
@@ -19498,21 +19645,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ORMReadingEditorToolWindow">
-          <Members>
-           <Member Name=".ctor(System.IServiceProvider)">
-            <Messages>
-             <Message Id="0#Provder" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMReadingEditorToolWindow.ORMReadingEditorToolWindow(IServiceProvider)</Item>
-               <Item>Provder</Item>
-               <Item>serviceProvder</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="ORMReferenceModeEditorToolWindow">
           <Members>
            <Member Name=".ctor(System.IServiceProvider)">
@@ -19580,6 +19712,7 @@
     <Note Id="2" Modified="2005-04-29 21:24:32Z">Internal rules instantiated via reflection</Note>
    </User>
    <User Name="mcurland">
+    <Note Id="0" Modified="2005-07-07 00:43:51Z">Reviewed unsed parameters</Note>
     <Note Id="1" Modified="2005-04-15 15:27:49Z">Defers to protected IFactConstraintRoleCollection to avoid conflict with RoleCollection name.</Note>
     <Note Id="2" Modified="2005-04-15 15:29:35Z">These interface members are always reimplemented directly by derived classes and have no implementation.</Note>
     <Note Id="3" Modified="2005-04-15 16:04:50Z">Defined in IMS-generated code</Note>
@@ -19769,8 +19902,6 @@
    <Rule TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814">
     <Resolution Name="Body">'{0}' uses a multidimensional array of '{1}'. Replace it with a jagged array if possible. (Jagged arrays are not CLS Compliant.)</Resolution>
     <Resolution Name="Return">'{0}' returns a multidimensional array of '{1}'. Replace it with a jagged array if possible. (Jagged arrays are not CLS Compliant.)</Resolution>
-    <Resolution Name="ReturnType">'{0}' returns a multidimensional array of '{1}'. Replace it with a jagged array if possible. (Jagged arrays are not CLS Compliant.)</Resolution>
-    <Resolution Name="Uses">'{0}' uses a multidimensional array of '{1}'. Replace it with a jagged array if possible. (Jagged arrays are not CLS Compliant.)</Resolution>
    </Rule>
    <Rule TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819">
     <Resolution Name="Default">Change {0} to return a collection or make it a method.</Resolution>

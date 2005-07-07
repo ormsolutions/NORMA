@@ -1343,7 +1343,10 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 				}
 				return retval;
 			}
-
+			static StateRefreshChanges SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+			{
+				return StateRefreshChanges.None;
+			}
 			static int UpdateCounter
 			{
 				get
@@ -1434,6 +1437,10 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			StateRefreshChanges IBranch.ToggleState(int row, int column)
 			{
 				return ToggleState(row, column);
+			}
+			StateRefreshChanges IBranch.SynchronizeState(int row, int column, IBranch matchBranch, int matchRow, int matchColumn)
+			{
+				return SynchronizeState(row, column, matchBranch, matchRow, matchColumn);
 			}
 			int IBranch.UpdateCounter
 			{

@@ -34,15 +34,15 @@
     <Reference Include="Accessibility" />
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.ArtifactMapper, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.ArtifactMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.ArtifactMapper.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -50,11 +50,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Shell, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Shell, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Shell.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Utilities, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Utilities, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Utilities.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -65,7 +65,7 @@
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.VirtualTreeGrid, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.VisualStudio.VirtualTreeGrid, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.VirtualTreeGrid.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -215,7 +215,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Shell\ORMReadingEditor.cs" />
+    <Compile Include="Shell\ORMReadingEditor.cs">
+    </Compile>
     <Compile Include="Shell\ORMSerializer.2.cs">
       <SubType>Code</SubType>
     </Compile>
