@@ -98,7 +98,7 @@
 	</xsl:template>
 	<!-- Objects with duplicates removed and a useCount attribute added. Objects are
 		represented as a RolePlayer element with id and useCount attributes. -->
-	<xsl:variable name="FunctionalRolePlayers">
+	<xsl:variable name="FunctionalRolePlayersFragment">
 		<!-- All objects (including duplicates) that are role players for roles in
 			a binary fact where the role is the only role player in an internal uniqueness
 			constraint. -->
@@ -153,6 +153,7 @@
 			</xsl:choose>
 		</xsl:for-each>
 	</xsl:variable>
+	<xsl:variable name="FunctionalRolePlayers" select="msxsl:node-set($FunctionalRolePlayersFragment)/child::*"/>
 	<!-- A set of FunctionalObject elements with a ref attribute (referencing the target object) and
 		    nested FunctionalRole elements, also with a ref attribute (referencing the attached role) -->
 	<xsl:variable name="FunctionalObjectsFragment">
@@ -216,7 +217,7 @@
 													<xsl:copy>
 														<xsl:copy-of select="@*"/>
 														<xsl:attribute name="useCount">
-															<xsl:value-of select="$FunctionalRolePlayers/child::*[@id=$rolePlayerId]/@useCount"/>
+															<xsl:value-of select="$FunctionalRolePlayers[@id=$rolePlayerId]/@useCount"/>
 														</xsl:attribute>
 														<xsl:value-of select="text()"/>
 														<xsl:copy-of select="child::*"/>
@@ -224,7 +225,7 @@
 												</xsl:if>
 											</xsl:for-each>
 										</xsl:variable>
-										<xsl:for-each select="$RolesWithPlayerCounts/child::*">
+										<xsl:for-each select="msxsl:node-set($RolesWithPlayerCounts)/child::*">
 											<xsl:sort select="@useCount" data-type="number" order="descending"/>
 											<xsl:if test="position()=1">
 												<!-- Note this also picks up the fallback case (5) (a tie on the most) -->
