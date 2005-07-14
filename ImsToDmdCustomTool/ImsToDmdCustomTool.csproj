@@ -9,7 +9,7 @@
     <RootNamespace>ImsToDmdCustomTool</RootNamespace>
     <AssemblyName>Northface.Tools.Converters</AssemblyName>
     <WarningLevel>4</WarningLevel>
-    <AssemblyOriginatorKeyFile>..\ORMPackage\ORMPackage.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <AssemblyOriginatorKeyMode>File</AssemblyOriginatorKeyMode>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
@@ -45,7 +45,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="..\ORMPackage\ORMPackage.snk">
+    <None Include="..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
     <None Include="Properties\Settings.settings">
@@ -59,4 +59,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <PropertyGroup Condition="">
+    <PostBuildEvent>"$(SolutionDir)install.bat" "$(SolutionDir)" "$(DevEnvDir)..\..\"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
