@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.Shell;
 namespace Northface.Tools.ORM.ShapeModel
@@ -82,7 +81,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// The link decorator used to draw the mandatory
 		/// constraint dot on a link.
 		/// </summary>
-		protected class MandatoryDotDecorator : LinkDecorator
+		protected class MandatoryDotDecorator : LinkDecorator, ILinkDecoratorSettings
 		{
 			/// <summary>
 			/// Singleton instance of this decorator
@@ -101,12 +100,46 @@ namespace Northface.Tools.ORM.ShapeModel
 			protected override GraphicsPath GetPath(RectangleD bounds)
 			{
 				GraphicsPath path = new GraphicsPath();
-				float inflateBy = -(float)(bounds.Width * .07);
-				RectangleF boundsF = RectangleD.ToRectangleF(bounds);
-				boundsF.Inflate(inflateBy, inflateBy);
-				path.AddArc(boundsF, 0, 360);
+				path.AddArc(RectangleD.ToRectangleF(bounds), 0, 360);
 				return path;
 			}
+
+			#region ILinkDecoratorSettings Implementation
+			/// <summary>
+			/// Implements ILinkDecoratorSettings.DecoratorSize.
+			/// </summary>
+			protected static SizeD DecoratorSize
+			{
+				get
+				{
+					return new SizeD(.075d, .075d);
+				}
+			}
+			SizeD ILinkDecoratorSettings.DecoratorSize
+			{
+				get
+				{
+					return DecoratorSize;
+				}
+			}
+			/// <summary>
+			/// Implements ILinkDecoratorSettings.OffsetBy
+			/// </summary>
+			protected static double OffsetBy
+			{
+				get
+				{
+					return .0375d;
+				}
+			}
+			double ILinkDecoratorSettings.OffsetBy
+			{
+				get
+				{
+					return OffsetBy;
+				}
+			}
+			#endregion // ILinkDecoratorSettings Implementation
 		}
 		#endregion // MandatoryDotDecorator class
 		#region Customize appearance
@@ -175,47 +208,20 @@ namespace Northface.Tools.ORM.ShapeModel
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
 			PenSettings penSettings = new PenSettings();
-			penSettings.Width = 1.4F / 72.0F; // 1.4 Point. 0 Means 1 pixel, but should only be used for non-printed items
+			penSettings.Width = 1.2F / 72.0F; // 1.2 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			penSettings.Alignment = PenAlignment.Center;
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, penSettings);
-		}
-		/// <summary>
-		/// Use a straight line routing style
-		/// Use a center to center routing style
-		/// </summary>
-		[CLSCompliant(false)]
-		protected override VGRoutingStyle DefaultRoutingStyle
-		{
-			get
-			{
-				return VGRoutingStyle.VGRouteCenterToCenter;
-			}
-		}
-		/// <summary>
-		/// Selecting role player links gets in the way of selecting roleboxes, etc.
-		/// It is best just to turn them off. This also eliminates a bunch of unnamed
-		/// roles from the property grid element picker.
-		/// </summary>
-		public override bool CanSelect
-		{
-			get
-			{
-				return false;
-			}
+			IORMFontAndColorService fontsAndColors = (Store as IORMToolServices).FontAndColorService;
+			Color constraintForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.Constraint);
+			penSettings = new PenSettings();
+			penSettings.Color = constraintForeColor;
+			classStyleSet.OverridePen(DiagramPens.ConnectionLineDecorator, penSettings);
+			BrushSettings brushSettings = new BrushSettings();
+			brushSettings.Color = constraintForeColor;
+			classStyleSet.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
 		}
 		#endregion // Customize appearance
 		#region RolePlayerLink specific
-		/// <summary>
-		/// Stop the user from manually routine link lines
-		/// </summary>
-		/// <value>false</value>
-		public override bool CanManuallyRoute
-		{
-			get
-			{
-				return false;
-			}
-		}
 		/// <summary>
 		/// Get the ObjectTypePlaysRole link associated with this link shape
 		/// </summary>
@@ -302,22 +308,5 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Shape display update rules
-		#region Luminosity Modification
-		/// <summary>
-		/// Redirect all luminosity modification to the ORMDiagram.ModifyLuminosity
-		/// algorithm
-		/// </summary>
-		/// <param name="currentLuminosity">The luminosity to modify</param>
-		/// <param name="view">The view containing this item</param>
-		/// <returns>Modified luminosity value</returns>
-		protected override int ModifyLuminosity(int currentLuminosity, DiagramClientView view)
-		{
-			if (view.HighlightedShapes.Contains(new DiagramItem(this)))
-			{
-				return ORMDiagram.ModifyLuminosity(currentLuminosity);
-			}
-			return currentLuminosity;
-		}
-		#endregion // Luminosity Modification
 	}
 }

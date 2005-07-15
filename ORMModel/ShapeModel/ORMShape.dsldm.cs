@@ -328,6 +328,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				typeof(Northface.Tools.ORM.ShapeModel.ReadingShapeElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ShapeModel.ValueRangeShape),
 				typeof(Northface.Tools.ORM.ShapeModel.ValueRangeShapeElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape),
 				typeof(Northface.Tools.ORM.ShapeModel.RolePlayerLink),
 				typeof(Northface.Tools.ORM.ShapeModel.RolePlayerLinkElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ShapeModel.SubtypeLink),
@@ -2206,12 +2207,86 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// 
 	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape")]
+	public abstract partial class ORMBaseBinaryLinkShape : Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape
+	{
+		#region ORMBaseBinaryLinkShape's Generated Shape Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "ceff4339-48d0-4ffe-b052-2f9da167b1db";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.MetaClassGuidString);
+		#region Boilerplate code for every Shape-derived class
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.StyleSet classStyleSet = null;
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection shapeFields = null;
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		protected override Microsoft.VisualStudio.Modeling.Diagrams.StyleSet ClassStyleSet
+		{
+			get
+			{
+				if (classStyleSet == null)
+				{
+					classStyleSet = CreateClassStyleSet();
+				}
+				return classStyleSet;
+			}
+		}
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection ShapeFields
+		{
+			get
+			{
+				if (shapeFields == null)
+				{
+					shapeFields = CreateShapeFields();
+				}
+				return shapeFields;
+			}
+		}
+		#endregion
+		#endregion
+
+	}
+	#region ORMBaseBinaryLinkShape's Generated Constructor Code
+	public abstract partial class ORMBaseBinaryLinkShape
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected ORMBaseBinaryLinkShape(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ShapeModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
 	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypePlaysRole))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.RolePlayerLink.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.RolePlayerLink")]
-	public  partial class RolePlayerLink : Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape
+	public  partial class RolePlayerLink : Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	{
 		#region RolePlayerLink's Generated Shape Code
 		/// <summary>
@@ -2353,7 +2428,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.SubtypeLink.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.SubtypeLink")]
-	public  partial class SubtypeLink : Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape
+	public  partial class SubtypeLink : Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	{
 		#region SubtypeLink's Generated Shape Code
 		/// <summary>
@@ -2495,7 +2570,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ExternalConstraintLink.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ExternalConstraintLink")]
-	public  partial class ExternalConstraintLink : Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape
+	public  partial class ExternalConstraintLink : Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	{
 		#region ExternalConstraintLink's Generated Shape Code
 		/// <summary>
@@ -2637,7 +2712,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ValueRangeLink.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ValueRangeLink")]
-	public  partial class ValueRangeLink : Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape
+	public  partial class ValueRangeLink : Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	{
 		#region ValueRangeLink's Generated Shape Code
 		/// <summary>

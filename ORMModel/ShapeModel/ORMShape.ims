@@ -89,25 +89,30 @@ Information Contained Herein is Proprietary and Confidential.
         </shape>
       </derivedshapes>
     </shape>
-    <shape namespace="Northface.Tools.ORM.ShapeModel" name="RolePlayerLink" identity="2b3f0aae-b1b1-4727-8862-5c34b494b499" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
-      <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ObjectTypePlaysRole)" />
+    <shape namespace="Northface.Tools.ORM.ShapeModel" name="ORMBaseBinaryLinkShape" identity="ceff4339-48d0-4ffe-b052-2f9da167b1db" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
       <metaattributes />
-      <derivedshapes />
-    </shape>
-    <shape namespace="Northface.Tools.ORM.ShapeModel" name="SubtypeLink" identity="87ddaeda-1fd8-4433-bb1e-7482c7f471a7" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
-      <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.SubtypeFact)" />
-      <metaattributes />
-      <derivedshapes />
-    </shape>
-    <shape namespace="Northface.Tools.ORM.ShapeModel" name="ExternalConstraintLink" identity="8815e6d8-238b-422c-a4b3-29fdc8de9ea5" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
-      <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint)" />
-      <metaattributes />
-      <derivedshapes />
-    </shape>
-    <shape namespace="Northface.Tools.ORM.ShapeModel" name="ValueRangeLink" identity="374e43c3-c294-49c4-8a61-3c3ca5fc86e8" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
-      <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition)" />
-      <metaattributes />
-      <derivedshapes />
+      <derivedshapes>
+        <shape namespace="Northface.Tools.ORM.ShapeModel" name="RolePlayerLink" identity="2b3f0aae-b1b1-4727-8862-5c34b494b499" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ObjectTypePlaysRole)" />
+          <metaattributes />
+          <derivedshapes />
+        </shape>
+        <shape namespace="Northface.Tools.ORM.ShapeModel" name="SubtypeLink" identity="87ddaeda-1fd8-4433-bb1e-7482c7f471a7" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.SubtypeFact)" />
+          <metaattributes />
+          <derivedshapes />
+        </shape>
+        <shape namespace="Northface.Tools.ORM.ShapeModel" name="ExternalConstraintLink" identity="8815e6d8-238b-422c-a4b3-29fdc8de9ea5" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint)" />
+          <metaattributes />
+          <derivedshapes />
+        </shape>
+        <shape namespace="Northface.Tools.ORM.ShapeModel" name="ValueRangeLink" identity="374e43c3-c294-49c4-8a61-3c3ca5fc86e8" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition)" />
+          <metaattributes />
+          <derivedshapes />
+        </shape>
+      </derivedshapes>
     </shape>
   </shapes>
   <diagrams>

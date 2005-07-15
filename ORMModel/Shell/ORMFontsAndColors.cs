@@ -164,7 +164,7 @@ namespace Northface.Tools.ORM.Shell
 			new DefaultColorSetting(
 			ConstraintColorName,
 			ResourceStrings.FontsAndColorsConstraintColorId,
-			(uint)ColorTranslator.ToWin32(Color.Violet),
+			(uint)ColorTranslator.ToWin32(Color.Purple),
 			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
 			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS,
 			false)

@@ -71,13 +71,16 @@ namespace Northface.Tools.ORM.FactEditor
 
 		private void LoadModelElements()
 		{
-			IList objectList = (myCurrentDocView.DocData as ModelingDocData).Store.ElementDirectory.GetElements(ObjectType.MetaClassGuid);
-			myObjectEntries = new List<ObjectType>();
-			foreach (ObjectType ot in objectList)
+			if (myCurrentDocView != null)
 			{
-				myObjectEntries.Add(ot);
+				IList objectList = (myCurrentDocView.DocData as ModelingDocData).Store.ElementDirectory.GetElements(ObjectType.MetaClassGuid);
+				myObjectEntries = new List<ObjectType>();
+				foreach (ObjectType ot in objectList)
+				{
+					myObjectEntries.Add(ot);
+				}
+				myObjectEntries.Sort(myComparer);
 			}
-			myObjectEntries.Sort(myComparer);
 		}
 
 		/// <summary>

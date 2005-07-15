@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.Shell;
 namespace Northface.Tools.ORM.ShapeModel
@@ -31,30 +30,6 @@ namespace Northface.Tools.ORM.ShapeModel
 			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ConnectionLine, settings);
 		}
 		/// <summary>
-		/// Use a straight line routing style
-		/// Use a center to center routing style
-		/// </summary>
-		[CLSCompliant(false)]
-		protected override VGRoutingStyle DefaultRoutingStyle
-		{
-			get
-			{
-				return VGRoutingStyle.VGRouteCenterToCenter;
-			}
-		}
-		/// <summary>
-		/// Selecting role player links gets in the way of selecting roleboxes, etc.
-		/// It is best just to turn them off. This also eliminates a bunch of unnamed
-		/// roles from the property grid element picker.
-		/// </summary>
-		public override bool CanSelect
-		{
-			get
-			{
-				return false;
-			}
-		}
-		/// <summary>
 		/// Draw the connection lines as sticky along with the constraint
 		/// and associated roles
 		/// </summary>
@@ -67,17 +42,6 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // Customize appearance
 		#region ValueRangeLink specific
-		/// <summary>
-		/// Stop the user from manually routine link lines
-		/// </summary>
-		/// <value>false</value>
-		public override bool CanManuallyRoute
-		{
-			get
-			{
-				return false;
-			}
-		}
 		/// <summary>
 		/// Get the ObjectTypePlaysRole link associated with this link shape
 		/// </summary>
@@ -110,22 +74,5 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ValueRangeLink specific
-		#region Luminosity Modification
-		/// <summary>
-		/// Redirect all luminosity modification to the ORMDiagram.ModifyLuminosity
-		/// algorithm
-		/// </summary>
-		/// <param name="currentLuminosity">The luminosity to modify</param>
-		/// <param name="view">The view containing this item</param>
-		/// <returns>Modified luminosity value</returns>
-		protected override int ModifyLuminosity(int currentLuminosity, DiagramClientView view)
-		{
-			if (view.HighlightedShapes.Contains(new DiagramItem(this)))
-			{
-				return ORMDiagram.ModifyLuminosity(currentLuminosity);
-			}
-			return currentLuminosity;
-		}
-		#endregion // Luminosity Modification
 	}
 }

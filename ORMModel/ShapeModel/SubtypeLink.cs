@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.Shell;
 namespace Northface.Tools.ORM.ShapeModel
@@ -20,7 +19,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return LinkDecorator.DecoratorEmptyArrow;
+				return LinkDecorator.DecoratorFilledArrow;
 			}
 			set
 			{
@@ -33,55 +32,40 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <param name="classStyleSet">The style set to modify</param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
+			Pen samplePen = classStyleSet.GetPen(DiagramPens.ShapeOutline);
+			Color lineColor = samplePen.Color;
 			PenSettings penSettings = new PenSettings();
-			penSettings.Width = 1.8F / 72.0F; // 1.8 Point. 0 Means 1 pixel, but should only be used for non-printed items
+			penSettings.Width = 1.8F / 72.0F; // 1.6 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			penSettings.Alignment = PenAlignment.Center;
+			penSettings.Color = lineColor;
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, penSettings);
+			penSettings = new PenSettings();
+			penSettings.Width = 1.4F / 72.0F; // Soften the arrow a bit
+			penSettings.Color = lineColor;
+			classStyleSet.OverridePen(DiagramPens.ConnectionLineDecorator, penSettings);
+			BrushSettings brushSettings = new BrushSettings();
+			brushSettings.Color = lineColor;
+			classStyleSet.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
 		}
 		/// <summary>
-		/// Use a straight line routing style
-		/// Use a center to center routing style
+		/// Subtype links need to be selectable to enable readings, etc
 		/// </summary>
-		[CLSCompliant(false)]
-		protected override VGRoutingStyle DefaultRoutingStyle
+		public override bool CanSelect
 		{
 			get
 			{
-				return VGRoutingStyle.VGRouteCenterToCenter;
+				return true;
 			}
 		}
 		/// <summary>
-		/// Stop the user from manually routing link lines
+		/// Get a geometry we can click on
 		/// </summary>
-		/// <value>false</value>
-		public override bool CanManuallyRoute
+		public override ShapeGeometry ShapeGeometry
 		{
 			get
 			{
-				return false;
+				return ObliqueBinaryLinkShapeGeometry.ShapeGeometry;
 			}
-		}
-		/// <summary>
-		/// Display the name of the underlying element as the
-		/// component name in the property grid.
-		/// </summary>
-		public override string GetComponentName()
-		{
-			ModelElement element = ModelElement;
-			return (element != null) ? element.GetComponentName() : base.GetComponentName();
-		}
-		/// <summary>
-		/// Display the class of the underlying element as the
-		/// component name in the property grid.
-		/// </summary>
-		public override string GetClassName()
-		{
-			if (Store.Disposed)
-			{
-				return GetType().Name;
-			}
-			ModelElement element = ModelElement;
-			return (element != null) ? element.GetClassName() : base.GetClassName();
 		}
 		#endregion // Customize appearance
 		#region SubtypeLink specific
@@ -119,23 +103,6 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // SubtypeLink specific
-		#region Luminosity Modification
-		/// <summary>
-		/// Redirect all luminosity modification to the ORMDiagram.ModifyLuminosity
-		/// algorithm
-		/// </summary>
-		/// <param name="currentLuminosity">The luminosity to modify</param>
-		/// <param name="view">The view containing this item</param>
-		/// <returns>Modified luminosity value</returns>
-		protected override int ModifyLuminosity(int currentLuminosity, DiagramClientView view)
-		{
-			if (view.HighlightedShapes.Contains(new DiagramItem(this)))
-			{
-				return ORMDiagram.ModifyLuminosity(currentLuminosity);
-			}
-			return currentLuminosity;
-		}
-		#endregion // Luminosity Modification
 	}
 	public partial class ORMDiagram
 	{
