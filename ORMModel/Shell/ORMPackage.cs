@@ -28,7 +28,7 @@ namespace Northface.Tools.ORM.Shell
 	[ProvideOptionPage(typeof(OptionsPage), "ORM Designer", "General", 105, 106, false)]
 	[ProvideToolboxItems(1, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
-	[InstalledProductRegistration(false, "#103", "#103", "1.0", IconResourceID=101)]
+	[InstalledProductRegistration(true, "#103", "#103", "1.0", IconResourceID=110)]
 	public sealed class ORMDesignerPackage : ModelingPackage, IVsInstalledProduct
 	{
 		#region Member variables
@@ -264,11 +264,12 @@ namespace Northface.Tools.ORM.Shell
 		}
 		#endregion FactEditorToolWindow Creation
 		#region IVsInstalledProduct Members
+
+		[Obsolete("Visual Studio 2005 no longer calls this method.", true)]
 		int IVsInstalledProduct.IdBmpSplash(out uint pIdBmp)
 		{
-			// UNDONE: implement splash screen here
-			pIdBmp = 111;
-			return VSConstants.S_OK;
+			pIdBmp = (uint)UIntPtr.Zero;
+			return VSConstants.E_NOTIMPL;
 		}
 
 		int IVsInstalledProduct.IdIcoLogoForAboutbox(out uint pIdIco)
@@ -292,8 +293,7 @@ namespace Northface.Tools.ORM.Shell
 
 		int IVsInstalledProduct.ProductID(out string pbstrPID)
 		{
-			// UNDONE: we need to sync the productID with the assembly
-			pbstrPID = "1.0";
+			pbstrPID = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			return VSConstants.S_OK;
 		}
 
