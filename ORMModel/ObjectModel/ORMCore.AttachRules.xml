@@ -57,9 +57,15 @@
 		<arg:Rule class="ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindRemovingRule"/>
 		<arg:Rule class="ReferenceModeKind.ReferenceModeKindChangeRule"/>
 		<arg:Rule class="Role.RoleChangeRule"/>
+		<arg:Rule class="Role.RolePlayerRequiredAddRule"/>
+		<arg:Rule class="Role.RolePlayerRequiredForNewRoleAddRule"/>
+		<arg:Rule class="Role.RolePlayerRequiredRemovedRule"/>
+		<arg:Rule class="Role.UpdatedRolePlayerRequiredErrorsRemovedRule"/>
 		<arg:Rule class="RoleValueRangeDefinition.RoleValueRangeDefinitionChangeRule"/>
 		<arg:Rule class="SingleColumnExternalConstraint.ConstraintHasRoleSequenceAdded"/>
 		<arg:Rule class="SingleColumnExternalConstraint.ConstraintRoleSequenceHasRoleAdded"/>
+		<arg:Rule class="SingleColumnExternalConstraint.EnforceRoleSequenceValidityForFactTypeAdd"/>
+		<arg:Rule class="SingleColumnExternalConstraint.EnforceRoleSequenceValidityForFactTypeRemove"/>
 		<arg:Rule class="SubtypeFact.BlockCircularSubtypesAddRule"/>
 		<arg:Rule class="SubtypeFact.InitializeSubtypeAddRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintRolesAddRule"/>

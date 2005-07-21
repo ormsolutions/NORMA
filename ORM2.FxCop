@@ -539,6 +539,14 @@
           <Members>
            <Member Name="CreateEditorInstance(System.UInt32,System.String,System.String,Microsoft.VisualStudio.Shell.Interop.IVsHierarchy,System.UInt32,System.IntPtr,System.IntPtr&amp;,System.IntPtr&amp;,System.String&amp;,System.Guid&amp;,System.Int32&amp;):System.Int32">
             <Messages>
+             <Message Id="System.ArgumentException.#ctor(System.String)" TypeName="DoNotPassLiteralsAsLocalizedParameters" Category="Microsoft.Globalization" CheckId="CA1303" Created="2005-07-21 19:54:58Z">
+              <Issue>
+               <Item>FactEditorFactory.CreateEditorInstance(UInt32, String, String, IVsHierarchy, UInt32, IntPtr, IntPtr&amp;, IntPtr&amp;, String&amp;, Guid&amp;, Int32&amp;):Int32</Item>
+               <Item>1</Item>
+               <Item>ArgumentException.ArgumentException(String)</Item>
+               <Item>Only Open or Silent is valid</Item>
+              </Issue>
+             </Message>
              <Message Id="0#grf" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
               <Issue Name="Parameter">
                <Item>FactEditorFactory.CreateEditorInstance(UInt32, String, String, IVsHierarchy, UInt32, IntPtr, IntPtr&amp;, IntPtr&amp;, String&amp;, Guid&amp;, Int32&amp;):Int32</Item>
@@ -1266,6 +1274,40 @@
          </Type>
          <Type Name="CompatibleRolePlayerTypeError">
           <Members>
+           <Member Name=".ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag)">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Status="Excluded" Created="2005-07-21 15:44:15Z">
+              <Issue>
+               <Item>CompatibleRolePlayerTypeError.CompatibleRolePlayerTypeError(Partition, ModelDataBag)</Item>
+               <Item>columnPropertyStorage</Item>
+               <Item>System.Int32</Item>
+               <Item>0</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="47" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name=".ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.ModelDataBag)">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Status="Excluded" Created="2005-07-21 15:44:15Z">
+              <Issue>
+               <Item>CompatibleRolePlayerTypeError.CompatibleRolePlayerTypeError(Store, ModelDataBag)</Item>
+               <Item>columnPropertyStorage</Item>
+               <Item>System.Int32</Item>
+               <Item>0</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="47" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="CustomSerializedChildRoleComparer">
             <Accessors>
              <Accessor Name="get_CustomSerializedChildRoleComparer():System.Collections.Generic.IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;">
@@ -1503,6 +1545,20 @@
             </Accessors>
            </Member>
           </Members>
+         </Type>
+         <Type Name="CompatibleRolePlayerTypeError+CompatibleRolePlayerTypeErrorColumnFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-07-21 15:44:15Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError+CompatibleRolePlayerTypeErrorColumnFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="47" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
          <Type Name="CompatibleRolePlayerTypeErrorElementFactoryCreator">
           <Members>
@@ -2161,6 +2217,22 @@
                 <Note Id="1" />
                </User>
               </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CustomReferenceModeEditor">
+          <Members>
+           <Member Name="InitializeComponent():System.Void">
+            <Messages>
+             <Message Id="System.Windows.Forms.Control.set_Text(System.String)" TypeName="DoNotPassLiteralsAsLocalizedParameters" Category="Microsoft.Globalization" CheckId="CA1303" Created="2005-07-21 19:54:58Z">
+              <Issue>
+               <Item>CustomReferenceModeEditor.InitializeComponent():Void</Item>
+               <Item>1</Item>
+               <Item>Control.set_Text(String):Void</Item>
+               <Item>virtualTreeControl</Item>
+              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -3327,19 +3399,19 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ExternalConstraintRoleSequenceArityMismatch">
+         <Type Name="ExternalConstraintRoleSequenceArityMismatchError">
           <Members>
            <Member Name="CustomSerializedChildRoleComparer">
             <Accessors>
              <Accessor Name="get_CustomSerializedChildRoleComparer():System.Collections.Generic.IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;">
               <Messages>
-               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
                 <Issue>
-                 <Item>ExternalConstraintRoleSequenceArityMismatch.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
+                 <Item>ExternalConstraintRoleSequenceArityMismatchError.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
                 </Issue>
                 <Notes>
                  <User Name="mcurland">
-                  <Note Id="37" />
+                  <Note Id="48" />
                  </User>
                 </Notes>
                </Message>
@@ -3351,13 +3423,13 @@
             <Accessors>
              <Accessor Name="get_CustomSerializedElementInfo():Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
               <Messages>
-               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
                 <Issue>
-                 <Item>ExternalConstraintRoleSequenceArityMismatch.get_CustomSerializedElementInfo():ORMCustomSerializedElementInfo</Item>
+                 <Item>ExternalConstraintRoleSequenceArityMismatchError.get_CustomSerializedElementInfo():ORMCustomSerializedElementInfo</Item>
                 </Issue>
                 <Notes>
                  <User Name="mcurland">
-                  <Note Id="37" />
+                  <Note Id="48" />
                  </User>
                 </Notes>
                </Message>
@@ -3367,45 +3439,35 @@
            </Member>
            <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
             <Messages>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
               <Issue>
-               <Item>ExternalConstraintRoleSequenceArityMismatch.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+               <Item>ExternalConstraintRoleSequenceArityMismatchError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="37" />
+                <Note Id="48" />
                </User>
               </Notes>
              </Message>
-             <Message Id="attributeInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-02 21:00:35Z" FixCategory="Breaking">
+             <Message Id="attributeInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
               <Issue>
                <Item>attributeInfo</Item>
-               <Item>ExternalConstraintRoleSequenceArityMismatch.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+               <Item>ExternalConstraintRoleSequenceArityMismatchError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
               </Issue>
               <Notes>
-               <User Name="pewert">
-                <Note Id="30" />
+               <User Name="mcurland">
+                <Note Id="48" />
                </User>
               </Notes>
              </Message>
-             <Message Id="rolePlayedInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-02 21:00:35Z" FixCategory="Breaking">
+             <Message Id="rolePlayedInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
               <Issue>
                <Item>rolePlayedInfo</Item>
-               <Item>ExternalConstraintRoleSequenceArityMismatch.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+               <Item>ExternalConstraintRoleSequenceArityMismatchError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
               </Issue>
               <Notes>
-               <User Name="pewert">
-                <Note Id="30" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-02 21:00:35Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>ExternalConstraintRoleSequenceArityMismatch.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="pewert">
-                <Note Id="30" />
+               <User Name="mcurland">
+                <Note Id="48" />
                </User>
               </Notes>
              </Message>
@@ -3413,13 +3475,13 @@
            </Member>
            <Member Name="GetCustomSerializedChildElementInfo():Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[]">
             <Messages>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
               <Issue>
-               <Item>ExternalConstraintRoleSequenceArityMismatch.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
+               <Item>ExternalConstraintRoleSequenceArityMismatchError.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="37" />
+                <Note Id="48" />
                </User>
               </Notes>
              </Message>
@@ -3427,36 +3489,26 @@
            </Member>
            <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
             <Messages>
-             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-02 21:00:35Z">
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue>
                <Item>rolePlayedInfo</Item>
-               <Item>ExternalConstraintRoleSequenceArityMismatch.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>ExternalConstraintRoleSequenceArityMismatchError.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
                <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
                <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
               </Issue>
               <Notes>
-               <User Name="pewert">
-                <Note Id="30" />
+               <User Name="mcurland">
+                <Note Id="48" />
                </User>
               </Notes>
              </Message>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
               <Issue>
-               <Item>ExternalConstraintRoleSequenceArityMismatch.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>ExternalConstraintRoleSequenceArityMismatchError.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="37" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-02 21:00:35Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>ExternalConstraintRoleSequenceArityMismatch.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="pewert">
-                <Note Id="30" />
+                <Note Id="48" />
                </User>
               </Notes>
              </Message>
@@ -3464,45 +3516,35 @@
            </Member>
            <Member Name="MapAttribute(System.String,System.String):System.Guid">
             <Messages>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
               <Issue>
-               <Item>ExternalConstraintRoleSequenceArityMismatch.MapAttribute(String, String):Guid</Item>
+               <Item>ExternalConstraintRoleSequenceArityMismatchError.MapAttribute(String, String):Guid</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="37" />
+                <Note Id="48" />
                </User>
               </Notes>
              </Message>
-             <Message Id="attributeName" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
+             <Message Id="attributeName" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
               <Issue>
                <Item>attributeName</Item>
-               <Item>ExternalConstraintRoleSequenceArityMismatch.MapAttribute(String, String):Guid</Item>
+               <Item>ExternalConstraintRoleSequenceArityMismatchError.MapAttribute(String, String):Guid</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="33" />
+                <Note Id="48" />
                </User>
               </Notes>
              </Message>
-             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>ExternalConstraintRoleSequenceArityMismatch.MapAttribute(String, String):Guid</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="33" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="xmlNamespace" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
+             <Message Id="xmlNamespace" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
               <Issue>
                <Item>xmlNamespace</Item>
-               <Item>ExternalConstraintRoleSequenceArityMismatch.MapAttribute(String, String):Guid</Item>
+               <Item>ExternalConstraintRoleSequenceArityMismatchError.MapAttribute(String, String):Guid</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="33" />
+                <Note Id="48" />
                </User>
               </Notes>
              </Message>
@@ -3510,23 +3552,13 @@
            </Member>
            <Member Name="MapChildElement(System.String,System.String,System.String,System.String):Northface.Tools.ORM.Shell.ORMCustomSerializedElementMatch">
             <Messages>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
               <Issue>
-               <Item>ExternalConstraintRoleSequenceArityMismatch.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+               <Item>ExternalConstraintRoleSequenceArityMismatchError.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="37" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>ExternalConstraintRoleSequenceArityMismatch.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="33" />
+                <Note Id="48" />
                </User>
               </Notes>
              </Message>
@@ -3536,13 +3568,13 @@
             <Accessors>
              <Accessor Name="get_SupportedCustomSerializedOperations():Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations">
               <Messages>
-               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
                 <Issue>
-                 <Item>ExternalConstraintRoleSequenceArityMismatch.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
+                 <Item>ExternalConstraintRoleSequenceArityMismatchError.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
                 </Issue>
                 <Notes>
                  <User Name="mcurland">
-                  <Note Id="37" />
+                  <Note Id="48" />
                  </User>
                 </Notes>
                </Message>
@@ -3552,17 +3584,17 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ExternalConstraintRoleSequenceArityMismatchElementFactoryCreator">
+         <Type Name="ExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
             <Messages>
-             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
+             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue>
-               <Item>ExternalConstraintRoleSequenceArityMismatchElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>ExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="34" />
+                <Note Id="47" />
                </User>
               </Notes>
              </Message>
@@ -7155,76 +7187,76 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch">
+         <Type Name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError">
           <Messages>
-           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch</Item>
+             <Item>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
-              <Note Id="36" />
+              <Note Id="46" />
              </User>
             </Notes>
            </Message>
           </Messages>
           <Members>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch">
+           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError">
             <Messages>
-             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Partition, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch</Item>
+               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Partition, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="36" />
+                <Note Id="46" />
                </User>
               </Notes>
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch">
+           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError">
             <Messages>
-             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Store, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch</Item>
+               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateAndInitializeMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Store, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="36" />
+                <Note Id="46" />
                </User>
               </Notes>
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch">
+           <Member Name="CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError">
             <Messages>
-             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Partition, RoleAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch</Item>
+               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Partition, RoleAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="36" />
+                <Note Id="46" />
                </User>
               </Notes>
              </Message>
             </Messages>
            </Member>
-           <Member Name="CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch">
+           <Member Name="CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError">
             <Messages>
-             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue Name="Member">
                <Item>Multi</Item>
-               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch.CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch(Store, RoleAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch</Item>
+               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.CreateMultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError(Store, RoleAssignment[]):MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="36" />
+                <Note Id="46" />
                </User>
               </Notes>
              </Message>
@@ -7232,16 +7264,16 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchElementFactoryCreator">
+         <Type Name="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator">
           <Messages>
-           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
+           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-21 15:44:15Z">
             <Issue Name="Type">
              <Item>Multi</Item>
-             <Item>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchElementFactoryCreator</Item>
+             <Item>Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
-              <Note Id="36" />
+              <Note Id="46" />
              </User>
             </Notes>
            </Message>
@@ -7249,13 +7281,13 @@
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
             <Messages>
-             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
+             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-21 15:44:15Z">
               <Issue>
-               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+               <Item>MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
-                <Note Id="34" />
+                <Note Id="47" />
                </User>
               </Notes>
              </Message>
@@ -12301,6 +12333,48 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="Role+RolePlayerRequiredAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-21 15:44:15Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.Role+RolePlayerRequiredAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="45" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Role+RolePlayerRequiredForNewRoleAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-21 15:44:15Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.Role+RolePlayerRequiredForNewRoleAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="45" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Role+RolePlayerRequiredRemovedRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-21 15:44:15Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.Role+RolePlayerRequiredRemovedRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="45" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="Role+RoleRolePlayerDisplayFieldHandler">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -12329,6 +12403,20 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="Role+UpdatedRolePlayerRequiredErrorsRemovedRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-21 15:44:15Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.Role+UpdatedRolePlayerRequiredErrorsRemovedRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="45" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="RoleElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
@@ -12340,6 +12428,24 @@
               <Notes>
                <User Name="mcurland">
                 <Note Id="34" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="RoleHasRolePlayerRequiredErrorElementFactoryCreator">
+          <Members>
+           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
+            <Messages>
+             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-21 15:44:15Z">
+              <Issue>
+               <Item>RoleHasRolePlayerRequiredErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="47" />
                </User>
               </Notes>
              </Message>
@@ -12379,6 +12485,209 @@
             </Notes>
            </Message>
           </Messages>
+         </Type>
+         <Type Name="RolePlayerRequiredError">
+          <Members>
+           <Member Name="CustomSerializedChildRoleComparer">
+            <Accessors>
+             <Accessor Name="get_CustomSerializedChildRoleComparer():System.Collections.Generic.IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>RolePlayerRequiredError.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
+                </Issue>
+                <Notes>
+                 <User Name="mcurland">
+                  <Note Id="48" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="CustomSerializedElementInfo">
+            <Accessors>
+             <Accessor Name="get_CustomSerializedElementInfo():Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>RolePlayerRequiredError.get_CustomSerializedElementInfo():ORMCustomSerializedElementInfo</Item>
+                </Issue>
+                <Notes>
+                 <User Name="mcurland">
+                  <Note Id="48" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+              <Issue>
+               <Item>RolePlayerRequiredError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="attributeInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>RolePlayerRequiredError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="rolePlayedInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>RolePlayerRequiredError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedChildElementInfo():Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[]">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+              <Issue>
+               <Item>RolePlayerRequiredError.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-07-21 15:44:15Z">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>RolePlayerRequiredError.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+              <Issue>
+               <Item>RolePlayerRequiredError.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MapAttribute(System.String,System.String):System.Guid">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+              <Issue>
+               <Item>RolePlayerRequiredError.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="attributeName" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+              <Issue>
+               <Item>attributeName</Item>
+               <Item>RolePlayerRequiredError.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="xmlNamespace" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+              <Issue>
+               <Item>xmlNamespace</Item>
+               <Item>RolePlayerRequiredError.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MapChildElement(System.String,System.String,System.String,System.String):Northface.Tools.ORM.Shell.ORMCustomSerializedElementMatch">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+              <Issue>
+               <Item>RolePlayerRequiredError.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="48" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="SupportedCustomSerializedOperations">
+            <Accessors>
+             <Accessor Name="get_SupportedCustomSerializedOperations():Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-21 15:44:15Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>RolePlayerRequiredError.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
+                </Issue>
+                <Notes>
+                 <User Name="mcurland">
+                  <Note Id="48" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="RolePlayerRequiredErrorElementFactoryCreator">
+          <Members>
+           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
+            <Messages>
+             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-21 15:44:15Z">
+              <Issue>
+               <Item>RolePlayerRequiredErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="47" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
          </Type>
          <Type Name="RoleValueRangeDefinition">
           <Members>
@@ -13081,6 +13390,34 @@
             <Notes>
              <User Name="mcurland">
               <Note Id="7" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SingleColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeAdd">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-21 15:44:15Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeAdd</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="45" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SingleColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeRemove">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-21 15:44:15Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+EnforceRoleSequenceValidityForFactTypeRemove</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="45" />
              </User>
             </Notes>
            </Message>
@@ -15478,6 +15815,28 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="ReadingEditor">
+          <Members>
+           <Member Name="InitializeComponent():System.Void">
+            <Messages>
+             <Message Id="System.Windows.Forms.Control.set_Text(System.String)" TypeName="DoNotPassLiteralsAsLocalizedParameters" Category="Microsoft.Globalization" CheckId="CA1303" Created="2005-07-21 19:54:58Z">
+              <Issue>
+               <Item>ReadingEditor.InitializeComponent():Void</Item>
+               <Item>1</Item>
+               <Item>Control.set_Text(String):Void</Item>
+               <Item>Readings</Item>
+              </Issue>
+              <Issue>
+               <Item>ReadingEditor.InitializeComponent():Void</Item>
+               <Item>1</Item>
+               <Item>Control.set_Text(String):Void</Item>
+               <Item>splitContainer1</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="ReadingEditor+ReadingBranch">
           <Members>
            <Member Name="BeginLabelEdit(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditData">
@@ -15962,6 +16321,34 @@
                 <Note Id="5" />
                </User>
               </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ReadingEditor+ReadingRootTreeNode">
+          <Members>
+           <Member Name=".ctor(Northface.Tools.ORM.ObjectModel.Role)">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2005-07-21 19:54:58Z">
+              <Issue>
+               <Item>ReadingRootTreeNode.ReadingRootTreeNode(Role)</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;ReadingRootTreeNode.ReadingRootTreeNode(Role)&#xD;&#xA;BaseReadingTreeNode.SetText():Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ReadingEditor+ReadingTreeNode">
+          <Members>
+           <Member Name=".ctor(Northface.Tools.ORM.ObjectModel.Role[])">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2005-07-21 19:54:58Z">
+              <Issue>
+               <Item>ReadingTreeNode.ReadingTreeNode(Role[])</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;ReadingTreeNode.ReadingTreeNode(Role[])&#xD;&#xA;BaseReadingTreeNode.SetText():Void</Item>
+              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -19087,6 +19474,25 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="Northface.Tools.ORM.ObjectModel.IORMToolServices.ServiceProvider">
+            <Accessors>
+             <Accessor Name="Northface.Tools.ORM.ObjectModel.IORMToolServices.get_ServiceProvider():System.IServiceProvider">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="Excluded" Created="2005-07-21 15:44:15Z">
+                <Issue>
+                 <Item>ORMDesignerDocData</Item>
+                 <Item>IORMToolServices.get_ServiceProvider():IServiceProvider</Item>
+                </Issue>
+                <Notes>
+                 <User Name="mcurland">
+                  <Note Id="44" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
           </Members>
          </Type>
          <Type Name="ORMDesignerDocData+ORMStore">
@@ -19126,6 +19532,24 @@
                <Item>ORMDesignerDocView.InitializeView(Diagram, ORMDesignerDocData):Void</Item>
                <Item>Northface.Tools.ORM.Shell.ORMDesignerDocData</Item>
                <Item>Microsoft.VisualStudio.EnterpriseTools.Shell.DocData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="OnMenuDeleteRoleSequence():System.Void">
+            <Messages>
+             <Message Id="System.NotImplementedException.#ctor(System.String)" TypeName="DoNotPassLiteralsAsLocalizedParameters" Category="Microsoft.Globalization" CheckId="CA1303" Created="2005-07-21 19:54:58Z">
+              <Issue>
+               <Item>ORMDesignerDocView.OnMenuDeleteRoleSequence():Void</Item>
+               <Item>1</Item>
+               <Item>NotImplementedException.NotImplementedException(String)</Item>
+               <Item>Multiselect deletion of role sequences is not implemented.  If you see this message, decide if what you're doing is really a valid operation.  If it is, look in Shell\ORMCommandSet.cs, OnMenuDeleteRowSequence() to implement it.</Item>
+              </Issue>
+             </Message>
+             <Message Id="Multiselect" TypeName="LiteralsShouldBeSpelledCorrectly" Category="Microsoft.Usage" CheckId="CA2204" Created="2005-07-21 19:54:58Z">
+              <Issue>
+               <Item>Multiselect</Item>
+               <Item>Multiselect deletion of role sequences is not implemented.  If you see this message, decide if what you're doing is really a valid operation.  If it is, look in Shell\ORMCommandSet.cs, OnMenuDeleteRowSequence() to implement it.</Item>
               </Issue>
              </Message>
             </Messages>
@@ -19185,6 +19609,16 @@
            </Message>
           </Messages>
           <Members>
+           <Member Name=".ctor(System.IServiceProvider)">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2005-07-21 19:54:58Z">
+              <Issue>
+               <Item>ORMDesignerCommandSet.ORMDesignerCommandSet(IServiceProvider)</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;ORMDesignerCommandSet.ORMDesignerCommandSet(IServiceProvider)&#xD;&#xA;ORMDesignerCommandSet.AddCommands(MenuCommand[]):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="Dispose():System.Void">
             <Messages>
              <Message TypeName="ImplementIDisposableCorrectly" Category="Microsoft.Design" CheckId="CA1063" Created="2005-07-06 21:44:00Z">
@@ -19835,6 +20269,11 @@
     <Note Id="41" Modified="2005-07-15 07:28:07Z">Instances are immutable</Note>
     <Note Id="42" Modified="2005-07-15 07:28:25Z">Generated code</Note>
     <Note Id="43" Modified="2005-07-16 00:48:26Z">Rule instantiated via reflection</Note>
+    <Note Id="44" Modified="2005-07-21 15:46:14Z">Defers to correctly named method on base class</Note>
+    <Note Id="45" Modified="2005-07-21 15:47:46Z">Rules instantiated through reflection</Note>
+    <Note Id="46" Modified="2005-07-21 15:55:31Z">'Multi' is listed in custom dictionary, FxCop is not picking it up.</Note>
+    <Note Id="47" Modified="2005-07-21 16:05:11Z">IMS-generated code</Note>
+    <Note Id="48" Modified="2005-07-21 16:06:39Z">Code generated to match explicit interface implementation pattern</Note>
    </User>
    <User Name="pewert">
     <Note Id="0" Modified="2005-04-25 20:13:21Z">Defined in IMS-generated code</Note>
@@ -19897,6 +20336,9 @@
    <Rule TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011">
     <Resolution Name="Default">Consider changing the type of parameter '{0}' in {1} from {2} to its base type {3}. This method appears to only require base class members in its implementation. Suppress this violation if there is a compelling reason to require the more derived type in the method signature.</Resolution>
    </Rule>
+   <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
+    <Resolution Name="Default">'{0}' contains a call chain that results in a call to a virtual method defined by the class. Review the following call stack for unintended consequences: {1}</Resolution>
+   </Rule>
    <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
     <Resolution Name="Local">'{0}', a local, is cast to type '{1}' multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
     <Resolution Name="Parameter">'{0}', a parameter, is cast to type '{1}' multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
@@ -19918,6 +20360,9 @@
    </Rule>
    <Rule TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805">
     <Resolution Name="Default">{0} initializes field {1} of type {2} to {3}. Remove this initialization as it will be done automatically by the runtime.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotPassLiteralsAsLocalizedParameters" Category="Microsoft.Globalization" CheckId="CA1303">
+    <Resolution Name="Default">{0} passes a literal as parameter {1} of a call to {2}. Retrieve the following string argument from a resource table instead: '{3}'</Resolution>
    </Rule>
    <Rule TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045">
     <Resolution Name="Default">Consider a design that does not require that '{0}' be a reference parameter.</Resolution>
@@ -19949,6 +20394,9 @@
    </Rule>
    <Rule TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033">
     <Resolution Name="Default">Make '{0}' sealed (a breaking change if this class has previously shipped), implement the method non-explicitly, or implement a new method that exposes the functionality of '{1}' and is visible to derived classes.</Resolution>
+   </Rule>
+   <Rule TypeName="LiteralsShouldBeSpelledCorrectly" Category="Microsoft.Usage" CheckId="CA2204">
+    <Resolution Name="Default">Correct the spelling of the unrecognized token '{0}' in the literal '{1}'.</Resolution>
    </Rule>
    <Rule TypeName="LongAcronymsShouldBePascalCased" Category="Microsoft.Naming" CheckId="CA1705">
     <Resolution Name="Parameter">Correct the capitalization of parameter name '{0}'.</Resolution>

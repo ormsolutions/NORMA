@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -68,7 +68,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
             </xsd:complexType>
@@ -85,7 +85,7 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
             </xsd:complexType>
@@ -109,20 +109,24 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Model.Reading.RoleDeletedText">
     <value xml:space="preserve">{{deleted}}</value>
     <comment xml:space="preserve">Text used to replace a role place holder when the role is deleted</comment>
   </data>
-  <data name="ModelError.Constraint.CompatibleRolePlayerTypeError.Text">
-    <value xml:space="preserve">Constraint '{0}' has role players with incompatible types in model '{1}'.</value>
-    <comment xml:space="preserve">The role players in an external constraint must have compatible types.</comment>
+  <data name="ModelError.Constraint.CompatibleRolePlayerTypeError.SingleColumn.Text">
+    <value xml:space="preserve">Constraint '{0}' in model '{1}' has role players with incompatible types.</value>
+    <comment xml:space="preserve">The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</comment>
   </data>
-  <data name="ModelError.Constraint.ExternalConstraintArityMismatch.Text">
+	<data name="ModelError.Constraint.CompatibleRolePlayerTypeError.MultiColumn.Text">
+		<value xml:space="preserve">Constraint '{0}' in model '{1}' has role players in column '{2}' with incompatible types.</value>
+		<comment xml:space="preserve">The role players in an external constraint column must have compatible types. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) column number.</comment>
+	</data>
+	<data name="ModelError.Constraint.ExternalConstraintArityMismatch.Text">
     <value xml:space="preserve">Constraint '{0}' has role sequences with different numbers of roles.</value>
     <comment xml:space="preserve">Model validation error text when role sequences in a multi column constraint have different role counts (arity).</comment>
   </data>
@@ -169,6 +173,10 @@
   <data name="ModelError.Reading.TooManyRoles.Message">
     <value xml:space="preserve">Too many roles for the reading with text '{0}' in model '{1}'</value>
     <comment xml:space="preserve">Text displayed in the text of the TooManyRolesError</comment>
+  </data>
+  <data name="ModelError.Role.RolePlayerRequired.Message">
+    <value xml:space="preserve">Role '{0}' in fact '{1}' in model '{2}' requires a role player.</value>
+    <comment xml:space="preserve">Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
   </data>
   <data name="ModelError.ValueType.DataTypeNotSpecified.Message">
     <value xml:space="preserve">A data type must be specified for value type '{0}' in model '{1}'.</value>

@@ -8,6 +8,13 @@ using Northface.Tools.ORM;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
+	/// <summary>
+	/// A callback definition used for walking subtype and supertype hierarchies.
+	/// </summary>
+	/// <param name="type">The ObjectType being visited</param>
+	/// <returns>true to continue iteration, false to stop</returns>
+	[CLSCompliant(true)]
+	public delegate bool ObjectTypeVisitor(ObjectType type);
 	public partial class ObjectType : INamedElementDictionaryChild, IModelErrorOwner
 	{
 		#region Public token values
@@ -104,52 +111,6 @@ namespace Northface.Tools.ORM.ObjectModel
 				return (defn == null) ? "" : defn.Text;
 			}
 			return base.GetValueForCustomStoredAttribute(attribute);
-		}
-		/// <summary>
-		/// Get the sub types for this type
-		/// </summary>
-		/// <returns>Enumeration of ObjectType</returns>
-		[CLSCompliant(false)]
-		public IEnumerable<ObjectType> SubtypeCollection
-		{
-			get
-			{
-				foreach (Role role in PlayedRoleCollection)
-				{
-					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
-					if (subtypeFact != null)
-					{
-						// If we're the derived type
-						if (subtypeFact.Supertype == this)
-						{
-							yield return subtypeFact.Subtype;
-						}
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// Get the super types for this type
-		/// </summary>
-		/// <returns>Enumeration of ObjectType</returns>
-		[CLSCompliant(false)]
-		public IEnumerable<ObjectType> SupertypeCollection
-		{
-			get
-			{
-				foreach (Role role in PlayedRoleCollection)
-				{
-					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
-					if (subtypeFact != null)
-					{
-						// If we're the derived type
-						if (subtypeFact.Subtype == this)
-						{
-							yield return subtypeFact.Supertype;
-						}
-					}
-				}
-			}
 		}
 		/// <summary>
 		/// Standard override. Defer to GetValueForCustomStoredAttribute.
@@ -559,6 +520,96 @@ namespace Northface.Tools.ORM.ObjectModel
 			return valueDefn as ValueRangeDefinition;
 		}
 		#endregion // Customize property display
+		#region Subtype and Supertype routines
+		/// <summary>
+		/// Get the sub types for this type
+		/// </summary>
+		/// <returns>Enumeration of ObjectType</returns>
+		[CLSCompliant(false)]
+		public IEnumerable<ObjectType> SubtypeCollection
+		{
+			get
+			{
+				foreach (Role role in PlayedRoleCollection)
+				{
+					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
+					if (subtypeFact != null)
+					{
+						// If we're the derived type
+						if (subtypeFact.Supertype == this)
+						{
+							yield return subtypeFact.Subtype;
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Get the super types for this type
+		/// </summary>
+		/// <returns>Enumeration of ObjectType</returns>
+		[CLSCompliant(false)]
+		public IEnumerable<ObjectType> SupertypeCollection
+		{
+			get
+			{
+				foreach (Role role in PlayedRoleCollection)
+				{
+					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
+					if (subtypeFact != null)
+					{
+						// If we're the derived type
+						if (subtypeFact.Subtype == this)
+						{
+							yield return subtypeFact.Supertype;
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Recursively walk all supertypes of a given type (including the type itself).
+		/// </summary>
+		/// <param name="startingType">The type to begin recursion with</param>
+		/// <param name="visitor">A callback delegate. Should return true to continue recursion.</param>
+		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
+		public static bool WalkSupertypes(ObjectType startingType, ObjectTypeVisitor visitor)
+		{
+			if (!visitor(startingType))
+			{
+				return false;
+			}
+			foreach (ObjectType superType in startingType.SupertypeCollection)
+			{
+				if (!WalkSupertypes(superType, visitor))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		/// <summary>
+		/// Recursively walk all subtypes of a given type (including the type itself).
+		/// </summary>
+		/// <param name="startingType">The type to begin recursion with</param>
+		/// <param name="visitor">A callback delegate. Should return true to continue recursion.</param>
+		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
+		public static bool WalkSubtypes(ObjectType startingType, ObjectTypeVisitor visitor)
+		{
+			if (!visitor(startingType))
+			{
+				return false;
+			}
+			foreach (ObjectType subType in startingType.SubtypeCollection)
+			{
+				if (!WalkSubtypes(subType, visitor))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		#endregion // Subtype and Supertype routines
 		#region ObjectTypeChangeRule class
 
 		/// <summary>

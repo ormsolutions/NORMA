@@ -490,6 +490,18 @@ namespace Northface.Tools.ORM.ObjectModel
 						yield return nMinusOneError;
 					}
 				}
+				
+				// Show the fact type as an owner of the role errors as well
+				// so the fact can be accurately named in the error text. However,
+				// we do not validate this error on the fact type, it is done on the role.
+				foreach (Role role in RoleCollection)
+				{
+					RolePlayerRequiredError rolePlayerRequired = role.RolePlayerRequiredError;
+					if (rolePlayerRequired != null)
+					{
+						yield return rolePlayerRequired;
+					}
+				}
 			}
 		}
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection

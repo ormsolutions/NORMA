@@ -233,7 +233,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	}
 	#endregion // InternalConstraint class
 	#region SingleColumnExternalConstraint class
-	public partial class SingleColumnExternalConstraint
+	public partial class SingleColumnExternalConstraint : IModelErrorOwner
 	{
 		#region SingleColumnExternalConstraint Specific
 		/// <summary>
@@ -345,6 +345,46 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // SingleColumnExternalConstraint synchronization rules
+		#region IModelErrorOwner Implementation
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		[CLSCompliant(false)]
+		protected IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				CompatibleRolePlayerTypeError typeCompatibility;
+				if (null != (typeCompatibility = CompatibleRolePlayerTypeError))
+				{
+					yield return typeCompatibility;
+				}
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// Validate all errors on the external constraint. This
+		/// is called during deserialization fixup when rules are
+		/// suspended.
+		/// </summary>
+		/// <param name="notifyAdded">A callback for notifying
+		/// the caller of all objects that are added.</param>
+		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		#endregion // IModelErrorOwner Implementation
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return a deserialization fixup listener. The listener
@@ -404,13 +444,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		// objects here as well.
 
 
-		/*
-
-		TODO:  This code is really close to completion.  Time just ran out.  It is very similar to the Multi-Column 
-			   VerifyCompatibleRolePlayerTypeForRule.  Some small modifications need to be made to get this code working.
-				
-				
-
 		/// <summary>
 		/// Verify CompatibleRolePlayertypeForRule Used to verify compatibility for single column constraints.
 		/// </summary>
@@ -420,46 +453,68 @@ namespace Northface.Tools.ORM.ObjectModel
 		private void VerifyCompatibleRolePlayerTypeForRule(INotifyElementAdded notifyAdded)
 		{
 			CompatibleRolePlayerTypeError compatibleError;
-			int currentCount = DuplicateNameError.SingleColumnExternalConstraintCollection.Count;
-			Store store = Store;
 			bool isCompatible = true;
 
-			if (currentCount != 0)
+			RoleMoveableCollection roles = RoleCollection;
+			int roleCount = roles.Count;
+			if (roleCount > 1)
 			{
-				IList sequences = DuplicateNameError.SingleColumnExternalConstraintCollection;
-				int RolePlayersCount = ((ConstraintRoleSequence)sequences[0]).RoleCollection.Count;
-				for (int i = 0; i + 1 < currentCount; i++)
+				// We will only test incompatibility if we find more than
+				// only role that actually has a role player. We'll cache the
+				// full set of supertypes for the first roleplayer we find,
+				// then walk the supertypes for all other types to find an
+				// intersection with the first set.
+				ObjectType firstRolePlayer = null;
+				Collection<ObjectType> superTypesCache = null;
+
+				for (int i = 0; i < roleCount; ++i)
 				{
-					for (int j = 0; j < RolePlayersCount; j++)
+					Role currentRole = roles[i];
+					ObjectType currentRolePlayer = currentRole.RolePlayer;
+					if (currentRolePlayer != null)
 					{
-						ObjectType A = ((ConstraintRoleSequence)sequences[i]).RoleCollection[j].RolePlayer;
-						ObjectType B = ((ConstraintRoleSequence)sequences[i + 1]).RoleCollection[j].RolePlayer;
-
-						//Checks the each sequence at the given position for the same ID (the same ObjectType)
-						if (A != B)
+						if (firstRolePlayer == null)
 						{
-							isCompatible = false;
-
-							//Finds if the parent elements are compatible or not
-							isCompatible = RecurseThroughSuperTypes(A, B);
+							// Store the first role player. We won't populate until
+							// we're sure we need to.
+							firstRolePlayer = currentRolePlayer;
 						}
-
-						//Iterates through the supertypes for compatibility
-						if (!isCompatible)
+						else
 						{
-							//If the error is not present, add it to the model
-							if (null == CompatibleRolePlayerTypeError)
+							if (superTypesCache == null)
 							{
-								compatibleError = CompatibleRolePlayerTypeError.CreateCompatibleRolePlayerTypeError(store);
-								compatibleError.Model = Model;
-								compatibleError.SingleColumnExternalConstraint = this;
-								compatibleError.GenerateErrorText();
-								if (notifyAdded != null)
+								// Populate the cache
+								superTypesCache = new Collection<ObjectType>();
+								ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type)
 								{
-									notifyAdded.ElementAdded(compatibleError, true);
-								}
+									superTypesCache.Add(type);
+									return true;
+								});
 							}
-							return;
+							// If the type is contained, WalkSupertype will return false because the iteration
+							// did not complete.
+							isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type)
+							{
+								// Continue iteration if the type is recognized in the cache
+								return !superTypesCache.Contains(type);
+							});
+
+							if (!isCompatible)
+							{
+								//If the error is not present, add it to the model
+								if (null == CompatibleRolePlayerTypeError)
+								{
+									compatibleError = CompatibleRolePlayerTypeError.CreateCompatibleRolePlayerTypeError(Store);
+									compatibleError.Model = Model;
+									compatibleError.SingleColumnExternalConstraint = this;
+									compatibleError.GenerateErrorText();
+									if (notifyAdded != null)
+									{
+										notifyAdded.ElementAdded(compatibleError, true);
+									}
+								}
+								return;
+							}
 						}
 					}
 				}
@@ -469,70 +524,12 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				if (null != (compatibleError = CompatibleRolePlayerTypeError))
 				{
-						compatibleError.Remove();
-				}					
-			}
-		}
-
-		#region Helper recursive methods for VerifyCompatibleRolePlayerTypeForRule
-
-		/// <summary>
-		/// Recurses through the ObjectType A and ObjectType B to find all the parents of the ObjectTypes, and then compares them for compatible fact types
-		/// </summary>
-		/// <param name="A">ObjectType being compared</param>
-		/// <param name="B">ObjectType being compared</param>
-		/// <returns>The two ObjectTypes are compatible</returns>
-		private bool RecurseThroughSuperTypes(ObjectType A, ObjectType B)
-		{
-
-			ArrayList arryA = FindSuperParent(A);
-			ArrayList arryB = FindSuperParent(B);
-
-			foreach (Object itr in arryA)
-			{
-				if (arryB.Contains(itr))
-					return true;
-			}
-			return false;
-		}
-
-
-		/// <summary>
-		/// Recurses through the ObjectType to find the list of Top-Level ObjectType Objects for the parameter passed in.  Default function which is recommended for use.
-		/// </summary>
-		/// <param name="myObjectType">ObjectType which top elements are to be found</param>
-		/// <returns>ArrayList consisting of all Top-Level ObjectType Objects</returns>
-		private ArrayList FindSuperParent(ObjectType myObjectType)
-		{
-			ArrayList myList = new ArrayList();
-			FindSuperParent(myObjectType, myList);
-
-			return myList;
-		}
-
-		/// <summary>
-		/// Actual recursive function. Populates the ResultSet with Top-Level ObjectType Objects.
-		/// </summary>
-		/// <param name="myObjectType">ObjectType which top elements are to be found</param>
-		/// <param name="ResultSet">ArrayList cinsisting of current discovered Top-Level ObjectType Objects</param>
-		private void FindSuperParent(ObjectType myObjectType, ArrayList ResultSet)
-		{
-			if (!myObjectType.SupertypeCollection.GetEnumerator().MoveNext())
-			{
-				ResultSet.Add(myObjectType);
-			}
-			else
-			{
-				foreach (ObjectType super in myObjectType.SupertypeCollection)
-				{
-					FindSuperParent(super, ResultSet);
+					compatibleError.Remove();
 				}
 			}
 		}
-		#endregion		//end  Helper recursive methods for VerifyCompatibleRolePlayerTypeForRule  */
 
-
-		/*		Add and Remove Rules for a Single Column Constraint to enforce the Compatibility between fact types
+		//		Add and Remove Rules for a Single Column Constraint to enforce the Compatibility between fact types
 
 
 		/// <summary>
@@ -581,9 +578,6 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
-		*/
-
 		#endregion // Error synchronization rules
 	}
 	#endregion // SingleColumnExternalConstraint class
@@ -790,7 +784,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // Deserialization Fixup
 		#region Error synchronization rules
-
 		#region VerifyRoleSequenceCountForRule
 		/// <summary>
 		/// Add, remove, and otherwise validate the current set of
@@ -863,8 +856,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				VerifyRoleSequenceArityForRule(notifyAdded, tooFewOrTooMany);
 			}
 		}
-		#endregion
-
+		#endregion // VerifyRoleSequenceCountForRule
 		#region VerifyRoleSequenceArityForRule
 		/// <summary>
 		/// Add, remove, and otherwise validate the current set of
@@ -893,7 +885,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// will remove this error if present.</param>
 		private void VerifyRoleSequenceArityForRule(INotifyElementAdded notifyAdded, bool tooFewOrTooManySequences)
 		{
-			ExternalConstraintRoleSequenceArityMismatch arityError;
+			ExternalConstraintRoleSequenceArityMismatchError arityError;
 			bool arityValid = true;
 			int currentCount = RoleSequenceCollection.Count;
 			Store store = Store;
@@ -920,7 +912,7 @@ namespace Northface.Tools.ORM.ObjectModel
 							arityError = ArityMismatchError;
 							if (arityError == null)
 							{
-								arityError = ExternalConstraintRoleSequenceArityMismatch.CreateExternalConstraintRoleSequenceArityMismatch(store);
+								arityError = ExternalConstraintRoleSequenceArityMismatchError.CreateExternalConstraintRoleSequenceArityMismatchError(store);
 								arityError.Model = Model;
 								arityError.Constraint = this;
 								arityError.GenerateErrorText();
@@ -943,8 +935,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
 		}
-		#endregion
-
+		#endregion // VerifyRoleSequenceArityForRule
 		#region VerifyCompatibleRolePlayerTypeForRule
 		/// <summary>
 		/// Add, remove, and otherwise validate the current CompatibleRolePlayerType
@@ -959,140 +950,116 @@ namespace Northface.Tools.ORM.ObjectModel
 		private void VerifyCompatibleRolePlayerTypeForRule(INotifyElementAdded notifyAdded, bool tooFewOrTooManySequencesOrArity)
 		{
 			CompatibleRolePlayerTypeError compatibleError;
-			int currentCount = RoleSequenceCollection.Count;
 			Store store = Store;
-			bool isCompatible = true;
 
 			//We don't want to display the error if arity error present or toofeworTooMany sequence errors are present
 			if (tooFewOrTooManySequencesOrArity)
 			{
-				CompatibleRolePlayerTypeErrorMoveableCollection compatibleErrors = CompatibleRolePlayerTypeErrorCollection;
-				int compatibleErrorCount = compatibleErrors.Count;
-				for (int i = 0; i < compatibleErrorCount; ++i)
-				{
-					compatibleError = compatibleErrors[i];
-					if (compatibleError != null)
-					{
-						compatibleError.Remove(); // We don't want to validate compatibility with the wrong number of role sequences
-					}
-				}
+				CompatibleRolePlayerTypeErrorCollection.Clear();
 			}
 			else
 			{
-				if (currentCount != 0)
+				MultiColumnExternalConstraintRoleSequenceMoveableCollection sequences = RoleSequenceCollection;
+				int sequenceCount = sequences.Count;
+
+				if (sequenceCount > 1)
 				{
-					IList sequences = RoleSequenceCollection;
-					int RolePlayersCount = ((ConstraintRoleSequence)sequences[0]).RoleCollection.Count;
-					RoleMoveableCollection collection0 = null;
-					RoleMoveableCollection collection1;
-					for (int i = 0; i + 1 < currentCount; ++i)
+					// Cache the role collection so we're not regenerating them all the time
+					RoleMoveableCollection[] roleCollections = new RoleMoveableCollection[sequenceCount];
+					for (int i = 0; i < sequenceCount; ++i)
 					{
-						collection1 = (i == 0) ? ((ConstraintRoleSequence)sequences[1]).RoleCollection : collection0;
-						collection0 = ((ConstraintRoleSequence)sequences[i]).RoleCollection;
-						for (int j = 0; j < RolePlayersCount; ++j)
+						roleCollections[i] = sequences[i].RoleCollection;
+					}
+
+					CompatibleRolePlayerTypeErrorMoveableCollection startingErrors = CompatibleRolePlayerTypeErrorCollection;
+					int startingErrorCount = startingErrors.Count;
+					int nextStartingError = 0;
+
+					// Verify each column individually
+					int rolePlayerCount = roleCollections[0].Count;
+					for (int column = 0; column < rolePlayerCount; ++column)
+					{
+						// We will only test incompatibility if we find more than
+						// only role that actually has a role player. We'll cache the
+						// full set of supertypes for the first roleplayer we find,
+						// then walk the supertypes for all other types to find an
+						// intersection with the first set.
+						ObjectType firstRolePlayer = null;
+						Collection<ObjectType> superTypesCache = null;
+
+						for (int sequence = 0; sequence < sequenceCount; ++sequence)
 						{
-							ObjectType A = collection0[j].RolePlayer;
-							ObjectType B = collection1[j].RolePlayer;
-
-							//Checks the each sequence at the given position for the same ID (the same ObjectType)
-							if (A != null && B != null && A != B)
+							Role currentRole = roleCollections[sequence][column];
+							ObjectType currentRolePlayer = currentRole.RolePlayer;
+							if (currentRolePlayer != null)
 							{
-								//Finds if the parent elements are compatible or not
-								isCompatible = RecurseThroughSuperTypes(A, B);								
-							}
-
-							//Iterates through the supertypes for compatibility
-							if (!isCompatible)
-							{
-								//If the error is not present, add it to the model
-								if (CompatibleRolePlayerTypeErrorCollection.Count == 0)
+								if (firstRolePlayer == null)
 								{
-									compatibleError = CompatibleRolePlayerTypeError.CreateCompatibleRolePlayerTypeError(store);
-									compatibleError.Model = Model;
-									compatibleError.MultiColumnExternalConstraint = this;
-									compatibleError.GenerateErrorText();
-									if (notifyAdded != null)
+									// Store the first role player. We won't populate until
+									// we're sure we need to.
+									firstRolePlayer = currentRolePlayer;
+								}
+								else
+								{
+									if (superTypesCache == null)
 									{
-										notifyAdded.ElementAdded(compatibleError, true);
+										// Populate the cache
+										superTypesCache = new Collection<ObjectType>();
+										ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type)
+										{
+											superTypesCache.Add(type);
+											return true;
+										});
+									}
+									// If the type is contained, WalkSupertype will return false because the iteration
+									// did not complete.
+									bool isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type)
+									{
+										// Continue iteration if the type is recognized in the cache
+										return !superTypesCache.Contains(type);
+									});
+									if (!isCompatible)
+									{
+										// If a starting error is present, then adjust its column
+										// property and regenerate the text
+										if (nextStartingError < startingErrorCount)
+										{
+											compatibleError = startingErrors[nextStartingError];
+											++nextStartingError;
+											compatibleError.Column = column;
+											compatibleError.GenerateErrorText();
+										}
+										else
+										{
+											// We need a new error, create it from scratch
+											compatibleError = CompatibleRolePlayerTypeError.CreateCompatibleRolePlayerTypeError(store);
+											compatibleError.Model = Model;
+											compatibleError.Column = column;
+											compatibleError.MultiColumnExternalConstraint = this;
+											compatibleError.GenerateErrorText();
+											if (notifyAdded != null)
+											{
+												notifyAdded.ElementAdded(compatibleError, true);
+											}
+										}
 									}
 								}
-								return;
 							}
 						}
 					}
-				}
-				//If the matches are compatible, then remove any errors that may be present
-				if (isCompatible)
-				{
-					for (int i = 0; i < CompatibleRolePlayerTypeErrorCollection.Count; i++)
+
+					// If any errors are left, then remove them, we have enough
+					for (int i = startingErrorCount - 1; i >= nextStartingError; --i)
 					{
-						if (null != (compatibleError = CompatibleRolePlayerTypeErrorCollection[i]))
-						{
-							compatibleError.Remove();
-						}
+						startingErrors[i].Remove();
 					}
 				}
-			}
-		}
-
-		#region Helper recursive methods for VerifyCompatibleRolePlayerTypeForRule
-
-		/// <summary>
-		/// Recurses through the ObjectType A and ObjectType B to find all the parents of the ObjectTypes, and then compares them for compatible fact types
-		/// </summary>
-		/// <param name="typeA">ObjectType being compared</param>
-		/// <param name="typeB">ObjectType being compared</param>
-		/// <returns>The two ObjectTypes are compatible</returns>
-		private bool RecurseThroughSuperTypes(ObjectType typeA, ObjectType typeB)
-		{
-
-			Collection<ObjectType> arryA = FindSuperParent(typeA);
-			Collection<ObjectType> arryB = FindSuperParent(typeB);
-
-			foreach (ObjectType itr in arryA)
-			{
-				if (arryB.Contains(itr))
+				else
 				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-
-		/// <summary>
-		/// Recurses through the ObjectType to find the list of Top-Level ObjectType Objects for the parameter passed in.  Default function which is recommended for use.
-		/// </summary>
-		/// <param name="parentType">ObjectType which top elements are to be found</param>
-		/// <returns>Collection consisting of all Top-Level ObjectType Objects</returns>
-		private Collection<ObjectType> FindSuperParent(ObjectType parentType)
-		{
-			Collection<ObjectType> retVal = new Collection<ObjectType>();
-			FindSuperParent(parentType, retVal);
-			return retVal;
-		}
-
-		/// <summary>
-		/// Actual recursive function. Populates the ResultSet with Top-Level ObjectType Objects.
-		/// </summary>
-		/// <param name="parentType">ObjectType which top elements are to be found</param>
-		/// <param name="superParents">Collection consisting of current discovered Top-Level ObjectType Objects</param>
-		private void FindSuperParent(ObjectType parentType, Collection<ObjectType> superParents)
-		{
-			if (!parentType.SupertypeCollection.GetEnumerator().MoveNext())
-			{
-				superParents.Add(parentType);
-			}
-			else
-			{
-				foreach (ObjectType super in parentType.SupertypeCollection)
-				{
-					FindSuperParent(super, superParents);
+					CompatibleRolePlayerTypeErrorCollection.Clear();
 				}
 			}
 		}
-		#endregion		//end  Helper recursive methods for VerifyCompatibleRolePlayerTypeForRule
-
 		private void VerifyCompatibleRolePlayerTypeForRule(INotifyElementAdded notifyAdded)
 		{
 			if (null == TooFewRoleSequencesError && null == TooManyRoleSequencesError && null == ArityMismatchError)
@@ -1104,11 +1071,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				VerifyCompatibleRolePlayerTypeForRule(notifyAdded, true);
 			}
 		}
-
-		#endregion
-
+		#endregion // VerifyCompatibleRolePlayerTypeForRule
 		#region Add/Remove Rules
-
 		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence), FireTime = TimeToFire.TopLevelCommit)]
 		private class EnforceRoleSequenceCardinalityForAdd : AddRule
 		{
@@ -1231,9 +1195,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
-		#endregion 
-
+		#endregion // Add/Remove Rules
 		#endregion // Error synchronization rules
 		#region IModelErrorOwner Implementation
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
@@ -1253,7 +1215,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			{
 				TooManyRoleSequencesError tooMany;
 				TooFewRoleSequencesError tooFew;
-				ExternalConstraintRoleSequenceArityMismatch arityMismatch;
+				ExternalConstraintRoleSequenceArityMismatchError arityMismatch;
 				if (null != (tooMany = TooManyRoleSequencesError))
 				{
 					yield return tooMany;
@@ -2428,7 +2390,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
-	public partial class ExternalConstraintRoleSequenceArityMismatch : IRepresentModelElements
+	public partial class ExternalConstraintRoleSequenceArityMismatchError : IRepresentModelElements
 	{
 		#region Base overrides
 		/// <summary>
@@ -2480,10 +2442,26 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			MultiColumnExternalConstraint parent = this.MultiColumnExternalConstraint;
-			string parentName = (parent != null) ? parent.Name : "";
+			MultiColumnExternalConstraint multiColumnParent = MultiColumnExternalConstraint;
+			NamedElement namedParent;
+			bool useColumn;
+			if (multiColumnParent != null)
+			{
+				namedParent = multiColumnParent;
+				useColumn = multiColumnParent.RoleSequenceCollection[0].RoleCollection.Count > 1;
+			}
+			else
+			{
+				namedParent = SingleColumnExternalConstraint;
+				useColumn = false;
+			}
+			Debug.Assert(namedParent != null, "Parent must be single column or multi column");
+			string parentName = (namedParent != null) ? namedParent.Name : "";
+			string modelName = this.Model.Name;
 			string currentText = Name;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintCompatibleRolePlayerTypeError, parentName, this.Model.Name);
+			string newText = useColumn ?
+				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorMultiColumnConstraintCompatibleRolePlayerTypeError, parentName, modelName, (Column + 1).ToString(CultureInfo.InvariantCulture)) :
+				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSingleColumnConstraintCompatibleRolePlayerTypeError, parentName, modelName);
 			if (currentText != newText)
 			{
 				Name = newText;
@@ -2507,13 +2485,27 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected ModelElement[] GetRepresentedElements()
 		{
-			return new ModelElement[] { MultiColumnExternalConstraint };
+			return new ModelElement[] { ParentConstraint };
 		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
 		{
 			return GetRepresentedElements();
 		}
 		#endregion // IRepresentModelElements Implementation
+		#region Accessor Properties
+		/// <summary>
+		/// Return either the single column or multi column
+		/// constraint associated with this error.
+		/// </summary>
+		public NamedElement ParentConstraint
+		{
+			get
+			{
+				NamedElement retVal = MultiColumnExternalConstraint;
+				return (retVal != null) ? retVal : SingleColumnExternalConstraint;
+			}
+		}
+		#endregion // Accessor Properties
 	}
 
 

@@ -172,6 +172,7 @@
 			<se:Link Name="RolePlayer" RelationshipName="ObjectTypePlaysRole" RoleName="RolePlayer"/>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequenceCollection" WriteStyle="NotWritten"/>
 			<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
+			<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="RolePlayerRequiredError" WriteStyle="NotWritten"/>
 		</se:Element>
 		<!--Constraints-->
 		<se:Element Class="MultiColumnExternalConstraint">
@@ -188,6 +189,7 @@
 				<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 			</se:ChildElement>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
+			<se:Link RelationshipName="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeError" WriteStyle="NotWritten"/>
 		</se:Element>
 		<se:Element Class="ExternalUniquenessConstraint" Override="true" SortChildElements="true">
 			<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
@@ -218,8 +220,8 @@
 		<se:Element Class="ObjectTypeDuplicateNameError">
 			<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectTypeCollection" Name="Objects"/>
 		</se:Element>
-		<se:Element Class="ExternalConstraintRoleSequenceArityMismatch">
-			<se:Link RelationshipName="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatch" RoleName="Constraint" Name="Constraint"/>
+		<se:Element Class="ExternalConstraintRoleSequenceArityMismatchError">
+			<se:Link RelationshipName="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="Constraint" Name="Constraint"/>
 		</se:Element>
 		<se:Element Class="FactTypeRequiresInternalUniquenessConstraintError">
 			<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="FactType" Name="Fact"/>
@@ -246,7 +248,11 @@
 			<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="InternalUniquenessConstraint"/>
 		</se:Element>
 		<se:Element Class="CompatibleRolePlayerTypeError">
-			<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="MultiColumnExternalConstraint" Name="Constraint"/>
+			<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="MultiColumnExternalConstraint" Name="MultiColumnConstraint"/>
+			<se:Link RelationshipName="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="SingleColumnExternalConstraint" Name="SingleColumnConstraint"/>
+		</se:Element>
+		<se:Element Class="RolePlayerRequiredError">
+			<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="Role" Name="Role"/>
 		</se:Element>
 	</se:Using>
 	<se:Using Namespace="Northface.Tools.ORM.ShapeModel">

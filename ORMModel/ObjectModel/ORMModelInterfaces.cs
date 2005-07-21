@@ -23,6 +23,11 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// Retrieve the service for getting current font and color information
 		/// </summary>
 		IORMFontAndColorService FontAndColorService { get;}
+		/// <summary>
+		/// Retrieve the context service provider. Can be null in some situations,
+		/// such as when the model is being loaded outside the Visual Studio environment.
+		/// </summary>
+		IServiceProvider ServiceProvider { get;}
 	}
 	#endregion // IORMToolServices interface
 	#region IRepresentedModelElements interface

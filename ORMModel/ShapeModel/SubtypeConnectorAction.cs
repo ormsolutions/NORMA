@@ -263,6 +263,11 @@ namespace Northface.Tools.ORM.ShapeModel
 				MouseDown(mouseEventArgs);
 				Click(new DiagramPointEventArgs(emulateClickPoint.X, emulateClickPoint.Y, PointRelativeTo.Client, clientView));
 				MouseUp(mouseEventArgs);
+
+				// An extra move lets us chain when the mouse is not on the design surface,
+				// such as when we are being activated via the task list.
+				MouseMove(mouseEventArgs);
+
 				myEmulateDrag = emulateDrag;
 				ORMDiagram.SelectToolboxItem(activeView, ResourceStrings.ToolboxSubtypeConnectorItemId);
 			}

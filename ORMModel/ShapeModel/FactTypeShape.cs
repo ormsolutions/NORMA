@@ -2856,6 +2856,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			FactTypeRequiresReadingError noReading;
 			FactTypeRequiresInternalUniquenessConstraintError noUniqueness;
 			NMinusOneError nMinusOne;
+			RolePlayerRequiredError requireRolePlayer;
 			FactType fact;
 			Reading reading = null;
 			InternalUniquenessConstraint activateConstraint = null;
@@ -2892,6 +2893,16 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				activateConstraint = nMinusOne.Constraint;
 				addActiveRoles = true;
+			}
+			else if (null != (requireRolePlayer = error as RolePlayerRequiredError))
+			{
+				ORMDiagram ormDiagram = Diagram as ORMDiagram;
+				Role role = requireRolePlayer.Role;
+				DiagramClientView clientView = ormDiagram.ActiveDiagramView.DiagramClientView;
+				DiagramItem diagramItem = new DiagramItem(this, RolesShape, new RoleSubField(role));
+				clientView.Selection.Set(diagramItem);
+				RoleConnectAction connectAction = ormDiagram.RoleConnectAction;
+				connectAction.ChainMouseAction(GetAbsoluteRoleAttachPoint(role), clientView, false);
 			}
 
 			if (reading != null)
@@ -3067,7 +3078,27 @@ namespace Northface.Tools.ORM.ShapeModel
 					constraintShapeField = myBottomConstraintShapeField;
 				}
 			}
-			return retVal; ;
+			return retVal;
+		}
+		/// <summary>
+		/// Gets the attach point of the specific role within this shape.
+		/// </summary>
+		/// <param name="role">The role to locate</param>
+		/// <returns>An absolute point</returns>
+		public PointD GetAbsoluteRoleAttachPoint(Role role)
+		{
+			Debug.Assert(role.FactType == AssociatedFactType);
+			FactType factType = role.FactType;
+			RoleMoveableCollection roles = factType.RoleCollection;
+			int roleCount = roles.Count;
+			if (roleCount != 0)
+			{
+				RectangleD roleBounds = myRolesShapeField.GetBounds(this);
+				roleBounds.Offset(Bounds.Location);
+				int roleIndex = roles.IndexOf(role);
+				return new PointD((roleBounds.Width / roleCount) * (roleIndex + .5f) + roleBounds.X, roleBounds.Height / 2 + roleBounds.Y);
+			}
+			return default(PointD);
 		}
 		/// <summary>
 		/// Static property set when an external constraint is being created. The active

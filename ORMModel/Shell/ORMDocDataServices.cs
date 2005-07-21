@@ -86,6 +86,24 @@ namespace Northface.Tools.ORM.Shell
 					return FontAndColorService;
 				}
 			}
+			/// <summary>
+			/// Defer to ServiceProvider on the document. Implements
+			/// IORMToolServices.ServiceProvider
+			/// </summary>
+			protected IServiceProvider ServiceProvider
+			{
+				get
+				{
+					return myServices.ServiceProvider;
+				}
+			}
+			IServiceProvider IORMToolServices.ServiceProvider
+			{
+				get
+				{
+					return ServiceProvider;
+				}
+			}
 			#endregion // IORMToolServices Implementation
 		}
 		#endregion // Store services passthrough
@@ -132,6 +150,13 @@ namespace Northface.Tools.ORM.Shell
 			get
 			{
 				return FontAndColorService;
+			}
+		}
+		IServiceProvider IORMToolServices.ServiceProvider
+		{
+			get
+			{
+				return ServiceProvider;
 			}
 		}
 		#endregion // IORMToolServices Implementation

@@ -7,7 +7,7 @@
         <plx:Root xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
             <plx:Namespace name="Northface.Tools.ORM">
                 <plx:Class name="ResourceStrings" partial="true" visibility="Internal">
-                    <xsl:for-each select="ResourceString">
+                    <!--<xsl:for-each select="ResourceString">
                         <plx:Field const="true" visibility="Private" dataTypeName="String" dataTypeQualifier="System" name="{@name}_Id">
                             <plx:Initialize>
                                 <plx:String>
@@ -15,7 +15,7 @@
                                 </plx:String>
                             </plx:Initialize>
                         </plx:Field>
-                    </xsl:for-each>
+                    </xsl:for-each>-->
                     <xsl:for-each select="ResourceString">
                         <plx:Property name="{@name}" shared="true" visibility="Public">
                             <plx:Param name="" style="RetVal" dataTypeName="String" dataTypeQualifier="System"></plx:Param>
@@ -26,7 +26,10 @@
                                             <plx:CallType name="{@model}" dataTypeName="ResourceManagers" style="Field"/>
                                         </plx:PassParam>
                                         <plx:PassParam passStyle="In">
-                                            <plx:CallType name="{@name}_Id" dataTypeName="ResourceStrings" style="Field"/>
+											<plx:String>
+												<xsl:value-of select="@resourceName"/>
+											</plx:String>
+											<!--<plx:CallType name="{@name}_Id" dataTypeName="ResourceStrings" style="Field"/>-->
                                         </plx:PassParam>
                                     </plx:CallType>
                                 </plx:Return>

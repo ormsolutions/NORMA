@@ -13,161 +13,13 @@ namespace Northface.Tools.ORM
     
     internal partial class ResourceStrings
     {
-        private const string ToolboxDefaultTabName_Id = "Toolbox.DefaultTabName";
-        private const string ValueType_Id = "Northface.Tools.ORM.ObjectModel.ValueType";
-        private const string EntityType_Id = "Northface.Tools.ORM.ObjectModel.EntityType";
-        private const string FactType_Id = "Northface.Tools.ORM.ObjectModel.FactType";
-        private const string SubtypeFact_Id = "Northface.Tools.ORM.ObjectModel.SubtypeFact";
-        private const string ObjectifiedFactType_Id = "Northface.Tools.ORM.ObjectModel.ObjectifiedFactType";
-        private const string ReadingType_Id = "Northface.Tools.ORM.ObjectModel.Reading";
-        private const string RolePlayerPickerNullItemText_Id = "Northface.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText";
-        private const string NestedFactTypePickerNullItemText_Id = "Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText";
-        private const string NestingTypePickerNullItemText_Id = "Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText";
-        private const string EntityTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern";
-        private const string PortableDataTypeUnspecified_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text";
-        private const string PortableDataTypeTextFixedLength_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text";
-        private const string PortableDataTypeTextVariableLength_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Tex" +
-            "t";
-        private const string PortableDataTypeTextLargeLength_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text";
-        private const string PortableDataTypeNumericSignedInteger_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.T" +
-            "ext";
-        private const string PortableDataTypeNumericUnsignedInteger_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger" +
-            ".Text";
-        private const string PortableDataTypeNumericAutoCounter_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Tex" +
-            "t";
-        private const string PortableDataTypeNumericFloatingPoint_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.T" +
-            "ext";
-        private const string PortableDataTypeNumericDecimal_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text";
-        private const string PortableDataTypeNumericMoney_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text";
-        private const string PortableDataTypeRawDataFixedLength_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Tex" +
-            "t";
-        private const string PortableDataTypeRawDataVariableLength_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength." +
-            "Text";
-        private const string PortableDataTypeRawDataLargeLength_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Tex" +
-            "t";
-        private const string PortableDataTypeRawDataPicture_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text";
-        private const string PortableDataTypeRawDataOleObject_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text";
-        private const string PortableDataTypeTemporalAutoTimestamp_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp." +
-            "Text";
-        private const string PortableDataTypeTemporalTime_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text";
-        private const string PortableDataTypeTemporalDate_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text";
-        private const string PortableDataTypeTemporalDateAndTime_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Te" +
-            "xt";
-        private const string PortableDataTypeLogicalTrueOrFalse_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Tex" +
-            "t";
-        private const string PortableDataTypeLogicalYesOrNo_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text";
-        private const string PortableDataTypeOtherRowId_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text";
-        private const string PortableDataTypeOtherObjectId_Id = "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text";
-        private const string ValueTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern";
-        private const string FactTypeDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.FactType.DefaultNamePattern";
-        private const string SubtypeFactDefaultNamePattern_Id = "Northface.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern";
-        private const string SubtypeFactPredicateInverseReading_Id = "SubtypeFact.PredicateInverseReading";
-        private const string SubtypeFactPredicateReading_Id = "SubtypeFact.PredicateReading";
-        private const string SubtypeFactComponentNameFormat_Id = "SubtypeFact.ComponentNameFormat";
-        private const string ExternalConstraintConnectActionInstructions_Id = "ExternalConstraintConnectAction.Instructions";
-        private const string ExternalConstraintConnectActionTransactionName_Id = "ExternalConstraintConnectAction.TransactionName";
-        private const string FrequencyConstraintMinimumFormatString_Id = "FrequencyConstraint.Minimum.FormatString";
-        private const string FrequencyConstraintBetweenFormatString_Id = "FrequencyConstraint.Between.FormatString";
-        private const string InternalUniquenessConstraintConnectActionInstructions_Id = "InternalUniquenessConstraintConnectAction.Instructions";
-        private const string InternalUniquenessConstraintConnectActionTransactionName_Id = "InternalUniquenessConstraintConnectAction.TransactionName";
-        private const string InsertRoleTransactionName_Id = "InsertRole.TransactionName";
-        private const string RoleConnectActionTransactionName_Id = "RoleConnectAction.TransactionName";
-        private const string SubtypeConnectActionTransactionName_Id = "SubtypeConnectAction.TransactionName";
-        private const string OptionsPageChangeTransactionName_Id = "OptionsPageChange.TransactionName";
-        private const string DeleteRoleSequenceTransactionName_Id = "DeleteRoleSequence.TransactionName";
-        private const string MoveRoleSequenceDownTransactionName_Id = "MoveRoleSequenceDown.TransactionName";
-        private const string MoveRoleSequenceUpTransactionName_Id = "MoveRoleSequenceUp.TransactionName";
-        private const string InterpretFactEditorLineTransactionName_Id = "InterpretFactEditorLine.TransactionName";
-        private const string ModelBrowserWindowTitle_Id = "ORMModelBrowser.WindowTitle";
-        private const string ModelExceptionReadingIsPrimaryToFalse_Id = "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse";
-        private const string ModelExceptionFactAddReadingInvalidReadingText_Id = "ModelException.Fact.AddReading.InvalidReadingText";
-        private const string ModelErrorConstraintHasTooFewRoleSequencesText_Id = "ModelError.Constraint.TooFewRoleSequences.Text";
-        private const string ModelErrorConstraintHasTooManyRoleSequencesText_Id = "ModelError.Constraint.TooManyRoleSequences.Text";
-        private const string ModelErrorConstraintExternalConstraintArityMismatch_Id = "ModelError.Constraint.ExternalConstraintArityMismatch.Text";
-        private const string ModelErrorModelHasDuplicateConstraintNames_Id = "ModelError.Model.DuplicateConstraintNames.Text";
-        private const string ModelErrorModelHasDuplicateFactTypeNames_Id = "ModelError.Model.DuplicateFactTypeNames.Text";
-        private const string ModelErrorModelHasDuplicateObjectTypeNames_Id = "ModelError.Model.DuplicateObjectTypeNames.Text";
-        private const string ModelExceptionNameAlreadyUsedByModel_Id = "ModelException.Model.DuplicateName.Text";
-        private const string ModelExceptionEnforceValueTypeNotNestingType_Id = "ModelException.ObjectType.EnforceValueTypeNotNestingType";
-        private const string ModelExceptionEnforceRolePlayerNotNestingType_Id = "ModelException.FactType.EnforceRolePlayerNotNestingType";
-        private const string ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType_Id = "ModelException.ObjectType.EnforcePreferredIdentifierForUnobjectifiedEntityType";
-        private const string ModelExceptionIsMandatoryRequiresAttachedFactType_Id = "ModelException.Role.IsMandatoryRequiresAttachedFactType";
-        private const string ModelExceptionPreferredIdentifierMustBeUniquenessConstraint_Id = "ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint";
-        private const string ModelExceptionInvalidInternalPreferredIdentifierPreConditions_Id = "ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditio" +
-            "ns";
-        private const string ModelExceptionInternalConstraintInconsistentRoleOwners_Id = "ModelException.InternalConstraint.InconsistentRoleOwners";
-        private const string CommandDeleteFactTypeText_Id = "Command.DeleteFactType.Text";
-        private const string CommandDeleteObjectTypeText_Id = "Command.DeleteObjectType.Text";
-        private const string CommandDeleteConstraintText_Id = "Command.DeleteConstraint.Text";
-        private const string CommandDeleteRoleText_Id = "Command.DeleteRole.Text";
-        private const string ModelReadingEditorListColumnHeaderReadingText_Id = "ModelReadingEditor.ListColumnHeader.ReadingText";
-        private const string ModelReadingEditorListColumnHeaderIsPrimary_Id = "ModelReadingEditor.ListColumnHeader.IsPrimary";
-        private const string ModelReadingEditorAllReadingsNodeName_Id = "ModelReadingEditor.AllReadingsNodeName";
-        private const string ModelReadingEditorMissingRolePlayerText_Id = "ModelReadingEditor.MissingRolePlayerText";
-        private const string ModelReadingEditorNewItemText_Id = "ModelReadingEditor.NewItemText";
-        private const string ModelReadingEditorNewReadingTransactionText_Id = "ModelReadingEditor.NewReadingTransactionText";
-        private const string ModelReadingEditorChangeReadingText_Id = "ModelReadingEditor.ChangeReadingText";
-        private const string ModelReadingEditorIsPrimaryToolTip_Id = "ModelReadingEditor.IsPrimaryToolTip";
-        private const string ModelReadingEditorChangePrimaryReadingText_Id = "ModelReadingEditor.ChangePrimaryReadingText";
-        private const string ModelReadingEditorWindowTitle_Id = "ModelReadingEditor.WindowTitle";
-        private const string ModelReadingEditorUnsupportedSelectionText_Id = "ModelReadingEditor.UnsupportedSelectionText";
-        private const string PackageOfficialName_Id = "Package.OfficialName";
-        private const string PackageProductDetails_Id = "Package.ProductDetails";
-        private const string ModelReferenceModeEditorReferenceModeName_Id = "ModelReferenceModeEditor.ReferenceModeName";
-        private const string ModelReferenceModeEditorEntityTypeName_Id = "ModelReferenceModeEditor.EntityTypeName";
-        private const string ModelReferenceModeEditorReferenceModeKindHeader_Id = "ModelReferenceModeEditor.ReferenceModeKindHeader";
-        private const string ModelReferenceModeEditorChangeNameTransaction_Id = "ModelReferenceModeEditor.ChangeNameTransaction";
-        private const string ModelReferenceModeEditorCustomReferenceModesHeader_Id = "ModelReferenceModeEditor.CustomReferenceModesHeader";
-        private const string ModelReferenceModeEditorIntrinsicReferenceModesHeader_Id = "ModelReferenceModeEditor.IntrinsicReferenceModesHeader";
-        private const string ModelReferenceModeEditorAbbreviatedEntityTypeName_Id = "ModelReferenceModeEditor.AbbreviatedEntityTypeName";
-        private const string ModelReferenceModeEditorAbbreviatedReferenceModeName_Id = "ModelReferenceModeEditor.AbbreviatedReferenceModeName";
-        private const string ModelReferenceModeEditorAddCustomReferenceModeTransaction_Id = "ModelReferenceModeEditor.AddCustomReferenceModeTransaction";
-        private const string ModelReferenceModeEditorAddNewRowText_Id = "ModelReferenceModeEditor.AddNewRowText";
-        private const string ModelReferenceModeEditorChangeFormatStringTransaction_Id = "ModelReferenceModeEditor.ChangeFormatStringTransaction";
-        private const string ModelReferenceModeEditorEditorWindowTitle_Id = "ModelReferenceModeEditor.EditorWindowTitle";
-        private const string ModelExceptionReferenceModeEnforceUniqueFormatString_Id = "ModelException.ReferenceMode.EnforceUniqueFormatString";
-        private const string ModelExceptionReferenceModeKindEnforceUniqueFormatString_Id = "ModelException.ReferenceModeKind.EnforceUniqueFormatString";
-        private const string ModelExceptionReferenceModeIntrinsicRefModesDontChange_Id = "ModelException.ReferenceMode.IntrinsicRefModesDontChange";
-        private const string ModelExceptionReferenceModeReferenceModesKindNotEmpty_Id = "ModelException.ReferenceMode.ReferenceModesKindNotEmpty";
-        private const string ModelReferenceModeEditorChangeReferenceModeKindTransaction_Id = "ModelReferenceModeEditor.ChangeReferenceModeKindTransaction";
-        private const string ReferenceModePredicateReading_Id = "ReferenceMode.PredicateReading";
-        private const string ReferenceModePredicateInverseReading_Id = "ReferenceMode.PredicateInverseReading";
-        private const string ModelReferenceModeEditorFormatStringColumn_Id = "ModelReferenceModeEditor.FormatStringColumn";
-        private const string ModelReferenceModeEditorKindColumn_Id = "ModelReferenceModeEditor.KindColumn";
-        private const string ModelReferenceModeEditorNameColumn_Id = "ModelReferenceModeEditor.NameColumn";
-        private const string FactEditorToolWindowCaption_Id = "FactEditorToolWindow.Caption";
-        private const string ModelExceptionReferenceModeAmbiguousName_Id = "ModelException.ReferenceMode.AmbiguousName";
-        private const string ModelExceptionSubtypeConstraintAndRolePatternFixed_Id = "ModelException.SubtypeFact.ConstraintAndRolePatternFixed";
-        private const string ModelExceptionSubtypeFactNotNested_Id = "ModelException.SubtypeFact.NotNested";
-        private const string ModelExceptionSubtypeFactCycle_Id = "ModelException.SubtypeFact.Cycle";
-        private const string ModelReferenceModePickerFormatString_Id = "ModelReferenceModePicker.FormatString";
-        private const string ModelErrorReadingTooFewRolesMessage_Id = "ModelError.Reading.TooFewRoles.Message";
-        private const string ModelErrorReadingTooManyRolesMessage_Id = "ModelError.Reading.TooManyRoles.Message";
-        private const string ModelReadingRoleDeletedRoleText_Id = "Model.Reading.RoleDeletedText";
-        private const string ModelErrorFactTypeRequiresInternalUniquessConstraintMessage_Id = "ModelError.FactType.RequiresInternalUniquenessConstraint.Message";
-        private const string ModelErrorFactTypeRequiresReadingMessage_Id = "ModelError.FactType.RequiresReading.Message";
-        private const string ModelErrorValueTypeDataTypeNotSpecifiedMessage_Id = "ModelError.ValueType.DataTypeNotSpecified.Message";
-        private const string ModelErrorFactTypeRequiresIUCActivateTransactionName_Id = "ModelError.FactType.RequiresIUC.ActivateTransactionName";
-        private const string ValueRangeDefinitionDefinitionContainerPattern_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern";
-        private const string ValueRangeDefinitionRangeDelimiter_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter";
-        private const string ValueRangeDefinitionValueDelimiter_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueDelimiter";
-        private const string ValueRangeDefinitionStringContainerPattern_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern";
-        private const string ValueRangeDefinitionOpenInclusionContainer_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern";
-        private const string ValueRangeDefinitionClosedInclusionContainer_Id = "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern";
-        private const string ReadingShapeReadingSeparator_Id = "ReadingShape.ReadingSeparator";
-        private const string ReadingShapeEllipsis_Id = "ReadingShape.Ellipsis";
-        private const string ReadingShapeInverseReading_Id = "ReadingShape.InverseReading";
-        private const string ReadingShapeAttachedRoleDisplay_Id = "ReadingShape.AttachedRoleDisplay";
-        private const string ReadingShapeUnattachedRoleDisplay_Id = "ReadingShape.UnattachedRoleDisplay";
-        private const string NMinusOneRuleInternalSpan_Id = "ModelError.FactType.NMinusOneRule.Text";
-        private const string ModelErrorConstraintCompatibleRolePlayerTypeError_Id = "ModelError.Constraint.CompatibleRolePlayerTypeError.Text";
         /// <summary>
         ///</summary>
         public static string ToolboxDefaultTabName
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ShapeModel, ResourceStrings.ToolboxDefaultTabName_Id);
+                return ResourceStrings.GetString(ResourceManagers.ShapeModel, "Toolbox.DefaultTabName");
             }
         }
         /// <summary>
@@ -176,7 +28,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueType_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueType");
             }
         }
         /// <summary>
@@ -185,7 +37,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.EntityType_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.EntityType");
             }
         }
         /// <summary>
@@ -194,7 +46,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.FactType_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.FactType");
             }
         }
         /// <summary>
@@ -203,7 +55,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.SubtypeFact_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.SubtypeFact");
             }
         }
         /// <summary>
@@ -212,7 +64,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ObjectifiedFactType_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ObjectifiedFactType");
             }
         }
         /// <summary>
@@ -221,7 +73,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ReadingType_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.Reading");
             }
         }
         /// <summary>
@@ -230,7 +82,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.RolePlayerPickerNullItemText_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText");
             }
         }
         /// <summary>
@@ -239,7 +91,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.NestedFactTypePickerNullItemText_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
             }
         }
         /// <summary>
@@ -248,7 +100,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.NestingTypePickerNullItemText_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
             }
         }
         /// <summary>
@@ -257,7 +109,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.EntityTypeDefaultNamePattern_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern");
             }
         }
         /// <summary>
@@ -266,7 +118,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeUnspecified_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text");
             }
         }
         /// <summary>
@@ -275,7 +127,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeTextFixedLength_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text");
             }
         }
         /// <summary>
@@ -284,7 +136,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeTextVariableLength_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Tex" +
+                        "t");
             }
         }
         /// <summary>
@@ -293,7 +146,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeTextLargeLength_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text");
             }
         }
         /// <summary>
@@ -302,7 +155,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeNumericSignedInteger_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.T" +
+                        "ext");
             }
         }
         /// <summary>
@@ -311,7 +165,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeNumericUnsignedInteger_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger" +
+                        ".Text");
             }
         }
         /// <summary>
@@ -320,7 +175,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeNumericAutoCounter_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Tex" +
+                        "t");
             }
         }
         /// <summary>
@@ -329,7 +185,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeNumericFloatingPoint_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.T" +
+                        "ext");
             }
         }
         /// <summary>
@@ -338,7 +195,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeNumericDecimal_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text");
             }
         }
         /// <summary>
@@ -347,7 +204,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeNumericMoney_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text");
             }
         }
         /// <summary>
@@ -356,7 +213,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeRawDataFixedLength_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Tex" +
+                        "t");
             }
         }
         /// <summary>
@@ -365,7 +223,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeRawDataVariableLength_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength." +
+                        "Text");
             }
         }
         /// <summary>
@@ -374,7 +233,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeRawDataLargeLength_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Tex" +
+                        "t");
             }
         }
         /// <summary>
@@ -383,7 +243,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeRawDataPicture_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text");
             }
         }
         /// <summary>
@@ -392,7 +252,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeRawDataOleObject_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text");
             }
         }
         /// <summary>
@@ -401,7 +261,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeTemporalAutoTimestamp_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp." +
+                        "Text");
             }
         }
         /// <summary>
@@ -410,7 +271,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeTemporalTime_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text");
             }
         }
         /// <summary>
@@ -419,7 +280,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeTemporalDate_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text");
             }
         }
         /// <summary>
@@ -428,7 +289,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeTemporalDateAndTime_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Te" +
+                        "xt");
             }
         }
         /// <summary>
@@ -437,7 +299,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeLogicalTrueOrFalse_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Tex" +
+                        "t");
             }
         }
         /// <summary>
@@ -446,7 +309,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeLogicalYesOrNo_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text");
             }
         }
         /// <summary>
@@ -455,7 +318,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeOtherRowId_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text");
             }
         }
         /// <summary>
@@ -464,7 +327,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.PortableDataTypeOtherObjectId_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text");
             }
         }
         /// <summary>
@@ -473,7 +336,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueTypeDefaultNamePattern_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern");
             }
         }
         /// <summary>
@@ -482,7 +345,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.FactTypeDefaultNamePattern_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.FactType.DefaultNamePattern");
             }
         }
         /// <summary>
@@ -491,7 +354,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.SubtypeFactDefaultNamePattern_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern");
             }
         }
         /// <summary>
@@ -500,7 +363,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.SubtypeFactPredicateInverseReading_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.PredicateInverseReading");
             }
         }
         /// <summary>
@@ -509,7 +372,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.SubtypeFactPredicateReading_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.PredicateReading");
             }
         }
         /// <summary>
@@ -518,7 +381,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.SubtypeFactComponentNameFormat_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.ComponentNameFormat");
             }
         }
         /// <summary>
@@ -527,7 +390,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ExternalConstraintConnectActionInstructions_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintConnectAction.Instructions");
             }
         }
         /// <summary>
@@ -536,7 +399,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ExternalConstraintConnectActionTransactionName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintConnectAction.TransactionName");
             }
         }
         /// <summary>
@@ -545,7 +408,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.FrequencyConstraintMinimumFormatString_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "FrequencyConstraint.Minimum.FormatString");
             }
         }
         /// <summary>
@@ -554,7 +417,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.FrequencyConstraintBetweenFormatString_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "FrequencyConstraint.Between.FormatString");
             }
         }
         /// <summary>
@@ -563,7 +426,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.InternalUniquenessConstraintConnectActionInstructions_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "InternalUniquenessConstraintConnectAction.Instructions");
             }
         }
         /// <summary>
@@ -572,7 +435,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.InternalUniquenessConstraintConnectActionTransactionName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "InternalUniquenessConstraintConnectAction.TransactionName");
             }
         }
         /// <summary>
@@ -581,7 +444,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.InsertRoleTransactionName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "InsertRole.TransactionName");
             }
         }
         /// <summary>
@@ -590,7 +453,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.RoleConnectActionTransactionName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "RoleConnectAction.TransactionName");
             }
         }
         /// <summary>
@@ -599,7 +462,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.SubtypeConnectActionTransactionName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "SubtypeConnectAction.TransactionName");
             }
         }
         /// <summary>
@@ -608,7 +471,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.OptionsPageChangeTransactionName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "OptionsPageChange.TransactionName");
             }
         }
         /// <summary>
@@ -617,7 +480,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.DeleteRoleSequenceTransactionName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "DeleteRoleSequence.TransactionName");
             }
         }
         /// <summary>
@@ -626,7 +489,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.MoveRoleSequenceDownTransactionName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "MoveRoleSequenceDown.TransactionName");
             }
         }
         /// <summary>
@@ -635,7 +498,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.MoveRoleSequenceUpTransactionName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "MoveRoleSequenceUp.TransactionName");
             }
         }
         /// <summary>
@@ -644,7 +507,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.InterpretFactEditorLineTransactionName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "InterpretFactEditorLine.TransactionName");
             }
         }
         /// <summary>
@@ -653,7 +516,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ModelBrowserWindowTitle_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMModelBrowser.WindowTitle");
             }
         }
         /// <summary>
@@ -662,7 +525,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionReadingIsPrimaryToFalse_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse");
             }
         }
         /// <summary>
@@ -671,7 +534,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionFactAddReadingInvalidReadingText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Fact.AddReading.InvalidReadingText");
             }
         }
         /// <summary>
@@ -680,7 +543,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.Text");
             }
         }
         /// <summary>
@@ -689,7 +552,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooManyRoleSequences.Text");
             }
         }
         /// <summary>
@@ -698,7 +561,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorConstraintExternalConstraintArityMismatch_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalConstraintArityMismatch.Text");
             }
         }
         /// <summary>
@@ -707,7 +570,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorModelHasDuplicateConstraintNames_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateConstraintNames.Text");
             }
         }
         /// <summary>
@@ -716,7 +579,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorModelHasDuplicateFactTypeNames_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateFactTypeNames.Text");
             }
         }
         /// <summary>
@@ -725,7 +588,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorModelHasDuplicateObjectTypeNames_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateObjectTypeNames.Text");
             }
         }
         /// <summary>
@@ -734,7 +597,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionNameAlreadyUsedByModel_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Model.DuplicateName.Text");
             }
         }
         /// <summary>
@@ -743,7 +606,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionEnforceValueTypeNotNestingType_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforceValueTypeNotNestingType");
             }
         }
         /// <summary>
@@ -752,7 +615,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionEnforceRolePlayerNotNestingType_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactType.EnforceRolePlayerNotNestingType");
             }
         }
         /// <summary>
@@ -761,7 +624,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforcePreferredIdentifierForUnobjectifiedEntityType");
             }
         }
         /// <summary>
@@ -770,7 +633,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionIsMandatoryRequiresAttachedFactType_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Role.IsMandatoryRequiresAttachedFactType");
             }
         }
         /// <summary>
@@ -779,7 +642,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionPreferredIdentifierMustBeUniquenessConstraint_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint");
             }
         }
         /// <summary>
@@ -788,7 +651,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionInvalidInternalPreferredIdentifierPreConditions_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditio" +
+                        "ns");
             }
         }
         /// <summary>
@@ -797,7 +661,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionInternalConstraintInconsistentRoleOwners_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.InternalConstraint.InconsistentRoleOwners");
             }
         }
         /// <summary>
@@ -806,7 +670,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.CommandDeleteFactTypeText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteFactType.Text");
             }
         }
         /// <summary>
@@ -815,7 +679,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.CommandDeleteObjectTypeText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteObjectType.Text");
             }
         }
         /// <summary>
@@ -824,7 +688,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.CommandDeleteConstraintText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteConstraint.Text");
             }
         }
         /// <summary>
@@ -833,7 +697,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.CommandDeleteRoleText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteRole.Text");
             }
         }
         /// <summary>
@@ -842,7 +706,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingEditorListColumnHeaderReadingText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ListColumnHeader.ReadingText");
             }
         }
         /// <summary>
@@ -851,7 +715,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingEditorListColumnHeaderIsPrimary_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ListColumnHeader.IsPrimary");
             }
         }
         /// <summary>
@@ -860,7 +724,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingEditorAllReadingsNodeName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.AllReadingsNodeName");
             }
         }
         /// <summary>
@@ -869,7 +733,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingEditorMissingRolePlayerText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.MissingRolePlayerText");
             }
         }
         /// <summary>
@@ -878,7 +742,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingEditorNewItemText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.NewItemText");
             }
         }
         /// <summary>
@@ -887,7 +751,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingEditorNewReadingTransactionText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.NewReadingTransactionText");
             }
         }
         /// <summary>
@@ -896,7 +760,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingEditorChangeReadingText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ChangeReadingText");
             }
         }
         /// <summary>
@@ -905,7 +769,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingEditorIsPrimaryToolTip_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.IsPrimaryToolTip");
             }
         }
         /// <summary>
@@ -914,7 +778,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingEditorChangePrimaryReadingText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ChangePrimaryReadingText");
             }
         }
         /// <summary>
@@ -923,7 +787,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingEditorWindowTitle_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.WindowTitle");
             }
         }
         /// <summary>
@@ -932,7 +796,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingEditorUnsupportedSelectionText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.UnsupportedSelectionText");
             }
         }
         /// <summary>
@@ -941,7 +805,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.PackageOfficialName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "Package.OfficialName");
             }
         }
         /// <summary>
@@ -950,7 +814,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.PackageProductDetails_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "Package.ProductDetails");
             }
         }
         /// <summary>
@@ -959,7 +823,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorReferenceModeName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ReferenceModeName");
             }
         }
         /// <summary>
@@ -968,7 +832,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorEntityTypeName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.EntityTypeName");
             }
         }
         /// <summary>
@@ -977,7 +841,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorReferenceModeKindHeader_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ReferenceModeKindHeader");
             }
         }
         /// <summary>
@@ -986,7 +850,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorChangeNameTransaction_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeNameTransaction");
             }
         }
         /// <summary>
@@ -995,7 +859,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorCustomReferenceModesHeader_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.CustomReferenceModesHeader");
             }
         }
         /// <summary>
@@ -1004,7 +868,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorIntrinsicReferenceModesHeader_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.IntrinsicReferenceModesHeader");
             }
         }
         /// <summary>
@@ -1013,7 +877,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorAbbreviatedEntityTypeName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AbbreviatedEntityTypeName");
             }
         }
         /// <summary>
@@ -1022,7 +886,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorAbbreviatedReferenceModeName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AbbreviatedReferenceModeName");
             }
         }
         /// <summary>
@@ -1031,7 +895,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorAddCustomReferenceModeTransaction_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AddCustomReferenceModeTransaction");
             }
         }
         /// <summary>
@@ -1040,7 +904,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorAddNewRowText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AddNewRowText");
             }
         }
         /// <summary>
@@ -1049,7 +913,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeFormatStringTransaction");
             }
         }
         /// <summary>
@@ -1058,7 +922,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorEditorWindowTitle_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.EditorWindowTitle");
             }
         }
         /// <summary>
@@ -1067,7 +931,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionReferenceModeEnforceUniqueFormatString_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.EnforceUniqueFormatString");
             }
         }
         /// <summary>
@@ -1076,7 +940,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionReferenceModeKindEnforceUniqueFormatString_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceModeKind.EnforceUniqueFormatString");
             }
         }
         /// <summary>
@@ -1085,7 +949,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionReferenceModeIntrinsicRefModesDontChange_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.IntrinsicRefModesDontChange");
             }
         }
         /// <summary>
@@ -1094,7 +958,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionReferenceModeReferenceModesKindNotEmpty_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.ReferenceModesKindNotEmpty");
             }
         }
         /// <summary>
@@ -1103,7 +967,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorChangeReferenceModeKindTransaction_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeReferenceModeKindTransaction");
             }
         }
         /// <summary>
@@ -1112,7 +976,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ReferenceModePredicateReading_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ReferenceMode.PredicateReading");
             }
         }
         /// <summary>
@@ -1121,7 +985,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ReferenceModePredicateInverseReading_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ReferenceMode.PredicateInverseReading");
             }
         }
         /// <summary>
@@ -1130,7 +994,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorFormatStringColumn_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.FormatStringColumn");
             }
         }
         /// <summary>
@@ -1139,7 +1003,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorKindColumn_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.KindColumn");
             }
         }
         /// <summary>
@@ -1148,7 +1012,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModeEditorNameColumn_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.NameColumn");
             }
         }
         /// <summary>
@@ -1157,7 +1021,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.FactEditorToolWindowCaption_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "FactEditorToolWindow.Caption");
             }
         }
         /// <summary>
@@ -1166,7 +1030,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionReferenceModeAmbiguousName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.AmbiguousName");
             }
         }
         /// <summary>
@@ -1175,7 +1039,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionSubtypeConstraintAndRolePatternFixed_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.ConstraintAndRolePatternFixed");
             }
         }
         /// <summary>
@@ -1184,7 +1048,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionSubtypeFactNotNested_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.NotNested");
             }
         }
         /// <summary>
@@ -1193,7 +1057,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelExceptionSubtypeFactCycle_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.Cycle");
             }
         }
         /// <summary>
@@ -1202,7 +1066,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReferenceModePickerFormatString_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModePicker.FormatString");
             }
         }
         /// <summary>
@@ -1211,7 +1075,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorReadingTooFewRolesMessage_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.TooFewRoles.Message");
             }
         }
         /// <summary>
@@ -1220,7 +1084,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorReadingTooManyRolesMessage_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.TooManyRoles.Message");
             }
         }
         /// <summary>
@@ -1229,7 +1093,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelReadingRoleDeletedRoleText_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "Model.Reading.RoleDeletedText");
             }
         }
         /// <summary>
@@ -1238,7 +1102,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorFactTypeRequiresInternalUniquessConstraintMessage_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresInternalUniquenessConstraint.Message");
             }
         }
         /// <summary>
@@ -1247,7 +1111,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorFactTypeRequiresReadingMessage_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresReading.Message");
             }
         }
         /// <summary>
@@ -1256,7 +1120,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorValueTypeDataTypeNotSpecifiedMessage_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueType.DataTypeNotSpecified.Message");
             }
         }
         /// <summary>
@@ -1265,7 +1129,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorFactTypeRequiresIUCActivateTransactionName_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresIUC.ActivateTransactionName");
             }
         }
         /// <summary>
@@ -1274,7 +1138,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionDefinitionContainerPattern_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern");
             }
         }
         /// <summary>
@@ -1283,7 +1147,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionRangeDelimiter_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter");
             }
         }
         /// <summary>
@@ -1292,7 +1156,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionValueDelimiter_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueDelimiter");
             }
         }
         /// <summary>
@@ -1301,7 +1165,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionStringContainerPattern_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern");
             }
         }
         /// <summary>
@@ -1310,7 +1174,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionOpenInclusionContainer_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern");
             }
         }
         /// <summary>
@@ -1319,7 +1183,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, ResourceStrings.ValueRangeDefinitionClosedInclusionContainer_Id);
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern");
             }
         }
         /// <summary>
@@ -1328,7 +1192,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeReadingSeparator_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.ReadingSeparator");
             }
         }
         /// <summary>
@@ -1337,7 +1201,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeEllipsis_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.Ellipsis");
             }
         }
         /// <summary>
@@ -1346,7 +1210,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeInverseReading_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.InverseReading");
             }
         }
         /// <summary>
@@ -1355,7 +1219,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeAttachedRoleDisplay_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.AttachedRoleDisplay");
             }
         }
         /// <summary>
@@ -1364,7 +1228,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeUnattachedRoleDisplay_Id);
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.UnattachedRoleDisplay");
             }
         }
         /// <summary>
@@ -1373,16 +1237,34 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.NMinusOneRuleInternalSpan_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.NMinusOneRule.Text");
             }
         }
         /// <summary>
         ///</summary>
-        public static string ModelErrorConstraintCompatibleRolePlayerTypeError
+        public static string ModelErrorSingleColumnConstraintCompatibleRolePlayerTypeError
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.Model, ResourceStrings.ModelErrorConstraintCompatibleRolePlayerTypeError_Id);
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SingleColumn.Text");
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ModelErrorMultiColumnConstraintCompatibleRolePlayerTypeError
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.MultiColumn.Text");
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ModelErrorRolePlayerRequiredError
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Role.RolePlayerRequired.Message");
             }
         }
     }

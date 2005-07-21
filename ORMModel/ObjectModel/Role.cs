@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 
 namespace Northface.Tools.ORM.ObjectModel
@@ -45,7 +47,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		OneToMany,
 	}
 	#endregion // RoleMultiplicity enum
-	public partial class Role
+	public partial class Role : IModelErrorOwner
 	{
 		#region CustomStorage handlers
 		/// <summary>
@@ -643,5 +645,221 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // RoleChangeRule class
+		#region IModelErrorOwner Implementation
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		[CLSCompliant(false)]
+		protected IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				RolePlayerRequiredError requiredError;
+				if (null != (requiredError = RolePlayerRequiredError))
+				{
+					yield return requiredError;
+				}
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// Validate all errors on the external constraint. This
+		/// is called during deserialization fixup when rules are
+		/// suspended.
+		/// </summary>
+		/// <param name="notifyAdded">A callback for notifying
+		/// the caller of all objects that are added.</param>
+		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			VerifyRolePlayerRequiredForRule(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		#endregion // IModelErrorOwner Implementation
+		#region RolePlayer validation rules
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		private class RolePlayerRequiredAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				link.PlayedRoleCollection.VerifyRolePlayerRequiredForRule(null);
+			}
+		}
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		private class RolePlayerRequiredRemovedRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				link.PlayedRoleCollection.VerifyRolePlayerRequiredForRule(null);
+			}
+		}
+		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class RolePlayerRequiredForNewRoleAddRule : AddRule
+		{
+			/// <summary>
+			/// Verify that the role has a role player attached to it, and
+			/// renumber other role player required error messages when roles are added
+			/// and removed.
+			/// </summary>
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+				Role addedRole = link.RoleCollection;
+				addedRole.VerifyRolePlayerRequiredForRule(null);
+				RenumberRolePlayerRequiredErrors(link.FactType, addedRole);
+			}
+		}
+		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class UpdatedRolePlayerRequiredErrorsRemovedRule : RemoveRule
+		{
+			/// <summary>
+			/// Renumber role player required error messages when roles are added
+			/// and removed.
+			/// </summary>
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+				FactType factType = link.FactType;
+				RenumberRolePlayerRequiredErrors(factType, null);
+			}
+		}
+		/// <summary>
+		/// The error message for role player required events includes the role number.
+		/// If a role is added or deleted, then this numbering can change, so we need to
+		/// regenerated the text.
+		/// </summary>
+		/// <param name="factType">The owning factType</param>
+		/// <param name="roleAdded">The added role, or null if a role was removed.</param>
+		private static void RenumberRolePlayerRequiredErrors(FactType factType, Role roleAdded)
+		{
+			if (!factType.IsRemoved)
+			{
+				RoleMoveableCollection roles = factType.RoleCollection;
+				bool regenerate = roleAdded == null;
+				int roleCount = roles.Count;
+				for (int i = 0; i < roleCount; ++i)
+				{
+					Role currentRole = roles[i];
+					if (regenerate)
+					{
+						RolePlayerRequiredError error = currentRole.RolePlayerRequiredError;
+						if (error != null)
+						{
+							error.GenerateErrorText();
+						}
+					}
+					else if (roleAdded == currentRole)
+					{
+						// Regenerate on the next pass
+						regenerate = true;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Utility function to verify that a role player is present for all roles
+		/// </summary>
+		private void VerifyRolePlayerRequiredForRule(INotifyElementAdded notifyAdded)
+		{
+			if (!IsRemoved)
+			{
+				bool hasRolePlayer = true;
+				RolePlayerRequiredError rolePlayerRequired;
+
+				if (null == RolePlayer)
+				{
+					hasRolePlayer = false;
+					if (null == RolePlayerRequiredError)
+					{
+						rolePlayerRequired = RolePlayerRequiredError.CreateRolePlayerRequiredError(Store);
+						rolePlayerRequired.Model = FactType.Model;
+						rolePlayerRequired.Role = this;
+						rolePlayerRequired.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(rolePlayerRequired, true);
+						}
+					}
+				}
+				if (hasRolePlayer)
+				{
+					if (null != (rolePlayerRequired = RolePlayerRequiredError))
+					{
+						rolePlayerRequired.Remove();
+					}
+				}
+			}
+		}
+		#endregion // RolePlayer validation rules
+	}
+	public partial class RolePlayerRequiredError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			string roleName = "";
+			string factName = "";
+			string modelName = "";
+			Role role = Role;
+			if (role != null)
+			{
+				FactType fact = role.FactType;
+				if (fact != null)
+				{
+					factName = fact.Name;
+					roleName = (fact.RoleCollection.IndexOf(role) + 1).ToString(CultureInfo.InvariantCulture);
+				}
+			}
+			ORMModel model = Model;
+			if (model != null)
+			{
+				modelName = model.Name;
+			}
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRolePlayerRequiredError, roleName, factName, modelName);
+			string currentText = Name;
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { Role };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
 	}
 }

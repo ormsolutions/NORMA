@@ -336,6 +336,11 @@ namespace Northface.Tools.ORM.ShapeModel
 				MouseDown(mouseEventArgs);
 				Click(new DiagramPointEventArgs(emulateClickPoint.X, emulateClickPoint.Y, PointRelativeTo.Client, clientView));
 				MouseUp(mouseEventArgs);
+
+				// An extra move lets us chain when the mouse is not on the design surface,
+				// such as when we are being activated via the task list.
+				MouseMove(mouseEventArgs);
+
 				myEmulateDrag = emulateDrag;
 				ORMDiagram.SelectToolboxItem(activeView, ResourceStrings.ToolboxRoleConnectorItemId);
 			}
@@ -366,8 +371,14 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <returns>An ObjectType, or null</returns>
 		protected static ObjectType ObjectTypeFromShape(ShapeElement shape)
 		{
-			ModelElement backingElement = shape.ModelElement;
 			ObjectType objectType = null;
+			if (shape == null)
+			{
+				// Protect against breaking into the debugger, should
+				// not be hit without a debugger active.
+				return null;
+			}
+			ModelElement backingElement = shape.ModelElement;
 			FactType factType;
 			if (null == (objectType = backingElement as ObjectType))
 			{

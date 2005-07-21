@@ -442,6 +442,9 @@
 	<xs:complexType name="MultiColumnConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF" />
 	</xs:complexType>
+	<xs:complexType name="SingleColumnConstraintRef">
+		<xs:attribute name="ref" type="xs:IDREF" />
+	</xs:complexType>
 	<!-- end Multicolumn constraints-->
 	<!--Singlecolumn constraints-->
 	<xs:complexType name="SingleColumnExternalConstraint">
@@ -568,19 +571,20 @@
 			<xs:complexContent>
 				<xs:extension base="ExtendableElement">
 					<xs:choice minOccurs="0" maxOccurs="unbounded">
-						<xs:element name="ConstraintDuplicateNameError" type="ConstraintDuplicateNameError" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="FactTypeDuplicateNameError" type="FactTypeDuplicateNameError" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameError" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="ExternalConstraintRoleSequenceArityMismatch" type="ExternalConstraintRoleSequenceArityMismatch" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintError" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="FactTypeRequiresReadingError" type="FactTypeRequiresReadingError" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="TooFewReadingRolesError" type="TooFewReadingRolesError" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="TooFewRoleSequencesError" type="TooFewRoleSequencesError" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="TooManyReadingRolesError" type="TooManyReadingRolesError" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="TooManyRoleSequencesError" type="TooManyRoleSequencesError" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="DataTypeNotSpecifiedError" type="DataTypeNotSpecifiedError" minOccurs="0" maxOccurs="unbounded"/>
-						<xs:element name="NMinusOneError" type="NMinusOneError" minOccurs="0" maxOccurs="unbounded" />
-						<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeError" minOccurs="0" maxOccurs="unbounded" />
+						<xs:element name="ConstraintDuplicateNameError" type="ConstraintDuplicateNameError"/>
+						<xs:element name="FactTypeDuplicateNameError" type="FactTypeDuplicateNameError"/>
+						<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameError"/>
+						<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchError"/>
+						<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintError"/>
+						<xs:element name="FactTypeRequiresReadingError" type="FactTypeRequiresReadingError"/>
+						<xs:element name="TooFewReadingRolesError" type="TooFewReadingRolesError"/>
+						<xs:element name="TooFewRoleSequencesError" type="TooFewRoleSequencesError"/>
+						<xs:element name="TooManyReadingRolesError" type="TooManyReadingRolesError"/>
+						<xs:element name="TooManyRoleSequencesError" type="TooManyRoleSequencesError"/>
+						<xs:element name="DataTypeNotSpecifiedError" type="DataTypeNotSpecifiedError"/>
+						<xs:element name="NMinusOneError" type="NMinusOneError"/>
+						<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeError"/>
+						<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredError"/>
 					</xs:choice>
 				</xs:extension>
 			</xs:complexContent>
@@ -625,7 +629,7 @@
 				</xs:extension>
 			</xs:complexContent>
 		</xs:complexType>
-		<xs:complexType name="ExternalConstraintRoleSequenceArityMismatch">
+		<xs:complexType name="ExternalConstraintRoleSequenceArityMismatchError">
 			<xs:complexContent>
 				<xs:extension base="ModelError">
 					<xs:sequence minOccurs ="1" maxOccurs ="1">
@@ -700,9 +704,19 @@
 		<xs:complexType name="CompatibleRolePlayerTypeError">
 			<xs:complexContent>
 				<xs:extension base="ModelError">
-					<xs:sequence>
-						<xs:element name="Constraint" type="MultiColumnConstraintRef"></xs:element>
-					</xs:sequence>
+					<xs:choice>
+						<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"></xs:element>
+						<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"></xs:element>
+					</xs:choice>
+				</xs:extension >
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:complexType name="RolePlayerRequiredError">
+			<xs:complexContent>
+				<xs:extension base="ModelError">
+					<xs:choice>
+						<xs:element name="Role" type="RoleRef"></xs:element>
+					</xs:choice>
 				</xs:extension >
 			</xs:complexContent>
 		</xs:complexType>

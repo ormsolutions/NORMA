@@ -405,7 +405,13 @@
     <ResourceString name="NMinusOneRuleInternalSpan" model="Model" resourceName="ModelError.FactType.NMinusOneRule.Text">
         <comment type="Summary">Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1</comment> 
     </ResourceString>
-    <ResourceString name="ModelErrorConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.Text">
-        <comment type="Summary">Text diplayed in the Model Error when the role players are not the same type</comment> 
+    <ResourceString name="ModelErrorSingleColumnConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SingleColumn.Text">
+        <comment type="Summary">The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</comment> 
+    </ResourceString>
+    <ResourceString name="ModelErrorMultiColumnConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.MultiColumn.Text">
+        <comment type="Summary">The role players in an external constraint column must have compatible types. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) column number.</comment>
+    </ResourceString>
+    <ResourceString name="ModelErrorRolePlayerRequiredError" model="Model" resourceName="ModelError.Role.RolePlayerRequired.Message">
+        <comment type="Summary">Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
     </ResourceString>
 </ResourceStrings>

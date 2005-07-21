@@ -5,11 +5,44 @@ using System.Drawing.Drawing2D;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell.Interop;
 using Northface.Tools.ORM;
 using Northface.Tools.ORM.ObjectModel;
 using System.Runtime.InteropServices;
 namespace Northface.Tools.ORM.ShapeModel
 {
+	public partial class ObjectTypeShape : IModelErrorActivation
+	{
+
+		#region IModelErrorActivation Implementation
+		/// <summary>
+		/// Implements IModelErrorActivation.ActivateModelError for DataTypeNotSpecifiedError
+		/// </summary>
+		protected void ActivateModelError(ModelError error)
+		{
+			if (error is DataTypeNotSpecifiedError)
+			{
+				IServiceProvider provider;
+				IVsUIShell shell;
+				if (null != (provider = (Store as IORMToolServices).ServiceProvider) &&
+					null != (shell = (IVsUIShell)provider.GetService(typeof(IVsUIShell))))
+				{
+					Guid windowGuid = new Guid(ToolWindowGuids.PropertyBrowser);
+					IVsWindowFrame frame;
+					ErrorHandler.ThrowOnFailure(shell.FindToolWindow((uint)(__VSFINDTOOLWIN.FTW_fForceCreate), ref windowGuid, out frame));
+					ErrorHandler.ThrowOnFailure(frame.Show());
+					// UNDONE: Keep going, select the DataType property, and open its dropdown. I've pinged MS on this one, I can't
+					// see any good way to get at the PropertyGrid reference, or to open the dropdown when I find it.
+				}
+			}
+		}
+		void IModelErrorActivation.ActivateModelError(ModelError error)
+		{
+			ActivateModelError(error);
+		}
+		#endregion // IModelErrorActivation Implementation
+	}
 	public partial class ObjectTypeShape
 	{
 		#region Member Variables
