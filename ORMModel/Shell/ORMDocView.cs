@@ -417,17 +417,6 @@ namespace Northface.Tools.ORM.Shell
 			// the default command text
 			command.Text = commandText;
 		}
-		/// <summary>
-		/// UNDONE: Temporary workaround for DSLTools SDK bug.
-		/// OnClose is throwing when ModelingDocStore.CreateVSHost
-		/// attempts to cast to the wrong class type.
-		/// </summary>
-		/// <param name="pgrfSaveOptions"></param>
-		/// <returns></returns>
-		public override int OnClose(ref uint pgrfSaveOptions)
-		{
-			return 0;
-		}
 		#endregion // Base overrides
 		#region ORMDesignerDocView Specific
 		/// <summary>

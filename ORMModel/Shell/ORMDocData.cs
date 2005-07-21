@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.ArtifactMapper;
@@ -266,7 +267,17 @@ namespace Northface.Tools.ORM.Shell
 			}
 #endif // NEWSERIALIZE
 		}
-
+		/// <summary>
+		/// Override the default implementation, which attempts
+		/// to set the fileName to a path, which doesn't exist.
+		/// UNDONE: MSBUG, FDBK32824, we shouldn't need to do this
+		/// </summary>
+		/// <param name="pszDocDataPath">Ignored per SDK directions</param>
+		/// <returns>S_OK</returns>
+		public override int SetUntitledDocPath(string pszDocDataPath)
+		{
+			return VSConstants.S_OK;
+		}
 		/// <summary>
 		/// Called to populate the Filter field in the Save As... dialog.
 		/// </summary>
