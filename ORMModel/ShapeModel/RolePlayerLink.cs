@@ -308,5 +308,70 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Shape display update rules
+		#region Hack code to enable multiple links between the same fact/object pair
+		private bool myHasBeenConnected;
+		/// <summary>
+		/// True if the link has ever been connected
+		/// </summary>
+		public bool HasBeenConnected
+		{
+			get
+			{
+				return myHasBeenConnected;
+			}
+			set
+			{
+				Debug.Assert(value, "HasBeenConnected should never be set to false");
+				myHasBeenConnected = value;
+			}
+		}
+		/// <summary>
+		/// Due to the hackish nature of the way we're connecting
+		/// players for rings, we need to reconnect when any link of
+		/// the same type is deleted.
+		/// UNDONE: MSBUG This is a huge hack that will go away if
+		/// Microsoft passes link information into DoFoldToShape
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole))]
+		private class RolePlayerRemoving : RemovingRule
+		{
+			public override void ElementRemoving(ElementRemovingEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+
+				Role role = link.PlayedRoleCollection;
+				FactType fact = role.FactType;
+				if (fact != null && !fact.IsRemoving)
+				{
+					IList roles = fact.RoleCollection;
+					int rolesCount = roles.Count;
+					ObjectType rolePlayer = link.RolePlayer;
+					for (int i = 0; i < rolesCount; ++i)
+					{
+						Role currentRole = (Role)roles[i];
+						if (!currentRole.IsRemoving)
+						{
+							IList rolePlayerLinks = currentRole.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
+							if (rolePlayerLinks.Count != 0)
+							{
+								ObjectTypePlaysRole playerLink = (ObjectTypePlaysRole)rolePlayerLinks[0];
+								if (!playerLink.IsRemoving && object.ReferenceEquals(playerLink.RolePlayer, rolePlayer))
+								{
+									foreach (PresentationElement pel in playerLink.PresentationRolePlayers)
+									{
+										RolePlayerLink displayLink = pel as RolePlayerLink;
+										if (displayLink != null)
+										{
+											displayLink.RipUp();
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // Hack code to enable multiple links between the same fact/object pair
 	}
 }

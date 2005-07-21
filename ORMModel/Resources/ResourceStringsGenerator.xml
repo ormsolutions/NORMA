@@ -396,6 +396,12 @@
     <ResourceString name="ReadingShapeInverseReading" model="Diagram" resourceName="ReadingShape.InverseReading">
         <comment type="Summary">The string to use to indicate that a reading goes in the opposite direction. The preferred string (per Terry Halpin) is "\u25C4 ", but the unicode character is not available in that Tahoma font.</comment>
     </ResourceString>
+    <ResourceString name="ReadingShapeAttachedRoleDisplay" model="Diagram" resourceName="ReadingShape.AttachedRoleDisplay">
+        <comment type="Summary">The string used to display a reading with a non-primary order when the role is attached.</comment>
+    </ResourceString>
+    <ResourceString name="ReadingShapeUnattachedRoleDisplay" model="Diagram" resourceName="ReadingShape.UnattachedRoleDisplay">
+        <comment type="Summary">The string used to display a reading with a non-primary order when the role is not attached.</comment>
+    </ResourceString>
     <ResourceString name="NMinusOneRuleInternalSpan" model="Model" resourceName="ModelError.FactType.NMinusOneRule.Text">
         <comment type="Summary">Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1</comment> 
     </ResourceString>

@@ -157,6 +157,8 @@ namespace Northface.Tools.ORM
         private const string ReadingShapeReadingSeparator_Id = "ReadingShape.ReadingSeparator";
         private const string ReadingShapeEllipsis_Id = "ReadingShape.Ellipsis";
         private const string ReadingShapeInverseReading_Id = "ReadingShape.InverseReading";
+        private const string ReadingShapeAttachedRoleDisplay_Id = "ReadingShape.AttachedRoleDisplay";
+        private const string ReadingShapeUnattachedRoleDisplay_Id = "ReadingShape.UnattachedRoleDisplay";
         private const string NMinusOneRuleInternalSpan_Id = "ModelError.FactType.NMinusOneRule.Text";
         private const string ModelErrorConstraintCompatibleRolePlayerTypeError_Id = "ModelError.Constraint.CompatibleRolePlayerTypeError.Text";
         /// <summary>
@@ -1345,6 +1347,24 @@ namespace Northface.Tools.ORM
             get
             {
                 return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeInverseReading_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ReadingShapeAttachedRoleDisplay
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeAttachedRoleDisplay_Id);
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ReadingShapeUnattachedRoleDisplay
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Diagram, ResourceStrings.ReadingShapeUnattachedRoleDisplay_Id);
             }
         }
         /// <summary>

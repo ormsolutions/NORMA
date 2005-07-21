@@ -268,22 +268,24 @@ namespace Northface.Tools.ORM.ShapeModel
 					Debug.Assert(readingOrd != null);
 
 					FactType factType = readingOrd.FactType;
-					ReadingOrderMoveableCollection readingCollection = factType.ReadingOrderCollection;
-					int numReadings = readingCollection.Count;
-					for (int i = 0; i < numReadings; ++i)
+					ReadingOrderMoveableCollection readingOrderCollection = factType.ReadingOrderCollection;
+					ReadingOrder primaryReadingOrder = FactType.FindMatchingReadingOrder(factType);
+					int numReadingOrders = readingOrderCollection.Count;
+					for (int i = 0; i < numReadingOrders; ++i)
 					{
 						if (i > 0)
 						{
 							retval.Append(ResourceStrings.ReadingShapeReadingSeparator);
-							if (numReadings > 2)
+							if (numReadingOrders > 2)
 							{
 								retval.Append("\u000A\u000D");
 							}
 						}
-						ReadingOrder readingOrder = readingCollection[i];
+						ReadingOrder readingOrder = readingOrderCollection[i];
 						string aReading = readingOrder.ReadingText;
 						RoleMoveableCollection roleCollection = readingOrder.RoleCollection;
-						if (roleCollection.Count <= 2 || (numReadings > 1 && i == 0))
+						int roleCount = roleCollection.Count;
+						if (roleCount <= 2 || (numReadingOrders > 1 && i == 0))
 						{
 							aReading = regCountPlaces.Replace(aReading, ellipsis).Trim();
 							if (i == 0 && roleCollection[0] != factType.RoleCollection[0])
@@ -292,7 +294,7 @@ namespace Northface.Tools.ORM.ShapeModel
 								//be found in the "Arial Unicode MS" font
 								retval.Append(ResourceStrings.ReadingShapeInverseReading);
 							}
-							if (numReadings <= 2 && roleCollection.Count <= 2 &&
+							if (numReadingOrders <= 2 && roleCount <= 2 &&
 								aReading.IndexOf(c_ellipsis) == 0 &&
 								aReading.LastIndexOf(c_ellipsis) == aReading.Length - 1)
 							{
@@ -302,18 +304,40 @@ namespace Northface.Tools.ORM.ShapeModel
 						else
 						{
 							RoleMoveableCollection factRoleCollection = factType.RoleCollection;
+							bool primaryOrder = object.ReferenceEquals(primaryReadingOrder, readingOrder);
 							//UNDONE: the roleCount should be factRoleCollection.Count. However, this causes
 							//an error when a role is added to a factType because the factType attempts to
 							//update the ReadingShape before the ReadingOrders have had the role added to them.
 							//Check the order of execution to see if the ReadingOrders can have the role added
 							//to them before the ReadingShape is updated.
-							int roleCount = roleCollection.Count;
-							Debug.Assert(roleCount == roleCollection.Count);
 							string[] roleTranslator = new string[roleCount];
-							for (int readRoleNum = 0; readRoleNum < roleCount; ++readRoleNum)
+							if (primaryOrder)
 							{
-								int factRoleNum = factRoleCollection.IndexOf(roleCollection[readRoleNum]) + 1;
-								roleTranslator[readRoleNum] = "{" + factRoleNum.ToString(CultureInfo.InvariantCulture) + "}";
+								for (int readRoleNum = 0; readRoleNum < roleCount; ++readRoleNum)
+								{
+									roleTranslator[readRoleNum] = ellipsis;
+								}
+							}
+							else
+							{
+								for (int readRoleNum = 0; readRoleNum < roleCount; ++readRoleNum)
+								{
+									Role currentRole = roleCollection[readRoleNum];
+									ObjectType rolePlayer = currentRole.RolePlayer;
+									string formatString;
+									string replacementField;
+									if (rolePlayer == null)
+									{
+										replacementField = (factRoleCollection.IndexOf(currentRole) + 1).ToString(CultureInfo.InvariantCulture);
+										formatString = ResourceStrings.ReadingShapeUnattachedRoleDisplay;
+									}
+									else
+									{
+										replacementField = rolePlayer.Name;
+										formatString = ResourceStrings.ReadingShapeAttachedRoleDisplay;
+									}
+									roleTranslator[readRoleNum] = string.Format(CultureInfo.InvariantCulture, formatString, replacementField);
+								}
 							}
 							aReading = string.Format(CultureInfo.InvariantCulture, aReading, roleTranslator);
 						}

@@ -320,16 +320,10 @@ namespace Northface.Tools.ORM.Shell
 		protected override void AddPostLoadModelingEventHandlers()
 		{
 			Store store = Store;
+			AddErrorReportingEvents();
 			NamedElementDictionary.AttachEventHandlers(store);
 			ReadingShape.AttachEventHandlers(store);
 			ExternalConstraintShape.AttachEventHandlers(store);
-		}
-		/// <summary>
-		/// Attach event handlers to populate the task list
-		/// </summary>
-		protected override void AddPreLoadModelingEventHandlers()
-		{
-			AddErrorReportingEvents();
 		}
 		/// <summary>
 		/// Detach model events. Adds NamedElementDictionary handling

@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -68,7 +68,7 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
             </xsd:complexType>
@@ -85,7 +85,7 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
             </xsd:complexType>
@@ -109,10 +109,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Command.DeleteConstraint.Text">
     <value xml:space="preserve">&amp;Delete Constraint</value>
@@ -206,7 +206,7 @@
     <value xml:space="preserve">ORM Fact Quantifier</value>
     <comment xml:space="preserve">Display name for color setting for logical and existential quantifiers in the fact editor.</comment>
   </data>
-    <data name="FactEditorColors.ReferenceModeName">
+  <data name="FactEditorColors.ReferenceModeName">
     <value xml:space="preserve">ORM Fact Reference Mode</value>
     <comment xml:space="preserve">Display Name of the Reference Mode Name color</comment>
   </data>
@@ -330,6 +330,10 @@
     <value xml:space="preserve">Designer for Object Role Modeling (ORM) diagrams</value>
     <comment xml:space="preserve">The extra information that appears in the about box of Visual Studio</comment>
   </data>
+  <data name="ReadingShape.AttachedRoleDisplay">
+    <value xml:space="preserve">[{0}]</value>
+    <comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is attached.</comment>
+  </data>
   <data name="ReadingShape.Ellipsis">
     <value xml:space="preserve">…</value>
     <comment xml:space="preserve">The character to use as the object placeholder in a ReadingShape.</comment>
@@ -341,6 +345,10 @@
   <data name="ReadingShape.ReadingSeparator">
     <value xml:space="preserve"> / </value>
     <comment xml:space="preserve">The string used to divide multiple readings shown in a ReadingShape.</comment>
+  </data>
+  <data name="ReadingShape.UnattachedRoleDisplay">
+    <value xml:space="preserve">[Object{0}]</value>
+    <comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is not attached.</comment>
   </data>
   <data name="RoleConnectAction.TransactionName">
     <value xml:space="preserve">Set Role Player</value>

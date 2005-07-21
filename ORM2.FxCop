@@ -18582,6 +18582,20 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="RolePlayerLink+RolePlayerRemoving">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-16 00:47:19Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.RolePlayerLink+RolePlayerRemoving</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="43" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="RolePlayerLinkElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
@@ -19820,6 +19834,7 @@
     <Note Id="40" Modified="2005-07-06 21:53:13Z">Reviewed</Note>
     <Note Id="41" Modified="2005-07-15 07:28:07Z">Instances are immutable</Note>
     <Note Id="42" Modified="2005-07-15 07:28:25Z">Generated code</Note>
+    <Note Id="43" Modified="2005-07-16 00:48:26Z">Rule instantiated via reflection</Note>
    </User>
    <User Name="pewert">
     <Note Id="0" Modified="2005-04-25 20:13:21Z">Defined in IMS-generated code</Note>

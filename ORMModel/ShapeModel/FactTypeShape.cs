@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -2623,19 +2624,114 @@ namespace Northface.Tools.ORM.ShapeModel
 				RoleMoveableCollection roles = factType.RoleCollection;
 				factRoleCount = roles.Count;
 				Role role = null;
+				ORMDiagram parentDiagram = (ORMDiagram)Diagram;
+				int firstIndex = -1;
+				int bestIndex = -1;
+				RolePlayerLink firstLinkShape = null;
+				RolePlayerLink linkShape = null;
+				bool recordMatch = false;
+				Dictionary<FactTypeShape, Collection<RolePlayerLink>> linksDictionary = ConnectedLinksContextDictionary;
+				Collection<RolePlayerLink> processedLinks = null;
 				for (int i = 0; i < factRoleCount; ++i)
 				{
+					// UNDONE: MSBUG Note that this where the data passed to DoFoldToShape
+					// is insufficient. Unless we're given the specific link object
+					// we're dealing with, there is no way to tell which role we're
+					// on when the role player is shared by multiple roles. The hack
+					// solution is to simply guess, but this is also not completely accurate
+					// because we can end up position the lines in the wrong place. This is
+					// OK for display, but does not work if we ever attach anything to the lines
+					// or make them selectable. The code here includes the RolePlayerLink.RolePlayerRemoving
+					// and the RolePlayeLink.HasBeenConnected properties.
 					role = (Role)roles[i];
-					if (object.ReferenceEquals(role.RolePlayer, objectType))
+					IList rolePlayerLinks = role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
+					if (rolePlayerLinks.Count != 0)
 					{
-						// UNDONE: Note that this where the data passed to DoFoldToShape
-						// is insufficient. Unless we're given the specific link object
-						// we're dealing with, there is no way to tell which role we're
-						// on when the role player is shared by multiple roles.
-						roleIndex = i;
-						break;
+						ObjectTypePlaysRole rolePlayerLink = (ObjectTypePlaysRole)rolePlayerLinks[0];
+						if (object.ReferenceEquals(rolePlayerLink.RolePlayer, objectType))
+						{
+							if (firstIndex == -1)
+							{
+								firstIndex = i;
+								firstLinkShape = linkShape = parentDiagram.FindShapeForElement<RolePlayerLink>(rolePlayerLink);
+							}
+							else
+							{
+								// Now we need to decide which link to take. First priority is any link that
+								// has not yet been connected. Second priority is the ones that have not been connected
+								// in this transaction. If there are multiple links, then store them in the
+								// transaction context for this shape.
+								recordMatch = true;
+								if (linkShape.HasBeenConnected)
+								{
+									RolePlayerLink testLinkShape = parentDiagram.FindShapeForElement<RolePlayerLink>(rolePlayerLink);
+									if (!testLinkShape.HasBeenConnected)
+									{
+										bestIndex = i;
+										linkShape = testLinkShape;
+										break;
+									}
+									if (bestIndex == -1)
+									{
+										EnsureLinksDictionary(ref linksDictionary, ref processedLinks);
+										if (processedLinks.Contains(linkShape))
+										{
+											bestIndex = i;
+											linkShape = testLinkShape;
+										}
+										else
+										{
+											bestIndex = firstIndex;
+										}
+									}
+									else if (processedLinks.Contains(linkShape))
+									{
+										bestIndex = i;
+										linkShape = testLinkShape;
+									}
+								}
+								else
+								{
+									if (bestIndex == -1)
+									{
+										bestIndex = firstIndex;
+									}
+									break;
+								}
+							}
+						}
 					}
 				}
+				if (bestIndex == -1)
+				{
+					// There was only one match, we don't have to record anything
+					bestIndex = firstIndex;
+					linkShape.HasBeenConnected = true;
+				}
+				else if (!linkShape.HasBeenConnected)
+				{
+					linkShape.HasBeenConnected = true;
+					if (recordMatch)
+					{
+						EnsureLinksDictionary(ref linksDictionary, ref processedLinks);
+						processedLinks.Add(linkShape);
+					}
+				}
+				else if (processedLinks != null)
+				{
+					if (processedLinks.Contains(linkShape))
+					{
+						// They've all been recorded, empty the collection and revert to the first
+						processedLinks.Clear();
+						bestIndex = firstIndex;
+						processedLinks.Add(firstLinkShape);
+					}
+					else if (recordMatch)
+					{
+						processedLinks.Add(linkShape);
+					}
+				}
+				roleIndex = bestIndex;
 			}
 			if (roleIndex != -1)
 			{
@@ -2711,6 +2807,41 @@ namespace Northface.Tools.ORM.ShapeModel
 		PointD ICustomShapeFolding.CalculateConnectionPoint(NodeShape oppositeShape)
 		{
 			return CalculateConnectionPoint(oppositeShape);
+		}
+		// Code to track which links have already been returned during this walk
+		private static object ConnectedLinksContextDictionaryKey = new object();
+		private Dictionary<FactTypeShape, Collection<RolePlayerLink>> ConnectedLinksContextDictionary
+		{
+			get
+			{
+				Store store = Store;
+				return store.TransactionActive ? (Dictionary<FactTypeShape, Collection<RolePlayerLink>>)store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ConnectedLinksContextDictionaryKey] : null;
+			}
+			set
+			{
+				Debug.Assert(Store.TransactionActive, "Link connections require context dictionary");
+				Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ConnectedLinksContextDictionaryKey] = value;
+			}
+		}
+		private void EnsureLinksDictionary(ref Dictionary<FactTypeShape, Collection<RolePlayerLink>> linksDictionary, ref Collection<RolePlayerLink> processedLinks)
+		{
+			if (processedLinks == null)
+			{
+				if (linksDictionary == null)
+				{
+					Debug.Assert(ConnectedLinksContextDictionary == null, "Attempt to retrieve the dictionary  before creating it");
+					linksDictionary = new Dictionary<FactTypeShape, Collection<RolePlayerLink>>();
+					linksDictionary[this] = processedLinks = new Collection<RolePlayerLink>();
+					ConnectedLinksContextDictionary = linksDictionary;
+				}
+				else
+				{
+					if (!linksDictionary.TryGetValue(this, out processedLinks))
+					{
+						linksDictionary[this] = processedLinks = new Collection<RolePlayerLink>();
+					}
+				}
+			}
 		}
 		#endregion // ICustomShapeFolding implementation
 		#region IModelErrorActivation Implementation

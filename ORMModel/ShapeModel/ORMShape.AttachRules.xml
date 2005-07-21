@@ -36,6 +36,7 @@
 		<arg:Rule class="ReadingShape.ReadingTextChanged"/>
 		<arg:Rule class="RolePlayerLink.InternalConstraintRoleSequenceAdded"/>
 		<arg:Rule class="RolePlayerLink.InternalConstraintRoleSequenceRoleRemoved"/>
+		<arg:Rule class="RolePlayerLink.RolePlayerRemoving"/>
 		<arg:Rule class="ValueRangeShape.ValueRangeChanged"/>
 		<arg:Rule class="ValueRangeShape.ValueRangeDefinitionAdded"/>
 		<arg:Rule class="ValueRangeShape.ValueTypeHasDataTypeAdded"/>
