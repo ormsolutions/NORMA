@@ -88,7 +88,8 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 		{
 			Debug.Assert(!(value is object[]));
 			FactType instance = (FactType)EditorUtility.ResolveContextInstance(context.Instance, false); // false indicates this should not be called in multiselect mode.
-			IList<ObjectType> roleTypes = null;
+			ObjectType[] roleTypes = null;
+			IList<ObjectType> roleTypesList = null;
 			IList candidates = instance.Store.ElementDirectory.GetElements(ObjectType.MetaClassGuid);
 			int count = candidates.Count;
 			if (count > 0)
@@ -121,8 +122,9 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 								{
 									roleTypes = new ObjectType[0];
 								}
+								roleTypesList = roleTypes;
 							}
-							if (!roleTypes.Contains(objType))
+							if (!roleTypesList.Contains(objType))
 							{
 								types.Add(objType);
 							}
@@ -183,7 +185,8 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 			Debug.Assert(!(value is object[]));
 			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, false); // false indicates this should not be called in multiselect mode.
 			IList candidates = instance.Store.ElementDirectory.GetElements(FactType.MetaClassGuid);
-			IList<FactType> roleFacts = null;
+			FactType[] roleFacts = null;
+			IList<FactType> roleFactsList = null;
 			int count = candidates.Count;
 			if (count > 0)
 			{
@@ -218,8 +221,9 @@ namespace Northface.Tools.ORM.ObjectModel.Editors
 							{
 								roleFacts = new FactType[0];
 							}
+							roleFactsList = roleFacts;
 						}
-						if (!roleFacts.Contains(factType))
+						if (!roleFactsList.Contains(factType))
 						{
 							types.Add(factType);
 						}
