@@ -28,6 +28,7 @@ namespace Northface.Tools.ORM.ShapeModel
                     typeof(FactTypeShape).GetNestedType("SwitchFromNestedFact", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(FactTypeShape).GetNestedType("SwitchToNestedFact", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintAttributeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
+                    typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierRemovedRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ObjectTypeShape).GetNestedType("ShapeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ORMDiagram).GetNestedType("ConstraintRoleSequenceRoleAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ORMDiagram).GetNestedType("ConstraintRoleSequenceRoleRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),

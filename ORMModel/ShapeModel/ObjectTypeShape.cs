@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Northface.Tools.ORM;
 using Northface.Tools.ORM.ObjectModel;
 using System.Runtime.InteropServices;
+using System.Collections;
 namespace Northface.Tools.ORM.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation
@@ -291,9 +292,50 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
+				//if primaryidentifyer for a Entity type is 
+				//removed and ref mode is not expanded...AutoResize() the entity type
 				Guid attributeGuid = e.MetaAttribute.Id;
 				if (attributeGuid == NamedElement.NameMetaAttributeGuid)
 				{
+					// Figure out if we need to resize related object shapes. This happens
+					// when we've renamed a value type that is bound to the reference scheme
+					// of an entity type.
+					ObjectType changeType = e.ModelElement as ObjectType;
+		
+					if (changeType.IsValueType)
+					{
+						RoleMoveableCollection playedRoles = changeType.PlayedRoleCollection;
+						int roleCount = playedRoles.Count;
+						for (int i = 0; i < roleCount; ++i)
+						{
+							Role currentRole = playedRoles[i];
+							ConstraintRoleSequenceMoveableCollection roleConstraints = currentRole.ConstraintRoleSequenceCollection;
+							int constraintCount = roleConstraints.Count;
+							for (int j = 0; j < constraintCount; ++j)
+							{
+								ConstraintRoleSequence currentConstraintRoleSequence = roleConstraints[j];
+								IConstraint associatedConstraint = currentConstraintRoleSequence.Constraint;
+								if (associatedConstraint.ConstraintType == ConstraintType.InternalUniqueness)
+								{
+									InternalUniquenessConstraint iuc = (InternalUniquenessConstraint)associatedConstraint;
+									ObjectType identifierFor = iuc.PreferredIdentifierFor;
+									if (identifierFor != null)
+									{
+										PresentationElementMoveableCollection pels = identifierFor.PresentationRolePlayers;
+										int pelCount = pels.Count;
+										ObjectTypeShape ots;
+										for (int k = 0; k < pelCount; ++k)
+										{
+											if (null != (ots = pels[k] as ObjectTypeShape))
+											{
+												ots.AutoResize();
+											}
+										}
+									}
+								}
+							}
+						}
+					}
 					foreach (object obj in e.ModelElement.AssociatedPresentationElements)
 					{
 						ORMBaseShape shape = obj as ORMBaseShape;
@@ -303,6 +345,8 @@ namespace Northface.Tools.ORM.ShapeModel
 						}
 					}
 				}
+				// UNDONE: This doesn't belong here. IsValueType is a derived property.
+				// Add a rule on the ValueTypeHasDataType ElementLink instead of the IsValueType property.
 				else if (attributeGuid == ObjectType.IsValueTypeMetaAttributeGuid)
 				{
 					foreach (object obj in e.ModelElement.AssociatedPresentationElements)
@@ -316,9 +360,30 @@ namespace Northface.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class PreferredIdentifierRemovedRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+				ObjectType entityType = link.PreferredIdentifierFor;
+				if (!entityType.IsRemoved)
+				{
+					PresentationElementMoveableCollection pels = entityType.PresentationRolePlayers;
+					int pelCount = pels.Count;
+					ObjectTypeShape ots;
+					for (int i = 0; i < pelCount; ++i)
+					{
+						if (null != (ots = pels[i] as ObjectTypeShape))
+						{
+							ots.AutoResize();
+						}
+					}
+				}
+			}
+		}
 		#endregion // Shape display update rules
 	}
-
 	/// <summary>
 	/// Temporary class to fer refernce mode to show up.
 	/// </summary>

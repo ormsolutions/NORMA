@@ -17740,6 +17740,20 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="ObjectTypeShape+PreferredIdentifierRemovedRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 20:55:57Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ShapeModel.ObjectTypeShape+PreferredIdentifierRemovedRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="jbriggs">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="ObjectTypeShape+ShapeChangeRule">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -20435,6 +20449,9 @@
    <User Name="ckaylor">
     <Note Id="0" Modified="2005-07-25 19:34:18Z">Rule classes instantiated via reflection</Note>
     <Note Id="1" Modified="2005-07-25 19:34:41Z">Standard serialization spit matching required interface pattern</Note>
+   </User>
+   <User Name="jbriggs">
+    <Note Id="0" Modified="2005-07-25 20:58:15Z">Rule class instantiated by reflection</Note>
    </User>
    <User Name="jwilde">
     <Note Id="0" Modified="2005-04-26 20:54:13Z">Internal rules instantiated via reflection</Note>
