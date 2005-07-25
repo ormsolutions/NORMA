@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Northface.Tools.ORM;
+using System.Globalization;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
@@ -269,7 +270,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			RoleMoveableCollection readingRoles = readingOrder1.RoleCollection;
 			readingRoles.Add(roles[0]);
 			readingRoles.Add(roles[1]);
-			readingOrder1.AddReading(ResourceStrings.ReferenceModePredicateReading); 
+			readingOrder1.AddReading(ResourceStrings.ReferenceModePredicateReading);
 			readingOrder1.FactType = refFact;
 
 			ReadingOrder readingOrder2 = ReadingOrder.CreateReadingOrder(store);
@@ -887,6 +888,113 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // DataTypeNotSpecifiedError retrieval and validation
+		#region EntityTypeRequiresReferenceSchemeError Validation
+		private void ValidateRequiresReferenceScheme(INotifyElementAdded notifyAdded)
+		{
+			if (!IsRemoved)
+			{
+				bool hasError = true;
+				Store theStore = Store;
+				ORMModel theModel = Model;
+				if (IsValueType == true || NestedFactType != null || this.PreferredIdentifier != null)
+				{
+					hasError = false;
+				}
+
+				EntityTypeRequiresReferenceSchemeError noRefSchemeError = ReferenceSchemeError;
+				if (hasError)
+				{
+					if (noRefSchemeError == null)
+					{
+						noRefSchemeError = EntityTypeRequiresReferenceSchemeError.CreateEntityTypeRequiresReferenceSchemeError(theStore);
+						noRefSchemeError.Model = theModel;
+						noRefSchemeError.ObjectType = this;
+						noRefSchemeError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(noRefSchemeError, true);
+						}
+					}
+				}
+				else
+				{
+					if (noRefSchemeError != null)
+					{
+						noRefSchemeError.Remove();
+					}
+				}
+			}
+		}
+
+		#endregion // EntityTypeRequiresReferenceSchemeError Validation
+		#region EntityTypeRequiresReferenceSchemeError Rules
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.LocalCommit)]
+		private class VerifyReferenceSchemeAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+				link.PreferredIdentifierFor.ValidateRequiresReferenceScheme(null);
+			}
+		}
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.LocalCommit)]
+		private class VerifyReferenceSchemeRemoveRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+				link.PreferredIdentifierFor.ValidateRequiresReferenceScheme(null);
+			}
+		}
+		[RuleOn(typeof(NestingEntityTypeHasFactType), FireTime = TimeToFire.LocalCommit)]
+		private class VerifyNestingEntityTypeHasFactTypeAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				NestingEntityTypeHasFactType link = e.ModelElement as NestingEntityTypeHasFactType;
+				link.NestingType.ValidateRequiresReferenceScheme(null);
+			}
+		}
+		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.LocalCommit)]
+		private class VerifyValueTypeHasDataTypeAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+				link.ValueTypeCollection.ValidateRequiresReferenceScheme(null);
+			}
+		}
+		[RuleOn(typeof(NestingEntityTypeHasFactType), FireTime = TimeToFire.LocalCommit)]
+		private class VerifyNestingEntityTypeHasFactTypeRemoveRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				NestingEntityTypeHasFactType link = e.ModelElement as NestingEntityTypeHasFactType;
+				link.NestingType.ValidateRequiresReferenceScheme(null);
+			}
+		}
+		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.LocalCommit)]
+		private class VerifyValueTypeHasDataTypeRemoveRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+				link.ValueTypeCollection.ValidateRequiresReferenceScheme(null);
+			}
+		}
+		/// <summary>
+		/// Calls the validation of all FactType related errors
+		/// </summary>
+		[RuleOn(typeof(ModelHasObjectType), FireTime=TimeToFire.LocalCommit)]
+		private class ModelHasObjectTypeAddRuleModelValidation : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
+				link.ObjectTypeCollection.ValidateErrors(null);
+			}
+		}
+		#endregion // EntityTypeRequiresReferenceSchemeError Rules
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the errors associated with the object.
@@ -900,6 +1008,12 @@ namespace Northface.Tools.ORM.ObjectModel
 				if (unspecifiedDataTypeError != null)
 				{
 					yield return unspecifiedDataTypeError;
+				}
+
+				EntityTypeRequiresReferenceSchemeError requiredReferenceSchemeError = ReferenceSchemeError;
+				if (requiredReferenceSchemeError != null)
+				{
+					yield return requiredReferenceSchemeError;
 				}
 			}
 		}
@@ -916,6 +1030,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateDataTypeNotSpecifiedError(notifyAdded);
+			ValidateRequiresReferenceScheme(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -1046,7 +1161,8 @@ namespace Northface.Tools.ORM.ObjectModel
 			/// <param name="metaAttributeInfo">Passed to base</param>
 			/// <param name="requestor">Passed to base</param>
 			/// <param name="attributes">Passed to base</param>
-			public ReferenceModeDisplayPropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes) : base(modelElement, metaAttributeInfo, requestor, attributes)
+			public ReferenceModeDisplayPropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes)
+				: base(modelElement, metaAttributeInfo, requestor, attributes)
 			{
 			}
 			/// <summary>
@@ -1118,4 +1234,48 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // ReferenceModeDisplayPropertyDescriptor class
 	}
+
+	#region class EntityTypeRequiresReferenceSchemeError
+	partial class EntityTypeRequiresReferenceSchemeError : IRepresentModelElements
+	{
+		#region overrides
+		/// <summary>
+		/// Creates error text for when an EntityType lacks a reference scheme.
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorEntityTypeRequiresReferenceSchemeMessage, ObjectType.Name, Model.Name);
+			if (Name != newText)
+			{
+				Name = newText;
+			}
+		}
+
+		/// <summary>
+		/// Sets regernate to ModelNameChange | OwnerNameChange
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		#endregion
+
+		#region IRepresentModelElements Members
+		/// <summary>
+		/// The EntityType to which the error belongs
+		/// </summary>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.ObjectType };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion
+	}
+	#endregion // class EntityTypeRequiresReferenceSchemeError
 }

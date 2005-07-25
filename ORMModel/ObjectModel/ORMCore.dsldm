@@ -1006,6 +1006,27 @@ Information Contained Herein is Proprietary and Confidential.
           </role>
         </roles>
       </relationship>
+      <relationship name="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" identity="92e220d3-1ff5-487d-bb01-9343fa460cf2" namespace="Northface.Tools.ORM.ObjectModel" id="i92e220d3z1ff5z487dzbb01z9343fa460cf2" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <roles>
+          <role name="ReferenceSchemeError" identity="c4ac92c4-08b5-4d06-b2af-24a9c1bd9b89" id="ic4ac92c4z08b5z4d06zb2afz24a9c1bd9b89" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i910a08efze1a5z461azbebdz150932f12aad</source>
+            <type>i3c7be87dzdb77z4269z8372z33664b89c558</type>
+            <generatedProperty name="ReferenceSchemeError" identity="5452fd58-0bbe-4cb9-bb30-fdf6d864ac1a">
+              <referenceType>i3c7be87dzdb77z4269z8372z33664b89c558</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="ObjectType" identity="6c31dffd-3f72-434f-98ea-82a98e06bce6" id="i6c31dffdz3f72z434fz98eaz82a98e06bce6" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i3c7be87dzdb77z4269z8372z33664b89c558</source>
+            <type>i910a08efze1a5z461azbebdz150932f12aad</type>
+            <generatedProperty name="ObjectType" identity="1624fb49-53b9-4b37-9480-a4d2c04595e6">
+              <referenceType>i910a08efze1a5z461azbebdz150932f12aad</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
     </relationships>
     <trees>
       <treenavigator name="intrinsic" identity="e71eab56-58f2-48c1-a61c-e32a3f1bba22" id="ie71eab56z58f2z48c1za61cze32a3f1bba22">
@@ -1544,6 +1565,15 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="RoleExpression" name="EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryError" identity="90fea496-75a3-4515-b09a-c9b38e965b0f" id="i90fea496z75a3z4515zb09azc9b38e965b0f" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i4108fc75z346ez4ebcza012z2e3e7692a6af</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="EntityTypeRequiresReferenceSchemeError-ModelError" identity="0e988c52-d2af-482b-9834-6328844fc91f" id="i0e988c52zd2afz482bz9834z6328844fc91f" definitionlevel="none">
+            <source />
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i3c7be87dzdb77z4269z8372z33664b89c558</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasEntityTypeRequiresReferenceSchemeError.EntityTypeRequiresReferenceSchemeError" identity="2bc3de51-c3fd-414d-b616-fc8795d5950d" id="i2bc3de51zc3fdz414dzb616zfc8795d5950d" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>ic4ac92c4z08b5z4d06zb2afz24a9c1bd9b89</role>
           </treeExpression>
         </expressions>
         <roots />
@@ -2245,6 +2275,15 @@ Information Contained Herein is Proprietary and Confidential.
             <source>i90fea496z75a3z4515zb09azc9b38e965b0f</source>
             <role>i4108fc75z346ez4ebcza012z2e3e7692a6af</role>
           </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="EntityTypeRequiresReferenceSchemeError-ModelError" identity="49bc5cfb-4725-4a9b-8980-d283ebb4e4b5" id="i49bc5cfbz4725z4a9bz8980zd283ebb4e4b5" definitionlevel="definition">
+            <source>i0e988c52zd2afz482bz9834z6328844fc91f</source>
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i3c7be87dzdb77z4269z8372z33664b89c558</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasEntityTypeRequiresReferenceSchemeError.EntityTypeRequiresReferenceSchemeError" identity="c6bd17b6-0d7a-47c5-9e8e-0481405220e0" id="ic6bd17b6z0d7az47c5z9e8ez0481405220e0" definitionlevel="use" containmentstyle="fromsource">
+            <source>i2bc3de51zc3fdz414dzb616zfc8795d5950d</source>
+            <role>ic4ac92c4z08b5z4d06zb2afz24a9c1bd9b89</role>
+          </treeExpression>
         </expressions>
         <roots>
           <root name="ORMModel" identity="f231968d-acdd-4123-ba57-7b5e5075194c" id="if231968dzacddz4123zba57z7b5e5075194c">
@@ -2645,6 +2684,14 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="RoleExpression" name="EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraint" identity="9bc6f0fe-da2e-495d-bf7d-fef1d3299189" id="i9bc6f0fezda2ez495dzbf7dzfef1d3299189" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>ifdf5af22z719bz47fbzac2azef9bbe68e61e</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasEntityTypeRequiresReferenceSchemeError.EntityTypeRequiresReferenceSchemeError" identity="4f3a7564-7ae4-4597-84c2-a7012e16fb2d" id="i4f3a7564z7ae4z4597z84c2za7012e16fb2d" definitionlevel="none" containmentstyle="embedding">
+            <source>i2bc3de51zc3fdz414dzb616zfc8795d5950d</source>
+            <role>ic4ac92c4z08b5z4d06zb2afz24a9c1bd9b89</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectType" identity="4b3eb259-bdb0-4471-9058-3083c29442f6" id="i4b3eb259zbdb0z4471z9058z3083c29442f6" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i6c31dffdz3f72z434fz98eaz82a98e06bce6</role>
           </treeExpression>
         </expressions>
         <roots />
@@ -3181,6 +3228,10 @@ Information Contained Herein is Proprietary and Confidential.
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
       <concept name="EqualityIsImpliedByMandatoryError" identity="47f92ff5-0183-4a60-96ee-8528565f4b67" namespace="Northface.Tools.ORM.ObjectModel" id="i47f92ff5z0183z4a60z96eez8528565f4b67" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+      </concept>
+      <concept name="EntityTypeRequiresReferenceSchemeError" identity="3c7be87d-db77-4269-8372-33664b89c558" namespace="Northface.Tools.ORM.ObjectModel" id="i3c7be87dzdb77z4269z8372z33664b89c558" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>

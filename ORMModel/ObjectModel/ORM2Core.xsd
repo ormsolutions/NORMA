@@ -589,6 +589,7 @@
 						<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeError"/>
 						<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredError"/>
 						<xs:element name="EqualityIsImpliedByMandatoryError" type="EqualityIsImpliedByMandatoryError"/>
+						<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeError"/>
 					</xs:choice>
 				</xs:extension>
 			</xs:complexContent>
@@ -629,6 +630,15 @@
 				<xs:extension base="DuplicateNameError">
 					<xs:sequence minOccurs ="0" maxOccurs ="1">
 						<xs:element name ="Objects" type ="ObjectRefs" minOccurs="1" maxOccurs ="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:complexType name="EntityTypeRequiresReferenceSchemeError">
+			<xs:complexContent>
+				<xs:extension base="ModelError">
+					<xs:sequence minOccurs ="1" maxOccurs ="1">
+						<xs:element name="EntityType" type="ObjectRef"/>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>

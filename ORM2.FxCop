@@ -3241,6 +3241,191 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="EntityTypeRequiresReferenceSchemeError">
+          <Members>
+           <Member Name="CustomSerializedChildRoleComparer">
+            <Accessors>
+             <Accessor Name="get_CustomSerializedChildRoleComparer():System.Collections.Generic.IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>EntityTypeRequiresReferenceSchemeError.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
+                </Issue>
+                <Notes>
+                 <User Name="jtanner">
+                  <Note Id="1" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="CustomSerializedElementInfo">
+            <Accessors>
+             <Accessor Name="get_CustomSerializedElementInfo():Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>EntityTypeRequiresReferenceSchemeError.get_CustomSerializedElementInfo():ORMCustomSerializedElementInfo</Item>
+                </Issue>
+                <Notes>
+                 <User Name="jtanner">
+                  <Note Id="1" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+              <Issue>
+               <Item>EntityTypeRequiresReferenceSchemeError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="jtanner">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="attributeInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>EntityTypeRequiresReferenceSchemeError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="jtanner">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="rolePlayedInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>EntityTypeRequiresReferenceSchemeError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="jtanner">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedChildElementInfo():Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[]">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+              <Issue>
+               <Item>EntityTypeRequiresReferenceSchemeError.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
+              </Issue>
+              <Notes>
+               <User Name="jtanner">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-07-25 22:24:35Z">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>EntityTypeRequiresReferenceSchemeError.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="jtanner">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+              <Issue>
+               <Item>EntityTypeRequiresReferenceSchemeError.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="jtanner">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MapAttribute(System.String,System.String):System.Guid">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+              <Issue>
+               <Item>EntityTypeRequiresReferenceSchemeError.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="jtanner">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="attributeName" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+              <Issue>
+               <Item>attributeName</Item>
+               <Item>EntityTypeRequiresReferenceSchemeError.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="jtanner">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="xmlNamespace" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+              <Issue>
+               <Item>xmlNamespace</Item>
+               <Item>EntityTypeRequiresReferenceSchemeError.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="jtanner">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MapChildElement(System.String,System.String,System.String,System.String):Northface.Tools.ORM.Shell.ORMCustomSerializedElementMatch">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+              <Issue>
+               <Item>EntityTypeRequiresReferenceSchemeError.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+              </Issue>
+              <Notes>
+               <User Name="jtanner">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="SupportedCustomSerializedOperations">
+            <Accessors>
+             <Accessor Name="get_SupportedCustomSerializedOperations():Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 22:24:35Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>EntityTypeRequiresReferenceSchemeError.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
+                </Issue>
+                <Notes>
+                 <User Name="jtanner">
+                  <Note Id="1" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="EqualityConstraint+ConstraintRoleSequenceHasRoleAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 19:32:04Z">
@@ -8764,6 +8949,20 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="ObjectType+ModelHasObjectTypeAddRuleModelValidation">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 22:24:35Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ObjectType+ModelHasObjectTypeAddRuleModelValidation</Item>
+            </Issue>
+            <Notes>
+             <User Name="jtanner">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="ObjectType+ObjectTypeChangeRule">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -8968,6 +9167,90 @@
             <Issue>
              <Item>Northface.Tools.ORM.ObjectModel.ObjectType+ReferenceModeDisplayPropertyDescriptor</Item>
             </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ObjectType+VerifyNestingEntityTypeHasFactTypeAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 22:24:35Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ObjectType+VerifyNestingEntityTypeHasFactTypeAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="jtanner">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ObjectType+VerifyNestingEntityTypeHasFactTypeRemoveRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 22:24:35Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ObjectType+VerifyNestingEntityTypeHasFactTypeRemoveRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="jtanner">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ObjectType+VerifyReferenceSchemeAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 22:24:35Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ObjectType+VerifyReferenceSchemeAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="jtanner">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ObjectType+VerifyReferenceSchemeRemoveRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 22:24:35Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ObjectType+VerifyReferenceSchemeRemoveRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="jtanner">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ObjectType+VerifyValueTypeHasDataTypeAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 22:24:35Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ObjectType+VerifyValueTypeHasDataTypeAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="jtanner">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ObjectType+VerifyValueTypeHasDataTypeRemoveRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 22:24:35Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.ObjectType+VerifyValueTypeHasDataTypeRemoveRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="jtanner">
+              <Note Id="0" />
+             </User>
+            </Notes>
            </Message>
           </Messages>
          </Type>
@@ -20452,6 +20735,10 @@
    </User>
    <User Name="jbriggs">
     <Note Id="0" Modified="2005-07-25 20:58:15Z">Rule class instantiated by reflection</Note>
+   </User>
+   <User Name="jtanner">
+    <Note Id="0" Modified="2005-07-25 22:25:45Z">Rule classes instantiated via reflection</Note>
+    <Note Id="1" Modified="2005-07-25 22:26:05Z">Standard generated code</Note>
    </User>
    <User Name="jwilde">
     <Note Id="0" Modified="2005-04-26 20:54:13Z">Internal rules instantiated via reflection</Note>

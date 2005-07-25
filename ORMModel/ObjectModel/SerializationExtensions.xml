@@ -100,6 +100,7 @@
 			<se:Link Name="Role"  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
 			<se:Link Name="NestedPredicate" RelationshipName="NestingEntityTypeHasFactType" RoleName="NestedFactType" />
 			<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
+			<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
 			<!--TODO:Subtypes-->
 			<!--TODO:Supertypes-->
 		</se:Element>
@@ -222,6 +223,9 @@
 		</se:Element>
 		<se:Element Class="ObjectTypeDuplicateNameError">
 			<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectTypeCollection" Name="Objects"/>
+		</se:Element>
+		<se:Element Class="EntityTypeRequiresReferenceSchemeError">
+			<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ObjectType" Name="EntityType"/>
 		</se:Element>
 		<se:Element Class="ExternalConstraintRoleSequenceArityMismatchError">
 			<se:Link RelationshipName="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="Constraint" Name="Constraint"/>

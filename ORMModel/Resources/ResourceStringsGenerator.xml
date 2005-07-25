@@ -417,4 +417,7 @@
 	<ResourceString name="ModelErrorExternalEqualityIsImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.ExternalEqualityIsImpliedByMandatory.Text">
 		<comment type="Summary">Constraint '{0}' is implied by mandatory constraints.</comment>
 	</ResourceString>
+	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message">
+		<comment type="Summary">An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
+	</ResourceString>
 </ResourceStrings>

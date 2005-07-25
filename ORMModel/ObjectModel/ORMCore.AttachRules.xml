@@ -42,8 +42,15 @@
 		<arg:Rule class="NamedElementDictionary.ElementLinkRemovedRule"/>
 		<arg:Rule class="NamedElementDictionary.NamedElementChangedRule"/>
 		<arg:Rule class="ObjectType.CheckForIncompatibleRelationshipRule"/>
+		<arg:Rule class="ObjectType.ModelHasObjectTypeAddRuleModelValidation"/>
 		<arg:Rule class="ObjectType.ObjectTypeChangeRule"/>
 		<arg:Rule class="ObjectType.ObjectTypeRemoveRule"/>
+		<arg:Rule class="ObjectType.VerifyNestingEntityTypeHasFactTypeAddRule"/>
+		<arg:Rule class="ObjectType.VerifyNestingEntityTypeHasFactTypeRemoveRule"/>
+		<arg:Rule class="ObjectType.VerifyReferenceSchemeAddRule"/>
+		<arg:Rule class="ObjectType.VerifyReferenceSchemeRemoveRule"/>
+		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeAddRule"/>
+		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeRemoveRule"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateConstraintNameErrorRule"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateFactTypeNameErrorRule"/>
 		<arg:Rule class="ORMModel.RemoveDuplicateObjectTypeNameErrorRule"/>

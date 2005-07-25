@@ -1276,5 +1276,14 @@ namespace Northface.Tools.ORM
                 return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalEqualityIsImpliedByMandatory.Text");
             }
         }
+        /// <summary>
+        ///</summary>
+        public static string ModelErrorEntityTypeRequiresReferenceSchemeMessage
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityType.RequiresReferenceScheme.Message");
+            }
+        }
     }
 }

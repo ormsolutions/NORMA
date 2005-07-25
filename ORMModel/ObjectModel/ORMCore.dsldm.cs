@@ -225,6 +225,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -465,6 +466,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				typeof(Northface.Tools.ORM.ObjectModel.RolePlayerRequiredErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError),
 				typeof(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError),
+				typeof(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder),
 				typeof(Northface.Tools.ORM.ObjectModel.ReadingOrderElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind),
@@ -572,6 +575,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				typeof(Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError),
 				typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError),
+				typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeErrorElementFactoryCreator),
 
 			};
 			return typeArray;
@@ -740,6 +745,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError), "Role", Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RoleMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError), "EqualityIsImpliedByMandatoryError", Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError), "EqualityConstraint", Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError), "ReferenceSchemeError", Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError), "ObjectType", Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid),
 
 			};
 			return typeArray;
@@ -2298,6 +2305,51 @@ namespace Northface.Tools.ORM.ObjectModel
 					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, value);
 					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid, this);
 					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region ReferenceSchemeError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError ReferenceSchemeError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError), newRoles);
 				}
 			}
 		}
@@ -16123,6 +16175,154 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError")]
+	public  partial class EntityTypeRequiresReferenceSchemeError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region EntityTypeRequiresReferenceSchemeError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "3c7be87d-db77-4269-8372-33664b89c558";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError.MetaClassGuidString);
+		#endregion
+
+		#region ObjectType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ObjectType ObjectType
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.ObjectType;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.ObjectType counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.ObjectType;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region EntityTypeRequiresReferenceSchemeError's Generated Constructor Code
+	public  partial class EntityTypeRequiresReferenceSchemeError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EntityTypeRequiresReferenceSchemeError CreateEntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateEntityTypeRequiresReferenceSchemeError(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EntityTypeRequiresReferenceSchemeError CreateAndInitializeEntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeEntityTypeRequiresReferenceSchemeError(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EntityTypeRequiresReferenceSchemeError CreateEntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (EntityTypeRequiresReferenceSchemeError)partition.ElementFactory.CreateElement(typeof(EntityTypeRequiresReferenceSchemeError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EntityTypeRequiresReferenceSchemeError CreateAndInitializeEntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (EntityTypeRequiresReferenceSchemeError)partition.ElementFactory.CreateElement(typeof(EntityTypeRequiresReferenceSchemeError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for EntityTypeRequiresReferenceSchemeError
+	/// <summary>
+	/// EntityTypeRequiresReferenceSchemeError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError))]
+	public sealed class EntityTypeRequiresReferenceSchemeErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EntityTypeRequiresReferenceSchemeErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static EntityTypeRequiresReferenceSchemeErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new EntityTypeRequiresReferenceSchemeErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrder.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrder")]
 	public  partial class ReadingOrder : Microsoft.VisualStudio.Modeling.ModelElement
 	{
@@ -27888,6 +28088,159 @@ namespace Northface.Tools.ORM.ObjectModel
 			get
 			{
 				return new EqualityConstraintHasEqualityIsImpliedByMandatoryErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError")]
+	public  partial class ObjectTypeHasEntityTypeRequiresReferenceSchemeError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ObjectTypeHasEntityTypeRequiresReferenceSchemeError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "92e220d3-1ff5-487d-bb01-9343fa460cf2";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = ObjectTypeHasEntityTypeRequiresReferenceSchemeError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = ObjectTypeHasEntityTypeRequiresReferenceSchemeError.MetaClassGuid;
+		#endregion
+
+		#region ReferenceSchemeError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ReferenceSchemeErrorMetaRoleGuidString = "c4ac92c4-08b5-4d06-b2af-24a9c1bd9b89";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ReferenceSchemeErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeError")]
+		public  Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError ReferenceSchemeError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError)this.GetRolePlayer(ReferenceSchemeErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(ReferenceSchemeErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region ObjectType's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ObjectTypeMetaRoleGuidString = "6c31dffd-3f72-434f-98ea-82a98e06bce6";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ObjectTypeMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectType")]
+		public  Northface.Tools.ORM.ObjectModel.ObjectType ObjectType
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ObjectType)this.GetRolePlayer(ObjectTypeMetaRoleGuid); }
+			set { this.SetRolePlayer(ObjectTypeMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region ObjectTypeHasEntityTypeRequiresReferenceSchemeError's Generated Constructor Code
+	public  partial class ObjectTypeHasEntityTypeRequiresReferenceSchemeError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeHasEntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeHasEntityTypeRequiresReferenceSchemeError CreateObjectTypeHasEntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateObjectTypeHasEntityTypeRequiresReferenceSchemeError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeHasEntityTypeRequiresReferenceSchemeError CreateAndInitializeObjectTypeHasEntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeObjectTypeHasEntityTypeRequiresReferenceSchemeError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeHasEntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeHasEntityTypeRequiresReferenceSchemeError CreateObjectTypeHasEntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ObjectTypeHasEntityTypeRequiresReferenceSchemeError)partition.ElementFactory.CreateElementLink(typeof(ObjectTypeHasEntityTypeRequiresReferenceSchemeError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeHasEntityTypeRequiresReferenceSchemeError CreateAndInitializeObjectTypeHasEntityTypeRequiresReferenceSchemeError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ObjectTypeHasEntityTypeRequiresReferenceSchemeError)partition.ElementFactory.CreateElementLink(typeof(ObjectTypeHasEntityTypeRequiresReferenceSchemeError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ObjectTypeHasEntityTypeRequiresReferenceSchemeError
+	/// <summary>
+	/// ObjectTypeHasEntityTypeRequiresReferenceSchemeError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError))]
+	public sealed class ObjectTypeHasEntityTypeRequiresReferenceSchemeErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeHasEntityTypeRequiresReferenceSchemeErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ObjectTypeHasEntityTypeRequiresReferenceSchemeErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ObjectTypeHasEntityTypeRequiresReferenceSchemeErrorElementFactoryCreator();
 			}
 		}
 	}
