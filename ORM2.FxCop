@@ -20,9 +20,9 @@
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
-   <Directory>c:/Program Files/Microsoft Visual Studio 8/Common7/IDE/DSLTools/</Directory>
-   <Directory>c:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
-   <Directory>c:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
+   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/DSLTools/</Directory>
+   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
+   <Directory>C:/Program Files/VSIP 8.0/EnvSDK/common/VSIA/</Directory>
   </AssemblyReferenceDirectories>
   <Target Name="$(ProjectDir)/ORMModel/bin/Debug/Northface.Tools.ORM.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
@@ -2258,12 +2258,258 @@
          </Type>
          <Type Name="CustomReferenceModesBranch">
           <Members>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnBranchModification" Kind="Event">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.add_OnBranchModification(Microsoft.VisualStudio.VirtualTreeGrid.BranchModificationEventHandler):System.Void">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>CustomReferenceModesBranch</Item>
+                 <Item>IBranch.add_OnBranchModification(BranchModificationEventHandler):Void</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.remove_OnBranchModification(Microsoft.VisualStudio.VirtualTreeGrid.BranchModificationEventHandler):System.Void">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>CustomReferenceModesBranch</Item>
+                 <Item>IBranch.remove_OnBranchModification(BranchModificationEventHandler):Void</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.BeginLabelEdit(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.BeginLabelEdit(Int32, Int32, VirtualTreeLabelEditActivationStyles):VirtualTreeLabelEditData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.CommitLabelEdit(System.Int32,System.Int32,System.String):Microsoft.VisualStudio.VirtualTreeGrid.LabelEditResult">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.CommitLabelEdit(Int32, Int32, String):LabelEditResult</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.Features">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.get_Features():Microsoft.VisualStudio.VirtualTreeGrid.BranchFeatures">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>CustomReferenceModesBranch</Item>
+                 <Item>IBranch.get_Features():BranchFeatures</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetAccessibilityData(System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeAccessibilityData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.GetAccessibilityData(Int32, Int32):VirtualTreeAccessibilityData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetDisplayData(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeDisplayDataMasks):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeDisplayData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.GetDisplayData(Int32, Int32, VirtualTreeDisplayDataMasks):VirtualTreeDisplayData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetObject(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.ObjectStyle,System.Int32&amp;):System.Object">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.GetObject(Int32, Int32, ObjectStyle, Int32&amp;):Object</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetText(System.Int32,System.Int32):System.String">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2005-04-15 14:45:27Z">
               <Issue>
                <Item>CustomReferenceModesBranch.Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetText(Int32, Int32):String</Item>
                <Item>System.Object</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.GetText(Int32, Int32):String</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetTipText(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.ToolTipType):System.String">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.GetTipText(Int32, Int32, ToolTipType):String</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.IsExpandable(System.Int32,System.Int32):System.Boolean">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.IsExpandable(Int32, Int32):Boolean</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.LocateObject(System.Object,Microsoft.VisualStudio.VirtualTreeGrid.ObjectStyle,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.LocateObjectData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.LocateObject(Object, ObjectStyle, Int32):LocateObjectData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnDragEvent(System.Object,System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.DragEventType,System.Windows.Forms.DragEventArgs):System.Void">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.OnDragEvent(Object, Int32, Int32, DragEventType, DragEventArgs):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs,System.Int32,System.Int32):System.Void">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.OnGiveFeedback(GiveFeedbackEventArgs, Int32, Int32):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnQueryContinueDrag(System.Windows.Forms.QueryContinueDragEventArgs,System.Int32,System.Int32):System.Void">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs, Int32, Int32):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnStartDrag(System.Object,System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.DragReason):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeStartDragData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.OnStartDrag(Object, Int32, Int32, DragReason):VirtualTreeStartDragData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.SynchronizeState(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.IBranch,System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.ToggleState(System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IBranch.ToggleState(Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.UpdateCounter">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.get_UpdateCounter():System.Int32">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>CustomReferenceModesBranch</Item>
+                 <Item>IBranch.get_UpdateCounter():Int32</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.VisibleItemCount">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.get_VisibleItemCount():System.Int32">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>CustomReferenceModesBranch</Item>
+                 <Item>IBranch.get_VisibleItemCount():Int32</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.ColumnCount">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.get_ColumnCount():System.Int32">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>CustomReferenceModesBranch</Item>
+                 <Item>IMultiColumnBranch.get_ColumnCount():Int32</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.ColumnStyles(System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.SubItemCellStyles">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IMultiColumnBranch.ColumnStyles(Int32):SubItemCellStyles</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.GetJaggedColumnCount(System.Int32):System.Int32">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>CustomReferenceModesBranch</Item>
+               <Item>IMultiColumnBranch.GetJaggedColumnCount(Int32):Int32</Item>
               </Issue>
              </Message>
             </Messages>
@@ -2995,6 +3241,34 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="EqualityConstraint+ConstraintRoleSequenceHasRoleAdded">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 19:32:04Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.EqualityConstraint+ConstraintRoleSequenceHasRoleAdded</Item>
+            </Issue>
+            <Notes>
+             <User Name="ckaylor">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="EqualityConstraint+ConstraintRoleSequenceHasRoleRemoved">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 19:32:04Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.EqualityConstraint+ConstraintRoleSequenceHasRoleRemoved</Item>
+            </Issue>
+            <Notes>
+             <User Name="ckaylor">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="EqualityConstraintElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
@@ -3010,6 +3284,191 @@
               </Notes>
              </Message>
             </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="EqualityIsImpliedByMandatoryError">
+          <Members>
+           <Member Name="CustomSerializedChildRoleComparer">
+            <Accessors>
+             <Accessor Name="get_CustomSerializedChildRoleComparer():System.Collections.Generic.IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>EqualityIsImpliedByMandatoryError.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
+                </Issue>
+                <Notes>
+                 <User Name="ckaylor">
+                  <Note Id="1" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="CustomSerializedElementInfo">
+            <Accessors>
+             <Accessor Name="get_CustomSerializedElementInfo():Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>EqualityIsImpliedByMandatoryError.get_CustomSerializedElementInfo():ORMCustomSerializedElementInfo</Item>
+                </Issue>
+                <Notes>
+                 <User Name="ckaylor">
+                  <Note Id="1" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>EqualityIsImpliedByMandatoryError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="ckaylor">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="attributeInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>EqualityIsImpliedByMandatoryError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="ckaylor">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="rolePlayedInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>EqualityIsImpliedByMandatoryError.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="ckaylor">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedChildElementInfo():Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[]">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>EqualityIsImpliedByMandatoryError.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
+              </Issue>
+              <Notes>
+               <User Name="ckaylor">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>EqualityIsImpliedByMandatoryError.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="ckaylor">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>EqualityIsImpliedByMandatoryError.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="ckaylor">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MapAttribute(System.String,System.String):System.Guid">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>EqualityIsImpliedByMandatoryError.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="ckaylor">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="attributeName" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>attributeName</Item>
+               <Item>EqualityIsImpliedByMandatoryError.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="ckaylor">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="xmlNamespace" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>xmlNamespace</Item>
+               <Item>EqualityIsImpliedByMandatoryError.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="ckaylor">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MapChildElement(System.String,System.String,System.String,System.String):Northface.Tools.ORM.Shell.ORMCustomSerializedElementMatch">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>EqualityIsImpliedByMandatoryError.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+              </Issue>
+              <Notes>
+               <User Name="ckaylor">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="SupportedCustomSerializedOperations">
+            <Accessors>
+             <Accessor Name="get_SupportedCustomSerializedOperations():Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-25 19:32:04Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>EqualityIsImpliedByMandatoryError.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
+                </Issue>
+                <Notes>
+                 <User Name="ckaylor">
+                  <Note Id="1" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
            </Member>
           </Members>
          </Type>
@@ -5540,12 +5999,258 @@
          </Type>
          <Type Name="IntrinsicReferenceModesBranch">
           <Members>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnBranchModification" Kind="Event">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.add_OnBranchModification(Microsoft.VisualStudio.VirtualTreeGrid.BranchModificationEventHandler):System.Void">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>IntrinsicReferenceModesBranch</Item>
+                 <Item>IBranch.add_OnBranchModification(BranchModificationEventHandler):Void</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.remove_OnBranchModification(Microsoft.VisualStudio.VirtualTreeGrid.BranchModificationEventHandler):System.Void">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>IntrinsicReferenceModesBranch</Item>
+                 <Item>IBranch.remove_OnBranchModification(BranchModificationEventHandler):Void</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.BeginLabelEdit(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.BeginLabelEdit(Int32, Int32, VirtualTreeLabelEditActivationStyles):VirtualTreeLabelEditData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.CommitLabelEdit(System.Int32,System.Int32,System.String):Microsoft.VisualStudio.VirtualTreeGrid.LabelEditResult">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.CommitLabelEdit(Int32, Int32, String):LabelEditResult</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.Features">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.get_Features():Microsoft.VisualStudio.VirtualTreeGrid.BranchFeatures">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>IntrinsicReferenceModesBranch</Item>
+                 <Item>IBranch.get_Features():BranchFeatures</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetAccessibilityData(System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeAccessibilityData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.GetAccessibilityData(Int32, Int32):VirtualTreeAccessibilityData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetDisplayData(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeDisplayDataMasks):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeDisplayData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.GetDisplayData(Int32, Int32, VirtualTreeDisplayDataMasks):VirtualTreeDisplayData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetObject(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.ObjectStyle,System.Int32&amp;):System.Object">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.GetObject(Int32, Int32, ObjectStyle, Int32&amp;):Object</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetText(System.Int32,System.Int32):System.String">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2005-04-15 14:45:27Z">
               <Issue>
                <Item>IntrinsicReferenceModesBranch.Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetText(Int32, Int32):String</Item>
                <Item>System.Object</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.GetText(Int32, Int32):String</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetTipText(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.ToolTipType):System.String">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.GetTipText(Int32, Int32, ToolTipType):String</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.IsExpandable(System.Int32,System.Int32):System.Boolean">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.IsExpandable(Int32, Int32):Boolean</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.LocateObject(System.Object,Microsoft.VisualStudio.VirtualTreeGrid.ObjectStyle,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.LocateObjectData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.LocateObject(Object, ObjectStyle, Int32):LocateObjectData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnDragEvent(System.Object,System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.DragEventType,System.Windows.Forms.DragEventArgs):System.Void">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.OnDragEvent(Object, Int32, Int32, DragEventType, DragEventArgs):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs,System.Int32,System.Int32):System.Void">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.OnGiveFeedback(GiveFeedbackEventArgs, Int32, Int32):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnQueryContinueDrag(System.Windows.Forms.QueryContinueDragEventArgs,System.Int32,System.Int32):System.Void">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs, Int32, Int32):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnStartDrag(System.Object,System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.DragReason):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeStartDragData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.OnStartDrag(Object, Int32, Int32, DragReason):VirtualTreeStartDragData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.SynchronizeState(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.IBranch,System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.ToggleState(System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IBranch.ToggleState(Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.UpdateCounter">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.get_UpdateCounter():System.Int32">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>IntrinsicReferenceModesBranch</Item>
+                 <Item>IBranch.get_UpdateCounter():Int32</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.VisibleItemCount">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.get_VisibleItemCount():System.Int32">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>IntrinsicReferenceModesBranch</Item>
+                 <Item>IBranch.get_VisibleItemCount():Int32</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.ColumnCount">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.get_ColumnCount():System.Int32">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>IntrinsicReferenceModesBranch</Item>
+                 <Item>IMultiColumnBranch.get_ColumnCount():Int32</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.ColumnStyles(System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.SubItemCellStyles">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IMultiColumnBranch.ColumnStyles(Int32):SubItemCellStyles</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.GetJaggedColumnCount(System.Int32):System.Int32">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>IntrinsicReferenceModesBranch</Item>
+               <Item>IMultiColumnBranch.GetJaggedColumnCount(Int32):Int32</Item>
               </Issue>
              </Message>
             </Messages>
@@ -10248,6 +10953,30 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnBranchModification" Kind="Event">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.add_OnBranchModification(Microsoft.VisualStudio.VirtualTreeGrid.BranchModificationEventHandler):System.Void">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>ReferenceModeHeaderBranch</Item>
+                 <Item>IBranch.add_OnBranchModification(BranchModificationEventHandler):Void</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.remove_OnBranchModification(Microsoft.VisualStudio.VirtualTreeGrid.BranchModificationEventHandler):System.Void">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>ReferenceModeHeaderBranch</Item>
+                 <Item>IBranch.remove_OnBranchModification(BranchModificationEventHandler):Void</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
            <Member Name="GetAccessibilityData(System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeAccessibilityData">
             <Messages>
              <Message Id="column" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-04-15 15:56:51Z" FixCategory="Breaking">
@@ -11232,12 +11961,258 @@
          </Type>
          <Type Name="ReferenceModeKindsBranch">
           <Members>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnBranchModification" Kind="Event">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.add_OnBranchModification(Microsoft.VisualStudio.VirtualTreeGrid.BranchModificationEventHandler):System.Void">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>ReferenceModeKindsBranch</Item>
+                 <Item>IBranch.add_OnBranchModification(BranchModificationEventHandler):Void</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.remove_OnBranchModification(Microsoft.VisualStudio.VirtualTreeGrid.BranchModificationEventHandler):System.Void">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>ReferenceModeKindsBranch</Item>
+                 <Item>IBranch.remove_OnBranchModification(BranchModificationEventHandler):Void</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.BeginLabelEdit(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditActivationStyles):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeLabelEditData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.BeginLabelEdit(Int32, Int32, VirtualTreeLabelEditActivationStyles):VirtualTreeLabelEditData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.CommitLabelEdit(System.Int32,System.Int32,System.String):Microsoft.VisualStudio.VirtualTreeGrid.LabelEditResult">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.CommitLabelEdit(Int32, Int32, String):LabelEditResult</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.Features">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.get_Features():Microsoft.VisualStudio.VirtualTreeGrid.BranchFeatures">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>ReferenceModeKindsBranch</Item>
+                 <Item>IBranch.get_Features():BranchFeatures</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetAccessibilityData(System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeAccessibilityData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.GetAccessibilityData(Int32, Int32):VirtualTreeAccessibilityData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetDisplayData(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeDisplayDataMasks):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeDisplayData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.GetDisplayData(Int32, Int32, VirtualTreeDisplayDataMasks):VirtualTreeDisplayData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetObject(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.ObjectStyle,System.Int32&amp;):System.Object">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.GetObject(Int32, Int32, ObjectStyle, Int32&amp;):Object</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetText(System.Int32,System.Int32):System.String">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2005-04-15 14:45:27Z">
               <Issue>
                <Item>ReferenceModeKindsBranch.Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetText(Int32, Int32):String</Item>
                <Item>System.Object</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.GetText(Int32, Int32):String</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.GetTipText(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.ToolTipType):System.String">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.GetTipText(Int32, Int32, ToolTipType):String</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.IsExpandable(System.Int32,System.Int32):System.Boolean">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.IsExpandable(Int32, Int32):Boolean</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.LocateObject(System.Object,Microsoft.VisualStudio.VirtualTreeGrid.ObjectStyle,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.LocateObjectData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.LocateObject(Object, ObjectStyle, Int32):LocateObjectData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnDragEvent(System.Object,System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.DragEventType,System.Windows.Forms.DragEventArgs):System.Void">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.OnDragEvent(Object, Int32, Int32, DragEventType, DragEventArgs):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnGiveFeedback(System.Windows.Forms.GiveFeedbackEventArgs,System.Int32,System.Int32):System.Void">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.OnGiveFeedback(GiveFeedbackEventArgs, Int32, Int32):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnQueryContinueDrag(System.Windows.Forms.QueryContinueDragEventArgs,System.Int32,System.Int32):System.Void">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.OnQueryContinueDrag(QueryContinueDragEventArgs, Int32, Int32):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.OnStartDrag(System.Object,System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.DragReason):Microsoft.VisualStudio.VirtualTreeGrid.VirtualTreeStartDragData">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.OnStartDrag(Object, Int32, Int32, DragReason):VirtualTreeStartDragData</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.SynchronizeState(System.Int32,System.Int32,Microsoft.VisualStudio.VirtualTreeGrid.IBranch,System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.SynchronizeState(Int32, Int32, IBranch, Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.ToggleState(System.Int32,System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.StateRefreshChanges">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IBranch.ToggleState(Int32, Int32):StateRefreshChanges</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.UpdateCounter">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.get_UpdateCounter():System.Int32">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>ReferenceModeKindsBranch</Item>
+                 <Item>IBranch.get_UpdateCounter():Int32</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.VisibleItemCount">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IBranch.get_VisibleItemCount():System.Int32">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>ReferenceModeKindsBranch</Item>
+                 <Item>IBranch.get_VisibleItemCount():Int32</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.ColumnCount">
+            <Accessors>
+             <Accessor Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.get_ColumnCount():System.Int32">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+                <Issue>
+                 <Item>ReferenceModeKindsBranch</Item>
+                 <Item>IMultiColumnBranch.get_ColumnCount():Int32</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.ColumnStyles(System.Int32):Microsoft.VisualStudio.VirtualTreeGrid.SubItemCellStyles">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IMultiColumnBranch.ColumnStyles(Int32):SubItemCellStyles</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Microsoft.VisualStudio.VirtualTreeGrid.IMultiColumnBranch.GetJaggedColumnCount(System.Int32):System.Int32">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-07-25 19:32:04Z">
+              <Issue>
+               <Item>ReferenceModeKindsBranch</Item>
+               <Item>IMultiColumnBranch.GetJaggedColumnCount(Int32):Int32</Item>
               </Issue>
              </Message>
             </Messages>
@@ -19456,6 +20431,10 @@
     <Note Id="2" Modified="2005-06-18 04:10:11Z">Typing in a type parameter is good exercise. Programmer's who use generic types do it all the time.</Note>
     <Note Id="3" Modified="2005-06-18 04:11:44Z">Private rules instantiated via reflection</Note>
     <Note Id="4" Modified="2005-06-18 04:15:11Z">Generated code patterns matching standard interface implementation pattern</Note>
+   </User>
+   <User Name="ckaylor">
+    <Note Id="0" Modified="2005-07-25 19:34:18Z">Rule classes instantiated via reflection</Note>
+    <Note Id="1" Modified="2005-07-25 19:34:41Z">Standard serialization spit matching required interface pattern</Note>
    </User>
    <User Name="jwilde">
     <Note Id="0" Modified="2005-04-26 20:54:13Z">Internal rules instantiated via reflection</Note>

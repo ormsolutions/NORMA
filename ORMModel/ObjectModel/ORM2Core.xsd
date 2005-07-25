@@ -382,6 +382,9 @@
 	<xs:complexType name="ConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
+	<xs:complexType name="EqualityConstraintRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
 	<!--end ConstraintRef and  ConstraintRefs-->
 	<xs:complexType name="ExternalConstraints">
 		<xs:complexContent>
@@ -585,6 +588,7 @@
 						<xs:element name="NMinusOneError" type="NMinusOneError"/>
 						<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeError"/>
 						<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredError"/>
+						<xs:element name="EqualityIsImpliedByMandatoryError" type="EqualityIsImpliedByMandatoryError"/>
 					</xs:choice>
 				</xs:extension>
 			</xs:complexContent>
@@ -716,6 +720,15 @@
 				<xs:extension base="ModelError">
 					<xs:choice>
 						<xs:element name="Role" type="RoleRef"></xs:element>
+					</xs:choice>
+				</xs:extension >
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:complexType name="EqualityIsImpliedByMandatoryError">
+			<xs:complexContent>
+				<xs:extension base="ModelError">
+					<xs:choice>
+						<xs:element name="EqualityConstraint" type="EqualityConstraintRef"></xs:element>
 					</xs:choice>
 				</xs:extension >
 			</xs:complexContent>

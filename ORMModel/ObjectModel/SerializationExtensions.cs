@@ -135,6 +135,7 @@ namespace Northface.Tools.ORM.ObjectModel
                 classNameMap.Add("ExternalUniquenessConstraint", ExternalUniquenessConstraint.MetaClassGuid);
                 classNameMap.Add("InternalUniquenessConstraint", InternalUniquenessConstraint.MetaClassGuid);
                 classNameMap.Add("SimpleMandatoryConstraint", SimpleMandatoryConstraint.MetaClassGuid);
+                classNameMap.Add("EqualityConstraint", EqualityConstraint.MetaClassGuid);
                 classNameMap.Add("ConstraintDuplicateNameError", ConstraintDuplicateNameError.MetaClassGuid);
                 classNameMap.Add("FactTypeDuplicateNameError", FactTypeDuplicateNameError.MetaClassGuid);
                 classNameMap.Add("ObjectTypeDuplicateNameError", ObjectTypeDuplicateNameError.MetaClassGuid);
@@ -146,6 +147,7 @@ namespace Northface.Tools.ORM.ObjectModel
                 classNameMap.Add("TooManyReadingRolesError", TooManyReadingRolesError.MetaClassGuid);
                 classNameMap.Add("TooManyRoleSequencesError", TooManyRoleSequencesError.MetaClassGuid);
                 classNameMap.Add("DataTypeNotSpecifiedError", DataTypeNotSpecifiedError.MetaClassGuid);
+                classNameMap.Add("EqualityIsImpliedByMandatoryError", EqualityIsImpliedByMandatoryError.MetaClassGuid);
                 classNameMap.Add("NMinusOneError", NMinusOneError.MetaClassGuid);
                 classNameMap.Add("CompatibleRolePlayerTypeError", CompatibleRolePlayerTypeError.MetaClassGuid);
                 classNameMap.Add("RolePlayerRequiredError", RolePlayerRequiredError.MetaClassGuid);
@@ -2785,6 +2787,46 @@ namespace Northface.Tools.ORM.ObjectModel
     }
     /// <summary>
     ///</summary>
+    public partial class EqualityConstraint : IORMCustomSerializedElement
+    {
+        /// <summary>
+        ///</summary>
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+            }
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            if ((rolePlayedInfo.Id == EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid))
+            {
+                return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+            }
+            if (!((0 
+            == (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))))
+            {
+                return base.GetCustomSerializedLinkInfo(rolePlayedInfo);
+            }
+            return ORMCustomSerializedElementInfo.Default;
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+        }
+    }
+    /// <summary>
+    ///</summary>
     public partial class ConstraintDuplicateNameError : IORMCustomSerializedElement
     {
         private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
@@ -4083,6 +4125,126 @@ namespace Northface.Tools.ORM.ObjectModel
                 match.InitializeRoles(ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuid);
                 childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|ConceptualDataType", match);
                 DataTypeNotSpecifiedError.myChildElementMappings = childElementMappings;
+            }
+            ORMCustomSerializedElementMatch rVal;
+            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
+            return rVal;
+        }
+        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        {
+            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+        }
+        /// <summary>
+        ///</summary>
+        protected Guid MapAttribute(string xmlNamespace, string attributeName)
+        {
+            return default(Guid);
+        }
+        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+        {
+            return this.MapAttribute(xmlNamespace, attributeName);
+        }
+    }
+    /// <summary>
+    ///</summary>
+    public partial class EqualityIsImpliedByMandatoryError : IORMCustomSerializedElement
+    {
+        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+        /// <summary>
+        ///</summary>
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return ORMCustomSerializedElementSupportedOperations.LinkInfo;
+            }
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+        {
+            get
+            {
+                throw new System.NotSupportedException();
+            }
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+        {
+            get
+            {
+                return this.CustomSerializedElementInfo;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        [CLSCompliant(false)]
+        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return null;
+            }
+        }
+        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+        {
+            get
+            {
+                return this.CustomSerializedChildRoleComparer;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+        {
+            throw new System.NotSupportedException();
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+        {
+            return this.GetCustomSerializedChildElementInfo();
+        }
+        /// <summary>
+        ///</summary>
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            throw new System.NotSupportedException();
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+        }
+        /// <summary>
+        ///</summary>
+        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            if ((rolePlayedInfo.Id == EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid))
+            {
+                return new ORMCustomSerializedElementInfo(null, "EqualityConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
+            }
+            return ORMCustomSerializedElementInfo.Default;
+        }
+        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        {
+            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+        }
+        /// <summary>
+        ///</summary>
+        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+        {
+            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = EqualityIsImpliedByMandatoryError.myChildElementMappings;
+            if ((childElementMappings == null))
+            {
+                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
+                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
+                match.InitializeRoles(EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid);
+                childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMCore|EqualityConstraint", match);
+                EqualityIsImpliedByMandatoryError.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
             childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);

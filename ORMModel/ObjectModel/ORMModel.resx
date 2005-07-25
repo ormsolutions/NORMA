@@ -122,13 +122,17 @@
     <value xml:space="preserve">Constraint '{0}' in model '{1}' has role players with incompatible types.</value>
     <comment xml:space="preserve">The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</comment>
   </data>
-	<data name="ModelError.Constraint.CompatibleRolePlayerTypeError.MultiColumn.Text">
-		<value xml:space="preserve">Constraint '{0}' in model '{1}' has role players in column '{2}' with incompatible types.</value>
-		<comment xml:space="preserve">The role players in an external constraint column must have compatible types. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) column number.</comment>
-	</data>
-	<data name="ModelError.Constraint.ExternalConstraintArityMismatch.Text">
+  <data name="ModelError.Constraint.CompatibleRolePlayerTypeError.MultiColumn.Text">
+    <value xml:space="preserve">Constraint '{0}' in model '{1}' has role players in column '{2}' with incompatible types.</value>
+    <comment xml:space="preserve">The role players in an external constraint column must have compatible types. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) column number.</comment>
+  </data>
+  <data name="ModelError.Constraint.ExternalConstraintArityMismatch.Text">
     <value xml:space="preserve">Constraint '{0}' has role sequences with different numbers of roles.</value>
     <comment xml:space="preserve">Model validation error text when role sequences in a multi column constraint have different role counts (arity).</comment>
+  </data>
+  <data name="ModelError.Constraint.ExternalEqualityIsImpliedByMandatory.Text">
+    <value xml:space="preserve">Constraint '{0}' in Model '{1}' is implied by mandatory constraint(s).</value>
+    <comment xml:space="preserve">Model validation error text when two roles played by the same object have an external equality constrant and also have both roles identified as mandatory.</comment>
   </data>
   <data name="ModelError.Constraint.TooFewRoleSequences.Text">
     <value xml:space="preserve">Constraint '{0}' does not have enough role sequences.</value>

@@ -224,6 +224,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -462,6 +463,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.RolePlayerRequiredError),
 				typeof(Northface.Tools.ORM.ObjectModel.RolePlayerRequiredErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError),
+				typeof(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder),
 				typeof(Northface.Tools.ORM.ObjectModel.ReadingOrderElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind),
@@ -567,6 +570,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				typeof(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError),
 				typeof(Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError),
+				typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryErrorElementFactoryCreator),
 
 			};
 			return typeArray;
@@ -733,6 +738,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError), "Constraint", Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.ConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError), "RolePlayerRequiredError", Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError), "Role", Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RoleMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError), "EqualityIsImpliedByMandatoryError", Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError), "EqualityConstraint", Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid),
 
 			};
 			return typeArray;
@@ -4359,6 +4366,51 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EqualityConstraint.MetaClassGuidString);
 		#endregion
 
+		#region EqualityIsImpliedByMandatoryError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError EqualityIsImpliedByMandatoryError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid, Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region EqualityConstraint's Generated Constructor Code
 	public  partial class EqualityConstraint
@@ -15909,6 +15961,154 @@ namespace Northface.Tools.ORM.ObjectModel
 			get
 			{
 				return new RolePlayerRequiredErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError")]
+	public  partial class EqualityIsImpliedByMandatoryError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region EqualityIsImpliedByMandatoryError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "47f92ff5-0183-4a60-96ee-8528565f4b67";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError.MetaClassGuidString);
+		#endregion
+
+		#region EqualityConstraint's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.EqualityConstraint EqualityConstraint
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.EqualityConstraint;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.EqualityConstraint counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.EqualityConstraint;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region EqualityIsImpliedByMandatoryError's Generated Constructor Code
+	public  partial class EqualityIsImpliedByMandatoryError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EqualityIsImpliedByMandatoryError CreateEqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateEqualityIsImpliedByMandatoryError(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EqualityIsImpliedByMandatoryError CreateAndInitializeEqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeEqualityIsImpliedByMandatoryError(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EqualityIsImpliedByMandatoryError CreateEqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (EqualityIsImpliedByMandatoryError)partition.ElementFactory.CreateElement(typeof(EqualityIsImpliedByMandatoryError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EqualityIsImpliedByMandatoryError CreateAndInitializeEqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (EqualityIsImpliedByMandatoryError)partition.ElementFactory.CreateElement(typeof(EqualityIsImpliedByMandatoryError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for EqualityIsImpliedByMandatoryError
+	/// <summary>
+	/// EqualityIsImpliedByMandatoryError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError))]
+	public sealed class EqualityIsImpliedByMandatoryErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EqualityIsImpliedByMandatoryErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static EqualityIsImpliedByMandatoryErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new EqualityIsImpliedByMandatoryErrorElementFactoryCreator();
 			}
 		}
 	}
@@ -27535,6 +27735,159 @@ namespace Northface.Tools.ORM.ObjectModel
 			get
 			{
 				return new RoleHasRolePlayerRequiredErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError")]
+	public  partial class EqualityConstraintHasEqualityIsImpliedByMandatoryError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region EqualityConstraintHasEqualityIsImpliedByMandatoryError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "80308cb5-fdf0-44dd-8a03-d8bb64dde146";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = EqualityConstraintHasEqualityIsImpliedByMandatoryError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = EqualityConstraintHasEqualityIsImpliedByMandatoryError.MetaClassGuid;
+		#endregion
+
+		#region EqualityIsImpliedByMandatoryError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String EqualityIsImpliedByMandatoryErrorMetaRoleGuidString = "4108fc75-346e-4ebc-a012-2e3e7692a6af";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid EqualityIsImpliedByMandatoryErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryError")]
+		public  Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError EqualityIsImpliedByMandatoryError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError)this.GetRolePlayer(EqualityIsImpliedByMandatoryErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(EqualityIsImpliedByMandatoryErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region EqualityConstraint's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String EqualityConstraintMetaRoleGuidString = "fdf5af22-719b-47fb-ac2a-ef9bbe68e61e";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid EqualityConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraint")]
+		public  Northface.Tools.ORM.ObjectModel.EqualityConstraint EqualityConstraint
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.EqualityConstraint)this.GetRolePlayer(EqualityConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(EqualityConstraintMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region EqualityConstraintHasEqualityIsImpliedByMandatoryError's Generated Constructor Code
+	public  partial class EqualityConstraintHasEqualityIsImpliedByMandatoryError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EqualityConstraintHasEqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EqualityConstraintHasEqualityIsImpliedByMandatoryError CreateEqualityConstraintHasEqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateEqualityConstraintHasEqualityIsImpliedByMandatoryError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EqualityConstraintHasEqualityIsImpliedByMandatoryError CreateAndInitializeEqualityConstraintHasEqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeEqualityConstraintHasEqualityIsImpliedByMandatoryError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EqualityConstraintHasEqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EqualityConstraintHasEqualityIsImpliedByMandatoryError CreateEqualityConstraintHasEqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (EqualityConstraintHasEqualityIsImpliedByMandatoryError)partition.ElementFactory.CreateElementLink(typeof(EqualityConstraintHasEqualityIsImpliedByMandatoryError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static EqualityConstraintHasEqualityIsImpliedByMandatoryError CreateAndInitializeEqualityConstraintHasEqualityIsImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (EqualityConstraintHasEqualityIsImpliedByMandatoryError)partition.ElementFactory.CreateElementLink(typeof(EqualityConstraintHasEqualityIsImpliedByMandatoryError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for EqualityConstraintHasEqualityIsImpliedByMandatoryError
+	/// <summary>
+	/// EqualityConstraintHasEqualityIsImpliedByMandatoryError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError))]
+	public sealed class EqualityConstraintHasEqualityIsImpliedByMandatoryErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public EqualityConstraintHasEqualityIsImpliedByMandatoryErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static EqualityConstraintHasEqualityIsImpliedByMandatoryErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new EqualityConstraintHasEqualityIsImpliedByMandatoryErrorElementFactoryCreator();
 			}
 		}
 	}

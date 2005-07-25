@@ -22,6 +22,7 @@
     <OutputPath>.\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;FACTEDITORPROTOTYPE;NEWSERIALIZE</DefineConstants>
     <DocumentationFile>bin\Debug\Northface.Tools.ORM.XML</DocumentationFile>
+    <RunFxCop>false</RunFxCop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -233,6 +234,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AttachRulesGenerator.xsx">
+      <DependentUpon>AttachRulesGenerator.xsd</DependentUpon>
+    </None>
     <None Include="ObjectModel\ORMCore.dsldm" />
     <None Include="ObjectModel\ORMCore.dsldm.dsldmt">
       <Generator>TextTemplatingFileGenerator</Generator>

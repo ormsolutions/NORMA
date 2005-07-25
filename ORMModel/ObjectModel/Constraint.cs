@@ -1953,6 +1953,214 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion // NMinusOneError Validation
 	}
 	#endregion // InternalUniquenessConstraint class
+	#region EqualityConstraint class
+	public partial class EqualityConstraint : IModelErrorOwner
+	{
+		#region IModelErrorOwner Implementation
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		[CLSCompliant(false)]
+		protected new IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
+				EqualityIsImpliedByMandatoryError equalityImplied;
+				if (null != (equalityImplied = EqualityIsImpliedByMandatoryError))
+				{
+					yield return equalityImplied;
+				}
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// Validate all errors on the external constraint. This
+		/// is called during deserialization fixup when rules are
+		/// suspended.
+		/// </summary>
+		/// <param name="notifyAdded">A callback for notifying
+		/// the caller of all objects that are added.</param>
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			base.ValidateErrors(notifyAdded);
+			VerifyNoRolesAreMandatory(notifyAdded, false);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		#endregion // IModelErrorOwner Implementation
+		#region Error synchronization rules
+		/// <summary>
+		/// Verifies that no mandatory roles are connected to the equality constraint.
+		/// </summary>
+		/// <param name="notifyAdded">If not null, this is being called during
+		/// load when rules are not in place. Any elements that are added
+		/// must be notified back to the caller.</param>
+		/// <param name="forceError">We know we need the error, don't check</param>
+		private void VerifyNoRolesAreMandatory(INotifyElementAdded notifyAdded, bool forceError)
+		{
+			if (!IsRemoved)
+			{
+				bool noError = true;
+				EqualityIsImpliedByMandatoryError impliedEqualityError;
+				if (!forceError)
+				{
+					MultiColumnExternalConstraintRoleSequenceMoveableCollection sequences = RoleSequenceCollection;
+					int roleSequenceCount = sequences.Count;
+
+					for (int i = 0; i < roleSequenceCount && noError; ++i)
+					{
+						RoleMoveableCollection roleCollection = sequences[i].RoleCollection;
+						int roleCount = roleCollection.Count;
+						for (int j = 0; j < roleCount; ++j)
+						{
+							Role currentRole = roleCollection[j];
+							ConstraintRoleSequenceMoveableCollection roleConstraints = currentRole.ConstraintRoleSequenceCollection;
+							int constraintCount = roleConstraints.Count;
+							for (int counter = 0; counter < constraintCount; ++counter)
+							{
+								IConstraint currentConstraint = roleConstraints[counter].Constraint;
+								if (currentConstraint.ConstraintType == ConstraintType.SimpleMandatory)
+								{
+									SimpleMandatoryConstraint mandatory = currentConstraint as SimpleMandatoryConstraint;
+									if (!mandatory.IsRemoving)
+									{
+										noError = false;
+									}
+									break; // There will only be one simple mandatory constraint on any given role
+								}
+							}
+						}
+					}
+				}
+				if (forceError || !noError)
+				{
+					if (null == EqualityIsImpliedByMandatoryError)
+					{
+						impliedEqualityError = EqualityIsImpliedByMandatoryError.CreateEqualityIsImpliedByMandatoryError(Store);
+						impliedEqualityError.Model = Model;
+						impliedEqualityError.EqualityConstraint = this;
+						impliedEqualityError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(impliedEqualityError, true);
+						}
+					}
+				}
+				else if (noError && null != (impliedEqualityError = EqualityIsImpliedByMandatoryError))
+				{
+					impliedEqualityError.Remove();
+				}
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="mandatoryContraint">The mandatory constraint being added or removed</param>
+		/// <param name="forAdd">This is called from an add rule, so we will always need the error</param>
+		private static void VerifyMandatoryHasNoEqualityConstraints(SimpleMandatoryConstraint mandatoryContraint, bool forAdd)
+		{
+			RoleMoveableCollection roles = mandatoryContraint.RoleCollection;
+			if (roles.Count != 0)
+			{
+				Role currentRole = roles[0];
+				ConstraintRoleSequenceMoveableCollection constraints = currentRole.ConstraintRoleSequenceCollection;
+				int constraintCount = constraints.Count;
+				for (int i = 0; i < constraintCount; ++i)
+				{
+					IConstraint currentConstraint = constraints[i].Constraint;
+					if (currentConstraint.ConstraintType == ConstraintType.Equality)
+					{
+						(currentConstraint as EqualityConstraint).VerifyNoRolesAreMandatory(null, forAdd);
+					}
+				}
+			}
+		}
+		#endregion //Error synchronization rules
+		#region ConstraintRoleSequenceHasRoleClasses
+		/// <summary>
+		/// Check to see if mandatory constraints are still implied by equality when removing a mandatory
+		/// constraint.
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.Inline)]
+		private class ConstraintRoleSequenceHasRoleRemoved : RemovingRule
+		{
+			/// <summary>
+			/// Runs when roleset element is removing. It calls to verify that no mandatory roles are 
+			/// connected to the EqualityConstraint.
+			/// </summary>
+			public override void ElementRemoving(ElementRemovingEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequenceCollection;
+				IConstraint constraint = roleSequences.Constraint;
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.Equality:
+						EqualityConstraint equality = constraint as EqualityConstraint;
+						if (!equality.IsRemoved)
+						{
+							equality.VerifyNoRolesAreMandatory(null, false);
+						}
+						break;
+					case ConstraintType.SimpleMandatory:
+						//Find my my equality constraint and check to see if my error message can be
+						//removed.
+						SimpleMandatoryConstraint mandatory = constraint as SimpleMandatoryConstraint;
+						VerifyMandatoryHasNoEqualityConstraints(mandatory, false);
+						break;
+				}
+			}
+		}
+		/// <summary>
+		/// Check to see if mandatory constraints are implied by equality when adding an equality
+		/// constraint.
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class ConstraintRoleSequenceHasRoleAdded : AddRule
+		{
+			/// <summary>
+			/// Runs when roleset element is being added. It calls to verify that no mandatory roles are 
+			/// connected to the EqualityConstraint.
+			/// </summary>
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequenceCollection;
+				IConstraint constraint = roleSequences.Constraint;
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.Equality:
+						EqualityConstraint equality = constraint as EqualityConstraint;
+						if (!equality.IsRemoved)
+						{
+							equality.VerifyNoRolesAreMandatory(null, false);
+						}
+						break;
+					case ConstraintType.SimpleMandatory:
+						//Find my my equality constraint and check to see if my error message can be
+						//removed.
+						SimpleMandatoryConstraint mandatory = constraint as SimpleMandatoryConstraint;
+						VerifyMandatoryHasNoEqualityConstraints(mandatory, true);
+						break;
+				}
+			}
+		}
+		#endregion
+	}
+	#endregion // EqualityConstraint class
 	#region EntityTypeHasPreferredIdentifier pattern enforcement
 	public partial class EntityTypeHasPreferredIdentifier
 	{
@@ -2508,6 +2716,49 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion // Accessor Properties
 	}
 
+	public partial class EqualityIsImpliedByMandatoryError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			EqualityConstraint parent = this.EqualityConstraint;
+			string parentName = (parent != null) ? parent.Name : "";
+			string currentText = Name;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorExternalEqualityIsImpliedByMandatoryError, parentName, this.Model.Name);
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		#endregion //Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { EqualityConstraint };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion //IRepresentModelElements Implementation       
+	}
 
 	#endregion // ModelError classes
 	#region ExclusionType enum

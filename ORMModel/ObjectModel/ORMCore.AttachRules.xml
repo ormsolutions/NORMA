@@ -6,6 +6,8 @@
 		<arg:Rule class="DataTypeNotSpecifiedError.UnspecifiedTypeAddedRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRule"/>
+		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleAdded"/>
+		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleRemoved"/>
 		<arg:Rule class="ExternalUniquenessConstraint.ExternalUniquenessConstraintChangeRule"/>
 		<arg:Rule class="FactType.FactTypeChangeRule"/>
 		<arg:Rule class="FactType.FactTypeHasReadingOrderAddRuleModelValidation"/>

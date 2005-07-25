@@ -414,4 +414,7 @@
     <ResourceString name="ModelErrorRolePlayerRequiredError" model="Model" resourceName="ModelError.Role.RolePlayerRequired.Message">
         <comment type="Summary">Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
     </ResourceString>
+	<ResourceString name="ModelErrorExternalEqualityIsImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.ExternalEqualityIsImpliedByMandatory.Text">
+		<comment type="Summary">Constraint '{0}' is implied by mandatory constraints.</comment>
+	</ResourceString>
 </ResourceStrings>

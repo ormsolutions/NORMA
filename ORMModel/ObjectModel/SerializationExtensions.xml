@@ -210,6 +210,9 @@
 			</se:ChildElement>
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 		</se:Element>
+		<se:Element Class="EqualityConstraint" Override="true">
+			<se:Link RelationshipName="EqualityConstraintHasEqualityIsImpliedByMandatoryError" RoleName="EqualityIsImpliedByMandatoryError" WriteStyle="NotWritten"/>
+		</se:Element>
 		<!--Errors-->
 		<se:Element Class="ConstraintDuplicateNameError">
 			<se:Link RelationshipName="MultiColumnExternalConstraintHasDuplicateNameError" RoleName="MultiColumnExternalConstraintCollection" Name="Constraint"/>
@@ -243,6 +246,9 @@
 		</se:Element>
 		<se:Element Class="DataTypeNotSpecifiedError">
 			<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="ValueTypeHasDataType" Name="ConceptualDataType"/>
+		</se:Element>
+		<se:Element Class="EqualityIsImpliedByMandatoryError">
+			<se:Link RelationshipName="EqualityConstraintHasEqualityIsImpliedByMandatoryError" RoleName="EqualityConstraint" Name="EqualityConstraint"/>
 		</se:Element>
 		<se:Element Class="NMinusOneError">
 			<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="InternalUniquenessConstraint"/>

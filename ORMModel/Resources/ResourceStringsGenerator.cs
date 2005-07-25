@@ -1267,5 +1267,14 @@ namespace Northface.Tools.ORM
                 return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Role.RolePlayerRequired.Message");
             }
         }
+        /// <summary>
+        ///</summary>
+        public static string ModelErrorExternalEqualityIsImpliedByMandatoryError
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalEqualityIsImpliedByMandatory.Text");
+            }
+        }
     }
 }
