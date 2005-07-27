@@ -256,16 +256,16 @@ namespace Northface.Tools.ORM.Shell
 			Synchronize();
 
 			// Save it out.
+#if OLDSERIALIZE
+			using (FileStream fileStream = File.Create(fileName + '1'))
+			{
+				(new ORMSerializer(Store)).Save1(fileStream);
+			}
+#endif // OLDSERIALIZE
 			using (FileStream fileStream = File.Create(fileName))
 			{
 				(new ORMSerializer(Store)).Save(fileStream);
 			}
-#if NEWSERIALIZE
-			using (FileStream fileStream = File.Create(fileName + '2'))
-			{
-				(new ORMSerializer(Store)).Save2(fileStream);
-			}
-#endif // NEWSERIALIZE
 		}
 		/// <summary>
 		/// Override the default implementation, which attempts
@@ -469,16 +469,14 @@ namespace Northface.Tools.ORM.Shell
 		/// </summary>
 		protected void GetAutomationObject(string name, IExtensibleObjectSite parent, out object result)
 		{
-#if NEWSERIALIZE
-			if ("ORM2Stream" == name)
+			if ("ORMXmlStream" == name)
 			{
 				MemoryStream stream = new MemoryStream();
-				(new ORMSerializer(Store)).Save2(stream);
+				(new ORMSerializer(Store)).Save(stream);
 				stream.Position = 0;
 				result = stream;
 				return;
 			}
-#endif // NEWSERIALIZE
 			result = this;
 		}
 		void IExtensibleObject.GetAutomationObject(string Name, IExtensibleObjectSite pParent, out object ppDisp)

@@ -722,6 +722,7 @@
 						<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"></xs:element>
 						<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"></xs:element>
 					</xs:choice>
+					<xs:attribute name="Column" type="xs:int" use="optional"/>
 				</xs:extension >
 			</xs:complexContent>
 		</xs:complexType>

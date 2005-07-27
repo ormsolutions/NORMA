@@ -1,4 +1,3 @@
-#if NEWSERIALIZE
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
@@ -138,7 +137,6 @@ namespace Northface.Tools.ORM.Shell
 		MultipleOppositeMetaRoles,
 	}
 	#endregion Public Enumerations
-
 	#region Public Classes
 	/// <summary>
 	/// Custom serialization information.
@@ -482,7 +480,6 @@ namespace Northface.Tools.ORM.Shell
 		}
 	}
 	#endregion Public Classes
-
 	#region Public Interfaces
 	/// <summary>
 	/// The interface for getting custom element namespaces.
@@ -500,6 +497,10 @@ namespace Northface.Tools.ORM.Shell
 		/// prefix is not specified
 		/// </summary>
 		string DefaultElementPrefix { get;}
+		/// <summary>
+		/// Return the meta class guids for all root elements.
+		/// </summary>
+		Guid[] GetRootElementClasses();
 		/// <summary>
 		/// Determine if a class or relationship should be serialized. This allows
 		/// the serialization engine to do a meta-level sanity check before retrieving
@@ -1048,10 +1049,10 @@ namespace Northface.Tools.ORM.Shell
 		/// <param name="file">The file to write to.</param>
 		/// <param name="link">The link.</param>
 		/// <param name="rolePlayer">The role player.</param>
+		/// <param name="oppositeRolePlayer">The opposite role player.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
-		private void SerializeLink(System.Xml.XmlWriter file, ElementLink link, ModelElement rolePlayer, MetaRoleInfo rolePlayedInfo)
+		private void SerializeLink(System.Xml.XmlWriter file, ElementLink link, ModelElement rolePlayer, ModelElement oppositeRolePlayer, MetaRoleInfo rolePlayedInfo)
 		{
-			ModelElement oppositeRolePlayer = link.GetRolePlayer(rolePlayedInfo.OppositeMetaRole);
 			ORMCustomSerializedElementSupportedOperations supportedOperations = ORMCustomSerializedElementSupportedOperations.None;
 			ORMCustomSerializedElementInfo customInfo = ORMCustomSerializedElementInfo.Default;
 			IList attributes = null;
@@ -1162,22 +1163,67 @@ namespace Northface.Tools.ORM.Shell
 		private bool SerializeChildElement(System.Xml.XmlWriter file, ModelElement childElement, MetaRoleInfo rolePlayedInfo, MetaRoleInfo oppositeRoleInfo, ORMCustomSerializedElementInfo customInfo, string defaultPrefix, bool writeBeginElement)
 		{
 			bool ret = false;
+			MetaClassInfo lastChildClass = null;
+			IORMCustomSerializedMetaModel parentModel = null;
+			// If there class derived from the role player, then the class-level serialization settings may be
+			// different than they were on the class specified on the role player, we need to check explicitly,
+			// despite the earlier call to ShouldSerializeMetaRole
+			bool checkSerializeClass = oppositeRoleInfo.RolePlayer.Descendants.Count != 0;
+			Store store = myStore;
 
 			if (!rolePlayedInfo.IsAggregate && !oppositeRoleInfo.IsAggregate) //write link
 			{
 				IList links = childElement.GetElementLinks(rolePlayedInfo);
-
-				foreach (ElementLink link in links)
+				int linksCount = links.Count;
+				if (links.Count != 0)
 				{
-					if (writeBeginElement && !ret && customInfo != null)
+					bool checkSerializeLinkClass = rolePlayedInfo.MetaRelationship.Descendants.Count != 0;
+					MetaRelationshipInfo lastLinkClass = null;
+					IORMCustomSerializedMetaModel linkParentModel = null;
+					for (int i = 0; i < linksCount; ++i)
 					{
-						if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, customInfo.CustomName))
+						// Verify that the link itself should be serialized
+						ElementLink link = (ElementLink)links[i];
+						if (checkSerializeLinkClass)
 						{
-							return false;
+							MetaRelationshipInfo linkClass = link.MetaRelationship;
+							if (linkClass != lastLinkClass)
+							{
+								lastLinkClass = linkClass;
+								linkParentModel = GetParentModel(link);
+							}
+							if (linkParentModel != null && !linkParentModel.ShouldSerializeMetaClass(store, linkClass))
+							{
+								continue;
+							}
 						}
-						ret = true;
+
+						// Verify that the opposite role player class should be serialized
+						ModelElement oppositeRolePlayer = link.GetRolePlayer(oppositeRoleInfo);
+						if (checkSerializeClass)
+						{
+							MetaClassInfo childClass = oppositeRolePlayer.MetaClass;
+							if (childClass != lastChildClass)
+							{
+								lastChildClass = childClass;
+								parentModel = GetParentModel(oppositeRolePlayer);
+							}
+							if (parentModel != null && !parentModel.ShouldSerializeMetaClass(store, childClass))
+							{
+								continue;
+							}
+						}
+
+						if (writeBeginElement && !ret && customInfo != null)
+						{
+							if (!WriteCustomizedStartElement(file, customInfo, defaultPrefix, customInfo.CustomName))
+							{
+								return false;
+							}
+							ret = true;
+						}
+						SerializeLink(file, link, childElement, oppositeRolePlayer, rolePlayedInfo);
 					}
-					SerializeLink(file, link, childElement, rolePlayedInfo);
 				}
 			}
 			else if (rolePlayedInfo.IsAggregate) //write child
@@ -1193,6 +1239,20 @@ namespace Northface.Tools.ORM.Shell
 					for (int iChild = 0; iChild < childCount; ++iChild)
 					{
 						ModelElement child = (ModelElement)children[iChild];
+
+						if (checkSerializeClass)
+						{
+							MetaClassInfo childClass = child.MetaClass;
+							if (childClass != lastChildClass)
+							{
+								lastChildClass = childClass;
+								parentModel = GetParentModel(child);
+							}
+							if (parentModel != null && !parentModel.ShouldSerializeMetaClass(store, childClass))
+							{
+								continue;
+							}
+						}
 
 						if (ShouldSerialize(child))
 						{
@@ -1413,12 +1473,11 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// New XML Serialization
 		/// </summary>
-		public void Save2(Stream stream)
+		public void Save(Stream stream)
 		{
 			System.Xml.XmlWriterSettings xmlSettings = new XmlWriterSettings();
 			System.Xml.XmlWriter file;
 			Store store = myStore;
-			ModelElement[] currentElements;
 			ICollection values = store.SubStores.Values;
 
 			xmlSettings.IndentChars = "\t";
@@ -1445,10 +1504,28 @@ namespace Northface.Tools.ORM.Shell
 			}
 
 			//serialize all root elements
-			currentElements = RootElements;
-			for (int i = 0, count = currentElements.Length; i < count; ++i)
+			ElementDirectory elementDir = myStore.ElementDirectory;
+			foreach (object value in values)
 			{
-				SerializeElement(file, currentElements[i]);
+				IORMCustomSerializedMetaModel ns = value as IORMCustomSerializedMetaModel;
+
+				if (ns != null)
+				{
+					Guid[] metaClasses = ns.GetRootElementClasses();
+					if (metaClasses != null)
+					{
+						int classCount = metaClasses.Length;
+						for (int i = 0; i < classCount; ++i)
+						{
+							IList elements = elementDir.GetElements(metaClasses[i]);
+							int elementCount = elements.Count;
+							for (int j = 0; j < elementCount; ++j)
+							{
+								SerializeElement(file, (ModelElement)elements[j]);
+							}
+						}
+					}
+				}
 			}
 
 			file.WriteEndElement();
@@ -1635,13 +1712,18 @@ namespace Northface.Tools.ORM.Shell
 		private Dictionary<Guid, PlaceholderElement> myPlaceholderElementMap;
 		private Dictionary<string, IORMCustomSerializedMetaModel> myXmlNamespaceToModelMap;
 		private static Dictionary<Type, TypeConverter> myTypeConverterCache;
+#if DEBUG
+		// Used for skipping schema validation on load if the shift key is down
+		[System.Runtime.InteropServices.DllImport("user32.dll", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+		private static extern short GetKeyState(System.Windows.Forms.Keys nVirtKey);
+#endif
 		/// <summary>
 		/// Load the stream contents into the current store
 		/// </summary>
 		/// <param name="stream">An initialized stream</param>
 		/// <param name="fixupManager">Class used to perfom fixup operations
 		/// after the load is complete.</param>
-		public void Load2(Stream stream, DeserializationFixupManager fixupManager)
+		public void Load(Stream stream, DeserializationFixupManager fixupManager)
 		{
 			// Leave rules on so all of the links reconnect. Links are not saved.
 			RulesSuspended = true;
@@ -1667,13 +1749,23 @@ namespace Northface.Tools.ORM.Shell
 				NameTable nameTable = new NameTable();
 				XmlReaderSettings settings = new XmlReaderSettings();
 				settings.NameTable = nameTable;
+#if DEBUG
+				// Skip validation when the shift key is down in debug mode
+				if (0 == (0xff00 & GetKeyState(System.Windows.Forms.Keys.ShiftKey)))
+				{
+#endif // DEBUG
 				settings.ValidationType = ValidationType.Schema;
 				XmlSchemaSet schemas = settings.Schemas;
 				Type coreModel = typeof(ORMModel);
+				// UNDONE: Only the ORM2Root.xsd file should be automatically loaded. The other
+				// schema files should be pulled from the IORMCustomSerializeMetaModel substores
 				Assembly assembly = coreModel.Assembly;
 				schemas.Add("http://Schemas.Northface.edu/ORM/ORMCore", new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORM2Core.xsd")));
 				schemas.Add("http://Schemas.Northface.edu/ORM/ORMDiagram", new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORM2Diagram.xsd")));
 				schemas.Add(RootXmlNamespace, new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORM2Root.xsd")));
+#if DEBUG
+				}
+#endif // DEBUG
 				// UNDONE: MSBUG Figure out why this transaction is needed. If it is ommitted then the EdgePointCollection
 				// for each of the lines on the diagram is not initialized during Diagram.HandleLineRouting and none of the lines
 				// are drawn. This behavior appears to be related to the diagram.GraphWrapper.IsLoading setting, which changes with
@@ -2414,4 +2506,3 @@ namespace Northface.Tools.ORM.Shell
 	}
 	#endregion // New Deserialization
 }
-#endif // NEWSERIALIZE

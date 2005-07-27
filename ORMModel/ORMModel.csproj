@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>.\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;FACTEDITORPROTOTYPE;NEWSERIALIZE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FACTEDITORPROTOTYPE</DefineConstants>
     <DocumentationFile>bin\Debug\Northface.Tools.ORM.XML</DocumentationFile>
     <RunFxCop>false</RunFxCop>
   </PropertyGroup>
@@ -28,7 +28,7 @@
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>.\bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NEWSERIALIZE</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <DocumentationFile>bin\Release\Northface.Tools.ORM.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>

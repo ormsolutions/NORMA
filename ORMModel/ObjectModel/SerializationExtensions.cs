@@ -85,6 +85,17 @@ namespace Northface.Tools.ORM.ObjectModel
         }
         /// <summary>
         ///</summary>
+        protected static Guid[] GetRootElementClasses()
+        {
+            return new Guid[] {
+                    ORMModel.MetaClassGuid};
+        }
+        Guid[] IORMCustomSerializedMetaModel.GetRootElementClasses()
+        {
+            return ORMMetaModel.GetRootElementClasses();
+        }
+        /// <summary>
+        ///</summary>
         protected static Guid MapRootElement(string xmlNamespace, string elementName)
         {
             if (((elementName == "ORMModel") 
@@ -4517,13 +4528,14 @@ namespace Northface.Tools.ORM.ObjectModel
     public partial class CompatibleRolePlayerTypeError : IORMCustomSerializedElement
     {
         private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+        private static Dictionary<string, Guid> myCustomSerializedAttributes;
         /// <summary>
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
-                return ORMCustomSerializedElementSupportedOperations.LinkInfo;
+                return (ORMCustomSerializedElementSupportedOperations.AttributeInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -4580,7 +4592,15 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            throw new System.NotSupportedException();
+            if ((attributeInfo.Id == CompatibleRolePlayerTypeError.ColumnMetaAttributeGuid))
+            {
+                if ((this.SingleColumnExternalConstraint != null))
+                {
+                    return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+                }
+                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+            }
+            return ORMCustomSerializedAttributeInfo.Default;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
@@ -4631,7 +4651,21 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected Guid MapAttribute(string xmlNamespace, string attributeName)
         {
-            return default(Guid);
+            Dictionary<string, Guid> customSerializedAttributes = CompatibleRolePlayerTypeError.myCustomSerializedAttributes;
+            if ((customSerializedAttributes == null))
+            {
+                customSerializedAttributes = new Dictionary<string, Guid>();
+                customSerializedAttributes.Add("Column", CompatibleRolePlayerTypeError.ColumnMetaAttributeGuid);
+                CompatibleRolePlayerTypeError.myCustomSerializedAttributes = customSerializedAttributes;
+            }
+            Guid rVal;
+            string key = attributeName;
+            if (!((xmlNamespace.Length == 0)))
+            {
+                key = string.Concat(xmlNamespace, "|", attributeName);
+            }
+            customSerializedAttributes.TryGetValue(key, out rVal);
+            return rVal;
         }
         Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
         {
@@ -4831,6 +4865,17 @@ namespace Northface.Tools.ORM.ShapeModel
         bool IORMCustomSerializedMetaModel.ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
         {
             return this.ShouldSerializeMetaClass(store, classInfo);
+        }
+        /// <summary>
+        ///</summary>
+        protected static Guid[] GetRootElementClasses()
+        {
+            return new Guid[] {
+                    ORMDiagram.MetaClassGuid};
+        }
+        Guid[] IORMCustomSerializedMetaModel.GetRootElementClasses()
+        {
+            return ORMShapeModel.GetRootElementClasses();
         }
         /// <summary>
         ///</summary>

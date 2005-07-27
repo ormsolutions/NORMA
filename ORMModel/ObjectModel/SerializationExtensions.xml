@@ -258,6 +258,22 @@
 			<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="InternalUniquenessConstraint"/>
 		</se:Element>
 		<se:Element Class="CompatibleRolePlayerTypeError">
+			<se:Attribute ID="Column">
+				<se:Condition WriteStyle="NotWritten">
+					<plx:Operator name="IdentityInequality">
+						<plx:Left>
+							<plx:CallInstance name="SingleColumnExternalConstraint" style="Property">
+								<plx:CallObject>
+									<plx:ThisKeyword/>
+								</plx:CallObject>
+							</plx:CallInstance>
+						</plx:Left>
+						<plx:Right>
+							<plx:NullObjectKeyword/>
+						</plx:Right>
+					</plx:Operator>
+				</se:Condition>
+			</se:Attribute>
 			<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="MultiColumnExternalConstraint" Name="MultiColumnConstraint"/>
 			<se:Link RelationshipName="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="SingleColumnExternalConstraint" Name="SingleColumnConstraint"/>
 		</se:Element>

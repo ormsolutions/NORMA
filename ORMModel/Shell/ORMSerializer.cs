@@ -22,6 +22,7 @@ namespace Northface.Tools.ORM.Shell
 	/// </summary>
 	public partial class ORMSerializer
 	{
+#if OLDSERIALIZE
 		#region Xsl transforms
 		private const string TrimMdfOrmXsl =
 @"<?xml version=""1.0"" encoding=""UTF-8"" ?>
@@ -104,7 +105,7 @@ namespace Northface.Tools.ORM.Shell
 			}
 		}
 		#endregion // Synchronized code to load transform into static variable
-		#region Member Variables
+		#region Old Member Variables
 		/// <summary>
 		/// Major Version of File Format
 		/// </summary>
@@ -116,17 +117,19 @@ namespace Northface.Tools.ORM.Shell
 		public const int MinorVersion = 0;
 
 		/// <summary>
-		/// Ref Counter for suspending/resuming Modeling Rule Engine
-		/// </summary>
-		private int myRuleSuspendCount;
-
-		/// <summary>
 		/// Track when we've seen a diagram. We only want
 		/// to record SubjectHasPresentation elements after
 		/// a diagram to keep the object and shape portions
 		/// of the model separate.
 		/// </summary>
 		private bool mySeenDiagram;
+		#endregion // Old Member Variables
+#endif // OLDSERIALIZE
+		#region Member Variables
+		/// <summary>
+		/// Ref Counter for suspending/resuming Modeling Rule Engine
+		/// </summary>
+		private int myRuleSuspendCount;
 
 		/// <summary>
 		/// Current store object. Set in constructor
@@ -176,11 +179,12 @@ namespace Northface.Tools.ORM.Shell
 		}
 		#endregion // Rule Suspension
 		#region Serialize
+#if OLDSERIALIZE
 		/// <summary>
 		/// Save the contents of the current store to a stream
 		/// </summary>
 		/// <param name="stream">An initialized stream</param>
-		public void Save(Stream stream)
+		public void Save1(Stream stream)
 		{
 			const bool onDiskFormat = true;
 			RulesSuspended = true;
@@ -188,7 +192,7 @@ namespace Northface.Tools.ORM.Shell
 			{
 				MemoryStream tempStream = new MemoryStream();
 				// Write out the MDF format to a temporary string stream
-				XmlSerialization.SerializeStore(myStore, /*RootElements,*/ tempStream, false, false, MajorVersion, MinorVersion, new XmlSerialization.ShouldSerialize(ShouldSerialize));
+				XmlSerialization.SerializeStore(myStore, tempStream, false, false, MajorVersion, MinorVersion, new XmlSerialization.ShouldSerialize(ShouldSerialize));
 
 				// Strip unwanted elements that won't reload
 				tempStream.Position = 0;
@@ -220,6 +224,7 @@ namespace Northface.Tools.ORM.Shell
 			}
 			return;
 		}
+#endif // OLDSERIALIZE
 		/// <summary>
 		/// Determine if an element should be serialized
 		/// </summary>
@@ -228,8 +233,7 @@ namespace Northface.Tools.ORM.Shell
 		private bool ShouldSerialize(ModelElement modelElement)
 		{
 			DataType dataType;
-			// UNDONE: For the new serialization engine, all of these elements
-			// will be eliminated at the type level 
+#if OLDSERIALIZE
 			if (modelElement is ExternalFactConstraint ||
 				modelElement is ExternalRoleConstraint ||
 				modelElement is ExternalConstraintLink ||
@@ -241,7 +245,9 @@ namespace Northface.Tools.ORM.Shell
 			{
 				return false;
 			}
-			else if (null != (dataType = modelElement as DataType))
+			else
+#endif // OLDSERIALIZE
+			if (null != (dataType = modelElement as DataType))
 			{
 				// If the only reference to this type is the aggregating
 				// object type, then don't bother to write it out. These
@@ -249,6 +255,7 @@ namespace Northface.Tools.ORM.Shell
 				// is reloaded.
 				return dataType.GetElementLinks().Count > 1;
 			}
+#if OLDSERIALIZE
 			else if (modelElement is ORMDiagram)
 			{
 				mySeenDiagram = true;
@@ -257,50 +264,10 @@ namespace Northface.Tools.ORM.Shell
 			{
 				return mySeenDiagram;
 			}
+#endif // OLDSERIALIZE
 			return true; // Serialize everything else.
 		}
-		/// <summary>
-		/// Generate an array of all top level model elements
-		/// </summary>
-		private ModelElement[] RootElements
-		{
-			get
-			{
-				ElementDirectory elementDir = myStore.ElementDirectory;
-				return GenerateElementArray(new IList[]
-					{
-						elementDir.GetElements(ORMModel.MetaClassGuid),
-						elementDir.GetElements(ORMDiagram.MetaClassGuid)
-					});
-			}
-		}
-		private static ModelElement[] GenerateElementArray(IList[] elementLists)
-		{
-			int listCount = elementLists.Length;
-			int elementCount = 0;
-			for (int i = 0; i < listCount; ++i)
-			{
-				elementCount += elementLists[i].Count;
-			}
-
-			ModelElement[] retVal = new ModelElement[elementCount];
-
-			if (elementCount > 0)
-			{
-				int nextCopyIndex = 0;
-				for (int i = 0; i < listCount; ++i)
-				{
-					IList curList = elementLists[i];
-					int curCount = curList.Count;
-					if (curCount > 0)
-					{
-						curList.CopyTo(retVal, nextCopyIndex);
-						nextCopyIndex += curCount;
-					}
-				}
-			}
-			return retVal;
-		}
+#if OLDSERIALIZE
 		/// <summary>
 		/// Get the formatting the way we want it. Getting it consistent
 		/// via Xsl is very difficult
@@ -354,15 +321,17 @@ namespace Northface.Tools.ORM.Shell
 			}
 			reader.Close();
 		}
+#endif // OLDSERIALIZE
 		#endregion // Serialize
 		#region Deserialize
+#if OLDSERIALIZE
 		/// <summary>
 		/// Load the stream contents into the current store
 		/// </summary>
 		/// <param name="stream">An initialized stream</param>
 		/// <param name="fixupManager">Class used to perfom fixup operations
 		/// after the load is complete.</param>
-		public void Load(Stream stream, DeserializationFixupManager fixupManager)
+		public void Load1(Stream stream, DeserializationFixupManager fixupManager)
 		{
 			// Leave rules on so all of the links reconnect. Links are not saved.
 			RulesSuspended = true;
@@ -397,6 +366,7 @@ namespace Northface.Tools.ORM.Shell
 			SysDiag.Debug.Fail("Nothing to upgrade yet");
 			return false;
 		}
+#endif // OLDSERIALIZE
 		#endregion // Deserialize
 	}
 }

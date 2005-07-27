@@ -1862,6 +1862,31 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</plx:Function>
+			<plx:Function visibility="Protected" name="GetRootElementClasses" shared="true">
+				<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="GetRootElementClasses"/>
+				<plx:Param style="RetVal" name="" dataTypeName="Guid" dataTypeIsSimpleArray="true"/>
+				<plx:Return>
+					<plx:CallNew dataTypeName="Guid" dataTypeIsSimpleArray="true">
+						<xsl:variable name="rootElements" select="se:RootElements/se:RootElement"/>
+						<xsl:choose>
+							<xsl:when test="$rootElements">
+								<plx:ArrayInitializer>
+									<xsl:for-each select="$rootElements">
+										<plx:PassParam>
+											<plx:CallType dataTypeName="{@Class}" name="MetaClassGuid" style="Field"/>
+										</plx:PassParam>
+									</xsl:for-each>
+								</plx:ArrayInitializer>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:PassParam>
+									<plx:Value type="I4">0</plx:Value>
+								</plx:PassParam>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:CallNew>
+				</plx:Return>
+			</plx:Function>
 			<plx:Function visibility="Protected" name="MapRootElement" shared="true">
 				<plx:InterfaceMember dataTypeName="IORMCustomSerializedMetaModel" member="MapRootElement"/>
 				<plx:Param style="RetVal" name="" dataTypeName="Guid"/>
