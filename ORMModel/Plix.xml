@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <plixLoader:SourceFiles xmlns:plixLoader="http://Schemas.Northface.edu/CodeGeneration/PlixLoader">
-	<plixLoader:SourceFile file="ObjectModel\ORMCore.AttachRules.xml" transformFile="AttachRulesGenerator.xslt"/>
-	<plixLoader:SourceFile file="ShapeModel\ORMShape.AttachRules.xml" transformFile="AttachRulesGenerator.xslt"/>
+	<plixLoader:SourceFile file="ObjectModel\ORMCore.AttachRules.xml" transformFile="Transforms\AttachRulesGenerator.xslt"/>
+	<plixLoader:SourceFile file="ShapeModel\ORMShape.AttachRules.xml" transformFile="Transforms\AttachRulesGenerator.xslt"/>
+	<plixLoader:SourceFile file="ObjectModel\ORMCore.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>
+	<plixLoader:SourceFile file="ShapeModel\ORMShape.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>
 </plixLoader:SourceFiles>

@@ -490,7 +490,13 @@ namespace Northface.Tools.ORM.Shell
 		/// Return all namespaces used by custom elements in this model.
 		/// </summary>
 		/// <returns>Custom element namespaces. return value [*, 0] contains
-		/// the prefix and [*, 1] contains the associated xml namespace</returns>
+		/// the prefix, [*, 1] contains the associated xml namespace, and [*, 2] contains
+		/// the name of the schema file with no path. The schema file must be built into the
+		/// model's assembly as an embedded resource (set via the Build Action property when the
+		/// file is selected in the solution explorer) with the same namespace as the metamodel.
+		/// This is most easily done by placing the schema file in the same directory as the
+		/// model file, and making the namespace for the model file correspond to the default
+		/// namespace for the directory (the project default namespace with the directory path appended)</returns>
 		string[,] GetCustomElementNamespaces();
 		/// <summary>
 		/// Return the default element prefix for elements where the
@@ -1730,6 +1736,12 @@ namespace Northface.Tools.ORM.Shell
 			try
 			{
 				myNotifyAdded = fixupManager as INotifyElementAdded;
+				XmlReaderSettings settings = new XmlReaderSettings();
+				XmlSchemaSet schemas = settings.Schemas;
+				Type schemaResourcePathType = GetType();
+				schemas.Add(RootXmlNamespace, new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, "ORM2Root.xsd")));
+
+				// Extract namespace and schema information from the different meta models
 				ICollection substores = myStore.SubStores.Values;
 				Dictionary<string, IORMCustomSerializedMetaModel> namespaceToModelMap = new Dictionary<string, IORMCustomSerializedMetaModel>();
 				foreach (object substore in substores)
@@ -1741,13 +1753,19 @@ namespace Northface.Tools.ORM.Shell
 						int namespaceCount = namespaces.GetLength(0);
 						for (int i = 0; i < namespaceCount; ++i)
 						{
-							namespaceToModelMap.Add(namespaces[i, 1], metaModel);
+							string namespaceURI = namespaces[i, 1];
+							namespaceToModelMap.Add(namespaceURI, metaModel);
+							string schemaFile = namespaces[i, 2];
+							if (schemaFile != null && schemaFile.Length != 0)
+							{
+								schemaResourcePathType = substore.GetType();
+								schemas.Add(namespaceURI, new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, schemaFile)));
+							}
 						}
 					}
 				}
 				myXmlNamespaceToModelMap = namespaceToModelMap;
 				NameTable nameTable = new NameTable();
-				XmlReaderSettings settings = new XmlReaderSettings();
 				settings.NameTable = nameTable;
 #if DEBUG
 				// Skip validation when the shift key is down in debug mode
@@ -1755,14 +1773,6 @@ namespace Northface.Tools.ORM.Shell
 				{
 #endif // DEBUG
 				settings.ValidationType = ValidationType.Schema;
-				XmlSchemaSet schemas = settings.Schemas;
-				Type coreModel = typeof(ORMModel);
-				// UNDONE: Only the ORM2Root.xsd file should be automatically loaded. The other
-				// schema files should be pulled from the IORMCustomSerializeMetaModel substores
-				Assembly assembly = coreModel.Assembly;
-				schemas.Add("http://Schemas.Northface.edu/ORM/ORMCore", new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORM2Core.xsd")));
-				schemas.Add("http://Schemas.Northface.edu/ORM/ORMDiagram", new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORM2Diagram.xsd")));
-				schemas.Add(RootXmlNamespace, new XmlTextReader(assembly.GetManifestResourceStream(coreModel, "ORM2Root.xsd")));
 #if DEBUG
 				}
 #endif // DEBUG

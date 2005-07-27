@@ -4,6 +4,8 @@
     xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix"
     xmlns:se="http://Schemas.Northface.edu/Private/SerializationExtensions"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+	<!-- Pick up param value supplied automatically by plix loader -->
+	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:template match="se:CustomSerializedElements">
 		<plx:Root xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
 			<plx:Using name="System"/>
@@ -13,11 +15,9 @@
 			<plx:Using name="Microsoft.VisualStudio.Modeling"/>
 			<plx:Using name="Microsoft.VisualStudio.Modeling.Diagrams"/>
 			<plx:Using name="Northface.Tools.ORM.Shell"/>
-			<xsl:for-each select="se:Using">
-				<plx:Namespace name="{@Namespace}">
-					<xsl:apply-templates select="child::*"/>
-				</plx:Namespace>
-			</xsl:for-each>
+			<plx:Namespace name="{$CustomToolNamespace}">
+				<xsl:apply-templates select="child::*"/>
+			</plx:Namespace>
 		</plx:Root>
 	</xsl:template>
 	<xsl:template match="se:Element">
@@ -931,7 +931,7 @@
 				</xsl:when>
 			</xsl:choose>
 			<xsl:variable name="mapChildElementBodyFragment">
-				<xsl:variable name="namespaces" select="parent::se:Using/se:MetaModel/se:Namespaces/se:Namespace"/>
+				<xsl:variable name="namespaces" select="../se:MetaModel/se:Namespaces/se:Namespace"/>
 				<xsl:variable name="namespace">
 					<xsl:call-template name="ResolveNamespace">
 						<xsl:with-param name="namespaces" select="$namespaces"/>
@@ -1653,7 +1653,7 @@
 									</plx:Value>
 								</plx:PassParam>
 								<plx:PassParam>
-									<plx:Value type="I4">2</plx:Value>
+									<plx:Value type="I4">3</plx:Value>
 								</plx:PassParam>
 							</plx:CallNew>
 						</plx:Initialize>
@@ -1700,6 +1700,28 @@
 							<plx:Right>
 								<plx:String>
 									<xsl:value-of select="@URI"/>
+								</plx:String>
+							</plx:Right>
+						</plx:Operator>
+						<plx:Operator name="Assign">
+							<plx:Left>
+								<plx:CallInstance name="" style="ArrayIndexer">
+									<plx:CallObject>
+										<plx:Value type="Local">ret</plx:Value>
+									</plx:CallObject>
+									<plx:PassParam>
+										<plx:Value type="I4">
+											<xsl:value-of select="position()-1"/>
+										</plx:Value>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:Value type="I4">2</plx:Value>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</plx:Left>
+							<plx:Right>
+								<plx:String>
+									<xsl:value-of select="@SchemaFile"/>
 								</plx:String>
 							</plx:Right>
 						</plx:Operator>
@@ -2036,8 +2058,8 @@
 								</plx:CallNew>
 							</plx:Right>
 						</plx:Operator>
-						<xsl:variable name="LocalNamespace" select="parent::se:Using/@Namespace"/>
-						<xsl:for-each select="parent::se:Using/se:Element">
+						<xsl:variable name="LocalNamespace" select="$CustomToolNamespace"/>
+						<xsl:for-each select="../se:Element">
 							<plx:CallInstance name="Add">
 								<plx:CallObject>
 									<plx:Value type="Local">classNameMap</plx:Value>
@@ -2240,7 +2262,8 @@
 							<plx:Operator name="Assign">
 								<plx:Left>
 									<plx:Value type="Local">
-										name<xsl:value-of select="$modifier"/>
+										<xsl:text>name</xsl:text>
+										<xsl:value-of select="$modifier"/>
 									</plx:Value>
 								</plx:Left>
 								<plx:Right>
@@ -2259,7 +2282,8 @@
 									<plx:Operator name="Assign">
 										<plx:Left>
 											<plx:Value type="Local">
-												name<xsl:value-of select="$modifier"/>
+												<xsl:text>name</xsl:text>
+												<xsl:value-of select="$modifier"/>
 											</plx:Value>
 										</plx:Left>
 										<plx:Right>
@@ -2294,7 +2318,8 @@
 			<xsl:choose>
 				<xsl:when test="count(se:ConditionalName)">
 					<plx:Value type="Local">
-						name<xsl:value-of select="$modifier"/>
+						<xsl:text>name</xsl:text>
+						<xsl:value-of select="$modifier"/>
 					</plx:Value>
 				</xsl:when>
 				<xsl:otherwise>

@@ -36,28 +36,6 @@ namespace Northface.Tools.ORM.Shell
 		}
 		#endregion // Construction/destruction
 		#region Base overrides
-#if DEBUG
-		/// <summary>
-		/// UNDONE: Temporary code for load failure debugging. Remove.
-		/// </summary>
-		/// <param name="fileName"></param>
-		/// <param name="isReload"></param>
-		/// <returns></returns>
-		protected override int LoadDocData(string fileName, bool isReload)
-		{
-			int retVal;
-			try
-			{
-				retVal = base.LoadDocData(fileName, isReload);
-			}
-			catch (Exception ex)
-			{
-				System.Windows.Forms.MessageBox.Show(ex.StackTrace.ToString(), ex.Message);
-				throw;
-			}
-			return retVal;
-		}
-#endif // DEBUG
 		/// <summary>
 		/// Return array of types of the substores used by the designer
 		/// </summary>

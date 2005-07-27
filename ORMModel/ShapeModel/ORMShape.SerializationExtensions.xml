@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<se:CustomSerializedElements
+    xmlns:se="http://Schemas.Northface.edu/Private/SerializationExtensions"
+    xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
+	<se:MetaModel Class="ORMShapeModel">
+		<se:Namespaces>
+			<se:Namespace Prefix="ormDiagram" URI="http://Schemas.Northface.edu/ORM/ORMDiagram" SchemaFile="ORM2Diagram.xsd" DefaultPrefix="true"/>
+		</se:Namespaces>
+		<se:RootElements>
+			<se:RootElement Class="ORMDiagram"/>
+		</se:RootElements>
+		<se:OmittedMetaElements>
+			<se:OmitClass Class="ExternalConstraintLink"/>
+			<se:OmitClass Class="ValueRangeLink"/>
+			<se:OmitClass Class="RolePlayerLink"/>
+			<se:OmitClass Class="SubtypeLink"/>
+			<se:OmitRelationship Class="LinkConnectsToNode" Namespace="Microsoft.VisualStudio.Modeling.Diagrams"/>
+		</se:OmittedMetaElements>
+	</se:MetaModel>
+	<se:Element Class="ORMDiagram" SortChildElements="true">
+		<se:ChildElement Name="Shapes">
+			<se:Link RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
+		</se:ChildElement>
+		<se:Link Name="Subject" RelationshipName="SubjectHasPresentation" RoleName="Subject"/>
+	</se:Element>
+	<se:Element Class="ORMBaseShape" SortChildElements="true">
+		<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
+		<se:Attribute ID="AbsoluteBounds" WriteCustomStorage="true"/>
+		<se:ChildElement Name="RelativeShapes">
+			<se:Link RelationshipName="ParentShapeHasRelativeChildShapes" RoleName="RelativeChildShapes"/>
+		</se:ChildElement>
+		<se:ChildElement Name="NestedShapes">
+			<se:Link RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
+		</se:ChildElement>
+		<se:Link Name="Subject" RelationshipName="SubjectHasPresentation" RoleName="Subject"/>
+	</se:Element>
+	<se:Element Class="ObjectTypeShape" Override="true">
+		<se:Attribute ID="ShapeName" WriteStyle="NotWritten"/>
+		<se:Attribute ID="ReferenceModeName" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="ObjectifiedFactTypeNameShape" Override="true">
+		<se:Attribute ID="ObjectTypeName" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="ReadingShape" Override="true">
+		<se:Attribute ID="ReadingText" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="ValueRangeShape" Override="true">
+		<se:Attribute ID="ValueRangeText" WriteStyle="NotWritten"/>
+	</se:Element>
+</se:CustomSerializedElements>

@@ -131,9 +131,9 @@
     </Compile>
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
-    <Compile Include="ObjectModel\SerializationExtensions.cs">
+    <Compile Include="ObjectModel\ORMCore.SerializationExtensions.cs">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SerializationExtensions.xml</DependentUpon>
+      <DependentUpon>ORMCore.SerializationExtensions.xml</DependentUpon>
     </Compile>
     <Compile Include="ObjectModel\SubtypeFact.cs" />
     <Compile Include="ObjectModel\ValueRange.cs" />
@@ -146,6 +146,10 @@
     <Compile Include="ShapeModel\ORMShape.AttachRules.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMShape.AttachRules.xml</DependentUpon>
+    </Compile>
+    <Compile Include="ShapeModel\ORMShape.SerializationExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ORMShape.SerializationExtensions.xml</DependentUpon>
     </Compile>
     <Compile Include="ShapeModel\SubtypeLink.cs" />
     <Compile Include="ShapeModel\SubtypeConnectorAction.cs" />
@@ -239,9 +243,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ORMCore.dsldm.cs</LastGenOutput>
     </None>
-    <None Include="ObjectModel\SerializationExtensions.xsx">
-      <DependentUpon>SerializationExtensions.xsd</DependentUpon>
-    </None>
     <None Include="Resources\Toolbox.EntityType.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ObjectModel\ORMCore.dsldm.resx">
       <DependentUpon>ORMCore.dsldm.cs</DependentUpon>
@@ -262,15 +263,15 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>DataTypesGenerator.cs</LastGenOutput>
     </Content>
-    <None Include="ObjectModel\SerializationExtensions.xml">
+    <None Include="ObjectModel\ORMCore.SerializationExtensions.xml">
       <Generator>NUPlixLoader</Generator>
-      <LastGenOutput>SerializationExtensions.cs</LastGenOutput>
+      <LastGenOutput>ORMCore.SerializationExtensions.cs</LastGenOutput>
     </None>
-    <None Include="ObjectModel\SerializationExtensions.xsd" />
-    <None Include="ObjectModel\SerializationExtensions.xslt" />
+    <None Include="Transforms\SerializationExtensions.xsd" />
+    <None Include="Transforms\SerializationExtensions.xslt" />
     <EmbeddedResource Include="ObjectModel\ORM2Core.xsd" />
-    <EmbeddedResource Include="ObjectModel\ORM2Diagram.xsd" />
-    <EmbeddedResource Include="ObjectModel\ORM2Root.xsd" />
+    <EmbeddedResource Include="ShapeModel\ORM2Diagram.xsd" />
+    <EmbeddedResource Include="Shell\ORM2Root.xsd" />
     <Content Include="ObjectModel\ORMCore.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.AttachRules.cs</LastGenOutput>
@@ -283,7 +284,12 @@
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
     </Content>
     <Content Include="Resources\ResourceStringsGenerator.xslt" />
-    <Content Include="AttachRulesGenerator.xslt" />
+    <None Include="ShapeModel\ORMShape.SerializationExtensions.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>ORMShape.SerializationExtensions.cs</LastGenOutput>
+    </None>
+    <None Include="Transforms\AttachRulesGenerator.xslt" />
+    <None Include="Transforms\AttachRulesGenerator.xsd" />
     <None Include="ShapeModel\ORMShape.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMShape.AttachRules.cs</LastGenOutput>
@@ -310,7 +316,6 @@
     <None Include="Resources\Toolbox.PreferredExternalUniquenessConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.EqualityConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.ExternalConstraintConnector.Bitmap.Id.bmp" />
-    <None Include="AttachRulesGenerator.xsd" />
     <None Include="ShapeModel\ORMShape.dsldm">
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMShape.ims</DependentUpon>
