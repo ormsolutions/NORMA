@@ -16,7 +16,7 @@ xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ProjectItems\ORMProjectItems.vsdir" %en
 xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ProjectItems\ORMModel.orm" %envPath%"Common7\IDE\NewFileItems"
 xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ProjectItems\FactEditor.fct" %envPath%"Common7\IDE\NewFileItems"
 xcopy /Y /D /Q %rootPath%"ORMModel\ObjectModel\ORM2Core.xsd" %envPath%"Xml\Schemas\"
-xcopy /Y /D /Q %rootPath%"ORMModel\ObjectModel\ORM2Diagram.xsd" %envPath%"Xml\Schemas\"
-xcopy /Y /D /Q %rootPath%"ORMModel\ObjectModel\ORM2Root.xsd" %envPath%"Xml\Schemas\"
+xcopy /Y /D /Q %rootPath%"ORMModel\ShapeModel\ORM2Diagram.xsd" %envPath%"Xml\Schemas\"
+xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ORM2Root.xsd" %envPath%"Xml\Schemas\"
 regedit /s %rootPath%ORMDesigner.vrg
 regedit /s %rootPath%FactEditor.vrg
