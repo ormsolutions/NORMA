@@ -22,7 +22,6 @@
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:string" use="required" />
 		<xs:attribute name="IsCompleteView" type="xs:boolean" use="required" />
-		<xs:attribute name="DiagramId" type="xs:string" use="required" />
 		<xs:attribute name="Name" type="xs:string" use="required" />
 		<xs:attribute name="BaseFontName" type="xs:string" use="required" />
 		<xs:attribute name="BaseFontSize" type="xs:decimal" use="required" />

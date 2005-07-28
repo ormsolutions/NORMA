@@ -9662,6 +9662,14 @@
                <Item>ORMMetaModel.GetCustomElementNamespaces():String[,]</Item>
                <Item>System.String[,]</Item>
               </Issue>
+              <Issue Name="Body">
+               <Item>ORMMetaModel.GetCustomElementNamespaces():String[,]</Item>
+               <Item>System.String[,]</Item>
+              </Issue>
+              <Issue Name="Body">
+               <Item>ORMMetaModel.GetCustomElementNamespaces():String[,]</Item>
+               <Item>System.String[,]</Item>
+              </Issue>
               <Notes>
                <User Name="mcurland">
                 <Note Id="24" />
@@ -18478,6 +18486,19 @@
            </Member>
            <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
             <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-07-28 19:57:06Z">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>ORMDiagram.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaAttributeInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="jbriggs">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
              <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
               <Issue>
                <Item>ORMDiagram.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
@@ -19055,6 +19076,10 @@
            <Member Name="GetCustomElementNamespaces():System.String[,]">
             <Messages>
              <Message Id="Body" TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-06-02 21:00:35Z">
+              <Issue Name="Body">
+               <Item>ORMShapeModel.GetCustomElementNamespaces():String[,]</Item>
+               <Item>System.String[,]</Item>
+              </Issue>
               <Issue Name="Body">
                <Item>ORMShapeModel.GetCustomElementNamespaces():String[,]</Item>
                <Item>System.String[,]</Item>
@@ -19988,15 +20013,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="LoadDocData(System.String,System.Boolean):System.Int32">
-            <Messages>
-             <Message TypeName="SpecifyMessageBoxOptions" Category="Microsoft.Globalization" CheckId="CA1300" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>ORMDesignerDocData.LoadDocData(String, Boolean):Int32</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="Northface.Tools.ORM.ObjectModel.IORMToolServices.ServiceProvider">
             <Accessors>
              <Accessor Name="Northface.Tools.ORM.ObjectModel.IORMToolServices.get_ServiceProvider():System.IServiceProvider">
@@ -20776,6 +20792,7 @@
    </User>
    <User Name="jbriggs">
     <Note Id="0" Modified="2005-07-25 20:58:15Z">Rule class instantiated by reflection</Note>
+    <Note Id="1" Modified="2005-07-28 19:58:43Z">Standard generated code matching interface pattern</Note>
    </User>
    <User Name="jtanner">
     <Note Id="0" Modified="2005-07-25 22:25:45Z">Rule classes instantiated via reflection</Note>
@@ -21021,9 +21038,6 @@
    </Rule>
    <Rule TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305">
     <Resolution Name="Default">{0} makes a call to {1} that does not explicitly provide an IFormatProvider. This should be replaced with a call to {2}.</Resolution>
-   </Rule>
-   <Rule TypeName="SpecifyMessageBoxOptions" Category="Microsoft.Globalization" CheckId="CA1300">
-    <Resolution Name="Default">Change {0} to call the MessageBox.Show overload that specifies MessageBoxOptions, and make sure to set MessageBoxOptions.RightAlign and MessageBoxOptions.RtlReading if RightToLeft is set to RightToLeft.Yes on the parent control. If it is set to RightTolLeft.Inherit, check its parent until a value indicating Yes or No is found.</Resolution>
    </Rule>
    <Rule TypeName="TypesThatOwnDisposableFieldsShouldBeDisposable" Category="Microsoft.Design" CheckId="CA1001">
     <Resolution Name="Default">Implement IDisposable on '{0}' as it instantiates members of the following IDisposable types: {1}</Resolution>

@@ -18,6 +18,7 @@
 		</se:OmittedMetaElements>
 	</se:MetaModel>
 	<se:Element Class="ORMDiagram" SortChildElements="true">
+		<se:Attribute ID="DiagramId" WriteStyle="NotWritten"/>
 		<se:ChildElement Name="Shapes">
 			<se:Link RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
 		</se:ChildElement>

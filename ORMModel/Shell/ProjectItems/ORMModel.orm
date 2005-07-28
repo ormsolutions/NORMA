@@ -1,23 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<om:MetaModel MajorVersion="1" MinorVersion="0" xmlns:om="http://Microsoft.VisualStudio.Modeling">
-  <om:SubStore Guid="2b131234-7959-458d-834f-2dc0769ce683" />
-  <om:SubStore Guid="91d59b16-e488-4a28-8d51-59273ad5bf2e" />
-  <om:SubStore Guid="83ad9e12-0e90-47cd-8e2f-a79f8d9c7288" />
-  <om:SubStore Guid="c52fb9a5-6bf4-4267-8716-71d74c7aa89c" />
-  <om:ModelElement Type="Northface.Tools.ORM.ObjectModel.ORMModel" Id="1">
-    <om:Property Name="Name" Value="Model1" />
-  </om:ModelElement>
-  <om:ModelElement Type="Northface.Tools.ORM.ShapeModel.ORMDiagram" Id="2">
-    <om:Property Name="IsCompleteView" Value="False" />
-    <om:Property Name="DiagramId" Value="60647d57-15d0-4db5-99f0-791e57b0d077" />
-    <om:Property Name="Name" Value="" />
-    <om:Property Name="BaseFontName" Value="Tahoma" />
-    <om:Property Name="BaseFontSize" Value="0.11458333581686" />
-    <om:Property Name="IsExpanded" Value="AAEAAAD/////AQAAAAAAAAAEAQAAAA5TeXN0ZW0uQm9vbGVhbgEAAAAHbV92YWx1ZQABAQs=" />
-    <om:Property Name="AbsoluteBounds" Value="AAEAAAD/////AQAAAAAAAAAMAgAAAHJNaWNyb3NvZnQuVmlzdWFsU3R1ZGlvLk1vZGVsaW5nLlNkay5EaWFncmFtcywgVmVyc2lvbj04LjAuMTIwMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAADNNaWNyb3NvZnQuVmlzdWFsU3R1ZGlvLk1vZGVsaW5nLkRpYWdyYW1zLlJlY3RhbmdsZUQEAAAAAXgBeQV3aWR0aAZoZWlnaHQAAAAABgYGBgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJkAAAAAAAAAhQAs=" />
-    <om:ElementLink Type="Microsoft.VisualStudio.Modeling.SubjectHasPresentation" Id="b4f1891e-fd13-4073-b247-5126146e5212">
-      <om:Role Name="Presentation" Id="2" />
-      <om:Role Name="Subject" Id="1" />
-    </om:ElementLink>
-  </om:ModelElement>
-</om:MetaModel>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ormRoot:ORM2 xmlns:orm="http://Schemas.Northface.edu/ORM/ORMCore" xmlns:ormDerived="http://Schemas.Northface.edu/ORM/ORMDerived" xmlns:ormDiagram="http://Schemas.Northface.edu/ORM/ORMDiagram" xmlns:ormRoot="http://Schemas.Northface.edu/ORM/ORMRoot">
+	<orm:ORMModel id="modelId" Name="NewModel"/>
+	<ormDiagram:ORMDiagram id="diagramId" IsCompleteView="false" Name="" BaseFontName="Tahoma" BaseFontSize="0.0972222238779068">
+		<ormDiagram:Subject ref="modelId" />
+	</ormDiagram:ORMDiagram>
+</ormRoot:ORM2>

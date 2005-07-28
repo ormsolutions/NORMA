@@ -156,7 +156,8 @@ namespace Northface.Tools.ORM.ShapeModel
             get
             {
                 return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
-                            | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles));
+                            | (ORMCustomSerializedElementSupportedOperations.AttributeInfo 
+                            | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
             }
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -226,7 +227,11 @@ namespace Northface.Tools.ORM.ShapeModel
         ///</summary>
         protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
-            throw new System.NotSupportedException();
+            if ((attributeInfo.Id == ORMDiagram.DiagramIdMetaAttributeGuid))
+            {
+                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+            }
+            return ORMCustomSerializedAttributeInfo.Default;
         }
         Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
