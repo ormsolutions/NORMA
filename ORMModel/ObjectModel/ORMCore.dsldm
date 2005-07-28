@@ -1027,6 +1027,27 @@ Information Contained Herein is Proprietary and Confidential.
           </role>
         </roles>
       </relationship>
+      <relationship name="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError" identity="24765452-d1f9-48e5-b2d2-c222703a93cd" namespace="Northface.Tools.ORM.ObjectModel" id="i24765452zd1f9z48e5zb2d2zc222703a93cd" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <roles>
+          <role name="ImpliedBySimpleMandatoryError" identity="3e6d6499-cad9-4764-8387-4f8a4d4ecf05" id="i3e6d6499zcad9z4764z8387z4f8a4d4ecf05" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i749901acz66bbz4d86za42cz127456eb5451</source>
+            <type>i35071ae7z35b9z462dz91afz8d19e4bf6c30</type>
+            <generatedProperty name="ImpliedBySimpleMandatoryError" identity="f30ecd94-f2fa-484f-abd4-fdce82d1bdfb">
+              <referenceType>i35071ae7z35b9z462dz91afz8d19e4bf6c30</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="DisjunctiveMandatoryConstraint" identity="cf3b1ba2-1ae9-4481-b437-12939e2df798" id="icf3b1ba2z1ae9z4481zb437z12939e2df798" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i35071ae7z35b9z462dz91afz8d19e4bf6c30</source>
+            <type>i749901acz66bbz4d86za42cz127456eb5451</type>
+            <generatedProperty name="DisjunctiveMandatoryConstraint" identity="a6c8e407-cff7-4760-bcfa-a1f690f52726">
+              <referenceType>i749901acz66bbz4d86za42cz127456eb5451</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
     </relationships>
     <trees>
       <treenavigator name="intrinsic" identity="e71eab56-58f2-48c1-a61c-e32a3f1bba22" id="ie71eab56z58f2z48c1za61cze32a3f1bba22">
@@ -1574,6 +1595,15 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasEntityTypeRequiresReferenceSchemeError.EntityTypeRequiresReferenceSchemeError" identity="2bc3de51-c3fd-414d-b616-fc8795d5950d" id="i2bc3de51zc3fdz414dzb616zfc8795d5950d" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>ic4ac92c4z08b5z4d06zb2afz24a9c1bd9b89</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="Class1-ModelError" identity="0a199c52-782b-4c48-9382-9bdc7d49b4ff" id="i0a199c52z782bz4c48z9382z9bdc7d49b4ff" definitionlevel="none">
+            <source />
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i35071ae7z35b9z462dz91afz8d19e4bf6c30</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.SimpleMandatoryImpliesDisjunctiveMandatoryError" identity="5aca0568-6eee-42a7-a496-c7917067a0ef" id="i5aca0568z6eeez42a7za496zc7917067a0ef" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i3e6d6499zcad9z4764z8387z4f8a4d4ecf05</role>
           </treeExpression>
         </expressions>
         <roots />
@@ -2284,6 +2314,15 @@ Information Contained Herein is Proprietary and Confidential.
             <source>i2bc3de51zc3fdz414dzb616zfc8795d5950d</source>
             <role>ic4ac92c4z08b5z4d06zb2afz24a9c1bd9b89</role>
           </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="Class1-ModelError" identity="826e07a5-c83e-4723-af40-721d356823a8" id="i826e07a5zc83ez4723zaf40z721d356823a8" definitionlevel="definition">
+            <source>i0a199c52z782bz4c48z9382z9bdc7d49b4ff</source>
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i35071ae7z35b9z462dz91afz8d19e4bf6c30</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.SimpleMandatoryImpliesDisjunctiveMandatoryError" identity="1e7d57da-cbfc-4d0d-9ef3-948f76809001" id="i1e7d57dazcbfcz4d0dz9ef3z948f76809001" definitionlevel="use" containmentstyle="fromsource">
+            <source>i5aca0568z6eeez42a7za496zc7917067a0ef</source>
+            <role>i3e6d6499zcad9z4764z8387z4f8a4d4ecf05</role>
+          </treeExpression>
         </expressions>
         <roots>
           <root name="ORMModel" identity="f231968d-acdd-4123-ba57-7b5e5075194c" id="if231968dzacddz4123zba57z7b5e5075194c">
@@ -2692,6 +2731,14 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectType" identity="4b3eb259-bdb0-4471-9058-3083c29442f6" id="i4b3eb259zbdb0z4471z9058z3083c29442f6" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i6c31dffdz3f72z434fz98eaz82a98e06bce6</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.SimpleMandatoryImpliesDisjunctiveMandatoryError" identity="b8dae755-6add-4d09-9715-fdf9b06f0197" id="ib8dae755z6addz4d09z9715zfdf9b06f0197" definitionlevel="none" containmentstyle="embedding">
+            <source>i5aca0568z6eeez42a7za496zc7917067a0ef</source>
+            <role>i3e6d6499zcad9z4764z8387z4f8a4d4ecf05</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraint" identity="b1d184b4-5527-41c6-9d9e-f3db111c623d" id="ib1d184b4z5527z41c6z9d9ezf3db111c623d" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>icf3b1ba2z1ae9z4481zb437z12939e2df798</role>
           </treeExpression>
         </expressions>
         <roots />
@@ -3232,6 +3279,10 @@ Information Contained Herein is Proprietary and Confidential.
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
       <concept name="EntityTypeRequiresReferenceSchemeError" identity="3c7be87d-db77-4269-8372-33664b89c558" namespace="Northface.Tools.ORM.ObjectModel" id="i3c7be87dzdb77z4269z8372z33664b89c558" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+      </concept>
+      <concept name="SimpleMandatoryImpliesDisjunctiveMandatoryError" identity="35071ae7-35b9-462d-91af-8d19e4bf6c30" namespace="Northface.Tools.ORM.ObjectModel" id="i35071ae7z35b9z462dz91afz8d19e4bf6c30" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>

@@ -1285,5 +1285,14 @@ namespace Northface.Tools.ORM
                 return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityType.RequiresReferenceScheme.Message");
             }
         }
+        /// <summary>
+        ///</summary>
+        public static string SimpleMandatoryImpliesDisjunctiveMandatoryError
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SimpleMandatoryImpliesDisjunctiveMandatoryError.Message");
+            }
+        }
     }
 }

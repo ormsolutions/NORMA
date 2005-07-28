@@ -287,7 +287,7 @@
     <comment xml:space="preserve">Text to display in the reading editor when the role has no roleplayer to substitute into the text.</comment>
   </data>
   <data name="ModelReadingEditor.NewItemText">
-    <value xml:space="preserve">New…</value>
+    <value xml:space="preserve">New⬦</value>
     <comment xml:space="preserve">Text to place in the new item entry of the readings list in the reading editor tool window</comment>
   </data>
   <data name="ModelReadingEditor.NewReadingTransactionText">
@@ -393,5 +393,9 @@
   <data name="ModelError.EntityType.RequiresReferenceScheme.Message">
     <value xml:space="preserve">Entity type '{0}' in model '{1}' requires a primary reference scheme.</value>
     <comment xml:space="preserve">An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
+  </data>
+  <data name="ModelError.Constraint.SimpleMandatoryImpliesDisjunctiveMandatoryError.Message">
+    <value xml:space="preserve">Constraint '{0}' in model '{1}' is implied by a simple mandatory constraint.</value>
+    <comment xml:space="preserve">The mandatory disjunctive constraint is implied by a simple mandatory constraint. Replacement field {0} is the constraint name and {1} is the model name.</comment>
   </data>
 </root>

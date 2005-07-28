@@ -226,6 +226,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -468,6 +469,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				typeof(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError),
 				typeof(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError),
+				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder),
 				typeof(Northface.Tools.ORM.ObjectModel.ReadingOrderElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind),
@@ -577,6 +580,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError),
 				typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError),
+				typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator),
 
 			};
 			return typeArray;
@@ -747,6 +752,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError), "EqualityConstraint", Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError), "ReferenceSchemeError", Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError), "ObjectType", Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), "ImpliedBySimpleMandatoryError", Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), "DisjunctiveMandatoryConstraint", Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid),
 
 			};
 			return typeArray;
@@ -12009,6 +12016,51 @@ namespace Northface.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint.MetaClassGuidString);
 		#endregion
 
+		#region ImpliedBySimpleMandatoryError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError ImpliedBySimpleMandatoryError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region DisjunctiveMandatoryConstraint's Generated Constructor Code
 	public  partial class DisjunctiveMandatoryConstraint
@@ -16309,6 +16361,154 @@ namespace Northface.Tools.ORM.ObjectModel
 			get
 			{
 				return new EntityTypeRequiresReferenceSchemeErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError")]
+	public  partial class SimpleMandatoryImpliesDisjunctiveMandatoryError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region SimpleMandatoryImpliesDisjunctiveMandatoryError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "35071ae7-35b9-462d-91af-8d19e4bf6c30";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuidString);
+		#endregion
+
+		#region DisjunctiveMandatoryConstraint's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint DisjunctiveMandatoryConstraint
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region SimpleMandatoryImpliesDisjunctiveMandatoryError's Generated Constructor Code
+	public  partial class SimpleMandatoryImpliesDisjunctiveMandatoryError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SimpleMandatoryImpliesDisjunctiveMandatoryError CreateSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateSimpleMandatoryImpliesDisjunctiveMandatoryError(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SimpleMandatoryImpliesDisjunctiveMandatoryError CreateAndInitializeSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeSimpleMandatoryImpliesDisjunctiveMandatoryError(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SimpleMandatoryImpliesDisjunctiveMandatoryError CreateSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (SimpleMandatoryImpliesDisjunctiveMandatoryError)partition.ElementFactory.CreateElement(typeof(SimpleMandatoryImpliesDisjunctiveMandatoryError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SimpleMandatoryImpliesDisjunctiveMandatoryError CreateAndInitializeSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (SimpleMandatoryImpliesDisjunctiveMandatoryError)partition.ElementFactory.CreateElement(typeof(SimpleMandatoryImpliesDisjunctiveMandatoryError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for SimpleMandatoryImpliesDisjunctiveMandatoryError
+	/// <summary>
+	/// SimpleMandatoryImpliesDisjunctiveMandatoryError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError))]
+	public sealed class SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator();
 			}
 		}
 	}
@@ -28241,6 +28441,159 @@ namespace Northface.Tools.ORM.ObjectModel
 			get
 			{
 				return new ObjectTypeHasEntityTypeRequiresReferenceSchemeErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError")]
+	public  partial class DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "24765452-d1f9-48e5-b2d2-c222703a93cd";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuid;
+		#endregion
+
+		#region ImpliedBySimpleMandatoryError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ImpliedBySimpleMandatoryErrorMetaRoleGuidString = "3e6d6499-cad9-4764-8387-4f8a4d4ecf05";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ImpliedBySimpleMandatoryErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryError")]
+		public  Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError ImpliedBySimpleMandatoryError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError)this.GetRolePlayer(ImpliedBySimpleMandatoryErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(ImpliedBySimpleMandatoryErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region DisjunctiveMandatoryConstraint's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String DisjunctiveMandatoryConstraintMetaRoleGuidString = "cf3b1ba2-1ae9-4481-b437-12939e2df798";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid DisjunctiveMandatoryConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraint")]
+		public  Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint DisjunctiveMandatoryConstraint
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint)this.GetRolePlayer(DisjunctiveMandatoryConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(DisjunctiveMandatoryConstraintMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError's Generated Constructor Code
+	public  partial class DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError CreateDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError CreateAndInitializeDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError CreateDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError)partition.ElementFactory.CreateElementLink(typeof(DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError CreateAndInitializeDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError)partition.ElementFactory.CreateElementLink(typeof(DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError
+	/// <summary>
+	/// DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError))]
+	public sealed class DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator();
 			}
 		}
 	}

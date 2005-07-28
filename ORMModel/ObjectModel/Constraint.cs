@@ -2511,6 +2511,193 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion // ExternalUniquenessConstraintChangeRule class
 	}
 	#endregion // ExternalUniquenessConstraint class
+	#region DisjunctiveMandatoryConstraint class
+	public partial class DisjunctiveMandatoryConstraint : IModelErrorOwner
+	{
+		#region IModelErrorOwner Implementation
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		[CLSCompliant(false)]
+		protected new IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				foreach (ModelError baseError in base.ErrorCollection)
+				{
+					yield return baseError;
+				}
+				SimpleMandatoryImpliesDisjunctiveMandatoryError impliedDisjunctive = ImpliedBySimpleMandatoryError;
+				if (impliedDisjunctive != null)
+				{
+					yield return impliedDisjunctive;
+				}
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// Validate all errors on the external constraint. This
+		/// is called during deserialization fixup when rules are
+		/// suspended.
+		/// </summary>
+		/// <param name="notifyAdded">A callback for notifying
+		/// the caller of all objects that are added.</param>
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			base.ValidateErrors(notifyAdded);
+			ValidateImpliedDisjunctiveError(notifyAdded, false);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		#endregion // IModelErrorOwner Implementation
+		#region Error Rules
+		/// <summary>
+		/// Verify that we the disjunctive mandatory constraint is not attached to a role that
+		/// also has a simple mandatory
+		/// </summary>
+		/// <param name="notifyAdded">Set during deserialization</param>
+		/// <param name="forceError">Set to true if we already know that the error condition will be there,
+		/// such as when a simplemandatory constraint is added</param>
+		private void ValidateImpliedDisjunctiveError(INotifyElementAdded notifyAdded, bool forceError)
+		{
+			if (!IsRemoved)
+			{
+				bool hasError = forceError;
+				Store theStore = Store;
+				if (!hasError)
+				{
+					RoleMoveableCollection roles = RoleCollection;
+					int roleCount = roles.Count;
+					for (int i = 0; !hasError && i < roleCount; i++)
+					{
+						Role role = roles[i];
+						if (!role.IsRemoving)
+						{
+							ConstraintRoleSequenceMoveableCollection attachedSequences = role.ConstraintRoleSequenceCollection;
+							int roleSequenceCount = attachedSequences.Count;
+							for (int j = 0; j < roleSequenceCount; ++j)
+							{
+								ConstraintRoleSequence roleSequence = attachedSequences[j];
+								if (!roleSequence.IsRemoving)
+								{
+									IConstraint constraint = roleSequence.Constraint;
+									if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
+									{
+										hasError = true;
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+				SimpleMandatoryImpliesDisjunctiveMandatoryError noImpliedMandatoryError = ImpliedBySimpleMandatoryError;
+				if (hasError)
+				{
+					if (noImpliedMandatoryError == null)
+					{
+						noImpliedMandatoryError = SimpleMandatoryImpliesDisjunctiveMandatoryError.CreateSimpleMandatoryImpliesDisjunctiveMandatoryError(theStore);
+						noImpliedMandatoryError.Model = Model;
+						noImpliedMandatoryError.DisjunctiveMandatoryConstraint = this;
+						noImpliedMandatoryError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(noImpliedMandatoryError, true);
+						}
+					}
+				}
+				else if (noImpliedMandatoryError != null)
+				{
+					noImpliedMandatoryError.Remove();
+				}
+			}
+		}
+		/// <summary>
+		/// Verify that the SimpleMandatoryImpliesDisjunctiveMandatoryError is present/not present when
+		/// a simple mandatory constraint is added to a role that also participates in a DisjunctiveMandatoryConstraint
+		/// </summary>
+		/// <param name="mandatoryContraint">The SimpleMandatoryConstraint to test</param>
+		/// <param name="forAdd">True if the constraint was just added, false otherwise</param>
+		private static void VerifyMandatoryHasNoDisjunctivMandatoryConstraints(SimpleMandatoryConstraint mandatoryContraint, bool forAdd)
+		{
+			RoleMoveableCollection roles = mandatoryContraint.RoleCollection;
+			if (roles.Count != 0)
+			{
+				Role currentRole = roles[0];
+				ConstraintRoleSequenceMoveableCollection constraints = currentRole.ConstraintRoleSequenceCollection;
+				int constraintCount = constraints.Count;
+				IConstraint currentConstraint;
+				for (int i = 0; i < constraintCount; ++i)
+				{
+					currentConstraint = constraints[i].Constraint;
+					if (currentConstraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
+					{
+						(currentConstraint as DisjunctiveMandatoryConstraint).ValidateImpliedDisjunctiveError(null, forAdd);
+					}
+				}
+			}
+		}
+		#endregion //Error Rules
+		#region VerifyImpliedDisjunctiveMandatoryRole Add/Remove Methods
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class VerifyImpliedDisjunctiveMandatoryRoleAdd : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequenceCollection;
+				IConstraint constraint = roleSequences.Constraint;
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.SimpleMandatory:
+						SimpleMandatoryConstraint simpleMandatory = constraint as SimpleMandatoryConstraint;
+						VerifyMandatoryHasNoDisjunctivMandatoryConstraints(simpleMandatory, true);
+						break;
+					case ConstraintType.DisjunctiveMandatory:
+						DisjunctiveMandatoryConstraint mandatory = constraint as DisjunctiveMandatoryConstraint;
+						mandatory.ValidateImpliedDisjunctiveError(null, false);
+						break;
+
+				}
+			}
+		}
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.Inline)]
+		private class VerifyImpliedDisjunctiveMandatoryRoleRemoved : RemovingRule
+		{
+			/// <summary>
+			/// Runs when roleset element is removing. It calls to verify that no mandatory roles are connected to the EqualityConstraint.
+			/// </summary>
+			public override void ElementRemoving(ElementRemovingEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequenceCollection;
+				IConstraint constraint = roleSequences.Constraint;
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.SimpleMandatory:
+						SimpleMandatoryConstraint simpleMandatory = constraint as SimpleMandatoryConstraint;
+						VerifyMandatoryHasNoDisjunctivMandatoryConstraints(simpleMandatory, false);
+						break;
+					case ConstraintType.DisjunctiveMandatory:
+						DisjunctiveMandatoryConstraint mandatory = constraint as DisjunctiveMandatoryConstraint;
+						mandatory.ValidateImpliedDisjunctiveError(null, false);
+						break;
+
+				}
+			}
+		}
+		#endregion //VerifyImpliedDisjunctiveMandatoryRole Add/Remove Methods
+	}
+	#endregion // DisjunctiveMandatoryConstraint class
 	#region ModelError classes
 	public partial class TooManyRoleSequencesError : IRepresentModelElements
 	{
@@ -2758,6 +2945,50 @@ namespace Northface.Tools.ORM.ObjectModel
 			return GetRepresentedElements();
 		}
 		#endregion //IRepresentModelElements Implementation       
+	}
+	public partial class SimpleMandatoryImpliesDisjunctiveMandatoryError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			SingleColumnExternalConstraint parent = this.DisjunctiveMandatoryConstraint;
+			string parentName = (parent != null) ? parent.Name : "";
+			string modelName = this.Model.Name;
+			string currentText = Name;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.SimpleMandatoryImpliesDisjunctiveMandatoryError, parentName, modelName);
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { DisjunctiveMandatoryConstraint };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
 	}
 
 	#endregion // ModelError classes

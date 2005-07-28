@@ -25,6 +25,8 @@ namespace Northface.Tools.ORM.ObjectModel
                     typeof(ConstraintUtility).GetNestedType("ConstraintRoleSequenceHasRoleRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(CustomReferenceMode).GetNestedType("CustomReferenceModeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(DataTypeNotSpecifiedError).GetNestedType("UnspecifiedTypeAddedRule", (BindingFlags.Public | BindingFlags.NonPublic)),
+                    typeof(DisjunctiveMandatoryConstraint).GetNestedType("VerifyImpliedDisjunctiveMandatoryRoleAdd", (BindingFlags.Public | BindingFlags.NonPublic)),
+                    typeof(DisjunctiveMandatoryConstraint).GetNestedType("VerifyImpliedDisjunctiveMandatoryRoleRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(EntityTypeHasPreferredIdentifier).GetNestedType("PreferredIdentifierAddedRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(EntityTypeHasPreferredIdentifier).GetNestedType("TestRemovePreferredIdentifierRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(EqualityConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", (BindingFlags.Public | BindingFlags.NonPublic)),

@@ -4,6 +4,8 @@
 		<arg:Rule class="ConstraintUtility.ConstraintRoleSequenceHasRoleRemoved"/>
 		<arg:Rule class="CustomReferenceMode.CustomReferenceModeChangeRule"/>
 		<arg:Rule class="DataTypeNotSpecifiedError.UnspecifiedTypeAddedRule"/>
+		<arg:Rule class="DisjunctiveMandatoryConstraint.VerifyImpliedDisjunctiveMandatoryRoleAdd"/>
+		<arg:Rule class="DisjunctiveMandatoryConstraint.VerifyImpliedDisjunctiveMandatoryRoleRemoved"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRule"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleAdded"/>

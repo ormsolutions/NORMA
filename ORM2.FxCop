@@ -3176,6 +3176,34 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="DisjunctiveMandatoryConstraint+VerifyImpliedDisjunctiveMandatoryRoleAdd">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-28 20:27:31Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint+VerifyImpliedDisjunctiveMandatoryRoleAdd</Item>
+            </Issue>
+            <Notes>
+             <User Name="ashumway">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="DisjunctiveMandatoryConstraint+VerifyImpliedDisjunctiveMandatoryRoleRemoved">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-28 20:27:31Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint+VerifyImpliedDisjunctiveMandatoryRoleRemoved</Item>
+            </Issue>
+            <Notes>
+             <User Name="ashumway">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="DisjunctiveMandatoryConstraintElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
@@ -20780,6 +20808,9 @@
    </Target>
   </Targets>
   <Notes>
+   <User Name="ashumway">
+    <Note Id="0" Modified="2005-07-28 20:29:23Z">Rule classes instantiated via reflection</Note>
+   </User>
    <User Name="bfrank">
     <Note Id="0" Modified="2005-04-19 22:11:24Z">Intentionally explicitly type CompareTo override</Note>
     <Note Id="2" Modified="2005-06-18 04:10:11Z">Typing in a type parameter is good exercise. Programmer's who use generic types do it all the time.</Note>

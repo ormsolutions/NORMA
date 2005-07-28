@@ -420,4 +420,7 @@
 	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message">
 		<comment type="Summary">An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
 	</ResourceString>
+	<ResourceString name="SimpleMandatoryImpliesDisjunctiveMandatoryError" model="Model" resourceName="ModelError.Constraint.SimpleMandatoryImpliesDisjunctiveMandatoryError.Message">
+		<comment type="Summary">The mandatory disjunctive constraint is implied by a simple mandatory constraint. Replacement field {0} is the constraint name and {1} is the model name.</comment>
+	</ResourceString>
 </ResourceStrings>
