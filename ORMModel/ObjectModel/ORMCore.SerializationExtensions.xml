@@ -104,13 +104,14 @@
 		<!--TODO:Supertypes-->
 	</se:Element>
 	<se:Element Class="CustomReferenceMode" HasMixedTypedAttributes="true">
-		<se:Attribute ID="CustomFormatString" WriteStyle="Element"></se:Attribute>
+		<se:Attribute ID="CustomFormatString" WriteStyle="Element"/>
 		<se:Link Name="Kind" RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="Kind"/>
 	</se:Element>
-	<se:Element Class="ValueTypeHasDataType" HasMixedTypedAttributes="true">
+	<se:Element Class="ValueTypeHasDataType">
 		<se:Attribute ID="Scale">
 			<se:RolePlayed ID="ValueTypeCollection" Name="Scale"/>
 		</se:Attribute>
+		<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="DataTypeNotSpecifiedError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="DataType">
 		<se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueTypeCollection" WriteStyle="NotWritten"/>
