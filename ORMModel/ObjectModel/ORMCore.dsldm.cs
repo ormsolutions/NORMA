@@ -344,8 +344,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			System.Type[] typeArray = new System.Type[]
 			{
 				typeof(Northface.Tools.ORM.ObjectModel.ORMMetaModel),
-				typeof(Northface.Tools.ORM.ObjectModel.ORMModel),
-				typeof(Northface.Tools.ORM.ObjectModel.ORMModelElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ORMNamedElement),
 				typeof(Northface.Tools.ORM.ObjectModel.RootType),
 				typeof(Northface.Tools.ORM.ObjectModel.ObjectType),
 				typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeElementFactoryCreator),
@@ -360,6 +359,75 @@ namespace Northface.Tools.ORM.ObjectModel
 				typeof(Northface.Tools.ORM.ObjectModel.ExclusionConstraintElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.SubsetConstraint),
 				typeof(Northface.Tools.ORM.ObjectModel.SubsetConstraintElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.Expression),
+				typeof(Northface.Tools.ORM.ObjectModel.ExpressionElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.Role),
+				typeof(Northface.Tools.ORM.ObjectModel.RoleElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence),
+				typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint),
+				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryConstraint),
+				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryConstraintElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint),
+				typeof(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence),
+				typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequenceElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint),
+				typeof(Northface.Tools.ORM.ObjectModel.RingConstraint),
+				typeof(Northface.Tools.ORM.ObjectModel.RingConstraintElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint),
+				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint),
+				typeof(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraintElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint),
+				typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ModelError),
+				typeof(Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesError),
+				typeof(Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesError),
+				typeof(Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.DuplicateNameError),
+				typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError),
+				typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameError),
+				typeof(Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError),
+				typeof(Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError),
+				typeof(Northface.Tools.ORM.ObjectModel.TooFewReadingRolesErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError),
+				typeof(Northface.Tools.ORM.ObjectModel.TooManyReadingRolesErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatchError),
+				typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingError),
+				typeof(Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError),
+				typeof(Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError),
+				typeof(Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.NMinusOneError),
+				typeof(Northface.Tools.ORM.ObjectModel.NMinusOneErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError),
+				typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.RolePlayerRequiredError),
+				typeof(Northface.Tools.ORM.ObjectModel.RolePlayerRequiredErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError),
+				typeof(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError),
+				typeof(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError),
+				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError),
+				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind),
+				typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKindElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode),
+				typeof(Northface.Tools.ORM.ObjectModel.IntrinsicReferenceMode),
+				typeof(Northface.Tools.ORM.ObjectModel.IntrinsicReferenceModeElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.CustomReferenceMode),
+				typeof(Northface.Tools.ORM.ObjectModel.CustomReferenceModeElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ORMModel),
+				typeof(Northface.Tools.ORM.ObjectModel.ORMModelElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ORMModelElement),
 				typeof(Northface.Tools.ORM.ObjectModel.DataType),
 				typeof(Northface.Tools.ORM.ObjectModel.UnspecifiedDataType),
 				typeof(Northface.Tools.ORM.ObjectModel.UnspecifiedDataTypeElementFactoryCreator),
@@ -413,76 +481,10 @@ namespace Northface.Tools.ORM.ObjectModel
 				typeof(Northface.Tools.ORM.ObjectModel.RowIdOtherDataTypeElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataType),
 				typeof(Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataTypeElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.Expression),
-				typeof(Northface.Tools.ORM.ObjectModel.ExpressionElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.Role),
-				typeof(Northface.Tools.ORM.ObjectModel.RoleElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence),
-				typeof(Northface.Tools.ORM.ObjectModel.InternalConstraint),
-				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryConstraint),
-				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryConstraintElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraint),
-				typeof(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequence),
-				typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintRoleSequenceElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint),
-				typeof(Northface.Tools.ORM.ObjectModel.RingConstraint),
-				typeof(Northface.Tools.ORM.ObjectModel.RingConstraintElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint),
-				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint),
-				typeof(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraintElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint),
-				typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.Reading),
 				typeof(Northface.Tools.ORM.ObjectModel.ReadingElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.ModelError),
-				typeof(Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesError),
-				typeof(Northface.Tools.ORM.ObjectModel.TooFewRoleSequencesErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesError),
-				typeof(Northface.Tools.ORM.ObjectModel.TooManyRoleSequencesErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.DuplicateNameError),
-				typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameError),
-				typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeDuplicateNameErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameError),
-				typeof(Northface.Tools.ORM.ObjectModel.FactTypeDuplicateNameErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameError),
-				typeof(Northface.Tools.ORM.ObjectModel.ConstraintDuplicateNameErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError),
-				typeof(Northface.Tools.ORM.ObjectModel.TooFewReadingRolesErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError),
-				typeof(Northface.Tools.ORM.ObjectModel.TooManyReadingRolesErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatchError),
-				typeof(Northface.Tools.ORM.ObjectModel.ExternalConstraintRoleSequenceArityMismatchErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingError),
-				typeof(Northface.Tools.ORM.ObjectModel.FactTypeRequiresReadingErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintError),
-				typeof(Northface.Tools.ORM.ObjectModel.FactTypeRequiresInternalUniquenessConstraintErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError),
-				typeof(Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.NMinusOneError),
-				typeof(Northface.Tools.ORM.ObjectModel.NMinusOneErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError),
-				typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.RolePlayerRequiredError),
-				typeof(Northface.Tools.ORM.ObjectModel.RolePlayerRequiredErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryError),
-				typeof(Northface.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError),
-				typeof(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError),
-				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError),
-				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder),
 				typeof(Northface.Tools.ORM.ObjectModel.ReadingOrderElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind),
-				typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKindElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode),
-				typeof(Northface.Tools.ORM.ObjectModel.IntrinsicReferenceMode),
-				typeof(Northface.Tools.ORM.ObjectModel.IntrinsicReferenceModeElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ObjectModel.CustomReferenceMode),
-				typeof(Northface.Tools.ORM.ObjectModel.CustomReferenceModeElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ValueRange),
 				typeof(Northface.Tools.ORM.ObjectModel.ValueRangeElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ValueRangeDefinition),
@@ -490,6 +492,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				typeof(Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinitionElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition),
 				typeof(Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinitionElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.ORMElementLink),
 				typeof(Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType),
 				typeof(Northface.Tools.ORM.ObjectModel.ValueTypeHasDataTypeElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.FactTypeDerivation),
@@ -628,15 +631,15 @@ namespace Northface.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint), "MinFrequency", Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MinFrequencyMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.FrequencyConstraintMinFrequencyFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint), "MaxFrequency", Northface.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequencyMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint.FrequencyConstraintMaxFrequencyFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint), "IsPreferred", Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.ExternalUniquenessConstraintIsPreferredFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.Reading), "Text", Northface.Tools.ORM.ObjectModel.Reading.TextMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.Reading.ReadingTextFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.Reading), "IsPrimary", Northface.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.Reading.ReadingIsPrimaryFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.Reading), "Language", Northface.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.Reading.ReadingLanguageFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError), "Column", Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError.ColumnMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.CompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorColumnFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder), "ReadingText", Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingOrderReadingTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind), "FormatString", Northface.Tools.ORM.ObjectModel.ReferenceModeKind.FormatStringMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeKindFormatStringFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind), "ReferenceModeType", Northface.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeTypeMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeKindReferenceModeTypeFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode), "KindDisplay", Northface.Tools.ORM.ObjectModel.ReferenceMode.KindDisplayMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.ReferenceMode.ReferenceModeKindDisplayFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.CustomReferenceMode), "CustomFormatString", Northface.Tools.ORM.ObjectModel.CustomReferenceMode.CustomFormatStringMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.CustomReferenceMode.CustomReferenceModeCustomFormatStringFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.Reading), "Text", Northface.Tools.ORM.ObjectModel.Reading.TextMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.Reading.ReadingTextFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.Reading), "IsPrimary", Northface.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.Reading.ReadingIsPrimaryFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.Reading), "Language", Northface.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.Reading.ReadingLanguageFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder), "ReadingText", Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingOrderReadingTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.ValueRange), "MinValue", Northface.Tools.ORM.ObjectModel.ValueRange.MinValueMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.ValueRange.ValueRangeMinValueFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.ValueRange), "MaxValue", Northface.Tools.ORM.ObjectModel.ValueRange.MaxValueMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.ValueRange.ValueRangeMaxValueFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ObjectModel.ValueRange), "Text", Northface.Tools.ORM.ObjectModel.ValueRange.TextMetaAttributeGuid, typeof(Northface.Tools.ORM.ObjectModel.ValueRange.ValueRangeTextFieldHandler)),
@@ -776,172 +779,33 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ORMModel.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ORMModel")]
-	public  partial class ORMModel : Microsoft.VisualStudio.Modeling.NamedElement
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ORMNamedElement.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ORMNamedElement")]
+	public abstract partial class ORMNamedElement : Microsoft.VisualStudio.Modeling.NamedElement
 	{
-		#region ORMModel's Generated MetaClass Code
+		#region ORMNamedElement's Generated MetaClass Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
-		public new const System.String MetaClassGuidString = "3f4ba8fa-355b-4a49-a42c-9c56f6e5f242";
+		public new const System.String MetaClassGuidString = "d18ac149-4ff4-433b-bc8e-440e96842cbb";
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ORMModel.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ORMNamedElement.MetaClassGuidString);
 		#endregion
 
-		#region ObjectTypeCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ObjectTypeMoveableCollection ObjectTypeCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.ObjectTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasObjectType.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region FactTypeCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection FactTypeCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasFactType.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasFactType.FactTypeCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region ErrorCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ModelErrorMoveableCollection ErrorCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.ModelErrorMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasError.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region ReferenceModeKindCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ReferenceModeKindMoveableCollection ReferenceModeKindCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.ReferenceModeKindMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region ReferenceModeCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ReferenceModeMoveableCollection ReferenceModeCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.ReferenceModeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region SingleColumnExternalConstraintCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintMoveableCollection SingleColumnExternalConstraintCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region MultiColumnExternalConstraintCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintMoveableCollection MultiColumnExternalConstraintCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region DataTypeCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.DataTypeMoveableCollection DataTypeCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.DataTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasDataType.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid); }
-		}
-		#endregion
 	}
-	#region ORMModel's Generated Constructor Code
-	public  partial class ORMModel
+	#region ORMNamedElement's Generated Constructor Code
+	public abstract partial class ORMNamedElement
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ORMModel(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ORMModel CreateORMModel(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateORMModel(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ORMModel CreateAndInitializeORMModel(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeORMModel(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ORMModel(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		protected ORMNamedElement(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 			: base(partition, bag)
 		{
 		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ORMModel CreateORMModel(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (ORMModel)partition.ElementFactory.CreateElement(typeof(ORMModel));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ORMModel CreateAndInitializeORMModel(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (ORMModel)partition.ElementFactory.CreateElement(typeof(ORMModel), assignments);
-		}
 	}
 	#endregion
-	#region Class Factory Creator for ORMModel
-	/// <summary>
-	/// ORMModel Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ORMModel))]
-	public sealed class ORMModelElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ORMModelElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.ORMModel( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static ORMModelElementFactoryCreator Instance
-		{
-			get
-			{
-				return new ORMModelElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
 }
 namespace Northface.Tools.ORM.ObjectModel
 {
@@ -952,7 +816,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RootType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.RootType")]
-	public abstract partial class RootType : Microsoft.VisualStudio.Modeling.NamedElement
+	public abstract partial class RootType : Northface.Tools.ORM.ObjectModel.ORMNamedElement
 	{
 		#region RootType's Generated MetaClass Code
 		/// <summary>
@@ -3777,7 +3641,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint")]
-	public abstract partial class MultiColumnExternalConstraint : Microsoft.VisualStudio.Modeling.NamedElement
+	public abstract partial class MultiColumnExternalConstraint : Northface.Tools.ORM.ObjectModel.ORMNamedElement
 	{
 		#region MultiColumnExternalConstraint's Generated MetaClass Code
 		/// <summary>
@@ -4772,3037 +4636,8 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.DataType")]
-	public abstract partial class DataType : Microsoft.VisualStudio.Modeling.ModelElement
-	{
-		#region DataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "547d17bb-3dc9-4869-b280-ff6be0f7dca9";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DataType.MetaClassGuidString);
-		#endregion
-
-		#region ValueTypeCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ObjectTypeMoveableCollection ValueTypeCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.ObjectTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.DataTypeMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region Model's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ORMModel Model
-		{
-			get
-			{
-				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasDataType.ModelMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.ORMModel;
-			}
-			set
-			{
-				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid);
-				if (links.Count > 0)
-				{
-					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.ModelHasDataType.ModelMetaRoleGuid);
-					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-					{
-						if (!link.IsRemoved)
-						{
-							Northface.Tools.ORM.ObjectModel.ORMModel counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.ORMModel;
-							if (counterpart != null && object.ReferenceEquals(counterpart, value))
-							{
-								sameRolePlayer = true;
-							}
-							else
-							{
-								link.Remove();
-							}
-							break;
-						}
-					}
-				}
-				if ((!sameRolePlayer) && (value != null))
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasDataType.ModelMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ModelHasDataType), newRoles);
-				}
-			}
-		}
-		#endregion
-	}
-	#region Collection Classes for DataType
-	/// <summary>
-	/// Northface.Tools.ORM.ObjectModel.DataType Collection class, strongly-typed collection
-	/// </summary>
-	[System.CLSCompliant(true)]
-	public sealed partial class DataTypeMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
-	{
-		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
-		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
-		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
-		/// <summary>
-		/// Counterpart
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
-		{
-			get { return this.counterpartMember; }
-		}
-		/// <summary>
-		/// Source Role
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
-		{
-			get { return this.sourceRoleMember; }
-		}
-		/// <summary>
-		/// Target Role
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
-		{
-			get { return this.targetRoleMember; }
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="counterpart">Counterpart to create relationship with</param>
-		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
-		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
-		public DataTypeMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
-		{
-			this.counterpartMember = counterpart;
-			this.sourceRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
-			this.targetRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
-		}
-		/// <summary>
-		/// Returns an enumerator that can iterate through a collection
-		/// </summary>
-		/// <returns>Enumerator</returns>
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
-		}
-		/// <summary>
-		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
-		/// </summary>
-		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
-		/// <param name="index">The zero-based index in array at which copying begins</param>
-		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
-		}
-		/// <summary>
-		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
-		/// </summary>
-		System.Int32 System.Collections.ICollection.Count
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
-		/// </summary>
-		System.Boolean System.Collections.ICollection.IsSynchronized
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
-		/// </summary>
-		System.Object System.Collections.ICollection.SyncRoot
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
-		/// </summary>
-		System.Boolean System.Collections.IList.IsFixedSize
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
-		/// </summary>
-		System.Boolean System.Collections.IList.IsReadOnly
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
-		}
-		/// <summary>
-		/// Indexed accessor
-		/// </summary>
-		/// <param name="index">Index to access</param>
-		/// <returns>object at that index</returns>
-		System.Object System.Collections.IList.this[System.Int32 index]
-		{
-			get
-			{
-				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
-				return list[index];
-			}
-			set
-			{
-				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
-				{
-					throw new System.InvalidCastException();
-				}
-				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
-				list[index] = value;
-			}
-		}
-		/// <summary>
-		/// When implemented by a class, adds an item to the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
-		/// <returns>index where object was added</returns>
-		System.Int32 System.Collections.IList.Add(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes all items from the System.Collections.IList
-		/// </summary>
-		void System.Collections.IList.Clear()
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
-		}
-		/// <summary>
-		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
-		/// </summary>
-		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
-		/// <returns>true if object is contained, false otherwise</returns>
-		System.Boolean System.Collections.IList.Contains(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
-		}
-		/// <summary>
-		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
-		/// <returns>index of object</returns>
-		System.Int32 System.Collections.IList.IndexOf(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
-		}
-		/// <summary>
-		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
-		/// </summary>
-		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
-		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
-		void System.Collections.IList.Remove(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes the System.Collections.IList item at the specified index
-		/// </summary>
-		/// <param name="index">The zero-based index of the item to remove</param>
-		void System.Collections.IList.RemoveAt(System.Int32 index)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="rolePlayer">The role player to move</param>
-		/// <param name="newPosition">The position to move to</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
-		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="oldPosition">The position of the role player to move from</param>
-		/// <param name="newPosition">The position of the role player to move to</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
-		}
-		/// <summary>
-		/// Insert a roleplayer in the specified location
-		/// </summary>
-		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
-		/// <param name="rolePlayer">The role player that will be inserted</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
-		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
-		}
-		/// <summary>
-		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
-		/// </summary>
-		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
-		/// <param name="index">The zero-based index in array at which copying begins</param>
-		public void CopyTo(Northface.Tools.ORM.ObjectModel.DataType[] array, System.Int32 index)
-		{
-			((System.Collections.ICollection)this).CopyTo(array, index);
-		}
-		/// <summary>
-		/// Gets the number of elements contained in the collection
-		/// </summary>
-		public System.Int32 Count
-		{
-			get { return ((System.Collections.ICollection)this).Count; }
-		}
-		/// <summary>
-		/// Gets a value indicating whether the list is read-only
-		/// </summary>
-		public System.Boolean IsReadOnly
-		{
-			get { return ((System.Collections.IList)this).IsReadOnly; }
-		}
-		/// <summary>
-		/// Indexed accessor
-		/// </summary>
-		/// <param name="index">Index to access</param>
-		/// <returns>Northface.Tools.ORM.ObjectModel.DataType at that index</returns>
-		public Northface.Tools.ORM.ObjectModel.DataType this[System.Int32 index]
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.DataType)(((System.Collections.IList)this)[index]); }
-			set { ((System.Collections.IList)this)[index] = value as System.Object; }
-		}
-		/// <summary>
-		/// Adds an item to the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.DataType to add to the list</param>
-		/// <returns>index where object was added</returns>
-		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.DataType value)
-		{
-			return ((System.Collections.IList)this).Add(value as System.Object);
-		}
-		/// <summary>
-		/// Removes all items from the list
-		/// </summary>
-		public void Clear()
-		{
-			((System.Collections.IList)this).Clear();
-		}
-		/// <summary>
-		/// Determines whether the list has a specific value
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.DataType to locate in the list</param>
-		/// <returns>true if object is contained, false otherwise</returns>
-		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.DataType value)
-		{
-			return ((System.Collections.IList)this).Contains(value as System.Object);
-		}
-		/// <summary>
-		/// Determines the index of a specific item in the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.DataType to locate in the list</param>
-		/// <returns>index of object</returns>
-		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.DataType value)
-		{
-			return ((System.Collections.IList)this).IndexOf(value as System.Object);
-		}
-		/// <summary>
-		/// Inserts an item to the list at the specified position
-		/// </summary>
-		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.DataType to insert into the list</param>
-		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.DataType value)
-		{
-			((System.Collections.IList)this).Insert(index, value as System.Object);
-		}
-		/// <summary>
-		/// Removes the first occurrence of a specific object from the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.DataType to remove from the list</param>
-		public void Remove(Northface.Tools.ORM.ObjectModel.DataType value)
-		{
-			((System.Collections.IList)this).Remove(value as System.Object);
-		}
-		/// <summary>
-		/// Removes the list item at the specified index
-		/// </summary>
-		/// <param name="index">The zero-based index of the item to remove</param>
-		public void RemoveAt(System.Int32 index)
-		{
-			((System.Collections.IList)this).RemoveAt(index);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="rolePlayer">The role player to move</param>
-		/// <param name="newPosition">The position to move to</param>
-		public void Move(Northface.Tools.ORM.ObjectModel.DataType rolePlayer, System.Int32 newPosition)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="oldPosition">The position of the role player to move from</param>
-		/// <param name="newPosition">The position of the role player to move to</param>
-		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
-		}
-		/// <summary>
-		/// Insert a roleplayer in the specified location
-		/// </summary>
-		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
-		/// <param name="rolePlayer">The role player that will be inserted</param>
-		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.DataType rolePlayer)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
-		}
-
-	}
-	#endregion
-
-	#region DataType's Generated Constructor Code
-	public abstract partial class DataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		protected DataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-	}
-	#endregion
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.UnspecifiedDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.UnspecifiedDataType")]
-	public  partial class UnspecifiedDataType : Northface.Tools.ORM.ObjectModel.DataType
-	{
-		#region UnspecifiedDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "12a11e3f-7daf-4ced-8ca2-34d3250ad125";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.UnspecifiedDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region UnspecifiedDataType's Generated Constructor Code
-	public  partial class UnspecifiedDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public UnspecifiedDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static UnspecifiedDataType CreateUnspecifiedDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateUnspecifiedDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static UnspecifiedDataType CreateAndInitializeUnspecifiedDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeUnspecifiedDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public UnspecifiedDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static UnspecifiedDataType CreateUnspecifiedDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (UnspecifiedDataType)partition.ElementFactory.CreateElement(typeof(UnspecifiedDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static UnspecifiedDataType CreateAndInitializeUnspecifiedDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (UnspecifiedDataType)partition.ElementFactory.CreateElement(typeof(UnspecifiedDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for UnspecifiedDataType
-	/// <summary>
-	/// UnspecifiedDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.UnspecifiedDataType))]
-	public sealed class UnspecifiedDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public UnspecifiedDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.UnspecifiedDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static UnspecifiedDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new UnspecifiedDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TextDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TextDataType")]
-	public abstract partial class TextDataType : Northface.Tools.ORM.ObjectModel.DataType
-	{
-		#region TextDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "8590bbf5-92b9-4a9d-98a0-7b7a0d01c450";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TextDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region TextDataType's Generated Constructor Code
-	public abstract partial class TextDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		protected TextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-	}
-	#endregion
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FixedLengthTextDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FixedLengthTextDataType")]
-	public  partial class FixedLengthTextDataType : Northface.Tools.ORM.ObjectModel.TextDataType
-	{
-		#region FixedLengthTextDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "9de7b056-3e4d-4344-a00c-a9e81da805f6";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FixedLengthTextDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region FixedLengthTextDataType's Generated Constructor Code
-	public  partial class FixedLengthTextDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FixedLengthTextDataType CreateFixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateFixedLengthTextDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FixedLengthTextDataType CreateAndInitializeFixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeFixedLengthTextDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FixedLengthTextDataType CreateFixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (FixedLengthTextDataType)partition.ElementFactory.CreateElement(typeof(FixedLengthTextDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FixedLengthTextDataType CreateAndInitializeFixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (FixedLengthTextDataType)partition.ElementFactory.CreateElement(typeof(FixedLengthTextDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for FixedLengthTextDataType
-	/// <summary>
-	/// FixedLengthTextDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FixedLengthTextDataType))]
-	public sealed class FixedLengthTextDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FixedLengthTextDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.FixedLengthTextDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static FixedLengthTextDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new FixedLengthTextDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.VariableLengthTextDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.VariableLengthTextDataType")]
-	public  partial class VariableLengthTextDataType : Northface.Tools.ORM.ObjectModel.TextDataType
-	{
-		#region VariableLengthTextDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "4498d0d4-f386-46c5-a7ef-6ee9abc14611";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.VariableLengthTextDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region VariableLengthTextDataType's Generated Constructor Code
-	public  partial class VariableLengthTextDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public VariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static VariableLengthTextDataType CreateVariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateVariableLengthTextDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static VariableLengthTextDataType CreateAndInitializeVariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeVariableLengthTextDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public VariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static VariableLengthTextDataType CreateVariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (VariableLengthTextDataType)partition.ElementFactory.CreateElement(typeof(VariableLengthTextDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static VariableLengthTextDataType CreateAndInitializeVariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (VariableLengthTextDataType)partition.ElementFactory.CreateElement(typeof(VariableLengthTextDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for VariableLengthTextDataType
-	/// <summary>
-	/// VariableLengthTextDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.VariableLengthTextDataType))]
-	public sealed class VariableLengthTextDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public VariableLengthTextDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.VariableLengthTextDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static VariableLengthTextDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new VariableLengthTextDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.LargeLengthTextDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.LargeLengthTextDataType")]
-	public  partial class LargeLengthTextDataType : Northface.Tools.ORM.ObjectModel.TextDataType
-	{
-		#region LargeLengthTextDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "42b4206d-7766-41f0-87d6-6ff23b10756e";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.LargeLengthTextDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region LargeLengthTextDataType's Generated Constructor Code
-	public  partial class LargeLengthTextDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public LargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static LargeLengthTextDataType CreateLargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateLargeLengthTextDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static LargeLengthTextDataType CreateAndInitializeLargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeLargeLengthTextDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public LargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static LargeLengthTextDataType CreateLargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (LargeLengthTextDataType)partition.ElementFactory.CreateElement(typeof(LargeLengthTextDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static LargeLengthTextDataType CreateAndInitializeLargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (LargeLengthTextDataType)partition.ElementFactory.CreateElement(typeof(LargeLengthTextDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for LargeLengthTextDataType
-	/// <summary>
-	/// LargeLengthTextDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.LargeLengthTextDataType))]
-	public sealed class LargeLengthTextDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public LargeLengthTextDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.LargeLengthTextDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static LargeLengthTextDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new LargeLengthTextDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.NumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.NumericDataType")]
-	public abstract partial class NumericDataType : Northface.Tools.ORM.ObjectModel.DataType
-	{
-		#region NumericDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "5d6c8146-073b-4f54-ae4e-e97620c42b2c";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.NumericDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region NumericDataType's Generated Constructor Code
-	public abstract partial class NumericDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		protected NumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-	}
-	#endregion
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SignedIntegerNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.SignedIntegerNumericDataType")]
-	public  partial class SignedIntegerNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
-	{
-		#region SignedIntegerNumericDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "0a1d30c1-a7cb-47bb-ab4a-36a89522e12a";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SignedIntegerNumericDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region SignedIntegerNumericDataType's Generated Constructor Code
-	public  partial class SignedIntegerNumericDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public SignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static SignedIntegerNumericDataType CreateSignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateSignedIntegerNumericDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static SignedIntegerNumericDataType CreateAndInitializeSignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeSignedIntegerNumericDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public SignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static SignedIntegerNumericDataType CreateSignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (SignedIntegerNumericDataType)partition.ElementFactory.CreateElement(typeof(SignedIntegerNumericDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static SignedIntegerNumericDataType CreateAndInitializeSignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (SignedIntegerNumericDataType)partition.ElementFactory.CreateElement(typeof(SignedIntegerNumericDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for SignedIntegerNumericDataType
-	/// <summary>
-	/// SignedIntegerNumericDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.SignedIntegerNumericDataType))]
-	public sealed class SignedIntegerNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public SignedIntegerNumericDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.SignedIntegerNumericDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static SignedIntegerNumericDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new SignedIntegerNumericDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType")]
-	public  partial class UnsignedIntegerNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
-	{
-		#region UnsignedIntegerNumericDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "773798cc-73bb-49b0-ad72-cb145d0a5f14";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region UnsignedIntegerNumericDataType's Generated Constructor Code
-	public  partial class UnsignedIntegerNumericDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public UnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static UnsignedIntegerNumericDataType CreateUnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateUnsignedIntegerNumericDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static UnsignedIntegerNumericDataType CreateAndInitializeUnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeUnsignedIntegerNumericDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public UnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static UnsignedIntegerNumericDataType CreateUnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (UnsignedIntegerNumericDataType)partition.ElementFactory.CreateElement(typeof(UnsignedIntegerNumericDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static UnsignedIntegerNumericDataType CreateAndInitializeUnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (UnsignedIntegerNumericDataType)partition.ElementFactory.CreateElement(typeof(UnsignedIntegerNumericDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for UnsignedIntegerNumericDataType
-	/// <summary>
-	/// UnsignedIntegerNumericDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType))]
-	public sealed class UnsignedIntegerNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public UnsignedIntegerNumericDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static UnsignedIntegerNumericDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new UnsignedIntegerNumericDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.AutoCounterNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.AutoCounterNumericDataType")]
-	public  partial class AutoCounterNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
-	{
-		#region AutoCounterNumericDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "ff1b07d5-e8fc-44cb-acec-cb93f6e6e37a";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.AutoCounterNumericDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region AutoCounterNumericDataType's Generated Constructor Code
-	public  partial class AutoCounterNumericDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public AutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static AutoCounterNumericDataType CreateAutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateAutoCounterNumericDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static AutoCounterNumericDataType CreateAndInitializeAutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeAutoCounterNumericDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public AutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static AutoCounterNumericDataType CreateAutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (AutoCounterNumericDataType)partition.ElementFactory.CreateElement(typeof(AutoCounterNumericDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static AutoCounterNumericDataType CreateAndInitializeAutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (AutoCounterNumericDataType)partition.ElementFactory.CreateElement(typeof(AutoCounterNumericDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for AutoCounterNumericDataType
-	/// <summary>
-	/// AutoCounterNumericDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.AutoCounterNumericDataType))]
-	public sealed class AutoCounterNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public AutoCounterNumericDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.AutoCounterNumericDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static AutoCounterNumericDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new AutoCounterNumericDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FloatingPointNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FloatingPointNumericDataType")]
-	public  partial class FloatingPointNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
-	{
-		#region FloatingPointNumericDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "2ead05d6-d343-43ea-8130-fc226751b1cf";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FloatingPointNumericDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region FloatingPointNumericDataType's Generated Constructor Code
-	public  partial class FloatingPointNumericDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FloatingPointNumericDataType CreateFloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateFloatingPointNumericDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FloatingPointNumericDataType CreateAndInitializeFloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeFloatingPointNumericDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FloatingPointNumericDataType CreateFloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (FloatingPointNumericDataType)partition.ElementFactory.CreateElement(typeof(FloatingPointNumericDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FloatingPointNumericDataType CreateAndInitializeFloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (FloatingPointNumericDataType)partition.ElementFactory.CreateElement(typeof(FloatingPointNumericDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for FloatingPointNumericDataType
-	/// <summary>
-	/// FloatingPointNumericDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FloatingPointNumericDataType))]
-	public sealed class FloatingPointNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FloatingPointNumericDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.FloatingPointNumericDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static FloatingPointNumericDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new FloatingPointNumericDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DecimalNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.DecimalNumericDataType")]
-	public  partial class DecimalNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
-	{
-		#region DecimalNumericDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "8e7c90d2-8c42-4932-8275-ad4fed9227bb";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DecimalNumericDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region DecimalNumericDataType's Generated Constructor Code
-	public  partial class DecimalNumericDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public DecimalNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DecimalNumericDataType CreateDecimalNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateDecimalNumericDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DecimalNumericDataType CreateAndInitializeDecimalNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeDecimalNumericDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public DecimalNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DecimalNumericDataType CreateDecimalNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (DecimalNumericDataType)partition.ElementFactory.CreateElement(typeof(DecimalNumericDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DecimalNumericDataType CreateAndInitializeDecimalNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (DecimalNumericDataType)partition.ElementFactory.CreateElement(typeof(DecimalNumericDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for DecimalNumericDataType
-	/// <summary>
-	/// DecimalNumericDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.DecimalNumericDataType))]
-	public sealed class DecimalNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public DecimalNumericDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.DecimalNumericDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static DecimalNumericDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new DecimalNumericDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MoneyNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.MoneyNumericDataType")]
-	public  partial class MoneyNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
-	{
-		#region MoneyNumericDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "67f4fed3-53a4-462f-a050-c3de3055620f";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MoneyNumericDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region MoneyNumericDataType's Generated Constructor Code
-	public  partial class MoneyNumericDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public MoneyNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static MoneyNumericDataType CreateMoneyNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateMoneyNumericDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static MoneyNumericDataType CreateAndInitializeMoneyNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeMoneyNumericDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public MoneyNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static MoneyNumericDataType CreateMoneyNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (MoneyNumericDataType)partition.ElementFactory.CreateElement(typeof(MoneyNumericDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static MoneyNumericDataType CreateAndInitializeMoneyNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (MoneyNumericDataType)partition.ElementFactory.CreateElement(typeof(MoneyNumericDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for MoneyNumericDataType
-	/// <summary>
-	/// MoneyNumericDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.MoneyNumericDataType))]
-	public sealed class MoneyNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public MoneyNumericDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.MoneyNumericDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static MoneyNumericDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new MoneyNumericDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.RawDataDataType")]
-	public abstract partial class RawDataDataType : Northface.Tools.ORM.ObjectModel.DataType
-	{
-		#region RawDataDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "fdd0f0c5-33fe-408e-92ea-7fe3e17f80dd";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.RawDataDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region RawDataDataType's Generated Constructor Code
-	public abstract partial class RawDataDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		protected RawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-	}
-	#endregion
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FixedLengthRawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FixedLengthRawDataDataType")]
-	public  partial class FixedLengthRawDataDataType : Northface.Tools.ORM.ObjectModel.RawDataDataType
-	{
-		#region FixedLengthRawDataDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "44a46583-e878-4f70-90ac-ca08f37feba6";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FixedLengthRawDataDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region FixedLengthRawDataDataType's Generated Constructor Code
-	public  partial class FixedLengthRawDataDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FixedLengthRawDataDataType CreateFixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateFixedLengthRawDataDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FixedLengthRawDataDataType CreateAndInitializeFixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeFixedLengthRawDataDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FixedLengthRawDataDataType CreateFixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (FixedLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(FixedLengthRawDataDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static FixedLengthRawDataDataType CreateAndInitializeFixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (FixedLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(FixedLengthRawDataDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for FixedLengthRawDataDataType
-	/// <summary>
-	/// FixedLengthRawDataDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FixedLengthRawDataDataType))]
-	public sealed class FixedLengthRawDataDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public FixedLengthRawDataDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.FixedLengthRawDataDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static FixedLengthRawDataDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new FixedLengthRawDataDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.VariableLengthRawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.VariableLengthRawDataDataType")]
-	public  partial class VariableLengthRawDataDataType : Northface.Tools.ORM.ObjectModel.RawDataDataType
-	{
-		#region VariableLengthRawDataDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "ac252d1e-c491-495f-988c-3e9649d00720";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.VariableLengthRawDataDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region VariableLengthRawDataDataType's Generated Constructor Code
-	public  partial class VariableLengthRawDataDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public VariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static VariableLengthRawDataDataType CreateVariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateVariableLengthRawDataDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static VariableLengthRawDataDataType CreateAndInitializeVariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeVariableLengthRawDataDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public VariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static VariableLengthRawDataDataType CreateVariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (VariableLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(VariableLengthRawDataDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static VariableLengthRawDataDataType CreateAndInitializeVariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (VariableLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(VariableLengthRawDataDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for VariableLengthRawDataDataType
-	/// <summary>
-	/// VariableLengthRawDataDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.VariableLengthRawDataDataType))]
-	public sealed class VariableLengthRawDataDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public VariableLengthRawDataDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.VariableLengthRawDataDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static VariableLengthRawDataDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new VariableLengthRawDataDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.LargeLengthRawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.LargeLengthRawDataDataType")]
-	public  partial class LargeLengthRawDataDataType : Northface.Tools.ORM.ObjectModel.RawDataDataType
-	{
-		#region LargeLengthRawDataDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "4133fda1-45bf-48c5-b3ce-4f4a9d891066";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.LargeLengthRawDataDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region LargeLengthRawDataDataType's Generated Constructor Code
-	public  partial class LargeLengthRawDataDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public LargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static LargeLengthRawDataDataType CreateLargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateLargeLengthRawDataDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static LargeLengthRawDataDataType CreateAndInitializeLargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeLargeLengthRawDataDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public LargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static LargeLengthRawDataDataType CreateLargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (LargeLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(LargeLengthRawDataDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static LargeLengthRawDataDataType CreateAndInitializeLargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (LargeLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(LargeLengthRawDataDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for LargeLengthRawDataDataType
-	/// <summary>
-	/// LargeLengthRawDataDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.LargeLengthRawDataDataType))]
-	public sealed class LargeLengthRawDataDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public LargeLengthRawDataDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.LargeLengthRawDataDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static LargeLengthRawDataDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new LargeLengthRawDataDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.PictureRawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.PictureRawDataDataType")]
-	public  partial class PictureRawDataDataType : Northface.Tools.ORM.ObjectModel.RawDataDataType
-	{
-		#region PictureRawDataDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "7e172f50-433b-4d89-acfa-5f1022c379a5";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.PictureRawDataDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region PictureRawDataDataType's Generated Constructor Code
-	public  partial class PictureRawDataDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public PictureRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static PictureRawDataDataType CreatePictureRawDataDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreatePictureRawDataDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static PictureRawDataDataType CreateAndInitializePictureRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializePictureRawDataDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public PictureRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static PictureRawDataDataType CreatePictureRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (PictureRawDataDataType)partition.ElementFactory.CreateElement(typeof(PictureRawDataDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static PictureRawDataDataType CreateAndInitializePictureRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (PictureRawDataDataType)partition.ElementFactory.CreateElement(typeof(PictureRawDataDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for PictureRawDataDataType
-	/// <summary>
-	/// PictureRawDataDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.PictureRawDataDataType))]
-	public sealed class PictureRawDataDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public PictureRawDataDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.PictureRawDataDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static PictureRawDataDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new PictureRawDataDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.OleObjectRawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.OleObjectRawDataDataType")]
-	public  partial class OleObjectRawDataDataType : Northface.Tools.ORM.ObjectModel.RawDataDataType
-	{
-		#region OleObjectRawDataDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "560297d3-6e91-4090-8daa-54784f85990d";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.OleObjectRawDataDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region OleObjectRawDataDataType's Generated Constructor Code
-	public  partial class OleObjectRawDataDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public OleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static OleObjectRawDataDataType CreateOleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateOleObjectRawDataDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static OleObjectRawDataDataType CreateAndInitializeOleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeOleObjectRawDataDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public OleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static OleObjectRawDataDataType CreateOleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (OleObjectRawDataDataType)partition.ElementFactory.CreateElement(typeof(OleObjectRawDataDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static OleObjectRawDataDataType CreateAndInitializeOleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (OleObjectRawDataDataType)partition.ElementFactory.CreateElement(typeof(OleObjectRawDataDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for OleObjectRawDataDataType
-	/// <summary>
-	/// OleObjectRawDataDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.OleObjectRawDataDataType))]
-	public sealed class OleObjectRawDataDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public OleObjectRawDataDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.OleObjectRawDataDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static OleObjectRawDataDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new OleObjectRawDataDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TemporalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TemporalDataType")]
-	public abstract partial class TemporalDataType : Northface.Tools.ORM.ObjectModel.DataType
-	{
-		#region TemporalDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "10027217-5978-4286-bf21-80738dc9a877";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TemporalDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region TemporalDataType's Generated Constructor Code
-	public abstract partial class TemporalDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		protected TemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-	}
-	#endregion
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.AutoTimestampTemporalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.AutoTimestampTemporalDataType")]
-	public  partial class AutoTimestampTemporalDataType : Northface.Tools.ORM.ObjectModel.TemporalDataType
-	{
-		#region AutoTimestampTemporalDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "d3c4e6b2-79cc-4f09-8080-62ce74090fd1";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.AutoTimestampTemporalDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region AutoTimestampTemporalDataType's Generated Constructor Code
-	public  partial class AutoTimestampTemporalDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public AutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static AutoTimestampTemporalDataType CreateAutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateAutoTimestampTemporalDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static AutoTimestampTemporalDataType CreateAndInitializeAutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeAutoTimestampTemporalDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public AutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static AutoTimestampTemporalDataType CreateAutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (AutoTimestampTemporalDataType)partition.ElementFactory.CreateElement(typeof(AutoTimestampTemporalDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static AutoTimestampTemporalDataType CreateAndInitializeAutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (AutoTimestampTemporalDataType)partition.ElementFactory.CreateElement(typeof(AutoTimestampTemporalDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for AutoTimestampTemporalDataType
-	/// <summary>
-	/// AutoTimestampTemporalDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.AutoTimestampTemporalDataType))]
-	public sealed class AutoTimestampTemporalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public AutoTimestampTemporalDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.AutoTimestampTemporalDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static AutoTimestampTemporalDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new AutoTimestampTemporalDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TimeTemporalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TimeTemporalDataType")]
-	public  partial class TimeTemporalDataType : Northface.Tools.ORM.ObjectModel.TemporalDataType
-	{
-		#region TimeTemporalDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "4677814b-958d-4176-a54e-8f70b7ca0d56";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TimeTemporalDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region TimeTemporalDataType's Generated Constructor Code
-	public  partial class TimeTemporalDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public TimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static TimeTemporalDataType CreateTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateTimeTemporalDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static TimeTemporalDataType CreateAndInitializeTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeTimeTemporalDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public TimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static TimeTemporalDataType CreateTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (TimeTemporalDataType)partition.ElementFactory.CreateElement(typeof(TimeTemporalDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static TimeTemporalDataType CreateAndInitializeTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (TimeTemporalDataType)partition.ElementFactory.CreateElement(typeof(TimeTemporalDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for TimeTemporalDataType
-	/// <summary>
-	/// TimeTemporalDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.TimeTemporalDataType))]
-	public sealed class TimeTemporalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public TimeTemporalDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.TimeTemporalDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static TimeTemporalDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new TimeTemporalDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DateTemporalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.DateTemporalDataType")]
-	public  partial class DateTemporalDataType : Northface.Tools.ORM.ObjectModel.TemporalDataType
-	{
-		#region DateTemporalDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "905b8a13-7c5e-430f-8d7b-03e63356439b";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DateTemporalDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region DateTemporalDataType's Generated Constructor Code
-	public  partial class DateTemporalDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public DateTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DateTemporalDataType CreateDateTemporalDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateDateTemporalDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DateTemporalDataType CreateAndInitializeDateTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeDateTemporalDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public DateTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DateTemporalDataType CreateDateTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (DateTemporalDataType)partition.ElementFactory.CreateElement(typeof(DateTemporalDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DateTemporalDataType CreateAndInitializeDateTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (DateTemporalDataType)partition.ElementFactory.CreateElement(typeof(DateTemporalDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for DateTemporalDataType
-	/// <summary>
-	/// DateTemporalDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.DateTemporalDataType))]
-	public sealed class DateTemporalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public DateTemporalDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.DateTemporalDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static DateTemporalDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new DateTemporalDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DateAndTimeTemporalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.DateAndTimeTemporalDataType")]
-	public  partial class DateAndTimeTemporalDataType : Northface.Tools.ORM.ObjectModel.TemporalDataType
-	{
-		#region DateAndTimeTemporalDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "facd55e1-c5a2-4d3d-93d2-7b651c05e7a2";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DateAndTimeTemporalDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region DateAndTimeTemporalDataType's Generated Constructor Code
-	public  partial class DateAndTimeTemporalDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public DateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DateAndTimeTemporalDataType CreateDateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateDateAndTimeTemporalDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DateAndTimeTemporalDataType CreateAndInitializeDateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeDateAndTimeTemporalDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public DateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DateAndTimeTemporalDataType CreateDateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (DateAndTimeTemporalDataType)partition.ElementFactory.CreateElement(typeof(DateAndTimeTemporalDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static DateAndTimeTemporalDataType CreateAndInitializeDateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (DateAndTimeTemporalDataType)partition.ElementFactory.CreateElement(typeof(DateAndTimeTemporalDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for DateAndTimeTemporalDataType
-	/// <summary>
-	/// DateAndTimeTemporalDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.DateAndTimeTemporalDataType))]
-	public sealed class DateAndTimeTemporalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public DateAndTimeTemporalDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.DateAndTimeTemporalDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static DateAndTimeTemporalDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new DateAndTimeTemporalDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.LogicalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.LogicalDataType")]
-	public abstract partial class LogicalDataType : Northface.Tools.ORM.ObjectModel.DataType
-	{
-		#region LogicalDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "85881c27-24d8-4a89-a81d-6031128ae967";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.LogicalDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region LogicalDataType's Generated Constructor Code
-	public abstract partial class LogicalDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		protected LogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-	}
-	#endregion
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TrueOrFalseLogicalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TrueOrFalseLogicalDataType")]
-	public  partial class TrueOrFalseLogicalDataType : Northface.Tools.ORM.ObjectModel.LogicalDataType
-	{
-		#region TrueOrFalseLogicalDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "a4c50357-f789-472c-a94e-93af109f1056";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TrueOrFalseLogicalDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region TrueOrFalseLogicalDataType's Generated Constructor Code
-	public  partial class TrueOrFalseLogicalDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public TrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static TrueOrFalseLogicalDataType CreateTrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateTrueOrFalseLogicalDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static TrueOrFalseLogicalDataType CreateAndInitializeTrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeTrueOrFalseLogicalDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public TrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static TrueOrFalseLogicalDataType CreateTrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (TrueOrFalseLogicalDataType)partition.ElementFactory.CreateElement(typeof(TrueOrFalseLogicalDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static TrueOrFalseLogicalDataType CreateAndInitializeTrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (TrueOrFalseLogicalDataType)partition.ElementFactory.CreateElement(typeof(TrueOrFalseLogicalDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for TrueOrFalseLogicalDataType
-	/// <summary>
-	/// TrueOrFalseLogicalDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.TrueOrFalseLogicalDataType))]
-	public sealed class TrueOrFalseLogicalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public TrueOrFalseLogicalDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.TrueOrFalseLogicalDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static TrueOrFalseLogicalDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new TrueOrFalseLogicalDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.YesOrNoLogicalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.YesOrNoLogicalDataType")]
-	public  partial class YesOrNoLogicalDataType : Northface.Tools.ORM.ObjectModel.LogicalDataType
-	{
-		#region YesOrNoLogicalDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "f6d6b7e4-c22b-47e1-8f30-2bcaee1d3c17";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.YesOrNoLogicalDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region YesOrNoLogicalDataType's Generated Constructor Code
-	public  partial class YesOrNoLogicalDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public YesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static YesOrNoLogicalDataType CreateYesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateYesOrNoLogicalDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static YesOrNoLogicalDataType CreateAndInitializeYesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeYesOrNoLogicalDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public YesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static YesOrNoLogicalDataType CreateYesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (YesOrNoLogicalDataType)partition.ElementFactory.CreateElement(typeof(YesOrNoLogicalDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static YesOrNoLogicalDataType CreateAndInitializeYesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (YesOrNoLogicalDataType)partition.ElementFactory.CreateElement(typeof(YesOrNoLogicalDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for YesOrNoLogicalDataType
-	/// <summary>
-	/// YesOrNoLogicalDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.YesOrNoLogicalDataType))]
-	public sealed class YesOrNoLogicalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public YesOrNoLogicalDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.YesOrNoLogicalDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static YesOrNoLogicalDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new YesOrNoLogicalDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.OtherDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.OtherDataType")]
-	public abstract partial class OtherDataType : Northface.Tools.ORM.ObjectModel.DataType
-	{
-		#region OtherDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "3efdcece-b2e0-45f0-aab1-ca085144b933";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.OtherDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region OtherDataType's Generated Constructor Code
-	public abstract partial class OtherDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		protected OtherDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-	}
-	#endregion
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RowIdOtherDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.RowIdOtherDataType")]
-	public  partial class RowIdOtherDataType : Northface.Tools.ORM.ObjectModel.OtherDataType
-	{
-		#region RowIdOtherDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "ccdd5096-8948-45cc-835b-321af2c8b656";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.RowIdOtherDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region RowIdOtherDataType's Generated Constructor Code
-	public  partial class RowIdOtherDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public RowIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static RowIdOtherDataType CreateRowIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateRowIdOtherDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static RowIdOtherDataType CreateAndInitializeRowIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeRowIdOtherDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public RowIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static RowIdOtherDataType CreateRowIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (RowIdOtherDataType)partition.ElementFactory.CreateElement(typeof(RowIdOtherDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static RowIdOtherDataType CreateAndInitializeRowIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (RowIdOtherDataType)partition.ElementFactory.CreateElement(typeof(RowIdOtherDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for RowIdOtherDataType
-	/// <summary>
-	/// RowIdOtherDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.RowIdOtherDataType))]
-	public sealed class RowIdOtherDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public RowIdOtherDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.RowIdOtherDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static RowIdOtherDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new RowIdOtherDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataType")]
-	public  partial class ObjectIdOtherDataType : Northface.Tools.ORM.ObjectModel.OtherDataType
-	{
-		#region ObjectIdOtherDataType's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "2ce276c0-607d-43f3-ae1e-162be0c853ec";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataType.MetaClassGuidString);
-		#endregion
-
-	}
-	#region ObjectIdOtherDataType's Generated Constructor Code
-	public  partial class ObjectIdOtherDataType
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ObjectIdOtherDataType CreateObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateObjectIdOtherDataType(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ObjectIdOtherDataType CreateAndInitializeObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeObjectIdOtherDataType(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ObjectIdOtherDataType CreateObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (ObjectIdOtherDataType)partition.ElementFactory.CreateElement(typeof(ObjectIdOtherDataType));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ObjectIdOtherDataType CreateAndInitializeObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (ObjectIdOtherDataType)partition.ElementFactory.CreateElement(typeof(ObjectIdOtherDataType), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for ObjectIdOtherDataType
-	/// <summary>
-	/// ObjectIdOtherDataType Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataType))]
-	public sealed class ObjectIdOtherDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ObjectIdOtherDataTypeElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataType( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static ObjectIdOtherDataTypeElementFactoryCreator Instance
-		{
-			get
-			{
-				return new ObjectIdOtherDataTypeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Expression.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.Expression")]
-	public  partial class Expression : Microsoft.VisualStudio.Modeling.NamedElement
+	public  partial class Expression : Northface.Tools.ORM.ObjectModel.ORMNamedElement
 	{
 		#region Expression's Generated MetaClass Code
 		/// <summary>
@@ -8114,7 +4949,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Role.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.Role")]
-	public  partial class Role : Microsoft.VisualStudio.Modeling.NamedElement
+	public  partial class Role : Northface.Tools.ORM.ObjectModel.ORMNamedElement
 	{
 		#region Role's Generated MetaClass Code
 		/// <summary>
@@ -9115,7 +5950,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSequence")]
-	public abstract partial class ConstraintRoleSequence : Microsoft.VisualStudio.Modeling.NamedElement
+	public abstract partial class ConstraintRoleSequence : Northface.Tools.ORM.ObjectModel.ORMNamedElement
 	{
 		#region ConstraintRoleSequence's Generated MetaClass Code
 		/// <summary>
@@ -12202,973 +9037,8 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Reading.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.Reading")]
-	public  partial class Reading : Microsoft.VisualStudio.Modeling.ModelElement
-	{
-		#region Reading's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "cef616d5-3fe8-489e-bd60-3333921b675e";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Reading.MetaClassGuidString);
-		#endregion
-
-		#region Text's Generated  Field Code
-		#region Text's Generated  MetaAttribute Code
-		/// <summary>
-		/// MetaAttribute Guid String
-		/// </summary>
-		public const System.String TextMetaAttributeGuidString = "deb9d5ff-64f8-4887-b41a-8ea3689efa4d";
-
-		/// <summary>
-		/// MetaAttribute Guid
-		/// </summary>
-		public static readonly System.Guid TextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Reading.TextMetaAttributeGuidString);
-		#endregion
-
-		#region Text's Generated Property Code
-
-		private System.String textPropertyStorage = string.Empty;
-		
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ReadingTextFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Reading.TextMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Reading.Text")]
-		public  System.String Text
-		{
-			get
-			{
-				return textPropertyStorage;
-			}
-		
-			set
-			{
-				readingTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
-			}
-		}
-		#endregion
-
-		#region ReadingTextFieldHandler Generated Code
-		/// <summary>
-		/// FieldHandler for Reading.Text field
-		/// </summary>
-		private static ReadingTextFieldHandler	readingTextFieldHandler	= ReadingTextFieldHandler.Instance;
-
-		/// <summary>
-		/// Implement the field handler for Reading.Text
-		/// </summary>
-		[System.CLSCompliant(false)]
-		public sealed partial class ReadingTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.Reading,System.String>
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private ReadingTextFieldHandler() { }
-
-			/// <summary>
-			/// Returns the singleton instance of the Reading.Text field handler
-			/// </summary>
-			/// <value>ReadingTextFieldHandler</value>
-			public static ReadingTextFieldHandler Instance
-			{
-				get
-				{
-					if (Northface.Tools.ORM.ObjectModel.Reading.readingTextFieldHandler != null)
-					{
-						return Northface.Tools.ORM.ObjectModel.Reading.readingTextFieldHandler;
-					}
-					else
-					{
-						// The static constructor in Reading will assign this value to
-						// Northface.Tools.ORM.ObjectModel.Reading.readingTextFieldHandler, so just instantiate one and return it
-						return new ReadingTextFieldHandler();
-					}
-				}
-			}
-
-			/// <summary>
-			/// Returns the meta attribute id for the Reading.Text field handler
-			/// </summary>
-			/// <value>Guid</value>
-			public sealed override System.Guid Id
-			{
-				get
-				{
-					return Northface.Tools.ORM.ObjectModel.Reading.TextMetaAttributeGuid;
-				}
-			}
-			/// <summary>
-			/// Gets the value of the attribute as it exists in the element
-			/// </summary>
-			/// <param name="element">the Reading</param>
-			protected sealed override System.String GetValue(Northface.Tools.ORM.ObjectModel.Reading element)
-			{
-				return element.textPropertyStorage;
-			}
-
-			/// <summary>
-			/// Sets the value into the element
-			/// </summary>
-			/// <param name="element">the element</param>
-			/// <param name="value">new value</param>
-			/// <param name="commandFactory">the command factory for this change</param>
-			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
-			/// <param name="oldValue">the old value before the change</param>
-			/// <returns>true if the value actually changed</returns>
-			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.Reading element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
-			{
-				oldValue = element.textPropertyStorage;
-				if (allowDuplicates || oldValue != value)
-				{
-					OnValueChanging(element, oldValue, value);
-					element.textPropertyStorage = value;
-					OnValueChanged(element, oldValue, value);
-					return true;
-				}
-				return false;
-			}
-		
-		}
-		#endregion
-		#endregion
-		
-		#region IsPrimary's Generated  Field Code
-		#region IsPrimary's Generated  MetaAttribute Code
-		/// <summary>
-		/// MetaAttribute Guid String
-		/// </summary>
-		public const System.String IsPrimaryMetaAttributeGuidString = "fb40e877-7171-473d-88b5-bea06782e468";
-
-		/// <summary>
-		/// MetaAttribute Guid
-		/// </summary>
-		public static readonly System.Guid IsPrimaryMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuidString);
-		#endregion
-
-		#region IsPrimary's Generated Property Code
-
-		private System.Boolean isPrimaryPropertyStorage = false;
-		
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferFalse)]
-		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ReadingIsPrimaryFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Reading.IsPrimary")]
-		public  System.Boolean IsPrimary
-		{
-			get
-			{
-				return isPrimaryPropertyStorage;
-			}
-		
-			set
-			{
-				readingIsPrimaryFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
-			}
-		}
-		#endregion
-
-		#region ReadingIsPrimaryFieldHandler Generated Code
-		/// <summary>
-		/// FieldHandler for Reading.IsPrimary field
-		/// </summary>
-		private static ReadingIsPrimaryFieldHandler	readingIsPrimaryFieldHandler	= ReadingIsPrimaryFieldHandler.Instance;
-
-		/// <summary>
-		/// Implement the field handler for Reading.IsPrimary
-		/// </summary>
-		[System.CLSCompliant(false)]
-		public sealed partial class ReadingIsPrimaryFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.Reading,System.Boolean>
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private ReadingIsPrimaryFieldHandler() { }
-
-			/// <summary>
-			/// Returns the singleton instance of the Reading.IsPrimary field handler
-			/// </summary>
-			/// <value>ReadingIsPrimaryFieldHandler</value>
-			public static ReadingIsPrimaryFieldHandler Instance
-			{
-				get
-				{
-					if (Northface.Tools.ORM.ObjectModel.Reading.readingIsPrimaryFieldHandler != null)
-					{
-						return Northface.Tools.ORM.ObjectModel.Reading.readingIsPrimaryFieldHandler;
-					}
-					else
-					{
-						// The static constructor in Reading will assign this value to
-						// Northface.Tools.ORM.ObjectModel.Reading.readingIsPrimaryFieldHandler, so just instantiate one and return it
-						return new ReadingIsPrimaryFieldHandler();
-					}
-				}
-			}
-
-			/// <summary>
-			/// Returns the meta attribute id for the Reading.IsPrimary field handler
-			/// </summary>
-			/// <value>Guid</value>
-			public sealed override System.Guid Id
-			{
-				get
-				{
-					return Northface.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuid;
-				}
-			}
-			/// <summary>
-			/// Gets the value of the attribute as it exists in the element
-			/// </summary>
-			/// <param name="element">the Reading</param>
-			protected sealed override System.Boolean GetValue(Northface.Tools.ORM.ObjectModel.Reading element)
-			{
-				return element.isPrimaryPropertyStorage;
-			}
-
-			/// <summary>
-			/// Sets the value into the element
-			/// </summary>
-			/// <param name="element">the element</param>
-			/// <param name="value">new value</param>
-			/// <param name="commandFactory">the command factory for this change</param>
-			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
-			/// <param name="oldValue">the old value before the change</param>
-			/// <returns>true if the value actually changed</returns>
-			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.Reading element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
-			{
-				oldValue = element.isPrimaryPropertyStorage;
-				if (allowDuplicates || oldValue != value)
-				{
-					OnValueChanging(element, oldValue, value);
-					element.isPrimaryPropertyStorage = value;
-					OnValueChanged(element, oldValue, value);
-					return true;
-				}
-				return false;
-			}
-		
-		}
-		#endregion
-		#endregion
-		
-		#region Language's Generated  Field Code
-		#region Language's Generated  MetaAttribute Code
-		/// <summary>
-		/// MetaAttribute Guid String
-		/// </summary>
-		public const System.String LanguageMetaAttributeGuidString = "28f89850-a91e-4b64-a917-43a97cfb192e";
-
-		/// <summary>
-		/// MetaAttribute Guid
-		/// </summary>
-		public static readonly System.Guid LanguageMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuidString);
-		#endregion
-
-		#region Language's Generated Property Code
-
-		private System.String languagePropertyStorage = string.Empty;
-		
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ReadingLanguageFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Reading.Language")]
-		public  System.String Language
-		{
-			get
-			{
-				return languagePropertyStorage;
-			}
-		
-			set
-			{
-				readingLanguageFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
-			}
-		}
-		#endregion
-
-		#region ReadingLanguageFieldHandler Generated Code
-		/// <summary>
-		/// FieldHandler for Reading.Language field
-		/// </summary>
-		private static ReadingLanguageFieldHandler	readingLanguageFieldHandler	= ReadingLanguageFieldHandler.Instance;
-
-		/// <summary>
-		/// Implement the field handler for Reading.Language
-		/// </summary>
-		[System.CLSCompliant(false)]
-		public sealed partial class ReadingLanguageFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.Reading,System.String>
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private ReadingLanguageFieldHandler() { }
-
-			/// <summary>
-			/// Returns the singleton instance of the Reading.Language field handler
-			/// </summary>
-			/// <value>ReadingLanguageFieldHandler</value>
-			public static ReadingLanguageFieldHandler Instance
-			{
-				get
-				{
-					if (Northface.Tools.ORM.ObjectModel.Reading.readingLanguageFieldHandler != null)
-					{
-						return Northface.Tools.ORM.ObjectModel.Reading.readingLanguageFieldHandler;
-					}
-					else
-					{
-						// The static constructor in Reading will assign this value to
-						// Northface.Tools.ORM.ObjectModel.Reading.readingLanguageFieldHandler, so just instantiate one and return it
-						return new ReadingLanguageFieldHandler();
-					}
-				}
-			}
-
-			/// <summary>
-			/// Returns the meta attribute id for the Reading.Language field handler
-			/// </summary>
-			/// <value>Guid</value>
-			public sealed override System.Guid Id
-			{
-				get
-				{
-					return Northface.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuid;
-				}
-			}
-			/// <summary>
-			/// Gets the value of the attribute as it exists in the element
-			/// </summary>
-			/// <param name="element">the Reading</param>
-			protected sealed override System.String GetValue(Northface.Tools.ORM.ObjectModel.Reading element)
-			{
-				return element.languagePropertyStorage;
-			}
-
-			/// <summary>
-			/// Sets the value into the element
-			/// </summary>
-			/// <param name="element">the element</param>
-			/// <param name="value">new value</param>
-			/// <param name="commandFactory">the command factory for this change</param>
-			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
-			/// <param name="oldValue">the old value before the change</param>
-			/// <returns>true if the value actually changed</returns>
-			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.Reading element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
-			{
-				oldValue = element.languagePropertyStorage;
-				if (allowDuplicates || oldValue != value)
-				{
-					OnValueChanging(element, oldValue, value);
-					element.languagePropertyStorage = value;
-					OnValueChanged(element, oldValue, value);
-					return true;
-				}
-				return false;
-			}
-		
-		}
-		#endregion
-		#endregion
-		
-		#region RoleCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.RoleMoveableCollection RoleCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.RoleMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ReadingHasRole.ReadingCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasRole.RoleCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region ReadingOrder's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ReadingOrder ReadingOrder
-		{
-			get
-			{
-				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.ReadingOrder;
-			}
-			set
-			{
-				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid);
-				if (links.Count > 0)
-				{
-					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuid);
-					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-					{
-						if (!link.IsRemoved)
-						{
-							Northface.Tools.ORM.ObjectModel.ReadingOrder counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.ReadingOrder;
-							if (counterpart != null && object.ReferenceEquals(counterpart, value))
-							{
-								sameRolePlayer = true;
-							}
-							else
-							{
-								link.Remove();
-							}
-							break;
-						}
-					}
-				}
-				if ((!sameRolePlayer) && (value != null))
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading), newRoles);
-				}
-			}
-		}
-		#endregion
-		#region TooManyRolesError's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError TooManyRolesError
-		{
-			get
-			{
-				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError;
-			}
-			set
-			{
-				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuid);
-				if (links.Count > 0)
-				{
-					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid);
-					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-					{
-						if (!link.IsRemoved)
-						{
-							Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError;
-							if (counterpart != null && object.ReferenceEquals(counterpart, value))
-							{
-								sameRolePlayer = true;
-							}
-							else
-							{
-								link.Remove();
-							}
-							break;
-						}
-					}
-				}
-				if ((!sameRolePlayer) && (value != null))
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError), newRoles);
-				}
-			}
-		}
-		#endregion
-		#region TooFewRolesError's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError TooFewRolesError
-		{
-			get
-			{
-				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError;
-			}
-			set
-			{
-				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuid);
-				if (links.Count > 0)
-				{
-					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid);
-					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-					{
-						if (!link.IsRemoved)
-						{
-							Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError;
-							if (counterpart != null && object.ReferenceEquals(counterpart, value))
-							{
-								sameRolePlayer = true;
-							}
-							else
-							{
-								link.Remove();
-							}
-							break;
-						}
-					}
-				}
-				if ((!sameRolePlayer) && (value != null))
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError), newRoles);
-				}
-			}
-		}
-		#endregion
-	}
-	#region Collection Classes for Reading
-	/// <summary>
-	/// Northface.Tools.ORM.ObjectModel.Reading Collection class, strongly-typed collection
-	/// </summary>
-	[System.CLSCompliant(true)]
-	public sealed partial class ReadingMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
-	{
-		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
-		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
-		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
-		/// <summary>
-		/// Counterpart
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
-		{
-			get { return this.counterpartMember; }
-		}
-		/// <summary>
-		/// Source Role
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
-		{
-			get { return this.sourceRoleMember; }
-		}
-		/// <summary>
-		/// Target Role
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
-		{
-			get { return this.targetRoleMember; }
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="counterpart">Counterpart to create relationship with</param>
-		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
-		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
-		public ReadingMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
-		{
-			this.counterpartMember = counterpart;
-			this.sourceRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
-			this.targetRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
-		}
-		/// <summary>
-		/// Returns an enumerator that can iterate through a collection
-		/// </summary>
-		/// <returns>Enumerator</returns>
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
-		}
-		/// <summary>
-		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
-		/// </summary>
-		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
-		/// <param name="index">The zero-based index in array at which copying begins</param>
-		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
-		}
-		/// <summary>
-		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
-		/// </summary>
-		System.Int32 System.Collections.ICollection.Count
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
-		/// </summary>
-		System.Boolean System.Collections.ICollection.IsSynchronized
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
-		/// </summary>
-		System.Object System.Collections.ICollection.SyncRoot
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
-		/// </summary>
-		System.Boolean System.Collections.IList.IsFixedSize
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
-		/// </summary>
-		System.Boolean System.Collections.IList.IsReadOnly
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
-		}
-		/// <summary>
-		/// Indexed accessor
-		/// </summary>
-		/// <param name="index">Index to access</param>
-		/// <returns>object at that index</returns>
-		System.Object System.Collections.IList.this[System.Int32 index]
-		{
-			get
-			{
-				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
-				return list[index];
-			}
-			set
-			{
-				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
-				{
-					throw new System.InvalidCastException();
-				}
-				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
-				list[index] = value;
-			}
-		}
-		/// <summary>
-		/// When implemented by a class, adds an item to the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
-		/// <returns>index where object was added</returns>
-		System.Int32 System.Collections.IList.Add(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes all items from the System.Collections.IList
-		/// </summary>
-		void System.Collections.IList.Clear()
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
-		}
-		/// <summary>
-		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
-		/// </summary>
-		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
-		/// <returns>true if object is contained, false otherwise</returns>
-		System.Boolean System.Collections.IList.Contains(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
-		}
-		/// <summary>
-		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
-		/// <returns>index of object</returns>
-		System.Int32 System.Collections.IList.IndexOf(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
-		}
-		/// <summary>
-		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
-		/// </summary>
-		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
-		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
-		void System.Collections.IList.Remove(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes the System.Collections.IList item at the specified index
-		/// </summary>
-		/// <param name="index">The zero-based index of the item to remove</param>
-		void System.Collections.IList.RemoveAt(System.Int32 index)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="rolePlayer">The role player to move</param>
-		/// <param name="newPosition">The position to move to</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
-		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="oldPosition">The position of the role player to move from</param>
-		/// <param name="newPosition">The position of the role player to move to</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
-		}
-		/// <summary>
-		/// Insert a roleplayer in the specified location
-		/// </summary>
-		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
-		/// <param name="rolePlayer">The role player that will be inserted</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
-		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
-		}
-		/// <summary>
-		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
-		/// </summary>
-		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
-		/// <param name="index">The zero-based index in array at which copying begins</param>
-		public void CopyTo(Northface.Tools.ORM.ObjectModel.Reading[] array, System.Int32 index)
-		{
-			((System.Collections.ICollection)this).CopyTo(array, index);
-		}
-		/// <summary>
-		/// Gets the number of elements contained in the collection
-		/// </summary>
-		public System.Int32 Count
-		{
-			get { return ((System.Collections.ICollection)this).Count; }
-		}
-		/// <summary>
-		/// Gets a value indicating whether the list is read-only
-		/// </summary>
-		public System.Boolean IsReadOnly
-		{
-			get { return ((System.Collections.IList)this).IsReadOnly; }
-		}
-		/// <summary>
-		/// Indexed accessor
-		/// </summary>
-		/// <param name="index">Index to access</param>
-		/// <returns>Northface.Tools.ORM.ObjectModel.Reading at that index</returns>
-		public Northface.Tools.ORM.ObjectModel.Reading this[System.Int32 index]
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.Reading)(((System.Collections.IList)this)[index]); }
-			set { ((System.Collections.IList)this)[index] = value as System.Object; }
-		}
-		/// <summary>
-		/// Adds an item to the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Reading to add to the list</param>
-		/// <returns>index where object was added</returns>
-		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.Reading value)
-		{
-			return ((System.Collections.IList)this).Add(value as System.Object);
-		}
-		/// <summary>
-		/// Removes all items from the list
-		/// </summary>
-		public void Clear()
-		{
-			((System.Collections.IList)this).Clear();
-		}
-		/// <summary>
-		/// Determines whether the list has a specific value
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Reading to locate in the list</param>
-		/// <returns>true if object is contained, false otherwise</returns>
-		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.Reading value)
-		{
-			return ((System.Collections.IList)this).Contains(value as System.Object);
-		}
-		/// <summary>
-		/// Determines the index of a specific item in the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Reading to locate in the list</param>
-		/// <returns>index of object</returns>
-		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.Reading value)
-		{
-			return ((System.Collections.IList)this).IndexOf(value as System.Object);
-		}
-		/// <summary>
-		/// Inserts an item to the list at the specified position
-		/// </summary>
-		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Reading to insert into the list</param>
-		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.Reading value)
-		{
-			((System.Collections.IList)this).Insert(index, value as System.Object);
-		}
-		/// <summary>
-		/// Removes the first occurrence of a specific object from the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Reading to remove from the list</param>
-		public void Remove(Northface.Tools.ORM.ObjectModel.Reading value)
-		{
-			((System.Collections.IList)this).Remove(value as System.Object);
-		}
-		/// <summary>
-		/// Removes the list item at the specified index
-		/// </summary>
-		/// <param name="index">The zero-based index of the item to remove</param>
-		public void RemoveAt(System.Int32 index)
-		{
-			((System.Collections.IList)this).RemoveAt(index);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="rolePlayer">The role player to move</param>
-		/// <param name="newPosition">The position to move to</param>
-		public void Move(Northface.Tools.ORM.ObjectModel.Reading rolePlayer, System.Int32 newPosition)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="oldPosition">The position of the role player to move from</param>
-		/// <param name="newPosition">The position of the role player to move to</param>
-		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
-		}
-		/// <summary>
-		/// Insert a roleplayer in the specified location
-		/// </summary>
-		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
-		/// <param name="rolePlayer">The role player that will be inserted</param>
-		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.Reading rolePlayer)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
-		}
-
-	}
-	#endregion
-
-	#region Reading's Generated Constructor Code
-	public  partial class Reading
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public Reading(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static Reading CreateReading(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateReading(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static Reading CreateAndInitializeReading(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeReading(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public Reading(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static Reading CreateReading(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (Reading)partition.ElementFactory.CreateElement(typeof(Reading));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static Reading CreateAndInitializeReading(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (Reading)partition.ElementFactory.CreateElement(typeof(Reading), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for Reading
-	/// <summary>
-	/// Reading Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.Reading))]
-	public sealed class ReadingElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ReadingElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.Reading( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static ReadingElementFactoryCreator Instance
-		{
-			get
-			{
-				return new ReadingElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ModelError")]
-	public abstract partial class ModelError : Microsoft.VisualStudio.Modeling.NamedElement
+	public abstract partial class ModelError : Northface.Tools.ORM.ObjectModel.ORMNamedElement
 	{
 		#region ModelError's Generated MetaClass Code
 		/// <summary>
@@ -16723,617 +12593,8 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrder.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrder")]
-	public  partial class ReadingOrder : Microsoft.VisualStudio.Modeling.ModelElement
-	{
-		#region ReadingOrder's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "624a498e-0659-4c34-ab74-7fe43b4c8fa1";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrder.MetaClassGuidString);
-		#endregion
-
-		#region ReadingText's Generated  Field Code
-		#region ReadingText's Generated  MetaAttribute Code
-		/// <summary>
-		/// MetaAttribute Guid String
-		/// </summary>
-		public const System.String ReadingTextMetaAttributeGuidString = "b426931f-9232-4e42-b384-61c60d331aae";
-
-		/// <summary>
-		/// MetaAttribute Guid
-		/// </summary>
-		public static readonly System.Guid ReadingTextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuidString);
-		#endregion
-
-		#region ReadingText's Generated Property Code
-
-		/// <summary>
-		/// 
-		/// </summary>
-		[System.ComponentModel.Editor(typeof(Northface.Tools.ORM.ObjectModel.Editors.ReadingTextEditor), typeof(System.Drawing.Design.UITypeEditor))]
-		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ReadingOrderReadingTextFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingText")]
-		public  System.String ReadingText
-		{
-			get
-			{
-				return readingOrderReadingTextFieldHandler.GetFieldValue(this);
-			}
-		
-			set
-			{
-				readingOrderReadingTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
-			}
-		}
-		#endregion
-
-		#region ReadingOrderReadingTextFieldHandler Generated Code
-		/// <summary>
-		/// FieldHandler for ReadingOrder.ReadingText field
-		/// </summary>
-		private static ReadingOrderReadingTextFieldHandler	readingOrderReadingTextFieldHandler	= ReadingOrderReadingTextFieldHandler.Instance;
-
-		/// <summary>
-		/// Implement the field handler for ReadingOrder.ReadingText
-		/// </summary>
-		[System.CLSCompliant(false)]
-		public sealed partial class ReadingOrderReadingTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ReadingOrder,System.String>
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private ReadingOrderReadingTextFieldHandler() { }
-
-			/// <summary>
-			/// Returns the singleton instance of the ReadingOrder.ReadingText field handler
-			/// </summary>
-			/// <value>ReadingOrderReadingTextFieldHandler</value>
-			public static ReadingOrderReadingTextFieldHandler Instance
-			{
-				get
-				{
-					if (Northface.Tools.ORM.ObjectModel.ReadingOrder.readingOrderReadingTextFieldHandler != null)
-					{
-						return Northface.Tools.ORM.ObjectModel.ReadingOrder.readingOrderReadingTextFieldHandler;
-					}
-					else
-					{
-						// The static constructor in ReadingOrder will assign this value to
-						// Northface.Tools.ORM.ObjectModel.ReadingOrder.readingOrderReadingTextFieldHandler, so just instantiate one and return it
-						return new ReadingOrderReadingTextFieldHandler();
-					}
-				}
-			}
-
-			/// <summary>
-			/// Returns the meta attribute id for the ReadingOrder.ReadingText field handler
-			/// </summary>
-			/// <value>Guid</value>
-			public sealed override System.Guid Id
-			{
-				get
-				{
-					return Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuid;
-				}
-			}
-		}
-		#endregion
-		#endregion
-		
-		#region ReadingCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ReadingMoveableCollection ReadingCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.ReadingMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region RoleCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.RoleMoveableCollection RoleCollection
-		{
-			get { return new Northface.Tools.ORM.ObjectModel.RoleMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.ReadingOrderMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.RoleCollectionMetaRoleGuid); }
-		}
-		#endregion
-		#region FactType's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.FactType FactType
-		{
-			get
-			{
-				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactTypeMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.FactType;
-			}
-			set
-			{
-				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
-				if (links.Count > 0)
-				{
-					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactTypeMetaRoleGuid);
-					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-					{
-						if (!link.IsRemoved)
-						{
-							Northface.Tools.ORM.ObjectModel.FactType counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.FactType;
-							if (counterpart != null && object.ReferenceEquals(counterpart, value))
-							{
-								sameRolePlayer = true;
-							}
-							else
-							{
-								link.Remove();
-							}
-							break;
-						}
-					}
-				}
-				if ((!sameRolePlayer) && (value != null))
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactTypeMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder), newRoles);
-				}
-			}
-		}
-		#endregion
-	}
-	#region Collection Classes for ReadingOrder
-	/// <summary>
-	/// Northface.Tools.ORM.ObjectModel.ReadingOrder Collection class, strongly-typed collection
-	/// </summary>
-	[System.CLSCompliant(true)]
-	public sealed partial class ReadingOrderMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
-	{
-		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
-		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
-		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
-		/// <summary>
-		/// Counterpart
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
-		{
-			get { return this.counterpartMember; }
-		}
-		/// <summary>
-		/// Source Role
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
-		{
-			get { return this.sourceRoleMember; }
-		}
-		/// <summary>
-		/// Target Role
-		/// </summary>
-		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
-		{
-			get { return this.targetRoleMember; }
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="counterpart">Counterpart to create relationship with</param>
-		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
-		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
-		public ReadingOrderMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
-		{
-			this.counterpartMember = counterpart;
-			this.sourceRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
-			this.targetRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
-		}
-		/// <summary>
-		/// Returns an enumerator that can iterate through a collection
-		/// </summary>
-		/// <returns>Enumerator</returns>
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
-		}
-		/// <summary>
-		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
-		/// </summary>
-		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
-		/// <param name="index">The zero-based index in array at which copying begins</param>
-		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
-		}
-		/// <summary>
-		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
-		/// </summary>
-		System.Int32 System.Collections.ICollection.Count
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
-		/// </summary>
-		System.Boolean System.Collections.ICollection.IsSynchronized
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
-		/// </summary>
-		System.Object System.Collections.ICollection.SyncRoot
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
-		/// </summary>
-		System.Boolean System.Collections.IList.IsFixedSize
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
-		}
-		/// <summary>
-		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
-		/// </summary>
-		System.Boolean System.Collections.IList.IsReadOnly
-		{
-			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
-		}
-		/// <summary>
-		/// Indexed accessor
-		/// </summary>
-		/// <param name="index">Index to access</param>
-		/// <returns>object at that index</returns>
-		System.Object System.Collections.IList.this[System.Int32 index]
-		{
-			get
-			{
-				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
-				return list[index];
-			}
-			set
-			{
-				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
-				{
-					throw new System.InvalidCastException();
-				}
-				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
-				list[index] = value;
-			}
-		}
-		/// <summary>
-		/// When implemented by a class, adds an item to the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
-		/// <returns>index where object was added</returns>
-		System.Int32 System.Collections.IList.Add(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes all items from the System.Collections.IList
-		/// </summary>
-		void System.Collections.IList.Clear()
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
-		}
-		/// <summary>
-		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
-		/// </summary>
-		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
-		/// <returns>true if object is contained, false otherwise</returns>
-		System.Boolean System.Collections.IList.Contains(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
-		}
-		/// <summary>
-		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
-		/// <returns>index of object</returns>
-		System.Int32 System.Collections.IList.IndexOf(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
-			{
-				throw new System.InvalidCastException();
-			}
-			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
-		}
-		/// <summary>
-		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
-		/// </summary>
-		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
-		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
-		/// </summary>
-		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
-		void System.Collections.IList.Remove(System.Object value)
-		{
-			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
-		}
-		/// <summary>
-		/// When implemented by a class, removes the System.Collections.IList item at the specified index
-		/// </summary>
-		/// <param name="index">The zero-based index of the item to remove</param>
-		void System.Collections.IList.RemoveAt(System.Int32 index)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="rolePlayer">The role player to move</param>
-		/// <param name="newPosition">The position to move to</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
-		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="oldPosition">The position of the role player to move from</param>
-		/// <param name="newPosition">The position of the role player to move to</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
-		{
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
-		}
-		/// <summary>
-		/// Insert a roleplayer in the specified location
-		/// </summary>
-		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
-		/// <param name="rolePlayer">The role player that will be inserted</param>
-		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
-		{
-			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
-			{
-				throw new System.InvalidCastException();
-			}
-			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
-		}
-		/// <summary>
-		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
-		/// </summary>
-		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
-		/// <param name="index">The zero-based index in array at which copying begins</param>
-		public void CopyTo(Northface.Tools.ORM.ObjectModel.ReadingOrder[] array, System.Int32 index)
-		{
-			((System.Collections.ICollection)this).CopyTo(array, index);
-		}
-		/// <summary>
-		/// Gets the number of elements contained in the collection
-		/// </summary>
-		public System.Int32 Count
-		{
-			get { return ((System.Collections.ICollection)this).Count; }
-		}
-		/// <summary>
-		/// Gets a value indicating whether the list is read-only
-		/// </summary>
-		public System.Boolean IsReadOnly
-		{
-			get { return ((System.Collections.IList)this).IsReadOnly; }
-		}
-		/// <summary>
-		/// Indexed accessor
-		/// </summary>
-		/// <param name="index">Index to access</param>
-		/// <returns>Northface.Tools.ORM.ObjectModel.ReadingOrder at that index</returns>
-		public Northface.Tools.ORM.ObjectModel.ReadingOrder this[System.Int32 index]
-		{
-			get { return (Northface.Tools.ORM.ObjectModel.ReadingOrder)(((System.Collections.IList)this)[index]); }
-			set { ((System.Collections.IList)this)[index] = value as System.Object; }
-		}
-		/// <summary>
-		/// Adds an item to the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to add to the list</param>
-		/// <returns>index where object was added</returns>
-		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
-		{
-			return ((System.Collections.IList)this).Add(value as System.Object);
-		}
-		/// <summary>
-		/// Removes all items from the list
-		/// </summary>
-		public void Clear()
-		{
-			((System.Collections.IList)this).Clear();
-		}
-		/// <summary>
-		/// Determines whether the list has a specific value
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to locate in the list</param>
-		/// <returns>true if object is contained, false otherwise</returns>
-		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
-		{
-			return ((System.Collections.IList)this).Contains(value as System.Object);
-		}
-		/// <summary>
-		/// Determines the index of a specific item in the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to locate in the list</param>
-		/// <returns>index of object</returns>
-		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
-		{
-			return ((System.Collections.IList)this).IndexOf(value as System.Object);
-		}
-		/// <summary>
-		/// Inserts an item to the list at the specified position
-		/// </summary>
-		/// <param name="index">The zero-based index at which the value should be inserted</param>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to insert into the list</param>
-		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ReadingOrder value)
-		{
-			((System.Collections.IList)this).Insert(index, value as System.Object);
-		}
-		/// <summary>
-		/// Removes the first occurrence of a specific object from the list
-		/// </summary>
-		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to remove from the list</param>
-		public void Remove(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
-		{
-			((System.Collections.IList)this).Remove(value as System.Object);
-		}
-		/// <summary>
-		/// Removes the list item at the specified index
-		/// </summary>
-		/// <param name="index">The zero-based index of the item to remove</param>
-		public void RemoveAt(System.Int32 index)
-		{
-			((System.Collections.IList)this).RemoveAt(index);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="rolePlayer">The role player to move</param>
-		/// <param name="newPosition">The position to move to</param>
-		public void Move(Northface.Tools.ORM.ObjectModel.ReadingOrder rolePlayer, System.Int32 newPosition)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
-		}
-		/// <summary>
-		/// Move the roleplayer to the new position in the collection
-		/// </summary>
-		/// <param name="oldPosition">The position of the role player to move from</param>
-		/// <param name="newPosition">The position of the role player to move to</param>
-		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
-		}
-		/// <summary>
-		/// Insert a roleplayer in the specified location
-		/// </summary>
-		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
-		/// <param name="rolePlayer">The role player that will be inserted</param>
-		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ReadingOrder rolePlayer)
-		{
-			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
-		}
-
-	}
-	#endregion
-
-	#region ReadingOrder's Generated Constructor Code
-	public  partial class ReadingOrder
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ReadingOrder(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ReadingOrder CreateReadingOrder(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateReadingOrder(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ReadingOrder CreateAndInitializeReadingOrder(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeReadingOrder(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ReadingOrder(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ReadingOrder CreateReadingOrder(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (ReadingOrder)partition.ElementFactory.CreateElement(typeof(ReadingOrder));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ReadingOrder CreateAndInitializeReadingOrder(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (ReadingOrder)partition.ElementFactory.CreateElement(typeof(ReadingOrder), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for ReadingOrder
-	/// <summary>
-	/// ReadingOrder Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))]
-	public sealed class ReadingOrderElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ReadingOrderElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Northface.Tools.ORM.ObjectModel.ReadingOrder( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static ReadingOrderElementFactoryCreator Instance
-		{
-			get
-			{
-				return new ReadingOrderElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Northface.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReferenceModeKind.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ReferenceModeKind")]
-	public  partial class ReferenceModeKind : Microsoft.VisualStudio.Modeling.NamedElement
+	public  partial class ReferenceModeKind : Northface.Tools.ORM.ObjectModel.ORMNamedElement
 	{
 		#region ReferenceModeKind's Generated MetaClass Code
 		/// <summary>
@@ -18086,7 +13347,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReferenceMode.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ReferenceMode")]
-	public abstract partial class ReferenceMode : Microsoft.VisualStudio.Modeling.NamedElement
+	public abstract partial class ReferenceMode : Northface.Tools.ORM.ObjectModel.ORMNamedElement
 	{
 		#region ReferenceMode's Generated MetaClass Code
 		/// <summary>
@@ -18936,8 +14197,4822 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ORMModel.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ORMModel")]
+	public  partial class ORMModel : Northface.Tools.ORM.ObjectModel.ORMNamedElement
+	{
+		#region ORMModel's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "3f4ba8fa-355b-4a49-a42c-9c56f6e5f242";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ORMModel.MetaClassGuidString);
+		#endregion
+
+		#region ObjectTypeCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ObjectTypeMoveableCollection ObjectTypeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ObjectTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasObjectType.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region FactTypeCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection FactTypeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.FactTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasFactType.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasFactType.FactTypeCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ErrorCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ModelErrorMoveableCollection ErrorCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ModelErrorMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasError.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ReferenceModeKindCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ReferenceModeKindMoveableCollection ReferenceModeKindCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ReferenceModeKindMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ReferenceModeCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ReferenceModeMoveableCollection ReferenceModeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ReferenceModeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region SingleColumnExternalConstraintCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintMoveableCollection SingleColumnExternalConstraintCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region MultiColumnExternalConstraintCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintMoveableCollection MultiColumnExternalConstraintCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region DataTypeCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.DataTypeMoveableCollection DataTypeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.DataTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ModelHasDataType.ModelMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid); }
+		}
+		#endregion
+	}
+	#region ORMModel's Generated Constructor Code
+	public  partial class ORMModel
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMModel(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMModel CreateORMModel(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateORMModel(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMModel CreateAndInitializeORMModel(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeORMModel(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMModel(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMModel CreateORMModel(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (ORMModel)partition.ElementFactory.CreateElement(typeof(ORMModel));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ORMModel CreateAndInitializeORMModel(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ORMModel)partition.ElementFactory.CreateElement(typeof(ORMModel), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ORMModel
+	/// <summary>
+	/// ORMModel Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ORMModel))]
+	public sealed class ORMModelElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ORMModelElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ORMModel( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ORMModelElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ORMModelElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ORMModelElement.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ORMModelElement")]
+	public abstract partial class ORMModelElement : Microsoft.VisualStudio.Modeling.ModelElement
+	{
+		#region ORMModelElement's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "b5e86643-b849-47f8-afc8-70ace49cc51a";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ORMModelElement.MetaClassGuidString);
+		#endregion
+
+	}
+	#region ORMModelElement's Generated Constructor Code
+	public abstract partial class ORMModelElement
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected ORMModelElement(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.DataType")]
+	public abstract partial class DataType : Northface.Tools.ORM.ObjectModel.ORMModelElement
+	{
+		#region DataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "547d17bb-3dc9-4869-b280-ff6be0f7dca9";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DataType.MetaClassGuidString);
+		#endregion
+
+		#region ValueTypeCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ObjectTypeMoveableCollection ValueTypeCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ObjectTypeMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.DataTypeMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region Model's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ORMModel Model
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ModelHasDataType.ModelMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.ORMModel;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.ModelHasDataType.ModelMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.ORMModel counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.ORMModel;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasDataType.ModelMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ModelHasDataType), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region Collection Classes for DataType
+	/// <summary>
+	/// Northface.Tools.ORM.ObjectModel.DataType Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class DataTypeMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public DataTypeMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.DataType) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.DataType))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.DataType[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Northface.Tools.ORM.ObjectModel.DataType at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.DataType this[System.Int32 index]
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.DataType)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.DataType to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.DataType value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.DataType to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.DataType value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.DataType to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.DataType value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.DataType to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.DataType value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.DataType to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.DataType value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Northface.Tools.ORM.ObjectModel.DataType rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.DataType rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
+	#region DataType's Generated Constructor Code
+	public abstract partial class DataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected DataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.UnspecifiedDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.UnspecifiedDataType")]
+	public  partial class UnspecifiedDataType : Northface.Tools.ORM.ObjectModel.DataType
+	{
+		#region UnspecifiedDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "12a11e3f-7daf-4ced-8ca2-34d3250ad125";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.UnspecifiedDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region UnspecifiedDataType's Generated Constructor Code
+	public  partial class UnspecifiedDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public UnspecifiedDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static UnspecifiedDataType CreateUnspecifiedDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateUnspecifiedDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static UnspecifiedDataType CreateAndInitializeUnspecifiedDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeUnspecifiedDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public UnspecifiedDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static UnspecifiedDataType CreateUnspecifiedDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (UnspecifiedDataType)partition.ElementFactory.CreateElement(typeof(UnspecifiedDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static UnspecifiedDataType CreateAndInitializeUnspecifiedDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (UnspecifiedDataType)partition.ElementFactory.CreateElement(typeof(UnspecifiedDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for UnspecifiedDataType
+	/// <summary>
+	/// UnspecifiedDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.UnspecifiedDataType))]
+	public sealed class UnspecifiedDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public UnspecifiedDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.UnspecifiedDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static UnspecifiedDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new UnspecifiedDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TextDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TextDataType")]
+	public abstract partial class TextDataType : Northface.Tools.ORM.ObjectModel.DataType
+	{
+		#region TextDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "8590bbf5-92b9-4a9d-98a0-7b7a0d01c450";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TextDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region TextDataType's Generated Constructor Code
+	public abstract partial class TextDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected TextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FixedLengthTextDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FixedLengthTextDataType")]
+	public  partial class FixedLengthTextDataType : Northface.Tools.ORM.ObjectModel.TextDataType
+	{
+		#region FixedLengthTextDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "9de7b056-3e4d-4344-a00c-a9e81da805f6";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FixedLengthTextDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region FixedLengthTextDataType's Generated Constructor Code
+	public  partial class FixedLengthTextDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FixedLengthTextDataType CreateFixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateFixedLengthTextDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FixedLengthTextDataType CreateAndInitializeFixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeFixedLengthTextDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FixedLengthTextDataType CreateFixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (FixedLengthTextDataType)partition.ElementFactory.CreateElement(typeof(FixedLengthTextDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FixedLengthTextDataType CreateAndInitializeFixedLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FixedLengthTextDataType)partition.ElementFactory.CreateElement(typeof(FixedLengthTextDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FixedLengthTextDataType
+	/// <summary>
+	/// FixedLengthTextDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FixedLengthTextDataType))]
+	public sealed class FixedLengthTextDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FixedLengthTextDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FixedLengthTextDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static FixedLengthTextDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new FixedLengthTextDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.VariableLengthTextDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.VariableLengthTextDataType")]
+	public  partial class VariableLengthTextDataType : Northface.Tools.ORM.ObjectModel.TextDataType
+	{
+		#region VariableLengthTextDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "4498d0d4-f386-46c5-a7ef-6ee9abc14611";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.VariableLengthTextDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region VariableLengthTextDataType's Generated Constructor Code
+	public  partial class VariableLengthTextDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public VariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static VariableLengthTextDataType CreateVariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateVariableLengthTextDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static VariableLengthTextDataType CreateAndInitializeVariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeVariableLengthTextDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public VariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static VariableLengthTextDataType CreateVariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (VariableLengthTextDataType)partition.ElementFactory.CreateElement(typeof(VariableLengthTextDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static VariableLengthTextDataType CreateAndInitializeVariableLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (VariableLengthTextDataType)partition.ElementFactory.CreateElement(typeof(VariableLengthTextDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for VariableLengthTextDataType
+	/// <summary>
+	/// VariableLengthTextDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.VariableLengthTextDataType))]
+	public sealed class VariableLengthTextDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public VariableLengthTextDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.VariableLengthTextDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static VariableLengthTextDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new VariableLengthTextDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.LargeLengthTextDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.LargeLengthTextDataType")]
+	public  partial class LargeLengthTextDataType : Northface.Tools.ORM.ObjectModel.TextDataType
+	{
+		#region LargeLengthTextDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "42b4206d-7766-41f0-87d6-6ff23b10756e";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.LargeLengthTextDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region LargeLengthTextDataType's Generated Constructor Code
+	public  partial class LargeLengthTextDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public LargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LargeLengthTextDataType CreateLargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateLargeLengthTextDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LargeLengthTextDataType CreateAndInitializeLargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeLargeLengthTextDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public LargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LargeLengthTextDataType CreateLargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (LargeLengthTextDataType)partition.ElementFactory.CreateElement(typeof(LargeLengthTextDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LargeLengthTextDataType CreateAndInitializeLargeLengthTextDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (LargeLengthTextDataType)partition.ElementFactory.CreateElement(typeof(LargeLengthTextDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for LargeLengthTextDataType
+	/// <summary>
+	/// LargeLengthTextDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.LargeLengthTextDataType))]
+	public sealed class LargeLengthTextDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public LargeLengthTextDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.LargeLengthTextDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static LargeLengthTextDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new LargeLengthTextDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.NumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.NumericDataType")]
+	public abstract partial class NumericDataType : Northface.Tools.ORM.ObjectModel.DataType
+	{
+		#region NumericDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "5d6c8146-073b-4f54-ae4e-e97620c42b2c";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.NumericDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region NumericDataType's Generated Constructor Code
+	public abstract partial class NumericDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected NumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SignedIntegerNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.SignedIntegerNumericDataType")]
+	public  partial class SignedIntegerNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
+	{
+		#region SignedIntegerNumericDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "0a1d30c1-a7cb-47bb-ab4a-36a89522e12a";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.SignedIntegerNumericDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region SignedIntegerNumericDataType's Generated Constructor Code
+	public  partial class SignedIntegerNumericDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SignedIntegerNumericDataType CreateSignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateSignedIntegerNumericDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SignedIntegerNumericDataType CreateAndInitializeSignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeSignedIntegerNumericDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SignedIntegerNumericDataType CreateSignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (SignedIntegerNumericDataType)partition.ElementFactory.CreateElement(typeof(SignedIntegerNumericDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SignedIntegerNumericDataType CreateAndInitializeSignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (SignedIntegerNumericDataType)partition.ElementFactory.CreateElement(typeof(SignedIntegerNumericDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for SignedIntegerNumericDataType
+	/// <summary>
+	/// SignedIntegerNumericDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.SignedIntegerNumericDataType))]
+	public sealed class SignedIntegerNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SignedIntegerNumericDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.SignedIntegerNumericDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static SignedIntegerNumericDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new SignedIntegerNumericDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType")]
+	public  partial class UnsignedIntegerNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
+	{
+		#region UnsignedIntegerNumericDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "773798cc-73bb-49b0-ad72-cb145d0a5f14";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region UnsignedIntegerNumericDataType's Generated Constructor Code
+	public  partial class UnsignedIntegerNumericDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public UnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static UnsignedIntegerNumericDataType CreateUnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateUnsignedIntegerNumericDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static UnsignedIntegerNumericDataType CreateAndInitializeUnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeUnsignedIntegerNumericDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public UnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static UnsignedIntegerNumericDataType CreateUnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (UnsignedIntegerNumericDataType)partition.ElementFactory.CreateElement(typeof(UnsignedIntegerNumericDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static UnsignedIntegerNumericDataType CreateAndInitializeUnsignedIntegerNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (UnsignedIntegerNumericDataType)partition.ElementFactory.CreateElement(typeof(UnsignedIntegerNumericDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for UnsignedIntegerNumericDataType
+	/// <summary>
+	/// UnsignedIntegerNumericDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType))]
+	public sealed class UnsignedIntegerNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public UnsignedIntegerNumericDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.UnsignedIntegerNumericDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static UnsignedIntegerNumericDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new UnsignedIntegerNumericDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.AutoCounterNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.AutoCounterNumericDataType")]
+	public  partial class AutoCounterNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
+	{
+		#region AutoCounterNumericDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "ff1b07d5-e8fc-44cb-acec-cb93f6e6e37a";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.AutoCounterNumericDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region AutoCounterNumericDataType's Generated Constructor Code
+	public  partial class AutoCounterNumericDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public AutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static AutoCounterNumericDataType CreateAutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateAutoCounterNumericDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static AutoCounterNumericDataType CreateAndInitializeAutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeAutoCounterNumericDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public AutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static AutoCounterNumericDataType CreateAutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (AutoCounterNumericDataType)partition.ElementFactory.CreateElement(typeof(AutoCounterNumericDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static AutoCounterNumericDataType CreateAndInitializeAutoCounterNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (AutoCounterNumericDataType)partition.ElementFactory.CreateElement(typeof(AutoCounterNumericDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for AutoCounterNumericDataType
+	/// <summary>
+	/// AutoCounterNumericDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.AutoCounterNumericDataType))]
+	public sealed class AutoCounterNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public AutoCounterNumericDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.AutoCounterNumericDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static AutoCounterNumericDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new AutoCounterNumericDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FloatingPointNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FloatingPointNumericDataType")]
+	public  partial class FloatingPointNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
+	{
+		#region FloatingPointNumericDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "2ead05d6-d343-43ea-8130-fc226751b1cf";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FloatingPointNumericDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region FloatingPointNumericDataType's Generated Constructor Code
+	public  partial class FloatingPointNumericDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FloatingPointNumericDataType CreateFloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateFloatingPointNumericDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FloatingPointNumericDataType CreateAndInitializeFloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeFloatingPointNumericDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FloatingPointNumericDataType CreateFloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (FloatingPointNumericDataType)partition.ElementFactory.CreateElement(typeof(FloatingPointNumericDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FloatingPointNumericDataType CreateAndInitializeFloatingPointNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FloatingPointNumericDataType)partition.ElementFactory.CreateElement(typeof(FloatingPointNumericDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FloatingPointNumericDataType
+	/// <summary>
+	/// FloatingPointNumericDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FloatingPointNumericDataType))]
+	public sealed class FloatingPointNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FloatingPointNumericDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FloatingPointNumericDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static FloatingPointNumericDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new FloatingPointNumericDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DecimalNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.DecimalNumericDataType")]
+	public  partial class DecimalNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
+	{
+		#region DecimalNumericDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "8e7c90d2-8c42-4932-8275-ad4fed9227bb";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DecimalNumericDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region DecimalNumericDataType's Generated Constructor Code
+	public  partial class DecimalNumericDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DecimalNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DecimalNumericDataType CreateDecimalNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateDecimalNumericDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DecimalNumericDataType CreateAndInitializeDecimalNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeDecimalNumericDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DecimalNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DecimalNumericDataType CreateDecimalNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (DecimalNumericDataType)partition.ElementFactory.CreateElement(typeof(DecimalNumericDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DecimalNumericDataType CreateAndInitializeDecimalNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (DecimalNumericDataType)partition.ElementFactory.CreateElement(typeof(DecimalNumericDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for DecimalNumericDataType
+	/// <summary>
+	/// DecimalNumericDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.DecimalNumericDataType))]
+	public sealed class DecimalNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DecimalNumericDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.DecimalNumericDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static DecimalNumericDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new DecimalNumericDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MoneyNumericDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.MoneyNumericDataType")]
+	public  partial class MoneyNumericDataType : Northface.Tools.ORM.ObjectModel.NumericDataType
+	{
+		#region MoneyNumericDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "67f4fed3-53a4-462f-a050-c3de3055620f";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.MoneyNumericDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region MoneyNumericDataType's Generated Constructor Code
+	public  partial class MoneyNumericDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MoneyNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MoneyNumericDataType CreateMoneyNumericDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateMoneyNumericDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MoneyNumericDataType CreateAndInitializeMoneyNumericDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeMoneyNumericDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MoneyNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MoneyNumericDataType CreateMoneyNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (MoneyNumericDataType)partition.ElementFactory.CreateElement(typeof(MoneyNumericDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MoneyNumericDataType CreateAndInitializeMoneyNumericDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (MoneyNumericDataType)partition.ElementFactory.CreateElement(typeof(MoneyNumericDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for MoneyNumericDataType
+	/// <summary>
+	/// MoneyNumericDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.MoneyNumericDataType))]
+	public sealed class MoneyNumericDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MoneyNumericDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.MoneyNumericDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static MoneyNumericDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new MoneyNumericDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.RawDataDataType")]
+	public abstract partial class RawDataDataType : Northface.Tools.ORM.ObjectModel.DataType
+	{
+		#region RawDataDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "fdd0f0c5-33fe-408e-92ea-7fe3e17f80dd";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.RawDataDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region RawDataDataType's Generated Constructor Code
+	public abstract partial class RawDataDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected RawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FixedLengthRawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FixedLengthRawDataDataType")]
+	public  partial class FixedLengthRawDataDataType : Northface.Tools.ORM.ObjectModel.RawDataDataType
+	{
+		#region FixedLengthRawDataDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "44a46583-e878-4f70-90ac-ca08f37feba6";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FixedLengthRawDataDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region FixedLengthRawDataDataType's Generated Constructor Code
+	public  partial class FixedLengthRawDataDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FixedLengthRawDataDataType CreateFixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateFixedLengthRawDataDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FixedLengthRawDataDataType CreateAndInitializeFixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeFixedLengthRawDataDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FixedLengthRawDataDataType CreateFixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (FixedLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(FixedLengthRawDataDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FixedLengthRawDataDataType CreateAndInitializeFixedLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FixedLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(FixedLengthRawDataDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FixedLengthRawDataDataType
+	/// <summary>
+	/// FixedLengthRawDataDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FixedLengthRawDataDataType))]
+	public sealed class FixedLengthRawDataDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FixedLengthRawDataDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FixedLengthRawDataDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static FixedLengthRawDataDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new FixedLengthRawDataDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.VariableLengthRawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.VariableLengthRawDataDataType")]
+	public  partial class VariableLengthRawDataDataType : Northface.Tools.ORM.ObjectModel.RawDataDataType
+	{
+		#region VariableLengthRawDataDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "ac252d1e-c491-495f-988c-3e9649d00720";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.VariableLengthRawDataDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region VariableLengthRawDataDataType's Generated Constructor Code
+	public  partial class VariableLengthRawDataDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public VariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static VariableLengthRawDataDataType CreateVariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateVariableLengthRawDataDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static VariableLengthRawDataDataType CreateAndInitializeVariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeVariableLengthRawDataDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public VariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static VariableLengthRawDataDataType CreateVariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (VariableLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(VariableLengthRawDataDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static VariableLengthRawDataDataType CreateAndInitializeVariableLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (VariableLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(VariableLengthRawDataDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for VariableLengthRawDataDataType
+	/// <summary>
+	/// VariableLengthRawDataDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.VariableLengthRawDataDataType))]
+	public sealed class VariableLengthRawDataDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public VariableLengthRawDataDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.VariableLengthRawDataDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static VariableLengthRawDataDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new VariableLengthRawDataDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.LargeLengthRawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.LargeLengthRawDataDataType")]
+	public  partial class LargeLengthRawDataDataType : Northface.Tools.ORM.ObjectModel.RawDataDataType
+	{
+		#region LargeLengthRawDataDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "4133fda1-45bf-48c5-b3ce-4f4a9d891066";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.LargeLengthRawDataDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region LargeLengthRawDataDataType's Generated Constructor Code
+	public  partial class LargeLengthRawDataDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public LargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LargeLengthRawDataDataType CreateLargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateLargeLengthRawDataDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LargeLengthRawDataDataType CreateAndInitializeLargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeLargeLengthRawDataDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public LargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LargeLengthRawDataDataType CreateLargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (LargeLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(LargeLengthRawDataDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LargeLengthRawDataDataType CreateAndInitializeLargeLengthRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (LargeLengthRawDataDataType)partition.ElementFactory.CreateElement(typeof(LargeLengthRawDataDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for LargeLengthRawDataDataType
+	/// <summary>
+	/// LargeLengthRawDataDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.LargeLengthRawDataDataType))]
+	public sealed class LargeLengthRawDataDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public LargeLengthRawDataDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.LargeLengthRawDataDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static LargeLengthRawDataDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new LargeLengthRawDataDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.PictureRawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.PictureRawDataDataType")]
+	public  partial class PictureRawDataDataType : Northface.Tools.ORM.ObjectModel.RawDataDataType
+	{
+		#region PictureRawDataDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "7e172f50-433b-4d89-acfa-5f1022c379a5";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.PictureRawDataDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region PictureRawDataDataType's Generated Constructor Code
+	public  partial class PictureRawDataDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public PictureRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static PictureRawDataDataType CreatePictureRawDataDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreatePictureRawDataDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static PictureRawDataDataType CreateAndInitializePictureRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializePictureRawDataDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public PictureRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static PictureRawDataDataType CreatePictureRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (PictureRawDataDataType)partition.ElementFactory.CreateElement(typeof(PictureRawDataDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static PictureRawDataDataType CreateAndInitializePictureRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (PictureRawDataDataType)partition.ElementFactory.CreateElement(typeof(PictureRawDataDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for PictureRawDataDataType
+	/// <summary>
+	/// PictureRawDataDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.PictureRawDataDataType))]
+	public sealed class PictureRawDataDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public PictureRawDataDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.PictureRawDataDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static PictureRawDataDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new PictureRawDataDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.OleObjectRawDataDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.OleObjectRawDataDataType")]
+	public  partial class OleObjectRawDataDataType : Northface.Tools.ORM.ObjectModel.RawDataDataType
+	{
+		#region OleObjectRawDataDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "560297d3-6e91-4090-8daa-54784f85990d";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.OleObjectRawDataDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region OleObjectRawDataDataType's Generated Constructor Code
+	public  partial class OleObjectRawDataDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public OleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static OleObjectRawDataDataType CreateOleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateOleObjectRawDataDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static OleObjectRawDataDataType CreateAndInitializeOleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeOleObjectRawDataDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public OleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static OleObjectRawDataDataType CreateOleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (OleObjectRawDataDataType)partition.ElementFactory.CreateElement(typeof(OleObjectRawDataDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static OleObjectRawDataDataType CreateAndInitializeOleObjectRawDataDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (OleObjectRawDataDataType)partition.ElementFactory.CreateElement(typeof(OleObjectRawDataDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for OleObjectRawDataDataType
+	/// <summary>
+	/// OleObjectRawDataDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.OleObjectRawDataDataType))]
+	public sealed class OleObjectRawDataDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public OleObjectRawDataDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.OleObjectRawDataDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static OleObjectRawDataDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new OleObjectRawDataDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TemporalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TemporalDataType")]
+	public abstract partial class TemporalDataType : Northface.Tools.ORM.ObjectModel.DataType
+	{
+		#region TemporalDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "10027217-5978-4286-bf21-80738dc9a877";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TemporalDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region TemporalDataType's Generated Constructor Code
+	public abstract partial class TemporalDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected TemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.AutoTimestampTemporalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.AutoTimestampTemporalDataType")]
+	public  partial class AutoTimestampTemporalDataType : Northface.Tools.ORM.ObjectModel.TemporalDataType
+	{
+		#region AutoTimestampTemporalDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "d3c4e6b2-79cc-4f09-8080-62ce74090fd1";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.AutoTimestampTemporalDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region AutoTimestampTemporalDataType's Generated Constructor Code
+	public  partial class AutoTimestampTemporalDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public AutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static AutoTimestampTemporalDataType CreateAutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateAutoTimestampTemporalDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static AutoTimestampTemporalDataType CreateAndInitializeAutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeAutoTimestampTemporalDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public AutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static AutoTimestampTemporalDataType CreateAutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (AutoTimestampTemporalDataType)partition.ElementFactory.CreateElement(typeof(AutoTimestampTemporalDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static AutoTimestampTemporalDataType CreateAndInitializeAutoTimestampTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (AutoTimestampTemporalDataType)partition.ElementFactory.CreateElement(typeof(AutoTimestampTemporalDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for AutoTimestampTemporalDataType
+	/// <summary>
+	/// AutoTimestampTemporalDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.AutoTimestampTemporalDataType))]
+	public sealed class AutoTimestampTemporalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public AutoTimestampTemporalDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.AutoTimestampTemporalDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static AutoTimestampTemporalDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new AutoTimestampTemporalDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TimeTemporalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TimeTemporalDataType")]
+	public  partial class TimeTemporalDataType : Northface.Tools.ORM.ObjectModel.TemporalDataType
+	{
+		#region TimeTemporalDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "4677814b-958d-4176-a54e-8f70b7ca0d56";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TimeTemporalDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region TimeTemporalDataType's Generated Constructor Code
+	public  partial class TimeTemporalDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public TimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TimeTemporalDataType CreateTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateTimeTemporalDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TimeTemporalDataType CreateAndInitializeTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeTimeTemporalDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public TimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TimeTemporalDataType CreateTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (TimeTemporalDataType)partition.ElementFactory.CreateElement(typeof(TimeTemporalDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TimeTemporalDataType CreateAndInitializeTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (TimeTemporalDataType)partition.ElementFactory.CreateElement(typeof(TimeTemporalDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for TimeTemporalDataType
+	/// <summary>
+	/// TimeTemporalDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.TimeTemporalDataType))]
+	public sealed class TimeTemporalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public TimeTemporalDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.TimeTemporalDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static TimeTemporalDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new TimeTemporalDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DateTemporalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.DateTemporalDataType")]
+	public  partial class DateTemporalDataType : Northface.Tools.ORM.ObjectModel.TemporalDataType
+	{
+		#region DateTemporalDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "905b8a13-7c5e-430f-8d7b-03e63356439b";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DateTemporalDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region DateTemporalDataType's Generated Constructor Code
+	public  partial class DateTemporalDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DateTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DateTemporalDataType CreateDateTemporalDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateDateTemporalDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DateTemporalDataType CreateAndInitializeDateTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeDateTemporalDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DateTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DateTemporalDataType CreateDateTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (DateTemporalDataType)partition.ElementFactory.CreateElement(typeof(DateTemporalDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DateTemporalDataType CreateAndInitializeDateTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (DateTemporalDataType)partition.ElementFactory.CreateElement(typeof(DateTemporalDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for DateTemporalDataType
+	/// <summary>
+	/// DateTemporalDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.DateTemporalDataType))]
+	public sealed class DateTemporalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DateTemporalDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.DateTemporalDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static DateTemporalDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new DateTemporalDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DateAndTimeTemporalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.DateAndTimeTemporalDataType")]
+	public  partial class DateAndTimeTemporalDataType : Northface.Tools.ORM.ObjectModel.TemporalDataType
+	{
+		#region DateAndTimeTemporalDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "facd55e1-c5a2-4d3d-93d2-7b651c05e7a2";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.DateAndTimeTemporalDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region DateAndTimeTemporalDataType's Generated Constructor Code
+	public  partial class DateAndTimeTemporalDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DateAndTimeTemporalDataType CreateDateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateDateAndTimeTemporalDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DateAndTimeTemporalDataType CreateAndInitializeDateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeDateAndTimeTemporalDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DateAndTimeTemporalDataType CreateDateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (DateAndTimeTemporalDataType)partition.ElementFactory.CreateElement(typeof(DateAndTimeTemporalDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DateAndTimeTemporalDataType CreateAndInitializeDateAndTimeTemporalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (DateAndTimeTemporalDataType)partition.ElementFactory.CreateElement(typeof(DateAndTimeTemporalDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for DateAndTimeTemporalDataType
+	/// <summary>
+	/// DateAndTimeTemporalDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.DateAndTimeTemporalDataType))]
+	public sealed class DateAndTimeTemporalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DateAndTimeTemporalDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.DateAndTimeTemporalDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static DateAndTimeTemporalDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new DateAndTimeTemporalDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.LogicalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.LogicalDataType")]
+	public abstract partial class LogicalDataType : Northface.Tools.ORM.ObjectModel.DataType
+	{
+		#region LogicalDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "85881c27-24d8-4a89-a81d-6031128ae967";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.LogicalDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region LogicalDataType's Generated Constructor Code
+	public abstract partial class LogicalDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected LogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.TrueOrFalseLogicalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.TrueOrFalseLogicalDataType")]
+	public  partial class TrueOrFalseLogicalDataType : Northface.Tools.ORM.ObjectModel.LogicalDataType
+	{
+		#region TrueOrFalseLogicalDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "a4c50357-f789-472c-a94e-93af109f1056";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.TrueOrFalseLogicalDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region TrueOrFalseLogicalDataType's Generated Constructor Code
+	public  partial class TrueOrFalseLogicalDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public TrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TrueOrFalseLogicalDataType CreateTrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateTrueOrFalseLogicalDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TrueOrFalseLogicalDataType CreateAndInitializeTrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeTrueOrFalseLogicalDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public TrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TrueOrFalseLogicalDataType CreateTrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (TrueOrFalseLogicalDataType)partition.ElementFactory.CreateElement(typeof(TrueOrFalseLogicalDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static TrueOrFalseLogicalDataType CreateAndInitializeTrueOrFalseLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (TrueOrFalseLogicalDataType)partition.ElementFactory.CreateElement(typeof(TrueOrFalseLogicalDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for TrueOrFalseLogicalDataType
+	/// <summary>
+	/// TrueOrFalseLogicalDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.TrueOrFalseLogicalDataType))]
+	public sealed class TrueOrFalseLogicalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public TrueOrFalseLogicalDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.TrueOrFalseLogicalDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static TrueOrFalseLogicalDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new TrueOrFalseLogicalDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.YesOrNoLogicalDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.YesOrNoLogicalDataType")]
+	public  partial class YesOrNoLogicalDataType : Northface.Tools.ORM.ObjectModel.LogicalDataType
+	{
+		#region YesOrNoLogicalDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "f6d6b7e4-c22b-47e1-8f30-2bcaee1d3c17";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.YesOrNoLogicalDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region YesOrNoLogicalDataType's Generated Constructor Code
+	public  partial class YesOrNoLogicalDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public YesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static YesOrNoLogicalDataType CreateYesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateYesOrNoLogicalDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static YesOrNoLogicalDataType CreateAndInitializeYesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeYesOrNoLogicalDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public YesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static YesOrNoLogicalDataType CreateYesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (YesOrNoLogicalDataType)partition.ElementFactory.CreateElement(typeof(YesOrNoLogicalDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static YesOrNoLogicalDataType CreateAndInitializeYesOrNoLogicalDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (YesOrNoLogicalDataType)partition.ElementFactory.CreateElement(typeof(YesOrNoLogicalDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for YesOrNoLogicalDataType
+	/// <summary>
+	/// YesOrNoLogicalDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.YesOrNoLogicalDataType))]
+	public sealed class YesOrNoLogicalDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public YesOrNoLogicalDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.YesOrNoLogicalDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static YesOrNoLogicalDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new YesOrNoLogicalDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.OtherDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.OtherDataType")]
+	public abstract partial class OtherDataType : Northface.Tools.ORM.ObjectModel.DataType
+	{
+		#region OtherDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "3efdcece-b2e0-45f0-aab1-ca085144b933";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.OtherDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region OtherDataType's Generated Constructor Code
+	public abstract partial class OtherDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected OtherDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RowIdOtherDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.RowIdOtherDataType")]
+	public  partial class RowIdOtherDataType : Northface.Tools.ORM.ObjectModel.OtherDataType
+	{
+		#region RowIdOtherDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "ccdd5096-8948-45cc-835b-321af2c8b656";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.RowIdOtherDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region RowIdOtherDataType's Generated Constructor Code
+	public  partial class RowIdOtherDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RowIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RowIdOtherDataType CreateRowIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateRowIdOtherDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RowIdOtherDataType CreateAndInitializeRowIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeRowIdOtherDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RowIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RowIdOtherDataType CreateRowIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (RowIdOtherDataType)partition.ElementFactory.CreateElement(typeof(RowIdOtherDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RowIdOtherDataType CreateAndInitializeRowIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (RowIdOtherDataType)partition.ElementFactory.CreateElement(typeof(RowIdOtherDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for RowIdOtherDataType
+	/// <summary>
+	/// RowIdOtherDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.RowIdOtherDataType))]
+	public sealed class RowIdOtherDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RowIdOtherDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.RowIdOtherDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static RowIdOtherDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new RowIdOtherDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataType.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataType")]
+	public  partial class ObjectIdOtherDataType : Northface.Tools.ORM.ObjectModel.OtherDataType
+	{
+		#region ObjectIdOtherDataType's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "2ce276c0-607d-43f3-ae1e-162be0c853ec";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataType.MetaClassGuidString);
+		#endregion
+
+	}
+	#region ObjectIdOtherDataType's Generated Constructor Code
+	public  partial class ObjectIdOtherDataType
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectIdOtherDataType CreateObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateObjectIdOtherDataType(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectIdOtherDataType CreateAndInitializeObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeObjectIdOtherDataType(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectIdOtherDataType CreateObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (ObjectIdOtherDataType)partition.ElementFactory.CreateElement(typeof(ObjectIdOtherDataType));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectIdOtherDataType CreateAndInitializeObjectIdOtherDataType(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ObjectIdOtherDataType)partition.ElementFactory.CreateElement(typeof(ObjectIdOtherDataType), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ObjectIdOtherDataType
+	/// <summary>
+	/// ObjectIdOtherDataType Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataType))]
+	public sealed class ObjectIdOtherDataTypeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectIdOtherDataTypeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ObjectIdOtherDataType( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ObjectIdOtherDataTypeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ObjectIdOtherDataTypeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Reading.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.Reading")]
+	public  partial class Reading : Northface.Tools.ORM.ObjectModel.ORMModelElement
+	{
+		#region Reading's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "cef616d5-3fe8-489e-bd60-3333921b675e";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Reading.MetaClassGuidString);
+		#endregion
+
+		#region Text's Generated  Field Code
+		#region Text's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String TextMetaAttributeGuidString = "deb9d5ff-64f8-4887-b41a-8ea3689efa4d";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid TextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Reading.TextMetaAttributeGuidString);
+		#endregion
+
+		#region Text's Generated Property Code
+
+		private System.String textPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ReadingTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Reading.TextMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Reading.Text")]
+		public  System.String Text
+		{
+			get
+			{
+				return textPropertyStorage;
+			}
+		
+			set
+			{
+				readingTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ReadingTextFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Reading.Text field
+		/// </summary>
+		private static ReadingTextFieldHandler	readingTextFieldHandler	= ReadingTextFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Reading.Text
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ReadingTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.Reading,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ReadingTextFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Reading.Text field handler
+			/// </summary>
+			/// <value>ReadingTextFieldHandler</value>
+			public static ReadingTextFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.Reading.readingTextFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.Reading.readingTextFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Reading will assign this value to
+						// Northface.Tools.ORM.ObjectModel.Reading.readingTextFieldHandler, so just instantiate one and return it
+						return new ReadingTextFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Reading.Text field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.Reading.TextMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the Reading</param>
+			protected sealed override System.String GetValue(Northface.Tools.ORM.ObjectModel.Reading element)
+			{
+				return element.textPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.Reading element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
+			{
+				oldValue = element.textPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.textPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region IsPrimary's Generated  Field Code
+		#region IsPrimary's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String IsPrimaryMetaAttributeGuidString = "fb40e877-7171-473d-88b5-bea06782e468";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid IsPrimaryMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuidString);
+		#endregion
+
+		#region IsPrimary's Generated Property Code
+
+		private System.Boolean isPrimaryPropertyStorage = false;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferFalse)]
+		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ReadingIsPrimaryFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Reading.IsPrimary")]
+		public  System.Boolean IsPrimary
+		{
+			get
+			{
+				return isPrimaryPropertyStorage;
+			}
+		
+			set
+			{
+				readingIsPrimaryFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ReadingIsPrimaryFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Reading.IsPrimary field
+		/// </summary>
+		private static ReadingIsPrimaryFieldHandler	readingIsPrimaryFieldHandler	= ReadingIsPrimaryFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Reading.IsPrimary
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ReadingIsPrimaryFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.Reading,System.Boolean>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ReadingIsPrimaryFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Reading.IsPrimary field handler
+			/// </summary>
+			/// <value>ReadingIsPrimaryFieldHandler</value>
+			public static ReadingIsPrimaryFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.Reading.readingIsPrimaryFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.Reading.readingIsPrimaryFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Reading will assign this value to
+						// Northface.Tools.ORM.ObjectModel.Reading.readingIsPrimaryFieldHandler, so just instantiate one and return it
+						return new ReadingIsPrimaryFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Reading.IsPrimary field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the Reading</param>
+			protected sealed override System.Boolean GetValue(Northface.Tools.ORM.ObjectModel.Reading element)
+			{
+				return element.isPrimaryPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.Reading element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
+			{
+				oldValue = element.isPrimaryPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.isPrimaryPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region Language's Generated  Field Code
+		#region Language's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String LanguageMetaAttributeGuidString = "28f89850-a91e-4b64-a917-43a97cfb192e";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid LanguageMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuidString);
+		#endregion
+
+		#region Language's Generated Property Code
+
+		private System.String languagePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ReadingLanguageFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.Reading.Language")]
+		public  System.String Language
+		{
+			get
+			{
+				return languagePropertyStorage;
+			}
+		
+			set
+			{
+				readingLanguageFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ReadingLanguageFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Reading.Language field
+		/// </summary>
+		private static ReadingLanguageFieldHandler	readingLanguageFieldHandler	= ReadingLanguageFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Reading.Language
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ReadingLanguageFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ObjectModel.Reading,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ReadingLanguageFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Reading.Language field handler
+			/// </summary>
+			/// <value>ReadingLanguageFieldHandler</value>
+			public static ReadingLanguageFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.Reading.readingLanguageFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.Reading.readingLanguageFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Reading will assign this value to
+						// Northface.Tools.ORM.ObjectModel.Reading.readingLanguageFieldHandler, so just instantiate one and return it
+						return new ReadingLanguageFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Reading.Language field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the Reading</param>
+			protected sealed override System.String GetValue(Northface.Tools.ORM.ObjectModel.Reading element)
+			{
+				return element.languagePropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Northface.Tools.ORM.ObjectModel.Reading element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
+			{
+				oldValue = element.languagePropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.languagePropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region RoleCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.RoleMoveableCollection RoleCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.RoleMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ReadingHasRole.ReadingCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasRole.RoleCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region ReadingOrder's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ReadingOrder ReadingOrder
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.ReadingOrder;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.ReadingOrder counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.ReadingOrder;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region TooManyRolesError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError TooManyRolesError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.TooManyReadingRolesError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.TooManyRolesErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.ReadingMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region TooFewRolesError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError TooFewRolesError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.TooFewReadingRolesError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.TooFewRolesErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.ReadingMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region Collection Classes for Reading
+	/// <summary>
+	/// Northface.Tools.ORM.ObjectModel.Reading Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class ReadingMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public ReadingMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.Reading) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.Reading))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.Reading[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Northface.Tools.ORM.ObjectModel.Reading at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.Reading this[System.Int32 index]
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.Reading)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Reading to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.Reading value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Reading to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.Reading value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Reading to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.Reading value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Reading to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.Reading value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.Reading to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.Reading value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Northface.Tools.ORM.ObjectModel.Reading rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.Reading rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
+	#region Reading's Generated Constructor Code
+	public  partial class Reading
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public Reading(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static Reading CreateReading(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateReading(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static Reading CreateAndInitializeReading(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeReading(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public Reading(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static Reading CreateReading(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (Reading)partition.ElementFactory.CreateElement(typeof(Reading));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static Reading CreateAndInitializeReading(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (Reading)partition.ElementFactory.CreateElement(typeof(Reading), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for Reading
+	/// <summary>
+	/// Reading Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.Reading))]
+	public sealed class ReadingElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.Reading( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ReadingElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ReadingElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrder.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrder")]
+	public  partial class ReadingOrder : Northface.Tools.ORM.ObjectModel.ORMModelElement
+	{
+		#region ReadingOrder's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "624a498e-0659-4c34-ab74-7fe43b4c8fa1";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrder.MetaClassGuidString);
+		#endregion
+
+		#region ReadingText's Generated  Field Code
+		#region ReadingText's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ReadingTextMetaAttributeGuidString = "b426931f-9232-4e42-b384-61c60d331aae";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ReadingTextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuidString);
+		#endregion
+
+		#region ReadingText's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Editor(typeof(Northface.Tools.ORM.ObjectModel.Editors.ReadingTextEditor), typeof(System.Drawing.Design.UITypeEditor))]
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ReadingOrderReadingTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingText")]
+		public  System.String ReadingText
+		{
+			get
+			{
+				return readingOrderReadingTextFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				readingOrderReadingTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ReadingOrderReadingTextFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ReadingOrder.ReadingText field
+		/// </summary>
+		private static ReadingOrderReadingTextFieldHandler	readingOrderReadingTextFieldHandler	= ReadingOrderReadingTextFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ReadingOrder.ReadingText
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ReadingOrderReadingTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Northface.Tools.ORM.ObjectModel.ReadingOrder,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ReadingOrderReadingTextFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ReadingOrder.ReadingText field handler
+			/// </summary>
+			/// <value>ReadingOrderReadingTextFieldHandler</value>
+			public static ReadingOrderReadingTextFieldHandler Instance
+			{
+				get
+				{
+					if (Northface.Tools.ORM.ObjectModel.ReadingOrder.readingOrderReadingTextFieldHandler != null)
+					{
+						return Northface.Tools.ORM.ObjectModel.ReadingOrder.readingOrderReadingTextFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ReadingOrder will assign this value to
+						// Northface.Tools.ORM.ObjectModel.ReadingOrder.readingOrderReadingTextFieldHandler, so just instantiate one and return it
+						return new ReadingOrderReadingTextFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ReadingOrder.ReadingText field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Northface.Tools.ORM.ObjectModel.ReadingOrder.ReadingTextMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+		#region ReadingCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.ReadingMoveableCollection ReadingCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.ReadingMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingOrderMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region RoleCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.RoleMoveableCollection RoleCollection
+		{
+			get { return new Northface.Tools.ORM.ObjectModel.RoleMoveableCollection(this, Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.ReadingOrderMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.RoleCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region FactType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactTypeMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.FactType;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactTypeMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.FactType counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.FactType;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.FactTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region Collection Classes for ReadingOrder
+	/// <summary>
+	/// Northface.Tools.ORM.ObjectModel.ReadingOrder Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class ReadingOrderMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public ReadingOrderMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !value.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder) && !rolePlayer.GetType().IsSubclassOf(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Northface.Tools.ORM.ObjectModel.ReadingOrder[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Northface.Tools.ORM.ObjectModel.ReadingOrder at that index</returns>
+		public Northface.Tools.ORM.ObjectModel.ReadingOrder this[System.Int32 index]
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.ReadingOrder)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to insert into the list</param>
+		public void Insert(System.Int32 index, Northface.Tools.ORM.ObjectModel.ReadingOrder value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Northface.Tools.ORM.ObjectModel.ReadingOrder to remove from the list</param>
+		public void Remove(Northface.Tools.ORM.ObjectModel.ReadingOrder value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Northface.Tools.ORM.ObjectModel.ReadingOrder rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Northface.Tools.ORM.ObjectModel.ReadingOrder rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
+	#region ReadingOrder's Generated Constructor Code
+	public  partial class ReadingOrder
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingOrder(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingOrder CreateReadingOrder(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateReadingOrder(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingOrder CreateAndInitializeReadingOrder(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeReadingOrder(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingOrder(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingOrder CreateReadingOrder(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (ReadingOrder)partition.ElementFactory.CreateElement(typeof(ReadingOrder));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ReadingOrder CreateAndInitializeReadingOrder(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ReadingOrder)partition.ElementFactory.CreateElement(typeof(ReadingOrder), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ReadingOrder
+	/// <summary>
+	/// ReadingOrder Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))]
+	public sealed class ReadingOrderElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ReadingOrderElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.ReadingOrder( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ReadingOrderElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ReadingOrderElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRange.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ValueRange")]
-	public  partial class ValueRange : Microsoft.VisualStudio.Modeling.ModelElement
+	public  partial class ValueRange : Northface.Tools.ORM.ObjectModel.ORMModelElement
 	{
 		#region ValueRange's Generated MetaClass Code
 		/// <summary>
@@ -20011,7 +20086,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition")]
-	public abstract partial class ValueRangeDefinition : Microsoft.VisualStudio.Modeling.ModelElement
+	public abstract partial class ValueRangeDefinition : Northface.Tools.ORM.ObjectModel.ORMModelElement
 	{
 		#region ValueRangeDefinition's Generated MetaClass Code
 		/// <summary>
@@ -20439,8 +20514,52 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ORMElementLink.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ORMElementLink")]
+	public abstract partial class ORMElementLink : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ORMElementLink's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "718adac4-a9e2-454d-a700-1c34b6d3bcbf";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.ORMElementLink.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = ORMElementLink.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = ORMElementLink.MetaClassGuid;
+		#endregion
+
+	}
+	#region ORMElementLink's Generated Constructor Code
+	public abstract partial class ORMElementLink
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected ORMElementLink(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasDataType")]
-	public  partial class ValueTypeHasDataType : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ValueTypeHasDataType : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ValueTypeHasDataType's Generated MetaRelationship Code
 		/// <summary>
@@ -20880,7 +20999,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeDerivation.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeDerivation")]
-	public  partial class FactTypeDerivation : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class FactTypeDerivation : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region FactTypeDerivation's Generated MetaRelationship Code
 		/// <summary>
@@ -21154,7 +21273,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.NestingEntityTypeHasFactType.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.NestingEntityTypeHasFactType")]
-	public  partial class NestingEntityTypeHasFactType : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class NestingEntityTypeHasFactType : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region NestingEntityTypeHasFactType's Generated MetaRelationship Code
 		/// <summary>
@@ -21307,7 +21426,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasRole.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasRole")]
-	public  partial class FactTypeHasRole : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class FactTypeHasRole : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region FactTypeHasRole's Generated MetaRelationship Code
 		/// <summary>
@@ -21460,7 +21579,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectTypePlaysRole.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ObjectTypePlaysRole")]
-	public  partial class ObjectTypePlaysRole : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ObjectTypePlaysRole : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ObjectTypePlaysRole's Generated MetaRelationship Code
 		/// <summary>
@@ -21613,7 +21732,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasObjectType.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasObjectType")]
-	public  partial class ModelHasObjectType : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ModelHasObjectType : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ModelHasObjectType's Generated MetaRelationship Code
 		/// <summary>
@@ -21766,7 +21885,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasFactType.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasFactType")]
-	public  partial class ModelHasFactType : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ModelHasFactType : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ModelHasFactType's Generated MetaRelationship Code
 		/// <summary>
@@ -21919,7 +22038,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ExternalFactConstraint")]
-	public abstract partial class ExternalFactConstraint : Microsoft.VisualStudio.Modeling.ElementLink
+	public abstract partial class ExternalFactConstraint : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ExternalFactConstraint's Generated MetaRelationship Code
 		/// <summary>
@@ -22632,7 +22751,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalRoleConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ExternalRoleConstraint")]
-	public  partial class ExternalRoleConstraint : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ExternalRoleConstraint : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ExternalRoleConstraint's Generated MetaRelationship Code
 		/// <summary>
@@ -22785,7 +22904,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence")]
-	public  partial class MultiColumnExternalConstraintHasRoleSequence : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class MultiColumnExternalConstraintHasRoleSequence : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region MultiColumnExternalConstraintHasRoleSequence's Generated MetaRelationship Code
 		/// <summary>
@@ -22938,7 +23057,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole")]
-	public  partial class ConstraintRoleSequenceHasRole : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ConstraintRoleSequenceHasRole : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ConstraintRoleSequenceHasRole's Generated MetaRelationship Code
 		/// <summary>
@@ -23454,7 +23573,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasRole.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasRole")]
-	public  partial class ReadingHasRole : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ReadingHasRole : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ReadingHasRole's Generated MetaRelationship Code
 		/// <summary>
@@ -23607,7 +23726,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasError")]
-	public  partial class ModelHasError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ModelHasError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ModelHasError's Generated MetaRelationship Code
 		/// <summary>
@@ -23760,7 +23879,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError")]
-	public  partial class ExternalConstraintHasTooFewRoleSequencesError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ExternalConstraintHasTooFewRoleSequencesError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ExternalConstraintHasTooFewRoleSequencesError's Generated MetaRelationship Code
 		/// <summary>
@@ -23913,7 +24032,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError")]
-	public  partial class ExternalConstraintHasTooManyRoleSequencesError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ExternalConstraintHasTooManyRoleSequencesError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ExternalConstraintHasTooManyRoleSequencesError's Generated MetaRelationship Code
 		/// <summary>
@@ -24066,7 +24185,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError")]
-	public  partial class ObjectTypeHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ObjectTypeHasDuplicateNameError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ObjectTypeHasDuplicateNameError's Generated MetaRelationship Code
 		/// <summary>
@@ -24219,7 +24338,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError")]
-	public  partial class FactTypeHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class FactTypeHasDuplicateNameError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region FactTypeHasDuplicateNameError's Generated MetaRelationship Code
 		/// <summary>
@@ -24372,7 +24491,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrderHasReading")]
-	public  partial class ReadingOrderHasReading : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ReadingOrderHasReading : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ReadingOrderHasReading's Generated MetaRelationship Code
 		/// <summary>
@@ -24525,7 +24644,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReadingOrderHasRole")]
-	public  partial class ReadingOrderHasRole : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ReadingOrderHasRole : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ReadingOrderHasRole's Generated MetaRelationship Code
 		/// <summary>
@@ -24678,7 +24797,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasReadingOrder")]
-	public  partial class FactTypeHasReadingOrder : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class FactTypeHasReadingOrder : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region FactTypeHasReadingOrder's Generated MetaRelationship Code
 		/// <summary>
@@ -24831,7 +24950,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasReferenceModeKind")]
-	public  partial class ModelHasReferenceModeKind : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ModelHasReferenceModeKind : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ModelHasReferenceModeKind's Generated MetaRelationship Code
 		/// <summary>
@@ -24984,7 +25103,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasReferenceMode")]
-	public  partial class ModelHasReferenceMode : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ModelHasReferenceMode : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ModelHasReferenceMode's Generated MetaRelationship Code
 		/// <summary>
@@ -25137,7 +25256,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind")]
-	public  partial class ReferenceModeHasReferenceModeKind : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ReferenceModeHasReferenceModeKind : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ReferenceModeHasReferenceModeKind's Generated MetaRelationship Code
 		/// <summary>
@@ -25290,7 +25409,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasSingleColumnExternalConstraint")]
-	public  partial class ModelHasSingleColumnExternalConstraint : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ModelHasSingleColumnExternalConstraint : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ModelHasSingleColumnExternalConstraint's Generated MetaRelationship Code
 		/// <summary>
@@ -25443,7 +25562,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasMultiColumnExternalConstraint")]
-	public  partial class ModelHasMultiColumnExternalConstraint : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ModelHasMultiColumnExternalConstraint : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ModelHasMultiColumnExternalConstraint's Generated MetaRelationship Code
 		/// <summary>
@@ -25596,7 +25715,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasInternalConstraint")]
-	public  partial class FactTypeHasInternalConstraint : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class FactTypeHasInternalConstraint : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region FactTypeHasInternalConstraint's Generated MetaRelationship Code
 		/// <summary>
@@ -25749,7 +25868,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasDuplicateNameError")]
-	public  partial class SingleColumnExternalConstraintHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class SingleColumnExternalConstraintHasDuplicateNameError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region SingleColumnExternalConstraintHasDuplicateNameError's Generated MetaRelationship Code
 		/// <summary>
@@ -25902,7 +26021,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasDuplicateNameError")]
-	public  partial class MultiColumnExternalConstraintHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class MultiColumnExternalConstraintHasDuplicateNameError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region MultiColumnExternalConstraintHasDuplicateNameError's Generated MetaRelationship Code
 		/// <summary>
@@ -26055,7 +26174,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier")]
-	public  partial class EntityTypeHasPreferredIdentifier : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class EntityTypeHasPreferredIdentifier : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region EntityTypeHasPreferredIdentifier's Generated MetaRelationship Code
 		/// <summary>
@@ -26208,7 +26327,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasTooManyRolesError")]
-	public  partial class ReadingHasTooManyRolesError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ReadingHasTooManyRolesError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ReadingHasTooManyRolesError's Generated MetaRelationship Code
 		/// <summary>
@@ -26361,7 +26480,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ReadingHasTooFewRolesError")]
-	public  partial class ReadingHasTooFewRolesError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ReadingHasTooFewRolesError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ReadingHasTooFewRolesError's Generated MetaRelationship Code
 		/// <summary>
@@ -26514,7 +26633,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError")]
-	public  partial class MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError's Generated MetaRelationship Code
 		/// <summary>
@@ -26667,7 +26786,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError")]
-	public  partial class FactTypeHasFactTypeRequiresReadingError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class FactTypeHasFactTypeRequiresReadingError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region FactTypeHasFactTypeRequiresReadingError's Generated MetaRelationship Code
 		/// <summary>
@@ -26820,7 +26939,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ModelHasDataType.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ModelHasDataType")]
-	public  partial class ModelHasDataType : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ModelHasDataType : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ModelHasDataType's Generated MetaRelationship Code
 		/// <summary>
@@ -26973,7 +27092,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError")]
-	public  partial class FactTypeHasFactTypeRequiresInternalUniquenessConstraintError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class FactTypeHasFactTypeRequiresInternalUniquenessConstraintError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region FactTypeHasFactTypeRequiresInternalUniquenessConstraintError's Generated MetaRelationship Code
 		/// <summary>
@@ -27126,7 +27245,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition")]
-	public  partial class ValueTypeHasValueRangeDefinition : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ValueTypeHasValueRangeDefinition : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ValueTypeHasValueRangeDefinition's Generated MetaRelationship Code
 		/// <summary>
@@ -27279,7 +27398,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition")]
-	public  partial class RoleHasValueRangeDefinition : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class RoleHasValueRangeDefinition : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region RoleHasValueRangeDefinition's Generated MetaRelationship Code
 		/// <summary>
@@ -27432,7 +27551,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange")]
-	public  partial class ValueRangeDefinitionHasValueRange : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ValueRangeDefinitionHasValueRange : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ValueRangeDefinitionHasValueRange's Generated MetaRelationship Code
 		/// <summary>
@@ -27585,7 +27704,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError")]
-	public  partial class ValueTypeHasUnspecifiedDataTypeError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ValueTypeHasUnspecifiedDataTypeError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ValueTypeHasUnspecifiedDataTypeError's Generated MetaRelationship Code
 		/// <summary>
@@ -27738,7 +27857,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError")]
-	public  partial class MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError's Generated MetaRelationship Code
 		/// <summary>
@@ -27891,7 +28010,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError")]
-	public  partial class SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError's Generated MetaRelationship Code
 		/// <summary>
@@ -28044,7 +28163,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.InternalUniquenessConstraintHasNMinusOneError")]
-	public  partial class InternalUniquenessConstraintHasNMinusOneError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class InternalUniquenessConstraintHasNMinusOneError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region InternalUniquenessConstraintHasNMinusOneError's Generated MetaRelationship Code
 		/// <summary>
@@ -28197,7 +28316,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError")]
-	public  partial class RoleHasRolePlayerRequiredError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class RoleHasRolePlayerRequiredError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region RoleHasRolePlayerRequiredError's Generated MetaRelationship Code
 		/// <summary>
@@ -28350,7 +28469,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError")]
-	public  partial class EqualityConstraintHasEqualityIsImpliedByMandatoryError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class EqualityConstraintHasEqualityIsImpliedByMandatoryError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region EqualityConstraintHasEqualityIsImpliedByMandatoryError's Generated MetaRelationship Code
 		/// <summary>
@@ -28503,7 +28622,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError")]
-	public  partial class ObjectTypeHasEntityTypeRequiresReferenceSchemeError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class ObjectTypeHasEntityTypeRequiresReferenceSchemeError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region ObjectTypeHasEntityTypeRequiresReferenceSchemeError's Generated MetaRelationship Code
 		/// <summary>
@@ -28656,7 +28775,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError")]
-	public  partial class DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError's Generated MetaRelationship Code
 		/// <summary>
@@ -28809,7 +28928,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError")]
-	public  partial class FrequencyConstraintHasFrequencyConstraintMinMaxError : Microsoft.VisualStudio.Modeling.ElementLink
+	public  partial class FrequencyConstraintHasFrequencyConstraintMinMaxError : Northface.Tools.ORM.ObjectModel.ORMElementLink
 	{
 		#region FrequencyConstraintHasFrequencyConstraintMinMaxError's Generated MetaRelationship Code
 		/// <summary>
