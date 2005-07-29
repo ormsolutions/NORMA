@@ -385,6 +385,9 @@
 	<xs:complexType name="EqualityConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
+	<xs:complexType name="FrequencyConstraintRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
 	<!--end ConstraintRef and  ConstraintRefs-->
 	<xs:complexType name="ExternalConstraints">
 		<xs:complexContent>
@@ -590,6 +593,7 @@
 						<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredError"/>
 						<xs:element name="EqualityIsImpliedByMandatoryError" type="EqualityIsImpliedByMandatoryError"/>
 						<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeError"/>
+						<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxError"/>
 					</xs:choice>
 				</xs:extension>
 			</xs:complexContent>
@@ -702,6 +706,15 @@
 				<xs:extension base="ModelError">
 					<xs:sequence>
 						<xs:element name ="ConceptualDataType" type="DataTypeRefRef"></xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:complexType name="FrequencyConstraintMinMaxError">
+			<xs:complexContent>
+				<xs:extension base="ModelError">
+					<xs:sequence>
+						<xs:element name ="FrequencyConstraint" type="FrequencyConstraintRef"></xs:element>
 					</xs:sequence>
 				</xs:extension>
 			</xs:complexContent>

@@ -227,6 +227,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid);
 			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid);
+			MetaRoles.Add(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -471,6 +472,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				typeof(Northface.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError),
 				typeof(Northface.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError),
+				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder),
 				typeof(Northface.Tools.ORM.ObjectModel.ReadingOrderElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.ReferenceModeKind),
@@ -582,6 +585,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeErrorElementFactoryCreator),
 				typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError),
 				typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator),
+				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError),
+				typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxErrorElementFactoryCreator),
 
 			};
 			return typeArray;
@@ -754,6 +759,8 @@ namespace Northface.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError), "ObjectType", Northface.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), "ImpliedBySimpleMandatoryError", Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), "DisjunctiveMandatoryConstraint", Northface.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError), "FrequencyConstraintMinMaxError", Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError), "FrequencyConstraint", Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuid),
 
 			};
 			return typeArray;
@@ -11721,6 +11728,51 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
+		#region FrequencyConstraintMinMaxError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError FrequencyConstraintMinMaxError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region FrequencyConstraint's Generated Constructor Code
 	public  partial class FrequencyConstraint
@@ -16509,6 +16561,154 @@ namespace Northface.Tools.ORM.ObjectModel
 			get
 			{
 				return new SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError.MetaClassGuidString, "Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError")]
+	public  partial class FrequencyConstraintMinMaxError : Northface.Tools.ORM.ObjectModel.ModelError
+	{
+		#region FrequencyConstraintMinMaxError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "d63cebc9-d0e6-48bf-a614-5e1944a9f1ea";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError.MetaClassGuidString);
+		#endregion
+
+		#region FrequencyConstraint's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Northface.Tools.ORM.ObjectModel.FrequencyConstraint FrequencyConstraint
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid, Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuid, false) as Northface.Tools.ORM.ObjectModel.FrequencyConstraint;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Northface.Tools.ORM.ObjectModel.FrequencyConstraint counterpart = link.GetRolePlayer(roleInfo) as Northface.Tools.ORM.ObjectModel.FrequencyConstraint;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region FrequencyConstraintMinMaxError's Generated Constructor Code
+	public  partial class FrequencyConstraintMinMaxError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraintMinMaxError CreateFrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateFrequencyConstraintMinMaxError(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraintMinMaxError CreateAndInitializeFrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeFrequencyConstraintMinMaxError(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraintMinMaxError CreateFrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (FrequencyConstraintMinMaxError)partition.ElementFactory.CreateElement(typeof(FrequencyConstraintMinMaxError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraintMinMaxError CreateAndInitializeFrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FrequencyConstraintMinMaxError)partition.ElementFactory.CreateElement(typeof(FrequencyConstraintMinMaxError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FrequencyConstraintMinMaxError
+	/// <summary>
+	/// FrequencyConstraintMinMaxError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError))]
+	public sealed class FrequencyConstraintMinMaxErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraintMinMaxErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static FrequencyConstraintMinMaxErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new FrequencyConstraintMinMaxErrorElementFactoryCreator();
 			}
 		}
 	}
@@ -28594,6 +28794,159 @@ namespace Northface.Tools.ORM.ObjectModel
 			get
 			{
 				return new DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Northface.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.MetaRelationshipGuidString, "Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError")]
+	public  partial class FrequencyConstraintHasFrequencyConstraintMinMaxError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region FrequencyConstraintHasFrequencyConstraintMinMaxError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "48db4517-59eb-4fc7-b9d7-522d76a299fd";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = FrequencyConstraintHasFrequencyConstraintMinMaxError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = FrequencyConstraintHasFrequencyConstraintMinMaxError.MetaClassGuid;
+		#endregion
+
+		#region FrequencyConstraintMinMaxError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FrequencyConstraintMinMaxErrorMetaRoleGuidString = "4cb15135-7033-4a3c-ad60-57996b2819fe";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FrequencyConstraintMinMaxErrorMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxError")]
+		public  Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError FrequencyConstraintMinMaxError
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError)this.GetRolePlayer(FrequencyConstraintMinMaxErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(FrequencyConstraintMinMaxErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region FrequencyConstraint's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FrequencyConstraintMetaRoleGuidString = "fe6ddbaf-145d-4a9f-b659-fbf7af4a98b8";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FrequencyConstraintMetaRoleGuid = new System.Guid(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuidString, "Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraint")]
+		public  Northface.Tools.ORM.ObjectModel.FrequencyConstraint FrequencyConstraint
+		{
+			get { return (Northface.Tools.ORM.ObjectModel.FrequencyConstraint)this.GetRolePlayer(FrequencyConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(FrequencyConstraintMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region FrequencyConstraintHasFrequencyConstraintMinMaxError's Generated Constructor Code
+	public  partial class FrequencyConstraintHasFrequencyConstraintMinMaxError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraintHasFrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraintHasFrequencyConstraintMinMaxError CreateFrequencyConstraintHasFrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateFrequencyConstraintHasFrequencyConstraintMinMaxError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraintHasFrequencyConstraintMinMaxError CreateAndInitializeFrequencyConstraintHasFrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeFrequencyConstraintHasFrequencyConstraintMinMaxError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraintHasFrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraintHasFrequencyConstraintMinMaxError CreateFrequencyConstraintHasFrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (FrequencyConstraintHasFrequencyConstraintMinMaxError)partition.ElementFactory.CreateElementLink(typeof(FrequencyConstraintHasFrequencyConstraintMinMaxError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FrequencyConstraintHasFrequencyConstraintMinMaxError CreateAndInitializeFrequencyConstraintHasFrequencyConstraintMinMaxError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FrequencyConstraintHasFrequencyConstraintMinMaxError)partition.ElementFactory.CreateElementLink(typeof(FrequencyConstraintHasFrequencyConstraintMinMaxError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FrequencyConstraintHasFrequencyConstraintMinMaxError
+	/// <summary>
+	/// FrequencyConstraintHasFrequencyConstraintMinMaxError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError))]
+	public sealed class FrequencyConstraintHasFrequencyConstraintMinMaxErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FrequencyConstraintHasFrequencyConstraintMinMaxErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Northface.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static FrequencyConstraintHasFrequencyConstraintMinMaxErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new FrequencyConstraintHasFrequencyConstraintMinMaxErrorElementFactoryCreator();
 			}
 		}
 	}

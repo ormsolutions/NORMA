@@ -2700,6 +2700,127 @@ namespace Northface.Tools.ORM.ObjectModel
 		#endregion //VerifyImpliedDisjunctiveMandatoryRole Add/Remove Methods
 	}
 	#endregion // DisjunctiveMandatoryConstraint class
+	#region FrequencyConstraint class
+	public partial class FrequencyConstraint : IModelErrorOwner
+	{
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Returns the error associated with the constraint.
+		/// </summary>
+		[CLSCompliant(false)]
+		protected new IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				foreach (ModelError error in base.ErrorCollection)
+				{
+					yield return error;
+				}
+				FrequencyConstraintMinMaxError minMaxError = FrequencyConstraintMinMaxError;
+				if (minMaxError != null)
+				{
+					yield return minMaxError;
+				}
+			}
+		}
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// </summary>
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			base.ValidateErrors(notifyAdded);
+			VerifyMinMaxRule(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		#endregion //IModelErrorOwner Implementation
+		#region MinMaxError Validation
+		/// <summary>
+		/// Add, remove, and otherwise validate the current NMinusOne errors
+		/// </summary>
+		/// <param name="notifyAdded">If not null, this is being called during
+		/// load when rules are not in place. Any elements that are added
+		/// must be notified back to the caller.</param>
+		private void VerifyMinMaxRule(INotifyElementAdded notifyAdded)
+		{
+			if (IsRemoved)
+			{
+				return;
+			}
+
+			FrequencyConstraintMinMaxError minMaxError = FrequencyConstraintMinMaxError;
+			int min = MinFrequency;
+			int max = MaxFrequency;
+			if (max > 0 && min > max)
+			{
+				//Adding the Error to the model
+				if (minMaxError == null)
+				{
+					minMaxError = FrequencyConstraintMinMaxError.CreateFrequencyConstraintMinMaxError(Store);
+					minMaxError.FrequencyConstraint = this;
+					minMaxError.Model = Model;
+					minMaxError.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(minMaxError, true);
+					}
+				}
+			}
+			else if (minMaxError != null)
+			{
+				minMaxError.Remove();
+			}
+		}
+		#endregion // MinMaxError Validation
+		#region FrequencyConstraintMinMaxRule class
+		[RuleOn(typeof(FrequencyConstraint), FireTime = TimeToFire.LocalCommit)]
+		private class FrequencyConstraintMinMaxRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == FrequencyConstraint.MinFrequencyMetaAttributeGuid ||
+					attributeId == FrequencyConstraint.MaxFrequencyMetaAttributeGuid)
+				{
+					FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
+					if (!fc.IsRemoved)
+					{
+						fc.VerifyMinMaxRule(null);
+					}
+				}
+			}
+		}
+		#endregion // FrequencyConstraintMinMaxRule class
+		#region FrequencyConstraintMinMaxAddRule class
+		[RuleOn(typeof(FrequencyConstraint), FireTime = TimeToFire.LocalCommit)]
+		private class FrequencyConstraintMinMaxAddRule : AddRule
+		{
+
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+
+				FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
+				if (!fc.IsRemoved)
+				{
+					fc.VerifyMinMaxRule(null);
+				}
+				
+			}
+
+		}
+		#endregion // FrequencyConstraintMinMaxAddRule class
+
+	}
+	#endregion // FrequencyConstraint class
 	#region ModelError classes
 	public partial class TooManyRoleSequencesError : IRepresentModelElements
 	{
@@ -2904,7 +3025,50 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // Accessor Properties
 	}
-
+	public partial class FrequencyConstraintMinMaxError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			FrequencyConstraint parent = this.FrequencyConstraint;
+			string parentName = (parent != null) ? parent.Name : "";
+			string currentText = Name;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintMinMaxError, parentName, Model.Name);
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { FrequencyConstraint };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	
+	}
 	public partial class EqualityIsImpliedByMandatoryError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -2992,7 +3156,6 @@ namespace Northface.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
-
 	#endregion // ModelError classes
 	#region ExclusionType enum
 	/// <summary>

@@ -192,6 +192,9 @@
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 		<se:Link RelationshipName="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeError" WriteStyle="NotWritten"/>
 	</se:Element>
+	<se:Element Class="FrequencyConstraint" Override="true">
+		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
+	</se:Element>
 	<se:Element Class="ExternalUniquenessConstraint" Override="true" SortChildElements="true">
 		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 	</se:Element>
@@ -235,6 +238,9 @@
 	</se:Element>
 	<se:Element Class="FactTypeRequiresReadingError">
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="FactType" Name="Fact"/>
+	</se:Element>
+	<se:Element Class="FrequencyConstraintMinMaxError">
+		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>
 	</se:Element>
 	<se:Element Class="TooFewReadingRolesError">
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="Reading" Name="Reading"/>

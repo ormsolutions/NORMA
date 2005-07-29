@@ -1048,6 +1048,27 @@ Information Contained Herein is Proprietary and Confidential.
           </role>
         </roles>
       </relationship>
+      <relationship name="FrequencyConstraintHasFrequencyConstraintMinMaxError" identity="48db4517-59eb-4fc7-b9d7-522d76a299fd" namespace="Northface.Tools.ORM.ObjectModel" id="i48db4517z59ebz4fc7zb9d7z522d76a299fd" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <roles>
+          <role name="FrequencyConstraintMinMaxError" identity="4cb15135-7033-4a3c-ad60-57996b2819fe" id="i4cb15135z7033z4a3czad60z57996b2819fe" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>icee1eaf8z155fz4646zacb3zbf2e87be032a</source>
+            <type>id63cebc9zd0e6z48bfza614z5e1944a9f1ea</type>
+            <generatedProperty name="FrequencyConstraintMinMaxError" identity="973cd69d-22a4-4ac8-bf86-e383fc2c532f">
+              <referenceType>id63cebc9zd0e6z48bfza614z5e1944a9f1ea</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="FrequencyConstraint" identity="fe6ddbaf-145d-4a9f-b659-fbf7af4a98b8" id="ife6ddbafz145dz4a9fzb659zfbf7af4a98b8" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>id63cebc9zd0e6z48bfza614z5e1944a9f1ea</source>
+            <type>icee1eaf8z155fz4646zacb3zbf2e87be032a</type>
+            <generatedProperty name="FrequencyConstraint" identity="c121c8d3-48c2-44a1-a38d-e51d168eb3a9">
+              <referenceType>icee1eaf8z155fz4646zacb3zbf2e87be032a</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
     </relationships>
     <trees>
       <treenavigator name="intrinsic" identity="e71eab56-58f2-48c1-a61c-e32a3f1bba22" id="ie71eab56z58f2z48c1za61cze32a3f1bba22">
@@ -1583,7 +1604,13 @@ Information Contained Herein is Proprietary and Confidential.
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i47f92ff5z0183z4a60z96eez8528565f4b67</subType>
           </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FrequencyConstraintMinimumMaximumSwapError-ModelError" identity="72190644-c233-49b7-944d-9f81377d4bec" id="i72190644zc233z49b7z944dz9f81377d4bec" definitionlevel="none">
+            <source />
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>id63cebc9zd0e6z48bfza614z5e1944a9f1ea</subType>
+          </treeExpression>
           <treeExpression xsi:type="RoleExpression" name="EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryError" identity="90fea496-75a3-4515-b09a-c9b38e965b0f" id="i90fea496z75a3z4515zb09azc9b38e965b0f" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="FrequencyConstraintHasFrequencyConstraintMinimumMaximumSwapError.FrequencyConstraintMinimumMaximumSwapError" identity="390b6d1e-c8f2-4925-b5ae-039b36926263" id="i390b6d1ezc8f2z4925zb5aez039b36926263" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i4108fc75z346ez4ebcza012z2e3e7692a6af</role>
           </treeExpression>
@@ -1604,6 +1631,9 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="RoleExpression" name="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.SimpleMandatoryImpliesDisjunctiveMandatoryError" identity="5aca0568-6eee-42a7-a496-c7917067a0ef" id="i5aca0568z6eeez42a7za496zc7917067a0ef" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i3e6d6499zcad9z4764z8387z4f8a4d4ecf05</role>
+          </treeExpression>
+            <source />
+            <role>i4cb15135z7033z4a3czad60z57996b2819fe</role>
           </treeExpression>
         </expressions>
         <roots />
@@ -2323,6 +2353,15 @@ Information Contained Herein is Proprietary and Confidential.
             <source>i5aca0568z6eeez42a7za496zc7917067a0ef</source>
             <role>i3e6d6499zcad9z4764z8387z4f8a4d4ecf05</role>
           </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="FrequencyConstraintMinimumMaximumSwapError-ModelError" identity="93cb979b-f2a6-4c81-a008-5b67bb3f0d6b" id="i93cb979bzf2a6z4c81za008z5b67bb3f0d6b" definitionlevel="definition">
+            <source>i72190644zc233z49b7z944dz9f81377d4bec</source>
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>id63cebc9zd0e6z48bfza614z5e1944a9f1ea</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="FrequencyConstraintHasFrequencyConstraintMinimumMaximumSwapError.FrequencyConstraintMinimumMaximumSwapError" identity="559a2d06-37de-44b4-8c7d-e7ebe2ce1da7" id="i559a2d06z37dez44b4z8c7dze7ebe2ce1da7" definitionlevel="use" containmentstyle="fromsource">
+            <source>i390b6d1ezc8f2z4925zb5aez039b36926263</source>
+            <role>i4cb15135z7033z4a3czad60z57996b2819fe</role>
+          </treeExpression>
         </expressions>
         <roots>
           <root name="ORMModel" identity="f231968d-acdd-4123-ba57-7b5e5075194c" id="if231968dzacddz4123zba57z7b5e5075194c">
@@ -2739,6 +2778,14 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="RoleExpression" name="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraint" identity="b1d184b4-5527-41c6-9d9e-f3db111c623d" id="ib1d184b4z5527z41c6z9d9ezf3db111c623d" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>icf3b1ba2z1ae9z4481zb437z12939e2df798</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="FrequencyConstraintHasFrequencyConstraintMinimumMaximumSwapError.FrequencyConstraintMinimumMaximumSwapError" identity="83e7c5cb-1ed2-4f11-80d4-eb4bbdd2ac26" id="i83e7c5cbz1ed2z4f11z80d4zeb4bbdd2ac26" definitionlevel="none" containmentstyle="embedding">
+            <source>i390b6d1ezc8f2z4925zb5aez039b36926263</source>
+            <role>i4cb15135z7033z4a3czad60z57996b2819fe</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="FrequencyConstraintHasFrequencyConstraintMinimumMaximumSwapError.FrequencyConstraint" identity="b7e12bfd-6cbd-4fd0-8d47-240ab193e38b" id="ib7e12bfdz6cbdz4fd0z8d47z240ab193e38b" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>ife6ddbafz145dz4a9fzb659zfbf7af4a98b8</role>
           </treeExpression>
         </expressions>
         <roots />
@@ -3283,6 +3330,10 @@ Information Contained Herein is Proprietary and Confidential.
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
       <concept name="SimpleMandatoryImpliesDisjunctiveMandatoryError" identity="35071ae7-35b9-462d-91af-8d19e4bf6c30" namespace="Northface.Tools.ORM.ObjectModel" id="i35071ae7z35b9z462dz91afz8d19e4bf6c30" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+      </concept>
+      <concept name="FrequencyConstraintMinMaxError" identity="d63cebc9-d0e6-48bf-a614-5e1944a9f1ea" namespace="Northface.Tools.ORM.ObjectModel" id="id63cebc9zd0e6z48bfza614z5e1944a9f1ea" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>

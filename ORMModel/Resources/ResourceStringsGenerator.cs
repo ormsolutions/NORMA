@@ -1294,5 +1294,14 @@ namespace Northface.Tools.ORM
                 return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SimpleMandatoryImpliesDisjunctiveMandatoryError.Message");
             }
         }
+        /// <summary>
+        ///</summary>
+        public static string ModelErrorFrequencyConstraintMinMaxError
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintMinMaxError.Text");
+            }
+        }
     }
 }

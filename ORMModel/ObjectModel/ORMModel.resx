@@ -390,6 +390,10 @@
     <value xml:space="preserve">{0} is a subtype of {1}</value>
     <comment xml:space="preserve">The reading for the forward predicate created by creating a subtype relationship.</comment>
   </data>
+  <data name="ModelError.Constraint.FrequencyConstraintMinMaxError.Text">
+    <value xml:space="preserve">Maximum value for constraint '{0}' in model '{1}' cannot be less than the minimum value.</value>
+    <comment xml:space="preserve">The frequency constraint minimum must be less than or equal to the maximum</comment>
+  </data>
   <data name="ModelError.EntityType.RequiresReferenceScheme.Message">
     <value xml:space="preserve">Entity type '{0}' in model '{1}' requires a primary reference scheme.</value>
     <comment xml:space="preserve">An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>

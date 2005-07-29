@@ -423,4 +423,7 @@
 	<ResourceString name="SimpleMandatoryImpliesDisjunctiveMandatoryError" model="Model" resourceName="ModelError.Constraint.SimpleMandatoryImpliesDisjunctiveMandatoryError.Message">
 		<comment type="Summary">The mandatory disjunctive constraint is implied by a simple mandatory constraint. Replacement field {0} is the constraint name and {1} is the model name.</comment>
 	</ResourceString>
+	<ResourceString name="ModelErrorFrequencyConstraintMinMaxError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintMinMaxError.Text">
+		<comment type="Summary">Text displayed in the text of the FrequencyConstraintMinMaxError. {0} is the constraint name and {1} is the model name</comment>
+	</ResourceString>
 </ResourceStrings>
