@@ -12,7 +12,6 @@ namespace Northface.Tools.ORM.ShapeModel
 {
     using System;
     using System.Reflection;
-    using Northface.Tools.ORM.Framework;
     
     /// <summary>
     ///</summary>
@@ -22,7 +21,7 @@ namespace Northface.Tools.ORM.ShapeModel
         ///</summary>
         protected override Type[] AllMetaModelTypes()
         {
-            return new Type[] {
+            Type[] retVal = new Type[] {
                     typeof(ExternalConstraintShape).GetNestedType("ShapeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(FactTypeShape).GetNestedType("ConstraintDisplayPositionChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(FactTypeShape).GetNestedType("ExternalConstraintShapeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
@@ -31,28 +30,28 @@ namespace Northface.Tools.ORM.ShapeModel
                     typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintAttributeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierRemovedRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ObjectTypeShape).GetNestedType("ShapeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("ConstraintRoleSequenceRoleAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("ConstraintRoleSequenceRoleRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("ExternalFactConstraintAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("ExternalFactConstraintRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("FactTypedAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("FactTypeHasInternalConstraintAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("FactTypeHasInternalConstraintRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("MultiColumnExternalConstraintAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("ObjectTypedAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("ObjectTypePlaysRoleRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("ObjectTypeShapeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("PresentationLinkRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("PrimaryIdentifierAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("PrimaryIdentifierRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("RoleAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("RolePlayerAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("RoleRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("RoleValueRangeDefinitionAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("RoleValueRangeDefinitionRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("SingleColumnExternalConstraintAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("ValueTypeValueRangeDefinitionAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(ORMDiagram).GetNestedType("ValueTypeValueRangeDefinitionRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
+                    typeof(ConstraintRoleSequenceRoleAdded),
+                    typeof(ConstraintRoleSequenceRoleRemoved),
+                    typeof(ExternalFactConstraintAdded),
+                    typeof(ExternalFactConstraintRemoved),
+                    typeof(FactTypedAdded),
+                    typeof(FactTypeHasInternalConstraintAdded),
+                    typeof(FactTypeHasInternalConstraintRemoved),
+                    typeof(MultiColumnExternalConstraintAdded),
+                    typeof(ObjectTypedAdded),
+                    typeof(ObjectTypePlaysRoleRemoved),
+                    typeof(ObjectTypeShapeChangeRule),
+                    typeof(PresentationLinkRemoved),
+                    typeof(PrimaryIdentifierAdded),
+                    typeof(PrimaryIdentifierRemoved),
+                    typeof(RoleAdded),
+                    typeof(RolePlayerAdded),
+                    typeof(RoleRemoved),
+                    typeof(RoleValueRangeDefinitionAdded),
+                    typeof(RoleValueRangeDefinitionRemoved),
+                    typeof(SingleColumnExternalConstraintAdded),
+                    typeof(ValueTypeValueRangeDefinitionAdded),
+                    typeof(ValueTypeValueRangeDefinitionRemoved),
                     typeof(ReadingShape).GetNestedType("ReadingOrderAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ReadingShape).GetNestedType("ReadingOrderReadingTextChanged", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ReadingShape).GetNestedType("ReadingOrderRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
@@ -63,6 +62,9 @@ namespace Northface.Tools.ORM.ShapeModel
                     typeof(ValueRangeShape).GetNestedType("ValueRangeChanged", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ValueRangeShape).GetNestedType("ValueRangeDefinitionAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ValueRangeShape).GetNestedType("ValueTypeHasDataTypeAdded", (BindingFlags.Public | BindingFlags.NonPublic))};
+            System.Diagnostics.Debug.Assert(!(((System.Collections.IList)(retVal)).Contains(null)), "One or more rule types failed to resolve. The file and/or package will fail to lo" +
+                    "ad.");
+            return retVal;
         }
     }
 }

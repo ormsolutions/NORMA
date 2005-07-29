@@ -29,20 +29,49 @@
 			<plx:Class name="{@class}" visibility="Public" partial="true">
 				<plx:Function name="AllMetaModelTypes" visibility="Protected" override="true">
 					<plx:Param style="RetVal" name="" dataTypeName="Type" dataTypeIsSimpleArray="true"/>
-					<plx:Return>
-						<plx:CallNew style="New" dataTypeName="Type" dataTypeIsSimpleArray="true">
-							<plx:ArrayInitializer>
-								<xsl:for-each select="arg:Rule">
+					<plx:Variable name="retVal" dataTypeName="Type" dataTypeIsSimpleArray="true">
+						<plx:Initialize>
+							<plx:CallNew style="New" dataTypeName="Type" dataTypeIsSimpleArray="true">
+								<plx:ArrayInitializer>
+									<xsl:variable name="contextClass" select="@class"/>
+									<xsl:for-each select="arg:Rule">
+										<plx:PassParam>
+											<xsl:call-template name="GenerateTypeOf">
+												<xsl:with-param name="className" select="@class"/>
+												<xsl:with-param name="namespace" select="@namespace"/>
+												<xsl:with-param name="contextClass" select="$contextClass"/>
+												<xsl:with-param name="contextNamespace" select="$namespaceName"/>
+											</xsl:call-template>
+										</plx:PassParam>
+									</xsl:for-each>
+								</plx:ArrayInitializer>
+							</plx:CallNew>
+						</plx:Initialize>
+					</plx:Variable>
+					<plx:CallType name="Assert" dataTypeName="Debug" dataTypeQualifier="System.Diagnostics">
+						<plx:PassParam>
+							<plx:Operator name="BooleanNot">
+								<plx:CallInstance name="Contains">
+									<plx:CallObject>
+										<plx:Cast style="TypeCastException">
+											<plx:TargetType dataTypeName="IList" dataTypeQualifier="System.Collections"/>
+											<plx:CastExpression>
+												<plx:Value type="Local">retVal</plx:Value>
+											</plx:CastExpression>
+										</plx:Cast>
+									</plx:CallObject>
 									<plx:PassParam>
-										<xsl:call-template name="GenerateTypeOf">
-											<xsl:with-param name="className" select="@class"/>
-											<xsl:with-param name="namespace" select="@namespace"/>
-											<xsl:with-param name="contextNamespace" select="$namespaceName"/>
-										</xsl:call-template>
+										<plx:NullObjectKeyword/>
 									</plx:PassParam>
-								</xsl:for-each>
-							</plx:ArrayInitializer>
-						</plx:CallNew>
+								</plx:CallInstance>
+							</plx:Operator>
+						</plx:PassParam>
+						<plx:PassParam>
+							<plx:String>One or more rule types failed to resolve. The file and/or package will fail to load.</plx:String>
+						</plx:PassParam>
+					</plx:CallType>
+					<plx:Return>
+						<plx:Value type="Local">retVal</plx:Value>
 					</plx:Return>
 				</plx:Function>
 			</plx:Class>
@@ -50,7 +79,8 @@
 	</xsl:template>
 	<xsl:template name="GenerateTypeOf">
 		<xsl:param name="className"/>
-		<xsl:param name="namespace"/>
+		<xsl:param name="namespace" select="''"/>
+		<xsl:param name="contextClass" select="''"/>
 		<xsl:param name="contextNamespace"/>
 		<xsl:variable name="namespaceNameTemp">
 			<xsl:choose>
@@ -65,30 +95,40 @@
 		<xsl:variable name="namespaceName" select="string($namespaceNameTemp)"/>
 		<xsl:variable name="normalizedName" select="normalize-space(translate($className, '+.','  '))"/>
 		<xsl:variable name="publicPart" select="substring-before($normalizedName,' ')"/>
-		<xsl:variable name="primaryTypeOf">
-			<plx:TypeOf dataTypeName="{$className}">
-				<xsl:if test="string-length($publicPart)">
-					<xsl:attribute name="dataTypeName">
-						<xsl:value-of select="$publicPart"/>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:if test="$contextNamespace!=$namespaceName">
-					<xsl:attribute name="dataTypeQualifier">
-						<xsl:value-of select="$namespaceName"/>
-					</xsl:attribute>
-				</xsl:if>
-			</plx:TypeOf>
-		</xsl:variable>
 		<xsl:choose>
-			<xsl:when test="string-length($publicPart)">
-				<xsl:call-template name="GeneratedNestedTypeCall">
-					<xsl:with-param name="nestedTypes" select="substring($normalizedName, string-length($publicPart)+2)"/>
-					<xsl:with-param name="callObject" select="$primaryTypeOf"/>
+			<xsl:when test="string-length($publicPart) and $namespaceName=$contextNamespace and $publicPart=$contextClass">
+				<xsl:call-template name="GenerateTypeOf">
+					<xsl:with-param name="className" select="substring($normalizedName, string-length($publicPart)+2)"/>
+					<xsl:with-param name="contextNamespace" select="$contextNamespace"/>
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:copy-of select="$primaryTypeOf"/>
-			</xsl:otherwise>
+				<xsl:variable name="primaryTypeOf">
+					<plx:TypeOf dataTypeName="{$className}">
+						<xsl:if test="string-length($publicPart)">
+							<xsl:attribute name="dataTypeName">
+								<xsl:value-of select="$publicPart"/>
+							</xsl:attribute>
+						</xsl:if>
+						<xsl:if test="$contextNamespace!=$namespaceName">
+							<xsl:attribute name="dataTypeQualifier">
+								<xsl:value-of select="$namespaceName"/>
+							</xsl:attribute>
+						</xsl:if>
+					</plx:TypeOf>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="string-length($publicPart)">
+						<xsl:call-template name="GeneratedNestedTypeCall">
+							<xsl:with-param name="nestedTypes" select="substring($normalizedName, string-length($publicPart)+2)"/>
+							<xsl:with-param name="callObject" select="$primaryTypeOf"/>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:copy-of select="$primaryTypeOf"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:otherwise>		  
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="GeneratedNestedTypeCall">

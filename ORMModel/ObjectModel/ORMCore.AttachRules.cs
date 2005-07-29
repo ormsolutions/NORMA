@@ -21,7 +21,7 @@ namespace Northface.Tools.ORM.ObjectModel
         ///</summary>
         protected override Type[] AllMetaModelTypes()
         {
-            return new Type[] {
+            Type[] retVal = new Type[] {
                     typeof(ConstraintUtility).GetNestedType("ConstraintRoleSequenceHasRoleRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(CustomReferenceMode).GetNestedType("CustomReferenceModeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(DataTypeNotSpecifiedError).GetNestedType("UnspecifiedTypeAddedRule", (BindingFlags.Public | BindingFlags.NonPublic)),
@@ -109,6 +109,9 @@ namespace Northface.Tools.ORM.ObjectModel
                     typeof(SubtypeFact).GetNestedType("RemoveSubtypeWhenRolePlayerRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ValueRange).GetNestedType("ValueRangeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ValueTypeValueRangeDefinition).GetNestedType("ValueTypeValueRangeDefinitionChangeRule", (BindingFlags.Public | BindingFlags.NonPublic))};
+            System.Diagnostics.Debug.Assert(!(((System.Collections.IList)(retVal)).Contains(null)), "One or more rule types failed to resolve. The file and/or package will fail to lo" +
+                    "ad.");
+            return retVal;
         }
     }
 }
