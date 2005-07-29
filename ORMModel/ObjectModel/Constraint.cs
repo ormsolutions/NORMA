@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Northface.Tools.ORM.Framework;
+
 namespace Northface.Tools.ORM.ObjectModel
 {
 	#region IConstraint interface

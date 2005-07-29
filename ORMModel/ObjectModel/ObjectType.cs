@@ -6,6 +6,7 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Northface.Tools.ORM;
 using System.Globalization;
+using Northface.Tools.ORM.Framework;
 
 namespace Northface.Tools.ORM.ObjectModel
 {

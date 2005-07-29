@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
+using Northface.Tools.ORM.Framework;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
@@ -195,7 +196,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Rule to update error text on model name change
-		#region Rule to update error text on model name change
+		#region Rule to update error text on owner name change
 		[RuleOn(typeof(NamedElement))]
 		private class SynchronizeErrorForOwnerRule : ChangeRule
 		{
@@ -218,7 +219,7 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // Rule to update error text on model name change
+		#endregion // Rule to update error text on owner name change
 	}
 	#endregion // ModelError class
 } 

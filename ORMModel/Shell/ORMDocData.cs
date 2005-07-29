@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.Modeling.ArtifactMapper;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.ShapeModel;
+using Northface.Tools.ORM.Framework;
 using EnvDTE;
 #if ATTACHELEMENTPROVIDERS
 using Northface.Tools.ORM.DocumentSynchronization;
@@ -429,13 +430,16 @@ namespace Northface.Tools.ORM.Shell
 		{
 			get
 			{
-				foreach (IDeserializationFixupListener listener in ORMModel.DeserializationFixupListeners)
+				foreach (object subStore in Store.SubStores.Values)
 				{
-					yield return listener;
-				}
-				foreach (IDeserializationFixupListener listener in ORMDiagram.DeserializationFixupListeners)
-				{
-					yield return listener;
+					IDeserializationFixupListenerProvider provider = subStore as IDeserializationFixupListenerProvider;
+					if (provider != null)
+					{
+						foreach (IDeserializationFixupListener listener in provider.DeserializationFixupListenerCollection)
+						{
+							yield return listener;
+						}
+					}
 				}
 			}
 		}

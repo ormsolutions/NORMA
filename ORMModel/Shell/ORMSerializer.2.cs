@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.ShapeModel;
+using Northface.Tools.ORM.Framework;
 
 namespace Northface.Tools.ORM.Shell
 {

@@ -112,12 +112,13 @@
     <Compile Include="ObjectModel\Editors\ReferenceModeHeaderBranch.cs" />
     <Compile Include="ObjectModel\Editors\ReferenceModeKindsBranch.cs" />
     <Compile Include="ObjectModel\ModelError.cs" />
-    <Compile Include="ObjectModel\NamedElementDictionary.cs" />
+    <Compile Include="Framework\NamedElementDictionary.cs" />
     <Compile Include="ObjectModel\Editors\ElementPicker.cs">
     </Compile>
     <Compile Include="ObjectModel\Editors\TypedElementPickers.cs" />
     <Compile Include="ObjectModel\Constraint.cs" />
     <Compile Include="ObjectModel\FactType.cs" />
+    <Compile Include="ObjectModel\ORMCore.DeserializationFixupListeners.cs" />
     <Compile Include="ObjectModel\ORMCore.dsldm.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -147,6 +148,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMShape.AttachRules.xml</DependentUpon>
     </Compile>
+    <Compile Include="ShapeModel\ORMShape.DeserializationFixupListeners.cs" />
     <Compile Include="ShapeModel\ORMShape.SerializationExtensions.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMShape.SerializationExtensions.xml</DependentUpon>
@@ -163,7 +165,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ORMShape.dsldm.dsldmt</DependentUpon>
     </Compile>
-    <Compile Include="ObjectModel\DeserializationManager.cs" />
+    <Compile Include="Framework\DeserializationManager.cs" />
     <Compile Include="ShapeModel\RoleConnectorAction.cs" />
     <Compile Include="Shell\ORMDocDataServices.cs" />
     <Compile Include="ObjectModel\ORMModelInterfaces.cs" />

@@ -5,9 +5,10 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
+using Northface.Tools.ORM.Framework;
 namespace Northface.Tools.ORM.ShapeModel
 {
-	public partial class ORMDiagram
+	public partial class ORMShapeModel
 	{
 		#region View Fixup Rules
 		#region ModelHasObjectType fixup
@@ -89,7 +90,7 @@ namespace Northface.Tools.ORM.ShapeModel
 								else
 								{
 									if (!objectType.ReferenceModeSharesValueType || // Easy check first
-										!parentDiagram.ShouldAddShapeForElement(valueType)) // More involved check second
+										!parentDiagram.ShouldDisplayObjectType(valueType)) // More involved check second
 									{
 										RemoveShapesFromDiagram(valueType, parentDiagram);
 									}

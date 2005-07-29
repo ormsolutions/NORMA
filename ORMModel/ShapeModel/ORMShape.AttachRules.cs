@@ -12,6 +12,7 @@ namespace Northface.Tools.ORM.ShapeModel
 {
     using System;
     using System.Reflection;
+    using Northface.Tools.ORM.Framework;
     
     /// <summary>
     ///</summary>

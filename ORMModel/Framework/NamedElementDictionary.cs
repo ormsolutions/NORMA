@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
-namespace Northface.Tools.ORM.ObjectModel
+namespace Northface.Tools.ORM.Framework
 {
 	#region LocatedElement structure
 	/// <summary>

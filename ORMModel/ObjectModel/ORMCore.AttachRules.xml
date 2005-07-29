@@ -40,9 +40,9 @@
 		<arg:Rule class="MultiColumnExternalConstraint.EnforceRoleSequenceValidityForFactTypeRemove"/>
 		<arg:Rule class="MultiColumnExternalConstraint.EnforceRoleSequenceValidityForRemove"/>
 		<arg:Rule class="MultiColumnExternalConstraint.ExternalRoleConstraintRemoved"/>
-		<arg:Rule class="NamedElementDictionary.ElementLinkAddedRule"/>
-		<arg:Rule class="NamedElementDictionary.ElementLinkRemovedRule"/>
-		<arg:Rule class="NamedElementDictionary.NamedElementChangedRule"/>
+		<arg:Rule class="NamedElementDictionary.ElementLinkAddedRule" namespace="Northface.Tools.ORM.Framework"/>
+		<arg:Rule class="NamedElementDictionary.ElementLinkRemovedRule" namespace="Northface.Tools.ORM.Framework"/>
+		<arg:Rule class="NamedElementDictionary.NamedElementChangedRule" namespace="Northface.Tools.ORM.Framework"/>
 		<arg:Rule class="ObjectType.CheckForIncompatibleRelationshipRule"/>
 		<arg:Rule class="ObjectType.ModelHasObjectTypeAddRuleModelValidation"/>
 		<arg:Rule class="ObjectType.ObjectTypeChangeRule"/>

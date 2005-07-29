@@ -1,6 +1,4 @@
-﻿#region Using directives
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -8,9 +6,7 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
 using System.ComponentModel;
 using System.Globalization;
-
-#endregion
-
+using Northface.Tools.ORM.Framework;
 namespace Northface.Tools.ORM.ObjectModel
 {
 	public partial class Reading : IModelErrorOwner

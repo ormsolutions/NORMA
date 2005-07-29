@@ -7,7 +7,7 @@ using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using System.Reflection;
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Northface.Tools.ORM.Framework
 {
 	#region INotifyElementAdded interface
 	/// <summary>
@@ -36,6 +36,7 @@ namespace Northface.Tools.ORM.ObjectModel
 	/// An interface to provide an extensible plugin point
 	/// for managing deserialization fixups
 	/// </summary>
+	[CLSCompliant(true)]
 	public interface IDeserializationFixupListener : INotifyElementAdded
 	{
 		/// <summary>
@@ -73,6 +74,20 @@ namespace Northface.Tools.ORM.ObjectModel
 		void PhaseCompleted(int phase, Store store);
 	}
 	#endregion // IDeserializationFixupListener interface
+	#region IDeserializationFixupListenerProvider interface
+	/// <summary>
+	/// An interface to implement on the meta model to dynamically provide
+	/// fixup listeners from a loaded meta model.
+	/// </summary>
+	[CLSCompliant(true)]
+	public interface IDeserializationFixupListenerProvider
+	{
+		/// <summary>
+		/// Provide a interator for fixup listeners supported by this model
+		/// </summary>
+		IEnumerable<IDeserializationFixupListener> DeserializationFixupListenerCollection { get;}
+	}
+	#endregion // IDeserializationFixupListenerProvider interface
 	#region DeserializationFixupManager class
 	/// <summary>
 	/// A class to manage post-deserialization model fixup

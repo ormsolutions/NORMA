@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using System.Globalization;
+using Northface.Tools.ORM.Framework;
 
 namespace Northface.Tools.ORM.ObjectModel
 {

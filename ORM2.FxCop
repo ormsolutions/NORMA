@@ -1234,6 +1234,174 @@
          </Type>
         </Types>
        </Namespace>
+       <Namespace Name="Northface.Tools.ORM.Framework">
+        <Types>
+         <Type Name="DeserializationFixupListener`1">
+          <Members>
+           <Member Name="ElementAdded(Microsoft.VisualStudio.Modeling.ModelElement,System.Boolean):System.Void">
+            <Messages>
+             <Message Id="addLinks" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-02-03 20:22:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>addLinks</Item>
+               <Item>DeserializationFixupListener`1.ElementAdded(ModelElement, Boolean):Void</Item>
+              </Issue>
+             </Message>
+             <Message Id="element" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-02-03 20:22:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>element</Item>
+               <Item>DeserializationFixupListener`1.ElementAdded(ModelElement, Boolean):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="HasElements(System.Int32,Microsoft.VisualStudio.Modeling.Store):System.Boolean">
+            <Messages>
+             <Message Id="store" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-02-03 20:22:04Z" FixCategory="Breaking">
+              <Issue>
+               <Item>store</Item>
+               <Item>DeserializationFixupListener`1.HasElements(Int32, Store):Boolean</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="INamedElementDictionary">
+          <Messages>
+           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Created="2005-02-03 20:22:04Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.Framework.INamedElementDictionary</Item>
+             <Item>Dictionary</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="INamedElementDictionaryChild">
+          <Members>
+           <Member Name="GetRoleGuids(System.Guid&amp;,System.Guid&amp;):System.Void">
+            <Messages>
+             <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2005-02-03 20:22:04Z">
+              <Issue>
+               <Item>parentMetaRoleGuid</Item>
+              </Issue>
+             </Message>
+             <Message Id="1#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2005-02-03 20:22:04Z">
+              <Issue>
+               <Item>childMetaRoleGuid</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="LocatedElement">
+          <Messages>
+           <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Created="2005-02-03 20:22:04Z">
+            <Issue Name="Equals">
+             <Item>Northface.Tools.ORM.Framework.LocatedElement</Item>
+            </Issue>
+            <Issue Name="op_Equality">
+             <Item>Northface.Tools.ORM.Framework.LocatedElement</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name=".ctor(Microsoft.VisualStudio.Modeling.NamedElement)">
+            <Messages>
+             <Message Id="0#" TypeName="AvoidTypeNamesInParameters" Category="Microsoft.Naming" CheckId="CA1720" Created="2005-02-03 20:22:04Z">
+              <Issue>
+               <Item>singleElement</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Empty">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2005-02-03 20:22:04Z">
+              <Issue>
+               <Item>Empty</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="NamedElementDictionary">
+          <Messages>
+           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Created="2005-02-03 20:22:04Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.Framework.NamedElementDictionary</Item>
+             <Item>Dictionary</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="Northface.Tools.ORM.Framework.INamedElementDictionary.GetElement(System.String):Northface.Tools.ORM.Framework.LocatedElement">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-02-03 20:22:04Z">
+              <Issue>
+               <Item>NamedElementDictionary</Item>
+               <Item>INamedElementDictionary.GetElement(String):LocatedElement</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Northface.Tools.ORM.Framework.INamedElementDictionary.RemoveElement(Microsoft.VisualStudio.Modeling.NamedElement,System.String,Northface.Tools.ORM.Framework.DuplicateNameAction):System.Boolean">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-04-15 14:45:27Z">
+              <Issue>
+               <Item>NamedElementDictionary</Item>
+               <Item>INamedElementDictionary.RemoveElement(NamedElement, String, DuplicateNameAction):Boolean</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="NamedElementDictionary+ElementLinkAddedRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.Framework.NamedElementDictionary+ElementLinkAddedRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="7" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="NamedElementDictionary+ElementLinkRemovedRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.Framework.NamedElementDictionary+ElementLinkRemovedRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="7" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="NamedElementDictionary+NamedElementChangedRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
+            <Issue>
+             <Item>Northface.Tools.ORM.Framework.NamedElementDictionary+NamedElementChangedRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="7" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
        <Namespace Name="Northface.Tools.ORM.ObjectModel">
         <Types>
          <Type Name="AutoCounterNumericDataTypeElementFactoryCreator">
@@ -3146,36 +3314,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="DeserializationFixupListener`1">
-          <Members>
-           <Member Name="ElementAdded(Microsoft.VisualStudio.Modeling.ModelElement,System.Boolean):System.Void">
-            <Messages>
-             <Message Id="addLinks" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-02-03 20:22:04Z" FixCategory="Breaking">
-              <Issue>
-               <Item>addLinks</Item>
-               <Item>DeserializationFixupListener`1.ElementAdded(ModelElement, Boolean):Void</Item>
-              </Issue>
-             </Message>
-             <Message Id="element" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-02-03 20:22:04Z" FixCategory="Breaking">
-              <Issue>
-               <Item>element</Item>
-               <Item>DeserializationFixupListener`1.ElementAdded(ModelElement, Boolean):Void</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="HasElements(System.Int32,Microsoft.VisualStudio.Modeling.Store):System.Boolean">
-            <Messages>
-             <Message Id="store" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-02-03 20:22:04Z" FixCategory="Breaking">
-              <Issue>
-               <Item>store</Item>
-               <Item>DeserializationFixupListener`1.HasElements(Int32, Store):Boolean</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="DisjunctiveMandatoryConstraint+VerifyImpliedDisjunctiveMandatoryRoleAdd">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-28 20:27:31Z">
@@ -3224,7 +3362,7 @@
          </Type>
          <Type Name="DuplicateNameError">
           <Members>
-           <Member Name="ValidateErrors(Northface.Tools.ORM.ObjectModel.INotifyElementAdded):System.Void">
+           <Member Name="ValidateErrors(Northface.Tools.ORM.Framework.INotifyElementAdded):System.Void">
             <Messages>
              <Message Id="notifyAdded" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
               <Issue>
@@ -5689,34 +5827,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="INamedElementDictionary">
-          <Messages>
-           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Created="2005-02-03 20:22:04Z">
-            <Issue>
-             <Item>Northface.Tools.ORM.ObjectModel.INamedElementDictionary</Item>
-             <Item>Dictionary</Item>
-            </Issue>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="INamedElementDictionaryChild">
-          <Members>
-           <Member Name="GetRoleGuids(System.Guid&amp;,System.Guid&amp;):System.Void">
-            <Messages>
-             <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>parentMetaRoleGuid</Item>
-              </Issue>
-             </Message>
-             <Message Id="1#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>childMetaRoleGuid</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="InternalConstraint">
           <Members>
            <Member Name="Northface.Tools.ORM.ObjectModel.IConstraint.ConstraintType">
@@ -6523,38 +6633,6 @@
                 <Note Id="34" />
                </User>
               </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="LocatedElement">
-          <Messages>
-           <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Created="2005-02-03 20:22:04Z">
-            <Issue Name="Equals">
-             <Item>Northface.Tools.ORM.ObjectModel.LocatedElement</Item>
-            </Issue>
-            <Issue Name="op_Equality">
-             <Item>Northface.Tools.ORM.ObjectModel.LocatedElement</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name=".ctor(Microsoft.VisualStudio.Modeling.NamedElement)">
-            <Messages>
-             <Message Id="0#" TypeName="AvoidTypeNamesInParameters" Category="Microsoft.Naming" CheckId="CA1720" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>singleElement</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="Empty">
-            <Messages>
-             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>Empty</Item>
-              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -8376,80 +8454,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="NamedElementDictionary">
-          <Messages>
-           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Created="2005-02-03 20:22:04Z">
-            <Issue>
-             <Item>Northface.Tools.ORM.ObjectModel.NamedElementDictionary</Item>
-             <Item>Dictionary</Item>
-            </Issue>
-           </Message>
-          </Messages>
-          <Members>
-           <Member Name="Northface.Tools.ORM.ObjectModel.INamedElementDictionary.GetElement(System.String):Northface.Tools.ORM.ObjectModel.LocatedElement">
-            <Messages>
-             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-02-03 20:22:04Z">
-              <Issue>
-               <Item>NamedElementDictionary</Item>
-               <Item>INamedElementDictionary.GetElement(String):LocatedElement</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="Northface.Tools.ORM.ObjectModel.INamedElementDictionary.RemoveElement(Microsoft.VisualStudio.Modeling.NamedElement,System.String,Northface.Tools.ORM.ObjectModel.DuplicateNameAction):System.Boolean">
-            <Messages>
-             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>NamedElementDictionary</Item>
-               <Item>INamedElementDictionary.RemoveElement(NamedElement, String, DuplicateNameAction):Boolean</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="NamedElementDictionary+ElementLinkAddedRule">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
-            <Issue>
-             <Item>Northface.Tools.ORM.ObjectModel.NamedElementDictionary+ElementLinkAddedRule</Item>
-            </Issue>
-            <Notes>
-             <User Name="mcurland">
-              <Note Id="7" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="NamedElementDictionary+ElementLinkRemovedRule">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
-            <Issue>
-             <Item>Northface.Tools.ORM.ObjectModel.NamedElementDictionary+ElementLinkRemovedRule</Item>
-            </Issue>
-            <Notes>
-             <User Name="mcurland">
-              <Note Id="7" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="NamedElementDictionary+NamedElementChangedRule">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
-            <Issue>
-             <Item>Northface.Tools.ORM.ObjectModel.NamedElementDictionary+NamedElementChangedRule</Item>
-            </Issue>
-            <Notes>
-             <User Name="mcurland">
-              <Note Id="7" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
          <Type Name="NestingEntityTypeHasFactTypeElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
@@ -9798,7 +9802,7 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="GetCounterpartRoleDictionary(System.Guid,System.Guid):Northface.Tools.ORM.ObjectModel.INamedElementDictionary">
+           <Member Name="GetCounterpartRoleDictionary(System.Guid,System.Guid):Northface.Tools.ORM.Framework.INamedElementDictionary">
             <Messages>
              <Message Id="childMetaRoleGuid" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-02-03 20:22:04Z" FixCategory="Breaking">
               <Issue>
@@ -18742,11 +18746,145 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ORMDiagram+ConstraintRoleSequenceRoleAdded">
+         <Type Name="ORMDiagramElementFactoryCreator">
+          <Members>
+           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
+            <Messages>
+             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
+              <Issue>
+               <Item>ORMDiagramElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="34" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ORMShapeModel">
+          <Members>
+           <Member Name=".cctor()">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Status="Excluded" Created="2005-07-06 21:44:00Z">
+              <Issue>
+               <Item>ORMShapeModel.ORMShapeModel()</Item>
+               <Item>resourceManager</Item>
+               <Item>System.Resources.ResourceManager</Item>
+               <Item>null</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="39" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="BuildCustomSerializationOmissions(Microsoft.VisualStudio.Modeling.Store):System.Collections.Generic.Dictionary`2&lt;Microsoft.VisualStudio.Modeling.MetaClassInfo,System.Object&gt;">
+            <Messages>
+             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-15 19:53:08Z" FixCategory="NonBreaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ORMShapeModel.BuildCustomSerializationOmissions(Store):Dictionary`2&lt;Microsoft.VisualStudio.Modeling.MetaClassInfo,System.Object&gt;</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomElementNamespaces():System.String[,]">
+            <Messages>
+             <Message Id="Body" TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-06-02 21:00:35Z">
+              <Issue Name="Body">
+               <Item>ORMShapeModel.GetCustomElementNamespaces():String[,]</Item>
+               <Item>System.String[,]</Item>
+              </Issue>
+              <Issue Name="Body">
+               <Item>ORMShapeModel.GetCustomElementNamespaces():String[,]</Item>
+               <Item>System.String[,]</Item>
+              </Issue>
+              <Issue Name="Body">
+               <Item>ORMShapeModel.GetCustomElementNamespaces():String[,]</Item>
+               <Item>System.String[,]</Item>
+              </Issue>
+              <Issue Name="Body">
+               <Item>ORMShapeModel.GetCustomElementNamespaces():String[,]</Item>
+               <Item>System.String[,]</Item>
+              </Issue>
+              <Notes>
+               <User Name="pewert">
+                <Note Id="30" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="Return" TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-06-02 21:00:35Z">
+              <Issue Name="Return">
+               <Item>ORMShapeModel.GetCustomElementNamespaces():String[,]</Item>
+               <Item>System.String[,]</Item>
+              </Issue>
+              <Notes>
+               <User Name="pewert">
+                <Note Id="30" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MapClassName(System.String,System.String):System.Guid">
+            <Messages>
+             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ORMShapeModel.MapClassName(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="33" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MapRootElement(System.String,System.String):System.Guid">
+            <Messages>
+             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ORMShapeModel.MapRootElement(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="33" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="Northface.Tools.ORM.Shell.IORMCustomSerializedMetaModel.GetCustomElementNamespaces():System.String[,]">
+            <Messages>
+             <Message Id="Return" TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814" Status="Excluded" Created="2005-06-15 19:53:08Z">
+              <Issue Name="Return">
+               <Item>ORMShapeModel.Northface.Tools.ORM.Shell.IORMCustomSerializedMetaModel.GetCustomElementNamespaces():String[,]</Item>
+               <Item>System.String[,]</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="32" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ORMShapeModel+ConstraintRoleSequenceRoleAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+ConstraintRoleSequenceRoleAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+ConstraintRoleSequenceRoleAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18756,11 +18894,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+ConstraintRoleSequenceRoleRemoved">
+         <Type Name="ORMShapeModel+ConstraintRoleSequenceRoleRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+ConstraintRoleSequenceRoleRemoved</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+ConstraintRoleSequenceRoleRemoved</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18770,11 +18908,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+ExternalFactConstraintAdded">
+         <Type Name="ORMShapeModel+ExternalFactConstraintAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+ExternalFactConstraintAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+ExternalFactConstraintAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18784,11 +18922,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+ExternalFactConstraintRemoved">
+         <Type Name="ORMShapeModel+ExternalFactConstraintRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+ExternalFactConstraintRemoved</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+ExternalFactConstraintRemoved</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18798,11 +18936,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+FactTypedAdded">
+         <Type Name="ORMShapeModel+FactTypedAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+FactTypedAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+FactTypedAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18812,11 +18950,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+FactTypeHasInternalConstraintAdded">
+         <Type Name="ORMShapeModel+FactTypeHasInternalConstraintAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+FactTypeHasInternalConstraintAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+FactTypeHasInternalConstraintAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18826,11 +18964,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+FactTypeHasInternalConstraintRemoved">
+         <Type Name="ORMShapeModel+FactTypeHasInternalConstraintRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+FactTypeHasInternalConstraintRemoved</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+FactTypeHasInternalConstraintRemoved</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18840,11 +18978,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+MultiColumnExternalConstraintAdded">
+         <Type Name="ORMShapeModel+MultiColumnExternalConstraintAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+MultiColumnExternalConstraintAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+MultiColumnExternalConstraintAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18854,11 +18992,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+ObjectTypedAdded">
+         <Type Name="ORMShapeModel+ObjectTypedAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+ObjectTypedAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+ObjectTypedAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18868,11 +19006,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+ObjectTypePlaysRoleRemoved">
+         <Type Name="ORMShapeModel+ObjectTypePlaysRoleRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+ObjectTypePlaysRoleRemoved</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+ObjectTypePlaysRoleRemoved</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18882,11 +19020,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+ObjectTypeShapeChangeRule">
+         <Type Name="ORMShapeModel+ObjectTypeShapeChangeRule">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+ObjectTypeShapeChangeRule</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+ObjectTypeShapeChangeRule</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18896,11 +19034,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+PresentationLinkRemoved">
+         <Type Name="ORMShapeModel+PresentationLinkRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+PresentationLinkRemoved</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+PresentationLinkRemoved</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18910,11 +19048,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+PrimaryIdentifierAdded">
+         <Type Name="ORMShapeModel+PrimaryIdentifierAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+PrimaryIdentifierAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+PrimaryIdentifierAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18924,11 +19062,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+PrimaryIdentifierRemoved">
+         <Type Name="ORMShapeModel+PrimaryIdentifierRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+PrimaryIdentifierRemoved</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+PrimaryIdentifierRemoved</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18938,11 +19076,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+RoleAdded">
+         <Type Name="ORMShapeModel+RoleAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+RoleAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+RoleAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18952,11 +19090,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+RolePlayerAdded">
+         <Type Name="ORMShapeModel+RolePlayerAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+RolePlayerAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+RolePlayerAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18966,11 +19104,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+RoleRemoved">
+         <Type Name="ORMShapeModel+RoleRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+RoleRemoved</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+RoleRemoved</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -18980,11 +19118,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+RoleValueRangeDefinitionAdded">
+         <Type Name="ORMShapeModel+RoleValueRangeDefinitionAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+RoleValueRangeDefinitionAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+RoleValueRangeDefinitionAdded</Item>
             </Issue>
             <Notes>
              <User Name="pewert">
@@ -18994,11 +19132,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+RoleValueRangeDefinitionRemoved">
+         <Type Name="ORMShapeModel+RoleValueRangeDefinitionRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+RoleValueRangeDefinitionRemoved</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+RoleValueRangeDefinitionRemoved</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -19008,11 +19146,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+SingleColumnExternalConstraintAdded">
+         <Type Name="ORMShapeModel+SingleColumnExternalConstraintAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+SingleColumnExternalConstraintAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+SingleColumnExternalConstraintAdded</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
@@ -19022,11 +19160,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+ValueTypeValueRangeDefinitionAdded">
+         <Type Name="ORMShapeModel+ValueTypeValueRangeDefinitionAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+ValueTypeValueRangeDefinitionAdded</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+ValueTypeValueRangeDefinitionAdded</Item>
             </Issue>
             <Notes>
              <User Name="pewert">
@@ -19036,11 +19174,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ORMDiagram+ValueTypeValueRangeDefinitionRemoved">
+         <Type Name="ORMShapeModel+ValueTypeValueRangeDefinitionRemoved">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-06 21:44:00Z">
             <Issue>
-             <Item>Northface.Tools.ORM.ShapeModel.ORMDiagram+ValueTypeValueRangeDefinitionRemoved</Item>
+             <Item>Northface.Tools.ORM.ShapeModel.ORMShapeModel+ValueTypeValueRangeDefinitionRemoved</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">

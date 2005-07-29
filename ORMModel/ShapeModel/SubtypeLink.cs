@@ -7,6 +7,8 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Northface.Tools.ORM.ObjectModel;
 using Northface.Tools.ORM.Shell;
+using Northface.Tools.ORM.Framework;
+
 namespace Northface.Tools.ORM.ShapeModel
 {
 	public partial class SubtypeLink
@@ -104,7 +106,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		}
 		#endregion // SubtypeLink specific
 	}
-	public partial class ORMDiagram
+	public partial class ORMShapeModel
 	{
 		#region  DisplaySubtypeLinkFixupListener
 		/// <summary>
@@ -129,7 +131,7 @@ namespace Northface.Tools.ORM.ShapeModel
 				SubtypeFact subTypeFact = element.FactTypeCollection as SubtypeFact;
 				if (subTypeFact != null)
 				{
-					FixUpDiagram(subTypeFact.Model, subTypeFact);
+					Diagram.FixUpDiagram(subTypeFact.Model, subTypeFact);
 				}
 			}
 		}

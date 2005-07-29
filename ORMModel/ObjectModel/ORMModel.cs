@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
+using Northface.Tools.ORM.Framework;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
@@ -133,24 +134,6 @@ namespace Northface.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // MergeContext functions
-		#region Deserialization Fixup
-		/// <summary>
-		/// Return all deserialization fixup listeners for the core object model
-		/// </summary>
-		[CLSCompliant(false)]
-		public static IEnumerable<IDeserializationFixupListener> DeserializationFixupListeners
-		{
-			get
-			{
-				yield return MultiColumnExternalConstraint.FixupListener;
-				yield return SingleColumnExternalConstraint.FixupListener;
-				yield return NamedElementDictionary.GetFixupListener((int)ORMDeserializationFixupPhase.AddImplicitElements);
-				yield return ModelError.FixupListener;
-				yield return ReferenceMode.FixupListener;
-				yield return ORMModel.DataTypesFixupListener;
-			}
-		}
-		#endregion // Deserialization Fixup
 	}
 	#region NamedElementDictionary and DuplicateNameError integration
 	public partial class ORMModel : INamedElementDictionaryParent

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using System.Globalization;
+using Northface.Tools.ORM.Framework;
 
 namespace Northface.Tools.ORM.ObjectModel
 {
@@ -39,7 +40,7 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// The listener adds the implicit DataType elements if they
 		/// are not already in the model.
 		/// </summary>
-		private static IDeserializationFixupListener DataTypesFixupListener
+		public static IDeserializationFixupListener DataTypesFixupListener
 		{
 			get
 			{

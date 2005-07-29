@@ -154,16 +154,26 @@ namespace Northface.Tools.ORM.ShapeModel
 			}
 			else if (null != (objType = element as ObjectType))
 			{
-				if (objType.NestedFactType == null)
-				{
-					return ShouldDisplayPartOfReferenceMode(objType);
-				}
-				else
-				{
-					return false;
-				}
+				return ShouldDisplayObjectType(objType);
 			}
 			return base.ShouldAddShapeForElement(element);
+		}
+		/// <summary>
+		/// Determine if an ObjectType element should be displayed on
+		/// the diagram.
+		/// </summary>
+		/// <param name="typeElement">The element to test</param>
+		/// <returns>true to display, false to not display</returns>
+		public bool ShouldDisplayObjectType(ObjectType typeElement)
+		{
+			if (typeElement.NestedFactType == null)
+			{
+				return ShouldDisplayPartOfReferenceMode(typeElement);
+			}
+			else
+			{
+				return false;
+			}
 		}
 		/// <summary>
 		/// Function to determine if a fact type, which may be participating
@@ -971,23 +981,5 @@ namespace Northface.Tools.ORM.ShapeModel
 				(startLuminosity + luminosityFixedDelta + (int)((double)(luminosityCheck - startLuminosity)/luminosityCheck * luminosityIncrementalDelta));
 		}
 		#endregion // Utility Methods
-		#region Deserialization Fixup
-		/// <summary>
-		/// Return all deserialization fixup listeners for the presentation model
-		/// </summary>
-		[CLSCompliant(false)]
-		public static IEnumerable<IDeserializationFixupListener> DeserializationFixupListeners
-		{
-			get
-			{
-				yield return new DisplayRolePlayersFixupListener();
-				yield return new DisplayExternalConstraintLinksFixupListener();
-				yield return new DisplaySubtypeLinkFixupListener();
-				yield return new DisplayRoleValueRangeDefinitionFixupListener();
-				yield return new DisplayValueTypeValueRangeDefinitionFixupListener();
-				yield return new EliminateOrphanedShapesFixupListener();
-			}
-		}
-		#endregion // Deserialization Fixup
 	}
 }
