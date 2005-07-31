@@ -8,9 +8,9 @@ using System.Drawing.Design;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.Shell;
-namespace Northface.Tools.ORM.ShapeModel
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region IStickyObject interface
 	/// <summary>
@@ -378,11 +378,11 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The Brush to use when drawing the background of a sticky object.
 		/// </summary>
-		public static readonly StyleSetResourceId StickyBackgroundResource = new StyleSetResourceId("Northface", "StickyBackgroundResource");
+		public static readonly StyleSetResourceId StickyBackgroundResource = new StyleSetResourceId("Neumont", "StickyBackgroundResource");
 		/// <summary>
 		/// The Brush to use when drawing the foreground of a sticky object.
 		/// </summary>
-		public static readonly StyleSetResourceId StickyForegroundResource = new StyleSetResourceId("Northface", "StickyForegroundResource");
+		public static readonly StyleSetResourceId StickyForegroundResource = new StyleSetResourceId("Neumont", "StickyForegroundResource");
 		/// <summary>
 		/// Standard override to populate the style set for the shape type
 		/// </summary>

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// An extension of a TextField shape. The minimum size is recalculated

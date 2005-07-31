@@ -6,10 +6,10 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.EnterpriseTools.Validation.UI;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
 
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {
 	public partial class ORMDesignerDocData : IORMToolServices
 	{

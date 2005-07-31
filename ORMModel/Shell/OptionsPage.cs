@@ -8,12 +8,12 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
-using Northface.Tools.ORM.Shell;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.Shell;
 using CategoryAttribute = System.ComponentModel.CategoryAttribute;
 using DescriptionAttribute = System.ComponentModel.DescriptionAttribute;
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {
 	#region Shape enums
 	/// <summary>
@@ -92,7 +92,7 @@ namespace Northface.Tools.ORM.Shell
 	#endregion // NotifyDocument Delegate
 	/// <summary>
 	/// Options dialog for ORM designers
-	/// see https://svn.northface.edu/projects/orm2/wiki/HowToAddOptionPageOptions for adding options
+	/// see https://svn.neumont.edu/projects/orm2/wiki/HowToAddOptionPageOptions for adding options
 	/// </summary>
 	[Guid("B4ABD9FD-CE79-4B26-8D36-F345CB53B525")]
 	public class OptionsPage : DialogPage

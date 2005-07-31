@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Northface.Tools.ORM.Framework;
+using Neumont.Tools.ORM.Framework;
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class ORMMetaModel : IDeserializationFixupListenerProvider
 	{

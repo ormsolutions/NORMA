@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<metamodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" namespace="Northface.Tools.ORM.ShapeModel" name="ORMShapeModel" identity="c52fb9a5-6bf4-4267-8716-71d74c7aa89c" majorversion="1" minorversion="0" category="" description="" doccomment="" localize="true" alwaysgeneratecollection="false" xmlns="urn:schemas-microsoft-com:phoenix">
+<metamodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" namespace="Neumont.Tools.ORM.ShapeModel" name="ORMShapeModel" identity="c52fb9a5-6bf4-4267-8716-71d74c7aa89c" majorversion="1" minorversion="0" category="" description="" doccomment="" localize="true" alwaysgeneratecollection="false" xmlns="urn:schemas-microsoft-com:phoenix">
   <copyright>------------------------------------------------------------------------------
-Copyright (c) Northface University. All Rights Reserved.
+Copyright (c) Neumont University. All Rights Reserved.
 Information Contained Herein is Proprietary and Confidential.
 ------------------------------------------------------------------------------</copyright>
   <extendsmetamodel model="2b131234-7959-458d-834f-2dc0769ce683" />
   <extendsmetamodel model="91d59b16-e488-4a28-8d51-59273ad5bf2e" />
-  <stringtable resxfile="ORMShape.dsldm.resx" resourcesfile="Northface.Tools.ORM.ShapeModel.ORMShapeModel" usefullyqualifiedname="true" />
+  <stringtable resxfile="ORMShape.dsldm.resx" resourcesfile="Neumont.Tools.ORM.ShapeModel.ORMShapeModel" usefullyqualifiedname="true" />
   <copyclosure name="ORMShapeModelCopyClosure" classmodifier="sealed" doccomment="Copy closure visitor filter" />
   <removeclosure name="ORMShapeModelRemoveClosure" classmodifier="sealed" doccomment="Remove closure visitor filter" />
   <metaclasses />
   <shapes>
-    <shape namespace="Northface.Tools.ORM.ShapeModel" name="ORMBaseShape" identity="55131f4b-0f9a-408d-bed0-79451ba7f4f0" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.NodeShape" category="" description="" doccomment="" localize="false">
+    <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ORMBaseShape" identity="55131f4b-0f9a-408d-bed0-79451ba7f4f0" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.NodeShape" category="" description="" doccomment="" localize="false">
       <metaattributes />
       <derivedshapes>
-        <shape namespace="Northface.Tools.ORM.ShapeModel" name="ObjectTypeShape" identity="00c1f246-d8f1-4eea-ac88-39ba238143a8" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ObjectType)" />
+        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ObjectTypeShape" identity="00c1f246-d8f1-4eea-ac88-39ba238143a8" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)" />
           <metaattributes>
             <metaattribute name="ShapeName" identity="b70a72b8-282e-403a-aad6-50d75a2f071c" type="System.String" xpathexpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
               <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
@@ -31,32 +31,32 @@ Information Contained Herein is Proprietary and Confidential.
           </metaattributes>
           <derivedshapes />
         </shape>
-        <shape namespace="Northface.Tools.ORM.ShapeModel" name="FactTypeShape" identity="8e440a3b-275e-42f7-868b-d5d473158acd" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.FactType)" />
+        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="FactTypeShape" identity="8e440a3b-275e-42f7-868b-d5d473158acd" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.FactType)" />
           <metaattributes>
-            <metaattribute name="ConstraintDisplayPosition" identity="802767fd-de7d-4541-b42b-90b613dfe22d" type="Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
-              <enumerationdomain type="Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition" default="ConstraintDisplayPosition.Top" />
+            <metaattribute name="ConstraintDisplayPosition" identity="802767fd-de7d-4541-b42b-90b613dfe22d" type="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
+              <enumerationdomain type="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition" default="ConstraintDisplayPosition.Top" />
             </metaattribute>
           </metaattributes>
           <derivedshapes />
         </shape>
-        <shape namespace="Northface.Tools.ORM.ShapeModel" name="ExternalConstraintShape" identity="00a08f56-73ba-4c8f-8fa1-ae61b8fc1cae" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)" />
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)" />
+        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ExternalConstraintShape" identity="00a08f56-73ba-4c8f-8fa1-ae61b8fc1cae" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)" />
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)" />
           <metaattributes />
           <derivedshapes>
-            <shape namespace="Northface.Tools.ORM.ShapeModel" name="FrequencyConstraintShape" identity="ec47cd7d-023b-4971-8b5b-1242dbc7356f" accessmodifier="public" category="" description="" doccomment="" localize="false">
-            <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint)" />
+            <shape namespace="Neumont.Tools.ORM.ShapeModel" name="FrequencyConstraintShape" identity="ec47cd7d-023b-4971-8b5b-1242dbc7356f" accessmodifier="public" category="" description="" doccomment="" localize="false">
+            <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)" />
             <metaattributes />
             <derivedshapes />
             </shape>
           </derivedshapes>
         </shape>
-        <shape namespace="Northface.Tools.ORM.ShapeModel" name="FloatingTextShape" identity="0904999f-d9c5-4c4e-a08f-f8dd4b2f29a3" accessmodifier="public" classmodifier="abstract" category="" description="" doccomment="" localize="false">
+        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="FloatingTextShape" identity="0904999f-d9c5-4c4e-a08f-f8dd4b2f29a3" accessmodifier="public" classmodifier="abstract" category="" description="" doccomment="" localize="false">
           <metaattributes />
           <derivedshapes>
-            <shape namespace="Northface.Tools.ORM.ShapeModel" name="ObjectifiedFactTypeNameShape" identity="7fd5183a-8bc2-43bb-8474-a0a2d558d90a" accessmodifier="public" category="" description="" doccomment="" localize="false">
-              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ObjectType)" />
+            <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ObjectifiedFactTypeNameShape" identity="7fd5183a-8bc2-43bb-8474-a0a2d558d90a" accessmodifier="public" category="" description="" doccomment="" localize="false">
+              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)" />
               <metaattributes>
                 <metaattribute name="ObjectTypeName" identity="4c9bb78d-6290-455e-b844-e7bcc01676f8" type="System.String" xpathexpression="/ObjectifiedFactTypeNameShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
                   <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
@@ -65,8 +65,8 @@ Information Contained Herein is Proprietary and Confidential.
               </metaattributes>
               <derivedshapes />
             </shape>
-            <shape namespace="Northface.Tools.ORM.ShapeModel" name="ReadingShape" identity="c567ed6d-d0a6-4fd8-a974-c567aa309d5e" accessmodifier="public" category="" description="" doccomment="" localize="false">
-              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder)" />
+            <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ReadingShape" identity="c567ed6d-d0a6-4fd8-a974-c567aa309d5e" accessmodifier="public" category="" description="" doccomment="" localize="false">
+              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrder)" />
               <metaattributes>
                 <metaattribute name="ReadingText" identity="22bf9cf7-715c-4159-9ef0-1bdf98647f9c" type="System.String" xpathexpression="/ReadingShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/Reading/SubjectHasPresentation.Presentation/Presentation" realattributename="ReadingText" proxyattributename="ReadingText" category="" description="" doccomment="" localize="false" tag="">
                   <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
@@ -75,8 +75,8 @@ Information Contained Herein is Proprietary and Confidential.
               </metaattributes>
               <derivedshapes />
             </shape>
-            <shape namespace="Northface.Tools.ORM.ShapeModel" name="ValueRangeShape" identity="b65f916a-06a5-4efe-bbf9-8d8e55b5c7eb" accessmodifier="public" category="" description="" doccomment="" localize="false">
-              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ValueRangeDefinition)" />
+            <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ValueRangeShape" identity="b65f916a-06a5-4efe-bbf9-8d8e55b5c7eb" accessmodifier="public" category="" description="" doccomment="" localize="false">
+              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition)" />
               <metaattributes>
                 <metaattribute name="ValueRangeText" identity="107e2630-8d2f-43fd-b58a-76577e85cdfa" type="System.String" xpathexpression="/ValueRangeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/ValueRangeDefinition/SubjectHasPresentation.Presentation/Presentation" realattributename="Text" proxyattributename="Text" category="" description="" doccomment="" localize="false" tag="">
                   <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
@@ -89,26 +89,26 @@ Information Contained Herein is Proprietary and Confidential.
         </shape>
       </derivedshapes>
     </shape>
-    <shape namespace="Northface.Tools.ORM.ShapeModel" name="ORMBaseBinaryLinkShape" identity="ceff4339-48d0-4ffe-b052-2f9da167b1db" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
+    <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ORMBaseBinaryLinkShape" identity="ceff4339-48d0-4ffe-b052-2f9da167b1db" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
       <metaattributes />
       <derivedshapes>
-        <shape namespace="Northface.Tools.ORM.ShapeModel" name="RolePlayerLink" identity="2b3f0aae-b1b1-4727-8862-5c34b494b499" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ObjectTypePlaysRole)" />
+        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="RolePlayerLink" identity="2b3f0aae-b1b1-4727-8862-5c34b494b499" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)" />
           <metaattributes />
           <derivedshapes />
         </shape>
-        <shape namespace="Northface.Tools.ORM.ShapeModel" name="SubtypeLink" identity="87ddaeda-1fd8-4433-bb1e-7482c7f471a7" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.SubtypeFact)" />
+        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="SubtypeLink" identity="87ddaeda-1fd8-4433-bb1e-7482c7f471a7" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.SubtypeFact)" />
           <metaattributes />
           <derivedshapes />
         </shape>
-        <shape namespace="Northface.Tools.ORM.ShapeModel" name="ExternalConstraintLink" identity="8815e6d8-238b-422c-a4b3-29fdc8de9ea5" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint)" />
+        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ExternalConstraintLink" identity="8815e6d8-238b-422c-a4b3-29fdc8de9ea5" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ExternalFactConstraint)" />
           <metaattributes />
           <derivedshapes />
         </shape>
-        <shape namespace="Northface.Tools.ORM.ShapeModel" name="ValueRangeLink" identity="374e43c3-c294-49c4-8a61-3c3ca5fc86e8" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition)" />
+        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ValueRangeLink" identity="374e43c3-c294-49c4-8a61-3c3ca5fc86e8" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition)" />
           <metaattributes />
           <derivedshapes />
         </shape>
@@ -116,7 +116,7 @@ Information Contained Herein is Proprietary and Confidential.
     </shape>
   </shapes>
   <diagrams>
-    <diagram namespace="Northface.Tools.ORM.ShapeModel" name="ORMDiagram" identity="948f992d-c9b8-46f9-be3c-b48347f8ab0b" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.Diagram" category="" description="" doccomment="" localize="false">
+    <diagram namespace="Neumont.Tools.ORM.ShapeModel" name="ORMDiagram" identity="948f992d-c9b8-46f9-be3c-b48347f8ab0b" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.Diagram" category="" description="" doccomment="" localize="false">
       <toolboxitem toolboxitemid="Toolbox.EntityType.Item.Id" position="0" bitmapresourceid="Toolbox.EntityType.Bitmap.Id" captionresourceid="Toolbox.EntityType.Caption.Id" tooltipresourceid="Toolbox.EntityType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
       <toolboxitem toolboxitemid="Toolbox.ValueType.Item.Id" position="5" bitmapresourceid="Toolbox.ValueType.Bitmap.Id" captionresourceid="Toolbox.ValueType.Caption.Id" tooltipresourceid="Toolbox.ValueType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
       <toolboxitem toolboxitemid="Toolbox.UnaryFactType.Item.Id" position="10" bitmapresourceid="Toolbox.UnaryFactType.Bitmap.Id" captionresourceid="Toolbox.UnaryFactType.Caption.Id" tooltipresourceid="Toolbox.UnaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />

@@ -7,12 +7,12 @@ using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Shell;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Editors;
 
 #endregion
 
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Defines the tool window that is used to modify the readings associated with a fact.

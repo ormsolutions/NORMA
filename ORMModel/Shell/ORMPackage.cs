@@ -12,9 +12,9 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.TextManager.Interop;
-using Northface.Tools.ORM.FactEditor;
+using Neumont.Tools.ORM.FactEditor;
 
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Entry point for the ORMPackage package. An instance of this class is created by the VS

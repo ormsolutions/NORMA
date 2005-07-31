@@ -8,11 +8,11 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
 
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {	
 	public partial class ORMDesignerDocView
 	{

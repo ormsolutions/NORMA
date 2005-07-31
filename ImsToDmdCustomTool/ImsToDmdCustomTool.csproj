@@ -7,7 +7,7 @@
     <ProjectGuid>{6D558C29-B5D8-4DA6-ACB0-A268793565F4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>ImsToDmdCustomTool</RootNamespace>
-    <AssemblyName>Northface.Tools.Converters</AssemblyName>
+    <AssemblyName>Neumont.Tools.Converters</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <AssemblyOriginatorKeyMode>File</AssemblyOriginatorKeyMode>

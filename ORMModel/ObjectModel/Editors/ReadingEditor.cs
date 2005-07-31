@@ -12,12 +12,12 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using Microsoft.VisualStudio.Modeling;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.Shell;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
 
 #endregion
 
-namespace Northface.Tools.ORM.ObjectModel.Editors
+namespace Neumont.Tools.ORM.ObjectModel.Editors
 {
 	public partial class ReadingEditor : UserControl
 	{

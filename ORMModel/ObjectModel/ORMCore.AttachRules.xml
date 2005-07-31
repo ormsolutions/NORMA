@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<arg:Rules xmlns:arg="http://Schemas.Northface.edu/Private/AttachRulesGenerator">
+<arg:Rules xmlns:arg="http://Schemas.Neumont.edu/Private/AttachRulesGenerator">
 	<arg:Model class="ORMMetaModel">
 		<arg:Rule class="ConstraintUtility.ConstraintRoleSequenceHasRoleRemoved"/>
 		<arg:Rule class="CustomReferenceMode.CustomReferenceModeChangeRule"/>
@@ -42,9 +42,9 @@
 		<arg:Rule class="MultiColumnExternalConstraint.EnforceRoleSequenceValidityForFactTypeRemove"/>
 		<arg:Rule class="MultiColumnExternalConstraint.EnforceRoleSequenceValidityForRemove"/>
 		<arg:Rule class="MultiColumnExternalConstraint.ExternalRoleConstraintRemoved"/>
-		<arg:Rule class="NamedElementDictionary.ElementLinkAddedRule" namespace="Northface.Tools.ORM.Framework"/>
-		<arg:Rule class="NamedElementDictionary.ElementLinkRemovedRule" namespace="Northface.Tools.ORM.Framework"/>
-		<arg:Rule class="NamedElementDictionary.NamedElementChangedRule" namespace="Northface.Tools.ORM.Framework"/>
+		<arg:Rule class="NamedElementDictionary.ElementLinkAddedRule" namespace="Neumont.Tools.ORM.Framework"/>
+		<arg:Rule class="NamedElementDictionary.ElementLinkRemovedRule" namespace="Neumont.Tools.ORM.Framework"/>
+		<arg:Rule class="NamedElementDictionary.NamedElementChangedRule" namespace="Neumont.Tools.ORM.Framework"/>
 		<arg:Rule class="ObjectType.CheckForIncompatibleRelationshipRule"/>
 		<arg:Rule class="ObjectType.ModelHasObjectTypeAddRuleModelValidation"/>
 		<arg:Rule class="ObjectType.ObjectTypeChangeRule"/>

@@ -2,11 +2,11 @@
 <xsl:stylesheet 
     version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
+    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix">
     <xsl:template match="DataTypes">
-        <plx:Root xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
+        <plx:Root xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix">
             <plx:Using name="System"/>
-            <plx:Namespace name="Northface.Tools.ORM.ObjectModel">
+            <plx:Namespace name="Neumont.Tools.ORM.ObjectModel">
                 <plx:Enum name="PortableDataType" visibility="Public">
 					<plx:Attribute dataTypeName="CLSCompliant" dataTypeQualifier="System">
 						<plx:PassParam><plx:TrueKeyword/></plx:PassParam>

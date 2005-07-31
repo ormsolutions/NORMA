@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:orm="http://schemas.northface.edu/orm/ormcore">
+    xmlns:orm="http://Schemas.Neumont.edu/ORM/ORMCore">
     <xsl:output method="xml" indent ="yes" encoding="utf-8"/>
     <xsl:template match="/ORM2/ORMModel">
         <xsl:element name="orm:ORMModel">

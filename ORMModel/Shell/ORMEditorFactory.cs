@@ -7,8 +7,8 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using VsShell = Microsoft.VisualStudio.Shell.Interop;
-using Northface.Tools.ORM.ShapeModel;
-namespace Northface.Tools.ORM.Shell
+using Neumont.Tools.ORM.ShapeModel;
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Editor factory for ORM Designer. 

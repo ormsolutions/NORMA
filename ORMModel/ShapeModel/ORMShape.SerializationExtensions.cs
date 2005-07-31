@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
     using System;
     using System.Collections;
@@ -16,7 +16,7 @@ namespace Northface.Tools.ORM.ShapeModel
     using System.Collections.Generic;
     using Microsoft.VisualStudio.Modeling;
     using Microsoft.VisualStudio.Modeling.Diagrams;
-    using Northface.Tools.ORM.Shell;
+    using Neumont.Tools.ORM.Shell;
     
     /// <summary>
     ///</summary>
@@ -47,7 +47,7 @@ namespace Northface.Tools.ORM.ShapeModel
         {
             string[,] ret = new string[1, 3];
             ret[0, 0] = "ormDiagram";
-            ret[0, 1] = "http://Schemas.Northface.edu/ORM/ORMDiagram";
+            ret[0, 1] = "http://Schemas.Neumont.edu/ORM/ORMDiagram";
             ret[0, 2] = "ORM2Diagram.xsd";
             return ret;
         }
@@ -98,7 +98,7 @@ namespace Northface.Tools.ORM.ShapeModel
         protected static Guid MapRootElement(string xmlNamespace, string elementName)
         {
             if (((elementName == "ORMDiagram") 
-                        && (xmlNamespace == "http://Schemas.Northface.edu/ORM/ORMDiagram")))
+                        && (xmlNamespace == "http://Schemas.Neumont.edu/ORM/ORMDiagram")))
             {
                 return ORMDiagram.MetaClassGuid;
             }
@@ -117,7 +117,7 @@ namespace Northface.Tools.ORM.ShapeModel
             if ((validNamespaces == null))
             {
                 validNamespaces = new Collection<string>();
-                validNamespaces.Add("http://Schemas.Northface.edu/ORM/ORMDiagram");
+                validNamespaces.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram");
                 ORMShapeModel.myValidNamespaces = validNamespaces;
             }
             if ((classNameMap == null))
@@ -146,12 +146,12 @@ namespace Northface.Tools.ORM.ShapeModel
     ///</summary>
     public partial class ORMDiagram : IORMCustomSerializedElement
     {
-        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
+        private static Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
         private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
@@ -160,7 +160,7 @@ namespace Northface.Tools.ORM.ShapeModel
                             | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
             }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
             get
             {
@@ -169,14 +169,14 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
             get
             {
                 throw new System.NotSupportedException();
             }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
             get
             {
@@ -208,24 +208,24 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ORMDiagram.myCustomSerializedChildElementInfo;
+            Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ORMDiagram.myCustomSerializedChildElementInfo;
             if ((ret == null))
             {
-                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Shapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+                ret = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+                ret[0] = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Shapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
                 ORMDiagram.myCustomSerializedChildElementInfo = ret;
             }
             return ret;
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             if ((attributeInfo.Id == ORMDiagram.DiagramIdMetaAttributeGuid))
             {
@@ -233,13 +233,13 @@ namespace Northface.Tools.ORM.ShapeModel
             }
             return ORMCustomSerializedAttributeInfo.Default;
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             if ((rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid))
             {
@@ -247,7 +247,7 @@ namespace Northface.Tools.ORM.ShapeModel
             }
             return ORMCustomSerializedElementInfo.Default;
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
@@ -261,9 +261,9 @@ namespace Northface.Tools.ORM.ShapeModel
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
-                childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMDiagram|Subject", match);
+                childElementMappings.Add("||http://Schemas.Neumont.edu/ORM/ORMDiagram|Subject", match);
                 match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|Shapes||", match);
+                childElementMappings.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram|Shapes||", match);
                 ORMDiagram.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
@@ -333,13 +333,13 @@ namespace Northface.Tools.ORM.ShapeModel
     ///</summary>
     public partial class ORMBaseShape : IORMCustomSerializedElement
     {
-        private static Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
+        private static Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
         private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
         private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
         private static Dictionary<string, Guid> myCustomSerializedAttributes;
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
@@ -348,7 +348,7 @@ namespace Northface.Tools.ORM.ShapeModel
                             | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
             }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
             get
             {
@@ -357,14 +357,14 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
         {
             get
             {
                 throw new System.NotSupportedException();
             }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
         {
             get
             {
@@ -396,25 +396,25 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
         {
-            Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ORMBaseShape.myCustomSerializedChildElementInfo;
+            Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ORMBaseShape.myCustomSerializedChildElementInfo;
             if ((ret == null))
             {
-                ret = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
-                ret[0] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RelativeShapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
-                ret[1] = new Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "NestedShapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+                ret = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
+                ret[0] = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RelativeShapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
+                ret[1] = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "NestedShapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
                 ORMBaseShape.myCustomSerializedChildElementInfo = ret;
             }
             return ret;
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
         {
             return this.GetCustomSerializedChildElementInfo();
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             if ((attributeInfo.Id == ORMBaseShape.IsExpandedMetaAttributeGuid))
             {
@@ -426,13 +426,13 @@ namespace Northface.Tools.ORM.ShapeModel
             }
             return ORMCustomSerializedAttributeInfo.Default;
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
         }
         /// <summary>
         ///</summary>
-        protected Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             if ((rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid))
             {
@@ -440,7 +440,7 @@ namespace Northface.Tools.ORM.ShapeModel
             }
             return ORMCustomSerializedElementInfo.Default;
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
         }
@@ -454,11 +454,11 @@ namespace Northface.Tools.ORM.ShapeModel
                 childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
                 ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
                 match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
-                childElementMappings.Add("||http://Schemas.Northface.edu/ORM/ORMDiagram|Subject", match);
+                childElementMappings.Add("||http://Schemas.Neumont.edu/ORM/ORMDiagram|Subject", match);
                 match.InitializeRoles(ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|RelativeShapes||", match);
+                childElementMappings.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram|RelativeShapes||", match);
                 match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-                childElementMappings.Add("http://Schemas.Northface.edu/ORM/ORMDiagram|NestedShapes||", match);
+                childElementMappings.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram|NestedShapes||", match);
                 ORMBaseShape.myChildElementMappings = childElementMappings;
             }
             ORMCustomSerializedElementMatch rVal;
@@ -547,14 +547,14 @@ namespace Northface.Tools.ORM.ShapeModel
     {
         /// <summary>
         ///</summary>
-        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
                 return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
             }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
             get
             {
@@ -563,7 +563,7 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             if ((attributeInfo.Id == ObjectTypeShape.ShapeNameMetaAttributeGuid))
             {
@@ -580,7 +580,7 @@ namespace Northface.Tools.ORM.ShapeModel
             }
             return ORMCustomSerializedAttributeInfo.Default;
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
         }
@@ -591,14 +591,14 @@ namespace Northface.Tools.ORM.ShapeModel
     {
         /// <summary>
         ///</summary>
-        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
                 return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
             }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
             get
             {
@@ -607,7 +607,7 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             if ((attributeInfo.Id == ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid))
             {
@@ -620,7 +620,7 @@ namespace Northface.Tools.ORM.ShapeModel
             }
             return ORMCustomSerializedAttributeInfo.Default;
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
         }
@@ -631,14 +631,14 @@ namespace Northface.Tools.ORM.ShapeModel
     {
         /// <summary>
         ///</summary>
-        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
                 return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
             }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
             get
             {
@@ -647,7 +647,7 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             if ((attributeInfo.Id == ReadingShape.ReadingTextMetaAttributeGuid))
             {
@@ -660,7 +660,7 @@ namespace Northface.Tools.ORM.ShapeModel
             }
             return ORMCustomSerializedAttributeInfo.Default;
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
         }
@@ -671,14 +671,14 @@ namespace Northface.Tools.ORM.ShapeModel
     {
         /// <summary>
         ///</summary>
-        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
         {
             get
             {
                 return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
             }
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
         {
             get
             {
@@ -687,7 +687,7 @@ namespace Northface.Tools.ORM.ShapeModel
         }
         /// <summary>
         ///</summary>
-        protected new Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             if ((attributeInfo.Id == ValueRangeShape.ValueRangeTextMetaAttributeGuid))
             {
@@ -700,7 +700,7 @@ namespace Northface.Tools.ORM.ShapeModel
             }
             return ORMCustomSerializedAttributeInfo.Default;
         }
-        Northface.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
         {
             return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
         }

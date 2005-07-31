@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// Draw a link decorator by deferring painting to a list

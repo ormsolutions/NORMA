@@ -16,11 +16,11 @@ using System.Threading;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
-using Northface.Tools.ORM.Framework;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.Framework;
 
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {
 	#region Public Enumerations
 	/// <summary>
@@ -611,7 +611,7 @@ namespace Northface.Tools.ORM.Shell
 		/// <summary>
 		/// The namespace for the root node of the ORM document
 		/// </summary>
-		public const string RootXmlNamespace = "http://Schemas.Northface.edu/ORM/ORMRoot";
+		public const string RootXmlNamespace = "http://Schemas.Neumont.edu/ORM/ORMRoot";
 
 		/// <summary>
 		/// Used for sorting.

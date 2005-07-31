@@ -7,11 +7,11 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
-using Northface.Tools.ORM;
-using Northface.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM;
+using Neumont.Tools.ORM.ObjectModel;
 using System.Runtime.InteropServices;
 using System.Collections;
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation
 	{
@@ -51,7 +51,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		private static AutoSizeTextField myReferenceModeShapeField;
 		private const double HorizontalMargin = 0.2;
 		private const double VerticalMargin = 0.075;
-		private static readonly StyleSetResourceId DashedShapeOutlinePen = new StyleSetResourceId("Northface", "DashedShapeOutlinePen");
+		private static readonly StyleSetResourceId DashedShapeOutlinePen = new StyleSetResourceId("Neumont", "DashedShapeOutlinePen");
 		#endregion // Member Variables
 		#region Customize appearance
 		/// <summary>

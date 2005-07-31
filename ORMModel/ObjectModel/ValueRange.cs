@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Modeling;
 using System.Text.RegularExpressions;
 using System.Text;
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region RangeInclusion enum
 	/// <summary>

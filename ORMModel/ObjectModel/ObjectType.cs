@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
-using Northface.Tools.ORM;
+using Neumont.Tools.ORM;
 using System.Globalization;
-using Northface.Tools.ORM.Framework;
+using Neumont.Tools.ORM.Framework;
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
 	/// A callback definition used for walking subtype and supertype hierarchies.
@@ -439,7 +439,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			ObjectType objectType;
 			if (null != (objectType = GetObjectTypeForPreferredConstraint()))
 			{
-				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, this.Model);
+				Neumont.Tools.ORM.ObjectModel.ReferenceMode refMode = Neumont.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, this.Model);
 				return refMode;
 			}
 			return null;
@@ -453,7 +453,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			ObjectType objectType;
 			if (null != (objectType = GetObjectTypeForPreferredConstraint()))
 			{
-				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, formatString, this.Model);
+				Neumont.Tools.ORM.ObjectModel.ReferenceMode refMode = Neumont.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, formatString, this.Model);
 				return refMode;
 			}
 			return null;
@@ -467,7 +467,7 @@ namespace Northface.Tools.ORM.ObjectModel
 			ObjectType objectType;
 			if (null != (objectType = GetObjectTypeForPreferredConstraint()))
 			{
-				Northface.Tools.ORM.ObjectModel.ReferenceMode refMode = Northface.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, formatString, referenceModeName, oldReferenceModeName, this.Model);
+				Neumont.Tools.ORM.ObjectModel.ReferenceMode refMode = Neumont.Tools.ORM.ObjectModel.ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.Name, this.Name, formatString, referenceModeName, oldReferenceModeName, this.Model);
 				return refMode;
 			}
 			return null;

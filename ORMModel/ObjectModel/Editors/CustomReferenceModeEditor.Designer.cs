@@ -1,4 +1,4 @@
-﻿namespace Northface.Tools.ORM.ObjectModel
+﻿namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
 	/// Customer Reference mode editor usercontrol

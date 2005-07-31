@@ -1,6 +1,6 @@
 using System;
 using Microsoft.VisualStudio.Modeling;
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
 	/// A helper class to enable returning custom values from

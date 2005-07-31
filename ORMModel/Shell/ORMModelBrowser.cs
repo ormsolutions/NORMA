@@ -12,9 +12,9 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
-using Northface.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel;
 
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// This is the concrete tool window class that the Object Model Browser uses

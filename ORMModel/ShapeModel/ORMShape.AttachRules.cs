@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
     using System;
     using System.Reflection;

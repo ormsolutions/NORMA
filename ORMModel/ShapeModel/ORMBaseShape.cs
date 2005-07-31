@@ -4,8 +4,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.ObjectModel;
-namespace Northface.Tools.ORM.ShapeModel
+using Neumont.Tools.ORM.ObjectModel;
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ORMBaseShape
 	{

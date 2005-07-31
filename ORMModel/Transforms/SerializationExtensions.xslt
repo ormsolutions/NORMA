@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix"
-    xmlns:se="http://Schemas.Northface.edu/Private/SerializationExtensions"
+    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix"
+    xmlns:se="http://Schemas.Neumont.edu/Private/SerializationExtensions"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<!-- Pick up param value supplied automatically by plix loader -->
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:template match="se:CustomSerializedElements">
-		<plx:Root xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
+		<plx:Root xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix">
 			<plx:Using name="System"/>
 			<plx:Using name="System.Collections"/>
 			<plx:Using name="System.Collections.ObjectModel"/>
 			<plx:Using name="System.Collections.Generic"/>
 			<plx:Using name="Microsoft.VisualStudio.Modeling"/>
 			<plx:Using name="Microsoft.VisualStudio.Modeling.Diagrams"/>
-			<plx:Using name="Northface.Tools.ORM.Shell"/>
+			<plx:Using name="Neumont.Tools.ORM.Shell"/>
 			<plx:Namespace name="{$CustomToolNamespace}">
 				<xsl:apply-templates select="child::*"/>
 			</plx:Namespace>
@@ -27,7 +27,7 @@
 			<plx:ImplementsInterface dataTypeName="IORMCustomSerializedElement"/>
 			<plx:Property visibility="Protected" name="SupportedCustomSerializedOperations" shadow="{$ClassOverride}">
 				<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="SupportedCustomSerializedOperations"/>
-				<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementSupportedOperations" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
+				<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementSupportedOperations" dataTypeQualifier="Neumont.Tools.ORM.Shell"/>
 				<plx:Get>
 					<xsl:variable name="currentSupport">
 						<xsl:call-template name="ReturnORMCustomSerializedElementSupportedOperations">
@@ -65,15 +65,15 @@
 			<xsl:variable name="childElementCount" select="count(se:ChildElement)"/>
 			<xsl:variable name="haveCustomChildInfo" select="0!=$childElementCount"/>
 			<xsl:if test="$haveCustomChildInfo">
-				<plx:Field visibility="Private" shared="true" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo[]" name="myCustomSerializedChildElementInfo"/>
+				<plx:Field visibility="Private" shared="true" dataTypeQualifier="Neumont.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo[]" name="myCustomSerializedChildElementInfo"/>
 			</xsl:if>
 			<xsl:if test="$haveCustomChildInfo or not($ClassOverride)">
 				<plx:Function visibility="Protected" name="GetCustomSerializedChildElementInfo" shadow="{$ClassOverride}">
 					<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedChildElementInfo"/>
-					<plx:Param name="" style="RetVal" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo[]"/>
+					<plx:Param name="" style="RetVal" dataTypeQualifier="Neumont.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo[]"/>
 					<xsl:choose>
 						<xsl:when test="$haveCustomChildInfo">
-							<plx:Variable dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true" name="ret">
+							<plx:Variable dataTypeQualifier="Neumont.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeIsSimpleArray="true" name="ret">
 								<plx:Initialize>
 									<plx:CallType dataTypeName="{$ClassName}" name="myCustomSerializedChildElementInfo" style="Field"/>
 								</plx:Initialize>
@@ -173,7 +173,7 @@
 											<plx:Value type="Local">ret</plx:Value>
 										</plx:Left>
 										<plx:Right>
-											<plx:CallNew style="New" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeIsSimpleArray="true">
+											<plx:CallNew style="New" dataTypeName="ORMCustomSerializedChildElementInfo" dataTypeQualifier="Neumont.Tools.ORM.Shell" dataTypeIsSimpleArray="true">
 												<plx:PassParam>
 													<xsl:choose>
 														<xsl:when test="$ClassOverride">
@@ -249,7 +249,7 @@
 												</plx:CallInstance>
 											</plx:Left>
 											<plx:Right>
-												<plx:CallNew style="New" dataTypeQualifier="Northface.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo">
+												<plx:CallNew style="New" dataTypeQualifier="Neumont.Tools.ORM.Shell" dataTypeName="ORMCustomSerializedChildElementInfo">
 													<xsl:call-template name="PassORMCustomSerializedElementInfoParams">
 														<xsl:with-param name="modifier" select="$index"/>
 													</xsl:call-template>
@@ -288,7 +288,7 @@
 			<xsl:if test="$haveCustomElementInfo or not($ClassOverride)">
 				<plx:Property visibility="Protected" name="CustomSerializedElementInfo" shadow="{$ClassOverride}">
 					<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="CustomSerializedElementInfo"/>
-					<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
+					<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementInfo" dataTypeQualifier="Neumont.Tools.ORM.Shell"/>
 					<plx:Get>
 						<xsl:choose>
 							<xsl:when test="$haveCustomElementInfo">
@@ -307,7 +307,7 @@
 			<xsl:if test="$haveCustomAttributeInfo or not($ClassOverride)">
 				<plx:Function visibility="Protected" name="GetCustomSerializedAttributeInfo" shadow="{$ClassOverride}">
 					<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedAttributeInfo"/>
-					<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedAttributeInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
+					<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedAttributeInfo" dataTypeQualifier="Neumont.Tools.ORM.Shell"/>
 					<plx:Param name="attributeInfo" dataTypeName="MetaAttributeInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
 					<plx:Param name="rolePlayedInfo" dataTypeName="MetaRoleInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
 					<xsl:choose>
@@ -413,7 +413,7 @@
 			<xsl:if test="$haveCustomLinkInfo or not($ClassOverride)">
 				<plx:Function visibility="Protected" name="GetCustomSerializedLinkInfo" shadow="{$ClassOverride}">
 					<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="GetCustomSerializedLinkInfo"/>
-					<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementInfo" dataTypeQualifier="Northface.Tools.ORM.Shell"/>
+					<plx:Param name="" style="RetVal" dataTypeName="ORMCustomSerializedElementInfo" dataTypeQualifier="Neumont.Tools.ORM.Shell"/>
 					<plx:Param name="rolePlayedInfo" dataTypeName="MetaRoleInfo" dataTypeQualifier="Microsoft.VisualStudio.Modeling"></plx:Param>
 					<xsl:choose>
 						<xsl:when test="$haveCustomLinkInfo">

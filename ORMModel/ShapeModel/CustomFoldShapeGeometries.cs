@@ -4,7 +4,7 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region ICustomShapeFolding interface
 	/// <summary>

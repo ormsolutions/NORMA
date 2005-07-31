@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid; 
 #endregion
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
 	/// Represents the Reference Mode Header Branch

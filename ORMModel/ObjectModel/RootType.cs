@@ -3,7 +3,7 @@ using System.Collections;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class RootType
 	{

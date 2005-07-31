@@ -5,9 +5,9 @@ using System.Drawing;
 using System.Drawing.Design;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel;
 
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region RoleDragPendingAction Class
 	/// <summary>

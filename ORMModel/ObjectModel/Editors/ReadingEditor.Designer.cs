@@ -1,4 +1,4 @@
-﻿namespace Northface.Tools.ORM.ObjectModel.Editors
+﻿namespace Neumont.Tools.ORM.ObjectModel.Editors
 {
 	/// <summary>
 	/// Generated code behind for ReadingEditor control.

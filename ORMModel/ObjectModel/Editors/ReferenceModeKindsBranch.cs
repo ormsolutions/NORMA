@@ -6,11 +6,11 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using Northface.Tools.ORM.ObjectModel; 
+using Neumont.Tools.ORM.ObjectModel; 
 using Microsoft.VisualStudio.Modeling;
 #endregion
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
 	/// Branch for all the differnt Reference mode kinds

@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.Modeling;
 
 #endregion
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	public partial class ReadingOrder
 	{

@@ -1,11 +1,11 @@
 using System;
 using System.Diagnostics;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
 using System.Resources;
 using System.Windows.Forms;
 
-namespace Northface.Tools.ORM
+namespace Neumont.Tools.ORM
 {
 	/// <summary>
 	/// A constant list of strings corresponding to resource identifiers

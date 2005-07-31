@@ -6,7 +6,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager;
 using Microsoft.VisualStudio.TextManager.Interop;
-using Northface.Tools.ORM.Shell;
+using Neumont.Tools.ORM.Shell;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -14,7 +14,7 @@ using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
 #endregion
 
-namespace Northface.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.FactEditor
 {
 	/// <summary>
 	/// The host of the text editor

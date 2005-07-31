@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.VisualStudio;
 using MSOle = Microsoft.VisualStudio.OLE.Interop;
 using System.Runtime.InteropServices;
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {
 	#region ORMDesignerColor Enum
 	/// <summary>

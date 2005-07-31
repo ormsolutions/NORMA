@@ -120,13 +120,13 @@
   <data name="ConstraintDisplayPosition.Top">
     <value xml:space="preserve">Top</value>
   </data>
-  <data name="Northface.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPosition">
+  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPosition">
     <value xml:space="preserve">ConstraintDisplayPosition</value>
   </data>
-  <data name="Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode">
+  <data name="Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode">
     <value xml:space="preserve">ExpandRefMode</value>
   </data>
-  <data name="Northface.Tools.ORM.ShapeModel.ORMShapeModel">
+  <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeModel">
     <value xml:space="preserve">ORMShapeModel</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />

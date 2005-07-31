@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 // 2) Decorators can only have N/S/E/W rotation angles
 // 3) Decorators are always rotated
 // 4) The attach point for the decorator cannot be moved along the connection line
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region ILinkDecoratorSettings interface
 	/// <summary>

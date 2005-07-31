@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------
-// Copyright (c) Northface University. All Rights Reserved.
+// Copyright (c) Neumont University. All Rights Reserved.
 // Information Contained Herein is Proprietary and Confidential.
 // ------------------------------------------------------------------------------
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
@@ -19,7 +19,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	[Microsoft.VisualStudio.Modeling.InheritBaseModel("91d59b16-e488-4a28-8d51-59273ad5bf2e")]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ORMShapeModel.MetaModelGuidString, "Northface.Tools.ORM.ShapeModel.ORMShapeModel")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ORMShapeModel.MetaModelGuidString, "Neumont.Tools.ORM.ShapeModel.ORMShapeModel")]
 	public  partial class ORMShapeModel : Microsoft.VisualStudio.Modeling.SubStore
 	{
 		#region ORMShapeModel's Generated MetaClass Code
@@ -30,7 +30,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaModel Guid
 		/// </summary>
-		public static readonly System.Guid MetaModelGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ORMShapeModel.MetaModelGuidString);
+		public static readonly System.Guid MetaModelGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ORMShapeModel.MetaModelGuidString);
 		/// <summary>
 		/// Default Constructor called by the IMS -- do not call directly
 		/// </summary>
@@ -40,13 +40,13 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ORMShapeModel(Microsoft.VisualStudio.Modeling.Store store) : base(store.DefaultPartition, Northface.Tools.ORM.ShapeModel.ORMShapeModel.MetaModelGuid)
+		public ORMShapeModel(Microsoft.VisualStudio.Modeling.Store store) : base(store.DefaultPartition, Neumont.Tools.ORM.ShapeModel.ORMShapeModel.MetaModelGuid)
 		{
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ORMShapeModel(Microsoft.VisualStudio.Modeling.Partition partition) : base(partition, Northface.Tools.ORM.ShapeModel.ORMShapeModel.MetaModelGuid)
+		public ORMShapeModel(Microsoft.VisualStudio.Modeling.Partition partition) : base(partition, Neumont.Tools.ORM.ShapeModel.ORMShapeModel.MetaModelGuid)
 		{
 		}
 		#endregion
@@ -59,7 +59,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The base name of this models resources.
 		/// </summary>
-		public const string ResourceBaseName = "Northface.Tools.ORM.ShapeModel.ORMShapeModel";
+		public const string ResourceBaseName = "Neumont.Tools.ORM.ShapeModel.ORMShapeModel";
 		/// <summary>
 		/// Returns the SubStore's ResourceManager. If the ResourceManager does not already exist, then it is created.
 		/// </summary>
@@ -67,7 +67,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return Northface.Tools.ORM.ShapeModel.ORMShapeModel.SingletonResourceManager;
+				return Neumont.Tools.ORM.ShapeModel.ORMShapeModel.SingletonResourceManager;
 			}
 		}
 		/// <summary>
@@ -96,17 +96,17 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				if (Northface.Tools.ORM.ShapeModel.ORMShapeModel.resourceManager == null)
+				if (Neumont.Tools.ORM.ShapeModel.ORMShapeModel.resourceManager == null)
 				{
-					lock (Northface.Tools.ORM.ShapeModel.ORMShapeModel.InternalSyncObject)
+					lock (Neumont.Tools.ORM.ShapeModel.ORMShapeModel.InternalSyncObject)
 					{
-						if (Northface.Tools.ORM.ShapeModel.ORMShapeModel.resourceManager == null)
+						if (Neumont.Tools.ORM.ShapeModel.ORMShapeModel.resourceManager == null)
 						{
-							Northface.Tools.ORM.ShapeModel.ORMShapeModel.resourceManager = new System.Resources.ResourceManager(ResourceBaseName, typeof(Northface.Tools.ORM.ShapeModel.ORMShapeModel).Assembly);
+							Neumont.Tools.ORM.ShapeModel.ORMShapeModel.resourceManager = new System.Resources.ResourceManager(ResourceBaseName, typeof(Neumont.Tools.ORM.ShapeModel.ORMShapeModel).Assembly);
 						}
 					}
 				}
-				return Northface.Tools.ORM.ShapeModel.ORMShapeModel.resourceManager;
+				return Neumont.Tools.ORM.ShapeModel.ORMShapeModel.resourceManager;
 			}
 		}
 	}
@@ -311,34 +311,34 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			System.Type[] typeArray = new System.Type[]
 			{
-				typeof(Northface.Tools.ORM.ShapeModel.ORMShapeModel),
-				typeof(Northface.Tools.ORM.ShapeModel.ORMBaseShape),
-				typeof(Northface.Tools.ORM.ShapeModel.ObjectTypeShape),
-				typeof(Northface.Tools.ORM.ShapeModel.ObjectTypeShapeElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ShapeModel.FactTypeShape),
-				typeof(Northface.Tools.ORM.ShapeModel.FactTypeShapeElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ShapeModel.ExternalConstraintShape),
-				typeof(Northface.Tools.ORM.ShapeModel.ExternalConstraintShapeElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape),
-				typeof(Northface.Tools.ORM.ShapeModel.FrequencyConstraintShapeElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ShapeModel.FloatingTextShape),
-				typeof(Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape),
-				typeof(Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShapeElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ShapeModel.ReadingShape),
-				typeof(Northface.Tools.ORM.ShapeModel.ReadingShapeElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ShapeModel.ValueRangeShape),
-				typeof(Northface.Tools.ORM.ShapeModel.ValueRangeShapeElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape),
-				typeof(Northface.Tools.ORM.ShapeModel.RolePlayerLink),
-				typeof(Northface.Tools.ORM.ShapeModel.RolePlayerLinkElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ShapeModel.SubtypeLink),
-				typeof(Northface.Tools.ORM.ShapeModel.SubtypeLinkElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ShapeModel.ExternalConstraintLink),
-				typeof(Northface.Tools.ORM.ShapeModel.ExternalConstraintLinkElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ShapeModel.ValueRangeLink),
-				typeof(Northface.Tools.ORM.ShapeModel.ValueRangeLinkElementFactoryCreator),
-				typeof(Northface.Tools.ORM.ShapeModel.ORMDiagram),
-				typeof(Northface.Tools.ORM.ShapeModel.ORMDiagramElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.ORMShapeModel),
+				typeof(Neumont.Tools.ORM.ShapeModel.ORMBaseShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShapeElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShapeElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.ExternalConstraintShapeElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShapeElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.FloatingTextShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShapeElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.ReadingShapeElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeShapeElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.RolePlayerLink),
+				typeof(Neumont.Tools.ORM.ShapeModel.RolePlayerLinkElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.SubtypeLink),
+				typeof(Neumont.Tools.ORM.ShapeModel.SubtypeLinkElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink),
+				typeof(Neumont.Tools.ORM.ShapeModel.ExternalConstraintLinkElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeLink),
+				typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeLinkElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.ORMDiagram),
+				typeof(Neumont.Tools.ORM.ShapeModel.ORMDiagramElementFactoryCreator),
 
 			};
 			return typeArray;
@@ -358,13 +358,13 @@ namespace Northface.Tools.ORM.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.MetaFieldInfo[] typeArray = new Microsoft.VisualStudio.Modeling.MetaFieldInfo[]
 			{
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ShapeModel.ObjectTypeShape), "ShapeName", Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ShapeNameMetaAttributeGuid, typeof(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeShapeNameFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ShapeModel.ObjectTypeShape), "ReferenceModeName", Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuid, typeof(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeReferenceModeNameFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ShapeModel.ObjectTypeShape), "ExpandRefMode", Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuid, typeof(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeExpandRefModeFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ShapeModel.FactTypeShape), "ConstraintDisplayPosition", Northface.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuid, typeof(Northface.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeConstraintDisplayPositionFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape), "ObjectTypeName", Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid, typeof(Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectifiedFactTypeNameShapeObjectTypeNameFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ShapeModel.ReadingShape), "ReadingText", Northface.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuid, typeof(Northface.Tools.ORM.ShapeModel.ReadingShape.ReadingShapeReadingTextFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Northface.Tools.ORM.ShapeModel.ValueRangeShape), "ValueRangeText", Northface.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuid, typeof(Northface.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeShapeValueRangeTextFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape), "ShapeName", Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ShapeNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeShapeNameFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape), "ReferenceModeName", Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeReferenceModeNameFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape), "ExpandRefMode", Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeExpandRefModeFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape), "ConstraintDisplayPosition", Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeConstraintDisplayPositionFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape), "ObjectTypeName", Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectifiedFactTypeNameShapeObjectTypeNameFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape), "ReadingText", Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingShapeReadingTextFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeShape), "ValueRangeText", Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeShapeValueRangeTextFieldHandler)),
 
 			};
 			return typeArray;
@@ -372,7 +372,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		#endregion
 	}
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
@@ -380,7 +380,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ORMBaseShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ORMBaseShape")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ORMBaseShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ORMBaseShape")]
 	public abstract partial class ORMBaseShape : Microsoft.VisualStudio.Modeling.Diagrams.NodeShape
 	{
 		#region ORMBaseShape's Generated Shape Code
@@ -391,7 +391,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ORMBaseShape.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ORMBaseShape.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -446,17 +446,17 @@ namespace Northface.Tools.ORM.ShapeModel
 	}
 	#endregion
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.ObjectType))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ObjectTypeShape")]
-	public  partial class ObjectTypeShape : Northface.Tools.ORM.ShapeModel.ORMBaseShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape")]
+	public  partial class ObjectTypeShape : Neumont.Tools.ORM.ShapeModel.ORMBaseShape
 	{
 		#region ObjectTypeShape's Generated Shape Code
 		/// <summary>
@@ -466,7 +466,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -517,7 +517,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaAttribute Guid
 		/// </summary>
-		public static readonly System.Guid ShapeNameMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ShapeNameMetaAttributeGuidString);
+		public static readonly System.Guid ShapeNameMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ShapeNameMetaAttributeGuidString);
 		#endregion
 
 		#region ShapeName's Generated Property Code
@@ -528,7 +528,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
 		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="Name", ProxyAttributeName="Name", FieldHandlerType=typeof(ObjectTypeShapeShapeNameFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ShapeNameMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ShapeName")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ShapeNameMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ShapeName")]
 		public  System.String ShapeName
 		{
 			get
@@ -553,7 +553,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Implement the field handler for ObjectTypeShape.ShapeName
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class ObjectTypeShapeShapeNameFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Northface.Tools.ORM.ShapeModel.ObjectTypeShape,System.String>
+		public sealed partial class ObjectTypeShapeShapeNameFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Neumont.Tools.ORM.ShapeModel.ObjectTypeShape,System.String>
 		{
 			/// <summary>
 			/// Constructor
@@ -568,14 +568,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					if (Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeShapeNameFieldHandler != null)
+					if (Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeShapeNameFieldHandler != null)
 					{
-						return Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeShapeNameFieldHandler;
+						return Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeShapeNameFieldHandler;
 					}
 					else
 					{
 						// The static constructor in ObjectTypeShape will assign this value to
-						// Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeShapeNameFieldHandler, so just instantiate one and return it
+						// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeShapeNameFieldHandler, so just instantiate one and return it
 						return new ObjectTypeShapeShapeNameFieldHandler();
 					}
 				}
@@ -589,7 +589,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					return Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ShapeNameMetaAttributeGuid;
+					return Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ShapeNameMetaAttributeGuid;
 				}
 			}
 		}
@@ -606,7 +606,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaAttribute Guid
 		/// </summary>
-		public static readonly System.Guid ReferenceModeNameMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuidString);
+		public static readonly System.Guid ReferenceModeNameMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuidString);
 		#endregion
 
 		#region ReferenceModeName's Generated Property Code
@@ -617,7 +617,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
 		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/ObjectType/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="ReferenceModeString", ProxyAttributeName="ReferenceModeString", FieldHandlerType=typeof(ObjectTypeShapeReferenceModeNameFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeName")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeName")]
 		public  System.String ReferenceModeName
 		{
 			get
@@ -642,7 +642,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Implement the field handler for ObjectTypeShape.ReferenceModeName
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class ObjectTypeShapeReferenceModeNameFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Northface.Tools.ORM.ShapeModel.ObjectTypeShape,System.String>
+		public sealed partial class ObjectTypeShapeReferenceModeNameFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Neumont.Tools.ORM.ShapeModel.ObjectTypeShape,System.String>
 		{
 			/// <summary>
 			/// Constructor
@@ -657,14 +657,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					if (Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeReferenceModeNameFieldHandler != null)
+					if (Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeReferenceModeNameFieldHandler != null)
 					{
-						return Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeReferenceModeNameFieldHandler;
+						return Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeReferenceModeNameFieldHandler;
 					}
 					else
 					{
 						// The static constructor in ObjectTypeShape will assign this value to
-						// Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeReferenceModeNameFieldHandler, so just instantiate one and return it
+						// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeReferenceModeNameFieldHandler, so just instantiate one and return it
 						return new ObjectTypeShapeReferenceModeNameFieldHandler();
 					}
 				}
@@ -678,7 +678,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					return Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuid;
+					return Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ReferenceModeNameMetaAttributeGuid;
 				}
 			}
 		}
@@ -695,7 +695,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaAttribute Guid
 		/// </summary>
-		public static readonly System.Guid ExpandRefModeMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuidString);
+		public static readonly System.Guid ExpandRefModeMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuidString);
 		#endregion
 
 		#region ExpandRefMode's Generated Property Code
@@ -707,7 +707,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
 		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ObjectTypeShapeExpandRefModeFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode")]
 		public  System.Boolean ExpandRefMode
 		{
 			get
@@ -732,7 +732,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Implement the field handler for ObjectTypeShape.ExpandRefMode
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class ObjectTypeShapeExpandRefModeFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ShapeModel.ObjectTypeShape,System.Boolean>
+		public sealed partial class ObjectTypeShapeExpandRefModeFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ShapeModel.ObjectTypeShape,System.Boolean>
 		{
 			/// <summary>
 			/// Constructor
@@ -747,14 +747,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					if (Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeExpandRefModeFieldHandler != null)
+					if (Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeExpandRefModeFieldHandler != null)
 					{
-						return Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeExpandRefModeFieldHandler;
+						return Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeExpandRefModeFieldHandler;
 					}
 					else
 					{
 						// The static constructor in ObjectTypeShape will assign this value to
-						// Northface.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeExpandRefModeFieldHandler, so just instantiate one and return it
+						// Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.objectTypeShapeExpandRefModeFieldHandler, so just instantiate one and return it
 						return new ObjectTypeShapeExpandRefModeFieldHandler();
 					}
 				}
@@ -768,14 +768,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					return Northface.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuid;
+					return Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuid;
 				}
 			}
 			/// <summary>
 			/// Gets the value of the attribute as it exists in the element
 			/// </summary>
 			/// <param name="element">the ObjectTypeShape</param>
-			protected sealed override System.Boolean GetValue(Northface.Tools.ORM.ShapeModel.ObjectTypeShape element)
+			protected sealed override System.Boolean GetValue(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape element)
 			{
 				return element.expandRefModePropertyStorage;
 			}
@@ -789,7 +789,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
 			/// <param name="oldValue">the old value before the change</param>
 			/// <returns>true if the value actually changed</returns>
-			protected sealed override bool SetValue(Northface.Tools.ORM.ShapeModel.ObjectTypeShape element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
 			{
 				oldValue = element.expandRefModePropertyStorage;
 				if (allowDuplicates || oldValue != value)
@@ -857,7 +857,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// ObjectTypeShape Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.ObjectTypeShape))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape))]
 	public sealed class ObjectTypeShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -871,7 +871,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.ObjectTypeShape( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.ObjectTypeShape( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
@@ -887,17 +887,17 @@ namespace Northface.Tools.ORM.ShapeModel
 	#endregion
 
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.FactType))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.FactType))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.FactTypeShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.FactTypeShape")]
-	public  partial class FactTypeShape : Northface.Tools.ORM.ShapeModel.ORMBaseShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.FactTypeShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.FactTypeShape")]
+	public  partial class FactTypeShape : Neumont.Tools.ORM.ShapeModel.ORMBaseShape
 	{
 		#region FactTypeShape's Generated Shape Code
 		/// <summary>
@@ -907,7 +907,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.FactTypeShape.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.FactTypeShape.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -958,20 +958,20 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaAttribute Guid
 		/// </summary>
-		public static readonly System.Guid ConstraintDisplayPositionMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuidString);
+		public static readonly System.Guid ConstraintDisplayPositionMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuidString);
 		#endregion
 
 		#region ConstraintDisplayPosition's Generated Property Code
 
-		private Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition constraintDisplayPositionPropertyStorage = Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition.Top;
+		private Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition constraintDisplayPositionPropertyStorage = Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition.Top;
 		
 		/// <summary>
 		/// 
 		/// </summary>
-		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition),DefaultEnumerationValueName="Top")]
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition),DefaultEnumerationValueName="Top")]
 		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(FactTypeShapeConstraintDisplayPositionFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPosition")]
-		public  Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition ConstraintDisplayPosition
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPosition")]
+		public  Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition ConstraintDisplayPosition
 		{
 			get
 			{
@@ -995,7 +995,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Implement the field handler for FactTypeShape.ConstraintDisplayPosition
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class FactTypeShapeConstraintDisplayPositionFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Northface.Tools.ORM.ShapeModel.FactTypeShape,Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition>
+		public sealed partial class FactTypeShapeConstraintDisplayPositionFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ShapeModel.FactTypeShape,Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition>
 		{
 			/// <summary>
 			/// Constructor
@@ -1010,14 +1010,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					if (Northface.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeConstraintDisplayPositionFieldHandler != null)
+					if (Neumont.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeConstraintDisplayPositionFieldHandler != null)
 					{
-						return Northface.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeConstraintDisplayPositionFieldHandler;
+						return Neumont.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeConstraintDisplayPositionFieldHandler;
 					}
 					else
 					{
 						// The static constructor in FactTypeShape will assign this value to
-						// Northface.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeConstraintDisplayPositionFieldHandler, so just instantiate one and return it
+						// Neumont.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeConstraintDisplayPositionFieldHandler, so just instantiate one and return it
 						return new FactTypeShapeConstraintDisplayPositionFieldHandler();
 					}
 				}
@@ -1031,14 +1031,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					return Northface.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuid;
+					return Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuid;
 				}
 			}
 			/// <summary>
 			/// Gets the value of the attribute as it exists in the element
 			/// </summary>
 			/// <param name="element">the FactTypeShape</param>
-			protected sealed override Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition GetValue(Northface.Tools.ORM.ShapeModel.FactTypeShape element)
+			protected sealed override Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition GetValue(Neumont.Tools.ORM.ShapeModel.FactTypeShape element)
 			{
 				return element.constraintDisplayPositionPropertyStorage;
 			}
@@ -1052,7 +1052,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
 			/// <param name="oldValue">the old value before the change</param>
 			/// <returns>true if the value actually changed</returns>
-			protected sealed override bool SetValue(Northface.Tools.ORM.ShapeModel.FactTypeShape element, Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Northface.Tools.ORM.ShapeModel.ConstraintDisplayPosition oldValue)
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ShapeModel.FactTypeShape element, Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition oldValue)
 			{
 				oldValue = element.constraintDisplayPositionPropertyStorage;
 				if (allowDuplicates || oldValue != value)
@@ -1120,7 +1120,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// FactTypeShape Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.FactTypeShape))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape))]
 	public sealed class FactTypeShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -1134,7 +1134,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.FactTypeShape( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.FactTypeShape( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
@@ -1150,18 +1150,18 @@ namespace Northface.Tools.ORM.ShapeModel
 	#endregion
 
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.MultiColumnExternalConstraint))]
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.SingleColumnExternalConstraint))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ExternalConstraintShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ExternalConstraintShape")]
-	public  partial class ExternalConstraintShape : Northface.Tools.ORM.ShapeModel.ORMBaseShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape")]
+	public  partial class ExternalConstraintShape : Neumont.Tools.ORM.ShapeModel.ORMBaseShape
 	{
 		#region ExternalConstraintShape's Generated Shape Code
 		/// <summary>
@@ -1171,7 +1171,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ExternalConstraintShape.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -1263,7 +1263,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// ExternalConstraintShape Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.ExternalConstraintShape))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape))]
 	public sealed class ExternalConstraintShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -1277,7 +1277,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.ExternalConstraintShape( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
@@ -1293,17 +1293,17 @@ namespace Northface.Tools.ORM.ShapeModel
 	#endregion
 
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.FrequencyConstraint))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape")]
-	public  partial class FrequencyConstraintShape : Northface.Tools.ORM.ShapeModel.ExternalConstraintShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape")]
+	public  partial class FrequencyConstraintShape : Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape
 	{
 		#region FrequencyConstraintShape's Generated Shape Code
 		/// <summary>
@@ -1313,7 +1313,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -1405,7 +1405,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// FrequencyConstraintShape Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape))]
 	public sealed class FrequencyConstraintShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -1419,7 +1419,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.FrequencyConstraintShape( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
@@ -1435,7 +1435,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	#endregion
 
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
@@ -1443,8 +1443,8 @@ namespace Northface.Tools.ORM.ShapeModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.FloatingTextShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.FloatingTextShape")]
-	public abstract partial class FloatingTextShape : Northface.Tools.ORM.ShapeModel.ORMBaseShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.FloatingTextShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.FloatingTextShape")]
+	public abstract partial class FloatingTextShape : Neumont.Tools.ORM.ShapeModel.ORMBaseShape
 	{
 		#region FloatingTextShape's Generated Shape Code
 		/// <summary>
@@ -1454,7 +1454,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.FloatingTextShape.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.FloatingTextShape.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -1509,17 +1509,17 @@ namespace Northface.Tools.ORM.ShapeModel
 	}
 	#endregion
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.ObjectType))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape")]
-	public  partial class ObjectifiedFactTypeNameShape : Northface.Tools.ORM.ShapeModel.FloatingTextShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape")]
+	public  partial class ObjectifiedFactTypeNameShape : Neumont.Tools.ORM.ShapeModel.FloatingTextShape
 	{
 		#region ObjectifiedFactTypeNameShape's Generated Shape Code
 		/// <summary>
@@ -1529,7 +1529,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -1580,7 +1580,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaAttribute Guid
 		/// </summary>
-		public static readonly System.Guid ObjectTypeNameMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuidString);
+		public static readonly System.Guid ObjectTypeNameMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuidString);
 		#endregion
 
 		#region ObjectTypeName's Generated Property Code
@@ -1591,7 +1591,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
 		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ObjectifiedFactTypeNameShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="Name", ProxyAttributeName="Name", FieldHandlerType=typeof(ObjectifiedFactTypeNameShapeObjectTypeNameFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeName")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeName")]
 		public  System.String ObjectTypeName
 		{
 			get
@@ -1616,7 +1616,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Implement the field handler for ObjectifiedFactTypeNameShape.ObjectTypeName
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class ObjectifiedFactTypeNameShapeObjectTypeNameFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape,System.String>
+		public sealed partial class ObjectifiedFactTypeNameShapeObjectTypeNameFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape,System.String>
 		{
 			/// <summary>
 			/// Constructor
@@ -1631,14 +1631,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					if (Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.objectifiedFactTypeNameShapeObjectTypeNameFieldHandler != null)
+					if (Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.objectifiedFactTypeNameShapeObjectTypeNameFieldHandler != null)
 					{
-						return Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.objectifiedFactTypeNameShapeObjectTypeNameFieldHandler;
+						return Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.objectifiedFactTypeNameShapeObjectTypeNameFieldHandler;
 					}
 					else
 					{
 						// The static constructor in ObjectifiedFactTypeNameShape will assign this value to
-						// Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.objectifiedFactTypeNameShapeObjectTypeNameFieldHandler, so just instantiate one and return it
+						// Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.objectifiedFactTypeNameShapeObjectTypeNameFieldHandler, so just instantiate one and return it
 						return new ObjectifiedFactTypeNameShapeObjectTypeNameFieldHandler();
 					}
 				}
@@ -1652,7 +1652,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					return Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid;
+					return Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid;
 				}
 			}
 		}
@@ -1710,7 +1710,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// ObjectifiedFactTypeNameShape Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape))]
 	public sealed class ObjectifiedFactTypeNameShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -1724,7 +1724,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
@@ -1740,17 +1740,17 @@ namespace Northface.Tools.ORM.ShapeModel
 	#endregion
 
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.ReadingOrder))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrder))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ReadingShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ReadingShape")]
-	public  partial class ReadingShape : Northface.Tools.ORM.ShapeModel.FloatingTextShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ReadingShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ReadingShape")]
+	public  partial class ReadingShape : Neumont.Tools.ORM.ShapeModel.FloatingTextShape
 	{
 		#region ReadingShape's Generated Shape Code
 		/// <summary>
@@ -1760,7 +1760,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ReadingShape.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ReadingShape.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -1811,7 +1811,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaAttribute Guid
 		/// </summary>
-		public static readonly System.Guid ReadingTextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuidString);
+		public static readonly System.Guid ReadingTextMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuidString);
 		#endregion
 
 		#region ReadingText's Generated Property Code
@@ -1822,7 +1822,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
 		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ReadingShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/Reading/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="ReadingText", ProxyAttributeName="ReadingText", FieldHandlerType=typeof(ReadingShapeReadingTextFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.ReadingShape.ReadingText")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingText")]
 		public  System.String ReadingText
 		{
 			get
@@ -1847,7 +1847,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Implement the field handler for ReadingShape.ReadingText
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class ReadingShapeReadingTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Northface.Tools.ORM.ShapeModel.ReadingShape,System.String>
+		public sealed partial class ReadingShapeReadingTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Neumont.Tools.ORM.ShapeModel.ReadingShape,System.String>
 		{
 			/// <summary>
 			/// Constructor
@@ -1862,14 +1862,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					if (Northface.Tools.ORM.ShapeModel.ReadingShape.readingShapeReadingTextFieldHandler != null)
+					if (Neumont.Tools.ORM.ShapeModel.ReadingShape.readingShapeReadingTextFieldHandler != null)
 					{
-						return Northface.Tools.ORM.ShapeModel.ReadingShape.readingShapeReadingTextFieldHandler;
+						return Neumont.Tools.ORM.ShapeModel.ReadingShape.readingShapeReadingTextFieldHandler;
 					}
 					else
 					{
 						// The static constructor in ReadingShape will assign this value to
-						// Northface.Tools.ORM.ShapeModel.ReadingShape.readingShapeReadingTextFieldHandler, so just instantiate one and return it
+						// Neumont.Tools.ORM.ShapeModel.ReadingShape.readingShapeReadingTextFieldHandler, so just instantiate one and return it
 						return new ReadingShapeReadingTextFieldHandler();
 					}
 				}
@@ -1883,7 +1883,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					return Northface.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuid;
+					return Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuid;
 				}
 			}
 		}
@@ -1941,7 +1941,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// ReadingShape Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.ReadingShape))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape))]
 	public sealed class ReadingShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -1955,7 +1955,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.ReadingShape( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.ReadingShape( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
@@ -1971,17 +1971,17 @@ namespace Northface.Tools.ORM.ShapeModel
 	#endregion
 
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.ValueRangeDefinition))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ValueRangeShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ValueRangeShape")]
-	public  partial class ValueRangeShape : Northface.Tools.ORM.ShapeModel.FloatingTextShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ValueRangeShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ValueRangeShape")]
+	public  partial class ValueRangeShape : Neumont.Tools.ORM.ShapeModel.FloatingTextShape
 	{
 		#region ValueRangeShape's Generated Shape Code
 		/// <summary>
@@ -1991,7 +1991,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ValueRangeShape.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ValueRangeShape.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -2042,7 +2042,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaAttribute Guid
 		/// </summary>
-		public static readonly System.Guid ValueRangeTextMetaAttributeGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuidString);
+		public static readonly System.Guid ValueRangeTextMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuidString);
 		#endregion
 
 		#region ValueRangeText's Generated Property Code
@@ -2053,7 +2053,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
 		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ValueRangeShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/ValueRangeDefinition/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="Text", ProxyAttributeName="Text", FieldHandlerType=typeof(ValueRangeShapeValueRangeTextFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuidString, "Northface.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeText")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeText")]
 		public  System.String ValueRangeText
 		{
 			get
@@ -2078,7 +2078,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// Implement the field handler for ValueRangeShape.ValueRangeText
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class ValueRangeShapeValueRangeTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Northface.Tools.ORM.ShapeModel.ValueRangeShape,System.String>
+		public sealed partial class ValueRangeShapeValueRangeTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Neumont.Tools.ORM.ShapeModel.ValueRangeShape,System.String>
 		{
 			/// <summary>
 			/// Constructor
@@ -2093,14 +2093,14 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					if (Northface.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler != null)
+					if (Neumont.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler != null)
 					{
-						return Northface.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler;
+						return Neumont.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler;
 					}
 					else
 					{
 						// The static constructor in ValueRangeShape will assign this value to
-						// Northface.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler, so just instantiate one and return it
+						// Neumont.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler, so just instantiate one and return it
 						return new ValueRangeShapeValueRangeTextFieldHandler();
 					}
 				}
@@ -2114,7 +2114,7 @@ namespace Northface.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					return Northface.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuid;
+					return Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuid;
 				}
 			}
 		}
@@ -2172,7 +2172,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// ValueRangeShape Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.ValueRangeShape))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeShape))]
 	public sealed class ValueRangeShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -2186,7 +2186,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.ValueRangeShape( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.ValueRangeShape( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
@@ -2202,7 +2202,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	#endregion
 
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
@@ -2210,7 +2210,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape")]
 	public abstract partial class ORMBaseBinaryLinkShape : Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape
 	{
 		#region ORMBaseBinaryLinkShape's Generated Shape Code
@@ -2221,7 +2221,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -2276,17 +2276,17 @@ namespace Northface.Tools.ORM.ShapeModel
 	}
 	#endregion
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.ObjectTypePlaysRole))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.RolePlayerLink.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.RolePlayerLink")]
-	public  partial class RolePlayerLink : Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.RolePlayerLink.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.RolePlayerLink")]
+	public  partial class RolePlayerLink : Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	{
 		#region RolePlayerLink's Generated Shape Code
 		/// <summary>
@@ -2296,7 +2296,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.RolePlayerLink.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.RolePlayerLink.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -2388,7 +2388,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// RolePlayerLink Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.RolePlayerLink))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.RolePlayerLink))]
 	public sealed class RolePlayerLinkElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -2402,7 +2402,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.RolePlayerLink( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.RolePlayerLink( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
@@ -2418,17 +2418,17 @@ namespace Northface.Tools.ORM.ShapeModel
 	#endregion
 
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.SubtypeFact))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.SubtypeFact))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.SubtypeLink.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.SubtypeLink")]
-	public  partial class SubtypeLink : Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.SubtypeLink.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.SubtypeLink")]
+	public  partial class SubtypeLink : Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	{
 		#region SubtypeLink's Generated Shape Code
 		/// <summary>
@@ -2438,7 +2438,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.SubtypeLink.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.SubtypeLink.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -2530,7 +2530,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// SubtypeLink Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.SubtypeLink))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.SubtypeLink))]
 	public sealed class SubtypeLinkElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -2544,7 +2544,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.SubtypeLink( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.SubtypeLink( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
@@ -2560,17 +2560,17 @@ namespace Northface.Tools.ORM.ShapeModel
 	#endregion
 
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.ExternalFactConstraint))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.ExternalFactConstraint))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ExternalConstraintLink.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ExternalConstraintLink")]
-	public  partial class ExternalConstraintLink : Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink")]
+	public  partial class ExternalConstraintLink : Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	{
 		#region ExternalConstraintLink's Generated Shape Code
 		/// <summary>
@@ -2580,7 +2580,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ExternalConstraintLink.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -2672,7 +2672,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// ExternalConstraintLink Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.ExternalConstraintLink))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink))]
 	public sealed class ExternalConstraintLinkElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -2686,7 +2686,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.ExternalConstraintLink( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
@@ -2702,17 +2702,17 @@ namespace Northface.Tools.ORM.ShapeModel
 	#endregion
 
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Northface.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ValueRangeLink.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ValueRangeLink")]
-	public  partial class ValueRangeLink : Northface.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ValueRangeLink.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ValueRangeLink")]
+	public  partial class ValueRangeLink : Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape
 	{
 		#region ValueRangeLink's Generated Shape Code
 		/// <summary>
@@ -2722,7 +2722,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ValueRangeLink.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ValueRangeLink.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -2814,7 +2814,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// ValueRangeLink Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.ValueRangeLink))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeLink))]
 	public sealed class ValueRangeLinkElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -2828,7 +2828,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.ValueRangeLink( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.ValueRangeLink( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
@@ -2844,7 +2844,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	#endregion
 
 }
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// 
@@ -2869,7 +2869,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.ExternalConstraintConnector.Item.Id", 60, "Toolbox.ExternalConstraintConnector.Bitmap.Id", "Toolbox.ExternalConstraintConnector.Caption.Id", "Toolbox.ExternalConstraintConnector.Tooltip.Id", "Toolbox.DefaultTabName")][System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Northface.Tools.ORM.ShapeModel.ORMDiagram.MetaClassGuidString, "Northface.Tools.ORM.ShapeModel.ORMDiagram")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ORMDiagram.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ORMDiagram")]
 	public  partial class ORMDiagram : Microsoft.VisualStudio.Modeling.Diagrams.Diagram
 	{
 		#region ORMDiagram's Generated Diagram Code
@@ -2880,7 +2880,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Northface.Tools.ORM.ShapeModel.ORMDiagram.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ORMDiagram.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -2972,7 +2972,7 @@ namespace Northface.Tools.ORM.ShapeModel
 	/// <summary>
 	/// ORMDiagram Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Northface.Tools.ORM.ShapeModel.ORMDiagram))]
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.ORMDiagram))]
 	public sealed class ORMDiagramElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
@@ -2986,7 +2986,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Northface.Tools.ORM.ShapeModel.ORMDiagram( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.ORMDiagram( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object

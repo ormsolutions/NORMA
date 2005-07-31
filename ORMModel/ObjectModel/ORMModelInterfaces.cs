@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
-using Northface.Tools.ORM.Shell;
+using Neumont.Tools.ORM.Shell;
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region IORMToolServices interface
 	/// <summary>

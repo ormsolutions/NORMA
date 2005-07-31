@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.ObjectModel;
-namespace Northface.Tools.ORM.ShapeModel
+using Neumont.Tools.ORM.ObjectModel;
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	public abstract partial class FloatingTextShape
 	{

@@ -10,10 +10,10 @@ using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.EnterpriseTools.Validation.UI;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell;
-using Northface.Tools.ORM;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
-namespace Northface.Tools.ORM.Shell
+using Neumont.Tools.ORM;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Valid commands
@@ -468,9 +468,9 @@ namespace Northface.Tools.ORM.Shell
 						if (null != (pel = selectedObject as ShapeElement))
 						{
 							// Check if the object shape was in expanded mode
-							Northface.Tools.ORM.ShapeModel.ObjectTypeShape objectShape;
+							Neumont.Tools.ORM.ShapeModel.ObjectTypeShape objectShape;
 							if (testRefModeCollapse &&
-								null != (objectShape = pel as Northface.Tools.ORM.ShapeModel.ObjectTypeShape) &&
+								null != (objectShape = pel as Neumont.Tools.ORM.ShapeModel.ObjectTypeShape) &&
 								!objectShape.ExpandRefMode
 								)
 							{

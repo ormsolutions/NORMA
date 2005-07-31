@@ -5,9 +5,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.Shell;
-namespace Northface.Tools.ORM.ShapeModel
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region (Temporary) CompositeLinkDecorator test class
 	/// <summary>

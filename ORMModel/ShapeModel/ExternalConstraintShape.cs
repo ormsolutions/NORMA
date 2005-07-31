@@ -8,9 +8,9 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.Shell;
-namespace Northface.Tools.ORM.ShapeModel
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ExternalConstraintShape : IStickyObject, IModelErrorActivation
 	{
@@ -18,7 +18,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A brush used to draw portions of mandatory constraints
 		/// </summary>
-		protected static readonly StyleSetResourceId ExternalConstraintBrush = new StyleSetResourceId("Northface", "ExternalConstraintBrush");
+		protected static readonly StyleSetResourceId ExternalConstraintBrush = new StyleSetResourceId("Neumont", "ExternalConstraintBrush");
 		/// <summary>
 		/// Set the default size for this object.
 		/// </summary>

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.Framework;
-namespace Northface.Tools.ORM.ShapeModel
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Framework;
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ORMShapeModel
 	{

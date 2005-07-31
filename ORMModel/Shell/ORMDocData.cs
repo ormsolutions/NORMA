@@ -9,14 +9,14 @@ using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.ArtifactMapper;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
-using Northface.Tools.ORM.Framework;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.Framework;
 using EnvDTE;
 #if ATTACHELEMENTPROVIDERS
-using Northface.Tools.ORM.DocumentSynchronization;
+using Neumont.Tools.ORM.DocumentSynchronization;
 #endif // ATTACHELEMENTPROVIDERS
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {
 	#region ORMDesignerDocData class
 	/// <summary>

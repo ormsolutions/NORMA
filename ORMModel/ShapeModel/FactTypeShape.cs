@@ -12,10 +12,10 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.Shell;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.Shell;
 
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	#region ConstraintDisplayPosition enum
 	/// <summary>
@@ -1832,15 +1832,15 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Pen to draw a role box outline
 		/// </summary>
-		protected static readonly StyleSetResourceId RoleBoxResource = new StyleSetResourceId("Northface", "RoleBoxResource");
+		protected static readonly StyleSetResourceId RoleBoxResource = new StyleSetResourceId("Neumont", "RoleBoxResource");
 		/// <summary>
 		/// Brush to draw the foreground text for a role picker  
 		/// </summary>
-		protected static readonly StyleSetResourceId RolePickerForeground = new StyleSetResourceId("Northface", "RolePickerForeground");
+		protected static readonly StyleSetResourceId RolePickerForeground = new StyleSetResourceId("Neumont", "RolePickerForeground");
 		/// <summary>
 		/// Pen to draw the active part of an internal uniqueness constraint.
 		/// </summary>
-		protected static readonly StyleSetResourceId InternalFactConstraintPen = new StyleSetResourceId("Northface", "InternalFactConstraintPen");
+		protected static readonly StyleSetResourceId InternalFactConstraintPen = new StyleSetResourceId("Neumont", "InternalFactConstraintPen");
 		private static ExternalConstraintConnectAction myActiveExternalConstraintConnectAction;
 		private static InternalUniquenessConstraintConnectAction myActiveInternalUniquenessConstraintConnectAction;
 		#endregion // Member Variables

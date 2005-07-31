@@ -7,7 +7,7 @@ using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using System.Reflection;
 
-namespace Northface.Tools.ORM.Framework
+namespace Neumont.Tools.ORM.Framework
 {
 	#region INotifyElementAdded interface
 	/// <summary>

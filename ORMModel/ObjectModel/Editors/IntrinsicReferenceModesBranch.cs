@@ -7,10 +7,10 @@ using System.Drawing;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using Microsoft.VisualStudio.Modeling;
-using Northface.Tools.ORM.ObjectModel;  
+using Neumont.Tools.ORM.ObjectModel;  
 #endregion
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	/// <summary>
 	/// The Intrinsic Reference Modes Branch on the tree

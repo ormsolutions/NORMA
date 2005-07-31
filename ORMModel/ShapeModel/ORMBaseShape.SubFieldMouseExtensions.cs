@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	/// <summary>
 	/// An extension to NodeShape to enable Enter/Leave/Hover events

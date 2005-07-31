@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 
 #endregion
 
-namespace Northface.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.FactEditor
 {
 	/// <summary>
 	/// A class which handles applying color to marked tokens

@@ -8,7 +8,7 @@ using Microsoft.VisualStudio;
 using System.Text;
 using System.Diagnostics;
 
-namespace Northface.Tools.Converters
+namespace Neumont.Tools.Converters
 {
 	/// <summary>
 	/// A custom tool to shell the Microsoft-provided ImsToDmd.exe tool.

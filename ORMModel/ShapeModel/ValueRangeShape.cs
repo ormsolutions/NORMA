@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using Northface.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.Shell;
+using Neumont.Tools.ORM.Shell;
 #endregion
 
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ValueRangeShape : IModelErrorActivation
 	{
@@ -20,7 +20,7 @@ namespace Northface.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A brush used to draw the value range text
 		/// </summary>
-		protected static readonly StyleSetResourceId ValueRangeTextBrush = new StyleSetResourceId("Northface", "ValueRangeTextBrush");
+		protected static readonly StyleSetResourceId ValueRangeTextBrush = new StyleSetResourceId("Neumont", "ValueRangeTextBrush");
 		/// <summary>
 		/// Initialize a pen and a brush for drawing the constraint
 		/// outlines and contents.

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Northface.Tools.ORM
+namespace Neumont.Tools.ORM
 {
     
     internal partial class ResourceStrings
@@ -28,7 +28,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueType");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType");
             }
         }
         /// <summary>
@@ -37,7 +37,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.EntityType");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.EntityType");
             }
         }
         /// <summary>
@@ -46,7 +46,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.FactType");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.FactType");
             }
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.SubtypeFact");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SubtypeFact");
             }
         }
         /// <summary>
@@ -64,7 +64,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ObjectifiedFactType");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ObjectifiedFactType");
             }
         }
         /// <summary>
@@ -73,7 +73,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.Reading");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Reading");
             }
         }
         /// <summary>
@@ -82,7 +82,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText");
             }
         }
         /// <summary>
@@ -91,7 +91,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
             }
         }
         /// <summary>
@@ -100,7 +100,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
             }
         }
         /// <summary>
@@ -109,7 +109,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern");
             }
         }
         /// <summary>
@@ -118,7 +118,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text");
             }
         }
         /// <summary>
@@ -127,7 +127,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text");
             }
         }
         /// <summary>
@@ -136,8 +136,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Tex" +
-                        "t");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Text");
             }
         }
         /// <summary>
@@ -146,7 +145,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text");
             }
         }
         /// <summary>
@@ -155,8 +154,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.T" +
-                        "ext");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Tex" +
+                        "t");
             }
         }
         /// <summary>
@@ -165,8 +164,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger" +
-                        ".Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.T" +
+                        "ext");
             }
         }
         /// <summary>
@@ -175,8 +174,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Tex" +
-                        "t");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text");
             }
         }
         /// <summary>
@@ -185,8 +183,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.T" +
-                        "ext");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Tex" +
+                        "t");
             }
         }
         /// <summary>
@@ -195,7 +193,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text");
             }
         }
         /// <summary>
@@ -204,7 +202,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text");
             }
         }
         /// <summary>
@@ -213,8 +211,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Tex" +
-                        "t");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text");
             }
         }
         /// <summary>
@@ -223,8 +220,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength." +
-                        "Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength.Te" +
+                        "xt");
             }
         }
         /// <summary>
@@ -233,8 +230,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Tex" +
-                        "t");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text");
             }
         }
         /// <summary>
@@ -243,7 +239,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text");
             }
         }
         /// <summary>
@@ -252,7 +248,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text");
             }
         }
         /// <summary>
@@ -261,8 +257,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp." +
-                        "Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Te" +
+                        "xt");
             }
         }
         /// <summary>
@@ -271,7 +267,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text");
             }
         }
         /// <summary>
@@ -280,7 +276,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text");
             }
         }
         /// <summary>
@@ -289,8 +285,8 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Te" +
-                        "xt");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text" +
+                        "");
             }
         }
         /// <summary>
@@ -299,8 +295,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Tex" +
-                        "t");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text");
             }
         }
         /// <summary>
@@ -309,7 +304,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text");
             }
         }
         /// <summary>
@@ -318,7 +313,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text");
             }
         }
         /// <summary>
@@ -327,7 +322,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text");
             }
         }
         /// <summary>
@@ -336,7 +331,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern");
             }
         }
         /// <summary>
@@ -345,7 +340,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.FactType.DefaultNamePattern");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.FactType.DefaultNamePattern");
             }
         }
         /// <summary>
@@ -354,7 +349,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern");
             }
         }
         /// <summary>
@@ -1138,7 +1133,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern");
             }
         }
         /// <summary>
@@ -1147,7 +1142,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter");
             }
         }
         /// <summary>
@@ -1156,7 +1151,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueDelimiter");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueDelimiter");
             }
         }
         /// <summary>
@@ -1165,7 +1160,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern");
             }
         }
         /// <summary>
@@ -1174,7 +1169,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern");
             }
         }
         /// <summary>
@@ -1183,7 +1178,7 @@ namespace Northface.Tools.ORM
         {
             get
             {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Northface.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern");
+                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern");
             }
         }
         /// <summary>

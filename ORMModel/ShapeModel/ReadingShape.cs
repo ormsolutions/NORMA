@@ -6,14 +6,14 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Globalization;
-using Northface.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Drawing;
 
 #endregion
 
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ReadingShape : IModelErrorActivation
 	{

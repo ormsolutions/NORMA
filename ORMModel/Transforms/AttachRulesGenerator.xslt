@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix"
-    xmlns:arg="http://Schemas.Northface.edu/Private/AttachRulesGenerator"
+    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix"
+    xmlns:arg="http://Schemas.Neumont.edu/Private/AttachRulesGenerator"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<!-- Pick up param value supplied automatically by plix loader -->
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>

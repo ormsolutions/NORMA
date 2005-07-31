@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <se:CustomSerializedElements
-    xmlns:se="http://Schemas.Northface.edu/Private/SerializationExtensions"
-    xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
+    xmlns:se="http://Schemas.Neumont.edu/Private/SerializationExtensions"
+    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix">
 	<se:MetaModel Class="ORMMetaModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="orm" URI="http://Schemas.Northface.edu/ORM/ORMCore" SchemaFile="ORM2Core.xsd"  DefaultPrefix="true"/>
-			<se:Namespace Prefix="ormDerived" URI="http://Schemas.Northface.edu/ORM/ORMDerived"/>
+			<se:Namespace Prefix="orm" URI="http://Schemas.Neumont.edu/ORM/ORMCore" SchemaFile="ORM2Core.xsd"  DefaultPrefix="true"/>
+			<se:Namespace Prefix="ormDerived" URI="http://Schemas.Neumont.edu/ORM/ORMDerived"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="ORMModel"/>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
     using System;
     using System.Reflection;
@@ -63,9 +63,9 @@ namespace Northface.Tools.ORM.ObjectModel
                     typeof(MultiColumnExternalConstraint).GetNestedType("EnforceRoleSequenceValidityForFactTypeRemove", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(MultiColumnExternalConstraint).GetNestedType("EnforceRoleSequenceValidityForRemove", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(MultiColumnExternalConstraint).GetNestedType("ExternalRoleConstraintRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(Northface.Tools.ORM.Framework.NamedElementDictionary).GetNestedType("ElementLinkAddedRule", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(Northface.Tools.ORM.Framework.NamedElementDictionary).GetNestedType("ElementLinkRemovedRule", (BindingFlags.Public | BindingFlags.NonPublic)),
-                    typeof(Northface.Tools.ORM.Framework.NamedElementDictionary).GetNestedType("NamedElementChangedRule", (BindingFlags.Public | BindingFlags.NonPublic)),
+                    typeof(Neumont.Tools.ORM.Framework.NamedElementDictionary).GetNestedType("ElementLinkAddedRule", (BindingFlags.Public | BindingFlags.NonPublic)),
+                    typeof(Neumont.Tools.ORM.Framework.NamedElementDictionary).GetNestedType("ElementLinkRemovedRule", (BindingFlags.Public | BindingFlags.NonPublic)),
+                    typeof(Neumont.Tools.ORM.Framework.NamedElementDictionary).GetNestedType("NamedElementChangedRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ObjectType).GetNestedType("CheckForIncompatibleRelationshipRule", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ObjectType).GetNestedType("ModelHasObjectTypeAddRuleModelValidation", (BindingFlags.Public | BindingFlags.NonPublic)),
                     typeof(ObjectType).GetNestedType("ObjectTypeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),

@@ -6,8 +6,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{888816BF-5497-49F9-8353-C8EF30CB9226}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Northface.Tools.ORM</RootNamespace>
-    <AssemblyName>Northface.Tools.ORM</AssemblyName>
+    <RootNamespace>Neumont.Tools.ORM</RootNamespace>
+    <AssemblyName>Neumont.Tools.ORM</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
@@ -21,7 +21,7 @@
     <Optimize>false</Optimize>
     <OutputPath>.\bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;FACTEDITORPROTOTYPE</DefineConstants>
-    <DocumentationFile>bin\Debug\Northface.Tools.ORM.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Neumont.Tools.ORM.XML</DocumentationFile>
     <RunFxCop>false</RunFxCop>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -29,7 +29,7 @@
     <Optimize>true</Optimize>
     <OutputPath>.\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>bin\Release\Northface.Tools.ORM.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Neumont.Tools.ORM.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
@@ -200,15 +200,6 @@
     <Compile Include="Shell\ORMEditorFactory.cs" />
     <Compile Include="Shell\ORMPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="..\ORMDesigner.vrg">
       <Link>Shell\ProjectItems\ORMDesigner.vrg</Link>
     </None>
@@ -216,14 +207,6 @@
       <Link>ORMPackage.snk</Link>
     </None>
     <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Shell\ORMReadingEditor.cs">
     </Compile>
     <Compile Include="Shell\ORMSerializer.2.cs">

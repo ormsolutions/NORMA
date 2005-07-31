@@ -10,7 +10,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.TextManager.Interop;
 #endregion
 
-namespace Northface.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.FactEditor
 {
 	#region IFactParser
 

@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Globalization;
 using System.ComponentModel;
 using Microsoft.VisualStudio.Modeling;
-using Northface.Tools.ORM.ObjectModel;
-namespace Northface.Tools.ORM.ObjectModel.Editors
+using Neumont.Tools.ORM.ObjectModel;
+namespace Neumont.Tools.ORM.ObjectModel.Editors
 {
 	#region RolePlayerPicker class
 	/// <summary>

@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-namespace Northface.Tools.ORM.ObjectModel.Editors
+namespace Neumont.Tools.ORM.ObjectModel.Editors
 {
 	/// <summary>
 	/// A base class used to display a simple list of elements

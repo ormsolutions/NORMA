@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Todo: Is external on object type?  What am I supposed to do with object shapes and data types? -->
-<xs:schema targetNamespace="http://Schemas.Northface.edu/ORM/ORMCore" 
+<xs:schema targetNamespace="http://Schemas.Neumont.edu/ORM/ORMCore" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified" 
-	xmlns="http://Schemas.Northface.edu/ORM/ORMCore" 
+	xmlns="http://Schemas.Neumont.edu/ORM/ORMCore" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	xmlns:derived="http://Schemas.Northface.edu/ORM/ORMDerived">
+	xmlns:derived="http://Schemas.Neumont.edu/ORM/ORMDerived">
 
-	<!-- <xs:import namespace="http://Schemas.Northface.edu/ORM/ORMDerived" /> -->
+	<!-- <xs:import namespace="http://Schemas.Neumont.edu/ORM/ORMDerived" /> -->
 	<!--ExtendableElement the thought here is to define all the any's once and then have Extendable Element extend this-->
 	<xs:complexType name="ExtendableElement" abstract="true">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">

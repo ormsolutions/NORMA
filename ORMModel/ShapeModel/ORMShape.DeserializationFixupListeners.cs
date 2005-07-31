@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Northface.Tools.ORM.Framework;
+using Neumont.Tools.ORM.Framework;
 
-namespace Northface.Tools.ORM.ShapeModel
+namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ORMShapeModel : IDeserializationFixupListenerProvider
 	{

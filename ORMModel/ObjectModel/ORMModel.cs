@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
-using Northface.Tools.ORM.Framework;
+using Neumont.Tools.ORM.Framework;
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region ORMDeserializationFixupPhase enum
 	/// <summary>

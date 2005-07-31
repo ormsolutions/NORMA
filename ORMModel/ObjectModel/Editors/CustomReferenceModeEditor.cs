@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 
 #endregion
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	///	<summary>
 	///	Custom reference mode editor.

@@ -71,7 +71,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				ExecutionBucket="14"
-				OutputFile="$(OutDir)\Northface.Tools.ORMUI.dll"
+				OutputFile="$(OutDir)\Neumont.Tools.ORMUI.dll"
 				LinkIncremental="1"
 				GenerateManifest="false"
 				ManifestFile=""

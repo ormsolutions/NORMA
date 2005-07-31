@@ -6,7 +6,7 @@ using System.Text;
 
 #endregion
 
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// A collection of static GUIDs used in the IOleCommandTarget.Exec

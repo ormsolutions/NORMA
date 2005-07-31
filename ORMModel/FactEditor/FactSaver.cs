@@ -2,16 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using Northface.Tools.ORM.Shell;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
-using Northface.Tools.ORM.Framework;
+using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.Framework;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Text.RegularExpressions;
 
-namespace Northface.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.FactEditor
 {
 	/// <summary>
 	/// Use to draw a FactLine on the model.

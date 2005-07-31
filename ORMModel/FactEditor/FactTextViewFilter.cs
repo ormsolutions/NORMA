@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Runtime.InteropServices;
-using Northface.Tools.ORM.Shell;
+using Neumont.Tools.ORM.Shell;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 
 #endregion
 
-namespace Northface.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.FactEditor
 {
 	/// <summary>
 	/// Filter the text view and look for specific package commands

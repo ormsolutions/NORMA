@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.Modeling;
-using Northface.Tools.ORM.Framework;
+using Neumont.Tools.ORM.Framework;
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region RegenerateErrorTextEvents enum
 	/// <summary>

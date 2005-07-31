@@ -2,9 +2,9 @@
 <xsl:stylesheet version="1.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-    xmlns:orm="http://Schemas.Northface.edu/ORM/ORMCore"
-    xmlns:ormRoot="http://Schemas.Northface.edu/ORM/ORMRoot"
-    xmlns:plx="http://Schemas.Northface.edu/CodeGeneration/Plix">
+    xmlns:orm="http://Schemas.Neumont.edu/ORM/ORMCore"
+    xmlns:ormRoot="http://Schemas.Neumont.edu/ORM/ORMRoot"
+    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix">
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:param name="AssociationClassDecorator" select="'Association'"></xsl:param>
 

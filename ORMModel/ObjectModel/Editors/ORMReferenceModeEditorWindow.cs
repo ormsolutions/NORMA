@@ -7,13 +7,13 @@ using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Shell;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Editors;
 using Microsoft.VisualStudio.Modeling;  
 
 #endregion
 
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Tool window for editing refence modes.

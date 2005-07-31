@@ -8,11 +8,11 @@ using System.Windows.Forms.Design;
 using System.Drawing.Design;
 using System.Drawing;
 using Microsoft.VisualStudio.Modeling;
-using Northface.Tools.ORM.Shell;
+using Neumont.Tools.ORM.Shell;
 
 #endregion
 
-namespace Northface.Tools.ORM.ObjectModel.Editors
+namespace Neumont.Tools.ORM.ObjectModel.Editors
 {
 	/// <summary>
 	/// Type editor for use on ReadingText properties in the property grid.

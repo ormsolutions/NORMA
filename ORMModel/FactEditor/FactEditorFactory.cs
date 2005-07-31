@@ -9,11 +9,11 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TextManager.Interop;
 using System.Reflection;
-using Northface.Tools.ORM.Shell;
+using Neumont.Tools.ORM.Shell;
 
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
-namespace Northface.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.FactEditor
 {
 	/// <summary>
 	/// The factory which creates instances of the ORM fact editor. A factory is created

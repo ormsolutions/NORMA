@@ -12,10 +12,10 @@ using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagnostics;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
 
-namespace Northface.Tools.ORM.Shell
+namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
 	/// Read/write .orm files leveraging the default IMS serializer
@@ -54,16 +54,16 @@ namespace Northface.Tools.ORM.Shell
 	<xsl:template match=""om:Property[@Name='KindDisplay']"" />
 	<xsl:template match=""om:Property[@Name='Text']"">
 		<xsl:choose>
-			<xsl:when test=""parent::om:ModelElement[@Type='Northface.Tools.ORM.ObjectModel.ValueRange']""/>
-			<xsl:when test=""parent::om:ModelElement[@Type='Northface.Tools.ORM.ObjectModel.RoleValueRangeDefinition']""/>
-			<xsl:when test=""parent::om:ModelElement[@Type='Northface.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition']""/>
+			<xsl:when test=""parent::om:ModelElement[@Type='Neumont.Tools.ORM.ObjectModel.ValueRange']""/>
+			<xsl:when test=""parent::om:ModelElement[@Type='Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition']""/>
+			<xsl:when test=""parent::om:ModelElement[@Type='Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition']""/>
 			<xsl:otherwise>
 				<xsl:copy-of select="".""/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	<!-- DataTypeNotSpecifiedError spits as a link to a link, which won't deserialize, so don't save it -->
-	<xsl:template match=""om:ModelElement[@Type='Northface.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError']""/>
+	<xsl:template match=""om:ModelElement[@Type='Neumont.Tools.ORM.ObjectModel.DataTypeNotSpecifiedError']""/>
 </xsl:stylesheet>";
 		#endregion // Xsl transforms
 		#region Synchronized code to load transform into static variable

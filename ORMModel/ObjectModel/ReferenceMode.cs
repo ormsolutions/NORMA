@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using System.Globalization;
-using Northface.Tools.ORM.Framework;
+using Neumont.Tools.ORM.Framework;
 
-namespace Northface.Tools.ORM.ObjectModel
+namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region ReferenceModeType enum
 	/// <summary>
@@ -108,13 +108,13 @@ namespace Northface.Tools.ORM.ObjectModel
 		/// standard code spit to generate a role player change instead of
 		/// a delete/add when the property is changed.
 		/// </summary>
-		public Northface.Tools.ORM.ObjectModel.ReferenceModeKind Kind
+		public Neumont.Tools.ORM.ObjectModel.ReferenceModeKind Kind
 		{
 			get
 			{
 				System.Object o = null;
 				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid);
 				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 				{
 					if (!link.IsRemoved)
@@ -125,9 +125,9 @@ namespace Northface.Tools.ORM.ObjectModel
 				}
 				if (goodLink != null)
 				{
-					o = goodLink.GetRolePlayer(Northface.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.KindMetaRoleGuid);
+					o = goodLink.GetRolePlayer(Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.KindMetaRoleGuid);
 				}
-				return (Northface.Tools.ORM.ObjectModel.ReferenceModeKind)o;
+				return (Neumont.Tools.ORM.ObjectModel.ReferenceModeKind)o;
 			}
 			set
 			{

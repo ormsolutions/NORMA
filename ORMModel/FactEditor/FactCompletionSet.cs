@@ -12,15 +12,15 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.TextManager.Interop;
-using Northface.Tools.ORM.Shell;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ObjectModel.Editors;
+using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Editors;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 #endregion
 
-namespace Northface.Tools.ORM.FactEditor
+namespace Neumont.Tools.ORM.FactEditor
 {
 	/// <summary>
 	/// A completion set manager for fact editing
