@@ -1100,6 +1100,7 @@ Information Contained Herein is Proprietary and Confidential.
       </relationship>
       <relationship name="ORMElementLink" identity="718adac4-a9e2-454d-a700-1c34b6d3bcbf" namespace="Neumont.Tools.ORM.ObjectModel" id="i718adac4za9e2z454dza700z1c34b6d3bcbf" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
+        <superType>if24967fbz05a7z4fd7zad80z1c981c4dfe26</superType>
         <roles />
       </relationship>
     </relationships>
@@ -1952,6 +1953,26 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <superType>id18ac149z4ff4z433bzbc8ez440e96842cbb</superType>
             <subType>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMElementLink-ElementLink" identity="0f29c885-316a-4eec-ae86-7d8e854a45e4" id="i0f29c885z316az4eeczae86z7d8e854a45e4" definitionlevel="none">
+            <source />
+            <superType>if24967fbz05a7z4fd7zad80z1c981c4dfe26</superType>
+            <subType>i718adac4za9e2z454dza700z1c34b6d3bcbf</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ElementLink-ModelElement" identity="c1ae4024-fbdc-4663-be7c-049c54d37621" id="ic1ae4024zfbdcz4663zbe7cz049c54d37621" definitionlevel="none">
+            <source />
+            <superType>iefb12b90z0b84z4491z83bfzc5c8fe0dc28c</superType>
+            <subType>if24967fbz05a7z4fd7zad80z1c981c4dfe26</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="NamedElement-ModelElement" identity="7c45d848-8f7a-4068-8fcc-f383243d732c" id="i7c45d848z8f7az4068z8fcczf383243d732c" definitionlevel="none">
+            <source />
+            <superType>iefb12b90z0b84z4491z83bfzc5c8fe0dc28c</superType>
+            <subType>i67bc2b25z4157z4c4dz8814zd41bdd182434</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMNamedElement-NamedElement" identity="6b33bf21-5b50-4342-b71f-e036f0f24329" id="i6b33bf21z5b50z4342zb71fze036f0f24329" definitionlevel="none">
+            <source />
+            <superType>i67bc2b25z4157z4c4dz8814zd41bdd182434</superType>
+            <subType>id18ac149z4ff4z433bzbc8ez440e96842cbb</subType>
           </treeExpression>
         </expressions>
         <roots />
@@ -2965,16 +2986,28 @@ Information Contained Herein is Proprietary and Confidential.
             <superType>id18ac149z4ff4z433bzbc8ez440e96842cbb</superType>
             <subType>i3f4ba8faz355bz4a49za42cz9c56f6e5f242</subType>
           </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMElementLink-ElementLink" identity="1af21bfb-fe1f-464c-a1c2-e5c100f7a606" id="i1af21bfbzfe1fz464cza1c2ze5c100f7a606" definitionlevel="definition">
+            <source>i0f29c885z316az4eeczae86z7d8e854a45e4</source>
+            <superType>if24967fbz05a7z4fd7zad80z1c981c4dfe26</superType>
+            <subType>i718adac4za9e2z454dza700z1c34b6d3bcbf</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ElementLink-ModelElement" identity="d3103cab-1d98-4fb9-a49d-6344f57a6517" id="id3103cabz1d98z4fb9za49dz6344f57a6517" definitionlevel="definition">
+            <source>ic1ae4024zfbdcz4663zbe7cz049c54d37621</source>
+            <superType>iefb12b90z0b84z4491z83bfzc5c8fe0dc28c</superType>
+            <subType>if24967fbz05a7z4fd7zad80z1c981c4dfe26</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="NamedElement-ModelElement" identity="76728df3-4445-4613-b18d-73bdb9b7622e" id="i76728df3z4445z4613zb18dz73bdb9b7622e" definitionlevel="definition">
+            <source>i7c45d848z8f7az4068z8fcczf383243d732c</source>
+            <superType>iefb12b90z0b84z4491z83bfzc5c8fe0dc28c</superType>
+            <subType>i67bc2b25z4157z4c4dz8814zd41bdd182434</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMNamedElement-NamedElement" identity="342a5b47-2e49-4a0e-b3e4-d9bf3d19e9a8" id="i342a5b47z2e49z4a0ezb3e4zd9bf3d19e9a8" definitionlevel="definition">
+            <source>i6b33bf21z5b50z4342zb71fze036f0f24329</source>
+            <superType>i67bc2b25z4157z4c4dz8814zd41bdd182434</superType>
+            <subType>id18ac149z4ff4z433bzbc8ez440e96842cbb</subType>
+          </treeExpression>
         </expressions>
         <roots>
-          <root name="ORMNamedElement" identity="52af1977-e13e-483a-8f40-63f7587d20b3" id="i52af1977ze13ez483az8f40z63f7587d20b3">
-            <source />
-            <referencetype>id18ac149z4ff4z433bzbc8ez440e96842cbb</referencetype>
-          </root>
-          <root name="ORMElementLink" identity="d2f3fe96-577b-4ef9-b72d-3247f6871621" id="id2f3fe96z577bz4ef9zb72dz3247f6871621">
-            <source />
-            <referencetype>i718adac4za9e2z454dza700z1c34b6d3bcbf</referencetype>
-          </root>
           <root name="ModelElement" identity="7ff516db-ce3c-4610-a36c-ec835c0f8057" id="i7ff516dbzce3cz4610za36czec835c0f8057">
             <source />
             <referencetype>iefb12b90z0b84z4491z83bfzc5c8fe0dc28c</referencetype>
@@ -3738,6 +3771,7 @@ Information Contained Herein is Proprietary and Confidential.
       </concept>
       <concept name="ORMNamedElement" identity="d18ac149-4ff4-433b-bc8e-440e96842cbb" namespace="Neumont.Tools.ORM.ObjectModel" id="id18ac149z4ff4z433bzbc8ez440e96842cbb" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
+        <superType>i67bc2b25z4157z4c4dz8814zd41bdd182434</superType>
       </concept>
       <concept name="UnspecifiedDataType" identity="12a11e3f-7daf-4ced-8ca2-34d3250ad125" namespace="Neumont.Tools.ORM.ObjectModel" id="i12a11e3fz7dafz4cedz8ca2z34d3250ad125" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
@@ -3947,6 +3981,14 @@ Information Contained Herein is Proprietary and Confidential.
       </concept>
       <concept name="ModelElement" identity="efb12b90-0b84-4491-83bf-c5c8fe0dc28c" namespace="Microsoft.VisualStudio.Modeling" id="iefb12b90z0b84z4491z83bfzc5c8fe0dc28c" isLoaded="false" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+      </concept>
+      <concept name="ElementLink" identity="f24967fb-05a7-4fd7-ad80-1c981c4dfe26" namespace="Microsoft.VisualStudio.Modeling" id="if24967fbz05a7z4fd7zad80z1c981c4dfe26" isLoaded="false" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>iefb12b90z0b84z4491z83bfzc5c8fe0dc28c</superType>
+      </concept>
+      <concept name="NamedElement" identity="67bc2b25-4157-4c4d-8814-d41bdd182434" namespace="Microsoft.VisualStudio.Modeling" id="i67bc2b25z4157z4c4dz8814zd41bdd182434" isLoaded="false" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>iefb12b90z0b84z4491z83bfzc5c8fe0dc28c</superType>
       </concept>
     </concepts>
   </model>
