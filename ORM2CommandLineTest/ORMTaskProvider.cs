@@ -1,11 +1,8 @@
-﻿#region Using directives
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
-using Northface.Tools.ORM.ObjectModel;
-
-#endregion
+using Neumont.Tools.ORM.ObjectModel;
 
 namespace ORM2CommandLineTest
 {

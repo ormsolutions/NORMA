@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
-using Northface.Tools.ORM.Shell;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM.Shell;
 using System.Xml;
 
 #endregion
@@ -63,6 +63,24 @@ namespace ORM2CommandLineTest
 			get
 			{
 				return FontAndColorService;
+			}
+		}
+		/// <summary>
+		/// Defer to ServiceProvider on the document. Implements
+		/// IORMToolServices.ServiceProvider
+		/// </summary>
+		protected IServiceProvider ServiceProvider
+		{
+			get
+			{
+				return myServices.ServiceProvider;
+			}
+		}
+		IServiceProvider IORMToolServices.ServiceProvider
+		{
+			get
+			{
+				return ServiceProvider;
 			}
 		}
 		#endregion // IORMToolServices Implementation

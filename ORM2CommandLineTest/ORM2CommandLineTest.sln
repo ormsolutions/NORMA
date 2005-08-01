@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORM2CommandLineTest", "ORM2CommandLineTest\ORM2CommandLineTest.csproj", "{5DB17441-D264-4B37-88D5-98C3B1CF7D71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORM2CommandLineTest", "ORM2CommandLineTest.csproj", "{5DB17441-D264-4B37-88D5-98C3B1CF7D71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

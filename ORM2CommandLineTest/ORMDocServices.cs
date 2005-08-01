@@ -1,12 +1,10 @@
-﻿#region Using directives
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
-using Northface.Tools.ORM;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM;
 using System.Diagnostics;
 using System.Drawing;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -14,11 +12,9 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Northface.Tools.ORM.Shell;
-using System.Xml.Query;
+using Neumont.Tools.ORM.Shell;
+using Neumont.Tools.ORM.Framework;
 using System.Xml;
-
-#endregion
 
 namespace ORM2CommandLineTest
 {
@@ -74,6 +70,20 @@ namespace ORM2CommandLineTest
 			Debug.Assert(myTaskProvider == null);
 			return new ORMTaskProvider();
 		}
+		protected IServiceProvider ServiceProvider
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IServiceProvider IORMToolServices.ServiceProvider
+		{
+			get
+			{
+				return ServiceProvider;
+			}
+		}
 		#endregion
 
 		#region IORMFontAndColorService Members
@@ -121,7 +131,6 @@ namespace ORM2CommandLineTest
 			store.UndoManager.UndoState = UndoState.Disabled;
 			Type[] subStores = new Type[4] { typeof(Core), typeof(CoreDesignSurface), typeof(ORMMetaModel), typeof(ORMShapeModel) };
 			store.LoadMetaModels(subStores);
-			AddErrorReportingEvents(store);
 			using (Transaction t = store.TransactionManager.BeginTransaction("Initialization"))
 			{
 				foreach (Type subStoreType in subStores)
@@ -145,7 +154,7 @@ namespace ORM2CommandLineTest
 					if (stream.Length > 1)
 					{
 						DeserializationFixupManager fixupManager = new DeserializationFixupManager(DeserializationFixupPhaseType, store);
-						foreach (IDeserializationFixupListener listener in DeserializationFixupListeners)
+						foreach (IDeserializationFixupListener listener in GetDeserializationFixupListeners(store))
 						{
 							fixupManager.AddListener(listener);
 						}
@@ -154,6 +163,7 @@ namespace ORM2CommandLineTest
 				}
 				t.Commit();
 			}
+			AddErrorReportingEvents(store);
 			return store;
 		}
 
@@ -184,17 +194,17 @@ namespace ORM2CommandLineTest
 		/// <summary>
 		/// Return a set of listeners for deserialization fixup
 		/// </summary>
-		private IEnumerable<IDeserializationFixupListener> DeserializationFixupListeners
+		private IEnumerable<IDeserializationFixupListener> GetDeserializationFixupListeners(Store store)
 		{
-			get
+			foreach (object subStore in store.SubStores.Values)
 			{
-				foreach (IDeserializationFixupListener listener in ORMModel.DeserializationFixupListeners)
+				IDeserializationFixupListenerProvider provider = subStore as IDeserializationFixupListenerProvider;
+				if (provider != null)
 				{
-					yield return listener;
-				}
-				foreach (IDeserializationFixupListener listener in ORMDiagram.DeserializationFixupListeners)
-				{
-					yield return listener;
+					foreach (IDeserializationFixupListener listener in provider.DeserializationFixupListenerCollection)
+					{
+						yield return listener;
+					}
 				}
 			}
 		}

@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Northface.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel;
 
 #endregion
 

@@ -6,9 +6,9 @@ using System.IO;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Xml;
-using Northface.Tools.ORM;
-using Northface.Tools.ORM.ObjectModel;
-using Northface.Tools.ORM.ShapeModel;
+using Neumont.Tools.ORM;
+using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ShapeModel;
 using System.Reflection;
 using Microsoft.XmlDiffPatch;
 using System.Text.RegularExpressions;
@@ -20,8 +20,6 @@ namespace ORM2CommandLineTest
 	{
 		static string originalFile;
 		static string savedFile = @"C:\temp\testSave.orm";
-
-		static bool pass;
 
 		static void Main(string[] args)
 		{
