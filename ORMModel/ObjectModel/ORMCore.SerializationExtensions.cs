@@ -139,6 +139,7 @@ namespace Neumont.Tools.ORM.ObjectModel
                 classNameMap.Add("ValueRangeDefinition", ValueTypeValueRangeDefinition.MetaClassGuid);
                 classNameMap.Add("RoleValueRangeDefinition", RoleValueRangeDefinition.MetaClassGuid);
                 classNameMap.Add("Fact", FactType.MetaClassGuid);
+                classNameMap.Add("SubtypeFact", SubtypeFact.MetaClassGuid);
                 classNameMap.Add("ReadingOrder", ReadingOrder.MetaClassGuid);
                 classNameMap.Add("Reading", Reading.MetaClassGuid);
                 classNameMap.Add("Role", Role.MetaClassGuid);
@@ -1518,6 +1519,43 @@ namespace Neumont.Tools.ORM.ObjectModel
                     }
                 }
                 return 1;
+            }
+        }
+    }
+    /// <summary>
+    ///</summary>
+    public partial class SubtypeFact : IORMCustomSerializedElement
+    {
+        /// <summary>
+        ///</summary>
+        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.ElementInfo);
+            }
+        }
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+        {
+            get
+            {
+                return this.SupportedCustomSerializedOperations;
+            }
+        }
+        /// <summary>
+        ///</summary>
+        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+        {
+            get
+            {
+                return new ORMCustomSerializedElementInfo(null, "SubtypeFact", null, ORMCustomSerializedElementWriteStyle.Element, null);
+            }
+        }
+        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+        {
+            get
+            {
+                return this.CustomSerializedElementInfo;
             }
         }
     }

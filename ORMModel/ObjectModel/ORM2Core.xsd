@@ -348,9 +348,10 @@
 	<xs:complexType name="Facts">
 		<xs:complexContent>
 			<xs:extension base="ExtendableElement">
-				<xs:sequence>
-					<xs:element name="Fact" type="Fact" minOccurs="0" maxOccurs="unbounded"/>
-				</xs:sequence>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="Fact" type="Fact"/>
+					<xs:element name="SubtypeFact" type="SubtypeFact"/>
+				</xs:choice>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -369,6 +370,11 @@
 				<xs:attribute name="id" use="required" type="xs:ID"/>
 				<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SubtypeFact">
+		<xs:complexContent>
+			<xs:extension base="Fact"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<!-- End Facts -->

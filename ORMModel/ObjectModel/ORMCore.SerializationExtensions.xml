@@ -144,6 +144,7 @@
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="ReadingRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
+	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true"/>
 	<!--Readings-->
 	<se:Element Class="ReadingOrder">
 		<se:ChildElement Name="Readings">
