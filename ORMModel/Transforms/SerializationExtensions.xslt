@@ -103,27 +103,24 @@
 										</plx:Variable>
 										<plx:Condition>
 											<plx:Test>
-												<plx:Operator name="BooleanNot">
-													<!-- UNDONE: Plix game for CodeDomProvider -->
-													<plx:Operator name="Equality">
-														<plx:Left>
-															<plx:Value type="I4">0</plx:Value>
-														</plx:Left>
-														<plx:Right>
-															<plx:Operator name="BitwiseAnd">
-																<plx:Left>
-																	<plx:CallType name="ChildElementInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
-																</plx:Left>
-																<plx:Right>
-																	<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
-																		<plx:CallObject>
-																			<plx:BaseKeyword/>
-																		</plx:CallObject>
-																	</plx:CallInstance>
-																</plx:Right>
-															</plx:Operator>
-														</plx:Right>
-													</plx:Operator>
+												<plx:Operator name="Inequality">
+													<plx:Left>
+														<plx:Value type="I4">0</plx:Value>
+													</plx:Left>
+													<plx:Right>
+														<plx:Operator name="BitwiseAnd">
+															<plx:Left>
+																<plx:CallType name="ChildElementInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
+															</plx:Left>
+															<plx:Right>
+																<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
+																	<plx:CallObject>
+																		<plx:BaseKeyword/>
+																	</plx:CallObject>
+																</plx:CallInstance>
+															</plx:Right>
+														</plx:Operator>
+													</plx:Right>
 												</plx:Operator>
 											</plx:Test>
 											<plx:Body>
@@ -357,27 +354,24 @@
 							<xsl:if test="$ClassOverride">
 								<plx:Condition>
 									<plx:Test>
-										<plx:Operator name="BooleanNot">
-											<!-- UNDONE: Plix game for CodeDomProvider -->
-											<plx:Operator name="Equality">
-												<plx:Left>
-													<plx:Value type="I4">0</plx:Value>
-												</plx:Left>
-												<plx:Right>
-													<plx:Operator name="BitwiseAnd">
-														<plx:Left>
-															<plx:CallType name="AttributeInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
-														</plx:Left>
-														<plx:Right>
-															<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
-																<plx:CallObject>
-																	<plx:BaseKeyword/>
-																</plx:CallObject>
-															</plx:CallInstance>
-														</plx:Right>
-													</plx:Operator>
-												</plx:Right>
-											</plx:Operator>
+										<plx:Operator name="Inequality">
+											<plx:Left>
+												<plx:Value type="I4">0</plx:Value>
+											</plx:Left>
+											<plx:Right>
+												<plx:Operator name="BitwiseAnd">
+													<plx:Left>
+														<plx:CallType name="AttributeInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
+													</plx:Left>
+													<plx:Right>
+														<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
+															<plx:CallObject>
+																<plx:BaseKeyword/>
+															</plx:CallObject>
+														</plx:CallInstance>
+													</plx:Right>
+												</plx:Operator>
+											</plx:Right>
 										</plx:Operator>
 									</plx:Test>
 									<plx:Body>
@@ -441,27 +435,24 @@
 							<xsl:if test="$ClassOverride">
 								<plx:Condition>
 									<plx:Test>
-										<plx:Operator name="BooleanNot">
-											<!-- UNDONE: Plix game for CodeDomProvider -->
-											<plx:Operator name="Equality">
-												<plx:Left>
-													<plx:Value type="I4">0</plx:Value>
-												</plx:Left>
-												<plx:Right>
-													<plx:Operator name="BitwiseAnd">
-														<plx:Left>
-															<plx:CallType name="LinkInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
-														</plx:Left>
-														<plx:Right>
-															<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
-																<plx:CallObject>
-																	<plx:BaseKeyword/>
-																</plx:CallObject>
-															</plx:CallInstance>
-														</plx:Right>
-													</plx:Operator>
-												</plx:Right>
-											</plx:Operator>
+										<plx:Operator name="Inequality">
+											<plx:Left>
+												<plx:Value type="I4">0</plx:Value>
+											</plx:Left>
+											<plx:Right>
+												<plx:Operator name="BitwiseAnd">
+													<plx:Left>
+														<plx:CallType name="LinkInfo" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
+													</plx:Left>
+													<plx:Right>
+														<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
+															<plx:CallObject>
+																<plx:BaseKeyword/>
+															</plx:CallObject>
+														</plx:CallInstance>
+													</plx:Right>
+												</plx:Operator>
+											</plx:Right>
 										</plx:Operator>
 									</plx:Test>
 									<plx:Body>
@@ -500,7 +491,7 @@
 							<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
 						</plx:ImplementsInterface>
 						<plx:Field name="myRoleOrderDictionary" visibility="Private" dataTypeName="Dictionary">
-							<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+							<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
 							<plx:PassTypeParam dataTypeName="Int32" dataTypeQualifier="System"/>
 						</plx:Field>
 						<xsl:if test="$ClassOverride">
@@ -579,11 +570,11 @@
 								</plx:Initialize>
 							</plx:Variable>
 							<plx:Variable name="roleOrderDictionary" dataTypeName="Dictionary">
-								<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+								<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
 								<plx:PassTypeParam dataTypeName="Int32" dataTypeQualifier="System"/>
 								<plx:Initialize>
 									<plx:CallNew dataTypeName="Dictionary">
-										<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
+										<plx:PassTypeParam dataTypeName="String" dataTypeQualifier="System"/>
 										<plx:PassTypeParam dataTypeName="Int32" dataTypeQualifier="System"/>
 									</plx:CallNew>
 								</plx:Initialize>
@@ -614,9 +605,13 @@
 													<plx:Value type="Local">roleOrderDictionary</plx:Value>
 												</plx:CallObject>
 												<plx:PassParam>
-													<plx:CallInstance name="OppositeMetaRole" style="Property">
+													<plx:CallInstance name="FullName" style="Property">
 														<plx:CallObject>
-															<plx:Value type="Local">metaRole</plx:Value>
+															<plx:CallInstance name="OppositeMetaRole" style="Property">
+																<plx:CallObject>
+																	<plx:Value type="Local">metaRole</plx:Value>
+																</plx:CallObject>
+															</plx:CallInstance>
 														</plx:CallObject>
 													</plx:CallInstance>
 												</plx:PassParam>
@@ -644,7 +639,7 @@
 							</plx:Operator>
 						</plx:Function>
 						<plx:Function visibility="Public" name="Compare">
-							<!-- UNDONE: I'd prefer the following block, but Beta1 CodeDom isn't
+							<!-- UNDONE: I'd prefer the following block, but Beta2 CodeDom isn't
 								spitting type arguments for private implementation types
 							<plx:InterfaceMember dataTypeName="IComparer" member="Compare">
 								<plx:PassTypeParam dataTypeName="MetaRoleInfo"/>
@@ -691,16 +686,13 @@
 										</plx:Variable>
 										<plx:Condition>
 											<plx:Test>
-												<plx:Operator name="BooleanNot">
-													<!-- UNDONE: Plix game for CodeDom -->
-													<plx:Operator name="Equality">
-														<plx:Left>
-															<plx:Value type="I4">0</plx:Value>
-														</plx:Left>
-														<plx:Right>
-															<plx:Value type="Local">baseOpinion</plx:Value>
-														</plx:Right>
-													</plx:Operator>
+												<plx:Operator name="Inequality">
+													<plx:Left>
+														<plx:Value type="I4">0</plx:Value>
+													</plx:Left>
+													<plx:Right>
+														<plx:Value type="Local">baseOpinion</plx:Value>
+													</plx:Right>
 												</plx:Operator>
 											</plx:Test>
 											<plx:Body>
@@ -730,9 +722,13 @@
 													</plx:CallInstance>
 												</plx:CallObject>
 												<plx:PassParam passStyle="In">
-													<plx:Value type="Parameter">
-														<xsl:value-of select="."/>
-													</plx:Value>
+													<plx:CallInstance name="FullName" style="Property">
+														<plx:CallObject>
+															<plx:Value type="Parameter">
+																<xsl:value-of select="."/>
+															</plx:Value>
+														</plx:CallObject>
+													</plx:CallInstance>
 												</plx:PassParam>
 												<plx:PassParam passStyle="Out">
 													<plx:Value type="Local">
@@ -835,27 +831,24 @@
 										</plx:Variable>
 										<plx:Condition>
 											<plx:Test>
-												<plx:Operator name="BooleanNot">
-													<!-- UNDONE: Plix game for CodeDomProvider -->
-													<plx:Operator name="Equality">
-														<plx:Left>
-															<plx:Value type="I4">0</plx:Value>
-														</plx:Left>
-														<plx:Right>
-															<plx:Operator name="BitwiseAnd">
-																<plx:Left>
-																	<plx:CallType name="CustomSortChildRoles" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
-																</plx:Left>
-																<plx:Right>
-																	<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
-																		<plx:CallObject>
-																			<plx:BaseKeyword/>
-																		</plx:CallObject>
-																	</plx:CallInstance>
-																</plx:Right>
-															</plx:Operator>
-														</plx:Right>
-													</plx:Operator>
+												<plx:Operator name="Inequality">
+													<plx:Left>
+														<plx:Value type="I4">0</plx:Value>
+													</plx:Left>
+													<plx:Right>
+														<plx:Operator name="BitwiseAnd">
+															<plx:Left>
+																<plx:CallType name="CustomSortChildRoles" dataTypeName="ORMCustomSerializedElementSupportedOperations" style="Field"/>
+															</plx:Left>
+															<plx:Right>
+																<plx:CallInstance name="SupportedCustomSerializedOperations" style="Property">
+																	<plx:CallObject>
+																		<plx:BaseKeyword/>
+																	</plx:CallObject>
+																</plx:CallInstance>
+															</plx:Right>
+														</plx:Operator>
+													</plx:Right>
 												</plx:Operator>
 											</plx:Test>
 											<plx:Body>

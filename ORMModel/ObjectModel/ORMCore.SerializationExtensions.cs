@@ -331,30 +331,30 @@ namespace Neumont.Tools.ORM.ObjectModel
         }
         private class CustomSortChildComparer : IComparer<MetaRoleInfo>
         {
-            private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
+            private Dictionary<string, int> myRoleOrderDictionary;
             /// <summary>
             ///</summary>
             public CustomSortChildComparer(Store store)
             {
                 MetaDataDirectory metaDataDir = store.MetaDataDirectory;
-                Dictionary<MetaRoleInfo, int> roleOrderDictionary = new Dictionary<MetaRoleInfo, int>();
+                Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
                 MetaRoleInfo metaRole;
                 metaRole = metaDataDir.FindMetaRole(ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
                 metaRole = metaDataDir.FindMetaRole(ModelHasFactType.FactTypeCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
                 metaRole = metaDataDir.FindMetaRole(ModelHasMultiColumnExternalConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
                 metaRole = metaDataDir.FindMetaRole(ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
                 metaRole = metaDataDir.FindMetaRole(ModelHasDataType.DataTypeCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 3;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 3;
                 metaRole = metaDataDir.FindMetaRole(ModelHasReferenceMode.ReferenceModeCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 4;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 4;
                 metaRole = metaDataDir.FindMetaRole(ModelHasError.ErrorCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 5;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 5;
                 metaRole = metaDataDir.FindMetaRole(ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 6;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 6;
                 this.myRoleOrderDictionary = roleOrderDictionary;
             }
             /// <summary>
@@ -362,12 +362,12 @@ namespace Neumont.Tools.ORM.ObjectModel
             public int Compare(MetaRoleInfo x, MetaRoleInfo y)
             {
                 int xPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
                 {
                     xPos = int.MaxValue;
                 }
                 int yPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
                 {
                     yPos = int.MaxValue;
                 }
@@ -590,26 +590,26 @@ namespace Neumont.Tools.ORM.ObjectModel
         }
         private class CustomSortChildComparer : IComparer<MetaRoleInfo>
         {
-            private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
+            private Dictionary<string, int> myRoleOrderDictionary;
             /// <summary>
             ///</summary>
             public CustomSortChildComparer(Store store)
             {
                 MetaDataDirectory metaDataDir = store.MetaDataDirectory;
-                Dictionary<MetaRoleInfo, int> roleOrderDictionary = new Dictionary<MetaRoleInfo, int>();
+                Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
                 MetaRoleInfo metaRole;
                 metaRole = metaDataDir.FindMetaRole(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
                 metaRole = metaDataDir.FindMetaRole(ValueTypeHasDataType.DataTypeMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
                 metaRole = metaDataDir.FindMetaRole(ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
                 metaRole = metaDataDir.FindMetaRole(NestingEntityTypeHasFactType.NestedFactTypeMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 3;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 3;
                 metaRole = metaDataDir.FindMetaRole(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 4;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 4;
                 metaRole = metaDataDir.FindMetaRole(ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 5;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 5;
                 this.myRoleOrderDictionary = roleOrderDictionary;
             }
             /// <summary>
@@ -617,12 +617,12 @@ namespace Neumont.Tools.ORM.ObjectModel
             public int Compare(MetaRoleInfo x, MetaRoleInfo y)
             {
                 int xPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
                 {
                     xPos = int.MaxValue;
                 }
                 int yPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
                 {
                     yPos = int.MaxValue;
                 }
@@ -1470,26 +1470,26 @@ namespace Neumont.Tools.ORM.ObjectModel
         }
         private class CustomSortChildComparer : IComparer<MetaRoleInfo>
         {
-            private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
+            private Dictionary<string, int> myRoleOrderDictionary;
             /// <summary>
             ///</summary>
             public CustomSortChildComparer(Store store)
             {
                 MetaDataDirectory metaDataDir = store.MetaDataDirectory;
-                Dictionary<MetaRoleInfo, int> roleOrderDictionary = new Dictionary<MetaRoleInfo, int>();
+                Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
                 MetaRoleInfo metaRole;
                 metaRole = metaDataDir.FindMetaRole(FactTypeHasRole.RoleCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
                 metaRole = metaDataDir.FindMetaRole(FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
                 metaRole = metaDataDir.FindMetaRole(FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
                 metaRole = metaDataDir.FindMetaRole(NestingEntityTypeHasFactType.NestingTypeMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 3;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 3;
                 metaRole = metaDataDir.FindMetaRole(FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 4;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 4;
                 metaRole = metaDataDir.FindMetaRole(FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 5;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 5;
                 this.myRoleOrderDictionary = roleOrderDictionary;
             }
             /// <summary>
@@ -1497,12 +1497,12 @@ namespace Neumont.Tools.ORM.ObjectModel
             public int Compare(MetaRoleInfo x, MetaRoleInfo y)
             {
                 int xPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
                 {
                     xPos = int.MaxValue;
                 }
                 int yPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
                 {
                     yPos = int.MaxValue;
                 }
@@ -2356,8 +2356,7 @@ namespace Neumont.Tools.ORM.ObjectModel
             {
                 return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
             }
-            if (!((0 
-            == (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))))
+            if ((0) != ((ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations)))
             {
                 return base.GetCustomSerializedLinkInfo(rolePlayedInfo);
             }
@@ -2402,8 +2401,7 @@ namespace Neumont.Tools.ORM.ObjectModel
                 if ((null == retVal))
                 {
                     IComparer<MetaRoleInfo> baseComparer = null;
-                    if (!((0 
-            == (ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles & base.SupportedCustomSerializedOperations))))
+                    if ((0) != ((ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles & base.SupportedCustomSerializedOperations)))
                     {
                         baseComparer = base.CustomSerializedChildRoleComparer;
                     }
@@ -2428,8 +2426,7 @@ namespace Neumont.Tools.ORM.ObjectModel
             {
                 return new ORMCustomSerializedElementInfo(null, "PreferredIdentifierFor", null, ORMCustomSerializedElementWriteStyle.Element, null);
             }
-            if (!((0 
-            == (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))))
+            if ((0) != ((ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations)))
             {
                 return base.GetCustomSerializedLinkInfo(rolePlayedInfo);
             }
@@ -2465,7 +2462,7 @@ namespace Neumont.Tools.ORM.ObjectModel
         }
         private class CustomSortChildComparer : IComparer<MetaRoleInfo>
         {
-            private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
+            private Dictionary<string, int> myRoleOrderDictionary;
             private IComparer<MetaRoleInfo> myBaseComparer;
             /// <summary>
             ///</summary>
@@ -2473,10 +2470,10 @@ namespace Neumont.Tools.ORM.ObjectModel
             {
                 this.myBaseComparer = baseComparer;
                 MetaDataDirectory metaDataDir = store.MetaDataDirectory;
-                Dictionary<MetaRoleInfo, int> roleOrderDictionary = new Dictionary<MetaRoleInfo, int>();
+                Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
                 MetaRoleInfo metaRole;
                 metaRole = metaDataDir.FindMetaRole(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
                 this.myRoleOrderDictionary = roleOrderDictionary;
             }
             /// <summary>
@@ -2486,18 +2483,18 @@ namespace Neumont.Tools.ORM.ObjectModel
                 if ((this.myBaseComparer != null))
                 {
                     int baseOpinion = this.myBaseComparer.Compare(x, y);
-                    if (!((0 == baseOpinion)))
+                    if ((0) != (baseOpinion))
                     {
                         return baseOpinion;
                     }
                 }
                 int xPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
                 {
                     xPos = int.MaxValue;
                 }
                 int yPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
                 {
                     yPos = int.MaxValue;
                 }
@@ -2669,20 +2666,20 @@ namespace Neumont.Tools.ORM.ObjectModel
         }
         private class CustomSortChildComparer : IComparer<MetaRoleInfo>
         {
-            private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
+            private Dictionary<string, int> myRoleOrderDictionary;
             /// <summary>
             ///</summary>
             public CustomSortChildComparer(Store store)
             {
                 MetaDataDirectory metaDataDir = store.MetaDataDirectory;
-                Dictionary<MetaRoleInfo, int> roleOrderDictionary = new Dictionary<MetaRoleInfo, int>();
+                Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
                 MetaRoleInfo metaRole;
                 metaRole = metaDataDir.FindMetaRole(ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
                 metaRole = metaDataDir.FindMetaRole(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
                 metaRole = metaDataDir.FindMetaRole(InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
                 this.myRoleOrderDictionary = roleOrderDictionary;
             }
             /// <summary>
@@ -2690,12 +2687,12 @@ namespace Neumont.Tools.ORM.ObjectModel
             public int Compare(MetaRoleInfo x, MetaRoleInfo y)
             {
                 int xPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
                 {
                     xPos = int.MaxValue;
                 }
                 int yPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
                 {
                     yPos = int.MaxValue;
                 }
@@ -2876,8 +2873,7 @@ namespace Neumont.Tools.ORM.ObjectModel
             {
                 return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
             }
-            if (!((0 
-            == (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))))
+            if ((0) != ((ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations)))
             {
                 return base.GetCustomSerializedLinkInfo(rolePlayedInfo);
             }

@@ -286,18 +286,18 @@ namespace Neumont.Tools.ORM.ShapeModel
         }
         private class CustomSortChildComparer : IComparer<MetaRoleInfo>
         {
-            private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
+            private Dictionary<string, int> myRoleOrderDictionary;
             /// <summary>
             ///</summary>
             public CustomSortChildComparer(Store store)
             {
                 MetaDataDirectory metaDataDir = store.MetaDataDirectory;
-                Dictionary<MetaRoleInfo, int> roleOrderDictionary = new Dictionary<MetaRoleInfo, int>();
+                Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
                 MetaRoleInfo metaRole;
                 metaRole = metaDataDir.FindMetaRole(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
                 metaRole = metaDataDir.FindMetaRole(SubjectHasPresentation.SubjectMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
                 this.myRoleOrderDictionary = roleOrderDictionary;
             }
             /// <summary>
@@ -305,12 +305,12 @@ namespace Neumont.Tools.ORM.ShapeModel
             public int Compare(MetaRoleInfo x, MetaRoleInfo y)
             {
                 int xPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
                 {
                     xPos = int.MaxValue;
                 }
                 int yPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
                 {
                     yPos = int.MaxValue;
                 }
@@ -496,20 +496,20 @@ namespace Neumont.Tools.ORM.ShapeModel
         }
         private class CustomSortChildComparer : IComparer<MetaRoleInfo>
         {
-            private Dictionary<MetaRoleInfo, int> myRoleOrderDictionary;
+            private Dictionary<string, int> myRoleOrderDictionary;
             /// <summary>
             ///</summary>
             public CustomSortChildComparer(Store store)
             {
                 MetaDataDirectory metaDataDir = store.MetaDataDirectory;
-                Dictionary<MetaRoleInfo, int> roleOrderDictionary = new Dictionary<MetaRoleInfo, int>();
+                Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
                 MetaRoleInfo metaRole;
                 metaRole = metaDataDir.FindMetaRole(ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 0;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
                 metaRole = metaDataDir.FindMetaRole(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 1;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
                 metaRole = metaDataDir.FindMetaRole(SubjectHasPresentation.SubjectMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole] = 2;
+                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
                 this.myRoleOrderDictionary = roleOrderDictionary;
             }
             /// <summary>
@@ -517,12 +517,12 @@ namespace Neumont.Tools.ORM.ShapeModel
             public int Compare(MetaRoleInfo x, MetaRoleInfo y)
             {
                 int xPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(x, out xPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
                 {
                     xPos = int.MaxValue;
                 }
                 int yPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(y, out yPos)))
+                if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
                 {
                     yPos = int.MaxValue;
                 }
@@ -573,8 +573,7 @@ namespace Neumont.Tools.ORM.ShapeModel
             {
                 return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
             }
-            if (!((0 
-            == (ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations))))
+            if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
             {
                 return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
             }
@@ -613,8 +612,7 @@ namespace Neumont.Tools.ORM.ShapeModel
             {
                 return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
             }
-            if (!((0 
-            == (ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations))))
+            if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
             {
                 return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
             }
@@ -653,8 +651,7 @@ namespace Neumont.Tools.ORM.ShapeModel
             {
                 return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
             }
-            if (!((0 
-            == (ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations))))
+            if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
             {
                 return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
             }
@@ -693,8 +690,7 @@ namespace Neumont.Tools.ORM.ShapeModel
             {
                 return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
             }
-            if (!((0 
-            == (ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations))))
+            if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
             {
                 return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
             }
