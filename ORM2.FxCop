@@ -17386,6 +17386,68 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="ExternalConstraintLink+SubsetDecorator">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-08-02 18:53:33Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink+SubsetDecorator</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="11" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="Decorator">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2005-08-02 18:53:33Z">
+              <Issue>
+               <Item>SubsetDecorator.Decorator</Item>
+               <Item>Microsoft.VisualStudio.Modeling.Diagrams.LinkDecorator</Item>
+              </Issue>
+              <Notes>
+               <User Name="pewert">
+                <Note Id="8" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ExternalConstraintLink+SubsetStickyDecorator">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-08-02 18:53:33Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ShapeModel.ExternalConstraintLink+SubsetStickyDecorator</Item>
+            </Issue>
+            <Notes>
+             <User Name="pewert">
+              <Note Id="11" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="Decorator">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2005-08-02 18:53:33Z">
+              <Issue>
+               <Item>SubsetStickyDecorator.Decorator</Item>
+               <Item>Microsoft.VisualStudio.Modeling.Diagrams.LinkDecorator</Item>
+              </Issue>
+              <Notes>
+               <User Name="pewert">
+                <Note Id="6" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="ExternalConstraintLinkElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
@@ -21115,9 +21177,12 @@
     <Note Id="3" Modified="2005-04-25 20:24:00Z">Internal rules instantiated via reflection</Note>
     <Note Id="4" Modified="2005-04-25 21:57:49Z">Internal rules instantiated via reflection</Note>
     <Note Id="5" Modified="2005-04-25 21:58:32Z">Referenced object is immutable</Note>
+    <Note Id="6" Modified="2005-08-02 19:07:34Z">Referenced object is immutable</Note>
     <Note Id="7" Modified="2005-05-02 22:15:51Z">Defined in IMS-generated code</Note>
+    <Note Id="8" Modified="2005-08-02 19:07:40Z">Referenced object is immutable</Note>
     <Note Id="9" Modified="2005-05-25 19:46:36Z">IMS-generated collections</Note>
     <Note Id="10" Modified="2005-05-25 19:49:57Z">Defined in IMS-generated code</Note>
+    <Note Id="11" Modified="2005-08-02 19:22:47Z">Nested protected classes should be OK</Note>
     <Note Id="12" Modified="2005-05-25 19:53:45Z">Defined in IMS-generated code</Note>
     <Note Id="13" Modified="2005-05-25 19:53:54Z">Defined in IMS-generated code</Note>
     <Note Id="14" Modified="2005-05-25 19:54:01Z">Defined in IMS-generated code</Note>

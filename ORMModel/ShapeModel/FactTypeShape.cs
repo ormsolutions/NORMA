@@ -1033,9 +1033,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			private class ForDrawing
 			{
 				private Graphics myGraphics;
-				private HighlightedShapesCollection highlightedShapes;
+				private HighlightedShapesCollection myHighlightedShapes;
 				private FactTypeShape myParentShapeElement;
-				private StyleSet styleSet;
 				private float myGap;
 				private Pen myConstraintPen;
 				private ConstraintDisplayPosition myPosition;
@@ -1049,10 +1048,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				public ForDrawing(DiagramPaintEventArgs e, FactTypeShape parentShape, ConstraintDisplayPosition position)
 				{
 					myGraphics = e.Graphics;
-					highlightedShapes = e.View.HighlightedShapes;
+					DiagramClientView view = e.View;
+					myHighlightedShapes = (view != null) ? view.HighlightedShapes : null;
 					myParentShapeElement = parentShape;
-					styleSet = myParentShapeElement.StyleSet;
-					myConstraintPen = styleSet.GetPen(InternalFactConstraintPen);
+					myConstraintPen = myParentShapeElement.StyleSet.GetPen(InternalFactConstraintPen);
 					myGap = myConstraintPen.Width;
 					myPosition = position;
 				}
@@ -1118,16 +1117,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 
 					// test for and draw highlights
-					foreach (DiagramItem item in highlightedShapes)
+					if (myHighlightedShapes != null)
 					{
-						if (object.ReferenceEquals(myParentShapeElement, item.Shape))
+						foreach (DiagramItem item in myHighlightedShapes)
 						{
-							ConstraintSubField highlightedSubField = item.SubField as ConstraintSubField;
-							if (highlightedSubField != null && highlightedSubField.AssociatedConstraint == currentConstraint)
+							if (object.ReferenceEquals(myParentShapeElement, item.Shape))
 							{
-								isHighlighted = true;
-								myConstraintPen.Color = ORMDiagram.ModifyLuminosity(myConstraintPen.Color);
-								break;
+								ConstraintSubField highlightedSubField = item.SubField as ConstraintSubField;
+								if (highlightedSubField != null && highlightedSubField.AssociatedConstraint == currentConstraint)
+								{
+									isHighlighted = true;
+									myConstraintPen.Color = ORMDiagram.ModifyLuminosity(myConstraintPen.Color);
+									break;
+								}
 							}
 						}
 					}
@@ -1460,19 +1462,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (roleCount > 0 || objectified)
 				{
 					int highlightRoleBox = -1;
-					DiagramClientView clientView = e.View;
-					SelectedShapesCollection selection = clientView.Selection;
 					RoleSubField testSubField = new RoleSubField();
 					DiagramItem testSelect = new DiagramItem(parentShape, this, testSubField);
-					foreach (DiagramItem item in clientView.HighlightedShapes)
+					DiagramClientView clientView = e.View;
+					SelectedShapesCollection selection = null;
+					if (clientView != null)
 					{
-						if (object.ReferenceEquals(parentShape, item.Shape))
+						selection = clientView.Selection;
+						foreach (DiagramItem item in clientView.HighlightedShapes)
 						{
-							RoleSubField roleField = item.SubField as RoleSubField;
-							if (roleField != null)
+							if (object.ReferenceEquals(parentShape, item.Shape))
 							{
-								highlightRoleBox = roleField.RoleIndex;
-								break;
+								RoleSubField roleField = item.SubField as RoleSubField;
+								if (roleField != null)
+								{
+									highlightRoleBox = roleField.RoleIndex;
+									break;
+								}
 							}
 						}
 					}
@@ -1633,7 +1639,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 							// Draw a selection rectangle if needed
 							testSubField.AssociatedRole = currentRole;
-							if (selection.Contains(testSelect))
+							if (selection != null && selection.Contains(testSelect))
 							{
 								roleBounds.Inflate(-.02f, -.02f);
 								StyleSetResourceId pen1Id;
