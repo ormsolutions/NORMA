@@ -111,6 +111,7 @@
     <Compile Include="ObjectModel\Editors\IntrinsicReferenceModesBranch.cs" />
     <Compile Include="ObjectModel\Editors\ReferenceModeHeaderBranch.cs" />
     <Compile Include="ObjectModel\Editors\ReferenceModeKindsBranch.cs" />
+    <Compile Include="ObjectModel\ORMElementInterfaces.cs" />
     <Compile Include="ObjectModel\ModelError.cs" />
     <Compile Include="Framework\NamedElementDictionary.cs" />
     <Compile Include="ObjectModel\Editors\ElementPicker.cs">
@@ -130,6 +131,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMCore.AttachRules.xml</DependentUpon>
     </Compile>
+    <Compile Include="ObjectModel\ORMElements.cs" />
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
     <Compile Include="ObjectModel\ORMCore.SerializationExtensions.cs">
