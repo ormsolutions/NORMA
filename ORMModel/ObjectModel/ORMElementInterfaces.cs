@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
+using System.ComponentModel;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {

@@ -13,6 +13,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Framework;
 using EnvDTE;
+using System.Reflection;
 #if ATTACHELEMENTPROVIDERS
 using Neumont.Tools.ORM.DocumentSynchronization;
 #endif // ATTACHELEMENTPROVIDERS
@@ -45,9 +46,17 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			if (storeKey == PrimaryStoreKey)
 			{
+#if SAMPLEEXTENSION
+				Assembly dummyExtension = Assembly.LoadFile((new FileInfo(GetType().Assembly.Location)).DirectoryName + @"\ExtensionExample.dll");
+#endif
 				return new System.Type[] { typeof(Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurface),
 									   typeof(ORMMetaModel),
-									   typeof(ORMShapeModel)};
+									   typeof(ORMShapeModel)
+#if SAMPLEEXTENSION
+										, dummyExtension.GetType("ExtensionExample.ExtensionDomainModel")
+#endif
+					
+				};
 			}
 			return null;
 		}

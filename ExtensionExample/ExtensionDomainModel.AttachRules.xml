@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<arg:Rules xmlns:arg="http://Schemas.Neumont.edu/Private/AttachRulesGenerator">
+	<arg:Model class="ExtensionDomainModel">
+		<arg:Rule class="ExtensionAddRule"/>
+	</arg:Model>
+</arg:Rules>

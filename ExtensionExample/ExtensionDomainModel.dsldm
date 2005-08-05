@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dmd xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:schemas-microsoft-com:dmd">
+  <model name="ExtensionDomainModel" identity="9f620b5a-9a99-45a4-a022-c9ed95ce85d6" id="i9f620b5az9a99z45a4za022zc9ed95ce85d6" namespace="ExtensionExample" isLoaded="true">
+    <mdfmetadata xsi:type="modelmdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" majorversion="1" minorversion="0" alwaysgeneratecollection="false">
+      <copyright />
+      <copyclosure name="ExtensionDomainModelCopyClosure" doccomment="Copy closure visitor filter" />
+      <removeclosure name="ExtensionDomainModelRemoveClosure" doccomment="Remove closure visitor filter" />
+    </mdfmetadata>
+    <extended>
+      <model>i2b131234z7959z458dz834fz2dc0769ce683</model>
+    </extended>
+    <trees>
+      <treenavigator name="intrinsic" identity="5870bb97-ec11-42ba-8468-694c47516950" id="i5870bb97zec11z42baz8468z694c47516950">
+        <expressions />
+        <roots />
+      </treenavigator>
+      <treenavigator xsi:type="ShadowTreeNavigator" name="completeDiagram" identity="a97be1b4-98ee-4bbc-b3a8-029f2b466270" id="ia97be1b4z98eez4bbczb3a8z029f2b466270">
+        <expressions>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="448450c5-8849-444d-a34f-970e9be97679" id="i448450c5z8849z444dza34fz970e9be97679">
+            <source />
+            <property>i6825c613z7e2az4d14z8277z0db3b86b1210</property>
+          </treeExpression>
+        </expressions>
+        <roots>
+          <root name="" identity="0c04863e-eb83-4a14-bad8-26ae7c1aa6ef" id="i0c04863ezeb83z4a14zbad8z26ae7c1aa6ef">
+            <source />
+            <referencetype>i14db7e59z72e3z441fz9993z88fb3e3c01b3</referencetype>
+          </root>
+        </roots>
+        <source>i5870bb97zec11z42baz8468z694c47516950</source>
+      </treenavigator>
+      <treenavigator xsi:type="ShadowTreeNavigator" name="serialization" identity="b303ccfe-0308-4f53-8f83-6819768fc91f" id="ib303ccfez0308z4f53z8f83z6819768fc91f">
+        <expressions />
+        <roots>
+          <root name="MyCustomExtensionElement" identity="a395d5e9-0c60-41b9-a470-fee98c9aa0ba" id="ia395d5e9z0c60z41b9za470zfee98c9aa0ba">
+            <source />
+            <referencetype>i14db7e59z72e3z441fz9993z88fb3e3c01b3</referencetype>
+          </root>
+        </roots>
+        <source>i5870bb97zec11z42baz8468z694c47516950</source>
+      </treenavigator>
+      <treenavigator xsi:type="ShadowTreeNavigator" name="delete" identity="06f0b2b2-2e7d-4531-89e0-d087f4284478" id="i06f0b2b2z2e7dz4531z89e0zd087f4284478">
+        <expressions />
+        <roots />
+        <source>i5870bb97zec11z42baz8468z694c47516950</source>
+      </treenavigator>
+    </trees>
+    <concepts>
+      <concept name="MyCustomExtensionElement" identity="14db7e59-72e3-441f-9993-88fb3e3c01b3" namespace="ExtensionExample" id="i14db7e59z72e3z441fz9993z88fb3e3c01b3" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <valueProperties>
+          <property name="TestProperty" identity="6825c613-7e2a-4d14-8277-0db3b86b1210" id="i6825c613z7e2az4d14z8277z0db3b86b1210">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
+            <propertyInfo xsi:type="StringPropertyInfo" name="" identity="32ccbf5c-d406-4a24-8d50-271b54d6f4d7" default="" max="2147483647" />
+          </property>
+        </valueProperties>
+      </concept>
+    </concepts>
+  </model>
+</dmd>

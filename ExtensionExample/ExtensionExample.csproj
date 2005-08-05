@@ -1,0 +1,86 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50215</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7C737995-FC98-488D-A0CE-912FE71FDDB7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExtensionExample</RootNamespace>
+    <AssemblyName>ExtensionExample</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CustomExtendedElement.cs" />
+    <Compile Include="ExtensionDomainModel.dsldm.cs">
+      <DependentUpon>ExtensionDomainModel.dsldm.dsldmt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ExtensionDomainModel.AttachRules.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExtensionDomainModel.AttachRules.xml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ExtensionDomainModel.dsldm" />
+    <None Include="ExtensionDomainModel.dsldm.dsldmt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ExtensionDomainModel.dsldm.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExtensionDomainModel.dsldm.resx">
+      <DependentUpon>ExtensionDomainModel.dsldm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ExtensionDomainModel.AttachRules.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>ExtensionDomainModel.AttachRules.cs</LastGenOutput>
+    </Content>
+    <None Include="..\ORMPackage.snk">
+      <Link>ORMPackage.snk</Link>
+    </None>
+    <None Include="Plix.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ORMModel\ORMModel.csproj">
+      <Project>{888816BF-5497-49F9-8353-C8EF30CB9226}</Project>
+      <Name>ORMModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(ProjectDir)install.bat" "$(ProjectDir)" "$(OutDir)" "$(DevEnvDir)..\..\"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -3940,6 +3940,24 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="ExtensionUtility">
+          <Members>
+           <Member Name="GetExtendedElement(Microsoft.VisualStudio.Modeling.ModelElement):T">
+            <Messages>
+             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Status="Excluded" Created="2005-08-05 19:30:44Z">
+              <Issue>
+               <Item>ExtensionUtility.GetExtendedElement(ModelElement):T</Item>
+              </Issue>
+              <Notes>
+               <User Name="ckaylor">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="ExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
@@ -9848,6 +9866,21 @@
             <Issue Name="NotFlagsNoZeroValue">
              <Item>ORMDeserializationFixupPhase</Item>
             </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ORMExtensionPropertySettings">
+          <Messages>
+           <Message TypeName="EnumsShouldHaveZeroValue" Category="Microsoft.Design" CheckId="CA1008" Status="Excluded" Created="2005-08-05 19:30:44Z" FixCategory="Breaking">
+            <Issue Name="FlagsRename">
+             <Item>Neumont.Tools.ORM.ObjectModel.ORMExtensionPropertySettings</Item>
+             <Item>ORMExtensionPropertySettings.NotDisplayed</Item>
+            </Issue>
+            <Notes>
+             <User Name="ckaylor">
+              <Note Id="2" />
+             </User>
+            </Notes>
            </Message>
           </Messages>
          </Type>
@@ -21122,6 +21155,8 @@
    <User Name="ckaylor">
     <Note Id="0" Modified="2005-07-25 19:34:18Z">Rule classes instantiated via reflection</Note>
     <Note Id="1" Modified="2005-07-25 19:34:41Z">Standard serialization spit matching required interface pattern</Note>
+    <Note Id="2" Modified="2005-08-05 19:32:04Z">Choosing to have a more descriptive value for the enum field.</Note>
+    <Note Id="3" Modified="2005-08-05 19:32:12Z">Not applicable.</Note>
    </User>
    <User Name="jbriggs">
     <Note Id="0" Modified="2005-07-25 20:58:15Z">Rule class instantiated by reflection</Note>
@@ -21289,6 +21324,7 @@
     <Resolution Name="Default">Consider a design that does not require that '{0}' be a reference parameter.</Resolution>
    </Rule>
    <Rule TypeName="EnumsShouldHaveZeroValue" Category="Microsoft.Design" CheckId="CA1008">
+    <Resolution Name="FlagsRename">In enum '{0}', change the name of '{1}' to 'None'.</Resolution>
     <Resolution Name="NotFlagsNoZeroValue">Add a member to '{0}' that has a value of zero with a suggested name of 'None'.</Resolution>
    </Rule>
    <Rule TypeName="EventsShouldNotHaveBeforeOrAfterPrefix" Category="Microsoft.Naming" CheckId="CA1713">
