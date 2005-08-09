@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TestReport xmlns="http://Schemas.Neumont.edu/ORM/SDK/TestReport">
+	<ValidationErrors name="Before constraint repair">
+		<ValidationError>Internal uniqueness constraint required for fact 'TestFact' in the model 'NewModel'.</ValidationError>
+	</ValidationErrors>
+	<Compare result="pass" />
+</TestReport>

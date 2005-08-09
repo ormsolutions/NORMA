@@ -7,61 +7,65 @@ using Neumont.Tools.ORM.ObjectModel;
 
 #endregion
 
-namespace ORM2CommandLineTest
+namespace Neumont.Tools.ORM.SDK.TestEngine
 {
-	public class ORMTaskItem : IORMToolTaskItem
+	public partial struct Suite
 	{
-		IRepresentModelElements myElementLocator;
-		IORMToolTaskProvider myOwner;
-		private string myText;
+		private class ORMTaskItem : IORMToolTaskItem
+		{
+			#region Member variables and constructors
+			IRepresentModelElements myElementLocator;
+			IORMToolTaskProvider myOwner;
+			private string myText;
 
-		private ORMTaskItem()
-		{
-		}
-		/// <summary>
-		/// Create a task item for the specified owning provider
-		/// </summary>
-		/// <param name="owner">IORMToolTaskProvider</param>
-		public ORMTaskItem(IORMToolTaskProvider owner)
-		{
-			myOwner = owner;
-		}
-
-		#region IORMToolTaskItem Members
-		/// <summary>
-		/// Implements IORMToolTaskItem.ElementLocator property
-		/// </summary>
-		protected IRepresentModelElements ElementLocator
-		{
-			get { return myElementLocator; }
-			set { myElementLocator = value; }
-		}
-		IRepresentModelElements IORMToolTaskItem.ElementLocator
-		{
-			get { return ElementLocator; }
-			set { ElementLocator = value; }
-		}
-		/// <summary>
-		/// Implements IORMToolTaskItem.Text property
-		/// </summary>
-		protected string Text
-		{
-			get { return myText; }
-			set
+			private ORMTaskItem()
 			{
-				//Don't trigger task list change unless needed
-				string oldText = myText;
-				if (oldText != value)
+			}
+			/// <summary>
+			/// Create a task item for the specified owning provider
+			/// </summary>
+			/// <param name="owner">IORMToolTaskProvider</param>
+			public ORMTaskItem(IORMToolTaskProvider owner)
+			{
+				myOwner = owner;
+			}
+			#endregion // Member variables and constructors
+			#region IORMToolTaskItem Members
+			/// <summary>
+			/// Implements IORMToolTaskItem.ElementLocator property
+			/// </summary>
+			protected IRepresentModelElements ElementLocator
+			{
+				get { return myElementLocator; }
+				set { myElementLocator = value; }
+			}
+			IRepresentModelElements IORMToolTaskItem.ElementLocator
+			{
+				get { return ElementLocator; }
+				set { ElementLocator = value; }
+			}
+			/// <summary>
+			/// Implements IORMToolTaskItem.Text property
+			/// </summary>
+			protected string Text
+			{
+				get { return myText; }
+				set
 				{
-					myText = value;
+					//Don't trigger task list change unless needed
+					string oldText = myText;
+					if (oldText != value)
+					{
+						myText = value;
+					}
 				}
 			}
+			string IORMToolTaskItem.Text
+			{
+				get { return Text; }
+				set { Text = value; }
+			}
+			#endregion
 		}
-		string IORMToolTaskItem.Text
-		{
-			get { return Text; }
-			set { Text = value; }
-		}
-		#endregion
 	}
 }

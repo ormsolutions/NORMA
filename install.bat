@@ -7,6 +7,7 @@ set envPath=%2
 )
 xcopy /Y /D /Q %rootPath%"ORMModel\bin\Debug\Neumont.Tools.ORM.dll" %envPath%"Common7\IDE\PrivateAssemblies\"
 xcopy /Y /D /Q %rootPath%"ORMModel\bin\Debug\Neumont.Tools.ORM.pdb" %envPath%"Common7\IDE\PrivateAssemblies\"
+xcopy /Y /D /Q %rootPath%"ORMModel\bin\Debug\Neumont.Tools.ORM.XML" %envPath%"Common7\IDE\PrivateAssemblies\"
 xcopy /Y /D /Q %rootPath%"ORMModelSatDll\Debug\Neumont.Tools.ORMUI.dll" %envPath%"Common7\IDE\PrivateAssemblies\1033"
 xcopy /Y /D /Q %rootPath%"ORMModelSatDll\Debug\Neumont.Tools.ORMUI.pdb" %envPath%"Common7\IDE\PrivateAssemblies\1033"
 xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ProjectItems\ORMProjectItems.vsdir" %envPath%"VC#\CSharpProjectItems"

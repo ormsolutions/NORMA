@@ -1,0 +1,65 @@
+﻿<?xml version="1.0"?>
+<xs:schema id="PlixLoader"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	targetNamespace="http://Schemas.Neumont.edu/ORM/SDK/TestSuite"
+	xmlns="http://Schemas.Neumont.edu/ORM/SDK/TestSuite"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	>
+	<xs:element name="Suites" type="SuitesType"/>
+	<xs:complexType name="SuitesType">
+		<xs:annotation>
+			<xs:documentation>The root node for a Suites file. Corresponds to the Suite element in the SuiteReport file.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="Suite" type="SuiteType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SuiteType">
+		<xs:annotation>
+			<xs:documentation>A single suite. A suite consists of a name, category settings and test assemblies. Corresponds to the Suite element in the SuiteReport file.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="TestAssemblies" type="TestAssembliesType"/>
+			<xs:element name="Categories" minOccurs="0">
+				<xs:complexType>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="IncludeCategory">
+							<xs:complexType>
+								<xs:attribute name="name" type="xs:string" use="required"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="ExcludeCategory">
+							<xs:complexType>
+								<xs:attribute name="name" type="xs:string" use="required"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the suite. Duplicated in the suite results file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="TestAssembliesType">
+		<xs:annotation>
+			<xs:documentation>A container for TestAssembly elements</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="TestAssembly" type="TestAssemblyType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TestAssemblyType">
+		<xs:annotation>
+			<xs:documentation>A single test assembly. Corresponds to the TestAssembly element in the SuiteReport file.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="location" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The location of the test assembly, relative to the location of the suite file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

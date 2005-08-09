@@ -1,0 +1,107 @@
+﻿<?xml version="1.0"?>
+<xs:schema id="PlixLoader"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	targetNamespace="http://Schemas.Neumont.edu/ORM/SDK/TestReport"
+	xmlns="http://Schemas.Neumont.edu/ORM/SDK/TestReport"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	>
+	<xs:element name="TestReport" type="TestReportType"/>
+	<xs:complexType name="TestReportType">
+		<xs:annotation>
+			<xs:documentation>The root node for a test report</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Message" type="MessageType"/>
+			<xs:element name="Exception" type="ExceptionType"/>
+			<xs:element name="ValidationErrors" type="ValidationErrorsType"/>
+			<xs:element name="Compare" type="CompareType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:simpleType name="MessageType">
+		<xs:annotation>
+			<xs:documentation>A message explicitly written to the report file by the test</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="ExceptionType">
+		<xs:annotation>
+			<xs:documentation>Record of an exception thrown during the test</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0">
+			<xs:element name="InnerException" type="ExceptionType">
+				<xs:annotation>
+					<xs:documentation>The exception information the InnerException, if available.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The full name of the exception type</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="message" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The exception message</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ValidationErrorsType">
+		<xs:annotation>
+			<xs:documentation>A sorted list of validation errors currently in the model</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0"  maxOccurs="unbounded">
+			<xs:element name="ValidationError" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The text of the validation error.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>An optional name for the error list.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="CompareType">
+		<xs:annotation>
+			<xs:documentation>The result of a Compare operation, which compares the serialized contents of the current schema with a baseline file.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:any namespace="http://schemas.microsoft.com/xmltools/2002/xmldiff http://Schemas.Neumont.edu/ORM/ORMRoot" processContents="skip" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The diffgram between the expected report and final test report, or the full test report</xs:documentation>
+				</xs:annotation>
+			</xs:any>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>An optional name for the comparison. A compare operation is automatically performed after a test is run. Named compares to intermediate stages can be run at any time, and the name of the compare is reported here.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="result">
+			<xs:annotation>
+				<xs:documentation>The result of the comparison</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="pass">
+						<xs:annotation>
+							<xs:documentation>The store contents and baseline compare file are equivalent.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="failDiffgram">
+						<xs:annotation>
+							<xs:documentation>The compared file is different from the baseline with the contained diffgram. The diffgram can be used to recreate the modified file from the baseline.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="failMissingBaseline">
+						<xs:annotation>
+							<xs:documentation>A comparison baseline file was not found. The current stream contents are provided.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

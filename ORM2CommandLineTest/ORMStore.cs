@@ -11,78 +11,48 @@ using System.Xml;
 
 #endregion
 
-namespace ORM2CommandLineTest
+namespace Neumont.Tools.ORM.SDK.TestEngine
 {
-	public class ORMStore : Store, IORMToolServices
+	public partial struct Suite
 	{
-		#region Member Variables
-		private IORMToolServices myServices;
-		#endregion // Member Variables
-		#region Constructors
-		/// <summary>
-		/// Create a new store
-		/// </summary>
-		/// <param name="services">IORMToolServices to defer to</param>
-		public ORMStore(IORMToolServices services)
+		private class ORMStore : Store, IORMToolServices
 		{
-			myServices = services;
-		}
-		#endregion // Constructors
-		#region IORMToolServices Implementation
-		/// <summary>
-		/// Defer to TaskProvider on the document. Implements
-		/// IORMToolServices.TaskProvider
-		/// </summary>
-		protected IORMToolTaskProvider TaskProvider
-		{
-			get
+			#region Member Variables
+			private IORMToolServices myServices;
+			#endregion // Member Variables
+			#region Constructors
+			/// <summary>
+			/// Create a new store
+			/// </summary>
+			/// <param name="services">IORMToolServices to defer to</param>
+			public ORMStore(IORMToolServices services)
 			{
-				return myServices.TaskProvider;
+				myServices = services;
 			}
-		}
-		IORMToolTaskProvider IORMToolServices.TaskProvider
-		{
-			get
+			#endregion // Constructors
+			#region IORMToolServices Implementation
+			IORMToolTaskProvider IORMToolServices.TaskProvider
 			{
-				return TaskProvider;
+				get
+				{
+					return myServices.TaskProvider;
+				}
 			}
-		}
-		/// <summary>
-		/// Defer to ColorService on the document. Implements
-		/// IORMToolServices.ColorService
-		/// </summary>
-		protected IORMFontAndColorService FontAndColorService
-		{
-			get
+			IORMFontAndColorService IORMToolServices.FontAndColorService
 			{
-				return myServices.FontAndColorService;
+				get
+				{
+					return myServices.FontAndColorService;
+				}
 			}
-		}
-		IORMFontAndColorService IORMToolServices.FontAndColorService
-		{
-			get
+			IServiceProvider IORMToolServices.ServiceProvider
 			{
-				return FontAndColorService;
+				get
+				{
+					return myServices.ServiceProvider;
+				}
 			}
+			#endregion // IORMToolServices Implementation
 		}
-		/// <summary>
-		/// Defer to ServiceProvider on the document. Implements
-		/// IORMToolServices.ServiceProvider
-		/// </summary>
-		protected IServiceProvider ServiceProvider
-		{
-			get
-			{
-				return myServices.ServiceProvider;
-			}
-		}
-		IServiceProvider IORMToolServices.ServiceProvider
-		{
-			get
-			{
-				return ServiceProvider;
-			}
-		}
-		#endregion // IORMToolServices Implementation
 	}
 }

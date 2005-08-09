@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Suites xmlns="http://Schemas.Neumont.edu/ORM/SDK/TestSuite">
+	<Suite name="Sample">
+		<Categories>
+			<IncludeCategory name="Sample"/>
+		</Categories>
+		<TestAssemblies>
+			<TestAssembly location="TestSample\TestSample.dll"/>
+		</TestAssemblies>
+	</Suite>
+</Suites>

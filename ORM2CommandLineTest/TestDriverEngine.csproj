@@ -5,9 +5,9 @@
     <ProductVersion>8.0.50215</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5DB17441-D264-4B37-88D5-98C3B1CF7D71}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>ORM2CommandLineTest</RootNamespace>
-    <AssemblyName>ORM2CommandLineTest</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Neumont.Tools.ORM.SDK.TestEngine</RootNamespace>
+    <AssemblyName>Neumont.Tools.ORM.SDK.TestEngine</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>http://localhost/ORM2CommandLineTest</PublishUrl>
@@ -24,19 +24,25 @@
     <ApplicationVersion>1.0.0.*</ApplicationVersion>
     <ApplicationRevision>0</ApplicationRevision>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <StartupObject>
+    </StartupObject>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(DevEnvDir)\</OutputPath>
+    <OutputPath>.\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\Neumont.Tools.ORM.SDK.TestEngine.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>.\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Neumont.Tools.ORM.SDK.TestEngine.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -52,11 +58,6 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="Neumont.Tools.ORM, Version=1.0.2034.18350, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ORMModel\bin\Debug\Neumont.Tools.ORM.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -67,18 +68,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyTests.cs" />
     <Compile Include="ORMDocServices.cs" />
     <Compile Include="ORMTaskItem.cs" />
     <Compile Include="ORMTaskProvider.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ORMStore.cs" />
+    <Compile Include="Suite.cs" />
     <Compile Include="TestAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="App.config">
+    <Compile Include="TestInterfaces.cs" />
+    <EmbeddedResource Include="..\ORMModel\Shell\ProjectItems\ORMModel.orm">
+      <Link>ORMModel.orm</Link>
+    </EmbeddedResource>
+    <None Include="..\ORMPackage.snk">
+      <Link>ORMPackage.snk</Link>
     </None>
+    <EmbeddedResource Include="ORMTestReport.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Include="ORMTestSuiteReport.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="ORMTestSuite.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +101,16 @@
       <ProductName>.NET Framework 2.0</ProductName>
       <Install>true</Install>
     </BootstrapperFile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MapIds.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ORMModel\ORMModel.csproj">
+      <Project>{888816BF-5497-49F9-8353-C8EF30CB9226}</Project>
+      <Name>ORMModel</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
 </Project>

@@ -4,90 +4,41 @@ using System.Collections.ObjectModel;
 using System.Text;
 using Neumont.Tools.ORM.ObjectModel;
 
-namespace ORM2CommandLineTest
+namespace Neumont.Tools.ORM.SDK.TestEngine
 {
-	public class ORMTaskProvider : IORMToolTaskProvider
+	public partial struct Suite
 	{
-		Collection<IORMToolTaskItem> taskItems = new Collection<IORMToolTaskItem>();
-
-		public Collection<IORMToolTaskItem> TaskItems
+		private class ORMTaskProvider : IORMToolTaskProvider
 		{
-			get { return taskItems; }
+			#region TaskItems collection
+			private Collection<IORMToolTaskItem> myTaskItems = new Collection<IORMToolTaskItem>();
+			public Collection<IORMToolTaskItem> TaskItems
+			{
+				get { return myTaskItems; }
+			}
+			#endregion // TaskItems collection
+			#region IORMToolTaskProvider Implementation
+			void IORMToolTaskProvider.AddTask(IORMToolTaskItem task)
+			{
+				myTaskItems.Add(task);
+			}
+			IORMToolTaskItem IORMToolTaskProvider.CreateTask()
+			{
+				return new ORMTaskItem(this);
+			}
+			bool IORMToolTaskProvider.NavigateTo(IORMToolTaskItem task)
+			{
+				return false;
+			}
+			void IORMToolTaskProvider.RemoveAllTasks()
+			{
+				myTaskItems.Clear();
+			}
+			void IORMToolTaskProvider.RemoveTask(IORMToolTaskItem task)
+			{
+				myTaskItems.Remove(task);
+			}
+			#endregion //IORMToolTaskProvider Implementation
 		}
-
-		public ORMTaskProvider()
-		{
-
-		}
-		#region IORMToolTaskProvider Members
-
-		/// <summary>
-		/// Implements IORMToolTaskProvider.AddTask
-		/// </summary>
-		/// <param name="task">IORMToolTaskItem created by CreateTask</param>
-		protected void AddTask(IORMToolTaskItem task)
-		{
-			taskItems.Add(task);
-		}
-		void IORMToolTaskProvider.AddTask(IORMToolTaskItem task)
-		{
-			AddTask(task);
-		}
-
-		/// <summary>
-		/// Implements IORMToolTaskProvider.CreateTask
-		/// </summary>
-		/// <returns>IORMToolTaskItem</returns>
-		protected IORMToolTaskItem CreateTask()
-		{
-			ORMTaskItem task = new ORMTaskItem(this);
-			return task;
-		}
-		IORMToolTaskItem IORMToolTaskProvider.CreateTask()
-		{
-			return CreateTask();
-		}
-
-		/// <summary>
-		/// Implements IORMToolTaskProvider.NavigateTo;
-		/// </summary>
-		/// <param name="task"></param>
-		/// <returns></returns>
-		protected bool NavigateTo(IORMToolTaskItem task)
-		{
-			return false;		
-		}
-		bool IORMToolTaskProvider.NavigateTo(IORMToolTaskItem task)
-		{
-			return NavigateTo(task);
-		}
-
-		/// <summary>
-		/// Implements IORMToolTaskProvider.RemoveAllTasks
-		/// </summary>
-		protected void RemoveAllTasks()
-		{
-			taskItems.Clear();
-		}
-		void IORMToolTaskProvider.RemoveAllTasks()
-		{
-			RemoveAllTasks();
-		}
-
-		/// <summary>
-		/// Implements IORMToolTaskProvider.RemoveTask
-		/// </summary>
-		/// <param name="task">IORMToolTaskItem previously added by AddTask</param>
-		protected void RemoveTask(IORMToolTaskItem task)
-		{
-			taskItems.Remove(task);
-		}
-		void IORMToolTaskProvider.RemoveTask(IORMToolTaskItem task)
-		{
-			RemoveTask(task);
-		}
-
-		#endregion //IORMToolTaskProvider Members
 	}
-
 }

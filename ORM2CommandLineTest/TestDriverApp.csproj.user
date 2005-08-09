@@ -1,0 +1,12 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <LastOpenVersion>8.0.50215</LastOpenVersion>
+    <ProjectView>ProjectFiles</ProjectView>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartAction>Program</StartAction>
+    <StartProgram>$(DevEnvDir)ORMTestDriver.exe</StartProgram>
+    <StartArguments>TestSuites\SampleSuites.xml</StartArguments>
+    <StartWorkingDirectory>$(SolutionDir)</StartWorkingDirectory>
+  </PropertyGroup>
+</Project>

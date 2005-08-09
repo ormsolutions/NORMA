@@ -1,0 +1,118 @@
+﻿<?xml version="1.0"?>
+<xs:schema id="PlixLoader"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	targetNamespace="http://Schemas.Neumont.edu/ORM/SDK/TestSuiteReport"
+	xmlns="http://Schemas.Neumont.edu/ORM/SDK/TestSuiteReport"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	>
+	<xs:element name="Suites" type="SuitesType"/>
+	<xs:complexType name="SuitesType">
+		<xs:annotation>
+			<xs:documentation>The root node for a SuitesReport file. Corresponds to the root node in a TestSuite file.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="Suite" type="SuiteType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SuiteType">
+		<xs:annotation>
+			<xs:documentation>A single suite. Corresponds to the Suite node in a TestSuite file.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="TestAssembly" type="TestAssemblyType"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the suite. Read from the suite file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="TestAssemblyType">
+		<xs:annotation>
+			<xs:documentation>The results for a single TestAssembly listed in the Suite file. This element will not be written if no tests were run from the assembly, unless the assembly failed to load.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="TestClass" type="TestClassType"/>
+		</xs:sequence>
+		<xs:attribute name="location" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The location of the test assembly, relative to the location of the suite file.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="loadFailure" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>true if the assembly failed to load for any reason</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="TestClassType">
+		<xs:annotation>
+			<xs:documentation>The results for all tests in a single test class. This element will not be written if no Test methods which match the specified categories are found in the class.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Test" type="TestType"/>
+		</xs:sequence>
+		<xs:attribute name="namespace" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The test class namespace</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The test class name</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="loadFailure" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>true if a class with a Tests attribute could not be created. This usually indicates the lack of a public constructor with an IORMToolServices parameter.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="TestType">
+		<xs:annotation>
+			<xs:documentation>The results for a single test, which is defined as a method marked with the Test attribute</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:any namespace="http://schemas.microsoft.com/xmltools/2002/xmldiff http://Schemas.Neumont.edu/ORM/SDK/TestReport" processContents="skip" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The diffgram between the expected report and final test report, or the full test report</xs:documentation>
+				</xs:annotation>
+			</xs:any>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the test. Corresponds to the name of the method with the Test attribute</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="result">
+			<xs:annotation>
+				<xs:documentation>The result of the test</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="pass">
+						<xs:annotation>
+							<xs:documentation>The method was executed and the generated test report is equivalent to the expected report.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="failReportDiffgram">
+						<xs:annotation>
+							<xs:documentation>The method was executed, but generated test report is not equivalent to the expected report.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="failReportMissingBaseline">
+						<xs:annotation>
+							<xs:documentation>The method was executed, but no baseline report is provided in the test assembly. The generated report is included.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="failBind">
+						<xs:annotation>
+							<xs:documentation>The method could not be executed. This will usually occur if the test method does not have the correct signature. A test method must take a single Microsoft.VisualStudio.Modeling.Store parameter.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>
