@@ -36,7 +36,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// Controls how custom properties are displayed
 	/// </summary>
-	[Flags]
+	[Flags, CLSCompliant(true)]
 	public enum ORMExtensionPropertySettings
 	{
 		/// <summary>

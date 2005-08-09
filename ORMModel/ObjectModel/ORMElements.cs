@@ -23,12 +23,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return ExtendableElementUtility.GetProperties(this, base.GetDisplayProperties(requestor, ref defaultPropertyDescriptor));
 		}
 	}
-
+	/// <summary>
+	/// Utility methods for building extension objects
+	/// </summary>
 	public static class ExtendableElementUtility
 	{
+		/// <summary>
+		/// Merge properties from an extenable object with
+		/// properties from its associated extension elements
+		/// </summary>
+		/// <param name="extendableElement">The extendable element</param>
+		/// <param name="baseProperties">The original properties from the extendable element</param>
+		/// <returns>A merged PropertyDescriptorCollection</returns>
 		public static PropertyDescriptorCollection GetProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection baseProperties)
 		{
-			
 			foreach (IORMPropertyExtension extension in extendableElement.ExtensionCollection)
 			{
 				if (0 != (extension.ExtensionPropertySettings & ORMExtensionPropertySettings.MergeAsChildProperties))
