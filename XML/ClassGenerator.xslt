@@ -472,11 +472,11 @@
 									</xsl:variable>
 									<xsl:variable name="oppositeObjectTemp">
 										<xsl:if test="string-length($oppositeObjectId)">
-											<xsl:value-of select="$ObjectsSet[@id=$oppositeObjectId]"/>
+											<xsl:copy-of select="$ObjectsSet[@id=$oppositeObjectId]"/>
 										</xsl:if>
 									</xsl:variable>
 									<xsl:variable name="oppositeObject" select="msxsl:node-set($oppositeObjectTemp)/child::*"/>
-									<xsl:variable name="oppositeRoleCount" select="count($oppositeObject/RelatedObject)"></xsl:variable>
+									<xsl:variable name="oppositeRoleCount" select="count($oppositeObject/RelatedObject)"/>
 									<xsl:choose>
 										<xsl:when test="$isDominantFunctional='true' and 1=$oppositeRoleCount">
 											<!-- We're absorbing the opposite object, but only if it has not
@@ -485,10 +485,16 @@
 												<xsl:when test="count($oppositeObject/AbsorbedObject)&lt;=1">
 													<xsl:variable name="roleId" select="@roleRef"/>
 													<xsl:variable name="roleName" select="@roleName"/>
-													<xsl:for-each select="$oppositeObject">
-														<AbsorbedObject type="{@type}" ref="{@id}" name="{@name}" thisRoleName="{$roleName}" thisRoleRef="{$roleId}" oppositeRoleRef="{RelatedObject/@roleRef}" oppositeRoleName="{RelatedObject/@roleName}">
+													<xsl:for-each select="..">
+														<xsl:copy>
+															<xsl:copy-of select="@*"/>
 															<xsl:copy-of select="AbsorbedObject"/>
-														</AbsorbedObject>
+															<xsl:for-each select="$oppositeObject">
+																<AbsorbedObject type="{@type}" ref="{@id}" name="{@name}" thisRoleName="{$roleName}" thisRoleRef="{$roleId}" oppositeRoleRef="{RelatedObject/@roleRef}" oppositeRoleName="{RelatedObject/@roleName}">
+																	<xsl:copy-of select="AbsorbedObject"/>
+																</AbsorbedObject>
+															</xsl:for-each>
+														</xsl:copy>
 													</xsl:for-each>
 												</xsl:when>
 												<xsl:otherwise>
