@@ -475,7 +475,7 @@
 											<xsl:value-of select="$ObjectsSet[@id=$oppositeObjectId]"/>
 										</xsl:if>
 									</xsl:variable>
-									<xsl:variable name="oppositeObject" select="oppositeObjectTemp/child::*"/>
+									<xsl:variable name="oppositeObject" select="msxsl:node-set($oppositeObjectTemp)/child::*"/>
 									<xsl:variable name="oppositeRoleCount" select="count($oppositeObject/RelatedObject)"></xsl:variable>
 									<xsl:choose>
 										<xsl:when test="$isDominantFunctional='true' and 1=$oppositeRoleCount">
