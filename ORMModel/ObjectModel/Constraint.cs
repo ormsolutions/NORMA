@@ -2357,9 +2357,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (null != (constraintLink = element as ConstraintRoleSequenceHasRole))
 				{
 					ConstraintRoleSequence sequence = constraintLink.ConstraintRoleSequenceCollection;
-					if (sequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+					IConstraint constraint = sequence.Constraint;
+					if (constraint != null && constraint.ConstraintType == ConstraintType.InternalUniqueness)
 					{
-						// A preferred identifier on an internal uniqueness constraint requires
+						// A preferred identifier on an internal uniqueness constraint reqduires
 						// the constraint to have one role only. If we already have a preferred
 						// identifier on this role, then we must have one already, so adding an
 						// additional role is bad.
