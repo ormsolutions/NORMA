@@ -3388,15 +3388,29 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="EntityTypeHasPreferredIdentifier+TestRemovePreferredIdentifierRule">
+         <Type Name="EntityTypeHasPreferredIdentifier+TestRemovePreferredIdentifierAddRule">
           <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-08-10 17:51:38Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier+TestRemovePreferredIdentifierRule</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier+TestRemovePreferredIdentifierAddRule</Item>
             </Issue>
             <Notes>
              <User Name="mcurland">
-              <Note Id="7" />
+              <Note Id="51" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="EntityTypeHasPreferredIdentifier+TestRemovePreferredIdentifierRemovingRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-08-10 17:51:38Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier+TestRemovePreferredIdentifierRemovingRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="51" />
              </User>
             </Notes>
            </Message>
@@ -21223,6 +21237,7 @@
     <Note Id="48" Modified="2005-07-21 16:06:39Z">Code generated to match explicit interface implementation pattern</Note>
     <Note Id="49" Modified="2005-07-27 00:24:14Z">Debug only code</Note>
     <Note Id="50" Modified="2005-07-27 00:24:35Z">Standard code spit to match interface pattern</Note>
+    <Note Id="51" Modified="2005-08-10 17:52:43Z">Rule classes instantiated via reflection</Note>
    </User>
    <User Name="obuhler">
     <Note Id="0" Modified="2005-07-29 21:45:56Z">Rule classes instantiated via reflection</Note>

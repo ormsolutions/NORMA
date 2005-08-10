@@ -7,7 +7,8 @@
 		<arg:Rule class="DisjunctiveMandatoryConstraint.VerifyImpliedDisjunctiveMandatoryRoleAdd"/>
 		<arg:Rule class="DisjunctiveMandatoryConstraint.VerifyImpliedDisjunctiveMandatoryRoleRemoved"/>
 		<arg:Rule class="EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule"/>
-		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRule"/>
+		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierAddRule"/>
+		<arg:Rule class="EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRemovingRule"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleRemoved"/>
 		<arg:Rule class="ExternalUniquenessConstraint.ExternalUniquenessConstraintChangeRule"/>

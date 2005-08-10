@@ -2273,14 +2273,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Remove testing for preferred identifier
-		#region TestRemovePreferredIdentifierRule class
+		#region TestRemovePreferredIdentifierRemovingRule class
 		/// <summary>
 		/// A rule to determine if a mandatory condition for
 		/// a preferred identifier link has been eliminated.
-		/// Remove the rule if this happens.
+		/// Remove the preferred identifier if this happens.
 		/// </summary>
 		[RuleOn(typeof(ObjectTypePlaysRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))]
-		private class TestRemovePreferredIdentifierRule : RemovingRule
+		private class TestRemovePreferredIdentifierRemovingRule : RemovingRule
 		{
 			/// <summary>
 			/// See if a preferred identifier is still valid
@@ -2330,7 +2330,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // TestRemovePreferredIdentifierRule class
+		#endregion // TestRemovePreferredIdentifierRemovingRule class
+		#region TestRemovePreferredIdentifierAddRule class
+		/// <summary>
+		/// A rule to determine if a mandatory condition for
+		/// a preferred identifier link has been eliminated by
+		/// adding an element.
+		/// Remove the identifier if this happens.
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasRole)), RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		private class TestRemovePreferredIdentifierAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ModelElement element = e.ModelElement;
+				FactTypeHasRole roleLink;
+				ConstraintRoleSequenceHasRole constraintLink;
+				if (null != (roleLink = element as FactTypeHasRole))
+				{
+					FactType fact = roleLink.FactType;
+					foreach (InternalConstraint constraint in fact.GetInternalConstraints(ConstraintType.InternalUniqueness))
+					{
+						constraint.PreferredIdentifierFor = null;
+					}
+				}
+				else if (null != (constraintLink = element as ConstraintRoleSequenceHasRole))
+				{
+					ConstraintRoleSequence sequence = constraintLink.ConstraintRoleSequenceCollection;
+					if (sequence.Constraint.ConstraintType == ConstraintType.InternalUniqueness)
+					{
+						// A preferred identifier on an internal uniqueness constraint requires
+						// the constraint to have one role only. If we already have a preferred
+						// identifier on this role, then we must have one already, so adding an
+						// additional role is bad.
+						sequence.PreferredIdentifierFor = null;
+					}
+				}
+			}
+		}
+		#endregion // TestRemovePreferredIdentifierAddRule class
 		#region PreferredIdentifierAddedRule class
 		/// <summary>
 		/// Verify that all preconditions hold for adding a primary
