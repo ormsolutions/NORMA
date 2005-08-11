@@ -401,6 +401,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					case ConstraintType.DisjunctiveMandatory:
 					case ConstraintType.Ring:
 					case ConstraintType.Exclusion:
+					case ConstraintType.Equality:
 					case ConstraintType.Subset:
 						retVal = 1;
 						break;
@@ -426,10 +427,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					case ConstraintType.InternalUniqueness:
 					case ConstraintType.ExternalUniqueness:
+					case ConstraintType.Equality:
 					case ConstraintType.DisjunctiveMandatory:
 					case ConstraintType.Ring:
 					case ConstraintType.Exclusion:
 					case ConstraintType.Subset:
+					case ConstraintType.Frequency:
 						return true;
 				}
 				return false;
