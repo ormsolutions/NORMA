@@ -3157,12 +3157,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // FactTypeShape specific
 		#region Shape display update rules
-		[RuleOn(typeof(NestingEntityTypeHasFactType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class SwitchToNestedFact : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				NestingEntityTypeHasFactType link = e.ModelElement as NestingEntityTypeHasFactType;
+				Objectification link = e.ModelElement as Objectification;
 				FactType nestedFactType = link.NestedFactType;
 				ObjectType nestingType = link.NestingType;
 
@@ -3231,12 +3231,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		[RuleOn(typeof(NestingEntityTypeHasFactType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		[RuleOn(typeof(Objectification), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class SwitchFromNestedFact : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				NestingEntityTypeHasFactType link = e.ModelElement as NestingEntityTypeHasFactType;
+				Objectification link = e.ModelElement as Objectification;
 				FactType nestedFactType = link.NestedFactType;
 				ObjectType nestingType = link.NestingType;
 

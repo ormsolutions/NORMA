@@ -129,24 +129,59 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ObjectType objType;
 			FactType factType;
 			ObjectTypePlaysRole objectTypePlaysRole;
+			EqualityConstraint equalityConstraint;
+			ExternalUniquenessConstraint externalUniquenessConstraint;
+			ExternalFactConstraint factConstraint;
 			if (null != (factType = element as FactType))
 			{
 				if (factType is SubtypeFact)
 				{
 					return true;
 				}
+				else if (factType.ImpliedByObjectification != null)
+				{
+					return false;
+				}
 				return ShouldDisplayPartOfReferenceMode(factType);
 			}
 			else if (null != (objectTypePlaysRole = element as ObjectTypePlaysRole))
 			{
-				if (objectTypePlaysRole.PlayedRoleCollection.FactType is SubtypeFact)
+				FactType fact = objectTypePlaysRole.PlayedRoleCollection.FactType;
+				if (fact is SubtypeFact || fact.ImpliedByObjectification != null)
 				{
 					return false;
 				}
 				return ShouldDisplayPartOfReferenceMode(objectTypePlaysRole);
 			}
-			else if (element is ExternalFactConstraint ||
-					 element is SingleColumnExternalConstraint ||
+			else if (null != (equalityConstraint = element as EqualityConstraint))
+			{
+				return equalityConstraint.ImpliedByObjectification == null;
+			}
+			else if (null != (externalUniquenessConstraint = element as ExternalUniquenessConstraint))
+			{
+				return externalUniquenessConstraint.ImpliedByObjectification == null;
+			}
+			else if (null != (factConstraint = element as ExternalFactConstraint))
+			{
+				IConstraint constraint = ((IFactConstraint)factConstraint).Constraint;
+				switch (constraint.ConstraintType)
+				{
+					case ConstraintType.ExternalUniqueness:
+						if (((ExternalUniquenessConstraint)constraint).ImpliedByObjectification != null)
+						{
+							return false;
+						}
+						break;
+					case ConstraintType.Equality:
+						if (((EqualityConstraint)constraint).ImpliedByObjectification != null)
+						{
+							return false;
+						}
+						break;
+				}
+				return true;
+			}
+			else if (element is SingleColumnExternalConstraint ||
 					 element is MultiColumnExternalConstraint ||
 					 element is RoleHasValueRangeDefinition)
 			{

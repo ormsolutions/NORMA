@@ -46,12 +46,13 @@
 		<arg:Rule class="NamedElementDictionary.ElementLinkAddedRule" namespace="Neumont.Tools.ORM.Framework"/>
 		<arg:Rule class="NamedElementDictionary.ElementLinkRemovedRule" namespace="Neumont.Tools.ORM.Framework"/>
 		<arg:Rule class="NamedElementDictionary.NamedElementChangedRule" namespace="Neumont.Tools.ORM.Framework"/>
+		<arg:Rule class="Objectification.ObjectificationAddRule"/>
 		<arg:Rule class="ObjectType.CheckForIncompatibleRelationshipRule"/>
 		<arg:Rule class="ObjectType.ModelHasObjectTypeAddRuleModelValidation"/>
 		<arg:Rule class="ObjectType.ObjectTypeChangeRule"/>
 		<arg:Rule class="ObjectType.ObjectTypeRemoveRule"/>
-		<arg:Rule class="ObjectType.VerifyNestingEntityTypeHasFactTypeAddRule"/>
-		<arg:Rule class="ObjectType.VerifyNestingEntityTypeHasFactTypeRemoveRule"/>
+		<arg:Rule class="ObjectType.VerifyObjectificationAddRule"/>
+		<arg:Rule class="ObjectType.VerifyObjectificationRemoveRule"/>
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeAddRule"/>
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeRemoveRule"/>
 		<arg:Rule class="ObjectType.VerifyValueTypeHasDataTypeAddRule"/>

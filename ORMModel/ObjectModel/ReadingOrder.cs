@@ -257,7 +257,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion ReadingHasRoleRemoving
+		#endregion // ReadingOrederHasRoleRemoving rule class
 		#region FactTypeHasRoleAddedRule
 		/// <summary>
 		/// Common place for code to deal with roles that exist in a fact

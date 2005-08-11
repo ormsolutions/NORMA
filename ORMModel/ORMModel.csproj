@@ -111,6 +111,7 @@
     <Compile Include="ObjectModel\Editors\IntrinsicReferenceModesBranch.cs" />
     <Compile Include="ObjectModel\Editors\ReferenceModeHeaderBranch.cs" />
     <Compile Include="ObjectModel\Editors\ReferenceModeKindsBranch.cs" />
+    <Compile Include="ObjectModel\Objectification.cs" />
     <Compile Include="ObjectModel\ORMElementInterfaces.cs" />
     <Compile Include="ObjectModel\ModelError.cs" />
     <Compile Include="Framework\NamedElementDictionary.cs" />

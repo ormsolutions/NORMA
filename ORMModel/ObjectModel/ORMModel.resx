@@ -114,6 +114,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ImpliedFactType.PredicateInverseReading">
+    <value xml:space="preserve">{{0}} involves{0} {{1}}</value>
+    <comment xml:space="preserve">The inverse reading for the predicate created implicitly via objectification. The replacement field is used to keep the readings unique in ring situations.</comment>
+  </data>
+  <data name="ImpliedFactType.PredicateReading">
+    <value xml:space="preserve">{{0}} is involved in{0} {{1}}</value>
+      <comment xml:space="preserve">The reading for the predicate created implicitly via objectification. The replacement field is used to keep the readings unique in ring situations.</comment>
+  </data>
   <data name="Model.Reading.RoleDeletedText">
     <value xml:space="preserve">{{deleted}}</value>
     <comment xml:space="preserve">Text used to replace a role place holder when the role is deleted</comment>
@@ -401,5 +409,9 @@
   <data name="ModelError.Constraint.SimpleMandatoryImpliesDisjunctiveMandatoryError.Message">
     <value xml:space="preserve">Constraint '{0}' in model '{1}' is implied by a simple mandatory constraint.</value>
     <comment xml:space="preserve">The mandatory disjunctive constraint is implied by a simple mandatory constraint. Replacement field {0} is the constraint name and {1} is the model name.</comment>
+  </data>
+  <data name="ModelException.Objectification.ModelNotSpecified">
+    <value xml:space="preserve">Objectification requires the Model property to be set on either the NestingType or the NestedFactType role players.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to create an objectification relationship when the Model is not specified for either the NestingType or the NestedFactType.</comment>
   </data>
 </root>

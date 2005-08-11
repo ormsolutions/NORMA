@@ -574,11 +574,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private void ValidateRequiresInternalUniqueness(INotifyElementAdded notifyAdded)
 		{
-			if (!IsRemoved)
+			ORMModel theModel;
+			if (!IsRemoved && (null != (theModel = Model)))
 			{
 				bool hasError = true;
 				Store theStore = Store;
-				ORMModel theModel = Model;
 				InternalConstraintMoveableCollection internalConstraints = InternalConstraintCollection;
 				foreach (InternalConstraint constraint in internalConstraints)
 				{

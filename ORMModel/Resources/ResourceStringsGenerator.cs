@@ -372,6 +372,24 @@ namespace Neumont.Tools.ORM
         }
         /// <summary>
         ///</summary>
+        public static string ImpliedFactTypePredicateInverseReading
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, "ImpliedFactType.PredicateInverseReading");
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ImpliedFactTypePredicateReading
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, "ImpliedFactType.PredicateReading");
+            }
+        }
+        /// <summary>
+        ///</summary>
         public static string SubtypeFactComponentNameFormat
         {
             get
@@ -512,6 +530,15 @@ namespace Neumont.Tools.ORM
             get
             {
                 return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMModelBrowser.WindowTitle");
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ModelExceptionObjectificationRequiresModel
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ModelNotSpecified");
             }
         }
         /// <summary>

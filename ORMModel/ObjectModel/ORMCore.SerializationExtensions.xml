@@ -97,7 +97,7 @@
 			<se:Link RelationshipName="ValueTypeHasValueRangeDefinition" RoleName="ValueRangeDefinition"/>
 		</se:ChildElement>
 		<se:Link Name="Role"  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
-		<se:Link Name="NestedPredicate" RelationshipName="NestingEntityTypeHasFactType" RoleName="NestedFactType" />
+		<se:Link Name="NestedPredicate" RelationshipName="Objectification" RoleName="NestedFactType" WriteStyle="PrimaryLinkElement" />
 		<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
 		<!--TODO:Subtypes-->
@@ -131,6 +131,20 @@
 	<se:Element Class="FactType" Name="Fact" SortChildElements="true">
 		<!--TODO: FactNotes-->
 		<!--TODO: Derivation Rule-->
+		<se:ConditionalName Name="ImpliedFact">
+			<plx:Operator name="IdentityInequality">
+				<plx:Left>
+					<plx:CallInstance name="ImpliedByObjectification" style="Property">
+						<plx:CallObject>
+							<plx:ThisKeyword/>
+						</plx:CallObject>
+					</plx:CallInstance>
+				</plx:Left>
+				<plx:Right>
+					<plx:NullObjectKeyword/>
+				</plx:Right>
+			</plx:Operator>
+		</se:ConditionalName>
 		<se:ChildElement Name="FactRoles">
 			<se:Link RelationshipName="FactTypeHasRole" RoleName="RoleCollection"/>
 		</se:ChildElement>
@@ -140,11 +154,17 @@
 		<se:ChildElement Name="InternalConstraints">
 			<se:Link RelationshipName="FactTypeHasInternalConstraint" RoleName="InternalConstraintCollection"/>
 		</se:ChildElement>
-		<se:Link RelationshipName="NestingEntityTypeHasFactType" RoleName="NestingType" WriteStyle="NotWritten"/>
+		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedByObjectification"/>
+		<se:Link RelationshipName="Objectification" RoleName="NestingType" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="ReadingRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true"/>
+	<se:Element Class="Objectification">
+		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedFactTypeCollection" WriteStyle="NotWritten"/>
+		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesEqualityConstraint" RoleName="ImpliedEqualityConstraint" WriteStyle="NotWritten"/>
+		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesExternalUniquenessConstraint" RoleName="ImpliedExternalUniquenessConstraintCollection" WriteStyle="NotWritten"/>
+	</se:Element>
 	<!--Readings-->
 	<se:Element Class="ReadingOrder">
 		<se:ChildElement Name="Readings">
@@ -177,7 +197,7 @@
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="RolePlayerRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Constraints-->
-	<se:Element Class="MultiColumnExternalConstraint">
+	<se:Element Class="MultiColumnExternalConstraint" SortChildElements="true">
 		<se:ChildElement Name="RoleSequences">
 			<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 		</se:ChildElement>
@@ -186,7 +206,7 @@
 	<se:Element Class="MultiColumnExternalConstraintRoleSequence" Name="RoleSequence">
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 	</se:Element>
-	<se:Element Class="SingleColumnExternalConstraint">
+	<se:Element Class="SingleColumnExternalConstraint" SortChildElements="true">
 		<se:ChildElement Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 		</se:ChildElement>
@@ -197,7 +217,22 @@
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ExternalUniquenessConstraint" Override="true" SortChildElements="true">
+		<se:ConditionalName Name="ImpliedExternalUniquenessConstraint">
+			<plx:Operator name="IdentityInequality">
+				<plx:Left>
+					<plx:CallInstance name="ImpliedByObjectification" style="Property">
+						<plx:CallObject>
+							<plx:ThisKeyword/>
+						</plx:CallObject>
+					</plx:CallInstance>
+				</plx:Left>
+				<plx:Right>
+					<plx:NullObjectKeyword/>
+				</plx:Right>
+			</plx:Operator>
+		</se:ConditionalName>
 		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
+		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesExternalUniquenessConstraint" RoleName="ImpliedByObjectification"/>
 	</se:Element>
 	<se:Element Class="InternalUniquenessConstraint" SortChildElements="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
@@ -215,7 +250,22 @@
 		</se:ChildElement>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 	</se:Element>
-	<se:Element Class="EqualityConstraint" Override="true">
+	<se:Element Class="EqualityConstraint" Override="true" SortChildElements="true">
+		<se:ConditionalName Name="ImpliedEqualityConstraint">
+			<plx:Operator name="IdentityInequality">
+				<plx:Left>
+					<plx:CallInstance name="ImpliedByObjectification" style="Property">
+						<plx:CallObject>
+							<plx:ThisKeyword/>
+						</plx:CallObject>
+					</plx:CallInstance>
+				</plx:Left>
+				<plx:Right>
+					<plx:NullObjectKeyword/>
+				</plx:Right>
+			</plx:Operator>
+		</se:ConditionalName>
+		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesEqualityConstraint" RoleName="ImpliedByObjectification"/>
 		<se:Link RelationshipName="EqualityConstraintHasEqualityIsImpliedByMandatoryError" RoleName="EqualityIsImpliedByMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Errors-->

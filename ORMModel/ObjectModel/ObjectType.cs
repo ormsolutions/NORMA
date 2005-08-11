@@ -947,12 +947,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				link.PreferredIdentifierFor.ValidateRequiresReferenceScheme(null);
 			}
 		}
-		[RuleOn(typeof(NestingEntityTypeHasFactType), FireTime = TimeToFire.LocalCommit)]
-		private class VerifyNestingEntityTypeHasFactTypeAddRule : AddRule
+		[RuleOn(typeof(Objectification), FireTime = TimeToFire.LocalCommit)]
+		private class VerifyObjectificationAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				NestingEntityTypeHasFactType link = e.ModelElement as NestingEntityTypeHasFactType;
+				Objectification link = e.ModelElement as Objectification;
 				link.NestingType.ValidateRequiresReferenceScheme(null);
 			}
 		}
@@ -965,12 +965,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				link.ValueTypeCollection.ValidateRequiresReferenceScheme(null);
 			}
 		}
-		[RuleOn(typeof(NestingEntityTypeHasFactType), FireTime = TimeToFire.LocalCommit)]
-		private class VerifyNestingEntityTypeHasFactTypeRemoveRule : RemoveRule
+		[RuleOn(typeof(Objectification), FireTime = TimeToFire.LocalCommit)]
+		private class VerifyObjectificationRemoveRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				NestingEntityTypeHasFactType link = e.ModelElement as NestingEntityTypeHasFactType;
+				Objectification link = e.ModelElement as Objectification;
 				link.NestingType.ValidateRequiresReferenceScheme(null);
 			}
 		}
@@ -1044,7 +1044,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// This is an object model backup for the UI, which does not offer these
 		/// conditions to the user.
 		/// </summary>
-		[RuleOn(typeof(NestingEntityTypeHasFactType)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole))]
+		[RuleOn(typeof(Objectification)), RuleOn(typeof(ValueTypeHasDataType)), RuleOn(typeof(ObjectTypePlaysRole))]
 		private class CheckForIncompatibleRelationshipRule : AddRule
 		{
 			/// <summary>
@@ -1053,7 +1053,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				NestingEntityTypeHasFactType nester;
+				Objectification nester;
 				ValueTypeHasDataType valType;
 				ObjectTypePlaysRole roleLink;
 				FactTypeHasRole newRole;
@@ -1064,7 +1064,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// Note that the other portion of this condition is
 				// checked in a separate add rule for EntityTypeHasPreferredIdentifier
 				bool incompatiblePreferredIdentifierCombination = false;
-				if (null != (nester = element as NestingEntityTypeHasFactType))
+				if (null != (nester = element as Objectification))
 				{
 					if (nester.NestedFactType is SubtypeFact)
 					{

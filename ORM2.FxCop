@@ -4320,6 +4320,21 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="ExternalUniquenessConstraintMoveableCollection">
+          <Messages>
+           <Message TypeName="CollectionsShouldImplementGenericInterface" Category="Microsoft.Design" CheckId="CA1010" Status="Excluded" Created="2005-08-11 20:45:47Z">
+            <Issue>
+             <Item>ExternalUniquenessConstraintMoveableCollection</Item>
+             <Item>IList</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="53" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="FactType">
           <Members>
            <Member Name="CustomSerializedElementInfo">
@@ -8699,24 +8714,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="NestingEntityTypeHasFactTypeElementFactoryCreator">
-          <Members>
-           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
-            <Messages>
-             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue>
-               <Item>NestingEntityTypeHasFactTypeElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="34" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="NMinusOneError">
           <Members>
            <Member Name="CustomSerializedChildRoleComparer">
@@ -8967,6 +8964,267 @@
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
                <Item>ObjectIdOtherDataTypeElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="34" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Objectification">
+          <Members>
+           <Member Name="CustomSerializedChildRoleComparer">
+            <Accessors>
+             <Accessor Name="get_CustomSerializedChildRoleComparer():System.Collections.Generic.IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>Objectification.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
+                </Issue>
+                <Notes>
+                 <User Name="mcurland">
+                  <Note Id="54" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="CustomSerializedElementInfo">
+            <Accessors>
+             <Accessor Name="get_CustomSerializedElementInfo():Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>Objectification.get_CustomSerializedElementInfo():ORMCustomSerializedElementInfo</Item>
+                </Issue>
+                <Notes>
+                 <User Name="mcurland">
+                  <Note Id="54" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>Objectification.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="attributeInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>attributeInfo</Item>
+               <Item>Objectification.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="rolePlayedInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>Objectification.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedChildElementInfo():Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[]">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>Objectification.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-08-11 20:45:47Z">
+              <Issue>
+               <Item>rolePlayedInfo</Item>
+               <Item>Objectification.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
+               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>Objectification.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MapAttribute(System.String,System.String):System.Guid">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>Objectification.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="attributeName" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>attributeName</Item>
+               <Item>Objectification.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="xmlNamespace" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>xmlNamespace</Item>
+               <Item>Objectification.MapAttribute(String, String):Guid</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MapChildElement(System.String,System.String,System.String,System.String):Neumont.Tools.ORM.Shell.ORMCustomSerializedElementMatch">
+            <Messages>
+             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>Objectification.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="containerName" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>containerName</Item>
+               <Item>Objectification.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="containerNamespace" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>containerNamespace</Item>
+               <Item>Objectification.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="elementName" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>elementName</Item>
+               <Item>Objectification.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="elementNamespace" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+              <Issue>
+               <Item>elementNamespace</Item>
+               <Item>Objectification.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="54" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="SupportedCustomSerializedOperations">
+            <Accessors>
+             <Accessor Name="get_SupportedCustomSerializedOperations():Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations">
+              <Messages>
+               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-08-11 20:45:47Z" FixCategory="Breaking">
+                <Issue>
+                 <Item>Objectification.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
+                </Issue>
+                <Notes>
+                 <User Name="mcurland">
+                  <Note Id="54" />
+                 </User>
+                </Notes>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Objectification+ObjectificationAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-08-11 20:45:47Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.Objectification+ObjectificationAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="52" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ObjectificationElementFactoryCreator">
+          <Members>
+           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
+            <Messages>
+             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
+              <Issue>
+               <Item>ObjectificationElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -9460,11 +9718,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ObjectType+VerifyNestingEntityTypeHasFactTypeAddRule">
+         <Type Name="ObjectType+VerifyObjectificationAddRule">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 22:24:35Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.ObjectType+VerifyNestingEntityTypeHasFactTypeAddRule</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.ObjectType+VerifyObjectificationAddRule</Item>
             </Issue>
             <Notes>
              <User Name="jtanner">
@@ -9474,11 +9732,11 @@
            </Message>
           </Messages>
          </Type>
-         <Type Name="ObjectType+VerifyNestingEntityTypeHasFactTypeRemoveRule">
+         <Type Name="ObjectType+VerifyObjectificationRemoveRule">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-07-25 22:24:35Z">
             <Issue>
-             <Item>Neumont.Tools.ORM.ObjectModel.ObjectType+VerifyNestingEntityTypeHasFactTypeRemoveRule</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.ObjectType+VerifyObjectificationRemoveRule</Item>
             </Issue>
             <Notes>
              <User Name="jtanner">
@@ -10848,24 +11106,6 @@
              <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
               <Issue>
                <Item>ReadingElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="34" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ReadingHasRoleElementFactoryCreator">
-          <Members>
-           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
-            <Messages>
-             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue>
-               <Item>ReadingHasRoleElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
               </Issue>
               <Notes>
                <User Name="mcurland">
@@ -21238,6 +21478,9 @@
     <Note Id="49" Modified="2005-07-27 00:24:14Z">Debug only code</Note>
     <Note Id="50" Modified="2005-07-27 00:24:35Z">Standard code spit to match interface pattern</Note>
     <Note Id="51" Modified="2005-08-10 17:52:43Z">Rule classes instantiated via reflection</Note>
+    <Note Id="52" Modified="2005-08-11 20:47:55Z">Rule class instantiated via reflection</Note>
+    <Note Id="53" Modified="2005-08-11 20:48:14Z">Standard DSLTools spit</Note>
+    <Note Id="54" Modified="2005-08-11 20:48:34Z">Standard serialization spit matching interface pattern</Note>
    </User>
    <User Name="obuhler">
     <Note Id="0" Modified="2005-07-29 21:45:56Z">Rule classes instantiated via reflection</Note>
