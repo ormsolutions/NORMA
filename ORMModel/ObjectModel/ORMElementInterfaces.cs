@@ -1,40 +1,70 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.Modeling;
 using System.ComponentModel;
+using Microsoft.VisualStudio.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	#region IORMExtendableElement
 	/// <summary>
-	/// An ORM element that can be extended.
+	/// An <see cref="ModelElement">ORM element</see> that can be extended.
 	/// </summary>
+	[CLSCompliant(true)]
 	public interface IORMExtendableElement
 	{
 		/// <summary>
-		/// The collection of IORMExtensionElements
+		/// The collection of extension <see cref="ModelElement"/>s.
 		/// </summary>
 		ModelElementMoveableCollection ExtensionCollection { get;}
+
+		/// <summary>
+		/// In order to support <see cref="IORMPropertyExtension"/>s, this method must call
+		/// <see cref="ExtendableElementUtility.MergeExtensionProperties"/>. See example.
+		/// </summary>
+		/// <example>
+		/// public override PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, ref PropertyDescriptor defaultPropertyDescriptor)
+		/// {
+		///		return Neumont.Tools.ORM.ObjectModel.ExtendableElementUtility.MergeExtensionProperties(this, base.GetDisplayProperties(requestor, ref defaultPropertyDescriptor));
+		/// }
+		/// </example>
+		PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, ref PropertyDescriptor defaultPropertyDescriptor);
 	}
+	#endregion
+
+	#region IORMPropertyExtension
 	/// <summary>
-	/// An IORMExtension element that provides custom properties
+	/// An extension <see cref="ModelElement"/> that provides custom properties for the
+	/// <see cref="System.Windows.Forms.PropertyGrid"/> of the <see cref="IORMExtendableElement"/>
+	/// that it is extending.
 	/// </summary>
+	[CLSCompliant(true)]
 	public interface IORMPropertyExtension
 	{
 		/// <summary>
-		/// Controls how custom properties are displayed
+		/// Controls how custom properties are displayed.
 		/// </summary>
 		ORMExtensionPropertySettings ExtensionPropertySettings { get;}
 		/// <summary>
-		/// If the extension is being shown as a direct property, then
-		/// provide the meta attribute to display as the default value,
-		/// or Guid.Empty to show a read-only value returned by ToString.
+		/// If the extension is being shown as an
+		/// <see cref="ORMExtensionPropertySettings.MergeAsExpandableProperty">expandable property</see>,
+		/// this determines the meta attribute to display as the value at the root of the expandable tree.
 		/// </summary>
-		Guid ExtensionDefaultAttribute { get;}
+		/// <remarks>
+		/// If <see cref="ORMExtensionPropertySettings.MergeAsExpandableProperty"/> is not set, the value of this
+		/// property is not used.
+		/// If <see cref="Guid.Empty"/> or a <see cref="Guid"/> for which a <see cref="MetaAttributeInfo"/>
+		/// cannot be retrieved is specified, the value returned by <see cref="Object.ToString"/> is used.
+		/// </remarks>
+		Guid ExtensionExpandableTopLevelAttributeGuid { get; }
+		/// <summary>
+		/// Returns a <see cref="PropertyDescriptorCollection"/> containing the <see cref="PropertyDescriptor"/>s
+		/// that should be merged with the <see cref="IORMExtendableElement"/>'s <see cref="PropertyDescriptor"/>s.
+		/// </summary>
+		PropertyDescriptorCollection GetProperties();
 	}
+
 	/// <summary>
-	/// Controls how custom properties are displayed
+	/// Controls how custom properties are displayed in the <see cref="System.Windows.Forms.PropertyGrid"/>.
 	/// </summary>
 	[Flags, CLSCompliant(true)]
 	public enum ORMExtensionPropertySettings
@@ -44,34 +74,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		NotDisplayed = 0,
 		/// <summary>
-		/// Displays as an expandable tree in the property grid
+		/// Properties are displayed as an expandable tree
 		/// </summary>
-		MergeAsChildProperties = 1,
+		MergeAsExpandableProperty = 1,
 		/// <summary>
-		/// Displays as a top level property in the property grid
+		/// Properties are displayed as top-level entries
 		/// </summary>
-		MergeAsDirectProperty = 2,
+		MergeAsTopLevelProperty = 2,
 	}
-	/// <summary>
-	/// Provides static helper utility functions for IORMExtensionElement
-	/// </summary>
-	public static partial class ExtensionUtility
-	{		
-		/// <summary>
-		/// Adds an IORMExtensionElement to an IORMExtendableElement
-		/// </summary>
-		public static void AddExtensionElement(ModelElement extensionElement, IORMExtendableElement extendedElement)
-		{
-			extendedElement.ExtensionCollection.Add(extensionElement);
-		}
-		/// <summary>
-		/// Gets the IORMExtendableElement that extensionElement is attached to. 
-		/// </summary>
-		public static T GetExtendedElement<T>(ModelElement extensionElement) where T : ModelElement, IORMExtendableElement
-		{
-			return (T)(extensionElement.GetCounterpartRolePlayer(ORMNamedElementHasExtensionElement.ExtensionCollectionMetaRoleGuid, ORMNamedElementHasExtensionElement.ExtendedElementMetaRoleGuid, false)
-			??
-			extensionElement.GetCounterpartRolePlayer(ORMModelElementHasExtensionElement.ExtensionCollectionMetaRoleGuid, ORMModelElementHasExtensionElement.ExtendedElementMetaRoleGuid, false));
-		}
-	}
+	#endregion
+
+
 }

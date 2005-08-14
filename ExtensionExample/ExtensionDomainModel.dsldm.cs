@@ -212,6 +212,7 @@ namespace ExtensionExample
 			Microsoft.VisualStudio.Modeling.MetaFieldInfo[] typeArray = new Microsoft.VisualStudio.Modeling.MetaFieldInfo[]
 			{
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(ExtensionExample.MyCustomExtensionElement), "TestProperty", ExtensionExample.MyCustomExtensionElement.TestPropertyMetaAttributeGuid, typeof(ExtensionExample.MyCustomExtensionElement.MyCustomExtensionElementTestPropertyFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(ExtensionExample.MyCustomExtensionElement), "CustomEnum", ExtensionExample.MyCustomExtensionElement.CustomEnumMetaAttributeGuid, typeof(ExtensionExample.MyCustomExtensionElement.MyCustomExtensionElementCustomEnumFieldHandler)),
 
 			};
 			return typeArray;
@@ -228,7 +229,7 @@ namespace ExtensionExample
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("9f620b5a-9a99-45a4-a022-c9ed95ce85d6")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(ExtensionExample.MyCustomExtensionElement.MetaClassGuidString, "ExtensionExample.MyCustomExtensionElement")]
-	public  partial class MyCustomExtensionElement : Microsoft.VisualStudio.Modeling.NamedElement
+	public  partial class MyCustomExtensionElement : Microsoft.VisualStudio.Modeling.ModelElement
 	{
 		#region MyCustomExtensionElement's Generated MetaClass Code
 		/// <summary>
@@ -256,12 +257,13 @@ namespace ExtensionExample
 
 		#region TestProperty's Generated Property Code
 
-		private System.String testPropertyPropertyStorage = string.Empty;
+		private System.String testPropertyPropertyStorage = "Default value";
 		
 		/// <summary>
 		/// 
 		/// </summary>
-		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[System.ComponentModel.Editor(typeof(TestElementPicker), typeof(System.Drawing.Design.UITypeEditor))]
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute(DefaultString="Default value")]
 		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(MyCustomExtensionElementTestPropertyFieldHandler))]
 		[Microsoft.VisualStudio.Modeling.MetaObject(ExtensionExample.MyCustomExtensionElement.TestPropertyMetaAttributeGuidString, "ExtensionExample.MyCustomExtensionElement.TestProperty")]
 		public  System.String TestProperty
@@ -352,6 +354,127 @@ namespace ExtensionExample
 				{
 					OnValueChanging(element, oldValue, value);
 					element.testPropertyPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region CustomEnum's Generated  Field Code
+		#region CustomEnum's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String CustomEnumMetaAttributeGuidString = "26aaf88d-2051-4d87-b863-bf330d7123bb";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid CustomEnumMetaAttributeGuid = new System.Guid(ExtensionExample.MyCustomExtensionElement.CustomEnumMetaAttributeGuidString);
+		#endregion
+
+		#region CustomEnum's Generated Property Code
+
+		private ExtensionExample.TestEnumeration customEnumPropertyStorage = ExtensionExample.TestEnumeration.None;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(ExtensionExample.TestEnumeration),DefaultEnumerationValueName="None")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(MyCustomExtensionElementCustomEnumFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(ExtensionExample.MyCustomExtensionElement.CustomEnumMetaAttributeGuidString, "ExtensionExample.MyCustomExtensionElement.CustomEnum")]
+		public  ExtensionExample.TestEnumeration CustomEnum
+		{
+			get
+			{
+				return customEnumPropertyStorage;
+			}
+		
+			set
+			{
+				myCustomExtensionElementCustomEnumFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region MyCustomExtensionElementCustomEnumFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for MyCustomExtensionElement.CustomEnum field
+		/// </summary>
+		private static MyCustomExtensionElementCustomEnumFieldHandler	myCustomExtensionElementCustomEnumFieldHandler	= MyCustomExtensionElementCustomEnumFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for MyCustomExtensionElement.CustomEnum
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class MyCustomExtensionElementCustomEnumFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<ExtensionExample.MyCustomExtensionElement,ExtensionExample.TestEnumeration>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private MyCustomExtensionElementCustomEnumFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the MyCustomExtensionElement.CustomEnum field handler
+			/// </summary>
+			/// <value>MyCustomExtensionElementCustomEnumFieldHandler</value>
+			public static MyCustomExtensionElementCustomEnumFieldHandler Instance
+			{
+				get
+				{
+					if (ExtensionExample.MyCustomExtensionElement.myCustomExtensionElementCustomEnumFieldHandler != null)
+					{
+						return ExtensionExample.MyCustomExtensionElement.myCustomExtensionElementCustomEnumFieldHandler;
+					}
+					else
+					{
+						// The static constructor in MyCustomExtensionElement will assign this value to
+						// ExtensionExample.MyCustomExtensionElement.myCustomExtensionElementCustomEnumFieldHandler, so just instantiate one and return it
+						return new MyCustomExtensionElementCustomEnumFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the MyCustomExtensionElement.CustomEnum field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return ExtensionExample.MyCustomExtensionElement.CustomEnumMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the MyCustomExtensionElement</param>
+			protected sealed override ExtensionExample.TestEnumeration GetValue(ExtensionExample.MyCustomExtensionElement element)
+			{
+				return element.customEnumPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(ExtensionExample.MyCustomExtensionElement element, ExtensionExample.TestEnumeration value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref ExtensionExample.TestEnumeration oldValue)
+			{
+				oldValue = element.customEnumPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.customEnumPropertyStorage = value;
 					OnValueChanged(element, oldValue, value);
 					return true;
 				}

@@ -3954,24 +3954,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ExtensionUtility">
-          <Members>
-           <Member Name="GetExtendedElement(Microsoft.VisualStudio.Modeling.ModelElement):T">
-            <Messages>
-             <Message TypeName="GenericMethodsShouldProvideTypeParameter" Category="Microsoft.Design" CheckId="CA1004" Status="Excluded" Created="2005-08-05 19:30:44Z">
-              <Issue>
-               <Item>ExtensionUtility.GetExtendedElement(ModelElement):T</Item>
-              </Issue>
-              <Notes>
-               <User Name="ckaylor">
-                <Note Id="3" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="ExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
@@ -6857,6 +6839,42 @@
               <Issue>
                <Item>SetModel</Item>
               </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IORMExtendableElement">
+          <Members>
+           <Member Name="GetDisplayProperties(Microsoft.VisualStudio.Modeling.ModelElement,System.ComponentModel.PropertyDescriptor&amp;):System.ComponentModel.PropertyDescriptorCollection">
+            <Messages>
+             <Message Id="1#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Status="Excluded" Created="2005-08-14 22:06:21Z">
+              <Issue Level="CriticalWarning">
+               <Item>defaultPropertyDescriptor</Item>
+              </Issue>
+              <Notes>
+               <User Name="kowen">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="IORMPropertyExtension">
+          <Members>
+           <Member Name="GetProperties():System.ComponentModel.PropertyDescriptorCollection">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2005-08-14 22:06:21Z">
+              <Issue Certainty="50">
+               <Item>GetProperties</Item>
+              </Issue>
+              <Notes>
+               <User Name="kowen">
+                <Note Id="1" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -20594,6 +20612,15 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="GetAllFlag(Neumont.Tools.ORM.Shell.ORMDesignerDocData+PrivateFlags):System.Boolean">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2005-08-14 22:06:21Z">
+              <Issue>
+               <Item>ORMDesignerDocData.GetAllFlag(PrivateFlags):Boolean</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="GetAutomationObject(System.String,EnvDTE.IExtensibleObjectSite,System.Object&amp;):System.Void">
             <Messages>
              <Message Id="2#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-06-03 18:06:39Z">
@@ -21313,6 +21340,24 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="ORMDesignerPackage">
+          <Members>
+           <Member Name="REGISTRYROOT_PACKAGE">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2005-08-14 22:06:21Z">
+              <Issue>
+               <Item>ORMDesignerPackage.REGISTRYROOT_PACKAGE</Item>
+              </Issue>
+              <Notes>
+               <User Name="kowen">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="ORMReferenceModeEditorToolWindow">
           <Members>
            <Member Name=".ctor(System.IServiceProvider)">
@@ -21410,7 +21455,6 @@
     <Note Id="0" Modified="2005-07-25 19:34:18Z">Rule classes instantiated via reflection</Note>
     <Note Id="1" Modified="2005-07-25 19:34:41Z">Standard serialization spit matching required interface pattern</Note>
     <Note Id="2" Modified="2005-08-05 19:32:04Z">Choosing to have a more descriptive value for the enum field.</Note>
-    <Note Id="3" Modified="2005-08-05 19:32:12Z">Not applicable.</Note>
    </User>
    <User Name="jbriggs">
     <Note Id="0" Modified="2005-07-25 20:58:15Z">Rule class instantiated by reflection</Note>
@@ -21424,6 +21468,11 @@
     <Note Id="0" Modified="2005-04-26 20:54:13Z">Internal rules instantiated via reflection</Note>
     <Note Id="1" Modified="2005-04-26 20:55:26Z">Errors in generated code</Note>
     <Note Id="2" Modified="2005-04-29 21:24:32Z">Internal rules instantiated via reflection</Note>
+   </User>
+   <User Name="kowen">
+    <Note Id="0" Modified="2005-08-14 22:08:18Z">This field is used by other constant fields. FxCop is unable to detect such usage.</Note>
+    <Note Id="1" Modified="2005-08-14 22:13:19Z">N/A</Note>
+    <Note Id="2" Modified="2005-08-14 22:16:50Z">This is a wrapper method, so its signature is outside of our control.</Note>
    </User>
    <User Name="mcurland">
     <Note Id="0" Modified="2005-07-07 00:43:51Z">Reviewed unsed parameters</Note>
@@ -21535,8 +21584,14 @@
    <Rule TypeName="AvoidTypeNamesInParameters" Category="Microsoft.Naming" CheckId="CA1720">
     <Resolution Name="Default">Remove the type identifier from parameter name '{0}'.</Resolution>
    </Rule>
+   <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
+    <Resolution Name="Default">'{0}' appears to have no upstream public or protected callers.</Resolution>
+   </Rule>
    <Rule TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812">
     <Resolution Name="Default">'{0}' is an internal class that is apparently never instantiated. If so, remove the code from the assembly. If this class is intended to contain only static methods, consider adding a private constructor to prevent the compiler from generating a default constructor.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823">
+    <Resolution Name="Default">It appears that field '{0}' is never used or is only ever assigned to. Use this field or remove it.</Resolution>
    </Rule>
    <Rule TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227">
     <Resolution Name="Default">Change '{0}' to be read-only by removing the property setter.</Resolution>

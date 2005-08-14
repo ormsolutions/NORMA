@@ -1084,8 +1084,14 @@ Information Contained Herein is Proprietary and Confidential.
         <superType>if24967fbz05a7z4fd7zad80z1c981c4dfe26</superType>
         <roles />
       </relationship>
+      <relationship name="ORMExtendableElementHasExtensionElement" identity="780a6c20-d6e6-4b6e-b3ac-5715a2537b6e" namespace="Neumont.Tools.ORM.ObjectModel" id="i780a6c20zd6e6z4b6ezb3acz5715a2537b6e" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
+        <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+        <roles />
+      </relationship>
       <relationship name="ORMNamedElementHasExtensionElement" identity="279023be-e4f2-427c-a7c4-43b0b16d5aac" namespace="Neumont.Tools.ORM.ObjectModel" id="i279023beze4f2z427cza7c4z43b0b16d5aac" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i780a6c20zd6e6z4b6ezb3acz5715a2537b6e</superType>
         <roles>
           <role name="ExtensionCollection" identity="bfa5f7fb-d2f3-4444-a76a-c1cfc00293a3" id="ibfa5f7fbzd2f3z4444za76azc1cfc00293a3" min="1" max="0" isUnbounded="true" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
@@ -1104,6 +1110,7 @@ Information Contained Herein is Proprietary and Confidential.
       </relationship>
       <relationship name="ORMModelElementHasExtensionElement" identity="ef78e4b4-d4e5-4209-b050-2c64adb89e9f" namespace="Neumont.Tools.ORM.ObjectModel" id="ief78e4b4zd4e5z4209zb050z2c64adb89e9f" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i780a6c20zd6e6z4b6ezb3acz5715a2537b6e</superType>
         <roles>
           <role name="ExtensionCollection" identity="1d5b9d81-3a3a-4282-8d89-19ce9b29b2e5" id="i1d5b9d81z3a3az4282z8d89z19ce9b29b2e5" min="1" max="0" isUnbounded="true" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
@@ -2032,6 +2039,21 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <superType>if24967fbz05a7z4fd7zad80z1c981c4dfe26</superType>
             <subType>i718adac4za9e2z454dza700z1c34b6d3bcbf</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMExtendableElementHasExtensionElement-ORMElementLink" identity="80ecb4a7-6181-4873-bb26-18d3512af274" id="i80ecb4a7z6181z4873zbb26z18d3512af274" definitionlevel="none">
+            <source />
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>i780a6c20zd6e6z4b6ezb3acz5715a2537b6e</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMModelElementHasExtensionElement-ORMExtendableElementHasExtensionElement" identity="6a125d63-315b-4206-96ba-4de39c75cd1e" id="i6a125d63z315bz4206z96baz4de39c75cd1e" definitionlevel="none">
+            <source />
+            <superType>i780a6c20zd6e6z4b6ezb3acz5715a2537b6e</superType>
+            <subType>ief78e4b4zd4e5z4209zb050z2c64adb89e9f</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMNamedElementHasExtensionElement-ORMExtendableElementHasExtensionElement" identity="7a5f59f3-a95b-4bea-9941-efbdc1a980ea" id="i7a5f59f3za95bz4beaz9941zefbdc1a980ea" definitionlevel="none">
+            <source />
+            <superType>i780a6c20zd6e6z4b6ezb3acz5715a2537b6e</superType>
+            <subType>i279023beze4f2z427cza7c4z43b0b16d5aac</subType>
           </treeExpression>
           <treeExpression xsi:type="InheritanceExpression" name="ElementLink-ModelElement" identity="c1ae4024-fbdc-4663-be7c-049c54d37621" id="ic1ae4024zfbdcz4663zbe7cz049c54d37621" definitionlevel="none">
             <source />
@@ -3090,6 +3112,21 @@ Information Contained Herein is Proprietary and Confidential.
             <source>i0f29c885z316az4eeczae86z7d8e854a45e4</source>
             <superType>if24967fbz05a7z4fd7zad80z1c981c4dfe26</superType>
             <subType>i718adac4za9e2z454dza700z1c34b6d3bcbf</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMExtendableElementHasExtensionElement-ORMElementLink" identity="d41d3d3e-c9f7-4dac-9b2f-9b644b29fe5c" id="id41d3d3ezc9f7z4dacz9b2fz9b644b29fe5c" definitionlevel="definition">
+            <source>i80ecb4a7z6181z4873zbb26z18d3512af274</source>
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>i780a6c20zd6e6z4b6ezb3acz5715a2537b6e</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMModelElementHasExtensionElement-ORMExtendableElementHasExtensionElement" identity="b4215a61-f94c-4ba8-9def-830f7b9b8f6e" id="ib4215a61zf94cz4ba8z9defz830f7b9b8f6e" definitionlevel="definition">
+            <source>i6a125d63z315bz4206z96baz4de39c75cd1e</source>
+            <superType>i780a6c20zd6e6z4b6ezb3acz5715a2537b6e</superType>
+            <subType>ief78e4b4zd4e5z4209zb050z2c64adb89e9f</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ORMNamedElementHasExtensionElement-ORMExtendableElementHasExtensionElement" identity="e2edce8d-6809-44fa-979a-633be2aee953" id="ie2edce8dz6809z44faz979az633be2aee953" definitionlevel="definition">
+            <source>i7a5f59f3za95bz4beaz9941zefbdc1a980ea</source>
+            <superType>i780a6c20zd6e6z4b6ezb3acz5715a2537b6e</superType>
+            <subType>i279023beze4f2z427cza7c4z43b0b16d5aac</subType>
           </treeExpression>
           <treeExpression xsi:type="InheritanceExpression" name="ElementLink-ModelElement" identity="d3103cab-1d98-4fb9-a49d-6344f57a6517" id="id3103cabz1d98z4fb9za49dz6344f57a6517" definitionlevel="definition">
             <source>ic1ae4024zfbdcz4663zbe7cz049c54d37621</source>

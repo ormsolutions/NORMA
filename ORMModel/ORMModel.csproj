@@ -23,13 +23,15 @@
     <DefineConstants>TRACE;DEBUG;FACTEDITORPROTOTYPE</DefineConstants>
     <DocumentationFile>bin\Debug\Neumont.Tools.ORM.XML</DocumentationFile>
     <RunFxCop>false</RunFxCop>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>.\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <DocumentationFile>bin\Release\Neumont.Tools.ORM.XML</DocumentationFile>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
@@ -115,8 +117,7 @@
     <Compile Include="ObjectModel\ORMElementInterfaces.cs" />
     <Compile Include="ObjectModel\ModelError.cs" />
     <Compile Include="Framework\NamedElementDictionary.cs" />
-    <Compile Include="ObjectModel\Editors\ElementPicker.cs">
-    </Compile>
+    <Compile Include="ObjectModel\Editors\ElementPicker.cs" />
     <Compile Include="ObjectModel\Editors\TypedElementPickers.cs" />
     <Compile Include="ObjectModel\Constraint.cs" />
     <Compile Include="ObjectModel\FactType.cs" />
@@ -126,13 +127,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ORMCore.dsldm.dsldmt</DependentUpon>
     </Compile>
-    <Compile Include="ObjectModel\Editors\ORMReferenceModeEditorWindow.cs">
-    </Compile>
+    <Compile Include="ObjectModel\Editors\ORMReferenceModeEditorWindow.cs" />
     <Compile Include="ObjectModel\ORMCore.AttachRules.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMCore.AttachRules.xml</DependentUpon>
     </Compile>
     <Compile Include="ObjectModel\ORMElements.cs" />
+    <Compile Include="ObjectModel\ORMElementUtilities.cs" />
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
     <Compile Include="ObjectModel\ORMCore.SerializationExtensions.cs">

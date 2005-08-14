@@ -17,6 +17,7 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 	/// method to return items, and alternately the LastControlSize and
 	/// NullItemText getters to control the list contents.
 	/// </summary>
+	[CLSCompliant(true)]
 	public abstract class ElementPicker : UITypeEditor
 	{
 		#region DropDownListBox class. Handles Escape key for ListBox

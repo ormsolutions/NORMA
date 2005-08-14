@@ -9,9 +9,20 @@
     <extended>
       <model>i2b131234z7959z458dz834fz2dc0769ce683</model>
     </extended>
+    <enumerations>
+      <enumeration name="TestEnumeration" identity="d4c5d9a5-68e5-416e-a86c-9acfd0dbeb43" namespace="ExtensionExample" id="id4c5d9a5z68e5z416eza86cz9acfd0dbeb43">
+        <literals />
+      </enumeration>
+    </enumerations>
     <trees>
       <treenavigator name="intrinsic" identity="5870bb97-ec11-42ba-8468-694c47516950" id="i5870bb97zec11z42baz8468z694c47516950">
-        <expressions />
+        <expressions>
+          <treeExpression xsi:type="InheritanceExpression" name="MyCustomExtensionElement-ModelElement" identity="eee809f7-1814-45d2-951c-c415843de9f7" id="ieee809f7z1814z45d2z951czc415843de9f7" definitionlevel="none">
+            <source />
+            <superType>i1f92939dz732dz43c9z83e5z127d634068ee</superType>
+            <subType>i14db7e59z72e3z441fz9993z88fb3e3c01b3</subType>
+          </treeExpression>
+        </expressions>
         <roots />
       </treenavigator>
       <treenavigator xsi:type="ShadowTreeNavigator" name="completeDiagram" identity="a97be1b4-98ee-4bbc-b3a8-029f2b466270" id="ia97be1b4z98eez4bbczb3a8z029f2b466270">
@@ -20,11 +31,20 @@
             <source />
             <property>i6825c613z7e2az4d14z8277z0db3b86b1210</property>
           </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="cdfe1642-0657-496b-a64f-a5a3b042fbe2" id="icdfe1642z0657z496bza64fza5a3b042fbe2">
+            <source />
+            <property>i26aaf88dz2051z4d87zb863zbf330d7123bb</property>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="MyCustomExtensionElement-ModelElement" identity="5394d824-eaf5-4b8f-a7ea-8423ba9c4a62" id="i5394d824zeaf5z4b8fza7eaz8423ba9c4a62" definitionlevel="definition">
+            <source>ieee809f7z1814z45d2z951czc415843de9f7</source>
+            <superType>i1f92939dz732dz43c9z83e5z127d634068ee</superType>
+            <subType>i14db7e59z72e3z441fz9993z88fb3e3c01b3</subType>
+          </treeExpression>
         </expressions>
         <roots>
-          <root name="" identity="0c04863e-eb83-4a14-bad8-26ae7c1aa6ef" id="i0c04863ezeb83z4a14zbad8z26ae7c1aa6ef">
+          <root name="" identity="4dfe86ec-dc09-4378-aad2-e4a56a2b91f8" id="i4dfe86eczdc09z4378zaad2ze4a56a2b91f8">
             <source />
-            <referencetype>i14db7e59z72e3z441fz9993z88fb3e3c01b3</referencetype>
+            <referencetype>i1f92939dz732dz43c9z83e5z127d634068ee</referencetype>
           </root>
         </roots>
         <source>i5870bb97zec11z42baz8468z694c47516950</source>
@@ -48,12 +68,24 @@
     <concepts>
       <concept name="MyCustomExtensionElement" identity="14db7e59-72e3-441f-9993-88fb3e3c01b3" namespace="ExtensionExample" id="i14db7e59z72e3z441fz9993z88fb3e3c01b3" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i1f92939dz732dz43c9z83e5z127d634068ee</superType>
         <valueProperties>
           <property name="TestProperty" identity="6825c613-7e2a-4d14-8277-0db3b86b1210" id="i6825c613z7e2az4d14z8277z0db3b86b1210">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="">
+              <clrattribute name="System.ComponentModel.Editor" parametertext="typeof(TestElementPicker), typeof(System.Drawing.Design.UITypeEditor)" />
+            </mdfmetadata>
+            <propertyInfo xsi:type="StringPropertyInfo" name="" identity="32ccbf5c-d406-4a24-8d50-271b54d6f4d7" default="Default value" max="2147483647" />
+          </property>
+          <property name="CustomEnum" identity="26aaf88d-2051-4d87-b863-bf330d7123bb" id="i26aaf88dz2051z4d87zb863zbf330d7123bb">
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
-            <propertyInfo xsi:type="StringPropertyInfo" name="" identity="32ccbf5c-d406-4a24-8d50-271b54d6f4d7" default="" max="2147483647" />
+            <propertyInfo xsi:type="EnumerationPropertyInfo" name="TestEnumeration" identity="00000000-0000-0000-0000-000000000000" default="None">
+              <enumeration>id4c5d9a5z68e5z416eza86cz9acfd0dbeb43</enumeration>
+            </propertyInfo>
           </property>
         </valueProperties>
+      </concept>
+      <concept name="ModelElement" identity="1f92939d-732d-43c9-83e5-127d634068ee" namespace="Microsoft.VisualStudio.Modeling" id="i1f92939dz732dz43c9z83e5z127d634068ee" isLoaded="false" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
       </concept>
     </concepts>
   </model>

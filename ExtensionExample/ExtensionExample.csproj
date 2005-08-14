@@ -36,10 +36,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomExtendedElement.cs" />
+    <Compile Include="CustomExtensionElement.cs" />
     <Compile Include="ExtensionDomainModel.dsldm.cs">
       <DependentUpon>ExtensionDomainModel.dsldm.dsldmt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -77,6 +78,7 @@
     <ProjectReference Include="..\ORMModel\ORMModel.csproj">
       <Project>{888816BF-5497-49F9-8353-C8EF30CB9226}</Project>
       <Name>ORMModel</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

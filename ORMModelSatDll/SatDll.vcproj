@@ -118,6 +118,7 @@
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
+			ATLMinimizesCRunTimeLibraryUsage="true"
 			CharacterSet="2"
 			>
 			<Tool
@@ -165,11 +166,15 @@
 				ExecutionBucket="14"
 				OutputFile="$(OutDir)/SatDll.dll"
 				LinkIncremental="1"
+				GenerateManifest="false"
+				ManifestFile=""
+				IgnoreAllDefaultLibraries="true"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/SatDll.lib"
+				ResourceOnlyDLL="true"
+				ImportLibrary="$(OutDir)/$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -182,10 +187,12 @@
 			<Tool
 				Name="VCManifestTool"
 				ExecutionBucket="16"
+				VerboseOutput="true"
 			/>
 			<Tool
 				Name="VCBscMakeTool"
 				ExecutionBucket="17"
+				OutputFile="$(OutDir)/$(TargetName).bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

@@ -13,7 +13,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Framework;
 using EnvDTE;
-using System.Reflection;
+
 #if ATTACHELEMENTPROVIDERS
 using Neumont.Tools.ORM.DocumentSynchronization;
 #endif // ATTACHELEMENTPROVIDERS
@@ -25,6 +25,35 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	public partial class ORMDesignerDocData : ModelingDocData, IExtensibleObject
 	{
+		#region Private flags
+		[Flags]
+		private enum PrivateFlags
+		{
+			None = 0,
+			AddedPostLoadEvents = 1,
+			// Other flags here, add instead of lots of bool variables
+		}
+		private PrivateFlags myFlags;
+		private bool GetFlag(PrivateFlags flags)
+		{
+			return 0 != (myFlags & flags);
+		}
+		private bool GetAllFlag(PrivateFlags flags)
+		{
+			return flags == (myFlags & flags);
+		}
+		private void SetFlag(PrivateFlags flags, bool value)
+		{
+			if (value)
+			{
+				myFlags |= flags;
+			}
+			else
+			{
+				myFlags &= ~flags;
+			}
+		}
+		#endregion // Private flags
 		#region Member variables
 		#endregion // Member variables
 		#region Construction/destruction
@@ -46,17 +75,7 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			if (storeKey == PrimaryStoreKey)
 			{
-#if SAMPLEEXTENSION
-				Assembly dummyExtension = Assembly.LoadFile((new FileInfo(GetType().Assembly.Location)).DirectoryName + @"\ExtensionExample.dll");
-#endif
-				return new System.Type[] { typeof(Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurface),
-									   typeof(ORMMetaModel),
-									   typeof(ORMShapeModel)
-#if SAMPLEEXTENSION
-										, dummyExtension.GetType("ExtensionExample.ExtensionDomainModel")
-#endif
-					
-				};
+				return ORMDesignerPackage.GetGlobalSubStores();
 			}
 			return null;
 		}
@@ -323,6 +342,7 @@ namespace Neumont.Tools.ORM.Shell
 			NamedElementDictionary.AttachEventHandlers(store);
 			ReadingShape.AttachEventHandlers(store);
 			ExternalConstraintShape.AttachEventHandlers(store);
+			SetFlag(PrivateFlags.AddedPostLoadEvents, true);
 		}
 		/// <summary>
 		/// Detach model events. Adds NamedElementDictionary handling
@@ -330,6 +350,11 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		protected override void RemoveModelingEventHandlers()
 		{
+			if (!GetFlag(PrivateFlags.AddedPostLoadEvents))
+			{
+				return;
+			}
+			SetFlag(PrivateFlags.AddedPostLoadEvents, false);
 			Store store = Store;
 			NamedElementDictionary.DetachEventHandlers(store);
 			ReadingShape.DetachEventHandlers(store);
