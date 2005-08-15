@@ -260,7 +260,7 @@
 	<!-- Get all functional Binary Facts out of fragment form -->
 	<xsl:variable name="FunctionalBinaryFacts" select="msxsl:node-set($FunctionalBinaryFactsFragment)/child::*"/>
 	<!-- Copy template for the FunctionalyBinaryFacts variable generation. Matches a Fact -->
-	<xsl:template match="orm:Fact" mode="ForFunctionalBinaryFacts">
+	<xsl:template match="orm:Fact|orm:SubtypeFact|orm:ImpliedFact" mode="ForFunctionalBinaryFacts">
 		<xsl:param name="UniqueRolesCount"/>
 		<xsl:param name="UniqueRoles"/>
 		<xsl:copy>
@@ -875,7 +875,7 @@
 	<xsl:template name="MapDataType">
 		<xsl:variable name="tagName" select="local-name()"/>
 		<xsl:choose>
-			<xsl:when test="$tagName='FixedLengthTextDataType' or $tagName='VariableLengthTextDataType' or $tagName='VariableLengthTextDataType'">
+			<xsl:when test="$tagName='FixedLengthTextDataType' or $tagName='VariableLengthTextDataType' or $tagName='LargeLengthTextDataType'">
 				<DataType dataTypeName="String" dataTypeQualifier="System"/>
 			</xsl:when>
 			<xsl:when test="$tagName='SignedIntegerNumericDataType'">
@@ -894,7 +894,7 @@
 				<DataType dataTypeName="Byte" dataTypeQualifier="System" dataTypeIsSimpleArray="true"/>
 			</xsl:when>
 			<xsl:when test="$tagName='AutoTimestampTemporalDataType' or $tagName='TimeTemporalDataType' or $tagName='DateTemporalDataType' or $tagName='DateAndTimeTemporalDataType'">
-				<DataType dataTypeName="DataTime" dataTypeQualifier="System"/>
+				<DataType dataTypeName="DateTime" dataTypeQualifier="System"/>
 			</xsl:when>
 			<xsl:when test="$tagName='TrueOrFalseLogicalDataType' or $tagName='YesOrNoLogicalDataType'">
 				<DataType dataTypeName="Boolean" dataTypeQualifier="System"/>
@@ -1005,7 +1005,7 @@
 	</xsl:template>
 	<xsl:template match="ao:Object" mode="WalkAbsorbedObjects">
 		<xsl:param name="Model"/>
-		<xsl:if test="@type='EntityType'">
+		<xsl:if test="@type='EntityType' or @type='ObjectifiedType'">
 			<xsl:variable name="propertyFragment">
 				<xsl:apply-templates mode="WalkAbsorbedObjects" select="child::*">
 					<xsl:with-param name="Model" select="$Model"/>
@@ -1104,7 +1104,7 @@
 				<xsl:otherwise>
 					<!-- Related to an association object -->
 					<xsl:variable name="factId" select="@factRef"/>
-					<xsl:variable name="relatedFact" select="$Model/orm:Facts/orm:Fact[@id=$factId]"/>
+					<xsl:variable name="relatedFact" select="$Model/orm:Facts/orm:*[@id=$factId]"/>
 					<xsl:variable name="factName" select="$relatedFact/@Name"/>
 					<xsl:attribute name="name">
 						<xsl:choose>

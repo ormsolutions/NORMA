@@ -266,6 +266,10 @@
     <value xml:space="preserve">Move Role Sequence Up</value>
     <comment xml:space="preserve">The transaction name used for moving a role sequence up in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="ObjectTypeShape.IsIndependentReading">
+    <value xml:space="preserve">{0} !</value>
+    <comment xml:space="preserve">The string used to display that an object is independent.</comment>
+  </data>
   <data name="OptionsPage.Category.Appearance">
     <value xml:space="preserve">Appearance</value>
     <comment xml:space="preserve">This is the title of the category on the options page.</comment>

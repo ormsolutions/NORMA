@@ -396,6 +396,9 @@
 	<ResourceString name="ValueRangeDefinitionClosedInclusionContainer" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern">
 		<comment type="Summary">Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
 	</ResourceString>
+	<ResourceString name="ObjectTypeShapeIsIndependentReading" model="Diagram" resourceName="ObjectTypeShape.IsIndependentReading">
+		<comment type="Summary">The string used to display that an object is independent.</comment>
+	</ResourceString>
 	<ResourceString name="ReadingShapeReadingSeparator" model="Diagram" resourceName="ReadingShape.ReadingSeparator">
 		<comment type="Summary">The string used to divide multiple readings shown in a ReadingShape.</comment>
 	</ResourceString>

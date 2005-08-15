@@ -1210,6 +1210,15 @@ namespace Neumont.Tools.ORM
         }
         /// <summary>
         ///</summary>
+        public static string ObjectTypeShapeIsIndependentReading
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.IsIndependentReading");
+            }
+        }
+        /// <summary>
+        ///</summary>
         public static string ReadingShapeReadingSeparator
         {
             get

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using System.Globalization;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 
 namespace Neumont.Tools.ORM.ShapeModel
@@ -59,6 +60,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 			return textSize;
+		}
+		/// <summary>
+		/// Modify the display text for independent object types.
+		/// </summary>
+		/// <param name="parentShape">The ShapeElement to get the display text for.</param>
+		/// <returns>The text to display.</returns>
+		public override string GetDisplayText(ShapeElement parentShape)
+		{
+			string text = base.GetDisplayText(parentShape);
+			ObjectModel.ObjectType obj;
+			if (!(this is ReferenceModeAutoSizeTextField) &&
+				null != (obj = parentShape.ModelElement as ObjectModel.ObjectType))
+			{
+				if (obj.IsIndependent)
+				{
+					text = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeIsIndependentReading, text);
+				}
+			}
+			return text;
 		}
 	}
 }
