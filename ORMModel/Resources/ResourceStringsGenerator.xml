@@ -118,10 +118,10 @@
 		<comment type="Summary">The reading for the forward predicate created by creating a subtype relationship.</comment>
 	</ResourceString>
 	<ResourceString name="ImpliedFactTypePredicateInverseReading" model="Model" resourceName="ImpliedFactType.PredicateInverseReading">
-		<comment type="Summary">The inverse reading for the predicate created implicitly via objectification. The replacement field is used to keep the readings unique in ring situations.</comment>
+		<comment type="Summary">The inverse reading for the predicate created implicitly via objectification. There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>
 	</ResourceString>
 	<ResourceString name="ImpliedFactTypePredicateReading" model="Model" resourceName="ImpliedFactType.PredicateReading">
-		<comment type="Summary">The reading for the predicate created implicitly via objectification. The replacement field is used to keep the readings unique in ring situations.</comment>
+		<comment type="Summary">The reading for the predicate created implicitly via objectification. There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>
 	</ResourceString>
 	<ResourceString name="SubtypeFactComponentNameFormat" model="Model" resourceName="SubtypeFact.ComponentNameFormat">
 		<comment type="Summary">String for generating a component name for a subtype. The {0} replacement field is used for the subtype component name; {1} for the supertype.</comment>
@@ -173,6 +173,12 @@
 	</ResourceString>
 	<ResourceString name="ModelExceptionObjectificationRequiresModel" model="Model" resourceName="ModelException.Objectification.ModelNotSpecified">
 		<comment type="Summary">Exception message when an attempt is made to create an objectification relationship when the Model is not specified for either the NestingType or the NestedFactType.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionObjectificationImpliedElementModified" model="Model" resourceName="ModelException.Objectification.DirectModificationOfImpliedElement">
+		<comment type="Summary">Exception message when an attempt is made to modify roles, constraints, and role players on elements implied by an Objectification relationship.</comment>
+	</ResourceString>
+	<ResourceString name="ModelExceptionObjectificationImpliedFactObjectified" model="Model" resourceName="ModelException.Objectification.ImpliedFactTypesCannotBeObjectified">
+		<comment type="Summary">Exception message when an attempt is made to objectify a fact that is implied by another objectification.</comment>
 	</ResourceString>
 	<ResourceString name="ModelExceptionReadingIsPrimaryToFalse" model="Model" resourceName="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse">
 		<comment type="Summary">The error message to return when an attempt is made to change the IsPrimary property of a reading to false.</comment>

@@ -780,16 +780,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				if (null == RolePlayer)
 				{
-					hasRolePlayer = false;
-					if (null == RolePlayerRequiredError)
+					FactType fact = FactType;
+					// Don't show an error for roles on implied fact types,
+					// this is controlled indirectly by the nested roles
+					if (null != fact && null == fact.ImpliedByObjectification)
 					{
-						rolePlayerRequired = RolePlayerRequiredError.CreateRolePlayerRequiredError(Store);
-						rolePlayerRequired.Model = FactType.Model;
-						rolePlayerRequired.Role = this;
-						rolePlayerRequired.GenerateErrorText();
-						if (notifyAdded != null)
+						hasRolePlayer = false;
+						if (null == RolePlayerRequiredError)
 						{
-							notifyAdded.ElementAdded(rolePlayerRequired, true);
+							rolePlayerRequired = RolePlayerRequiredError.CreateRolePlayerRequiredError(Store);
+							rolePlayerRequired.Model = fact.Model;
+							rolePlayerRequired.Role = this;
+							rolePlayerRequired.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(rolePlayerRequired, true);
+							}
 						}
 					}
 				}

@@ -211,6 +211,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return retVal;
 		}
+		/// <summary>
+		/// Return the Objectification relationship that
+		/// attaches this fact to its nesting type
+		/// </summary>
+		public Objectification Objectification
+		{
+			get
+			{
+				IList links = GetElementLinks(Objectification.NestedFactTypeMetaRoleGuid, false);
+				if (links != null && links.Count != 0)
+				{
+					Debug.Assert(links.Count == 1);
+					return (Objectification)links[0];
+				}
+				return null;
+			}
+		}
 		#endregion // FactType Specific
 		#region FactConstraintCollection implementation
 		private class FactConstraintCollectionImpl : ICollection<IFactConstraint>

@@ -115,12 +115,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ImpliedFactType.PredicateInverseReading">
-    <value xml:space="preserve">{{0}} involves{0} {{1}}</value>
-    <comment xml:space="preserve">The inverse reading for the predicate created implicitly via objectification. The replacement field is used to keep the readings unique in ring situations.</comment>
+    <value xml:space="preserve">{0} involves {1}</value>
+    <comment xml:space="preserve">The inverse reading for the predicate created implicitly via objectification. There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>
   </data>
   <data name="ImpliedFactType.PredicateReading">
-    <value xml:space="preserve">{{0}} is involved in{0} {{1}}</value>
-      <comment xml:space="preserve">The reading for the predicate created implicitly via objectification. The replacement field is used to keep the readings unique in ring situations.</comment>
+    <value xml:space="preserve">{0} is involved in {1}</value>
+    <comment xml:space="preserve">The reading for the predicate created implicitly via objectification.There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>
   </data>
   <data name="Model.Reading.RoleDeletedText">
     <value xml:space="preserve">{{deleted}}</value>
@@ -205,6 +205,10 @@
   <data name="ModelException.FactType.EnforceRolePlayerNotNestingType">
     <value xml:space="preserve">A role player cannot be the type objectifying the role's parent fact type.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to use the same type as both a role player and the nesting type of a fact type.</comment>
+  </data>
+  <data name="ModelException.Objectification.DirectModificationOfImpliedElement">
+    <value xml:space="preserve">Facts and constraints implied by an Objectification relationship cannot be directly modified.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to modify roles, constraints, and role players on elements implied by an Objectification relationship.</comment>
   </data>
   <data name="ModelException.InternalConstraint.InconsistentRoleOwners">
     <value xml:space="preserve">All roles in an internal constraint must be owned by the same fact type.</value>
@@ -413,5 +417,9 @@
   <data name="ModelException.Objectification.ModelNotSpecified">
     <value xml:space="preserve">Objectification requires the Model property to be set on either the NestingType or the NestedFactType role players.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to create an objectification relationship when the Model is not specified for either the NestingType or the NestedFactType.</comment>
+  </data>
+  <data name="ModelException.Objectification.ImpliedFactTypesCannotBeObjectified">
+    <value xml:space="preserve">A FactType that is implied by an Objectification cannot be objectified.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to objectify a fact that is implied by another objectification.</comment>
   </data>
 </root>

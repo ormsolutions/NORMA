@@ -297,7 +297,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				SingleColumnExternalConstraint constraint = link.ConstraintRoleSequenceCollection.Constraint as SingleColumnExternalConstraint;
-				if (constraint != null)
+				if (constraint != null && constraint.Model != null)
 				{
 					ExternalFactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.RoleCollection);
 					if (factConstraint != null)
@@ -455,6 +455,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private void VerifyCompatibleRolePlayerTypeForRule(INotifyElementAdded notifyAdded)
 		{
 			CompatibleRolePlayerTypeError compatibleError;
+			if (0 == (((IConstraint)this).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
+			{
+				if (notifyAdded != null)
+				{
+					// Check on load, but not later. Constraint types don't switch on the fly
+					if (null != (compatibleError = CompatibleRolePlayerTypeError))
+					{
+						compatibleError.Remove();
+					}
+				}
+				return;
+			}
+
 			bool isCompatible = true;
 
 			RoleMoveableCollection roles = RoleCollection;
@@ -663,7 +676,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				MultiColumnExternalConstraint constraint = link.ConstraintRoleSequenceCollection.Constraint as MultiColumnExternalConstraint;
-				if (constraint != null)
+				if (constraint != null && constraint.Model != null)
 				{
 					ExternalFactConstraint factConstraint = constraint.EnsureFactConstraintForRole(link.RoleCollection);
 					if (factConstraint != null)
@@ -951,6 +964,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// sequences, it will remove this error if present.</param>
 		private void VerifyCompatibleRolePlayerTypeForRule(INotifyElementAdded notifyAdded, bool tooFewOrTooManySequencesOrArity)
 		{
+			Debug.Assert(0 != (((IConstraint)this).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns)); // All multi column externals support column compatibility
 			CompatibleRolePlayerTypeError compatibleError;
 			Store store = Store;
 
@@ -3267,6 +3281,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The order of the role sequences is significant
 		/// </summary>
 		OrderedRoleSequences = 0x80,
+		/// <summary>
+		/// Each of the columns must be type compatible
+		/// </summary>
+		CompatibleColumns = 0x100,
 	}
 	#endregion // RoleSequenceStyles enum
 	#region ConstraintType enum
@@ -3488,13 +3506,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements IConstraint.RoleSequenceStyles. Returns {TwoRoleSequences, OneRolePerSequence}.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {TwoRoleSequences, OneRolePerSequence, CompatibleColumns}.
 		/// </summary>
 		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
-				return RoleSequenceStyles.TwoRoleSequences | RoleSequenceStyles.OneRolePerSequence;
+				return RoleSequenceStyles.TwoRoleSequences | RoleSequenceStyles.OneRolePerSequence | RoleSequenceStyles.CompatibleColumns;
 			}
 		}
 		RoleSequenceStyles IConstraint.RoleSequenceStyles
@@ -3566,13 +3584,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, MultipleRolesPerSequence}.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, MultipleRolesPerSequence, CompatibleColumns}.
 		/// </summary>
 		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
-				return RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.MultipleRolesPerSequence;
+				return RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.MultipleRolesPerSequence | RoleSequenceStyles.CompatibleColumns;
 			}
 		}
 		RoleSequenceStyles IConstraint.RoleSequenceStyles
@@ -3605,13 +3623,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, MultipleRowSequences}.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, MultipleRowSequences, CompatibleColumns}.
 		/// </summary>
 		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
-				return RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.MultipleRolesPerSequence;
+				return RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.MultipleRolesPerSequence | RoleSequenceStyles.CompatibleColumns;
 			}
 		}
 		RoleSequenceStyles IConstraint.RoleSequenceStyles
@@ -3683,13 +3701,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements IConstraint.RoleSequenceStyles. Returns {TwoRoleSequences, MultipleRolesPerSequence, OrderedRoleSequences}.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {TwoRoleSequences, MultipleRolesPerSequence, OrderedRoleSequences, CompatibleColumns}.
 		/// </summary>
 		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
-				return RoleSequenceStyles.TwoRoleSequences | RoleSequenceStyles.MultipleRolesPerSequence | RoleSequenceStyles.OrderedRoleSequences;
+				return RoleSequenceStyles.TwoRoleSequences | RoleSequenceStyles.MultipleRolesPerSequence | RoleSequenceStyles.OrderedRoleSequences | RoleSequenceStyles.CompatibleColumns;
 			}
 		}
 		RoleSequenceStyles IConstraint.RoleSequenceStyles

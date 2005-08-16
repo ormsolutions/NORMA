@@ -7172,6 +7172,20 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="Objectification+ImpliedFactTypeAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-08-16 18:28:07Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.Objectification+ImpliedFactTypeAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="55" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="Objectification+ObjectificationAddRule">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-08-11 20:45:47Z">
@@ -7181,6 +7195,62 @@
             <Notes>
              <User Name="mcurland">
               <Note Id="52" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Objectification+RolePlayerAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-08-16 18:28:07Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.Objectification+RolePlayerAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="55" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Objectification+RolePlayerRemovingRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-08-16 18:28:07Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.Objectification+RolePlayerRemovingRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="55" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Objectification+UpdateImplicitUniquenessAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-08-16 18:28:07Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.Objectification+UpdateImplicitUniquenessAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="55" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Objectification+UpdateImplicitUniquenessRemoveRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-08-16 18:28:07Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.Objectification+UpdateImplicitUniquenessRemoveRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="55" />
              </User>
             </Notes>
            </Message>
@@ -18154,6 +18224,7 @@
     <Note Id="52" Modified="2005-08-11 20:47:55Z">Rule class instantiated via reflection</Note>
     <Note Id="53" Modified="2005-08-11 20:48:14Z">Standard DSLTools spit</Note>
     <Note Id="54" Modified="2005-08-11 20:48:34Z">Standard serialization spit matching interface pattern</Note>
+    <Note Id="55" Modified="2005-08-16 18:29:07Z">Rule classes instantiated via reflection</Note>
    </User>
    <User Name="obuhler">
     <Note Id="0" Modified="2005-07-29 21:45:56Z">Rule classes instantiated via reflection</Note>

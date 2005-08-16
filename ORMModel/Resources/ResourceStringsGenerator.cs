@@ -543,6 +543,24 @@ namespace Neumont.Tools.ORM
         }
         /// <summary>
         ///</summary>
+        public static string ModelExceptionObjectificationImpliedElementModified
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.DirectModificationOfImpliedElement");
+            }
+        }
+        /// <summary>
+        ///</summary>
+        public static string ModelExceptionObjectificationImpliedFactObjectified
+        {
+            get
+            {
+                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ImpliedFactTypesCannotBeObjectified");
+            }
+        }
+        /// <summary>
+        ///</summary>
         public static string ModelExceptionReadingIsPrimaryToFalse
         {
             get
