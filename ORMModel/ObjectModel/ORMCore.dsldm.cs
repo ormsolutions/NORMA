@@ -29609,7 +29609,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtendedElementMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtendedElement")]
 		public  Neumont.Tools.ORM.ObjectModel.ORMNamedElement ExtendedElement
 		{
@@ -29762,7 +29762,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
-		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtendedElementMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtendedElement")]
 		public  Neumont.Tools.ORM.ObjectModel.ORMModelElement ExtendedElement
 		{

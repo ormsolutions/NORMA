@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<se:CustomSerializedElements
+    xmlns:se="http://Schemas.Neumont.edu/Private/SerializationExtensions"
+    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix">
+	<se:MetaModel Class="ExtensionDomainModel">
+		<se:Namespaces>
+			<se:Namespace Prefix="ormExtension" URI="http://Schemas.Neumont.edu/ORM/ExtensionExample" SchemaFile="ExtensionDomainModelTest.xsd" DefaultPrefix="true"/>
+		</se:Namespaces>
+	</se:MetaModel>
+	<se:Element Class="MyCustomExtensionElement" Name="SampleElement">
+	</se:Element>
+</se:CustomSerializedElements>

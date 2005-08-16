@@ -56,13 +56,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>A merged <see cref="PropertyDescriptorCollection"/></returns>
 		public static PropertyDescriptorCollection MergeExtensionProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection baseProperties)
 		{
-			foreach (IORMPropertyExtension extension in extendableElement.ExtensionCollection)
+			foreach (ModelElement extension in extendableElement.ExtensionCollection)
 			{
-				if (0 != (extension.ExtensionPropertySettings & ORMExtensionPropertySettings.MergeAsExpandableProperty))
+				IORMPropertyExtension customPropertyExtension = extension as IORMPropertyExtension;
+				ORMExtensionPropertySettings settings = (customPropertyExtension != null) ? customPropertyExtension.ExtensionPropertySettings : ORMExtensionPropertySettings.MergeAsTopLevelProperty;
+				if (0 != (settings & ORMExtensionPropertySettings.MergeAsExpandableProperty))
 				{
-					baseProperties.Add(ExpandableExtensionDescriptor.CreateExtensionDescriptor(extension));
+					baseProperties.Add(ExpandableExtensionDescriptor.CreateExtensionDescriptor(customPropertyExtension));
 				}
-				if (0 != (extension.ExtensionPropertySettings & ORMExtensionPropertySettings.MergeAsTopLevelProperty))
+				if (0 != (settings & ORMExtensionPropertySettings.MergeAsTopLevelProperty))
 				{
 					foreach (PropertyDescriptor descriptor in extension.GetProperties())
 					{

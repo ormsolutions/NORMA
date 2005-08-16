@@ -19,7 +19,17 @@
 		</se:OmittedMetaElements>
 	</se:MetaModel>
 	<!--Model-->
-	<se:Element Class="ORMModel" Name="ORMModel" SortChildElements="true">
+	<se:Element Class="ORMNamedElement">
+		<se:ChildElement Name="Extensions">
+			<se:Link RelationshipName="ORMNamedElementHasExtensionElement" RoleName="ExtensionCollection"/>
+		</se:ChildElement>
+	</se:Element>
+	<se:Element Class="ORMModelElement">
+		<se:ChildElement Name="Extensions">
+			<se:Link RelationshipName="ORMModelElementHasExtensionElement" RoleName="ExtensionCollection"/>
+		</se:ChildElement>
+	</se:Element>
+	<se:Element Class="ORMModel" Name="ORMModel" SortChildElements="true" Override="true">
 		<se:ChildElement Name="Objects">
 			<se:Link RelationshipName="ModelHasObjectType" RoleName="ObjectTypeCollection"/>
 		</se:ChildElement>
@@ -44,7 +54,7 @@
 		</se:ChildElement>
 	</se:Element>
 	<!--Object Types-->
-	<se:Element Class="ObjectType" Name="EntityType" SortChildElements="true">
+	<se:Element Class="ObjectType" Name="EntityType" SortChildElements="true" Override="true">
 		<se:ConditionalName Name="ValueType">
 			<plx:CallInstance name="IsValueType" style="Property">
 				<plx:CallObject>
@@ -103,7 +113,7 @@
 		<!--TODO:Subtypes-->
 		<!--TODO:Supertypes-->
 	</se:Element>
-	<se:Element Class="CustomReferenceMode" HasMixedTypedAttributes="true">
+	<se:Element Class="CustomReferenceMode" HasMixedTypedAttributes="true" SortChildElements="true" Override="true">
 		<se:Attribute ID="CustomFormatString" WriteStyle="Element"/>
 		<se:Link Name="Kind" RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="Kind"/>
 	</se:Element>
@@ -113,14 +123,14 @@
 		</se:Attribute>
 		<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="DataTypeNotSpecifiedError" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="DataType">
+	<se:Element Class="DataType" Override="true">
 		<se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueTypeCollection" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="ReferenceModeKind" Name="ReferenceModeKind">
+	<se:Element Class="ReferenceModeKind" Name="ReferenceModeKind" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceModeCollection" WriteStyle="NotWritten" />
 	</se:Element>
-	<se:Element Name="BaseValueRangeDefinition" Class="ValueRangeDefinition">
+	<se:Element Name="BaseValueRangeDefinition" Class="ValueRangeDefinition" Override="true">
 		<se:ChildElement Name="ValueRanges">
 			<se:Link RelationshipName="ValueRangeDefinitionHasValueRange" RoleName="ValueRangeCollection"/>
 		</se:ChildElement>
@@ -128,7 +138,7 @@
 	<se:Element Class="ValueTypeValueRangeDefinition" Name="ValueRangeDefinition" Override="true"/>
 	<se:Element Class="RoleValueRangeDefinition" Name="RoleValueRangeDefinition" Override="true"/>
 	<!--Facts-->
-	<se:Element Class="FactType" Name="Fact" SortChildElements="true">
+	<se:Element Class="FactType" Name="Fact" SortChildElements="true" Override="true">
 		<!--TODO: FactNotes-->
 		<!--TODO: Derivation Rule-->
 		<se:ConditionalName Name="ImpliedFact">
@@ -166,7 +176,7 @@
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesExternalUniquenessConstraint" RoleName="ImpliedExternalUniquenessConstraintCollection" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Readings-->
-	<se:Element Class="ReadingOrder">
+	<se:Element Class="ReadingOrder" SortChildElements="true" Override="true">
 		<se:ChildElement Name="Readings">
 			<se:Link RelationshipName="ReadingOrderHasReading" RoleName="ReadingCollection"/>
 		</se:ChildElement>
@@ -175,38 +185,35 @@
 		</se:ChildElement>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="RoleCollection" Name="Role"/>
 	</se:Element>
-	<se:Element Class="Reading" HasMixedTypedAttributes="true">
+	<se:Element Class="Reading" HasMixedTypedAttributes="true" Override="true">
 		<se:Attribute ID="Text" Name="Data" WriteStyle="Element"/>
 		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Role-->
-	<se:Element Class="Role">
+	<se:Element Class="Role" Override="true" SortChildElements="true">
 		<se:Attribute ID="IsMandatory" Name ="IsMandatory" WriteCustomStorage="true"/>
 		<se:Attribute ID="Multiplicity" Name ="Multiplicity" WriteCustomStorage="true"/>
+		<se:Link Name="RolePlayer" RelationshipName="ObjectTypePlaysRole" RoleName="RolePlayer"/>
 		<se:ChildElement Name="ValueConstraint">
 			<se:Link RelationshipName="RoleHasValueRangeDefinition" RoleName="ValueRangeDefinition"/>
 		</se:ChildElement>
-		<se:ChildElement Name="ReadingOrders">
-			<se:Link RelationshipName="FactTypeHasReadingOrder" RoleName="ReadingOrderCollection"/>
-		</se:ChildElement>
 		<!--Need to add this attribute as custom storage.-->
 		<!--<se:Attribute ID="IsFunctional" Name ="IsFunctional" WriteCustomStorage="true"/>-->
-		<se:Link Name="RolePlayer" RelationshipName="ObjectTypePlaysRole" RoleName="RolePlayer"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="ConstraintRoleSequenceCollection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="RolePlayerRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Constraints-->
-	<se:Element Class="MultiColumnExternalConstraint" SortChildElements="true">
+	<se:Element Class="MultiColumnExternalConstraint" SortChildElements="true" Override="true">
 		<se:ChildElement Name="RoleSequences">
 			<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 		</se:ChildElement>
 		<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="MultiColumnExternalConstraintRoleSequence" Name="RoleSequence">
+	<se:Element Class="MultiColumnExternalConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 	</se:Element>
-	<se:Element Class="SingleColumnExternalConstraint" SortChildElements="true">
+	<se:Element Class="SingleColumnExternalConstraint" SortChildElements="true" Override="true">
 		<se:ChildElement Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 		</se:ChildElement>
@@ -234,7 +241,7 @@
 		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesExternalUniquenessConstraint" RoleName="ImpliedByObjectification"/>
 	</se:Element>
-	<se:Element Class="InternalUniquenessConstraint" SortChildElements="true">
+	<se:Element Class="InternalUniquenessConstraint" SortChildElements="true" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 		<se:ChildElement Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
@@ -243,14 +250,14 @@
 		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 		<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="NMinusOneError" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="SimpleMandatoryConstraint">
+	<se:Element Class="SimpleMandatoryConstraint" SortChildElements="true" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 		<se:ChildElement Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 		</se:ChildElement>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 	</se:Element>
-	<se:Element Class="EqualityConstraint" Override="true" SortChildElements="true">
+	<se:Element Class="EqualityConstraint" SortChildElements="true" Override="true" >
 		<se:ConditionalName Name="ImpliedEqualityConstraint">
 			<plx:Operator name="IdentityInequality">
 				<plx:Left>
@@ -269,52 +276,52 @@
 		<se:Link RelationshipName="EqualityConstraintHasEqualityIsImpliedByMandatoryError" RoleName="EqualityIsImpliedByMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Errors-->
-	<se:Element Class="ConstraintDuplicateNameError">
+	<se:Element Class="ConstraintDuplicateNameError" Override="true">
 		<se:Link RelationshipName="MultiColumnExternalConstraintHasDuplicateNameError" RoleName="MultiColumnExternalConstraintCollection" Name="Constraint"/>
 	</se:Element>
-	<se:Element Class="FactTypeDuplicateNameError">
+	<se:Element Class="FactTypeDuplicateNameError" Override="true">
 		<se:Link RelationshipName="FactTypeHasDuplicateNameError" RoleName="FactTypeCollection" Name="Facts"/>
 	</se:Element>
-	<se:Element Class="ObjectTypeDuplicateNameError">
+	<se:Element Class="ObjectTypeDuplicateNameError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectTypeCollection" Name="Objects"/>
 	</se:Element>
-	<se:Element Class="EntityTypeRequiresReferenceSchemeError">
+	<se:Element Class="EntityTypeRequiresReferenceSchemeError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ObjectType" Name="EntityType"/>
 	</se:Element>
-	<se:Element Class="ExternalConstraintRoleSequenceArityMismatchError">
+	<se:Element Class="ExternalConstraintRoleSequenceArityMismatchError" Override="true">
 		<se:Link RelationshipName="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="Constraint" Name="Constraint"/>
 	</se:Element>
-	<se:Element Class="FactTypeRequiresInternalUniquenessConstraintError">
+	<se:Element Class="FactTypeRequiresInternalUniquenessConstraintError" Override="true">
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="FactType" Name="Fact"/>
 	</se:Element>
-	<se:Element Class="FactTypeRequiresReadingError">
+	<se:Element Class="FactTypeRequiresReadingError" Override="true">
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="FactType" Name="Fact"/>
 	</se:Element>
-	<se:Element Class="FrequencyConstraintMinMaxError">
+	<se:Element Class="FrequencyConstraintMinMaxError" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>
 	</se:Element>
-	<se:Element Class="TooFewReadingRolesError">
+	<se:Element Class="TooFewReadingRolesError" Override="true">
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="Reading" Name="Reading"/>
 	</se:Element>
-	<se:Element Class="TooFewRoleSequencesError">
+	<se:Element Class="TooFewRoleSequencesError" Override="true">
 		<se:Link RelationshipName="ExternalConstraintHasTooFewRoleSequencesError" RoleName="Constraint" Name="Constraint"/>
 	</se:Element>
-	<se:Element Class="TooManyReadingRolesError">
+	<se:Element Class="TooManyReadingRolesError" Override="true">
 		<se:Link RelationshipName="ReadingHasTooManyRolesError" RoleName="Reading" Name="Reading"/>
 	</se:Element>
-	<se:Element Class="TooManyRoleSequencesError">
+	<se:Element Class="TooManyRoleSequencesError" Override="true">
 		<se:Link RelationshipName="ExternalConstraintHasTooManyRoleSequencesError" RoleName="Constraint" Name="Constraint"/>
 	</se:Element>
-	<se:Element Class="DataTypeNotSpecifiedError">
+	<se:Element Class="DataTypeNotSpecifiedError" Override="true">
 		<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="ValueTypeHasDataType" Name="ConceptualDataType"/>
 	</se:Element>
-	<se:Element Class="EqualityIsImpliedByMandatoryError">
+	<se:Element Class="EqualityIsImpliedByMandatoryError" Override="true">
 		<se:Link RelationshipName="EqualityConstraintHasEqualityIsImpliedByMandatoryError" RoleName="EqualityConstraint" Name="EqualityConstraint"/>
 	</se:Element>
-	<se:Element Class="NMinusOneError">
+	<se:Element Class="NMinusOneError" Override="true">
 		<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="InternalUniquenessConstraint"/>
 	</se:Element>
-	<se:Element Class="CompatibleRolePlayerTypeError">
+	<se:Element Class="CompatibleRolePlayerTypeError" Override="true">
 		<se:Attribute ID="Column">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:Operator name="IdentityInequality">
@@ -334,7 +341,7 @@
 		<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="MultiColumnExternalConstraint" Name="MultiColumnConstraint"/>
 		<se:Link RelationshipName="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="SingleColumnExternalConstraint" Name="SingleColumnConstraint"/>
 	</se:Element>
-	<se:Element Class="RolePlayerRequiredError">
+	<se:Element Class="RolePlayerRequiredError" Override="true">
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="Role" Name="Role"/>
 	</se:Element>
 </se:CustomSerializedElements>

@@ -7,32 +7,26 @@
 	xmlns:derived="http://Schemas.Neumont.edu/ORM/ORMDerived">
 
 	<!-- <xs:import namespace="http://Schemas.Neumont.edu/ORM/ORMDerived" /> -->
-	<!--ExtendableElement the thought here is to define all the any's once and then have Extendable Element extend this-->
-	<xs:complexType name="ExtendableElement" abstract="true">
+	<xs:complexType name="Extensions">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:any namespace="##other" processContents="strict"/>
 		</xs:sequence>
-		<xs:anyAttribute namespace="##other" processContents="lax"/>
 	</xs:complexType>
-	<!--ExtendableElement-->
 	<!--ORMModel-->
 	<xs:element name="ORMModel" type="ORMModel"/>
 	<xs:complexType name="ORMModel">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="Objects" type="Objects" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="Facts" type="Facts" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="ExternalConstraints" type="ExternalConstraints" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="DataTypes" type="DataTypes" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="CustomReferenceModes" type="CustomReferenceModes" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="ModelErrors" type="ModelErrors" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="ReferenceModeKinds" type="ReferenceModeKinds" minOccurs="0" maxOccurs="1"/>
-				</xs:sequence>
-				<xs:attribute name="Name" type="xs:string"></xs:attribute>
-				<xs:attribute name="id" type="xs:ID"></xs:attribute>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:all>
+			<xs:element name="Objects" type="Objects" minOccurs="0"/>
+			<xs:element name="Facts" type="Facts" minOccurs="0"/>
+			<xs:element name="ExternalConstraints" type="ExternalConstraints" minOccurs="0"/>
+			<xs:element name="DataTypes" type="DataTypes" minOccurs="0"/>
+			<xs:element name="CustomReferenceModes" type="CustomReferenceModes" minOccurs="0"/>
+			<xs:element name="ModelErrors" type="ModelErrors" minOccurs="0"/>
+			<xs:element name="ReferenceModeKinds" type="ReferenceModeKinds" minOccurs="0"/>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="Name" type="xs:string"></xs:attribute>
+		<xs:attribute name="id" type="xs:ID"></xs:attribute>
 	</xs:complexType>
 	<!--End ORMModel-->
 	<!--Objects and Object Types-->
@@ -47,41 +41,34 @@
 	</xs:complexType>
 	<!--end ObjectRef and  ObjectRefs-->
 	<xs:complexType name="Objects">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="EntityType" type="EntityType" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="ObjectifiedType" type="ObjectifiedType" minOccurs="0" maxOccurs="unbounded"/>
-					<xs:element name="ValueType" type="ValueType" minOccurs="0" maxOccurs="unbounded"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="EntityType" type="EntityType"/>
+			<xs:element name="ObjectifiedType" type="ObjectifiedType"/>
+			<xs:element name="ValueType" type="ValueType"/>
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ObjectType" abstract="true">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence>
-					<xs:element name="ObjectNotes" type="Data" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="PlayedRoles" type="RoleSequence" minOccurs="0" maxOccurs="unbounded"/>
-					<!--Subtypes is derived.-->
-					<!--We need to be able to reference elements from the derived schema without introducing ambiguity.-->
-					<!--<xs:element ref="derived:test"></xs:element>-->
-<!--					<xs:element ref="derived:Subtypes"/>-->
-					<!--Supertypes is derived.-->
-					<xs:element name="Supertypes" type="ObjectRefs" minOccurs="0" maxOccurs="unbounded"/>
-				</xs:sequence>
-				<xs:attribute name="Name" use="required" type="xs:string"/>
-				<xs:attribute name="id" use="required" type="xs:ID"/>
-				<xs:attribute name="IsIndependent" type="xs:boolean" default="false"/>
-				<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence>
+			<xs:element name="ObjectNotes" type="Data" minOccurs="0"/>
+			<xs:element name="PlayedRoles" type="RoleSequence" minOccurs="0"/>
+			<!--Subtypes is derived.-->
+			<!--We need to be able to reference elements from the derived schema without introducing ambiguity.-->
+			<!--<xs:element ref="derived:test"></xs:element>-->
+			<!--<xs:element ref="derived:Subtypes"/>-->
+			<!--Supertypes is derived.-->
+			<xs:element name="Supertypes" type="ObjectRefs" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Name" use="required" type="xs:string"/>
+		<xs:attribute name="id" use="required" type="xs:ID"/>
+		<xs:attribute name="IsIndependent" type="xs:boolean" default="false"/>
+		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="EntityType">
 		<xs:complexContent>
 			<xs:extension base="ObjectType">
 				<xs:sequence>
 					<xs:element name="PreferredIdentifier" type="ConstraintRef" minOccurs="0"/>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 				<!--ReferenceMode is derived.-->
 				<xs:attribute name="ReferenceMode" type="xs:string"/>
@@ -149,11 +136,10 @@
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="DataType" abstract="true">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:attribute name="id" type="xs:ID" use="required"/>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:choice>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+		</xs:choice>
+		<xs:attribute name="id" type="xs:ID" use="required"/>		
 	</xs:complexType>
 	<xs:complexType name="UnspecifiedDataType">
 		<xs:complexContent>
@@ -268,13 +254,9 @@
 	<!--End DataType -->
 	<!--Data is a gereral purpose element wrapper to enclose data.  This helps make the schema more extendable.-->
 	<xs:complexType name="Data">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence minOccurs="1" maxOccurs="1">
-					<xs:element name="Data" minOccurs="1" maxOccurs="1" type="xs:string"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence minOccurs="1" maxOccurs="1">
+			<xs:element name="Data" minOccurs="1" maxOccurs="1" type="xs:string"/>
+		</xs:sequence>
 	</xs:complexType>
 	<!--end data-->
 	<!--Roles-->
@@ -296,31 +278,24 @@
 	</xs:complexType>
 	<!--end RoleRef, RoleSequence and  RoleSequences-->
 	<xs:complexType name="Roles">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence>
-					<xs:element name="Role" type="Role" minOccurs="0" maxOccurs="unbounded"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence>
+			<xs:element name="Role" type="Role" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="Role">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence>
-					<xs:element name="RolePlayer" type="ObjectRef" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="ValueConstraint" type="RoleValueRangeDefinition" minOccurs="0" maxOccurs="1"/>
-				</xs:sequence>
-				<xs:attribute name="Name" type="xs:string" use="required"/>
-				<xs:attribute name="id" type="xs:ID" use="required"/>
-				<!--Derived-->
-				<xs:attribute name="IsFunctional" type="xs:boolean" default="false"/>
-				<!--Derived-->
-				<xs:attribute name="IsMandatory" type="xs:boolean" default="false"/>
-				<!--Derived-->
-				<xs:attribute name="Multiplicity" type="MultiplicityEnum" default="ZeroToOne"/>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:all>
+			<xs:element name="RolePlayer" type="ObjectRef" minOccurs="0"/>
+			<xs:element name="ValueConstraint" type="RoleValueRangeDefinition" minOccurs="0"/>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute name="Name" type="xs:string" use="required"/>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<!--Derived-->
+		<xs:attribute name="IsFunctional" type="xs:boolean" default="false"/>
+		<!--Derived-->
+		<xs:attribute name="IsMandatory" type="xs:boolean" default="false"/>
+		<!--Derived-->
+		<xs:attribute name="Multiplicity" type="MultiplicityEnum" default="ZeroToOne"/>
 	</xs:complexType>
 	<!--Look up enum values.-->
 	<xs:simpleType name="MultiplicityEnum">
@@ -355,45 +330,51 @@
 	</xs:complexType>
 	<!--end Fact Ref-->
 	<xs:complexType name="Facts">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:choice minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="Fact" type="Fact"/>
-					<xs:element name="SubtypeFact" type="SubtypeFact"/>
-					<xs:element name="ImpliedFact" type="ImpliedFact"/>
-				</xs:choice>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:choice minOccurs="0" maxOccurs="1">
+			<xs:element name="Fact" type="Fact"/>
+			<xs:element name="SubtypeFact" type="SubtypeFact"/>
+			<xs:element name="ImpliedFact" type="ImpliedFact"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="BaseFact" abstract="true">
+		<xs:sequence minOccurs="0" maxOccurs="1">
+			<xs:element name="FactNotes" type="Data" minOccurs="0"/>
+			<xs:element name="DerivationRule" type="Data" minOccurs="0"/>
+			<xs:element name="FactRoles" type="Roles" minOccurs="0"/>
+			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
+			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
+			<xs:element name="ExternalConstraints" type="ConstraintRefs" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Name" use="required" type="xs:string"/>
+		<xs:attribute name="id" use="required" type="xs:ID"/>
+		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="Fact">
 		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence minOccurs="0" maxOccurs="1">
-					<xs:element name="FactNotes" type="Data" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="DerivationRule" type="Data" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="FactRoles" type="Roles" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="ExternalConstraints" type="ConstraintRefs" minOccurs="0" maxOccurs="1"/>
+			<xs:extension base="BaseFact">
+				<xs:sequence>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
-				<xs:attribute name="Name" use="required" type="xs:string"/>
-				<xs:attribute name="id" use="required" type="xs:ID"/>
-				<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ImpliedFact">
 		<xs:complexContent>
-			<xs:extension base="Fact">
+			<xs:extension base="BaseFact">
 				<xs:sequence>
 					<xs:element name="ImpliedByObjectification" type="ObjectificationRef"/>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SubtypeFact">
 		<xs:complexContent>
-			<xs:extension base="Fact"/>
+			<xs:extension base="BaseFact">
+				<xs:sequence>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<!-- End Facts -->
@@ -415,32 +396,24 @@
 	</xs:complexType>
 	<!--end ConstraintRef and  ConstraintRefs-->
 	<xs:complexType name="ExternalConstraints">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:choice minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="EqualityConstraint" type="EqualityConstraint"/>
-					<xs:element name="ImpliedEqualityConstraint" type="ImpliedEqualityConstraint"/>
-					<xs:element name="ExclusionConstraint" type="ExclusionConstraint"/>
-					<xs:element name="SubsetConstraint" type="SubsetConstraint"/>
-					<xs:element name="FrequencyConstraint" type="FrequencyConstraint"/>
-					<xs:element name="DisjunctiveMandatoryConstraint" type="DisjunctiveMandatoryConstraint"/>
-					<xs:element name="ExternalUniquenessConstraint" type="ExternalUniquenessConstraint"/>
-					<xs:element name="ImpliedExternalUniquenessConstraint" type="ImpliedExternalUniquenessConstraint"/>
-					<xs:element name="RingConstraint" type="RingConstraint"/>
-				</xs:choice>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="EqualityConstraint" type="EqualityConstraint"/>
+			<xs:element name="ImpliedEqualityConstraint" type="ImpliedEqualityConstraint"/>
+			<xs:element name="ExclusionConstraint" type="ExclusionConstraint"/>
+			<xs:element name="SubsetConstraint" type="SubsetConstraint"/>
+			<xs:element name="FrequencyConstraint" type="FrequencyConstraint"/>
+			<xs:element name="DisjunctiveMandatoryConstraint" type="DisjunctiveMandatoryConstraint"/>
+			<xs:element name="ExternalUniquenessConstraint" type="ExternalUniquenessConstraint"/>
+			<xs:element name="ImpliedExternalUniquenessConstraint" type="ImpliedExternalUniquenessConstraint"/>
+			<xs:element name="RingConstraint" type="RingConstraint"/>
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="Constraint">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence>
-					<xs:element name="ConstraintNote" type="Data" minOccurs="0" maxOccurs="1"/>
-				</xs:sequence>
-				<xs:attribute name="id" type="xs:ID"></xs:attribute>
-				<xs:attribute name="Name" type="xs:string"></xs:attribute>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence>
+			<xs:element name="ConstraintNote" type="Data" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+			<xs:attribute name="id" type="xs:ID"></xs:attribute>
+			<xs:attribute name="Name" type="xs:string"></xs:attribute>
 	</xs:complexType>
 	<!--Multicolumn constraints-->
 	<xs:complexType name="MultiColumnExternalConstraint" abstract="true">
@@ -537,14 +510,10 @@
 	<!--End Singlecolumn constraints-->
 	<!--InternalConstraint-note these are owned by FactTypes not the model -->
 	<xs:complexType name="InternalConstraints">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="InternalUniquenessConstraint" type="InternalUniquenessConstraint" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="SimpleMandatoryConstraint" type="SimpleMandatoryConstraint" minOccurs="0" maxOccurs="1"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="InternalUniquenessConstraint" type="InternalUniquenessConstraint" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="SimpleMandatoryConstraint" type="SimpleMandatoryConstraint" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="InternalConstraint">
 		<xs:complexContent>
@@ -579,33 +548,21 @@
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<xs:complexType name="ReadingOrders">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence>
-					<xs:element name="ReadingOrder" type="ReadingOrder" minOccurs="0" maxOccurs="unbounded"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="ReadingOrder" type="ReadingOrder"/>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ReadingOrder">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence minOccurs="1" maxOccurs="1">
-					<xs:element name="Readings" type="Readings" minOccurs="1" maxOccurs="1"/>
-					<xs:element name="RoleSequence" type="RoleSequence" minOccurs="0" maxOccurs="unbounded"/>
-				</xs:sequence>
-				<xs:attribute name="id" type="xs:ID"/>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence minOccurs="1" maxOccurs="1">
+			<xs:element name="Readings" type="Readings"/>
+			<xs:element name="RoleSequence" type="RoleSequence" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID"/>
 	</xs:complexType>
 	<xs:complexType name="Readings">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence minOccurs="1" maxOccurs="1">
-					<xs:element name="Reading" type="Reading" minOccurs="1" maxOccurs="unbounded"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="Reading" type="Reading"/>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="Reading">
 		<xs:complexContent>
@@ -619,43 +576,31 @@
 	<!-- Should Model errors be part of the core schema or in another namespace?-->
 	<!--ModelErrors-->
 	<xs:complexType name="ModelErrors">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:choice minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="ConstraintDuplicateNameError" type="ConstraintDuplicateNameError"/>
-					<xs:element name="FactTypeDuplicateNameError" type="FactTypeDuplicateNameError"/>
-					<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameError"/>
-					<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchError"/>
-					<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintError"/>
-					<xs:element name="FactTypeRequiresReadingError" type="FactTypeRequiresReadingError"/>
-					<xs:element name="TooFewReadingRolesError" type="TooFewReadingRolesError"/>
-					<xs:element name="TooFewRoleSequencesError" type="TooFewRoleSequencesError"/>
-					<xs:element name="TooManyReadingRolesError" type="TooManyReadingRolesError"/>
-					<xs:element name="TooManyRoleSequencesError" type="TooManyRoleSequencesError"/>
-					<xs:element name="DataTypeNotSpecifiedError" type="DataTypeNotSpecifiedError"/>
-					<xs:element name="NMinusOneError" type="NMinusOneError"/>
-					<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeError"/>
-					<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredError"/>
-					<xs:element name="EqualityIsImpliedByMandatoryError" type="EqualityIsImpliedByMandatoryError"/>
-					<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeError"/>
-					<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxError"/>
-				</xs:choice>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="ConstraintDuplicateNameError" type="ConstraintDuplicateNameError"/>
+			<xs:element name="FactTypeDuplicateNameError" type="FactTypeDuplicateNameError"/>
+			<xs:element name="ObjectTypeDuplicateNameError" type="ObjectTypeDuplicateNameError"/>
+			<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchError"/>
+			<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintError"/>
+			<xs:element name="FactTypeRequiresReadingError" type="FactTypeRequiresReadingError"/>
+			<xs:element name="TooFewReadingRolesError" type="TooFewReadingRolesError"/>
+			<xs:element name="TooFewRoleSequencesError" type="TooFewRoleSequencesError"/>
+			<xs:element name="TooManyReadingRolesError" type="TooManyReadingRolesError"/>
+			<xs:element name="TooManyRoleSequencesError" type="TooManyRoleSequencesError"/>
+			<xs:element name="DataTypeNotSpecifiedError" type="DataTypeNotSpecifiedError"/>
+			<xs:element name="NMinusOneError" type="NMinusOneError"/>
+			<xs:element name="CompatibleRolePlayerTypeError" type="CompatibleRolePlayerTypeError"/>
+			<xs:element name="RolePlayerRequiredError" type="RolePlayerRequiredError"/>
+			<xs:element name="EqualityIsImpliedByMandatoryError" type="EqualityIsImpliedByMandatoryError"/>
+			<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeError"/>
+			<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxError"/>
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:attribute name="id" type="xs:ID" use="required"/>
-				<xs:attribute name="Name" type="xs:string" use="required"/>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
+		<xs:attribute name="Name" type="xs:string" use="required"/>
 	</xs:complexType>
-	<xs:complexType name="DuplicateNameError" abstract="true">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement"></xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
+	<xs:complexType name="DuplicateNameError" abstract="true"/>
 	<xs:complexType name="ConstraintDuplicateNameError">
 		<xs:complexContent>
 			<xs:extension base="DuplicateNameError">
@@ -678,7 +623,7 @@
 		<xs:complexContent>
 			<xs:extension base="DuplicateNameError">
 				<xs:sequence minOccurs ="0" maxOccurs ="1">
-					<xs:element name ="Objects" type ="ObjectRefs" minOccurs="1" maxOccurs ="unbounded"/>
+					<xs:element name="Objects" type ="ObjectRefs" minOccurs="1" maxOccurs ="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -840,25 +785,17 @@
 	<xs:complexType name="ReferenceMode"></xs:complexType>
 	<!--Reference Mdoes and Kinds-->
 	<xs:complexType name="CustomReferenceModes">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="CustomReferenceMode" type="CustomReferenceMode"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="CustomReferenceMode" type="CustomReferenceMode"/>
+		</xs:sequence>	
 	</xs:complexType>
 	<xs:complexType name="CustomReferenceMode">
-		<xs:complexContent>
-			<xs:extension base="ExtendableElement">
-				<xs:sequence>
-					<xs:element name="CustomFormatString" type="xs:string" minOccurs="0" maxOccurs="1"/>
-					<xs:element name="Kind" type="ReferenceModeKindRef" minOccurs="0" maxOccurs="1"/>
-				</xs:sequence>
-				<xs:attribute name="id" type="xs:ID"/>
-				<xs:attribute name="Name" type="xs:string" default=""/>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence minOccurs="0" maxOccurs="1">
+			<xs:element name="CustomFormatString" type="xs:string"/>
+			<xs:element name="Kind" type="ReferenceModeKindRef"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attribute name="Name" type="xs:string" default=""/>
 	</xs:complexType>
 	<!--End Custom Reference Modes-->
 	<xs:complexType name="ValueRangeDefinition">

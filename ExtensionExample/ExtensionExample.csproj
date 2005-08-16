@@ -34,6 +34,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -49,6 +53,10 @@
     <Compile Include="ExtensionDomainModel.AttachRules.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ExtensionDomainModel.AttachRules.xml</DependentUpon>
+    </Compile>
+    <Compile Include="ExtensionDomainModel.SerializationExtensions.cs">
+      <DependentUpon>ExtensionDomainModel.SerializationExtensions.xml</DependentUpon>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -69,9 +77,14 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ExtensionDomainModel.AttachRules.cs</LastGenOutput>
     </Content>
+    <None Include="ExtensionDomainModel.SerializationExtensions.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>ExtensionDomainModel.SerializationExtensions.cs</LastGenOutput>
+    </None>
     <None Include="..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
+    <EmbeddedResource Include="ExtensionDomainModelTest.xsd" />
     <None Include="Plix.xml" />
   </ItemGroup>
   <ItemGroup>

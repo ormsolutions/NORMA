@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ExtensionExample" targetNamespace="http://Schemas.Neumont.edu/ORM/ExtensionExample" elementFormDefault="qualified" xmlns="http://Schemas.Neumont.edu/ORM/ExtensionExample" xmlns:mstns="http://Schemas.Neumont.edu/ORM/ExtensionExample" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="SampleElement">
+        <xs:complexType>
+            <xs:sequence />
+            <xs:attribute name="TestProperty" type="xs:string" />
+            <xs:attribute name="id" type="xs:ID" />
+            <xs:attribute name="CustomEnum" type="TestEnumeration" />
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="TestEnumeration">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="None" />
+            <xs:enumeration value="One" />
+            <xs:enumeration value="Two" />
+            <xs:enumeration value="Three" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -2104,9 +2104,14 @@ namespace Neumont.Tools.ORM.Shell
 								if (aggregatedClass && !oppositeMetaClassFullyDeterministic)
 								{
 									MetaClassInfo testMetaClass = null;
-									if (customModel != null)
+									IORMCustomSerializedMetaModel elementModel = myXmlNamespaceToModelMap[namespaceName];
+									if (elementModel == null)
 									{
-										Guid mappedGuid = customModel.MapClassName(namespaceName, elementName);
+										elementModel = customModel;
+									}
+									if (elementModel != null)
+									{
+										Guid mappedGuid = elementModel.MapClassName(namespaceName, elementName);
 										if (!mappedGuid.Equals(Guid.Empty))
 										{
 											testMetaClass = dataDir.FindMetaClass(mappedGuid);
@@ -2114,7 +2119,7 @@ namespace Neumont.Tools.ORM.Shell
 									}
 									if (testMetaClass == null)
 									{
-										Type namespaceType = (customModel != null) ? customModel.GetType() : element.GetType();
+										Type namespaceType = (elementModel != null) ? elementModel.GetType() : element.GetType();
 										testMetaClass = dataDir.FindMetaClass(string.Concat(namespaceType.Namespace, ".", elementName));
 									}
 									oppositeMetaClass = testMetaClass;
