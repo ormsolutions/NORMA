@@ -1,0 +1,69 @@
+"Name"    = FactGrammar
+"Author"  = Nickolas Maly and Scott Baldwin
+"Version" = 0.1
+"About"   = This is for our fact editor
+
+"Case Sensitive" = True 
+"Start Symbol"   = <Fact>
+
+{LowercaseLetter} = [abcdefghijklmnopqrstuvwxyz]
+{UppercaseLetter} = [ABCDEFGHIJKLMNOPQRSTUVWXYZ]
+{NoSpaces}	    = {Printable} - [ ]
+{WeirdCharacter}  = [#$%_]
+{HardSpace}       = [ ]
+
+IdentifierName	= ({UppercaseLetter}({UppercaseLetter}|{LowercaseLetter})*{Whitespace}*)+
+PredicateText	= ({Whitespace}*{LowercaseLetter}+{Whitespace}*)+
+NumberQuantifier = {Digit}+
+
+<Fact>    ::=   <UnaryFact>
+		| <BinaryFact>
+!		| <TernaryFact>
+!		| <QuaternaryFact>
+!		| <QuinternaryFact>
+!		| <SexternaryFact>
+!		| <SepternaryFact>
+!		| <OcternaryFact>
+!		| <NonaryFact>
+!		| <DecaryFact>
+
+<UnaryFact>		::= <FactPart>
+<BinaryFact>		::= <FactPart> <FactPart>
+!<TernaryFact>		::= <FactPart> <FactPart> <FactPart>
+!<QuaternaryFact>	::= <FactPart> <FactPart> <FactPart> <FactPart>
+!<QuinternaryFact>	::= <FactPart> <FactPart> <FactPart> <FactPart> <FactPart>
+!<SexternaryFact>	::= <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart>
+!<SepternaryFact>	::= <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart>
+!<OcternaryFact>	::= <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart>
+!<NonaryFact>		::= <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart>
+!<DecaryFact>		::= <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart> <FactPart>
+
+<FactPart>	::= <ExistentialQuantifier> <ObjectType> <Predicate>
+		| <Predicate> <ObjectType>
+		| <Predicate> <ExistentialQuantifier> <ObjectType>
+		| <Predicate> <ExistentialQuantifier> <ObjectType> <Predicate>
+		| <ExistentialQuantifier> <ObjectType>
+		| <ObjectType>
+
+<ObjectType>	::= '[' <ObjectTypeText> ']'
+		| '[' <ObjectTypeText> <RefMode> ']'
+
+<ObjectTypeText> ::= IdentifierName
+
+<RefMode>	::= '(' <RefModeValue> ')'
+		| '(' ')'
+
+<RefModeValue> ::= IdentifierName
+		|
+
+<Predicate>	::= PredicateText
+
+<ExistentialQuantifier>	::= '.' <ExistentialQuantifierText> '.'
+		|
+
+<ExistentialQuantifierText> ::= 'exactly one'
+		| 'exactly ' <ExistentialNumber>
+		| 'at most ' <ExistentialNumber>
+		| 'at least ' <ExistentialNumber>
+
+<ExistentialNumber> ::= NumberQuantifier
