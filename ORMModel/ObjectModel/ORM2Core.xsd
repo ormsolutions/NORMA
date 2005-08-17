@@ -81,6 +81,7 @@
 			<xs:extension base="ObjectType">
 				<xs:sequence>
 					<xs:element name="NestedPredicate" type="ObjectifiedFactRef"/>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -92,6 +93,7 @@
 				<xs:sequence>
 					<xs:element name="ConceptualDataType" type="DataTypeRef" minOccurs="1" maxOccurs="1"/>
 					<xs:element name="ValueConstraint" type="ValueRangeDefinition" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -330,7 +332,7 @@
 	</xs:complexType>
 	<!--end Fact Ref-->
 	<xs:complexType name="Facts">
-		<xs:choice minOccurs="0" maxOccurs="1">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Fact" type="Fact"/>
 			<xs:element name="SubtypeFact" type="SubtypeFact"/>
 			<xs:element name="ImpliedFact" type="ImpliedFact"/>
@@ -412,8 +414,8 @@
 		<xs:sequence>
 			<xs:element name="ConstraintNote" type="Data" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
-			<xs:attribute name="id" type="xs:ID"></xs:attribute>
-			<xs:attribute name="Name" type="xs:string"></xs:attribute>
+		<xs:attribute name="id" type="xs:ID"></xs:attribute>
+		<xs:attribute name="Name" type="xs:string"></xs:attribute>
 	</xs:complexType>
 	<!--Multicolumn constraints-->
 	<xs:complexType name="MultiColumnExternalConstraint" abstract="true">
@@ -425,28 +427,45 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="EqualityConstraint">
+	<xs:complexType name="BaseEqualityConstraint" abstract="true">
 		<xs:complexContent>
 			<xs:extension base="MultiColumnExternalConstraint"/>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="EqualityConstraint">
+		<xs:complexContent>
+			<xs:extension base="BaseEqualityConstraint">
+				<xs:sequence>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="ImpliedEqualityConstraint">
 		<xs:complexContent>
-			<xs:extension base="EqualityConstraint">
+			<xs:extension base="BaseEqualityConstraint">
 				<xs:sequence>
 					<xs:element name="ImpliedByObjectification" type="ObjectificationRef"/>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ExclusionConstraint">
 		<xs:complexContent>
-			<xs:extension base="MultiColumnExternalConstraint"/>
+			<xs:extension base="MultiColumnExternalConstraint">
+				<xs:sequence>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SubsetConstraint">
 		<xs:complexContent>
 			<xs:extension base="MultiColumnExternalConstraint">
+				<xs:sequence>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+				</xs:sequence>
 				<xs:attribute name="FromRoleSequence" type="xs:IDREF"/>
 				<!-- use="required"/>  should be here-->
 				<xs:attribute name="ToRoleSequence" type="xs:IDREF"/>
@@ -474,6 +493,9 @@
 	<xs:complexType name="FrequencyConstraint">
 		<xs:complexContent>
 			<xs:extension base="SingleColumnExternalConstraint">
+				<xs:sequence>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+				</xs:sequence>
 				<xs:attribute name="MinFrequency" type="xs:int"/>
 				<xs:attribute name="MaxFrequency" type="xs:int"/>
 			</xs:extension >
@@ -481,10 +503,14 @@
 	</xs:complexType>
 	<xs:complexType name="DisjunctiveMandatoryConstraint">
 		<xs:complexContent>
-			<xs:extension base="SingleColumnExternalConstraint"/>
+			<xs:extension base="SingleColumnExternalConstraint">
+				<xs:sequence>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ExternalUniquenessConstraint">
+	<xs:complexType name="BaseExternalUniquenessConstraint" abstract="true">
 		<xs:complexContent>
 			<xs:extension base="SingleColumnExternalConstraint">
 				<xs:sequence>
@@ -493,28 +519,42 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="ExternalUniquenessConstraint">
+		<xs:complexContent>
+			<xs:extension base="BaseExternalUniquenessConstraint">
+				<xs:sequence>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="ImpliedExternalUniquenessConstraint">
 		<xs:complexContent>
-			<xs:extension base="ExternalUniquenessConstraint">
+			<xs:extension base="BaseExternalUniquenessConstraint">
 				<xs:sequence>
 					<xs:element name="ImpliedByObjectification" type="ObjectificationRef"/>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="RingConstraint">
 		<xs:complexContent>
-			<xs:extension base="SingleColumnExternalConstraint"/>
+			<xs:extension base="SingleColumnExternalConstraint">
+				<xs:sequence>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<!--End Singlecolumn constraints-->
 	<!--InternalConstraint-note these are owned by FactTypes not the model -->
 	<xs:complexType name="InternalConstraints">
-		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="InternalUniquenessConstraint" type="InternalUniquenessConstraint" minOccurs="0" maxOccurs="1"/>
-			<xs:element name="SimpleMandatoryConstraint" type="SimpleMandatoryConstraint" minOccurs="0" maxOccurs="1"/>
-		</xs:sequence>
-	</xs:complexType>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="InternalUniquenessConstraint" type="InternalUniquenessConstraint"/>
+				<xs:element name="SimpleMandatoryConstraint" type="SimpleMandatoryConstraint"/>
+			</xs:choice>
+		</xs:complexType>
 	<xs:complexType name="InternalConstraint">
 		<xs:complexContent>
 			<xs:extension base="Constraint">
@@ -529,6 +569,7 @@
 			<xs:extension base="InternalConstraint">
 				<xs:sequence>
 					<xs:element name="PreferredIdentifierFor" type="ObjectRef" minOccurs="0"/>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -538,7 +579,11 @@
 	</xs:complexType>
 	<xs:complexType name="SimpleMandatoryConstraint">
 		<xs:complexContent>
-			<xs:extension base="InternalConstraint"/>
+			<xs:extension base="InternalConstraint">
+				<xs:sequence>
+					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<!--End InternalConstraint-->
