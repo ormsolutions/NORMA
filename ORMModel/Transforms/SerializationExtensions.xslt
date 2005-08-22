@@ -1043,23 +1043,17 @@
 						</xsl:for-each>
 					</xsl:variable>
 					<xsl:variable name="localLinks" select="msxsl:node-set($localLinksFragment)/child::*"/>
-					<xsl:variable name="PLiXedLinksFragment">
-						<xsl:for-each select="$localLinks">
-							<plx:PassParam>
-								<plx:CallType name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" style="Field"/>
-							</plx:PassParam>
-						</xsl:for-each>
-					</xsl:variable>
-					<xsl:variable name="PLiXedLinks" select="msxsl:node-set($PLiXedLinksFragment)/child::*"/>
 					<xsl:if test="count($localLinks)">
-						<plx:CallInstance name="InitializeRoles">
-							<plx:CallObject>
-								<plx:Value type="Local">match</plx:Value>
-							</plx:CallObject>
-							<xsl:copy-of select="$PLiXedLinks"/>
-						</plx:CallInstance>
 						<xsl:variable name="containerName" select="@Name"/>
 						<xsl:for-each select="$localLinks">
+							<plx:CallInstance name="InitializeRoles">
+								<plx:CallObject>
+									<plx:Value type="Local">match</plx:Value>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:CallType name="{@RoleName}MetaRoleGuid" dataTypeName="{@RelationshipName}" style="Field"/>
+								</plx:PassParam>
+							</plx:CallInstance>
 							<plx:CallInstance name="Add">
 								<plx:CallObject>
 									<plx:Value type="Local">childElementMappings</plx:Value>

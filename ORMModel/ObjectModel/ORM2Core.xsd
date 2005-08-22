@@ -25,8 +25,8 @@
 			<xs:element name="ReferenceModeKinds" type="ReferenceModeKinds" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:all>
-		<xs:attribute name="Name" type="xs:string"></xs:attribute>
-		<xs:attribute name="id" type="xs:ID"></xs:attribute>
+		<xs:attribute name="Name" type="xs:string"/>
+		<xs:attribute name="id" type="xs:ID"/>
 	</xs:complexType>
 	<!--End ORMModel-->
 	<!--Objects and Object Types-->
@@ -145,112 +145,112 @@
 	</xs:complexType>
 	<xs:complexType name="UnspecifiedDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="FixedLengthTextDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="VariableLengthTextDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="LargeLengthTextDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SignedIntegerNumericDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="UnsignedIntegerNumericDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AutoCounterNumericDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="FloatingPointNumericDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="DecimalNumericDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="MoneyNumericDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="FixedLengthRawDataDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="VariableLengthRawDataDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="LargeLengthRawDataDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="PictureRawDataDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="OleObjectRawDataDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AutoTimestampTemporalDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="TimeTemporalDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="DateTemporalDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="DateAndTimeTemporalDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="TrueOrFalseLogicalDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="YesOrNoLogicalDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="RowIdOtherDataType">
 		<xs:complexContent>
-			<xs:extension base="DataType"></xs:extension>
+			<xs:extension base="DataType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<!--End DataType -->
@@ -414,8 +414,8 @@
 		<xs:sequence>
 			<xs:element name="ConstraintNote" type="Data" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID"></xs:attribute>
-		<xs:attribute name="Name" type="xs:string"></xs:attribute>
+		<xs:attribute name="id" type="xs:ID"/>
+		<xs:attribute name="Name" type="xs:string"/>
 	</xs:complexType>
 	<!--Multicolumn constraints-->
 	<xs:complexType name="MultiColumnExternalConstraint" abstract="true">
@@ -477,6 +477,9 @@
 		<xs:attribute name="ref" type="xs:IDREF" />
 	</xs:complexType>
 	<xs:complexType name="SingleColumnConstraintRef">
+		<xs:attribute name="ref" type="xs:IDREF" />
+	</xs:complexType>
+	<xs:complexType name="InternalConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF" />
 	</xs:complexType>
 	<!-- end Multicolumn constraints-->
@@ -561,6 +564,7 @@
 				<xs:sequence minOccurs="0" maxOccurs="unbounded">
 					<xs:element name="RoleSequence" type="RoleSequence" minOccurs="1" maxOccurs="unbounded"/>
 				</xs:sequence>
+				<xs:attribute name="Name" type="xs:string"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -645,30 +649,37 @@
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="Name" type="xs:string" use="required"/>
 	</xs:complexType>
-	<xs:complexType name="DuplicateNameError" abstract="true"/>
 	<xs:complexType name="ConstraintDuplicateNameError">
 		<xs:complexContent>
-			<xs:extension base="DuplicateNameError">
-				<xs:sequence minOccurs ="0" maxOccurs ="1">
-					<xs:element name ="Constraints" type ="ConstraintRefs" minOccurs="1" maxOccurs ="unbounded"/>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="Constraints">
+						<xs:complexType>
+							<xs:choice minOccurs="2" maxOccurs="unbounded">
+								<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"/>
+								<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"/>
+								<xs:element name="InternalConstraint" type="InternalConstraintRef"/>
+							</xs:choice>
+						</xs:complexType>
+					</xs:element>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="FactTypeDuplicateNameError">
 		<xs:complexContent>
-			<xs:extension base="DuplicateNameError">
-				<xs:sequence minOccurs ="0" maxOccurs ="1">
-					<xs:element name ="Facts" type ="FactRefs" minOccurs="1" maxOccurs ="unbounded"/>
+			<xs:extension base="ModelError">
+				<xs:sequence minOccurs="0" maxOccurs="1">
+					<xs:element name="Facts" type="FactRefs" minOccurs="1" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ObjectTypeDuplicateNameError">
 		<xs:complexContent>
-			<xs:extension base="DuplicateNameError">
-				<xs:sequence minOccurs ="0" maxOccurs ="1">
-					<xs:element name="Objects" type ="ObjectRefs" minOccurs="1" maxOccurs ="unbounded"/>
+			<xs:extension base="ModelError">
+				<xs:sequence minOccurs="0" maxOccurs="1">
+					<xs:element name="Objects" type="ObjectRefs" minOccurs="1" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -676,7 +687,7 @@
 	<xs:complexType name="EntityTypeRequiresReferenceSchemeError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs ="1" maxOccurs ="1">
+				<xs:sequence minOccurs="1" maxOccurs="1">
 					<xs:element name="EntityType" type="ObjectRef"/>
 				</xs:sequence>
 			</xs:extension>
@@ -685,8 +696,8 @@
 	<xs:complexType name="ExternalConstraintRoleSequenceArityMismatchError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs ="1" maxOccurs ="1">
-					<xs:element name ="Constraint" type="ConstraintRef"></xs:element>
+				<xs:sequence minOccurs="1" maxOccurs="1">
+					<xs:element name="Constraint" type="ConstraintRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -694,8 +705,8 @@
 	<xs:complexType name="FactTypeRequiresInternalUniquenessConstraintError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs ="1" maxOccurs ="1">
-					<xs:element name ="Fact" type="FactRef"></xs:element>
+				<xs:sequence minOccurs="1" maxOccurs="1">
+					<xs:element name="Fact" type="FactRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -703,8 +714,8 @@
 	<xs:complexType name="FactTypeRequiresReadingError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs ="1" maxOccurs ="1">
-					<xs:element name ="Fact" type="FactRef"></xs:element>
+				<xs:sequence minOccurs="1" maxOccurs="1">
+					<xs:element name="Fact" type="FactRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -712,8 +723,8 @@
 	<xs:complexType name="TooFewReadingRolesError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs ="1" maxOccurs ="1">
-					<xs:element name ="Reading" type="ReadingRef"></xs:element>
+				<xs:sequence minOccurs="1" maxOccurs="1">
+					<xs:element name="Reading" type="ReadingRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -721,8 +732,8 @@
 	<xs:complexType name="TooFewRoleSequencesError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs ="1" maxOccurs ="1">
-					<xs:element name ="Constraint" type="ConstraintRef"></xs:element>
+				<xs:sequence minOccurs="1" maxOccurs="1">
+					<xs:element name="Constraint" type="ConstraintRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -730,8 +741,8 @@
 	<xs:complexType name="TooManyReadingRolesError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs ="1" maxOccurs ="1">
-					<xs:element name ="Reading" type="ReadingRef"></xs:element>
+				<xs:sequence minOccurs="1" maxOccurs="1">
+					<xs:element name="Reading" type="ReadingRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -740,7 +751,7 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name ="ConceptualDataType" type="DataTypeRefRef"></xs:element>
+					<xs:element name="ConceptualDataType" type="DataTypeRefRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -749,7 +760,7 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name ="FrequencyConstraint" type="FrequencyConstraintRef"></xs:element>
+					<xs:element name="FrequencyConstraint" type="FrequencyConstraintRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -757,8 +768,8 @@
 	<xs:complexType name="TooManyRoleSequencesError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
-				<xs:sequence minOccurs ="1" maxOccurs ="1">
-					<xs:element name ="Constraint" type="ConstraintRef"></xs:element>
+				<xs:sequence minOccurs="1" maxOccurs="1">
+					<xs:element name="Constraint" type="ConstraintRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -767,8 +778,8 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
-					<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"></xs:element>
-					<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"></xs:element>
+					<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"/>
+					<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"/>
 				</xs:choice>
 				<xs:attribute name="Column" type="xs:int" use="optional"/>
 			</xs:extension >
@@ -778,7 +789,7 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
-					<xs:element name="Role" type="RoleRef"></xs:element>
+					<xs:element name="Role" type="RoleRef"/>
 				</xs:choice>
 			</xs:extension >
 		</xs:complexContent>
@@ -787,7 +798,7 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:choice>
-					<xs:element name="EqualityConstraint" type="EqualityConstraintRef"></xs:element>
+					<xs:element name="EqualityConstraint" type="EqualityConstraintRef"/>
 				</xs:choice>
 			</xs:extension >
 		</xs:complexContent>
@@ -796,7 +807,7 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="InternalUniquenessConstraint" type="InternalUniquenessConstraintRef"></xs:element>
+					<xs:element name="InternalUniquenessConstraint" type="InternalUniquenessConstraintRef"/>
 				</xs:sequence>
 			</xs:extension >
 		</xs:complexContent>
@@ -815,19 +826,18 @@
 	<xs:complexType name="ReferenceModeKind">
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="FormatString" type="xs:string" use="required"/>
-		<xs:attribute name="ReferenceModeType" type="xs:string" use="required"/>
+		<xs:attribute name="ReferenceModeType" type="ReferenceModeTypeType" use="required"/>
 	</xs:complexType>
-	<xs:simpleType name="ReferenceModeType">
-		<xs:restriction base ="xs:string">
-			<xs:enumeration value ="General"/>
-			<xs:enumeration value ="Popular"/>
-			<xs:enumeration value ="UnitBased"/>
+	<xs:simpleType name="ReferenceModeTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="General"/>
+			<xs:enumeration value="Popular"/>
+			<xs:enumeration value="UnitBased"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="CustomReferenceModeRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
-	<xs:complexType name="ReferenceMode"></xs:complexType>
 	<!--Reference Mdoes and Kinds-->
 	<xs:complexType name="CustomReferenceModes">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">

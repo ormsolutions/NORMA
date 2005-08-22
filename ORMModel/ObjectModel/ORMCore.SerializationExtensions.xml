@@ -110,6 +110,7 @@
 		<se:Link Name="NestedPredicate" RelationshipName="Objectification" RoleName="NestedFactType" WriteStyle="PrimaryLinkElement" />
 		<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<!--TODO:Subtypes-->
 		<!--TODO:Supertypes-->
 	</se:Element>
@@ -168,6 +169,7 @@
 		<se:Link RelationshipName="Objectification" RoleName="NestingType" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="ReadingRequiredError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true"/>
 	<se:Element Class="Objectification">
@@ -241,21 +243,16 @@
 		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesExternalUniquenessConstraint" RoleName="ImpliedByObjectification"/>
 	</se:Element>
-	<se:Element Class="InternalUniquenessConstraint" SortChildElements="true" Override="true">
-		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
+	<se:Element Class="InternalConstraint" SortChildElements="true" Override="true">
 		<se:ChildElement Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 		</se:ChildElement>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
+		<se:Link RelationshipName="InternalConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="InternalUniquenessConstraint" SortChildElements="true" Override="true">
 		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 		<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="NMinusOneError" WriteStyle="NotWritten"/>
-	</se:Element>
-	<se:Element Class="SimpleMandatoryConstraint" SortChildElements="true" Override="true">
-		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
-		<se:ChildElement Name="RoleSequence">
-			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
-		</se:ChildElement>
-		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 	</se:Element>
 	<se:Element Class="EqualityConstraint" SortChildElements="true" Override="true" >
 		<se:ConditionalName Name="ImpliedEqualityConstraint">
@@ -277,13 +274,26 @@
 	</se:Element>
 	<!--Errors-->
 	<se:Element Class="ConstraintDuplicateNameError" Override="true">
-		<se:Link RelationshipName="MultiColumnExternalConstraintHasDuplicateNameError" RoleName="MultiColumnExternalConstraintCollection" Name="Constraint"/>
+		<se:ChildElement Name="Constraints">
+			<se:Link RelationshipName="MultiColumnExternalConstraintHasDuplicateNameError" RoleName="MultiColumnExternalConstraintCollection"/>
+			<se:Link RelationshipName="SingleColumnExternalConstraintHasDuplicateNameError" RoleName="SingleColumnExternalConstraintCollection"/>
+			<se:Link RelationshipName="InternalConstraintHasDuplicateNameError" RoleName="InternalConstraintCollection"/>
+		</se:ChildElement>
+		<se:Link RelationshipName="MultiColumnExternalConstraintHasDuplicateNameError" RoleName="MultiColumnExternalConstraintCollection" Name="MultiColumnConstraint"/>
+		<se:Link RelationshipName="SingleColumnExternalConstraintHasDuplicateNameError" RoleName="SingleColumnExternalConstraintCollection" Name="SingleColumnConstraint"/>
+		<se:Link RelationshipName="InternalConstraintHasDuplicateNameError" RoleName="InternalConstraintCollection" Name="InternalConstraint"/>
 	</se:Element>
 	<se:Element Class="FactTypeDuplicateNameError" Override="true">
-		<se:Link RelationshipName="FactTypeHasDuplicateNameError" RoleName="FactTypeCollection" Name="Facts"/>
+		<se:ChildElement Name="Facts">
+			<se:Link RelationshipName="FactTypeHasDuplicateNameError" RoleName="FactTypeCollection"/>
+		</se:ChildElement>
+		<se:Link RelationshipName="FactTypeHasDuplicateNameError" RoleName="FactTypeCollection" Name="Fact"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeDuplicateNameError" Override="true">
-		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectTypeCollection" Name="Objects"/>
+		<se:ChildElement Name="Objects">
+			<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectTypeCollection"/>
+		</se:ChildElement>
+		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="ObjectTypeCollection" Name="Object"/>
 	</se:Element>
 	<se:Element Class="EntityTypeRequiresReferenceSchemeError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ObjectType" Name="EntityType"/>

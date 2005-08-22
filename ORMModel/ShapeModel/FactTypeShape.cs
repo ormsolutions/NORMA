@@ -2867,8 +2867,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			NMinusOneError nMinusOne;
 			RolePlayerRequiredError requireRolePlayer;
 			FactType fact;
+			ConstraintDuplicateNameError constraintNameError;
 			Reading reading = null;
 			InternalUniquenessConstraint activateConstraint = null;
+			bool selectConstraintOnly = false;
 			bool addActiveRoles = false;
 			if (null != (tooFew = error as TooFewReadingRolesError))
 			{
@@ -2913,6 +2915,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 				RoleConnectAction connectAction = ormDiagram.RoleConnectAction;
 				connectAction.ChainMouseAction(GetAbsoluteRoleAttachPoint(role), clientView, false);
 			}
+			else if (null != (constraintNameError = error as ConstraintDuplicateNameError))
+			{
+				// We'll get here if one of the constraints we own has a duplicate name
+				IList internalConstraints = constraintNameError.InternalConstraintCollection;
+				int internalConstraintsCount = internalConstraints.Count;
+				fact = AssociatedFactType;
+				for (int i = 0; i < internalConstraintsCount; ++i)
+				{
+					InternalConstraint ic = (InternalConstraint)internalConstraints[i];
+					if (ic.FactType == fact)
+					{
+						switch (ic.Constraint.ConstraintType)
+						{
+							case ConstraintType.InternalUniqueness:
+								activateConstraint = (InternalUniquenessConstraint)ic;
+								selectConstraintOnly = true;
+								break;
+							case ConstraintType.SimpleMandatory:
+								Diagram.ActiveDiagramView.DiagramClientView.Selection.Set(new DiagramItem(this, RolesShape, new RoleSubField(ic.RoleCollection[0])));
+								break;
+						}
+						break;
+					}
+				}
+			}
 
 			if (reading != null)
 			{
@@ -2941,22 +2968,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 					DiagramClientView clientView = ormDiagram.ActiveDiagramView.DiagramClientView;
 					DiagramItem diagramItem = new DiagramItem(this, targetSubfield, new ConstraintSubField(activateConstraint));
 					clientView.Selection.Set(diagramItem);
-					InternalUniquenessConstraintConnectAction connectAction = ormDiagram.InternalUniquenessConstraintConnectAction;
-					ActiveInternalUniquenessConstraintConnectAction = connectAction;
-					if (addActiveRoles)
+					if (!selectConstraintOnly)
 					{
-						RoleMoveableCollection roleColl = activateConstraint.RoleCollection;
-						if (roleColl.Count != 0)
+						InternalUniquenessConstraintConnectAction connectAction = ormDiagram.InternalUniquenessConstraintConnectAction;
+						ActiveInternalUniquenessConstraintConnectAction = connectAction;
+						if (addActiveRoles)
 						{
-							IList<Role> selectedRoles = connectAction.SelectedRoleCollection;
-							foreach (Role r in roleColl)
+							RoleMoveableCollection roleColl = activateConstraint.RoleCollection;
+							if (roleColl.Count != 0)
 							{
-								selectedRoles.Add(r);
+								IList<Role> selectedRoles = connectAction.SelectedRoleCollection;
+								foreach (Role r in roleColl)
+								{
+									selectedRoles.Add(r);
+								}
 							}
 						}
+						this.Invalidate(true);
+						connectAction.ChainMouseAction(this, activateConstraint, clientView);
 					}
-					this.Invalidate(true);
-					connectAction.ChainMouseAction(this, activateConstraint, clientView);
 				}
 			}
 		}

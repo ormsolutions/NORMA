@@ -218,7 +218,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return FactTypesDictionary;
 			}
 			else if (parentMetaRoleGuid == ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid ||
-					 parentMetaRoleGuid == ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid)
+					 parentMetaRoleGuid == ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid ||
+					 parentMetaRoleGuid == FactTypeHasInternalConstraint.FactTypeMetaRoleGuid)
 			{
 				return ConstraintsDictionary;
 			}
@@ -273,7 +274,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		[RuleOn(typeof(MultiColumnExternalConstraintHasDuplicateNameError)), RuleOn(typeof(SingleColumnExternalConstraintHasDuplicateNameError))]
+		[RuleOn(typeof(MultiColumnExternalConstraintHasDuplicateNameError)), RuleOn(typeof(SingleColumnExternalConstraintHasDuplicateNameError)), RuleOn(typeof(InternalConstraintHasDuplicateNameError))]
 		private class RemoveDuplicateConstraintNameErrorRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -281,6 +282,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				ModelElement link = e.ModelElement;
 				MultiColumnExternalConstraintHasDuplicateNameError mcLink;
 				SingleColumnExternalConstraintHasDuplicateNameError scLink;
+				InternalConstraintHasDuplicateNameError iLink;
 				ConstraintDuplicateNameError error = null;
 				if (null != (mcLink = link as MultiColumnExternalConstraintHasDuplicateNameError))
 				{
@@ -290,9 +292,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					error = scLink.DuplicateNameError;
 				}
+				else if (null != (iLink = link as InternalConstraintHasDuplicateNameError))
+				{
+					error = iLink.DuplicateNameError;
+				}
 				if (error != null && !error.IsRemoved)
 				{
-					if ((error.MultiColumnExternalConstraintCollection.Count + error.SingleColumnExternalConstraintCollection.Count) < 2)
+					if ((error.MultiColumnExternalConstraintCollection.Count + error.SingleColumnExternalConstraintCollection.Count + error.InternalConstraintCollection.Count) < 2)
 					{
 						error.Remove();
 					}
@@ -535,16 +541,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 				#region IDuplicateNameCollectionManager Implementation
 				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, NamedElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
-					SingleColumnExternalConstraint scConstraint = element as SingleColumnExternalConstraint;
-					MultiColumnExternalConstraint mcConstraint = (scConstraint == null) ? (element as MultiColumnExternalConstraint) : null;
-					Debug.Assert(scConstraint != null || mcConstraint != null);
+					SingleColumnExternalConstraint scConstraint = null;
+					MultiColumnExternalConstraint mcConstraint = null;
+					InternalConstraint iConstraint = null;
+					ConstraintDuplicateNameError existingError = null;
+					if (null != (scConstraint = element as SingleColumnExternalConstraint))
+					{
+						existingError = scConstraint.DuplicateNameError;
+					}
+					else if (null != (mcConstraint = element as MultiColumnExternalConstraint))
+					{
+						existingError = mcConstraint.DuplicateNameError;
+					}
+					else if (null != (iConstraint = element as InternalConstraint))
+					{
+						existingError = iConstraint.DuplicateNameError;
+					}
+					Debug.Assert(scConstraint != null || mcConstraint != null || iConstraint != null);
 					if (afterTransaction)
 					{
 						// We're not in a transaction, but the object model will be in
 						// the state we need it because we put it there during a transaction.
 						// Just return the collection from the current state of the object model.
-						ConstraintDuplicateNameError error = (scConstraint != null) ? scConstraint.DuplicateNameError : mcConstraint.DuplicateNameError;
-						return (error != null) ? error.ConstraintCollection : null;
+						return (existingError != null) ? existingError.ConstraintCollection : null;
 					}
 					else
 					{
@@ -558,7 +577,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								// may already be attached to the object. Track
 								// it down and verify that it is a legitimate error.
 								// If it is not legitimate, then generate a new one.
-								error = (scConstraint != null) ? scConstraint.DuplicateNameError : mcConstraint.DuplicateNameError;
+								error = existingError;
 								if (error != null && !error.ValidateDuplicates(element))
 								{
 									error = null;
@@ -572,10 +591,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 									scConstraint.DuplicateNameError = error;
 									error.Model = scConstraint.Model;
 								}
-								else
+								else if (mcConstraint != null)
 								{
 									mcConstraint.DuplicateNameError = error;
 									error.Model = mcConstraint.Model;
+								}
+								else if (iConstraint != null)
+								{
+									iConstraint.DuplicateNameError = error;
+									Debug.Assert(iConstraint.FactType != null && iConstraint.FactType.Model != null); // Can't get here unless the constraint is attached to an attached fact
+									error.Model = iConstraint.FactType.Model;
 								}
 								error.GenerateErrorText();
 								if (notifyAdded != null)
@@ -606,6 +631,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// object itself when there is not longer a duplicate.
 						MultiColumnExternalConstraint mcConstraint;
 						SingleColumnExternalConstraint scConstraint;
+						InternalConstraint iConstraint;
 						if (null != (scConstraint = element as SingleColumnExternalConstraint))
 						{
 							scConstraint.DuplicateNameError = null;
@@ -613,6 +639,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						else if (null != (mcConstraint = element as MultiColumnExternalConstraint))
 						{
 							mcConstraint.DuplicateNameError = null;
+						}
+						else if (null != (iConstraint = element as InternalConstraint))
+						{
+							iConstraint.DuplicateNameError = null;
 						}
 					}
 					return elementCollection;
@@ -635,7 +665,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <returns>A base name string pattern</returns>
 			protected override string GetRootNamePattern(NamedElement element)
 			{
-				Debug.Assert(element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint);
+				Debug.Assert(element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint || element is InternalConstraint);
 				// UNDONE: How explicit do we want to be on constraint naming?
 				return base.GetRootNamePattern(element);
 			}
@@ -680,6 +710,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get { return ObjectTypeCollection; }
 		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
+		/// Returns null.
+		/// </summary>
+		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		{
+			get { return null; }
+		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	public partial class ModelHasFactType : INamedElementDictionaryLink
@@ -706,6 +748,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Returns ObjectTypeCollection.
 		/// </summary>
 		protected INamedElementDictionaryChild ChildRolePlayer
+		{
+			get { return FactTypeCollection; }
+		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
+		/// Returns FactTypeCollection.
+		/// </summary>
+		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
 		{
 			get { return FactTypeCollection; }
 		}
@@ -737,6 +791,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected INamedElementDictionaryChild ChildRolePlayer
 		{
 			get { return MultiColumnExternalConstraintCollection; }
+		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
+		/// Returns null.
+		/// </summary>
+		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		{
+			get { return null; }
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
@@ -787,6 +853,59 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get { return SingleColumnExternalConstraintCollection; }
 		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
+		/// Returns null.
+		/// </summary>
+		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		{
+			get { return null; }
+		}
+		#endregion // INamedElementDictionaryLink implementation
+	}
+	public partial class FactTypeHasInternalConstraint : INamedElementDictionaryLink
+	{
+		#region INamedElementDictionaryLink implementation
+		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		{
+			get { return ParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ParentRolePlayer
+		/// Returns FactType.
+		/// </summary>
+		protected INamedElementDictionaryParent ParentRolePlayer
+		{
+			get { return FactType; }
+		}
+		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		{
+			get { return ChildRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ChildRolePlayer
+		/// Returns InternalConstraintCollection.
+		/// </summary>
+		protected INamedElementDictionaryChild ChildRolePlayer
+		{
+			get { return InternalConstraintCollection; }
+		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
+		/// Returns null
+		/// </summary>
+		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		{
+			get { return null; }
+		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	public partial class SingleColumnExternalConstraint : INamedElementDictionaryChild
@@ -806,6 +925,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			parentMetaRoleGuid = ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid;
 			childMetaRoleGuid = ModelHasSingleColumnExternalConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid;
+		}
+		#endregion // INamedElementDictionaryChild implementation
+	}
+	public partial class InternalConstraint : INamedElementDictionaryChild
+	{
+		#region INamedElementDictionaryChild implementation
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+		}
+		/// <summary>
+		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
+		/// this child as participating in the 'ModelHasConstraint' naming set.
+		/// </summary>
+		/// <param name="parentMetaRoleGuid">Guid</param>
+		/// <param name="childMetaRoleGuid">Guid</param>
+		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			parentMetaRoleGuid = FactTypeHasInternalConstraint.FactTypeMetaRoleGuid;
+			childMetaRoleGuid = FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
@@ -1054,7 +1193,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private IList myCompositeList;
 		/// <summary>
 		/// Return a constraint collection encompassing
-		/// both single column and multi column external constraints
+		/// single column external, multi column external, and internal constraints
 		/// </summary>
 		/// <value></value>
 		public IList ConstraintCollection
@@ -1074,25 +1213,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 			#region Member Variables
 			private IList myList1;
 			private IList myList2;
+			private IList myList3;
 			#endregion // Member Variables
 			#region Constructors
 			public CompositeCollection(ConstraintDuplicateNameError error)
 			{
 				myList1 = error.MultiColumnExternalConstraintCollection;
 				myList2 = error.SingleColumnExternalConstraintCollection;
+				myList3 = error.InternalConstraintCollection;
 			}
 			#endregion // Constructors
 			#region ICollection Implementation
 			void ICollection.CopyTo(Array array, int index)
 			{
-				myList1.CopyTo(array, index);
-				myList2.CopyTo(array, index + myList1.Count);
+				int baseIndex = index;
+				myList1.CopyTo(array, baseIndex);
+				baseIndex += myList1.Count;
+				myList2.CopyTo(array, baseIndex);
+				baseIndex += myList2.Count;
+				myList3.CopyTo(array, baseIndex);
 			}
 			int ICollection.Count
 			{
 				get
 				{
-					return myList1.Count + myList2.Count;
+					return myList1.Count + myList2.Count + myList3.Count;
 				}
 			}
 			bool ICollection.IsSynchronized
@@ -1121,16 +1266,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return obj;
 				}
+				foreach (object obj in myList3)
+				{
+					yield return obj;
+				}
 			}
 			#endregion // IEnumerable Implementation
 			#region IList Implementation
 			bool IList.Contains(object value)
 			{
-				if (myList1.Contains(value))
+				if (value is MultiColumnExternalConstraint)
 				{
-					return true;
+					if (myList1.Contains(value))
+					{
+						return true;
+					}
 				}
-				return myList2.Contains(value);
+				else if (value is SingleColumnExternalConstraint)
+				{
+					if (myList2.Contains(value))
+					{
+						return true;
+					}
+				}
+				else if (value is InternalConstraint)
+				{
+					return myList3.Contains(value);
+				}
+				return false;
 			}
 			int IList.IndexOf(object value)
 			{
@@ -1141,6 +1304,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (retVal != -1)
 					{
 						retVal += myList1.Count;
+					}
+					else
+					{
+						retVal = myList3.IndexOf(value);
+						if (retVal != -1)
+						{
+							retVal += myList1.Count + myList2.Count;
+						}
 					}
 				}
 				return retVal;
@@ -1164,14 +1335,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 				get
 				{
 					int list1Count = myList1.Count;
-					return (index >= list1Count) ? myList2[index - list1Count] : myList1[index];
+					if (index >= list1Count)
+					{
+						index -= list1Count;
+						int list2Count = myList2.Count;
+						return (index >= list2Count) ? myList3[index - list2Count] : myList2[index];
+					}
+					return myList1[index];
 				}
 				set
 				{
 					int list1Count = myList1.Count;
 					if (index >= list1Count)
 					{
-						myList2[index - list1Count] = value;
+						index -= list1Count;
+						int list2Count = myList2.Count;
+						if (index >= list2Count)
+						{
+							myList3[index - list2Count] = value;
+						}
+						else
+						{
+							myList2[index] = value;
+						}
 					}
 					else
 					{
@@ -1181,7 +1367,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			int IList.Add(object value)
 			{
-				throw new NotImplementedException(); // Not supported for readonly list
+				InternalConstraint ic;
+				MultiColumnExternalConstraint mcec;
+				SingleColumnExternalConstraint scec;
+				if (null != (ic = value as InternalConstraint))
+				{
+					return myList3.Add(ic) + myList1.Count + myList2.Count;
+				}
+				else if (null != (scec = value as SingleColumnExternalConstraint))
+				{
+					return myList2.Add(scec) + myList1.Count;
+				}
+				else if (null != (mcec = value as MultiColumnExternalConstraint))
+				{
+					return myList1.Add(mcec);
+				}
+				else
+				{
+					throw new InvalidCastException();
+				}
 			}
 			void IList.Clear()
 			{

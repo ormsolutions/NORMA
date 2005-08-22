@@ -303,6 +303,9 @@
   <data name="Neumont.Tools.ORM.ObjectModel.Role.IsMandatory">
     <value xml:space="preserve">IsMandatory</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintName">
+    <value xml:space="preserve">MandatoryConstraintName</value>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role.Multiplicity">
     <value xml:space="preserve">Multiplicity</value>
   </data>

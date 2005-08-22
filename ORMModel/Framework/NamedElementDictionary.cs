@@ -308,15 +308,49 @@ namespace Neumont.Tools.ORM.Framework
 	public interface INamedElementDictionaryLink
 	{
 		/// <summary>
-		/// Get the parent role player
+		/// Get the parent role player. Can be null if this
+		/// link is used solely for retrieving remote role
+		/// players through this link.
 		/// </summary>
 		INamedElementDictionaryParent ParentRolePlayer{get;}
 		/// <summary>
-		/// Get the child role player
+		/// Get the child role player. Can be null if this
+		/// link is used solely for retrieving remote role
+		/// players through this link.
 		/// </summary>
 		INamedElementDictionaryChild ChildRolePlayer { get;}
+		/// <summary>
+		/// Get the role player from this link that acts as
+		/// a remote parent link.
+		/// </summary>
+		INamedElementDictionaryRemoteParent RemoteParentRolePlayer { get;}
 	}
 	#endregion // INamedElementDictionaryLink interface
+	#region INamedElementDictionaryRemoteParent interface
+	/// <summary>
+	/// By default, the assumption is made that the object implementing
+	/// INamedElementDictionaryParent also owns the dictionary. However, this
+	/// does not allow for dictionaries to be shared across different levels
+	/// of the metamodel. If names must be unique across a set of both
+	/// child and grandchild elements and the dictionary is owned by the
+	/// parent/grandparent, then the dictionary cannot be reached if the grandchildren
+	/// are associated with the child before the child is associated with the
+	/// parent. Implementing this interface and pointing to it from the
+	/// INamedElementDictionaryLink.RemoteParentRolePlayer property
+	/// enables the dictionary implementation to include remote objects
+	/// in the dictionary.
+	/// </summary>
+	[CLSCompliant(true)]
+	public interface INamedElementDictionaryRemoteParent
+	{
+		/// <summary>
+		/// Get the meta-role guids for all roles on this object that
+		/// attach to a link that implements INamedElementDictionaryLink
+		/// </summary>
+		/// <returns>An array of supported guids, or null.</returns>
+		Guid[] GetNamedElementDictionaryLinkRoles();
+	}
+	#endregion // INamedElementDictionaryRemoteParent interface
 	#region NamedElementDictionary class
 	/// <summary>
 	/// A class used to enforce naming across a relationship
@@ -676,7 +710,7 @@ namespace Neumont.Tools.ORM.Framework
 							{
 								EntryStateChange.OnEntryChange(element, this, elementName, existingCollection);
 							}
-							myDictionary[elementName] = element;
+							myDictionary[elementName] = otherElement;
 						}
 						else
 						{
@@ -830,9 +864,9 @@ namespace Neumont.Tools.ORM.Framework
 			}
 		}
 		[RuleOn(typeof(ElementLink), Priority = NamedElementDictionary.RulePriority)]
-		private class ElementLinkRemovedRule : RemoveRule
+		private class ElementLinkRemovedRule : RemovingRule
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			public override void ElementRemoving(ElementRemovingEventArgs e)
 			{
 				HandleAddRemove(e.ModelElement, true, false);
 			}
@@ -1238,6 +1272,34 @@ namespace Neumont.Tools.ORM.Framework
 						else
 						{
 							dictionary.AddElement(namedChild, duplicateAction, notifyAdded);
+						}
+					}
+				}
+
+				// Now handle any remote parents associated with this link. Remote
+				// work only needs to be done for adds inside a transaction. The rest
+				// handles itself automatically.
+				INamedElementDictionaryRemoteParent remoteParent;
+				if (!forEvent && !remove && notifyAdded == null && null != (remoteParent = link.RemoteParentRolePlayer))
+				{
+					Guid[] remoteRoleGuids = remoteParent.GetNamedElementDictionaryLinkRoles();
+					int remoteRoleGuidsCount;
+					if (remoteRoleGuids != null && 0 != (remoteRoleGuidsCount = remoteRoleGuids.Length))
+					{
+						ModelElement parentElement = (ModelElement)remoteParent;
+						for (int i = 0; i < remoteRoleGuidsCount; ++i)
+						{
+							IList remoteLinks = parentElement.GetElementLinks(remoteRoleGuids[i]);
+							int remoteLinksCount = remoteLinks.Count;
+							for (int j = 0; j < remoteLinksCount; ++j)
+							{
+								ModelElement remoteLinkElement = (ModelElement)remoteLinks[j];
+								INamedElementDictionaryLink remoteLink = remoteLinkElement as INamedElementDictionaryLink;
+								if (remoteLink != null)
+								{
+									HandleAddRemove(remoteLink, remoteLinkElement, false, false, null);
+								}
+							}
 						}
 					}
 				}

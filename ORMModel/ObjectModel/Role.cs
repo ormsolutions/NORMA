@@ -62,6 +62,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Guid attributeGuid = attribute.Id;
 			if (attributeGuid == RolePlayerDisplayMetaAttributeGuid ||
 				attributeGuid == IsMandatoryMetaAttributeGuid ||
+				attributeGuid == MandatoryConstraintNameMetaAttributeGuid ||
 				attributeGuid == MultiplicityMetaAttributeGuid ||
 				attributeGuid == ValueRangeTextMetaAttributeGuid)
 			{
@@ -144,6 +145,27 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return retVal;
 		}
 		/// <summary>
+		/// Retrieve the mandatory constraint associated with this role, if any
+		/// </summary>
+		private SimpleMandatoryConstraint SimpleMandatoryConstraint
+		{
+			get
+			{
+				ConstraintRoleSequenceMoveableCollection constraintRoleSequences = ConstraintRoleSequenceCollection;
+				int roleSequenceCount = constraintRoleSequences.Count;
+				for (int i = 0; i < roleSequenceCount; ++i)
+				{
+					ConstraintRoleSequence roleSequence = constraintRoleSequences[i];
+					IConstraint constraint = roleSequence.Constraint;
+					if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
+					{
+						return (SimpleMandatoryConstraint)constraint;
+					}
+				}
+				return null;
+			}
+		}
+		/// <summary>
 		/// Standard override. Retrieve values for calculated properties.
 		/// </summary>
 		/// <param name="attribute">MetaAttributeInfo</param>
@@ -157,18 +179,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (attributeGuid == IsMandatoryMetaAttributeGuid)
 			{
-				ConstraintRoleSequenceMoveableCollection constraintRoleSequences = ConstraintRoleSequenceCollection;
-				int roleSequenceCount = constraintRoleSequences.Count;
-				for (int i = 0; i < roleSequenceCount; ++i)
-				{
-					ConstraintRoleSequence roleSequence = constraintRoleSequences[i];
-					IConstraint constraint = roleSequence.Constraint;
-					if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
-					{
-						return true;
-					}
-				}
-				return false;
+				return SimpleMandatoryConstraint != null;
+			}
+			else if (attributeGuid == MandatoryConstraintNameMetaAttributeGuid)
+			{
+				SimpleMandatoryConstraint smc = SimpleMandatoryConstraint;
+				return (smc != null) ? smc.Name : "";
 			}
 			else if (attributeGuid == MultiplicityMetaAttributeGuid)
 			{
@@ -219,6 +235,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType fact = FactType;
 				// Display for binary fact types
 				return fact != null && fact.RoleCollection.Count == 2;
+			}
+			else if (attributeGuid == MandatoryConstraintNameMetaAttributeGuid)
+			{
+				return SimpleMandatoryConstraint != null;
 			}
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
@@ -411,6 +431,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				#endregion // Handle IsMandatory attribute changes
+				#region Handle MandatoryConstraintName attribute changes
+				else if (attributeGuid == Role.MandatoryConstraintNameMetaAttributeGuid)
+				{
+					Role role = e.ModelElement as Role;
+					SimpleMandatoryConstraint smc = role.SimpleMandatoryConstraint;
+					if (smc != null)
+					{
+						smc.Name = (string)e.NewValue;
+					}
+				}
+				#endregion // Handle MandatoryConstraintName attribute changes
 				#region Handle Multiplicity attribute changes
 				else if (attributeGuid == Role.MultiplicityMetaAttributeGuid)
 				{

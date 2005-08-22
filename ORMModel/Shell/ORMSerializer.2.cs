@@ -2428,7 +2428,8 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					metaClassInfo = myStore.MetaDataDirectory.FindMetaClass(metaClassId);
 				}
-				if (createAsPlaceholder)
+				Type implClass = metaClassInfo.ImplementationClass;
+				if (createAsPlaceholder || implClass.IsAbstract)
 				{
 					if (!existingPlaceholder && myPlaceholderElementMap == null)
 					{
@@ -2439,7 +2440,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				else
 				{
-					retVal = myStore.ElementFactory.CreateElement(false, metaClassInfo.ImplementationClass, id);
+					retVal = myStore.ElementFactory.CreateElement(false, implClass, id);
 					isNewElement = true;
 					if (myNotifyAdded != null)
 					{

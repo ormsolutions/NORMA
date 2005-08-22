@@ -171,7 +171,7 @@
     <comment xml:space="preserve">Model validation error text used when multiple constraints with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
   </data>
   <data name="ModelError.Model.DuplicateFactTypeNames.Text">
-    <value xml:space="preserve">Model '{0}' contains multiple fact types named '{1}'. Type names must be unique across all facts in a model.</value>
+    <value xml:space="preserve">Model '{0}' contains multiple fact types named '{1}'. Fact names must be unique across all facts in a model.</value>
     <comment xml:space="preserve">Model validation error text used when multiple fact types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
   </data>
   <data name="ModelError.Model.DuplicateObjectTypeNames.Text">

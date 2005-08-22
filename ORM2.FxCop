@@ -3349,6 +3349,32 @@
              </Accessor>
             </Accessors>
            </Member>
+           <Member Name="GetAllowDuplicateNamesContextKey(System.Guid,System.Guid):System.Object">
+            <Messages>
+             <Message Id="childMetaRoleGuid" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-08-22 18:14:48Z" FixCategory="Breaking">
+              <Issue>
+               <Item>childMetaRoleGuid</Item>
+               <Item>FactType.GetAllowDuplicateNamesContextKey(Guid, Guid):Object</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="58" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="parentMetaRoleGuid" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-08-22 18:14:48Z" FixCategory="Breaking">
+              <Issue>
+               <Item>parentMetaRoleGuid</Item>
+               <Item>FactType.GetAllowDuplicateNamesContextKey(Guid, Guid):Object</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="58" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="GetCustomSerializedChildElementInfo():Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[]">
             <Messages>
              <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
@@ -4443,6 +4469,30 @@
          </Type>
          <Type Name="InternalConstraint">
           <Members>
+           <Member Name="GetRoleGuids(System.Guid&amp;,System.Guid&amp;):System.Void">
+            <Messages>
+             <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-08-22 18:14:48Z">
+              <Issue>
+               <Item>parentMetaRoleGuid</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="57" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="1#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-08-22 18:14:48Z">
+              <Issue>
+               <Item>childMetaRoleGuid</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="57" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="Neumont.Tools.ORM.ObjectModel.IConstraint.ConstraintType">
             <Accessors>
              <Accessor Name="Neumont.Tools.ORM.ObjectModel.IConstraint.get_ConstraintType():Neumont.Tools.ORM.ObjectModel.ConstraintType">
@@ -4547,79 +4597,6 @@
          </Type>
          <Type Name="InternalUniquenessConstraint">
           <Members>
-           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
-            <Messages>
-             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-02 21:00:35Z">
-              <Issue>
-               <Item>attributeInfo</Item>
-               <Item>InternalUniquenessConstraint.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
-               <Item>Microsoft.VisualStudio.Modeling.MetaAttributeInfo</Item>
-               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="pewert">
-                <Note Id="30" />
-               </User>
-              </Notes>
-             </Message>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
-              <Issue>
-               <Item>InternalUniquenessConstraint.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="37" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="attributeInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-05-27 18:50:05Z" FixCategory="Breaking">
-              <Issue>
-               <Item>attributeInfo</Item>
-               <Item>InternalUniquenessConstraint.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="25" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="rolePlayedInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-05-27 18:50:05Z" FixCategory="Breaking">
-              <Issue>
-               <Item>rolePlayedInfo</Item>
-               <Item>InternalUniquenessConstraint.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="25" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-05-27 18:50:05Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>InternalUniquenessConstraint.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="25" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetCustomSerializedChildElementInfo():Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[]">
-            <Messages>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
-              <Issue>
-               <Item>InternalUniquenessConstraint.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="37" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
             <Messages>
              <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-05-27 18:50:05Z">
@@ -11086,6 +11063,20 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="Role+RoleMandatoryConstraintNameFieldHandler">
+          <Messages>
+           <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-08-22 18:14:48Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.Role+RoleMandatoryConstraintNameFieldHandler</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="56" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="Role+RoleMultiplicityFieldHandler">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-04-15 14:45:27Z">
@@ -11486,180 +11477,6 @@
               </Notes>
              </Message>
             </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="SimpleMandatoryConstraint">
-          <Members>
-           <Member Name="CustomSerializedChildRoleComparer">
-            <Accessors>
-             <Accessor Name="get_CustomSerializedChildRoleComparer():System.Collections.Generic.IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;">
-              <Messages>
-               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
-                <Issue>
-                 <Item>SimpleMandatoryConstraint.get_CustomSerializedChildRoleComparer():IComparer`1&lt;Microsoft.VisualStudio.Modeling.MetaRoleInfo&gt;</Item>
-                </Issue>
-                <Notes>
-                 <User Name="mcurland">
-                  <Note Id="37" />
-                 </User>
-                </Notes>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
-           </Member>
-           <Member Name="GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo,Microsoft.VisualStudio.Modeling.MetaRoleInfo):Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo">
-            <Messages>
-             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-06-29 21:52:14Z">
-              <Issue>
-               <Item>attributeInfo</Item>
-               <Item>SimpleMandatoryConstraint.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
-               <Item>Microsoft.VisualStudio.Modeling.MetaAttributeInfo</Item>
-               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="33" />
-               </User>
-              </Notes>
-             </Message>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
-              <Issue>
-               <Item>SimpleMandatoryConstraint.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="37" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="attributeInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-05-27 18:50:05Z" FixCategory="Breaking">
-              <Issue>
-               <Item>attributeInfo</Item>
-               <Item>SimpleMandatoryConstraint.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="25" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="rolePlayedInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-05-27 18:50:05Z" FixCategory="Breaking">
-              <Issue>
-               <Item>rolePlayedInfo</Item>
-               <Item>SimpleMandatoryConstraint.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="25" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-05-27 18:50:05Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>SimpleMandatoryConstraint.GetCustomSerializedAttributeInfo(MetaAttributeInfo, MetaRoleInfo):ORMCustomSerializedAttributeInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="25" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetCustomSerializedChildElementInfo():Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[]">
-            <Messages>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
-              <Issue>
-               <Item>SimpleMandatoryConstraint.GetCustomSerializedChildElementInfo():ORMCustomSerializedChildElementInfo[]</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="37" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
-            <Messages>
-             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-05-27 18:50:05Z">
-              <Issue>
-               <Item>rolePlayedInfo</Item>
-               <Item>SimpleMandatoryConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
-               <Item>Microsoft.VisualStudio.Modeling.MetaRoleInfo</Item>
-               <Item>Microsoft.VisualStudio.Modeling.MetaDataInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="28" />
-               </User>
-              </Notes>
-             </Message>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
-              <Issue>
-               <Item>SimpleMandatoryConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="37" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-05-27 18:50:05Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>SimpleMandatoryConstraint.GetCustomSerializedLinkInfo(MetaRoleInfo):ORMCustomSerializedElementInfo</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="25" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="MapChildElement(System.String,System.String,System.String,System.String):Neumont.Tools.ORM.Shell.ORMCustomSerializedElementMatch">
-            <Messages>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
-              <Issue>
-               <Item>SimpleMandatoryConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="37" />
-               </User>
-              </Notes>
-             </Message>
-             <Message Id="this" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-06-29 21:52:14Z" FixCategory="Breaking">
-              <Issue Name="MarkAsStatic">
-               <Item>SimpleMandatoryConstraint.MapChildElement(String, String, String, String):ORMCustomSerializedElementMatch</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="33" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="SupportedCustomSerializedOperations">
-            <Accessors>
-             <Accessor Name="get_SupportedCustomSerializedOperations():Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations">
-              <Messages>
-               <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
-                <Issue>
-                 <Item>SimpleMandatoryConstraint.get_SupportedCustomSerializedOperations():ORMCustomSerializedElementSupportedOperations</Item>
-                </Issue>
-                <Notes>
-                 <User Name="mcurland">
-                  <Note Id="37" />
-                 </User>
-                </Notes>
-               </Message>
-              </Messages>
-             </Accessor>
-            </Accessors>
            </Member>
           </Members>
          </Type>
@@ -18225,6 +18042,9 @@
     <Note Id="53" Modified="2005-08-11 20:48:14Z">Standard DSLTools spit</Note>
     <Note Id="54" Modified="2005-08-11 20:48:34Z">Standard serialization spit matching interface pattern</Note>
     <Note Id="55" Modified="2005-08-16 18:29:07Z">Rule classes instantiated via reflection</Note>
+    <Note Id="56" Modified="2005-08-22 18:15:46Z">DSLTools code spit</Note>
+    <Note Id="57" Modified="2005-08-22 18:16:12Z">Interface implementation</Note>
+    <Note Id="58" Modified="2005-08-22 18:16:31Z">Interface pattern function</Note>
    </User>
    <User Name="obuhler">
     <Note Id="0" Modified="2005-07-29 21:45:56Z">Rule classes instantiated via reflection</Note>

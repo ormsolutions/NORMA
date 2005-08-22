@@ -40,7 +40,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
-	public partial class FactType : INamedElementDictionaryChild, IModelErrorOwner
+	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, INamedElementDictionaryParent, IModelErrorOwner
 	{
 		#region ReadingOrder acquisition
 		/// <summary>
@@ -457,6 +457,58 @@ namespace Neumont.Tools.ORM.ObjectModel
 			childMetaRoleGuid = ModelHasFactType.FactTypeCollectionMetaRoleGuid;
 		}
 		#endregion // INamedElementDictionaryChild implementation
+		#region INamedElementDictionaryRemoteParent implementation
+		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { FactTypeHasInternalConstraint.FactTypeMetaRoleGuid };
+		/// <summary>
+		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles. Identifies
+		/// this as a remote parent for the 'ModelHasConstraint' naming set.
+		/// </summary>
+		/// <returns>Guid for the FactTypeHasInternalConstraint.FactType role</returns>
+		protected static Guid[] GetNamedElementDictionaryLinkRoles()
+		{
+			return myRemoteNamedElementDictionaryRoles;
+		}
+		Guid[] INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles()
+		{
+			return GetNamedElementDictionaryLinkRoles();
+		}
+		#endregion // INamedElementDictionaryRemoteParent implementation
+		#region INamedElementDictionaryParent implementation
+		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			return GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryParent.GetCounterpartRoleDictionary
+		/// </summary>
+		/// <param name="parentMetaRoleGuid">Guid</param>
+		/// <param name="childMetaRoleGuid">Guid</param>
+		/// <returns>Model-owned dictionary for constraints</returns>
+		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			if (parentMetaRoleGuid == FactTypeHasInternalConstraint.FactTypeMetaRoleGuid)
+			{
+				ORMModel model = Model;
+				if (model != null)
+				{
+					return ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
+				}
+			}
+			return null;
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
+		/// </summary>
+		protected static object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			// Use the default settings (allow duplicates during load time only)
+			return null;
+		}
+		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			return GetAllowDuplicateNamesContextKey(parentMetaRoleGuid, childMetaRoleGuid);
+		}
+		#endregion // INamedElementDictionaryParent implementation
 		#region RoleChangeRule class
 		[RuleOn(typeof(FactType))]
 		private class FactTypeChangeRule : ChangeRule
