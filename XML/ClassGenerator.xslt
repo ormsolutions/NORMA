@@ -236,6 +236,12 @@
 	<xsl:variable name="UnaryFacts" select="$UnaryAndBinaryFacts[1=count(orm:FactRoles/orm:Role)]"/>
 	<!-- Binary Facts Only-->
 	<xsl:variable name="BinaryFacts" select="$UnaryAndBinaryFacts[2=count(orm:FactRoles/orm:Role)]"/>
+
+	<!-- Functional Roles -->
+	<!--<xsl:variable name ="FunctionalRoles" select=""/>-->
+	<!-- Mandatory Functional Roles -->
+	<!--<xsl:variable name ="MandatoryFunctionalRoles" select=""/>-->
+
 	<!-- All functional Binary Facts (at least on single-role internal uniqueness constraint on the Fact). 
 	     Add functionalRolesCount attribute to the fact and a functionalRole attribute to the role. -->
 	<xsl:variable name="FunctionalBinaryFactsFragment">
@@ -364,19 +370,20 @@
 		    nested FunctionalRole elements, also with a ref attribute (referencing the attached role) -->
 	<xsl:variable name="FunctionalObjectsFragment">
 		<xsl:variable name="AllFunctionalObjects">
-			<!-- The algorithm here first picks all roles with one candidate role only (1), falling back on
-				then the roles opposite a preferred uniqueness constraint (2), falling back on the only mandatory
-				role (3), falling back on the role that is a role player for the most roles (4), falling back
-				on a random role (5). Note that steps 4 and 5 are non-deterministic and we will need extension
-				attributes attached to the roles to make a better choice. The output is a set of FunctionalObject
-				elements with attributes ref (pointing to the object type) and roleRef (indicating the attaching role).
-				These are then transformed into FunctionalObject/FunctionalRole elements to handle the case where an
-				object is functional in more than one fact type. -->
+			<!-- The algorithm here first: 
+				(1)picks all roles with one candidate role only,
+				(2)falling back on then the roles opposite a preferred uniqueness constraint,
+				(3)falling back on the only mandatory role, 
+				(4)falling back on the role that is a role player for the most roles, 
+				(5)falling back on a random role. 
+				Note that steps 4 and 5 are non-deterministic and we will need extension attributes attached to the roles to make a better choice. 
+				The output is a set of FunctionalObject elements with attributes ref (pointing to the object type) and roleRef (indicating the attaching role).
+				These are then transformed into FunctionalObject/FunctionalRole elements to handle the case where an object is functional in more than one fact type. -->
 			<xsl:for-each select="$FunctionalBinaryFacts">
 				<xsl:variable name="Roles" select="orm:FactRoles/orm:Role"/>
 				<xsl:choose>
 					<xsl:when test="@functionalRolesCount=1">
-						<!-- There is only one candidate role (1) -->
+						<!-- (1) There is only one candidate role -->
 						<xsl:for-each select="orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[1=count(orm:Role)]/orm:Role">
 							<xsl:variable name="roleId" select="@ref"/>
 							<xsl:for-each select="$Roles[@id=$roleId]/orm:RolePlayer">
@@ -398,7 +405,7 @@
 						<xsl:variable name="OppositePreferredCandidateRoles" select="msxsl:node-set($OppositePreferredCandidateRolesFragment)/child::*"/>
 						<xsl:choose>
 							<xsl:when test="count($OppositePreferredCandidateRoles)=1">
-								<!-- The roles is opposite a preferred uniqueness constraint (2) -->
+								<!-- (2) The role is opposite a preferred uniqueness constraint -->
 								<xsl:variable name="roleId" select="$OppositePreferredCandidateRoles[1]/@ref"/>
 								<xsl:for-each select="$Roles[@id=$roleId]/orm:RolePlayer">
 									<FunctionalObject ref="{@ref}" roleRef="{$roleId}"/>
@@ -409,13 +416,13 @@
 								<xsl:variable name="MandatoryRoles" select="$Roles[@functionalRole and @IsMandatory='true']"/>
 								<xsl:choose>
 									<xsl:when test="1=count($MandatoryRoles)">
-										<!-- The role is the only mandatory role (3) -->
+										<!-- (3) The role is the only mandatory role -->
 										<xsl:for-each select="$MandatoryRoles">
 											<FunctionalObject ref="{orm:RolePlayer/@ref}" roleRef="{@id}"/>
 										</xsl:for-each>
 									</xsl:when>
 									<xsl:otherwise>
-										<!-- Use the object for the role with the most role players (4) -->
+										<!-- (4) Use the object for the role with the most role players  -->
 										<xsl:variable name="RolesWithPlayerCounts">
 											<xsl:for-each select="$Roles">
 												<xsl:if test="@functionalRole">
@@ -517,6 +524,11 @@
 											<xsl:attribute name="arity">
 												<xsl:value-of select="count($parentFact/orm:FactRoles/orm:Role)"/>
 											</xsl:attribute>
+											<xsl:if test="@IsMandatory='true'">
+												<xsl:attribute name="mandatory">
+													<xsl:value-of select="true()"/>
+												</xsl:attribute>
+											</xsl:if>
 											<xsl:if test="1=count($oppositeRoles)">
 												<xsl:for-each select="$oppositeRoles">
 													<xsl:attribute name="multiplicity">
@@ -691,12 +703,18 @@
 												<xsl:when test="count($oppositeObject/ao:AbsorbedObject)&lt;=1">
 													<xsl:variable name="roleId" select="@roleRef"/>
 													<xsl:variable name="roleName" select="@roleName"/>
+													<xsl:variable name="isMandatory" select="@mandatory"/>
 													<xsl:for-each select="..">
 														<xsl:copy>
 															<xsl:copy-of select="@*"/>
 															<xsl:copy-of select="ao:AbsorbedObject"/>
 															<xsl:for-each select="$oppositeObject">
 																<ao:AbsorbedObject type="{@type}" ref="{@id}" name="{@name}" thisRoleName="{$roleName}" thisRoleRef="{$roleId}" oppositeRoleRef="{ao:RelatedObject/@roleRef}" oppositeRoleName="{ao:RelatedObject/@roleName}">
+																	<xsl:if test="isMandatory">
+																		<xsl:attribute name="mandatory">
+																			<xsl:value-of select="true()"/>
+																		</xsl:attribute>
+																	</xsl:if>
 																	<xsl:copy-of select="ao:AbsorbedObject"/>
 																</ao:AbsorbedObject>
 															</xsl:for-each>
@@ -738,6 +756,7 @@
 							<xsl:for-each select="ao:RelatedObject">
 								<xsl:variable name="roleId" select="@roleRef"/>
 								<xsl:variable name="roleName" select="@roleName"/>
+								<xsl:variable name="isMandatory" select="@mandatory"/>
 								<xsl:variable name="oppositeObjectId" select="@oppositeObjectRef"/>
 								<xsl:choose>
 									<xsl:when test="string-length($oppositeObjectId)">
@@ -763,6 +782,11 @@
 												<xsl:for-each select="$oppositeObject">
 													<xsl:variable name="oppositeRelatedObject" select="ao:RelatedObject[@oppositeRoleRef=$roleId]"/>
 													<ao:AbsorbedObject type="{@type}" ref="{@id}" name="{@name}" thisRoleName="{$roleName}" thisRoleRef="{$roleId}" oppositeRoleRef="{$oppositeRelatedObject/@roleRef}" oppositeRoleName="{$oppositeRelatedObject/@roleName}">
+														<xsl:if test="$isMandatory">
+															<xsl:attribute name="mandatory">
+																<xsl:value-of select="true()"/>
+															</xsl:attribute>
+														</xsl:if>
 														<xsl:copy-of select="ao:AbsorbedObject"/>
 													</ao:AbsorbedObject>
 												</xsl:for-each>
@@ -923,6 +947,7 @@
 				</xsl:if>
 			</xsl:for-each>
 		</plx:Field>
+		<!-- Get and Set Properties for the given Object-->
 		<plx:Property name="{@name}" visibility="Public">
 			<plx:Param style="RetVal" name="">
 				<xsl:for-each select="DataType">
@@ -930,6 +955,7 @@
 					<xsl:copy-of select="child::*"/>
 				</xsl:for-each>
 			</plx:Param>
+			<!-- Get -->
 			<plx:Get>
 				<plx:Return>
 					<plx:CallInstance name="my{@name}" style="Field">
@@ -939,6 +965,21 @@
 					</plx:CallInstance>
 				</plx:Return>
 			</plx:Get>
+			<!-- Set -->
+			<plx:Set>
+				<plx:Operator name="Assign">
+					<plx:Left>
+						<plx:CallInstance name="my{@name}" style="Field">
+							<plx:CallObject>
+								<plx:ThisKeyword/>
+							</plx:CallObject>
+						</plx:CallInstance>
+					</plx:Left>
+					<plx:Right>
+						<plx:ValueKeyword/>
+					</plx:Right>
+				</plx:Operator>
+			</plx:Set>
 		</plx:Property>
 	</xsl:template>
 	<xsl:template name="GenerateParameters">
@@ -1012,13 +1053,18 @@
 				</xsl:apply-templates>
 			</xsl:variable>
 			<xsl:variable name="property" select="msxsl:node-set($propertyFragment)/child::*"/>
+			<!--<xsl:variable name="AbsorbedMandatory" select="$Model/orm:ORMModel/orm:Facts/orm:Fact/orm:FactRoles/orm:Role[@IsMandatory='true']/@DataType"/>-->
 			<plx:Class visibility="Public" partial="true" name="{@name}">
 				<plx:Function ctor="true" visibility="Protected">
 					<xsl:for-each select="$property">
-						<xsl:call-template name="GenerateParameters"/>
+						<xsl:if test="@mandatory='true'">
+							<xsl:call-template name="GenerateParameters"/>
+						</xsl:if>
 					</xsl:for-each>
 					<xsl:for-each select="$property">
-						<xsl:call-template name="GenerateConstructorAssignment"/>
+						<xsl:if test="@mandatory='true'">
+							<xsl:call-template name="GenerateConstructorAssignment"/>
+						</xsl:if>
 					</xsl:for-each>
 				</plx:Function>
 				<!-- TODO: make version with parameters based on required roles -->
@@ -1073,7 +1119,7 @@
 			 DataType element for all both cases, then spit the property and its backing field
 			 using the GenerateBackedProperty template. -->
 		<!--		<xsl:variable name="property">-->
-		<Property>
+		<Property mandatory="{@mandatory}">
 			<xsl:choose>
 				<xsl:when test="@oppositeObjectRef">
 					<!-- Related to an object by a binary fact -->
@@ -1166,7 +1212,7 @@
 					</xsl:apply-templates>
 				</xsl:variable>
 				<xsl:variable name="nested" select="msxsl:node-set($nestedTemp)/child::*"/>
-				<Property multiplicity="{@multiplicity}">
+				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}">
 					<xsl:attribute name="name">
 						<xsl:choose>
 							<xsl:when test="string-length(@roleName)">
@@ -1182,7 +1228,7 @@
 				</Property>
 			</xsl:when>
 			<xsl:otherwise>
-				<Property name="{@roleName}" multiplicity="{@multiplicity}">
+				<Property name="{@roleName}" multiplicity="{@multiplicity}" mandatory="{@mandatory}">
 					<!--<xsl:if test="0=string-length(@roleName)">
 						<xsl:attribute name="name">
 							<xsl:value-of select="@name"/>
