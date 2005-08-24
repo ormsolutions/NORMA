@@ -2083,8 +2083,11 @@ namespace Neumont.Tools.ORM.Shell
 								// If this is an unrecognized node without an id or ref then push
 								// the container node (we only allow container depth of 1)
 								// and continue to loop.
-								containerName = elementName;
-								containerNamespace = namespaceName;
+								if (!reader.IsEmptyElement)
+								{
+									containerName = elementName;
+									containerNamespace = namespaceName;
+								}
 								nodeProcessed = true;
 							}
 						}
