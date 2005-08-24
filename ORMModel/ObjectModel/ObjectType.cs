@@ -369,12 +369,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						for (int i = 0; i < linkCount; ++i)
 						{
 							ElementLink link = (ElementLink)links[i];
-							if (!link.IsRemoving && !(link is SubjectHasPresentation))
+							if (!link.IsRemoving && !(link is SubjectHasPresentation) && !(link is ORMExtendableElementHasExtensionElement))
 							{
 								++count;
 								// We're expecting a ValueTypeHasDataType,
 								// RoleHasRolePlayer, ModelHasObjectType, and
 								// 0 or more (ignored) SubjectHasPresentation
+								// and ORMExtendableElementHasExtensionElement-derived
 								// links. Any other links indicate a shared value type.
 								if (count > 3)
 								{
