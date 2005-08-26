@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://Schemas.Neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:ao="http://Schemas.Neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="Object" type="ao:ObjectType"/>
+	<xs:element name="Association" type="ao:AssociationType"/>
+	<xs:simpleType name="ObjectTypeStyle">
+		<xs:annotation>
+			<xs:documentation>A list of the different names for ObjectType tags in the .orm file.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="EntityType">
+				<xs:annotation>
+					<xs:documentation>The ObjectType element is based on an EntityType element in the .orm file</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ObjectifiedType">
+				<xs:annotation>
+					<xs:documentation>The ObjectType element is based on an ObjectifiedType element in the .orm file</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ValueType">
+				<xs:annotation>
+					<xs:documentation>The ObjectType element is based on a ValueType element in the .orm file</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ObjectType">
+		<xs:annotation>
+			<xs:documentation>An EntityType that is not absorbed</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element maxOccurs="unbounded" name="AbsorbedObject" type="ao:AbsorbedObjectType"/>
+				<xs:element maxOccurs="unbounded" name="RelatedObject">
+					<xs:annotation>
+						<xs:documentation>An object not being absorbed, but is related</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="factRef" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation>id of this Fact</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="roleRef" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation>Role id of absorbing Object</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="roleName" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation>Role name of absorbing Object</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="arity" type="xs:unsignedByte" use="required">
+							<xs:annotation>
+								<xs:documentation>Number of roles in Fact</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="mandatory" type="xs:boolean" use="optional">
+							<xs:annotation>
+								<xs:documentation>Is it necessary that this Object play this role?</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="unique" type="xs:boolean" use="required">
+							<xs:annotation>
+								<xs:documentation>Does this RelatedObject on its own uniquely identify this Object?</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="multiplicity" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation>Multiplicity of this Object in relation to the RelatedObject</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="oppositeRoleRef" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation>Role id of RelatedObject</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="oppositeObjectRef" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation>id of RelatedObject</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="oppositeObjectName" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation>Name of RelatedObject</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="oppositeRoleName" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation>RoleName of RelatedObject</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="type" type="ao:ObjectTypeStyle" use="required"/>
+		<xs:attribute name="id" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>id of ObjectType</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Name of the ObjectType</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="AbsorbedObjectType">
+		<xs:annotation>
+			<xs:documentation>An absorbed EntityType or ValueType</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0">
+			<xs:element name="AbsorbedObject" type="ao:AbsorbedObjectType" />
+		</xs:sequence>
+		<xs:attribute name="type" type="ao:ObjectTypeStyle" use="required"/>
+		<xs:attribute name="name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Name of this AbsorbedObject</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="mandatory" type="xs:boolean" use="optional"/>
+		<xs:attribute name="unique" type="xs:boolean" use="required">
+			<xs:annotation>
+				<xs:documentation>Does this AbsorbedObject on its own uniquely identify the Object that absorbed it?</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ref" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>id of this AbsorbedObject</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="thisRoleName" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Role Name of absorbing Object</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="thisRoleRef" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Role id of absorbing Object</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="oppositeRoleRef" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Role id of this AbsorbedObject</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="oppositeRoleName" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Role Name of this AbsorbedObject</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="AssociationType">
+		<xs:annotation>
+			<xs:documentation>For Facts with an arity of 3 or more</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element maxOccurs="unbounded" name="RelatedObject">
+				<xs:annotation>
+					<xs:documentation>An object not being absorbed</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="type" type="ao:ObjectTypeStyle" use="required"/>
+					<xs:attribute name="objectRef" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>id of this RelatedObject</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="roleRef" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>Role id of this RelatedObject</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="roleName" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>Role Name of this RelatedObject</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="className" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>Name of this RelatedObject</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element maxOccurs="unbounded" name="AbsorbedObject">
+				<xs:annotation>
+					<xs:documentation>An absorbed EntityType or ValueType</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0">
+						<xs:element name="AbsorbedObject" type="ao:AbsorbedObjectType" />
+					</xs:sequence>
+					<xs:attribute name="type" type="ao:ObjectTypeStyle" use="required"/>
+					<xs:attribute name="ref" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>id of this AbsorbedObject</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="name" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>Name of this AbsorbedObject</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="roleName" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>Role Name of this AbsorbedObject</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="thisRoleRef" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>Role id of this AbsorbedObject</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Name of Fact</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="id" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>id of Fact</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>
+

@@ -8,220 +8,7 @@
 	xmlns:ao="http://Schemas.Neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects">
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:param name="AssociationClassDecorator" select="'Association'"/>
-	<xs:schema targetNamespace="http://Schemas.Neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-		<xs:element name="Object" type="ao:ObjectType"/>
-		<xs:element name="Association" type="ao:AssociationType"/>
-		<xs:simpleType name="ObjectTypeStyle">
-			<xs:annotation>
-				<xs:documentation>A list of the different names for ObjectType tags in the .orm file.</xs:documentation>
-			</xs:annotation>
-			<xs:restriction base="xs:string">
-				<xs:enumeration value="EntityType">
-					<xs:annotation>
-						<xs:documentation>The ObjectType element is based on an EntityType element in the .orm file</xs:documentation>
-					</xs:annotation>
-				</xs:enumeration>
-				<xs:enumeration value="ObjectifiedType">
-					<xs:annotation>
-						<xs:documentation>The ObjectType element is based on an ObjectifiedType element in the .orm file</xs:documentation>
-					</xs:annotation>
-				</xs:enumeration>
-				<xs:enumeration value="ValueType">
-					<xs:annotation>
-						<xs:documentation>The ObjectType element is based on a ValueType element in the .orm file</xs:documentation>
-					</xs:annotation>
-				</xs:enumeration>
-			</xs:restriction>
-		</xs:simpleType>
-		<xs:complexType name="ObjectType">
-			<xs:annotation>
-				<xs:documentation>An EntityType that is not absorbed</xs:documentation>
-			</xs:annotation>
-			<xs:sequence>
-				<xs:choice maxOccurs="unbounded">
-					<xs:element maxOccurs="unbounded" name="AbsorbedObject" type="ao:AbsorbedObjectType"/>
-					<xs:element maxOccurs="unbounded" name="RelatedObject">
-						<xs:annotation>
-							<xs:documentation>An object not being absorbed, but is related</xs:documentation>
-						</xs:annotation>
-						<xs:complexType>
-							<xs:attribute name="factRef" type="xs:string" use="required">
-								<xs:annotation>
-									<xs:documentation>id of this Fact</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="roleRef" type="xs:string" use="required">
-								<xs:annotation>
-									<xs:documentation>Role id of absorbing Object</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="roleName" type="xs:string" use="required">
-								<xs:annotation>
-									<xs:documentation>Role name of absorbing Object</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="arity" type="xs:unsignedByte" use="required">
-								<xs:annotation>
-									<xs:documentation>Number of roles in Fact</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="multiplicity" type="xs:string" use="optional">
-								<xs:annotation>
-									<xs:documentation>Multiplicity of RelatedObject</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="oppositeRoleRef" type="xs:string" use="optional">
-								<xs:annotation>
-									<xs:documentation>Role id of RelatedObject</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="oppositeObjectRef" type="xs:string" use="optional">
-								<xs:annotation>
-									<xs:documentation>id of RelatedObject</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="oppositeObjectName" type="xs:string" use="optional">
-								<xs:annotation>
-									<xs:documentation>Name of RelatedObject</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="oppositeRoleName" type="xs:string" use="optional">
-								<xs:annotation>
-									<xs:documentation>RoleName of RelatedObject</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-						</xs:complexType>
-					</xs:element>
-				</xs:choice>
-			</xs:sequence>
-			<xs:attribute name="type" type="ao:ObjectTypeStyle" use="required"/>
-			<xs:attribute name="id" type="xs:string" use="required">
-				<xs:annotation>
-					<xs:documentation>id of ObjectType</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="name" type="xs:string" use="required">
-				<xs:annotation>
-					<xs:documentation>Name of the ObjectType</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-		</xs:complexType>
-		<xs:complexType name="AbsorbedObjectType">
-			<xs:annotation>
-				<xs:documentation>An absorbed EntityType or ValueType</xs:documentation>
-			</xs:annotation>
-			<xs:sequence minOccurs="0">
-				<xs:element name="AbsorbedObject" type="ao:AbsorbedObjectType" />
-			</xs:sequence>
-			<xs:attribute name="type" type="ao:ObjectTypeStyle" use="required"/>
-			<xs:attribute name="ref" type="xs:string" use="required">
-				<xs:annotation>
-					<xs:documentation>id of this AbsorbedObject</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="name" type="xs:string" use="required">
-				<xs:annotation>
-					<xs:documentation>Name of this AbsorbedObject</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="thisRoleName" type="xs:string" use="required">
-				<xs:annotation>
-					<xs:documentation>Role Name of absorbing Object</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="thisRoleRef" type="xs:string" use="required">
-				<xs:annotation>
-					<xs:documentation>Role id of absorbing Object</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="oppositeRoleRef" type="xs:string" use="required">
-				<xs:annotation>
-					<xs:documentation>Role id of this AbsorbedObject</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="oppositeRoleName" type="xs:string" use="required">
-				<xs:annotation>
-					<xs:documentation>Role Name of this AbsorbedObject</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-		</xs:complexType>
-		<xs:complexType name="AssociationType">
-			<xs:annotation>
-				<xs:documentation>For Facts with an arity of 3 or more</xs:documentation>
-			</xs:annotation>
-			<xs:choice minOccurs="0" maxOccurs="unbounded">
-				<xs:element maxOccurs="unbounded" name="RelatedObject">
-					<xs:annotation>
-						<xs:documentation>An object not being absorbed</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:attribute name="type" type="ao:ObjectTypeStyle" use="required"/>
-						<xs:attribute name="objectRef" type="xs:string" use="required">
-							<xs:annotation>
-								<xs:documentation>id of this RelatedObject</xs:documentation>
-							</xs:annotation>
-						</xs:attribute>
-						<xs:attribute name="roleRef" type="xs:string" use="required">
-							<xs:annotation>
-								<xs:documentation>Role id of this RelatedObject</xs:documentation>
-							</xs:annotation>
-						</xs:attribute>
-						<xs:attribute name="roleName" type="xs:string" use="required">
-							<xs:annotation>
-								<xs:documentation>Role Name of this RelatedObject</xs:documentation>
-							</xs:annotation>
-						</xs:attribute>
-						<xs:attribute name="objectName" type="xs:string" use="required">
-							<xs:annotation>
-								<xs:documentation>Name of this RelatedObject</xs:documentation>
-							</xs:annotation>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-				<xs:element maxOccurs="unbounded" name="AbsorbedObject">
-					<xs:annotation>
-						<xs:documentation>An absorbed EntityType or ValueType</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:sequence minOccurs="0">
-							<xs:element name="AbsorbedObject" type="ao:AbsorbedObjectType" />
-						</xs:sequence>
-						<xs:attribute name="type" type="ao:ObjectTypeStyle" use="required"/>
-						<xs:attribute name="ref" type="xs:string" use="required">
-							<xs:annotation>
-								<xs:documentation>id of this AbsorbedObject</xs:documentation>
-							</xs:annotation>
-						</xs:attribute>
-						<xs:attribute name="name" type="xs:string" use="required">
-							<xs:annotation>
-								<xs:documentation>Name of this AbsorbedObject</xs:documentation>
-							</xs:annotation>
-						</xs:attribute>
-						<xs:attribute name="roleName" type="xs:string" use="required">
-							<xs:annotation>
-								<xs:documentation>Role Name of this AbsorbedObject</xs:documentation>
-							</xs:annotation>
-						</xs:attribute>
-						<xs:attribute name="thisRoleRef" type="xs:string" use="required">
-							<xs:annotation>
-								<xs:documentation>Role id of this AbsorbedObject</xs:documentation>
-							</xs:annotation>
-						</xs:attribute>
-					</xs:complexType>
-				</xs:element>
-			</xs:choice>
-			<xs:attribute name="name" type="xs:string" use="required">
-				<xs:annotation>
-					<xs:documentation>Name of Fact</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="id" type="xs:string" use="required">
-				<xs:annotation>
-					<xs:documentation>id of Fact</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-		</xs:complexType>
-	</xs:schema>
+	<xsl:param name="PrivateMemberPrefix" select="'my'"/>
 
 	<!-- 
 	KNOWN ISSUES
@@ -236,6 +23,7 @@
 	<xsl:variable name="UnaryFacts" select="$UnaryAndBinaryFacts[1=count(orm:FactRoles/orm:Role)]"/>
 	<!-- Binary Facts Only-->
 	<xsl:variable name="BinaryFacts" select="$UnaryAndBinaryFacts[2=count(orm:FactRoles/orm:Role)]"/>
+	
 
 	<!-- Functional Roles -->
 	<!--<xsl:variable name ="FunctionalRoles" select=""/>-->
@@ -529,6 +317,10 @@
 													<xsl:value-of select="true()"/>
 												</xsl:attribute>
 											</xsl:if>
+											<xsl:variable name="oppositeMultiplicity" select="@Multiplicity"/>
+											<xsl:attribute name="unique">
+												<xsl:value-of select="$oppositeMultiplicity = 'ZeroToOne' or $oppositeMultiplicity = 'ExactlyOne'"/>
+											</xsl:attribute>
 											<xsl:if test="1=count($oppositeRoles)">
 												<xsl:for-each select="$oppositeRoles">
 													<xsl:attribute name="multiplicity">
@@ -625,7 +417,7 @@
 							<xsl:variable name="objectId" select="orm:RolePlayer/@ref"/>
 							<xsl:variable name="rolePlayerObject" select="$Objects[@id=$objectId]"/>
 							<xsl:for-each select="$rolePlayerObject">
-								<ao:RelatedObject type="{@type}" objectRef="{@id}" roleRef="{$roleId}" roleName="{$roleName}" objectName="{@name}">
+								<ao:RelatedObject type="{@type}" objectRef="{@id}" roleRef="{$roleId}" roleName="{$roleName}" className="{@name}">
 								</ao:RelatedObject>
 							</xsl:for-each>
 						</xsl:for-each>
@@ -650,7 +442,7 @@
 										</ao:AbsorbedObject>
 									</xsl:when>
 									<xsl:otherwise>
-										<ao:RelatedObject type="{@type}" objectRef="{@id}" roleRef="{$roleId}" roleName="{$roleName}" objectName="{@name}">
+										<ao:RelatedObject type="{@type}" objectRef="{@id}" roleRef="{$roleId}" roleName="{$roleName}" className="{@name}">
 											<!--<xsl:if test="$hasMany">
 												<xsl:attribute name="multiplicity">Many</xsl:attribute>
 											</xsl:if>-->
@@ -709,7 +501,7 @@
 															<xsl:copy-of select="@*"/>
 															<xsl:copy-of select="ao:AbsorbedObject"/>
 															<xsl:for-each select="$oppositeObject">
-																<ao:AbsorbedObject type="{@type}" ref="{@id}" name="{@name}" thisRoleName="{$roleName}" thisRoleRef="{$roleId}" oppositeRoleRef="{ao:RelatedObject/@roleRef}" oppositeRoleName="{ao:RelatedObject/@roleName}">
+																<ao:AbsorbedObject type="{@type}" ref="{@id}" name="{@name}" unique="{@unique}"  thisRoleName="{$roleName}" thisRoleRef="{$roleId}" oppositeRoleRef="{ao:RelatedObject/@roleRef}" oppositeRoleName="{ao:RelatedObject/@roleName}">
 																	<xsl:if test="isMandatory">
 																		<xsl:attribute name="mandatory">
 																			<xsl:value-of select="true()"/>
@@ -781,7 +573,8 @@
 											<xsl:when test="string-length($shouldAbsorb)">
 												<xsl:for-each select="$oppositeObject">
 													<xsl:variable name="oppositeRelatedObject" select="ao:RelatedObject[@oppositeRoleRef=$roleId]"/>
-													<ao:AbsorbedObject type="{@type}" ref="{@id}" name="{@name}" thisRoleName="{$roleName}" thisRoleRef="{$roleId}" oppositeRoleRef="{$oppositeRelatedObject/@roleRef}" oppositeRoleName="{$oppositeRelatedObject/@roleName}">
+													<xsl:variable name="oppositeRelatedObjectMultiplicity" select="$oppositeRelatedObject/@multiplicity"/>
+													<ao:AbsorbedObject type="{@type}" ref="{@id}" name="{@name}" unique="{$oppositeRelatedObjectMultiplicity = 'ZeroToOne' or oppositeRelatedObjectMultiplicity = 'ExactlyOne'}" thisRoleName="{$roleName}" thisRoleRef="{$roleId}" oppositeRoleRef="{$oppositeRelatedObject/@roleRef}" oppositeRoleName="{$oppositeRelatedObject/@roleName}">
 														<xsl:if test="$isMandatory">
 															<xsl:attribute name="mandatory">
 																<xsl:value-of select="true()"/>
@@ -933,32 +726,29 @@
 		 corresponding to the plix attributes and child nodes for a data type reference. -->
 	<xsl:template name="GenerateBackedProperty">
 		<xsl:param name="initializeFields" select="true()"/>
-		<plx:Field name="my{@name}" visibility="Private">
-			<xsl:for-each select="DataType">
-				<xsl:copy-of select="@*"/>
-				<xsl:copy-of select="child::*"/>
-				<xsl:if test="$initializeFields">
-					<plx:Initialize>
-						<plx:DefaultValueOf>
-							<xsl:copy-of select="@*"/>
-							<xsl:copy-of select="child::*"/>
-						</plx:DefaultValueOf>
-					</plx:Initialize>
-				</xsl:if>
-			</xsl:for-each>
+		<xsl:param name="className"/>
+		<plx:Field name="{$PrivateMemberPrefix}{@name}" visibility="Private">
+			<xsl:copy-of select="DataType/@*"/>
+			<xsl:copy-of select="DataType/child::*"/>
+			<xsl:if test="$initializeFields">
+				<plx:Initialize>
+					<plx:DefaultValueOf>
+						<xsl:copy-of select="DataType/@*"/>
+						<xsl:copy-of select="DataType/child::*"/>
+					</plx:DefaultValueOf>
+				</plx:Initialize>
+			</xsl:if>
 		</plx:Field>
 		<!-- Get and Set Properties for the given Object-->
 		<plx:Property name="{@name}" visibility="Public">
 			<plx:Param style="RetVal" name="">
-				<xsl:for-each select="DataType">
-					<xsl:copy-of select="@*"/>
-					<xsl:copy-of select="child::*"/>
-				</xsl:for-each>
+				<xsl:copy-of select="DataType/@*"/>
+				<xsl:copy-of select="DataType/child::*"/>
 			</plx:Param>
 			<!-- Get -->
 			<plx:Get>
 				<plx:Return>
-					<plx:CallInstance name="my{@name}" style="Field">
+					<plx:CallInstance name="{$PrivateMemberPrefix}{@name}" style="Field">
 						<plx:CallObject>
 							<plx:ThisKeyword/>
 						</plx:CallObject>
@@ -967,18 +757,41 @@
 			</plx:Get>
 			<!-- Set -->
 			<plx:Set>
-				<plx:Operator name="Assign">
-					<plx:Left>
-						<plx:CallInstance name="my{@name}" style="Field">
+				<!-- This is currently commented out since the methods that it is calling on the ContextModel are not yet implemented.
+				Notify the ModelContext that we're changing the value of a property. -->
+				<!--<plx:Condition>
+					<plx:Test>
+						<plx:CallInstance name="On{$className}{@name}Changing">
 							<plx:CallObject>
-								<plx:ThisKeyword/>
+								<plx:CallInstance name="{$PrivateMemberPrefix}Context" style="Field">
+									<plx:CallObject>
+										<plx:ThisKeyword />
+									</plx:CallObject>
+								</plx:CallInstance>
 							</plx:CallObject>
+							<plx:PassParam>
+								<plx:ThisKeyword />
+							</plx:PassParam>
+							<plx:PassParam>
+								<plx:ValueKeyword />
+							</plx:PassParam>
 						</plx:CallInstance>
-					</plx:Left>
-					<plx:Right>
-						<plx:ValueKeyword/>
-					</plx:Right>
-				</plx:Operator>
+					</plx:Test>
+					<plx:Body>-->
+						<plx:Operator name="Assign">
+							<plx:Left>
+								<plx:CallInstance name="{$PrivateMemberPrefix}{@name}" style="Field">
+									<plx:CallObject>
+										<plx:ThisKeyword/>
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:Left>
+							<plx:Right>
+								<plx:ValueKeyword/>
+							</plx:Right>
+						</plx:Operator>
+					<!--</plx:Body>
+				</plx:Condition>-->
 			</plx:Set>
 		</plx:Property>
 	</xsl:template>
@@ -993,7 +806,7 @@
 	<xsl:template name="GenerateConstructorAssignment">
 		<plx:Operator name="Assign">
 			<plx:Left>
-				<plx:CallInstance name="my{@name}" style="Field">
+				<plx:CallInstance name="{$PrivateMemberPrefix}{@name}" style="Field">
 					<plx:CallObject>
 						<plx:ThisKeyword/>
 					</plx:CallObject>
@@ -1008,14 +821,14 @@
 	</xsl:template>
 	<xsl:template name="GenerateFactoryMethod">
 		<xsl:param name="property"/>
-		<xsl:param name="objectName"/>
+		<xsl:param name="className"/>
 		<plx:Function name="CreateInstance" visibility="Public" virtual="true" shared="true">
 			<xsl:for-each select="$property">
 				<xsl:call-template name="GenerateParameters"/>
 			</xsl:for-each>
-			<plx:Param name="" style="RetVal" dataTypeName="{$objectName}"/>
+			<plx:Param name="" style="RetVal" dataTypeName="{$className}"/>
 			<plx:Return>
-				<plx:CallNew dataTypeName="{$objectName}">
+				<plx:CallNew dataTypeName="{$className}">
 					<xsl:for-each select="$property">
 						<plx:PassParam>
 							<plx:Value type="Parameter">
@@ -1028,16 +841,18 @@
 		</plx:Function>
 	</xsl:template>
 	<xsl:template match="ormRoot:ORM2">
-		<!--<ao>
-			<xsl:copy-of select="$AbsorbedObjects"/>
-		</ao>-->
+		<xsl:text disable-output-escaping="yes"><![CDATA[<!--<ao>]]></xsl:text>
+				<xsl:copy-of select="$AbsorbedObjects"/>
+		<xsl:text disable-output-escaping="yes"><![CDATA[</ao>-->]]></xsl:text>
 		<xsl:apply-templates mode="Main" select="orm:ORMModel"/>
 	</xsl:template>
+	<xsl:include href="ModelContext.xslt"/>
 	<xsl:template match="orm:ORMModel" mode="Main">
 		<plx:Root>
 			<plx:Using name="System" />
 			<plx:Using name="System.Collections.Generic" />
 			<plx:Namespace name="{$CustomToolNamespace}">
+				<xsl:apply-templates mode="ModelContext" select="."/>
 				<xsl:apply-templates mode="WalkAbsorbedObjects" select="$AbsorbedObjects">
 					<xsl:with-param name="Model" select="."/>
 				</xsl:apply-templates>
@@ -1054,7 +869,9 @@
 			</xsl:variable>
 			<xsl:variable name="property" select="msxsl:node-set($propertyFragment)/child::*"/>
 			<!--<xsl:variable name="AbsorbedMandatory" select="$Model/orm:ORMModel/orm:Facts/orm:Fact/orm:FactRoles/orm:Role[@IsMandatory='true']/@DataType"/>-->
-			<plx:Class visibility="Public" partial="true" name="{@name}">
+			<xsl:variable name="className" select="@name"/>
+			<plx:Class visibility="Public" partial="true" name="{$className}">
+				<plx:Field name="{$PrivateMemberPrefix}Context" visibility="Private" dataTypeName="{$ModelContextName}"/>
 				<plx:Function ctor="true" visibility="Protected">
 					<xsl:for-each select="$property">
 						<xsl:if test="@mandatory='true'">
@@ -1070,19 +887,20 @@
 				<!-- TODO: make version with parameters based on required roles -->
 				<xsl:for-each select="$property">
 					<xsl:call-template name="GenerateBackedProperty">
+						<xsl:with-param name="className" select="$className"/>
 						<xsl:with-param name="initializeFields" select="true()"/>
 					</xsl:call-template>
 				</xsl:for-each>
 				<xsl:call-template name="GenerateFactoryMethod">
 					<xsl:with-param name="property" select="$property"/>
-					<xsl:with-param name="objectName" select="@name"/>
+					<xsl:with-param name="className" select="$className"/>
 				</xsl:call-template>
 			</plx:Class>
 		</xsl:if>
 	</xsl:template>
 	<xsl:template match="ao:Association" mode="WalkAbsorbedObjects">
 		<xsl:param name="Model"/>
-		<xsl:variable name="structName">
+		<xsl:variable name="className">
 			<xsl:value-of select="@name"/>
 			<xsl:value-of select="$AssociationClassDecorator"/>
 		</xsl:variable>
@@ -1092,7 +910,7 @@
 			</xsl:apply-templates>
 		</xsl:variable>
 		<xsl:variable name="property" select="msxsl:node-set($propertyFragment)/child::*"/>
-		<plx:Structure visibility="Public" partial="true" name="{$structName}">
+		<plx:Class visibility="Public" partial="true" name="{$className}">
 			<plx:Function ctor="true" visibility="Protected">
 				<xsl:for-each select="$property">
 					<xsl:call-template name="GenerateParameters"/>
@@ -1104,13 +922,14 @@
 			<xsl:for-each select="$property">
 				<xsl:call-template name="GenerateBackedProperty">
 					<xsl:with-param name="initializeFields" select="false()"/>
+					<xsl:with-param name="className" select="$className"/>
 				</xsl:call-template>
 			</xsl:for-each>
 			<xsl:call-template name="GenerateFactoryMethod">
 				<xsl:with-param name="property" select="$property"/>
-				<xsl:with-param name="objectName" select="$structName"/>
+				<xsl:with-param name="className" select="$className"/>
 			</xsl:call-template>
-		</plx:Structure>
+		</plx:Class>
 	</xsl:template>
 	<xsl:template match="ao:Object/ao:RelatedObject" mode="WalkAbsorbedObjects">
 		<xsl:param name="Model"/>
@@ -1258,7 +1077,7 @@
 	</xsl:template>
 	<xsl:template match="ao:Association/ao:RelatedObject" mode="WalkAbsorbedObjects">
 		<xsl:param name="Model"/>
-		<!--		<ao:RelatedObject type="{@type}" objectRef="{@id}" roleRef="{$roleId}" roleName="{$roleName}" objectName="{@name}">
+		<!--		<ao:RelatedObject type="{@type}" objectRef="{@id}" roleRef="{$roleId}" roleName="{$roleName}" className="{@name}">
 			<xsl:if test="$hasMany">
 				<xsl:attribute name="multiplicity">Many</xsl:attribute>
 			</xsl:if>
@@ -1271,7 +1090,7 @@
 						<xsl:value-of select="@roleName"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="@objectName"/>
+						<xsl:value-of select="@className"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
@@ -1279,11 +1098,11 @@
 				<xsl:choose>
 					<xsl:when test="contains(@multiplicity, 'Many')">
 						<xsl:attribute name="dataTypeName">ICollection</xsl:attribute>
-						<plx:PassTypeParam dataTypeName="{@objectName}"/>
+						<plx:PassTypeParam dataTypeName="{@className}"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:attribute name="dataTypeName">
-							<xsl:value-of select="@objectName"/>
+							<xsl:value-of select="@className"/>
 						</xsl:attribute>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -1318,7 +1137,7 @@
 				</DataType>
 			</xsl:variable>
 			<xsl:variable name="dataType" select="$dataTypeTemp/child::*"/>
-			<plx:Field name="my{@roleName}" visibility="Private">
+			<plx:Field name="{$PrivateMemberPrefix}{@roleName}" visibility="Private">
 				<xsl:copy-of select="$dataType/@*"/>
 				<xsl:copy-of select="$dataType/child::*"/>
 				<plx:Initialize>
@@ -1335,7 +1154,7 @@
 				</plx:Param>
 				<plx:Get>
 					<plx:Return>
-						<plx:CallInstance name="my{@roleName}" style="Field">
+						<plx:CallInstance name="{$PrivateMemberPrefix}{@roleName}" style="Field">
 							<plx:CallObject><plx:ThisKeyword/></plx:CallObject>
 						</plx:CallInstance>
 					</plx:Return>
