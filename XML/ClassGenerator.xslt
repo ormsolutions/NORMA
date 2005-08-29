@@ -302,15 +302,33 @@
 				<xsl:call-template name="BinaryAbsorbObjects">
 					<xsl:with-param name="Objects">
 						<xsl:for-each select="$RawObjects">
+							<xsl:variable name="Object" select="."/>
 							<ao:Object type="{local-name()}" id="{@id}" name="{@Name}">
-								<xsl:for-each select="orm:PlayedRoles/orm:Role">
+								<xsl:variable name="PlayedRoles" select="orm:PlayedRoles/orm:Role"/>
+								<xsl:for-each select="$PlayedRoles">
 									<xsl:variable name="roleId" select="@ref"/>
 									<xsl:for-each select="$RawFacts//orm:Role[@id=$roleId]">
 										<xsl:variable name="parentFact" select="ancestor::*[2]"/>
-										<ao:RelatedObject factRef="{$parentFact/@id}" roleRef="{$roleId}" roleName="{$parentFact/orm:FactRoles/orm:Role[@id=$roleId]/@Name}">
+										<ao:RelatedObject factRef="{$parentFact/@id}" roleRef="{$roleId}">
 											<xsl:variable name="oppositeRoles" select="$parentFact/orm:FactRoles/child::*[@id!=$roleId]"/>
 											<xsl:attribute name="arity">
 												<xsl:value-of select="count($parentFact/orm:FactRoles/orm:Role)"/>
+											</xsl:attribute>
+											<!--If a role name has been specified, use it; otherwise, generate one if needed.-->
+											<xsl:attribute name="roleName">
+												<xsl:variable name="givenRoleName" select="$parentFact/orm:FactRoles/orm:Role[@id=$roleId]/@Name"/>
+												<xsl:choose>
+													<xsl:when test="string-length($givenRoleName)">
+														<xsl:value-of select="$givenRoleName"/>
+													</xsl:when>
+													<xsl:when test="count($RawObjects[@id=$oppositeRoles[1]/orm:RolePlayer/@ref]/orm:PlayedRoles/child::*) > 1">
+														<xsl:call-template name="GenerateObjectName">
+															<xsl:with-param name="AttachedObject" select="$Object"/>
+															<xsl:with-param name="ReadingOrder" select="ancestor::*[2]/orm:ReadingOrders/orm:ReadingOrder[1]"/>
+														</xsl:call-template>
+													</xsl:when>
+													<xsl:otherwise></xsl:otherwise>
+												</xsl:choose>
 											</xsl:attribute>
 											<!-- assign the manadatory roles as 'relaxed' if the fact is OneToOne or ManyToMany and both roles are mandatory -->
 											<!-- opposite roles multiplicity -->
@@ -342,18 +360,18 @@
 											</xsl:attribute>
 											<xsl:if test="1=count($oppositeRoles)">
 												<xsl:for-each select="$oppositeRoles">
+													<xsl:variable name="oppositeRoleId" select="@id"/>
+													<xsl:variable name="oppositeObjectId" select="orm:RolePlayer/@ref"/>
+													<xsl:variable name="oppositeObject" select="$RawObjects[@id=$oppositeObjectId]"/>
 													<xsl:attribute name="multiplicity">
 														<xsl:value-of select="@Multiplicity"/>
 													</xsl:attribute>
-													<xsl:variable name="oppositeRoleId" select="@id"/>
 													<xsl:attribute name="oppositeRoleRef">
 														<xsl:value-of select="$oppositeRoleId"/>
 													</xsl:attribute>
-													<xsl:variable name="oppositeObjectId" select="orm:RolePlayer/@ref"/>
 													<xsl:attribute name="oppositeObjectRef">
 														<xsl:value-of select="$oppositeObjectId"/>
 													</xsl:attribute>
-													<xsl:variable name="oppositeObject" select="$RawObjects[@id=$oppositeObjectId]"/>
 													<xsl:attribute name="oppositeObjectName">
 														<xsl:value-of select="$oppositeObject/@Name"/>
 													</xsl:attribute>
@@ -399,6 +417,81 @@
 			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:variable>
+	<xsl:template name="replace">
+		<!--Takes a string and replaces a given substring with a given replacement string.-->
+		<xsl:param name="inputString"/>
+		<xsl:param name="match"/>
+		<xsl:param name="replaceWith"/>
+		<xsl:variable name="leftPart" select="substring-before($inputString, $match)"/>
+		<xsl:variable name="rightPart" select="substring-after($inputString, $match)"/>
+		<xsl:value-of select="concat($leftPart, $replaceWith, $rightPart)"/>
+	</xsl:template>
+	<xsl:template name="pieceAndParseReading">
+		<!--Takes a reading, pops in the object name, and checks for hyphen binding.-->
+		<xsl:param name="reading"/>
+		<xsl:param name="objectTypeName"/>
+		<xsl:param name="objectTypeNr"/>
+		<xsl:variable name="pieced">
+			<xsl:call-template name="replace">
+				<xsl:with-param name="inputString" select="$reading"/>
+				<xsl:with-param name="match" select="concat('{', $objectTypeNr, '}')"/>
+				<xsl:with-param name="replaceWith" select="$objectTypeName"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:call-template name="stringAfterLastMatch">
+			<xsl:with-param name="value" select="$pieced"/>
+			<xsl:with-param name="match" select="string(' ')"/>
+			<xsl:with-param name="stopper" select="string('-')"/>
+		</xsl:call-template>
+	</xsl:template>
+	<xsl:template name="stringAfterLastMatch">
+		<!--Iterative template to find the last match of a string and return the string to the right
+		of the last match with the spaces and hyphens translated. Used for hyphen binding.-->
+		<xsl:param name="value"/>
+		<xsl:param name="match"/>
+		<xsl:param name="stopper"/>
+		<xsl:choose>
+			<xsl:when test="contains($value, $match) and string-length(substring-before($value, $match)) &lt; string-length(substring-before($value, $stopper))">
+				<xsl:call-template name="stringAfterLastMatch">
+					<xsl:with-param name="value" select="substring-after($value, $match)"/>
+					<xsl:with-param name="match" select="$match"/>
+					<xsl:with-param name="stopper" select="$stopper"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="translate(translate($value, ' ', '_'), '-', '')"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template name="GenerateObjectName">
+		<!--Takes a reading and one of it's attached objects and generates an object name.-->
+		<xsl:param name="AttachedObject"/>
+		<xsl:param name="ReadingOrder"/>
+		<xsl:variable name="ObjectId" select="@id"/>
+		<xsl:variable name="ObjectPosition">
+			<xsl:for-each select="$ReadingOrder/orm:RoleSequence/orm:Role">
+				<xsl:if test="@ref=$ObjectId">
+					<xsl:value-of select="position()-1"/>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="RoleReading" select="$ReadingOrder/orm:Readings/orm:Reading/orm:Data"/>
+		<xsl:choose>
+			<xsl:when test="contains(substring-before($RoleReading, concat('{',$ObjectPosition,'}')), '- ') or contains($RoleReading, concat('-{',$ObjectPosition,'}'))">
+				<xsl:call-template name="pieceAndParseReading">
+					<xsl:with-param name="reading" select="$RoleReading"/>
+					<xsl:with-param name="objectTypeNr" select="$ObjectPosition"/>
+					<xsl:with-param name="objectTypeName" select="$AttachedObject/@Name"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$AttachedObject/@Name"/>
+				<xsl:if test="$ObjectPosition > 1">
+					<xsl:value-of select="$ObjectPosition"/>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 	<xsl:variable name="AbsorbedObjects" select="msxsl:node-set($AbsorbedObjectsFragment)/child::*"/>
 	<xsl:template name="AbsorbAssociationFacts">
 		<xsl:param name="Objects"/>
@@ -462,6 +555,15 @@
 									</xsl:when>
 									<xsl:otherwise>
 										<ao:RelatedObject type="{@type}" objectRef="{@id}" roleRef="{$roleId}" roleName="{$roleName}" className="{@name}">
+											<xsl:variable name="myRelatedObjects" select="./child::ao:RelatedObject"/>
+											<xsl:variable name="factRef" select="$myRelatedObjects[@roleRef=$roleId]/@factRef"/>
+											<!--If there are more than one related objects with the same factRef, use the roleName from
+											the relatedObject instead of the role.-->
+											<xsl:if test="count($myRelatedObjects[@factRef=$factRef])>0">
+												<xsl:attribute name="roleName">
+													<xsl:value-of select="$myRelatedObjects[@roleRef=$roleId]/@roleName"/>
+												</xsl:attribute>
+											</xsl:if>
 											<!--<xsl:if test="$hasMany">
 												<xsl:attribute name="multiplicity">Many</xsl:attribute>
 											</xsl:if>-->
