@@ -32,6 +32,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#region ReferenceMode class
 	public abstract partial class ReferenceMode : IComparable<ReferenceMode>
 	{
+		private PortableDataType dataType = PortableDataType.Unspecified;
+
 		#region ReferenceMode specific
 		/// <summary>
 		/// The FormatString used for reference modes. All
@@ -108,14 +110,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// standard code spit to generate a role player change instead of
 		/// a delete/add when the property is changed.
 		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.ReferenceModeKind Kind
+		public ReferenceModeKind Kind
 		{
 			get
 			{
-				System.Object o = null;
-				Microsoft.VisualStudio.Modeling.ElementLink goodLink = null;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid);
-				foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+				Object o = null;
+				ElementLink goodLink = null;
+				IList links = this.GetElementLinks(ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid);
+				foreach (ElementLink link in links)
 				{
 					if (!link.IsRemoved)
 					{
@@ -125,9 +127,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (goodLink != null)
 				{
-					o = goodLink.GetRolePlayer(Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.KindMetaRoleGuid);
+					o = goodLink.GetRolePlayer(ReferenceModeHasReferenceModeKind.KindMetaRoleGuid);
 				}
-				return (Neumont.Tools.ORM.ObjectModel.ReferenceModeKind)o;
+				return (ReferenceModeKind)o;
 			}
 			set
 			{
@@ -155,6 +157,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 					newRoles[1] = new RoleAssignment(ReferenceModeHasReferenceModeKind.ReferenceModeCollectionMetaRoleGuid, this);
 					this.Store.ElementFactory.CreateElementLink(typeof(ReferenceModeHasReferenceModeKind), newRoles);
 				}
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public PortableDataType Type
+		{
+			get
+			{
+				return dataType;
+			}
+			set
+			{
+				dataType = value;
 			}
 		}
 		#endregion
@@ -264,31 +280,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 
 						// Now populate all intrinsic reference modes
-						CreateIntrinsicReferenceMode(store, model, popularKind, "id");
-						CreateIntrinsicReferenceMode(store, model, popularKind, "name");
-						CreateIntrinsicReferenceMode(store, model, popularKind, "code");
-						CreateIntrinsicReferenceMode(store, model, popularKind, "title");
-						CreateIntrinsicReferenceMode(store, model, popularKind, "nr");
-						CreateIntrinsicReferenceMode(store, model, popularKind, "#");
-						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "mm");
-						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "cm");
-						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "kg");
-						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "mile");
-						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "Celsius");
-						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "USD");
-						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "AUD");
-						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "EUR");
-						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "CE");
+						CreateIntrinsicReferenceMode(store, model, popularKind, "id", PortableDataType.NumericAutoCounter);
+						CreateIntrinsicReferenceMode(store, model, popularKind, "name", PortableDataType.TextVariableLength);
+						CreateIntrinsicReferenceMode(store, model, popularKind, "code", PortableDataType.TextFixedLength);
+						CreateIntrinsicReferenceMode(store, model, popularKind, "title", PortableDataType.TextVariableLength);
+						CreateIntrinsicReferenceMode(store, model, popularKind, "nr", PortableDataType.NumericSignedInteger);
+						CreateIntrinsicReferenceMode(store, model, popularKind, "#", PortableDataType.NumericSignedInteger);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "kg", PortableDataType.NumericDecimal);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "mm", PortableDataType.NumericDecimal);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "cm", PortableDataType.NumericDecimal);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "km", PortableDataType.NumericDecimal);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "mile", PortableDataType.NumericDecimal);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "Celsius", PortableDataType.NumericDecimal);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "Fahrenheit", PortableDataType.NumericDecimal);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "USD", PortableDataType.NumericMoney);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "AUD", PortableDataType.NumericMoney);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "EUR", PortableDataType.NumericMoney);
+						CreateIntrinsicReferenceMode(store, model, unitBasedKind, "CE", PortableDataType.TemporalDate);
 						// UNDONE: Strongly consider extending this list
 					}
 				}
 			}
-			private static void CreateIntrinsicReferenceMode(Store store, ORMModel model, ReferenceModeKind kind, string referenceModeName)
+			private static void CreateIntrinsicReferenceMode(Store store, ORMModel model, ReferenceModeKind kind, string referenceModeName, PortableDataType dataType)
 			{
 				IntrinsicReferenceMode refMode = IntrinsicReferenceMode.CreateIntrinsicReferenceMode(store);
 				refMode.Name = referenceModeName;
 				refMode.Kind = kind;
 				refMode.Model = model;
+				refMode.Type = dataType;
 			}
 			#endregion // IDeserializationFixupListener Implementation
 			#region INotifyElementAdded Implementation

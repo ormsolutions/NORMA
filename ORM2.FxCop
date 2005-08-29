@@ -17120,15 +17120,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="GetAllFlag(Neumont.Tools.ORM.Shell.ORMDesignerDocData+PrivateFlags):System.Boolean">
-            <Messages>
-             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2005-08-14 22:06:21Z">
-              <Issue>
-               <Item>ORMDesignerDocData.GetAllFlag(PrivateFlags):Boolean</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="GetAutomationObject(System.String,EnvDTE.IExtensibleObjectSite,System.Object&amp;):System.Void">
             <Messages>
              <Message Id="2#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-06-03 18:06:39Z">
@@ -18098,9 +18089,6 @@
    </Rule>
    <Rule TypeName="AvoidTypeNamesInParameters" Category="Microsoft.Naming" CheckId="CA1720">
     <Resolution Name="Default">Remove the type identifier from parameter name '{0}'.</Resolution>
-   </Rule>
-   <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
-    <Resolution Name="Default">'{0}' appears to have no upstream public or protected callers.</Resolution>
    </Rule>
    <Rule TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812">
     <Resolution Name="Default">'{0}' is an internal class that is apparently never instantiated. If so, remove the code from the assembly. If this class is intended to contain only static methods, consider adding a private constructor to prevent the compiler from generating a default constructor.</Resolution>

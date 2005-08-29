@@ -38,10 +38,6 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			return 0 != (myFlags & flags);
 		}
-		private bool GetAllFlag(PrivateFlags flags)
-		{
-			return flags == (myFlags & flags);
-		}
 		private void SetFlag(PrivateFlags flags, bool value)
 		{
 			if (value)
