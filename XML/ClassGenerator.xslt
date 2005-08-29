@@ -740,9 +740,17 @@
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
-	<!-- Generate a public readonly property backed by a field. The current context should
+	<!-- Generate a public property. The current context should
 	     be an element with a name attribute and a DataType child element with attributes/children
 		 corresponding to the plix attributes and child nodes for a data type reference. -->
+	<xsl:template name="GenerateAbstractProperty">
+		<plx:Property abstract="true" name="{@name}" visibility="Public">
+			<plx:Param style="RetVal" name="">
+				<xsl:copy-of select="DataType/@*"/>
+				<xsl:copy-of select="DataType/child::*"/>
+			</plx:Param>
+		</plx:Property>
+	</xsl:template>
 	<xsl:template name="GenerateBackedProperty">
 		<xsl:param name="initializeFields" select="true()"/>
 		<xsl:param name="className"/>
@@ -759,7 +767,7 @@
 			</xsl:if>
 		</plx:Field>
 		<!-- Get and Set Properties for the given Object-->
-		<plx:Property name="{@name}" visibility="Public">
+		<plx:Property name="{@name}" visibility="Public" override="true">
 			<plx:Param style="RetVal" name="">
 				<xsl:copy-of select="DataType/@*"/>
 				<xsl:copy-of select="DataType/child::*"/>
@@ -776,9 +784,8 @@
 			</plx:Get>
 			<!-- Set -->
 			<plx:Set>
-				<!-- This is currently commented out since the methods that it is calling on the ContextModel are not yet implemented.
-				Notify the ModelContext that we're changing the value of a property. -->
-				<!--<plx:Condition>
+				<!-- Notify the ModelContext that we're changing the value of a property. -->
+				<plx:Condition>
 					<plx:Test>
 						<plx:CallInstance name="On{$className}{@name}Changing">
 							<plx:CallObject>
@@ -796,7 +803,18 @@
 							</plx:PassParam>
 						</plx:CallInstance>
 					</plx:Test>
-					<plx:Body>-->
+					<plx:Body>
+						<plx:Variable name="oldValue">
+							<xsl:copy-of select="DataType/@*"/>
+							<xsl:copy-of select="DataType/child::*"/>
+							<plx:Initialize>
+								<plx:CallInstance name="{@name}" style="Property">
+									<plx:CallObject>
+										<plx:ThisKeyword />
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:Initialize>
+						</plx:Variable>
 						<plx:Operator name="Assign">
 							<plx:Left>
 								<plx:CallInstance name="{$PrivateMemberPrefix}{@name}" style="Field">
@@ -809,10 +827,129 @@
 								<plx:ValueKeyword/>
 							</plx:Right>
 						</plx:Operator>
-					<!--</plx:Body>
-				</plx:Condition>-->
+						<plx:CallInstance name="On{$className}{@name}Changed">
+							<plx:CallObject>
+								<plx:CallInstance name="{$PrivateMemberPrefix}Context" style="Field">
+									<plx:CallObject>
+										<plx:ThisKeyword />
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:CallObject>
+							<plx:PassParam>
+								<plx:ThisKeyword />
+							</plx:PassParam>
+							<plx:PassParam>
+								<plx:Value type="Local">oldValue</plx:Value>
+							</plx:PassParam>
+						</plx:CallInstance>
+					</plx:Body>
+				</plx:Condition>
 			</plx:Set>
 		</plx:Property>
+	</xsl:template>
+	<xsl:template name="GenerateChangeMethods">
+		<xsl:param name="className"/>
+		<xsl:if test="@unique='true'">
+			<plx:Field name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" visibility="Private" dataTypeName="Dictionary">
+				<plx:PassTypeParam>
+					<xsl:copy-of select="DataType/@*"/>
+					<xsl:copy-of select="DataType/child::*"/>
+				</plx:PassTypeParam>
+				<plx:PassTypeParam dataTypeName="{$className}"/>
+				<plx:Initialize>
+					<plx:CallNew style="New" dataTypeName="Dictionary">
+						<plx:PassTypeParam>
+							<xsl:copy-of select="DataType/@*"/>
+							<xsl:copy-of select="DataType/child::*"/>
+						</plx:PassTypeParam>
+						<plx:PassTypeParam dataTypeName="{$className}"/>
+					</plx:CallNew>
+				</plx:Initialize>
+			</plx:Field>
+		</xsl:if>
+			<plx:Function visibility="Private" name="On{$className}{@name}Changing">
+				<plx:Param style="RetVal" name="" dataTypeName="Boolean"/>
+				<plx:Param style="In" name="instance" dataTypeName="{$className}"/>
+				<plx:Param style="In" name="newValue">
+					<xsl:copy-of select="DataType/@*"/>
+					<xsl:copy-of select="DataType/child::*"/>
+				</plx:Param>
+				<xsl:if test="@unique='true'">
+					<plx:Condition>
+						<plx:Test>
+							<plx:Operator name="IdentityInequality">
+								<plx:Left>
+									<plx:CallInstance name="{@name}" style="Property">
+										<plx:CallObject>
+											<plx:Value type="Parameter">instance</plx:Value>
+										</plx:CallObject>
+									</plx:CallInstance>
+								</plx:Left>
+								<plx:Right>
+									<plx:NullObjectKeyword />
+								</plx:Right>
+							</plx:Operator>
+						</plx:Test>
+						<plx:Body>
+							<plx:CallInstance name="Remove">
+								<plx:CallObject>
+									<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" style="Field">
+										<plx:CallObject>
+											<plx:ThisKeyword />
+										</plx:CallObject>
+									</plx:CallInstance>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:CallInstance name="{@name}" style="Property">
+										<plx:CallObject>
+											<plx:Value type="Parameter">instance</plx:Value>
+										</plx:CallObject>
+									</plx:CallInstance>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</plx:Body>
+					</plx:Condition>
+					<plx:Condition>
+						<plx:Test>
+							<plx:Operator name="IdentityInequality">
+								<plx:Left>
+									<plx:Value type="Parameter">newValue</plx:Value>
+								</plx:Left>
+								<plx:Right>
+									<plx:NullObjectKeyword />
+								</plx:Right>
+							</plx:Operator>
+						</plx:Test>
+						<plx:Body>
+							<plx:CallInstance name="Add">
+								<plx:CallObject>
+									<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" style="Field">
+										<plx:CallObject>
+											<plx:ThisKeyword />
+										</plx:CallObject>
+									</plx:CallInstance>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:Value type="Parameter">newValue</plx:Value>
+								</plx:PassParam>
+								<plx:PassParam>
+									<plx:Value type="Parameter">instance</plx:Value>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</plx:Body>
+					</plx:Condition>
+				</xsl:if>
+				<plx:Return>
+					<plx:TrueKeyword />
+				</plx:Return>
+			</plx:Function>
+			<plx:Function visibility="Private" name="On{$className}{@name}Changed">
+				<plx:Param style="In" name="instance" dataTypeName="{$className}"/>
+				<plx:Param style="In" name="oldValue">
+					<xsl:copy-of select="DataType/@*"/>
+					<xsl:copy-of select="DataType/child::*"/>
+				</plx:Param>
+			</plx:Function>
 	</xsl:template>
 	<xsl:template name="GenerateParameters">
 		<plx:Param name="{@name}" style="In">
@@ -889,31 +1026,45 @@
 			<xsl:variable name="property" select="msxsl:node-set($propertyFragment)/child::*"/>
 			<!--<xsl:variable name="AbsorbedMandatory" select="$Model/orm:ORMModel/orm:Facts/orm:Fact/orm:FactRoles/orm:Role[@IsMandatory='true']/@DataType"/>-->
 			<xsl:variable name="className" select="@name"/>
-			<plx:Class visibility="Public" partial="true" name="{$className}">
-				<plx:Field name="{$PrivateMemberPrefix}Context" visibility="Private" dataTypeName="{$ModelContextName}"/>
-				<plx:Function ctor="true" visibility="Protected">
-					<xsl:for-each select="$property">
-						<xsl:if test="@mandatory='true'">
-							<xsl:call-template name="GenerateParameters"/>
-						</xsl:if>
-					</xsl:for-each>
-					<xsl:for-each select="$property">
-						<xsl:if test="@mandatory='true'">
-							<xsl:call-template name="GenerateConstructorAssignment"/>
-						</xsl:if>
-					</xsl:for-each>
-				</plx:Function>
-				<!-- TODO: make version with parameters based on required roles -->
+			<plx:Class visibility="Public" abstract="true" partial="true" name="{$className}">
+				<plx:Function ctor="true" visibility="Protected"/>
 				<xsl:for-each select="$property">
-					<xsl:call-template name="GenerateBackedProperty">
+					<xsl:call-template name="GenerateAbstractProperty"/>
+				</xsl:for-each>
+			</plx:Class>
+			<plx:Class visibility="Public" partial="true" name="{$ModelContextName}">
+				<xsl:for-each select="$property">
+					<xsl:call-template name="GenerateChangeMethods">
 						<xsl:with-param name="className" select="$className"/>
-						<xsl:with-param name="initializeFields" select="true()"/>
 					</xsl:call-template>
 				</xsl:for-each>
-				<xsl:call-template name="GenerateFactoryMethod">
-					<xsl:with-param name="property" select="$property"/>
-					<xsl:with-param name="className" select="$className"/>
-				</xsl:call-template>
+				<plx:Class visibility="Private" sealed="true" partial="true" name="{$className}Core">
+					<plx:DerivesFromClass dataTypeName="{$className}"/>
+					<plx:Field name="{$PrivateMemberPrefix}Context" visibility="Private" dataTypeName="{$ModelContextName}"/>
+					<plx:Function ctor="true" visibility="Public">
+						<xsl:for-each select="$property">
+							<xsl:if test="@mandatory='true'">
+								<xsl:call-template name="GenerateParameters"/>
+							</xsl:if>
+						</xsl:for-each>
+						<xsl:for-each select="$property">
+							<xsl:if test="@mandatory='true'">
+								<xsl:call-template name="GenerateConstructorAssignment"/>
+							</xsl:if>
+						</xsl:for-each>
+					</plx:Function>
+					<!-- TODO: make version with parameters based on required roles -->
+					<xsl:for-each select="$property">
+						<xsl:call-template name="GenerateBackedProperty">
+							<xsl:with-param name="className" select="$className"/>
+							<xsl:with-param name="initializeFields" select="true()"/>
+						</xsl:call-template>
+					</xsl:for-each>
+					<xsl:call-template name="GenerateFactoryMethod">
+						<xsl:with-param name="property" select="$property"/>
+						<xsl:with-param name="className" select="$className"/>
+					</xsl:call-template>
+				</plx:Class>
 			</plx:Class>
 		</xsl:if>
 	</xsl:template>
@@ -1003,7 +1154,8 @@
 					<DataType>
 						<xsl:choose>
 							<xsl:when test="@arity=1">
-								<xsl:attribute name="dataTypeName">Nullable&lt;bool&gt;</xsl:attribute>
+								<xsl:attribute name="dataTypeName">Nullable</xsl:attribute>
+								<plx:PassTypeParam dataTypeName="Boolean"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:attribute name="dataTypeName">ICollection</xsl:attribute>
@@ -1050,7 +1202,7 @@
 					</xsl:apply-templates>
 				</xsl:variable>
 				<xsl:variable name="nested" select="msxsl:node-set($nestedTemp)/child::*"/>
-				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}">
+				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}">
 					<xsl:attribute name="name">
 						<xsl:choose>
 							<xsl:when test="string-length(@roleName)">
@@ -1066,7 +1218,7 @@
 				</Property>
 			</xsl:when>
 			<xsl:otherwise>
-				<Property name="{@roleName}" multiplicity="{@multiplicity}" mandatory="{@mandatory}">
+				<Property name="{@roleName}" multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}">
 					<!--<xsl:if test="0=string-length(@roleName)">
 						<xsl:attribute name="name">
 							<xsl:value-of select="@name"/>
@@ -1102,7 +1254,7 @@
 			</xsl:if>
 		</ao:RelatedObject>	-->
 		<!--		<xsl:variable name="property">-->
-		<Property>
+		<Property unique="{@unique}">
 			<xsl:attribute name="name">
 				<xsl:choose>
 					<xsl:when test="string-length(@roleName)">
