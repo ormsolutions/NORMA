@@ -312,11 +312,30 @@
 											<xsl:attribute name="arity">
 												<xsl:value-of select="count($parentFact/orm:FactRoles/orm:Role)"/>
 											</xsl:attribute>
-											<xsl:if test="@IsMandatory='true'">
-												<xsl:attribute name="mandatory">
-													<xsl:value-of select="true()"/>
-												</xsl:attribute>
-											</xsl:if>
+											<!-- assign the manadatory roles as 'relaxed' if the fact is OneToOne or ManyToMany and both roles are mandatory -->
+											<!-- opposite roles multiplicity -->
+											<xsl:variable name="oppositeRoleMultiplicity" select="../orm:Role[@id!=$roleId]/@Multiplicity"/>
+											<xsl:attribute name="mandatory">
+												<xsl:choose>
+													<!-- both are mandatory so set the dominant one to relaxed-->
+													<!-- (1)one to one binary set the non dominant role to relaxed-->
+													<xsl:when test="@Multiplicity='ExactlyOne' and count($DominantFunctionalRoles[@ref=$roleId])=0 and $oppositeRoleMultiplicity='ExactlyOne' ">
+														<xsl:value-of select="'relaxed'"/>
+													</xsl:when>
+													<!-- (2)many to many binary set both to relaxed-->
+													<xsl:when test="@Multiplicity='OneToMany' and $oppositeRoleMultiplicity='OneToMany'">
+														<xsl:value-of select="'relaxed'"/>
+													</xsl:when>
+													<!-- (3)Opposite role is funtional w/ both mandatory set the non dominant role to relaxed-->
+													<xsl:when test="@Multiplicity='ExactlyOne' and count($DominantFunctionalRoles[@ref=$roleId])=0 and $oppositeRoleMultiplicity='OneToMany'">
+														<xsl:value-of select="'relaxed'"/>
+													</xsl:when>
+													<!-- (4)Set mandatory to False or True -->
+													<xsl:otherwise>
+														<xsl:value-of select="@IsMandatory"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:attribute>
 											<xsl:variable name="oppositeMultiplicity" select="@Multiplicity"/>
 											<xsl:attribute name="unique">
 												<xsl:value-of select="$oppositeMultiplicity = 'ZeroToOne' or $oppositeMultiplicity = 'ExactlyOne'"/>
