@@ -1241,6 +1241,7 @@
 			</xsl:for-each>
 			<plx:Class visibility="Private" sealed="true" partial="true" name="{$className}{$ImplementationClassSuffix}">
 				<plx:DerivesFromClass dataTypeName="{$className}"/>
+				<plx:Field name="{$PrivateMemberPrefix}Context" visibility="Private" dataTypeName="{$ModelContextName}"/>
 				<plx:Function ctor="true" visibility="Protected">
 					<xsl:for-each select="$property">
 						<xsl:call-template name="GenerateParameters"/>
