@@ -847,10 +847,12 @@
 		 corresponding to the plix attributes and child nodes for a data type reference. -->
 	<xsl:template name="GenerateAbstractProperty">
 		<plx:Property abstract="true" name="{@name}" visibility="Public">
-			<plx:Param style="RetVal" name="">
+			<plx:Param type="RetVal" name="">
 				<xsl:copy-of select="DataType/@*"/>
 				<xsl:copy-of select="DataType/child::*"/>
 			</plx:Param>
+			<plx:Get/>
+			<plx:Set/>
 		</plx:Property>
 	</xsl:template>
 	<xsl:template name="GenerateBackedProperty">
@@ -870,14 +872,14 @@
 		</plx:Field>
 		<!-- Get and Set Properties for the given Object-->
 		<plx:Property name="{@name}" visibility="Public" override="true">
-			<plx:Param style="RetVal" name="">
+			<plx:Param type="RetVal" name="">
 				<xsl:copy-of select="DataType/@*"/>
 				<xsl:copy-of select="DataType/child::*"/>
 			</plx:Param>
 			<!-- Get -->
 			<plx:Get>
 				<plx:Return>
-					<plx:CallInstance name="{$PrivateMemberPrefix}{@name}" style="Field">
+					<plx:CallInstance name="{$PrivateMemberPrefix}{@name}" type="Field">
 						<plx:CallObject>
 							<plx:ThisKeyword/>
 						</plx:CallObject>
@@ -891,7 +893,7 @@
 					<plx:Test>
 						<plx:CallInstance name="On{$className}{@name}Changing">
 							<plx:CallObject>
-								<plx:CallInstance name="{$PrivateMemberPrefix}Context" style="Field">
+								<plx:CallInstance name="{$PrivateMemberPrefix}Context" type="Field">
 									<plx:CallObject>
 										<plx:ThisKeyword />
 									</plx:CallObject>
@@ -910,16 +912,16 @@
 							<xsl:copy-of select="DataType/@*"/>
 							<xsl:copy-of select="DataType/child::*"/>
 							<plx:Initialize>
-								<plx:CallInstance name="{@name}" style="Property">
+								<plx:CallInstance name="{@name}" type="Property">
 									<plx:CallObject>
 										<plx:ThisKeyword />
 									</plx:CallObject>
 								</plx:CallInstance>
 							</plx:Initialize>
 						</plx:Variable>
-						<plx:Operator name="Assign">
+						<plx:Operator type="Assign">
 							<plx:Left>
-								<plx:CallInstance name="{$PrivateMemberPrefix}{@name}" style="Field">
+								<plx:CallInstance name="{$PrivateMemberPrefix}{@name}" type="Field">
 									<plx:CallObject>
 										<plx:ThisKeyword/>
 									</plx:CallObject>
@@ -931,7 +933,7 @@
 						</plx:Operator>
 						<plx:CallInstance name="On{$className}{@name}Changed">
 							<plx:CallObject>
-								<plx:CallInstance name="{$PrivateMemberPrefix}Context" style="Field">
+								<plx:CallInstance name="{$PrivateMemberPrefix}Context" type="Field">
 									<plx:CallObject>
 										<plx:ThisKeyword />
 									</plx:CallObject>
@@ -941,7 +943,7 @@
 								<plx:ThisKeyword />
 							</plx:PassParam>
 							<plx:PassParam>
-								<plx:Value type="Local">oldValue</plx:Value>
+								<plx:Value type="Local" data="oldValue"/>
 							</plx:PassParam>
 						</plx:CallInstance>
 					</plx:Body>
@@ -959,7 +961,7 @@
 				</plx:PassTypeParam>
 				<plx:PassTypeParam dataTypeName="{$className}"/>
 				<plx:Initialize>
-					<plx:CallNew style="New" dataTypeName="Dictionary">
+					<plx:CallNew type="New" dataTypeName="Dictionary">
 						<plx:PassTypeParam>
 							<xsl:copy-of select="DataType/@*"/>
 							<xsl:copy-of select="DataType/child::*"/>
@@ -970,22 +972,66 @@
 			</plx:Field>
 		</xsl:if>
 			<plx:Function visibility="Private" name="On{$className}{@name}Changing">
-				<plx:Param style="RetVal" name="" dataTypeName="Boolean"/>
-				<plx:Param style="In" name="instance" dataTypeName="{$className}"/>
-				<plx:Param style="In" name="newValue">
+				<plx:Param type="RetVal" name="" dataTypeName="Boolean" dataTypeQualifier="System"/>
+				<plx:Param type="In" name="instance" dataTypeName="{$className}"/>
+				<plx:Param type="In" name="newValue">
+					<xsl:copy-of select="DataType/@*"/>
+					<xsl:copy-of select="DataType/child::*"/>
+				</plx:Param>
+				<xsl:if test="@unique='true'">
+					<plx:Variable name="currentInstance" dataTypeName="{$className}">
+						<plx:Initialize>
+							<plx:Value type="Parameter" data="instance"/>
+						</plx:Initialize>
+					</plx:Variable>
+					<plx:Condition>
+						<plx:Test>
+							<plx:CallInstance name="TryGetValue" type="MethodCall">
+								<plx:CallObject>
+									<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" type="Field">
+										<plx:CallObject>
+											<plx:ThisKeyword />
+										</plx:CallObject>
+									</plx:CallInstance>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:Value type="Parameter" data="newValue"/>
+								</plx:PassParam>
+								<plx:PassParam passStyle="Out">
+									<plx:Value type="Local" data="currentInstance"/>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</plx:Test>
+						<plx:Body>
+							<plx:Return>
+								<plx:Operator type="IdentityEquality">
+									<plx:Left>
+										<plx:Value type="Local" data="currentInstance"/>
+									</plx:Left>
+									<plx:Right>
+										<plx:Value type="Parameter" data="instance"/>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Return>
+						</plx:Body>
+					</plx:Condition>
+				</xsl:if>
+				<plx:Return>
+					<plx:TrueKeyword />
+				</plx:Return>
+			</plx:Function>
+			<plx:Function visibility="Private" name="On{$className}{@name}Changed">
+				<plx:Param type="In" name="instance" dataTypeName="{$className}"/>
+				<plx:Param type="In" name="oldValue">
 					<xsl:copy-of select="DataType/@*"/>
 					<xsl:copy-of select="DataType/child::*"/>
 				</plx:Param>
 				<xsl:if test="@unique='true'">
 					<plx:Condition>
 						<plx:Test>
-							<plx:Operator name="IdentityInequality">
+							<plx:Operator type="IdentityInequality">
 								<plx:Left>
-									<plx:CallInstance name="{@name}" style="Property">
-										<plx:CallObject>
-											<plx:Value type="Parameter">instance</plx:Value>
-										</plx:CallObject>
-									</plx:CallInstance>
+									<plx:Value type="Parameter" data="oldValue"/>
 								</plx:Left>
 								<plx:Right>
 									<plx:NullObjectKeyword />
@@ -995,27 +1041,27 @@
 						<plx:Body>
 							<plx:CallInstance name="Remove">
 								<plx:CallObject>
-									<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" style="Field">
+									<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" type="Field">
 										<plx:CallObject>
 											<plx:ThisKeyword />
 										</plx:CallObject>
 									</plx:CallInstance>
 								</plx:CallObject>
 								<plx:PassParam>
-									<plx:CallInstance name="{@name}" style="Property">
-										<plx:CallObject>
-											<plx:Value type="Parameter">instance</plx:Value>
-										</plx:CallObject>
-									</plx:CallInstance>
+									<plx:Value type="Parameter" data="oldValue"/>
 								</plx:PassParam>
 							</plx:CallInstance>
 						</plx:Body>
 					</plx:Condition>
 					<plx:Condition>
 						<plx:Test>
-							<plx:Operator name="IdentityInequality">
+							<plx:Operator type="IdentityInequality">
 								<plx:Left>
-									<plx:Value type="Parameter">newValue</plx:Value>
+									<plx:CallInstance name="{@name}" type="Property">
+										<plx:CallObject>
+											<plx:Value type="Parameter" data="instance"/>
+										</plx:CallObject>
+									</plx:CallInstance>
 								</plx:Left>
 								<plx:Right>
 									<plx:NullObjectKeyword />
@@ -1025,36 +1071,30 @@
 						<plx:Body>
 							<plx:CallInstance name="Add">
 								<plx:CallObject>
-									<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" style="Field">
+									<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" type="Field">
 										<plx:CallObject>
 											<plx:ThisKeyword />
 										</plx:CallObject>
 									</plx:CallInstance>
 								</plx:CallObject>
 								<plx:PassParam>
-									<plx:Value type="Parameter">newValue</plx:Value>
+									<plx:CallInstance name="{@name}" type="Property">
+										<plx:CallObject>
+											<plx:Value type="Parameter" data="instance"/>
+										</plx:CallObject>
+									</plx:CallInstance>
 								</plx:PassParam>
 								<plx:PassParam>
-									<plx:Value type="Parameter">instance</plx:Value>
+									<plx:Value type="Parameter" data="instance"/>
 								</plx:PassParam>
 							</plx:CallInstance>
 						</plx:Body>
 					</plx:Condition>
 				</xsl:if>
-				<plx:Return>
-					<plx:TrueKeyword />
-				</plx:Return>
-			</plx:Function>
-			<plx:Function visibility="Private" name="On{$className}{@name}Changed">
-				<plx:Param style="In" name="instance" dataTypeName="{$className}"/>
-				<plx:Param style="In" name="oldValue">
-					<xsl:copy-of select="DataType/@*"/>
-					<xsl:copy-of select="DataType/child::*"/>
-				</plx:Param>
 			</plx:Function>
 	</xsl:template>
 	<xsl:template name="GenerateParameters">
-		<plx:Param name="{@name}" style="In">
+		<plx:Param name="{@name}" type="In">
 			<xsl:for-each select="DataType">
 				<xsl:copy-of select="@*"/>
 				<xsl:copy-of select="child::*"/>
@@ -1062,9 +1102,9 @@
 		</plx:Param>
 	</xsl:template>
 	<xsl:template name="GenerateConstructorAssignment">
-		<plx:Operator name="Assign">
+		<plx:Operator type="Assign">
 			<plx:Left>
-				<plx:CallInstance name="{$PrivateMemberPrefix}{@name}" style="Field">
+				<plx:CallInstance name="{$PrivateMemberPrefix}{@name}" type="Field">
 					<plx:CallObject>
 						<plx:ThisKeyword/>
 					</plx:CallObject>
@@ -1072,7 +1112,9 @@
 			</plx:Left>
 			<plx:Right>
 				<plx:Value type="Parameter">
-					<xsl:value-of select="@name"/>
+					<xsl:attribute name="data">
+						<xsl:value-of select="@name"/>
+					</xsl:attribute>
 				</plx:Value>
 			</plx:Right>
 		</plx:Operator>
@@ -1080,17 +1122,19 @@
 	<xsl:template name="GenerateFactoryMethod">
 		<xsl:param name="property"/>
 		<xsl:param name="className"/>
-		<plx:Function name="CreateInstance" visibility="Public" virtual="true" shared="true">
+		<plx:Function name="CreateInstance" visibility="Public" virtual="true" static="true">
 			<xsl:for-each select="$property">
 				<xsl:call-template name="GenerateParameters"/>
 			</xsl:for-each>
-			<plx:Param name="" style="RetVal" dataTypeName="{$className}"/>
+			<plx:Param name="" type="RetVal" dataTypeName="{$className}"/>
 			<plx:Return>
 				<plx:CallNew dataTypeName="{$className}">
 					<xsl:for-each select="$property">
 						<plx:PassParam>
 							<plx:Value type="Parameter">
-								<xsl:value-of select="@name"/>
+								<xsl:attribute name="data">
+									<xsl:value-of select="@name"/>
+								</xsl:attribute>
 							</plx:Value>
 						</plx:PassParam>
 					</xsl:for-each>
@@ -1421,13 +1465,13 @@
 				</plx:Initialize>
 			</plx:Field>
 			<plx:Property name="{@roleName}" visibility="Public">
-				<plx:Param style="RetVal" name="">
+				<plx:Param type="RetVal" name="">
 					<xsl:copy-of select="$dataType/@*"/>
 					<xsl:copy-of select="$dataType/child::*"/>
 				</plx:Param>
 				<plx:Get>
 					<plx:Return>
-						<plx:CallInstance name="{$PrivateMemberPrefix}{@roleName}" style="Field">
+						<plx:CallInstance name="{$PrivateMemberPrefix}{@roleName}" type="Field">
 							<plx:CallObject><plx:ThisKeyword/></plx:CallObject>
 						</plx:CallInstance>
 					</plx:Return>
