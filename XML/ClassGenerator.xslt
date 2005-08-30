@@ -9,6 +9,7 @@
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:param name="AssociationClassDecorator" select="'Association'"/>
 	<xsl:param name="PrivateMemberPrefix" select="'my'"/>
+	<xsl:param name="ImplementationClassSuffix" select="'Core'"/>
 
 	<!-- 
 	KNOWN ISSUES
@@ -1128,7 +1129,7 @@
 			</xsl:for-each>
 			<plx:Param name="" type="RetVal" dataTypeName="{$className}"/>
 			<plx:Return>
-				<plx:CallNew dataTypeName="{$className}">
+				<plx:CallNew dataTypeName="{$className}{$ImplementationClassSuffix}">
 					<xsl:for-each select="$property">
 						<plx:PassParam>
 							<plx:Value type="Parameter">
@@ -1184,7 +1185,7 @@
 						<xsl:with-param name="className" select="$className"/>
 					</xsl:call-template>
 				</xsl:for-each>
-				<plx:Class visibility="Private" sealed="true" partial="true" name="{$className}Core">
+				<plx:Class visibility="Private" sealed="true" partial="true" name="{$className}{$ImplementationClassSuffix}">
 					<plx:DerivesFromClass dataTypeName="{$className}"/>
 					<plx:Field name="{$PrivateMemberPrefix}Context" visibility="Private" dataTypeName="{$ModelContextName}"/>
 					<plx:Function ctor="true" visibility="Public">
@@ -1226,25 +1227,39 @@
 			</xsl:apply-templates>
 		</xsl:variable>
 		<xsl:variable name="property" select="msxsl:node-set($propertyFragment)/child::*"/>
-		<plx:Class visibility="Public" partial="true" name="{$className}">
-			<plx:Function ctor="true" visibility="Protected">
-				<xsl:for-each select="$property">
-					<xsl:call-template name="GenerateParameters"/>
-				</xsl:for-each>
-				<xsl:for-each select="$property">
-					<xsl:call-template name="GenerateConstructorAssignment"/>
-				</xsl:for-each>
-			</plx:Function>
+		<plx:Class visibility="Public" abstract="true" partial="true" name="{$className}">
+			<plx:Function ctor="true" visibility="Protected"/>
 			<xsl:for-each select="$property">
-				<xsl:call-template name="GenerateBackedProperty">
-					<xsl:with-param name="initializeFields" select="false()"/>
+				<xsl:call-template name="GenerateAbstractProperty"/>
+			</xsl:for-each>
+		</plx:Class>
+		<plx:Class visibility="Public" partial="true" name="{$ModelContextName}">
+			<xsl:for-each select="$property">
+				<xsl:call-template name="GenerateChangeMethods">
 					<xsl:with-param name="className" select="$className"/>
 				</xsl:call-template>
 			</xsl:for-each>
-			<xsl:call-template name="GenerateFactoryMethod">
-				<xsl:with-param name="property" select="$property"/>
-				<xsl:with-param name="className" select="$className"/>
-			</xsl:call-template>
+			<plx:Class visibility="Private" sealed="true" partial="true" name="{$className}{$ImplementationClassSuffix}">
+				<plx:DerivesFromClass dataTypeName="{$className}"/>
+				<plx:Function ctor="true" visibility="Protected">
+					<xsl:for-each select="$property">
+						<xsl:call-template name="GenerateParameters"/>
+					</xsl:for-each>
+					<xsl:for-each select="$property">
+						<xsl:call-template name="GenerateConstructorAssignment"/>
+					</xsl:for-each>
+				</plx:Function>
+				<xsl:for-each select="$property">
+					<xsl:call-template name="GenerateBackedProperty">
+						<xsl:with-param name="initializeFields" select="false()"/>
+						<xsl:with-param name="className" select="$className"/>
+					</xsl:call-template>
+				</xsl:for-each>
+				<xsl:call-template name="GenerateFactoryMethod">
+					<xsl:with-param name="property" select="$property"/>
+					<xsl:with-param name="className" select="$className"/>
+				</xsl:call-template>
+			</plx:Class>
 		</plx:Class>
 	</xsl:template>
 	<xsl:template match="ao:Object/ao:RelatedObject" mode="WalkAbsorbedObjects">
