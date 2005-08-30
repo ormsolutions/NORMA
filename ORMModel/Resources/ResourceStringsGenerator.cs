@@ -10,1347 +10,1347 @@
 
 namespace Neumont.Tools.ORM
 {
-    
-    internal partial class ResourceStrings
-    {
-        /// <summary>
-        ///</summary>
-        public static string ToolboxDefaultTabName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ShapeModel, "Toolbox.DefaultTabName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ValueType
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string EntityType
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.EntityType");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string FactType
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.FactType");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string SubtypeFact
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SubtypeFact");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ObjectifiedFactType
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ObjectifiedFactType");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ReadingType
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Reading");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string RolePlayerPickerNullItemText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string NestedFactTypePickerNullItemText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string NestingTypePickerNullItemText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string EntityTypeDefaultNamePattern
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeUnspecified
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeTextFixedLength
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeTextVariableLength
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeTextLargeLength
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeNumericSignedInteger
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Tex" +
-                        "t");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeNumericUnsignedInteger
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.T" +
-                        "ext");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeNumericAutoCounter
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeNumericFloatingPoint
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Tex" +
-                        "t");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeNumericDecimal
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeNumericMoney
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeRawDataFixedLength
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeRawDataVariableLength
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength.Te" +
-                        "xt");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeRawDataLargeLength
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeRawDataPicture
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeRawDataOleObject
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeTemporalAutoTimestamp
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Te" +
-                        "xt");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeTemporalTime
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeTemporalDate
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeTemporalDateAndTime
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text" +
-                        "");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeLogicalTrueOrFalse
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeLogicalYesOrNo
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeOtherRowId
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PortableDataTypeOtherObjectId
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ValueTypeDefaultNamePattern
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string FactTypeDefaultNamePattern
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.FactType.DefaultNamePattern");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string SubtypeFactDefaultNamePattern
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string SubtypeFactPredicateInverseReading
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.PredicateInverseReading");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string SubtypeFactPredicateReading
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.PredicateReading");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ImpliedFactTypePredicateInverseReading
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ImpliedFactType.PredicateInverseReading");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ImpliedFactTypePredicateReading
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ImpliedFactType.PredicateReading");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string SubtypeFactComponentNameFormat
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.ComponentNameFormat");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ExternalConstraintConnectActionInstructions
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintConnectAction.Instructions");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ExternalConstraintConnectActionTransactionName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintConnectAction.TransactionName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string FrequencyConstraintMinimumFormatString
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "FrequencyConstraint.Minimum.FormatString");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string FrequencyConstraintBetweenFormatString
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "FrequencyConstraint.Between.FormatString");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string InternalUniquenessConstraintConnectActionInstructions
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "InternalUniquenessConstraintConnectAction.Instructions");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string InternalUniquenessConstraintConnectActionTransactionName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "InternalUniquenessConstraintConnectAction.TransactionName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string InsertRoleTransactionName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "InsertRole.TransactionName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string RoleConnectActionTransactionName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "RoleConnectAction.TransactionName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string SubtypeConnectActionTransactionName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "SubtypeConnectAction.TransactionName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string OptionsPageChangeTransactionName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "OptionsPageChange.TransactionName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string DeleteRoleSequenceTransactionName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "DeleteRoleSequence.TransactionName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string MoveRoleSequenceDownTransactionName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "MoveRoleSequenceDown.TransactionName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string MoveRoleSequenceUpTransactionName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "MoveRoleSequenceUp.TransactionName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string InterpretFactEditorLineTransactionName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "InterpretFactEditorLine.TransactionName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelBrowserWindowTitle
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMModelBrowser.WindowTitle");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionObjectificationRequiresModel
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ModelNotSpecified");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionObjectificationImpliedElementModified
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.DirectModificationOfImpliedElement");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionObjectificationImpliedFactObjectified
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ImpliedFactTypesCannotBeObjectified");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionReadingIsPrimaryToFalse
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionFactAddReadingInvalidReadingText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Fact.AddReading.InvalidReadingText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorConstraintHasTooFewRoleSequencesText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorConstraintHasTooManyRoleSequencesText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooManyRoleSequences.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorConstraintExternalConstraintArityMismatch
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalConstraintArityMismatch.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorModelHasDuplicateConstraintNames
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateConstraintNames.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorModelHasDuplicateFactTypeNames
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateFactTypeNames.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorModelHasDuplicateObjectTypeNames
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateObjectTypeNames.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionNameAlreadyUsedByModel
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Model.DuplicateName.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionEnforceValueTypeNotNestingType
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforceValueTypeNotNestingType");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionEnforceRolePlayerNotNestingType
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactType.EnforceRolePlayerNotNestingType");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforcePreferredIdentifierForUnobjectifiedEntityType");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionIsMandatoryRequiresAttachedFactType
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Role.IsMandatoryRequiresAttachedFactType");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionPreferredIdentifierMustBeUniquenessConstraint
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionInvalidInternalPreferredIdentifierPreConditions
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditio" +
-                        "ns");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionInternalConstraintInconsistentRoleOwners
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.InternalConstraint.InconsistentRoleOwners");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string CommandDeleteFactTypeText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteFactType.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string CommandDeleteObjectTypeText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteObjectType.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string CommandDeleteConstraintText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteConstraint.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string CommandDeleteRoleText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteRole.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingEditorListColumnHeaderReadingText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ListColumnHeader.ReadingText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingEditorListColumnHeaderIsPrimary
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ListColumnHeader.IsPrimary");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingEditorAllReadingsNodeName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.AllReadingsNodeName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingEditorMissingRolePlayerText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.MissingRolePlayerText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingEditorNewItemText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.NewItemText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingEditorNewReadingTransactionText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.NewReadingTransactionText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingEditorChangeReadingText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ChangeReadingText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingEditorIsPrimaryToolTip
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.IsPrimaryToolTip");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingEditorChangePrimaryReadingText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ChangePrimaryReadingText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingEditorWindowTitle
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.WindowTitle");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingEditorUnsupportedSelectionText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.UnsupportedSelectionText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PackageOfficialName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "Package.OfficialName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string PackageProductDetails
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "Package.ProductDetails");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorReferenceModeName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ReferenceModeName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorEntityTypeName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.EntityTypeName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorReferenceModeKindHeader
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ReferenceModeKindHeader");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorChangeNameTransaction
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeNameTransaction");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorCustomReferenceModesHeader
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.CustomReferenceModesHeader");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorIntrinsicReferenceModesHeader
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.IntrinsicReferenceModesHeader");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorAbbreviatedEntityTypeName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AbbreviatedEntityTypeName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorAbbreviatedReferenceModeName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AbbreviatedReferenceModeName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorAddCustomReferenceModeTransaction
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AddCustomReferenceModeTransaction");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorAddNewRowText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AddNewRowText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorChangeFormatStringTransaction
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeFormatStringTransaction");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorEditorWindowTitle
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.EditorWindowTitle");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionReferenceModeEnforceUniqueFormatString
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.EnforceUniqueFormatString");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionReferenceModeKindEnforceUniqueFormatString
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceModeKind.EnforceUniqueFormatString");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionReferenceModeIntrinsicRefModesDontChange
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.IntrinsicRefModesDontChange");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionReferenceModeReferenceModesKindNotEmpty
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.ReferenceModesKindNotEmpty");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorChangeReferenceModeKindTransaction
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeReferenceModeKindTransaction");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ReferenceModePredicateReading
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ReferenceMode.PredicateReading");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ReferenceModePredicateInverseReading
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ReferenceMode.PredicateInverseReading");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorFormatStringColumn
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.FormatStringColumn");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorKindColumn
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.KindColumn");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModeEditorNameColumn
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.NameColumn");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string FactEditorToolWindowCaption
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "FactEditorToolWindow.Caption");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionReferenceModeAmbiguousName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.AmbiguousName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionSubtypeConstraintAndRolePatternFixed
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.ConstraintAndRolePatternFixed");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionSubtypeFactNotNested
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.NotNested");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelExceptionSubtypeFactCycle
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.Cycle");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReferenceModePickerFormatString
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModePicker.FormatString");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorReadingTooFewRolesMessage
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.TooFewRoles.Message");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorReadingTooManyRolesMessage
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.TooManyRoles.Message");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelReadingRoleDeletedRoleText
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "Model.Reading.RoleDeletedText");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorFactTypeRequiresInternalUniquessConstraintMessage
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresInternalUniquenessConstraint.Message");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorFactTypeRequiresReadingMessage
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresReading.Message");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorValueTypeDataTypeNotSpecifiedMessage
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueType.DataTypeNotSpecified.Message");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorFactTypeRequiresIUCActivateTransactionName
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresIUC.ActivateTransactionName");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ValueRangeDefinitionDefinitionContainerPattern
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ValueRangeDefinitionRangeDelimiter
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ValueRangeDefinitionValueDelimiter
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueDelimiter");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ValueRangeDefinitionStringContainerPattern
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ValueRangeDefinitionOpenInclusionContainer
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ValueRangeDefinitionClosedInclusionContainer
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ObjectTypeShapeIsIndependentReading
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.IsIndependentReading");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ReadingShapeReadingSeparator
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.ReadingSeparator");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ReadingShapeEllipsis
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.Ellipsis");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ReadingShapeInverseReading
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.InverseReading");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ReadingShapeAttachedRoleDisplay
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.AttachedRoleDisplay");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ReadingShapeUnattachedRoleDisplay
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.UnattachedRoleDisplay");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string NMinusOneRuleInternalSpan
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.NMinusOneRule.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorSingleColumnConstraintCompatibleRolePlayerTypeError
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SingleColumn.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorMultiColumnConstraintCompatibleRolePlayerTypeError
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.MultiColumn.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorRolePlayerRequiredError
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Role.RolePlayerRequired.Message");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorExternalEqualityIsImpliedByMandatoryError
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalEqualityIsImpliedByMandatory.Text");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorEntityTypeRequiresReferenceSchemeMessage
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityType.RequiresReferenceScheme.Message");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string SimpleMandatoryImpliesDisjunctiveMandatoryError
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SimpleMandatoryImpliesDisjunctiveMandatoryError.Message");
-            }
-        }
-        /// <summary>
-        ///</summary>
-        public static string ModelErrorFrequencyConstraintMinMaxError
-        {
-            get
-            {
-                return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintMinMaxError.Text");
-            }
-        }
-    }
+	
+	internal partial class ResourceStrings
+	{
+		/// <summary>
+		///</summary>
+		public static string ToolboxDefaultTabName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ShapeModel, "Toolbox.DefaultTabName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ValueType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string EntityType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.EntityType");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string FactType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.FactType");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string SubtypeFact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SubtypeFact");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ObjectifiedFactType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ObjectifiedFactType");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ReadingType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Reading");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string RolePlayerPickerNullItemText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.RolePlayerPicker.NullItemText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string NestedFactTypePickerNullItemText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string NestingTypePickerNullItemText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.Editors.NestedFactTypePicker.NullItemText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string EntityTypeDefaultNamePattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.EntityType.DefaultNamePattern");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeUnspecified
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Unspecified.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeTextFixedLength
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.FixedLength.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeTextVariableLength
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.VariableLength.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeTextLargeLength
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Text.LargeLength.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeNumericSignedInteger
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.SignedInteger.Tex" +
+						"t");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeNumericUnsignedInteger
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.UnsignedInteger.T" +
+						"ext");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeNumericAutoCounter
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.AutoCounter.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeNumericFloatingPoint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.FloatingPoint.Tex" +
+						"t");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeNumericDecimal
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeNumericMoney
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Numeric.Money.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeRawDataFixedLength
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeRawDataVariableLength
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.VariableLength.Te" +
+						"xt");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeRawDataLargeLength
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeRawDataPicture
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.Picture.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeRawDataOleObject
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.RawData.OleObject.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeTemporalAutoTimestamp
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.AutoTimestamp.Te" +
+						"xt");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeTemporalTime
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Time.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeTemporalDate
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.Date.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeTemporalDateAndTime
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Temporal.DateAndTime.Text" +
+						"");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeLogicalTrueOrFalse
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.TrueOrFalse.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeLogicalYesOrNo
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeOtherRowId
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.RowId.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PortableDataTypeOtherObjectId
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.DataType.PortableDataType.Other.ObjectId.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ValueTypeDefaultNamePattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueType.DefaultNamePattern");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string FactTypeDefaultNamePattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.FactType.DefaultNamePattern");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string SubtypeFactDefaultNamePattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string SubtypeFactPredicateInverseReading
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.PredicateInverseReading");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string SubtypeFactPredicateReading
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.PredicateReading");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ImpliedFactTypePredicateInverseReading
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ImpliedFactType.PredicateInverseReading");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ImpliedFactTypePredicateReading
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ImpliedFactType.PredicateReading");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string SubtypeFactComponentNameFormat
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "SubtypeFact.ComponentNameFormat");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ExternalConstraintConnectActionInstructions
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintConnectAction.Instructions");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ExternalConstraintConnectActionTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintConnectAction.TransactionName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string FrequencyConstraintMinimumFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "FrequencyConstraint.Minimum.FormatString");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string FrequencyConstraintBetweenFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "FrequencyConstraint.Between.FormatString");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string InternalUniquenessConstraintConnectActionInstructions
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "InternalUniquenessConstraintConnectAction.Instructions");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string InternalUniquenessConstraintConnectActionTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "InternalUniquenessConstraintConnectAction.TransactionName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string InsertRoleTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "InsertRole.TransactionName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string RoleConnectActionTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "RoleConnectAction.TransactionName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string SubtypeConnectActionTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "SubtypeConnectAction.TransactionName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string OptionsPageChangeTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "OptionsPageChange.TransactionName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string DeleteRoleSequenceTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "DeleteRoleSequence.TransactionName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string MoveRoleSequenceDownTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MoveRoleSequenceDown.TransactionName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string MoveRoleSequenceUpTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MoveRoleSequenceUp.TransactionName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string InterpretFactEditorLineTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "InterpretFactEditorLine.TransactionName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelBrowserWindowTitle
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMModelBrowser.WindowTitle");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionObjectificationRequiresModel
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ModelNotSpecified");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionObjectificationImpliedElementModified
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.DirectModificationOfImpliedElement");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionObjectificationImpliedFactObjectified
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Objectification.ImpliedFactTypesCannotBeObjectified");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionReadingIsPrimaryToFalse
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Reading.IsPrimary.ReadOnlyWhenFalse");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionFactAddReadingInvalidReadingText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Fact.AddReading.InvalidReadingText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorConstraintHasTooFewRoleSequencesText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorConstraintHasTooManyRoleSequencesText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooManyRoleSequences.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorConstraintExternalConstraintArityMismatch
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalConstraintArityMismatch.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorModelHasDuplicateConstraintNames
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateConstraintNames.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorModelHasDuplicateFactTypeNames
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateFactTypeNames.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorModelHasDuplicateObjectTypeNames
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateObjectTypeNames.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionNameAlreadyUsedByModel
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Model.DuplicateName.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionEnforceValueTypeNotNestingType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforceValueTypeNotNestingType");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionEnforceRolePlayerNotNestingType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.FactType.EnforceRolePlayerNotNestingType");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionEnforcePreferredIdentifierForUnobjectifiedEntityType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectType.EnforcePreferredIdentifierForUnobjectifiedEntityType");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionIsMandatoryRequiresAttachedFactType
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Role.IsMandatoryRequiresAttachedFactType");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionPreferredIdentifierMustBeUniquenessConstraint
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionInvalidInternalPreferredIdentifierPreConditions
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditio" +
+						"ns");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionInternalConstraintInconsistentRoleOwners
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.InternalConstraint.InconsistentRoleOwners");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string CommandDeleteFactTypeText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteFactType.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string CommandDeleteObjectTypeText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteObjectType.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string CommandDeleteConstraintText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteConstraint.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string CommandDeleteRoleText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteRole.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingEditorListColumnHeaderReadingText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ListColumnHeader.ReadingText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingEditorListColumnHeaderIsPrimary
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ListColumnHeader.IsPrimary");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingEditorAllReadingsNodeName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.AllReadingsNodeName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingEditorMissingRolePlayerText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.MissingRolePlayerText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingEditorNewItemText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.NewItemText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingEditorNewReadingTransactionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.NewReadingTransactionText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingEditorChangeReadingText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ChangeReadingText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingEditorIsPrimaryToolTip
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.IsPrimaryToolTip");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingEditorChangePrimaryReadingText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.ChangePrimaryReadingText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingEditorWindowTitle
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.WindowTitle");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingEditorUnsupportedSelectionText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReadingEditor.UnsupportedSelectionText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PackageOfficialName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Package.OfficialName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string PackageProductDetails
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Package.ProductDetails");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorReferenceModeName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ReferenceModeName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorEntityTypeName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.EntityTypeName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorReferenceModeKindHeader
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ReferenceModeKindHeader");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorChangeNameTransaction
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeNameTransaction");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorCustomReferenceModesHeader
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.CustomReferenceModesHeader");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorIntrinsicReferenceModesHeader
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.IntrinsicReferenceModesHeader");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorAbbreviatedEntityTypeName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AbbreviatedEntityTypeName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorAbbreviatedReferenceModeName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AbbreviatedReferenceModeName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorAddCustomReferenceModeTransaction
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AddCustomReferenceModeTransaction");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorAddNewRowText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.AddNewRowText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorChangeFormatStringTransaction
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeFormatStringTransaction");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorEditorWindowTitle
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.EditorWindowTitle");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionReferenceModeEnforceUniqueFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.EnforceUniqueFormatString");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionReferenceModeKindEnforceUniqueFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceModeKind.EnforceUniqueFormatString");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionReferenceModeIntrinsicRefModesDontChange
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.IntrinsicRefModesDontChange");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionReferenceModeReferenceModesKindNotEmpty
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.ReferenceModesKindNotEmpty");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorChangeReferenceModeKindTransaction
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.ChangeReferenceModeKindTransaction");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ReferenceModePredicateReading
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ReferenceMode.PredicateReading");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ReferenceModePredicateInverseReading
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ReferenceMode.PredicateInverseReading");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorFormatStringColumn
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.FormatStringColumn");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorKindColumn
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.KindColumn");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModeEditorNameColumn
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.NameColumn");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string FactEditorToolWindowCaption
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "FactEditorToolWindow.Caption");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionReferenceModeAmbiguousName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ReferenceMode.AmbiguousName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionSubtypeConstraintAndRolePatternFixed
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.ConstraintAndRolePatternFixed");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionSubtypeFactNotNested
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.NotNested");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelExceptionSubtypeFactCycle
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.Cycle");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReferenceModePickerFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModePicker.FormatString");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorReadingTooFewRolesMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.TooFewRoles.Message");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorReadingTooManyRolesMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.TooManyRoles.Message");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelReadingRoleDeletedRoleText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "Model.Reading.RoleDeletedText");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorFactTypeRequiresInternalUniquessConstraintMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresInternalUniquenessConstraint.Message");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorFactTypeRequiresReadingMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresReading.Message");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorValueTypeDataTypeNotSpecifiedMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueType.DataTypeNotSpecified.Message");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorFactTypeRequiresIUCActivateTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresIUC.ActivateTransactionName");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ValueRangeDefinitionDefinitionContainerPattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ValueRangeDefinitionRangeDelimiter
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ValueRangeDefinitionValueDelimiter
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueDelimiter");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ValueRangeDefinitionStringContainerPattern
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ValueRangeDefinitionOpenInclusionContainer
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ValueRangeDefinitionClosedInclusionContainer
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ObjectTypeShapeIsIndependentReading
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.IsIndependentReading");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ReadingShapeReadingSeparator
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.ReadingSeparator");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ReadingShapeEllipsis
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.Ellipsis");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ReadingShapeInverseReading
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.InverseReading");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ReadingShapeAttachedRoleDisplay
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.AttachedRoleDisplay");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ReadingShapeUnattachedRoleDisplay
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.UnattachedRoleDisplay");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string NMinusOneRuleInternalSpan
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.NMinusOneRule.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorSingleColumnConstraintCompatibleRolePlayerTypeError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SingleColumn.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorMultiColumnConstraintCompatibleRolePlayerTypeError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.MultiColumn.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorRolePlayerRequiredError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Role.RolePlayerRequired.Message");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorExternalEqualityIsImpliedByMandatoryError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalEqualityIsImpliedByMandatory.Text");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorEntityTypeRequiresReferenceSchemeMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityType.RequiresReferenceScheme.Message");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string SimpleMandatoryImpliesDisjunctiveMandatoryError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SimpleMandatoryImpliesDisjunctiveMandatoryError.Message");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorFrequencyConstraintMinMaxError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintMinMaxError.Text");
+			}
+		}
+	}
 }

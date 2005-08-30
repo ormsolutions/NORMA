@@ -10,695 +10,695 @@
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-    using System;
-    using System.Collections;
-    using System.Collections.ObjectModel;
-    using System.Collections.Generic;
-    using Microsoft.VisualStudio.Modeling;
-    using Microsoft.VisualStudio.Modeling.Diagrams;
-    using Neumont.Tools.ORM.Shell;
-    
-    /// <summary>
-    ///</summary>
-    public partial class ORMShapeModel : IORMCustomSerializedMetaModel
-    {
-        private Dictionary<MetaClassInfo, object> myCustomSerializationOmissions;
-        private static Dictionary<string, Guid> myClassNameMap;
-        private static Collection<string> myValidNamespaces;
-        /// <summary>
-        ///</summary>
-        protected static string DefaultElementPrefix
-        {
-            get
-            {
-                return "ormDiagram";
-            }
-        }
-        string IORMCustomSerializedMetaModel.DefaultElementPrefix
-        {
-            get
-            {
-                return ORMShapeModel.DefaultElementPrefix;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected static string[,] GetCustomElementNamespaces()
-        {
-            string[,] ret = new string[1, 3];
-            ret[0, 0] = "ormDiagram";
-            ret[0, 1] = "http://Schemas.Neumont.edu/ORM/ORMDiagram";
-            ret[0, 2] = "ORM2Diagram.xsd";
-            return ret;
-        }
-        string[,] IORMCustomSerializedMetaModel.GetCustomElementNamespaces()
-        {
-            return ORMShapeModel.GetCustomElementNamespaces();
-        }
-        private static Dictionary<MetaClassInfo, object> BuildCustomSerializationOmissions(Store store)
-        {
-            Dictionary<MetaClassInfo, object> retVal = new Dictionary<MetaClassInfo, object>();
-            MetaDataDirectory dataDir = store.MetaDataDirectory;
-            retVal[dataDir.FindMetaClass(ExternalConstraintLink.MetaClassGuid)] = null;
-            retVal[dataDir.FindMetaClass(ValueRangeLink.MetaClassGuid)] = null;
-            retVal[dataDir.FindMetaClass(RolePlayerLink.MetaClassGuid)] = null;
-            retVal[dataDir.FindMetaClass(SubtypeLink.MetaClassGuid)] = null;
-            retVal[dataDir.FindMetaRelationship(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode.MetaRelationshipGuid)] = null;
-            return retVal;
-        }
-        /// <summary>
-        ///</summary>
-        protected bool ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
-        {
-            Dictionary<MetaClassInfo, object> omissions = this.myCustomSerializationOmissions;
-            if ((omissions == null))
-            {
-                omissions = ORMShapeModel.BuildCustomSerializationOmissions(store);
-                this.myCustomSerializationOmissions = omissions;
-            }
-            return !(omissions.ContainsKey(classInfo));
-        }
-        bool IORMCustomSerializedMetaModel.ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
-        {
-            return this.ShouldSerializeMetaClass(store, classInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected static Guid[] GetRootElementClasses()
-        {
-            return new Guid[] {
-                    ORMDiagram.MetaClassGuid};
-        }
-        Guid[] IORMCustomSerializedMetaModel.GetRootElementClasses()
-        {
-            return ORMShapeModel.GetRootElementClasses();
-        }
-        /// <summary>
-        ///</summary>
-        protected static Guid MapRootElement(string xmlNamespace, string elementName)
-        {
-            if (((elementName == "ORMDiagram") 
-                        && (xmlNamespace == "http://Schemas.Neumont.edu/ORM/ORMDiagram")))
-            {
-                return ORMDiagram.MetaClassGuid;
-            }
-            return default(Guid);
-        }
-        Guid IORMCustomSerializedMetaModel.MapRootElement(string xmlNamespace, string elementName)
-        {
-            return ORMShapeModel.MapRootElement(xmlNamespace, elementName);
-        }
-        /// <summary>
-        ///</summary>
-        protected static Guid MapClassName(string xmlNamespace, string elementName)
-        {
-            Collection<string> validNamespaces = ORMShapeModel.myValidNamespaces;
-            Dictionary<string, Guid> classNameMap = ORMShapeModel.myClassNameMap;
-            if ((validNamespaces == null))
-            {
-                validNamespaces = new Collection<string>();
-                validNamespaces.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram");
-                ORMShapeModel.myValidNamespaces = validNamespaces;
-            }
-            if ((classNameMap == null))
-            {
-                classNameMap = new Dictionary<string, Guid>();
-                classNameMap.Add("ORMDiagram", ORMDiagram.MetaClassGuid);
-                classNameMap.Add("ORMBaseShape", ORMBaseShape.MetaClassGuid);
-                classNameMap.Add("ObjectTypeShape", ObjectTypeShape.MetaClassGuid);
-                classNameMap.Add("ObjectifiedFactTypeNameShape", ObjectifiedFactTypeNameShape.MetaClassGuid);
-                classNameMap.Add("ReadingShape", ReadingShape.MetaClassGuid);
-                classNameMap.Add("ValueRangeShape", ValueRangeShape.MetaClassGuid);
-                ORMShapeModel.myClassNameMap = classNameMap;
-            }
-            if ((validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName)))
-            {
-                return classNameMap[elementName];
-            }
-            return default(Guid);
-        }
-        Guid IORMCustomSerializedMetaModel.MapClassName(string xmlNamespace, string elementName)
-        {
-            return ORMShapeModel.MapClassName(xmlNamespace, elementName);
-        }
-    }
-    /// <summary>
-    ///</summary>
-    public partial class ORMDiagram : IORMCustomSerializedElement
-    {
-        private static Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
-                            | (ORMCustomSerializedElementSupportedOperations.AttributeInfo 
-                            | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
-            }
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return this.SupportedCustomSerializedOperations;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
-        {
-            get
-            {
-                throw new System.NotSupportedException();
-            }
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-        {
-            get
-            {
-                return this.CustomSerializedElementInfo;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        [CLSCompliant(false)]
-        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                IComparer<MetaRoleInfo> retVal = ORMDiagram.myCustomSortChildComparer;
-                if ((null == retVal))
-                {
-                    retVal = new CustomSortChildComparer(this.Store);
-                    ORMDiagram.myCustomSortChildComparer = retVal;
-                }
-                return retVal;
-            }
-        }
-        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return this.CustomSerializedChildRoleComparer;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-        {
-            Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ORMDiagram.myCustomSerializedChildElementInfo;
-            if ((ret == null))
-            {
-                ret = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
-                ret[0] = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Shapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-                ORMDiagram.myCustomSerializedChildElementInfo = ret;
-            }
-            return ret;
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-        {
-            return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((attributeInfo.Id == ORMDiagram.DiagramIdMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
-            }
-            return ORMCustomSerializedAttributeInfo.Default;
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, "Subject", null, ORMCustomSerializedElementWriteStyle.Element, null);
-            }
-            return ORMCustomSerializedElementInfo.Default;
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ORMDiagram.myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
-                childElementMappings.Add("||http://Schemas.Neumont.edu/ORM/ORMDiagram|Subject", match);
-                match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-                childElementMappings.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram|Shapes||", match);
-                ORMDiagram.myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
-        }
-        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-        }
-        /// <summary>
-        ///</summary>
-        protected Guid MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return default(Guid);
-        }
-        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return this.MapAttribute(xmlNamespace, attributeName);
-        }
-        private class CustomSortChildComparer : IComparer<MetaRoleInfo>
-        {
-            private Dictionary<string, int> myRoleOrderDictionary;
-            /// <summary>
-            ///</summary>
-            public CustomSortChildComparer(Store store)
-            {
-                MetaDataDirectory metaDataDir = store.MetaDataDirectory;
-                Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
-                MetaRoleInfo metaRole;
-                metaRole = metaDataDir.FindMetaRole(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
-                metaRole = metaDataDir.FindMetaRole(SubjectHasPresentation.SubjectMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
-                this.myRoleOrderDictionary = roleOrderDictionary;
-            }
-            /// <summary>
-            ///</summary>
-            public int Compare(MetaRoleInfo x, MetaRoleInfo y)
-            {
-                int xPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
-                {
-                    xPos = int.MaxValue;
-                }
-                int yPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
-                {
-                    yPos = int.MaxValue;
-                }
-                if ((xPos == yPos))
-                {
-                    return 0;
-                }
-                else
-                {
-                    if ((xPos < yPos))
-                    {
-                        return -1;
-                    }
-                }
-                return 1;
-            }
-        }
-    }
-    /// <summary>
-    ///</summary>
-    public partial class ORMBaseShape : IORMCustomSerializedElement
-    {
-        private static Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
-        private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
-        private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
-        private static Dictionary<string, Guid> myCustomSerializedAttributes;
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
-                            | (ORMCustomSerializedElementSupportedOperations.AttributeInfo 
-                            | (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
-            }
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return this.SupportedCustomSerializedOperations;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
-        {
-            get
-            {
-                throw new System.NotSupportedException();
-            }
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-        {
-            get
-            {
-                return this.CustomSerializedElementInfo;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        [CLSCompliant(false)]
-        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                IComparer<MetaRoleInfo> retVal = ORMBaseShape.myCustomSortChildComparer;
-                if ((null == retVal))
-                {
-                    retVal = new CustomSortChildComparer(this.Store);
-                    ORMBaseShape.myCustomSortChildComparer = retVal;
-                }
-                return retVal;
-            }
-        }
-        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return this.CustomSerializedChildRoleComparer;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-        {
-            Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ORMBaseShape.myCustomSerializedChildElementInfo;
-            if ((ret == null))
-            {
-                ret = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
-                ret[0] = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RelativeShapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
-                ret[1] = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "NestedShapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-                ORMBaseShape.myCustomSerializedChildElementInfo = ret;
-            }
-            return ret;
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-        {
-            return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((attributeInfo.Id == ORMBaseShape.IsExpandedMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
-            }
-            if ((attributeInfo.Id == ORMBaseShape.AbsoluteBoundsMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
-            }
-            return ORMCustomSerializedAttributeInfo.Default;
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid))
-            {
-                return new ORMCustomSerializedElementInfo(null, "Subject", null, ORMCustomSerializedElementWriteStyle.Element, null);
-            }
-            return ORMCustomSerializedElementInfo.Default;
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ORMBaseShape.myChildElementMappings;
-            if ((childElementMappings == null))
-            {
-                childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-                ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-                match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
-                childElementMappings.Add("||http://Schemas.Neumont.edu/ORM/ORMDiagram|Subject", match);
-                match.InitializeRoles(ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
-                childElementMappings.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram|RelativeShapes||", match);
-                match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-                childElementMappings.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram|NestedShapes||", match);
-                ORMBaseShape.myChildElementMappings = childElementMappings;
-            }
-            ORMCustomSerializedElementMatch rVal;
-            childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
-            return rVal;
-        }
-        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-        }
-        /// <summary>
-        ///</summary>
-        protected Guid MapAttribute(string xmlNamespace, string attributeName)
-        {
-            Dictionary<string, Guid> customSerializedAttributes = ORMBaseShape.myCustomSerializedAttributes;
-            if ((customSerializedAttributes == null))
-            {
-                customSerializedAttributes = new Dictionary<string, Guid>();
-                customSerializedAttributes.Add("IsExpanded", ORMBaseShape.IsExpandedMetaAttributeGuid);
-                customSerializedAttributes.Add("AbsoluteBounds", ORMBaseShape.AbsoluteBoundsMetaAttributeGuid);
-                ORMBaseShape.myCustomSerializedAttributes = customSerializedAttributes;
-            }
-            Guid rVal;
-            string key = attributeName;
-            if (!((xmlNamespace.Length == 0)))
-            {
-                key = string.Concat(xmlNamespace, "|", attributeName);
-            }
-            customSerializedAttributes.TryGetValue(key, out rVal);
-            return rVal;
-        }
-        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return this.MapAttribute(xmlNamespace, attributeName);
-        }
-        private class CustomSortChildComparer : IComparer<MetaRoleInfo>
-        {
-            private Dictionary<string, int> myRoleOrderDictionary;
-            /// <summary>
-            ///</summary>
-            public CustomSortChildComparer(Store store)
-            {
-                MetaDataDirectory metaDataDir = store.MetaDataDirectory;
-                Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
-                MetaRoleInfo metaRole;
-                metaRole = metaDataDir.FindMetaRole(ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
-                metaRole = metaDataDir.FindMetaRole(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
-                metaRole = metaDataDir.FindMetaRole(SubjectHasPresentation.SubjectMetaRoleGuid);
-                roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
-                this.myRoleOrderDictionary = roleOrderDictionary;
-            }
-            /// <summary>
-            ///</summary>
-            public int Compare(MetaRoleInfo x, MetaRoleInfo y)
-            {
-                int xPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
-                {
-                    xPos = int.MaxValue;
-                }
-                int yPos;
-                if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
-                {
-                    yPos = int.MaxValue;
-                }
-                if ((xPos == yPos))
-                {
-                    return 0;
-                }
-                else
-                {
-                    if ((xPos < yPos))
-                    {
-                        return -1;
-                    }
-                }
-                return 1;
-            }
-        }
-    }
-    /// <summary>
-    ///</summary>
-    public partial class ObjectTypeShape : IORMCustomSerializedElement
-    {
-        /// <summary>
-        ///</summary>
-        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
-            }
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return this.SupportedCustomSerializedOperations;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((attributeInfo.Id == ObjectTypeShape.ShapeNameMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
-            }
-            if ((attributeInfo.Id == ObjectTypeShape.ReferenceModeNameMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
-            }
-            if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
-            {
-                return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-            }
-            return ORMCustomSerializedAttributeInfo.Default;
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-    }
-    /// <summary>
-    ///</summary>
-    public partial class ObjectifiedFactTypeNameShape : IORMCustomSerializedElement
-    {
-        /// <summary>
-        ///</summary>
-        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
-            }
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return this.SupportedCustomSerializedOperations;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((attributeInfo.Id == ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
-            }
-            if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
-            {
-                return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-            }
-            return ORMCustomSerializedAttributeInfo.Default;
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-    }
-    /// <summary>
-    ///</summary>
-    public partial class ReadingShape : IORMCustomSerializedElement
-    {
-        /// <summary>
-        ///</summary>
-        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
-            }
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return this.SupportedCustomSerializedOperations;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((attributeInfo.Id == ReadingShape.ReadingTextMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
-            }
-            if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
-            {
-                return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-            }
-            return ORMCustomSerializedAttributeInfo.Default;
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-    }
-    /// <summary>
-    ///</summary>
-    public partial class ValueRangeShape : IORMCustomSerializedElement
-    {
-        /// <summary>
-        ///</summary>
-        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
-            }
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return this.SupportedCustomSerializedOperations;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            if ((attributeInfo.Id == ValueRangeShape.ValueRangeTextMetaAttributeGuid))
-            {
-                return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
-            }
-            if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
-            {
-                return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-            }
-            return ORMCustomSerializedAttributeInfo.Default;
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-    }
+	using System;
+	using System.Collections;
+	using System.Collections.ObjectModel;
+	using System.Collections.Generic;
+	using Microsoft.VisualStudio.Modeling;
+	using Microsoft.VisualStudio.Modeling.Diagrams;
+	using Neumont.Tools.ORM.Shell;
+	
+	/// <summary>
+	///</summary>
+	public partial class ORMShapeModel : IORMCustomSerializedMetaModel
+	{
+		private Dictionary<MetaClassInfo, object> myCustomSerializationOmissions;
+		private static Dictionary<string, Guid> myClassNameMap;
+		private static Collection<string> myValidNamespaces;
+		/// <summary>
+		///</summary>
+		protected static string DefaultElementPrefix
+		{
+			get
+			{
+				return "ormDiagram";
+			}
+		}
+		string IORMCustomSerializedMetaModel.DefaultElementPrefix
+		{
+			get
+			{
+				return ORMShapeModel.DefaultElementPrefix;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected static string[,] GetCustomElementNamespaces()
+		{
+			string[,] ret = new string[1, 3];
+			ret[0, 0] = "ormDiagram";
+			ret[0, 1] = "http://Schemas.Neumont.edu/ORM/ORMDiagram";
+			ret[0, 2] = "ORM2Diagram.xsd";
+			return ret;
+		}
+		string[,] IORMCustomSerializedMetaModel.GetCustomElementNamespaces()
+		{
+			return ORMShapeModel.GetCustomElementNamespaces();
+		}
+		private static Dictionary<MetaClassInfo, object> BuildCustomSerializationOmissions(Store store)
+		{
+			Dictionary<MetaClassInfo, object> retVal = new Dictionary<MetaClassInfo, object>();
+			MetaDataDirectory dataDir = store.MetaDataDirectory;
+			retVal[dataDir.FindMetaClass(ExternalConstraintLink.MetaClassGuid)] = null;
+			retVal[dataDir.FindMetaClass(ValueRangeLink.MetaClassGuid)] = null;
+			retVal[dataDir.FindMetaClass(RolePlayerLink.MetaClassGuid)] = null;
+			retVal[dataDir.FindMetaClass(SubtypeLink.MetaClassGuid)] = null;
+			retVal[dataDir.FindMetaRelationship(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode.MetaRelationshipGuid)] = null;
+			return retVal;
+		}
+		/// <summary>
+		///</summary>
+		protected bool ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
+		{
+			Dictionary<MetaClassInfo, object> omissions = this.myCustomSerializationOmissions;
+			if ((omissions == null))
+			{
+				omissions = ORMShapeModel.BuildCustomSerializationOmissions(store);
+				this.myCustomSerializationOmissions = omissions;
+			}
+			return !(omissions.ContainsKey(classInfo));
+		}
+		bool IORMCustomSerializedMetaModel.ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
+		{
+			return this.ShouldSerializeMetaClass(store, classInfo);
+		}
+		/// <summary>
+		///</summary>
+		protected static Guid[] GetRootElementClasses()
+		{
+			return new Guid[] {
+					ORMDiagram.MetaClassGuid};
+		}
+		Guid[] IORMCustomSerializedMetaModel.GetRootElementClasses()
+		{
+			return ORMShapeModel.GetRootElementClasses();
+		}
+		/// <summary>
+		///</summary>
+		protected static Guid MapRootElement(string xmlNamespace, string elementName)
+		{
+			if (((elementName == "ORMDiagram") 
+						&& (xmlNamespace == "http://Schemas.Neumont.edu/ORM/ORMDiagram")))
+			{
+				return ORMDiagram.MetaClassGuid;
+			}
+			return default(Guid);
+		}
+		Guid IORMCustomSerializedMetaModel.MapRootElement(string xmlNamespace, string elementName)
+		{
+			return ORMShapeModel.MapRootElement(xmlNamespace, elementName);
+		}
+		/// <summary>
+		///</summary>
+		protected static Guid MapClassName(string xmlNamespace, string elementName)
+		{
+			Collection<string> validNamespaces = ORMShapeModel.myValidNamespaces;
+			Dictionary<string, Guid> classNameMap = ORMShapeModel.myClassNameMap;
+			if ((validNamespaces == null))
+			{
+				validNamespaces = new Collection<string>();
+				validNamespaces.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram");
+				ORMShapeModel.myValidNamespaces = validNamespaces;
+			}
+			if ((classNameMap == null))
+			{
+				classNameMap = new Dictionary<string, Guid>();
+				classNameMap.Add("ORMDiagram", ORMDiagram.MetaClassGuid);
+				classNameMap.Add("ORMBaseShape", ORMBaseShape.MetaClassGuid);
+				classNameMap.Add("ObjectTypeShape", ObjectTypeShape.MetaClassGuid);
+				classNameMap.Add("ObjectifiedFactTypeNameShape", ObjectifiedFactTypeNameShape.MetaClassGuid);
+				classNameMap.Add("ReadingShape", ReadingShape.MetaClassGuid);
+				classNameMap.Add("ValueRangeShape", ValueRangeShape.MetaClassGuid);
+				ORMShapeModel.myClassNameMap = classNameMap;
+			}
+			if ((validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName)))
+			{
+				return classNameMap[elementName];
+			}
+			return default(Guid);
+		}
+		Guid IORMCustomSerializedMetaModel.MapClassName(string xmlNamespace, string elementName)
+		{
+			return ORMShapeModel.MapClassName(xmlNamespace, elementName);
+		}
+	}
+	/// <summary>
+	///</summary>
+	public partial class ORMDiagram : IORMCustomSerializedElement
+	{
+		private static Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
+		private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
+		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
+							| (ORMCustomSerializedElementSupportedOperations.AttributeInfo 
+							| (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
+			}
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				throw new System.NotSupportedException();
+			}
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>
+		///</summary>
+		[CLSCompliant(false)]
+		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				IComparer<MetaRoleInfo> retVal = ORMDiagram.myCustomSortChildComparer;
+				if ((null == retVal))
+				{
+					retVal = new CustomSortChildComparer(this.Store);
+					ORMDiagram.myCustomSortChildComparer = retVal;
+				}
+				return retVal;
+			}
+		}
+		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ORMDiagram.myCustomSerializedChildElementInfo;
+			if ((ret == null))
+			{
+				ret = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[1];
+				ret[0] = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "Shapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+				ORMDiagram.myCustomSerializedChildElementInfo = ret;
+			}
+			return ret;
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			if ((attributeInfo.Id == ORMDiagram.DiagramIdMetaAttributeGuid))
+			{
+				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			return ORMCustomSerializedAttributeInfo.Default;
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			if ((rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid))
+			{
+				return new ORMCustomSerializedElementInfo(null, "Subject", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			return ORMCustomSerializedElementInfo.Default;
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+		}
+		/// <summary>
+		///</summary>
+		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ORMDiagram.myChildElementMappings;
+			if ((childElementMappings == null))
+			{
+				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
+				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
+				match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
+				childElementMappings.Add("||http://Schemas.Neumont.edu/ORM/ORMDiagram|Subject", match);
+				match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+				childElementMappings.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram|Shapes||", match);
+				ORMDiagram.myChildElementMappings = childElementMappings;
+			}
+			ORMCustomSerializedElementMatch rVal;
+			childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
+			return rVal;
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+		}
+		/// <summary>
+		///</summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return default(Guid);
+		}
+		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		private class CustomSortChildComparer : IComparer<MetaRoleInfo>
+		{
+			private Dictionary<string, int> myRoleOrderDictionary;
+			/// <summary>
+			///</summary>
+			public CustomSortChildComparer(Store store)
+			{
+				MetaDataDirectory metaDataDir = store.MetaDataDirectory;
+				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				MetaRoleInfo metaRole;
+				metaRole = metaDataDir.FindMetaRole(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
+				metaRole = metaDataDir.FindMetaRole(SubjectHasPresentation.SubjectMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
+				this.myRoleOrderDictionary = roleOrderDictionary;
+			}
+			/// <summary>
+			///</summary>
+			public int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			{
+				int xPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
+				{
+					xPos = int.MaxValue;
+				}
+				int yPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
+				{
+					yPos = int.MaxValue;
+				}
+				if ((xPos == yPos))
+				{
+					return 0;
+				}
+				else
+				{
+					if ((xPos < yPos))
+					{
+						return -1;
+					}
+				}
+				return 1;
+			}
+		}
+	}
+	/// <summary>
+	///</summary>
+	public partial class ORMBaseShape : IORMCustomSerializedElement
+	{
+		private static Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] myCustomSerializedChildElementInfo;
+		private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
+		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return (ORMCustomSerializedElementSupportedOperations.ChildElementInfo 
+							| (ORMCustomSerializedElementSupportedOperations.AttributeInfo 
+							| (ORMCustomSerializedElementSupportedOperations.LinkInfo | ORMCustomSerializedElementSupportedOperations.CustomSortChildRoles)));
+			}
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				throw new System.NotSupportedException();
+			}
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>
+		///</summary>
+		[CLSCompliant(false)]
+		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				IComparer<MetaRoleInfo> retVal = ORMBaseShape.myCustomSortChildComparer;
+				if ((null == retVal))
+				{
+					retVal = new CustomSortChildComparer(this.Store);
+					ORMBaseShape.myCustomSortChildComparer = retVal;
+				}
+				return retVal;
+			}
+		}
+		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] ret = ORMBaseShape.myCustomSerializedChildElementInfo;
+			if ((ret == null))
+			{
+				ret = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[2];
+				ret[0] = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "RelativeShapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
+				ret[1] = new Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo(null, "NestedShapes", null, ORMCustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+				ORMBaseShape.myCustomSerializedChildElementInfo = ret;
+			}
+			return ret;
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			if ((attributeInfo.Id == ORMBaseShape.IsExpandedMetaAttributeGuid))
+			{
+				return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if ((attributeInfo.Id == ORMBaseShape.AbsoluteBoundsMetaAttributeGuid))
+			{
+				return new ORMCustomSerializedAttributeInfo(null, null, null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			return ORMCustomSerializedAttributeInfo.Default;
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			if ((rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid))
+			{
+				return new ORMCustomSerializedElementInfo(null, "Subject", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			return ORMCustomSerializedElementInfo.Default;
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+		}
+		/// <summary>
+		///</summary>
+		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = ORMBaseShape.myChildElementMappings;
+			if ((childElementMappings == null))
+			{
+				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
+				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
+				match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
+				childElementMappings.Add("||http://Schemas.Neumont.edu/ORM/ORMDiagram|Subject", match);
+				match.InitializeRoles(ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
+				childElementMappings.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram|RelativeShapes||", match);
+				match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+				childElementMappings.Add("http://Schemas.Neumont.edu/ORM/ORMDiagram|NestedShapes||", match);
+				ORMBaseShape.myChildElementMappings = childElementMappings;
+			}
+			ORMCustomSerializedElementMatch rVal;
+			childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal);
+			return rVal;
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+		}
+		/// <summary>
+		///</summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = ORMBaseShape.myCustomSerializedAttributes;
+			if ((customSerializedAttributes == null))
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("IsExpanded", ORMBaseShape.IsExpandedMetaAttributeGuid);
+				customSerializedAttributes.Add("AbsoluteBounds", ORMBaseShape.AbsoluteBoundsMetaAttributeGuid);
+				ORMBaseShape.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (!((xmlNamespace.Length == 0)))
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			customSerializedAttributes.TryGetValue(key, out rVal);
+			return rVal;
+		}
+		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		private class CustomSortChildComparer : IComparer<MetaRoleInfo>
+		{
+			private Dictionary<string, int> myRoleOrderDictionary;
+			/// <summary>
+			///</summary>
+			public CustomSortChildComparer(Store store)
+			{
+				MetaDataDirectory metaDataDir = store.MetaDataDirectory;
+				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				MetaRoleInfo metaRole;
+				metaRole = metaDataDir.FindMetaRole(ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
+				metaRole = metaDataDir.FindMetaRole(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
+				metaRole = metaDataDir.FindMetaRole(SubjectHasPresentation.SubjectMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
+				this.myRoleOrderDictionary = roleOrderDictionary;
+			}
+			/// <summary>
+			///</summary>
+			public int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			{
+				int xPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
+				{
+					xPos = int.MaxValue;
+				}
+				int yPos;
+				if (!(this.myRoleOrderDictionary.TryGetValue(y.FullName, out yPos)))
+				{
+					yPos = int.MaxValue;
+				}
+				if ((xPos == yPos))
+				{
+					return 0;
+				}
+				else
+				{
+					if ((xPos < yPos))
+					{
+						return -1;
+					}
+				}
+				return 1;
+			}
+		}
+	}
+	/// <summary>
+	///</summary>
+	public partial class ObjectTypeShape : IORMCustomSerializedElement
+	{
+		/// <summary>
+		///</summary>
+		protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
+			}
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			if ((attributeInfo.Id == ObjectTypeShape.ShapeNameMetaAttributeGuid))
+			{
+				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if ((attributeInfo.Id == ObjectTypeShape.ReferenceModeNameMetaAttributeGuid))
+			{
+				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
+			{
+				return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			}
+			return ORMCustomSerializedAttributeInfo.Default;
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+		}
+	}
+	/// <summary>
+	///</summary>
+	public partial class ObjectifiedFactTypeNameShape : IORMCustomSerializedElement
+	{
+		/// <summary>
+		///</summary>
+		protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
+			}
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			if ((attributeInfo.Id == ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid))
+			{
+				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
+			{
+				return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			}
+			return ORMCustomSerializedAttributeInfo.Default;
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+		}
+	}
+	/// <summary>
+	///</summary>
+	public partial class ReadingShape : IORMCustomSerializedElement
+	{
+		/// <summary>
+		///</summary>
+		protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
+			}
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			if ((attributeInfo.Id == ReadingShape.ReadingTextMetaAttributeGuid))
+			{
+				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
+			{
+				return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			}
+			return ORMCustomSerializedAttributeInfo.Default;
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+		}
+	}
+	/// <summary>
+	///</summary>
+	public partial class ValueRangeShape : IORMCustomSerializedElement
+	{
+		/// <summary>
+		///</summary>
+		protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return (base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
+			}
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected new Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			if ((attributeInfo.Id == ValueRangeShape.ValueRangeTextMetaAttributeGuid))
+			{
+				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if ((0) != ((ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations)))
+			{
+				return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+			}
+			return ORMCustomSerializedAttributeInfo.Default;
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+		}
+	}
 }
