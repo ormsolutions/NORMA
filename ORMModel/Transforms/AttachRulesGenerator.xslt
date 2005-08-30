@@ -28,10 +28,10 @@
 		<plx:Namespace name="{$namespaceName}">
 			<plx:Class name="{@class}" visibility="Public" partial="true">
 				<plx:Function name="AllMetaModelTypes" visibility="Protected" override="true">
-					<plx:Param style="RetVal" name="" dataTypeName="Type" dataTypeIsSimpleArray="true"/>
+					<plx:Param type="RetVal" name="" dataTypeName="Type" dataTypeIsSimpleArray="true"/>
 					<plx:Variable name="retVal" dataTypeName="Type" dataTypeIsSimpleArray="true">
 						<plx:Initialize>
-							<plx:CallNew style="New" dataTypeName="Type" dataTypeIsSimpleArray="true">
+							<plx:CallNew type="New" dataTypeName="Type" dataTypeIsSimpleArray="true">
 								<plx:ArrayInitializer>
 									<xsl:variable name="contextClass" select="@class"/>
 									<xsl:for-each select="arg:Rule">
@@ -48,15 +48,15 @@
 							</plx:CallNew>
 						</plx:Initialize>
 					</plx:Variable>
-					<plx:CallType name="Assert" dataTypeName="Debug" dataTypeQualifier="System.Diagnostics">
+					<plx:CallStatic name="Assert" dataTypeName="Debug" dataTypeQualifier="System.Diagnostics">
 						<plx:PassParam>
-							<plx:Operator name="BooleanNot">
+							<plx:Operator type="BooleanNot">
 								<plx:CallInstance name="Contains">
 									<plx:CallObject>
-										<plx:Cast style="TypeCastException">
+										<plx:Cast type="TypeCastException">
 											<plx:TargetType dataTypeName="IList" dataTypeQualifier="System.Collections"/>
 											<plx:CastExpression>
-												<plx:Value type="Local">retVal</plx:Value>
+												<plx:Value type="Local" data="retVal"/>
 											</plx:CastExpression>
 										</plx:Cast>
 									</plx:CallObject>
@@ -69,9 +69,9 @@
 						<plx:PassParam>
 							<plx:String>One or more rule types failed to resolve. The file and/or package will fail to load.</plx:String>
 						</plx:PassParam>
-					</plx:CallType>
+					</plx:CallStatic>
 					<plx:Return>
-						<plx:Value type="Local">retVal</plx:Value>
+						<plx:Value type="Local" data="retVal"/>
 					</plx:Return>
 				</plx:Function>
 			</plx:Class>
@@ -153,12 +153,12 @@
 					</plx:String>
 				</plx:PassParam>
 				<plx:PassParam>
-					<plx:Operator name="BitwiseOr">
+					<plx:Operator type="BitwiseOr">
 						<plx:Left>
-							<plx:CallType name="Public" dataTypeName="BindingFlags" style="Field"/>
+							<plx:CallStatic name="Public" dataTypeName="BindingFlags" type="Field"/>
 						</plx:Left>
 						<plx:Right>
-							<plx:CallType name="NonPublic" dataTypeName="BindingFlags" style="Field"/>
+							<plx:CallStatic name="NonPublic" dataTypeName="BindingFlags" type="Field"/>
 						</plx:Right>
 					</plx:Operator>
 				</plx:PassParam>

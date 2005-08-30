@@ -56,16 +56,16 @@
 	<!--Object Types-->
 	<se:Element Class="ObjectType" Name="EntityType" SortChildElements="true" Override="true">
 		<se:ConditionalName Name="ValueType">
-			<plx:CallInstance name="IsValueType" style="Property">
+			<plx:CallInstance name="IsValueType" type="Property">
 				<plx:CallObject>
 					<plx:ThisKeyword/>
 				</plx:CallObject>
 			</plx:CallInstance>
 		</se:ConditionalName>
 		<se:ConditionalName Name="ObjectifiedType">
-			<plx:Operator name="IdentityInequality">
+			<plx:Operator type="IdentityInequality">
 				<plx:Left>
-					<plx:CallInstance name="NestedFactType" style="Property">
+					<plx:CallInstance name="NestedFactType" type="Property">
 						<plx:CallObject>
 							<plx:ThisKeyword/>
 						</plx:CallObject>
@@ -78,16 +78,16 @@
 		</se:ConditionalName>
 		<se:Attribute ID="ReferenceModeString"  Name="ReferenceMode" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:CallInstance name="IsValueType" style="Property">
+				<plx:CallInstance name="IsValueType" type="Property">
 					<plx:CallObject>
 						<plx:ThisKeyword/>
 					</plx:CallObject>
 				</plx:CallInstance>
 			</se:Condition>
 			<se:Condition WriteStyle="NotWritten">
-				<plx:Operator name="IdentityInequality">
+				<plx:Operator type="IdentityInequality">
 					<plx:Left>
-						<plx:CallInstance name="NestedFactType" style="Property">
+						<plx:CallInstance name="NestedFactType" type="Property">
 							<plx:CallObject>
 								<plx:ThisKeyword/>
 							</plx:CallObject>
@@ -143,9 +143,9 @@
 		<!--TODO: FactNotes-->
 		<!--TODO: Derivation Rule-->
 		<se:ConditionalName Name="ImpliedFact">
-			<plx:Operator name="IdentityInequality">
+			<plx:Operator type="IdentityInequality">
 				<plx:Left>
-					<plx:CallInstance name="ImpliedByObjectification" style="Property">
+					<plx:CallInstance name="ImpliedByObjectification" type="Property">
 						<plx:CallObject>
 							<plx:ThisKeyword/>
 						</plx:CallObject>
@@ -227,9 +227,9 @@
 	</se:Element>
 	<se:Element Class="ExternalUniquenessConstraint" Override="true" SortChildElements="true">
 		<se:ConditionalName Name="ImpliedExternalUniquenessConstraint">
-			<plx:Operator name="IdentityInequality">
+			<plx:Operator type="IdentityInequality">
 				<plx:Left>
-					<plx:CallInstance name="ImpliedByObjectification" style="Property">
+					<plx:CallInstance name="ImpliedByObjectification" type="Property">
 						<plx:CallObject>
 							<plx:ThisKeyword/>
 						</plx:CallObject>
@@ -256,9 +256,9 @@
 	</se:Element>
 	<se:Element Class="EqualityConstraint" SortChildElements="true" Override="true" >
 		<se:ConditionalName Name="ImpliedEqualityConstraint">
-			<plx:Operator name="IdentityInequality">
+			<plx:Operator type="IdentityInequality">
 				<plx:Left>
-					<plx:CallInstance name="ImpliedByObjectification" style="Property">
+					<plx:CallInstance name="ImpliedByObjectification" type="Property">
 						<plx:CallObject>
 							<plx:ThisKeyword/>
 						</plx:CallObject>
@@ -334,9 +334,9 @@
 	<se:Element Class="CompatibleRolePlayerTypeError" Override="true">
 		<se:Attribute ID="Column">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:Operator name="IdentityInequality">
+				<plx:Operator type="IdentityInequality">
 					<plx:Left>
-						<plx:CallInstance name="SingleColumnExternalConstraint" style="Property">
+						<plx:CallInstance name="SingleColumnExternalConstraint" type="Property">
 							<plx:CallObject>
 								<plx:ThisKeyword/>
 							</plx:CallObject>
