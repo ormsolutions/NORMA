@@ -84,7 +84,7 @@
 							<plx:Body>
 								<plx:Condition>
 									<plx:Test>
-										<plx:Operator type="IdentityInequality">
+										<plx:Operator type="IdentityEquality">
 											<plx:Left>
 												<plx:Value type="Local" data="sbMain"/>
 											</plx:Left>
@@ -399,8 +399,7 @@
 				<!-- Copy the constraint roles into an ordered set so that the following-sibling
 					 axis can be used to walk the ordered elements. The data is needed because a
 					 sorted for-each set does not affect the following-sibling axis order, which
-					 is relied on by the InternalConstraintArityConditions && InternalConstraintSpanConditions
-					 helper templates. -->
+					 is relied on by the InternalConstraintConditions helper template. -->
 				<xsl:variable name="sortedConstrainedRoles">
 					<xsl:for-each select="ve:ConstrainedRoles">
 						<!-- The actual order does not matter for specified fields,
@@ -412,15 +411,7 @@
 				</xsl:variable>
 				<xsl:for-each select="msxsl:node-set($sortedConstrainedRoles)/ve:ConstrainedRoles">
 					<xsl:if test="position()=1">
-						<xsl:choose>
-							<!-- An arity match is specified, use as the outer check -->
-							<xsl:when test="string-length(@arity)">
-								<xsl:call-template name="InternalConstraintArityConditions"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:call-template name="InternalConstraintSpanConditions"/>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:call-template name="InternalConstraintConditions"/>
 					</xsl:if>
 				</xsl:for-each>
 				<plx:Return>
@@ -433,110 +424,79 @@
 			</plx:Function>
 		</plx:Class>
 	</xsl:template>
-	<!-- Helper template for spitting conditional pattern matches based on arity. The assumption
-		 is made that the arity attribute for the current node is set, and that the elements in
-		 the parent context are ordered by arity/span (non-blank elements first). This defers
-		 to the InternalConstraintSpanConditions template for all body content. -->
-	<xsl:template name="InternalConstraintArityConditions">
+	<!-- Helper template for spitting conditions based on the specified arity and span
+		 settings. Note that this was originally done with a nested if pattern where arity
+		 was matched first, then span. However, picking up the 'global else' case would
+		 have required duplicating code or a 'handled' variable and a separate if (!handled)
+		 check. Given that the comparisons are cheap and the alternative is complicated, we
+		 abandoned this approach in favor of retesting arity values.
+		 
+		 Note that this template assumes that the unconstrained condition is sorted last -->
+	<xsl:template name="InternalConstraintConditions">
 		<xsl:param name="fallback" select="false()"/>
-		<xsl:variable name="matchArity" select="@arity"/>
-		<xsl:choose>
-			<xsl:when test="$fallback">
+		<xsl:variable name="conditionTestFragment">
+			<xsl:variable name="spanConditionFragment">
 				<xsl:choose>
-					<xsl:when test="string-length(@arity)">
-						<plx:FallbackCondition>
-							<plx:Test>
-								<plx:Operator type="Equality">
-									<plx:Left>
-										<plx:Value type="Local" data="fullArity"/>
-									</plx:Left>
-									<plx:Right>
-										<plx:Value type="I4" data="{$matchArity}"/>
-									</plx:Right>
-								</plx:Operator>
-							</plx:Test>
-							<plx:Body>
-								<xsl:call-template name="InternalConstraintSpanConditions">
-									<xsl:with-param name="contextArity" select="$matchArity"/>
-								</xsl:call-template>
-							</plx:Body>
-						</plx:FallbackCondition>
-						<xsl:for-each select="following-sibling::*[not(@arity=$matchArity)]">
-							<xsl:if test="position()=1">
-								<xsl:call-template name="InternalConstraintArityConditions">
-									<xsl:with-param name="fallback" select="true()"/>
-									<xsl:with-param name="contextArity" select="@arity"/>
-								</xsl:call-template>
-							</xsl:if>
-						</xsl:for-each>
-					</xsl:when>
-					<xsl:otherwise>
-						<plx:Alternate>
-							<xsl:call-template name="InternalConstraintSpanConditions"/>
-						</plx:Alternate>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:otherwise>
-				<plx:Condition>
-					<plx:Test>
+					<xsl:when test="@span='all'">
 						<plx:Operator type="Equality">
 							<plx:Left>
 								<plx:Value type="Local" data="fullArity"/>
 							</plx:Left>
 							<plx:Right>
-								<plx:Value type="I4" data="{$matchArity}"/>
+								<plx:Value type="Local" data="includedArity"/>
 							</plx:Right>
 						</plx:Operator>
-					</plx:Test>
-					<plx:Body>
-						<xsl:call-template name="InternalConstraintSpanConditions">
-							<xsl:with-param name="contextArity" select="$matchArity"/>
-						</xsl:call-template>
-					</plx:Body>
-					<xsl:for-each select="following-sibling::*[not(@arity=$matchArity)]">
-						<xsl:if test="position()=1">
-							<xsl:call-template name="InternalConstraintArityConditions">
-								<xsl:with-param name="fallback" select="true()"/>
-							</xsl:call-template>
-						</xsl:if>
-					</xsl:for-each>
-				</plx:Condition>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	<!-- Helper template for spitting conditional pattern matches based on span. -->
-	<xsl:template name="InternalConstraintSpanConditions">
-		<xsl:param name="fallback" select="false()"/>
-		<xsl:param name="contextArity" select="''"/>
-		<xsl:variable name="matchSpan" select="@span"/>
+					</xsl:when>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="spanCondition" select="msxsl:node-set($spanConditionFragment)/child::*"/>
+			<xsl:variable name="arityConditionFragment">
+				<xsl:choose>
+					<xsl:when test="string-length(@arity)">
+						<plx:Operator type="Equality">
+							<plx:Left>
+								<plx:Value type="Local" data="fullArity"/>
+							</plx:Left>
+							<plx:Right>
+								<plx:Value type="I4" data="{@arity}"/>
+							</plx:Right>
+						</plx:Operator>
+					</xsl:when>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="arityCondition" select="msxsl:node-set($arityConditionFragment)/child::*"/>
+			<xsl:choose>
+				<xsl:when test="$arityCondition and $spanCondition">
+					<plx:Operator type="BooleanAnd">
+						<plx:Left>
+							<xsl:copy-of select="$spanCondition"/>
+						</plx:Left>
+						<plx:Right>
+							<xsl:copy-of select="$arityCondition"/>
+						</plx:Right>
+					</plx:Operator>
+				</xsl:when>
+				<xsl:when test="$arityCondition">
+					<xsl:copy-of select="$arityCondition"/>
+				</xsl:when>
+				<xsl:when test="$spanCondition">
+					<xsl:copy-of select="$spanCondition"/>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="conditionTest" select="msxsl:node-set($conditionTestFragment)/child::*"/>
 		<xsl:choose>
 			<xsl:when test="$fallback">
 				<xsl:choose>
-					<xsl:when test="$matchSpan='All'">
+					<xsl:when test="$conditionTest">
 						<plx:FallbackCondition>
 							<plx:Test>
-								<plx:Operator type="Equality">
-									<plx:Left>
-										<plx:Value type="Local" data="fullArity"/>
-									</plx:Left>
-									<plx:Right>
-										<plx:Value type="Local" data="includedArity"/>
-									</plx:Right>
-								</plx:Operator>
+								<xsl:copy-of select="$conditionTest"/>
 							</plx:Test>
 							<plx:Body>
 								<xsl:call-template name="InternalConstraintBodyContent"/>
 							</plx:Body>
 						</plx:FallbackCondition>
-						<xsl:for-each select="following-sibling::*[not(@span=$matchSpan) and string(@arity)=$contextArity]">
-							<xsl:if test="position()=1">
-								<xsl:call-template name="InternalConstraintSpanConditions">
-									<xsl:with-param name="fallback" select="true()"/>
-									<xsl:with-param name="contextArity" select="@contextArity"/>
-								</xsl:call-template>
-							</xsl:if>
-						</xsl:for-each>
 					</xsl:when>
 					<xsl:otherwise>
 						<plx:Alternate>
@@ -547,28 +507,18 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:choose>
-					<xsl:when test="$matchSpan='All'">
+					<xsl:when test="$conditionTest">
 						<plx:Condition>
 							<plx:Test>
-								<plx:Operator type="Equality">
-									<plx:Left>
-										<plx:Value type="Local" data="fullArity"/>
-									</plx:Left>
-									<plx:Right>
-										<plx:Value type="Local" data="includedArity"/>
-									</plx:Right>
-								</plx:Operator>
+								<xsl:copy-of select="$conditionTest"/>
 							</plx:Test>
 							<plx:Body>
 								<xsl:call-template name="InternalConstraintBodyContent"/>
 							</plx:Body>
-							<xsl:for-each select="following-sibling::*[not(@span=$matchSpan) and string(@arity)=$contextArity]">
-								<xsl:if test="position()=1">
-									<xsl:call-template name="InternalConstraintSpanConditions">
-										<xsl:with-param name="fallback" select="true()"/>
-										<xsl:with-param name="contextArity" select="@contextArity"/>
-									</xsl:call-template>
-								</xsl:if>
+							<xsl:for-each select="following-sibling::*">
+								<xsl:call-template name="InternalConstraintConditions">
+									<xsl:with-param name="fallback" select="true()"/>
+								</xsl:call-template>
 							</xsl:for-each>
 						</plx:Condition>
 					</xsl:when>
@@ -664,6 +614,8 @@
 			</plx:Variable>
 			<xsl:apply-templates select="."  mode="InternalConstraintVerbalization">
 				<xsl:with-param name="VariablePrefix" select="concat($VariablePrefix,$VariableDecorator,'replace')"/>
+				<!-- The position will jump back to 1 with this call, so pick up the real position before jumping -->
+				<xsl:with-param name="VariableDecorator" select="position()"/>
 				<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 			</xsl:apply-templates>
 		</xsl:for-each>
@@ -842,59 +794,36 @@
 						</plx:Operator>
 					</plx:Body>
 				</plx:Loop>
-				<!-- Append this fact to our temp statement builder-->
-				<plx:CallInstance name="Append">
-					<plx:CallObject>
-						<plx:Value type="Local" data="sbTemp"/>
-					</plx:CallObject>
-					<plx:PassParam>
-						<plx:CallStatic name="PopulatePredicateText" dataTypeName="FactType">
-							<plx:PassParam>
-								<plx:Value type="Local" data="readingOrder"/>
-							</plx:PassParam>
-							<plx:PassParam>
-								<plx:Value type="Local" data="allRoles"/>
-							</plx:PassParam>
-							<plx:PassParam>
-								<plx:Value type="Local" data="roleReplacements"/>
-							</plx:PassParam>
-						</plx:CallStatic>
-					</plx:PassParam>
-				</plx:CallInstance>
-				<plx:Operator type="Assign">
-					<plx:Left>
-						<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
-					</plx:Left>
-					<plx:Right>
-						<plx:CallInstance name="ToString">
-							<plx:CallObject>
-								<plx:Value type="Local" data="sbTemp"/>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Right>
-				</plx:Operator>
 			</xsl:when>
-			<xsl:otherwise>
-				<plx:Operator type="Assign">
-					<plx:Left>
-						<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
-					</plx:Left>
-					<plx:Right>
-						<plx:CallStatic name="PopulatePredicateText" dataTypeName="FactType">
-							<plx:PassParam>
-								<plx:Value type="Local" data="readingOrder"/>
-							</plx:PassParam>
-							<plx:PassParam>
-								<plx:Value type="Local" data="allRoles"/>
-							</plx:PassParam>
-							<plx:PassParam>
-								<plx:Value type="Local" data="basicRoleReplacements"/>
-							</plx:PassParam>
-						</plx:CallStatic>
-					</plx:Right>
-				</plx:Operator>
-			</xsl:otherwise>
 		</xsl:choose>
+		<plx:Operator type="Assign">
+			<plx:Left>
+				<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
+			</plx:Left>
+			<plx:Right>
+				<plx:CallStatic name="PopulatePredicateText" dataTypeName="FactType">
+					<plx:PassParam>
+						<plx:Value type="Local" data="readingOrder"/>
+					</plx:PassParam>
+					<plx:PassParam>
+						<plx:Value type="Local" data="allRoles"/>
+					</plx:PassParam>
+					<plx:PassParam>
+						<xsl:variable name="replacementSet">
+							<xsl:choose>
+								<xsl:when test="$complexReplacement">
+									<xsl:text>roleReplacements</xsl:text>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:text>basicRoleReplacements</xsl:text>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<plx:Value type="Local" data="{$replacementSet}"/>
+					</plx:PassParam>
+				</plx:CallStatic>
+			</plx:Right>
+		</plx:Operator>
 	</xsl:template>
 	<xsl:template name="PredicateReplacementConditionTest">
 		<xsl:param name="Match"/>
@@ -1190,13 +1119,78 @@
 				</plx:Condition>
 
 				<!-- Process the child contents for this role -->
-				<xsl:for-each select="child::ve:*">
-					<xsl:apply-templates select="." mode="InternalConstraintVerbalization">
-						<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
-						<xsl:with-param name="IteratorContext" select="$contextMatch"/>
-					</xsl:apply-templates>
-				</xsl:for-each>
-				
+				<xsl:choose>
+					<xsl:when test="count(child::*)">
+						<xsl:for-each select="child::*">
+							<!-- Let children assign directly to the normal replacement variable so
+						 that we don't have to communicate down the stack that they should assign
+						 directly to the temp string builder. -->
+							<plx:Operator type="Assign">
+								<plx:Left>
+									<plx:Value type="Local" data="{$VariablePrefix}{position()}"/>
+								</plx:Left>
+								<plx:Right>
+									<plx:NullObjectKeyword/>
+								</plx:Right>
+							</plx:Operator>
+							<xsl:apply-templates select="." mode="InternalConstraintVerbalization">
+								<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+								<!-- Pass the position in here or it will always be 1 -->
+								<xsl:with-param name="VariableDecorator" select="position()"/>
+								<xsl:with-param name="IteratorContext" select="$contextMatch"/>
+							</xsl:apply-templates>
+							<plx:CallInstance name="Append">
+								<plx:CallObject>
+									<plx:Value type="Local" data="sbTemp"/>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:Value type="Local" data="{$VariablePrefix}{position()}"/>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:CallInstance name="Append">
+							<plx:CallObject>
+								<plx:Value type="Local" data="sbTemp"/>
+							</plx:CallObject>
+							<plx:PassParam>
+								<plx:CallInstance name="" type="ArrayIndexer">
+									<plx:CallObject>
+										<plx:Value type="Local" data="basicRoleReplacements"/>
+									</plx:CallObject>
+									<plx:PassParam>
+										<xsl:choose>
+											<xsl:when test="@match='included'">
+												<!-- The role index needs to be retrieved from the all roles list -->
+												<plx:CallInstance name="IndexOf">
+													<plx:CallObject>
+														<plx:Value type="Local" data="allRoles"/>
+													</plx:CallObject>
+													<plx:PassParam>
+														<plx:CallInstance name="" type="ArrayIndexer">
+															<plx:CallObject>
+																<plx:Value type="Local" data="includedRoles"/>
+															</plx:CallObject>
+															<plx:PassParam>
+																<plx:Value type="Local" data="{$iterVarName}"/>
+															</plx:PassParam>
+														</plx:CallInstance>
+													</plx:PassParam>
+												</plx:CallInstance>
+											</xsl:when>
+											<!-- UNDONE: Support excluded match -->
+											<xsl:otherwise>
+												<plx:Value type="Local" data="{$iterVarName}"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</plx:PassParam>
+						</plx:CallInstance>
+					</xsl:otherwise>
+				</xsl:choose>
+
 				<!-- Use the current snippets data to close the list -->
 				<plx:Condition>
 					<plx:Test>
@@ -1243,6 +1237,18 @@
 				</plx:Condition>
 			</plx:Body>
 		</plx:Loop>
+		<plx:Operator type="Assign">
+			<plx:Left>
+				<plx:Value type="Local" data="{$VariablePrefix}{position()}"/>
+			</plx:Left>
+			<plx:Right>
+				<plx:CallInstance name="ToString">
+					<plx:CallObject>
+						<plx:Value type="Local" data="sbTemp"/>
+					</plx:CallObject>
+				</plx:CallInstance>
+			</plx:Right>
+		</plx:Operator>
 	</xsl:template>
 	<!-- Get the snippet value from the current snippets set.
 		 This assumes snippets, isDeontic and isNegative local

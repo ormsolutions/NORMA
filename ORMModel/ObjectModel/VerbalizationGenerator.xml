@@ -79,13 +79,13 @@
 	<Constructs>
 		<Constraints>
 			<Constraint type="InternalUniquenessConstraint" patternGroup="InternalConstraint">
-				<ConstrainedRoles span="All" arity="2">
+				<ConstrainedRoles span="all" arity="2">
 					<Quantifier type="EachInstanceQuantifier">
 						<Fact/>
 					</Quantifier>
 					<Quantifier type="ModalPossibilityOperator">
 						<IterateRoles listStyle="IndentedList">
-							<!-- match="included" is not needed here because we've already filtered on span="All" -->
+							<!-- match="included" is not needed here because we've already filtered on span="all" -->
 							<Fact readingChoice="PreferPrimaryLeadReading">
 								<PredicateReplacement match="primary">
 									<Quantifier type="IdentityReferenceQuantifier"/>
@@ -97,7 +97,7 @@
 						</IterateRoles>
 					</Quantifier>
 				</ConstrainedRoles>
-				<ConstrainedRoles span="All">
+				<ConstrainedRoles span="all">
 					<Quantifier type="EachInstanceQuantifier">
 						<Fact/>
 					</Quantifier>
@@ -111,7 +111,9 @@
 									<PredicateReplacement match="included">
 										<Quantifier type="ImpersonalPronoun"/>
 									</PredicateReplacement>
-									<PredicateReplacement match="excluded">
+									<!-- match="excluded" is not needed here because it
+										 is implied by the previous replacement.-->
+									<PredicateReplacement>
 										<Quantifier type="AtMostOneQuantifier"/>
 									</PredicateReplacement>
 								</Fact>

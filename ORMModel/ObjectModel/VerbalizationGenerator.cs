@@ -215,7 +215,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				foreach (ModelError error in errorOwner.ErrorCollection)
 				{
-					if ((sbMain != null))
+					if ((sbMain == null))
 					{
 						sbMain = new StringBuilder();
 					}
@@ -261,80 +261,80 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				basicRoleReplacements[i] = basicReplacement;
 			}
-			if ((fullArity == 2))
+			if (((fullArity == includedArity) 
+						&& (fullArity == 2)))
 			{
-				if ((fullArity == includedArity))
+				string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.EachInstanceQuantifier, isDeontic, isNegative);
+				string snippet1replace1 = null;
+				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, allRoles[0], null, allRoles, true);
+				snippet1replace1 = FactType.PopulatePredicateText(readingOrder, allRoles, basicRoleReplacements);
+				sbMain.AppendFormat(CultureInfo.CurrentUICulture, snippet1, snippet1replace1);
+				sbMain.AppendLine();
+				string snippet2 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
+				string snippet2replace1 = null;
+				if ((sbTemp == null))
 				{
-					string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.EachInstanceQuantifier, isDeontic, isNegative);
-					string snippet1replace1 = null;
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, allRoles[0], null, allRoles, true);
-					snippet1replace1 = FactType.PopulatePredicateText(readingOrder, allRoles, basicRoleReplacements);
-					sbMain.AppendFormat(CultureInfo.CurrentUICulture, snippet1, snippet1replace1);
-					sbMain.AppendLine();
-					string snippet2 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
-					string snippet2replace1 = null;
-					if ((sbTemp == null))
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				int snippet2replaceroleIter1 = 0;
+				for (; (snippet2replaceroleIter1 < fullArity); snippet2replaceroleIter1 = (snippet2replaceroleIter1 + 1))
+				{
+					Role primaryRole = allRoles[snippet2replaceroleIter1];
+					if ((snippet2replaceroleIter1 == 0))
 					{
-						sbTemp = new StringBuilder();
+						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedListOpen, isDeontic, isNegative));
 					}
 					else
 					{
-						sbTemp.Length = 0;
-					}
-					int snippet2replaceroleIter1 = 0;
-					for (; (snippet2replaceroleIter1 < fullArity); snippet2replaceroleIter1 = (snippet2replaceroleIter1 + 1))
-					{
-						Role primaryRole = allRoles[snippet2replaceroleIter1];
-						if ((snippet2replaceroleIter1 == 0))
-						{
-							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedListOpen, isDeontic, isNegative));
-						}
-						else
-						{
-							if ((snippet2replaceroleIter1 
-										== (fullArity - 1)))
-							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedListFinalSeparator, isDeontic, isNegative));
-							}
-							else
-							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedListFinalSeparator, isDeontic, isNegative));
-							}
-						}
-						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, primaryRole, null, allRoles, true);
-						int snippet2replacefactRoleIter1 = 0;
-						for (; (snippet2replacefactRoleIter1 < fullArity); snippet2replacefactRoleIter1 = (snippet2replacefactRoleIter1 + 1))
-						{
-							Role currentRole = allRoles[snippet2replacefactRoleIter1];
-							string roleReplacement = null;
-							string basicReplacement = basicRoleReplacements[snippet2replacefactRoleIter1];
-							if ((primaryRole == currentRole))
-							{
-								roleReplacement = string.Format(CultureInfo.CurrentUICulture, snippets.GetSnippet(VerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative), basicReplacement);
-							}
-							else
-							{
-								if ((primaryRole != currentRole))
-								{
-									roleReplacement = string.Format(CultureInfo.CurrentUICulture, snippets.GetSnippet(VerbalizationTextSnippetType.MoreThanOneQuantifier, isDeontic, isNegative), basicReplacement);
-								}
-							}
-							if ((roleReplacement == null))
-							{
-								roleReplacement = basicReplacement;
-							}
-							roleReplacements[snippet2replacefactRoleIter1] = roleReplacement;
-						}
-						sbTemp.Append(FactType.PopulatePredicateText(readingOrder, allRoles, roleReplacements));
-						snippet2replace1 = sbTemp.ToString();
 						if ((snippet2replaceroleIter1 
 									== (fullArity - 1)))
 						{
-							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedListClose, isDeontic, isNegative));
+							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedListFinalSeparator, isDeontic, isNegative));
+						}
+						else
+						{
+							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedListFinalSeparator, isDeontic, isNegative));
 						}
 					}
-					sbMain.AppendFormat(CultureInfo.CurrentUICulture, snippet2, snippet2replace1);
+					snippet2replace1 = null;
+					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, primaryRole, null, allRoles, true);
+					int snippet2replacefactRoleIter1 = 0;
+					for (; (snippet2replacefactRoleIter1 < fullArity); snippet2replacefactRoleIter1 = (snippet2replacefactRoleIter1 + 1))
+					{
+						Role currentRole = allRoles[snippet2replacefactRoleIter1];
+						string roleReplacement = null;
+						string basicReplacement = basicRoleReplacements[snippet2replacefactRoleIter1];
+						if ((primaryRole == currentRole))
+						{
+							roleReplacement = string.Format(CultureInfo.CurrentUICulture, snippets.GetSnippet(VerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative), basicReplacement);
+						}
+						else
+						{
+							if ((primaryRole != currentRole))
+							{
+								roleReplacement = string.Format(CultureInfo.CurrentUICulture, snippets.GetSnippet(VerbalizationTextSnippetType.MoreThanOneQuantifier, isDeontic, isNegative), basicReplacement);
+							}
+						}
+						if ((roleReplacement == null))
+						{
+							roleReplacement = basicReplacement;
+						}
+						roleReplacements[snippet2replacefactRoleIter1] = roleReplacement;
+					}
+					snippet2replace1 = FactType.PopulatePredicateText(readingOrder, allRoles, roleReplacements);
+					sbTemp.Append(snippet2replace1);
+					if ((snippet2replaceroleIter1 
+								== (fullArity - 1)))
+					{
+						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedListClose, isDeontic, isNegative));
+					}
 				}
+				snippet2replace1 = sbTemp.ToString();
+				sbMain.AppendFormat(CultureInfo.CurrentUICulture, snippet2, snippet2replace1);
 			}
 			else
 			{
@@ -381,38 +381,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 									sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListFinalSeparator, isDeontic, isNegative));
 								}
 							}
+							sbTemp.Append(basicRoleReplacements[allRoles.IndexOf(includedRoles[snippet1replaceroleIter1])]);
 							if ((snippet1replaceroleIter1 
 										== (includedArity - 1)))
 							{
 								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 							}
 						}
+						snippet1replace1 = sbTemp.ToString();
 						string snippet1replace2 = null;
-						int snippet1replacefactRoleIter1 = 0;
-						for (; (snippet1replacefactRoleIter1 < fullArity); snippet1replacefactRoleIter1 = (snippet1replacefactRoleIter1 + 1))
+						int snippet1replacefactRoleIter2 = 0;
+						for (; (snippet1replacefactRoleIter2 < fullArity); snippet1replacefactRoleIter2 = (snippet1replacefactRoleIter2 + 1))
 						{
-							Role currentRole = allRoles[snippet1replacefactRoleIter1];
+							Role currentRole = allRoles[snippet1replacefactRoleIter2];
 							string roleReplacement = null;
-							string basicReplacement = basicRoleReplacements[snippet1replacefactRoleIter1];
+							string basicReplacement = basicRoleReplacements[snippet1replacefactRoleIter2];
 							if (includedRoles.Contains(currentRole))
 							{
 								roleReplacement = string.Format(CultureInfo.CurrentUICulture, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
 							}
 							else
 							{
-								if (!(includedRoles.Contains(currentRole)))
-								{
-									roleReplacement = string.Format(CultureInfo.CurrentUICulture, snippets.GetSnippet(VerbalizationTextSnippetType.AtMostOneQuantifier, isDeontic, isNegative), basicReplacement);
-								}
+								roleReplacement = string.Format(CultureInfo.CurrentUICulture, snippets.GetSnippet(VerbalizationTextSnippetType.AtMostOneQuantifier, isDeontic, isNegative), basicReplacement);
 							}
 							if ((roleReplacement == null))
 							{
 								roleReplacement = basicReplacement;
 							}
-							roleReplacements[snippet1replacefactRoleIter1] = roleReplacement;
+							roleReplacements[snippet1replacefactRoleIter2] = roleReplacement;
 						}
-						sbTemp.Append(FactType.PopulatePredicateText(readingOrder, allRoles, roleReplacements));
-						snippet1replace1 = sbTemp.ToString();
+						snippet1replace2 = FactType.PopulatePredicateText(readingOrder, allRoles, roleReplacements);
 						sbMain.AppendFormat(CultureInfo.CurrentUICulture, snippet1, snippet1replace1, snippet1replace2);
 					}
 					else

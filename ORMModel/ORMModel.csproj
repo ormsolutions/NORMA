@@ -146,7 +146,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>VerbalizationGenerator.xml</DependentUpon>
     </Compile>
-    <Compile Include="ObjectModel\VerbalizeSample.cs" />
+    <Compile Include="ObjectModel\Verbalization.cs" />
     <Compile Include="Resources\ResourceStringsGenerator.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
