@@ -142,6 +142,11 @@
     </Compile>
     <Compile Include="ObjectModel\SubtypeFact.cs" />
     <Compile Include="ObjectModel\ValueRange.cs" />
+    <Compile Include="ObjectModel\VerbalizationGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VerbalizationGenerator.xml</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectModel\VerbalizeSample.cs" />
     <Compile Include="Resources\ResourceStringsGenerator.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>ResourceStringsGenerator.xml</DependentUpon>
@@ -247,6 +252,7 @@
     <EmbeddedResource Include="ShapeModel\ORMShape.dsldm.resx">
       <DependentUpon>ORMShape.dsldm.cs</DependentUpon>
     </EmbeddedResource>
+    <Content Include="ObjectModel\VerbalizationGenerator.Sets.xslt" />
     <Content Include="ObjectModel\DataTypesGenerator.xslt" />
     <Content Include="ObjectModel\DataTypesGenerator.xml">
       <Generator>NUPlixLoader</Generator>
@@ -265,7 +271,14 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.AttachRules.cs</LastGenOutput>
     </Content>
-    <None Include="Plix.xml" />
+    <None Include="Plix.xml">
+      <LastGenOutput>Plix.cs</LastGenOutput>
+    </None>
+    <Content Include="ObjectModel\VerbalizationGenerator.xml">
+      <Generator>NUPlixLoader</Generator>
+      <LastGenOutput>VerbalizationGenerator.cs</LastGenOutput>
+    </Content>
+    <Content Include="ObjectModel\VerbalizationGenerator.xslt" />
     <Content Include="Resources\AboutBox.ico" />
     <Content Include="Resources\ORM.ico" />
     <Content Include="Resources\ResourceStringsGenerator.xml">

@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root xmlns="http://Schemas.Neumont.edu/ORM/SDK/Verbalization">
+	<Languages>
+		<Language code="en-us">
+			<FormalItems>
+				<FormalItem type="UniversalQuantifier">
+					<Form style="Basic">each {0}</Form>
+				</FormalItem>
+				<FormalItem type="ImpersonalPronoun">
+					<Form style="Basic">that {0}</Form>
+				</FormalItem>
+				<FormalItem type="AtMostOneQuantifier">
+					<Form style="Basic">at most one {0}</Form>
+				</FormalItem>
+				<FormalItem type="EachInstanceQuantifier">
+					<Form style="Basic">each instance of {0} occurs only once</Form>
+				</FormalItem>
+				<FormalItem type="GivenAnyQuantifier">
+					<Form style="Basic">given any {0} {1}</Form>
+				</FormalItem>
+				<FormalItem type="ExistentialQuantifier">
+					<Form style="Basic">some {0}</Form>
+					<SplitForm style="Advanced">
+						<Form condition="PreConsonant">a {0}</Form>
+						<Form condition="PreVowel">an {0}</Form>
+					</SplitForm>
+				</FormalItem>
+				<FormalItem type="IdentityReferenceQuantifier">
+					<Form style="Basic">the same {0}</Form>
+				</FormalItem>
+				<FormalItem type="MoreThanOneQuantifier">
+					<Form style="Basic">more than one {0}</Form>
+				</FormalItem>
+				<FormalItem type="ModalPossibilityOperator" modality="alethic" sign="+">
+					<Form style="Basic">it is possible that {0}</Form>
+				</FormalItem>
+				<FormalItem type="ModalPossibilityOperator" modality="deontic" sign="+">
+					<Form style="Basic">it is permitted that {0}</Form>
+				</FormalItem>
+				<FormalItem type="ModalPossibilityOperator" modality="alethic" sign="-">
+					<Form style="Basic">it is impossible that {0}</Form>
+				</FormalItem>
+				<FormalItem type="ModalPossibilityOperator" modality="deontic" sign="-">
+					<Form style="Basic">it is forbidden that {0}</Form>
+				</FormalItem>
+				<FormalItem type="ModalNecessityOperator" modality="alethic">
+					<Form style="Basic">it is necessary that {0}</Form>
+				</FormalItem>
+				<FormalItem type="ModalNecessityOperator" modality="deontic">
+					<Form style="Basic">it is obligatory that {0}</Form>
+				</FormalItem>
+				<FormalItem type="IndentedListOpen">
+					<Form style="Basic">&#xD;&#xA;&#x9;</Form>
+				</FormalItem>
+				<FormalItem type="IndentedListSeparator">
+					<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>
+				</FormalItem>
+				<FormalItem type="IndentedListFinalSeparator">
+					<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>
+				</FormalItem>
+				<FormalItem type="IndentedListClose">
+					<Form style="Basic"></Form>
+				</FormalItem>
+				<FormalItem type="SimpleListOpen">
+					<Form style="Basic"></Form>
+				</FormalItem>
+				<FormalItem type="SimpleListSeparator">
+					<Form style="Basic">, </Form>
+				</FormalItem>
+				<FormalItem type="SimpleListFinalSeparator">
+					<Form style="Basic">, and </Form>
+				</FormalItem>
+				<FormalItem type="SimpleListClose">
+					<Form style="Basic"></Form>
+				</FormalItem>
+			</FormalItems>
+		</Language>
+	</Languages>
+	<Constructs>
+		<Constraints>
+			<Constraint type="InternalUniquenessConstraint" patternGroup="InternalConstraint">
+				<ConstrainedRoles span="All" arity="2">
+					<Quantifier type="EachInstanceQuantifier">
+						<Fact/>
+					</Quantifier>
+					<Quantifier type="ModalPossibilityOperator">
+						<IterateRoles listStyle="IndentedList">
+							<!-- match="included" is not needed here because we've already filtered on span="All" -->
+							<Fact readingChoice="PreferPrimaryLeadReading">
+								<PredicateReplacement match="primary">
+									<Quantifier type="IdentityReferenceQuantifier"/>
+								</PredicateReplacement>
+								<PredicateReplacement match="secondary">
+									<Quantifier type="MoreThanOneQuantifier"/>
+								</PredicateReplacement>
+							</Fact>
+						</IterateRoles>
+					</Quantifier>
+				</ConstrainedRoles>
+				<ConstrainedRoles span="All">
+					<Quantifier type="EachInstanceQuantifier">
+						<Fact/>
+					</Quantifier>
+				</ConstrainedRoles>
+				<ConstrainedRoles>
+					<ConditionalReading>
+						<ReadingChoice match="LeadReading">
+							<Quantifier type="GivenAnyQuantifier">
+								<IterateRoles listStyle="SimpleList" match="included"/>
+								<Fact readingChoice="Conditional">
+									<PredicateReplacement match="included">
+										<Quantifier type="ImpersonalPronoun"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="excluded">
+										<Quantifier type="AtMostOneQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</Quantifier>
+						</ReadingChoice>
+						<ReadingChoice>
+							<!-- Fallback choice -->
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+			</Constraint>
+		</Constraints>
+	</Constructs>
+</Root>

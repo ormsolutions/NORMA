@@ -13355,6 +13355,36 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="VerbalizationSet">
+          <Messages>
+           <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Created="2005-08-31 15:41:24Z">
+            <Issue Name="Equals">
+             <Item>Neumont.Tools.ORM.ObjectModel.VerbalizationSet</Item>
+            </Issue>
+            <Issue Name="op_Equality">
+             <Item>Neumont.Tools.ORM.ObjectModel.VerbalizationSet</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="VerbalizationSets">
+          <Members>
+           <Member Name="Default">
+            <Messages>
+             <Message TypeName="NonConstantFieldsShouldNotBeVisible" Category="Microsoft.Usage" CheckId="CA2211" Status="Excluded" Created="2005-08-31 15:41:24Z">
+              <Issue>
+               <Item>Default</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="59" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="YesOrNoLogicalDataTypeElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
@@ -18036,6 +18066,7 @@
     <Note Id="56" Modified="2005-08-22 18:15:46Z">DSLTools code spit</Note>
     <Note Id="57" Modified="2005-08-22 18:16:12Z">Interface implementation</Note>
     <Note Id="58" Modified="2005-08-22 18:16:31Z">Interface pattern function</Note>
+    <Note Id="59" Modified="2005-08-31 15:42:38Z">CodeDom doesn't spit readonly, which is what I really want. The class being spit is not editable.</Note>
    </User>
    <User Name="obuhler">
     <Note Id="0" Modified="2005-07-29 21:45:56Z">Rule classes instantiated via reflection</Note>
