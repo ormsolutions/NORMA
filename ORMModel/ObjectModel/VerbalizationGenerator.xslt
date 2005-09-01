@@ -1118,7 +1118,7 @@
 											<plx:Value type="Local" data="{$iterVarName}"/>
 										</plx:Left>
 										<plx:Right>
-											<plx:Value type="I4" data="2"/>
+											<plx:Value type="I4" data="1"/>
 										</plx:Right>
 									</plx:Operator>
 								</plx:Test>

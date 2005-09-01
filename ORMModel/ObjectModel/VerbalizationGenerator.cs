@@ -29,6 +29,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ExistentialQuantifier,
 		/// <summary>
 		///</summary>
+		ForEachCompactQuantifier,
+		/// <summary>
+		///</summary>
 		ForEachQuantifier,
 		/// <summary>
 		///</summary>
@@ -132,6 +135,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"each instance of {0} occurs only once",
 								"some {0}",
 								"for each {0} {1}",
+								"for each {0},\r\n\t{1}",
 								"the same {0}",
 								"that {0}",
 								"",
@@ -153,6 +157,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"each instance of {0} occurs only once",
 								"some {0}",
 								"for each {0} {1}",
+								"for each {0},\r\n\t{1}",
 								"the same {0}",
 								"that {0}",
 								"",
@@ -174,6 +179,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"each instance of {0} occurs only once",
 								"some {0}",
 								"for each {0} {1}",
+								"for each {0},\r\n\t{1}",
 								"the same {0}",
 								"that {0}",
 								"",
@@ -195,6 +201,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"each instance of {0} occurs only once",
 								"some {0}",
 								"for each {0} {1}",
+								"for each {0},\r\n\t{1}",
 								"the same {0}",
 								"that {0}",
 								"",
@@ -308,7 +315,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if ((snippet2replaceroleIter1 
 									== (fullArity - 1)))
 						{
-							if ((snippet2replaceroleIter1 == 2))
+							if ((snippet2replaceroleIter1 == 1))
 							{
 								listSnippet = VerbalizationTextSnippetType.IndentedListPairSeparator;
 							}
@@ -393,7 +400,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, allRoles[0], null, allRoles, true);
 						if ((readingOrder != null))
 						{
-							string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
+							string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 							string snippet1replace1 = null;
 							if ((sbTemp == null))
 							{
@@ -417,7 +424,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									if ((snippet1replaceroleIter1 
 												== (includedArity - 1)))
 									{
-										if ((snippet1replaceroleIter1 == 2))
+										if ((snippet1replaceroleIter1 == 1))
 										{
 											listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
 										}
@@ -506,7 +513,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									if ((snippet1replaceroleIter1 
 												== (includedArity - 1)))
 									{
-										if ((snippet1replaceroleIter1 == 2))
+										if ((snippet1replaceroleIter1 == 1))
 										{
 											listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
 										}
