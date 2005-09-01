@@ -538,23 +538,18 @@
 	<xsl:template match="ve:ConditionalReading" mode="InternalConstraintVerbalization">
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="'all'"/>
-		<xsl:if test="$TopLevel and position()&gt;1">
-			<plx:CallInstance name="AppendLine">
-				<plx:CallObject>
-					<plx:Value type="Local" data="sbMain"/>
-				</plx:CallObject>
-			</plx:CallInstance>
-		</xsl:if>
 		<xsl:for-each select="ve:ReadingChoice">
 			<xsl:if test="position()=1">
 				<xsl:call-template name="ProcessConditionalReadingChoice">
 					<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+					<xsl:with-param name="TopLevel" select="$TopLevel"/>
 				</xsl:call-template>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="ProcessConditionalReadingChoice">
 		<xsl:param name="IteratorContext" select="'all'"/>
+		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:call-template name="PopulateReadingOrder">
 			<xsl:with-param name="readingChoice" select="@match"/>
 		</xsl:call-template>
@@ -572,6 +567,7 @@
 			<plx:Body>
 				<xsl:apply-templates select="child::*" mode="InternalConstraintVerbalization">
 					<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+					<xsl:with-param name="TopLevel" select="$TopLevel"/>
 				</xsl:apply-templates>
 			</plx:Body>
 			<xsl:if test="position()!=last()">
@@ -580,6 +576,7 @@
 						<xsl:if test="position()=1">
 							<xsl:call-template name="ProcessConditionalReadingChoice">
 								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+								<xsl:with-param name="TopLevel" select="$TopLevel"/>
 							</xsl:call-template>
 						</xsl:if>
 					</xsl:for-each>
@@ -641,6 +638,14 @@
 		<xsl:param name="VariablePrefix" select="'factText'"/>
 		<!-- all, included or excluded are the supported IteratorContext -->
 		<xsl:param name="IteratorContext" select="'all'"/>
+		<xsl:param name="TopLevel" select="false()"/>
+		<xsl:if test="$TopLevel and position()&gt;1">
+			<plx:CallInstance name="AppendLine">
+				<plx:CallObject>
+					<plx:Value type="Local" data="sbMain"/>
+				</plx:CallObject>
+			</plx:CallInstance>
+		</xsl:if>
 		<xsl:variable name="complexReplacement" select="0!=count(ve:PredicateReplacement)"/>
 		<xsl:call-template name="PopulateReadingOrder">
 			<xsl:with-param name="readingChoice" select="@readingChoice"/>
@@ -796,34 +801,51 @@
 				</plx:Loop>
 			</xsl:when>
 		</xsl:choose>
-		<plx:Operator type="Assign">
-			<plx:Left>
-				<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
-			</plx:Left>
-			<plx:Right>
-				<plx:CallStatic name="PopulatePredicateText" dataTypeName="FactType">
+		<xsl:variable name="predicateText">
+			<plx:CallStatic name="PopulatePredicateText" dataTypeName="FactType">
+				<plx:PassParam>
+					<plx:Value type="Local" data="readingOrder"/>
+				</plx:PassParam>
+				<plx:PassParam>
+					<plx:Value type="Local" data="allRoles"/>
+				</plx:PassParam>
+				<plx:PassParam>
+					<xsl:variable name="replacementSet">
+						<xsl:choose>
+							<xsl:when test="$complexReplacement">
+								<xsl:text>roleReplacements</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>basicRoleReplacements</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<plx:Value type="Local" data="{$replacementSet}"/>
+				</plx:PassParam>
+			</plx:CallStatic>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="$TopLevel">
+				<plx:CallInstance name="Append">
+					<plx:CallObject>
+						<plx:Value type="Local" data="sbMain"/>
+					</plx:CallObject>
 					<plx:PassParam>
-						<plx:Value type="Local" data="readingOrder"/>
+						<xsl:copy-of select="$predicateText"/>
 					</plx:PassParam>
-					<plx:PassParam>
-						<plx:Value type="Local" data="allRoles"/>
-					</plx:PassParam>
-					<plx:PassParam>
-						<xsl:variable name="replacementSet">
-							<xsl:choose>
-								<xsl:when test="$complexReplacement">
-									<xsl:text>roleReplacements</xsl:text>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:text>basicRoleReplacements</xsl:text>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
-						<plx:Value type="Local" data="{$replacementSet}"/>
-					</plx:PassParam>
-				</plx:CallStatic>
-			</plx:Right>
-		</plx:Operator>
+				</plx:CallInstance>
+			</xsl:when>
+			<xsl:otherwise>
+				<plx:Operator type="Assign">
+					<plx:Left>
+						<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
+					</plx:Left>
+					<plx:Right>
+						<xsl:copy-of select="$predicateText"/>
+					</plx:Right>
+				</plx:Operator>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="PredicateReplacementConditionTest">
 		<xsl:param name="Match"/>
@@ -1038,6 +1060,7 @@
 					</plx:Initialize>
 				</plx:Variable>
 				<!-- Use the current snippets data to open the list -->
+				<plx:Variable name="listSnippet" dataTypeName="{$VerbalizationTextSnippetType}"/>
 				<plx:Condition>
 					<plx:Test>
 						<plx:Operator type="Equality">
@@ -1050,17 +1073,13 @@
 						</plx:Operator>
 					</plx:Test>
 					<plx:Body>
-						<plx:CallInstance name="Append">
-							<plx:CallObject>
-								<plx:Value type="Local" data="sbTemp"/>
-							</plx:CallObject>
-							<plx:PassParam>
-								<xsl:call-template name="SnippetFor">
-									<xsl:with-param name="SnippetType" select="concat(@listStyle,'Open')"/>
-								</xsl:call-template>
-							</plx:PassParam>
-						</plx:CallInstance>
+						<xsl:call-template name="SetSnippetVariable">
+							<xsl:with-param name="SnippetType" select="concat(@listStyle,'Open')"/>
+							<xsl:with-param name="VariableName" select="'listSnippet'"/>
+						</xsl:call-template>
 					</plx:Body>
+					<!-- UNDONE: We could spit less code here if we pass the arity
+						 in from the ConstrainedRoles tag. -->
 					<plx:FallbackCondition>
 						<plx:Test>
 							<plx:Operator type="Equality">
@@ -1092,31 +1111,49 @@
 							</plx:Operator>
 						</plx:Test>
 						<plx:Body>
-							<plx:CallInstance name="Append">
-								<plx:CallObject>
-									<plx:Value type="Local" data="sbTemp"/>
-								</plx:CallObject>
-								<plx:PassParam>
-									<xsl:call-template name="SnippetFor">
-										<xsl:with-param name="SnippetType" select="concat(@listStyle,'FinalSeparator')"/>
+							<plx:Condition>
+								<plx:Test>
+									<plx:Operator type="Equality">
+										<plx:Left>
+											<plx:Value type="Local" data="{$iterVarName}"/>
+										</plx:Left>
+										<plx:Right>
+											<plx:Value type="I4" data="2"/>
+										</plx:Right>
+									</plx:Operator>
+								</plx:Test>
+								<plx:Body>
+									<xsl:call-template name="SetSnippetVariable">
+										<xsl:with-param name="SnippetType" select="concat(@listStyle,'PairSeparator')"/>
+										<xsl:with-param name="VariableName" select="'listSnippet'"/>
 									</xsl:call-template>
-								</plx:PassParam>
-							</plx:CallInstance>
+								</plx:Body>
+								<plx:Alternate>
+									<xsl:call-template name="SetSnippetVariable">
+										<xsl:with-param name="SnippetType" select="concat(@listStyle,'FinalSeparator')"/>
+										<xsl:with-param name="VariableName" select="'listSnippet'"/>
+									</xsl:call-template>
+								</plx:Alternate>
+							</plx:Condition>
 						</plx:Body>
 					</plx:FallbackCondition>
 					<plx:Alternate>
-						<plx:CallInstance name="Append">
-							<plx:CallObject>
-								<plx:Value type="Local" data="sbTemp"/>
-							</plx:CallObject>
-							<plx:PassParam>
-								<xsl:call-template name="SnippetFor">
-									<xsl:with-param name="SnippetType" select="concat(@listStyle,'FinalSeparator')"/>
-								</xsl:call-template>
-							</plx:PassParam>
-						</plx:CallInstance>
+						<xsl:call-template name="SetSnippetVariable">
+							<xsl:with-param name="SnippetType" select="concat(@listStyle,'Separator')"/>
+							<xsl:with-param name="VariableName" select="'listSnippet'"/>
+						</xsl:call-template>
 					</plx:Alternate>
 				</plx:Condition>
+				<plx:CallInstance name="Append">
+					<plx:CallObject>
+						<plx:Value type="Local" data="sbTemp"/>
+					</plx:CallObject>
+					<plx:PassParam>
+						<xsl:call-template name="SnippetFor">
+							<xsl:with-param name="VariableName" select="'listSnippet'"/>
+						</xsl:call-template>
+					</plx:PassParam>
+				</plx:CallInstance>
 
 				<!-- Process the child contents for this role -->
 				<xsl:choose>
@@ -1252,15 +1289,25 @@
 	</xsl:template>
 	<!-- Get the snippet value from the current snippets set.
 		 This assumes snippets, isDeontic and isNegative local
-		 variables are defined -->
+		 variables are defined. Alternately, a VariableName
+		 containing the name of a local variable containing the
+		 text can be passed in instead of SnippetType. -->
 	<xsl:template name="SnippetFor">
 		<xsl:param name="SnippetType"/>
+		<xsl:param name="VariableName"/>
 		<plx:CallInstance name="GetSnippet">
 			<plx:CallObject>
 				<plx:Value type="Local" data="snippets"/>
 			</plx:CallObject>
 			<plx:PassParam>
-				<plx:CallStatic name="{$SnippetType}" dataTypeName="{$VerbalizationTextSnippetType}" type="Field"/>
+				<xsl:choose>
+					<xsl:when test="string-length($VariableName)">
+						<plx:Value type="Local" data="{$VariableName}"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:CallStatic name="{$SnippetType}" dataTypeName="{$VerbalizationTextSnippetType}" type="Field"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</plx:PassParam>
 			<plx:PassParam>
 				<plx:Value type="Local" data="isDeontic"/>
@@ -1269,6 +1316,19 @@
 				<plx:Value type="Local" data="isNegative"/>
 			</plx:PassParam>
 		</plx:CallInstance>
+	</xsl:template>
+	<!-- Assign the specified snippet type to a local variable. -->
+	<xsl:template name="SetSnippetVariable">
+		<xsl:param name="SnippetType"/>
+		<xsl:param name="VariableName"/>
+		<plx:Operator type="Assign">
+			<plx:Left>
+				<plx:Value type="Local" data="{$VariableName}"/>
+			</plx:Left>
+			<plx:Right>
+				<plx:CallStatic name="{$SnippetType}" dataTypeName="{$VerbalizationTextSnippetType}" type="Field"/>
+			</plx:Right>
+		</plx:Operator>
 	</xsl:template>
 	<!-- Helper function to create an initialized string builder in the sbTemp local variable -->
 	<xsl:template name="EnsureTempStringBuilder">
