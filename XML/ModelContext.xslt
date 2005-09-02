@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
@@ -9,8 +9,25 @@
 	<xsl:variable name="ModelContextName" select="concat(ormRoot:ORM2/orm:ORMModel/@Name,'Context')"/>
 	<xsl:template match="orm:ORMModel" mode="ModelContext">
 		<plx:Class visibility="Public" partial="true" name="{$ModelContextName}">
+			<xsl:variable name="Model" select="."/>
+			<xsl:call-template name="BuildExternalUniquenessConstraintValidationFunctions">
+				<xsl:with-param name="Model" select="$Model"/>
+			</xsl:call-template>
 			<xsl:call-template name="BuildValueConstraintValidationFunctions"/>
 		</plx:Class>
+	</xsl:template>
+	<xsl:template name="BuildExternalUniquenessConstraintValidationFunctions">
+		<xsl:param name="Model"/>
+		<xsl:for-each select="orm:ExternalConstraints/orm:ExternalUniquenessConstraint">
+			<!-- TODO: Only pass external uniqueness constraints that are composed of simple binaries to the following template-->
+			<xsl:call-template name="GenerateExternalUniquenessSimpleBinaryDictionaries">
+				<xsl:with-param name="Model" select="$Model"/>
+			</xsl:call-template>
+			<!-- TODO: Only pass external uniqueness constraints that are composed of simple binaries to the following template-->
+			<xsl:call-template name="GenerateExternalUniquenessSimpleBinaryLookupMethods">
+				<xsl:with-param name="Model" select="$Model"/>
+			</xsl:call-template>
+		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="BuildValueConstraintValidationFunctions">
 		<xsl:variable name="cacheDataTypes" select="orm:DataTypes/child::*"/>

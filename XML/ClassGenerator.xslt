@@ -26,7 +26,7 @@
 	<xsl:variable name="UnaryFacts" select="$UnaryAndBinaryFacts[1=count(orm:FactRoles/orm:Role)]"/>
 	<!-- Binary Facts Only-->
 	<xsl:variable name="BinaryFacts" select="$UnaryAndBinaryFacts[2=count(orm:FactRoles/orm:Role)]"/>
-	
+
 
 	<!-- Functional Roles -->
 	<!--<xsl:variable name ="FunctionalRoles" select=""/>-->
@@ -954,8 +954,111 @@
 			</plx:Set>
 		</plx:Property>
 	</xsl:template>
+	<xsl:template name="GenerateExternalUniquenessSimpleBinaryLookupMethods">
+		<xsl:param name="Model"/>
+		<xsl:variable name="firstRoleRef" select="orm:RoleSequence/orm:Role[position() = 1]/@ref" />
+		<xsl:variable name="uniqueObjectName" select="$AbsorbedObjects/child::*[@oppositeRoleRef=$firstRoleRef]/../@name"/>
+		<xsl:variable name="params">
+			<xsl:for-each select="orm:RoleSequence/orm:Role">
+				<xsl:variable name="ref" select="@ref"/>
+				<plx:Param type="In">
+					<!--object is an ao:AbsorbedObject or an ao:RelatedObject-->
+					<xsl:variable name="object" select="$AbsorbedObjects/child::*[@oppositeRoleRef=$ref]"/>
+					<xsl:variable name="oppositeRoleName" select="$object/@oppositeRoleName"/>
+					<xsl:variable name="oppositeObjectName" select="$object/@oppositeObjectName"/>
+					<xsl:attribute name="name">
+						<xsl:choose>
+							<xsl:when test="string-length($oppositeRoleName)">
+								<xsl:value-of select="$oppositeRoleName"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$oppositeObjectName"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+					<xsl:choose>
+						<xsl:when test="string-length($oppositeObjectName)">
+							<xsl:attribute name="dataTypeName">
+								<xsl:value-of select="$oppositeObjectName"/>
+							</xsl:attribute>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:variable name="rolePlayerId" select="$Model/orm:Facts/descendant-or-self::node()[@id=$ref]/orm:RolePlayer/@ref"/>
+							<xsl:variable name="rolePlayer" select="$Model/orm:Objects/child::*[@id=$rolePlayerId]"/>
+							<xsl:variable name="dataTypeId"  select="$rolePlayer/orm:ConceptualDataType/@ref"/>
+							<xsl:variable name="dataTypeFragment">
+								<xsl:for-each select="$Model/orm:DataTypes/child::*[@id=$dataTypeId]">
+									<xsl:call-template name="MapDataType"/>
+								</xsl:for-each>
+							</xsl:variable>
+							<xsl:variable name="dataType" select="msxsl:node-set($dataTypeFragment)"/>
+							<xsl:copy-of select="$dataType/DataType/@*"/>
+							<xsl:copy-of select="$dataType/DataType/child::*"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</plx:Param>				
+			</xsl:for-each>
+		</xsl:variable>
+		<plx:Function visibility="Public" name="Get{$uniqueObjectName}By{@Name}">
+			<plx:Param type="RetVal" name="" dataTypeName="{$uniqueObjectName}"/>
+			<xsl:copy-of select="$params"/>
+			<plx:Return>
+				<plx:CallInstance type="Indexer" name="Item">
+					<plx:CallObject>
+						<plx:CallInstance type="Field" name="{$PrivateMemberPrefix}{@Name}Dictionary">
+							<plx:CallObject>
+								<plx:ThisKeyword/>
+							</plx:CallObject>
+						</plx:CallInstance>
+					</plx:CallObject>
+					<plx:PassParam>
+						<plx:CallStatic type="MethodCall" name="CreateTuple" dataTypeName="Tuple">
+							<xsl:for-each select="msxsl:node-set($params)/child::*">
+								<plx:PassParam>
+									<plx:Value type="Parameter">
+										<xsl:attribute name="data">
+											<xsl:value-of select="@name"/>
+										</xsl:attribute>
+									</plx:Value>
+								</plx:PassParam>
+							</xsl:for-each>
+						</plx:CallStatic>
+					</plx:PassParam>
+				</plx:CallInstance>
+			</plx:Return>
+		</plx:Function>
+	</xsl:template>
+	<xsl:template name="GenerateSimpleLookupMethods">
+		<xsl:param name="className"/>
+		<xsl:if test="@unique='true'">
+			<plx:Function name="Get{$className}By{@name}" visibility="Public">
+				<plx:Param type="RetVal" name="" dataTypeName="{$className}"/>
+				<plx:Param type="In" name="value">
+					<xsl:copy-of select="DataType/@*"/>
+					<xsl:copy-of select="DataType/child::*"/>
+				</plx:Param>
+				<plx:Return>
+					<plx:CallInstance type="Indexer" name="Item">
+						<plx:CallObject>
+							<plx:CallInstance type="Field" name="{$PrivateMemberPrefix}{$className}{@name}Dictionary">
+								<plx:CallObject>
+									<plx:ThisKeyword/>
+								</plx:CallObject>
+							</plx:CallInstance>
+						</plx:CallObject>
+						<plx:PassParam>
+							<plx:Value type="Parameter" data="value"/>
+						</plx:PassParam>
+					</plx:CallInstance>
+				</plx:Return>
+			</plx:Function>
+		</xsl:if>
+	</xsl:template>
 	<xsl:template name="GenerateChangeMethods">
 		<xsl:param name="className"/>
+		<xsl:param name="Model"/>
+		<xsl:variable name="oppositeRoleRef" select="@oppositeRoleRef"/>
+		<xsl:variable name="externalUniquenessConstraints" select="$Model/orm:ExternalConstraints/orm:ExternalUniquenessConstraint[orm:RoleSequence/orm:Role/@ref=$oppositeRoleRef]"/>
 		<xsl:if test="@unique='true'">
 			<plx:Field name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" visibility="Private" dataTypeName="Dictionary">
 				<plx:PassTypeParam>
@@ -974,127 +1077,323 @@
 				</plx:Initialize>
 			</plx:Field>
 		</xsl:if>
-			<plx:Function visibility="Private" name="On{$className}{@name}Changing">
-				<plx:Param type="RetVal" name="" dataTypeName="Boolean" dataTypeQualifier="System"/>
-				<plx:Param type="In" name="instance" dataTypeName="{$className}"/>
-				<plx:Param type="In" name="newValue">
-					<xsl:copy-of select="DataType/@*"/>
-					<xsl:copy-of select="DataType/child::*"/>
-				</plx:Param>
-				<xsl:if test="@unique='true'">
-					<plx:Variable name="currentInstance" dataTypeName="{$className}">
-						<plx:Initialize>
-							<plx:Value type="Parameter" data="instance"/>
-						</plx:Initialize>
-					</plx:Variable>
+		<plx:Function visibility="Private" name="On{$className}{@name}Changing">
+			<plx:Param type="RetVal" name="" dataTypeName="Boolean" dataTypeQualifier="System"/>
+			<plx:Param type="In" name="instance" dataTypeName="{$className}"/>
+			<plx:Param type="In" name="newValue">
+				<xsl:copy-of select="DataType/@*"/>
+				<xsl:copy-of select="DataType/child::*"/>
+			</plx:Param>
+			<xsl:if test="@unique='true'">
+				<plx:Condition>
+					<plx:Test>
+						<plx:Operator type="Inequality">
+							<plx:Left>
+								<plx:Value type="Parameter" data="newValue"/>
+							</plx:Left>
+							<plx:Right>
+								<plx:NullObjectKeyword />
+							</plx:Right>
+						</plx:Operator>
+					</plx:Test>
+					<plx:Body>
+						<plx:Variable name="currentInstance" dataTypeName="{$className}">
+							<plx:Initialize>
+								<plx:Value type="Parameter" data="instance"/>
+							</plx:Initialize>
+						</plx:Variable>
+						<plx:Condition>
+							<plx:Test>
+								<plx:CallInstance name="TryGetValue" type="MethodCall">
+									<plx:CallObject>
+										<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" type="Field">
+											<plx:CallObject>
+												<plx:ThisKeyword />
+											</plx:CallObject>
+										</plx:CallInstance>
+									</plx:CallObject>
+									<plx:PassParam>
+										<plx:Value type="Parameter" data="newValue"/>
+									</plx:PassParam>
+									<plx:PassParam passStyle="Out">
+										<plx:Value type="Local" data="currentInstance"/>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</plx:Test>
+							<plx:Body>
+								<plx:Condition>
+									<plx:Test>
+										<plx:Operator type="Inequality">
+											<plx:Left>
+												<plx:Value type="Local" data="currentInstance"/>
+											</plx:Left>
+											<plx:Right>
+												<plx:Value type="Parameter" data="instance"/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Test>
+									<plx:Body>
+										<plx:Return>
+											<plx:FalseKeyword/>
+										</plx:Return>
+									</plx:Body>
+								</plx:Condition>								
+							</plx:Body>
+						</plx:Condition>
+					</plx:Body>
+				</plx:Condition>
+			</xsl:if>
+			<xsl:if test="count($externalUniquenessConstraints)">
+				<xsl:for-each select="$externalUniquenessConstraints">
+					<!--<xsl:variable name="passTypeParams">
+						<xsl:for-each select="orm:RoleSequence/orm:Role">
+							<xsl:variable name="ref" select="@ref"/>
+							<plx:PassTypeParam>
+								--><!--object is an ao:AbsorbedObject or an ao:RelatedObject--><!--
+								<xsl:variable name="object" select="$AbsorbedObjects/child::*[@oppositeRoleRef=$ref]"/>
+								<xsl:variable name="oppositeObjectName" select="$object/@oppositeObjectName"/>
+								<xsl:choose>
+									<xsl:when test="string-length($oppositeObjectName)">
+										<xsl:attribute name="dataTypeName">
+											<xsl:value-of select="$oppositeObjectName"/>
+										</xsl:attribute>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:variable name="rolePlayerId" select="$object/@ref"/>
+										<xsl:variable name="rolePlayer" select="$Model/orm:Objects/child::*[@id=$rolePlayerId]"/>
+										<xsl:variable name="dataTypeId"  select="$rolePlayer/orm:ConceptualDataType/@ref"/>
+										<xsl:variable name="dataTypeFragment">
+											<xsl:for-each select="$Model/orm:DataTypes/child::*[@id=$dataTypeId]">
+												<xsl:call-template name="MapDataType"/>
+											</xsl:for-each>
+										</xsl:variable>
+										<xsl:variable name="dataType" select="msxsl:node-set($dataTypeFragment)"/>
+										<xsl:copy-of select="$dataType/DataType/@*"/>
+										<xsl:copy-of select="$dataType/DataType/child::*"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</plx:PassTypeParam>
+						</xsl:for-each>												
+					</xsl:variable>-->
+					<xsl:variable name="passParams">
+						<xsl:for-each select="orm:RoleSequence/orm:Role">
+							<xsl:variable name="ref" select="@ref"/>
+							<plx:PassParam>
+								<!--object is an ao:AbsorbedObject or an ao:RelatedObject-->
+								<xsl:variable name="object" select="$AbsorbedObjects/child::*[@oppositeRoleRef=$ref]"/>
+								<xsl:choose>
+									<xsl:when test="$ref=$oppositeRoleRef">
+										<plx:Value type="Parameter" data="newValue" />
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:variable name="oppositeRoleName" select="$object/@oppositeRoleName"/>
+										<plx:CallInstance type="Property">
+											<xsl:attribute name="name">
+												<xsl:choose>
+													<xsl:when test="string-length($oppositeRoleName)">
+														<xsl:value-of select="$oppositeRoleName"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="$object/@oppositeObjectName"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:attribute>
+											<plx:CallObject>
+												<plx:Value type="Parameter" data="instance"/>
+											</plx:CallObject>
+										</plx:CallInstance>
+									</xsl:otherwise>
+								</xsl:choose>
+							</plx:PassParam>
+						</xsl:for-each>						
+					</xsl:variable>					
 					<plx:Condition>
 						<plx:Test>
-							<plx:CallInstance name="TryGetValue" type="MethodCall">
-								<plx:CallObject>
-									<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" type="Field">
-										<plx:CallObject>
-											<plx:ThisKeyword />
-										</plx:CallObject>
-									</plx:CallInstance>
-								</plx:CallObject>
-								<plx:PassParam>
-									<plx:Value type="Parameter" data="newValue"/>
-								</plx:PassParam>
-								<plx:PassParam passStyle="Out">
-									<plx:Value type="Local" data="currentInstance"/>
-								</plx:PassParam>
-							</plx:CallInstance>
+							<plx:Operator type="BooleanNot">
+								<plx:CallInstance name="On{@Name}Changing" type="MethodCall">
+									<plx:CallObject>
+										<plx:ThisKeyword/>
+									</plx:CallObject>
+									<plx:PassParam>
+										<plx:Value type="Parameter" data="instance"/>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:CallStatic type="MethodCall" dataTypeName="Tuple" name="CreateTuple">
+											<!--Plix does not currently support calling Generic Methods-->
+											<!--<xsl:copy-of select="$passTypeParams"/>-->
+											<xsl:copy-of select="$passParams"/>											
+										</plx:CallStatic>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</plx:Operator>
 						</plx:Test>
 						<plx:Body>
 							<plx:Return>
-								<plx:Operator type="IdentityEquality">
-									<plx:Left>
-										<plx:Value type="Local" data="currentInstance"/>
-									</plx:Left>
-									<plx:Right>
-										<plx:Value type="Parameter" data="instance"/>
-									</plx:Right>
-								</plx:Operator>
+								<plx:FalseKeyword />
 							</plx:Return>
 						</plx:Body>
 					</plx:Condition>
-				</xsl:if>
-				<plx:Return>
-					<plx:TrueKeyword />
-				</plx:Return>
-			</plx:Function>
-			<plx:Function visibility="Private" name="On{$className}{@name}Changed">
-				<plx:Param type="In" name="instance" dataTypeName="{$className}"/>
-				<plx:Param type="In" name="oldValue">
-					<xsl:copy-of select="DataType/@*"/>
-					<xsl:copy-of select="DataType/child::*"/>
-				</plx:Param>
-				<xsl:if test="@unique='true'">
-					<plx:Condition>
-						<plx:Test>
-							<plx:Operator type="IdentityInequality">
-								<plx:Left>
-									<plx:Value type="Parameter" data="oldValue"/>
-								</plx:Left>
-								<plx:Right>
-									<plx:NullObjectKeyword />
-								</plx:Right>
-							</plx:Operator>
-						</plx:Test>
-						<plx:Body>
-							<plx:CallInstance name="Remove">
-								<plx:CallObject>
-									<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" type="Field">
-										<plx:CallObject>
-											<plx:ThisKeyword />
-										</plx:CallObject>
-									</plx:CallInstance>
-								</plx:CallObject>
-								<plx:PassParam>
-									<plx:Value type="Parameter" data="oldValue"/>
-								</plx:PassParam>
-							</plx:CallInstance>
-						</plx:Body>
-					</plx:Condition>
-					<plx:Condition>
-						<plx:Test>
-							<plx:Operator type="IdentityInequality">
-								<plx:Left>
-									<plx:CallInstance name="{@name}" type="Property">
-										<plx:CallObject>
-											<plx:Value type="Parameter" data="instance"/>
-										</plx:CallObject>
-									</plx:CallInstance>
-								</plx:Left>
-								<plx:Right>
-									<plx:NullObjectKeyword />
-								</plx:Right>
-							</plx:Operator>
-						</plx:Test>
-						<plx:Body>
-							<plx:CallInstance name="Add">
-								<plx:CallObject>
-									<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" type="Field">
-										<plx:CallObject>
-											<plx:ThisKeyword />
-										</plx:CallObject>
-									</plx:CallInstance>
-								</plx:CallObject>
-								<plx:PassParam>
-									<plx:CallInstance name="{@name}" type="Property">
-										<plx:CallObject>
-											<plx:Value type="Parameter" data="instance"/>
-										</plx:CallObject>
-									</plx:CallInstance>
-								</plx:PassParam>
-								<plx:PassParam>
-									<plx:Value type="Parameter" data="instance"/>
-								</plx:PassParam>
-							</plx:CallInstance>
-						</plx:Body>
-					</plx:Condition>
-				</xsl:if>
-			</plx:Function>
+				</xsl:for-each>
+			</xsl:if>
+			<plx:Return>
+				<plx:TrueKeyword />
+			</plx:Return>
+		</plx:Function>
+		<plx:Function visibility="Private" name="On{$className}{@name}Changed">
+			<plx:Param type="In" name="instance" dataTypeName="{$className}"/>
+			<plx:Param type="In" name="oldValue">
+				<xsl:copy-of select="DataType/@*"/>
+				<xsl:copy-of select="DataType/child::*"/>
+			</plx:Param>
+			<xsl:if test="@unique='true'">
+				<plx:Condition>
+					<plx:Test>
+						<plx:Operator type="Inequality">
+							<plx:Left>
+								<plx:Value type="Parameter" data="oldValue"/>
+							</plx:Left>
+							<plx:Right>
+								<plx:NullObjectKeyword />
+							</plx:Right>
+						</plx:Operator>
+					</plx:Test>
+					<plx:Body>
+						<plx:CallInstance name="Remove">
+							<plx:CallObject>
+								<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" type="Field">
+									<plx:CallObject>
+										<plx:ThisKeyword />
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:CallObject>
+							<plx:PassParam>
+								<plx:Value type="Parameter" data="oldValue"/>
+							</plx:PassParam>
+						</plx:CallInstance>
+					</plx:Body>
+				</plx:Condition>
+				<plx:Condition>
+					<plx:Test>
+						<plx:Operator type="Inequality">
+							<plx:Left>
+								<plx:CallInstance name="{@name}" type="Property">
+									<plx:CallObject>
+										<plx:Value type="Parameter" data="instance"/>
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:Left>
+							<plx:Right>
+								<plx:NullObjectKeyword />
+							</plx:Right>
+						</plx:Operator>
+					</plx:Test>
+					<plx:Body>
+						<plx:CallInstance name="Add">
+							<plx:CallObject>
+								<plx:CallInstance name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" type="Field">
+									<plx:CallObject>
+										<plx:ThisKeyword />
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:CallObject>
+							<plx:PassParam>
+								<plx:CallInstance name="{@name}" type="Property">
+									<plx:CallObject>
+										<plx:Value type="Parameter" data="instance"/>
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:PassParam>
+							<plx:PassParam>
+								<plx:Value type="Parameter" data="instance"/>
+							</plx:PassParam>
+						</plx:CallInstance>
+					</plx:Body>
+				</plx:Condition>
+			</xsl:if>
+			<xsl:if test="count($externalUniquenessConstraints)">
+				<xsl:for-each select="$externalUniquenessConstraints">
+					<xsl:variable name="oldValuePassParams">
+						<xsl:for-each select="orm:RoleSequence/orm:Role">
+							<xsl:variable name="ref" select="@ref"/>
+							<plx:PassParam>
+								<!--object is an ao:AbsorbedObject or an ao:RelatedObject-->
+								<xsl:variable name="object" select="$AbsorbedObjects/child::*[@oppositeRoleRef=$ref]"/>
+								<xsl:choose>
+									<xsl:when test="$ref=$oppositeRoleRef">
+										<plx:Value type="Parameter" data="oldValue" />
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:variable name="oppositeRoleName" select="$object/@oppositeRoleName"/>
+										<plx:CallInstance type="Property">
+											<xsl:attribute name="name">
+												<xsl:choose>
+													<xsl:when test="string-length($oppositeRoleName)">
+														<xsl:value-of select="$oppositeRoleName"/>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:value-of select="$object/@oppositeObjectName"/>
+													</xsl:otherwise>
+												</xsl:choose>
+											</xsl:attribute>
+											<plx:CallObject>
+												<plx:Value type="Parameter" data="instance"/>
+											</plx:CallObject>
+										</plx:CallInstance>
+									</xsl:otherwise>
+								</xsl:choose>
+							</plx:PassParam>
+						</xsl:for-each>
+					</xsl:variable>
+					<xsl:variable name="newValuePassParams">
+						<xsl:for-each select="orm:RoleSequence/orm:Role">
+							<xsl:variable name="ref" select="@ref"/>
+							<plx:PassParam>
+								<!--object is an ao:AbsorbedObject or an ao:RelatedObject-->
+								<xsl:variable name="object" select="$AbsorbedObjects/child::*[@oppositeRoleRef=$ref]"/>
+								<xsl:variable name="oppositeRoleName" select="$object/@oppositeRoleName"/>
+								<plx:CallInstance type="Property">
+									<xsl:attribute name="name">
+										<xsl:choose>
+											<xsl:when test="string-length($oppositeRoleName)">
+												<xsl:value-of select="$oppositeRoleName"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="$object/@oppositeObjectName"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:attribute>
+									<plx:CallObject>
+										<plx:Value type="Parameter" data="instance"/>
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:PassParam>
+						</xsl:for-each>
+					</xsl:variable>
+					<plx:CallInstance name="On{@Name}Changed" type="MethodCall">
+						<plx:CallObject>
+							<plx:ThisKeyword/>
+						</plx:CallObject>
+						<plx:PassParam>
+							<plx:Value type="Parameter" data="instance"/>
+						</plx:PassParam>
+						<plx:PassParam>
+							<plx:CallStatic type="MethodCall" dataTypeName="Tuple" name="CreateTuple">
+								<!--Plix does not currently support calling Generic Methods-->
+								<!--<xsl:copy-of select="$passTypeParams"/>-->
+								<xsl:copy-of select="$oldValuePassParams"/>
+							</plx:CallStatic>
+						</plx:PassParam>
+						<plx:PassParam>
+							<plx:CallStatic type="MethodCall" dataTypeName="Tuple" name="CreateTuple">
+								<!--Plix does not currently support calling Generic Methods-->
+								<!--<xsl:copy-of select="$passTypeParams"/>-->
+								<xsl:copy-of select="$newValuePassParams"/>
+							</plx:CallStatic>
+						</plx:PassParam>
+					</plx:CallInstance>
+				</xsl:for-each>
+			</xsl:if>
+		</plx:Function>
 	</xsl:template>
 	<xsl:template name="GenerateParameters">
 		<plx:Param name="{@name}" type="In">
@@ -1107,7 +1406,7 @@
 	<xsl:template name="GenerateConstructorAssignment">
 		<plx:Operator type="Assign">
 			<plx:Left>
-				<plx:CallInstance name="{$PrivateMemberPrefix}{@name}" type="Field">
+				<plx:CallInstance name="{@name}" type="Field">
 					<plx:CallObject>
 						<plx:ThisKeyword/>
 					</plx:CallObject>
@@ -1145,9 +1444,182 @@
 			</plx:Return>
 		</plx:Function>
 	</xsl:template>
+	<xsl:template name="GenerateExternalUniquenessSimpleBinaryDictionaries">
+		<xsl:param name="Model"/>
+		<xsl:variable name="firstRoleRef" select="orm:RoleSequence/orm:Role[position() = 1]/@ref" />
+		<xsl:variable name="uniqueObjectName" select="$AbsorbedObjects/child::*[@oppositeRoleRef=$firstRoleRef]/../@name"/>
+		<xsl:variable name="passTypeParams">
+				<xsl:for-each select="orm:RoleSequence/orm:Role">
+					<xsl:variable name="ref" select="@ref"/>
+					<plx:PassTypeParam>
+						<!--object is an ao:AbsorbedObject or an ao:RelatedObject-->
+						<xsl:variable name="object" select="$AbsorbedObjects/child::*[@oppositeRoleRef=$ref]"/>
+						<xsl:variable name="oppositeObjectName" select="$object/@oppositeObjectName"/>
+						<xsl:choose>
+							<xsl:when test="string-length($oppositeObjectName)">
+								<xsl:attribute name="dataTypeName">
+									<xsl:value-of select="$oppositeObjectName"/>
+								</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:variable name="rolePlayerId" select="$object/@ref"/>
+								<xsl:variable name="rolePlayer" select="$Model/orm:Objects/child::*[@id=$rolePlayerId]"/>
+								<xsl:variable name="dataTypeId"  select="$rolePlayer/orm:ConceptualDataType/@ref"/>
+								<xsl:variable name="dataTypeFragment">
+									<xsl:for-each select="$Model/orm:DataTypes/child::*[@id=$dataTypeId]">
+										<xsl:call-template name="MapDataType"/>
+									</xsl:for-each>
+								</xsl:variable>
+								<xsl:variable name="dataType" select="msxsl:node-set($dataTypeFragment)"/>
+								<xsl:copy-of select="$dataType/DataType/@*"/>
+								<xsl:copy-of select="$dataType/DataType/child::*"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</plx:PassTypeParam>
+				</xsl:for-each>
+		</xsl:variable>
+		<plx:Field name="{$PrivateMemberPrefix}{@Name}Dictionary" dataTypeName="Dictionary" visibility="Private">
+			<plx:PassTypeParam dataTypeName="Tuple">
+				<xsl:copy-of select="$passTypeParams"/>
+			</plx:PassTypeParam>
+			<plx:PassTypeParam dataTypeName="{$uniqueObjectName}"/>
+			<plx:Initialize>				
+				<plx:CallNew type="New" dataTypeName="Dictionary">
+					<plx:PassTypeParam dataTypeName="Tuple">
+						<xsl:copy-of select="$passTypeParams"/>
+					</plx:PassTypeParam>
+					<plx:PassTypeParam dataTypeName="{$uniqueObjectName}"/>
+				</plx:CallNew>
+			</plx:Initialize>
+		</plx:Field>
+		<plx:Function visibility="Private" name ="On{@Name}Changing">
+			<plx:Param name="" dataTypeName="Boolean" dataTypeQualifier="System" type="RetVal" />
+			<plx:Param name="instance" dataTypeName="{$uniqueObjectName}" type="In" />
+			<plx:Param name="newValue" dataTypeName="Tuple" type="In">
+				<xsl:copy-of select="$passTypeParams"/>
+			</plx:Param>
+			<plx:Condition>
+				<plx:Test>
+					<plx:Operator type="Inequality">
+						<plx:Left>
+							<plx:Value type="Parameter" data="newValue"/>
+						</plx:Left>
+						<plx:Right>
+							<plx:NullObjectKeyword/>
+						</plx:Right>
+					</plx:Operator>
+				</plx:Test>
+				<plx:Body>
+					<plx:Variable name="currentInstance" dataTypeName="{$uniqueObjectName}">
+						<plx:Initialize>
+							<plx:Value type="Parameter" data="instance"/>
+						</plx:Initialize>
+					</plx:Variable>
+					<plx:Condition>
+						<plx:Test>
+							<plx:CallInstance name="TryGetValue" type="MethodCall">
+								<plx:CallObject>
+									<plx:CallInstance name="{$PrivateMemberPrefix}{@Name}Dictionary" type="Field">
+										<plx:CallObject>
+											<plx:ThisKeyword />
+										</plx:CallObject>
+									</plx:CallInstance>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:Value type="Parameter" data="newValue"/>
+								</plx:PassParam>
+								<plx:PassParam passStyle="Out">
+									<plx:Value type="Local" data="currentInstance"/>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</plx:Test>
+						<plx:Body>
+							<plx:Return>
+								<plx:Operator type="IdentityEquality">
+									<plx:Left>
+										<plx:Value type="Local" data="currentInstance"/>
+									</plx:Left>
+									<plx:Right>
+										<plx:Value type="Parameter" data="instance"/>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Return>
+						</plx:Body>
+					</plx:Condition>
+				</plx:Body>
+			</plx:Condition>
+			<plx:Return>
+				<plx:TrueKeyword/>
+			</plx:Return>
+		</plx:Function>
+		<plx:Function visibility="Private" name ="On{@Name}Changed">			
+			<plx:Param name="instance" dataTypeName="{$uniqueObjectName}" type="In" />
+			<plx:Param name="oldValue" dataTypeName="Tuple" type="In">
+				<xsl:copy-of select="$passTypeParams"/>
+			</plx:Param>
+			<plx:Param name="newValue" dataTypeName="Tuple" type="In">
+				<xsl:copy-of select="$passTypeParams"/>
+			</plx:Param>
+			<plx:Condition>
+				<plx:Test>
+					<plx:Operator type="Inequality">
+						<plx:Left>
+							<plx:Value type="Parameter" data="oldValue"/>
+						</plx:Left>
+						<plx:Right>
+							<plx:NullObjectKeyword/>
+						</plx:Right>
+					</plx:Operator>
+				</plx:Test>
+				<plx:Body>
+					<plx:CallInstance name="Remove" type="MethodCall">
+						<plx:CallObject>
+							<plx:CallInstance name="{$PrivateMemberPrefix}{@Name}Dictionary" type="Field">
+								<plx:CallObject>
+									<plx:ThisKeyword/>
+								</plx:CallObject>
+							</plx:CallInstance>
+						</plx:CallObject>
+						<plx:PassParam>
+							<plx:Value type="Parameter" data="oldValue"/>
+						</plx:PassParam>
+					</plx:CallInstance>					
+				</plx:Body>
+			</plx:Condition>
+			<plx:Condition>
+				<plx:Test>
+					<plx:Operator type="Inequality">
+						<plx:Left>
+							<plx:Value type="Parameter" data="newValue"/>
+						</plx:Left>
+						<plx:Right>
+							<plx:NullObjectKeyword/>
+						</plx:Right>
+					</plx:Operator>
+				</plx:Test>
+				<plx:Body>
+					<plx:CallInstance name="Add" type="MethodCall">
+						<plx:CallObject>
+							<plx:CallInstance name="{$PrivateMemberPrefix}{@Name}Dictionary" type="Field">
+								<plx:CallObject>
+									<plx:ThisKeyword/>
+								</plx:CallObject>
+							</plx:CallInstance>
+						</plx:CallObject>
+						<plx:PassParam>
+							<plx:Value type="Parameter" data="newValue"/>
+						</plx:PassParam>
+						<plx:PassParam>
+							<plx:Value type="Parameter" data="instance"/>
+						</plx:PassParam>
+					</plx:CallInstance>
+				</plx:Body>
+			</plx:Condition>
+		</plx:Function>
+	</xsl:template>
 	<xsl:template match="ormRoot:ORM2">
 		<xsl:text disable-output-escaping="yes"><![CDATA[<!--<ao>]]></xsl:text>
-				<xsl:copy-of select="$AbsorbedObjects"/>
+		<xsl:copy-of select="$AbsorbedObjects"/>
 		<xsl:text disable-output-escaping="yes"><![CDATA[</ao>-->]]></xsl:text>
 		<xsl:apply-templates mode="Main" select="orm:ORMModel"/>
 	</xsl:template>
@@ -1183,8 +1655,12 @@
 			</plx:Class>
 			<plx:Class visibility="Public" partial="true" name="{$ModelContextName}">
 				<xsl:for-each select="$property">
+					<xsl:call-template name="GenerateSimpleLookupMethods">
+						<xsl:with-param name="className" select="$className"/>
+					</xsl:call-template>
 					<xsl:call-template name="GenerateChangeMethods">
 						<xsl:with-param name="className" select="$className"/>
+						<xsl:with-param name="Model" select="$Model"/>
 					</xsl:call-template>
 				</xsl:for-each>
 				<plx:Class visibility="Private" sealed="true" partial="true" name="{$className}{$ImplementationClassSuffix}">
@@ -1237,8 +1713,12 @@
 		</plx:Class>
 		<plx:Class visibility="Public" partial="true" name="{$ModelContextName}">
 			<xsl:for-each select="$property">
+				<xsl:call-template name="GenerateSimpleLookupMethods">
+					<xsl:with-param name="className" select="$className"/>
+				</xsl:call-template>
 				<xsl:call-template name="GenerateChangeMethods">
 					<xsl:with-param name="className" select="$className"/>
+					<xsl:with-param name="Model" select="$Model"/>
 				</xsl:call-template>
 			</xsl:for-each>
 			<plx:Class visibility="Private" sealed="true" partial="true" name="{$className}{$ImplementationClassSuffix}">
@@ -1272,7 +1752,7 @@
 			 DataType element for all both cases, then spit the property and its backing field
 			 using the GenerateBackedProperty template. -->
 		<!--		<xsl:variable name="property">-->
-		<Property mandatory="{@mandatory}">
+		<Property mandatory="{@mandatory}" unique="{@unique}" oppositeRoleRef="{@oppositeRoleRef}">
 			<xsl:choose>
 				<xsl:when test="@oppositeObjectRef">
 					<!-- Related to an object by a binary fact -->
@@ -1366,7 +1846,7 @@
 					</xsl:apply-templates>
 				</xsl:variable>
 				<xsl:variable name="nested" select="msxsl:node-set($nestedTemp)/child::*"/>
-				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}">
+				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}" oppositeRoleRef="{@oppositeRoleRef}">
 					<xsl:attribute name="name">
 						<xsl:choose>
 							<xsl:when test="string-length(@roleName)">
@@ -1382,7 +1862,7 @@
 				</Property>
 			</xsl:when>
 			<xsl:otherwise>
-				<Property name="{@roleName}" multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}">
+				<Property name="{@roleName}" multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}" oppositeRoleRef="{@oppositeRoleRef}">
 					<!--<xsl:if test="0=string-length(@roleName)">
 						<xsl:attribute name="name">
 							<xsl:value-of select="@name"/>
@@ -1418,7 +1898,7 @@
 			</xsl:if>
 		</ao:RelatedObject>	-->
 		<!--		<xsl:variable name="property">-->
-		<Property unique="{@unique}">
+		<Property unique="{@unique}" oppositeRoleRef="{@oppositeRoleRef}">
 			<xsl:attribute name="name">
 				<xsl:choose>
 					<xsl:when test="string-length(@roleName)">
