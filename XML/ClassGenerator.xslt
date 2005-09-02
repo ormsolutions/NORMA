@@ -10,6 +10,8 @@
 	<xsl:param name="AssociationClassDecorator" select="'Association'"/>
 	<xsl:param name="PrivateMemberPrefix" select="'my'"/>
 	<xsl:param name="ImplementationClassSuffix" select="'Core'"/>
+	<xsl:param name="RoleValueConstraintFor" select="'RoleValueConstraintFor'"/>
+	<xsl:param name="ValueConstraintFor" select="'ValueConstraintFor'"/>
 
 	<!-- 
 	KNOWN ISSUES
