@@ -8,5 +8,39 @@
 		</se:Namespaces>
 	</se:MetaModel>
 	<se:Element Class="MyCustomExtensionElement" Name="SampleElement">
+		<se:ConditionalSerialization>
+			<plx:Return>
+				<plx:Operator type="BooleanOr">
+					<plx:Left>
+						<plx:Operator type="Inequality">
+							<plx:Left>
+								<plx:CallStatic name="None" dataTypeName="TestEnumeration" type="Field"/>
+							</plx:Left>
+							<plx:Right>
+								<plx:CallInstance name="CustomEnum" type="Property">
+									<plx:CallObject>
+										<plx:ThisKeyword/>
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:Right>
+						</plx:Operator>
+					</plx:Left>
+					<plx:Right>
+						<plx:Operator type="Inequality">
+							<plx:Left>
+								<plx:String>Default value</plx:String>
+							</plx:Left>
+							<plx:Right>
+								<plx:CallInstance name="TestProperty" type="Property">
+									<plx:CallObject>
+										<plx:ThisKeyword/>
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:Right>
+						</plx:Operator>
+					</plx:Right>
+				</plx:Operator>
+			</plx:Return>
+		</se:ConditionalSerialization>
 	</se:Element>
 </se:CustomSerializedElements>

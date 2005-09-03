@@ -310,6 +310,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return this.MapAttribute(xmlNamespace, attributeName);
 		}
+		/// <summary>
+		///</summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool IORMCustomSerializedElement.ShouldSerialize()
+		{
+			return ORMNamedElement.ShouldSerialize();
+		}
 	}
 	/// <summary>
 	///</summary>
@@ -433,6 +443,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{
 			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>
+		///</summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool IORMCustomSerializedElement.ShouldSerialize()
+		{
+			return ORMModelElement.ShouldSerialize();
 		}
 	}
 	/// <summary>
@@ -1247,6 +1267,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return this.MapAttribute(xmlNamespace, attributeName);
 		}
+		/// <summary>
+		///</summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool IORMCustomSerializedElement.ShouldSerialize()
+		{
+			return ValueTypeHasDataType.ShouldSerialize();
+		}
 	}
 	/// <summary>
 	///</summary>
@@ -1285,6 +1315,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+		}
+		/// <summary>
+		///</summary>
+		protected new bool ShouldSerialize()
+		{
+			return (this.GetElementLinks().Count > 1);
+		}
+		bool IORMCustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
 		}
 	}
 	/// <summary>
@@ -1921,6 +1961,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{
 			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>
+		///</summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool IORMCustomSerializedElement.ShouldSerialize()
+		{
+			return Objectification.ShouldSerialize();
 		}
 	}
 	/// <summary>

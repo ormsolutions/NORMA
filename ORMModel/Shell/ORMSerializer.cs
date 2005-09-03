@@ -178,8 +178,8 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // Rule Suspension
-		#region Serialize
 #if OLDSERIALIZE
+		#region Serialize
 		/// <summary>
 		/// Save the contents of the current store to a stream
 		/// </summary>
@@ -224,7 +224,6 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			return;
 		}
-#endif // OLDSERIALIZE
 		/// <summary>
 		/// Determine if an element should be serialized
 		/// </summary>
@@ -233,7 +232,6 @@ namespace Neumont.Tools.ORM.Shell
 		private bool ShouldSerialize(ModelElement modelElement)
 		{
 			DataType dataType;
-#if OLDSERIALIZE
 			if (modelElement is ExternalFactConstraint ||
 				modelElement is ExternalRoleConstraint ||
 				modelElement is ExternalConstraintLink ||
@@ -245,9 +243,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return false;
 			}
-			else
-#endif // OLDSERIALIZE
-			if (null != (dataType = modelElement as DataType))
+			else if (null != (dataType = modelElement as DataType))
 			{
 				// If the only reference to this type is the aggregating
 				// object type, then don't bother to write it out. These
@@ -255,7 +251,6 @@ namespace Neumont.Tools.ORM.Shell
 				// is reloaded.
 				return dataType.GetElementLinks().Count > 1;
 			}
-#if OLDSERIALIZE
 			else if (modelElement is ORMDiagram)
 			{
 				mySeenDiagram = true;
@@ -264,10 +259,8 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				return mySeenDiagram;
 			}
-#endif // OLDSERIALIZE
 			return true; // Serialize everything else.
 		}
-#if OLDSERIALIZE
 		/// <summary>
 		/// Get the formatting the way we want it. Getting it consistent
 		/// via Xsl is very difficult
@@ -321,10 +314,8 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			reader.Close();
 		}
-#endif // OLDSERIALIZE
 		#endregion // Serialize
 		#region Deserialize
-#if OLDSERIALIZE
 		/// <summary>
 		/// Load the stream contents into the current store
 		/// </summary>
@@ -366,7 +357,7 @@ namespace Neumont.Tools.ORM.Shell
 			SysDiag.Debug.Fail("Nothing to upgrade yet");
 			return false;
 		}
-#endif // OLDSERIALIZE
 		#endregion // Deserialize
+#endif // OLDSERIALIZE
 	}
 }

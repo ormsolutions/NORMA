@@ -592,6 +592,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="attributeName">The local name of the attribute</param>
 		/// <returns>A MetaAttributeGuid, or Guid.Empty. Use Guid.IsEmpty to test.</returns>
 		Guid MapAttribute(string xmlNamespace, string attributeName);
+		/// <summary>
+		/// Check the current state of the object to determine
+		/// if it should be serialized or not.
+		/// </summary>
+		/// <returns>false to block serialization</returns>
+		bool ShouldSerialize();
 	}
 	#endregion Public Interfaces
 	#region New Serialization
@@ -926,6 +932,16 @@ namespace Neumont.Tools.ORM.Shell
 			return parentModel.ShouldSerializeMetaClass(store, role.MetaRelationship) && parentModel.ShouldSerializeMetaClass(store, role.OppositeMetaRole.RolePlayer);
 		}
 		/// <summary>
+		/// Determine if an element should be serialized
+		/// </summary>
+		/// <param name="modelElement">Element to test</param>
+		/// <returns>true unless the element is custom serialized and ShouldSerialize returns false.</returns>
+		private static bool ShouldSerializeElement(ModelElement modelElement)
+		{
+			IORMCustomSerializedElement customElement = modelElement as IORMCustomSerializedElement;
+			return (customElement != null) ? customElement.ShouldSerialize() : true;
+		}
+		/// <summary>
 		/// Get the default prefix for an element from the meta model containing the element
 		/// </summary>
 		private static string DefaultElementPrefix(ModelElement element)
@@ -1066,7 +1082,7 @@ namespace Neumont.Tools.ORM.Shell
 			string defaultPrefix;
 			bool hasCustomAttributes = false;
 
-			if (!ShouldSerialize(link) || !ShouldSerialize(rolePlayer))
+			if (!ShouldSerializeElement(link) || !ShouldSerializeElement(rolePlayer))
 			{
 				return;
 			}
@@ -1261,7 +1277,7 @@ namespace Neumont.Tools.ORM.Shell
 							}
 						}
 
-						if (ShouldSerialize(child))
+						if (ShouldSerializeElement(child))
 						{
 							if (customInfo == null)
 							{
@@ -1392,7 +1408,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>false if the container element was not written.</returns>
 		private bool SerializeElement(System.Xml.XmlWriter file, ModelElement element, ORMCustomSerializedElementInfo containerCustomInfo, string containerPrefix, ref string containerName)
 		{
-			if (!ShouldSerialize(element)) return true;
+			if (!ShouldSerializeElement(element)) return true;
 			ORMCustomSerializedElementSupportedOperations supportedOperations;
 			ORMCustomSerializedChildElementInfo[] childElementInfo = null;
 			MetaClassInfo classInfo = element.MetaClass;

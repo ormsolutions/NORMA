@@ -10,211 +10,221 @@
 
 namespace ExtensionExample
 {
-    using System;
-    using System.Collections;
-    using System.Collections.ObjectModel;
-    using System.Collections.Generic;
-    using Microsoft.VisualStudio.Modeling;
-    using Microsoft.VisualStudio.Modeling.Diagrams;
-    using Neumont.Tools.ORM.Shell;
-    
-    /// <summary>
-    ///</summary>
-    public partial class ExtensionDomainModel : IORMCustomSerializedMetaModel
-    {
-        private static Dictionary<string, Guid> myClassNameMap;
-        private static Collection<string> myValidNamespaces;
-        /// <summary>
-        ///</summary>
-        protected static string DefaultElementPrefix
-        {
-            get
-            {
-                return "ormExtension";
-            }
-        }
-        string IORMCustomSerializedMetaModel.DefaultElementPrefix
-        {
-            get
-            {
-                return ExtensionDomainModel.DefaultElementPrefix;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected static string[,] GetCustomElementNamespaces()
-        {
-            string[,] ret = new string[1, 3];
-            ret[0, 0] = "ormExtension";
-            ret[0, 1] = "http://Schemas.Neumont.edu/ORM/ExtensionExample";
-            ret[0, 2] = "ExtensionDomainModelTest.xsd";
-            return ret;
-        }
-        string[,] IORMCustomSerializedMetaModel.GetCustomElementNamespaces()
-        {
-            return ExtensionDomainModel.GetCustomElementNamespaces();
-        }
-        /// <summary>
-        ///</summary>
-        protected bool ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
-        {
-            return true;
-        }
-        bool IORMCustomSerializedMetaModel.ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
-        {
-            return this.ShouldSerializeMetaClass(store, classInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected static Guid[] GetRootElementClasses()
-        {
-            return new Guid[0];
-        }
-        Guid[] IORMCustomSerializedMetaModel.GetRootElementClasses()
-        {
-            return ExtensionDomainModel.GetRootElementClasses();
-        }
-        /// <summary>
-        ///</summary>
-        protected static Guid MapRootElement(string xmlNamespace, string elementName)
-        {
-            return default(Guid);
-        }
-        Guid IORMCustomSerializedMetaModel.MapRootElement(string xmlNamespace, string elementName)
-        {
-            return ExtensionDomainModel.MapRootElement(xmlNamespace, elementName);
-        }
-        /// <summary>
-        ///</summary>
-        protected static Guid MapClassName(string xmlNamespace, string elementName)
-        {
-            Collection<string> validNamespaces = ExtensionDomainModel.myValidNamespaces;
-            Dictionary<string, Guid> classNameMap = ExtensionDomainModel.myClassNameMap;
-            if ((validNamespaces == null))
-            {
-                validNamespaces = new Collection<string>();
-                validNamespaces.Add("http://Schemas.Neumont.edu/ORM/ExtensionExample");
-                ExtensionDomainModel.myValidNamespaces = validNamespaces;
-            }
-            if ((classNameMap == null))
-            {
-                classNameMap = new Dictionary<string, Guid>();
-                classNameMap.Add("SampleElement", MyCustomExtensionElement.MetaClassGuid);
-                ExtensionDomainModel.myClassNameMap = classNameMap;
-            }
-            if ((validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName)))
-            {
-                return classNameMap[elementName];
-            }
-            return default(Guid);
-        }
-        Guid IORMCustomSerializedMetaModel.MapClassName(string xmlNamespace, string elementName)
-        {
-            return ExtensionDomainModel.MapClassName(xmlNamespace, elementName);
-        }
-    }
-    /// <summary>
-    ///</summary>
-    public partial class MyCustomExtensionElement : IORMCustomSerializedElement
-    {
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return ORMCustomSerializedElementSupportedOperations.ElementInfo;
-            }
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
-        {
-            get
-            {
-                return this.SupportedCustomSerializedOperations;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
-        {
-            get
-            {
-                return new ORMCustomSerializedElementInfo(null, "SampleElement", null, ORMCustomSerializedElementWriteStyle.Element, null);
-            }
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-        {
-            get
-            {
-                return this.CustomSerializedElementInfo;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        [CLSCompliant(false)]
-        protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return null;
-            }
-        }
-        IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
-        {
-            get
-            {
-                return this.CustomSerializedChildRoleComparer;
-            }
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
-        {
-            throw new System.NotSupportedException();
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
-        {
-            return this.GetCustomSerializedChildElementInfo();
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            throw new System.NotSupportedException();
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            throw new System.NotSupportedException();
-        }
-        Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
-        {
-            return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
-        }
-        /// <summary>
-        ///</summary>
-        protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return default(ORMCustomSerializedElementMatch);
-        }
-        ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-        {
-            return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-        }
-        /// <summary>
-        ///</summary>
-        protected Guid MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return default(Guid);
-        }
-        Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
-        {
-            return this.MapAttribute(xmlNamespace, attributeName);
-        }
-    }
+	using System;
+	using System.Collections;
+	using System.Collections.ObjectModel;
+	using System.Collections.Generic;
+	using Microsoft.VisualStudio.Modeling;
+	using Microsoft.VisualStudio.Modeling.Diagrams;
+	using Neumont.Tools.ORM.Shell;
+	
+	/// <summary>
+	///</summary>
+	public partial class ExtensionDomainModel : IORMCustomSerializedMetaModel
+	{
+		private static Dictionary<string, Guid> myClassNameMap;
+		private static Collection<string> myValidNamespaces;
+		/// <summary>
+		///</summary>
+		protected static string DefaultElementPrefix
+		{
+			get
+			{
+				return "ormExtension";
+			}
+		}
+		string IORMCustomSerializedMetaModel.DefaultElementPrefix
+		{
+			get
+			{
+				return ExtensionDomainModel.DefaultElementPrefix;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected static string[,] GetCustomElementNamespaces()
+		{
+			string[,] ret = new string[1, 3];
+			ret[0, 0] = "ormExtension";
+			ret[0, 1] = "http://Schemas.Neumont.edu/ORM/ExtensionExample";
+			ret[0, 2] = "ExtensionDomainModelTest.xsd";
+			return ret;
+		}
+		string[,] IORMCustomSerializedMetaModel.GetCustomElementNamespaces()
+		{
+			return ExtensionDomainModel.GetCustomElementNamespaces();
+		}
+		/// <summary>
+		///</summary>
+		protected bool ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
+		{
+			return true;
+		}
+		bool IORMCustomSerializedMetaModel.ShouldSerializeMetaClass(Store store, MetaClassInfo classInfo)
+		{
+			return this.ShouldSerializeMetaClass(store, classInfo);
+		}
+		/// <summary>
+		///</summary>
+		protected static Guid[] GetRootElementClasses()
+		{
+			return new Guid[0];
+		}
+		Guid[] IORMCustomSerializedMetaModel.GetRootElementClasses()
+		{
+			return ExtensionDomainModel.GetRootElementClasses();
+		}
+		/// <summary>
+		///</summary>
+		protected static Guid MapRootElement(string xmlNamespace, string elementName)
+		{
+			return default(Guid);
+		}
+		Guid IORMCustomSerializedMetaModel.MapRootElement(string xmlNamespace, string elementName)
+		{
+			return ExtensionDomainModel.MapRootElement(xmlNamespace, elementName);
+		}
+		/// <summary>
+		///</summary>
+		protected static Guid MapClassName(string xmlNamespace, string elementName)
+		{
+			Collection<string> validNamespaces = ExtensionDomainModel.myValidNamespaces;
+			Dictionary<string, Guid> classNameMap = ExtensionDomainModel.myClassNameMap;
+			if ((validNamespaces == null))
+			{
+				validNamespaces = new Collection<string>();
+				validNamespaces.Add("http://Schemas.Neumont.edu/ORM/ExtensionExample");
+				ExtensionDomainModel.myValidNamespaces = validNamespaces;
+			}
+			if ((classNameMap == null))
+			{
+				classNameMap = new Dictionary<string, Guid>();
+				classNameMap.Add("SampleElement", MyCustomExtensionElement.MetaClassGuid);
+				ExtensionDomainModel.myClassNameMap = classNameMap;
+			}
+			if ((validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName)))
+			{
+				return classNameMap[elementName];
+			}
+			return default(Guid);
+		}
+		Guid IORMCustomSerializedMetaModel.MapClassName(string xmlNamespace, string elementName)
+		{
+			return ExtensionDomainModel.MapClassName(xmlNamespace, elementName);
+		}
+	}
+	/// <summary>
+	///</summary>
+	public partial class MyCustomExtensionElement : IORMCustomSerializedElement
+	{
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return ORMCustomSerializedElementSupportedOperations.ElementInfo;
+			}
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				return new ORMCustomSerializedElementInfo(null, "SampleElement", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>
+		///</summary>
+		[CLSCompliant(false)]
+		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IComparer<MetaRoleInfo> IORMCustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			throw new System.NotSupportedException();
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedChildElementInfo[] IORMCustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			throw new System.NotSupportedException();
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(Microsoft.VisualStudio.Modeling.MetaAttributeInfo attributeInfo, Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
+		}
+		/// <summary>
+		///</summary>
+		protected Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			throw new System.NotSupportedException();
+		}
+		Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+		}
+		/// <summary>
+		///</summary>
+		protected ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return default(ORMCustomSerializedElementMatch);
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+		}
+		/// <summary>
+		///</summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return default(Guid);
+		}
+		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>
+		///</summary>
+		protected bool ShouldSerialize()
+		{
+			return ((TestEnumeration.None) != (this.CustomEnum) || ("Default value") != (this.TestProperty));
+		}
+		bool IORMCustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
+		}
+	}
 }

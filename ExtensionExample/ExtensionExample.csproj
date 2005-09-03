@@ -58,6 +58,7 @@
       <DependentUpon>ExtensionDomainModel.SerializationExtensions.xml</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="ExtensionDomainModel.DeserializationFixupListeners.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

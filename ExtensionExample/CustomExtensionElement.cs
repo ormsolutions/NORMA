@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Modeling;
 
 namespace ExtensionExample
 {
+	#region TestElementPicker Class
 	/// <summary>
 	/// Provides the content for a drop down list for <see cref="MyCustomExtensionElement.TestProperty"/>.
 	/// </summary>
@@ -39,6 +40,11 @@ namespace ExtensionExample
 			}
 		}
 	}
+	#endregion // TestElementPicker Class
+	#region TestEnumeration Enum
+	/// <summary>
+	/// Provides test values for our enum sample dropdown
+	/// </summary>
 	public enum TestEnumeration
 	{
 		None = 0,
@@ -46,11 +52,20 @@ namespace ExtensionExample
 		Two = 2,
 		Three = 3
 	}
+	#endregion // TestEnumeration Enum
+	#region MyCustomExtensionElement class
 	public partial class MyCustomExtensionElement : IORMPropertyExtension
 	{
 		private static readonly Random random = new Random();
 		private Guid myExtensionExpandableTopLevelAttributeGuid;
 
+		/// <summary>
+		/// Test only code to randomly pick how our extension properties are displayed.
+		/// OnCreated generally does not need to be overriden. If you do override it, however,
+		/// note that OnCreated is called whenever an element is created, whereas OnInitialized
+		/// is not called during deserialization. Therefore, if you make any changes to the model
+		/// in this routine you should make those changes in OnInitialized instead.
+		/// </summary>
 		public override void OnCreated()
 		{
 			int randomNumber = -1;
@@ -124,19 +139,24 @@ namespace ExtensionExample
 			return this.GetType().Name;
 		}
 	}
-
-	[RuleOn(typeof(Role))]
-	[RuleOn(typeof(FactType))]
-	[RuleOn(typeof(RootType))]
+	#endregion // MyCustomExtensionElement class
+	#region ExtensionAddRule class
+	/// <summary>
+	/// Rule classes are defined to respond to changes in the object
+	/// model that occur during user editing. In this case, we're adding
+	/// our custom extension element to a Role object when it is added to
+	/// a FactType via the FactTypeHasRole relationship.
+	/// </summary>
+	[RuleOn(typeof(FactTypeHasRole))]
 	public sealed class ExtensionAddRule : AddRule
 	{
 		/// <summary>
-		/// Whenever we are notified that an element is added to the model, we check if it is an
-		/// IORMExtendableElement, and if so, we add ourselves to it.
+		/// Add our custom extension properties to a role when it is added to a fact type
 		/// </summary>
 		public override void ElementAdded(ElementAddedEventArgs e)
 		{
-			IORMExtendableElement extendableElement = e.ModelElement as IORMExtendableElement;
+			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+			IORMExtendableElement extendableElement = link.RoleCollection as IORMExtendableElement;
 			if (extendableElement != null)
 			{
 				MyCustomExtensionElement customElement = MyCustomExtensionElement.CreateMyCustomExtensionElement(e.ModelElement.Store);
@@ -144,4 +164,5 @@ namespace ExtensionExample
 			}
 		}
 	}
+	#endregion // ExtensionAddRule class
 }

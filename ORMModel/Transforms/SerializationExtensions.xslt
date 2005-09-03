@@ -1568,6 +1568,28 @@
 					</xsl:choose>
 				</plx:Function>
 			</xsl:if>
+			<xsl:variable name="serializeBody" select="se:ConditionalSerialization/child::plx:*"/>
+			<xsl:if test="$serializeBody or not($ClassOverride)">
+				<plx:Function visibility="Protected" name="ShouldSerialize" shadow="{$ClassOverride}">
+					<xsl:if test="not($serializeBody and count($serializeBody/descendant::plx:ThisKeyword | $serializeBody/descendant::plx:BaseKeyword))">
+						<xsl:attribute name="static">
+							<xsl:text>true</xsl:text>
+						</xsl:attribute>
+					</xsl:if>
+					<plx:InterfaceMember dataTypeName="IORMCustomSerializedElement" member="ShouldSerialize"/>
+					<plx:Param name="" type="RetVal" dataTypeName="Boolean" dataTypeQualifier="System"/>
+					<xsl:choose>
+						<xsl:when test="$serializeBody">
+							<xsl:copy-of select="$serializeBody"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:Return>
+								<plx:TrueKeyword/>
+							</plx:Return>
+						</xsl:otherwise>
+					</xsl:choose>
+				</plx:Function>
+			</xsl:if>
 		</plx:Class>
 	</xsl:template>
 	<xsl:template name="ResolveNamespace">

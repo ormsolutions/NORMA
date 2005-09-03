@@ -125,6 +125,30 @@
 		<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="DataTypeNotSpecifiedError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="DataType" Override="true">
+		<se:ConditionalSerialization>
+			<!-- If the only reference to this type is the aggregating
+				 object type, then don't bother to write it out. These
+				 are intrinsic types and will reappear when the model file
+				 is reloaded. -->
+			<plx:Return>
+				<plx:Operator type="GreaterThan">
+					<plx:Left>
+						<plx:CallInstance name="Count" type="Property">
+							<plx:CallObject>
+								<plx:CallInstance name="GetElementLinks">
+									<plx:CallObject>
+										<plx:ThisKeyword/>
+									</plx:CallObject>
+								</plx:CallInstance>
+							</plx:CallObject>
+						</plx:CallInstance>
+					</plx:Left>
+					<plx:Right>
+						<plx:Value type="I4" data="1"/>
+					</plx:Right>
+				</plx:Operator>
+			</plx:Return>
+		</se:ConditionalSerialization>
 		<se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueTypeCollection" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ReferenceModeKind" Name="ReferenceModeKind" Override="true">

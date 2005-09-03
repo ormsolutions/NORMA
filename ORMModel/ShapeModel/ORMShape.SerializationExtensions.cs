@@ -284,6 +284,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return this.MapAttribute(xmlNamespace, attributeName);
 		}
+		/// <summary>
+		///</summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool IORMCustomSerializedElement.ShouldSerialize()
+		{
+			return ORMDiagram.ShouldSerialize();
+		}
 		private class CustomSortChildComparer : IComparer<MetaRoleInfo>
 		{
 			private Dictionary<string, int> myRoleOrderDictionary;
@@ -493,6 +503,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		Guid IORMCustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{
 			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>
+		///</summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool IORMCustomSerializedElement.ShouldSerialize()
+		{
+			return ORMBaseShape.ShouldSerialize();
 		}
 		private class CustomSortChildComparer : IComparer<MetaRoleInfo>
 		{

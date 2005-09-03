@@ -135,6 +135,16 @@
 			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
+	<xs:element name="ConditionalSerialization">
+		<xs:annotation>
+			<xs:documentation>The body of a PLIX function to determine if an element should be serialized. Must include a PLIX return statement.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:any namespace="http://Schemas.Neumont.edu/CodeGeneration/Plix" processContents="lax" minOccurs="1"  maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="CustomSerializedElements">
 		<xs:annotation>
 			<xs:documentation>The root element.</xs:documentation>
@@ -269,6 +279,7 @@
 					<xs:complexType>
 						<xs:sequence>
 							<xs:sequence>
+								<xs:element ref="ConditionalSerialization" minOccurs="0"/>
 								<xs:element ref="ConditionalName" minOccurs="0" maxOccurs="unbounded"/>
 								<xs:element name="Attribute" minOccurs="0" maxOccurs="unbounded">
 									<xs:annotation>
