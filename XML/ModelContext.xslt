@@ -7,14 +7,44 @@
 	xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix"
 	xmlns:ao="http://Schemas.Neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects">
 	<xsl:variable name="ModelContextName" select="concat(ormRoot:ORM2/orm:ORMModel/@Name,'Context')"/>
+	<xsl:variable name="IModelFactoryName" select="concat('I', ormRoot:ORM2/orm:ORMModel/@Name, 'Factory')"/>
 	<xsl:template match="orm:ORMModel" mode="ModelContext">
 		<plx:Class visibility="Public" partial="true" name="{$ModelContextName}">
-			<xsl:variable name="Model" select="."/>
+			<plx:ImplementsInterface dataTypeName="{$IModelFactoryName}"/>
 			<xsl:call-template name="BuildExternalUniquenessConstraintValidationFunctions">
-				<xsl:with-param name="Model" select="$Model"/>
+				<xsl:with-param name="Model" select="."/>
 			</xsl:call-template>
 			<xsl:call-template name="BuildValueConstraintValidationFunctions"/>
 		</plx:Class>
+	</xsl:template>
+	<xsl:template name="GenerateFactoryInterface">
+		<xsl:param name="AbsorbedObjectsEx"/>
+		<plx:Interface name="{$IModelFactoryName}" visibility="Public">
+			<xsl:apply-templates mode="GenerateFactoryMethod" select="$AbsorbedObjectsEx">
+				<xsl:with-param name="Model" select="."/>
+			</xsl:apply-templates>
+		</plx:Interface>
+	</xsl:template>
+	<xsl:template match="ao:Object" mode="GenerateFactoryMethod">
+		<xsl:param name="Model"/>
+		<xsl:if test="@type='EntityType' or @type='ObjectifiedType'">
+			<plx:Function name="Create{@name}" abstract="true" visibility="Public">
+				<plx:Param name="" type="RetVal" dataTypeName="{@name}"/>
+				<xsl:apply-templates select="Properties/Property" mode="GenerateConstructorParams">
+					<xsl:with-param name="Pass" select="false()"/>
+				</xsl:apply-templates>
+			</plx:Function>
+		</xsl:if>
+	</xsl:template>
+	<xsl:template match="ao:Association" mode="GenerateFactoryMethod">
+		<xsl:param name="Model"/>
+		<plx:Function name="Create{@name}{$AssociationClassDecorator}" abstract="true" visibility="Public">
+			<plx:Param name="" type="RetVal" dataTypeName="{@name}{$AssociationClassDecorator}"/>
+			<xsl:apply-templates select="Properties/Property" mode="GenerateConstructorParams">
+				<xsl:with-param name="Pass" select="false()"/>
+				<xsl:with-param name="ForceMandatory" select="true()"/>
+			</xsl:apply-templates>
+		</plx:Function>
 	</xsl:template>
 	<xsl:template name="BuildExternalUniquenessConstraintValidationFunctions">
 		<xsl:param name="Model"/>
