@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
@@ -6,59 +6,113 @@
 	xmlns:ormRoot="http://Schemas.Neumont.edu/ORM/ORMRoot"
 	xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix"
 	xmlns:ao="http://Schemas.Neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects">
-	<xsl:variable name="ModelContextName" select="concat(ormRoot:ORM2/orm:ORMModel/@Name,'Context')"/>
-	<xsl:variable name="IModelFactoryName" select="concat('I', ormRoot:ORM2/orm:ORMModel/@Name, 'Factory')"/>
-	<xsl:template match="orm:ORMModel" mode="ModelContext">
-		<plx:Class visibility="Public" partial="true" name="{$ModelContextName}">
-			<plx:ImplementsInterface dataTypeName="{$IModelFactoryName}"/>
-			<xsl:call-template name="BuildExternalUniquenessConstraintValidationFunctions">
-				<xsl:with-param name="Model" select="."/>
-			</xsl:call-template>
-			<xsl:call-template name="BuildValueConstraintValidationFunctions"/>
-		</plx:Class>
-	</xsl:template>
-	<xsl:template name="GenerateFactoryInterface">
-		<xsl:param name="AbsorbedObjectsEx"/>
-		<plx:Interface name="{$IModelFactoryName}" visibility="Public">
-			<xsl:apply-templates mode="GenerateFactoryMethod" select="$AbsorbedObjectsEx">
-				<xsl:with-param name="Model" select="."/>
-			</xsl:apply-templates>
-		</plx:Interface>
-	</xsl:template>
-	<xsl:template match="ao:Object" mode="GenerateFactoryMethod">
+	<xsl:include href="ModelContextCode.xslt"/>
+
+	<xsl:template match="ao:Object" mode="ForGenerateImplementationClass">
 		<xsl:param name="Model"/>
+		<xsl:param name="ModelContextName"/>
+		<!-- TODO: Is this test necessary? Is it even possible to have an ao:Object that isn't an EntityType or an ObjectifiedType? -->
 		<xsl:if test="@type='EntityType' or @type='ObjectifiedType'">
-			<plx:Function name="Create{@name}" abstract="true" visibility="Public">
-				<plx:Param name="" type="RetVal" dataTypeName="{@name}"/>
-				<xsl:apply-templates select="Properties/Property" mode="GenerateConstructorParams">
-					<xsl:with-param name="Pass" select="false()"/>
-				</xsl:apply-templates>
-			</plx:Function>
+			<xsl:call-template name="GenerateImplementationClass">
+				<xsl:with-param name="Model" select="$Model"/>
+				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
+				<xsl:with-param name="className" select="@name"/>
+			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
-	<xsl:template match="ao:Association" mode="GenerateFactoryMethod">
+	<xsl:template match="ao:Association" mode="ForGenerateImplementationClass">
 		<xsl:param name="Model"/>
-		<plx:Function name="Create{@name}{$AssociationClassDecorator}" abstract="true" visibility="Public">
-			<plx:Param name="" type="RetVal" dataTypeName="{@name}{$AssociationClassDecorator}"/>
-			<xsl:apply-templates select="Properties/Property" mode="GenerateConstructorParams">
-				<xsl:with-param name="Pass" select="false()"/>
-				<xsl:with-param name="ForceMandatory" select="true()"/>
-			</xsl:apply-templates>
-		</plx:Function>
+		<xsl:param name="ModelContextName"/>
+		<xsl:call-template name="GenerateImplementationClass">
+			<xsl:with-param name="Model" select="$Model"/>
+			<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
+			<xsl:with-param name="className" select="concat(@name,$AssociationClassSuffix)"/>
+		</xsl:call-template>
 	</xsl:template>
+
+	<xsl:template name="GenerateImplementation">
+		<xsl:param name="ModelContextName"/>
+		<xsl:param name="ModelContextInterfaceName"/>
+		<plx:Class visibility="Public" sealed="true" name="{$ModelContextName}">
+			<plx:ImplementsInterface dataTypeName="{$ModelContextInterfaceName}"/>
+			<plx:Function ctor="true" visibility="Public"/>
+			<xsl:call-template name="GenerateModelContextMethods">
+				<xsl:with-param name="Model" select="."/>
+			</xsl:call-template>
+			<xsl:apply-templates mode="ForGenerateImplementationClass" select="$AbsorbedObjects">
+				<xsl:with-param name="Model" select="."/>
+				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
+				<xsl:with-param name="ModelContextInterfaceName" select="$ModelContextInterfaceName"/>
+			</xsl:apply-templates>
+		</plx:Class>
+	</xsl:template>
+	
+	<xsl:template name="GenerateModelContextMethods">
+		<xsl:param name="Model"/>
+		<xsl:call-template name="BuildExternalUniquenessConstraintValidationFunctions">
+			<xsl:with-param name="Model" select="$Model"/>
+		</xsl:call-template>
+		<xsl:call-template name="BuildAssociationUniquenessConstraintValidationFunctions">
+			<xsl:with-param name="Model" select="$Model"/>
+		</xsl:call-template>
+		<xsl:call-template name="BuildValueConstraintValidationFunctions"/>
+	</xsl:template>
+	
 	<xsl:template name="BuildExternalUniquenessConstraintValidationFunctions">
 		<xsl:param name="Model"/>
 		<xsl:for-each select="orm:ExternalConstraints/orm:ExternalUniquenessConstraint">
+			<xsl:variable name="firstRoleRef" select="orm:RoleSequence/orm:Role[1]/@ref" />
+			<xsl:variable name="uniqueObjectName" select="$AbsorbedObjects/child::*[@oppositeRoleRef=$firstRoleRef]/../@name"/>
+			<xsl:variable name="parametersFragment">
+				<xsl:for-each select="orm:RoleSequence/orm:Role">
+					<xsl:call-template name="GetParameterFromRole">
+						<xsl:with-param name="Model" select="$Model"/>
+					</xsl:call-template>
+				</xsl:for-each>
+			</xsl:variable>
+			<xsl:variable name="parameters" select="msxsl:node-set($parametersFragment)/child::*"/>
 			<!-- TODO: Only pass external uniqueness constraints that are composed of simple binaries to the following template-->
-			<xsl:call-template name="GenerateExternalUniquenessSimpleBinaryDictionaries">
+			<xsl:call-template name="GenerateSimpleBinaryUniquenessChangeMethods">
 				<xsl:with-param name="Model" select="$Model"/>
+				<xsl:with-param name="uniqueObjectName" select="$uniqueObjectName"/>
+				<xsl:with-param name="parameters" select="$parameters"/>
 			</xsl:call-template>
 			<!-- TODO: Only pass external uniqueness constraints that are composed of simple binaries to the following template-->
-			<xsl:call-template name="GenerateExternalUniquenessSimpleBinaryLookupMethods">
-				<xsl:with-param name="Model" select="$Model"/>
+			<xsl:call-template name="GenerateSimpleBinaryUniquenessLookupMethod">
+				<xsl:with-param name="uniqueObjectName" select="$uniqueObjectName"/>
+				<xsl:with-param name="parameters" select="$parameters"/>
 			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
+
+	<xsl:template name="BuildAssociationUniquenessConstraintValidationFunctions">
+		<xsl:param name="Model"/>
+		<xsl:for-each select="$AbsorbedObjects/../ao:Association">
+			<xsl:variable name="uniqueObjectName" select="concat(@name,$AssociationClassSuffix)"/>
+			<xsl:for-each select="$Model/orm:Facts/orm:Fact[@id=current()/@id]/orm:InternalConstraints/orm:InternalUniquenessConstraint">
+				<xsl:variable name="parametersFragment">
+					<xsl:for-each select="orm:RoleSequence/orm:Role">
+						<xsl:call-template name="GetParameterFromRole">
+							<xsl:with-param name="Model" select="$Model"/>
+						</xsl:call-template>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:variable name="parameters" select="msxsl:node-set($parametersFragment)/child::*"/>
+				<!-- TODO: Only pass external uniqueness constraints to the following template if they are composed of simple binaries -->
+				<xsl:call-template name="GenerateSimpleBinaryUniquenessChangeMethods">
+					<xsl:with-param name="Model" select="$Model"/>
+					<xsl:with-param name="uniqueObjectName" select="$uniqueObjectName"/>
+					<xsl:with-param name="parameters" select="$parameters"/>
+				</xsl:call-template>
+				<!-- TODO: Only pass external uniqueness constraints to the following template if they are composed of simple binaries -->
+				<xsl:call-template name="GenerateSimpleBinaryUniquenessLookupMethod">
+					<xsl:with-param name="uniqueObjectName" select="$uniqueObjectName"/>
+					<xsl:with-param name="parameters" select="$parameters"/>
+				</xsl:call-template>
+			</xsl:for-each>
+		</xsl:for-each>
+	</xsl:template>
+	
 	<xsl:template name="BuildValueConstraintValidationFunctions">
 		<xsl:variable name="cacheDataTypes" select="orm:DataTypes/child::*"/>
 		<xsl:variable name="cacheValueTypes" select="orm:Objects/orm:ValueType"/>
@@ -74,7 +128,7 @@
 							<xsl:call-template name="MapDataType"/>
 						</xsl:for-each>
 					</xsl:variable>
-					<xsl:call-template name="GenerateValueConstraintFunction">
+					<xsl:call-template name="GenerateValueConstraintMethod">
 						<xsl:with-param name="FunctionName" select="concat($RoleValueConstraintFor,$factName,$roleId)"/>
 						<xsl:with-param name="DataType" select="msxsl:node-set($dataTypeFragment)/child::*"/>
 					</xsl:call-template>
@@ -91,14 +145,14 @@
 				</xsl:for-each>
 			</xsl:variable>
 			<xsl:for-each select="orm:ValueConstraint/orm:ValueRangeDefinition">
-				<xsl:call-template name="GenerateValueConstraintFunction">
+				<xsl:call-template name="GenerateValueConstraintMethod">
 					<xsl:with-param name="FunctionName" select="concat($ValueConstraintFor,$valueTypeName)"/>
 					<xsl:with-param name="DataType" select="msxsl:node-set($dataTypeFragment)/child::*"/>
 				</xsl:call-template>
 			</xsl:for-each>
 		</xsl:for-each>
 	</xsl:template>
-	<xsl:template name="GenerateValueConstraintFunction">
+	<xsl:template name="GenerateValueConstraintMethod">
 		<xsl:param name="FunctionName"/>
 		<xsl:param name="DataType"/>
 		<xsl:variable name="valueType">
@@ -210,7 +264,7 @@
 						</plx:Test>
 						<plx:Body>
 							<plx:Throw>
-								<plx:CallNew dataTypeName="ArgumentOutOfRangeException" type="New"/>
+								<plx:CallNew dataTypeName="ArgumentOutOfRangeException" dataTypeQualifier="System" type="New"/>
 							</plx:Throw>
 						</plx:Body>
 					</plx:Condition>
@@ -248,71 +302,5 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<!-- Get the data type name and qualifier for the passed-in orm2 data type element.
-	     Returns a DataType element with up to three attributes (dataTypeName, dataTypeQualifier, dataTypeIsSimpleArray)
-		 to use in plix -->
-	<xsl:template name="DataTypeToPlixValueType">
-		<!-- Any element with standard Plix data type attributes -->
-		<xsl:param name="DataType"/>
-		<xsl:for-each select="$DataType">
-			<!-- Here's how we map
-			Char Char
-			I1 SByte
-			I2 Int16
-			I4 Int32
-			I8 Int64
-			U1 Byte
-			U2 UInt16
-			U4 UInt32
-			U8 UInt64
-			R4 Single
-			R8 Double
-			-->
-			<xsl:choose>
-				<xsl:when test="@dataTypeQualifier='System'">
-					<xsl:choose>
-						<xsl:when test="@dataTypeName='Char'">
-							<xsl:text>Char</xsl:text>
-						</xsl:when>
-						<xsl:when test="@dataTypeName='SByte'">
-							<xsl:text>I1</xsl:text>
-						</xsl:when>
-						<xsl:when test="@dataTypeName='Int16'">
-							<xsl:text>I2</xsl:text>
-						</xsl:when>
-						<xsl:when test="@dataTypeName='Int32'">
-							<xsl:text>I4</xsl:text>
-						</xsl:when>
-						<xsl:when test="@dataTypeName='Int64'">
-							<xsl:text>I8</xsl:text>
-						</xsl:when>
-						<xsl:when test="@dataTypeName='Byte'">
-							<xsl:text>U1</xsl:text>
-						</xsl:when>
-						<xsl:when test="@dataTypeName='UInt16'">
-							<xsl:text>U2</xsl:text>
-						</xsl:when>
-						<xsl:when test="@dataTypeName='UInt32'">
-							<xsl:text>U4</xsl:text>
-						</xsl:when>
-						<xsl:when test="@dataTypeName='UInt64'">
-							<xsl:text>U8</xsl:text>
-						</xsl:when>
-						<xsl:when test="@dataTypeName='Single'">
-							<xsl:text>R4</xsl:text>
-						</xsl:when>
-						<xsl:when test="@dataTypeName='Double'">
-							<xsl:text>R8</xsl:text>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:text>String</xsl:text>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>String</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:for-each>
-	</xsl:template>
+
 </xsl:stylesheet>
