@@ -1472,7 +1472,17 @@
 				</Property>
 			</xsl:when>
 			<xsl:otherwise>
-				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}" realRoleRef="{@thisRoleRef}">
+				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}">
+					<xsl:attribute name="realRoleRef">
+						<xsl:choose>
+							<xsl:when test="string-length(@oppositeRoleRef)">
+								<xsl:value-of select="@oppositeRoleRef"/>
+							</xsl:when>
+							<xsl:when test="string-length(@thisRoleRef)">
+								<xsl:value-of select="@thisRoleRef"/>
+							</xsl:when>
+						</xsl:choose>
+					</xsl:attribute>
 					<xsl:attribute name="name">
 						<xsl:choose>
 							<xsl:when test="string-length(@oppositeRoleName)">
