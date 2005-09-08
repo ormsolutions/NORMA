@@ -1089,9 +1089,11 @@
 	
 	<xsl:template name="GenerateMandatoryParameters">
 		<xsl:param name="properties"/>
+		<xsl:param name="nonCustomOnly" select="false()"/>
+		<!--Set nonCustomOnly to true() to force creation of single values only parameters-->
 		<xsl:variable name="localName" select="local-name()"/>
 		<xsl:for-each select="$properties">
-			<xsl:if test="@mandatory='true' or @mandatory='relaxed' or $localName='Association'">
+			<xsl:if test="(not($nonCustomOnly) or @customType='true') and (@mandatory='true' or @mandatory='relaxed' or $localName='Association')">
 				<plx:Param type="In" name="{@name}">
 					<xsl:copy-of select="DataType/@*"/>
 					<xsl:copy-of select="DataType/child::*"/>
