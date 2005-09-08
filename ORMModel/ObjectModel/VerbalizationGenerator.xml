@@ -88,7 +88,7 @@
 	<Constructs>
 		<Constraints>
 			<Constraint type="InternalUniquenessConstraint" patternGroup="InternalConstraint">
-				<ConstrainedRoles span="all" arity="2">
+				<ConstrainedRoles span="all" factArity="2">
 					<Quantifier type="EachInstanceQuantifier">
 						<Fact/>
 					</Quantifier>
@@ -106,7 +106,7 @@
 						</IterateRoles>
 					</Quantifier>
 				</ConstrainedRoles>
-				<ConstrainedRoles arity="2">
+				<ConstrainedRoles factArity="2">
 					<ConditionalReading>
 						<ReadingChoice match="RequireLeadReading">
 							<Fact readingChoice="Conditional">
@@ -161,6 +161,63 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
+			<!-- UNDONE: Temporary data for xslt testing.-->
+			<!--<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
+				--><!-- Unaries are the only reading choice that has an optional negative reading --><!--
+				<ConstrainedRoles minFactArity="1" maxFactArity="1" sign="-">
+					<Quantifier type="NegativeReadingForUnaryOnlyDisjuntiveMandatory">
+						<IterateRolePlayers listStyle="SimpleList" match="first"/>
+						<IterateRoles listStyle="CompoundList" match="singleColumnConstraintRoles">
+							<Fact/>
+						</IterateRoles>
+					</Quantifier>
+				</ConstrainedRoles>
+				<ConstrainedRoles minFactArity="1" maxFactArity="2" sign="-">
+					<ConditionalReading readingChoice="RequireAllPrimaryLeadReading">
+						<CompositeList listStyle="IndentedOrList">
+							<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
+								<Fact readingChoice="RequirePrimaryLeadReading">
+									<PredicateReplacement match="firstPrimary">
+										<Quantifier type="UniversalQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="primary">
+										<Quantifier type="ThatQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Quantifier type="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+							<IterateRoles factArity="1" match="singleColumnConstraintRoles">
+								<Fact readingChoice="RequirePrimaryLeadReading">
+									<PredicateReplacement>
+										<Quantifier type="ThatQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+						</CompositeList>
+					</ConditionalReading>
+					<ConditionalReading>
+						<Quantifier type="ForEachQuantifier">
+							<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
+								<Fact readingChoice="PreferPrimaryLeadReading">
+									<PredicateReplacement match="primary">
+										<Quantifier type="ImpersonalQuantifier"/>
+										<Quantifier type="ExistentialQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="secondary">
+										<Quantifier type="ExistentialQuantifier"/>
+										<Quantifier type="ImpersonalQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+							<IterateRoles factArity="1" match="singleColumnConstraintRoles">
+								<Fact/>
+							</IterateRoles>
+						</Quantifier>
+					</ConditionalReading>
+				</ConstrainedRoles>
+			</Constraint>-->
 		</Constraints>
 	</Constructs>
 </Root>
