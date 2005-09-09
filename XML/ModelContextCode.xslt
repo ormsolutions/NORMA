@@ -10,6 +10,7 @@
 
 	<xsl:template name="GenerateImplementationConstructor">
 		<xsl:param name="properties"/>
+		<xsl:param name="className"/>
 		<xsl:param name="ModelContextName"/>
 		<plx:Function ctor="true" visibility="Public">
 			<plx:Param type="In" name="context" dataTypeName="{$ModelContextName}"/>
@@ -44,38 +45,98 @@
 				</plx:Right>
 			</plx:Operator>
 			<xsl:for-each select="msxsl:node-set($mandatoryParameters)/child::*">
-					<plx:Operator type="Assign">
-						<plx:Left>
-							<plx:CallInstance type="Property" name="{@name}">
-								<plx:CallObject>
-									<plx:ThisKeyword/>
-								</plx:CallObject>
-							</plx:CallInstance>
-						</plx:Left>
-						<plx:Right>
-							<plx:Value type="Parameter" data="{@name}"/>
-						</plx:Right>
-					</plx:Operator>
+				<plx:Operator type="Assign">
+					<plx:Left>
+						<plx:CallInstance type="Field" name="{$PrivateMemberPrefix}{@name}">
+							<plx:CallObject>
+								<plx:ThisKeyword/>
+							</plx:CallObject>
+						</plx:CallInstance>
+					</plx:Left>
+					<plx:Right>
+						<plx:Value type="Parameter" data="{@name}"/>
+					</plx:Right>
+				</plx:Operator>
+				<plx:CallInstance type="MethodCall" name="On{$className}{@name}Changed">
+					<plx:CallObject>
+						<plx:CallInstance type="Property" name="Context">
+							<plx:CallObject>
+								<plx:ThisKeyword/>
+							</plx:CallObject>
+						</plx:CallInstance>
+					</plx:CallObject>
+					<plx:PassParam>
+						<plx:ThisKeyword/>
+					</plx:PassParam>
+					<plx:PassParam>
+						<plx:Value type="Parameter" data="{@name}"/>
+					</plx:PassParam>
+				</plx:CallInstance>
 			</xsl:for-each>
 		</plx:Function>
 	</xsl:template>
 	<xsl:template name="GenerateFactoryMethod">
+		<xsl:param name="ModelContextName"/>
 		<xsl:param name="properties"/>
 		<xsl:param name="className"/>
 		<plx:Function name="Create{$className}" visibility="Public">
+			<plx:InterfaceMember member="Create{$className}" dataTypeName="I{$ModelContextName}"/>
 			<plx:Param type="RetVal" name="" dataTypeName="{$className}"/>
-			<xsl:variable name="mandatoryParameters">
+			<xsl:variable name="mandatoryParametersFragment">
 				<xsl:call-template name="GenerateMandatoryParameters">
 					<xsl:with-param name="properties" select="$properties"/>
 				</xsl:call-template>
 			</xsl:variable>
+			<xsl:variable name="mandatoryParameters" select="msxsl:node-set($mandatoryParametersFragment)/child::*"/>
 			<xsl:copy-of select="$mandatoryParameters"/>
+			<plx:Condition>
+				<plx:Test>
+					<plx:CallInstance type="Property" name="IsDeserializing">
+						<plx:CallObject>
+							<plx:ThisKeyword/>
+						</plx:CallObject>
+					</plx:CallInstance>
+				</plx:Test>
+				<plx:Body>
+					<plx:Throw>
+						<plx:CallNew dataTypeName="InvalidOperationException">
+							<plx:PassParam>
+								<plx:String>This factory method cannot be called while IsDeserializing returns true.</plx:String>
+							</plx:PassParam>
+						</plx:CallNew>
+					</plx:Throw>
+				</plx:Body>
+			</plx:Condition>
+			<xsl:for-each select="$mandatoryParameters">
+				<plx:Condition>
+					<plx:Test>
+						<plx:Operator type="BooleanNot">
+							<plx:CallInstance type="MethodCall" name="On{$className}{@name}Changing">
+								<plx:CallObject>
+									<plx:ThisKeyword/>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:NullObjectKeyword/>
+								</plx:PassParam>
+								<plx:PassParam>
+									<plx:Value type="Parameter" data="{@name}"/>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</plx:Operator>
+					</plx:Test>
+					<plx:Body>
+						<plx:Throw>
+							<plx:CallNew dataTypeName="ArgumentException"/>
+						</plx:Throw>
+					</plx:Body>
+				</plx:Condition>
+			</xsl:for-each>
 			<plx:Return>
 				<plx:CallNew dataTypeName="{$className}{$ImplementationClassSuffix}">
 					<plx:PassParam>
 						<plx:ThisKeyword/>
 					</plx:PassParam>
-					<xsl:for-each select="msxsl:node-set($mandatoryParameters)/child::*">
+					<xsl:for-each select="$mandatoryParameters">
 							<plx:PassParam>
 								<plx:Value type="Parameter" data="{@name}"/>
 							</plx:PassParam>
@@ -99,6 +160,7 @@
 		<!--<xsl:variable name="AbsorbedMandatory" select="$Model/orm:ORMModel/orm:Facts/orm:Fact/orm:FactRoles/orm:Role[@IsMandatory='true']/@DataType"/>-->
 		<xsl:for-each select="$properties">
 			<xsl:call-template name="GenerateImplementationSimpleLookupMethod">
+				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 				<xsl:with-param name="className" select="$className"/>
 			</xsl:call-template>
 			<xsl:call-template name="GenerateImplementationPropertyChangeMethods">
@@ -107,6 +169,7 @@
 			</xsl:call-template>
 		</xsl:for-each>
 		<xsl:call-template name="GenerateFactoryMethod">
+			<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 			<xsl:with-param name="properties" select="$properties"/>
 			<xsl:with-param name="className" select="$className"/>
 		</xsl:call-template>
@@ -116,6 +179,7 @@
 			<plx:Field visibility="Private" readOnly="true" name="Events" dataTypeName="EventHandlerList"/>
 			<xsl:call-template name="GenerateImplementationConstructor">
 				<xsl:with-param name="properties" select="$properties"/>
+				<xsl:with-param name="className" select="$className"/>
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 			</xsl:call-template>
 			<xsl:call-template name="GenerateINotifyPropertyChangedImplementation">
@@ -608,8 +672,7 @@
 					</plx:DelegateType>
 				</xsl:otherwise>
 			</xsl:choose>
-			<!-- PLIX_TODO: Plix (actually, CodeDom) currently doesn't like Event elements that contain OnAdd and OnRemove elements -->
-			<!--<plx:OnAdd>
+			<plx:OnAdd>
 				<plx:CallInstance name="AddHandler" type="MethodCall">
 					<plx:CallObject>
 						<plx:CallInstance name="Events" type="Field">
@@ -642,7 +705,7 @@
 						<plx:ValueKeyword/>
 					</plx:PassParam>
 				</plx:CallInstance>
-			</plx:OnRemove>-->
+			</plx:OnRemove>
 		</plx:Event>
 	</xsl:template>
 	<xsl:template name="GenerateImplementationPropertyChangeEventRaiseMethod">
@@ -814,9 +877,11 @@
 		</plx:Function>
 	</xsl:template>
 	<xsl:template name="GenerateImplementationSimpleLookupMethod">
+		<xsl:param name="ModelContextName"/>
 		<xsl:param name="className"/>
 		<xsl:if test="@unique='true' and not(@customType='true')">
 			<plx:Function name="Get{$className}By{@name}" visibility="Public">
+				<plx:InterfaceMember member="Get{$className}By{@name}" dataTypeName="I{$ModelContextName}"/>
 				<plx:Param type="RetVal" name="" dataTypeName="{$className}"/>
 				<plx:Param type="In" name="value">
 					<xsl:copy-of select="DataType/@*"/>
@@ -1060,9 +1125,11 @@
 		</plx:Function>
 	</xsl:template>
 	<xsl:template name="GenerateSimpleBinaryUniquenessLookupMethod">
+		<xsl:param name="ModelContextName"/>
 		<xsl:param name="uniqueObjectName"/>
 		<xsl:param name="parameters"/>
 		<plx:Function visibility="Public" name="Get{$uniqueObjectName}By{@Name}">
+			<plx:InterfaceMember member="Get{$uniqueObjectName}By{@Name}" dataTypeName="I{$ModelContextName}"/>
 			<plx:Param type="RetVal" name="" dataTypeName="{$uniqueObjectName}"/>
 			<xsl:for-each select="$parameters">
 				<plx:Param type="In" name="{@name}">

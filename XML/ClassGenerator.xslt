@@ -1034,6 +1034,8 @@
 			<plx:ImplementsInterface dataTypeName="INotifyPropertyChanged"/>
 			<plx:Function ctor="true" visibility="Protected"/>
 			<plx:Event visibility="Public" abstract="true" name="PropertyChanged">
+				<!-- PLIX_TODO: Plix currently doesn't seem to like InterfaceMember elements in Event elements -->
+				<!--<plx:InterfaceMember member="PropertyChanged" dataTypeName="INotifyPropertyChanged"/>-->
 				<plx:DelegateType dataTypeName="PropertyChangedEventHandler"/>
 			</plx:Event>
 			<xsl:variable name="contextPropertyFragment">
@@ -1103,7 +1105,6 @@
 	</xsl:template>
 	
 	<xsl:template name="GenerateGlobalSupportClasses">
-		<plx:Namespace name="{$CustomToolNamespace}">
 			<xsl:variable name="PropertyChangeEventArgsClassBody">
 				<plx:TypeParam name="TProperty"/>
 				<plx:Field visibility="Private" readOnly="true" name="{$PrivateMemberPrefix}OldValue" dataTypeName="TProperty"/>
@@ -1169,7 +1170,6 @@
 				<plx:DerivesFromClass dataTypeName="EventArgs"/>
 				<xsl:copy-of select="$PropertyChangeEventArgsClassBody"/>
 			</plx:Class>
-		</plx:Namespace>
 	</xsl:template>
 
 	<xsl:template name="GenerateModelContextInterfaceMethods">
@@ -1224,7 +1224,7 @@
 			</xsl:for-each>
 		</xsl:for-each>
 	</xsl:template>
-	<xsl:template name="GenerateModelContextInterfaceCreateMethod">
+	<xsl:template name="GenerateModelContextInterfaceObjectMethods">
 		<xsl:param name="Model"/>
 		<xsl:param name="className"/>
 		<xsl:variable name="propertiesFragment">
@@ -1233,12 +1233,43 @@
 			</xsl:apply-templates>
 		</xsl:variable>
 		<xsl:variable name="properties" select="msxsl:node-set($propertiesFragment)/child::*"/>
+		<xsl:call-template name="GenerateModelContextInterfaceCreateMethod">
+			<xsl:with-param name="Model" select="$Model"/>
+			<xsl:with-param name="className" select="$className"/>
+			<xsl:with-param name="properties" select="$properties"/>
+		</xsl:call-template>
+		<xsl:call-template name="GenerateModelContextInterfaceSimpleLookupMethods">
+			<xsl:with-param name="Model" select="$Model"/>
+			<xsl:with-param name="className" select="$className"/>
+			<xsl:with-param name="properties" select="$properties"/>
+		</xsl:call-template>
+	</xsl:template>
+	<xsl:template name="GenerateModelContextInterfaceCreateMethod">
+		<xsl:param name="Model"/>
+		<xsl:param name="className"/>
+		<xsl:param name="properties"/>
 		<plx:Function visibility="Public" name="Create{$className}">
 			<plx:Param type="RetVal" name="" dataTypeName="{$className}"/>
 			<xsl:call-template name="GenerateMandatoryParameters">
 				<xsl:with-param name="properties" select="$properties"/>
 			</xsl:call-template>
 		</plx:Function>
+	</xsl:template>
+	<xsl:template name="GenerateModelContextInterfaceSimpleLookupMethods">
+		<xsl:param name="Model"/>
+		<xsl:param name="className"/>
+		<xsl:param name="properties"/>
+		<xsl:for-each select="$properties">
+			<xsl:if test="@unique='true' and not(@customType='true')">
+				<plx:Function name="Get{$className}By{@name}" visibility="Public">
+					<plx:Param type="RetVal" name="" dataTypeName="{$className}"/>
+					<plx:Param type="In" name="value">
+						<xsl:copy-of select="DataType/@*"/>
+						<xsl:copy-of select="DataType/child::*"/>
+					</plx:Param>
+				</plx:Function>
+			</xsl:if>
+		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template match="ormRoot:ORM2">
@@ -1249,31 +1280,31 @@
 			<plx:Using name="System"/>
 			<plx:Using name="System.Collections.Generic"/>
 			<plx:Using name="System.ComponentModel"/>
-			<xsl:call-template name="GenerateGlobalSupportClasses"/>
-			<xsl:apply-templates mode="Main" select="orm:ORMModel"/>
+			<plx:Namespace name="{$CustomToolNamespace}">
+				<xsl:call-template name="GenerateGlobalSupportClasses"/>
+				<xsl:apply-templates mode="Main" select="orm:ORMModel"/>
+			</plx:Namespace>
 		</plx:Root>
 	</xsl:template>
 	<xsl:include href="ModelContext.xslt"/>
 	<xsl:template match="orm:ORMModel" mode="Main">
 		<xsl:variable name="ModelName" select="@Name"/>
 		<xsl:variable name="ModelContextName" select="concat($ModelName,'Context')"/>
-		<xsl:variable name="ModelContextInterfaceName" select="concat('I',$ModelContextName)"/>
-		<plx:Namespace name="{$CustomToolNamespace}{'.'}{$ModelName}">
+		<plx:Namespace name="{$ModelName}">
 			<xsl:apply-templates mode="ForGenerateAbstractClass" select="$AbsorbedObjects">
 				<xsl:with-param name="Model" select="."/>
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 			</xsl:apply-templates>
-			<plx:Interface visibility="Public" name="{$ModelContextInterfaceName}">
+			<plx:Interface visibility="Public" name="I{$ModelContextName}">
 				<xsl:call-template name="GenerateModelContextInterfaceMethods">
 					<xsl:with-param name="Model" select="."/>
 				</xsl:call-template>
-				<xsl:apply-templates mode="ForGenerateModelContextInterfaceCreateMethod" select="$AbsorbedObjects">
+				<xsl:apply-templates mode="ForGenerateModelContextInterfaceObjectMethods" select="$AbsorbedObjects">
 					<xsl:with-param name="Model" select="."/>
 				</xsl:apply-templates>
 			</plx:Interface>
 			<xsl:call-template name="GenerateImplementation">
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
-				<xsl:with-param name="ModelContextInterfaceName" select="$ModelContextInterfaceName"/>
 			</xsl:call-template>
 		</plx:Namespace>
 	</xsl:template>
@@ -1290,11 +1321,11 @@
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
-	<xsl:template match="ao:Object" mode="ForGenerateModelContextInterfaceCreateMethod">
+	<xsl:template match="ao:Object" mode="ForGenerateModelContextInterfaceObjectMethods">
 		<xsl:param name="Model"/>
 		<!-- TODO: Is this test necessary? Is it even possible to have an ao:Object that isn't an EntityType or an ObjectifiedType? -->
 		<xsl:if test="@type='EntityType' or @type='ObjectifiedType'">
-			<xsl:call-template name="GenerateModelContextInterfaceCreateMethod">
+			<xsl:call-template name="GenerateModelContextInterfaceObjectMethods">
 				<xsl:with-param name="Model" select="$Model"/>
 				<xsl:with-param name="className" select="@name"/>
 			</xsl:call-template>
@@ -1310,9 +1341,9 @@
 			<xsl:with-param name="className" select="concat(@name,$AssociationClassSuffix)"/>
 		</xsl:call-template>
 	</xsl:template>
-	<xsl:template match="ao:Association" mode="ForGenerateModelContextInterfaceCreateMethod">
+	<xsl:template match="ao:Association" mode="ForGenerateModelContextInterfaceObjectMethods">
 		<xsl:param name="Model"/>
-		<xsl:call-template name="GenerateModelContextInterfaceCreateMethod">
+		<xsl:call-template name="GenerateModelContextInterfaceObjectMethods">
 			<xsl:with-param name="Model" select="$Model"/>
 			<xsl:with-param name="className" select="concat(@name,$AssociationClassSuffix)"/>
 		</xsl:call-template>

@@ -34,32 +34,36 @@
 		<xsl:param name="ModelContextName"/>
 		<xsl:param name="ModelContextInterfaceName"/>
 		<plx:Class visibility="Public" sealed="true" name="{$ModelContextName}">
-			<plx:ImplementsInterface dataTypeName="{$ModelContextInterfaceName}"/>
+			<plx:ImplementsInterface dataTypeName="I{$ModelContextName}"/>
 			<plx:Function ctor="true" visibility="Public"/>
 			<xsl:call-template name="GenerateModelContextMethods">
 				<xsl:with-param name="Model" select="."/>
+				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 			</xsl:call-template>
 			<xsl:apply-templates mode="ForGenerateImplementationClass" select="$AbsorbedObjects">
 				<xsl:with-param name="Model" select="."/>
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
-				<xsl:with-param name="ModelContextInterfaceName" select="$ModelContextInterfaceName"/>
 			</xsl:apply-templates>
 		</plx:Class>
 	</xsl:template>
 	
 	<xsl:template name="GenerateModelContextMethods">
 		<xsl:param name="Model"/>
+		<xsl:param name="ModelContextName"/>
 		<xsl:call-template name="BuildExternalUniquenessConstraintValidationFunctions">
 			<xsl:with-param name="Model" select="$Model"/>
+			<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 		</xsl:call-template>
 		<xsl:call-template name="BuildAssociationUniquenessConstraintValidationFunctions">
 			<xsl:with-param name="Model" select="$Model"/>
+			<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 		</xsl:call-template>
 		<xsl:call-template name="BuildValueConstraintValidationFunctions"/>
 	</xsl:template>
 	
 	<xsl:template name="BuildExternalUniquenessConstraintValidationFunctions">
 		<xsl:param name="Model"/>
+		<xsl:param name="ModelContextName"/>
 		<xsl:for-each select="orm:ExternalConstraints/orm:ExternalUniquenessConstraint">
 			<xsl:variable name="firstRoleRef" select="orm:RoleSequence/orm:Role[1]/@ref" />
 			<xsl:variable name="uniqueObjectName" select="$AbsorbedObjects/child::*[@oppositeRoleRef=$firstRoleRef]/../@name"/>
@@ -79,6 +83,7 @@
 			</xsl:call-template>
 			<!-- TODO: Only pass external uniqueness constraints that are composed of simple binaries to the following template-->
 			<xsl:call-template name="GenerateSimpleBinaryUniquenessLookupMethod">
+				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 				<xsl:with-param name="uniqueObjectName" select="$uniqueObjectName"/>
 				<xsl:with-param name="parameters" select="$parameters"/>
 			</xsl:call-template>
@@ -87,6 +92,7 @@
 
 	<xsl:template name="BuildAssociationUniquenessConstraintValidationFunctions">
 		<xsl:param name="Model"/>
+		<xsl:param name="ModelContextName"/>
 		<xsl:for-each select="$AbsorbedObjects/../ao:Association">
 			<xsl:variable name="uniqueObjectName" select="concat(@name,$AssociationClassSuffix)"/>
 			<xsl:for-each select="$Model/orm:Facts/orm:Fact[@id=current()/@id]/orm:InternalConstraints/orm:InternalUniquenessConstraint">
@@ -106,6 +112,7 @@
 				</xsl:call-template>
 				<!-- TODO: Only pass external uniqueness constraints to the following template if they are composed of simple binaries -->
 				<xsl:call-template name="GenerateSimpleBinaryUniquenessLookupMethod">
+					<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 					<xsl:with-param name="uniqueObjectName" select="$uniqueObjectName"/>
 					<xsl:with-param name="parameters" select="$parameters"/>
 				</xsl:call-template>
