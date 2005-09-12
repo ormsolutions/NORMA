@@ -137,9 +137,9 @@
 						<plx:ThisKeyword/>
 					</plx:PassParam>
 					<xsl:for-each select="$mandatoryParameters">
-							<plx:PassParam>
-								<plx:Value type="Parameter" data="{@name}"/>
-							</plx:PassParam>
+						<plx:PassParam>
+							<plx:Value type="Parameter" data="{@name}"/>
+						</plx:PassParam>
 					</xsl:for-each>
 				</plx:CallNew>
 			</plx:Return>
@@ -166,6 +166,7 @@
 			<xsl:call-template name="GenerateImplementationPropertyChangeMethods">
 				<xsl:with-param name="className" select="$className"/>
 				<xsl:with-param name="Model" select="$Model"/>
+				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 			</xsl:call-template>
 		</xsl:for-each>
 		<xsl:call-template name="GenerateFactoryMethod">
@@ -318,6 +319,9 @@
 												<plx:PassParam>
 													<plx:ValueKeyword/>
 												</plx:PassParam>
+												<plx:PassParam>
+													<plx:TrueKeyword/>
+												</plx:PassParam>
 											</plx:CallInstance>
 										</plx:Test>
 										<plx:Body>
@@ -380,8 +384,15 @@
 	<xsl:template name="GenerateImplementationPropertyChangeMethods">
 		<xsl:param name="className"/>
 		<xsl:param name="Model"/>
+		<xsl:param name="ModelContextName"/>
 		<xsl:if test="not(@readOnly='true')">
 			<xsl:variable name="realRoleRef" select="@realRoleRef"/>
+			<!-- this is the constrained role for value a ValueType constraint-->
+			<xsl:variable name="constrainedRole" select="$Model//orm:FactRoles/orm:Role[@id=$realRoleRef]"/>
+			<!-- this is the constrained ValueType for value a ValueType constraint-->
+			<xsl:variable name="constrainedValueType" select="orm:ValueType/orm:PlayedRoles/orm:Role[@ref=@realRoleRef]"/>
+			<xsl:variable name="roleValueConstraint" select="$constrainedRole/orm:ValueConstraint"/>
+
 			<xsl:variable name="externalUniquenessConstraints" select="$Model/orm:ExternalConstraints/orm:ExternalUniquenessConstraint[orm:RoleSequence/orm:Role/@ref=$realRoleRef]"/>
 			<xsl:variable name="associationUniquenessConstraintsFragment">
 				<xsl:for-each select="$AbsorbedObjects/../ao:Association">
@@ -414,6 +425,59 @@
 					<xsl:copy-of select="DataType/@*"/>
 					<xsl:copy-of select="DataType/child::*"/>
 				</plx:Param>
+				<plx:Param name="throwOnFailure" dataTypeName="Boolean" dataTypeQualifier="System"/>
+				<xsl:choose>
+					<xsl:when test="$roleValueConstraint">
+						<plx:Condition>
+							<plx:Test>
+								<plx:Operator type="BooleanNot">
+									<plx:CallStatic dataTypeName="{$ModelContextName}" name="calculated">
+										<xsl:attribute name="name">
+											<xsl:call-template name="ValueConstraintValidationFunctionNameForRole">
+												<xsl:with-param name="Role" select="$constrainedRole"/>
+											</xsl:call-template>
+										</xsl:attribute>
+										<plx:PassParam>
+											<plx:Value type="Parameter" data="newValue"/>
+										</plx:PassParam>
+										<plx:PassParam>
+											<plx:Value type="Parameter" data="throwOnFailure"/>
+										</plx:PassParam>
+									</plx:CallStatic>
+								</plx:Operator>
+							</plx:Test>
+							<plx:Body>
+								<plx:Return>
+									<plx:FalseKeyword/>
+								</plx:Return>
+							</plx:Body>
+						</plx:Condition>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:variable name="representedRoleForValueType" select="$Model/orm:Objects/orm:ValueType[@id=$constrainedRole/orm:RolePlayer/@ref]/orm:ValueConstraint"/>
+						<xsl:if test="$representedRoleForValueType">
+							<plx:Condition>
+								<plx:Test>
+									<plx:Operator type="BooleanNot">
+										<plx:CallStatic dataTypeName="{$ModelContextName}" name="ValueConstraintFor{@name}">
+											<plx:PassParam>
+												<plx:Value type="Parameter" data="newValue"/>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:Value type="Parameter" data="throwOnFailure"/>
+											</plx:PassParam>
+										</plx:CallStatic>
+									</plx:Operator>
+								</plx:Test>
+								<plx:Body>
+									<plx:Return>
+										<plx:FalseKeyword/>
+									</plx:Return>
+								</plx:Body>
+							</plx:Condition>
+						</xsl:if>
+					</xsl:otherwise>
+				</xsl:choose>
 				<xsl:if test="@unique='true' and not(@customType='true')">
 					<plx:Condition>
 						<plx:Test>
@@ -443,6 +507,59 @@
 											</plx:CallInstance>
 										</plx:CallObject>
 										<plx:PassParam>
+											<xsl:choose>
+												<xsl:when test="$roleValueConstraint">
+													<plx:Condition>
+														<plx:Test>
+															<plx:Operator type="BooleanNot">
+																<plx:CallStatic dataTypeName="{$ModelContextName}" name="calculated">
+																	<xsl:attribute name="name">
+																		<xsl:call-template name="ValueConstraintValidationFunctionNameForRole">
+																			<xsl:with-param name="Role" select="$constrainedRole"/>
+																		</xsl:call-template>
+																	</xsl:attribute>
+																	<plx:PassParam>
+																		<plx:Value type="Parameter" data="newValue"/>
+																	</plx:PassParam>
+																	<plx:PassParam>
+																		<plx:Value type="Parameter" data="throwOnFailure"/>
+																	</plx:PassParam>
+																</plx:CallStatic>
+															</plx:Operator>
+														</plx:Test>
+														<plx:Body>
+															<plx:Return>
+																<plx:FalseKeyword/>
+															</plx:Return>
+														</plx:Body>
+													</plx:Condition>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:variable name="representedRoleForValueType" select="$Model/orm:Objects/orm:ValueType[@id=$constrainedRole/orm:RolePlayer/@ref]/orm:ValueConstraint"/>
+													<xsl:if test="$representedRoleForValueType">
+														<plx:Condition>
+															<plx:Test>
+																<plx:Operator type="BooleanNot">
+																	<plx:CallStatic dataTypeName="{$ModelContextName}" name="ValueConstraintFor{@name}">
+																		<plx:PassParam>
+																			<plx:Value type="Parameter" data="newValue"/>
+																		</plx:PassParam>
+																		<plx:PassParam>
+																			<plx:Value type="Parameter" data="throwOnFailure"/>
+																		</plx:PassParam>
+																	</plx:CallStatic>
+																</plx:Operator>
+															</plx:Test>
+															<plx:Body>
+																<plx:Return>
+																	<plx:FalseKeyword/>
+																</plx:Return>
+															</plx:Body>
+														</plx:Condition>
+													</xsl:if>
+												</xsl:otherwise>
+											</xsl:choose>
+
 											<plx:Value type="Parameter" data="newValue"/>
 										</plx:PassParam>
 										<plx:PassParam passStyle="Out">
@@ -465,6 +582,16 @@
 											</plx:Operator>
 										</plx:Test>
 										<plx:Body>
+											<plx:Condition>
+												<plx:Test>
+													<plx:Value type="Parameter" data="throwOnFailure"/>
+												</plx:Test>
+												<plx:Body>
+													<plx:Throw>
+														<plx:CallNew dataTypeName="ArgumentOutOfRangeException" dataTypeQualifier="System" type="New"/>
+													</plx:Throw>
+												</plx:Body>
+											</plx:Condition>
 											<plx:Return>
 												<plx:FalseKeyword/>
 											</plx:Return>
@@ -1296,5 +1423,5 @@
 			</plx:PassParam>
 		</plx:CallInstance>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

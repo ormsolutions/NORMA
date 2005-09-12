@@ -279,7 +279,25 @@
 			</xsl:for-each>
 		</xsl:for-each>
 	</xsl:template>
-	
+
+	<xsl:template name="ValueConstraintValidationFunctionNameForRole">
+		<xsl:param name="Role"/>
+		<xsl:variable name="allRoles" select="$Role/.."/>
+		<xsl:variable name="parentFact" select="$allRoles/.."/>
+		<xsl:variable name="roleId" select="$Role/@id"/>
+		<xsl:variable name="rolePosition">
+			<xsl:for-each select="$allRoles/child::*">
+				<xsl:if test="@id=$roleId">
+					<xsl:value-of select="position()"/>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:value-of select="$RoleValueConstraintFor"/>
+		<xsl:value-of select="$parentFact/@Name"/>
+		<xsl:text>Role</xsl:text>
+		<xsl:value-of select="$rolePosition"/>
+	</xsl:template>
+
 	<xsl:template name="BuildValueConstraintValidationFunctions">
 		<xsl:variable name="cacheDataTypes" select="orm:DataTypes/child::*"/>
 		<xsl:variable name="cacheValueTypes" select="orm:Objects/orm:ValueType"/>
