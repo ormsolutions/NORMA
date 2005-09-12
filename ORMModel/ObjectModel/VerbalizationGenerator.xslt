@@ -19,8 +19,8 @@
 	<xsl:template match="ve:Root">
 		<plx:Root>
 			<plx:Using name="System"/>
+			<plx:Using name="System.IO"/>
 			<plx:Using name="System.Text"/>
-			<plx:Using name="System.Globalization"/>
 			<plx:Namespace name="{$CustomToolNamespace}">
 				<!-- Generate verbalization set classes and default populations -->
 				<xsl:call-template name="GenerateVerbalizationSets"/>
@@ -39,14 +39,9 @@
 		<plx:Class name="{@type}" visibility="Public" partial="true">
 			<plx:ImplementsInterface dataTypeName="IVerbalize"/>
 			<plx:Function name="GetVerbalization" visibility="Protected">
-				<plx:Param name="" type="RetVal" dataTypeName="String" dataTypeQualifier="System"/>
+				<plx:Param name="writer" dataTypeName="TextWriter"/>
 				<plx:Param name="isNegative" dataTypeName="Boolean" dataTypeQualifier="System"/>
 				<plx:InterfaceMember member="GetVerbalization" dataTypeName="IVerbalize"/>
-				<plx:Variable name="sbMain" dataTypeName="StringBuilder">
-					<plx:Initialize>
-						<plx:NullObjectKeyword/>
-					</plx:Initialize>
-				</plx:Variable>
 				<plx:Variable name="sbTemp" dataTypeName="StringBuilder">
 					<plx:Initialize>
 						<plx:NullObjectKeyword/>
@@ -76,6 +71,11 @@
 						</plx:Operator>
 					</plx:Test>
 					<plx:Body>
+						<plx:Variable name="firstElement" dataTypeName="Boolean" dataTypeQualifier="System">
+							<plx:Initialize>
+								<plx:TrueKeyword/>
+							</plx:Initialize>
+						</plx:Variable>
 						<plx:Iterator variableName="error" dataTypeName="ModelError">
 							<plx:Initialize>
 								<plx:CallInstance name="ErrorCollection" type="Property">
@@ -87,36 +87,29 @@
 							<plx:Body>
 								<plx:Condition>
 									<plx:Test>
-										<plx:Operator type="IdentityEquality">
-											<plx:Left>
-												<plx:Value type="Local" data="sbMain"/>
-											</plx:Left>
-											<plx:Right>
-												<plx:NullObjectKeyword/>
-											</plx:Right>
-										</plx:Operator>
+										<plx:Value type="Local" data="firstElement"/>
 									</plx:Test>
 									<plx:Body>
 										<plx:Operator type="Assign">
 											<plx:Left>
-												<plx:Value type="Local" data="sbMain"/>
+												<plx:Value type="Local" data="firstElement"/>
 											</plx:Left>
 											<plx:Right>
-												<plx:CallNew dataTypeName="StringBuilder"/>
+												<plx:FalseKeyword/>
 											</plx:Right>
 										</plx:Operator>
 									</plx:Body>
 									<plx:Alternate>
-										<plx:CallInstance name="AppendLine">
+										<plx:CallInstance name="WriteLine">
 											<plx:CallObject>
-												<plx:Value type="Local" data="sbMain"/>
+												<plx:Value type="Parameter" data="writer"/>
 											</plx:CallObject>
 										</plx:CallInstance>
 									</plx:Alternate>
 								</plx:Condition>
-								<plx:CallInstance name="Append">
+								<plx:CallInstance name="Write">
 									<plx:CallObject>
-										<plx:Value type="Local" data="sbMain"/>
+										<plx:Value type="Parameter" data="writer"/>
 									</plx:CallObject>
 									<plx:PassParam>
 										<plx:CallInstance name="Name" type="Property">
@@ -130,23 +123,12 @@
 						</plx:Iterator>
 						<plx:Condition>
 							<plx:Test>
-								<plx:Operator type="IdentityInequality">
-									<plx:Left>
-										<plx:Value type="Local" data="sbMain"/>
-									</plx:Left>
-									<plx:Right>
-										<plx:NullObjectKeyword/>
-									</plx:Right>
+								<plx:Operator type="BooleanNot">
+									<plx:Value type="Local" data="firstElement"/>
 								</plx:Operator>
 							</plx:Test>
 							<plx:Body>
-								<plx:Return>
-									<plx:CallInstance name="ToString">
-										<plx:CallObject>
-											<plx:Value type="Local" data="sbMain"/>
-										</plx:CallObject>
-									</plx:CallInstance>
-								</plx:Return>
+								<plx:Return/>
 							</plx:Body>
 						</plx:Condition>
 					</plx:Body>
@@ -268,9 +250,7 @@
 								</plx:Operator>
 							</plx:Test>
 							<plx:Body>
-								<plx:Return>
-									<plx:String/>
-								</plx:Return>
+								<plx:Return/>
 							</plx:Body>
 						</plx:Condition>
 						<plx:Variable name="includedArity" dataTypeName="Int32" dataTypeQualifier="System">
@@ -377,9 +357,7 @@
 										</plx:Operator>
 									</plx:Test>
 									<plx:Body>
-										<plx:Return>
-											<plx:String/>
-										</plx:Return>
+										<plx:Return/>
 									</plx:Body>
 								</plx:Condition>
 								<!-- Get the roles and role count for the current fact -->
@@ -500,14 +478,6 @@
 						</plx:CallNew>
 					</plx:Initialize>
 				</plx:Variable>
-				<plx:Operator type="Assign">
-					<plx:Left>
-						<plx:Value type="Local" data="sbMain"/>
-					</plx:Left>
-					<plx:Right>
-						<plx:CallNew dataTypeName="StringBuilder"/>
-					</plx:Right>
-				</plx:Operator>
 				<plx:Variable name="readingOrder" dataTypeName="ReadingOrder"/>
 				<xsl:for-each select="ve:ConstrainedRoles">
 					<xsl:if test="position()=1">
@@ -516,13 +486,7 @@
 						</xsl:call-template>
 					</xsl:if>
 				</xsl:for-each>
-				<plx:Return>
-					<plx:CallInstance name="ToString">
-						<plx:CallObject>
-							<plx:Value type="Local" data="sbMain"/>
-						</plx:CallObject>
-					</plx:CallInstance>
-				</plx:Return>
+				<plx:Return/>
 			</plx:Function>
 		</plx:Class>
 	</xsl:template>
@@ -831,7 +795,11 @@
 												</plx:Expression>
 											</plx:CallObject>
 											<plx:PassParam>
-												<plx:CallStatic name="CurrentUICulture" dataTypeName="CultureInfo" type="Property"/>
+												<plx:CallInstance name="FormatProvider" type="Property">
+													<plx:CallObject>
+														<plx:Value type="Parameter" data="writer"/>
+													</plx:CallObject>
+												</plx:CallInstance>
 											</plx:PassParam>
 										</plx:CallInstance>
 									</plx:Right>
@@ -921,9 +889,9 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="'all'"/>
 		<xsl:if test="$TopLevel and position()&gt;1">
-			<plx:CallInstance name="AppendLine">
+			<plx:CallInstance name="WriteLine">
 				<plx:CallObject>
-					<plx:Value type="Local" data="sbMain"/>
+					<plx:Value type="Parameter" data="writer"/>
 				</plx:CallObject>
 			</plx:CallInstance>
 		</xsl:if>
@@ -947,13 +915,10 @@
 				<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 			</xsl:apply-templates>
 		</xsl:for-each>
-		<plx:CallInstance name="AppendFormat">
+		<plx:CallInstance name="Write">
 			<plx:CallObject>
-				<plx:Value type="Local" data="sbMain"/>
+				<plx:Value type="Parameter" data="writer"/>
 			</plx:CallObject>
-			<plx:PassParam>
-				<plx:CallStatic dataTypeName="CultureInfo" name="CurrentUICulture" type="Property"/>
-			</plx:PassParam>
 			<plx:PassParam>
 				<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:PassParam>
@@ -971,9 +936,9 @@
 		<xsl:param name="IteratorContext" select="'all'"/>
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:if test="$TopLevel and position()&gt;1">
-			<plx:CallInstance name="AppendLine">
+			<plx:CallInstance name="WriteLine">
 				<plx:CallObject>
-					<plx:Value type="Local" data="sbMain"/>
+					<plx:Value type="Parameter" data="writer"/>
 				</plx:CallObject>
 			</plx:CallInstance>
 		</xsl:if>
@@ -1157,9 +1122,9 @@
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="$TopLevel">
-				<plx:CallInstance name="Append">
+				<plx:CallInstance name="Write">
 					<plx:CallObject>
-						<plx:Value type="Local" data="sbMain"/>
+						<plx:Value type="Parameter" data="writer"/>
 					</plx:CallObject>
 					<plx:PassParam>
 						<xsl:copy-of select="$predicateText"/>
@@ -1289,7 +1254,11 @@
 				<plx:Right>
 					<plx:CallStatic name="Format" dataTypeName="String" dataTypeQualifier="System">
 						<plx:PassParam>
-							<plx:CallStatic name="CurrentUICulture" dataTypeName="CultureInfo" type="Property"/>
+							<plx:CallInstance name="FormatProvider" type="Property">
+								<plx:CallObject>
+									<plx:Value type="Parameter" data="writer"/>
+								</plx:CallObject>
+							</plx:CallInstance>
 						</plx:PassParam>
 						<plx:PassParam>
 							<xsl:call-template name="SnippetFor">

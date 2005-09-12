@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,9 +18,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Verbalize in the requested form
 		/// </summary>
+		/// <param name="writer">The output text writer</param>
 		/// <param name="isNegative">true for a negative reading</param>
-		/// <returns>string verbalization</returns>
-		string GetVerbalization(bool isNegative);
+		void GetVerbalization(TextWriter writer, bool isNegative);
 	}
 	#endregion // IVerbalize interface
 	#region Static verbalization helpers on FactType class
