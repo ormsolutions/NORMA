@@ -58,11 +58,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		DisplayFactEditorWindow = 0x80,
 		/// <summary>
-		/// Mask field representing individual delete commands
-		/// </summary>
-		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
-		#region Constraint editing commands
-		/// <summary>
 		/// Activate editing for the RoleSequence
 		/// </summary>
 		ActivateRoleSequence = 0x100,
@@ -82,12 +77,18 @@ namespace Neumont.Tools.ORM.Shell
 		/// Activate editing for the ExternalConstraint
 		/// </summary>
 		EditExternalConstraint = 0x1000,
-
+		/// <summary>
+		/// Support the CopyImage command
+		/// </summary>
+		CopyImage = 0x2000,
+		/// <summary>
+		/// Mask field representing individual delete commands
+		/// </summary>
+		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
 		/// <summary>
 		/// Mask field representing individual RoleSeqeuence edit commands
 		/// </summary>
 		RoleSequenceActions = ActivateRoleSequence | DeleteRoleSequence | MoveRoleSequenceUp | MoveRoleSequenceDown,
-		#endregion //Constraint editing 
 		// Update the multiselect command filter constants in ORMDesignerDocView
 		// when new commands are added
 	}
@@ -295,8 +296,8 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else if (element is ORMModel)
 			{
-				visibleCommands = ORMDesignerCommands.Delete | ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow;
-				enabledCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow;
+				visibleCommands = ORMDesignerCommands.Delete | ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.CopyImage;
+				enabledCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.CopyImage;
 			}
 			else if (null != (role = element as Role))
 			{
@@ -617,6 +618,192 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
+
+		#region OnMenuCopyImage
+#if CUSTOM_COPY_IMAGE
+		#region NativeMethods
+		[System.Security.SuppressUnmanagedCodeSecurity]
+		private static partial class NativeMethods
+		{
+#if !CUSTOM_COPY_IMAGE_VIA_MAKE_TRANSPARENT
+			#region GetNewMetafile
+			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto, ExactSpelling=true)]
+			private static extern IntPtr GetDesktopWindow();
+
+			/// <summary>This supports <see cref="OnMenuCopyImage"/>, and should NOT be used by other methods.</summary>
+			internal static System.Drawing.Imaging.Metafile GetNewMetafile(System.Drawing.Imaging.EmfType emfType)
+			{
+				System.Drawing.Graphics graphics = null;
+				System.Drawing.Imaging.Metafile metafile = null;
+				IntPtr hdc = IntPtr.Zero;
+				try
+				{
+					graphics = System.Drawing.Graphics.FromHwnd(NativeMethods.GetDesktopWindow());
+					hdc = graphics.GetHdc();
+					metafile = new System.Drawing.Imaging.Metafile(hdc, emfType);
+				}
+				finally
+				{
+					if (graphics != null)
+					{
+						if (hdc != IntPtr.Zero)
+						{
+							graphics.ReleaseHdc(hdc);
+						}
+						graphics.Dispose();
+					}
+				}
+				return metafile;
+			}
+			#endregion
+#endif
+
+			#region CopyMetafileToClipboard
+			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto, ExactSpelling=true)]
+			private static extern bool CloseClipboard();
+			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto, ExactSpelling=true)]
+			private static extern bool EmptyClipboard();
+			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto, ExactSpelling=true)]
+			private static extern bool OpenClipboard(IntPtr hWndNewOwner);
+			[System.Runtime.InteropServices.DllImport("user32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto, ExactSpelling=true)]
+			private static extern IntPtr SetClipboardData(uint uFormat, IntPtr hMem);
+			[System.Runtime.InteropServices.DllImport("gdi32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+			private static extern IntPtr CopyEnhMetaFile(IntPtr hemfSrc, IntPtr lpszFile);
+			[System.Runtime.InteropServices.DllImport("gdi32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+			private static extern bool DeleteEnhMetaFile(IntPtr hemfSrc);
+
+			/// <summary>This supports <see cref="OnMenuCopyImage"/>, and should NOT be used by other methods.</summary>
+			internal static void CopyMetafileToClipboard(IntPtr hWndNewOwner, System.Drawing.Imaging.Metafile metafile)
+			{
+				const uint CF_ENHMETAFILE = 14;
+
+				bool clipboardOpen = false;
+				IntPtr hEnhmetafile = IntPtr.Zero;
+				try
+				{
+					if (clipboardOpen = OpenClipboard(hWndNewOwner) && EmptyClipboard())
+					{
+						hEnhmetafile = metafile.GetHenhmetafile();
+						SetClipboardData(CF_ENHMETAFILE, CopyEnhMetaFile(hEnhmetafile, IntPtr.Zero));
+					}
+				}
+				finally
+				{
+					if (clipboardOpen)
+					{
+						CloseClipboard();
+					}
+					if (hEnhmetafile != IntPtr.Zero)
+					{
+						DeleteEnhMetaFile(hEnhmetafile);
+					}
+				}
+			}
+			#endregion
+
+#if CUSTOM_COPY_IMAGE_VIA_MAKE_TRANSPARENT
+			#region MakeBackgroundTransparent
+			[System.Runtime.InteropServices.DllImport("gdi32.dll", CharSet=System.Runtime.InteropServices.CharSet.Auto)]
+			private static extern bool ExtFloodFill(IntPtr hdc, int nXStart, int nYStart, uint crColor, uint fuFillType);
+
+			/// <summary>This supports <see cref="OnMenuCopyImage"/>, and should NOT be used by other methods.</summary>
+			internal static void MakeBackgroundTransparent(System.Drawing.Imaging.Metafile metafile)
+			{
+				const uint FLOODFILLSURFACE = 1;
+
+				System.Drawing.Graphics graphics = null;
+				IntPtr hdc = IntPtr.Zero;
+				try
+				{
+					graphics = System.Drawing.Graphics.FromImage(metafile);
+					hdc = graphics.GetHdc();
+					ExtFloodFill(hdc, 0, metafile.Height, 0xFFFFFFFF, FLOODFILLSURFACE);
+				}
+				finally
+				{
+					if (graphics != null)
+					{
+						if (hdc != IntPtr.Zero)
+						{
+							graphics.ReleaseHdc(hdc);
+						}
+						graphics.Dispose();
+					}
+				}
+			}
+			#endregion
+#endif
+		}
+		#endregion
+#endif
+
+		/// <summary>
+		/// Copies the selected elements as an image.
+		/// </summary>
+		protected virtual void OnMenuCopyImage()
+		{
+			if (this.CurrentDiagram != null && this.CurrentDiagram.ActiveDiagramView != null)
+			{
+#if !CUSTOM_COPY_IMAGE
+				this.CurrentDiagram.CopyImageToClipboard(this.CurrentDiagram.NestedChildShapes);
+#else
+#if CUSTOM_COPY_IMAGE_VIA_MAKE_TRANSPARENT
+				System.Drawing.Imaging.Metafile createdMetafile = this.CurrentDiagram.CreateMetafile(this.CurrentDiagram.NestedChildShapes);
+				
+				NativeMethods.MakeBackgroundTransparent(createdMetafile);
+				NativeMethods.CopyMetafileToClipboard(this.CurrentDiagram.ActiveDiagramView.Handle, createdMetafile);
+#else
+				System.Reflection.BindingFlags bindingFlags = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+				
+				Type diagramType = typeof(Microsoft.VisualStudio.Modeling.Diagrams.Diagram);
+				System.Reflection.MethodInfo getShapesToDraw = diagramType.GetMethod("GetShapesToDraw", bindingFlags);
+				if (getShapesToDraw == null)
+				{
+					throw new MissingMethodException(diagramType.FullName, "GetShapesToDraw");
+				}
+								
+				RectangleD rect = default(RectangleD);
+				object[] parameters = new object[] { this.CurrentDiagram.NestedChildShapes, rect };
+
+				ArrayList shapesToDraw = getShapesToDraw.Invoke(this.CurrentDiagram, parameters) as ArrayList;
+				rect = (RectangleD)parameters[1];
+
+				const double imageMargin = 0.1;
+				rect.Inflate(imageMargin, imageMargin);
+
+				System.Drawing.Imaging.Metafile metafile = NativeMethods.GetNewMetafile(System.Drawing.Imaging.EmfType.EmfPlusDual);
+
+				using (System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(metafile))
+				{
+					if (rect.Location.X != 0 || rect.Location.Y != 0)
+					{
+						graphics.TranslateTransform((float)(-rect.Location.X), (float)(-rect.Location.Y));
+					}
+					graphics.PageUnit = System.Drawing.GraphicsUnit.Inch;
+					graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+					graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+					graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+
+					System.Drawing.Rectangle clipRectangle = new System.Drawing.Rectangle(0, 0, (int)Math.Ceiling(rect.Width * graphics.DpiX), (int)Math.Ceiling(rect.Height * graphics.DpiY));
+					DiagramPaintEventArgs diagramPaintEventArgs = new DiagramPaintEventArgs(graphics, clipRectangle, null, true);
+
+					foreach (ShapeElement shapeElement in shapesToDraw)
+					{
+						if (!shapeElement.IsRemoved)
+						{
+							shapeElement.OnPaintShape(diagramPaintEventArgs);
+						}
+					}
+				}
+				
+				NativeMethods.CopyMetafileToClipboard(this.CurrentDiagram.ActiveDiagramView.Handle, metafile);
+#endif
+#endif
+			}
+		}
+		#endregion
+
 		/// <summary>
 		/// Activate the RoleSequence for editing.
 		/// </summary>

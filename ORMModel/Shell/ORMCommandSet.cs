@@ -48,12 +48,12 @@ namespace Neumont.Tools.ORM.Shell
 			/// <param name="serviceProvider"></param>
 			public ORMDesignerCommandSet(IServiceProvider serviceProvider)
 			{
-				myServiceProvider = serviceProvider;
+				this.myServiceProvider = serviceProvider;
 				// add view ORM Model Explorer commands in the top-level menu.
 				// These do not need a status handler (always enabled when the application designer is 
 				// active), so we don't need an EFTMenuCommand
 				MenuCommand menuCommand = new MenuCommand(new EventHandler(OnMenuViewORMModelExplorer), ORMDesignerCommandIds.ViewModelExplorer);
-				menuCommand.Supported = false;
+				menuCommand.Supported = true;
 				MenuService.AddCommand(menuCommand);
 
 				#region Array of menu commands
@@ -68,9 +68,13 @@ namespace Neumont.Tools.ORM.Shell
 				new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusReferenceModesWindow),
 				new EventHandler(OnMenuReferenceModesWindow),
-				ORMDesignerCommandIds.ViewReferenceModeEditor),
+				ORMDesignerCommandIds.ViewReferenceModeEditor)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusCopyImage),
+				new EventHandler(OnMenuCopyImage),
+				ORMDesignerCommandIds.CopyImage)
 
-				new DynamicStatusMenuCommand(
+				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusDelete),
 				new EventHandler(OnMenuDelete),				
 				StandardCommands.Delete)
@@ -178,6 +182,30 @@ namespace Neumont.Tools.ORM.Shell
 			protected void OnMenuViewORMModelExplorer(object sender, EventArgs e)
 			{
 				ORMDesignerPackage.BrowserWindow.Show();
+			}
+
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnStatusCopyImage(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.CopyImage);
+			}
+			/// <summary>
+			/// Copies as image
+			/// </summary>
+			/// <param name="sender"></param>
+			/// <param name="e"></param>
+			protected void OnMenuCopyImage(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// call CopyImage on the doc view
+					docView.OnMenuCopyImage();
+				}
 			}
 
 #if DEBUG
@@ -524,6 +552,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewModelExplorer = new CommandID(guidORMDesignerCommandSet, cmdIdViewModelExplorer);
 			/// <summary>
+			/// Copy selected elements as an image.
+			/// </summary>
+			public static readonly CommandID CopyImage = new CommandID(guidORMDesignerCommandSet, cmdIdCopyImage);
+			/// <summary>
 			/// The ORM Readings Window item on the fact type context menu
 			/// </summary>
 			public static readonly CommandID ViewReadingEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewReadingEditor);
@@ -591,6 +623,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdViewModelExplorer = 0x2900;
 			/// <summary>
+			/// Copy selected elements as an image.
+			/// </summary>
+			private const int cmdIdCopyImage = 0x28FE;
+			/// <summary>
 			/// The ORM Readings Window item on the fact type context menu
 			/// </summary>
 			private const int cmdIdViewReadingEditor = 0x2901;
@@ -636,7 +672,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int menuIdContextMenu = 0x0100;
 			#endregion
-
 		}
 	}
 }
