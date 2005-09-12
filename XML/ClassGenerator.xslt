@@ -1091,15 +1091,27 @@
 	
 	<xsl:template name="GenerateMandatoryParameters">
 		<xsl:param name="properties"/>
+		<!--nonCustomOnly: set to true() to force creation of single values only parameters-->
 		<xsl:param name="nonCustomOnly" select="false()"/>
-		<!--Set nonCustomOnly to true() to force creation of single values only parameters-->
+		<!--nullPlaceHolders: set to true to generate a placeholder for custom types when
+		nonCustomOnly = true() (used by GenerateDeserializationContextMethod)-->
+		<xsl:param name="nullPlaceholders" select="false()"/>
 		<xsl:variable name="localName" select="local-name()"/>
 		<xsl:for-each select="$properties">
 			<xsl:if test="(not($nonCustomOnly) or @customType='true') and (@mandatory='true' or @mandatory='relaxed' or $localName='Association')">
-				<plx:Param type="In" name="{@name}">
-					<xsl:copy-of select="DataType/@*"/>
-					<xsl:copy-of select="DataType/child::*"/>
-				</plx:Param>
+				<xsl:choose>
+					<xsl:when test="$nullPlaceholders and @customType='true'">
+						<plx:PassParam>
+							<plx:NullObjectKeyword/>
+						</plx:PassParam>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:Param type="In" name="{@name}">
+							<xsl:copy-of select="DataType/@*"/>
+							<xsl:copy-of select="DataType/child::*"/>
+						</plx:Param>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
@@ -1180,6 +1192,7 @@
 	</xsl:template>
 	<xsl:template name="GenerateModelContextInterfaceLookupMethods">
 		<xsl:param name="Model"/>
+		<xsl:param name="nonCustomOnly"/>
 		<xsl:for-each select="orm:ExternalConstraints/orm:ExternalUniquenessConstraint">
 			<xsl:variable name="firstRoleRef" select="orm:RoleSequence/orm:Role[1]/@ref" />
 			<xsl:variable name="uniqueObjectName" select="$AbsorbedObjects/child::*[@oppositeRoleRef=$firstRoleRef]/../@name"/>
@@ -1227,6 +1240,7 @@
 	<xsl:template name="GenerateModelContextInterfaceObjectMethods">
 		<xsl:param name="Model"/>
 		<xsl:param name="className"/>
+		<xsl:param name="nonCustomOnly"/>
 		<xsl:variable name="propertiesFragment">
 			<xsl:apply-templates select="child::*" mode="TransformPropertyObjects">
 				<xsl:with-param name="Model" select="$Model"/>
@@ -1237,6 +1251,7 @@
 			<xsl:with-param name="Model" select="$Model"/>
 			<xsl:with-param name="className" select="$className"/>
 			<xsl:with-param name="properties" select="$properties"/>
+			<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
 		</xsl:call-template>
 		<xsl:call-template name="GenerateModelContextInterfaceSimpleLookupMethods">
 			<xsl:with-param name="Model" select="$Model"/>
@@ -1248,10 +1263,12 @@
 		<xsl:param name="Model"/>
 		<xsl:param name="className"/>
 		<xsl:param name="properties"/>
+		<xsl:param name="nonCustomOnly"/>
 		<plx:Function visibility="Public" name="Create{$className}">
 			<plx:Param type="RetVal" name="" dataTypeName="{$className}"/>
 			<xsl:call-template name="GenerateMandatoryParameters">
 				<xsl:with-param name="properties" select="$properties"/>
+				<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
 			</xsl:call-template>
 		</plx:Function>
 	</xsl:template>
@@ -1281,8 +1298,8 @@
 			<plx:Using name="System.Collections.Generic"/>
 			<plx:Using name="System.ComponentModel"/>
 			<plx:Namespace name="{$CustomToolNamespace}">
-				<xsl:call-template name="GenerateGlobalSupportClasses"/>
-				<xsl:apply-templates mode="Main" select="orm:ORMModel"/>
+			<xsl:call-template name="GenerateGlobalSupportClasses"/>
+			<xsl:apply-templates mode="Main" select="orm:ORMModel"/>
 			</plx:Namespace>
 		</plx:Root>
 	</xsl:template>
@@ -1290,21 +1307,34 @@
 	<xsl:template match="orm:ORMModel" mode="Main">
 		<xsl:variable name="ModelName" select="@Name"/>
 		<xsl:variable name="ModelContextName" select="concat($ModelName,'Context')"/>
+		<xsl:variable name="ModelDeserializationName" select="concat('Deserialization',$ModelContextName)"/>
 		<plx:Namespace name="{$ModelName}">
 			<xsl:apply-templates mode="ForGenerateAbstractClass" select="$AbsorbedObjects">
 				<xsl:with-param name="Model" select="."/>
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 			</xsl:apply-templates>
 			<plx:Interface visibility="Public" name="I{$ModelContextName}">
+				<plx:Function name="BeginDeserialization" visibility="Public">
+					<plx:Param name="" type="RetVal" dataTypeName="I{$ModelDeserializationName}"/>
+				</plx:Function>
 				<xsl:call-template name="GenerateModelContextInterfaceMethods">
 					<xsl:with-param name="Model" select="."/>
 				</xsl:call-template>
 				<xsl:apply-templates mode="ForGenerateModelContextInterfaceObjectMethods" select="$AbsorbedObjects">
 					<xsl:with-param name="Model" select="."/>
+					<xsl:with-param name="nonCustomOnly" select="false()"/>
+				</xsl:apply-templates>
+			</plx:Interface>
+			<plx:Interface visibility="Public" name="I{$ModelDeserializationName}">
+				<plx:ImplementsInterface dataTypeName="IDisposable"/>
+				<xsl:apply-templates mode="ForGenerateModelContextInterfaceObjectMethods" select="$AbsorbedObjects">
+					<xsl:with-param name="Model" select="."/>
+					<xsl:with-param name="nonCustomOnly" select="true()"/>
 				</xsl:apply-templates>
 			</plx:Interface>
 			<xsl:call-template name="GenerateImplementation">
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
+				<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
 			</xsl:call-template>
 		</plx:Namespace>
 	</xsl:template>
@@ -1323,11 +1353,13 @@
 	</xsl:template>
 	<xsl:template match="ao:Object" mode="ForGenerateModelContextInterfaceObjectMethods">
 		<xsl:param name="Model"/>
+		<xsl:param name="nonCustomOnly"/>
 		<!-- TODO: Is this test necessary? Is it even possible to have an ao:Object that isn't an EntityType or an ObjectifiedType? -->
 		<xsl:if test="@type='EntityType' or @type='ObjectifiedType'">
 			<xsl:call-template name="GenerateModelContextInterfaceObjectMethods">
 				<xsl:with-param name="Model" select="$Model"/>
 				<xsl:with-param name="className" select="@name"/>
+				<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
@@ -1343,9 +1375,11 @@
 	</xsl:template>
 	<xsl:template match="ao:Association" mode="ForGenerateModelContextInterfaceObjectMethods">
 		<xsl:param name="Model"/>
+		<xsl:param name="nonCustomOnly"/>
 		<xsl:call-template name="GenerateModelContextInterfaceObjectMethods">
 			<xsl:with-param name="Model" select="$Model"/>
 			<xsl:with-param name="className" select="concat(@name,$AssociationClassSuffix)"/>
+			<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
 		</xsl:call-template>
 	</xsl:template>
 
