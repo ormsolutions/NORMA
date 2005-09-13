@@ -95,7 +95,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		MoreThanOneQuantifier,
 		/// <summary>
 		///</summary>
-		NegativeReadingForUnaryOnlyDisjuntiveMandatory,
+		NegativeReadingForUnaryOnlyDisjunctiveMandatory,
 		/// <summary>
 		///</summary>
 		SimpleListClose,

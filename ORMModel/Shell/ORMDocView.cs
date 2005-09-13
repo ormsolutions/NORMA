@@ -89,6 +89,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// Mask field representing individual RoleSeqeuence edit commands
 		/// </summary>
 		RoleSequenceActions = ActivateRoleSequence | DeleteRoleSequence | MoveRoleSequenceUp | MoveRoleSequenceDown,
+		/// <summary>
+		/// Display the verbalization browser toolwindow
+		/// </summary>
+		DisplayVerbalizationWindow = 0x2000,
 		// Update the multiselect command filter constants in ORMDesignerDocView
 		// when new commands are added
 	}
@@ -102,8 +106,8 @@ namespace Neumont.Tools.ORM.Shell
 		#region Member variables
 		private ORMDesignerCommands myEnabledCommands;
 		private ORMDesignerCommands myVisibleCommands;
-		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole; // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
-		private const ORMDesignerCommands EnabledComplexMultiSelectCommandFilter = ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole;
+		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow & ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole; // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
+		private const ORMDesignerCommands EnabledComplexMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow & ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole;
 		#endregion // Member variables
 		#region Construction/destruction
 		/// <summary>
@@ -364,6 +368,9 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
+			// Turn on the verbalization window command for all selections
+			visibleCommands |= ORMDesignerCommands.DisplayVerbalizationWindow;
+			enabledCommands |= ORMDesignerCommands.DisplayVerbalizationWindow;
 		}
 		
 		/// <summary>

@@ -50,6 +50,7 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdMoveRoleSequenceDown			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0607,	guidOfficeIcon:msotcidNoIcon,	BUTTON,		DEFAULTINVISIBLE|DYNAMICVISIBILITY,			"Move Role Sequence &Down";
 		guidORMDesignerCommandSet:cmdIdViewReadingEditor,			guidORMDesignerCommandSet:groupIdFactCommands,			0x0610,	guidOfficeIcon:msotcidNoIcon,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Readings Window";
 		guidORMDesignerCommandSet:cmdIdViewFactEditor,				guidORMDesignerCommandSet:groupIdFactCommands,			0x0620,	guidOfficeIcon:msotcidNoIcon,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Fact Editor";
+		guidORMDesignerCommandSet:cmdIdViewVerbalizationBrowser,	guidORMDesignerCommandSet:groupIdFactCommands,			0x0630,	guidOfficeIcon:msotcidNoIcon,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Verbalization Browser";
 
 		guidORMDesignerCommandSet:cmdIdViewModelExplorer,			guidORMDesignerCommandSet:groupIdModelCommands,			0x0100,	guidOfficeIcon:msotcidNoIcon,	BUTTON,		0,											"ORM &Model Explorer";
 		guidORMDesignerCommandSet:cmdIdCopyImage,					guidORMDesignerCommandSet:groupIdModelCommands,			0x0200,	guidOfficeIcon:msotcidNoIcon,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Copy &Image";

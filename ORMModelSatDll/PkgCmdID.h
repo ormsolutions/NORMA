@@ -28,7 +28,6 @@
 #define cmdIdDebugViewStore				0x28FF
 #endif
 #define cmdIdViewModelExplorer			0x2900
-#define cmdIdCopyImage					0x28FE
 #define cmdIdViewReadingEditor			0x2901
 #define cmdIdViewReferenceModeEditor	0x2902
 #define cmdIdInsertRoleAfter			0x2903
@@ -41,5 +40,8 @@
 #define cmdIdEditExternalConstraint		0x2908
 #define cmdIdMoveRoleSequenceUp			0x2909
 #define cmdIdMoveRoleSequenceDown		0x290A
+
+#define cmdIdViewVerbalizationBrowser	0x290B
+#define cmdIdCopyImage					0x290C
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs

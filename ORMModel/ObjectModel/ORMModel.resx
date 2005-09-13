@@ -422,4 +422,8 @@
     <value xml:space="preserve">A FactType that is implied by an Objectification cannot be objectified.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to objectify a fact that is implied by another objectification.</comment>
   </data>
+  <data name="ModelVerbalization.WindowTitle">
+    <value xml:space="preserve">ORM Verbalization Browser</value>
+    <comment xml:space="preserve">Text to place in the title of the verbalization tool window.</comment>
+  </data>
 </root>

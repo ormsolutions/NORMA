@@ -208,4 +208,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // Static verbalization helpers on FactType class
+	#region Extremely Temporary IVerbalize implementation for FactType
+	public partial class FactType : IVerbalize
+	{
+		#region IVerbalize Members
+		void IVerbalize.GetVerbalization(TextWriter writer, bool isNegative)
+		{
+			GetVerbalization(writer, isNegative);
+		}
+
+		/// <summary>
+		/// Implements IVerbalize.GetVerbalization.
+		/// </summary>
+		/// <param name="isNegative"></param>
+		/// <param name="writer"></param>
+		protected static void GetVerbalization(TextWriter writer, bool isNegative)
+		{
+			writer.Write("Place holder for FactType verbalization.");
+		}
+		#endregion
+	}
+	#endregion // Extremely Temporary IVerbalize implementation for FactType
 }

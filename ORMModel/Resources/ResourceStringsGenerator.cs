@@ -1352,5 +1352,14 @@ namespace Neumont.Tools.ORM
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintMinMaxError.Text");
 			}
 		}
+		/// <summary>
+		///</summary>
+		public static string ModelVerbalizationWindowTitle
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelVerbalization.WindowTitle");
+			}
+		}
 	}
 }

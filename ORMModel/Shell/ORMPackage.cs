@@ -123,7 +123,7 @@ namespace Neumont.Tools.ORM.Shell
 #if FACTEDITORPROTOTYPE
 				service.AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
 #endif // FACTEDITORPROTOTYPE
-
+				
 				// setup commands
 				myCommandSet = ORMDesignerDocView.CreateCommandSet(this);
 
@@ -131,6 +131,7 @@ namespace Neumont.Tools.ORM.Shell
 				AddToolWindow(typeof(ORMBrowserToolWindow));
 				AddToolWindow(typeof(ORMReadingEditorToolWindow));
 				AddToolWindow(typeof(ORMReferenceModeEditorToolWindow));
+				AddToolWindow(typeof(ORMVerbalizationToolWindow));
 				
 				// Make sure our options are loaded from the registry
 				GetDialogPage(typeof(OptionsPage));
@@ -351,7 +352,19 @@ namespace Neumont.Tools.ORM.Shell
 				return mySingleton.EnsureFactEditorToolWindow();
 			}
 		}
+
+		/// <summary>
+		/// Verbalization output tool window.
+		/// </summary>
+		public static ORMVerbalizationToolWindow VerbalizationWindow
+		{
+			get
+			{
+				return (ORMVerbalizationToolWindow)mySingleton.GetToolWindow(typeof(ORMVerbalizationToolWindow), true);
+			}
+		}
 		#endregion
+
 		#region Global SubStores
 		private static Type[] myGlobalSubStores;
 		/// <summary>

@@ -228,6 +228,7 @@
     <Compile Include="SyncDoc\ORMXmlHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Verbalizer\ORMVerbalizationToolWindow.cs" />
     <Content Include="Shell\ProjectItems\ORMProjectItems.vsdir" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>

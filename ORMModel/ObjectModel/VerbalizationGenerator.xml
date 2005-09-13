@@ -52,7 +52,7 @@
 				<FormalItem type="ModalNecessityOperator" modality="deontic">
 					<Form style="Basic">it is obligatory that {0}</Form>
 				</FormalItem>
-				<FormalItem type="NegativeReadingForUnaryOnlyDisjuntiveMandatory" modality="deontic" sign="-">
+				<FormalItem type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" modality="deontic" sign="-">
 					<Form style="Basic">It is impossible that some {0} participates in none of the following:{1}</Form>
 				</FormalItem>
 				<FormalItem type="CompoundListOpen">
@@ -198,7 +198,7 @@
 			<!--<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
 				--><!-- Unaries are the only reading choice that has an optional negative reading --><!--
 				<ConstrainedRoles sign="-" maxFactArity="1">
-					<Quantifier type="NegativeReadingForUnaryOnlyDisjuntiveMandatory">
+					<Quantifier type="NegativeReadingForUnaryOnlyDisjunctiveMandatory">
 						<IterateRoles listStyle="SimpleList" match="singleColumnConstraintRoles" pass="first"/>
 						<IterateRoles listStyle="CompoundList" match="singleColumnConstraintRoles">
 							<Fact/>

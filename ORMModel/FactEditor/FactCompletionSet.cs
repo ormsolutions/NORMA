@@ -317,7 +317,11 @@ namespace Neumont.Tools.ORM.FactEditor
 					{
 						return;
 					}
-					DetachEventHandlers((myCurrentDocView.DocData as ModelingDocData).Store);
+					ModelingDocData docData = myCurrentDocView.DocData as ModelingDocData;
+					if (docData != null)
+					{
+						DetachEventHandlers(docData.Store);
+					}
 				}
 				myCurrentDocView = value;
 				if (value != null)

@@ -94,6 +94,10 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusFactEditorWindow),
 				new EventHandler(OnMenuFactEditorWindow),
 				ORMDesignerCommandIds.ViewFactEditor)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusVerbalizationWindow),
+				new EventHandler(OnMenuVerbalizationWindow),
+				ORMDesignerCommandIds.ViewVerbalizationBrowser)
 
 				// Constraint editing commands				
 				,new DynamicStatusMenuCommand(
@@ -334,6 +338,26 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				IVsWindowFrame editorWindow = ORMDesignerPackage.FactEditorWindow;
 				editorWindow.Show();
+			}
+
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			private void OnStatusVerbalizationWindow(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayVerbalizationWindow);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuVerbalizationWindow(object sender, EventArgs e)
+			{
+				ORMVerbalizationToolWindow verbWin = ORMDesignerPackage.VerbalizationWindow;
+				verbWin.Show();
 			}
 			/// <summary>
 			/// Status callback
@@ -576,6 +600,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// The ORM Fact Editor Window item on the fact type context menu
 			/// </summary>
 			public static readonly CommandID ViewFactEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewFactEditor);
+			/// <summary>
+			/// The ORM Verbalization Browser Window item on the fact type context menu
+			/// </summary>
+			public static readonly CommandID ViewVerbalizationBrowser = new CommandID(guidORMDesignerCommandSet, cmdIdViewVerbalizationBrowser);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -623,10 +651,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdViewModelExplorer = 0x2900;
 			/// <summary>
-			/// Copy selected elements as an image.
-			/// </summary>
-			private const int cmdIdCopyImage = 0x28FE;
-			/// <summary>
 			/// The ORM Readings Window item on the fact type context menu
 			/// </summary>
 			private const int cmdIdViewReadingEditor = 0x2901;
@@ -666,6 +690,14 @@ namespace Neumont.Tools.ORM.Shell
 			/// Available on any role belonging to any RoleSequence in the active MCEC.
 			/// </summary>
 			private const int cmdIdMoveRoleSequenceDown = 0x290A;
+			/// <summary>
+			/// The ORM Verbalization Browser Window item on the View and context menu
+			/// </summary>
+			private const int cmdIdViewVerbalizationBrowser = 0x290B;
+			/// <summary>
+			/// Copy selected elements as an image.
+			/// </summary>
+			private const int cmdIdCopyImage = 0x290C;
 
 			/// <summary>
 			/// The context menu for the diagram

@@ -3440,6 +3440,22 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="GetMatchingReadingOrder(Neumont.Tools.ORM.ObjectModel.ReadingOrderMoveableCollection,Neumont.Tools.ORM.ObjectModel.Role,Neumont.Tools.ORM.ObjectModel.RoleMoveableCollection,System.Boolean,System.Boolean,Neumont.Tools.ORM.ObjectModel.RoleMoveableCollection,System.Boolean):Neumont.Tools.ORM.ObjectModel.ReadingOrder">
+            <Messages>
+             <Message Id="invertLeadRoles" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-09-13 18:45:05Z" FixCategory="Breaking">
+              <Issue>
+               <Item>invertLeadRoles</Item>
+               <Item>FactType.GetMatchingReadingOrder(ReadingOrderMoveableCollection, Role, RoleMoveableCollection, Boolean, Boolean, RoleMoveableCollection, Boolean):ReadingOrder</Item>
+              </Issue>
+             </Message>
+             <Message Id="noForwardText" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-09-13 18:45:05Z" FixCategory="Breaking">
+              <Issue>
+               <Item>noForwardText</Item>
+               <Item>FactType.GetMatchingReadingOrder(ReadingOrderMoveableCollection, Role, RoleMoveableCollection, Boolean, Boolean, RoleMoveableCollection, Boolean):ReadingOrder</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="GetRoleGuids(System.Guid&amp;,System.Guid&amp;):System.Void">
             <Messages>
              <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2005-02-03 20:22:04Z">
@@ -3450,6 +3466,16 @@
              <Message Id="1#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2005-02-03 20:22:04Z">
               <Issue>
                <Item>childMetaRoleGuid</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="GetVerbalization(System.IO.TextWriter,System.Boolean):System.Void">
+            <Messages>
+             <Message Id="isNegative" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-09-13 18:45:05Z" FixCategory="Breaking">
+              <Issue>
+               <Item>isNegative</Item>
+               <Item>FactType.GetVerbalization(TextWriter, Boolean):Void</Item>
               </Issue>
              </Message>
             </Messages>
@@ -17348,6 +17374,20 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="OnMenuCopyImage(System.Object,System.EventArgs):System.Void">
+            <Messages>
+             <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Status="Excluded" Created="2005-09-13 18:45:05Z">
+              <Issue>
+               <Item>ORMDesignerCommandSet.OnMenuCopyImage(Object, EventArgs):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="sbaldwin">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="OnMenuDebugViewStore(System.Object,System.EventArgs):System.Void">
             <Messages>
              <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Created="2005-02-03 20:22:04Z">
@@ -17438,6 +17478,20 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="OnMenuVerbalizationWindow(System.Object,System.EventArgs):System.Void">
+            <Messages>
+             <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Status="Excluded" Created="2005-09-13 18:45:05Z">
+              <Issue>
+               <Item>ORMDesignerCommandSet.OnMenuVerbalizationWindow(Object, EventArgs):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="sbaldwin">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="OnMenuViewORMModelExplorer(System.Object,System.EventArgs):System.Void">
             <Messages>
              <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Created="2005-02-03 20:22:04Z">
@@ -17453,6 +17507,20 @@
               <Issue>
                <Item>ORMDesignerCommandSet.OnStatusActivateRoleSequence(Object, EventArgs):Void</Item>
               </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="OnStatusCopyImage(System.Object,System.EventArgs):System.Void">
+            <Messages>
+             <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Status="Excluded" Created="2005-09-13 18:45:05Z">
+              <Issue>
+               <Item>ORMDesignerCommandSet.OnStatusCopyImage(Object, EventArgs):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="sbaldwin">
+                <Note Id="2" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -17932,20 +18000,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="ShouldSerialize(Microsoft.VisualStudio.Modeling.ModelElement):System.Boolean">
-            <Messages>
-             <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-27 00:22:59Z" FixCategory="NonBreaking">
-              <Issue>
-               <Item>ORMSerializer.ShouldSerialize(ModelElement):Boolean</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="50" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
           </Members>
          </Type>
         </Types>
@@ -18109,6 +18163,7 @@
    <User Name="sbaldwin">
     <Note Id="0" Modified="2005-06-17 22:03:30Z">We need the arrays to assign to the shell methods for colorization</Note>
     <Note Id="1" Modified="2005-06-17 22:03:33Z">We need the arrays to assign to the shell methods for colorization</Note>
+    <Note Id="2" Modified="2005-09-13 18:45:49Z">Reviewed</Note>
    </User>
   </Notes>
   <Rules>

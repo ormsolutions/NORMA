@@ -444,4 +444,7 @@
 	<ResourceString name="ModelErrorFrequencyConstraintMinMaxError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintMinMaxError.Text">
 		<comment type="Summary">Text displayed in the text of the FrequencyConstraintMinMaxError. {0} is the constraint name and {1} is the model name</comment>
 	</ResourceString>
+    <ResourceString name="ModelVerbalizationWindowTitle" model="Model" resourceName="ModelVerbalization.WindowTitle">
+        <comment type="Summary">Text to place in the title of the verbalization tool window.</comment>
+    </ResourceString>
 </ResourceStrings>

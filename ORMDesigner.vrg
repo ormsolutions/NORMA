@@ -71,6 +71,16 @@ Windows Registry Editor Version 5.00
 "Style"="Tabbed"
 "Window"="{DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A}"
 
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0Exp\ToolWindows\{C9AA5E71-9193-46c9-971A-CB6365ACA338}\Visibility]
+"{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}"=dword:00000000
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0Exp\ToolWindows\{C9AA5E71-9193-46c9-971A-CB6365ACA338}]
+@="{EFDDC549-1646-4451-8A51-E5A5E94D647C}"
+"Name"="ORM Verbalization Browser"
+"Float"="200, 100, 400, 300"
+"Style"="Tabbed"
+"Window"="{C9AA5E71-9193-46c9-971A-CB6365ACA338}"
+
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Packages\{EFDDC549-1646-4451-8A51-E5A5E94D647C}\ToolBox]
 "Default Items"=dword:00000001
 "Formats"="Microsoft.VisualStudio.Modeling.ElementGroupPrototype"
