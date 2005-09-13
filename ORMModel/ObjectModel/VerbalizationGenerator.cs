@@ -23,6 +23,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		AtMostOneQuantifier,
 		/// <summary>
 		///</summary>
+		CompoundListClose,
+		/// <summary>
+		///</summary>
+		CompoundListFinalSeparator,
+		/// <summary>
+		///</summary>
+		CompoundListOpen,
+		/// <summary>
+		///</summary>
+		CompoundListPairSeparator,
+		/// <summary>
+		///</summary>
+		CompoundListSeparator,
+		/// <summary>
+		///</summary>
 		EachInstanceQuantifier,
 		/// <summary>
 		///</summary>
@@ -56,6 +71,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		IndentedListSeparator,
 		/// <summary>
 		///</summary>
+		IndentedOrListClose,
+		/// <summary>
+		///</summary>
+		IndentedOrListFinalSeparator,
+		/// <summary>
+		///</summary>
+		IndentedOrListOpen,
+		/// <summary>
+		///</summary>
+		IndentedOrListPairSeparator,
+		/// <summary>
+		///</summary>
+		IndentedOrListSeparator,
+		/// <summary>
+		///</summary>
 		ModalNecessityOperator,
 		/// <summary>
 		///</summary>
@@ -63,6 +93,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		///</summary>
 		MoreThanOneQuantifier,
+		/// <summary>
+		///</summary>
+		NegativeReadingForUnaryOnlyDisjuntiveMandatory,
 		/// <summary>
 		///</summary>
 		SimpleListClose,
@@ -132,6 +165,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			retVal.mySets = new VerbalizationSet[] {
 					new VerbalizationSet(new string[] {
 								"at most one {0}",
+								"",
+								"; ",
+								"\r\n\t",
+								"; ",
+								"; ",
 								"each instance of {0} occurs only once",
 								"some {0}",
 								"for each {0} {1}",
@@ -143,9 +181,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"\r\n\t",
 								" and\r\n\t",
 								" and\r\n\t",
+								"",
+								" or\r\n\t",
+								"\r\n\t",
+								" or\r\n\t",
+								" or\r\n\t",
 								"it is necessary that {0}",
 								"it is possible that {0}",
 								"more than one {0}",
+								"It is impossible that some {0} participates in none of the following:{1}",
 								"",
 								", and ",
 								"",
@@ -154,6 +198,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"each {0}"}),
 					new VerbalizationSet(new string[] {
 								"at most one {0}",
+								"",
+								"; ",
+								"\r\n\t",
+								"; ",
+								"; ",
 								"each instance of {0} occurs only once",
 								"some {0}",
 								"for each {0} {1}",
@@ -165,9 +214,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"\r\n\t",
 								" and\r\n\t",
 								" and\r\n\t",
+								"",
+								" or\r\n\t",
+								"\r\n\t",
+								" or\r\n\t",
+								" or\r\n\t",
 								"it is obligatory that {0}",
 								"it is permitted that {0}",
 								"more than one {0}",
+								"It is impossible that some {0} participates in none of the following:{1}",
 								"",
 								", and ",
 								"",
@@ -176,6 +231,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"each {0}"}),
 					new VerbalizationSet(new string[] {
 								"at most one {0}",
+								"",
+								"; ",
+								"\r\n\t",
+								"; ",
+								"; ",
 								"each instance of {0} occurs only once",
 								"some {0}",
 								"for each {0} {1}",
@@ -187,9 +247,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"\r\n\t",
 								" and\r\n\t",
 								" and\r\n\t",
+								"",
+								" or\r\n\t",
+								"\r\n\t",
+								" or\r\n\t",
+								" or\r\n\t",
 								"it is necessary that {0}",
 								"it is impossible that {0}",
 								"more than one {0}",
+								"It is impossible that some {0} participates in none of the following:{1}",
 								"",
 								", and ",
 								"",
@@ -198,6 +264,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"each {0}"}),
 					new VerbalizationSet(new string[] {
 								"at most one {0}",
+								"",
+								"; ",
+								"\r\n\t",
+								"; ",
+								"; ",
 								"each instance of {0} occurs only once",
 								"some {0}",
 								"for each {0} {1}",
@@ -209,9 +280,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"\r\n\t",
 								" and\r\n\t",
 								" and\r\n\t",
+								"",
+								" or\r\n\t",
+								"\r\n\t",
+								" or\r\n\t",
+								" or\r\n\t",
 								"it is obligatory that {0}",
 								"it is forbidden that {0}",
 								"more than one {0}",
+								"It is impossible that some {0} participates in none of the following:{1}",
 								"",
 								", and ",
 								"",
@@ -286,7 +363,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.EachInstanceQuantifier, isDeontic, isNegative);
 				string snippet1replace1 = null;
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, factRoles, true);
+				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
 				snippet1replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements);
 				writer.Write(snippet1, snippet1replace1);
 				writer.WriteLine();
@@ -330,7 +407,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					snippet2replace1 = null;
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, primaryRole, null, factRoles, true);
+					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, primaryRole, null, false, false, factRoles, true);
 					int snippet2replacefactRoleIter1 = 0;
 					for (; (snippet2replacefactRoleIter1 < factArity); snippet2replacefactRoleIter1 = (snippet2replacefactRoleIter1 + 1))
 					{
@@ -369,7 +446,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				if ((factArity == 2))
 				{
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, includedRoles, factRoles, false);
+					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, includedRoles, false, false, factRoles, false);
 					if ((readingOrder != null))
 					{
 						int factTextfactRoleIter1 = 0;
@@ -396,7 +473,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, factRoles, true);
+						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
 						if ((readingOrder != null))
 						{
 							string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
@@ -447,7 +524,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							snippet1replace1 = sbTemp.ToString();
 							string snippet1replace2 = null;
-							readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, factRoles, true);
+							readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
 							int snippet1replacefactRoleIter2 = 0;
 							for (; (snippet1replacefactRoleIter2 < factArity); snippet1replacefactRoleIter2 = (snippet1replacefactRoleIter2 + 1))
 							{
@@ -479,13 +556,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.EachInstanceQuantifier, isDeontic, isNegative);
 						string snippet1replace1 = null;
-						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, factRoles, true);
+						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
 						snippet1replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements);
 						writer.Write(snippet1, snippet1replace1);
 					}
 					else
 					{
-						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, includedRoles, factRoles, false);
+						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, includedRoles, false, false, factRoles, false);
 						if ((readingOrder != null))
 						{
 							string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
@@ -561,7 +638,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						else
 						{
-							readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, factRoles, true);
+							readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
 							if ((readingOrder != null))
 							{
 							}

@@ -52,6 +52,24 @@
 				<FormalItem type="ModalNecessityOperator" modality="deontic">
 					<Form style="Basic">it is obligatory that {0}</Form>
 				</FormalItem>
+				<FormalItem type="NegativeReadingForUnaryOnlyDisjuntiveMandatory" modality="deontic" sign="-">
+					<Form style="Basic">It is impossible that some {0} participates in none of the following:{1}</Form>
+				</FormalItem>
+				<FormalItem type="CompoundListOpen">
+					<Form style="Basic">&#xD;&#xA;&#x9;</Form>
+				</FormalItem>
+				<FormalItem type="CompoundListPairSeparator">
+					<Form style="Basic">; </Form>
+				</FormalItem>
+				<FormalItem type="CompoundListSeparator">
+					<Form style="Basic">; </Form>
+				</FormalItem>
+				<FormalItem type="CompoundListFinalSeparator">
+					<Form style="Basic">; </Form>
+				</FormalItem>
+				<FormalItem type="CompoundListClose">
+					<Form style="Basic"></Form>
+				</FormalItem>
 				<FormalItem type="IndentedListOpen">
 					<Form style="Basic">&#xD;&#xA;&#x9;</Form>
 				</FormalItem>
@@ -65,6 +83,21 @@
 					<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>
 				</FormalItem>
 				<FormalItem type="IndentedListClose">
+					<Form style="Basic"></Form>
+				</FormalItem>
+				<FormalItem type="IndentedOrListOpen">
+					<Form style="Basic">&#xD;&#xA;&#x9;</Form>
+				</FormalItem>
+				<FormalItem type="IndentedOrListPairSeparator">
+					<Form style="Basic"> or&#xD;&#xA;&#x9;</Form>
+				</FormalItem>
+				<FormalItem type="IndentedOrListSeparator">
+					<Form style="Basic"> or&#xD;&#xA;&#x9;</Form>
+				</FormalItem>
+				<FormalItem type="IndentedOrListFinalSeparator">
+					<Form style="Basic"> or&#xD;&#xA;&#x9;</Form>
+				</FormalItem>
+				<FormalItem type="IndentedOrListClose">
 					<Form style="Basic"></Form>
 				</FormalItem>
 				<FormalItem type="SimpleListOpen">
@@ -164,57 +197,59 @@
 			<!-- UNDONE: Temporary data for xslt testing.-->
 			<!--<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
 				--><!-- Unaries are the only reading choice that has an optional negative reading --><!--
-				<ConstrainedRoles minFactArity="1" maxFactArity="1" sign="-">
+				<ConstrainedRoles sign="-" maxFactArity="1">
 					<Quantifier type="NegativeReadingForUnaryOnlyDisjuntiveMandatory">
-						<IterateRolePlayers listStyle="SimpleList" match="first"/>
+						<IterateRoles listStyle="SimpleList" match="singleColumnConstraintRoles" pass="first"/>
 						<IterateRoles listStyle="CompoundList" match="singleColumnConstraintRoles">
 							<Fact/>
 						</IterateRoles>
 					</Quantifier>
 				</ConstrainedRoles>
-				<ConstrainedRoles minFactArity="1" maxFactArity="2" sign="-">
-					<ConditionalReading readingChoice="RequireAllPrimaryLeadReading">
-						<CompositeList listStyle="IndentedOrList">
-							<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
-								<Fact readingChoice="RequirePrimaryLeadReading">
-									<PredicateReplacement match="firstPrimary">
-										<Quantifier type="UniversalQuantifier"/>
-									</PredicateReplacement>
-									<PredicateReplacement match="primary">
-										<Quantifier type="ThatQuantifier"/>
-									</PredicateReplacement>
-									<PredicateReplacement>
-										<Quantifier type="ExistentialQuantifier"/>
-									</PredicateReplacement>
-								</Fact>
-							</IterateRoles>
-							<IterateRoles factArity="1" match="singleColumnConstraintRoles">
-								<Fact readingChoice="RequirePrimaryLeadReading">
-									<PredicateReplacement>
-										<Quantifier type="ThatQuantifier"/>
-									</PredicateReplacement>
-								</Fact>
-							</IterateRoles>
-						</CompositeList>
-					</ConditionalReading>
+				<ConstrainedRoles sign="-" maxFactArity="2">
 					<ConditionalReading>
-						<Quantifier type="ForEachQuantifier">
-							<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
-								<Fact readingChoice="PreferPrimaryLeadReading">
-									<PredicateReplacement match="primary">
-										<Quantifier type="ImpersonalQuantifier"/>
-										<Quantifier type="ExistentialQuantifier"/>
-									</PredicateReplacement>
-									<PredicateReplacement match="secondary">
-										<Quantifier type="ExistentialQuantifier"/>
-										<Quantifier type="ImpersonalQuantifier"/>
-									</PredicateReplacement>
-								</Fact>
-							</IterateRoles>
-							<IterateRoles factArity="1" match="singleColumnConstraintRoles">
-								<Fact/>
-							</IterateRoles>
-						</Quantifier>
+						<ReadingChoice match="RequireAllLeadReading">
+							<CompositeList listStyle="IndentedOrList">
+								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
+									<Fact readingChoice="Conditional">
+										<PredicateReplacement match="primary" pass="first">
+											<Quantifier type="UniversalQuantifier"/>
+										</PredicateReplacement>
+										<PredicateReplacement match="primary">
+											<Quantifier type="ImpersonalPronoun"/>
+										</PredicateReplacement>
+										<PredicateReplacement>
+											<Quantifier type="ExistentialQuantifier"/>
+										</PredicateReplacement>
+									</Fact>
+								</IterateRoles>
+								<IterateRoles factArity="1" match="singleColumnConstraintRoles">
+									<Fact readingChoice="Conditional">
+										<PredicateReplacement>
+											<Quantifier type="ImpersonalPronoun"/>
+										</PredicateReplacement>
+									</Fact>
+								</IterateRoles>
+							</CompositeList>
+						</ReadingChoice>
+						--><!--<ReadingChoice>
+							<Quantifier type="ForEachQuantifier">
+								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
+									<Fact readingChoice="PreferPrimaryLeadReading">
+										<PredicateReplacement match="primary">
+											<Quantifier type="ImpersonalQuantifier"/>
+											<Quantifier type="ExistentialQuantifier"/>
+										</PredicateReplacement>
+										<PredicateReplacement match="secondary">
+											<Quantifier type="ExistentialQuantifier"/>
+											<Quantifier type="ImpersonalQuantifier"/>
+										</PredicateReplacement>
+									</Fact>
+								</IterateRoles>
+								<IterateRoles factArity="1" match="singleColumnConstraintRoles">
+									<Fact/>
+								</IterateRoles>
+							</Quantifier>
+						</ReadingChoice>--><!--
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>-->

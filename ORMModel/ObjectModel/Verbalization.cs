@@ -34,11 +34,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="matchLeadRole">Choose any order that begins with this role. If defaultRoleOrder is also
 		/// set and starts with this role and the order is defined, then use it.</param>
 		/// <param name="matchAnyLeadRole">Same as matchAnyLeadRole, except with a set match</param>
+		/// <param name="invertLeadRoles">Invert the matchLeadRole and matchAnyLeadRole values</param>
+		/// <param name="noForwardText">Match a reading with no forward text if possible</param>
 		/// <param name="defaultRoleOrder">The default order to match</param>
 		/// <param name="allowAnyOrder">If true, use the first reading order if there are no other matches</param>
 		/// <returns>A matching reading order. Can return null if allowAnyOrder is false, or the readingOrders collection is empty.</returns>
-		public static ReadingOrder GetMatchingReadingOrder(ReadingOrderMoveableCollection readingOrders, Role matchLeadRole, RoleMoveableCollection matchAnyLeadRole, RoleMoveableCollection defaultRoleOrder, bool allowAnyOrder)
+		public static ReadingOrder GetMatchingReadingOrder(ReadingOrderMoveableCollection readingOrders, Role matchLeadRole, RoleMoveableCollection matchAnyLeadRole, bool invertLeadRoles, bool noForwardText, RoleMoveableCollection defaultRoleOrder, bool allowAnyOrder)
 		{
+			// UNDONE: Implement invertLeadRoles, noForwardText checks
 			int orderCount = readingOrders.Count;
 			ReadingOrder retVal = null;
 			bool blockTestDefault = false; // If we have specific lead role requirements, then default is only used to enforce them, or as the default for any allowed order
