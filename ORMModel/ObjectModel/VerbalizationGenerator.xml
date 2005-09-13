@@ -231,16 +231,21 @@
 								</IterateRoles>
 							</CompositeList>
 						</ReadingChoice>
-						--><!--<ReadingChoice>
+						-->
+												<!--<ReadingChoice>
 							<Quantifier type="ForEachQuantifier">
 								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
 									<Fact readingChoice="PreferPrimaryLeadReading">
 										<PredicateReplacement match="primary">
 											<Quantifier type="ImpersonalQuantifier"/>
+										</PredicateReplacement>
+										<PredicateReplacement match="primary">
 											<Quantifier type="ExistentialQuantifier"/>
 										</PredicateReplacement>
 										<PredicateReplacement match="secondary">
 											<Quantifier type="ExistentialQuantifier"/>
+										</PredicateReplacement>
+										<PredicateReplacement match="secondary">
 											<Quantifier type="ImpersonalQuantifier"/>
 										</PredicateReplacement>
 									</Fact>
@@ -249,7 +254,8 @@
 									<Fact/>
 								</IterateRoles>
 							</Quantifier>
-						</ReadingChoice>--><!--
+						</ReadingChoice>-->
+												<!--
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>-->
