@@ -3470,13 +3470,18 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="GetVerbalization(System.IO.TextWriter,System.Boolean):System.Void">
+           <Member Name="GetVerbalization(System.IO.TextWriter,Neumont.Tools.ORM.ObjectModel.NotifyBeginVerbalization,System.Boolean):System.Boolean">
             <Messages>
-             <Message Id="isNegative" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-09-13 18:45:05Z" FixCategory="Breaking">
+             <Message Id="isNegative" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-09-14 15:07:59Z" FixCategory="Breaking">
               <Issue>
                <Item>isNegative</Item>
-               <Item>FactType.GetVerbalization(TextWriter, Boolean):Void</Item>
+               <Item>FactType.GetVerbalization(TextWriter, NotifyBeginVerbalization, Boolean):Boolean</Item>
               </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="60" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -18121,6 +18126,7 @@
     <Note Id="57" Modified="2005-08-22 18:16:12Z">Interface implementation</Note>
     <Note Id="58" Modified="2005-08-22 18:16:31Z">Interface pattern function</Note>
     <Note Id="59" Modified="2005-08-31 15:42:38Z">CodeDom doesn't spit readonly, which is what I really want. The class being spit is not editable.</Note>
+    <Note Id="60" Modified="2005-09-14 15:09:44Z">Signature matches interface pattern</Note>
    </User>
    <User Name="obuhler">
     <Note Id="0" Modified="2005-07-29 21:45:56Z">Rule classes instantiated via reflection</Note>

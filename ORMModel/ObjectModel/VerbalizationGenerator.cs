@@ -177,10 +177,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"the same {0}",
 								"that {0}",
 								"</span>",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
-								"<br><span style=\"left:30px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
 								"",
 								" or\r\n\t",
 								"\r\n\t",
@@ -210,10 +210,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"the same {0}",
 								"that {0}",
 								"</span>",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
-								"<br><span style=\"left:30px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
 								"",
 								" or\r\n\t",
 								"\r\n\t",
@@ -243,10 +243,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"the same {0}",
 								"that {0}",
 								"</span>",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
-								"<br><span style=\"left:30px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
 								"",
 								" or\r\n\t",
 								"\r\n\t",
@@ -276,10 +276,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"the same {0}",
 								"that {0}",
 								"</span>",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
-								"<br><span style=\"left:30px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:30px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
 								"",
 								" or\r\n\t",
 								"\r\n\t",
@@ -304,7 +304,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		/// <summary>
 		///</summary>
-		protected void GetVerbalization(TextWriter writer, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			StringBuilder sbTemp = null;
 			IModelErrorOwner errorOwner = (this) as IModelErrorOwner;
@@ -316,6 +316,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstElement)
 					{
 						firstElement = false;
+						beginVerbalization(VerbalizationContent.ErrorReport);
 					}
 					else
 					{
@@ -325,7 +326,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!(firstElement))
 				{
-					return;
+					return false;
 				}
 			}
 			VerbalizationSets snippets = VerbalizationSets.Default;
@@ -337,7 +338,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
 			if ((allReadingOrders.Count == 0))
 			{
-				return;
+				return false;
 			}
 			int includedArity = includedRoles.Count;
 			string[] basicRoleReplacements = new string[factArity];
@@ -361,6 +362,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (((factArity == includedArity) 
 						&& (factArity == 2)))
 			{
+				beginVerbalization(VerbalizationContent.Normal);
 				string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.EachInstanceQuantifier, isDeontic, isNegative);
 				string snippet1replace1 = null;
 				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
@@ -449,6 +451,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, includedRoles, false, false, factRoles, false);
 					if ((readingOrder != null))
 					{
+						beginVerbalization(VerbalizationContent.Normal);
 						int factTextfactRoleIter1 = 0;
 						for (; (factTextfactRoleIter1 < factArity); factTextfactRoleIter1 = (factTextfactRoleIter1 + 1))
 						{
@@ -476,6 +479,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
 						if ((readingOrder != null))
 						{
+							beginVerbalization(VerbalizationContent.Normal);
 							string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
 							string snippet1replace1 = null;
 							if ((sbTemp == null))
@@ -554,6 +558,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					if ((factArity == includedArity))
 					{
+						beginVerbalization(VerbalizationContent.Normal);
 						string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.EachInstanceQuantifier, isDeontic, isNegative);
 						string snippet1replace1 = null;
 						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
@@ -565,6 +570,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, includedRoles, false, false, factRoles, false);
 						if ((readingOrder != null))
 						{
+							beginVerbalization(VerbalizationContent.Normal);
 							string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
 							string snippet1replace1 = null;
 							if ((sbTemp == null))
@@ -646,11 +652,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
-			return;
+			return true;
 		}
-		void IVerbalize.GetVerbalization(TextWriter writer, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			this.GetVerbalization(writer, isNegative);
+			return this.GetVerbalization(writer, beginVerbalization, isNegative);
 		}
 	}
 	/// <summary>
@@ -659,7 +665,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		/// <summary>
 		///</summary>
-		protected void GetVerbalization(TextWriter writer, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			StringBuilder sbTemp = null;
 			IModelErrorOwner errorOwner = (this) as IModelErrorOwner;
@@ -671,6 +677,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstElement)
 					{
 						firstElement = false;
+						beginVerbalization(VerbalizationContent.ErrorReport);
 					}
 					else
 					{
@@ -680,7 +687,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!(firstElement))
 				{
-					return;
+					return false;
 				}
 			}
 			VerbalizationSets snippets = VerbalizationSets.Default;
@@ -701,7 +708,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType currentFact = allFacts[iFact];
 				if ((currentFact.ReadingOrderCollection.Count == 0))
 				{
-					return;
+					return false;
 				}
 				factRoles = currentFact.RoleCollection;
 				factArity = factRoles.Count;
@@ -738,6 +745,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if ((isNegative 
 						&& (maxFactArity <= 1)))
 			{
+				beginVerbalization(VerbalizationContent.Normal);
 				string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.NegativeReadingForUnaryOnlyDisjunctiveMandatory, isDeontic, isNegative);
 				string snippet1replace1 = null;
 				if ((sbTemp == null))
@@ -848,6 +856,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					if (!(missingReading))
 					{
+						beginVerbalization(VerbalizationContent.Normal);
 						int listCompositeCount1 = 0;
 						int listCompositeIterator1;
 						for (listCompositeIterator1 = 0; (listCompositeIterator1 < constraintRoleArity); listCompositeIterator1 = (listCompositeIterator1 + 1))
@@ -1021,11 +1030,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 			}
-			return;
+			return true;
 		}
-		void IVerbalize.GetVerbalization(TextWriter writer, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			this.GetVerbalization(writer, isNegative);
+			return this.GetVerbalization(writer, beginVerbalization, isNegative);
 		}
 	}
 	/// <summary>
@@ -1034,7 +1043,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		/// <summary>
 		///</summary>
-		protected void GetVerbalization(TextWriter writer, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			StringBuilder sbTemp = null;
 			IModelErrorOwner errorOwner = (this) as IModelErrorOwner;
@@ -1046,6 +1055,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					if (firstElement)
 					{
 						firstElement = false;
+						beginVerbalization(VerbalizationContent.ErrorReport);
 					}
 					else
 					{
@@ -1055,7 +1065,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!(firstElement))
 				{
-					return;
+					return false;
 				}
 			}
 			VerbalizationSets snippets = VerbalizationSets.Default;
@@ -1076,7 +1086,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType currentFact = allFacts[iFact];
 				if ((currentFact.ReadingOrderCollection.Count == 0))
 				{
-					return;
+					return false;
 				}
 				factRoles = currentFact.RoleCollection;
 				factArity = factRoles.Count;
@@ -1135,6 +1145,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				if (!(missingReading))
 				{
+					beginVerbalization(VerbalizationContent.Normal);
 					string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
 					string snippet1replace1 = null;
 					if ((sbTemp == null))
@@ -1284,11 +1295,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 				}
 			}
-			return;
+			return true;
 		}
-		void IVerbalize.GetVerbalization(TextWriter writer, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			this.GetVerbalization(writer, isNegative);
+			return this.GetVerbalization(writer, beginVerbalization, isNegative);
 		}
 	}
 }

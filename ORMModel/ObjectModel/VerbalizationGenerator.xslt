@@ -39,7 +39,9 @@
 		<plx:Class name="{@type}" visibility="Public" partial="true">
 			<plx:ImplementsInterface dataTypeName="IVerbalize"/>
 			<plx:Function name="GetVerbalization" visibility="Protected">
+				<plx:Param name="" type="RetVal" dataTypeName="Boolean" dataTypeQualifier="System"/>
 				<plx:Param name="writer" dataTypeName="TextWriter"/>
+				<plx:Param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:Param name="isNegative" dataTypeName="Boolean" dataTypeQualifier="System"/>
 				<plx:InterfaceMember member="GetVerbalization" dataTypeName="IVerbalize"/>
 				<plx:Variable name="sbTemp" dataTypeName="StringBuilder">
@@ -98,6 +100,14 @@
 												<plx:FalseKeyword/>
 											</plx:Right>
 										</plx:Operator>
+										<plx:CallInstance name="" type="DelegateCall">
+											<plx:CallObject>
+												<plx:Value type="Parameter" data="beginVerbalization"/>
+											</plx:CallObject>
+											<plx:PassParam>
+												<plx:CallStatic name="ErrorReport" dataTypeName="VerbalizationContent" type="Field"/>
+											</plx:PassParam>
+										</plx:CallInstance>
 									</plx:Body>
 									<plx:Alternate>
 										<plx:CallInstance name="WriteLine">
@@ -128,7 +138,9 @@
 								</plx:Operator>
 							</plx:Test>
 							<plx:Body>
-								<plx:Return/>
+								<plx:Return>
+									<plx:FalseKeyword/>
+								</plx:Return>
 							</plx:Body>
 						</plx:Condition>
 					</plx:Body>
@@ -250,7 +262,9 @@
 								</plx:Operator>
 							</plx:Test>
 							<plx:Body>
-								<plx:Return/>
+								<plx:Return>
+									<plx:FalseKeyword/>
+								</plx:Return>
 							</plx:Body>
 						</plx:Condition>
 						<plx:Variable name="includedArity" dataTypeName="Int32" dataTypeQualifier="System">
@@ -357,7 +371,9 @@
 										</plx:Operator>
 									</plx:Test>
 									<plx:Body>
-										<plx:Return/>
+										<plx:Return>
+											<plx:FalseKeyword/>
+										</plx:Return>
 									</plx:Body>
 								</plx:Condition>
 								<!-- Get the roles and role count for the current fact -->
@@ -495,7 +511,9 @@
 						</xsl:call-template>
 					</xsl:if>
 				</xsl:for-each>
-				<plx:Return/>
+				<plx:Return>
+					<plx:TrueKeyword/>
+				</plx:Return>
 			</plx:Function>
 		</plx:Class>
 	</xsl:template>
@@ -1082,12 +1100,26 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="'all'"/>
 		<xsl:param name="PatternGroup"/>
-		<xsl:if test="$TopLevel and position()&gt;1">
-			<plx:CallInstance name="WriteLine">
-				<plx:CallObject>
-					<plx:Value type="Parameter" data="writer"/>
-				</plx:CallObject>
-			</plx:CallInstance>
+		<xsl:if test="$TopLevel">
+			<xsl:choose>
+				<xsl:when test="position()&gt;1">
+					<plx:CallInstance name="WriteLine">
+						<plx:CallObject>
+							<plx:Value type="Parameter" data="writer"/>
+						</plx:CallObject>
+					</plx:CallInstance>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:CallInstance name="" type="DelegateCall">
+						<plx:CallObject>
+							<plx:Value type="Parameter" data="beginVerbalization"/>
+						</plx:CallObject>
+						<plx:PassParam>
+							<plx:CallStatic name="Normal" dataTypeName="VerbalizationContent" type="Field"/>
+						</plx:PassParam>
+					</plx:CallInstance>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:if>
 		<plx:Variable name="{$VariablePrefix}{$VariableDecorator}" dataTypeName="String" dataTypeQualifier="System">
 			<plx:Initialize>
@@ -1132,12 +1164,26 @@
 		<!-- all, included or excluded are the supported IteratorContext -->
 		<xsl:param name="IteratorContext" select="'all'"/>
 		<xsl:param name="TopLevel" select="false()"/>
-		<xsl:if test="$TopLevel and position()&gt;1">
-			<plx:CallInstance name="WriteLine">
-				<plx:CallObject>
-					<plx:Value type="Parameter" data="writer"/>
-				</plx:CallObject>
-			</plx:CallInstance>
+		<xsl:if test="$TopLevel">
+			<xsl:choose>
+				<xsl:when test="position()&gt;1">
+					<plx:CallInstance name="WriteLine">
+						<plx:CallObject>
+							<plx:Value type="Parameter" data="writer"/>
+						</plx:CallObject>
+					</plx:CallInstance>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:CallInstance name="" type="DelegateCall">
+						<plx:CallObject>
+							<plx:Value type="Parameter" data="beginVerbalization"/>
+						</plx:CallObject>
+						<plx:PassParam>
+							<plx:CallStatic name="Normal" dataTypeName="VerbalizationContent" type="Field"/>
+						</plx:PassParam>
+					</plx:CallInstance>
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:if>
 		<xsl:variable name="complexReplacement" select="0!=count(ve:PredicateReplacement)"/>
 		<xsl:call-template name="PopulateReadingOrder">
@@ -2235,6 +2281,27 @@
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'list'"/>
 		<xsl:param name="PatternGroup"/>
+		<xsl:if test="$TopLevel">
+			<xsl:choose>
+				<xsl:when test="position()&gt;1">
+					<plx:CallInstance name="WriteLine">
+						<plx:CallObject>
+							<plx:Value type="Parameter" data="writer"/>
+						</plx:CallObject>
+					</plx:CallInstance>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:CallInstance name="" type="DelegateCall">
+						<plx:CallObject>
+							<plx:Value type="Parameter" data="beginVerbalization"/>
+						</plx:CallObject>
+						<plx:PassParam>
+							<plx:CallStatic name="Normal" dataTypeName="VerbalizationContent" type="Field"/>
+						</plx:PassParam>
+					</plx:CallInstance>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
 		<xsl:variable name="compositeCountVarName" select="concat($VariablePrefix,'CompositeCount',$VariableDecorator)"/>
 		<plx:Variable name="{$compositeCountVarName}" dataTypeName="Int32" dataTypeQualifier="System">
 			<plx:Initialize>

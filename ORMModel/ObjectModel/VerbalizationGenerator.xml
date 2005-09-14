@@ -71,19 +71,19 @@
 					<Form style="Basic"></Form>
 				</FormalItem>
 				<FormalItem type="IndentedListOpen">
-					<Form style="Basic"><![CDATA[<br><span style="left:30px;position:relative">]]></Form>
+					<Form style="Basic"><![CDATA[<br><span style="left:15px;position:relative">]]></Form>
 					<!--<Form style="Basic">&#xD;&#xA;&#x9;</Form>-->
 				</FormalItem>
 				<FormalItem type="IndentedListPairSeparator">
-					<Form style="Basic"><![CDATA[<b> and</b> </span><br><span style="left:30px;position:relative">]]></Form>
+					<Form style="Basic"><![CDATA[<b> and</b> </span><br><span style="left:15px;position:relative">]]></Form>
 					<!--<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>-->
 				</FormalItem>
 				<FormalItem type="IndentedListSeparator">
-					<Form style="Basic"><![CDATA[<b> and</b> </span><br><span style="left:30px;position:relative">]]></Form>
+					<Form style="Basic"><![CDATA[<b> and</b> </span><br><span style="left:15px;position:relative">]]></Form>
 					<!--<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>-->
 				</FormalItem>
 				<FormalItem type="IndentedListFinalSeparator">
-					<Form style="Basic"><![CDATA[<b> and</b> </span><br><span style="left:30px;position:relative">]]></Form>
+					<Form style="Basic"><![CDATA[<b> and</b> </span><br><span style="left:15px;position:relative">]]></Form>
 					<!--<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>-->
 				</FormalItem>
 				<FormalItem type="IndentedListClose">

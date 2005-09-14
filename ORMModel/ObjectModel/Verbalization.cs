@@ -11,6 +11,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region IVerbalize interface
 	/// <summary>
+	/// An enum representing the type of verbalization
+	/// for a given element
+	/// </summary>
+	[CLSCompliant(true)]
+	public enum VerbalizationContent
+	{
+		/// <summary>
+		/// Normal content
+		/// </summary>
+		Normal = 0,
+		/// <summary>
+		/// An error report
+		/// </summary>
+		ErrorReport = 1,
+	}
+	/// <summary>
+	/// A callback delegate enabling a verbalizer to tell
+	/// the hosting window that it is about to begin verbalizing.
+	/// This enables the host window to delay writing content outer
+	/// content until it knows that text is about to be written by
+	/// the verbalizer to the writer
+	/// </summary>
+	/// <param name="content">The style of verbalization content</param>
+	[CLSCompliant(true)]
+	public delegate void NotifyBeginVerbalization(VerbalizationContent content);
+	/// <summary>
 	/// Interface for verbalization
 	/// </summary>
 	public interface IVerbalize
@@ -19,8 +45,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Verbalize in the requested form
 		/// </summary>
 		/// <param name="writer">The output text writer</param>
+		/// <param name="beginVerbalization">A callback function to notify when verbalization is starting</param>
 		/// <param name="isNegative">true for a negative reading</param>
-		void GetVerbalization(TextWriter writer, bool isNegative);
+		/// <returns>true to continue with child verbalization, otherwise false</returns>
+		bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative);
 	}
 	#endregion // IVerbalize interface
 	#region Static verbalization helpers on FactType class
@@ -212,19 +240,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class FactType : IVerbalize
 	{
 		#region IVerbalize Members
-		void IVerbalize.GetVerbalization(TextWriter writer, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			GetVerbalization(writer, isNegative);
+			return GetVerbalization(writer, beginVerbalization, isNegative);
 		}
 
 		/// <summary>
 		/// Implements IVerbalize.GetVerbalization.
 		/// </summary>
-		/// <param name="isNegative"></param>
-		/// <param name="writer"></param>
-		protected static void GetVerbalization(TextWriter writer, bool isNegative)
+		protected static bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
+			beginVerbalization(VerbalizationContent.Normal);
 			writer.Write("Place holder for FactType verbalization.");
+			return true;
 		}
 		#endregion
 	}

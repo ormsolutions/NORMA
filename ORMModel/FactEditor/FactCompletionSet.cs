@@ -311,13 +311,22 @@ namespace Neumont.Tools.ORM.FactEditor
 			}
 			private set
 			{
-				if (myCurrentDocView != null)
+				ORMDesignerDocView oldView = myCurrentDocView;
+				if (oldView != null)
 				{
-					if (value != null && (object.ReferenceEquals(myCurrentDocView, value) || object.ReferenceEquals(myCurrentDocView.DocData, value.DocData)))
+					if (value != null)
 					{
-						return;
+						if (object.ReferenceEquals(oldView, value))
+						{
+							return;
+						}
+						else if (object.ReferenceEquals(oldView.DocData, value.DocData))
+						{
+							myCurrentDocView = value;
+							return;
+						}
 					}
-					ModelingDocData docData = myCurrentDocView.DocData as ModelingDocData;
+					ModelingDocData docData = oldView.DocData as ModelingDocData;
 					if (docData != null)
 					{
 						DetachEventHandlers(docData.Store);
@@ -326,7 +335,7 @@ namespace Neumont.Tools.ORM.FactEditor
 				myCurrentDocView = value;
 				if (value != null)
 				{
-					AttachEventHandlers((myCurrentDocView.DocData as ModelingDocData).Store);
+					AttachEventHandlers((value.DocData as ModelingDocData).Store);
 				}
 			}
 		}

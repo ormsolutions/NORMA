@@ -10,11 +10,6 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 
-// TODO: Add something like: (AttachEventHandlers)
-// eventDirectory.TransactionCommitted.Add(new TransactionCommittedEventHandler(TransactionCommittedEvent));
-// On the store when it changes.
-// Then for DetachEventHandlers
-// eventDirectory.TransactionCommitted.Remove(new TransactionCommittedEventHandler(TransactionCommittedEvent));
 namespace Neumont.Tools.ORM.Shell
 {
 	/// <summary>
@@ -26,22 +21,20 @@ namespace Neumont.Tools.ORM.Shell
 	{
 		#region Constants
 		private const string HtmlNewLine = "<br/>\n";
-		#endregion //Constants
+		private const string HtmlIncreaseIndent = @"<span style=""left:30px;position:relative"">";
+		private const string HtmlDecreaseIndent = @"</span>";
+		#endregion // Constants
 		#region Member variables
 		private WebBrowser myWebBrowser;
-		private ORMDesignerDocData myCurrentDocument;
+		private ORMDesignerDocView myCurrentDocumentView;
 		private StringWriter myStringWriter;
 
 		/// <summary>
-		/// Callback for when verbalizations when the selection changes
+		/// Callback for child verbalizations
 		/// </summary>
-		/// <param name="verbalizer"></param>
-		/// <param name="isNegative"></param>
-		/// <param name="indentationLevel"></param>
-		public delegate void VerbalizationHandler(IVerbalize verbalizer, bool isNegative, int indentationLevel);
+		private delegate bool VerbalizationHandler(IVerbalize verbalizer, int indentationLevel);
 		#endregion // Member variables
-
-		#region construction
+		#region Construction
 		/// <summary>
 		/// Construct a verbalization window with a monitor selection service
 		/// </summary>
@@ -57,70 +50,67 @@ namespace Neumont.Tools.ORM.Shell
 			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
 			monitor.DocumentWindowChanged += new MonitorSelectionEventHandler(DocumentWindowChangedEvent);
 			monitor.SelectionChanged += new MonitorSelectionEventHandler(SelectionChangedEvent);
-			CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;
+			CurrentDocumentView = monitor.CurrentDocumentView as ORMDesignerDocView;
 		}
-		#endregion
-
-		#region selection monitor event handlers and helpers
+		#endregion // Construction
+		#region Selection monitor event handlers and helpers
 		private void DocumentWindowChangedEvent(object sender, MonitorSelectionEventArgs e)
 		{
-			CurrentDocument = ((IMonitorSelectionService)sender).CurrentDocument as ORMDesignerDocData;
+			CurrentDocumentView = ((IMonitorSelectionService)sender).CurrentDocumentView as ORMDesignerDocView;
 		}
-
 		private void SelectionChangedEvent(object sender, MonitorSelectionEventArgs e)
 		{
-			// Give IVerbalize a StringBuilder to append to
-
-			myStringWriter.GetStringBuilder().Length = 0;
-			VerbalizationHandler myHandler = new VerbalizationHandler(HandleVerbalization);
-
-			ORMDesignerDocView theView = e.NewValue as ORMDesignerDocView;
-			if (theView != null)
-			{
-				ICollection selectedObjects = theView.GetSelectedComponents();
-				foreach (ModelElement melIter in selectedObjects)
-				{
-					ModelElement mel = melIter;
-					PresentationElement pel = mel as PresentationElement;
-					if (pel != null)
-					{
-						mel = pel.ModelElement;
-					}
-					if (mel != null)
-					{
-						VerbalizeElement(mel, false, myHandler);
-						//string verbalizedText = verbalize.GetVerbalization(false);
-						//myWebBrowser.DocumentText = verbalizedText;
-					}
-				}
-			}
+			UpdateVerbalization();
 		}
-		#endregion
-
-		private ORMDesignerDocData CurrentDocument
+		private void ModelStateChangedEvent(object sender, ElementEventsEndedEventArgs e)
 		{
+			UpdateVerbalization();
+		}
+		private ORMDesignerDocView CurrentDocumentView
+		{
+			get
+			{
+				return myCurrentDocumentView;
+			}
 			set
 			{
-				if (myCurrentDocument != null)
+				ORMDesignerDocView oldView = myCurrentDocumentView;
+				if (oldView != null)
 				{
-					if (value != null && object.ReferenceEquals(myCurrentDocument, value))
+					ORMDesignerDocData oldDoc = oldView.DocData as ORMDesignerDocData;
+					if (value != null)
 					{
-						return;
+						if (object.ReferenceEquals(oldView, value))
+						{
+							return;
+						}
+						else if (object.ReferenceEquals(oldDoc, value.DocData))
+						{
+							myCurrentDocumentView = value;
+							return;
+						}
 					}
-					//myForm.ReadingEditor.DetachEventHandlers(myCurrentDocument.Store);
+					if (oldDoc != null)
+					{
+						Store store = oldDoc.Store;
+						if (!store.Disposed)
+						{
+							store.EventManagerDirectory.ElementEventsEnded.Remove(new ElementEventsEndedEventHandler(ModelStateChangedEvent));
+						}
+					}
 				}
-				myCurrentDocument = value;
+				myCurrentDocumentView = value;
 				if (value != null)
 				{
-					//myForm.ReadingEditor.AttachEventHandlers(myCurrentDocument.Store);
-				}
-				else
-				{
-					//EditingFactType = null;
+					ORMDesignerDocData docData = value.DocData as ORMDesignerDocData;
+					if (docData != null)
+					{
+						docData.Store.EventManagerDirectory.ElementEventsEnded.Add(new ElementEventsEndedEventHandler(ModelStateChangedEvent));
+					}
 				}
 			}
 		}
-
+		#endregion // Selection monitor event handlers and helpers
 		#region Overrides
 		/// <summary>
 		/// Gets the title that will be displayed on the tool window.
@@ -154,7 +144,6 @@ namespace Neumont.Tools.ORM.Shell
 				return browser.Parent;
 			}
 		}
-
 		/// <summary>
 		/// Clean up any existing objects
 		/// </summary>
@@ -178,54 +167,121 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // Overrides
+		#region Verbalization Implementation
+		private void UpdateVerbalization()
+		{
+			ORMDesignerDocView theView = CurrentDocumentView;
+			if (theView == null)
+			{
+				return;
+			}
 
-		#region Verbalization Callback Implementation
+			myStringWriter.GetStringBuilder().Length = 0;
+
+			ICollection selectedObjects = theView.GetSelectedComponents();
+			bool isNegative = false; // UNDONE: Get this value from somewhere real
+			foreach (ModelElement melIter in selectedObjects)
+			{
+				ModelElement mel = melIter;
+				PresentationElement pel = mel as PresentationElement;
+				if (pel != null)
+				{
+					mel = pel.ModelElement;
+				}
+				if (mel != null)
+				{
+					VerbalizeElement(mel, isNegative, myStringWriter);
+				}
+			}
+			myWebBrowser.DocumentText = myStringWriter.ToString();
+		}
 		/// <summary>
 		/// Determine the indentation level for verbalizing a ModelElement, and fire
 		/// the delegate for verbalization
 		/// </summary>
 		/// <param name="element">The element to verbalize</param>
 		/// <param name="isNegative">Use the negative form of the reading</param>
-		/// <param name="callback">The handler for getting the verbalization to a string</param>
-		public static void VerbalizeElement(ModelElement element, bool isNegative, VerbalizationHandler callback)
+		/// <param name="writer">The TextWriter for verbalization output</param>
+		public static void VerbalizeElement(ModelElement element, bool isNegative, TextWriter writer)
 		{
-			VerbalizeElement(element, isNegative, callback, 0);
-		}
+			int lastLevel = 0;
+			bool firstWrite = true;
+			VerbalizeElement(
+				element,
+				delegate(IVerbalize verbalizer, int indentationLevel)
+				{
+					return verbalizer.GetVerbalization(
+						writer,
+						delegate(VerbalizationContent content)
+						{
+							// UNDONE: Tags for error content, which always
+							// comes through as straight text
 
-		private static void VerbalizeElement(ModelElement element, bool isNegative, VerbalizationHandler callback, int indentLevel)
+							// Prepare for verbalization on this element. Everything
+							// is delayed to this point in case the verbalization implementation
+							// does not callback to the text writer.
+							if (firstWrite)
+							{
+								firstWrite = false;
+							}
+							else
+							{
+								writer.WriteLine();
+							}
+
+							// Write indentation tags as needed
+							if (indentationLevel > lastLevel)
+							{
+								do
+								{
+									writer.Write(HtmlIncreaseIndent);
+									++lastLevel;
+								} while (lastLevel != indentationLevel);
+							}
+							else if (lastLevel > indentationLevel)
+							{
+								do
+								{
+									writer.Write(HtmlDecreaseIndent);
+									--lastLevel;
+								} while (lastLevel != indentationLevel);
+							}
+						},
+						isNegative);
+				},
+				0);
+			while (lastLevel > 0)
+			{
+				writer.Write(HtmlDecreaseIndent);
+				--lastLevel;
+			}
+		}
+		/// <summary>
+		/// Verbalize the passed in element and all its children
+		/// </summary>
+		private static void VerbalizeElement(ModelElement element, VerbalizationHandler callback, int indentLevel)
 		{
 			IVerbalize parentVerbalize = element as IVerbalize;
 			if (parentVerbalize != null)
 			{
-				callback(parentVerbalize, isNegative, indentLevel);
-				++indentLevel;
-				IList aggregateList = element.MetaClass.AggregatedRoles;
-				int aggregateCount = aggregateList.Count;
-				for (int i = 0; i < aggregateCount; ++i)
+				if (callback(parentVerbalize, indentLevel))
 				{
-					MetaRoleInfo roleInfo = (MetaRoleInfo)aggregateList[i];
-					IList children = element.GetCounterpartRolePlayers(roleInfo.OppositeMetaRole, roleInfo, false);
-					int childCount = children.Count;
-					for (int j = 0; j < childCount; ++j)
+					++indentLevel;
+					IList aggregateList = element.MetaClass.AggregatedRoles;
+					int aggregateCount = aggregateList.Count;
+					for (int i = 0; i < aggregateCount; ++i)
 					{
-						VerbalizeElement((ModelElement)children[j], isNegative, callback, indentLevel);
+						MetaRoleInfo roleInfo = (MetaRoleInfo)aggregateList[i];
+						IList children = element.GetCounterpartRolePlayers(roleInfo.OppositeMetaRole, roleInfo, false);
+						int childCount = children.Count;
+						for (int j = 0; j < childCount; ++j)
+						{
+							VerbalizeElement((ModelElement)children[j], callback, indentLevel);
+						}
 					}
 				}
 			}
 		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="verbalizer"></param>
-		/// <param name="isNegative"></param>
-		/// <param name="indentationLevel"></param>
-		public void HandleVerbalization(IVerbalize verbalizer, bool isNegative, int indentationLevel)
-		{
-			verbalizer.GetVerbalization(myStringWriter, isNegative);
-			// UNDONE: This is supposed to handle multiple elements
-			myWebBrowser.DocumentText = myStringWriter.ToString();
-		}
-#endregion // Verbalization Callback
+		#endregion // Verbalization Implementation
 	}
 }
