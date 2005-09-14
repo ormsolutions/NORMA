@@ -4,56 +4,56 @@
 		<Language code="en-us">
 			<FormalItems>
 				<FormalItem type="UniversalQuantifier">
-					<Form style="Basic">each {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">each</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ImpersonalPronoun">
-					<Form style="Basic">that {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">that</span> <span class="objectType">{0}</span>]]>that {0}</Form>
 				</FormalItem>
 				<FormalItem type="AtMostOneQuantifier">
-					<Form style="Basic">at most one {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">at most one</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="EachInstanceQuantifier">
-					<Form style="Basic">each instance of {0} occurs only once</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">each instance of</span> <span class="objectType">{0}</span> <span class="quantifier">occurs only once</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ForEachCompactQuantifier">
-					<Form style="Basic">for each {0} {1}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">for each</span> <span class="objectType">{0}</span> <span class="objectType">{1}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ForEachQuantifier">
-					<Form style="Basic">for each {0},&#xD;&#xA;&#x9;{1}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">for each</span> <span class="objectType">{0}</span>,&#xD;&#xA;&#x9;<span class="objectType">{1}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ExistentialQuantifier">
-					<Form style="Basic">some {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">some</span> <span class="objectType">{0}</span>]]></Form>
 					<SplitForm style="Advanced">
-						<Form condition="PreConsonant">a {0}</Form>
-						<Form condition="PreVowel">an {0}</Form>
+						<Form condition="PreConsonant"><![CDATA[<span class="quantifier">a</span> <span class="objectType">{0}</span>]]></Form>
+						<Form condition="PreVowel"><![CDATA[<span class="quantifier">an</span> <span class="objectType">{0}</span>]]></Form>
 					</SplitForm>
 				</FormalItem>
 				<FormalItem type="IdentityReferenceQuantifier">
-					<Form style="Basic">the same {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">the same</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="MoreThanOneQuantifier">
-					<Form style="Basic">more than one {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">more than one</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalPossibilityOperator" modality="alethic" sign="+">
-					<Form style="Basic">it is possible that {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is possible that</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalPossibilityOperator" modality="deontic" sign="+">
-					<Form style="Basic">it is permitted that {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is permitted that</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalPossibilityOperator" modality="alethic" sign="-">
-					<Form style="Basic">it is impossible that {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is impossible that</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalPossibilityOperator" modality="deontic" sign="-">
-					<Form style="Basic">it is forbidden that {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is forbidden that</span> <span class="objectType">{0}</span>]]>/Form>
 				</FormalItem>
 				<FormalItem type="ModalNecessityOperator" modality="alethic">
-					<Form style="Basic">it is necessary that {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is necessary that</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalNecessityOperator" modality="deontic">
-					<Form style="Basic">it is obligatory that {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is obligatory that</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" modality="deontic" sign="-">
-					<Form style="Basic">It is impossible that some {0} participates in none of the following:{1}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">It is permitted that some</span> <span class="objectType">{0}</span> <span class="quantifier">participates in none of the following:</span><span class="objectType">{1}</span>]]>{1}</Form>
 				</FormalItem>
 				<FormalItem type="CompoundListOpen">
 					<Form style="Basic">&#xD;&#xA;&#x9;</Form>
