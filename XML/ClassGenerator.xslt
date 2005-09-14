@@ -1098,7 +1098,7 @@
 		<xsl:param name="nullPlaceholders" select="false()"/>
 		<xsl:variable name="localName" select="local-name()"/>
 		<xsl:for-each select="$properties">
-			<xsl:if test="(not($nonCustomOnly) or @customType='true') and (@mandatory='true' or @mandatory='relaxed' or $localName='Association')">
+			<xsl:if test="(not($nonCustomOnly) or not(@customType='true')) and (@mandatory='true' or @mandatory='relaxed' or $localName='Association')">
 				<xsl:choose>
 					<xsl:when test="$nullPlaceholders and @customType='true'">
 						<plx:PassParam>
@@ -1253,11 +1253,13 @@
 			<xsl:with-param name="properties" select="$properties"/>
 			<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
 		</xsl:call-template>
-		<xsl:call-template name="GenerateModelContextInterfaceSimpleLookupMethods">
-			<xsl:with-param name="Model" select="$Model"/>
-			<xsl:with-param name="className" select="$className"/>
-			<xsl:with-param name="properties" select="$properties"/>
-		</xsl:call-template>
+		<xsl:if test="not($nonCustomOnly)">
+			<xsl:call-template name="GenerateModelContextInterfaceSimpleLookupMethods">
+				<xsl:with-param name="Model" select="$Model"/>
+				<xsl:with-param name="className" select="$className"/>
+				<xsl:with-param name="properties" select="$properties"/>
+			</xsl:call-template>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template name="GenerateModelContextInterfaceCreateMethod">
 		<xsl:param name="Model"/>
@@ -1266,10 +1268,10 @@
 		<xsl:param name="nonCustomOnly"/>
 		<plx:Function visibility="Public" name="Create{$className}">
 			<plx:Param type="RetVal" name="" dataTypeName="{$className}"/>
-			<xsl:call-template name="GenerateMandatoryParameters">
-				<xsl:with-param name="properties" select="$properties"/>
-				<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
-			</xsl:call-template>
+				<xsl:call-template name="GenerateMandatoryParameters">
+					<xsl:with-param name="properties" select="$properties"/>
+					<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
+				</xsl:call-template>
 		</plx:Function>
 	</xsl:template>
 	<xsl:template name="GenerateModelContextInterfaceSimpleLookupMethods">
