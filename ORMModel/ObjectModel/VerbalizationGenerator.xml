@@ -44,7 +44,7 @@
 					<Form style="Basic"><![CDATA[<span class="quantifier">it is impossible that</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalPossibilityOperator" modality="deontic" sign="-">
-					<Form style="Basic"><![CDATA[<span class="quantifier">it is forbidden that</span> <span class="objectType">{0}</span>]]>/Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is forbidden that</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalNecessityOperator" modality="alethic">
 					<Form style="Basic"><![CDATA[<span class="quantifier">it is necessary that</span> <span class="objectType">{0}</span>]]></Form>
