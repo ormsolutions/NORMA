@@ -846,11 +846,13 @@
 	<xsl:template match="ve:ConditionalReading" mode="ConstraintVerbalization">
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="'all'"/>
+		<xsl:param name="PatternGroup"/>
 		<xsl:for-each select="ve:ReadingChoice">
 			<xsl:if test="position()=1">
 				<xsl:call-template name="ProcessConditionalReadingChoice">
 					<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 					<xsl:with-param name="TopLevel" select="$TopLevel"/>
+					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 				</xsl:call-template>
 			</xsl:if>
 		</xsl:for-each>
@@ -859,6 +861,7 @@
 		<xsl:param name="IteratorContext" select="'all'"/>
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="Match" select="@match"/>
+		<xsl:param name="PatternGroup"/>
 		<xsl:choose>
 			<xsl:when test="contains($Match,'All')">
 				<xsl:variable name="singleMatch" select="concat(substring-before($Match,'All'), substring-after($Match,'All'))"/>
@@ -959,7 +962,8 @@
 							</plx:Right>
 						</plx:Operator>
 						<xsl:call-template name="PopulateReadingOrder">
-							<xsl:with-param name="readingChoice" select="$singleMatch"/>
+							<xsl:with-param name="ReadingChoice" select="$singleMatch"/>
+							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 						</xsl:call-template>
 						<plx:Condition>
 							<plx:Test>
@@ -1013,6 +1017,7 @@
 						<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 							<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 							<xsl:with-param name="TopLevel" select="$TopLevel"/>
+							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 						</xsl:apply-templates>
 					</plx:Body>
 					<xsl:if test="position()!=last()">
@@ -1022,6 +1027,7 @@
 									<xsl:call-template name="ProcessConditionalReadingChoice">
 										<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 										<xsl:with-param name="TopLevel" select="$TopLevel"/>
+										<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 									</xsl:call-template>
 								</xsl:if>
 							</xsl:for-each>
@@ -1031,7 +1037,8 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="PopulateReadingOrder">
-					<xsl:with-param name="readingChoice" select="$Match"/>
+					<xsl:with-param name="ReadingChoice" select="$Match"/>
+					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 				</xsl:call-template>
 				<plx:Condition>
 					<plx:Test>
@@ -1049,6 +1056,7 @@
 						<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 							<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 							<xsl:with-param name="TopLevel" select="$TopLevel"/>
+							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 						</xsl:apply-templates>
 					</plx:Body>
 					<xsl:if test="position()!=last()">
@@ -1058,6 +1066,7 @@
 									<xsl:call-template name="ProcessConditionalReadingChoice">
 										<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 										<xsl:with-param name="TopLevel" select="$TopLevel"/>
+										<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 									</xsl:call-template>
 								</xsl:if>
 							</xsl:for-each>
@@ -1072,6 +1081,7 @@
 		<xsl:param name="VariablePrefix" select="'snippet'"/>
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="'all'"/>
+		<xsl:param name="PatternGroup"/>
 		<xsl:if test="$TopLevel and position()&gt;1">
 			<plx:CallInstance name="WriteLine">
 				<plx:CallObject>
@@ -1097,6 +1107,7 @@
 				<!-- The position will jump back to 1 with this call, so pick up the real position before jumping -->
 				<xsl:with-param name="VariableDecorator" select="position()"/>
 				<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+				<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			</xsl:apply-templates>
 		</xsl:for-each>
 		<plx:CallInstance name="Write">
@@ -1116,6 +1127,8 @@
 	<xsl:template match="ve:Fact" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'factText'"/>
+		<xsl:param name="PatternGroup"/>
+		<xsl:param name="FirstPassVariable"/>
 		<!-- all, included or excluded are the supported IteratorContext -->
 		<xsl:param name="IteratorContext" select="'all'"/>
 		<xsl:param name="TopLevel" select="false()"/>
@@ -1128,7 +1141,8 @@
 		</xsl:if>
 		<xsl:variable name="complexReplacement" select="0!=count(ve:PredicateReplacement)"/>
 		<xsl:call-template name="PopulateReadingOrder">
-			<xsl:with-param name="readingChoice" select="@readingChoice"/>
+			<xsl:with-param name="ReadingChoice" select="@readingChoice"/>
+			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 		</xsl:call-template>
 		<xsl:choose>
 			<xsl:when test="$complexReplacement">
@@ -1210,6 +1224,10 @@
 												<xsl:call-template name="PredicateReplacementConditionTest">
 													<xsl:with-param name="Match" select="@match"/>
 													<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+													<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+													<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+													<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+													<xsl:with-param name="FirstPassVariable" select="$FirstPassVariable"/>
 												</xsl:call-template>
 											</plx:Test>
 											<plx:Body>
@@ -1223,6 +1241,10 @@
 																<xsl:call-template name="PredicateReplacementConditionTest">
 																	<xsl:with-param name="Match" select="@match"/>
 																	<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+																	<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+																	<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+																	<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+																	<xsl:with-param name="FirstPassVariable" select="$FirstPassVariable"/>
 																</xsl:call-template>
 															</plx:Test>
 															<plx:Body>
@@ -1337,58 +1359,34 @@
 	<xsl:template name="PredicateReplacementConditionTest">
 		<xsl:param name="Match"/>
 		<xsl:param name="IteratorContext"/>
-		<xsl:choose>
-			<xsl:when test="$Match='primary'">
-				<plx:Operator type="IdentityEquality">
-					<plx:Left>
-						<plx:Value type="Local" data="primaryRole"/>
-					</plx:Left>
-					<plx:Right>
-						<plx:Value type="Local" data="currentRole"/>
-					</plx:Right>
-				</plx:Operator>
-			</xsl:when>
-			<xsl:when test="$Match='secondary'">
-				<xsl:choose>
-					<xsl:when test="$IteratorContext='included'">
-						<plx:Operator type="BooleanAnd">
-							<plx:Left>
-								<plx:Operator type="IdentityInequality">
-									<plx:Left>
-										<plx:Value type="Local" data="primaryRole"/>
-									</plx:Left>
-									<plx:Right>
-										<plx:Value type="Local" data="currentRole"/>
-									</plx:Right>
-								</plx:Operator>
-							</plx:Left>
-							<plx:Right>
-								<plx:Operator type="BooleanNot">
-									<plx:CallInstance name="Contains">
-										<plx:CallObject>
-											<plx:Value type="Local" data="includedRoles"/>
-										</plx:CallObject>
-										<plx:PassParam>
-											<plx:Value type="Local" data="currentRole"/>
-										</plx:PassParam>
-									</plx:CallInstance>
-								</plx:Operator>
-							</plx:Right>
-						</plx:Operator>
-					</xsl:when>
-					<xsl:when test="$IteratorContext='excluded'">
-						<plx:Operator type="BooleanAnd">
-							<plx:Left>
-								<plx:Operator type="IdentityInequality">
-									<plx:Left>
-										<plx:Value type="Local" data="primaryRole"/>
-									</plx:Left>
-									<plx:Right>
-										<plx:Value type="Local" data="currentRole"/>
-									</plx:Right>
-								</plx:Operator>
-							</plx:Left>
-							<plx:Right>
+		<xsl:param name="PatternGroup"/>
+		<xsl:param name="VariablePrefix"/>
+		<xsl:param name="VariableDecorator"/>
+		<xsl:param name="FirstPassVariable"/>
+		<xsl:variable name="operatorsFragment">
+			<xsl:choose>
+				<xsl:when test="$Match='primary'">
+					<plx:Operator type="IdentityEquality">
+						<plx:Left>
+							<plx:Value type="Local" data="primaryRole"/>
+						</plx:Left>
+						<plx:Right>
+							<plx:Value type="Local" data="currentRole"/>
+						</plx:Right>
+					</plx:Operator>
+				</xsl:when>
+				<xsl:when test="$Match='secondary'">
+					<xsl:choose>
+						<xsl:when test="$IteratorContext='included'">
+							<plx:Operator type="IdentityInequality">
+								<plx:Left>
+									<plx:Value type="Local" data="primaryRole"/>
+								</plx:Left>
+								<plx:Right>
+									<plx:Value type="Local" data="currentRole"/>
+								</plx:Right>
+							</plx:Operator>
+							<plx:Operator type="BooleanNot">
 								<plx:CallInstance name="Contains">
 									<plx:CallObject>
 										<plx:Value type="Local" data="includedRoles"/>
@@ -1397,44 +1395,102 @@
 										<plx:Value type="Local" data="currentRole"/>
 									</plx:PassParam>
 								</plx:CallInstance>
-							</plx:Right>
-						</plx:Operator>
-					</xsl:when>
-					<xsl:otherwise>
-						<plx:Operator type="IdentityInequality">
-							<plx:Left>
-								<plx:Value type="Local" data="primaryRole"/>
-							</plx:Left>
-							<plx:Right>
-								<plx:Value type="Local" data="currentRole"/>
-							</plx:Right>
-						</plx:Operator>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:when test="$Match='included'">
-				<plx:CallInstance name="Contains">
-					<plx:CallObject>
-						<plx:Value type="Local" data="includedRoles"/>
-					</plx:CallObject>
-					<plx:PassParam>
-						<plx:Value type="Local" data="currentRole"/>
-					</plx:PassParam>
-				</plx:CallInstance>
-			</xsl:when>
-			<xsl:when test="$Match='excluded'">
-				<plx:Operator type="BooleanNot">
-					<plx:CallInstance name="Contains">
-						<plx:CallObject>
-							<plx:Value type="Local" data="includedRoles"/>
-						</plx:CallObject>
-						<plx:PassParam>
-							<plx:Value type="Local" data="currentRole"/>
-						</plx:PassParam>
-					</plx:CallInstance>
-				</plx:Operator>
-			</xsl:when>
-		</xsl:choose>
+							</plx:Operator>
+						</xsl:when>
+						<xsl:when test="$IteratorContext='excluded'">
+							<plx:Operator type="IdentityInequality">
+								<plx:Left>
+									<plx:Value type="Local" data="primaryRole"/>
+								</plx:Left>
+								<plx:Right>
+									<plx:Value type="Local" data="currentRole"/>
+								</plx:Right>
+							</plx:Operator>
+							<plx:CallInstance name="Contains">
+								<plx:CallObject>
+									<plx:Value type="Local" data="includedRoles"/>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:Value type="Local" data="currentRole"/>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:Operator type="IdentityInequality">
+								<plx:Left>
+									<plx:Value type="Local" data="primaryRole"/>
+								</plx:Left>
+								<plx:Right>
+									<plx:Value type="Local" data="currentRole"/>
+								</plx:Right>
+							</plx:Operator>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:when test="$Match='included'">
+					<xsl:choose>
+						<xsl:when test="$IteratorContext='singleColumnConstraintRoles'">
+							<!-- For the single column case, the included role is always a set consisting of the primary role only -->
+							<plx:Operator type="IdentityEquality">
+								<plx:Left>
+									<plx:Value type="Local" data="currentRole"/>
+								</plx:Left>
+								<plx:Right>
+									<plx:Value type="Local" data="primaryRole"/>
+								</plx:Right>
+							</plx:Operator>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:CallInstance name="Contains">
+								<plx:CallObject>
+									<plx:Value type="Local" data="includedRoles"/>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:Value type="Local" data="currentRole"/>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:when test="$Match='excluded'">
+					<xsl:choose>
+						<xsl:when test="$IteratorContext='singleColumnConstraintRoles'">
+							<!-- For the single column case, the included role is always a set consisting of the primary role only -->
+							<plx:Operator type="IdentityInequality">
+								<plx:Left>
+									<plx:Value type="Local" data="currentRole"/>
+								</plx:Left>
+								<plx:Right>
+									<plx:Value type="Local" data="primaryRole"/>
+								</plx:Right>
+							</plx:Operator>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:Operator type="BooleanNot">
+								<plx:CallInstance name="Contains">
+									<plx:CallObject>
+										<plx:Value type="Local" data="includedRoles"/>
+									</plx:CallObject>
+									<plx:PassParam>
+										<plx:Value type="Local" data="currentRole"/>
+									</plx:PassParam>
+								</plx:CallInstance>
+							</plx:Operator>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+			</xsl:choose>
+			<xsl:if test="@pass='first'">
+				<plx:Value type="Local" data="{$FirstPassVariable}"/>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:for-each select="msxsl:node-set($operatorsFragment)/child::*">
+			<xsl:if test="position()=1">
+				<xsl:call-template name="CombineElements">
+					<xsl:with-param name="OperatorType" select="'BooleanAnd'"/>
+				</xsl:call-template>
+			</xsl:if>
+		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="PredicateReplacementBody">
 		<xsl:for-each select="ve:Quantifier">
@@ -1482,6 +1538,7 @@
 		<xsl:param name="CompositeCount"/>
 		<xsl:param name="CompositeIterator"/>
 		<xsl:param name="ListStyle" select="@listStyle"/>
+		<xsl:param name="PatternGroup"/>
 		<!-- Other parameters should be forwarded to IterateRolesConstraintVerbalizationBody -->
 		
 		<!-- Normalize the match data -->
@@ -1523,6 +1580,15 @@
 		<xsl:variable name="filterTest" select="msxsl:node-set($filterTestFragment)/child::*"/>
 		<xsl:variable name="filteredCountVarName" select="concat($VariablePrefix,'FilteredCount',$VariableDecorator)"/>
 		<xsl:variable name="filteredIterVarName" select="concat($VariablePrefix,'FilteredIter',$VariableDecorator)"/>
+		<xsl:variable name="trackFirstPass" select="0!=count(descendant::ve:PredicateReplacement[@pass='first'])"/>
+		<xsl:variable name="trackFirstPassVarName" select="concat($VariablePrefix,'IsFirstPass',$VariableDecorator)"/>
+		<xsl:if test="$trackFirstPass">
+			<plx:Variable name="{$trackFirstPassVarName}" dataTypeName="Boolean" dataTypeQualifier="System">
+				<plx:Initialize>
+					<plx:TrueKeyword/>
+				</plx:Initialize>
+			</plx:Variable>
+		</xsl:if>
 		<xsl:if test="$filterTest">
 			<xsl:if test="0=string-length($CompositeCount)">
 				<plx:Variable name="{$filteredCountVarName}" dataTypeName="Int32" dataTypeQualifier="System">
@@ -1534,6 +1600,7 @@
 				<xsl:apply-templates select="." mode="CompositeOrFilteredListCount">
 					<xsl:with-param name="TotalCountCollectorVariable" select="$filteredCountVarName"/>
 					<xsl:with-param name="IteratorVariableName" select="$filteredIterVarName"/>
+					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 				</xsl:apply-templates>
 				<plx:Operator type="Assign">
 					<plx:Left>
@@ -1672,6 +1739,18 @@
 							</plx:CallInstance>
 						</plx:Right>
 					</plx:Operator>
+					<plx:Variable name="currentFactIndex" dataTypeName="Int32" dataTypeQualifier="System">
+						<plx:Initialize>
+							<plx:CallInstance name="IndexOf">
+								<plx:CallObject>
+									<plx:Value type="Local" data="allFacts"/>
+								</plx:CallObject>
+								<plx:PassParam>
+									<plx:Value type="Local" data="parentFact"/>
+								</plx:PassParam>
+							</plx:CallInstance>
+						</plx:Initialize>
+					</plx:Variable>
 					<plx:Variable name="basicRoleReplacements" dataTypeName="String" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
 						<plx:Initialize>
 							<plx:CallInstance name="" type="ArrayIndexer">
@@ -1679,14 +1758,7 @@
 									<plx:Value type="Local" data="allBasicRoleReplacements"/>
 								</plx:CallObject>
 								<plx:PassParam>
-									<plx:CallInstance name="IndexOf">
-										<plx:CallObject>
-											<plx:Value type="Local" data="allFacts"/>
-										</plx:CallObject>
-										<plx:PassParam>
-											<plx:Value type="Local" data="parentFact"/>
-										</plx:PassParam>
-									</plx:CallInstance>
+									<plx:Value type="Local" data="currentFactIndex"/>
 								</plx:PassParam>
 							</plx:CallInstance>
 						</plx:Initialize>
@@ -1726,6 +1798,8 @@
 									<xsl:with-param name="CompositeCount" select="string($passCompositeCount)"/>
 									<xsl:with-param name="CompositeIterator" select="string($passCompositeIterator)"/>
 									<xsl:with-param name="ListStyle" select="$ListStyle"/>
+									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+									<xsl:with-param name="FirstPassVariable" select="$trackFirstPassVarName"/>
 									<!-- Forwarded local parameters -->
 									<xsl:with-param name="contextMatch" select="$contextMatch"/>
 									<xsl:with-param name="iterVarName" select="$iterVarName"/>
@@ -1745,6 +1819,16 @@
 										</plx:Operator>
 									</plx:Right>
 								</plx:Operator>
+								<xsl:if test="$trackFirstPass">
+									<plx:Operator type="Assign">
+										<plx:Left>
+											<plx:Value type="Local" data="{$trackFirstPassVarName}"/>
+										</plx:Left>
+										<plx:Right>
+											<plx:FalseKeyword/>
+										</plx:Right>
+									</plx:Operator>
+								</xsl:if>
 							</plx:Body>
 						</plx:Condition>
 					</xsl:when>
@@ -1756,10 +1840,22 @@
 							<xsl:with-param name="CompositeCount" select="$CompositeCount"/>
 							<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
 							<xsl:with-param name="ListStyle" select="$ListStyle"/>
+							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+							<xsl:with-param name="FirstPassVariable" select="$trackFirstPassVarName"/>
 							<!-- Forwarded local parameters -->
 							<xsl:with-param name="contextMatch" select="$contextMatch"/>
 							<xsl:with-param name="iterVarName" select="$iterVarName"/>
 						</xsl:call-template>
+						<xsl:if test="$trackFirstPass">
+							<plx:Operator type="Assign">
+								<plx:Left>
+									<plx:Value type="Local" data="{$trackFirstPassVarName}"/>
+								</plx:Left>
+								<plx:Right>
+									<plx:FalseKeyword/>
+								</plx:Right>
+							</plx:Operator>
+						</xsl:if>
 					</xsl:otherwise>
 				</xsl:choose>
 			</plx:Body>
@@ -1789,6 +1885,8 @@
 		<xsl:param name="CompositeCount"/>
 		<xsl:param name="CompositeIterator"/>
 		<xsl:param name="ListStyle"/>
+		<xsl:param name="PatternGroup"/>
+		<xsl:param name="FirstPassVariable"/>
 		<!-- Forwarded local parameters -->
 		<xsl:param name="contextMatch"/>
 		<xsl:param name="iterVarName"/>
@@ -1954,6 +2052,8 @@
 						<!-- Pass the position in here or it will always be 1 -->
 						<xsl:with-param name="VariableDecorator" select="position()"/>
 						<xsl:with-param name="IteratorContext" select="$contextMatch"/>
+						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+						<xsl:with-param name="FirstPassVariable" select="$FirstPassVariable"/>
 					</xsl:apply-templates>
 					<plx:CallInstance name="Append">
 						<xsl:if test="$TopLevel">
@@ -2134,6 +2234,7 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'list'"/>
+		<xsl:param name="PatternGroup"/>
 		<xsl:variable name="compositeCountVarName" select="concat($VariablePrefix,'CompositeCount',$VariableDecorator)"/>
 		<plx:Variable name="{$compositeCountVarName}" dataTypeName="Int32" dataTypeQualifier="System">
 			<plx:Initialize>
@@ -2145,6 +2246,7 @@
 		<xsl:apply-templates select="child::*" mode="CompositeOrFilteredListCount">
 			<xsl:with-param name="TotalCountCollectorVariable" select="$compositeCountVarName"/>
 			<xsl:with-param name="IteratorVariableName" select="$iteratorVarName"/>
+			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 		</xsl:apply-templates>
 		<plx:Operator type="Assign">
 			<plx:Left>
@@ -2168,6 +2270,7 @@
 				<xsl:with-param name="CompositeIterator" select="$iteratorVarName"/>
 				<xsl:with-param name="TopLevel" select="$TopLevel"/>
 				<xsl:with-param name="ListStyle" select="$ListStyle"/>
+				<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			</xsl:apply-templates>
 		</xsl:for-each>
 	</xsl:template>
@@ -2215,6 +2318,7 @@
 	<xsl:template match="ve:IterateRoles" mode="CompositeOrFilteredListCount">
 		<xsl:param name="TotalCountCollectorVariable"/>
 		<xsl:param name="IteratorVariableName"/>
+		<xsl:param name="PatternGroup"/>
 		<xsl:variable name="contextMatchFragment">
 			<xsl:choose>
 				<xsl:when test="string-length(@match)">
@@ -2387,25 +2491,6 @@
 									</plx:CallInstance>
 								</plx:Right>
 							</plx:Operator>
-							<plx:Variable name="basicRoleReplacements" dataTypeName="String" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
-								<plx:Initialize>
-									<plx:CallInstance name="" type="ArrayIndexer">
-										<plx:CallObject>
-											<plx:Value type="Local" data="allBasicRoleReplacements"/>
-										</plx:CallObject>
-										<plx:PassParam>
-											<plx:CallInstance name="IndexOf">
-												<plx:CallObject>
-													<plx:Value type="Local" data="allFacts"/>
-												</plx:CallObject>
-												<plx:PassParam>
-													<plx:Value type="Local" data="parentFact"/>
-												</plx:PassParam>
-											</plx:CallInstance>
-										</plx:PassParam>
-									</plx:CallInstance>
-								</plx:Initialize>
-							</plx:Variable>
 						</xsl:if>
 						<plx:Condition>
 							<plx:Test>
@@ -2535,92 +2620,119 @@
 		</plx:Condition>
 	</xsl:template>
 	<xsl:template name="PopulateReadingOrder">
-		<!-- Support readings for {Prefer|Require}[Non][Primary]LeadReading[NoForwardText] and empty match properties -->
-		<xsl:param name="readingChoice"/>
-		<xsl:if test="not($readingChoice='Conditional')">
-			<plx:Operator type="Assign">
-				<plx:Left>
-					<plx:Value type="Local" data="readingOrder"/>
-				</plx:Left>
-				<plx:Right>
-					<plx:CallStatic name="GetMatchingReadingOrder" dataTypeName="FactType">
-						<plx:PassParam>
-							<!-- The readingOrders param-->
-							<plx:Value type="Local" data="allReadingOrders"/>
-						</plx:PassParam>
-						<plx:PassParam>
-							<!-- The matchLeadRole param -->
-							<xsl:choose>
-								<xsl:when test="contains($readingChoice,'PrimaryLeadReading')">
-									<plx:Value type="Local" data="primaryRole"/>
-								</xsl:when>
-								<xsl:when test="contains($readingChoice, 'LeadReading')">
-									<plx:NullObjectKeyword/>
-								</xsl:when>
-								<xsl:otherwise>
-									<plx:CallInstance name="" type="ArrayIndexer">
-										<plx:CallObject>
-											<plx:Value type="Local" data="factRoles"/>
-										</plx:CallObject>
-										<plx:PassParam>
-											<plx:Value type="I4" data="0"/>
-										</plx:PassParam>
-									</plx:CallInstance>
-								</xsl:otherwise>
-							</xsl:choose>
-						</plx:PassParam>
-						<plx:PassParam>
-							<!-- The matchAnyLeadRole param -->
-							<xsl:choose>
-								<xsl:when test="contains($readingChoice,'LeadReading') and not(contains($readingChoice,'PrimaryLeadReading'))">
-									<!-- UNDONE: Support excluded roles as weill -->
-									<plx:Value type="Local" data="includedRoles"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<plx:NullObjectKeyword/>
-								</xsl:otherwise>
-							</xsl:choose>
-						</plx:PassParam>
-						<plx:PassParam>
-							<!-- The invertLeadRoles param -->
-							<xsl:choose>
-								<xsl:when test="contains($readingChoice,'Non')">
-									<plx:TrueKeyword/>
-								</xsl:when>
-								<xsl:otherwise>
-									<plx:FalseKeyword/>
-								</xsl:otherwise>
-							</xsl:choose>
-						</plx:PassParam>
-						<plx:PassParam>
-							<!-- The noForwardText param -->
-							<xsl:choose>
-								<xsl:when test="contains($readingChoice,'NoForwardText')">
-									<plx:TrueKeyword/>
-								</xsl:when>
-								<xsl:otherwise>
-									<plx:FalseKeyword/>
-								</xsl:otherwise>
-							</xsl:choose>
-						</plx:PassParam>
-						<plx:PassParam>
-							<!-- The defaultRoleOrder param -->
-							<plx:Value type="Local" data="factRoles"/>
-						</plx:PassParam>
-						<plx:PassParam>
-							<!-- The allowAnyOrder param -->
-							<xsl:choose>
-								<xsl:when test="not(starts-with($readingChoice,'Require'))">
-									<plx:TrueKeyword/>
-								</xsl:when>
-								<xsl:otherwise>
-									<plx:FalseKeyword/>
-								</xsl:otherwise>
-							</xsl:choose>
-						</plx:PassParam>
-					</plx:CallStatic>
-				</plx:Right>
-			</plx:Operator>
-		</xsl:if>
+		<!-- Support readings for {Conditional, {Prefer|Require}[Non][Primary]LeadReading[NoForwardText], null} ReadingChoice values -->
+		<xsl:param name="ReadingChoice"/>
+		<xsl:param name="PatternGroup"/>
+		<xsl:choose>
+			<xsl:when test="$ReadingChoice='Conditional' and $PatternGroup='SingleColumnExternalConstraint'">
+				<plx:Operator type="Assign">
+					<plx:Left>
+						<plx:Value type="Local" data="readingOrder"/>
+					</plx:Left>
+					<plx:Right>
+						<plx:CallInstance name="" type="ArrayIndexer">
+							<plx:CallObject>
+								<plx:Value type="Local" data="allConstraintRoleReadingOrders"/>
+							</plx:CallObject>
+							<plx:PassParam>
+								<plx:Value type="Local" data="currentFactIndex"/>
+							</plx:PassParam>
+						</plx:CallInstance>
+					</plx:Right>
+				</plx:Operator>
+			</xsl:when>
+			<xsl:when test="not($ReadingChoice='Conditional')">
+				<plx:Operator type="Assign">
+					<plx:Left>
+						<plx:Value type="Local" data="readingOrder"/>
+					</plx:Left>
+					<plx:Right>
+						<plx:CallStatic name="GetMatchingReadingOrder" dataTypeName="FactType">
+							<plx:PassParam>
+								<!-- The readingOrders param-->
+								<plx:Value type="Local" data="allReadingOrders"/>
+							</plx:PassParam>
+							<plx:PassParam>
+								<!-- The matchLeadRole param -->
+								<xsl:choose>
+									<xsl:when test="contains($ReadingChoice,'PrimaryLeadReading')">
+										<plx:Value type="Local" data="primaryRole"/>
+									</xsl:when>
+									<xsl:when test="contains($ReadingChoice, 'LeadReading')">
+										<!-- LeadReading and PrimaryLeadReading should be treated the same for single column external constraints -->
+										<xsl:choose>
+											<xsl:when test="$PatternGroup='SingleColumnExternalConstraint'">
+												<plx:Value type="Local" data="primaryRole"/>
+											</xsl:when>
+											<xsl:otherwise>
+												<plx:NullObjectKeyword/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:CallInstance name="" type="ArrayIndexer">
+											<plx:CallObject>
+												<plx:Value type="Local" data="factRoles"/>
+											</plx:CallObject>
+											<plx:PassParam>
+												<plx:Value type="I4" data="0"/>
+											</plx:PassParam>
+										</plx:CallInstance>
+									</xsl:otherwise>
+								</xsl:choose>
+							</plx:PassParam>
+							<plx:PassParam>
+								<!-- The matchAnyLeadRole param -->
+								<xsl:choose>
+									<xsl:when test="not($PatternGroup='SingleColumneExternalConstraint') and contains($ReadingChoice,'LeadReading') and not(contains($ReadingChoice,'PrimaryLeadReading'))">
+										<plx:Value type="Local" data="includedRoles"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:NullObjectKeyword/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</plx:PassParam>
+							<plx:PassParam>
+								<!-- The invertLeadRoles param -->
+								<xsl:choose>
+									<xsl:when test="contains($ReadingChoice,'Non')">
+										<plx:TrueKeyword/>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:FalseKeyword/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</plx:PassParam>
+							<plx:PassParam>
+								<!-- The noForwardText param -->
+								<xsl:choose>
+									<xsl:when test="contains($ReadingChoice,'NoForwardText')">
+										<plx:TrueKeyword/>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:FalseKeyword/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</plx:PassParam>
+							<plx:PassParam>
+								<!-- The defaultRoleOrder param -->
+								<plx:Value type="Local" data="factRoles"/>
+							</plx:PassParam>
+							<plx:PassParam>
+								<!-- The allowAnyOrder param -->
+								<xsl:choose>
+									<xsl:when test="not(starts-with($ReadingChoice,'Require'))">
+										<plx:TrueKeyword/>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:FalseKeyword/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</plx:PassParam>
+						</plx:CallStatic>
+					</plx:Right>
+				</plx:Operator>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>

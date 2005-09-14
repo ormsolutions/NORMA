@@ -71,19 +71,24 @@
 					<Form style="Basic"></Form>
 				</FormalItem>
 				<FormalItem type="IndentedListOpen">
-					<Form style="Basic">&#xD;&#xA;&#x9;</Form>
+					<Form style="Basic"><![CDATA[<br><span style="left:30px;position:relative">]]></Form>
+					<!--<Form style="Basic">&#xD;&#xA;&#x9;</Form>-->
 				</FormalItem>
 				<FormalItem type="IndentedListPairSeparator">
-					<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>
+					<Form style="Basic"><![CDATA[<b> and</b> </span><br><span style="left:30px;position:relative">]]></Form>
+					<!--<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>-->
 				</FormalItem>
 				<FormalItem type="IndentedListSeparator">
-					<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>
+					<Form style="Basic"><![CDATA[<b> and</b> </span><br><span style="left:30px;position:relative">]]></Form>
+					<!--<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>-->
 				</FormalItem>
 				<FormalItem type="IndentedListFinalSeparator">
-					<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>
+					<Form style="Basic"><![CDATA[<b> and</b> </span><br><span style="left:30px;position:relative">]]></Form>
+					<!--<Form style="Basic"> and&#xD;&#xA;&#x9;</Form>-->
 				</FormalItem>
 				<FormalItem type="IndentedListClose">
-					<Form style="Basic"></Form>
+					<Form style="Basic"><![CDATA[</span>]]></Form>
+					<!--<Form style="Basic"></Form>-->
 				</FormalItem>
 				<FormalItem type="IndentedOrListOpen">
 					<Form style="Basic">&#xD;&#xA;&#x9;</Form>
@@ -194,9 +199,9 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-			<!-- UNDONE: Temporary data for xslt testing.-->
-			<!--<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
-				--><!-- Unaries are the only reading choice that has an optional negative reading --><!--
+			<!-- UNDONE: The data from here down is preliminary, but is being used for generation testing -->
+			<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
+				<!-- Unaries are the only reading choice that has an optional negative reading -->
 				<ConstrainedRoles sign="-" maxFactArity="1">
 					<Quantifier type="NegativeReadingForUnaryOnlyDisjunctiveMandatory">
 						<IterateRoles listStyle="SimpleList" match="singleColumnConstraintRoles" pass="first"/>
@@ -207,7 +212,7 @@
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="-" maxFactArity="2">
 					<ConditionalReading>
-						<ReadingChoice match="RequireAllLeadReading">
+						<ReadingChoice match="RequireAllPrimaryLeadReading">
 							<CompositeList listStyle="IndentedOrList">
 								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
 									<Fact readingChoice="Conditional">
@@ -231,8 +236,7 @@
 								</IterateRoles>
 							</CompositeList>
 						</ReadingChoice>
-						-->
-												<!--<ReadingChoice>
+						<!--<ReadingChoice>
 							<Quantifier type="ForEachQuantifier">
 								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
 									<Fact readingChoice="PreferPrimaryLeadReading">
@@ -255,10 +259,35 @@
 								</IterateRoles>
 							</Quantifier>
 						</ReadingChoice>-->
-												<!--
 					</ConditionalReading>
 				</ConstrainedRoles>
-			</Constraint>-->
+			</Constraint>
+			<Constraint type="ExternalUniquenessConstraint" patternGroup="SingleColumnExternalConstraint">
+				<ConstrainedRoles sign="+" minFactArity="2" maxFactArity="2">
+					<ConditionalReading>
+						<ReadingChoice match="RequireAllNonPrimaryLeadReadingNoForwardText">
+							<Quantifier type="ForEachQuantifier">
+								<IterateRoles match="singleColumnConstraintRoles" listStyle="SimpleList"/>
+								<IterateRoles match="singleColumnConstraintRoles" listStyle="IndentedList">
+									<Fact readingChoice="Conditional">
+										<PredicateReplacement match="excluded" pass="first">
+											<Quantifier type="AtMostOneQuantifier"/>
+										</PredicateReplacement>
+										<PredicateReplacement match="excluded">
+											<Quantifier type="null"/>
+										</PredicateReplacement>
+										<PredicateReplacement>
+											<Quantifier type="ImpersonalPronoun"/>
+										</PredicateReplacement>
+									</Fact>
+								</IterateRoles>
+							</Quantifier>
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+				<ConstrainedRoles sign="-" minFactArity="2" maxFactArity="2">
+				</ConstrainedRoles>
+			</Constraint>
 		</Constraints>
 	</Constructs>
 </Root>
