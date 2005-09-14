@@ -13,7 +13,7 @@
 					<Form style="Basic"><![CDATA[<span class="quantifier">at most one</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="EachInstanceQuantifier">
-					<Form style="Basic"><![CDATA[<span class="quantifier">each instance of</span> <span class="objectType">{0}</span> <span class="quantifier">occurs only once</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">each instance of</span> {0} <span class="quantifier">occurs only once</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ForEachCompactQuantifier">
 					<Form style="Basic"><![CDATA[<span class="quantifier">for each</span> <span class="objectType">{0}</span> <span class="objectType">{1}</span>]]></Form>
@@ -35,25 +35,25 @@
 					<Form style="Basic"><![CDATA[<span class="quantifier">more than one</span> <span class="objectType">{0}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalPossibilityOperator" modality="alethic" sign="+">
-					<Form style="Basic"><![CDATA[<span class="quantifier">it is possible that</span> <span class="objectType">{0}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is possible that</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalPossibilityOperator" modality="deontic" sign="+">
-					<Form style="Basic"><![CDATA[<span class="quantifier">it is permitted that</span> <span class="objectType">{0}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is permitted that</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalPossibilityOperator" modality="alethic" sign="-">
-					<Form style="Basic"><![CDATA[<span class="quantifier">it is impossible that</span> <span class="objectType">{0}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is impossible that</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalPossibilityOperator" modality="deontic" sign="-">
-					<Form style="Basic"><![CDATA[<span class="quantifier">it is forbidden that</span> <span class="objectType">{0}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is forbidden that</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalNecessityOperator" modality="alethic">
-					<Form style="Basic"><![CDATA[<span class="quantifier">it is necessary that</span> <span class="objectType">{0}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is necessary that</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalNecessityOperator" modality="deontic">
-					<Form style="Basic"><![CDATA[<span class="quantifier">it is obligatory that</span> <span class="objectType">{0}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">it is obligatory that</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" modality="deontic" sign="-">
-					<Form style="Basic"><![CDATA[<span class="quantifier">It is permitted that some</span> <span class="objectType">{0}</span> <span class="quantifier">participates in none of the following:</span><span class="objectType">{1}</span>]]>{1}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">It is permitted that some</span> <span class="objectType">{0}</span> <span class="quantifier">participates in none of the following:</span>{1}]]></Form>
 				</FormalItem>
 				<FormalItem type="CompoundListOpen">
 					<Form style="Basic">&#xD;&#xA;&#x9;</Form>
