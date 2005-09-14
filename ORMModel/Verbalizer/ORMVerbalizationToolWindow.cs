@@ -93,7 +93,7 @@ namespace Neumont.Tools.ORM.Shell
 					if (oldDoc != null)
 					{
 						Store store = oldDoc.Store;
-						if (!store.Disposed)
+						if (store != null && !store.Disposed)
 						{
 							store.EventManagerDirectory.ElementEventsEnded.Remove(new ElementEventsEndedEventHandler(ModelStateChangedEvent));
 						}

@@ -985,7 +985,7 @@
 						</xsl:call-template>
 						<plx:Condition>
 							<plx:Test>
-								<plx:Operator type="IdentityInequality">
+								<plx:Operator type="IdentityEquality">
 									<plx:Left>
 										<plx:Value type="Local" data="readingOrder"/>
 									</plx:Left>
@@ -2096,7 +2096,7 @@
 					<xsl:apply-templates select="." mode="ConstraintVerbalization">
 						<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 						<!-- Pass the position in here or it will always be 1 -->
-						<xsl:with-param name="VariableDecorator" select="position()"/>
+						<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
 						<xsl:with-param name="IteratorContext" select="$contextMatch"/>
 						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 						<xsl:with-param name="FirstPassVariable" select="$FirstPassVariable"/>
