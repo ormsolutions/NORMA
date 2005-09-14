@@ -789,11 +789,27 @@
 								<plx:Value type="Local" data="basicReplacement"/>
 							</plx:Left>
 							<plx:Right>
-								<plx:CallInstance name="Name" type="Property">
-									<plx:CallObject>
-										<plx:Value type="Local" data="rolePlayer"/>
-									</plx:CallObject>
-								</plx:CallInstance>
+								<plx:CallStatic name="Format" dataTypeName="String" dataTypeQualifier="System">
+									<plx:PassParam>
+										<plx:CallInstance name="FormatProvider" type="Property">
+											<plx:CallObject>
+												<plx:Value type="Parameter" data="writer"/>
+											</plx:CallObject>
+										</plx:CallInstance>
+									</plx:PassParam>
+									<plx:PassParam>
+										<xsl:call-template name="SnippetFor">
+											<xsl:with-param name="SnippetType" select="'ObjectType'"/>
+										</xsl:call-template>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:CallInstance name="Name" type="Property">
+											<plx:CallObject>
+												<plx:Value type="Local" data="rolePlayer"/>
+											</plx:CallObject>
+										</plx:CallInstance>
+									</plx:PassParam>
+								</plx:CallStatic>
 							</plx:Right>
 						</plx:Operator>
 					</plx:Body>
@@ -803,34 +819,30 @@
 								<plx:Value type="Local" data="basicReplacement"/>
 							</plx:Left>
 							<plx:Right>
-								<plx:Operator type="Add">
-									<plx:Left>
-										<plx:String>Role</plx:String>
-									</plx:Left>
-									<plx:Right>
-										<plx:CallInstance name="ToString">
+								<plx:CallStatic name="Format" dataTypeName="String" dataTypeQualifier="System">
+									<plx:PassParam>
+										<plx:CallInstance name="FormatProvider" type="Property">
 											<plx:CallObject>
-												<plx:Expression parens="true">
-													<plx:Operator type="Add">
-														<plx:Left>
-															<plx:Value type="Local" data="i"/>
-														</plx:Left>
-														<plx:Right>
-															<plx:Value type="I4" data="1"/>
-														</plx:Right>
-													</plx:Operator>
-												</plx:Expression>
+												<plx:Value type="Parameter" data="writer"/>
 											</plx:CallObject>
-											<plx:PassParam>
-												<plx:CallInstance name="FormatProvider" type="Property">
-													<plx:CallObject>
-														<plx:Value type="Parameter" data="writer"/>
-													</plx:CallObject>
-												</plx:CallInstance>
-											</plx:PassParam>
 										</plx:CallInstance>
-									</plx:Right>
-								</plx:Operator>
+									</plx:PassParam>
+									<plx:PassParam>
+										<xsl:call-template name="SnippetFor">
+											<xsl:with-param name="SnippetType" select="'ObjectTypeMissing'"/>
+										</xsl:call-template>
+									</plx:PassParam>
+									<plx:PassParam>
+										<plx:Operator type="Add">
+											<plx:Left>
+												<plx:Value type="Local" data="i"/>
+											</plx:Left>
+											<plx:Right>
+												<plx:Value type="I4" data="1"/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:PassParam>
+								</plx:CallStatic>
 							</plx:Right>
 						</plx:Operator>
 					</plx:Alternate>

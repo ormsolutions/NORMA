@@ -3,36 +3,41 @@
 	<Languages>
 		<Language code="en-us">
 			<FormalItems>
+				<FormalItem type="ObjectType">
+					<!-- All object type names are wrapped with this style automatically.
+						 The objectType class should not be used in other quantifiers. -->
+					<Form style="Basic"><![CDATA[<span class="objectType">{0}</span>]]></Form>
+				</FormalItem>
 				<FormalItem type="UniversalQuantifier">
-					<Form style="Basic"><![CDATA[<span class="quantifier">each</span> <span class="objectType">{0}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">each</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="ImpersonalPronoun">
-					<Form style="Basic"><![CDATA[<span class="quantifier">that</span> <span class="objectType">{0}</span>]]>that {0}</Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">that</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="AtMostOneQuantifier">
-					<Form style="Basic"><![CDATA[<span class="quantifier">at most one</span> <span class="objectType">{0}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">at most one</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="EachInstanceQuantifier">
 					<Form style="Basic"><![CDATA[<span class="quantifier">each instance of</span> {0} <span class="quantifier">occurs only once</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ForEachCompactQuantifier">
-					<Form style="Basic"><![CDATA[<span class="quantifier">for each</span> <span class="objectType">{0}</span> <span class="objectType">{1}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">for each</span> {0}, {1}]]></Form>
 				</FormalItem>
 				<FormalItem type="ForEachQuantifier">
-					<Form style="Basic"><![CDATA[<span class="quantifier">for each</span> <span class="objectType">{0}</span>,&#xD;&#xA;&#x9;<span class="objectType">{1}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">for each</span> {0},<br/><span class="smallIndent">{1}</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="ExistentialQuantifier">
-					<Form style="Basic"><![CDATA[<span class="quantifier">some</span> <span class="objectType">{0}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">some</span> {0}]]></Form>
 					<SplitForm style="Advanced">
-						<Form condition="PreConsonant"><![CDATA[<span class="quantifier">a</span> <span class="objectType">{0}</span>]]></Form>
-						<Form condition="PreVowel"><![CDATA[<span class="quantifier">an</span> <span class="objectType">{0}</span>]]></Form>
+						<Form condition="PreConsonant"><![CDATA[<span class="quantifier">a</span> {0}]]></Form>
+						<Form condition="PreVowel"><![CDATA[<span class="quantifier">an</span> {0}]]></Form>
 					</SplitForm>
 				</FormalItem>
 				<FormalItem type="IdentityReferenceQuantifier">
-					<Form style="Basic"><![CDATA[<span class="quantifier">the same</span> <span class="objectType">{0}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">the same</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="MoreThanOneQuantifier">
-					<Form style="Basic"><![CDATA[<span class="quantifier">more than one</span> <span class="objectType">{0}</span>]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">more than one</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="ModalPossibilityOperator" modality="alethic" sign="+">
 					<Form style="Basic"><![CDATA[<span class="quantifier">it is possible that</span> {0}]]></Form>
@@ -53,19 +58,19 @@
 					<Form style="Basic"><![CDATA[<span class="quantifier">it is obligatory that</span> {0}]]></Form>
 				</FormalItem>
 				<FormalItem type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" modality="deontic" sign="-">
-					<Form style="Basic"><![CDATA[<span class="quantifier">It is permitted that some</span> <span class="objectType">{0}</span> <span class="quantifier">participates in none of the following:</span>{1}]]></Form>
+					<Form style="Basic"><![CDATA[<span class="quantifier">It is permitted that some</span> {0} <span class="quantifier">participates in none of the following:</span>{1}]]></Form>
 				</FormalItem>
 				<FormalItem type="CompoundListOpen">
-					<Form style="Basic">&#xD;&#xA;&#x9;</Form>
+					<Form style="Basic"><![CDATA[<br/><span class="smallIndent">]]></Form>
 				</FormalItem>
 				<FormalItem type="CompoundListPairSeparator">
-					<Form style="Basic">; </Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator">; </span>]]></Form>
 				</FormalItem>
 				<FormalItem type="CompoundListSeparator">
-					<Form style="Basic">; </Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator">; </span>]]></Form>
 				</FormalItem>
 				<FormalItem type="CompoundListFinalSeparator">
-					<Form style="Basic">; </Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator">; </span>]]></Form>
 				</FormalItem>
 				<FormalItem type="CompoundListClose">
 					<Form style="Basic"></Form>
@@ -74,28 +79,28 @@
 					<Form style="Basic"><![CDATA[<br/><span class="smallIndent">]]></Form>
 				</FormalItem>
 				<FormalItem type="IndentedListPairSeparator">
-					<Form style="Basic"><![CDATA[<b> and</b> </span><br/><span class="smallIndent">]]></Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Form>
 				</FormalItem>
 				<FormalItem type="IndentedListSeparator">
-					<Form style="Basic"><![CDATA[<b> and</b> </span><br/><span class="smallIndent">]]></Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Form>
 				</FormalItem>
 				<FormalItem type="IndentedListFinalSeparator">
-					<Form style="Basic"><![CDATA[<b> and</b> </span><br/><span class="smallIndent">]]></Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Form>
 				</FormalItem>
 				<FormalItem type="IndentedListClose">
 					<Form style="Basic"><![CDATA[</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="IndentedOrListOpen">
-					<Form style="Basic">&#xD;&#xA;&#x9;</Form>
+					<Form style="Basic"><![CDATA[<br/><span class="smallIndent">]]></Form>
 				</FormalItem>
 				<FormalItem type="IndentedOrListPairSeparator">
-					<Form style="Basic"> or&#xD;&#xA;&#x9;</Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Form>
 				</FormalItem>
 				<FormalItem type="IndentedOrListSeparator">
-					<Form style="Basic"> or&#xD;&#xA;&#x9;</Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Form>
 				</FormalItem>
 				<FormalItem type="IndentedOrListFinalSeparator">
-					<Form style="Basic"> or&#xD;&#xA;&#x9;</Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Form>
 				</FormalItem>
 				<FormalItem type="IndentedOrListClose">
 					<Form style="Basic"></Form>
@@ -104,16 +109,19 @@
 					<Form style="Basic"></Form>
 				</FormalItem>
 				<FormalItem type="SimpleListPairSeparator">
-					<Form style="Basic"> and </Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator"> and </span>]]></Form>
 				</FormalItem>
 				<FormalItem type="SimpleListSeparator">
-					<Form style="Basic">, </Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator">, </span>]]></Form>
 				</FormalItem>
 				<FormalItem type="SimpleListFinalSeparator">
-					<Form style="Basic">, and </Form>
+					<Form style="Basic"><![CDATA[<span class="listSeparator">, and </span>]]></Form>
 				</FormalItem>
 				<FormalItem type="SimpleListClose">
 					<Form style="Basic"></Form>
+				</FormalItem>
+				<FormalItem type="ObjectTypeMissing">
+					<Form style="Basic"><![CDATA[<span class="objectTypeMissing">Missing<sub>{0}</sub></span>]]></Form>
 				</FormalItem>
 			</FormalItems>
 		</Language>
@@ -247,35 +255,37 @@
 
 				<!-- 3.1.3 n-ary predicate -->
 				<ConstrainedRoles>
-					<!-- mandatory role starts reading -->
-					<!-- Each A R some B1 ... some Bn -->
-					<ReadingChoice match="RequireLeadReading">
-						<Fact readingChoice="Conditional">
-							<PredicateReplacement match="included">
-								<Quantifier type="UniversalQuantifier"/>
-							</PredicateReplacement>
-							<PredicateReplacement>
-								<Quantifier type="ExistentialQuantifier"/>
-							</PredicateReplacement>
-						</Fact>
-					</ReadingChoice>
-
-					<!-- mandatory role does NOT start reading-->
-					<!-- For each A,
-						some B1 R ... that A ... some Bn -->
-					<ReadingChoice>
-						<Quantifier type="ForEachQuantifier">
-							<IterateRoles listStyle="SimpleList"/>
+					<ConditionalReading>
+						<!-- mandatory role starts reading -->
+						<!-- Each A R some B1 ... some Bn -->
+						<ReadingChoice match="RequireLeadReading">
 							<Fact readingChoice="Conditional">
 								<PredicateReplacement match="included">
-									<Quantifier type="ImpersonalPronoun"/>
+									<Quantifier type="UniversalQuantifier"/>
 								</PredicateReplacement>
 								<PredicateReplacement>
 									<Quantifier type="ExistentialQuantifier"/>
 								</PredicateReplacement>
 							</Fact>
-						</Quantifier>
-					</ReadingChoice>
+						</ReadingChoice>
+
+						<!-- mandatory role does NOT start reading-->
+						<!-- For each A,
+							some B1 R ... that A ... some Bn -->
+						<ReadingChoice>
+							<Quantifier type="ForEachQuantifier">
+								<IterateRoles listStyle="SimpleList"/>
+								<Fact readingChoice="Conditional">
+									<PredicateReplacement match="included">
+										<Quantifier type="ImpersonalPronoun"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Quantifier type="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</Quantifier>
+						</ReadingChoice>
+					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
 
@@ -342,23 +352,23 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-			<!-- Start External Uniqueness Constraint--><!--
-			- --><!-- Positive Reading --><!--
-			- <Constraint type="ExternalUniquenessConstraint" patternGroup="SingleColumnExternalConstraint">
-				- <ConstrainedRoles sign="+" minFactArity="2" maxFactArity="2">
-					- <ConditionalReading>
-						- <ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
-							- <Quantifier type="ForEachQuantifier">
+			<!-- Start External Uniqueness Constraint-->
+			<Constraint type="ExternalUniquenessConstraint" patternGroup="SingleColumnExternalConstraint">
+				<!-- Positive Reading -->
+				<ConstrainedRoles sign="+" minFactArity="2" maxFactArity="2">
+					<ConditionalReading>
+						<ReadingChoice match="RequireAllNonPrimaryLeadReadingNoForwardText">
+							<Quantifier type="ForEachCompactQuantifier">
 								<IterateRoles match="singleColumnConstraintRoles" listStyle="SimpleList" />
-								- <IterateRoles match="singleColumnConstraintRoles" listStyle="IndentedList">
-									- <Fact readingChoice="Conditional">
-										- <PredicateReplacement match="excluded" pass="first">
+								<IterateRoles match="singleColumnConstraintRoles" listStyle="IndentedList">
+									<Fact readingChoice="Conditional">
+										<PredicateReplacement match="excluded" pass="first">
 											<Quantifier type="AtMostOneQuantifier" />
 										</PredicateReplacement>
-										- <PredicateReplacement match="excluded">
+										<PredicateReplacement match="excluded">
 											<Quantifier type="null" />
 										</PredicateReplacement>
-										- <PredicateReplacement>
+										<PredicateReplacement>
 											<Quantifier type="ImpersonalPronoun" />
 										</PredicateReplacement>
 									</Fact>
@@ -367,26 +377,24 @@
 						</ReadingChoice>
 					</ConditionalReading>
 				</ConstrainedRoles>
-				- --><!-- Negative Reading for External Uniqueness Constraint--><!--
-				- <ConstrainedRoles sign="-" minFactArity="2" maxFactArity="2">
-					- <ConditionalReading>
-						- <ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
-							- <Quantifier type="ModalPossibilityOperator">
-								<IterateRoles match="singleColumnConstraintRoles" listStyle="SimpleList" />
-								- <Fact readingChoice="Conditional">
-									- <Predicate Replacement="" match="excluded">
-										<Quantifier type="MoreThanOneQuantifier" />
-									</Predicate>
-									- <Predicate>
-										<Quantifier type="IdentityReferenceQuantifier" />
-									</Predicate>
-									- <Predicate>
-										<Quantifier type="SimpleListPairSeparator" />
-									</Predicate>
-									- <Predicate>
-										<Quantifier type="IdentityReferenceQuantifier" />
-									</Predicate>
-								</Fact>
+				<!-- Negative Reading for External Uniqueness Constraint-->
+				<ConstrainedRoles sign="-" minFactArity="2" maxFactArity="2">
+					<ConditionalReading>
+						<ReadingChoice match="RequireAllNonPrimaryLeadReadingNoForwardText">
+							<Quantifier type="ModalPossibilityOperator">
+								<IterateRoles match="singleColumnConstraintRoles" listStyle="SimpleList">
+									<Fact readingChoice="Conditional">
+										<PredicateReplacement match="excluded" pass="first">
+											<Quantifier type="MoreThanOneQuantifier" />
+										</PredicateReplacement>
+										<PredicateReplacement match="excluded">
+											<Quantifier type="null" />
+										</PredicateReplacement>
+										<PredicateReplacement>
+											<Quantifier type="IdentityReferenceQuantifier" />
+										</PredicateReplacement>
+									</Fact>
+								</IterateRoles>
 							</Quantifier>
 						</ReadingChoice>
 					</ConditionalReading>

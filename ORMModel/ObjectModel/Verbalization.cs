@@ -39,6 +39,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// Interface for verbalization
 	/// </summary>
+	[CLSCompliant(true)]
 	public interface IVerbalize
 	{
 		/// <summary>
@@ -49,6 +50,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="isNegative">true for a negative reading</param>
 		/// <returns>true to continue with child verbalization, otherwise false</returns>
 		bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative);
+	}
+	/// <summary>
+	/// Interface to redirect verbalization. Called for top-level selected objects only
+	/// </summary>
+	[CLSCompliant(true)]
+	public interface IRedirectVerbalization
+	{
+		/// <summary>
+		/// Use the returned object as the verbalizer
+		/// </summary>
+		IVerbalize SurrogateVerbalizer { get;}
 	}
 	#endregion // IVerbalize interface
 	#region Static verbalization helpers on FactType class
@@ -69,7 +81,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>A matching reading order. Can return null if allowAnyOrder is false, or the readingOrders collection is empty.</returns>
 		public static ReadingOrder GetMatchingReadingOrder(ReadingOrderMoveableCollection readingOrders, Role matchLeadRole, RoleMoveableCollection matchAnyLeadRole, bool invertLeadRoles, bool noForwardText, RoleMoveableCollection defaultRoleOrder, bool allowAnyOrder)
 		{
-			// UNDONE: Implement invertLeadRoles, noForwardText checks
+			// UNDONE: Implement noForwardText verification
 			int orderCount = readingOrders.Count;
 			ReadingOrder retVal = null;
 			bool blockTestDefault = false; // If we have specific lead role requirements, then default is only used to enforce them, or as the default for any allowed order
@@ -78,7 +90,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// Match a single lead role, prefer the default order
 				if (matchLeadRole != null)
 				{
-					GetMatchingReadingOrder(readingOrders, matchLeadRole, defaultRoleOrder, ref retVal);
+					if (invertLeadRoles)
+					{
+						int matchAllCount = defaultRoleOrder.Count;
+						for (int i = 0; i < matchAllCount; ++i)
+						{
+							Role currentRole = defaultRoleOrder[i];
+							if (currentRole != matchLeadRole)
+							{
+								if (GetMatchingReadingOrder(readingOrders, currentRole, defaultRoleOrder, ref retVal))
+								{
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						GetMatchingReadingOrder(readingOrders, matchLeadRole, defaultRoleOrder, ref retVal);
+					}
 					if (retVal == null && matchAnyLeadRole == null)
 					{
 						blockTestDefault = !allowAnyOrder;
@@ -88,11 +118,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (retVal == null && matchAnyLeadRole != null)
 				{
 					int matchAnyCount = matchAnyLeadRole.Count;
-					for (int i = 0; i < matchAnyCount; ++i)
+					if (invertLeadRoles)
 					{
-						if (GetMatchingReadingOrder(readingOrders, matchAnyLeadRole[i], defaultRoleOrder, ref retVal))
+						int matchAllCount = defaultRoleOrder.Count;
+						if (matchAllCount > matchAnyCount)
 						{
-							break;
+							for (int i = 0; i < matchAllCount; ++i)
+							{
+								Role currentRole = defaultRoleOrder[i];
+								if (!matchAnyLeadRole.Contains(currentRole))
+								{
+									if (GetMatchingReadingOrder(readingOrders, currentRole, defaultRoleOrder, ref retVal))
+									{
+										break;
+									}
+								}
+							}
+						}
+					}
+					else
+					{
+						for (int i = 0; i < matchAnyCount; ++i)
+						{
+							if (GetMatchingReadingOrder(readingOrders, matchAnyLeadRole[i], defaultRoleOrder, ref retVal))
+							{
+								break;
+							}
 						}
 					}
 					if (retVal == null)

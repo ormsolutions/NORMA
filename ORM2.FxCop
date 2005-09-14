@@ -3442,12 +3442,6 @@
            </Member>
            <Member Name="GetMatchingReadingOrder(Neumont.Tools.ORM.ObjectModel.ReadingOrderMoveableCollection,Neumont.Tools.ORM.ObjectModel.Role,Neumont.Tools.ORM.ObjectModel.RoleMoveableCollection,System.Boolean,System.Boolean,Neumont.Tools.ORM.ObjectModel.RoleMoveableCollection,System.Boolean):Neumont.Tools.ORM.ObjectModel.ReadingOrder">
             <Messages>
-             <Message Id="invertLeadRoles" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-09-13 18:45:05Z" FixCategory="Breaking">
-              <Issue>
-               <Item>invertLeadRoles</Item>
-               <Item>FactType.GetMatchingReadingOrder(ReadingOrderMoveableCollection, Role, RoleMoveableCollection, Boolean, Boolean, RoleMoveableCollection, Boolean):ReadingOrder</Item>
-              </Issue>
-             </Message>
              <Message Id="noForwardText" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-09-13 18:45:05Z" FixCategory="Breaking">
               <Issue>
                <Item>noForwardText</Item>
@@ -11506,6 +11500,28 @@
                 <Note Id="34" />
                </User>
               </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="SimpleMandatoryConstraint">
+          <Members>
+           <Member Name="GetVerbalization(System.IO.TextWriter,Neumont.Tools.ORM.ObjectModel.NotifyBeginVerbalization,System.Boolean):System.Boolean">
+            <Messages>
+             <Message Id="includedArity" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-09-14 21:08:37Z">
+              <Issue>
+               <Item>SimpleMandatoryConstraint.GetVerbalization(TextWriter, NotifyBeginVerbalization, Boolean):Boolean</Item>
+               <Item>includedArity</Item>
+               <Item>System.Int32</Item>
+              </Issue>
+             </Message>
+             <Message Id="primaryRole" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-09-14 21:08:37Z">
+              <Issue>
+               <Item>SimpleMandatoryConstraint.GetVerbalization(TextWriter, NotifyBeginVerbalization, Boolean):Boolean</Item>
+               <Item>primaryRole</Item>
+               <Item>Neumont.Tools.ORM.ObjectModel.Role</Item>
+              </Issue>
              </Message>
             </Messages>
            </Member>

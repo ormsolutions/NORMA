@@ -35,15 +35,15 @@ namespace Neumont.Tools.ORM.Shell
 			body { font-family: Tahoma; font-size: 8pt; padding: 10px; }
 			td{ font-family: Tahoma; font-size: 8pt; }
 			.objectType { color: #ff0000; font-weight: bold; }
+			.objectTypeMissing { font-weight: bold; }
 			.referenceMode { color: #840084; font-weight: bold; }
 			.predicateText { color: #0000ff; }
 			.quantifier { color: #00a500; }
 			.error { color: red; }
-			.verbalization {  }
-			div.parentVerbalization { padding-left: 5px; }
-			div.childVerbalization { padding-left: 34px; }
+			.verbalization { }
 			.indent { left: 20px; position: relative; }
 			.smallIndent { left: 8px; position: relative; }
+			.listSeparator { font-weight: 200;}
 		</style>
 	</head>
 	<body>
@@ -329,9 +329,21 @@ namespace Neumont.Tools.ORM.Shell
 		private static void VerbalizeElement(ModelElement element, VerbalizationHandler callback, int indentLevel)
 		{
 			IVerbalize parentVerbalize = element as IVerbalize;
+			if (parentVerbalize == null && indentLevel == 0)
+			{
+				IRedirectVerbalization surrogateRedirect = element as IRedirectVerbalization;
+				if (surrogateRedirect != null)
+				{
+					parentVerbalize = surrogateRedirect.SurrogateVerbalizer;
+					if (parentVerbalize != null)
+					{
+						element = parentVerbalize as ModelElement;
+					}
+				}
+			}
 			if (parentVerbalize != null)
 			{
-				if (callback(parentVerbalize, indentLevel))
+				if (callback(parentVerbalize, indentLevel) && element != null)
 				{
 					++indentLevel;
 					IList aggregateList = element.MetaClass.AggregatedRoles;

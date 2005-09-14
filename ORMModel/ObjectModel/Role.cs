@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Neumont.Tools.ORM.Framework;
@@ -48,7 +49,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		OneToMany,
 	}
 	#endregion // RoleMultiplicity enum
-	public partial class Role : IModelErrorOwner
+	public partial class Role : IModelErrorOwner, IRedirectVerbalization
 	{
 		#region CustomStorage handlers
 		/// <summary>
@@ -840,6 +841,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // RolePlayer validation rules
+		#region IRedirectVerbalization Implementation
+		/// <summary>
+		/// Implements IRedirectVerbalization.SurrogateVerbalizer by deferring to the parent fact
+		/// </summary>
+		protected IVerbalize SurrogateVerbalizer
+		{
+			get
+			{
+				return FactType as IVerbalize;
+			}
+		}
+		IVerbalize IRedirectVerbalization.SurrogateVerbalizer
+		{
+			get
+			{
+				return SurrogateVerbalizer;
+			}
+		}
+		#endregion // IRedirectVerbalization Implementation
 	}
 	public partial class RolePlayerRequiredError : IRepresentModelElements
 	{
