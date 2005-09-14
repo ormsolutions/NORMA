@@ -199,6 +199,91 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
+			
+			<!-- Simple Mandatory Constraint -->
+			<Constraint type="SimpleMandatoryConstraint" patternGroup="SimpleConstraint">
+
+				<!-- 3.1.1 unary predicate -->
+				<!-- Each A R -->
+				<ConstrainedRoles factArity="1">
+					<Quantifier type="UniversalQuantifier">
+						<Fact/>
+					</Quantifier>
+				</ConstrainedRoles>
+
+
+				<!-- 3.1.2 binary predicate -->
+				<ConstrainedRoles factArity="2">
+					<ConditionalReading>
+
+						<!-- mandatory constraint starts reading relational style -->
+						<!-- Each A R some B -->
+						<ReadingChoice match="RequireLeadReading">
+							<Fact readingChoice="Conditional">
+								<PredicateReplacement match="included">
+									<Quantifier type="UniversalQuantifier"/>
+								</PredicateReplacement>
+								<PredicateReplacement>
+									<Quantifier type="ExistentialQuantifier"/>
+								</PredicateReplacement>
+							</Fact>
+						</ReadingChoice>
+
+						<!-- mandatory role does NOT start reading -->
+						<!-- For each A, some B S that A -->
+						<ReadingChoice>
+							<Quantifier type="ForEachCompactQuantifier">
+								<Fact readingChoice="Conditional">
+									<PredicateReplacement match="excluded">
+										<Quantifier type="ExistentialQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Quantifier type="ImpersonalPronoun"/>
+									</PredicateReplacement>
+								</Fact>
+							</Quantifier>
+						</ReadingChoice>
+					</ConditionalReading>
+				</ConstrainedRoles>
+
+				<!-- mandatory constraint starts reading attribute style -->
+				<!-- Each A R some B -->
+				<!-- not doing this time around -->
+
+				<!-- 3.1.3 n-ary predicate -->
+				<ConstrainedRoles>
+					<!-- mandatory role starts reading -->
+					<!-- Each A R some B1 ... some Bn -->
+					<ReadingChoice match="RequireLeadReading">
+						<Fact readingChoice="Conditional">
+							<PredicateReplacement match="included">
+								<Quantifier type="UniversalQuantifier"/>
+							</PredicateReplacement>
+							<PredicateReplacement>
+								<Quantifier type="ExistentialQuantifier"/>
+							</PredicateReplacement>
+						</Fact>
+					</ReadingChoice>
+
+					<!-- mandatory role does NOT start reading-->
+					<!-- For each A,
+						some B1 R ... that A ... some Bn -->
+					<ReadingChoice>
+						<Quantifier type="ForEachQuantifier">
+							<IterateRoles listStyle="SimpleList"/>
+							<Fact readingChoice="Conditional">
+								<PredicateReplacement match="included">
+									<Quantifier type="ImpersonalPronoun"/>
+								</PredicateReplacement>
+								<PredicateReplacement>
+									<Quantifier type="ExistentialQuantifier"/>
+								</PredicateReplacement>
+							</Fact>
+						</Quantifier>
+					</ReadingChoice>
+				</ConstrainedRoles>
+			</Constraint>
+
 			<!-- UNDONE: The data from here down is preliminary, but is being used for generation testing -->
 			<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
 				<!-- Unaries are the only reading choice that has an optional negative reading -->
@@ -262,8 +347,11 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-			<!-- Start External Uniqueness Constraint--><!--
-			- --><!-- Positive Reading --><!--
+			<!-- Start External Uniqueness Constraint-->
+			<!--
+			- -->
+			<!-- Positive Reading -->
+			<!--
 			- <Constraint type="ExternalUniquenessConstraint" patternGroup="SingleColumnExternalConstraint">
 				- <ConstrainedRoles sign="+" minFactArity="2" maxFactArity="2">
 					- <ConditionalReading>
@@ -287,7 +375,9 @@
 						</ReadingChoice>
 					</ConditionalReading>
 				</ConstrainedRoles>
-				- --><!-- Negative Reading for External Uniqueness Constraint--><!--
+				- -->
+			<!-- Negative Reading for External Uniqueness Constraint-->
+			<!--
 				- <ConstrainedRoles sign="-" minFactArity="2" maxFactArity="2">
 					- <ConditionalReading>
 						- <ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
@@ -312,7 +402,8 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-			- --><!-- End External Uniqueness Constraint  -->
-  </Constraints>
+			- -->
+			<!-- End External Uniqueness Constraint  -->
+		</Constraints>
 	</Constructs>
 </Root>
