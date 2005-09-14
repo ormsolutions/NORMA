@@ -20,9 +20,35 @@ namespace Neumont.Tools.ORM.Shell
 	public class ORMVerbalizationToolWindow : ToolWindow
 	{
 		#region Constants
+		// UNDONE: Move these constants outside of the compiled code
 		private const string HtmlNewLine = "<br/>\n";
-		private const string HtmlIncreaseIndent = @"<span style=""left:30px;position:relative"">";
+		private const string HtmlIncreaseIndent = @"<span class=""indent"">";
 		private const string HtmlDecreaseIndent = @"</span>";
+		private const string HtmlErrorTagOpen = @"<span class=""error"">";
+		private const string HtmlErrorTagClose = @"</span>";
+		private const string HtmlHeader = @"
+<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
+<html>
+	<head>
+		<title>ORM2 Verbalization</title>
+		<style>
+			body { font-family: Tahoma; font-size: 8pt; padding: 10px; }
+			td{ font-family: Tahoma; font-size: 8pt; }
+			.objectType { color: #ff0000; font-weight: bold; }
+			.referenceMode { color: #840084; font-weight: bold; }
+			.predicateText { color: #0000ff; }
+			.quantifier { color: #00a500; }
+			.error { color: red; }
+			.verbalization {  }
+			div.parentVerbalization { padding-left: 5px; }
+			div.childVerbalization { padding-left: 34px; }
+			.indent { left: 20px; position: relative; }
+			.smallIndent { left: 8px; position: relative; }
+		</style>
+	</head>
+	<body>
+";
+		private const string HtmlFooter = @"</body></html>";
 		#endregion // Constants
 		#region Member variables
 		private WebBrowser myWebBrowser;
@@ -180,6 +206,7 @@ namespace Neumont.Tools.ORM.Shell
 
 			ICollection selectedObjects = theView.GetSelectedComponents();
 			bool isNegative = false; // UNDONE: Get this value from somewhere real
+			bool firstCallPending = true;
 			foreach (ModelElement melIter in selectedObjects)
 			{
 				ModelElement mel = melIter;
@@ -190,8 +217,17 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				if (mel != null)
 				{
-					VerbalizeElement(mel, isNegative, myStringWriter);
+					VerbalizeElement(mel, isNegative, myStringWriter, ref firstCallPending);
 				}
+			}
+			if (!firstCallPending)
+			{
+				// Write footer
+				myStringWriter.Write(HtmlFooter);
+			}
+			else
+			{
+				// Nothing happened, put in text for nothing happened
 			}
 			myWebBrowser.DocumentText = myStringWriter.ToString();
 		}
@@ -202,32 +238,51 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="element">The element to verbalize</param>
 		/// <param name="isNegative">Use the negative form of the reading</param>
 		/// <param name="writer">The TextWriter for verbalization output</param>
-		public static void VerbalizeElement(ModelElement element, bool isNegative, TextWriter writer)
+		/// <param name="firstCallPending"></param>
+		private static void VerbalizeElement(ModelElement element, bool isNegative, TextWriter writer, ref bool firstCallPending)
 		{
 			int lastLevel = 0;
 			bool firstWrite = true;
+			bool localFirstCallPending = firstCallPending;
 			VerbalizeElement(
 				element,
 				delegate(IVerbalize verbalizer, int indentationLevel)
 				{
-					return verbalizer.GetVerbalization(
+					bool openedErrorReport = false;
+					bool retVal = verbalizer.GetVerbalization(
 						writer,
 						delegate(VerbalizationContent content)
 						{
-							// UNDONE: Tags for error content, which always
-							// comes through as straight text
+							if (content == VerbalizationContent.ErrorReport)
+							{
+								// spit opening tag for text denoting an error
+								openedErrorReport = true;
+								writer.Write(HtmlErrorTagOpen);
+							}
 
 							// Prepare for verbalization on this element. Everything
 							// is delayed to this point in case the verbalization implementation
 							// does not callback to the text writer.
 							if (firstWrite)
 							{
+								if (localFirstCallPending)
+								{
+									localFirstCallPending = false;
+									// Write the HTML header to the buffer
+									writer.Write(HtmlHeader);
+								}
+
+								// write open tag for new verbalization
+								writer.Write(@"<p class=""verbalization"">");
+
+								localFirstCallPending = false;
 								firstWrite = false;
 							}
 							else
 							{
 								writer.WriteLine();
 							}
+
 
 							// Write indentation tags as needed
 							if (indentationLevel > lastLevel)
@@ -248,6 +303,12 @@ namespace Neumont.Tools.ORM.Shell
 							}
 						},
 						isNegative);
+					if (openedErrorReport)
+					{
+						// Close error report tag
+						writer.Write(HtmlErrorTagClose);
+					}
+					return retVal;
 				},
 				0);
 			while (lastLevel > 0)
@@ -255,6 +316,12 @@ namespace Neumont.Tools.ORM.Shell
 				writer.Write(HtmlDecreaseIndent);
 				--lastLevel;
 			}
+			// close the opening tag for the new verbalization
+			if (!firstWrite)
+			{
+				writer.Write("</p>");
+			}
+			firstCallPending = localFirstCallPending;
 		}
 		/// <summary>
 		/// Verbalize the passed in element and all its children

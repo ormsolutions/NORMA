@@ -164,137 +164,161 @@ namespace Neumont.Tools.ORM.ObjectModel
 			VerbalizationSets retVal = new VerbalizationSets();
 			retVal.mySets = new VerbalizationSet[] {
 					new VerbalizationSet(new string[] {
-								"at most one {0}",
+								"<span class=\"quantifier\">at most one</span> <span class=\"objectType\">{0}</span>",
 								"",
 								"; ",
 								"\r\n\t",
 								"; ",
 								"; ",
-								"each instance of {0} occurs only once",
-								"some {0}",
-								"for each {0} {1}",
-								"for each {0},\r\n\t{1}",
-								"the same {0}",
-								"that {0}",
+								"<span class=\"quantifier\">each instance of</span> {0} <span class=\"quantifier\">occ" +
+									"urs only once</span>",
+								"<span class=\"quantifier\">some</span> <span class=\"objectType\">{0}</span>",
+								"<span class=\"quantifier\">for each</span> <span class=\"objectType\">{0}</span> <spa" +
+									"n class=\"objectType\">{1}</span>",
+								"<span class=\"quantifier\">for each</span> <span class=\"objectType\">{0}</span>,&#xD" +
+									";&#xA;&#x9;<span class=\"objectType\">{1}</span>",
+								"<span class=\"quantifier\">the same</span> <span class=\"objectType\">{0}</span>",
+								"<span class=\"quantifier\">that</span> <span class=\"objectType\">{0}</span>that {0}",
 								"</span>",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
-								"<br><span style=\"left:15px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
+								"<br/><span class=\"smallIndent\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
 								"",
 								" or\r\n\t",
 								"\r\n\t",
 								" or\r\n\t",
 								" or\r\n\t",
-								"it is necessary that {0}",
-								"it is possible that {0}",
-								"more than one {0}",
-								"It is impossible that some {0} participates in none of the following:{1}",
+								"<span class=\"quantifier\">it is necessary that</span> {0}",
+								"<span class=\"quantifier\">it is possible that</span> {0}",
+								"<span class=\"quantifier\">more than one</span> <span class=\"objectType\">{0}</span>" +
+									"",
+								"<span class=\"quantifier\">It is permitted that some</span> <span class=\"objectType" +
+									"\">{0}</span> <span class=\"quantifier\">participates in none of the following:</sp" +
+									"an>{1}",
 								"",
 								", and ",
 								"",
 								" and ",
 								", ",
-								"each {0}"}),
+								"<span class=\"quantifier\">each</span> <span class=\"objectType\">{0}</span>"}),
 					new VerbalizationSet(new string[] {
-								"at most one {0}",
+								"<span class=\"quantifier\">at most one</span> <span class=\"objectType\">{0}</span>",
 								"",
 								"; ",
 								"\r\n\t",
 								"; ",
 								"; ",
-								"each instance of {0} occurs only once",
-								"some {0}",
-								"for each {0} {1}",
-								"for each {0},\r\n\t{1}",
-								"the same {0}",
-								"that {0}",
+								"<span class=\"quantifier\">each instance of</span> {0} <span class=\"quantifier\">occ" +
+									"urs only once</span>",
+								"<span class=\"quantifier\">some</span> <span class=\"objectType\">{0}</span>",
+								"<span class=\"quantifier\">for each</span> <span class=\"objectType\">{0}</span> <spa" +
+									"n class=\"objectType\">{1}</span>",
+								"<span class=\"quantifier\">for each</span> <span class=\"objectType\">{0}</span>,&#xD" +
+									";&#xA;&#x9;<span class=\"objectType\">{1}</span>",
+								"<span class=\"quantifier\">the same</span> <span class=\"objectType\">{0}</span>",
+								"<span class=\"quantifier\">that</span> <span class=\"objectType\">{0}</span>that {0}",
 								"</span>",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
-								"<br><span style=\"left:15px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
+								"<br/><span class=\"smallIndent\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
 								"",
 								" or\r\n\t",
 								"\r\n\t",
 								" or\r\n\t",
 								" or\r\n\t",
-								"it is obligatory that {0}",
-								"it is permitted that {0}",
-								"more than one {0}",
-								"It is impossible that some {0} participates in none of the following:{1}",
+								"<span class=\"quantifier\">it is obligatory that</span> {0}",
+								"<span class=\"quantifier\">it is permitted that</span> {0}",
+								"<span class=\"quantifier\">more than one</span> <span class=\"objectType\">{0}</span>" +
+									"",
+								"<span class=\"quantifier\">It is permitted that some</span> <span class=\"objectType" +
+									"\">{0}</span> <span class=\"quantifier\">participates in none of the following:</sp" +
+									"an>{1}",
 								"",
 								", and ",
 								"",
 								" and ",
 								", ",
-								"each {0}"}),
+								"<span class=\"quantifier\">each</span> <span class=\"objectType\">{0}</span>"}),
 					new VerbalizationSet(new string[] {
-								"at most one {0}",
+								"<span class=\"quantifier\">at most one</span> <span class=\"objectType\">{0}</span>",
 								"",
 								"; ",
 								"\r\n\t",
 								"; ",
 								"; ",
-								"each instance of {0} occurs only once",
-								"some {0}",
-								"for each {0} {1}",
-								"for each {0},\r\n\t{1}",
-								"the same {0}",
-								"that {0}",
+								"<span class=\"quantifier\">each instance of</span> {0} <span class=\"quantifier\">occ" +
+									"urs only once</span>",
+								"<span class=\"quantifier\">some</span> <span class=\"objectType\">{0}</span>",
+								"<span class=\"quantifier\">for each</span> <span class=\"objectType\">{0}</span> <spa" +
+									"n class=\"objectType\">{1}</span>",
+								"<span class=\"quantifier\">for each</span> <span class=\"objectType\">{0}</span>,&#xD" +
+									";&#xA;&#x9;<span class=\"objectType\">{1}</span>",
+								"<span class=\"quantifier\">the same</span> <span class=\"objectType\">{0}</span>",
+								"<span class=\"quantifier\">that</span> <span class=\"objectType\">{0}</span>that {0}",
 								"</span>",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
-								"<br><span style=\"left:15px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
+								"<br/><span class=\"smallIndent\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
 								"",
 								" or\r\n\t",
 								"\r\n\t",
 								" or\r\n\t",
 								" or\r\n\t",
-								"it is necessary that {0}",
-								"it is impossible that {0}",
-								"more than one {0}",
-								"It is impossible that some {0} participates in none of the following:{1}",
+								"<span class=\"quantifier\">it is necessary that</span> {0}",
+								"<span class=\"quantifier\">it is impossible that</span> {0}",
+								"<span class=\"quantifier\">more than one</span> <span class=\"objectType\">{0}</span>" +
+									"",
+								"<span class=\"quantifier\">It is permitted that some</span> <span class=\"objectType" +
+									"\">{0}</span> <span class=\"quantifier\">participates in none of the following:</sp" +
+									"an>{1}",
 								"",
 								", and ",
 								"",
 								" and ",
 								", ",
-								"each {0}"}),
+								"<span class=\"quantifier\">each</span> <span class=\"objectType\">{0}</span>"}),
 					new VerbalizationSet(new string[] {
-								"at most one {0}",
+								"<span class=\"quantifier\">at most one</span> <span class=\"objectType\">{0}</span>",
 								"",
 								"; ",
 								"\r\n\t",
 								"; ",
 								"; ",
-								"each instance of {0} occurs only once",
-								"some {0}",
-								"for each {0} {1}",
-								"for each {0},\r\n\t{1}",
-								"the same {0}",
-								"that {0}",
+								"<span class=\"quantifier\">each instance of</span> {0} <span class=\"quantifier\">occ" +
+									"urs only once</span>",
+								"<span class=\"quantifier\">some</span> <span class=\"objectType\">{0}</span>",
+								"<span class=\"quantifier\">for each</span> <span class=\"objectType\">{0}</span> <spa" +
+									"n class=\"objectType\">{1}</span>",
+								"<span class=\"quantifier\">for each</span> <span class=\"objectType\">{0}</span>,&#xD" +
+									";&#xA;&#x9;<span class=\"objectType\">{1}</span>",
+								"<span class=\"quantifier\">the same</span> <span class=\"objectType\">{0}</span>",
+								"<span class=\"quantifier\">that</span> <span class=\"objectType\">{0}</span>that {0}",
 								"</span>",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
-								"<br><span style=\"left:15px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
-								"<b> and</b> </span><br><span style=\"left:15px;position:relative\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
+								"<br/><span class=\"smallIndent\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
+								"<b> and</b> </span><br/><span class=\"smallIndent\">",
 								"",
 								" or\r\n\t",
 								"\r\n\t",
 								" or\r\n\t",
 								" or\r\n\t",
-								"it is obligatory that {0}",
-								"it is forbidden that {0}",
-								"more than one {0}",
-								"It is impossible that some {0} participates in none of the following:{1}",
+								"<span class=\"quantifier\">it is obligatory that</span> {0}",
+								"<span class=\"quantifier\">it is forbidden that</span> {0}",
+								"<span class=\"quantifier\">more than one</span> <span class=\"objectType\">{0}</span>" +
+									"",
+								"<span class=\"quantifier\">It is permitted that some</span> <span class=\"objectType" +
+									"\">{0}</span> <span class=\"quantifier\">participates in none of the following:</sp" +
+									"an>{1}",
 								"",
 								", and ",
 								"",
 								" and ",
 								", ",
-								"each {0}"})};
+								"<span class=\"quantifier\">each</span> <span class=\"objectType\">{0}</span>"})};
 			return retVal;
 		}
 	}
@@ -650,6 +674,243 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 						}
 					}
+				}
+			}
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		{
+			return this.GetVerbalization(writer, beginVerbalization, isNegative);
+		}
+	}
+	/// <summary>
+	///</summary>
+	public partial class SimpleMandatoryConstraint : IVerbalize
+	{
+		/// <summary>
+		///</summary>
+		protected bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		{
+			StringBuilder sbTemp = null;
+			IModelErrorOwner errorOwner = (this) as IModelErrorOwner;
+			if ((errorOwner != null))
+			{
+				bool firstElement = true;
+				foreach (ModelError error in errorOwner.ErrorCollection)
+				{
+					if (firstElement)
+					{
+						firstElement = false;
+						beginVerbalization(VerbalizationContent.ErrorReport);
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(error.Name);
+				}
+				if (!(firstElement))
+				{
+					return false;
+				}
+			}
+			VerbalizationSets snippets = VerbalizationSets.Default;
+			bool isDeontic = false;
+			FactType parentFact = this.FactType;
+			RoleMoveableCollection includedRoles = this.RoleCollection;
+			RoleMoveableCollection factRoles = parentFact.RoleCollection;
+			int factArity = factRoles.Count;
+			ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
+			if ((allReadingOrders.Count == 0))
+			{
+				return false;
+			}
+			int includedArity = includedRoles.Count;
+			string[] basicRoleReplacements = new string[factArity];
+			int i = 0;
+			for (; (i < factArity); i = (i + 1))
+			{
+				ObjectType rolePlayer = factRoles[i].RolePlayer;
+				string basicReplacement;
+				if ((rolePlayer != null))
+				{
+					basicReplacement = rolePlayer.Name;
+				}
+				else
+				{
+					basicReplacement = ("Role" + ((i + 1)).ToString(writer.FormatProvider));
+				}
+				basicRoleReplacements[i] = basicReplacement;
+			}
+			string[] roleReplacements = new string[factArity];
+			ReadingOrder readingOrder;
+			if ((factArity == 1))
+			{
+				beginVerbalization(VerbalizationContent.Normal);
+				string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative);
+				string snippet1replace1 = null;
+				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
+				snippet1replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements);
+				writer.Write(snippet1, snippet1replace1);
+			}
+			else
+			{
+				if ((factArity == 2))
+				{
+					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, includedRoles, false, false, factRoles, false);
+					if ((readingOrder != null))
+					{
+						beginVerbalization(VerbalizationContent.Normal);
+						int factTextfactRoleIter1 = 0;
+						for (; (factTextfactRoleIter1 < factArity); factTextfactRoleIter1 = (factTextfactRoleIter1 + 1))
+						{
+							Role currentRole = factRoles[factTextfactRoleIter1];
+							string roleReplacement = null;
+							string basicReplacement = basicRoleReplacements[factTextfactRoleIter1];
+							if (includedRoles.Contains(currentRole))
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
+							}
+							else
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+							}
+							if ((roleReplacement == null))
+							{
+								roleReplacement = basicReplacement;
+							}
+							roleReplacements[factTextfactRoleIter1] = roleReplacement;
+						}
+						writer.Write(FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements));
+					}
+					else
+					{
+						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
+						if ((readingOrder != null))
+						{
+							beginVerbalization(VerbalizationContent.Normal);
+							string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachCompactQuantifier, isDeontic, isNegative);
+							string snippet1replace1 = null;
+							readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
+							int snippet1replacefactRoleIter1 = 0;
+							for (; (snippet1replacefactRoleIter1 < factArity); snippet1replacefactRoleIter1 = (snippet1replacefactRoleIter1 + 1))
+							{
+								Role currentRole = factRoles[snippet1replacefactRoleIter1];
+								string roleReplacement = null;
+								string basicReplacement = basicRoleReplacements[snippet1replacefactRoleIter1];
+								if (!(includedRoles.Contains(currentRole)))
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+								}
+								else
+								{
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+								}
+								if ((roleReplacement == null))
+								{
+									roleReplacement = basicReplacement;
+								}
+								roleReplacements[snippet1replacefactRoleIter1] = roleReplacement;
+							}
+							snippet1replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+							writer.Write(snippet1, snippet1replace1);
+						}
+					}
+				}
+				else
+				{
+					int factTextfactRoleIter2 = 0;
+					for (; (factTextfactRoleIter2 < factArity); factTextfactRoleIter2 = (factTextfactRoleIter2 + 1))
+					{
+						Role currentRole = factRoles[factTextfactRoleIter2];
+						string roleReplacement = null;
+						string basicReplacement = basicRoleReplacements[factTextfactRoleIter2];
+						if (includedRoles.Contains(currentRole))
+						{
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
+						}
+						else
+						{
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+						}
+						if ((roleReplacement == null))
+						{
+							roleReplacement = basicReplacement;
+						}
+						roleReplacements[factTextfactRoleIter2] = roleReplacement;
+					}
+					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
+					writer.Write(FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements));
+					string snippet2 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
+					string snippet2replace1 = null;
+					if ((sbTemp == null))
+					{
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					int snippet2replaceroleIter1 = 0;
+					for (; (snippet2replaceroleIter1 < factArity); snippet2replaceroleIter1 = (snippet2replaceroleIter1 + 1))
+					{
+						Role primaryRole = factRoles[snippet2replaceroleIter1];
+						VerbalizationTextSnippetType listSnippet;
+						if ((snippet2replaceroleIter1 == 0))
+						{
+							listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
+						}
+						else
+						{
+							if ((snippet2replaceroleIter1 
+										== (factArity - 1)))
+							{
+								if ((snippet2replaceroleIter1 == 1))
+								{
+									listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
+								}
+								else
+								{
+									listSnippet = VerbalizationTextSnippetType.SimpleListFinalSeparator;
+								}
+							}
+							else
+							{
+								listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
+							}
+						}
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						sbTemp.Append(basicRoleReplacements[snippet2replaceroleIter1]);
+						if ((snippet2replaceroleIter1 
+									== (factArity - 1)))
+						{
+							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
+						}
+					}
+					snippet2replace1 = sbTemp.ToString();
+					string snippet2replace2 = null;
+					int snippet2replacefactRoleIter2 = 0;
+					for (; (snippet2replacefactRoleIter2 < factArity); snippet2replacefactRoleIter2 = (snippet2replacefactRoleIter2 + 1))
+					{
+						Role currentRole = factRoles[snippet2replacefactRoleIter2];
+						string roleReplacement = null;
+						string basicReplacement = basicRoleReplacements[snippet2replacefactRoleIter2];
+						if (includedRoles.Contains(currentRole))
+						{
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+						}
+						else
+						{
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+						}
+						if ((roleReplacement == null))
+						{
+							roleReplacement = basicReplacement;
+						}
+						roleReplacements[snippet2replacefactRoleIter2] = roleReplacement;
+					}
+					snippet2replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+					writer.Write(snippet2, snippet2replace1, snippet2replace2);
 				}
 			}
 			return true;
@@ -1028,271 +1289,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 						}
 					}
-				}
-			}
-			return true;
-		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
-		{
-			return this.GetVerbalization(writer, beginVerbalization, isNegative);
-		}
-	}
-	/// <summary>
-	///</summary>
-	public partial class ExternalUniquenessConstraint : IVerbalize
-	{
-		/// <summary>
-		///</summary>
-		protected bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
-		{
-			StringBuilder sbTemp = null;
-			IModelErrorOwner errorOwner = (this) as IModelErrorOwner;
-			if ((errorOwner != null))
-			{
-				bool firstElement = true;
-				foreach (ModelError error in errorOwner.ErrorCollection)
-				{
-					if (firstElement)
-					{
-						firstElement = false;
-						beginVerbalization(VerbalizationContent.ErrorReport);
-					}
-					else
-					{
-						writer.WriteLine();
-					}
-					writer.Write(error.Name);
-				}
-				if (!(firstElement))
-				{
-					return false;
-				}
-			}
-			VerbalizationSets snippets = VerbalizationSets.Default;
-			bool isDeontic = false;
-			FactType parentFact;
-			RoleMoveableCollection factRoles;
-			int factArity;
-			ReadingOrderMoveableCollection allReadingOrders;
-			RoleMoveableCollection allConstraintRoles = this.RoleCollection;
-			FactTypeMoveableCollection allFacts = this.FactTypeCollection;
-			int allFactsCount = allFacts.Count;
-			string[][] allBasicRoleReplacements = new string[allFactsCount][];
-			int minFactArity = int.MaxValue;
-			int maxFactArity = int.MinValue;
-			int iFact = 0;
-			for (; (iFact < allFactsCount); iFact = (iFact + 1))
-			{
-				FactType currentFact = allFacts[iFact];
-				if ((currentFact.ReadingOrderCollection.Count == 0))
-				{
-					return false;
-				}
-				factRoles = currentFact.RoleCollection;
-				factArity = factRoles.Count;
-				if ((factArity < minFactArity))
-				{
-					minFactArity = factArity;
-				}
-				if ((factArity > maxFactArity))
-				{
-					maxFactArity = factArity;
-				}
-				string[] basicRoleReplacements = new string[factArity];
-				int i = 0;
-				for (; (i < factArity); i = (i + 1))
-				{
-					ObjectType rolePlayer = factRoles[i].RolePlayer;
-					string basicReplacement;
-					if ((rolePlayer != null))
-					{
-						basicReplacement = rolePlayer.Name;
-					}
-					else
-					{
-						basicReplacement = ("Role" + ((i + 1)).ToString(writer.FormatProvider));
-					}
-					basicRoleReplacements[i] = basicReplacement;
-				}
-				allBasicRoleReplacements[iFact] = basicRoleReplacements;
-			}
-			int constraintRoleArity = allConstraintRoles.Count;
-			ReadingOrder[] allConstraintRoleReadingOrders = new ReadingOrder[constraintRoleArity];
-			string[] roleReplacements = new string[maxFactArity];
-			ReadingOrder readingOrder;
-			if ((!(isNegative) 
-						&& ((minFactArity >= 2) 
-						&& (maxFactArity <= 2))))
-			{
-				bool missingReading = false;
-				int readingMatchIndex = 0;
-				for (; (!(missingReading) 
-							&& (readingMatchIndex < constraintRoleArity)); readingMatchIndex = (readingMatchIndex + 1))
-				{
-					Role primaryRole = allConstraintRoles[readingMatchIndex];
-					parentFact = primaryRole.FactType;
-					factRoles = parentFact.RoleCollection;
-					allReadingOrders = parentFact.ReadingOrderCollection;
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, primaryRole, null, true, true, factRoles, false);
-					if ((readingOrder == null))
-					{
-						missingReading = true;
-					}
-					else
-					{
-						allConstraintRoleReadingOrders[readingMatchIndex] = readingOrder;
-					}
-				}
-				if (!(missingReading))
-				{
-					beginVerbalization(VerbalizationContent.Normal);
-					string snippet1 = snippets.GetSnippet(VerbalizationTextSnippetType.ForEachQuantifier, isDeontic, isNegative);
-					string snippet1replace1 = null;
-					if ((sbTemp == null))
-					{
-						sbTemp = new StringBuilder();
-					}
-					else
-					{
-						sbTemp.Length = 0;
-					}
-					int snippet1replaceroleIter1 = 0;
-					for (; (snippet1replaceroleIter1 < constraintRoleArity); snippet1replaceroleIter1 = (snippet1replaceroleIter1 + 1))
-					{
-						Role primaryRole = allConstraintRoles[snippet1replaceroleIter1];
-						parentFact = primaryRole.FactType;
-						factRoles = parentFact.RoleCollection;
-						factArity = factRoles.Count;
-						allReadingOrders = parentFact.ReadingOrderCollection;
-						int currentFactIndex = allFacts.IndexOf(parentFact);
-						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
-						VerbalizationTextSnippetType listSnippet;
-						if ((snippet1replaceroleIter1 == 0))
-						{
-							listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
-						}
-						else
-						{
-							if ((snippet1replaceroleIter1 
-										== (constraintRoleArity - 1)))
-							{
-								if ((snippet1replaceroleIter1 == 1))
-								{
-									listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
-								}
-								else
-								{
-									listSnippet = VerbalizationTextSnippetType.SimpleListFinalSeparator;
-								}
-							}
-							else
-							{
-								listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
-							}
-						}
-						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(allConstraintRoles[snippet1replaceroleIter1])]);
-						if ((snippet1replaceroleIter1 
-									== (constraintRoleArity - 1)))
-						{
-							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
-						}
-					}
-					snippet1replace1 = sbTemp.ToString();
-					string snippet1replace2 = null;
-					if ((sbTemp == null))
-					{
-						sbTemp = new StringBuilder();
-					}
-					else
-					{
-						sbTemp.Length = 0;
-					}
-					int snippet1replaceroleIter2 = 0;
-					bool snippet1replaceIsFirstPass2 = true;
-					for (; (snippet1replaceroleIter2 < constraintRoleArity); snippet1replaceroleIter2 = (snippet1replaceroleIter2 + 1))
-					{
-						Role primaryRole = allConstraintRoles[snippet1replaceroleIter2];
-						parentFact = primaryRole.FactType;
-						factRoles = parentFact.RoleCollection;
-						factArity = factRoles.Count;
-						allReadingOrders = parentFact.ReadingOrderCollection;
-						int currentFactIndex = allFacts.IndexOf(parentFact);
-						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
-						VerbalizationTextSnippetType listSnippet;
-						if ((snippet1replaceroleIter2 == 0))
-						{
-							listSnippet = VerbalizationTextSnippetType.IndentedListOpen;
-						}
-						else
-						{
-							if ((snippet1replaceroleIter2 
-										== (constraintRoleArity - 1)))
-							{
-								if ((snippet1replaceroleIter2 == 1))
-								{
-									listSnippet = VerbalizationTextSnippetType.IndentedListPairSeparator;
-								}
-								else
-								{
-									listSnippet = VerbalizationTextSnippetType.IndentedListFinalSeparator;
-								}
-							}
-							else
-							{
-								listSnippet = VerbalizationTextSnippetType.IndentedListSeparator;
-							}
-						}
-						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						snippet1replace2 = null;
-						readingOrder = allConstraintRoleReadingOrders[currentFactIndex];
-						int snippet1replacefactRoleIter2 = 0;
-						for (; (snippet1replacefactRoleIter2 < factArity); snippet1replacefactRoleIter2 = (snippet1replacefactRoleIter2 + 1))
-						{
-							Role currentRole = factRoles[snippet1replacefactRoleIter2];
-							string roleReplacement = null;
-							string basicReplacement = basicRoleReplacements[snippet1replacefactRoleIter2];
-							if (((currentRole != primaryRole) 
-										&& snippet1replaceIsFirstPass2))
-							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.AtMostOneQuantifier, isDeontic, isNegative), basicReplacement);
-							}
-							else
-							{
-								if ((currentRole != primaryRole))
-								{
-									roleReplacement = "";
-								}
-								else
-								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
-								}
-							}
-							if ((roleReplacement == null))
-							{
-								roleReplacement = basicReplacement;
-							}
-							roleReplacements[snippet1replacefactRoleIter2] = roleReplacement;
-						}
-						snippet1replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
-						sbTemp.Append(snippet1replace2);
-						if ((snippet1replaceroleIter2 
-									== (constraintRoleArity - 1)))
-						{
-							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedListClose, isDeontic, isNegative));
-						}
-						snippet1replaceIsFirstPass2 = false;
-					}
-					snippet1replace2 = sbTemp.ToString();
-					writer.Write(snippet1, snippet1replace1, snippet1replace2);
-				}
-			}
-			else
-			{
-				if ((isNegative 
-							&& ((minFactArity >= 2) 
-							&& (maxFactArity <= 2))))
-				{
 				}
 			}
 			return true;
