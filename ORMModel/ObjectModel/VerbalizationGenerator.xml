@@ -262,22 +262,24 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-			<Constraint type="ExternalUniquenessConstraint" patternGroup="SingleColumnExternalConstraint">
-				<ConstrainedRoles sign="+" minFactArity="2" maxFactArity="2">
-					<ConditionalReading>
-						<ReadingChoice match="RequireAllNonPrimaryLeadReadingNoForwardText">
-							<Quantifier type="ForEachQuantifier">
-								<IterateRoles match="singleColumnConstraintRoles" listStyle="SimpleList"/>
-								<IterateRoles match="singleColumnConstraintRoles" listStyle="IndentedList">
-									<Fact readingChoice="Conditional">
-										<PredicateReplacement match="excluded" pass="first">
-											<Quantifier type="AtMostOneQuantifier"/>
+			<!-- Start External Uniqueness Constraint--><!--
+			- --><!-- Positive Reading --><!--
+			- <Constraint type="ExternalUniquenessConstraint" patternGroup="SingleColumnExternalConstraint">
+				- <ConstrainedRoles sign="+" minFactArity="2" maxFactArity="2">
+					- <ConditionalReading>
+						- <ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
+							- <Quantifier type="ForEachQuantifier">
+								<IterateRoles match="singleColumnConstraintRoles" listStyle="SimpleList" />
+								- <IterateRoles match="singleColumnConstraintRoles" listStyle="IndentedList">
+									- <Fact readingChoice="Conditional">
+										- <PredicateReplacement match="excluded" pass="first">
+											<Quantifier type="AtMostOneQuantifier" />
 										</PredicateReplacement>
-										<PredicateReplacement match="excluded">
-											<Quantifier type="null"/>
+										- <PredicateReplacement match="excluded">
+											<Quantifier type="null" />
 										</PredicateReplacement>
-										<PredicateReplacement>
-											<Quantifier type="ImpersonalPronoun"/>
+										- <PredicateReplacement>
+											<Quantifier type="ImpersonalPronoun" />
 										</PredicateReplacement>
 									</Fact>
 								</IterateRoles>
@@ -285,9 +287,32 @@
 						</ReadingChoice>
 					</ConditionalReading>
 				</ConstrainedRoles>
-				<ConstrainedRoles sign="-" minFactArity="2" maxFactArity="2">
+				- --><!-- Negative Reading for External Uniqueness Constraint--><!--
+				- <ConstrainedRoles sign="-" minFactArity="2" maxFactArity="2">
+					- <ConditionalReading>
+						- <ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
+							- <Quantifier type="ModalPossibilityOperator">
+								<IterateRoles match="singleColumnConstraintRoles" listStyle="SimpleList" />
+								- <Fact readingChoice="Conditional">
+									- <Predicate Replacement="" match="excluded">
+										<Quantifier type="MoreThanOneQuantifier" />
+									</Predicate>
+									- <Predicate>
+										<Quantifier type="IdentityReferenceQuantifier" />
+									</Predicate>
+									- <Predicate>
+										<Quantifier type="SimpleListPairSeparator" />
+									</Predicate>
+									- <Predicate>
+										<Quantifier type="IdentityReferenceQuantifier" />
+									</Predicate>
+								</Fact>
+							</Quantifier>
+						</ReadingChoice>
+					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-		</Constraints>
+			- --><!-- End External Uniqueness Constraint  -->
+  </Constraints>
 	</Constructs>
 </Root>
