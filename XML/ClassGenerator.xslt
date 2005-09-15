@@ -861,6 +861,9 @@
 			<xsl:when test="$tagName='RowIdOtherDataType' or $tagName='ObjectIdOtherDataType'">
 				<DataType dataTypeName="UInt32" dataTypeQualifier="System"/>
 			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message terminate="yes">Could not map DataType.</xsl:message>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
@@ -930,6 +933,19 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:for-each>
+	</xsl:template>
+
+	<!-- Helper template to get a PLiX Value element -->
+	<xsl:template name="GetHexValue">
+		<xsl:param name="Position" select="position()"/>
+		<plx:Value type="Hex">
+			<xsl:attribute name="data">
+				<xsl:value-of select="substring('1248',(($Position - 1) mod 4) + 1, 1)"/>
+				<xsl:if test="$Position &gt; 4">
+					<xsl:value-of select="substring('000000000000000000000000000000000000000000000000000000000000000',1, floor(($Position - 1) div 4))"/>
+				</xsl:if>
+			</xsl:attribute>
+		</plx:Value>
 	</xsl:template>
 
 	<!-- UNDONE: It would be nice to have all of this information in the AbsorbedObjects -->
@@ -1013,6 +1029,95 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</Parameter>
+	</xsl:template>
+
+	<xsl:template name="GenerateErrorEnums">
+		<xsl:param name="AbsorbedObjects"/>
+		<xsl:for-each select="$AbsorbedObjects/../ao:Object">
+			<xsl:if test="count(child::*[@mandatory='relaxed']) &gt; 0">
+				<xsl:variable name="relaxedObjectsFragment">
+					<xsl:for-each select="child::ao:RelatedObject[@mandatory='relaxed']">
+						<elem oppositeRoleName="{@oppositeRoleName}"/>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:variable name="relaxedObjects" select="msxsl:node-set($relaxedObjectsFragment)/child::*"/>
+				<plx:Enum visibility="Public" name="{@name}Errors">
+					<plx:Attribute dataTypeName="Flags"/>
+					<plx:EnumItem name="None">
+						<plx:Initialize>
+							<plx:Value data="0" type="I4"/>
+						</plx:Initialize>
+					</plx:EnumItem>
+					<xsl:for-each select="$relaxedObjects">
+						<plx:EnumItem name="{@oppositeRoleName}Required">
+							<plx:Initialize>
+								<xsl:call-template name="GetHexValue"/>
+							</plx:Initialize>
+						</plx:EnumItem>
+					</xsl:for-each>
+				</plx:Enum>
+			</xsl:if>
+		</xsl:for-each>
+	</xsl:template>
+	<xsl:template name="GenerateErrorGetter">
+		<xsl:param name="Properties"/>
+
+		<!--<xsl:variable name="oppositeRoleNameFragment" select="child::*/@oppositeRoleName"/>-->
+		<xsl:if test="count(child::*[@mandatory='relaxed']) &gt; 0">
+			<xsl:variable name="returnDataType" select="concat(@name,'Errors')"/>
+			<plx:Property visibility="Public" name="ErrorState">
+				<plx:Param name="" type="RetVal" dataTypeName="{$returnDataType}"/>
+				<plx:Get>
+					<plx:Variable name="retVal" dataTypeName="{$returnDataType}">
+						<plx:Initialize>
+							<plx:CallStatic type="Field" dataTypeName="{$returnDataType}" name="None"/>
+						</plx:Initialize>
+					</plx:Variable>
+					<xsl:for-each select="$Properties">
+						<xsl:choose>
+							<xsl:when test="@mandatory = 'relaxed'">
+								<plx:Condition>
+									<plx:Test>
+										<plx:Operator type="Equality">
+											<plx:Left>
+												<plx:CallInstance name="{@name}" type="Property">
+													<plx:CallObject>
+														<plx:ThisKeyword/>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:Left>
+											<plx:Right>
+												<plx:NullObjectKeyword/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Test>
+									<plx:Body>
+										<plx:Operator type="Assign">
+											<plx:Left>
+												<plx:Value type="Local" data="retVal"/>
+											</plx:Left>
+											<plx:Right>
+												<plx:Operator type="BitwiseOr">
+													<plx:Left>
+														<plx:Value type="Local" data="retVal"/>
+													</plx:Left>
+													<plx:Right>
+														<plx:CallStatic dataTypeName="{$returnDataType}" name="{@name}Required" type="Field"/>
+													</plx:Right>
+												</plx:Operator>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Body>
+								</plx:Condition>
+							</xsl:when>
+						</xsl:choose>
+					</xsl:for-each>
+					<plx:Return>
+						<plx:Value type="Local" data="retVal"/>
+					</plx:Return>
+				</plx:Get>
+			</plx:Property>
+		</xsl:if>
 	</xsl:template>
 	
 	<xsl:template name="GenerateAbstractClass">
@@ -1625,8 +1730,9 @@
 								<xsl:value-of select="true()"/>
 							</xsl:attribute>
 							<DataType dataTypeName="ICollection">
-								<xsl:copy-of select="$dataType/@*"/>
-								<xsl:copy-of select="$dataType/child::*"/>
+								<plx:PassTypeParam>
+									<xsl:copy-of select="$dataType/@*"/>
+								</plx:PassTypeParam>
 							</DataType>
 						</xsl:when>
 						<xsl:otherwise>
@@ -1643,104 +1749,5 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template name="GenerateErrorEnums">
-		<xsl:param name="AbsorbedObjects"/>
-		<xsl:for-each select="$AbsorbedObjects/../ao:Object">
-			<xsl:if test="count(child::*[@mandatory='relaxed']) &gt; 0">
-				<xsl:variable name="relaxedObjectsFragment">
-					<xsl:for-each select="child::ao:RelatedObject[@mandatory='relaxed']">
-						<elem oppositeRoleName="{@oppositeRoleName}"/>
-					</xsl:for-each>
-				</xsl:variable>
-				<xsl:variable name="relaxedObjects" select="msxsl:node-set($relaxedObjectsFragment)/child::*"/>
-				<plx:Enum visibility="Public" name="{@name}Errors">
-					<plx:Attribute dataTypeName="Flags"/>
-					<plx:EnumItem name="None">
-						<plx:Initialize>
-							<plx:Value data="0" type="I4"/>
-						</plx:Initialize>
-					</plx:EnumItem>
-					<xsl:for-each select="$relaxedObjects">
-						<plx:EnumItem name="{@oppositeRoleName}Required">
-							<plx:Initialize>
-								<xsl:call-template name="GetHexValue"/>
-							</plx:Initialize>
-						</plx:EnumItem>
-					</xsl:for-each>
-				</plx:Enum>
-			</xsl:if>
-		</xsl:for-each>
-	</xsl:template>
-	<!-- Helper template to get a PLiX Value element -->
-	<xsl:template name="GetHexValue">
-		<xsl:param name="Position" select="position()"/>
-		<plx:Value type="Hex">
-			<xsl:attribute name="data">
-				<xsl:value-of select="substring('1248',(($Position - 1) mod 4) + 1, 1)"/>
-				<xsl:if test="$Position &gt; 4">
-					<xsl:value-of select="substring('000000000000000000000000000000000000000000000000000000000000000',1, floor(($Position - 1) div 4))"/>
-				</xsl:if>
-			</xsl:attribute>
-		</plx:Value>
-	</xsl:template>
-	<xsl:template name="GenerateErrorGetter">
-		<xsl:param name="Properties"/>
-
-		<!--<xsl:variable name="oppositeRoleNameFragment" select="child::*/@oppositeRoleName"/>-->
-		<xsl:if test="count(child::*[@mandatory='relaxed']) &gt; 0">
-			<xsl:variable name="returnDataType" select="concat(@name,'Errors')"/>
-			<plx:Property visibility="Public" name="ErrorState">
-				<plx:Param name="" type="RetVal" dataTypeName="{$returnDataType}"/>
-				<plx:Get>
-					<plx:Variable name="retVal" dataTypeName="{$returnDataType}">
-						<plx:Initialize>
-							<plx:CallStatic type="Field" dataTypeName="{$returnDataType}" name="None"/>
-						</plx:Initialize>
-					</plx:Variable>
-					<xsl:for-each select="$Properties">
-						<xsl:choose>
-							<xsl:when test="@mandatory = 'relaxed'">
-								<plx:Condition>
-									<plx:Test>
-										<plx:Operator type="Equality">
-											<plx:Left>
-												<plx:CallInstance name="{@name}" type="Property">
-													<plx:CallObject>
-														<plx:ThisKeyword/>
-													</plx:CallObject>
-												</plx:CallInstance>
-											</plx:Left>
-											<plx:Right>
-												<plx:NullObjectKeyword/>
-											</plx:Right>
-										</plx:Operator>
-									</plx:Test>
-									<plx:Body>
-										<plx:Operator type="Assign">
-											<plx:Left>
-												<plx:Value type="Local" data="retVal"/>
-											</plx:Left>
-											<plx:Right>
-												<plx:Operator type="BitwiseOr">
-													<plx:Left>
-														<plx:Value type="Local" data="retVal"/>
-													</plx:Left>
-													<plx:Right>
-														<plx:CallStatic dataTypeName="{$returnDataType}" name="{@name}Required" type="Field"/>
-													</plx:Right>
-												</plx:Operator>
-											</plx:Right>
-										</plx:Operator>
-									</plx:Body>
-								</plx:Condition>
-							</xsl:when>
-						</xsl:choose>
-					</xsl:for-each>
-					<plx:Return>
-						<plx:Value type="Local" data="retVal"/>
-					</plx:Return>
-				</plx:Get>
-			</plx:Property>
-		</xsl:if>
-	</xsl:template>
+	
 </xsl:stylesheet>
