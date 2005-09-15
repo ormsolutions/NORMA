@@ -1179,7 +1179,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				if ((isNegative 
+				if ((!(isNegative) 
 							&& (maxFactArity <= 2)))
 				{
 					bool missingReading = false;
@@ -1191,7 +1191,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, primaryRole, null, false, false, factRoles, false);
+						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, primaryRole, null, false, true, factRoles, false);
 						if ((readingOrder == null))
 						{
 							missingReading = true;
@@ -1287,7 +1287,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									{
 										if ((primaryRole == currentRole))
 										{
-											roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+											roleReplacement = "";
 										}
 										else
 										{

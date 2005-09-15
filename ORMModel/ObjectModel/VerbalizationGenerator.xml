@@ -305,9 +305,9 @@
 						</IterateRoles>
 					</Quantifier>
 				</ConstrainedRoles>
-				<ConstrainedRoles sign="-" maxFactArity="2">
+				<ConstrainedRoles sign="+" maxFactArity="2">
 					<ConditionalReading>
-						<ReadingChoice match="RequireAllLeadReading">
+						<ReadingChoice match="RequireAllLeadReadingNoForwardText">
 							<CompositeList listStyle="IndentedOrList">
 								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
 									<Fact readingChoice="Conditional">
@@ -315,7 +315,7 @@
 											<Quantifier type="UniversalQuantifier"/>
 										</PredicateReplacement>
 										<PredicateReplacement match="primary">
-											<Quantifier type="ImpersonalPronoun"/>
+											<Quantifier type="null"/>
 										</PredicateReplacement>
 										<PredicateReplacement>
 											<Quantifier type="ExistentialQuantifier"/>
