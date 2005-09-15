@@ -5,8 +5,12 @@
 			<FormalItems>
 				<FormalItem type="ObjectType">
 					<!-- All object type names are wrapped with this style automatically.
-						 The objectType class should not be used in other quantifiers. -->
+						 The objectType class should not be used in other quantifiers because
+						 it will interfere with hyphen-binding and possible other features. -->
 					<Form style="Basic"><![CDATA[<span class="objectType">{0}</span>]]></Form>
+				</FormalItem>
+				<FormalItem type="ObjectTypeWithSubscript">
+					<Form style="Basic"><![CDATA[<span class="objectType">{0}<sub>{1}</sub></span>]]></Form>
 				</FormalItem>
 				<FormalItem type="UniversalQuantifier">
 					<Form style="Basic"><![CDATA[<span class="quantifier">each</span> {0}]]></Form>
@@ -129,7 +133,13 @@
 	<Constructs>
 		<Constraints>
 			<Constraint type="InternalUniquenessConstraint" patternGroup="InternalConstraint">
-				<ConstrainedRoles span="all" factArity="2">
+				<ConstrainedRoles span="all">
+					<!-- UNDONE: Subscripting requirements specify on for binary, off for n-ary. Currently
+						 they are always on. We need to see if there are any verbalizations where subscripts are
+						 required in some places but not others before designing the xml and generating from it.
+						 If subscripts are required in all places in any verbalization pattern that uses them, then
+						 the following would be a potential tag for this location (we'd have subscripts off by default). -->
+					<!--<EnableSubscripts minFactArity="3"/>-->
 					<Quantifier type="EachInstanceQuantifier">
 						<Fact/>
 					</Quantifier>
@@ -173,11 +183,6 @@
 							</Quantifier>
 						</ReadingChoice>
 					</ConditionalReading>
-				</ConstrainedRoles>
-				<ConstrainedRoles span="all">
-					<Quantifier type="EachInstanceQuantifier">
-						<Fact/>
-					</Quantifier>
 				</ConstrainedRoles>
 				<ConstrainedRoles>
 					<ConditionalReading>
@@ -302,7 +307,7 @@
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="-" maxFactArity="2">
 					<ConditionalReading>
-						<ReadingChoice match="RequireAllPrimaryLeadReading">
+						<ReadingChoice match="RequireAllLeadReading">
 							<CompositeList listStyle="IndentedOrList">
 								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
 									<Fact readingChoice="Conditional">
@@ -357,7 +362,7 @@
 				<!-- Positive Reading -->
 				<ConstrainedRoles sign="+" minFactArity="2" maxFactArity="2">
 					<ConditionalReading>
-						<ReadingChoice match="RequireAllNonPrimaryLeadReadingNoForwardText">
+						<ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
 							<Quantifier type="ForEachCompactQuantifier">
 								<IterateRoles match="singleColumnConstraintRoles" listStyle="SimpleList" />
 								<IterateRoles match="singleColumnConstraintRoles" listStyle="IndentedList">
@@ -380,7 +385,7 @@
 				<!-- Negative Reading for External Uniqueness Constraint-->
 				<ConstrainedRoles sign="-" minFactArity="2" maxFactArity="2">
 					<ConditionalReading>
-						<ReadingChoice match="RequireAllNonPrimaryLeadReadingNoForwardText">
+						<ReadingChoice match="RequireAllNonLeadReadingNoForwardText">
 							<Quantifier type="ModalPossibilityOperator">
 								<IterateRoles match="singleColumnConstraintRoles" listStyle="SimpleList">
 									<Fact readingChoice="Conditional">

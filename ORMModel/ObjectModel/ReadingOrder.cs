@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.Modeling;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
-	public partial class ReadingOrder
+	public partial class ReadingOrder : IRedirectVerbalization
 	{
 		private Reading primaryReading;
 
@@ -317,5 +317,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region IRedirectVerbalization Implementation
+		/// <summary>
+		/// Implements IRedirectVerbalization.SurrogateVerbalizer by deferring to the parent fact
+		/// </summary>
+		protected IVerbalize SurrogateVerbalizer
+		{
+			get
+			{
+				return FactType as IVerbalize;
+			}
+		}
+		IVerbalize IRedirectVerbalization.SurrogateVerbalizer
+		{
+			get
+			{
+				return SurrogateVerbalizer;
+			}
+		}
+		#endregion // IRedirectVerbalization Implementation
 	}
 }

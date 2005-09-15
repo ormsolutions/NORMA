@@ -770,8 +770,6 @@
 					</plx:Initialize>
 				</plx:Variable>
 				<plx:Variable name="basicReplacement" dataTypeName="String" dataTypeQualifier="System"/>
-				<!--UNDONE: Ring situations-->
-				<!--UNDONE: Localize or pull the role name from the snippet set-->
 				<plx:Condition>
 					<plx:Test>
 						<plx:Operator type="IdentityInequality">
@@ -784,34 +782,267 @@
 						</plx:Operator>
 					</plx:Test>
 					<plx:Body>
-						<plx:Operator type="Assign">
-							<plx:Left>
-								<plx:Value type="Local" data="basicReplacement"/>
-							</plx:Left>
-							<plx:Right>
-								<plx:CallStatic name="Format" dataTypeName="String" dataTypeQualifier="System">
-									<plx:PassParam>
-										<plx:CallInstance name="FormatProvider" type="Property">
-											<plx:CallObject>
-												<plx:Value type="Parameter" data="writer"/>
-											</plx:CallObject>
-										</plx:CallInstance>
-									</plx:PassParam>
-									<plx:PassParam>
-										<xsl:call-template name="SnippetFor">
-											<xsl:with-param name="SnippetType" select="'ObjectType'"/>
-										</xsl:call-template>
-									</plx:PassParam>
-									<plx:PassParam>
-										<plx:CallInstance name="Name" type="Property">
-											<plx:CallObject>
+						<!-- See if we need a subscript by comparing to other role players before and after this one -->
+						<plx:Variable name="j" dataTypeName="Int32" dataTypeQualifier="System">
+							<plx:Initialize>
+								<plx:Value type="I4" data="0"/>
+							</plx:Initialize>
+						</plx:Variable>
+						<plx:Variable name="subscript" dataTypeName="Int32" dataTypeQualifier="System">
+							<plx:Initialize>
+								<plx:Value type="I4" data="0"/>
+							</plx:Initialize>
+						</plx:Variable>
+						<plx:Variable name="useSubscript" dataTypeName="Boolean" dataTypeQualifier="System">
+							<plx:Initialize>
+								<plx:FalseKeyword/>
+							</plx:Initialize>
+						</plx:Variable>
+						<plx:Loop>
+							<plx:LoopTest>
+								<plx:Operator type="LessThan">
+									<plx:Left>
+										<plx:Value type="Local" data="j"/>
+									</plx:Left>
+									<plx:Right>
+										<plx:Value type="Local" data="i"/>
+									</plx:Right>
+								</plx:Operator>
+							</plx:LoopTest>
+							<plx:LoopIncrement>
+								<plx:Operator type="Assign">
+									<plx:Left>
+										<plx:Value type="Local" data="j"/>
+									</plx:Left>
+									<plx:Right>
+										<plx:Operator type="Add">
+											<plx:Left>
+												<plx:Value type="Local" data="j"/>
+											</plx:Left>
+											<plx:Right>
+												<plx:Value type="I4" data="1"/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Right>
+								</plx:Operator>
+							</plx:LoopIncrement>
+							<plx:Body>
+								<plx:Condition>
+									<plx:Test>
+										<plx:CallStatic name="ReferenceEquals" dataTypeName="Object" dataTypeQualifier="System">
+											<plx:PassParam>
 												<plx:Value type="Local" data="rolePlayer"/>
-											</plx:CallObject>
-										</plx:CallInstance>
-									</plx:PassParam>
-								</plx:CallStatic>
-							</plx:Right>
-						</plx:Operator>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:CallInstance name="RolePlayer" type="Property">
+													<plx:CallObject>
+														<plx:CallInstance name="" type="Indexer">
+															<plx:CallObject>
+																<plx:Value type="Local" data="factRoles"/>
+															</plx:CallObject>
+															<plx:PassParam>
+																<plx:Value type="Local" data="j"/>
+															</plx:PassParam>
+														</plx:CallInstance>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:PassParam>
+										</plx:CallStatic>
+									</plx:Test>
+									<plx:Body>
+										<plx:Operator type="Assign">
+											<plx:Left>
+												<plx:Value type="Local" data="useSubscript"/>
+											</plx:Left>
+											<plx:Right>
+												<plx:TrueKeyword/>
+											</plx:Right>
+										</plx:Operator>
+										<plx:Operator type="Assign">
+											<plx:Left>
+												<plx:Value type="Local" data="subscript"/>
+											</plx:Left>
+											<plx:Right>
+												<plx:Operator type="Add">
+													<plx:Left>
+														<plx:Value type="Local" data="subscript"/>
+													</plx:Left>
+													<plx:Right>
+														<plx:Value type="I4" data="1"/>
+													</plx:Right>
+												</plx:Operator>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Body>
+								</plx:Condition>
+							</plx:Body>
+						</plx:Loop>
+						<plx:Loop>
+							<plx:Initialize>
+								<plx:Operator type="Assign">
+									<plx:Left>
+										<plx:Value type="Local" data="j"/>
+									</plx:Left>
+									<plx:Right>
+										<plx:Operator type="Add">
+											<plx:Left>
+												<plx:Value type="Local" data="i"/>
+											</plx:Left>
+											<plx:Right>
+												<plx:Value type="I4" data="1"/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Initialize>
+							<plx:LoopTest>
+								<plx:Operator type="BooleanAnd">
+									<plx:Left>
+										<plx:Operator type="BooleanNot">
+											<plx:Value type="Local" data="useSubscript"/>
+										</plx:Operator>
+									</plx:Left>
+									<plx:Right>
+										<plx:Operator type="LessThan">
+											<plx:Left>
+												<plx:Value type="Local" data="j"/>
+											</plx:Left>
+											<plx:Right>
+												<plx:Value type="Local" data="factArity"/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Right>
+								</plx:Operator>
+							</plx:LoopTest>
+							<plx:LoopIncrement>
+								<plx:Operator type="Assign">
+									<plx:Left>
+										<plx:Value type="Local" data="j"/>
+									</plx:Left>
+									<plx:Right>
+										<plx:Operator type="Add">
+											<plx:Left>
+												<plx:Value type="Local" data="j"/>
+											</plx:Left>
+											<plx:Right>
+												<plx:Value type="I4" data="1"/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Right>
+								</plx:Operator>
+							</plx:LoopIncrement>
+							<plx:Body>
+								<plx:Condition>
+									<plx:Test>
+										<plx:CallStatic name="ReferenceEquals" dataTypeName="Object" dataTypeQualifier="System">
+											<plx:PassParam>
+												<plx:Value type="Local" data="rolePlayer"/>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:CallInstance name="RolePlayer" type="Property">
+													<plx:CallObject>
+														<plx:CallInstance name="" type="Indexer">
+															<plx:CallObject>
+																<plx:Value type="Local" data="factRoles"/>
+															</plx:CallObject>
+															<plx:PassParam>
+																<plx:Value type="Local" data="j"/>
+															</plx:PassParam>
+														</plx:CallInstance>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:PassParam>
+										</plx:CallStatic>
+									</plx:Test>
+									<plx:Body>
+										<plx:Operator type="Assign">
+											<plx:Left>
+												<plx:Value type="Local" data="useSubscript"/>
+											</plx:Left>
+											<plx:Right>
+												<plx:TrueKeyword/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Body>
+								</plx:Condition>
+							</plx:Body>
+						</plx:Loop>
+						<!-- End of subscript generation -->
+						<plx:Condition>
+							<plx:Test>
+								<plx:Value type="Local" data="useSubscript"/>
+							</plx:Test>
+							<plx:Body>
+								<plx:Operator type="Assign">
+									<plx:Left>
+										<plx:Value type="Local" data="basicReplacement"/>
+									</plx:Left>
+									<plx:Right>
+										<plx:CallStatic name="Format" dataTypeName="String" dataTypeQualifier="System">
+											<plx:PassParam>
+												<plx:CallInstance name="FormatProvider" type="Property">
+													<plx:CallObject>
+														<plx:Value type="Parameter" data="writer"/>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:PassParam>
+											<plx:PassParam>
+												<xsl:call-template name="SnippetFor">
+													<xsl:with-param name="SnippetType" select="'ObjectTypeWithSubscript'"/>
+												</xsl:call-template>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:CallInstance name="Name" type="Property">
+													<plx:CallObject>
+														<plx:Value type="Local" data="rolePlayer"/>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:Operator type="Add">
+													<plx:Left>
+														<plx:Value type="Local" data="subscript"/>
+													</plx:Left>
+													<plx:Right>
+														<plx:Value type="I4" data="1"/>
+													</plx:Right>
+												</plx:Operator>
+											</plx:PassParam>
+										</plx:CallStatic>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Body>
+							<plx:Alternate>
+								<plx:Operator type="Assign">
+									<plx:Left>
+										<plx:Value type="Local" data="basicReplacement"/>
+									</plx:Left>
+									<plx:Right>
+										<plx:CallStatic name="Format" dataTypeName="String" dataTypeQualifier="System">
+											<plx:PassParam>
+												<plx:CallInstance name="FormatProvider" type="Property">
+													<plx:CallObject>
+														<plx:Value type="Parameter" data="writer"/>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:PassParam>
+											<plx:PassParam>
+												<xsl:call-template name="SnippetFor">
+													<xsl:with-param name="SnippetType" select="'ObjectType'"/>
+												</xsl:call-template>
+											</plx:PassParam>
+											<plx:PassParam>
+												<plx:CallInstance name="Name" type="Property">
+													<plx:CallObject>
+														<plx:Value type="Local" data="rolePlayer"/>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:PassParam>
+										</plx:CallStatic>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Alternate>
+						</plx:Condition>
 					</plx:Body>
 					<plx:Alternate>
 						<plx:Operator type="Assign">
@@ -2763,7 +2994,7 @@
 							<plx:PassParam>
 								<!-- The matchAnyLeadRole param -->
 								<xsl:choose>
-									<xsl:when test="not($PatternGroup='SingleColumneExternalConstraint') and contains($ReadingChoice,'LeadReading') and not(contains($ReadingChoice,'PrimaryLeadReading'))">
+									<xsl:when test="not($PatternGroup='SingleColumnExternalConstraint') and contains($ReadingChoice,'LeadReading') and not(contains($ReadingChoice,'PrimaryLeadReading'))">
 										<plx:Value type="Local" data="includedRoles"/>
 									</xsl:when>
 									<xsl:otherwise>

@@ -24,6 +24,8 @@ namespace Neumont.Tools.ORM.Shell
 		private const string HtmlNewLine = "<br/>\n";
 		private const string HtmlIncreaseIndent = @"<span class=""indent"">";
 		private const string HtmlDecreaseIndent = @"</span>";
+		private const string HtmlOpenNewVerbalization = @"<p class=""verbalization"">";
+		private const string HtmlCloseNewVerbalization = @"</p>";
 		private const string HtmlErrorTagOpen = @"<span class=""error"">";
 		private const string HtmlErrorTagClose = @"</span>";
 		private const string HtmlHeader = @"
@@ -273,7 +275,7 @@ namespace Neumont.Tools.ORM.Shell
 								}
 
 								// write open tag for new verbalization
-								writer.Write(@"<p class=""verbalization"">");
+								writer.Write(HtmlOpenNewVerbalization);
 
 								localFirstCallPending = false;
 								firstWrite = false;
@@ -319,7 +321,7 @@ namespace Neumont.Tools.ORM.Shell
 			// close the opening tag for the new verbalization
 			if (!firstWrite)
 			{
-				writer.Write("</p>");
+				writer.Write(HtmlCloseNewVerbalization);
 			}
 			firstCallPending = localFirstCallPending;
 		}
