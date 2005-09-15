@@ -633,6 +633,42 @@ namespace Neumont.Tools.ORM
 		}
 		/// <summary>
 		///</summary>
+		public static string ModelErrorRoleValueRangeMaxValueMismatchError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.Message2");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorRoleValueRangeMinValueMismatchError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.Message2");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorValueRangeMaxValueMismatchError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.Message");
+			}
+		}
+		/// <summary>
+		///</summary>
+		public static string ModelErrorValueRangeMinValueMismatchError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.Message");
+			}
+		}
+		/// <summary>
+		///</summary>
 		public static string ModelExceptionNameAlreadyUsedByModel
 		{
 			get

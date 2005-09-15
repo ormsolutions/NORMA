@@ -750,7 +750,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				Role addedRole = link.RoleCollection;
 				addedRole.VerifyRolePlayerRequiredForRule(null);
-				RenumberRolePlayerRequiredErrors(link.FactType, addedRole);
+				RenumberErrorsWithRoleNumbers(link.FactType, addedRole);
 			}
 		}
 		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
@@ -764,7 +764,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
 				FactType factType = link.FactType;
-				RenumberRolePlayerRequiredErrors(factType, null);
+				RenumberErrorsWithRoleNumbers(factType, null);
 			}
 		}
 		/// <summary>
@@ -774,7 +774,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="factType">The owning factType</param>
 		/// <param name="roleAdded">The added role, or null if a role was removed.</param>
-		private static void RenumberRolePlayerRequiredErrors(FactType factType, Role roleAdded)
+		private static void RenumberErrorsWithRoleNumbers(FactType factType, Role roleAdded)
 		{
 			if (!factType.IsRemoved)
 			{
@@ -790,6 +790,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (error != null)
 						{
 							error.GenerateErrorText();
+						}
+						RoleValueRangeDefinition valueConstraint = currentRole.ValueRangeDefinition;
+						if (valueConstraint != null)
+						{
+							foreach (ValueRange range in valueConstraint.ValueRangeCollection)
+							{
+								MinValueMismatchError minError = range.MinValueMismatchError;
+								if (minError != null)
+								{
+									minError.GenerateErrorText();
+								}
+								MaxValueMismatchError maxError = range.MaxValueMismatchError;
+								if (maxError != null)
+								{
+									maxError.GenerateErrorText();
+								}
+							}
 						}
 					}
 					else if (roleAdded == currentRole)

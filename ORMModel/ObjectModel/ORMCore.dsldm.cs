@@ -233,6 +233,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.ImpliedFactTypeCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.ImpliedFactTypeCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraint.ImpliedEqualityConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraint.ImpliedEqualityConstraintMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint.ImpliedExternalUniquenessConstraintCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint.ImpliedExternalUniquenessConstraintCollectionMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid);
 			#endregion
 		}
 		/// <summary>
@@ -423,6 +425,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError),
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueMismatchError),
+				typeof(Neumont.Tools.ORM.ObjectModel.MinValueMismatchError),
+				typeof(Neumont.Tools.ORM.ObjectModel.MinValueMismatchErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError),
+				typeof(Neumont.Tools.ORM.ObjectModel.MaxValueMismatchErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKind),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKindElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceMode),
@@ -604,8 +611,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraintElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraintElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchErrorElementFactoryCreator),
 
 			};
 			return typeArray;
@@ -789,8 +800,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraint), "ImpliedByObjectification", Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraint.ImpliedByObjectificationMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint), "ImpliedExternalUniquenessConstraintCollection", Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint.ImpliedExternalUniquenessConstraintCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint), "ImpliedByObjectification", Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint.ImpliedByObjectificationMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError), "MaxValueMismatchError", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError), "ValueRange", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "DuplicateNameError", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "InternalConstraintCollection", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.InternalConstraintCollectionMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError), "MinValueMismatchError", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError), "ValueRange", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuid),
 
 			};
 			return typeArray;
@@ -13260,6 +13275,338 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueMismatchError.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.ValueMismatchError")]
+	public abstract partial class ValueMismatchError : Neumont.Tools.ORM.ObjectModel.ModelError
+	{
+		#region ValueMismatchError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "e226c582-3ce1-4e29-9040-25243f9f33f9";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueMismatchError.MetaClassGuidString);
+		#endregion
+
+	}
+	#region ValueMismatchError's Generated Constructor Code
+	public abstract partial class ValueMismatchError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected ValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.MinValueMismatchError.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.MinValueMismatchError")]
+	public  partial class MinValueMismatchError : Neumont.Tools.ORM.ObjectModel.ValueMismatchError
+	{
+		#region MinValueMismatchError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "d5ce5234-63a1-4de8-a2f6-d2ae66197020";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.MinValueMismatchError.MetaClassGuidString);
+		#endregion
+
+		#region ValueRange's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ValueRange ValueRange
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ValueRange;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.ValueRange counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ValueRange;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region MinValueMismatchError's Generated Constructor Code
+	public  partial class MinValueMismatchError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MinValueMismatchError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MinValueMismatchError CreateMinValueMismatchError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateMinValueMismatchError(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MinValueMismatchError CreateAndInitializeMinValueMismatchError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeMinValueMismatchError(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MinValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MinValueMismatchError CreateMinValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (MinValueMismatchError)partition.ElementFactory.CreateElement(typeof(MinValueMismatchError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MinValueMismatchError CreateAndInitializeMinValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (MinValueMismatchError)partition.ElementFactory.CreateElement(typeof(MinValueMismatchError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for MinValueMismatchError
+	/// <summary>
+	/// MinValueMismatchError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.MinValueMismatchError))]
+	public sealed class MinValueMismatchErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MinValueMismatchErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.MinValueMismatchError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static MinValueMismatchErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new MinValueMismatchErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError")]
+	public  partial class MaxValueMismatchError : Neumont.Tools.ORM.ObjectModel.ValueMismatchError
+	{
+		#region MaxValueMismatchError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "daeea7cc-93d4-49fc-ad4b-22159963d7f3";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError.MetaClassGuidString);
+		#endregion
+
+		#region ValueRange's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ValueRange ValueRange
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ValueRange;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.ValueRange counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ValueRange;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region MaxValueMismatchError's Generated Constructor Code
+	public  partial class MaxValueMismatchError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MaxValueMismatchError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MaxValueMismatchError CreateMaxValueMismatchError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateMaxValueMismatchError(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MaxValueMismatchError CreateAndInitializeMaxValueMismatchError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeMaxValueMismatchError(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MaxValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MaxValueMismatchError CreateMaxValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (MaxValueMismatchError)partition.ElementFactory.CreateElement(typeof(MaxValueMismatchError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static MaxValueMismatchError CreateAndInitializeMaxValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (MaxValueMismatchError)partition.ElementFactory.CreateElement(typeof(MaxValueMismatchError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for MaxValueMismatchError
+	/// <summary>
+	/// MaxValueMismatchError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError))]
+	public sealed class MaxValueMismatchErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MaxValueMismatchErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static MaxValueMismatchErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new MaxValueMismatchErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.ReferenceModeKind")]
 	public  partial class ReferenceModeKind : Neumont.Tools.ORM.ObjectModel.ORMNamedElement
 	{
@@ -20305,6 +20652,96 @@ namespace Neumont.Tools.ORM.ObjectModel
 					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuid, value);
 					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid, this);
 					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region MaxValueMismatchError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError MaxValueMismatchError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region MinValueMismatchError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.MinValueMismatchError MinValueMismatchError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.MinValueMismatchError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.MinValueMismatchError counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.MinValueMismatchError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError), newRoles);
 				}
 			}
 		}
@@ -30466,6 +30903,159 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError")]
+	public  partial class ValueRangeHasMaxValueMismatchError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	{
+		#region ValueRangeHasMaxValueMismatchError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "463c130a-b81b-4000-8a77-9b1d3e8ac213";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = ValueRangeHasMaxValueMismatchError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = ValueRangeHasMaxValueMismatchError.MetaClassGuid;
+		#endregion
+
+		#region MaxValueMismatchError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String MaxValueMismatchErrorMetaRoleGuidString = "e1106d80-3da0-455c-b95b-5b06552da7e3";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid MaxValueMismatchErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchError")]
+		public  Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError MaxValueMismatchError
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError)this.GetRolePlayer(MaxValueMismatchErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(MaxValueMismatchErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region ValueRange's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueRangeMetaRoleGuidString = "f9b3976a-149b-484d-a8aa-779d25f096a9";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueRangeMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRange")]
+		public  Neumont.Tools.ORM.ObjectModel.ValueRange ValueRange
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ValueRange)this.GetRolePlayer(ValueRangeMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueRangeMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region ValueRangeHasMaxValueMismatchError's Generated Constructor Code
+	public  partial class ValueRangeHasMaxValueMismatchError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeHasMaxValueMismatchError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeHasMaxValueMismatchError CreateValueRangeHasMaxValueMismatchError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateValueRangeHasMaxValueMismatchError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeHasMaxValueMismatchError CreateAndInitializeValueRangeHasMaxValueMismatchError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeValueRangeHasMaxValueMismatchError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeHasMaxValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeHasMaxValueMismatchError CreateValueRangeHasMaxValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ValueRangeHasMaxValueMismatchError)partition.ElementFactory.CreateElementLink(typeof(ValueRangeHasMaxValueMismatchError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeHasMaxValueMismatchError CreateAndInitializeValueRangeHasMaxValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueRangeHasMaxValueMismatchError)partition.ElementFactory.CreateElementLink(typeof(ValueRangeHasMaxValueMismatchError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueRangeHasMaxValueMismatchError
+	/// <summary>
+	/// ValueRangeHasMaxValueMismatchError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError))]
+	public sealed class ValueRangeHasMaxValueMismatchErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeHasMaxValueMismatchErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ValueRangeHasMaxValueMismatchErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ValueRangeHasMaxValueMismatchErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError")]
 	public  partial class InternalConstraintHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
 	{
@@ -30605,6 +31195,159 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new InternalConstraintHasDuplicateNameErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError")]
+	public  partial class ValueRangeHasMinValueMismatchError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ValueRangeHasMinValueMismatchError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "df243499-efe7-4e95-a0bf-9c4a6c954a0c";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = ValueRangeHasMinValueMismatchError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = ValueRangeHasMinValueMismatchError.MetaClassGuid;
+		#endregion
+
+		#region MinValueMismatchError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String MinValueMismatchErrorMetaRoleGuidString = "69a9bdbf-8167-4106-a7d4-c4f6199d761e";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid MinValueMismatchErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchError")]
+		public  Neumont.Tools.ORM.ObjectModel.MinValueMismatchError MinValueMismatchError
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.MinValueMismatchError)this.GetRolePlayer(MinValueMismatchErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(MinValueMismatchErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region ValueRange's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueRangeMetaRoleGuidString = "da145584-6a6f-4fd4-8b7f-1f8c61810777";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueRangeMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.ValueRange")]
+		public  Neumont.Tools.ORM.ObjectModel.ValueRange ValueRange
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ValueRange)this.GetRolePlayer(ValueRangeMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueRangeMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region ValueRangeHasMinValueMismatchError's Generated Constructor Code
+	public  partial class ValueRangeHasMinValueMismatchError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeHasMinValueMismatchError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeHasMinValueMismatchError CreateValueRangeHasMinValueMismatchError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateValueRangeHasMinValueMismatchError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeHasMinValueMismatchError CreateAndInitializeValueRangeHasMinValueMismatchError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeValueRangeHasMinValueMismatchError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeHasMinValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeHasMinValueMismatchError CreateValueRangeHasMinValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ValueRangeHasMinValueMismatchError)partition.ElementFactory.CreateElementLink(typeof(ValueRangeHasMinValueMismatchError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueRangeHasMinValueMismatchError CreateAndInitializeValueRangeHasMinValueMismatchError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueRangeHasMinValueMismatchError)partition.ElementFactory.CreateElementLink(typeof(ValueRangeHasMinValueMismatchError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueRangeHasMinValueMismatchError
+	/// <summary>
+	/// ValueRangeHasMinValueMismatchError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError))]
+	public sealed class ValueRangeHasMinValueMismatchErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueRangeHasMinValueMismatchErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ValueRangeHasMinValueMismatchErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ValueRangeHasMinValueMismatchErrorElementFactoryCreator();
 			}
 		}
 	}

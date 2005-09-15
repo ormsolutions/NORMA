@@ -571,6 +571,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						yield return rolePlayerRequired;
 					}
+					RoleValueRangeDefinition valueConstraint = role.ValueRangeDefinition;
+					if (valueConstraint != null)
+					{
+						foreach (ValueRange range in valueConstraint.ValueRangeCollection)
+						{
+							MinValueMismatchError minError = range.MinValueMismatchError;
+							if (minError != null)
+							{
+								yield return minError;
+							}
+							MaxValueMismatchError maxError = range.MaxValueMismatchError;
+							if (maxError != null)
+							{
+								yield return maxError;
+							}
+						}
+					}
 				}
 			}
 		}

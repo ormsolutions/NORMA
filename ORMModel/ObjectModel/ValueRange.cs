@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using System.Text.RegularExpressions;
 using System.Text;
+using Neumont.Tools.ORM.Framework;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -31,7 +33,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		Closed
 	}
 	#endregion // RangeInclusion enum
-	public partial class ValueRange
+	public partial class ValueRange : IModelErrorOwner
 	{
 		#region variables
 		private static readonly string valueDelim = ResourceStrings.ValueRangeDefinitionValueDelimiter;
@@ -55,7 +57,273 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return containerString.Substring(containerString.IndexOf("{0}") + 3);
 		}
 		#endregion // variables
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return ErrorCollection;
 
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ErrorCollection
+		/// </summary>
+		[CLSCompliant(false)]
+		protected IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				MaxValueMismatchError max;
+				MinValueMismatchError min;
+				if (null != (max = MaxValueMismatchError))
+				{
+					yield return max;
+				}
+				if (null != (min = MinValueMismatchError))
+				{
+					yield return min;
+				}
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="notifyAdded"></param>
+		protected void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			VerifyValueMatch(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			ValidateErrors(notifyAdded);
+		}
+		private void VerifyValueMatch(INotifyElementAdded notifyAdded)
+		{
+			DataType dataType = ValueRangeDefinition.DataType;
+			bool needMinError = false;
+			bool needMaxError = false;
+			MinValueMismatchError minMismatch;
+			MaxValueMismatchError maxMismatch;
+			if (dataType != null)
+			{
+				if (!dataType.CanParse(MinValue))
+				{
+					needMinError = true;
+					minMismatch = MinValueMismatchError;
+					if (minMismatch == null)
+					{
+						minMismatch = MinValueMismatchError.CreateMinValueMismatchError(Store);
+						minMismatch.Model = dataType.Model;
+						minMismatch.ValueRange = this;
+						minMismatch.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(minMismatch, true);
+						}
+					}
+					minMismatch.GenerateErrorText();
+				}
+				if (MinValue != MaxValue)
+				{
+					if (!dataType.CanParse(MaxValue))
+					{
+						needMaxError = true;
+						maxMismatch = MaxValueMismatchError;
+						if (maxMismatch == null)
+						{
+							maxMismatch = MaxValueMismatchError.CreateMaxValueMismatchError(Store);
+							maxMismatch.Model = dataType.Model;
+							maxMismatch.ValueRange = this;
+							maxMismatch.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(maxMismatch, true);
+							}
+						}
+						maxMismatch.GenerateErrorText();
+					}
+				}
+			}
+			if (!needMinError && null != (minMismatch = MinValueMismatchError))
+			{
+				minMismatch.Remove();
+			}
+			if (!needMaxError && null != (maxMismatch = MaxValueMismatchError))
+			{
+				maxMismatch.Remove();
+			}
+		}
+		private static void ValidateValueRangeDefinitionForRule(ValueRangeDefinition valueConstraint)
+		{
+			if (valueConstraint == null)
+			{
+				return;
+			}
+			ValueRangeMoveableCollection ranges = valueConstraint.ValueRangeCollection;
+			int rangesCount = ranges.Count;
+			for (int i = 0; i < rangesCount; ++i)
+			{
+				ranges[i].VerifyValueMatch(null);
+			}
+		}
+		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.LocalCommit)]
+		private class DataTypeAddRule : AddRule
+		{
+			/// <summary>
+			/// Test if the changed value does not match the specified data type.
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+				ObjectType valueType = link.ValueTypeCollection;
+				ValidateValueRangeDefinitionForRule(valueType.ValueRangeDefinition);
+				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
+				int rolesCount = roles.Count;
+				for (int i = 0; i < rolesCount; ++i)
+				{
+					ValidateValueRangeDefinitionForRule(roles[i].ValueRangeDefinition);
+				}
+			}
+		}
+		[RuleOn(typeof(ValueTypeHasDataType))]
+		private class DataTypeChangeRule: ChangeRule
+		{
+			/// <summary>
+			/// checks first if the data type has been chagned and then test if the 
+			/// value matches the datatype
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+				ObjectType valueType = link.ValueTypeCollection;
+				ValidateValueRangeDefinitionForRule(valueType.ValueRangeDefinition);
+				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
+				int rolesCount = roles.Count;
+				for (int i = 0; i < rolesCount; ++i)
+				{
+					ValidateValueRangeDefinitionForRule(roles[i].ValueRangeDefinition);
+				}
+			}
+		}
+		[RuleOn (typeof (ValueTypeHasValueRangeDefinition), FireTime = TimeToFire.LocalCommit)]
+		private class ValueRangeDefinitionAddRule: AddRule
+		{
+			/// <summary>
+			/// checks if the new value range definition matches the data type
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ValueTypeHasValueRangeDefinition link = e.ModelElement as ValueTypeHasValueRangeDefinition;
+				ObjectType valueType = link.ValueType;
+				ValidateValueRangeDefinitionForRule(valueType.ValueRangeDefinition);
+				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
+				int rolesCount = roles.Count;
+				for (int i = 0; i < rolesCount; ++i)
+				{
+					ValidateValueRangeDefinitionForRule(roles[i].ValueRangeDefinition);
+				}
+			}
+		}
+		[RuleOn(typeof(RoleHasValueRangeDefinition), FireTime= TimeToFire.LocalCommit)]
+		private class RoleValueRangeDefinitionAdded: AddRule
+		{
+			/// <summary>
+			/// checks if the the value range matches the specified date type
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				RoleHasValueRangeDefinition link = e.ModelElement as RoleHasValueRangeDefinition;
+				ObjectType valueType = link.Role.RolePlayer;
+				ValidateValueRangeDefinitionForRule(valueType.ValueRangeDefinition);
+				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
+				int rolesCount = roles.Count;
+				for (int i = 0; i < rolesCount; ++i)
+				{
+					ValidateValueRangeDefinitionForRule(roles[i].ValueRangeDefinition);
+				}
+			}
+		}
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime= TimeToFire.LocalCommit)]
+		private class ObjectTypeRoleAdded : AddRule
+		{
+			/// <summary>
+			/// checks to see if the value on the role added matches the specified data type
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				ObjectType valueType = link.RolePlayer;
+				ValidateValueRangeDefinitionForRule(valueType.ValueRangeDefinition);
+				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
+				int rolesCount = roles.Count;
+				for (int i = 0; i < rolesCount; ++i)
+				{
+					ValidateValueRangeDefinitionForRule(roles[i].ValueRangeDefinition);
+				}
+			}
+		}
+		[RuleOn(typeof(ValueRangeDefinitionHasValueRange), FireTime=TimeToFire.LocalCommit)]
+		private class ValueRangeAdded : AddRule
+		{
+			public override void  ElementAdded(ElementAddedEventArgs e)
+			{
+				ValueRangeDefinitionHasValueRange link = e.ModelElement as ValueRangeDefinitionHasValueRange;
+				link.ValueRangeCollection.VerifyValueMatch(null);
+			}
+		}
+		[RuleOn(typeof(ObjectTypePlaysRole))]
+		#region ValueRangeChangeRule class
+		[RuleOn(typeof(ValueRange))]
+		private class ValueRangeChangeRule : ChangeRule
+		{
+			/// <summary>
+			/// Translate the Text property
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeGuid = e.MetaAttribute.Id;
+				if (attributeGuid == ValueRange.TextMetaAttributeGuid)
+				{
+					ValueRange vr = e.ModelElement as ValueRange;
+					Debug.Assert(vr != null);
+					string newValue = e.NewValue as string;
+					//Set the min- and max-inclusion
+					string minInclusion;
+					string maxInclusion;
+					newValue = StripInclusions(out minInclusion, out maxInclusion, newValue);
+					if (minInclusion.Length != 0)
+					{
+						vr.MinInclusion = minInclusion.Equals(minOpenInclusionMark) ? RangeInclusion.Open : RangeInclusion.Closed;
+					}
+					if (maxInclusion.Length != 0)
+					{
+						vr.MaxInclusion = maxInclusion.Equals(maxOpenInclusionMark) ? RangeInclusion.Open : RangeInclusion.Closed;
+					}
+					//Split the range, if one exists, and set the values
+					if (newValue.Contains(valueDelim))
+					{
+						int currentPos = newValue.IndexOf(valueDelim);
+						string value = TrimStringMarkers(newValue.Substring(0, currentPos));
+						vr.MinValue = string.Format(CultureInfo.InvariantCulture, value);
+						currentPos += valueDelim.Length;
+						value = TrimStringMarkers(newValue.Substring(currentPos, newValue.Length - currentPos));
+						vr.MaxValue = string.Format(CultureInfo.InvariantCulture, value);
+					}
+					//Not a range? Set the value as both the min and max
+					else
+					{
+						vr.MinValue = vr.MaxValue = string.Format(CultureInfo.InvariantCulture, TrimStringMarkers(newValue));
+					}
+				}
+			}
+		}
+		#endregion // ValueRangeChangeRule class
 		#region CustomStorage handlers
 		/// <summary>
 		/// Standard override. Retrieve values for calculated properties.
@@ -75,7 +343,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// put values in string container if need to
 				if (minExists && IsText())
 				{
-					minValue = String.Format(CultureInfo.InvariantCulture, stringContainerString , minValue);
+					minValue = String.Format(CultureInfo.InvariantCulture, stringContainerString, minValue);
 				}
 				if (maxExists && IsText())
 				{
@@ -205,53 +473,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return range;
 		}
 		#endregion // CustomStorage handlers
-		#region ValueRangeChangeRule class
-		[RuleOn(typeof(ValueRange))]
-		private class ValueRangeChangeRule : ChangeRule
-		{
-			/// <summary>
-			/// Translate the Text property
-			/// </summary>
-			/// <param name="e"></param>
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
-			{
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == ValueRange.TextMetaAttributeGuid)
-				{
-					ValueRange vr = e.ModelElement as ValueRange;
-					Debug.Assert(vr != null);
-					string newValue = e.NewValue as string;
-					//Set the min- and max-inclusion
-					string minInclusion;
-					string maxInclusion;
-					newValue = StripInclusions(out minInclusion, out maxInclusion, newValue);
-					if (minInclusion.Length != 0)
-					{
-						vr.MinInclusion = minInclusion.Equals(minOpenInclusionMark) ? RangeInclusion.Open : RangeInclusion.Closed;
-					}
-					if (maxInclusion.Length != 0)
-					{
-						vr.MaxInclusion = maxInclusion.Equals(maxOpenInclusionMark) ? RangeInclusion.Open : RangeInclusion.Closed;
-					}
-					//Split the range, if one exists, and set the values
-					if (newValue.Contains(valueDelim))
-					{
-						int currentPos = newValue.IndexOf(valueDelim);
-						string value = TrimStringMarkers(newValue.Substring(0, currentPos));
-						vr.MinValue = string.Format(CultureInfo.InvariantCulture, value);
-						currentPos += valueDelim.Length;
-						value = TrimStringMarkers(newValue.Substring(currentPos, newValue.Length - currentPos));
-						vr.MaxValue = string.Format(CultureInfo.InvariantCulture, value);
-					}
-					//Not a range? Set the value as both the min and max
-					else
-					{
-						vr.MinValue = vr.MaxValue = string.Format(CultureInfo.InvariantCulture, TrimStringMarkers(newValue));
-					}
-				}
-			}
-		}
-		#endregion // ValueRangeChangeRule class
 	}
 	public partial class ValueRangeDefinition
 	{
@@ -263,7 +484,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static readonly string delimSansSpace = rangeDelim.Trim();
 		private static readonly string delimSansSpaceEscaped = Regex.Escape(delimSansSpace);
 		#endregion // variables
-
 		#region CustomStorage handlers
 		/// <summary>
 		/// Standard override. Retrieve values for calculated properties.
@@ -327,6 +547,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public abstract bool IsText();
 		/// <summary>
+		/// The data type associated with this value range definition
+		/// </summary>
+		public abstract DataType DataType { get;}
+		/// <summary>
 		/// Breaks a value range definition into value ranges and adds them
 		/// to the ValueRangeCollection.
 		/// </summary>
@@ -385,6 +609,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ValueType.DataType is TextDataType;
 		}
+		/// <summary>
+		/// Override to retrieve the data type
+		/// </summary>
+		public override DataType DataType
+		{
+			get
+			{
+				return ValueType.DataType;
+			}
+		}
 		#region ValueTypeValueRangeDefinitionChangeRule class
 		[RuleOn(typeof(ValueTypeValueRangeDefinition))]
 		private class ValueTypeValueRangeDefinitionChangeRule : ChangeRule
@@ -427,13 +661,28 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </returns>
 		public override bool IsText()
 		{
-			Role role = this.Role;
-			ObjectType objectType = role.RolePlayer;
-			if (objectType != null)
+			DataType testType = DataType;
+			return (testType != null) ? (testType is TextDataType) : false;
+		}
+		/// <summary>
+		/// Override to retrieve the data type
+		/// </summary>
+		public override DataType DataType
+		{
+			get
 			{
-				return objectType.DataType is TextDataType;
+				DataType retVal = null;
+				Role role = Role;
+				if (role != null)
+				{
+					ObjectType objectType = role.RolePlayer;
+					if (objectType != null)
+					{
+						retVal = objectType.DataType;
+					}
+				}
+				return retVal;
 			}
-			return false;
 		}
 		#region RoleValueRangeDefinitionChangeRule class
 		[RuleOn(typeof(RoleValueRangeDefinition))]
@@ -464,4 +713,121 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // RoleValueRangeDefinitionChangeRule class
 	}
 	#endregion // RoleValueRangeDefinition class
+	/// <summary>
+	/// 
+	/// </summary>
+	public abstract partial class ValueMismatchError 
+	{ 
+		/// <summary>
+		/// 
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		
+	}
+	/// <summary>
+	/// 
+	/// </summary>
+	public partial class MinValueMismatchError : IRepresentModelElements
+	{ 
+		/// <summary>
+		/// 
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			ValueRangeDefinition defn = ValueRange.ValueRangeDefinition;
+			RoleValueRangeDefinition roleDefn;
+			ValueTypeValueRangeDefinition valueDefn;
+			string value = null;
+			string newText = null;
+			string currentText = Name;
+			if (null != (roleDefn = defn as RoleValueRangeDefinition))
+			{
+				Role attachedRole = roleDefn.Role;
+				FactType roleFact = attachedRole.FactType;
+				int index = roleFact.RoleCollection.IndexOf(attachedRole) + 1;
+				string name = roleFact.Name;
+				string model = this.Model.Name;
+				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorRoleValueRangeMinValueMismatchError, model, name, index);
+			}
+			else if (null != (valueDefn = defn as ValueTypeValueRangeDefinition))
+			{
+				value = valueDefn.ValueType.Name;
+				string model = this.Model.Name;
+				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorValueRangeMinValueMismatchError, value, model);
+			}
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		//we need to find out what object this value range is associated with.  if the value range is the ref mode for the object, then
+		// return that object, otherwise return...
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.ValueRange.ValueRangeDefinition };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+	}
+	/// <summary>
+	/// 
+	/// </summary>
+	public partial class MaxValueMismatchError : IRepresentModelElements
+	{
+		/// <summary>
+		/// 
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			ValueRangeDefinition defn = ValueRange.ValueRangeDefinition;
+			RoleValueRangeDefinition roleDefn;
+			ValueTypeValueRangeDefinition valueDefn;
+			string value = null;
+			string newText = null;
+			string currentText = Name;
+			if (null != (roleDefn = defn as RoleValueRangeDefinition))
+			{
+				Role attachedRole = roleDefn.Role;
+				FactType roleFact = attachedRole.FactType;
+				int index = roleFact.RoleCollection.IndexOf(attachedRole) + 1;
+				string name = roleFact.Name;
+				string model = this.Model.Name;
+				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorRoleValueRangeMaxValueMismatchError, model, name, index);
+			}
+			else if (null != (valueDefn = defn as ValueTypeValueRangeDefinition))
+			{
+				value = valueDefn.ValueType.Name;
+				string model = this.Model.Name;
+				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorValueRangeMaxValueMismatchError, value, model);
+			}
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.ValueRange.ValueRangeDefinition };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+	}
 }

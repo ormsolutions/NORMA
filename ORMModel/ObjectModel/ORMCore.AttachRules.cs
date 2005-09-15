@@ -118,7 +118,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					typeof(SubtypeFact).GetNestedType("LimitSubtypeRolesAddRule", (BindingFlags.Public | BindingFlags.NonPublic)),
 					typeof(SubtypeFact).GetNestedType("LimitSubtypeRolesRemoveRule", (BindingFlags.Public | BindingFlags.NonPublic)),
 					typeof(SubtypeFact).GetNestedType("RemoveSubtypeWhenRolePlayerRemoved", (BindingFlags.Public | BindingFlags.NonPublic)),
+					typeof(ValueRange).GetNestedType("DataTypeAddRule", (BindingFlags.Public | BindingFlags.NonPublic)),
+					typeof(ValueRange).GetNestedType("DataTypeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
+					typeof(ValueRange).GetNestedType("ObjectTypeRoleAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
+					typeof(ValueRange).GetNestedType("RoleValueRangeDefinitionAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
+					typeof(ValueRange).GetNestedType("ValueRangeAdded", (BindingFlags.Public | BindingFlags.NonPublic)),
 					typeof(ValueRange).GetNestedType("ValueRangeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
+					typeof(ValueRange).GetNestedType("ValueRangeDefinitionAddRule", (BindingFlags.Public | BindingFlags.NonPublic)),
 					typeof(ValueTypeValueRangeDefinition).GetNestedType("ValueTypeValueRangeDefinitionChangeRule", (BindingFlags.Public | BindingFlags.NonPublic))};
 			System.Diagnostics.Debug.Assert(!(((System.Collections.IList)(retVal)).Contains(null)), "One or more rule types failed to resolve. The file and/or package will fail to lo" +
 					"ad.");

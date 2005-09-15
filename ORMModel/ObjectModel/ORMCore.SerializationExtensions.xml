@@ -162,6 +162,10 @@
 	</se:Element>
 	<se:Element Class="ValueTypeValueRangeDefinition" Name="ValueRangeDefinition" Override="true"/>
 	<se:Element Class="RoleValueRangeDefinition" Name="RoleValueRangeDefinition" Override="true"/>
+	<se:Element Class="ValueRange" Override="true">
+		<se:Link RelationshipName="ValueRangeHasMinValueMismatchError" RoleName="MinValueMismatchError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ValueRangeHasMaxValueMismatchError" RoleName="MaxValueMismatchError" WriteStyle="NotWritten"/>
+	</se:Element>
 	<!--Facts-->
 	<se:Element Class="FactType" Name="Fact" SortChildElements="true" Override="true">
 		<!--TODO: FactNotes-->
@@ -333,6 +337,12 @@
 	</se:Element>
 	<se:Element Class="FrequencyConstraintMinMaxError" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>
+	</se:Element>
+	<se:Element Class="MinValueMismatchError" Override="true">
+		<se:Link RelationshipName="ValueRangeHasMinValueMismatchError" RoleName="ValueRange" Name="ValueRange"/>
+	</se:Element>
+	<se:Element Class="MaxValueMismatchError" Override="true">
+		<se:Link RelationshipName="ValueRangeHasMaxValueMismatchError" RoleName="ValueRange" Name="ValueRange"/>
 	</se:Element>
 	<se:Element Class="TooFewReadingRolesError" Override="true">
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="Reading" Name="Reading"/>

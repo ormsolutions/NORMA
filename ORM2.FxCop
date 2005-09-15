@@ -12487,6 +12487,76 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="ValueRange+DataTypeAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-09-15 22:07:23Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.ValueRange+DataTypeAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mouzts">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRange+DataTypeChangeRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-09-15 22:07:23Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.ValueRange+DataTypeChangeRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mouzts">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRange+ObjectTypeRoleAdded">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-09-15 22:07:23Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.ValueRange+ObjectTypeRoleAdded</Item>
+            </Issue>
+            <Notes>
+             <User Name="mouzts">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRange+RoleValueRangeDefinitionAdded">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-09-15 22:07:23Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.ValueRange+RoleValueRangeDefinitionAdded</Item>
+            </Issue>
+            <Notes>
+             <User Name="mouzts">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRange+ValueRangeAdded">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-09-15 22:07:23Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.ValueRange+ValueRangeAdded</Item>
+            </Issue>
+            <Notes>
+             <User Name="mouzts">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="ValueRange+ValueRangeChangeRule">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-05-25 19:47:55Z">
@@ -12496,6 +12566,20 @@
             <Notes>
              <User Name="pewert">
               <Note Id="21" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ValueRange+ValueRangeDefinitionAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-09-15 22:07:23Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.ValueRange+ValueRangeDefinitionAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mouzts">
+              <Note Id="0" />
              </User>
             </Notes>
            </Message>
@@ -18143,6 +18227,9 @@
     <Note Id="58" Modified="2005-08-22 18:16:31Z">Interface pattern function</Note>
     <Note Id="59" Modified="2005-08-31 15:42:38Z">CodeDom doesn't spit readonly, which is what I really want. The class being spit is not editable.</Note>
     <Note Id="60" Modified="2005-09-14 15:09:44Z">Signature matches interface pattern</Note>
+   </User>
+   <User Name="mouzts">
+    <Note Id="0" Modified="2005-09-15 22:08:24Z">Rule classes instantiated via reflection</Note>
    </User>
    <User Name="obuhler">
     <Note Id="0" Modified="2005-07-29 21:45:56Z">Rule classes instantiated via reflection</Note>

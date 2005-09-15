@@ -643,6 +643,8 @@
 			<xs:element name="EqualityIsImpliedByMandatoryError" type="EqualityIsImpliedByMandatoryError"/>
 			<xs:element name="EntityTypeRequiresReferenceSchemeError" type="EntityTypeRequiresReferenceSchemeError"/>
 			<xs:element name="FrequencyConstraintMinMaxError" type="FrequencyConstraintMinMaxError"/>
+			<xs:element name="MinValueMismatchError" type="MinValueMismatchError"/>
+			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchError"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
@@ -765,6 +767,24 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="MaxValueMismatchError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ValueRange" type="ValueRangeRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="MinValueMismatchError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ValueRange" type="ValueRangeRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="TooManyRoleSequencesError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
@@ -836,6 +856,9 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="CustomReferenceModeRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
+	<xs:complexType name="ValueRangeRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<!--Reference Mdoes and Kinds-->

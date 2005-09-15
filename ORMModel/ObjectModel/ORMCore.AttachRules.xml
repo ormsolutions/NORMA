@@ -97,7 +97,13 @@
 		<arg:Rule class="SubtypeFact.LimitSubtypeRolesAddRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeRolesRemoveRule"/>
 		<arg:Rule class="SubtypeFact.RemoveSubtypeWhenRolePlayerRemoved"/>
+		<arg:Rule class="ValueRange.DataTypeAddRule"/>
+		<arg:Rule class="ValueRange.DataTypeChangeRule"/>
+		<arg:Rule class="ValueRange.ObjectTypeRoleAdded"/>
+		<arg:Rule class="ValueRange.RoleValueRangeDefinitionAdded"/>
+		<arg:Rule class="ValueRange.ValueRangeAdded"/>
 		<arg:Rule class="ValueRange.ValueRangeChangeRule"/>
+		<arg:Rule class="ValueRange.ValueRangeDefinitionAddRule"/>
 		<arg:Rule class="ValueTypeValueRangeDefinition.ValueTypeValueRangeDefinitionChangeRule"/>
 	</arg:Model>
 </arg:Rules>
