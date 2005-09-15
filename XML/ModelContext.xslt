@@ -69,7 +69,7 @@
 				</plx:CallNew>
 			</plx:Return>
 		</plx:Function>
-		<plx:Class visibility="Private" name="DeserializationFactory">
+		<plx:Class visibility="Private" sealed="true" name="DeserializationFactory">
 			<plx:ImplementsInterface dataTypeName="I{$ModelDeserializationName}"/>
 			<plx:Field name="{$PrivateMemberPrefix}Context" visibility="Private" dataTypeName="{$ModelContextName}"/>
 			<plx:Function ctor="true" visibility="Public">
@@ -280,7 +280,7 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<xsl:template name="ValueConstraintValidationFunctionNameForRole">
+	<xsl:template name="GetValueConstraintValidationFunctionNameForRole">
 		<xsl:param name="Role"/>
 		<xsl:variable name="allRoles" select="$Role/.."/>
 		<xsl:variable name="parentFact" select="$allRoles/.."/>
@@ -296,6 +296,52 @@
 		<xsl:value-of select="$parentFact/@Name"/>
 		<xsl:text>Role</xsl:text>
 		<xsl:value-of select="$rolePosition"/>
+	</xsl:template>
+
+	<xsl:template name="FindValueConstraintForAbsorbedObjectRecursively">
+		<xsl:param name="Model"/>
+		<xsl:param name="entityType"/>
+		<xsl:variable name="preferredIdentifierInternalUniquenessConstraint" select="$Model/orm:Facts/orm:Fact/orm:InternalConstraints/orm:InternalUniquenessConstraint[@id=$entityType/orm:PreferredIdentifier/@ref]"/>
+		<xsl:if test="count($preferredIdentifierInternalUniquenessConstraint/orm:RoleSequence/orm:Role)=1">
+			<xsl:variable name="preferredIdentifierInternalUniquenessConstraintFactRolePlayerRef" select="$preferredIdentifierInternalUniquenessConstraint/../../orm:FactRoles/orm:Role[@id=$preferredIdentifierInternalUniquenessConstraint/orm:RoleSequence/orm:Role/@ref]/orm:RolePlayer/@ref"/>
+			<xsl:variable name="preferredIdentifierInternalUniquenessConstraintFactRolePlayerObject" select="$Model/orm:Objects/child::node()[@id=$preferredIdentifierInternalUniquenessConstraintFactRolePlayerRef]"/>
+			<xsl:choose>
+				<xsl:when test="local-name($preferredIdentifierInternalUniquenessConstraintFactRolePlayerObject)='EntityType'">
+					<xsl:call-template name="FindValueConstraintForAbsorbedObjectRecursively">
+						<xsl:with-param name="Model" select="$Model"/>
+						<xsl:with-param name="entityType" select="$preferredIdentifierInternalUniquenessConstraintFactRolePlayerObject"/>
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:when test="local-name($preferredIdentifierInternalUniquenessConstraintFactRolePlayerObject)='ValueType'">
+					<!-- Don't even think of removing orm:ValueConstraint/.. from the select in the next line -->
+					<xsl:value-of select="$preferredIdentifierInternalUniquenessConstraintFactRolePlayerObject/orm:ValueConstraint/../@Name"/>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="GetValueTypeValueConstraintCode">
+		<xsl:param name="ModelContextName"/>
+		<xsl:param name="name"/>
+		<plx:Condition>
+			<plx:Test>
+				<plx:Operator type="BooleanNot">
+					<plx:CallStatic dataTypeName="{$ModelContextName}" name="{$ValueConstraintFor}{$name}">
+						<plx:PassParam>
+							<plx:Value type="Parameter" data="newValue"/>
+						</plx:PassParam>
+						<plx:PassParam>
+							<plx:Value type="Parameter" data="throwOnFailure"/>
+						</plx:PassParam>
+					</plx:CallStatic>
+				</plx:Operator>
+			</plx:Test>
+			<plx:Body>
+				<plx:Return>
+					<plx:FalseKeyword/>
+				</plx:Return>
+			</plx:Body>
+		</plx:Condition>
 	</xsl:template>
 
 	<xsl:template name="BuildValueConstraintValidationFunctions">

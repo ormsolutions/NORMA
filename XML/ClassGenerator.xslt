@@ -314,8 +314,9 @@
 										<xsl:variable name="parentFact" select="ancestor::*[2]"/>
 										<ao:RelatedObject factRef="{$parentFact/@id}" roleRef="{$roleId}">
 											<xsl:variable name="oppositeRoles" select="$parentFact/orm:FactRoles/child::*[@id!=$roleId]"/>
+											<xsl:variable name="arity" select="count($parentFact/orm:FactRoles/orm:Role)"/>
 											<xsl:attribute name="arity">
-												<xsl:value-of select="count($parentFact/orm:FactRoles/orm:Role)"/>
+												<xsl:value-of select="$arity"/>
 											</xsl:attribute>
 											<!--If a role name has been specified, use it; otherwise, generate one if needed.-->
 											<xsl:attribute name="roleName">
@@ -351,7 +352,7 @@
 											</xsl:attribute>
 											<xsl:variable name="oppositeMultiplicity" select="@Multiplicity"/>
 											<xsl:attribute name="unique">
-												<xsl:value-of select="$oppositeMultiplicity='ZeroToOne' or $oppositeMultiplicity='ExactlyOne'"/>
+												<xsl:value-of select="$oppositeMultiplicity='ZeroToOne' or $oppositeMultiplicity='ExactlyOne' or $arity&gt;2"/>
 											</xsl:attribute>
 											<xsl:if test="1=count($oppositeRoles)">
 												<xsl:for-each select="$oppositeRoles">
@@ -579,7 +580,7 @@
 										</ao:AbsorbedObject>
 									</xsl:when>
 									<xsl:otherwise>
-										<ao:RelatedObject type="{@type}" objectRef="{@id}" roleRef="{$roleId}" roleName="{$roleName}" className="{@name}">
+										<ao:RelatedObject type="{@type}" objectRef="{@id}" roleRef="{$roleId}" roleName="{$roleName}" className="{@name}" unique="false">
 											<xsl:variable name="myRelatedObjects" select="./child::ao:RelatedObject"/>
 											<xsl:variable name="factRef" select="$myRelatedObjects[@roleRef=$roleId]/@factRef"/>
 											<!--If there are more than one related objects with the same factRef, use the roleName from
@@ -1049,6 +1050,10 @@
 			<xsl:for-each select="$properties">
 				<xsl:call-template name="GenerateAbstractProperty"/>
 			</xsl:for-each>
+			<xsl:call-template name="GenerateToString">
+				<xsl:with-param name="className" select="$className"/>
+				<xsl:with-param name="properties" select="$properties"/>
+			</xsl:call-template>
 		</plx:Class>
 	</xsl:template>
 	<xsl:template name="GenerateAbstractProperty">
@@ -1087,6 +1092,68 @@
 				</plx:DelegateType>
 			</plx:Event>
 		</xsl:if>
+	</xsl:template>
+	<xsl:template name="GenerateToString">
+		<xsl:param name="className"/>
+		<xsl:param name="properties"/>
+		<xsl:variable name="nonCollectionPropertiesFragment">
+			<xsl:for-each select="$properties">
+				<xsl:if test="not(@collection='true')">
+					<xsl:copy-of select="."/>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="nonCollectionProperties" select="msxsl:node-set($nonCollectionPropertiesFragment)/child::*"/>
+		<plx:Function visibility="Public" override="true" name="ToString">
+			<plx:Param type="RetVal" name="" dataTypeName="String" dataTypeQualifier="System"/>
+			<plx:Return>
+				<plx:CallStatic type="MethodCall" name="Format" dataTypeName="String" dataTypeQualifier="System">
+					<plx:PassParam>
+						<plx:String>
+							<xsl:value-of select="concat($className,'{0}{{{0}{1}')"/>
+							<xsl:for-each select="$nonCollectionProperties">
+								<xsl:value-of select="concat(@name,' = ')"/>
+								<xsl:if test="not(@customType='true')">
+									<xsl:value-of select="'&quot;'"/>
+								</xsl:if>
+								<xsl:value-of select="concat('{',position()+1,'}')"/>
+								<xsl:if test="not(@customType='true')">
+									<xsl:value-of select="'&quot;'"/>
+								</xsl:if>
+								<xsl:if test="not(position()=last())">
+									<xsl:value-of select="',{0}{1}'"/>
+								</xsl:if>
+							</xsl:for-each>
+							<xsl:value-of select="'{0}}}'"/>
+						</plx:String>
+					</plx:PassParam>
+					<plx:PassParam>
+						<plx:CallStatic type="Field" name="NewLine" dataTypeName="Environment" dataTypeQualifier="System"/>
+					</plx:PassParam>
+					<plx:PassParam>
+						<plx:String>
+							<xsl:text>&#x09;</xsl:text>
+						</plx:String>
+					</plx:PassParam>
+					<xsl:for-each select="$nonCollectionProperties">
+						<plx:PassParam>
+							<xsl:choose>
+								<xsl:when test="@customType='true'">
+									<plx:String>TODO: Recursively call ToString for customTypes...</plx:String>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:CallInstance type="Property" name="{@name}">
+										<plx:CallObject>
+											<plx:ThisKeyword/>
+										</plx:CallObject>
+									</plx:CallInstance>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:PassParam>
+					</xsl:for-each>
+				</plx:CallStatic>
+			</plx:Return>
+		</plx:Function>
 	</xsl:template>
 	
 	<xsl:template name="GenerateMandatoryParameters">
@@ -1254,6 +1321,12 @@
 			<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
 		</xsl:call-template>
 		<xsl:if test="not($nonCustomOnly)">
+			<plx:Property visibility="Public" name="{$className}Collection">
+				<plx:Param type="RetVal" name="" dataTypeName="ReadOnlyCollection" dataTypeQualifier="System.Collections.ObjectModel">
+					<plx:PassTypeParam dataTypeName="{$className}"/>
+				</plx:Param>
+				<plx:Get/>
+			</plx:Property>
 			<xsl:call-template name="GenerateModelContextInterfaceSimpleLookupMethods">
 				<xsl:with-param name="Model" select="$Model"/>
 				<xsl:with-param name="className" select="$className"/>
@@ -1268,10 +1341,10 @@
 		<xsl:param name="nonCustomOnly"/>
 		<plx:Function visibility="Public" name="Create{$className}">
 			<plx:Param type="RetVal" name="" dataTypeName="{$className}"/>
-				<xsl:call-template name="GenerateMandatoryParameters">
-					<xsl:with-param name="properties" select="$properties"/>
-					<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
-				</xsl:call-template>
+			<xsl:call-template name="GenerateMandatoryParameters">
+				<xsl:with-param name="properties" select="$properties"/>
+				<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
+			</xsl:call-template>
 		</plx:Function>
 	</xsl:template>
 	<xsl:template name="GenerateModelContextInterfaceSimpleLookupMethods">
@@ -1391,7 +1464,7 @@
 				association objects. Build a Property element with a name attribute and
 				DataType element for all both cases. The property and its backing field
 				will be spit using the GenerateImplementationProperty template. -->
-		<Property mandatory="{@mandatory}" unique="{@unique}" realRoleRef="{@oppositeRoleRef}" oppositeName="{@roleName}">
+		<Property mandatory="{@mandatory}" unique="{@unique}" realRoleRef="{@oppositeRoleRef}" customType="true" oppositeName="{@roleName}">
 			<xsl:choose>
 				<xsl:when test="@oppositeObjectRef">
 					<!-- Related to an object by a binary fact -->
@@ -1405,12 +1478,12 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
-					<xsl:attribute name="customType">
-						<xsl:value-of select="true()"/>
-					</xsl:attribute>
 					<xsl:choose>
 						<xsl:when test="contains(@multiplicity,'Many')">
 							<xsl:attribute name="readOnly">
+								<xsl:value-of select="true()"/>
+							</xsl:attribute>
+							<xsl:attribute name="collection">
 								<xsl:value-of select="true()"/>
 							</xsl:attribute>
 							<DataType dataTypeName="ICollection">
@@ -1419,6 +1492,9 @@
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:attribute name="readOnly">
+								<xsl:value-of select="false()"/>
+							</xsl:attribute>
+							<xsl:attribute name="collection">
 								<xsl:value-of select="false()"/>
 							</xsl:attribute>
 							<DataType dataTypeName="{@oppositeObjectName}"/>
@@ -1431,47 +1507,26 @@
 					<xsl:variable name="relatedFact" select="$Model/orm:Facts/orm:*[@id=$factId]"/>
 					<xsl:variable name="factName" select="$relatedFact/@Name"/>
 					<xsl:attribute name="name">
-						<xsl:choose>
-							<xsl:when test="string-length(@roleName)">
-								<xsl:value-of select="@roleName"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="$factName"/>
-							</xsl:otherwise>
-						</xsl:choose>
+						<xsl:value-of select="$factName"/>
+						<xsl:text>As</xsl:text>
+						<xsl:value-of select="@roleName"/>
 					</xsl:attribute>
-						<xsl:choose>
-							<!-- TODO: How could the arity ever be 1 on a relationship with an association object? -->
-							<xsl:when test="@arity=1">
-								<xsl:attribute name="readOnly">
-									<xsl:value-of select="false()"/>
-								</xsl:attribute>
-								<xsl:attribute name="customType">
-									<xsl:value-of select="false()"/>
-								</xsl:attribute>
-								<DataType dateTypeName="Nullable" dataTypeQualifier="System">
-									<plx:PassTypeParam dataTypeName="Boolean" dataTypeQualifier="System"/>
-								</DataType>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:attribute name="readOnly">
-									<xsl:value-of select="true()"/>
-								</xsl:attribute>
-								<xsl:attribute name="customType">
-									<xsl:value-of select="true()"/>
-								</xsl:attribute>
-								<DataType dataTypeName="ICollection">
-									<plx:PassTypeParam dataTypeName="{$factName}{$AssociationClassSuffix}"/>
-								</DataType>
-							</xsl:otherwise>
-						</xsl:choose>
+					<xsl:attribute name="readOnly">
+						<xsl:value-of select="true()"/>
+					</xsl:attribute>
+					<xsl:attribute name="collection">
+						<xsl:value-of select="true()"/>
+					</xsl:attribute>
+					<DataType dataTypeName="ICollection">
+						<plx:PassTypeParam dataTypeName="{$factName}{$AssociationClassSuffix}"/>
+					</DataType>
 				</xsl:otherwise>
 			</xsl:choose>
 		</Property>
 	</xsl:template>
 	<xsl:template match="ao:Association/ao:RelatedObject" mode="TransformPropertyObjects">
 		<xsl:param name="Model"/>
-		<Property mandatory="true" unique="{@unique}" realRoleRef="{@roleRef}">
+		<Property mandatory="true" unique="{@unique}" realRoleRef="{@roleRef}" readOnly="false" customType="true" collection="false">
 			<xsl:attribute name="name">
 				<xsl:choose>
 					<xsl:when test="string-length(@roleName)">
@@ -1482,25 +1537,12 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
-			<xsl:attribute name="customType">
-				<xsl:value-of select="true()"/>
+			<xsl:attribute name="oppositeName">
+				<xsl:value-of select="../@name"/>
+				<xsl:text>As</xsl:text>
+				<xsl:value-of select="@roleName"/>
 			</xsl:attribute>
-			<xsl:choose>
-				<xsl:when test="contains(@multiplicity,'Many')">
-					<xsl:attribute name="readOnly">
-						<xsl:value-of select="true()"/>
-					</xsl:attribute>
-					<DataType dataTypeName="ICollection">
-						<plx:PassTypeParam dataTypeName="{@className}"/>
-					</DataType>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:attribute name="readOnly">
-						<xsl:value-of select="false()"/>
-					</xsl:attribute>
-					<DataType dataTypeName="{@className}"/>
-				</xsl:otherwise>
-			</xsl:choose>
+			<DataType dataTypeName="{@className}"/>
 		</Property>
 	</xsl:template>
 
@@ -1523,14 +1565,16 @@
 					</xsl:apply-templates>
 				</xsl:variable>
 				<xsl:variable name="nested" select="msxsl:node-set($nestedFragment)/child::*"/>
-				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}" realRoleRef="{@thisRoleRef}" customType="{$nested/@customType}">
+				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}" realRoleRef="{@thisRoleRef}" customType="{$nested/@customType}" collection="{$nested/@collection}">
 					<xsl:attribute name="name">
 						<xsl:choose>
 							<xsl:when test="string-length(@oppositeRoleName)">
 								<xsl:value-of select="@oppositeRoleName"/>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:value-of select="@name"/>
+								<xsl:if test="not(contains($nested/@name,@name))">
+									<xsl:value-of select="@name"/>
+								</xsl:if>
 								<xsl:value-of select="$nested/@name"/>
 							</xsl:otherwise>
 						</xsl:choose>
@@ -1539,7 +1583,7 @@
 				</Property>
 			</xsl:when>
 			<xsl:otherwise>
-				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}">
+				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}" customType="false">
 					<xsl:attribute name="realRoleRef">
 						<xsl:choose>
 							<xsl:when test="string-length(@oppositeRoleRef)">
@@ -1548,6 +1592,9 @@
 							<xsl:when test="string-length(@thisRoleRef)">
 								<xsl:value-of select="@thisRoleRef"/>
 							</xsl:when>
+							<xsl:otherwise>
+								<xsl:message terminate="yes">If we've hit this point, something is very wrong...</xsl:message>
+							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
 					<xsl:attribute name="name">
@@ -1560,21 +1607,38 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
-					<!-- TODO: Is it even possible for it to NOT be a ValueType? -->
-					<xsl:if test="@type='ValueType'">
-						<xsl:attribute name="readOnly">
-							<xsl:value-of select="false()"/>
-						</xsl:attribute>
-						<xsl:attribute name="customType">
-							<xsl:value-of select="false()"/>
-						</xsl:attribute>
-						<xsl:variable name="objectId" select="@ref"/>
-						<xsl:variable name="valueObject" select="$Model/orm:Objects/orm:ValueType[@id=$objectId]"/>
-						<xsl:variable name="dataTypeId" select="$valueObject/orm:ConceptualDataType/@ref"/>
+					<xsl:variable name="objectId" select="@ref"/>
+					<xsl:variable name="valueObject" select="$Model/orm:Objects/orm:ValueType[@id=$objectId]"/>
+					<xsl:variable name="dataTypeId" select="$valueObject/orm:ConceptualDataType/@ref"/>
+					<xsl:variable name="dataTypeFragment">
 						<xsl:for-each select="$Model/orm:DataTypes/child::*[@id=$dataTypeId]">
 							<xsl:call-template name="MapDataType"/>
 						</xsl:for-each>
-					</xsl:if>
+					</xsl:variable>
+					<xsl:variable name="dataType" select="msxsl:node-set($dataTypeFragment)/child::*"/>
+					<xsl:choose>
+						<xsl:when test="contains(@multiplicity,'Many')">
+							<xsl:attribute name="readOnly">
+								<xsl:value-of select="true()"/>
+							</xsl:attribute>
+							<xsl:attribute name="collection">
+								<xsl:value-of select="true()"/>
+							</xsl:attribute>
+							<DataType dataTypeName="ICollection">
+								<xsl:copy-of select="$dataType/@*"/>
+								<xsl:copy-of select="$dataType/child::*"/>
+							</DataType>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="readOnly">
+								<xsl:value-of select="false()"/>
+							</xsl:attribute>
+							<xsl:attribute name="collection">
+								<xsl:value-of select="false()"/>
+							</xsl:attribute>
+							<xsl:copy-of select="$dataType"/>
+						</xsl:otherwise>
+					</xsl:choose>
 				</Property>
 			</xsl:otherwise>
 		</xsl:choose>
