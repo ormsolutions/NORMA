@@ -61,8 +61,9 @@
 				<FormalItem type="ModalNecessityOperator" modality="deontic">
 					<Form style="Basic"><![CDATA[<span class="quantifier">it is obligatory that</span> {0}]]></Form>
 				</FormalItem>
-				<FormalItem type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" modality="deontic" sign="-">
-					<Form style="Basic"><![CDATA[<span class="quantifier">It is permitted that some</span> {0} <span class="quantifier">participates in none of the following:</span>{1}]]></Form>
+				<FormalItem type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" sign="-">
+					<!-- Used inside a ModalOperator -->
+					<Form style="Basic"><![CDATA[<span class="quantifier">some</span> {0} <span class="quantifier">participates in none of the following:</span>{1}]]></Form>
 				</FormalItem>
 				<FormalItem type="CompoundListOpen">
 					<Form style="Basic"><![CDATA[<br/><span class="smallIndent">]]></Form>
@@ -107,7 +108,7 @@
 					<Form style="Basic"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Form>
 				</FormalItem>
 				<FormalItem type="IndentedOrListClose">
-					<Form style="Basic"></Form>
+					<Form style="Basic"><![CDATA[</span>]]></Form>
 				</FormalItem>
 				<FormalItem type="SimpleListOpen">
 					<Form style="Basic"></Form>
@@ -127,10 +128,16 @@
 				<FormalItem type="ObjectTypeMissing">
 					<Form style="Basic"><![CDATA[<span class="objectTypeMissing">Missing<sub>{0}</sub></span>]]></Form>
 				</FormalItem>
+				<FormalItem type="CloseVerbalizationSentence">
+					<Form style="Basic"><![CDATA[<span class="listSeparator">.</span>]]></Form>
+				</FormalItem>
 			</FormalItems>
 		</Language>
 	</Languages>
 	<Constructs>
+		<!-- Generate FactType verbalization along with constraints -->
+		<FactType/>
+		<!-- Generate constraint verbalizations -->
 		<Constraints>
 			<Constraint type="InternalUniquenessConstraint" patternGroup="InternalConstraint">
 				<ConstrainedRoles span="all">
@@ -298,11 +305,13 @@
 			<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
 				<!-- Unaries are the only reading choice that has an optional negative reading -->
 				<ConstrainedRoles sign="-" maxFactArity="1">
-					<Quantifier type="NegativeReadingForUnaryOnlyDisjunctiveMandatory">
-						<IterateRoles listStyle="SimpleList" match="singleColumnConstraintRoles" pass="first"/>
-						<IterateRoles listStyle="CompoundList" match="singleColumnConstraintRoles">
-							<Fact/>
-						</IterateRoles>
+					<Quantifier type="ModalPossibilityOperator">
+						<Quantifier type="NegativeReadingForUnaryOnlyDisjunctiveMandatory">
+							<IterateRoles listStyle="SimpleList" match="singleColumnConstraintRoles" pass="first"/>
+							<IterateRoles listStyle="CompoundList" match="singleColumnConstraintRoles">
+								<Fact/>
+							</IterateRoles>
+						</Quantifier>
 					</Quantifier>
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="+" maxFactArity="2">

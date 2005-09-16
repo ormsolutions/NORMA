@@ -45,7 +45,7 @@ namespace Neumont.Tools.ORM.Shell
 			.verbalization { }
 			.indent { left: 20px; position: relative; }
 			.smallIndent { left: 8px; position: relative; }
-			.listSeparator { font-weight: 200;}
+			.listSeparator { color: windowtext; font-weight: 200;}
 		</style>
 	</head>
 	<body>

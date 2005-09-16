@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Text;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
+using System.Text.RegularExpressions;
 
 namespace Neumont.Tools.ORM.ObjectModel
 {
@@ -285,27 +286,101 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return retVal;
 		}
+		/// <summary>
+		/// Match the first non whitespace/html character
+		/// </summary>
+		private static Regex FirstBodyCharacterPatternAny = new Regex(@"^(?:((<[^>]*?>)|\s)+?)(?<1>.)", RegexOptions.Compiled | RegexOptions.Singleline);
+		/// <summary>
+		/// Match the first non whitespace/html character, but only if it is lower case
+		/// </summary>
+		private static Regex FirstBodyCharacterPatternLower = new Regex(@"^(?:((<[^>]*?>)|\s)+?)(?<1>\p{Ll})", RegexOptions.Compiled | RegexOptions.Singleline);
+		/// <summary>
+		/// Match the last non whitespace/html character
+		/// </summary>
+		private static Regex LastBodyCharacterPattern = new Regex(@".((<[^>]*?>)|\s)+?\z", RegexOptions.Compiled | RegexOptions.Singleline);
+		/// <summary>
+		/// Helper function for turning verbalizations into true sentences. Handles html and plain text
+		/// body text.
+		/// </summary>
+		public static void WriteVerbalizerSentence(TextWriter writer, string body, string closeSentenceWith)
+		{
+			Match match = FirstBodyCharacterPatternLower.Match(body);
+			if (match.Success)
+			{
+				Group group = match.Groups[1];
+				if (group.Success)
+				{
+					int charIndex = group.Index;
+					if (charIndex != 0)
+					{
+						writer.Write(body.Substring(0, charIndex));
+					}
+					writer.Write(char.ToUpper(body[charIndex], CultureInfo.CurrentUICulture));
+					string trailingText = body.Substring(charIndex + 1);
+					if (closeSentenceWith.Length != 0 && CloseSentence(writer, trailingText, closeSentenceWith))
+					{
+						return;
+					}
+					writer.Write(trailingText);
+					return;
+				}
+			}
+			else if (closeSentenceWith.Length != 0 && CloseSentence(writer, body, closeSentenceWith))
+			{
+				return;
+			}
+			writer.Write(body);
+		}
+		private static bool CloseSentence(TextWriter writer, string body, string closeSentenceWith)
+		{
+			// Note that the closeSentenceWith value must go inside any html tags with the last text
+			// because these contain indentation styles which may be cleared, causing the sentence closure
+			// to write in the wrong location
+			Match match = LastBodyCharacterPattern.Match(body);
+			if (match.Success)
+			{
+				string modifiedClose = closeSentenceWith;
+				// We need to strip any html tags from around the sentence closure and compare the
+				// contents, not the whole string
+				int replaceLength = closeSentenceWith.Length;
+				int modifiedReplaceLength = replaceLength;
+				if (replaceLength > 1)
+				{
+					// UNDONE: Cache the last closure string, we'll be getting the same query every time
+					Match closeStartMatch = FirstBodyCharacterPatternAny.Match(closeSentenceWith);
+					if (closeStartMatch.Success)
+					{
+						Group closeStartGroup = closeStartMatch.Groups[1];
+						if (closeStartGroup.Success)
+						{
+							Match closeLastMatch = LastBodyCharacterPattern.Match(closeSentenceWith);
+							if (closeLastMatch.Success)
+							{
+								int startIndex = closeStartGroup.Index;
+								int endIndex = closeLastMatch.Index;
+								if (startIndex <= endIndex)
+								{
+									modifiedClose = closeSentenceWith.Substring(startIndex, endIndex - startIndex + 1);
+									modifiedReplaceLength = modifiedClose.Length;
+								}
+							}
+						}
+					}
+				}
+				int charIndex = match.Index;
+				if ((modifiedReplaceLength > charIndex) || (modifiedClose != body.Substring(charIndex - modifiedReplaceLength + 2, modifiedReplaceLength)))
+				{
+					if (charIndex != 0)
+					{
+						writer.Write(body.Substring(0, charIndex + 1));
+					}
+					writer.Write(closeSentenceWith);
+					writer.Write(body.Substring(charIndex + 1));
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 	#endregion // Static verbalization helpers on FactType class
-	#region Extremely Temporary IVerbalize implementation for FactType
-	public partial class FactType : IVerbalize
-	{
-		#region IVerbalize Members
-		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
-		{
-			return GetVerbalization(writer, beginVerbalization, isNegative);
-		}
-
-		/// <summary>
-		/// Implements IVerbalize.GetVerbalization.
-		/// </summary>
-		protected static bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
-		{
-			beginVerbalization(VerbalizationContent.Normal);
-			writer.Write("Place holder for FactType verbalization.");
-			return true;
-		}
-		#endregion
-	}
-	#endregion // Extremely Temporary IVerbalize implementation for FactType
 }
