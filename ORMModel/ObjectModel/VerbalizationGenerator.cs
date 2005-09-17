@@ -110,6 +110,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		ObjectTypeWithSubscript,
 		/// <summary>
 		///</summary>
+		PersonalPronoun,
+		/// <summary>
+		///</summary>
 		SimpleListClose,
 		/// <summary>
 		///</summary>
@@ -178,7 +181,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					new VerbalizationSet(new string[] {
 								"<span class=\"quantifier\">at most one</span> {0}",
 								"<span class=\"listSeparator\">.</span>",
-								"",
+								"</span>",
 								"<span class=\"listSeparator\">; </span>",
 								"<br/><span class=\"smallIndent\">",
 								"<span class=\"listSeparator\">; </span>",
@@ -209,6 +212,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"<span class=\"objectType\">{0}</span>",
 								"<span class=\"objectTypeMissing\">Missing<sub>{0}</sub></span>",
 								"<span class=\"objectType\">{0}<sub>{1}</sub></span>",
+								"<span class=\"quantifier\">who</span> {0}",
 								"",
 								"<span class=\"listSeparator\">, and </span>",
 								"",
@@ -218,7 +222,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					new VerbalizationSet(new string[] {
 								"<span class=\"quantifier\">at most one</span> {0}",
 								"<span class=\"listSeparator\">.</span>",
-								"",
+								"</span>",
 								"<span class=\"listSeparator\">; </span>",
 								"<br/><span class=\"smallIndent\">",
 								"<span class=\"listSeparator\">; </span>",
@@ -249,6 +253,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"<span class=\"objectType\">{0}</span>",
 								"<span class=\"objectTypeMissing\">Missing<sub>{0}</sub></span>",
 								"<span class=\"objectType\">{0}<sub>{1}</sub></span>",
+								"<span class=\"quantifier\">who</span> {0}",
 								"",
 								"<span class=\"listSeparator\">, and </span>",
 								"",
@@ -258,7 +263,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					new VerbalizationSet(new string[] {
 								"<span class=\"quantifier\">at most one</span> {0}",
 								"<span class=\"listSeparator\">.</span>",
-								"",
+								"</span>",
 								"<span class=\"listSeparator\">; </span>",
 								"<br/><span class=\"smallIndent\">",
 								"<span class=\"listSeparator\">; </span>",
@@ -289,6 +294,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"<span class=\"objectType\">{0}</span>",
 								"<span class=\"objectTypeMissing\">Missing<sub>{0}</sub></span>",
 								"<span class=\"objectType\">{0}<sub>{1}</sub></span>",
+								"<span class=\"quantifier\">who</span> {0}",
 								"",
 								"<span class=\"listSeparator\">, and </span>",
 								"",
@@ -298,7 +304,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					new VerbalizationSet(new string[] {
 								"<span class=\"quantifier\">at most one</span> {0}",
 								"<span class=\"listSeparator\">.</span>",
-								"",
+								"</span>",
 								"<span class=\"listSeparator\">; </span>",
 								"<br/><span class=\"smallIndent\">",
 								"<span class=\"listSeparator\">; </span>",
@@ -329,6 +335,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"<span class=\"objectType\">{0}</span>",
 								"<span class=\"objectTypeMissing\">Missing<sub>{0}</sub></span>",
 								"<span class=\"objectType\">{0}<sub>{1}</sub></span>",
+								"<span class=\"quantifier\">who</span> {0}",
 								"",
 								"<span class=\"listSeparator\">, and </span>",
 								"",

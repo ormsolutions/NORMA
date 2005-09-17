@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://Schemas.Neumont.edu/ORM/SDK/Verbalization" xmlns="http://Schemas.Neumont.edu/ORM/SDK/Verbalization" xmlns:ve="http://Schemas.Neumont.edu/ORM/SDK/Verbalization" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+
+	<xs:simpleType name="ModalityEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="alethic"/>
+			<xs:enumeration value="deontic"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SignEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="positive"/>
+			<xs:enumeration value="negative"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PassEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="first"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="SnippetTypeEnum">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="null"/>
+			<xs:enumeration value="ObjectType"/>
+			<xs:enumeration value="ObjectTypeWithSubscript"/>
+			<xs:enumeration value="ObjectTypeMissing"/>
+			<xs:enumeration value="ImpersonalPronoun"/>
+			<xs:enumeration value="PersonalPronoun"/>
+			<xs:enumeration value="UniversalQuantifier"/>
+			<xs:enumeration value="AtMostOneQuantifier"/>
+			<xs:enumeration value="EachInstanceQuantifier"/>
+			<xs:enumeration value="ForEachCompactQuantifier"/>
+			<xs:enumeration value="ForEachQuantifier"/>
+			<xs:enumeration value="ExistentialQuantifier"/>
+			<xs:enumeration value="IdentityReferenceQuantifier"/>
+			<xs:enumeration value="MoreThanOneQuantifier"/>
+			<xs:enumeration value="ModalPossibilityOperator"/>
+			<xs:enumeration value="ModalNecessityOperator"/>
+			<xs:enumeration value="NegativeReadingForUnaryOnlyDisjunctiveMandatory"/>
+			<xs:enumeration value="CompoundListOpen"/>
+			<xs:enumeration value="CompoundListPairSeparator"/>
+			<xs:enumeration value="CompoundListSeparator"/>
+			<xs:enumeration value="CompoundListFinalSeparator"/>
+			<xs:enumeration value="CompoundListClose"/>
+			<xs:enumeration value="IndentedListOpen"/>
+			<xs:enumeration value="IndentedListPairSeparator"/>
+			<xs:enumeration value="IndentedListSeparator"/>
+			<xs:enumeration value="IndentedListFinalSeparator"/>
+			<xs:enumeration value="IndentedListClose"/>
+			<xs:enumeration value="IndentedOrListOpen"/>
+			<xs:enumeration value="IndentedOrListPairSeparator"/>
+			<xs:enumeration value="IndentedOrListSeparator"/>
+			<xs:enumeration value="IndentedOrListFinalSeparator"/>
+			<xs:enumeration value="IndentedOrListClose"/>
+			<xs:enumeration value="SimpleListOpen"/>
+			<xs:enumeration value="SimpleListPairSeparator"/>
+			<xs:enumeration value="SimpleListSeparator"/>
+			<xs:enumeration value="SimpleListFinalSeparator"/>
+			<xs:enumeration value="SimpleListClose"/>
+			<xs:enumeration value="CloseVerbalizationSentence"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ConstraintTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="InternalUniquenessConstraint"/>
+			<xs:enumeration value="ExternalUniquenessConstraint"/>
+			<xs:enumeration value="DisjunctiveMandatoryConstraint"/>
+			<xs:enumeration value="SimpleMandatoryConstraint"/>
+			<!-- Add other constraint types here -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ConstraintPatternGroupEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="InternalConstraint"/>
+			<xs:enumeration value="SingleColumnExternalConstraint"/>
+			<xs:enumeration value="MultipleColumnExternalConstraint"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ReadingChoiceMatchEnum">
+		<xs:restriction base="xs:string">
+			<!-- Allowable options are {Conditional|{Prefer|Require}[All][Non][Primary]LeadReading[NoForwardText]} -->
+			<xs:enumeration value="Conditional"/>
+			<xs:enumeration value="PreferLeadReading"/>
+			<xs:enumeration value="PreferNonLeadReading"/>
+			<xs:enumeration value="PreferPrimaryLeadReading"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
+			<xs:enumeration value="PreferLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferNonLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferPrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferNonPrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="RequireLeadReading"/>
+			<xs:enumeration value="RequireNonLeadReading"/>
+			<xs:enumeration value="RequirePrimaryLeadReading"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReading"/>
+			<xs:enumeration value="RequireLeadReadingNoForwardText"/>
+			<xs:enumeration value="RequireNonLeadReadingNoForwardText"/>
+			<xs:enumeration value="RequirePrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="RequireNonPrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferAllLeadReading"/>
+			<xs:enumeration value="PreferAllNonLeadReading"/>
+			<xs:enumeration value="PreferAllPrimaryLeadReading"/>
+			<xs:enumeration value="PreferAllNonPrimaryLeadReading"/>
+			<xs:enumeration value="PreferAllLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferAllNonLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferAllPrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="PreferAllNonPrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="RequireAllLeadReading"/>
+			<xs:enumeration value="RequireAllNonLeadReading"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReading"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReading"/>
+			<xs:enumeration value="RequireAllLeadReadingNoForwardText"/>
+			<xs:enumeration value="RequireAllNonLeadReadingNoForwardText"/>
+			<xs:enumeration value="RequireAllPrimaryLeadReadingNoForwardText"/>
+			<xs:enumeration value="RequireAllNonPrimaryLeadReadingNoForwardText"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IterateRolesListStyleEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SimpleList"/>
+			<xs:enumeration value="IndentedList"/>
+			<xs:enumeration value="CompoundList"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CompositeListStyleEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="IndentedOrList"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="BaseEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="included"/>
+			<xs:enumeration value="excluded"/>
+			<xs:enumeration value="primary"/>
+			<xs:enumeration value="secondary"/>
+			<xs:enumeration value="singleColumnConstraintRoles"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PredicateReplacementMatchEnum">
+		<xs:restriction base="BaseEnum">
+			<xs:enumeration value="included"/>
+			<xs:enumeration value="excluded"/>
+			<xs:enumeration value="primary"/>
+			<xs:enumeration value="secondary"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IncludedExcludedEnum">
+		<xs:restriction base="PredicateReplacementMatchEnum">
+			<xs:enumeration value="included"/>
+			<xs:enumeration value="excluded"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:attributeGroup name="factArityAttributes">
+		<xs:attribute name="factArity" type="xs:unsignedByte" use="optional"/>
+		<xs:attribute name="minFactArity" type="xs:unsignedByte" use="optional"/>
+		<xs:attribute name="maxFactArity" type="xs:unsignedByte" use="optional"/>
+	</xs:attributeGroup>
+
+	<xs:element name="Snippet">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="Snippet" minOccurs="1" maxOccurs="1"/>
+				<xs:sequence minOccurs="1" maxOccurs="1">
+					<xs:element ref="IterateRoles" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element ref="Fact" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:choice>
+			<xs:attribute name="ref" type="SnippetTypeEnum" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PredicateReplacement">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Snippet" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="match" use="optional" type="PredicateReplacementMatchEnum"/>
+			<xs:attribute name="pass" use="optional" type="PassEnum"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Fact">
+		<xs:complexType>
+			<xs:sequence minOccurs="0" maxOccurs="1">
+				<xs:element ref="PredicateReplacement" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="readingChoice" use="optional" type="ReadingChoiceMatchEnum"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="IterateRoles">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Fact" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="listStyle" type="IterateRolesListStyleEnum" use="optional"/>
+			<xs:attribute name="match" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="BaseEnum">
+						<xs:enumeration value="included"/>
+						<xs:enumeration value="excluded"/>
+						<xs:enumeration value="singleColumnConstraintRoles"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attributeGroup ref="factArityAttributes"/>
+			<xs:attribute name="pass" use="optional" type="PassEnum"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ReadingChoice">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="Fact" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="Snippet" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="CompositeList" minOccurs="1" maxOccurs="1"/>
+			</xs:choice>
+			<xs:attribute name="match" use="optional" type="ReadingChoiceMatchEnum"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ConditionalReading">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ReadingChoice" minOccurs="2" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:unique name="ConditionalReadingReadingChoice">
+			<xs:selector xpath="ve:ReadingChoice"/>
+			<xs:field xpath="@match"/>
+		</xs:unique>
+	</xs:element>
+	<xs:element name="CompositeList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="IterateRoles" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="listStyle" type="CompositeListStyleEnum" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	
+	
+	<xs:element name="VerbalizationRoot">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Languages" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Language" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Snippets" minOccurs="1" maxOccurs="1">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Snippet" minOccurs="1" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:string">
+																	<xs:attribute name="type" type="SnippetTypeEnum" use="required"/>
+																	<xs:attribute name="modality" type="ModalityEnum" use="optional"/>
+																	<xs:attribute name="sign" type="SignEnum" use="optional"/>
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute ref="xml:lang" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+					<xs:key name="LanguageCodeKey">
+						<xs:selector xpath="ve:Language"/>
+						<xs:field xpath="@xml:lang"/>
+					</xs:key>
+				</xs:element>
+				<xs:element name="Constructs" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FactType" minOccurs="1" maxOccurs="1"/>
+							<xs:element name="Constraints" minOccurs="1" maxOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Constraint" minOccurs="1" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="ConstrainedRoles" minOccurs="1" maxOccurs="unbounded" >
+														<xs:complexType>
+															<xs:choice>
+																<xs:element ref="Snippet" minOccurs="1" maxOccurs="unbounded"/>
+																<xs:element ref="ConditionalReading" minOccurs="1" maxOccurs="1"/>
+															</xs:choice>
+															<xs:attribute name="span" type="xs:string" use="optional"/>
+															<xs:attribute name="sign" type="SignEnum" use="optional"/>
+															<xs:attributeGroup ref="factArityAttributes"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="type" type="ConstraintTypeEnum" use="required"/>
+												<xs:attribute name="patternGroup" type="ConstraintPatternGroupEnum" use="required"/>
+											</xs:complexType>
+											<xs:unique name="ConstrainedRolesSpanFactArity">
+												<xs:selector xpath="ve:ConstrainedRoles"/>
+												<xs:field xpath="@span"/>
+												<xs:field xpath="@factArity"/>
+											</xs:unique>
+											<xs:unique name="ConstrainedRolesSpanMinFactArity">
+												<xs:selector xpath="ve:ConstrainedRoles"/>
+												<xs:field xpath="@span"/>
+												<xs:field xpath="@minFactArity"/>
+											</xs:unique>
+											<xs:unique name="ConstrainedRolesSpanMaxFactArity">
+												<xs:selector xpath="ve:ConstrainedRoles"/>
+												<xs:field xpath="@span"/>
+												<xs:field xpath="@maxFactArity"/>
+											</xs:unique>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+</xs:schema>

@@ -238,6 +238,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ORMCore.dsldm.cs</LastGenOutput>
     </None>
+    <None Include="ObjectModel\VerbalizationGenerator.xsd" />
     <None Include="Resources\Toolbox.EntityType.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ObjectModel\ORMCore.dsldm.resx">
       <DependentUpon>ORMCore.dsldm.cs</DependentUpon>

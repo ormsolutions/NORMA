@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix"
-    xmlns:ve="http://Schemas.Neumont.edu/ORM/SDK/Verbalization"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix"
+	xmlns:ve="http://Schemas.Neumont.edu/ORM/SDK/Verbalization"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-	>
+>
 	<!-- This file is designed as an include in VerbalizationGenerator.xslt. The CustomToolNamespace,
-	     VerbalizationTextSnippetType, VerbalizationSet, and VerbalizationSets params are used in
-		 this file and defined in the containing file. They are redefined here (along with a root template)
-		 to ease development and debugging of this file without the container. -->
+			 VerbalizationTextSnippetType, VerbalizationSet, and VerbalizationSets params are used in
+			 this file and defined in the containing file. They are redefined here (along with a root template)
+			 to ease development and debugging of this file without the container. -->
 	<!--<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:param name="VerbalizationTextSnippetType" select="'VerbalizationTextSnippetType'"/>
 	<xsl:param name="VerbalizationSet" select="'VerbalizationSet'"/>
 	<xsl:param name="VerbalizationSets" select="'VerbalizationSets'"/>
-	<xsl:template match="ve:Root">
+	<xsl:template match="ve:VerbalizationRoot">
 		<plx:Root>
 			<plx:Namespace name="{$CustomToolNamespace}">
 				<xsl:call-template name="GenerateVerbalizationSets"/>
@@ -21,13 +21,13 @@
 		</plx:Root>
 	</xsl:template>-->
 
-	<!-- Template to sort and normalize ve:FormalItem templates for the default (en-us) language. Called from
-	     the ve:Root node.-->
+	<!-- Template to sort and normalize ve:Snippet templates for the default (en-US) language. Called from
+	     the ve:VerbalizationRoot node.-->
 	<xsl:template name="GenerateSortedSnippetsFragment">
-		<xsl:for-each select="ve:Languages/ve:Language[@code='en-us']/ve:FormalItems/ve:FormalItem">
+		<xsl:for-each select="ve:Languages/ve:Language[@xml:lang='en-US']/ve:Snippets/ve:Snippet">
 			<xsl:sort select="@type" data-type="text" order="ascending"/>
 			<xsl:sort select="@modality" data-type="text" order="ascending"/>
-			<!-- We want +/-, not -/+, so that we don't have to resort after explicitly adding the default values -->
+			<!-- We want positive before negative so that we don't have to resort after explicitly adding the default values -->
 			<xsl:sort select="@sign" data-type="text" order="descending"/>
 			<xsl:copy>
 				<xsl:copy-of select="@*"/>
@@ -38,10 +38,10 @@
 				</xsl:if>
 				<xsl:if test="0=string-length(@sign)">
 					<xsl:attribute name="sign">
-						<xsl:text>+</xsl:text>
+						<xsl:text>positive</xsl:text>
 					</xsl:attribute>
 				</xsl:if>
-				<xsl:copy-of select="child::*"/>
+				<xsl:copy-of select="text()"/>
 			</xsl:copy>
 		</xsl:for-each>
 	</xsl:template>
@@ -50,13 +50,13 @@
 		 match as many values as possible. Go ahead and include strings without a perfect match
 		 in the current set. -->
 	<xsl:template name="MatchSnippetSet">
-		<!-- All ve:FormalItem elements from the default (us-english) language sorted
+		<!-- All ve:Snippet elements from the default (en-US) language sorted
 		     by type/modality/sign with all default modality and sign values filled in.
 			 Pass the child elements of the fragment returned from GeneratedSortedSnippetsFragment
 			 to this parameter. -->
 		<xsl:param name="SortedSnippets"/>
 		<xsl:param name="Modality" select="'alethic'"/>
-		<xsl:param name="Sign" select="'+'"/>
+		<xsl:param name="Sign" select="'positive'"/>
 		<xsl:for-each select="$SortedSnippets">
 			<xsl:if test="position()=1">
 				<xsl:call-template name="MatchSnippetSet2">
@@ -94,7 +94,7 @@
 						<xsl:when test="@sign=$Sign">
 							<xsl:text>xx</xsl:text>
 						</xsl:when>
-						<xsl:when test="@sign='+' and @modality='alethic'">
+						<xsl:when test="@sign='positive' and @modality='alethic'">
 							<xsl:text>x</xsl:text>
 						</xsl:when>
 					</xsl:choose>
@@ -114,7 +114,7 @@
 				<xsl:choose>
 					<xsl:when test="position()=last()">
 						<xsl:for-each select="msxsl:node-set($matchFragment)/child::*">
-							<Snippet type="{@type}" text="{ve:Form[@style='Basic']}"/>
+							<Snippet type="{@type}" text="{text()}"/>
 						</xsl:for-each>
 					</xsl:when>
 					<xsl:otherwise>
@@ -146,7 +146,7 @@
 				<!-- Move on to a different type, but first record the last -->
 				<xsl:if test="$Match">
 					<xsl:for-each select="$Match">
-						<Snippet type="{@type}" text="{ve:Form[@style='Basic']}"/>
+						<Snippet type="{@type}" text="{text()}"/>
 					</xsl:for-each>
 				</xsl:if>
 				<xsl:call-template name="MatchSnippetSet2">
@@ -169,7 +169,7 @@
 			<xsl:call-template name="MatchSnippetSet">
 				<xsl:with-param name="SortedSnippets" select="$SortedSnippets"/>
 				<xsl:with-param name="Modality" select="'alethic'"/>
-				<xsl:with-param name="Sign" select="'+'"/>
+				<xsl:with-param name="Sign" select="'positive'"/>
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="alethicPositive" select="msxsl:node-set($alethicPositiveFragment)/child::*"/>
@@ -337,7 +337,7 @@
 										<xsl:call-template name="MatchSnippetSet">
 											<xsl:with-param name="SortedSnippets" select="$SortedSnippets"/>
 											<xsl:with-param name="Modality" select="'deontic'"/>
-											<xsl:with-param name="Sign" select="'+'"/>
+											<xsl:with-param name="Sign" select="'positive'"/>
 										</xsl:call-template>
 									</xsl:with-param>
 								</xsl:call-template>
@@ -346,7 +346,7 @@
 										<xsl:call-template name="MatchSnippetSet">
 											<xsl:with-param name="SortedSnippets" select="$SortedSnippets"/>
 											<xsl:with-param name="Modality" select="'alethic'"/>
-											<xsl:with-param name="Sign" select="'-'"/>
+											<xsl:with-param name="Sign" select="'negative'"/>
 										</xsl:call-template>
 									</xsl:with-param>
 								</xsl:call-template>
@@ -355,7 +355,7 @@
 										<xsl:call-template name="MatchSnippetSet">
 											<xsl:with-param name="SortedSnippets" select="$SortedSnippets"/>
 											<xsl:with-param name="Modality" select="'deontic'"/>
-											<xsl:with-param name="Sign" select="'-'"/>
+											<xsl:with-param name="Sign" select="'negative'"/>
 										</xsl:call-template>
 									</xsl:with-param>
 								</xsl:call-template>

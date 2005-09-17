@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix"
-    xmlns:ve="http://Schemas.Neumont.edu/ORM/SDK/Verbalization"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix"
+	xmlns:ve="http://Schemas.Neumont.edu/ORM/SDK/Verbalization"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-	>
-	<xsl:preserve-space elements="ve:Form"/>
+>
+	<xsl:preserve-space elements="ve:Snippet"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 
@@ -25,7 +25,7 @@
 
 	<!-- Include templates to generate the shared verbalization classes -->
 	<xsl:include href="VerbalizationGenerator.Sets.xslt"/>
-	<xsl:template match="ve:Root">
+	<xsl:template match="ve:VerbalizationRoot">
 		<plx:Root>
 			<plx:Using name="System"/>
 			<plx:Using name="System.IO"/>
@@ -668,10 +668,10 @@
 	<!-- Handle the sign constraint condition attributes -->
 	<xsl:template match="@sign" mode="ConstraintConditionOperator">
 		<xsl:choose>
-			<xsl:when test=".='-'">
+			<xsl:when test=".='negative'">
 				<plx:Value type="Local" data="isNegative"/>
 			</xsl:when>
-			<xsl:when test=".='+'">
+			<xsl:when test=".='positive'">
 				<plx:Operator type="BooleanNot">
 					<plx:Value type="Local" data="isNegative"/>
 				</plx:Operator>
@@ -1223,7 +1223,7 @@
 	</xsl:template>
 	<xsl:template name="ConstraintBodyContent">
 		<xsl:param name="PatternGroup"/>
-		<!-- At this point we'll either have ConditionalReading or Quantifier children -->
+		<!-- At this point we'll either have ConditionalReading or Snippet children -->
 		<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			<xsl:with-param name="TopLevel" select="true()"/>
@@ -1462,7 +1462,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	<xsl:template match="ve:Quantifier" mode="ConstraintVerbalization">
+	<xsl:template match="ve:Snippet" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'snippet'"/>
 		<xsl:param name="TopLevel" select="false()"/>
@@ -1492,7 +1492,7 @@
 		<plx:Variable name="{$VariablePrefix}{$FormatVariablePart}{$VariableDecorator}" dataTypeName="String" dataTypeQualifier="System">
 			<plx:Initialize>
 				<xsl:call-template name="SnippetFor">
-					<xsl:with-param name="SnippetType" select="@type"/>
+					<xsl:with-param name="SnippetType" select="@ref"/>
 				</xsl:call-template>
 			</plx:Initialize>
 		</plx:Variable>
@@ -2009,14 +2009,14 @@
 		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="PredicateReplacementBody">
-		<xsl:for-each select="ve:Quantifier">
+		<xsl:for-each select="ve:Snippet">
 			<plx:Operator type="Assign">
 				<plx:Left>
 					<plx:Value type="Local" data="roleReplacement"/>
 				</plx:Left>
 				<plx:Right>
 					<xsl:choose>
-						<xsl:when test="@type='null'">
+						<xsl:when test="@ref='null'">
 							<!-- Special case so that we can eliminate replacement text fields -->
 							<plx:String/>
 						</xsl:when>
@@ -2031,7 +2031,7 @@
 								</plx:PassParam>
 								<plx:PassParam>
 									<xsl:call-template name="SnippetFor">
-										<xsl:with-param name="SnippetType" select="@type"/>
+										<xsl:with-param name="SnippetType" select="@ref"/>
 									</xsl:call-template>
 								</plx:PassParam>
 								<plx:PassParam>
