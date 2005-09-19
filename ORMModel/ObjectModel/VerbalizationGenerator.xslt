@@ -2535,6 +2535,30 @@
 							</plx:Condition>
 						</plx:Body>
 					</plx:FallbackCondition>
+					<plx:FallbackCondition>
+						<plx:Test>
+							<plx:Operator type="Equality">
+								<plx:Left>
+									<plx:Value type="Local" data="{$iterVarName}">
+										<xsl:if test="string-length($CompositeIterator)">
+											<xsl:attribute name="data">
+												<xsl:value-of select="$CompositeIterator"/>
+											</xsl:attribute>
+										</xsl:if>
+									</plx:Value>
+								</plx:Left>
+								<plx:Right>
+									<plx:Value type="I4" data="1"/>
+								</plx:Right>
+							</plx:Operator>
+						</plx:Test>
+						<plx:Body>
+							<xsl:call-template name="SetSnippetVariable">
+								<xsl:with-param name="SnippetType" select="concat($ListStyle,'FirstSeparator')"/>
+								<xsl:with-param name="VariableName" select="'listSnippet'"/>
+							</xsl:call-template>
+						</plx:Body>
+					</plx:FallbackCondition>
 					<plx:Alternate>
 						<xsl:call-template name="SetSnippetVariable">
 							<xsl:with-param name="SnippetType" select="concat($ListStyle,'Separator')"/>

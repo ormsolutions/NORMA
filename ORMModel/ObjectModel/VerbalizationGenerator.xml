@@ -38,26 +38,29 @@
 
 				<Snippet type="CompoundListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 				<Snippet type="CompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
+				<Snippet type="CompoundListFirstSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
 				<Snippet type="CompoundListSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
 				<Snippet type="CompoundListFinalSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
 				<Snippet type="CompoundListClose"><![CDATA[</span>]]></Snippet>
 				<Snippet type="IndentedListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 				<Snippet type="IndentedListPairSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
+				<Snippet type="IndentedListFirstSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 				<Snippet type="IndentedListSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 				<Snippet type="IndentedListFinalSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 				<Snippet type="IndentedListClose"><![CDATA[</span>]]></Snippet>
 				<Snippet type="IndentedOrListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 				<Snippet type="IndentedOrListPairSeparator"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Snippet>
+				<Snippet type="IndentedOrListFirstSeparator"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Snippet>
 				<Snippet type="IndentedOrListSeparator"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Snippet>
 				<Snippet type="IndentedOrListFinalSeparator"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Snippet>
 				<Snippet type="IndentedOrListClose"><![CDATA[</span>]]></Snippet>
 				<Snippet type="SimpleListOpen"><![CDATA[]]></Snippet>
 				<Snippet type="SimpleListPairSeparator"><![CDATA[<span class="listSeparator"> and </span>]]></Snippet>
+				<Snippet type="SimpleListFirstSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 				<Snippet type="SimpleListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 				<Snippet type="SimpleListFinalSeparator"><![CDATA[<span class="listSeparator">, and </span>]]></Snippet>
 				<Snippet type="SimpleListClose"><![CDATA[]]></Snippet>
 				<Snippet type="CloseVerbalizationSentence"><![CDATA[<span class="listSeparator">.</span>]]></Snippet>
-
 			</Snippets>
 		</Language>
 	</Languages>
@@ -231,7 +234,7 @@
 			<!-- UNDONE: The data from here down is preliminary, but is being used for generation testing -->
 			<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
 				<!-- Unaries are the only reading choice that has an optional negative reading -->
-				<ConstrainedRoles sign="negative" maxFactArity="1">
+				<ConstrainedRoles sign="positive" maxFactArity="1">
 					<Snippet ref="ModalPossibilityOperator">
 						<Snippet ref="NegativeReadingForUnaryOnlyDisjunctiveMandatory">
 							<IterateRoles listStyle="SimpleList" match="singleColumnConstraintRoles" pass="first"/>
