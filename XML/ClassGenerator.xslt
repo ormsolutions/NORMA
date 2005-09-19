@@ -1481,6 +1481,7 @@
 		</plx:Root>
 	</xsl:template>
 	<xsl:include href="ModelContext.xslt"/>
+	<xsl:include href="SerializationEngine.xslt"/>
 	<xsl:template match="orm:ORMModel" mode="Main">
 		<xsl:variable name="ModelName" select="@Name"/>
 		<xsl:variable name="ModelContextName" select="concat($ModelName,'Context')"/>
@@ -1515,6 +1516,10 @@
 			<xsl:call-template name="GenerateImplementation">
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 				<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
+			</xsl:call-template>
+			<xsl:call-template name="CreateSerializationClass">
+				<xsl:with-param name="AbsorbedObjects" select="$AbsorbedObjects"/>
+				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 			</xsl:call-template>
 		</plx:Namespace>
 	</xsl:template>
