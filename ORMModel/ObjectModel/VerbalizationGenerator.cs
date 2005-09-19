@@ -1096,6 +1096,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			RoleMoveableCollection allConstraintRoles = this.RoleCollection;
 			FactTypeMoveableCollection allFacts = this.FactTypeCollection;
 			int allFactsCount = allFacts.Count;
+			if ((allFactsCount == 0))
+			{
+				return false;
+			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
@@ -1503,6 +1507,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			RoleMoveableCollection allConstraintRoles = this.RoleCollection;
 			FactTypeMoveableCollection allFacts = this.FactTypeCollection;
 			int allFactsCount = allFacts.Count;
+			if ((allFactsCount == 0))
+			{
+				return false;
+			}
 			string[][] allBasicRoleReplacements = new string[allFactsCount][];
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;

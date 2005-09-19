@@ -208,7 +208,7 @@
 						</plx:Initialize>
 					</xsl:if>
 				</plx:Variable>
-				<xsl:if test="$isSingleColumn">
+				<xsl:if test="not($isInternal)">
 					<plx:Variable name="allConstraintRoles" dataTypeName="RoleMoveableCollection">
 						<plx:Initialize>
 							<plx:CallInstance name="RoleCollection" type="Property">
@@ -236,6 +236,25 @@
 							</plx:CallInstance>
 						</plx:Initialize>
 					</plx:Variable>
+					<plx:Condition>
+						<plx:Test>
+							<plx:Operator type="Equality">
+								<plx:Left>
+									<plx:Value type="Local" data="allFactsCount"/>
+								</plx:Left>
+								<plx:Right>
+									<plx:Value type="I4" data="0"/>
+								</plx:Right>
+							</plx:Operator>
+						</plx:Test>
+						<plx:Body>
+							<plx:Return>
+								<!-- This should be an error on the constraint, but be defensive and bail
+									if we have no facts -->
+								<plx:FalseKeyword/>
+							</plx:Return>
+						</plx:Body>
+					</plx:Condition>
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$isInternal">
