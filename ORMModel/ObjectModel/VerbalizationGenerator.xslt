@@ -2099,7 +2099,28 @@
 		</xsl:variable>
 		<xsl:variable name="contextMatch" select="string($contextMatchFragment)"/>
 		<xsl:variable name="iterVarName" select="concat($VariablePrefix,$RoleIterVariablePart,$VariableDecorator)"/>
-		<xsl:if test="not($TopLevel)">
+		<xsl:if test="$TopLevel">
+			<xsl:choose>
+				<xsl:when test="position()&gt;1">
+					<plx:CallInstance name="WriteLine">
+						<plx:CallObject>
+							<plx:Value type="Parameter" data="writer"/>
+						</plx:CallObject>
+					</plx:CallInstance>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:CallInstance name="" type="DelegateCall">
+						<plx:CallObject>
+							<plx:Value type="Parameter" data="beginVerbalization"/>
+						</plx:CallObject>
+						<plx:PassParam>
+							<plx:CallStatic name="Normal" dataTypeName="VerbalizationContent" type="Field"/>
+						</plx:PassParam>
+					</plx:CallInstance>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+		<xsl:if test="0=string-length($CompositeCount)">
 			<xsl:call-template name="EnsureTempStringBuilder"/>
 		</xsl:if>
 		<plx:Variable name="{$iterVarName}" dataTypeName="Int32" dataTypeQualifier="System">
@@ -2405,20 +2426,40 @@
 				</xsl:choose>
 			</plx:Body>
 		</plx:Loop>
-		<xsl:if test="not($TopLevel)">
-			<plx:Operator type="Assign">
-				<plx:Left>
-					<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
-				</plx:Left>
-				<plx:Right>
-					<plx:CallInstance name="ToString">
-						<plx:CallObject>
-							<plx:Value type="Local" data="sbTemp"/>
-						</plx:CallObject>
-					</plx:CallInstance>
-				</plx:Right>
-			</plx:Operator>
-		</xsl:if>
+		<xsl:variable name="getListText">
+			<plx:CallInstance name="ToString">
+				<plx:CallObject>
+					<plx:Value type="Local" data="sbTemp"/>
+				</plx:CallObject>
+			</plx:CallInstance>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="$TopLevel">
+				<plx:CallStatic name="WriteVerbalizerSentence" dataTypeName="FactType">
+					<plx:PassParam>
+						<plx:Value type="Parameter" data="writer"/>
+					</plx:PassParam>
+					<plx:PassParam>
+						<xsl:copy-of select="$getListText"/>
+					</plx:PassParam>
+					<plx:PassParam>
+						<xsl:call-template name="SnippetFor">
+							<xsl:with-param name="SnippetType" select="'CloseVerbalizationSentence'"/>
+						</xsl:call-template>
+					</plx:PassParam>
+				</plx:CallStatic>
+			</xsl:when>
+			<xsl:when test="0=string-length($CompositeIterator)">
+				<plx:Operator type="Assign">
+					<plx:Left>
+						<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
+					</plx:Left>
+					<plx:Right>
+						<xsl:copy-of select="$getListText"/>
+					</plx:Right>
+				</plx:Operator>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 	<!-- A helper template to spit the body of an IterateRoles iteration
 		 either inside a filter conditional or directly -->
@@ -2555,20 +2596,8 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<plx:CallInstance name="Append">
-			<xsl:if test="$TopLevel">
-				<xsl:attribute name="name">
-					<xsl:text>Write</xsl:text>
-				</xsl:attribute>
-			</xsl:if>
 			<plx:CallObject>
-				<xsl:choose>
-					<xsl:when test="$TopLevel">
-						<plx:Value type="Parameter" data="writer"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<plx:Value type="Local" data="sbTemp"/>
-					</xsl:otherwise>
-				</xsl:choose>
+				<plx:Value type="Local" data="sbTemp"/>
 			</plx:CallObject>
 			<plx:PassParam>
 				<xsl:call-template name="SnippetFor">
@@ -2584,14 +2613,25 @@
 					<!-- Let children assign directly to the normal replacement variable so
 						 that we don't have to communicate down the stack that they should assign
 						 directly to the temp string builder. -->
-					<plx:Operator type="Assign">
-						<plx:Left>
-							<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
-						</plx:Left>
-						<plx:Right>
-							<plx:NullObjectKeyword/>
-						</plx:Right>
-					</plx:Operator>
+					<xsl:choose>
+						<xsl:when test="$TopLevel">
+							<plx:Variable name="{$VariablePrefix}{$VariableDecorator}" dataTypeName="String" dataTypeQualifier="System">
+								<plx:Initialize>
+									<plx:NullObjectKeyword/>
+								</plx:Initialize>
+							</plx:Variable>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:Operator type="Assign">
+								<plx:Left>
+									<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
+								</plx:Left>
+								<plx:Right>
+									<plx:NullObjectKeyword/>
+								</plx:Right>
+							</plx:Operator>
+						</xsl:otherwise>
+					</xsl:choose>
 					<xsl:apply-templates select="." mode="ConstraintVerbalization">
 						<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 						<!-- Pass the position in here or it will always be 1 -->
@@ -2601,20 +2641,8 @@
 						<xsl:with-param name="FirstPassVariable" select="$FirstPassVariable"/>
 					</xsl:apply-templates>
 					<plx:CallInstance name="Append">
-						<xsl:if test="$TopLevel">
-							<xsl:attribute name="name">
-								<xsl:text>Write</xsl:text>
-							</xsl:attribute>
-						</xsl:if>
 						<plx:CallObject>
-							<xsl:choose>
-								<xsl:when test="$TopLevel">
-									<plx:Value type="Parameter" data="writer"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<plx:Value type="Local" data="sbTemp"/>
-								</xsl:otherwise>
-							</xsl:choose>
+							<plx:Value type="Local" data="sbTemp"/>
 						</plx:CallObject>
 						<plx:PassParam>
 							<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
@@ -2624,20 +2652,8 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<plx:CallInstance name="Append">
-					<xsl:if test="$TopLevel">
-						<xsl:attribute name="name">
-							<xsl:text>Write</xsl:text>
-						</xsl:attribute>
-					</xsl:if>
 					<plx:CallObject>
-						<xsl:choose>
-							<xsl:when test="$TopLevel">
-								<plx:Value type="Parameter" data="writer"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<plx:Value type="Local" data="sbTemp"/>
-							</xsl:otherwise>
-						</xsl:choose>
+						<plx:Value type="Local" data="sbTemp"/>
 					</plx:CallObject>
 					<plx:PassParam>
 						<plx:CallInstance name="" type="ArrayIndexer">
@@ -2686,20 +2702,8 @@
 		<xsl:choose>
 			<xsl:when test="@pass='first' and 0=string-length($CompositeCount)">
 				<plx:CallInstance name="Append">
-					<xsl:if test="$TopLevel">
-						<xsl:attribute name="name">
-							<xsl:text>Write</xsl:text>
-						</xsl:attribute>
-					</xsl:if>
 					<plx:CallObject>
-						<xsl:choose>
-							<xsl:when test="$TopLevel">
-								<plx:Value type="Parameter" data="writer"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<plx:Value type="Local" data="sbTemp"/>
-							</xsl:otherwise>
-						</xsl:choose>
+						<plx:Value type="Local" data="sbTemp"/>
 					</plx:CallObject>
 					<plx:PassParam>
 						<xsl:call-template name="SnippetFor">
@@ -2747,20 +2751,8 @@
 					</plx:Test>
 					<plx:Body>
 						<plx:CallInstance name="Append">
-							<xsl:if test="$TopLevel">
-								<xsl:attribute name="name">
-									<xsl:text>Write</xsl:text>
-								</xsl:attribute>
-							</xsl:if>
 							<plx:CallObject>
-								<xsl:choose>
-									<xsl:when test="$TopLevel">
-										<plx:Value type="Parameter" data="writer"/>
-									</xsl:when>
-									<xsl:otherwise>
-										<plx:Value type="Local" data="sbTemp"/>
-									</xsl:otherwise>
-								</xsl:choose>
+								<plx:Value type="Local" data="sbTemp"/>
 							</plx:CallObject>
 							<plx:PassParam>
 								<xsl:call-template name="SnippetFor">
@@ -2823,6 +2815,7 @@
 			</plx:Right>
 		</plx:Operator>
 		<xsl:variable name="ListStyle" select="@listStyle"/>
+		<xsl:call-template name="EnsureTempStringBuilder"/>
 		<xsl:for-each select="child::*">
 			<plx:Variable name="{$VariablePrefix}{$VariableDecorator}Item{position()}" dataTypeName="String" dataTypeQualifier="System">
 				<plx:Initialize>
@@ -2834,11 +2827,46 @@
 				<xsl:with-param name="VariableDecorator" select="position()"/>
 				<xsl:with-param name="CompositeCount" select="$compositeCountVarName"/>
 				<xsl:with-param name="CompositeIterator" select="$iteratorVarName"/>
-				<xsl:with-param name="TopLevel" select="$TopLevel"/>
 				<xsl:with-param name="ListStyle" select="$ListStyle"/>
 				<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			</xsl:apply-templates>
 		</xsl:for-each>
+		<xsl:variable name="getListText">
+			<plx:CallInstance name="ToString">
+				<plx:CallObject>
+					<plx:Value type="Local" data="sbTemp"/>
+				</plx:CallObject>
+			</plx:CallInstance>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="$TopLevel">
+				<!-- Write the snippet directly to the text writer after sentence modification -->
+				<plx:CallStatic name="WriteVerbalizerSentence" dataTypeName="FactType">
+					<plx:PassParam>
+						<plx:Value type="Parameter" data="writer"/>
+					</plx:PassParam>
+					<plx:PassParam>
+						<xsl:copy-of select="$getListText"/>
+					</plx:PassParam>
+					<plx:PassParam>
+						<xsl:call-template name="SnippetFor">
+							<xsl:with-param name="SnippetType" select="'CloseVerbalizationSentence'"/>
+						</xsl:call-template>
+					</plx:PassParam>
+				</plx:CallStatic>
+			</xsl:when>
+			<xsl:otherwise>
+				<!-- Snippet is used as a replacement field in another snippet -->
+				<plx:Operator type="Assign">
+					<plx:Left>
+						<plx:Value type="Local" data="{$VariablePrefix}{$VariableDecorator}"/>
+					</plx:Left>
+					<plx:Right>
+						<xsl:copy-of select="$getListText"/>
+					</plx:Right>
+				</plx:Operator>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<!-- Handle the minFactArity IterateRoles filter attribute -->
 	<xsl:template match="@minFactArity" mode="IterateRolesFilterOperator">

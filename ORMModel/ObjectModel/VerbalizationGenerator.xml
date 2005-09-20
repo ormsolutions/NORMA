@@ -38,25 +38,27 @@
 
 				<Snippet type="CompoundListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 				<Snippet type="CompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
-				<Snippet type="CompoundListFirstSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
 				<Snippet type="CompoundListSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
 				<Snippet type="CompoundListFinalSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
 				<Snippet type="CompoundListClose"><![CDATA[</span>]]></Snippet>
 				<Snippet type="IndentedListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 				<Snippet type="IndentedListPairSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
-				<Snippet type="IndentedListFirstSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 				<Snippet type="IndentedListSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 				<Snippet type="IndentedListFinalSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 				<Snippet type="IndentedListClose"><![CDATA[</span>]]></Snippet>
-				<Snippet type="IndentedOrListOpen"><![CDATA[<span>]]></Snippet>
-				<Snippet type="IndentedOrListPairSeparator"><![CDATA[</span><span class="smallIndent"><span class="listSeparator"><br/>or </span>]]></Snippet>
-				<Snippet type="IndentedOrListSeparator"><![CDATA[</span><span class="smallIndent"><span class="listSeparator"><br/>or </span>]]></Snippet>
-				<Snippet type="IndentedOrListFinalSeparator"><![CDATA[</span><span class="smallIndent"><span class="listSeparator"><br/>or </span>]]></Snippet>
+				<Snippet type="IndentedOrListOpen"><![CDATA[<span class="smallIndent">]]></Snippet>
+				<Snippet type="IndentedOrListPairSeparator"><![CDATA[<br/><span class="listSeparator">or </span>]]></Snippet>
+				<Snippet type="IndentedOrListSeparator"><![CDATA[<br/><span class="listSeparator">or </span>]]></Snippet>
+				<Snippet type="IndentedOrListFinalSeparator"><![CDATA[<br/><span class="listSeparator">or </span>]]></Snippet>
 				<Snippet type="IndentedOrListClose"><![CDATA[</span>]]></Snippet>
+				<Snippet type="TopLevelIndentedOrListOpen"><![CDATA[<span>]]></Snippet>
+				<Snippet type="TopLevelIndentedOrListPairSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="listSeparator">or </span>]]></Snippet>
+				<Snippet type="TopLevelIndentedOrListSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="listSeparator">or </span>]]></Snippet>
+				<Snippet type="TopLevelIndentedOrListFinalSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="listSeparator">or </span>]]></Snippet>
+				<Snippet type="TopLevelIndentedOrListClose"><![CDATA[</span>]]></Snippet>
 
 				<Snippet type="SimpleListOpen"><![CDATA[]]></Snippet>
 				<Snippet type="SimpleListPairSeparator"><![CDATA[<span class="listSeparator"> and </span>]]></Snippet>
-				<Snippet type="SimpleListFirstSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 				<Snippet type="SimpleListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 				<Snippet type="SimpleListFinalSeparator"><![CDATA[<span class="listSeparator">, and </span>]]></Snippet>
 				<Snippet type="SimpleListClose"><![CDATA[]]></Snippet>
@@ -244,21 +246,21 @@
 					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="positive" maxFactArity="1">
-					<Snippet ref="UniversalQuantifier">
-						<IterateRoles listStyle="IndentedOrList"  match="singleColumnConstraintRoles">
-							<Fact>
-								<PredicateReplacement match="primary" pass="first"/>
-								<PredicateReplacement match="primary">
-									<Snippet ref="null"/>
-								</PredicateReplacement>
-							</Fact>
-						</IterateRoles>
-					</Snippet>
+					<IterateRoles listStyle="TopLevelIndentedOrList"  match="singleColumnConstraintRoles">
+						<Fact>
+							<PredicateReplacement match="primary" pass="first">
+								<Snippet ref="UniversalQuantifier"/>
+							</PredicateReplacement>
+							<PredicateReplacement match="primary">
+								<Snippet ref="null"/>
+							</PredicateReplacement>
+						</Fact>
+					</IterateRoles>
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="positive">
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllLeadReading">
-							<CompositeList listStyle="IndentedOrList">
+							<CompositeList listStyle="TopLevelIndentedOrList">
 								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
 									<Fact readingChoice="Conditional">
 										<PredicateReplacement match="primary" pass="first">
@@ -275,6 +277,7 @@
 								<IterateRoles factArity="1" match="singleColumnConstraintRoles">
 									<Fact readingChoice="Conditional">
 										<PredicateReplacement>
+											<!-- UNDONE: Needs conditional snippet catering for forward text-->
 											<Snippet ref="null"/>
 										</PredicateReplacement>
 									</Fact>
@@ -298,9 +301,8 @@
 									<IterateRoles factArity="1" match="singleColumnConstraintRoles">
 										<Fact>
 											<PredicateReplacement>
-												<Snippet ref="null"/>
+												<Snippet ref="ImpersonalPronoun"/>
 											</PredicateReplacement>
-											<!--Needs catering for forward text-->
 										</Fact>
 									</IterateRoles>
 								</CompositeList>

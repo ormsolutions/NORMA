@@ -44,25 +44,26 @@
 			<xs:enumeration value="NegativeReadingForUnaryOnlyDisjunctiveMandatory"/>
 			<xs:enumeration value="CompoundListOpen"/>
 			<xs:enumeration value="CompoundListPairSeparator"/>
-			<xs:enumeration value="CompoundListFirstSeparator"/>
 			<xs:enumeration value="CompoundListSeparator"/>
 			<xs:enumeration value="CompoundListFinalSeparator"/>
 			<xs:enumeration value="CompoundListClose"/>
 			<xs:enumeration value="IndentedListOpen"/>
 			<xs:enumeration value="IndentedListPairSeparator"/>
-			<xs:enumeration value="IndentedListFirstSeparator"/>
 			<xs:enumeration value="IndentedListSeparator"/>
 			<xs:enumeration value="IndentedListFinalSeparator"/>
 			<xs:enumeration value="IndentedListClose"/>
 			<xs:enumeration value="IndentedOrListOpen"/>
 			<xs:enumeration value="IndentedOrListPairSeparator"/>
-			<xs:enumeration value="IndentedOrListFirstSeparator"/>
 			<xs:enumeration value="IndentedOrListSeparator"/>
 			<xs:enumeration value="IndentedOrListFinalSeparator"/>
 			<xs:enumeration value="IndentedOrListClose"/>
+			<xs:enumeration value="TopLevelIndentedOrListOpen"/>
+			<xs:enumeration value="TopLevelIndentedOrListPairSeparator"/>
+			<xs:enumeration value="TopLevelIndentedOrListSeparator"/>
+			<xs:enumeration value="TopLevelIndentedOrListFinalSeparator"/>
+			<xs:enumeration value="TopLevelIndentedOrListClose"/>
 			<xs:enumeration value="SimpleListOpen"/>
 			<xs:enumeration value="SimpleListPairSeparator"/>
-			<xs:enumeration value="SimpleListFirstSeparator"/>
 			<xs:enumeration value="SimpleListSeparator"/>
 			<xs:enumeration value="SimpleListFinalSeparator"/>
 			<xs:enumeration value="SimpleListClose"/>
@@ -111,17 +112,9 @@
 			<xs:enumeration value="RequireNonPrimaryLeadReadingNoForwardText"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="ReadingChoiceFullMatchEnum">
+	<xs:simpleType name="ReadingChoiceFullRequiredMatchEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {{Prefer|Require}[All][Non][Primary]LeadReading[NoForwardText]} -->
-			<xs:enumeration value="PreferLeadReading"/>
-			<xs:enumeration value="PreferNonLeadReading"/>
-			<xs:enumeration value="PreferPrimaryLeadReading"/>
-			<xs:enumeration value="PreferNonPrimaryLeadReading"/>
-			<xs:enumeration value="PreferLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferNonLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferPrimaryLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferNonPrimaryLeadReadingNoForwardText"/>
+			<!-- Allowable options are {Require[All][Non][Primary]LeadReading[NoForwardText]} -->
 			<xs:enumeration value="RequireLeadReading"/>
 			<xs:enumeration value="RequireNonLeadReading"/>
 			<xs:enumeration value="RequirePrimaryLeadReading"/>
@@ -130,14 +123,6 @@
 			<xs:enumeration value="RequireNonLeadReadingNoForwardText"/>
 			<xs:enumeration value="RequirePrimaryLeadReadingNoForwardText"/>
 			<xs:enumeration value="RequireNonPrimaryLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferAllLeadReading"/>
-			<xs:enumeration value="PreferAllNonLeadReading"/>
-			<xs:enumeration value="PreferAllPrimaryLeadReading"/>
-			<xs:enumeration value="PreferAllNonPrimaryLeadReading"/>
-			<xs:enumeration value="PreferAllLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferAllNonLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferAllPrimaryLeadReadingNoForwardText"/>
-			<xs:enumeration value="PreferAllNonPrimaryLeadReadingNoForwardText"/>
 			<xs:enumeration value="RequireAllLeadReading"/>
 			<xs:enumeration value="RequireAllNonLeadReading"/>
 			<xs:enumeration value="RequireAllPrimaryLeadReading"/>
@@ -154,6 +139,7 @@
 			<xs:enumeration value="IndentedList"/>
 			<xs:enumeration value="CompoundList"/>
 			<xs:enumeration value="IndentedOrList"/>
+			<xs:enumeration value="TopLevelIndentedOrList"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="PredicateReplacementMatchEnum">
@@ -240,7 +226,7 @@
 			<xs:element name="CompositeList" type="CompositeListType"/>
 			<xs:element name="IterateRoles" type="IterateRolesType"/>
 		</xs:choice>
-		<xs:attribute name="match" use="optional" type="ReadingChoiceFullMatchEnum"/>
+		<xs:attribute name="match" use="optional" type="ReadingChoiceFullRequiredMatchEnum"/>
 	</xs:complexType>
 	<xs:complexType name="ConditionalReadingType">
 		<xs:sequence>
@@ -292,9 +278,11 @@
 		<xs:sequence>
 			<xs:element name="ConstrainedRoles" minOccurs="1" maxOccurs="unbounded" >
 				<xs:complexType>
-					<xs:choice>
-						<xs:element name="Snippet" type="SnippetType" minOccurs="1" maxOccurs="unbounded"/>
-						<xs:element name="ConditionalReading" type="ConditionalReadingType" minOccurs="1" maxOccurs="1">
+					<xs:choice minOccurs="1" maxOccurs="unbounded">
+						<xs:element name="Snippet" type="SnippetType"/>
+						<xs:element name="IterateRoles" type="IterateRolesType"/>
+						<xs:element name="CompositeList" type="CompositeListType"/>
+						<xs:element name="ConditionalReading" type="ConditionalReadingType">
 							<xs:unique name="ConditionalReadingReadingChoice">
 								<xs:selector xpath="ve:ReadingChoice"/>
 								<xs:field xpath="@match"/>
