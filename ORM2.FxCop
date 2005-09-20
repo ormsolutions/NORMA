@@ -4674,6 +4674,17 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="GetVerbalization(System.IO.TextWriter,Neumont.Tools.ORM.ObjectModel.NotifyBeginVerbalization,System.Boolean):System.Boolean">
+            <Messages>
+             <Message Id="primaryRole" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-09-20 23:05:17Z">
+              <Issue>
+               <Item>InternalUniquenessConstraint.GetVerbalization(TextWriter, NotifyBeginVerbalization, Boolean):Boolean</Item>
+               <Item>primaryRole</Item>
+               <Item>Neumont.Tools.ORM.ObjectModel.Role</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="MapChildElement(System.String,System.String,System.String,System.String):Neumont.Tools.ORM.Shell.ORMCustomSerializedElementMatch">
             <Messages>
              <Message TypeName="MarkMethodsAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Excluded" Created="2005-07-06 21:44:00Z" FixCategory="Breaking">
@@ -11524,13 +11535,6 @@
           <Members>
            <Member Name="GetVerbalization(System.IO.TextWriter,Neumont.Tools.ORM.ObjectModel.NotifyBeginVerbalization,System.Boolean):System.Boolean">
             <Messages>
-             <Message Id="includedArity" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-09-14 21:08:37Z">
-              <Issue>
-               <Item>SimpleMandatoryConstraint.GetVerbalization(TextWriter, NotifyBeginVerbalization, Boolean):Boolean</Item>
-               <Item>includedArity</Item>
-               <Item>System.Int32</Item>
-              </Issue>
-             </Message>
              <Message Id="primaryRole" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-09-14 21:08:37Z">
               <Issue>
                <Item>SimpleMandatoryConstraint.GetVerbalization(TextWriter, NotifyBeginVerbalization, Boolean):Boolean</Item>

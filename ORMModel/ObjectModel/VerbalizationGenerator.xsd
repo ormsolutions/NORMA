@@ -67,7 +67,15 @@
 			<xs:enumeration value="SimpleListSeparator"/>
 			<xs:enumeration value="SimpleListFinalSeparator"/>
 			<xs:enumeration value="SimpleListClose"/>
+			<xs:enumeration value="CompactSimpleListOpen"/>
+			<xs:enumeration value="CompactSimpleListPairSeparator"/>
+			<xs:enumeration value="CompactSimpleListSeparator"/>
+			<xs:enumeration value="CompactSimpleListFinalSeparator"/>
+			<xs:enumeration value="CompactSimpleListClose"/>
 			<xs:enumeration value="CloseVerbalizationSentence"/>
+			<xs:enumeration value="CombinationIdentifier"/>
+			<xs:enumeration value="OccursInPopulation"/>
+			<xs:enumeration value="OneQuantifier"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ConstraintTypeEnum">
@@ -135,6 +143,7 @@
 	</xs:simpleType>
 	<xs:simpleType name="ListStyleEnum">
 		<xs:restriction base="xs:string">
+			<xs:enumeration value="CompactSimpleList"/>
 			<xs:enumeration value="SimpleList"/>
 			<xs:enumeration value="IndentedList"/>
 			<xs:enumeration value="CompoundList"/>
