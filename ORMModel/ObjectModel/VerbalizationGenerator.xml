@@ -280,8 +280,8 @@
 							some B1 R ... that A ... some Bn -->
 						<ReadingChoice>
 							<Snippet ref="ForEachQuantifier">
-								<IterateRoles listStyle="SimpleList"/>
-								<Fact readingChoice="Conditional">
+								<IterateRoles match="included" listStyle="SimpleList"/>
+								<Fact>
 									<PredicateReplacement match="included">
 										<Snippet ref="ImpersonalPronoun"/>
 									</PredicateReplacement>
