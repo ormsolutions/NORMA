@@ -282,6 +282,21 @@
 								</IterateRoles>
 							</CompositeList>
 						</ReadingChoice>
+						<ReadingChoice>
+							<Snippet ref="ForEachQuantifier">
+								<IterateRoles match="singleColumnConstraintRoles" pass="first" listStyle="SimpleList"/>
+								<IterateRoles match="singleColumnConstraintRoles" listStyle="IndentedOrList">
+									<Fact readingChoice="Conditional">
+										<PredicateReplacement match="included">
+											<Snippet ref="ImpersonalPronoun"/>
+										</PredicateReplacement>
+										<PredicateReplacement match="excluded">
+											<Snippet ref="ExistentialQuantifier"/>
+										</PredicateReplacement>
+									</Fact>
+								</IterateRoles>
+							</Snippet>
+						</ReadingChoice>
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>

@@ -1264,18 +1264,19 @@
 	</xsl:template>
 	<xsl:template name="ProcessConditionalReadingChoice">
 		<xsl:param name="IteratorContext" select="'all'"/>
+		<xsl:param name="VariableDecorator" select="'1'"/>
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="Match" select="@match"/>
 		<xsl:param name="PatternGroup"/>
 		<xsl:choose>
 			<xsl:when test="contains($Match,'All')">
 				<xsl:variable name="singleMatch" select="concat(substring-before($Match,'All'), substring-after($Match,'All'))"/>
-				<plx:Variable name="missingReading" dataTypeName="Boolean" dataTypeQualifier="System">
+				<plx:Variable name="missingReading{$VariableDecorator}" dataTypeName="Boolean" dataTypeQualifier="System">
 					<plx:Initialize>
 						<plx:FalseKeyword/>
 					</plx:Initialize>
 				</plx:Variable>
-				<plx:Variable name="readingMatchIndex" dataTypeName="Int32" dataTypeQualifier="System">
+				<plx:Variable name="readingMatchIndex{$VariableDecorator}" dataTypeName="Int32" dataTypeQualifier="System">
 					<plx:Initialize>
 						<plx:Value type="I4" data="0"/>
 					</plx:Initialize>
@@ -1285,13 +1286,13 @@
 						<plx:Operator type="BooleanAnd">
 							<plx:Left>
 								<plx:Operator type="BooleanNot">
-									<plx:Value type="Local" data="missingReading"/>
+									<plx:Value type="Local" data="missingReading{$VariableDecorator}"/>
 								</plx:Operator>
 							</plx:Left>
 							<plx:Right>
 								<plx:Operator type="LessThan">
 									<plx:Left>
-										<plx:Value type="Local" data="readingMatchIndex"/>
+										<plx:Value type="Local" data="readingMatchIndex{$VariableDecorator}"/>
 									</plx:Left>
 									<plx:Right>
 										<plx:Value type="Local" data="constraintRoleArity"/>
@@ -1303,12 +1304,12 @@
 					<plx:LoopIncrement>
 						<plx:Operator type="Assign">
 							<plx:Left>
-								<plx:Value type="Local" data="readingMatchIndex"/>
+								<plx:Value type="Local" data="readingMatchIndex{$VariableDecorator}"/>
 							</plx:Left>
 							<plx:Right>
 								<plx:Operator type="Add">
 									<plx:Left>
-										<plx:Value type="Local" data="readingMatchIndex"/>
+										<plx:Value type="Local" data="readingMatchIndex{$VariableDecorator}"/>
 									</plx:Left>
 									<plx:Right>
 										<plx:Value type="I4" data="1"/>
@@ -1325,7 +1326,7 @@
 										<plx:Value type="Local" data="allConstraintRoles"/>
 									</plx:CallObject>
 									<plx:PassParam>
-										<plx:Value type="Local" data="readingMatchIndex"/>
+										<plx:Value type="Local" data="readingMatchIndex{$VariableDecorator}"/>
 									</plx:PassParam>
 								</plx:CallInstance>
 							</plx:Initialize>
@@ -1384,7 +1385,7 @@
 							<plx:Body>
 								<plx:Operator type="Assign">
 									<plx:Left>
-										<plx:Value type="Local" data="missingReading"/>
+										<plx:Value type="Local" data="missingReading{$VariableDecorator}"/>
 									</plx:Left>
 									<plx:Right>
 										<plx:TrueKeyword/>
@@ -1399,7 +1400,7 @@
 												<plx:Value type="Local" data="allConstraintRoleReadingOrders"/>
 											</plx:CallObject>
 											<plx:PassParam>
-												<plx:Value type="Local" data="readingMatchIndex"/>
+												<plx:Value type="Local" data="readingMatchIndex{$VariableDecorator}"/>
 											</plx:PassParam>
 										</plx:CallInstance>
 									</plx:Left>
@@ -1414,7 +1415,7 @@
 				<plx:Condition>
 					<plx:Test>
 						<plx:Operator type="BooleanNot">
-							<plx:Value type="Local" data="missingReading"/>
+							<plx:Value type="Local" data="missingReading{$VariableDecorator}"/>
 						</plx:Operator>
 					</plx:Test>
 					<!-- The rest of this block is duplicated in otherwise condition, keep in sync -->
@@ -1431,6 +1432,7 @@
 								<xsl:if test="position()=1">
 									<xsl:call-template name="ProcessConditionalReadingChoice">
 										<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+										<xsl:with-param name="VariableDecorator" select="$VariableDecorator + 1"/>
 										<xsl:with-param name="TopLevel" select="$TopLevel"/>
 										<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 									</xsl:call-template>
@@ -1439,6 +1441,13 @@
 						</plx:Alternate>
 					</xsl:if>
 				</plx:Condition>
+			</xsl:when>
+			<xsl:when test="$PatternGroup='SingleColumnExternalConstraint'">
+				<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
+					<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+					<xsl:with-param name="TopLevel" select="$TopLevel"/>
+					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+				</xsl:apply-templates>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="PopulateReadingOrder">
@@ -1470,6 +1479,7 @@
 								<xsl:if test="position()=1">
 									<xsl:call-template name="ProcessConditionalReadingChoice">
 										<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+										<xsl:with-param name="VariableDecorator" select="$VariableDecorator + 1"/>
 										<xsl:with-param name="TopLevel" select="$TopLevel"/>
 										<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 									</xsl:call-template>
