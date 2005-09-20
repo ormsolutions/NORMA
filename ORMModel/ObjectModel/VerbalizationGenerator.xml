@@ -48,12 +48,17 @@
 				<Snippet type="IndentedListSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 				<Snippet type="IndentedListFinalSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 				<Snippet type="IndentedListClose"><![CDATA[</span>]]></Snippet>
-				<Snippet type="IndentedOrListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
-				<Snippet type="IndentedOrListPairSeparator"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Snippet>
-				<Snippet type="IndentedOrListFirstSeparator"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Snippet>
-				<Snippet type="IndentedOrListSeparator"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Snippet>
-				<Snippet type="IndentedOrListFinalSeparator"><![CDATA[<span class="listSeparator"> or </span><br/>]]></Snippet>
+				<Snippet type="IndentedOrListOpen"><![CDATA[<span>]]></Snippet>
+				<Snippet type="IndentedOrListPairSeparator"><![CDATA[</span><span class="smallIndent"><span class="listSeparator"><br/>or </span>]]></Snippet>
+
+				<!--<Snippet type="IndentedOrListFirstSeparator"><![CDATA[</span><span><span class="listSeparator"><br/>or </span>]]></Snippet>-->
+
+				<Snippet type="IndentedOrListSeparator"><![CDATA[</span><span class="smallIndent"><span class="listSeparator"><br/>or </span>]]></Snippet>
+
+				<Snippet type="IndentedOrListFinalSeparator"><![CDATA[</span><span class="smallIndent"><span class="listSeparator"><br/>or </span>]]></Snippet>
+
 				<Snippet type="IndentedOrListClose"><![CDATA[</span>]]></Snippet>
+
 				<Snippet type="SimpleListOpen"><![CDATA[]]></Snippet>
 				<Snippet type="SimpleListPairSeparator"><![CDATA[<span class="listSeparator"> and </span>]]></Snippet>
 				<Snippet type="SimpleListFirstSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
@@ -234,7 +239,7 @@
 			<!-- UNDONE: The data from here down is preliminary, but is being used for generation testing -->
 			<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
 				<!-- Unaries are the only reading choice that has an optional negative reading -->
-				<ConstrainedRoles sign="positive" maxFactArity="1">
+				<ConstrainedRoles sign="negative" maxFactArity="1">
 					<Snippet ref="ModalPossibilityOperator">
 						<Snippet ref="NegativeReadingForUnaryOnlyDisjunctiveMandatory">
 							<IterateRoles listStyle="SimpleList" match="singleColumnConstraintRoles" pass="first"/>
@@ -244,7 +249,7 @@
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
-				<ConstrainedRoles sign="positive" maxFactArity="2">
+				<ConstrainedRoles sign="positive">
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllLeadReadingNoForwardText">
 							<CompositeList listStyle="IndentedOrList">
@@ -264,35 +269,12 @@
 								<IterateRoles factArity="1" match="singleColumnConstraintRoles">
 									<Fact readingChoice="Conditional">
 										<PredicateReplacement>
-											<Snippet ref="ImpersonalPronoun"/>
+											<Snippet ref="null"/>
 										</PredicateReplacement>
 									</Fact>
 								</IterateRoles>
 							</CompositeList>
 						</ReadingChoice>
-						<!--<ReadingChoice>
-							<Snippet ref="ForEachQuantifier">
-								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
-									<Fact readingChoice="PreferPrimaryLeadReading">
-										<PredicateReplacement match="primary">
-											<Snippet ref="ImpersonalQuantifier"/>
-										</PredicateReplacement>
-										<PredicateReplacement match="primary">
-											<Snippet ref="ExistentialQuantifier"/>
-										</PredicateReplacement>
-										<PredicateReplacement match="secondary">
-											<Snippet ref="ExistentialQuantifier"/>
-										</PredicateReplacement>
-										<PredicateReplacement match="secondary">
-											<Snippet ref="ImpersonalQuantifier"/>
-										</PredicateReplacement>
-									</Fact>
-								</IterateRoles>
-								<IterateRoles factArity="1" match="singleColumnConstraintRoles">
-									<Fact/>
-								</IterateRoles>
-							</Snippet>
-						</ReadingChoice>-->
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>

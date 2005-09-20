@@ -86,9 +86,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		IndentedOrListFinalSeparator,
 		/// <summary>
 		///</summary>
-		IndentedOrListFirstSeparator,
-		/// <summary>
-		///</summary>
 		IndentedOrListOpen,
 		/// <summary>
 		///</summary>
@@ -214,11 +211,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"<span class=\"listSeparator\"> and </span><br/>",
 								"<span class=\"listSeparator\"> and </span><br/>",
 								"</span>",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<br/><span class=\"smallIndent\">",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<span class=\"listSeparator\"> or </span><br/>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
+								"<span>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
 								"<span class=\"quantifier\">it is necessary that</span> {0}",
 								"<span class=\"quantifier\">it is possible that</span> {0}",
 								"<span class=\"quantifier\">more than one</span> {0}",
@@ -259,11 +255,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"<span class=\"listSeparator\"> and </span><br/>",
 								"<span class=\"listSeparator\"> and </span><br/>",
 								"</span>",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<br/><span class=\"smallIndent\">",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<span class=\"listSeparator\"> or </span><br/>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
+								"<span>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
 								"<span class=\"quantifier\">it is obligatory that</span> {0}",
 								"<span class=\"quantifier\">it is permitted that</span> {0}",
 								"<span class=\"quantifier\">more than one</span> {0}",
@@ -304,11 +299,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"<span class=\"listSeparator\"> and </span><br/>",
 								"<span class=\"listSeparator\"> and </span><br/>",
 								"</span>",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<br/><span class=\"smallIndent\">",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<span class=\"listSeparator\"> or </span><br/>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
+								"<span>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
 								"<span class=\"quantifier\">it is necessary that</span> {0}",
 								"<span class=\"quantifier\">it is impossible that</span> {0}",
 								"<span class=\"quantifier\">more than one</span> {0}",
@@ -349,11 +343,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 								"<span class=\"listSeparator\"> and </span><br/>",
 								"<span class=\"listSeparator\"> and </span><br/>",
 								"</span>",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<br/><span class=\"smallIndent\">",
-								"<span class=\"listSeparator\"> or </span><br/>",
-								"<span class=\"listSeparator\"> or </span><br/>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
+								"<span>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
+								"</span><span class=\"smallIndent\"><span class=\"listSeparator\"><br/>or </span>",
 								"<span class=\"quantifier\">it is obligatory that</span> {0}",
 								"<span class=\"quantifier\">it is forbidden that</span> {0}",
 								"<span class=\"quantifier\">more than one</span> {0}",
@@ -566,14 +559,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						else
 						{
-							if ((snippet2ReplaceRoleIter1 == 1))
-							{
-								listSnippet = VerbalizationTextSnippetType.IndentedListFirstSeparator;
-							}
-							else
-							{
-								listSnippet = VerbalizationTextSnippetType.IndentedListSeparator;
-							}
+							listSnippet = VerbalizationTextSnippetType.IndentedListSeparator;
 						}
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
@@ -684,14 +670,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									else
 									{
-										if ((snippet1ReplaceRoleIter1 == 1))
-										{
-											listSnippet = VerbalizationTextSnippetType.SimpleListFirstSeparator;
-										}
-										else
-										{
-											listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
-										}
+										listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 									}
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
@@ -771,14 +750,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								else
 								{
-									if ((snippet1ReplaceRoleIter1 == 1))
-									{
-										listSnippet = VerbalizationTextSnippetType.SimpleListFirstSeparator;
-									}
-									else
-									{
-										listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
-									}
+									listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 								}
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
@@ -1059,14 +1031,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									else
 									{
-										if ((snippet1ReplaceRoleIter1 == 1))
-										{
-											listSnippet = VerbalizationTextSnippetType.SimpleListFirstSeparator;
-										}
-										else
-										{
-											listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
-										}
+										listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 									}
 								}
 								sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
@@ -1225,7 +1190,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ReadingOrder[] allConstraintRoleReadingOrders = new ReadingOrder[constraintRoleArity];
 			string[] roleReplacements = new string[maxFactArity];
 			ReadingOrder readingOrder;
-			if ((!(isNegative) 
+			if ((isNegative 
 						&& (maxFactArity <= 1)))
 			{
 				beginVerbalization(VerbalizationContent.Normal);
@@ -1298,14 +1263,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						else
 						{
-							if ((snippet1Replace1ReplaceRoleIter2 == 1))
-							{
-								listSnippet = VerbalizationTextSnippetType.CompoundListFirstSeparator;
-							}
-							else
-							{
-								listSnippet = VerbalizationTextSnippetType.CompoundListSeparator;
-							}
+							listSnippet = VerbalizationTextSnippetType.CompoundListSeparator;
 						}
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
@@ -1325,8 +1283,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				if ((!(isNegative) 
-							&& (maxFactArity <= 2)))
+				if (!(isNegative))
 				{
 					bool missingReading = false;
 					int readingMatchIndex = 0;
@@ -1412,14 +1369,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									else
 									{
-										if ((listCompositeIterator1 == 1))
-										{
-											listSnippet = VerbalizationTextSnippetType.IndentedOrListFirstSeparator;
-										}
-										else
-										{
-											listSnippet = VerbalizationTextSnippetType.IndentedOrListSeparator;
-										}
+										listSnippet = VerbalizationTextSnippetType.IndentedOrListSeparator;
 									}
 								}
 								writer.Write(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
@@ -1498,14 +1448,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									else
 									{
-										if ((listCompositeIterator1 == 1))
-										{
-											listSnippet = VerbalizationTextSnippetType.IndentedOrListFirstSeparator;
-										}
-										else
-										{
-											listSnippet = VerbalizationTextSnippetType.IndentedOrListSeparator;
-										}
+										listSnippet = VerbalizationTextSnippetType.IndentedOrListSeparator;
 									}
 								}
 								writer.Write(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
@@ -1517,7 +1460,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									Role currentRole = factRoles[list1ItemFactRoleIter2];
 									string roleReplacement = null;
 									string basicReplacement = basicRoleReplacements[list1ItemFactRoleIter2];
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+									roleReplacement = "";
 									if ((roleReplacement == null))
 									{
 										roleReplacement = basicReplacement;
@@ -1724,14 +1667,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else
 							{
-								if ((snippet1ReplaceRoleIter1 == 1))
-								{
-									listSnippet = VerbalizationTextSnippetType.SimpleListFirstSeparator;
-								}
-								else
-								{
-									listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
-								}
+								listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 							}
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
@@ -1784,14 +1720,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else
 							{
-								if ((snippet1ReplaceRoleIter2 == 1))
-								{
-									listSnippet = VerbalizationTextSnippetType.IndentedListFirstSeparator;
-								}
-								else
-								{
-									listSnippet = VerbalizationTextSnippetType.IndentedListSeparator;
-								}
+								listSnippet = VerbalizationTextSnippetType.IndentedListSeparator;
 							}
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
@@ -1908,14 +1837,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								else
 								{
-									if ((snippet1ReplaceRoleIter1 == 1))
-									{
-										listSnippet = VerbalizationTextSnippetType.SimpleListFirstSeparator;
-									}
-									else
-									{
-										listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
-									}
+									listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 								}
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
