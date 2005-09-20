@@ -50,13 +50,8 @@
 				<Snippet type="IndentedListClose"><![CDATA[</span>]]></Snippet>
 				<Snippet type="IndentedOrListOpen"><![CDATA[<span>]]></Snippet>
 				<Snippet type="IndentedOrListPairSeparator"><![CDATA[</span><span class="smallIndent"><span class="listSeparator"><br/>or </span>]]></Snippet>
-
-				<!--<Snippet type="IndentedOrListFirstSeparator"><![CDATA[</span><span><span class="listSeparator"><br/>or </span>]]></Snippet>-->
-
 				<Snippet type="IndentedOrListSeparator"><![CDATA[</span><span class="smallIndent"><span class="listSeparator"><br/>or </span>]]></Snippet>
-
 				<Snippet type="IndentedOrListFinalSeparator"><![CDATA[</span><span class="smallIndent"><span class="listSeparator"><br/>or </span>]]></Snippet>
-
 				<Snippet type="IndentedOrListClose"><![CDATA[</span>]]></Snippet>
 
 				<Snippet type="SimpleListOpen"><![CDATA[]]></Snippet>
@@ -247,6 +242,18 @@
 								<Fact/>
 							</IterateRoles>
 						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles sign="positive" maxFactArity="1">
+					<Snippet ref="UniversalQuantifier">
+						<IterateRoles listStyle="IndentedOrList"  match="singleColumnConstraintRoles">
+							<Fact>
+								<PredicateReplacement match="primary" pass="first"/>
+								<PredicateReplacement match="primary">
+									<Snippet ref="null"/>
+								</PredicateReplacement>
+							</Fact>
+						</IterateRoles>
 					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="positive">

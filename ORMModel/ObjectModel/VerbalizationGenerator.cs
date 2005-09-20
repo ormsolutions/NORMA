@@ -1283,198 +1283,288 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				if (!(isNegative))
+				if ((!(isNegative) 
+							&& (maxFactArity <= 1)))
 				{
-					bool missingReading = false;
-					int readingMatchIndex = 0;
-					for (; (!(missingReading) 
-								&& (readingMatchIndex < constraintRoleArity)); readingMatchIndex = (readingMatchIndex + 1))
+					beginVerbalization(VerbalizationContent.Normal);
+					string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative);
+					string snippet1Replace1 = null;
+					if ((sbTemp == null))
 					{
-						Role primaryRole = allConstraintRoles[readingMatchIndex];
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					int snippet1ReplaceRoleIter1 = 0;
+					bool snippet1ReplaceIsFirstPass1 = true;
+					for (; (snippet1ReplaceRoleIter1 < constraintRoleArity); snippet1ReplaceRoleIter1 = (snippet1ReplaceRoleIter1 + 1))
+					{
+						Role primaryRole = allConstraintRoles[snippet1ReplaceRoleIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
+						factArity = factRoles.Count;
 						allReadingOrders = parentFact.ReadingOrderCollection;
-						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, primaryRole, null, false, true, factRoles, false);
-						if ((readingOrder == null))
+						int currentFactIndex = allFacts.IndexOf(parentFact);
+						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
+						VerbalizationTextSnippetType listSnippet;
+						if ((snippet1ReplaceRoleIter1 == 0))
 						{
-							missingReading = true;
+							listSnippet = VerbalizationTextSnippetType.IndentedOrListOpen;
 						}
 						else
 						{
-							allConstraintRoleReadingOrders[readingMatchIndex] = readingOrder;
-						}
-					}
-					if (!(missingReading))
-					{
-						beginVerbalization(VerbalizationContent.Normal);
-						int listCompositeCount1 = 0;
-						int listCompositeIterator1;
-						for (listCompositeIterator1 = 0; (listCompositeIterator1 < constraintRoleArity); listCompositeIterator1 = (listCompositeIterator1 + 1))
-						{
-							Role primaryRole = allConstraintRoles[listCompositeIterator1];
-							parentFact = primaryRole.FactType;
-							factRoles = parentFact.RoleCollection;
-							factArity = factRoles.Count;
-							allReadingOrders = parentFact.ReadingOrderCollection;
-							if ((factArity >= 2))
+							if ((snippet1ReplaceRoleIter1 
+										== (constraintRoleArity - 1)))
 							{
-								listCompositeCount1 = (listCompositeCount1 + 1);
-							}
-						}
-						for (listCompositeIterator1 = 0; (listCompositeIterator1 < constraintRoleArity); listCompositeIterator1 = (listCompositeIterator1 + 1))
-						{
-							Role primaryRole = allConstraintRoles[listCompositeIterator1];
-							parentFact = primaryRole.FactType;
-							factRoles = parentFact.RoleCollection;
-							factArity = factRoles.Count;
-							allReadingOrders = parentFact.ReadingOrderCollection;
-							if ((factArity == 1))
-							{
-								listCompositeCount1 = (listCompositeCount1 + 1);
-							}
-						}
-						listCompositeIterator1 = 0;
-						string list1Item1 = null;
-						int list1ItemRoleIter1 = 0;
-						bool list1ItemIsFirstPass1 = true;
-						for (; (list1ItemRoleIter1 < constraintRoleArity); list1ItemRoleIter1 = (list1ItemRoleIter1 + 1))
-						{
-							Role primaryRole = allConstraintRoles[list1ItemRoleIter1];
-							parentFact = primaryRole.FactType;
-							factRoles = parentFact.RoleCollection;
-							factArity = factRoles.Count;
-							allReadingOrders = parentFact.ReadingOrderCollection;
-							int currentFactIndex = allFacts.IndexOf(parentFact);
-							string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
-							if ((factArity >= 2))
-							{
-								VerbalizationTextSnippetType listSnippet;
-								if ((listCompositeIterator1 == 0))
+								if ((snippet1ReplaceRoleIter1 == 1))
 								{
-									listSnippet = VerbalizationTextSnippetType.IndentedOrListOpen;
+									listSnippet = VerbalizationTextSnippetType.IndentedOrListPairSeparator;
 								}
 								else
 								{
-									if ((listCompositeIterator1 
-												== (listCompositeCount1 - 1)))
-									{
-										if ((listCompositeIterator1 == 1))
-										{
-											listSnippet = VerbalizationTextSnippetType.IndentedOrListPairSeparator;
-										}
-										else
-										{
-											listSnippet = VerbalizationTextSnippetType.IndentedOrListFinalSeparator;
-										}
-									}
-									else
-									{
-										listSnippet = VerbalizationTextSnippetType.IndentedOrListSeparator;
-									}
+									listSnippet = VerbalizationTextSnippetType.IndentedOrListFinalSeparator;
 								}
-								writer.Write(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-								list1Item1 = null;
-								readingOrder = allConstraintRoleReadingOrders[currentFactIndex];
-								int list1ItemFactRoleIter1 = 0;
-								for (; (list1ItemFactRoleIter1 < factArity); list1ItemFactRoleIter1 = (list1ItemFactRoleIter1 + 1))
-								{
-									Role currentRole = factRoles[list1ItemFactRoleIter1];
-									string roleReplacement = null;
-									string basicReplacement = basicRoleReplacements[list1ItemFactRoleIter1];
-									if (((primaryRole == currentRole) 
-												&& list1ItemIsFirstPass1))
-									{
-										roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
-									}
-									else
-									{
-										if ((primaryRole == currentRole))
-										{
-											roleReplacement = "";
-										}
-										else
-										{
-											roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
-										}
-									}
-									if ((roleReplacement == null))
-									{
-										roleReplacement = basicReplacement;
-									}
-									roleReplacements[list1ItemFactRoleIter1] = roleReplacement;
-								}
-								list1Item1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
-								writer.Write(list1Item1);
-								if ((list1ItemRoleIter1 
-											== (listCompositeCount1 - 1)))
-								{
-									writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedOrListClose, isDeontic, isNegative));
-								}
-								listCompositeIterator1 = (listCompositeIterator1 + 1);
-								list1ItemIsFirstPass1 = false;
+							}
+							else
+							{
+								listSnippet = VerbalizationTextSnippetType.IndentedOrListSeparator;
 							}
 						}
-						string list1Item2 = null;
-						int list1ItemRoleIter2 = 0;
-						for (; (list1ItemRoleIter2 < constraintRoleArity); list1ItemRoleIter2 = (list1ItemRoleIter2 + 1))
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						snippet1Replace1 = null;
+						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, factRoles[0], null, false, false, factRoles, true);
+						int snippet1ReplaceFactRoleIter1 = 0;
+						for (; (snippet1ReplaceFactRoleIter1 < factArity); snippet1ReplaceFactRoleIter1 = (snippet1ReplaceFactRoleIter1 + 1))
 						{
-							Role primaryRole = allConstraintRoles[list1ItemRoleIter2];
-							parentFact = primaryRole.FactType;
-							factRoles = parentFact.RoleCollection;
-							factArity = factRoles.Count;
-							allReadingOrders = parentFact.ReadingOrderCollection;
-							int currentFactIndex = allFacts.IndexOf(parentFact);
-							string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
-							if ((factArity == 1))
+							Role currentRole = factRoles[snippet1ReplaceFactRoleIter1];
+							string roleReplacement = null;
+							string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
+							if (((primaryRole == currentRole) 
+										&& snippet1ReplaceIsFirstPass1))
 							{
-								VerbalizationTextSnippetType listSnippet;
-								if ((listCompositeIterator1 == 0))
+							}
+							else
+							{
+								if ((primaryRole == currentRole))
 								{
-									listSnippet = VerbalizationTextSnippetType.IndentedOrListOpen;
-								}
-								else
-								{
-									if ((listCompositeIterator1 
-												== (listCompositeCount1 - 1)))
-									{
-										if ((listCompositeIterator1 == 1))
-										{
-											listSnippet = VerbalizationTextSnippetType.IndentedOrListPairSeparator;
-										}
-										else
-										{
-											listSnippet = VerbalizationTextSnippetType.IndentedOrListFinalSeparator;
-										}
-									}
-									else
-									{
-										listSnippet = VerbalizationTextSnippetType.IndentedOrListSeparator;
-									}
-								}
-								writer.Write(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-								list1Item2 = null;
-								readingOrder = allConstraintRoleReadingOrders[currentFactIndex];
-								int list1ItemFactRoleIter2 = 0;
-								for (; (list1ItemFactRoleIter2 < factArity); list1ItemFactRoleIter2 = (list1ItemFactRoleIter2 + 1))
-								{
-									Role currentRole = factRoles[list1ItemFactRoleIter2];
-									string roleReplacement = null;
-									string basicReplacement = basicRoleReplacements[list1ItemFactRoleIter2];
 									roleReplacement = "";
-									if ((roleReplacement == null))
-									{
-										roleReplacement = basicReplacement;
-									}
-									roleReplacements[list1ItemFactRoleIter2] = roleReplacement;
 								}
-								list1Item2 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
-								writer.Write(list1Item2);
-								if ((list1ItemRoleIter2 
-											== (listCompositeCount1 - 1)))
+							}
+							if ((roleReplacement == null))
+							{
+								roleReplacement = basicReplacement;
+							}
+							roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
+						}
+						snippet1Replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+						sbTemp.Append(snippet1Replace1);
+						if ((snippet1ReplaceRoleIter1 
+									== (constraintRoleArity - 1)))
+						{
+							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedOrListClose, isDeontic, isNegative));
+						}
+						snippet1ReplaceIsFirstPass1 = false;
+					}
+					snippet1Replace1 = sbTemp.ToString();
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				}
+				else
+				{
+					if (!(isNegative))
+					{
+						bool missingReading = false;
+						int readingMatchIndex = 0;
+						for (; (!(missingReading) 
+									&& (readingMatchIndex < constraintRoleArity)); readingMatchIndex = (readingMatchIndex + 1))
+						{
+							Role primaryRole = allConstraintRoles[readingMatchIndex];
+							parentFact = primaryRole.FactType;
+							factRoles = parentFact.RoleCollection;
+							allReadingOrders = parentFact.ReadingOrderCollection;
+							readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, primaryRole, null, false, true, factRoles, false);
+							if ((readingOrder == null))
+							{
+								missingReading = true;
+							}
+							else
+							{
+								allConstraintRoleReadingOrders[readingMatchIndex] = readingOrder;
+							}
+						}
+						if (!(missingReading))
+						{
+							beginVerbalization(VerbalizationContent.Normal);
+							int listCompositeCount1 = 0;
+							int listCompositeIterator1;
+							for (listCompositeIterator1 = 0; (listCompositeIterator1 < constraintRoleArity); listCompositeIterator1 = (listCompositeIterator1 + 1))
+							{
+								Role primaryRole = allConstraintRoles[listCompositeIterator1];
+								parentFact = primaryRole.FactType;
+								factRoles = parentFact.RoleCollection;
+								factArity = factRoles.Count;
+								allReadingOrders = parentFact.ReadingOrderCollection;
+								if ((factArity >= 2))
 								{
-									writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedOrListClose, isDeontic, isNegative));
+									listCompositeCount1 = (listCompositeCount1 + 1);
 								}
-								listCompositeIterator1 = (listCompositeIterator1 + 1);
+							}
+							for (listCompositeIterator1 = 0; (listCompositeIterator1 < constraintRoleArity); listCompositeIterator1 = (listCompositeIterator1 + 1))
+							{
+								Role primaryRole = allConstraintRoles[listCompositeIterator1];
+								parentFact = primaryRole.FactType;
+								factRoles = parentFact.RoleCollection;
+								factArity = factRoles.Count;
+								allReadingOrders = parentFact.ReadingOrderCollection;
+								if ((factArity == 1))
+								{
+									listCompositeCount1 = (listCompositeCount1 + 1);
+								}
+							}
+							listCompositeIterator1 = 0;
+							string list1Item1 = null;
+							int list1ItemRoleIter1 = 0;
+							bool list1ItemIsFirstPass1 = true;
+							for (; (list1ItemRoleIter1 < constraintRoleArity); list1ItemRoleIter1 = (list1ItemRoleIter1 + 1))
+							{
+								Role primaryRole = allConstraintRoles[list1ItemRoleIter1];
+								parentFact = primaryRole.FactType;
+								factRoles = parentFact.RoleCollection;
+								factArity = factRoles.Count;
+								allReadingOrders = parentFact.ReadingOrderCollection;
+								int currentFactIndex = allFacts.IndexOf(parentFact);
+								string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
+								if ((factArity >= 2))
+								{
+									VerbalizationTextSnippetType listSnippet;
+									if ((listCompositeIterator1 == 0))
+									{
+										listSnippet = VerbalizationTextSnippetType.IndentedOrListOpen;
+									}
+									else
+									{
+										if ((listCompositeIterator1 
+													== (listCompositeCount1 - 1)))
+										{
+											if ((listCompositeIterator1 == 1))
+											{
+												listSnippet = VerbalizationTextSnippetType.IndentedOrListPairSeparator;
+											}
+											else
+											{
+												listSnippet = VerbalizationTextSnippetType.IndentedOrListFinalSeparator;
+											}
+										}
+										else
+										{
+											listSnippet = VerbalizationTextSnippetType.IndentedOrListSeparator;
+										}
+									}
+									writer.Write(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+									list1Item1 = null;
+									readingOrder = allConstraintRoleReadingOrders[currentFactIndex];
+									int list1ItemFactRoleIter1 = 0;
+									for (; (list1ItemFactRoleIter1 < factArity); list1ItemFactRoleIter1 = (list1ItemFactRoleIter1 + 1))
+									{
+										Role currentRole = factRoles[list1ItemFactRoleIter1];
+										string roleReplacement = null;
+										string basicReplacement = basicRoleReplacements[list1ItemFactRoleIter1];
+										if (((primaryRole == currentRole) 
+													&& list1ItemIsFirstPass1))
+										{
+											roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative), basicReplacement);
+										}
+										else
+										{
+											if ((primaryRole == currentRole))
+											{
+												roleReplacement = "";
+											}
+											else
+											{
+												roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+											}
+										}
+										if ((roleReplacement == null))
+										{
+											roleReplacement = basicReplacement;
+										}
+										roleReplacements[list1ItemFactRoleIter1] = roleReplacement;
+									}
+									list1Item1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+									writer.Write(list1Item1);
+									if ((list1ItemRoleIter1 
+												== (listCompositeCount1 - 1)))
+									{
+										writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedOrListClose, isDeontic, isNegative));
+									}
+									listCompositeIterator1 = (listCompositeIterator1 + 1);
+									list1ItemIsFirstPass1 = false;
+								}
+							}
+							string list1Item2 = null;
+							int list1ItemRoleIter2 = 0;
+							for (; (list1ItemRoleIter2 < constraintRoleArity); list1ItemRoleIter2 = (list1ItemRoleIter2 + 1))
+							{
+								Role primaryRole = allConstraintRoles[list1ItemRoleIter2];
+								parentFact = primaryRole.FactType;
+								factRoles = parentFact.RoleCollection;
+								factArity = factRoles.Count;
+								allReadingOrders = parentFact.ReadingOrderCollection;
+								int currentFactIndex = allFacts.IndexOf(parentFact);
+								string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
+								if ((factArity == 1))
+								{
+									VerbalizationTextSnippetType listSnippet;
+									if ((listCompositeIterator1 == 0))
+									{
+										listSnippet = VerbalizationTextSnippetType.IndentedOrListOpen;
+									}
+									else
+									{
+										if ((listCompositeIterator1 
+													== (listCompositeCount1 - 1)))
+										{
+											if ((listCompositeIterator1 == 1))
+											{
+												listSnippet = VerbalizationTextSnippetType.IndentedOrListPairSeparator;
+											}
+											else
+											{
+												listSnippet = VerbalizationTextSnippetType.IndentedOrListFinalSeparator;
+											}
+										}
+										else
+										{
+											listSnippet = VerbalizationTextSnippetType.IndentedOrListSeparator;
+										}
+									}
+									writer.Write(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+									list1Item2 = null;
+									readingOrder = allConstraintRoleReadingOrders[currentFactIndex];
+									int list1ItemFactRoleIter2 = 0;
+									for (; (list1ItemFactRoleIter2 < factArity); list1ItemFactRoleIter2 = (list1ItemFactRoleIter2 + 1))
+									{
+										Role currentRole = factRoles[list1ItemFactRoleIter2];
+										string roleReplacement = null;
+										string basicReplacement = basicRoleReplacements[list1ItemFactRoleIter2];
+										roleReplacement = "";
+										if ((roleReplacement == null))
+										{
+											roleReplacement = basicReplacement;
+										}
+										roleReplacements[list1ItemFactRoleIter2] = roleReplacement;
+									}
+									list1Item2 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+									writer.Write(list1Item2);
+									if ((list1ItemRoleIter2 
+												== (listCompositeCount1 - 1)))
+									{
+										writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedOrListClose, isDeontic, isNegative));
+									}
+									listCompositeIterator1 = (listCompositeIterator1 + 1);
+								}
 							}
 						}
 					}
