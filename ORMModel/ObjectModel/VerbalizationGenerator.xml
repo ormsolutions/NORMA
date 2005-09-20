@@ -230,8 +230,7 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-
-			<!-- UNDONE: The data from here down is preliminary, but is being used for generation testing -->
+			
 			<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
 				<!-- Unaries are the only reading choice that has an optional negative reading -->
 				<ConstrainedRoles sign="negative" maxFactArity="1">
@@ -258,7 +257,7 @@
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="positive">
 					<ConditionalReading>
-						<ReadingChoice match="RequireAllLeadReadingNoForwardText">
+						<ReadingChoice match="RequireAllLeadReading">
 							<CompositeList listStyle="IndentedOrList">
 								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
 									<Fact readingChoice="Conditional">
@@ -285,16 +284,26 @@
 						<ReadingChoice>
 							<Snippet ref="ForEachQuantifier">
 								<IterateRoles match="singleColumnConstraintRoles" pass="first" listStyle="SimpleList"/>
-								<IterateRoles match="singleColumnConstraintRoles" listStyle="IndentedOrList">
-									<Fact readingChoice="Conditional">
-										<PredicateReplacement match="included">
-											<Snippet ref="ImpersonalPronoun"/>
-										</PredicateReplacement>
-										<PredicateReplacement match="excluded">
-											<Snippet ref="ExistentialQuantifier"/>
-										</PredicateReplacement>
-									</Fact>
-								</IterateRoles>
+								<CompositeList listStyle="IndentedOrList">
+									<IterateRoles match="singleColumnConstraintRoles" minFactArity="2">
+										<Fact readingChoice="PreferPrimaryLeadReadingNoForwardText">
+											<PredicateReplacement match="included">
+												<Snippet ref="ImpersonalPronoun"/>
+											</PredicateReplacement>
+											<PredicateReplacement match="excluded">
+												<Snippet ref="ExistentialQuantifier"/>
+											</PredicateReplacement>
+										</Fact>
+									</IterateRoles>
+									<IterateRoles factArity="1" match="singleColumnConstraintRoles">
+										<Fact>
+											<PredicateReplacement>
+												<Snippet ref="null"/>
+											</PredicateReplacement>
+											<!--Needs catering for forward text-->
+										</Fact>
+									</IterateRoles>
+								</CompositeList>
 							</Snippet>
 						</ReadingChoice>
 					</ConditionalReading>

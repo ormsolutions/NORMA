@@ -196,6 +196,7 @@
 				<xs:choice minOccurs="1" maxOccurs="unbounded">
 					<xs:element name="Snippet" type="SnippetType"/>
 					<xs:element name="IterateRoles" type="IterateRolesType"/>
+					<xs:element name="CompositeList" type="CompositeListType"/>
 					<xs:element name="Fact" type="FactType"/>
 				</xs:choice>
 			</xs:extension>
