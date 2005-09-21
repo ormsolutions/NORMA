@@ -289,15 +289,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Match the first non whitespace/html character
 		/// </summary>
-		private static Regex FirstBodyCharacterPatternAny = new Regex(@"^(?:((<[^>]*?>)|\s)+?)(?<1>.)", RegexOptions.Compiled | RegexOptions.Singleline);
+		private static Regex FirstBodyCharacterPatternAny = new Regex(@"^(?:((<[^>]*?>)|\s)*?)(?<1>[^<\s])", RegexOptions.Compiled | RegexOptions.Singleline);
 		/// <summary>
 		/// Match the first non whitespace/html character, but only if it is lower case
 		/// </summary>
-		private static Regex FirstBodyCharacterPatternLower = new Regex(@"^(?:((<[^>]*?>)|\s)+?)(?<1>\p{Ll})", RegexOptions.Compiled | RegexOptions.Singleline);
+		private static Regex FirstBodyCharacterPatternLower = new Regex(@"^(?:((<[^>]*?>)|\s)*?)(?<1>\p{Ll})", RegexOptions.Compiled | RegexOptions.Singleline);
 		/// <summary>
 		/// Match the last non whitespace/html character
 		/// </summary>
-		private static Regex LastBodyCharacterPattern = new Regex(@".((<[^>]*?>)|\s)+?\z", RegexOptions.Compiled | RegexOptions.Singleline);
+		private static Regex LastBodyCharacterPattern = new Regex(@"(?<1>[^<\s])((<[^>]*?>)|\s)*?\z", RegexOptions.Compiled | RegexOptions.Singleline);
 		/// <summary>
 		/// Helper function for turning verbalizations into true sentences. Handles html and plain text
 		/// body text.
@@ -368,7 +368,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				int charIndex = match.Index;
-				if ((modifiedReplaceLength > charIndex) || (modifiedClose != body.Substring(charIndex - modifiedReplaceLength + 2, modifiedReplaceLength)))
+				if ((modifiedReplaceLength > charIndex) || (modifiedClose != body.Substring(charIndex - modifiedReplaceLength + 1, modifiedReplaceLength)))
 				{
 					if (charIndex != 0)
 					{

@@ -84,14 +84,9 @@
 		<FactType/>
 		<!-- Generate constraint verbalizations -->
 		<Constraints>
-			<!-- UNDONE: Subscripting requirements specify on for binary, off for n-ary. Currently
-						 they are always on. We need to see if there are any verbalizations where subscripts are
-						 required in some places but not others before designing the xml and generating from it.
-						 If subscripts are required in all places in any verbalization pattern that uses them, then
-						 the following would be a potential tag for this location (we'd have subscripts off by default). -->
-			<!--<EnableSubscripts minFactArity="3"/>-->
 			<Constraint type="InternalUniquenessConstraint" patternGroup="InternalConstraint">
-				<ConstrainedRoles factArity="1" sign="positive" span="all">
+				<ConstrainedRoles factArity="1" sign="positive">
+					<!-- span='all' is implicit in the other conditions. 0 arity includedRoles is blocked. -->
 					<Snippet ref="OccursInPopulation">
 						<Snippet ref="UniversalQuantifier">
 							<IterateRoles match="included" listStyle="SimpleList"/>
@@ -99,11 +94,41 @@
 						<Fact/>
 					</Snippet>
 				</ConstrainedRoles>
-				<ConstrainedRoles factArity="1" sign="negative" span="all">
+				<ConstrainedRoles factArity="1">
+					<!-- span="all" sign="negative" is implicit in the other conditions are previous element-->
 					<Snippet ref="ModalPossibilityOperator">
 						<Snippet ref="OccursInPopulation">
 							<Snippet ref="IdentityReferenceQuantifier">
 								<IterateRoles match="included" listStyle="SimpleList"/>
+							</Snippet>
+							<Fact/>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles span="all" sign="positive">
+					<!-- UNDONE: Subscripting requirements specify on for binary, off for n-ary. Currently
+						 they are always on. We need to see if there are any verbalizations where subscripts are
+						 required in some places but not others before designing the xml and generating from it.
+						 If subscripts are required in all places in any verbalization pattern that uses them, then
+						 the following would be a potential tag for this location (we'd have subscripts off by default). -->
+					<!--<EnableSubscripts minFactArity="3"/>-->
+					<Snippet ref="OccursInPopulation">
+						<Snippet ref="CombinationIdentifier">
+							<Snippet ref="UniversalQuantifier">
+								<IterateRoles match="included" listStyle="SimpleList"/>
+							</Snippet>
+						</Snippet>
+						<Fact/>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles span="all">
+					<!-- sign="negative" is implied by the previous element -->
+					<Snippet ref="ModalPossibilityOperator">
+						<Snippet ref="OccursInPopulation">
+							<Snippet ref="CombinationIdentifier">
+								<Snippet ref="IdentityReferenceQuantifier">
+									<IterateRoles match="included" listStyle="CompactSimpleList"/>
+								</Snippet>
 							</Snippet>
 							<Fact/>
 						</Snippet>
@@ -136,7 +161,8 @@
 						</ReadingChoice>
 					</ConditionalReading>
 				</ConstrainedRoles>
-				<ConstrainedRoles factArity="2" sign="negative">
+				<ConstrainedRoles factArity="2">
+					<!-- sign="negative" is implied by the previous element -->
 					<ConditionalReading>
 						<ReadingChoice match="RequireLeadReading">
 							<Snippet ref="ForEachQuantifier">
@@ -147,36 +173,17 @@
 											<Snippet ref="ImpersonalPronoun"/>
 										</PredicateReplacement>
 										<PredicateReplacement>
+											<!-- UNDONE: Check -->
 											<Snippet ref="AtMostOneQuantifier"/>
 										</PredicateReplacement>
 									</Fact>
 								</Snippet>
 							</Snippet>
 						</ReadingChoice>
-						<ReadingChoice></ReadingChoice>
+						<ReadingChoice>
+							<!-- UNDONE: Fill in -->
+						</ReadingChoice>
 					</ConditionalReading>
-				</ConstrainedRoles>
-				<ConstrainedRoles span="all" sign="positive">
-					<Snippet ref="OccursInPopulation">
-						<Snippet ref="CombinationIdentifier">
-							<Snippet ref="UniversalQuantifier">
-								<IterateRoles match="included" listStyle="SimpleList"/>
-							</Snippet>
-						</Snippet>
-						<Fact/>
-					</Snippet>
-				</ConstrainedRoles>
-				<ConstrainedRoles span="all" sign="negative">
-					<Snippet ref="ModalPossibilityOperator">
-						<Snippet ref="OccursInPopulation">
-							<Snippet ref="CombinationIdentifier">
-								<Snippet ref="IdentityReferenceQuantifier">
-									<IterateRoles match="included" listStyle="CompactSimpleList"/>
-								</Snippet>
-							</Snippet>
-							<Fact/>
-						</Snippet>
-					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="negative">
 					<Snippet ref="ModalPossibilityOperator">
@@ -193,7 +200,8 @@
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
-				<ConstrainedRoles sign="positive">
+				<ConstrainedRoles>
+					<!-- sign="positive" is implied by the previous element -->
 					<Snippet ref="ForEachQuantifier">
 						<IterateRoles match="included" listStyle="SimpleList"/>
 						<Fact>

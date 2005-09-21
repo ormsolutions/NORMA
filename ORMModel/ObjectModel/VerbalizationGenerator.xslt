@@ -258,28 +258,6 @@
 				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="$isInternal">
-						<!-- No readings is an error on the parent, so we can get past the error check without them -->
-						<plx:Condition>
-							<plx:Test>
-								<plx:Operator type="Equality">
-									<plx:Left>
-										<plx:CallInstance name="Count" type="Property">
-											<plx:CallObject>
-												<plx:Value type="Local" data="allReadingOrders"/>
-											</plx:CallObject>
-										</plx:CallInstance>
-									</plx:Left>
-									<plx:Right>
-										<plx:Value type="I4" data="0"/>
-									</plx:Right>
-								</plx:Operator>
-							</plx:Test>
-							<plx:Body>
-								<plx:Return>
-									<plx:FalseKeyword/>
-								</plx:Return>
-							</plx:Body>
-						</plx:Condition>
 						<plx:Variable name="includedArity" dataTypeName="Int32" dataTypeQualifier="System">
 							<plx:Initialize>
 								<plx:CallInstance name="Count" type="Property">
@@ -289,6 +267,43 @@
 								</plx:CallInstance>
 							</plx:Initialize>
 						</plx:Variable>
+						<!-- No included roles is not an error, but we can't verbalize it -->
+						<plx:Condition>
+							<plx:Test>
+								<plx:Operator type="BooleanOr">
+									<plx:Left>
+										<!-- No readings is an error on the parent, so we can get past the error check without them -->
+										<plx:Operator type="Equality">
+											<plx:Left>
+												<plx:CallInstance name="Count" type="Property">
+													<plx:CallObject>
+														<plx:Value type="Local" data="allReadingOrders"/>
+													</plx:CallObject>
+												</plx:CallInstance>
+											</plx:Left>
+											<plx:Right>
+												<plx:Value type="I4" data="0"/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Left>
+									<plx:Right>
+										<plx:Operator type="Equality">
+											<plx:Left>
+												<plx:Value type="Local" data="includedArity"/>
+											</plx:Left>
+											<plx:Right>
+												<plx:Value type="I4" data="0"/>
+											</plx:Right>
+										</plx:Operator>
+									</plx:Right>
+								</plx:Operator>
+							</plx:Test>
+							<plx:Body>
+								<plx:Return>
+									<plx:FalseKeyword/>
+								</plx:Return>
+							</plx:Body>
+						</plx:Condition>
 					</xsl:when>
 					<xsl:when test="$isSingleColumn">
 						<plx:Variable name="allBasicRoleReplacements" dataTypeName="String" dataTypeQualifier="System">
