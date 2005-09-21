@@ -25,6 +25,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					typeof(ExternalConstraintShape).GetNestedType("ShapeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
 					typeof(FactTypeShape).GetNestedType("ConstraintDisplayPositionChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
 					typeof(FactTypeShape).GetNestedType("ExternalConstraintShapeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
+					typeof(FactTypeShape).GetNestedType("FactTypeShapeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),
 					typeof(FactTypeShape).GetNestedType("SwitchFromNestedFact", (BindingFlags.Public | BindingFlags.NonPublic)),
 					typeof(FactTypeShape).GetNestedType("SwitchToNestedFact", (BindingFlags.Public | BindingFlags.NonPublic)),
 					typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintAttributeChangeRule", (BindingFlags.Public | BindingFlags.NonPublic)),

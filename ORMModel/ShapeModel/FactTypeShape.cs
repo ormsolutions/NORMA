@@ -3412,6 +3412,65 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ExternalConstraintShapeChangeRule class
+		#region FactTypeShapeChangeRule class
+		/// <summary>
+		/// Keep relative child elements a fixed distance away from the fact
+		/// when the shape changes.
+		/// </summary>
+		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.LocalCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class FactTypeShapeChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == FactTypeShape.AbsoluteBoundsMetaAttributeGuid)
+				{
+					FactTypeShape parentShape = e.ModelElement as FactTypeShape;
+					RectangleD oldBounds = (RectangleD)e.OldValue;
+					RectangleD newBounds = (RectangleD)e.NewValue;
+					SizeD oldSize = oldBounds.Size;
+					SizeD newSize = newBounds.Size;
+					double xChange = newSize.Width - oldSize.Width;
+					double yChange = newSize.Height - oldSize.Height;
+					bool checkX = !VGConstants.FuzzZero(xChange, VGConstants.FuzzDistance);
+					bool checkY = !VGConstants.FuzzZero(yChange, VGConstants.FuzzDistance);
+					if (checkX || checkY)
+					{
+						ShapeElementMoveableCollection childShapes = parentShape.RelativeChildShapes;
+						int childCount = childShapes.Count;
+						if (childCount != 0)
+						{
+							for (int i = 0; i < childCount; ++i)
+							{
+								bool changeBounds = false;
+								PointD change = default(PointD);
+								NodeShape childShape = childShapes[i] as NodeShape;
+								if (childShape != null)
+								{
+									RectangleD childBounds = childShape.AbsoluteBoundingBox;
+									if (checkX && (childBounds.Left > (newBounds.Right - xChange)))
+									{
+										change.X = xChange;
+										changeBounds = true;
+									}
+									if (checkY && (childBounds.Top > (newBounds.Bottom - yChange)))
+									{
+										change.Y = yChange;
+										changeBounds = true;
+									}
+									if (changeBounds)
+									{
+										childBounds.Offset(change);
+										childShape.AbsoluteBounds = childBounds;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		#endregion // FactTypeShapeChangeRule class
 		#endregion // Shape display update rules
 	}
 	#endregion // FactTypeShape class

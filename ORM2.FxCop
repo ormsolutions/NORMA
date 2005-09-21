@@ -14779,6 +14779,20 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="FactTypeShape+FactTypeShapeChangeRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-09-21 15:48:28Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ShapeModel.FactTypeShape+FactTypeShapeChangeRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="61" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="FactTypeShape+FactTypeShapeConstraintDisplayPositionFieldHandler">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -18246,6 +18260,7 @@
     <Note Id="58" Modified="2005-08-22 18:16:31Z">Interface pattern function</Note>
     <Note Id="59" Modified="2005-08-31 15:42:38Z">CodeDom doesn't spit readonly, which is what I really want. The class being spit is not editable.</Note>
     <Note Id="60" Modified="2005-09-14 15:09:44Z">Signature matches interface pattern</Note>
+    <Note Id="61" Modified="2005-09-21 15:49:26Z">Rule class instantiated via reflection</Note>
    </User>
    <User Name="mouzts">
     <Note Id="0" Modified="2005-09-15 22:08:24Z">Rule classes instantiated via reflection</Note>
