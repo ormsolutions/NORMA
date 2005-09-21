@@ -1621,6 +1621,11 @@
 		<xsl:call-template name="PopulateReadingOrder">
 			<xsl:with-param name="ReadingChoice" select="@readingChoice"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+			<xsl:with-param name="ConditionalReadingOrderIndex">
+				<xsl:if test="$IteratorContext='singleColumnConstraintRoles'">
+					<xsl:value-of select="concat($VariablePrefix,$RoleIterVariablePart,$VariableDecorator)"/>
+				</xsl:if>
+			</xsl:with-param>
 		</xsl:call-template>
 		<xsl:choose>
 			<xsl:when test="$complexReplacement">
@@ -3217,6 +3222,7 @@
 		<!-- Support readings for {Conditional, {Prefer|Require}[Non][Primary]LeadReading[NoForwardText], null} ReadingChoice values -->
 		<xsl:param name="ReadingChoice"/>
 		<xsl:param name="PatternGroup"/>
+		<xsl:param name="ConditionalReadingOrderIndex"/>
 		<xsl:choose>
 			<xsl:when test="$ReadingChoice='Conditional' and $PatternGroup='SingleColumnExternalConstraint'">
 				<plx:Operator type="Assign">
@@ -3229,7 +3235,7 @@
 								<plx:Value type="Local" data="allConstraintRoleReadingOrders"/>
 							</plx:CallObject>
 							<plx:PassParam>
-								<plx:Value type="Local" data="currentFactIndex"/>
+								<plx:Value type="Local" data="{$ConditionalReadingOrderIndex}"/>
 							</plx:PassParam>
 						</plx:CallInstance>
 					</plx:Right>

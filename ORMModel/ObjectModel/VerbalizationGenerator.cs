@@ -1936,7 +1936,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 									list1Item1 = null;
-									readingOrder = allConstraintRoleReadingOrders[currentFactIndex];
+									readingOrder = allConstraintRoleReadingOrders[list1ItemRoleIter1];
 									int list1ItemFactRoleIter1 = 0;
 									for (; (list1ItemFactRoleIter1 < factArity); list1ItemFactRoleIter1 = (list1ItemFactRoleIter1 + 1))
 									{
@@ -2015,7 +2015,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 									}
 									sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 									list1Item2 = null;
-									readingOrder = allConstraintRoleReadingOrders[currentFactIndex];
+									readingOrder = allConstraintRoleReadingOrders[list1ItemRoleIter2];
 									int list1ItemFactRoleIter2 = 0;
 									for (; (list1ItemFactRoleIter2 < factArity); list1ItemFactRoleIter2 = (list1ItemFactRoleIter2 + 1))
 									{
@@ -2494,7 +2494,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						snippet1Replace2 = null;
-						readingOrder = allConstraintRoleReadingOrders[currentFactIndex];
+						readingOrder = allConstraintRoleReadingOrders[snippet1ReplaceRoleIter2];
 						int snippet1ReplaceFactRoleIter2 = 0;
 						for (; (snippet1ReplaceFactRoleIter2 < factArity); snippet1ReplaceFactRoleIter2 = (snippet1ReplaceFactRoleIter2 + 1))
 						{
@@ -2611,7 +2611,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							snippet1Replace1 = null;
-							readingOrder = allConstraintRoleReadingOrders[currentFactIndex];
+							readingOrder = allConstraintRoleReadingOrders[snippet1ReplaceRoleIter1];
 							int snippet1ReplaceFactRoleIter1 = 0;
 							for (; (snippet1ReplaceFactRoleIter1 < factArity); snippet1ReplaceFactRoleIter1 = (snippet1ReplaceFactRoleIter1 + 1))
 							{
