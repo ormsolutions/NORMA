@@ -787,6 +787,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ShapeElement presenter = link.Presentation as ShapeElement;
 					if (presenter != null) // Option role, may not be there
 					{
+						// If the presenter is a ReadingShape, then see if we
+						// can attach it to another ReadingOrder instead of
+						// removing it altogether
+						ReadingShape readingPel = presenter as ReadingShape;
+						if (readingPel != null)
+						{
+							ReadingOrder order = (ReadingOrder)link.Subject;
+							FactType fact = order.FactType;
+							if (!fact.IsRemoved)
+							{
+								ReadingOrderMoveableCollection remainingOrders = fact.ReadingOrderCollection;
+								if (remainingOrders.Count != 0)
+								{
+									RoleMoveableCollection roles = fact.RoleCollection;
+									readingPel.Associate(FactType.GetMatchingReadingOrder(remainingOrders, roles[0], null, false, false, roles, true));
+									return;
+								}
+							}
+						}
 						presenter.Invalidate();
 						presenter.Remove();
 					}

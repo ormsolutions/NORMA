@@ -299,7 +299,7 @@
     <comment xml:space="preserve">Text to display in the reading editor when the role has no roleplayer to substitute into the text.</comment>
   </data>
   <data name="ModelReadingEditor.NewItemText">
-    <value xml:space="preserve">New?</value>
+    <value xml:space="preserve">New…</value>
     <comment xml:space="preserve">Text to place in the new item entry of the readings list in the reading editor tool window</comment>
   </data>
   <data name="ModelReadingEditor.NewReadingTransactionText">
@@ -431,12 +431,12 @@
     <comment xml:space="preserve">data type does not match max inclusion. Replace valuetype, model.</comment>
   </data>
   <data name="ModelError.ValueRange.MinValueMismatchError.Message">
-      <value xml:space="preserve">The min value for '{0}' in model '{1}' must match the specified data type.</value>
-      <comment xml:space="preserve">data type does not match min inclusion. Replace valuetype, model.</comment>
+    <value xml:space="preserve">The min value for '{0}' in model '{1}' must match the specified data type.</value>
+    <comment xml:space="preserve">data type does not match min inclusion. Replace valuetype, model.</comment>
   </data>
   <data name="ModelError.ValueRange.MaxValueMismatchError.Message2">
-      <value xml:space="preserve">Role '{2}' of fact '{1}' in model '{0}' has a max value that does not match the specified data type.</value>
-      <comment xml:space="preserve">Role data type does not match max inclusion. Replace model,fact,role number.</comment>
+    <value xml:space="preserve">Role '{2}' of fact '{1}' in model '{0}' has a max value that does not match the specified data type.</value>
+    <comment xml:space="preserve">Role data type does not match max inclusion. Replace model,fact,role number.</comment>
   </data>
   <data name="ModelError.ValueRange.MinValueMismatchError.Message2">
     <value xml:space="preserve">Role '{2}' of fact '{1}' in model '{0}' has a min value that does not match the specified data type.</value>

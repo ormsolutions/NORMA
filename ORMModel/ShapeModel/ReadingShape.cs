@@ -17,13 +17,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ReadingShape : IModelErrorActivation
 	{
+		#region Member Variables and Constants
 		private static AutoSizeTextField myTextShapeField;
-		private static Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
-		private static string ellipsis = ResourceStrings.ReadingShapeEllipsis;
-		private static char c_ellipsis = ellipsis.ToCharArray()[0];
-
+		private static readonly Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}", RegexOptions.Compiled);
+		private static readonly string ellipsis = ResourceStrings.ReadingShapeEllipsis;
+		private static readonly char c_ellipsis = ellipsis[0];
+		private string myDisplayText;
+		#endregion // Member Variables and Constants
 		#region Model Event Hookup and Handlers
-
 		#region Event Hookup
 		/// <summary>
 		/// Attaches event listeners for the purpose of notifying the
@@ -72,8 +73,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(RoleAddedEvent));
 			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(RoleRemovedEvent));
 		}
-		#endregion
-
+		#endregion // Event Hookup
 		#region Reading Events
 		/// <summary>
 		/// Event handler that listens for when ReadingOrderHasReading link is being added
@@ -84,7 +84,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
 			if (link.ReadingCollection.IsPrimary)
 			{
-				RefreshPresentationElements(link.ReadingOrder.PresentationRolePlayers);
+				RefreshPresentationElements(link.ReadingOrder);
 			}
 		}
 
@@ -100,7 +100,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 			if (!ord.IsRemoved && read.IsPrimary)
 			{
-				RefreshPresentationElements(ord.PresentationRolePlayers);
+				RefreshPresentationElements(ord);
 			}
 		}
 
@@ -117,11 +117,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				(attrGuid == Reading.TextMetaAttributeGuid || attrGuid == Reading.IsPrimaryMetaAttributeGuid) &&
 				!read.IsRemoved)
 			{
-				RefreshPresentationElements(read.ReadingOrder.PresentationRolePlayers);
+				RefreshPresentationElements(read.ReadingOrder);
 			}
 		}
-		#endregion
-
+		#endregion // Reading Events
 		#region Role Events
 		/// <summary>
 		/// Event handler that listens for when ReadingOrderHasRole link is being added
@@ -132,7 +131,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ReadingOrderHasRole link = e.ModelElement as ReadingOrderHasRole;
 			ReadingOrder ord = link.ReadingOrder;
 
-			RefreshPresentationElements(ord.PresentationRolePlayers);
+			RefreshPresentationElements(ord);
 		}
 
 		/// <summary>
@@ -146,15 +145,51 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 			if (!ord.IsRemoved)
 			{
-				RefreshPresentationElements(ord.PresentationRolePlayers);
+				RefreshPresentationElements(ord);
 			}
 		}
 
 		/// <summary>
 		/// Used to invalidate caches on presentation elements.
 		/// </summary>
-		private static void RefreshPresentationElements(PresentationElementMoveableCollection pels)
+		/// <param name="order">The reading order being changed</param>
+		private static void RefreshPresentationElements(ReadingOrder order)
 		{
+			// We're displaying multiple reading orders in a single
+			// presentation element, so we need to look across pels
+			// on all reading orders associated with this fact, not
+			// just the one passed in.
+			if (RefreshPresentationElements(order.PresentationRolePlayers))
+			{
+				return;
+			}
+			FactType fact = order.FactType;
+			if (fact != null && !fact.IsRemoved)
+			{
+				ReadingOrderMoveableCollection orders = fact.ReadingOrderCollection;
+				int orderCount = orders.Count;
+				for (int i = 0; i < orderCount; ++i)
+				{
+					ReadingOrder currentOrder = orders[i];
+					if (!object.ReferenceEquals(currentOrder, order))
+					{
+						if (RefreshPresentationElements(currentOrder.PresentationRolePlayers))
+						{
+							break;
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Helper function for previous function. Return true if a ReadingShape pel was found for
+		/// this reading order
+		/// </summary>
+		/// <param name="pels"></param>
+		/// <returns>true if shape invalidated</returns>
+		private static bool RefreshPresentationElements(PresentationElementMoveableCollection pels)
+		{
+			bool retVal = false;
 			ReadingShape rs;
 			int numPels = pels.Count;
 			for (int i = 0; i < numPels; ++i)
@@ -163,15 +198,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (rs != null)
 				{
 					rs.InvalidateDisplayText();
+					retVal = true;
+					// Don't return, allow for multiples on different diagrams. However,
+					// they should all be attached to the same ReadingOrder
 				}
 			}
+			return retVal;
 		}
-		#endregion
-
-		#endregion
-
-		private string myDisplayText;
-
+		#endregion // Role Events
+		#endregion // Model Event Hookup and Handlers
 		#region overrides
 		/// <summary>
 		/// Associate the reading text with this shape
@@ -236,7 +271,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return new ReadingAutoSizeTextField();
 		}
 		#endregion
-
 		#region Helper methods
 		/// <summary>
 		/// Notifies the shape that the currently cached display text may no longer
@@ -251,8 +285,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				this.AutoResize();
 			}
 		}
-		#endregion
-
+		#endregion // Helper methods
 		#region properties
 		/// <summary>
 		/// Constructs how the reading text should be displayed.
@@ -261,9 +294,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				StringBuilder retval = new StringBuilder();
 				if (myDisplayText == null)
 				{
+					StringBuilder retval = new StringBuilder();
 					ReadingOrder readingOrd = this.ModelElement as ReadingOrder;
 					Debug.Assert(readingOrd != null);
 
@@ -348,8 +381,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return myDisplayText;
 			}
 		}
-		#endregion
-
+		#endregion // properties
 		#region Reading text display update rules
 		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class ReadingOrderAdded : AddRule
@@ -396,8 +428,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion
-
+		#endregion // Reading text display update rules
 		#region nested class ReadingAutoSizeTextField
 		/// <summary>
 		/// Contains code to replace RolePlayer place holders with an ellipsis.
@@ -443,7 +474,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // nested class ReadingAutoSizeTextField
-
 		#region change rules
 		/// <summary>
 		/// Rule to detect changes to the ReadingText so that the shape knows the
@@ -509,7 +539,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 					}
 				}
-				if(attrId == Reading.TextMetaAttributeGuid){
+				// UNDONE: Handling of TextMetaAttributeGuid belongs in the object model, not the shape model
+				if(attrId == Reading.TextMetaAttributeGuid)
+				{
 					string newValue = (string)e.NewValue;
 					if (newValue.Length == 0)
 					{
@@ -520,18 +552,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						else
 						{
-							//UNDONE: Removing the reading order when it is the one that the
-							//shape is based on causes the shape to be removed. The shape should
-							//remain if there are other reading orders available and it should
-							//display those reading orders.
+							// The PresentationLinkRemoved class in ViewFixupRules.cs will
+							// reattach another available reading to the presentation element, so
+							// this will not necessarily remove the reading shape
 							readingOrder.Remove();
 						}
 					}
 				}
 			}
 		}
-		#endregion
-
+		#endregion // change rules
 		#region IModelErrorActivation Implementation
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError. Forwards errors to
