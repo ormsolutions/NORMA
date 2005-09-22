@@ -165,23 +165,28 @@
 					<!-- sign="negative" is implied by the previous element -->
 					<ConditionalReading>
 						<ReadingChoice match="RequireLeadReading">
-							<Snippet ref="ForEachQuantifier">
-								<IterateRoles listStyle="SimpleList" match="included"/>
-								<Snippet ref="ModalPossibilityOperator">
-									<Fact readingChoice="Conditional">
-										<PredicateReplacement match="included">
-											<Snippet ref="ImpersonalPronoun"/>
-										</PredicateReplacement>
-										<PredicateReplacement>
-											<!-- UNDONE: Check -->
-											<Snippet ref="AtMostOneQuantifier"/>
-										</PredicateReplacement>
-									</Fact>
-								</Snippet>
+							<Snippet ref="ModalPossibilityOperator">
+								<Fact>
+									<PredicateReplacement match="included">
+										<Snippet ref="IdentityReferenceQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="excluded">
+										<Snippet ref="OneQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
 							</Snippet>
 						</ReadingChoice>
 						<ReadingChoice>
-							<!-- UNDONE: Fill in -->
+							<Snippet ref="ModalPossibilityOperator">
+								<Fact>
+									<PredicateReplacement match="excluded">
+										<Snippet ref="OneQuantifier"/>
+									</PredicateReplacement>
+									<PredicateReplacement match="included">
+										<Snippet ref="IdentityReferenceQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</Snippet>
 						</ReadingChoice>
 					</ConditionalReading>
 				</ConstrainedRoles>
