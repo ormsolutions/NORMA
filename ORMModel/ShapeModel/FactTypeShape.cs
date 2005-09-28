@@ -736,11 +736,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (showConstraint)
 						{
 							ShapeElement constraintShape = diagram.FindShapeForElement((ModelElement)constraintBoxes[i].FactConstraint.Constraint);
-							Debug.Assert(constraintShape != null); // Wouldn't be drawing it otherwise
-							double constraintVerticalCenter = constraintShape.AbsoluteCenter.Y;
-							showConstraint = (displayPosition == ConstraintDisplayPosition.Top) ?
-								constraintVerticalCenter < testVerticalPoint :
-								constraintVerticalCenter >= testVerticalPoint;
+							if (constraintShape == null)
+							{
+								// This can happen if the constraint is implied. Implied constraints are not displayed.
+								showConstraint = false;
+							}
+							else
+							{
+								double constraintVerticalCenter = constraintShape.AbsoluteCenter.Y;
+								showConstraint = (displayPosition == ConstraintDisplayPosition.Top) ?
+									constraintVerticalCenter < testVerticalPoint :
+									constraintVerticalCenter >= testVerticalPoint;
+							}
 						}
 						if (!showConstraint)
 						{
