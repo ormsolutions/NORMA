@@ -163,38 +163,23 @@
 				</ConstrainedRoles>
 				<ConstrainedRoles factArity="2">
 					<!-- sign="negative" is implied by the previous element -->
-					<ConditionalReading>
-						<ReadingChoice match="RequireLeadReading">
-							<Snippet ref="ModalPossibilityOperator">
-								<Fact>
-									<PredicateReplacement match="included">
-										<Snippet ref="IdentityReferenceQuantifier"/>
-									</PredicateReplacement>
-									<PredicateReplacement match="excluded">
-										<Snippet ref="OneQuantifier"/>
-									</PredicateReplacement>
-								</Fact>
-							</Snippet>
-						</ReadingChoice>
-						<ReadingChoice>
-							<Snippet ref="ModalPossibilityOperator">
-								<Fact>
-									<PredicateReplacement match="excluded">
-										<Snippet ref="OneQuantifier"/>
-									</PredicateReplacement>
-									<PredicateReplacement match="included">
-										<Snippet ref="IdentityReferenceQuantifier"/>
-									</PredicateReplacement>
-								</Fact>
-							</Snippet>
-						</ReadingChoice>
-					</ConditionalReading>
+					<!-- The pattern is the same whether or not we have a lead reading, so don't use ConditionalReading here -->
+					<Snippet ref="ModalPossibilityOperator">
+						<Fact readingChoice="PreferLeadReading">
+							<PredicateReplacement match="included">
+								<Snippet ref="IdentityReferenceQuantifier"/>
+							</PredicateReplacement>
+							<PredicateReplacement match="excluded">
+								<Snippet ref="OneQuantifier"/>
+							</PredicateReplacement>
+						</Fact>
+					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="negative">
 					<Snippet ref="ModalPossibilityOperator">
 						<Snippet ref="IdentityReferenceQuantifier">
 							<IterateRoles match="included" listStyle="SimpleList"/>
-							<Fact readingChoice="RequireLeadReading">
+							<Fact readingChoice="PreferLeadReading">
 								<PredicateReplacement match="included">
 									<Snippet ref="ImpersonalPronoun"/>
 								</PredicateReplacement>

@@ -98,9 +98,9 @@
 			<xs:enumeration value="MultiColumnExternalConstraint"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="ReadingChoiceSingleMatchEnum">
+	<xs:simpleType name="ReadingChoicePreferSingleMatchEnum">
 		<xs:restriction base="xs:string">
-			<!-- Allowable options are {Conditional|{Prefer|Require}[Non][Primary]LeadReading[NoForwardText]} -->
+			<!-- Allowable options are {Conditional|Prefer[Non][Primary]LeadReading[NoForwardText]} -->
 			<xs:enumeration value="Conditional"/>
 			<xs:enumeration value="PreferLeadReading"/>
 			<xs:enumeration value="PreferNonLeadReading"/>
@@ -110,14 +110,6 @@
 			<xs:enumeration value="PreferNonLeadReadingNoForwardText"/>
 			<xs:enumeration value="PreferPrimaryLeadReadingNoForwardText"/>
 			<xs:enumeration value="PreferNonPrimaryLeadReadingNoForwardText"/>
-			<xs:enumeration value="RequireLeadReading"/>
-			<xs:enumeration value="RequireNonLeadReading"/>
-			<xs:enumeration value="RequirePrimaryLeadReading"/>
-			<xs:enumeration value="RequireNonPrimaryLeadReading"/>
-			<xs:enumeration value="RequireLeadReadingNoForwardText"/>
-			<xs:enumeration value="RequireNonLeadReadingNoForwardText"/>
-			<xs:enumeration value="RequirePrimaryLeadReadingNoForwardText"/>
-			<xs:enumeration value="RequireNonPrimaryLeadReadingNoForwardText"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoiceFullRequiredMatchEnum">
@@ -211,7 +203,7 @@
 		<xs:sequence minOccurs="0" maxOccurs="1">
 			<xs:element name="PredicateReplacement" type="PredicateReplacementType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="readingChoice" use="optional" type="ReadingChoiceSingleMatchEnum"/>
+		<xs:attribute name="readingChoice" use="optional" type="ReadingChoicePreferSingleMatchEnum"/>
 	</xs:complexType>
 	<xs:complexType name="IterateRolesNoListType">
 		<xs:sequence>
