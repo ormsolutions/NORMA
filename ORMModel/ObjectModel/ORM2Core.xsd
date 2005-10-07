@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Todo: Is external on object type?  What am I supposed to do with object shapes and data types? -->
-<xs:schema targetNamespace="http://Schemas.Neumont.edu/ORM/ORMCore" 
+<xs:schema targetNamespace="http://schemas.neumont.edu/ORM/ORMCore" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified" 
-	xmlns="http://Schemas.Neumont.edu/ORM/ORMCore" 
+	xmlns="http://schemas.neumont.edu/ORM/ORMCore" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	xmlns:derived="http://Schemas.Neumont.edu/ORM/ORMDerived">
+	xmlns:derived="http://schemas.neumont.edu/ORM/ORMDerived">
 
-	<!-- <xs:import namespace="http://Schemas.Neumont.edu/ORM/ORMDerived" /> -->
+	<!-- <xs:import namespace="http://schemas.neumont.edu/ORM/ORMDerived" /> -->
 	<xs:complexType name="Extensions">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:any namespace="##other" processContents="strict"/>

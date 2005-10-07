@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://Schemas.Neumont.edu/ORM/SDK/Verbalization" xmlns="http://Schemas.Neumont.edu/ORM/SDK/Verbalization" xmlns:ve="http://Schemas.Neumont.edu/ORM/SDK/Verbalization" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+<xs:schema
+	attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
 	<xs:simpleType name="ModalityEnum">
 		<xs:restriction base="xs:string">

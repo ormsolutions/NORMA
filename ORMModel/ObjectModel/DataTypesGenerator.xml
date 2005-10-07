@@ -1,89 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <DataTypes>
-    <DataType name="Unspecified">
-       <comment type="Summary">A default type indicating 'no type set'</comment>
-       <SubType name=""/>
-    </DataType>
-    <DataType name="Text">
-        <SubType name="FixedLength">
-            <comment type="Summary">A fixed length text data type</comment>
-        </SubType>
-        <SubType name="VariableLength">
-            <comment type="Summary">A variable length text data type</comment>
-        </SubType>
-        <SubType name="LargeLength">
-            <comment type="Summary">A large length text data type</comment>
-        </SubType>
-    </DataType>
-    <DataType name="Numeric">
-        <SubType name="SignedInteger">
-            <comment type="Summary">A signed integer numeric data type</comment>
-        </SubType>
-        <SubType name="UnsignedInteger">
-            <comment type="Summary">An unsigned integer numeric data type</comment>
-        </SubType>
-        <SubType name="AutoCounter">
-            <comment type="Summary">An auto counter numeric data type</comment>
-        </SubType>
-        <SubType name="FloatingPoint">
-            <comment type="Summary">A floating point numeric data type</comment>
-        </SubType>
-        <SubType name="Decimal">
-            <comment type="Summary">A decimal numeric data type</comment>
-        </SubType>
-        <SubType name="Money">
-            <comment type="Summary">A money numeric data type</comment>
-        </SubType>
-    </DataType>
-    <DataType name="RawData">
-        <SubType name="FixedLength">
-            <comment type="Summary">A fixed length raw data data type</comment>
-        </SubType>
-        <SubType name="VariableLength">
-            <comment type="Summary">A variable length raw data data type</comment>
-        </SubType>
-        <SubType name="LargeLength">
-            <comment type="Summary">A large length raw data data type</comment>
-        </SubType>
-        <SubType name="Picture">
-            <comment type="Summary">A picture raw data data type</comment>
-        </SubType>
-        <SubType name="OleObject">
-            <comment type="Summary">An OLE object raw data data type</comment>
-        </SubType>
-    </DataType>
-    <DataType name="Temporal">
-        <SubType name="AutoTimestamp">
-            <comment type="Summary">An auto timestamp temporal data type</comment>
-        </SubType>
-        <SubType name="Time">
-            <comment type="Summary">A time temporal data type</comment>
-        </SubType>
-        <SubType name="Date">
-            <comment type="Summary">A date temporal data type</comment>
-        </SubType>
-        <SubType name="DateAndTime">
-            <comment type="Summary">A date and time temporal data type</comment>
-        </SubType>
-    </DataType>
-    <DataType name="Logical">
-        <SubType name="TrueOrFalse">
-            <comment type="Summary">A true or false logical data type</comment>
-        </SubType>
-        <SubType name="YesOrNo">
-            <comment type="Summary">A yes or no logical data type</comment>
-        </SubType>
-    </DataType>
-    <DataType name="Other">
-        <SubType name="RowId">
-            <comment type="Summary">A row id data type (can not be classified in any of the groups above)</comment>
-        </SubType>
-        <SubType name="ObjectId">
-            <comment type="Summary">An object id data type (can not be classified in any of the groups above)</comment>
-        </SubType>
-    </DataType>
-    <DataType name="UserDefined" enumOnly="true">
-        <comment type="Summary">Used for the upper bounds of the enum values.</comment>
-        <SubType name=""/>
-    </DataType>
+	<DataType name="Unspecified">
+		<SubType name="">
+			<comment type="summary">A default type indicating 'no type set'</comment>
+		</SubType>
+	</DataType>
+	<DataType name="Text">
+		<SubType name="FixedLength">
+			<comment type="summary">A fixed length text data type</comment>
+		</SubType>
+		<SubType name="VariableLength">
+			<comment type="summary">A variable length text data type</comment>
+		</SubType>
+		<SubType name="LargeLength">
+			<comment type="summary">A large length text data type</comment>
+		</SubType>
+	</DataType>
+	<DataType name="Numeric">
+		<SubType name="SignedInteger">
+			<comment type="summary">A signed integer numeric data type</comment>
+		</SubType>
+		<SubType name="UnsignedInteger">
+			<comment type="summary">An unsigned integer numeric data type</comment>
+		</SubType>
+		<SubType name="AutoCounter">
+			<comment type="summary">An auto counter numeric data type</comment>
+		</SubType>
+		<SubType name="FloatingPoint">
+			<comment type="summary">A floating point numeric data type</comment>
+		</SubType>
+		<SubType name="Decimal">
+			<comment type="summary">A decimal numeric data type</comment>
+		</SubType>
+		<SubType name="Money">
+			<comment type="summary">A money numeric data type</comment>
+		</SubType>
+	</DataType>
+	<DataType name="RawData">
+		<SubType name="FixedLength">
+			<comment type="summary">A fixed length raw data data type</comment>
+		</SubType>
+		<SubType name="VariableLength">
+			<comment type="summary">A variable length raw data data type</comment>
+		</SubType>
+		<SubType name="LargeLength">
+			<comment type="summary">A large length raw data data type</comment>
+		</SubType>
+		<SubType name="Picture">
+			<comment type="summary">A picture raw data data type</comment>
+		</SubType>
+		<SubType name="OleObject">
+			<comment type="summary">An OLE object raw data data type</comment>
+		</SubType>
+	</DataType>
+	<DataType name="Temporal">
+		<SubType name="AutoTimestamp">
+			<comment type="summary">An auto timestamp temporal data type</comment>
+		</SubType>
+		<SubType name="Time">
+			<comment type="summary">A time temporal data type</comment>
+		</SubType>
+		<SubType name="Date">
+			<comment type="summary">A date temporal data type</comment>
+		</SubType>
+		<SubType name="DateAndTime">
+			<comment type="summary">A date and time temporal data type</comment>
+		</SubType>
+	</DataType>
+	<DataType name="Logical">
+		<SubType name="TrueOrFalse">
+			<comment type="summary">A true or false logical data type</comment>
+		</SubType>
+		<SubType name="YesOrNo">
+			<comment type="summary">A yes or no logical data type</comment>
+		</SubType>
+	</DataType>
+	<DataType name="Other">
+		<SubType name="RowId">
+			<comment type="summary">A row id data type (can not be classified in any of the groups above)</comment>
+		</SubType>
+		<SubType name="ObjectId">
+			<comment type="summary">An object id data type (can not be classified in any of the groups above)</comment>
+		</SubType>
+	</DataType>
+	<DataType name="UserDefined" enumOnly="true">
+		<SubType name="">
+			<comment type="summary">Used for the upper bounds of the enum values.</comment>
+		</SubType>
+	</DataType>
 </DataTypes>

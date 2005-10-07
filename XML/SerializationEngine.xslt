@@ -2,10 +2,10 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-	xmlns:orm="http://Schemas.Neumont.edu/ORM/ORMCore"
-	xmlns:ormRoot="http://Schemas.Neumont.edu/ORM/ORMRoot"
-	xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix"
-	xmlns:ao="http://Schemas.Neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects">
+	xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
+	xmlns:ao="http://schemas.neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects">
 
 	<!-- UNDONE: Using "uid" is a "magic string" cheat.  It may not be a problem, but it's still cheap. -->
 	<xsl:variable name="ObjectUniqueIdentifier" select="'uid'"/>
@@ -23,552 +23,561 @@
 	<xsl:template name="CreateSerializationClass">
 		<xsl:param name="AbsorbedObjects"/>
 		<xsl:param name="ModelContextName"/>
-		<!--<plx:Using name="System.Xml"/>
-		<plx:Using name="System.Xml.Serialization"/>
-		<plx:Using name="System.IO"/>-->
-		<plx:Class name="SerializationEngine" visibility="Public">
-			<plx:Field name="myFactory" visibility="Private" dataTypeName="I{$ModelContextName}"/>
-			<plx:Field name="deserializationTable" visibility="Private" dataTypeName="ElementLoaderNameTable"/>
-			<plx:Function name="SerializationEngine" ctor="true" visibility="Public">
-				<plx:Param name="IModel1Factory_in" dataTypeName="IModel1Factory"/>
-				<plx:Operator type="Assign">
-					<plx:Left>
-						<plx:CallInstance name="myFactory" type="Field">
-							<plx:CallObject>
-								<plx:ThisKeyword/>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Left>
-					<plx:Right>
-						<plx:Value data="IModel1Factory_in" type="Local"/>
-					</plx:Right>
-				</plx:Operator>
-			</plx:Function>
+		<!--<plx:namespaceImport name="System.Xml"/>
+		<plx:namespaceImport name="System.Xml.Serialization"/>
+		<plx:namespaceImport name="System.IO"/>-->
+		<plx:class name="SerializationEngine" visibility="public">
+			<plx:field name="myFactory" visibility="private" dataTypeName="I{$ModelContextName}"/>
+			<plx:field name="deserializationTable" visibility="private" dataTypeName="ElementLoaderNameTable"/>
+			<plx:function name=".construct"  visibility="public">
+				<plx:param name="factory" dataTypeName="I{$ModelContextName}"/>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="myFactory" type="field"/>
+					</plx:left>
+					<plx:right>
+						<plx:nameRef name="factory" type="parameter"/>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
 
 			<!-- Serialization function -->
-			<plx:Function name="Serialize" visibility="Public">
-				<plx:Param name="writer" dataTypeName="XmlWriter"/>
+			<plx:function name="Serialize" visibility="public">
+				<plx:param name="writer" dataTypeName="XmlWriter"/>
 				<xsl:for-each select="$AbsorbedObjects">
-					<plx:Variable name="{@name}Collection" dataTypeName="ReadOnlyCollection&lt;{@name}&gt;" dataTypeQualifier="System.Collections.ObjectModel">
-						<plx:Initialize>
-							<plx:CallInstance name="Created{@name}Collection" type="MethodCall">
-								<plx:CallObject>
-									<plx:CallInstance name="myFactory" type="Field">
-										<plx:CallObject>
-											<plx:ThisKeyword/>
-										</plx:CallObject>
-									</plx:CallInstance>
-								</plx:CallObject>
-							</plx:CallInstance>
-						</plx:Initialize>
-					</plx:Variable>		
+					<xsl:variable name="Decorator">
+						<xsl:if test="local-name()='Association'">
+							<xsl:value-of select="$AssociationClassSuffix"/>
+						</xsl:if>
+					</xsl:variable>
+					<plx:local name="{@name}{$Decorator}Collection" dataTypeName="ReadOnlyCollection">
+						<plx:passTypeParam dataTypeName="{@name}{$Decorator}"/>
+						<plx:initialize>
+							<plx:callInstance name="Created{@name}{$Decorator}Collection" type="property">
+								<plx:callObject>
+									<plx:callThis name="myFactory" type="field"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>		
 				</xsl:for-each>
 				<xsl:for-each select="$AbsorbedObjects">
-					<xsl:variable name="ObjectName" select="@name"/>
+					<xsl:variable name="Decorator">
+						<xsl:if test="local-name()='Association'">
+							<xsl:value-of select="$AssociationClassSuffix"/>
+						</xsl:if>
+					</xsl:variable>
+					<xsl:variable name="ObjectName" select="concat(@name,$Decorator)"/>
 					<xsl:variable name="LocalInstance" select="concat('a',$ObjectName)"/>
-					<plx:Iterator variableName="{$LocalInstance}" dataTypeName="{@name}">
-						<plx:PassTypeParam dataTypeName="{$ObjectName}Collection"/>
-						<plx:Initialize>
-							<plx:Value data="{$ObjectName}Collection" type="Local"/>
-						</plx:Initialize>
-						<plx:Body>
-							<plx:CallInstance name="WriteStartElement" type="MethodCall">
-								<plx:CallObject>
-									<plx:Value type="Parameter" data="writer"/>
-								</plx:CallObject>
-								<plx:PassParam passStyle="In">
-									<plx:String>
-										<xsl:value-of select="@name"/>
-									</plx:String>
-								</plx:PassParam>
-							</plx:CallInstance>
-							<!-- Write the (artificial) unique identifier for this object. -->
-							<plx:CallInstance name="WriteAttributeString" type="MethodCall">
-								<plx:CallObject>
-									<plx:Value data="writer" type="Parameter"/>
-								</plx:CallObject>
-								<plx:PassParam>
-									<plx:String>
-										<xsl:value-of select="$ObjectUniqueIdentifier"/>
-									</plx:String>
-								</plx:PassParam>
-								<plx:PassParam>
-									<plx:CallStatic name="Concat" dataTypeName="String" dataTypeQualifier="System" type="MethodCall">
-										<plx:PassParam>
-											<plx:String>
-												<xsl:value-of select="@name"/>
-											</plx:String>
-										</plx:PassParam>
-										<plx:PassParam>
-											<plx:CallInstance name="ToString" type="MethodCall">
-												<plx:CallObject>
-													<plx:CallInstance name="IndexOf" type="MethodCall">
-														<plx:CallObject>
-															<plx:Value data="{@name}Collection" type="Local"/>
-														</plx:CallObject>
-														<plx:PassParam>
-															<plx:Value data="a{@name}" type="Local"/>
-														</plx:PassParam>
-													</plx:CallInstance>
-												</plx:CallObject>
-											</plx:CallInstance>
-										</plx:PassParam>
-									</plx:CallStatic>
-								</plx:PassParam>
-							</plx:CallInstance>
-							<!--Start the WriteAttributeString() for each name in the absorbedOject-->
-							<xsl:for-each select="ao:AbsorbedObject">
-								<plx:CallInstance name="WriteAttributeString" type="MethodCall">
-									<plx:CallObject>
-										<plx:Value data="writer" type="Parameter"/>
-									</plx:CallObject>
-									<plx:PassParam passStyle="In">
-										<plx:String>
+					<plx:iterator localName="{$LocalInstance}" dataTypeName="{$ObjectName}">
+						<plx:passTypeParam dataTypeName="{$ObjectName}Collection"/>
+						<plx:initialize>
+							<plx:nameRef name="{$ObjectName}Collection"/>
+						</plx:initialize>
+						<plx:callInstance name="WriteStartElement">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="writer"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:string>
+									<xsl:value-of select="@name"/>
+								</plx:string>
+							</plx:passParam>
+						</plx:callInstance>
+						<!-- Write the (artificial) unique identifier for this object. -->
+						<plx:callInstance name="WriteAttributeString">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="writer"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:string>
+									<xsl:value-of select="$ObjectUniqueIdentifier"/>
+								</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callStatic name="Concat" dataTypeName=".string">
+									<plx:passParam>
+										<plx:string>
 											<xsl:value-of select="@name"/>
-										</plx:String>
-									</plx:PassParam>
-									<plx:PassParam>
-										<plx:CallInstance name="{@name}" type="Property">
-											<plx:CallObject>
-												<plx:Value data="{$LocalInstance}" type="Local"/>
-											</plx:CallObject>
-										</plx:CallInstance>
-									</plx:PassParam>
-								</plx:CallInstance>
-							</xsl:for-each>
-							<!--End WriteAttributeString()-->
-							<!--Check to see if mulitiplicity is 0 to Many or 1 to Many for ReferenceValues-->
-							<xsl:for-each select="ao:RelatedObject">
-								<xsl:variable name="RelatedObject" select="concat(@oppositeObjectName,@oppositeRolName)"/>
-								<xsl:variable name="RoleNameInstance" select="concat('a',@roleName)"/>
-								<xsl:variable name="OppositeObjectNameInstance" select="concat('a',@oppositeObjectName)"/>
-								<xsl:if test="(@multiplicity = 'ZeroToMany') or (@multiplicity = 'OneToMany')">
-									<plx:Variable name="{$ObjectName}{@oppositeObjectName}Collection" dataTypeName="ICollection&lt;{@oppositeObjectName}&gt;">
-										<plx:Initialize>
-											<plx:CallInstance name="{@oppositeObjectName}" type="Property">
-												<plx:CallObject>
-													<plx:Value data="$RoleNameInstance" type="Local"/>
-												</plx:CallObject>
-											</plx:CallInstance>
-										</plx:Initialize>
-									</plx:Variable>
-											<plx:Iterator variableName="$OppositeObjectNameInstance" dataTypeName="Task">
-												<plx:PassTypeParam dataTypeName="PersonTaskCollection"/>
-												<plx:Initialize>
-													<plx:Value data="PersonTaskCollection" type="Local"/>
-												</plx:Initialize>
-												<plx:Body>
-									<plx:Condition>
-										<plx:Test>
-											<plx:Operator type="IdentityInequality">
-												<plx:Left>
-													<plx:NullObjectKeyword/>
-												</plx:Left>
-												<plx:Right>
-													<plx:Value data="$OppositeObjectNameInstance" type="Local"/>
-												</plx:Right>
-											</plx:Operator>
-										</plx:Test>
-										<plx:Body>
-											<plx:CallInstance name="WriteStartElement" type="MethodCall">
-												<plx:CallObject>
-													<plx:Value type="Parameter" data="writer"/>
-												</plx:CallObject>
-												<plx:PassParam passStyle="In">
-													<plx:String>
+										</plx:string>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:callInstance name="ToString">
+											<plx:callObject>
+												<plx:callInstance name="IndexOf">
+													<plx:callObject>
+														<plx:nameRef name="{@name}{$Decorator}Collection"/>
+													</plx:callObject>
+													<plx:passParam>
+														<plx:nameRef name="a{@name}{$Decorator}"/>
+													</plx:passParam>
+												</plx:callInstance>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:passParam>
+								</plx:callStatic>
+							</plx:passParam>
+						</plx:callInstance>
+						<!--Start the WriteAttributeString() for each name in the absorbedOject-->
+						<xsl:for-each select="ao:AbsorbedObject">
+							<plx:callInstance name="WriteAttributeString">
+								<plx:callObject>
+									<plx:nameRef type="parameter" name="writer"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string>
+										<xsl:value-of select="@name"/>
+									</plx:string>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="{@name}" type="property">
+										<plx:callObject>
+											<plx:nameRef name="{$LocalInstance}"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callInstance>
+						</xsl:for-each>
+						<!--End WriteAttributeString()-->
+						<!--Check to see if mulitiplicity is 0 to Many or 1 to Many for ReferenceValues-->
+						<xsl:for-each select="ao:RelatedObject">
+							<xsl:variable name="RelatedObject" select="concat(@oppositeObjectName,@oppositeRolName)"/>
+							<xsl:variable name="RoleNameInstance" select="concat('a',@roleName)"/>
+							<xsl:variable name="OppositeObjectNameInstance" select="concat('a',@oppositeObjectName)"/>
+							<xsl:if test="(@multiplicity = 'ZeroToMany') or (@multiplicity = 'OneToMany')">
+								<plx:local name="{$ObjectName}{@oppositeObjectName}Collection" dataTypeName="ICollection">
+									<plx:passTypeParam dataTypeName="{@oppositeObjectName}"/>
+									<plx:initialize>
+										<plx:callInstance name="{@oppositeObjectName}" type="property">
+											<plx:callObject>
+												<plx:nameRef name="{$RoleNameInstance}"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:initialize>
+								</plx:local>
+								<plx:iterator localName="{$OppositeObjectNameInstance}" dataTypeName="Task">
+									<plx:passTypeParam dataTypeName="PersonTaskCollection"/>
+									<plx:initialize>
+										<plx:nameRef name="PersonTaskCollection"/>
+									</plx:initialize>
+									<plx:branch>
+										<plx:condition>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:nullKeyword/>
+												</plx:left>
+												<plx:right>
+													<plx:nameRef name="{$OppositeObjectNameInstance}"/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:condition>
+										<plx:body>
+											<plx:callInstance name="WriteStartElement">
+												<plx:callObject>
+													<plx:nameRef type="parameter" name="writer"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:string>
 														<xsl:value-of select="$RelatedObject"/>
-													</plx:String>
-												</plx:PassParam>
-											</plx:CallInstance>
+													</plx:string>
+												</plx:passParam>
+											</plx:callInstance>
 											<xsl:call-template name="WriteRelatedObjectIdentifierToAttribute">
 												<xsl:with-param name="RelatedObject" select="$RelatedObject"/>
 												<!--<xsl:with-param name="RelatedObjectCollection" select=""/>-->
 											</xsl:call-template>
-											<plx:CallInstance name="WriteAttributeString" type="MethodCall">
-												<plx:CallObject>
-													<plx:Value type="Parameter" data="writer"/>
-												</plx:CallObject>
-												<plx:PassParam passStyle="In">
-													<plx:String>
+											<plx:callInstance name="WriteAttributeString">
+												<plx:callObject>
+													<plx:nameRef type="parameter" name="writer"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:string>
 														<xsl:value-of select="$RelatedObject"/>
-													</plx:String>
-												</plx:PassParam>
-												<plx:PassParam>
-													<plx:CallInstance name="ToString" type="MethodCall">
-														<plx:CallObject>
-															<plx:CallInstance name="TaskID" type="Property">
-																<plx:CallObject>
-																	<plx:Value data="$OppositeObjectNameInstance" type="Local"/>
-																</plx:CallObject>
-															</plx:CallInstance>
-														</plx:CallObject>
-													</plx:CallInstance>
-												</plx:PassParam>
-											</plx:CallInstance>
-											<plx:CallInstance name="WriteEndElement" type="MethodCall">
-												<plx:CallObject>
-													<plx:Value type="Parameter" data="writer"/>
-												</plx:CallObject>
-											</plx:CallInstance>
-										</plx:Body>
-									</plx:Condition>
-												</plx:Body>
-											</plx:Iterator>
-									<plx:CallInstance name="WriteEndElement" type="MethodCall">
-										<plx:CallObject>
-											<plx:Value type="Parameter" data="writer"/>
-										</plx:CallObject>
-									</plx:CallInstance>
-								</xsl:if>
-								<!--Checking to see if multiplicity is ExactlyOne or ZeroToOne for References-->
-								<xsl:if test="(@multiplicity = 'ExactlyOne') or (@multiplicity = 'ZeroToOne')">
-									<xsl:call-template name="WriteRelatedObjectIdentifierToAttribute">
-										<xsl:with-param name="RelatedObject" select="$RelatedObject"/>
-										<!--<xsl:with-param name="RelatedObjectCollection" select=""/>-->
-									</xsl:call-template>
-									<plx:CallInstance name="WriteEndElement" type="MethodCall">
-										<plx:CallObject>
-											<plx:Value type="Parameter" data="writer"/>
-										</plx:CallObject>
-									</plx:CallInstance>
-								</xsl:if>
-							</xsl:for-each>
-						</plx:Body>
-					</plx:Iterator>
+													</plx:string>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:callInstance name="ToString">
+														<plx:callObject>
+															<plx:callInstance name="TaskID" type="property">
+																<plx:callObject>
+																	<plx:nameRef name="{$OppositeObjectNameInstance}"/>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:passParam>
+											</plx:callInstance>
+											<plx:callInstance name="WriteEndElement">
+												<plx:callObject>
+													<plx:nameRef type="parameter" name="writer"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:body>
+									</plx:branch>
+								</plx:iterator>
+								<plx:callInstance name="WriteEndElement">
+									<plx:callObject>
+										<plx:nameRef type="parameter" name="writer"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</xsl:if>
+							<!--Checking to see if multiplicity is ExactlyOne or ZeroToOne for References-->
+							<xsl:if test="(@multiplicity = 'ExactlyOne') or (@multiplicity = 'ZeroToOne')">
+								<xsl:call-template name="WriteRelatedObjectIdentifierToAttribute">
+									<xsl:with-param name="RelatedObject" select="$RelatedObject"/>
+									<!--<xsl:with-param name="RelatedObjectCollection" select=""/>-->
+								</xsl:call-template>
+								<plx:callInstance name="WriteEndElement">
+									<plx:callObject>
+										<plx:nameRef type="parameter" name="writer"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</xsl:if>
+						</xsl:for-each>
+					</plx:iterator>
 				</xsl:for-each>
-			</plx:Function>
+			</plx:function>
 
 			<!-- Deserialization function -->
-			<plx:Function name="Deserialize" visibility="Public">
-				<plx:Param name="reader" dataTypeName="XmlReader"/>
+			<plx:function name="Deserialize" visibility="public">
+				<plx:param name="reader" dataTypeName="XmlReader"/>
 				<!-- XmlReaderSettings readerSettings = new XmlReaderSettings(); -->
-				<plx:Variable name="readerSettings" dataTypeName="XmlReaderSettings" dataTypeQualifier="System.Xml">
-					<plx:Initialize>
-						<plx:CallNew dataTypeName="XmlReaderSettings" dataTypeQualifier="System.Xml" type="New"/>
-					</plx:Initialize>
-				</plx:Variable>
+				<plx:local name="readerSettings" dataTypeName="XmlReaderSettings" dataTypeQualifier="System.Xml">
+					<plx:initialize>
+						<plx:callNew dataTypeName="XmlReaderSettings" dataTypeQualifier="System.Xml"/>
+					</plx:initialize>
+				</plx:local>
 				<!-- readerSettings.CloseInput = false; -->
-				<plx:Operator type="Assign">
-					<plx:Left>
-						<plx:CallInstance name="CloseInput" type="Property">
-							<plx:CallObject>
-								<plx:Value data="readerSettings" type="Local"/>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Left>
-					<plx:Right>
-						<plx:FalseKeyword/>
-					</plx:Right>
-				</plx:Operator>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="CloseInput" type="property">
+							<plx:callObject>
+								<plx:nameRef name="readerSettings"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:falseKeyword/>
+					</plx:right>
+				</plx:assign>
 				<!-- XmlReader myReader = XmlReader.Create(reader, readerSettings); -->
-				<plx:Variable name="myReader" dataTypeName="XmlReader" dataTypeQualifier="System.Xml">
-					<plx:Initialize>
-						<plx:CallStatic name="Create" dataTypeName="XmlReader" type="MethodCall" dataTypeQualifier="System.Xml">
-							<plx:PassParam>
-								<plx:Value data="reader" type="Parameter"/>
-							</plx:PassParam>
-							<plx:PassParam>
-								<plx:Value data="readerSettings" type="Local"/>
-							</plx:PassParam>
-						</plx:CallStatic>
-					</plx:Initialize>
-				</plx:Variable>
+				<plx:local name="myReader" dataTypeName="XmlReader" dataTypeQualifier="System.Xml">
+					<plx:initialize>
+						<plx:callStatic name="Create" dataTypeName="XmlReader" dataTypeQualifier="System.Xml">
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="reader"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:nameRef name="readerSettings"/>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:initialize>
+				</plx:local>
 
 				<!-- myReader.NameTable = ElementLoaderSchema.Names; -->
-				<plx:Operator type="Assign">
-					<plx:Left>
-						<plx:CallInstance name="NameTable" type="Property">
-							<plx:CallObject>
-								<plx:Value data="myReader" type="Parameter"/>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Left>
-					<plx:Right>
-						<plx:CallStatic name="Names" type="Property" dataTypeName="ElementLoaderSchema"/>
-					</plx:Right>
-				</plx:Operator>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="NameTable" type="property">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="myReader"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Names" type="property" dataTypeName="ElementLoaderSchema"/>
+					</plx:right>
+				</plx:assign>
 				<!--IModel1DeserializationFactory deserializationFactory = myIModel1Factory.BeginDeserialization;-->
-				<plx:Variable name="deserializationFactory" dataTypeName="IDeserialization{$ModelContextName}">
-					<plx:Initialize>
-						<plx:CallInstance name="BeginDeserialization" type="MethodCall">
-							<plx:CallObject>
-								<plx:CallInstance name="myFactory" type="Field">
-									<plx:CallObject>
-										<plx:ThisKeyword/>
-									</plx:CallObject>
-								</plx:CallInstance>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Initialize>
-				</plx:Variable>
+				<plx:local name="deserializationFactory" dataTypeName="IDeserialization{$ModelContextName}">
+					<plx:initialize>
+						<plx:callInstance name="BeginDeserialization">
+							<plx:callObject>
+								<plx:callThis name="myFactory" type="field"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
 				<!-- Bool continueLoop = true -->
-				<plx:Variable name="continueLoop" dataTypeName="Boolean" dataTypeQualifier="System">
-					<plx:Initialize>
-						<plx:TrueKeyword/>
-					</plx:Initialize>
-				</plx:Variable>
-				<plx:Try>
-					<plx:Body>
+				<plx:local name="continueLoop" dataTypeName=".boolean">
+					<plx:initialize>
+						<plx:trueKeyword/>
+					</plx:initialize>
+				</plx:local>
+				<plx:try>
+					<plx:body>
 						<xsl:for-each select="$AbsorbedObjects">
-							<plx:Variable name="Created{@name}Dictionary" dataTypeName="Dictionary&lt;string, {@name}&gt;">
-								<plx:Initialize>
-									<plx:CallNew dataTypeName="Dictionary&lt;string, {@name}&gt;"/>
-								</plx:Initialize>
-							</plx:Variable>
+							<xsl:variable name="Decorator">
+								<xsl:if test="local-name()='Association'">
+									<xsl:value-of select="$AssociationClassSuffix"/>
+								</xsl:if>
+							</xsl:variable>
+							<plx:local name="Created{@name}{$Decorator}Dictionary" dataTypeName="Dictionary">
+								<plx:passTypeParam dataTypeName=".string"/>
+								<plx:passTypeParam dataTypeName="{@name}{$Decorator}"/>
+								<plx:initialize>
+									<plx:callNew dataTypeName="Dictionary">
+										<plx:passTypeParam dataTypeName=".string"/>
+										<plx:passTypeParam dataTypeName="{@name}{$Decorator}"/>
+									</plx:callNew>
+								</plx:initialize>
+							</plx:local>
 						</xsl:for-each>
 						<!-- First of two passes for deserialization -->
-						<plx:Loop>
+						<plx:loop>
 							<!-- This is the best simulation we can get for:
 							while(myReader.Read() && continueLoop-->
-							<plx:LoopTest apply="Before">
-								<plx:Operator type="BooleanAnd">
-									<plx:Left>
-										<plx:CallInstance name="Read" type="MethodCall">
-											<plx:CallObject>
-												<plx:Value data="myReader" type="Parameter"/>
-											</plx:CallObject>
-										</plx:CallInstance>
-									</plx:Left>
-									<plx:Right>
-										<plx:Value data="continueLoop" type="Local"/>
-									</plx:Right>
-								</plx:Operator>
-							</plx:LoopTest>
-							<plx:Body>
-								<plx:Variable name="nodeType" dataTypeName="XmlNodeType" dataTypeQualifier="System.Xml">
-									<plx:Initialize>
-										<plx:CallInstance name="NodeType" type="Property">
-											<plx:CallObject>
-												<plx:Value data="myReader" type="Parameter"/>
-											</plx:CallObject>
-										</plx:CallInstance>
-									</plx:Initialize>
-								</plx:Variable>
-								<plx:Condition>
+							<plx:condition>
+								<plx:binaryOperator type="booleanAnd">
+									<plx:left>
+										<plx:callInstance name="Read">
+											<plx:callObject>
+												<plx:nameRef type="parameter" name="myReader"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:nameRef name="continueLoop"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:body>
+								<plx:local name="nodeType" dataTypeName="XmlNodeType" dataTypeQualifier="System.Xml">
+									<plx:initialize>
+										<plx:callInstance name="NodeType" type="property">
+											<plx:callObject>
+												<plx:nameRef type="parameter" name="myReader"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:initialize>
+								</plx:local>
+								<plx:branch>
 									<!-- Process XmlNodeType.Element nodes -->
-									<plx:Test>
-										<plx:Operator type="Equality">
-											<plx:Left>
-												<plx:Value data="nodeType" type="Local"/>
-											</plx:Left>
-											<plx:Right>
-												<plx:CallStatic name="Element" type="Property" dataTypeName="XmlNodeType"/>
-											</plx:Right>
-										</plx:Operator>
-									</plx:Test>
-									<plx:Body>
+									<plx:condition>
+										<plx:binaryOperator type="equality">
+											<plx:left>
+												<plx:nameRef name="nodeType"/>
+											</plx:left>
+											<plx:right>
+												<plx:callStatic name="Element" type="property" dataTypeName="XmlNodeType"/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:condition>
+									<plx:body>
 										<!-- string localName = myReader.LocalName-->
-										<plx:Variable name="localName" dataTypeName="String" dataTypeQualifier="System">
-											<plx:Initialize>
-												<plx:CallInstance name="LocalName" type="Property">
-													<plx:CallObject>
-														<plx:Value data="myReader" type="Parameter"/>
-													</plx:CallObject>
-												</plx:CallInstance>
-											</plx:Initialize>
-										</plx:Variable>
+										<plx:local name="localName" dataTypeName=".string">
+											<plx:initialize>
+												<plx:callInstance name="LocalName" type="property">
+													<plx:callObject>
+														<plx:nameRef type="parameter" name="myReader"/>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:initialize>
+										</plx:local>
 										<xsl:for-each select="$AbsorbedObjects">
 											<xsl:if test="position()=1">
 												<xsl:call-template name="DeserializationFirstPassLoop"/>
 											</xsl:if>
 										</xsl:for-each>
-									</plx:Body>
-								</plx:Condition>
-							</plx:Body>
-						</plx:Loop>
+									</plx:body>
+								</plx:branch>
+							</plx:body>
+						</plx:loop>
 						<!-- Reset the reader for another pass -->
-						<plx:Operator type="Assign">
-							<plx:Left>
-								<plx:Value data="myReader" type="Local"/>
-							</plx:Left>
-							<plx:Right>
-								<plx:CallStatic name="Create" dataTypeName="XmlReader" type="MethodCall" dataTypeQualifier="System.Xml">
-									<plx:PassParam>
-										<plx:Value data="reader" type="Parameter"/>
-									</plx:PassParam>
-									<plx:PassParam>
-										<plx:Value data="readerSettings" type="Local"/>
-									</plx:PassParam>
-								</plx:CallStatic>
-							</plx:Right>
-						</plx:Operator>
-						<plx:Operator type="Assign">
-							<plx:Left>
-								<plx:Value data="continueLoop" type="Local"/>
-							</plx:Left>
-							<plx:Right>
-								<plx:TrueKeyword/>
-							</plx:Right>
-						</plx:Operator>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="myReader"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic name="Create" dataTypeName="XmlReader" dataTypeQualifier="System.Xml">
+									<plx:passParam>
+										<plx:nameRef type="parameter" name="reader"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef name="readerSettings"/>
+									</plx:passParam>
+								</plx:callStatic>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="continueLoop"/>
+							</plx:left>
+							<plx:right>
+								<plx:trueKeyword/>
+							</plx:right>
+						</plx:assign>
 						<!-- Second of two passes for deserialization -->
-						<plx:Loop>
+						<plx:loop>
 							<!-- This is the best simulation we can get for:
 							while(myReader.Read() && continueLoop-->
-							<plx:LoopTest apply="Before">
-								<plx:Operator type="BooleanAnd">
-									<plx:Left>
-										<plx:CallInstance name="Read" type="MethodCall">
-											<plx:CallObject>
-												<plx:Value data="myReader" type="Parameter"/>
-											</plx:CallObject>
-										</plx:CallInstance>
-									</plx:Left>
-									<plx:Right>
-										<plx:Value data="continueLoop" type="Local"/>
-									</plx:Right>
-								</plx:Operator>
-							</plx:LoopTest>
-							<plx:Body>
-								<plx:Variable name="nodeType" dataTypeName="XmlNodeType" dataTypeQualifier="System.Xml">
-									<plx:Initialize>
-										<plx:CallInstance name="NodeType" type="Property">
-											<plx:CallObject>
-												<plx:Value data="myReader" type="Parameter"/>
-											</plx:CallObject>
-										</plx:CallInstance>
-									</plx:Initialize>
-								</plx:Variable>
+							<plx:condition>
+								<plx:binaryOperator type="booleanAnd">
+									<plx:left>
+										<plx:callInstance name="Read">
+											<plx:callObject>
+												<plx:nameRef type="parameter" name="myReader"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:nameRef name="continueLoop"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:body>
+								<plx:local name="nodeType" dataTypeName="XmlNodeType" dataTypeQualifier="System.Xml">
+									<plx:initialize>
+										<plx:callInstance name="NodeType" type="property">
+											<plx:callObject>
+												<plx:nameRef type="parameter" name="myReader"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:initialize>
+								</plx:local>
 								<!-- Process references that were absorbed as attributes -->
-									<plx:Condition>
-										<plx:Test>
-										<plx:Operator type="Equality">
-											<plx:Left>
-												<plx:Value data="nodeType" type="Local"/>
-											</plx:Left>
-												<plx:Right>
-													<plx:CallStatic name="Element" type="Property" dataTypeName="XmlNodeType"/>
-											</plx:Right>
-											</plx:Operator>
-										</plx:Test>
-										<plx:Body>
+									<plx:branch>
+										<plx:condition>
+										<plx:binaryOperator type="equality">
+											<plx:left>
+												<plx:nameRef name="nodeType"/>
+											</plx:left>
+												<plx:right>
+													<plx:callStatic name="Element" type="property" dataTypeName="XmlNodeType"/>
+											</plx:right>
+											</plx:binaryOperator>
+										</plx:condition>
+										<plx:body>
 											<!-- string localName = myReader.LocalName-->
-											<plx:Variable name="localName" dataTypeName="String" dataTypeQualifier="System">
-												<plx:Initialize>
-													<plx:CallInstance name="LocalName" type="Property">
-														<plx:CallObject>
-															<plx:Value data="myReader" type="Parameter"/>
-													</plx:CallObject>
-													</plx:CallInstance>
-												</plx:Initialize>
-											</plx:Variable>
+											<plx:local name="localName" dataTypeName=".string">
+												<plx:initialize>
+													<plx:callInstance name="LocalName" type="property">
+														<plx:callObject>
+															<plx:nameRef type="parameter" name="myReader"/>
+													</plx:callObject>
+													</plx:callInstance>
+												</plx:initialize>
+											</plx:local>
 											<xsl:for-each select="$AbsorbedObjects">
 												<xsl:if test="position()=1">
-													<xsl:call-template name="DeserializationSecondPassLoop"/>
+													<!-- UNDONE: This is currently spitting bad plix for any absorbed object with more than
+														 one related child. -->
+													<!--<xsl:call-template name="DeserializationSecondPassLoop"/>-->
 												</xsl:if>
 											</xsl:for-each>
-										</plx:Body>
-									</plx:Condition>
+										</plx:body>
+									</plx:branch>
 									<!--<xsl:for-each select="ao:RelatedObject">
 										<xsl:element name="tyTemp"/>
-										<plx:Condition>
-											<plx:Test>
-												<plx:Operator type="Equality">
-													<plx:Left>
-														<plx:Value data="nodeType" type="Local"/>
-													</plx:Left>
-													<plx:Right>
-														<plx:CallStatic name="Element" type="Property" dataTypeName="XmlNodeType"/>
-													</plx:Right>
-												</plx:Operator>
-											</plx:Test>
-										</plx:Condition>
+										<plx:branch>
+											<plx:condition>
+												<plx:binaryOperator type="equality">
+													<plx:left>
+														<plx:value data="nodeType"/>
+													</plx:left>
+													<plx:right>
+														<plx:callStatic name="Element" type="property" dataTypeName="XmlNodeType"/>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:condition>
+										</plx:branch>
 									</xsl:for-each>-->
-								</plx:Body>
-							</plx:Loop>
-						</plx:Body>
-					<plx:Finally>
-						<plx:CallInstance name="Close" type="MethodCall">
-							<plx:CallObject>
-								<plx:Value data="myReader" type="Local"/>
-							</plx:CallObject>
-						</plx:CallInstance>
-						<plx:CallInstance name="Close" type="MethodCall">
-							<plx:CallObject>
-								<plx:Value data="reader" type="Parameter"/>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Finally>
-				</plx:Try>
-			</plx:Function>
-		</plx:Class>
-		<plx:Class name="ElementLoaderSchema" visibility="Public" static="true">
+								</plx:body>
+							</plx:loop>
+						</plx:body>
+					<plx:finally>
+						<plx:callInstance name="Close">
+							<plx:callObject>
+								<plx:nameRef name="myReader"/>
+							</plx:callObject>
+						</plx:callInstance>
+						<plx:callInstance name="Close">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="reader"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:finally>
+				</plx:try>
+			</plx:function>
+		</plx:class>
+		<plx:class name="ElementLoaderSchema" visibility="public" modifier="static">
 			<xsl:for-each select="$AbsorbedObjects">
 				<xsl:variable name="ObjectName" select="@name"/>
-				<plx:Field name="{$ObjectName}_Object" visibility="Public" const="true" dataTypeName="String" dataTypeQualifier="System">
-					<plx:Initialize>
-						<plx:String>
+				<plx:field name="{$ObjectName}_Object" visibility="public" const="true" dataTypeName=".string">
+					<plx:initialize>
+						<plx:string>
 							<xsl:value-of select="$ObjectName"/>
-						</plx:String>
-					</plx:Initialize>
-				</plx:Field>
+						</plx:string>
+					</plx:initialize>
+				</plx:field>
 				<xsl:for-each select="ao:AbsorbedObject">
-					<plx:Field name="{$ObjectName}{@name}_Attribute" visibility="Public" const="true" dataTypeName="String" dataTypeQualifier="System">
-						<plx:Initialize>
-							<plx:String>
+					<plx:field name="{$ObjectName}{@name}_Attribute" visibility="public" const="true" dataTypeName=".string">
+						<plx:initialize>
+							<plx:string>
 								<xsl:value-of select="@name"/>
-							</plx:String>
-						</plx:Initialize>
-					</plx:Field>
+							</plx:string>
+						</plx:initialize>
+					</plx:field>
 				</xsl:for-each>
-				<xsl:for-each select="ao:RelatedObject">
-					<plx:Field name="{$ObjectName}{@oppositeRoleName}{@oppositeObjectName}_Reference" visibility="Public" const="true" dataTypeName="String" dataTypeQualifier="System">
-						<plx:Initialize>
-							<plx:String>
+				<xsl:for-each select="ao:RelatedObject[@arity='2']">
+					<!-- UNDONE: Association classes (arity > 2) -->
+					<plx:field name="{$ObjectName}{@oppositeRoleName}{@oppositeObjectName}_Reference" visibility="public" const="true" dataTypeName=".string">
+						<plx:initialize>
+							<plx:string>
 								<xsl:value-of select="@oppositeRoleName"/>
 								<xsl:value-of select="@oppositeObjectName"/>
 								<xsl:text>_Ref</xsl:text>
-							</plx:String>
-						</plx:Initialize>
-					</plx:Field>
+							</plx:string>
+						</plx:initialize>
+					</plx:field>
 				</xsl:for-each>
 			</xsl:for-each>
-			<plx:Field name="myNames" visibility="Private" static="true" dataTypeName="ElementLoaderNameTable"/>
-			<plx:Property name="Names" visibility="Public" static="true">
-				<plx:Param dataTypeName="ElementLoaderNameTable" name="" type="RetVal"/>
-				<plx:Get>
-					<plx:Variable name="retVal" dataTypeName="ElementLoaderNameTable">
-						<plx:Initialize>
-							<plx:CallStatic type="Field" name="myNames" dataTypeName="ElementLoaderNameTable"/>
-						</plx:Initialize>
-					</plx:Variable>
-					<plx:Condition>
-						<plx:Test>
-							<plx:Operator type="Equality">
-								<plx:Left>
-									<plx:Value data="retVal" type="Local"/>
-								</plx:Left>
-								<plx:Right>
-									<plx:NullObjectKeyword/>
-								</plx:Right>
-							</plx:Operator>
-						</plx:Test>
-						<plx:Body>
-							<plx:Operator type="Assign">
-								<plx:Left>
-									<plx:Value data="myNames" type="Local"/>
-								</plx:Left>
-								<plx:Right>
-									<plx:CallNew type="New" dataTypeName="ElementLoaderNameTable"/>
-								</plx:Right>
-							</plx:Operator>
-							<plx:Operator type="Assign">
-								<plx:Left>
-									<plx:Value data="retVal" type="Local"/>
-								</plx:Left>
-								<plx:Right>
-									<plx:Value data="myNames" type="Local"/>
-								</plx:Right>
-							</plx:Operator>
-						</plx:Body>
-					</plx:Condition>
-					<plx:Return>
-						<plx:Value data="retVal" type="Local"/>
-					</plx:Return>
-				</plx:Get>
-			</plx:Property>
-		</plx:Class>
-		<plx:Class name="ElementLoaderNameTable" visibility="Public">
-			<plx:DerivesFromClass dataTypeName="NameTable" dataTypeQualifier="System.Xml"/>
+			<plx:field name="myNames" visibility="private" static="true" dataTypeName="ElementLoaderNameTable"/>
+			<plx:property name="Names" visibility="public" modifier="static">
+				<plx:returns dataTypeName="ElementLoaderNameTable"/>
+				<plx:get>
+					<plx:local name="retVal" dataTypeName="ElementLoaderNameTable">
+						<plx:initialize>
+							<plx:callStatic type="field" name="myNames" dataTypeName="ElementLoaderNameTable"/>
+						</plx:initialize>
+					</plx:local>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="equality">
+								<plx:left>
+									<plx:nameRef name="retVal"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:body>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="myNames"/>
+								</plx:left>
+								<plx:right>
+									<plx:callNew dataTypeName="ElementLoaderNameTable"/>
+								</plx:right>
+							</plx:assign>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="retVal"/>
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="myNames"/>
+								</plx:right>
+							</plx:assign>
+						</plx:body>
+					</plx:branch>
+					<plx:return>
+						<plx:nameRef name="retVal"/>
+					</plx:return>
+				</plx:get>
+			</plx:property>
+		</plx:class>
+		<plx:class name="ElementLoaderNameTable" visibility="public">
+			<plx:derivesFromClass dataTypeName="NameTable" dataTypeQualifier="System.Xml"/>
 			<!-- To ensure uniqueness for each element in the name table, we need to be careful about naming
 			our objects, absorbed objects, and related objects.  The convention used here is:
 			ao:Object : concat(@name, '_Object')
@@ -577,139 +586,115 @@
 			-->
 			<xsl:for-each select="$AbsorbedObjects">
 				<xsl:variable name="ObjectName" select="@name"/>
-				<plx:Field name="{$ObjectName}_Object" visibility="Public" readOnly="true" dataTypeName="String" dataTypeQualifier="System"/>
+				<plx:field name="{$ObjectName}_Object" visibility="public" readOnly="true" dataTypeName=".string"/>
 				<xsl:for-each select="ao:AbsorbedObject">
-					<plx:Field name="{$ObjectName}{@name}_Attribute" visibility="Public" readOnly="true" dataTypeName="String" dataTypeQualifier="System"/>
+					<plx:field name="{$ObjectName}{@name}_Attribute" visibility="public" readOnly="true" dataTypeName=".string"/>
 				</xsl:for-each>
-				<xsl:for-each select="ao:RelatedObject">
-					<plx:Field name="{$ObjectName}{@oppositeRoleName}{@oppositeObjectName}_Reference" visibility="Public" readOnly="true" dataTypeName="String" dataTypeQualifier="System"/>
+				<xsl:for-each select="ao:RelatedObject[@arity='2']">
+					<!-- UNDONE: Association classes (arity > 2) -->
+					<plx:field name="{$ObjectName}{@oppositeRoleName}{@oppositeObjectName}_Reference" visibility="public" readOnly="true" dataTypeName=".string"/>
 				</xsl:for-each>
 			</xsl:for-each>
-			<plx:Function name="ElementLoaderNameTable" ctor="true" visibility="Public">
-				<plx:Initialize>
-					<plx:CallInstance name="Blah" type="MethodCall">
-						<plx:CallObject>
-							<plx:ThisKeyword/>
-						</plx:CallObject>
-					</plx:CallInstance>
-				</plx:Initialize>
+			<plx:function name=".construct" visibility="public">
+				<plx:initialize>
+					<plx:callThis name=".implied"/>
+				</plx:initialize>
 				<xsl:for-each select="$AbsorbedObjects">
 					<xsl:variable name="ObjectName" select="@name"/>
-					<plx:Operator type="Assign">
-						<plx:Left>
-							<plx:CallInstance name="{@name}_Object" type="Field">
-								<plx:CallObject>
-									<plx:ThisKeyword/>
-								</plx:CallObject>
-							</plx:CallInstance>
-						</plx:Left>
-						<plx:Right>
-							<plx:CallInstance name="Add" type="MethodCall">
-								<plx:CallObject>
-									<plx:ThisKeyword/>
-								</plx:CallObject>
-								<plx:PassParam>
-									<plx:CallStatic name="{$ObjectName}_Object" dataTypeName="ElementLoaderSchema" type="Property"/>
-								</plx:PassParam>
-							</plx:CallInstance>
-						</plx:Right>
-					</plx:Operator>
+					<plx:assign>
+						<plx:left>
+							<plx:callThis name="{@name}_Object" type="field"/>
+						</plx:left>
+						<plx:right>
+							<plx:callThis name="Add">
+								<plx:passParam>
+									<plx:callStatic name="{$ObjectName}_Object" dataTypeName="ElementLoaderSchema" type="property"/>
+								</plx:passParam>
+							</plx:callThis>
+						</plx:right>
+					</plx:assign>
 					<xsl:for-each select="ao:AbsorbedObject">
-						<plx:Operator type="Assign">
-							<plx:Left>
-								<plx:CallInstance name="{$ObjectName}{@name}_Attribute" type="Field">
-									<plx:CallObject>
-										<plx:ThisKeyword/>
-									</plx:CallObject>
-								</plx:CallInstance>
-							</plx:Left>
-							<plx:Right>
-								<plx:CallInstance name="Add" type="MethodCall">
-									<plx:CallObject>
-										<plx:ThisKeyword/>
-									</plx:CallObject>
-									<plx:PassParam>
-										<plx:CallStatic name="{$ObjectName}{@name}_Attribute" dataTypeName="ElementLoaderSchema" type="Property"/>
-									</plx:PassParam>
-								</plx:CallInstance>
-							</plx:Right>
-						</plx:Operator>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="{$ObjectName}{@name}_Attribute" type="field"/>
+							</plx:left>
+							<plx:right>
+								<plx:callThis name="Add">
+									<plx:passParam>
+										<plx:callStatic name="{$ObjectName}{@name}_Attribute" dataTypeName="ElementLoaderSchema" type="property"/>
+									</plx:passParam>
+								</plx:callThis>
+							</plx:right>
+						</plx:assign>
 					</xsl:for-each>
 					<xsl:for-each select="ao:RelatedObject">
-						<plx:Operator type="Assign">
-							<plx:Left>
-								<plx:CallInstance name="{$ObjectName}{@oppositeRoleName}{@oppositeObjectName}_Reference" type="Field">
-									<plx:CallObject>
-										<plx:ThisKeyword/>
-									</plx:CallObject>
-								</plx:CallInstance>
-							</plx:Left>
-							<plx:Right>
-								<plx:CallInstance name="Add" type="MethodCall">
-									<plx:CallObject>
-										<plx:ThisKeyword/>
-									</plx:CallObject>
-									<plx:PassParam>
-										<plx:CallStatic name="{$ObjectName}{@oppositeRoleName}{@oppositeObjectName}_Reference" dataTypeName="ElementLoaderSchema" type="Property"/>
-									</plx:PassParam>
-								</plx:CallInstance>
-							</plx:Right>
-						</plx:Operator>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis name="{$ObjectName}{@oppositeRoleName}{@oppositeObjectName}_Reference" type="field"/>
+							</plx:left>
+							<plx:right>
+								<plx:callThis name="Add">
+									<plx:passParam>
+										<plx:callStatic name="{$ObjectName}{@oppositeRoleName}{@oppositeObjectName}_Reference" dataTypeName="ElementLoaderSchema" type="property"/>
+									</plx:passParam>
+								</plx:callThis>
+							</plx:right>
+						</plx:assign>
 					</xsl:for-each>
 				</xsl:for-each>
-			</plx:Function>
-		</plx:Class>
+			</plx:function>
+		</plx:class>
 	</xsl:template>
 	<xsl:template name="WriteRelatedObjectIdentifierToAttribute">
 		<xsl:param name="RelatedObject"/>
 		<xsl:param name="RelatedObjectCollection"/>
-		<plx:CallInstance name="WriteAttributeString" type="MethodCall">
-			<plx:CallObject>
-				<plx:Value type="Parameter" data="writer"/>
-			</plx:CallObject>
-			<plx:PassParam passStyle="In">
-				<plx:String>
+		<plx:callInstance name="WriteAttributeString">
+			<plx:callObject>
+				<plx:nameRef type="parameter" name="writer"/>
+			</plx:callObject>
+			<plx:passParam>
+				<plx:string>
 					<xsl:value-of select="concat(@roleName,@oppositeRoleName,@oppositeObjectName,'_Ref')"/>
-				</plx:String>
-			</plx:PassParam>
-			<plx:PassParam>
-				<plx:CallStatic name="Concat" dataTypeName="String" dataTypeQualifier="System" type="MethodCall">
-					<plx:PassParam>
-						<plx:String>
+				</plx:string>
+			</plx:passParam>
+			<plx:passParam>
+				<plx:callStatic name="Concat" dataTypeName=".string">
+					<plx:passParam>
+						<plx:string>
 							<xsl:value-of select="concat(@roleName,@oppositeRoleName,@oppositeObjectName)"/>
-						</plx:String>
-					</plx:PassParam>
-					<plx:PassParam>
-				<plx:CallInstance name="ToString">
-					<plx:CallObject>
-						<plx:CallInstance name="IndexOf" type="MethodCall">
-							<plx:CallObject>
-								<plx:Value data="{@oppositeObjectName}Collection" type="Local"/>
-							</plx:CallObject>
-							<plx:PassParam>
-								<plx:Value data="a{@oppositeObjectName}" type="Local"/>
-							</plx:PassParam>
-						</plx:CallInstance>
-					</plx:CallObject>
-				</plx:CallInstance>
-					</plx:PassParam>
-				</plx:CallStatic>
-			</plx:PassParam>
-		</plx:CallInstance>
+						</plx:string>
+					</plx:passParam>
+					<plx:passParam>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:callInstance name="IndexOf">
+							<plx:callObject>
+								<plx:nameRef name="{@oppositeObjectName}Collection"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef name="a{@oppositeObjectName}"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:callObject>
+				</plx:callInstance>
+					</plx:passParam>
+				</plx:callStatic>
+			</plx:passParam>
+		</plx:callInstance>
 	</xsl:template>
 	
 	<xsl:template name="DeserializationFirstPassLoop">
 		<xsl:param name="Fallback" select="false()"/>
 		<xsl:choose>
 			<xsl:when test="$Fallback">
-				<plx:FallbackCondition>
+				<plx:alternateBranch>
 					<xsl:call-template name="DeserializationFirstPassLoopContents">
 						<xsl:with-param name="ObjectName" select="@name"/>
 					</xsl:call-template>
-				</plx:FallbackCondition>
+				</plx:alternateBranch>
 			</xsl:when>
 			<xsl:otherwise>
-				<plx:Condition>
+				<plx:branch>
 					<xsl:call-template name="DeserializationFirstPassLoopContents">
 						<xsl:with-param name="ObjectName" select="@name"/>
 					</xsl:call-template>
@@ -724,101 +709,99 @@
 					We're writing just the fallback condition here, but the XSD says you need a
 					Test and a Body before you can do FallbackCondition. 
 					Our Test and Body are elsewhere-->
-					<!--<plx:Test></plx:Test>
-					<plx:Body></plx:Body>-->
-					<plx:FallbackCondition>
-						<plx:Test>
-							<plx:Operator type="Equality">
-								<plx:Left>
-									<plx:Value data="nodeType" type="Local"/>
-								</plx:Left>
-								<plx:Right>
-									<plx:CallStatic name="EndElement" dataTypeName="XmlNodeType" type="Property"/>
-								</plx:Right>
-							</plx:Operator>
-						</plx:Test>
-						<plx:Body>
-							<plx:Operator type="Assign">
-								<plx:Left>
-									<plx:Value data="continueLoop" type="Local"/>
-								</plx:Left>
-								<plx:Right>
-									<plx:FalseKeyword/>
-								</plx:Right>
-							</plx:Operator>
-						</plx:Body>
-					</plx:FallbackCondition>
-				</plx:Condition>
+					<!--<plx:condition></plx:condition>
+					<plx:body></plx:body>-->
+					<plx:alternateBranch>
+						<plx:condition>
+							<plx:binaryOperator type="equality">
+								<plx:left>
+									<plx:nameRef name="nodeType"/>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic name="EndElement" dataTypeName="XmlNodeType" type="property"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:body>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="continueLoop"/>
+								</plx:left>
+								<plx:right>
+									<plx:falseKeyword/>
+								</plx:right>
+							</plx:assign>
+						</plx:body>
+					</plx:alternateBranch>
+				</plx:branch>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="DeserializationFirstPassLoopContents">
 		<xsl:variable name="ObjectName"/>
-		<!--<plx:Condition>-->
-		<plx:Test>
-			<plx:CallStatic name="ReferenceEquals" type="MethodCall" dataTypeName="ElementLoaderSchema">
-				<plx:PassParam>
-					<plx:Value data="localName" type="Local"/>
-				</plx:PassParam>
-				<plx:PassParam>
-					<plx:CallInstance name="{@name}_Object" type="Property">
-						<plx:CallObject>
-							<plx:Value data="deserializationTable" type="Local"/>
-						</plx:CallObject>
-					</plx:CallInstance>
-				</plx:PassParam>
-			</plx:CallStatic>
-		</plx:Test>
-		<plx:Body>
-			<xsl:variable name="aoAbsorbedObjects">
-				<xsl:copy-of select="ao:AbsorbedObject[@mandatory='true']"/>
-			</xsl:variable>
-			<xsl:for-each select="msxsl:node-set($aoAbsorbedObjects)/child::*">
-				<plx:Variable name="local{@name}" dataTypeName="String" dataTypeQualifier="System">
-					<plx:Initialize>
-						<plx:CallInstance name="" type="ArrayIndexer">
-							<plx:CallObject>
-								<plx:Value data="myReader" type="Parameter"/>
-							</plx:CallObject>
-							<plx:PassParam>
-								<plx:String>
+		<!--<plx:branch>-->
+		<plx:condition>
+			<plx:callStatic name="ReferenceEquals" dataTypeName="ElementLoaderSchema">
+				<plx:passParam>
+					<plx:nameRef name="localName"/>
+				</plx:passParam>
+				<plx:passParam>
+					<plx:callInstance name="{@name}_Object" type="property">
+						<plx:callObject>
+							<plx:nameRef name="deserializationTable"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:passParam>
+			</plx:callStatic>
+		</plx:condition>
+		<plx:body>
+			<xsl:variable name="aoAbsorbedObjects" select="ao:AbsorbedObject[@mandatory='true']"/>
+			<xsl:for-each select="$aoAbsorbedObjects">
+				<plx:local name="local{@name}" dataTypeName=".string">
+					<plx:initialize>
+						<plx:callInstance name=".implied" type="indexerCall">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="myReader"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:string>
 									<xsl:value-of select="@name"/>
-								</plx:String>
-							</plx:PassParam>
-						</plx:CallInstance>
-					</plx:Initialize>
-				</plx:Variable>
+								</plx:string>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
 
 			</xsl:for-each>
-			<plx:CallInstance name="Add">
-				<plx:CallObject>
-					<plx:Value data="Created{@name}Dictionary" type="Local"/>
-				</plx:CallObject>
-				<plx:PassParam>
-					<plx:CallInstance name="{$ObjectUniqueIdentifier}" type="ArrayIndexer">
-						<plx:CallObject>
-							<plx:Value data="myReader" type="Local"/>
-						</plx:CallObject>
-						<plx:PassParam>
-							<plx:String>id</plx:String>
-						</plx:PassParam>
-					</plx:CallInstance>
-				</plx:PassParam>
-				<plx:PassParam>
-					<plx:CallInstance name="Create{@name}">
-						<plx:CallObject>
-							<plx:Value data="deserializationFactory" type="Local"/>
-						</plx:CallObject>
-						<xsl:for-each select="msxsl:node-set($aoAbsorbedObjects)/child::*">
-							<plx:PassParam>
-								<plx:Value data="local{@name}" type="Local"/>
-							</plx:PassParam>
+			<plx:callInstance name="Add">
+				<plx:callObject>
+					<plx:nameRef name="Created{@name}Dictionary"/>
+				</plx:callObject>
+				<plx:passParam>
+					<plx:callInstance name=".implied" type="indexerCall">
+						<plx:callObject>
+							<plx:nameRef name="myReader"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:string>id</plx:string>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:passParam>
+				<plx:passParam>
+					<plx:callInstance name="Create{@name}">
+						<plx:callObject>
+							<plx:nameRef name="deserializationFactory"/>
+						</plx:callObject>
+						<xsl:for-each select="$aoAbsorbedObjects">
+							<plx:passParam>
+								<plx:nameRef name="local{@name}"/>
+							</plx:passParam>
 						</xsl:for-each>
-					</plx:CallInstance>
-				</plx:PassParam>
-			</plx:CallInstance>
-		</plx:Body>
-		<!--</plx:Condition>-->
+					</plx:callInstance>
+				</plx:passParam>
+			</plx:callInstance>
+		</plx:body>
+		<!--</plx:branch>-->
 	</xsl:template>
 	
 	<xsl:template name="DeserializationSecondPassLoop">
@@ -826,15 +809,15 @@
 		<xsl:choose>
 			<xsl:when test="$Fallback">
 				<!--<xsl:if test="(@multiplicity = 'ZeroToOne') or (@multiplicity = 'ExactlyOne')">-->
-					<plx:FallbackCondition>
+					<plx:alternateBranch>
 						<xsl:call-template name="DeserializationSecondPassLoopContents">
 							<xsl:with-param name="ObjectName" select="@name"/>
 						</xsl:call-template>
-					</plx:FallbackCondition>
+					</plx:alternateBranch>
 				<!--</xsl:if>-->
 			</xsl:when>
 			<xsl:otherwise>
-				<plx:Condition>
+				<plx:branch>
 					<xsl:call-template name="DeserializationSecondPassLoopContents">
 						<xsl:with-param name="ObjectName" select="@name"/>
 					</xsl:call-template>
@@ -849,131 +832,128 @@
 					We're writing just the fallback condition here, but the XSD says you need a
 					Test and a Body before you can do FallbackCondition. 
 					Our Test and Body are elsewhere-->
-					<!--<plx:Test></plx:Test>
-					<plx:Body></plx:Body>-->
-					<plx:FallbackCondition>
-						<plx:Test>
-							<plx:Operator type="Equality">
-								<plx:Left>
-									<plx:Value data="nodeType" type="Local"/>
-								</plx:Left>
-								<plx:Right>
-									<plx:CallStatic name="EndElement" dataTypeName="XmlNodeType" type="Property"/>
-								</plx:Right>
-							</plx:Operator>
-						</plx:Test>
-						<plx:Body>
-							<plx:Operator type="Assign">
-								<plx:Left>
-									<plx:Value data="continueLoop" type="Local"/>
-								</plx:Left>
-								<plx:Right>
-									<plx:FalseKeyword/>
-								</plx:Right>
-							</plx:Operator>
-						</plx:Body>
-					</plx:FallbackCondition>
-				</plx:Condition>
+					<!--<plx:condition></plx:condition>
+					<plx:body></plx:body>-->
+					<plx:alternateBranch>
+						<plx:condition>
+							<plx:binaryOperator type="equality">
+								<plx:left>
+									<plx:nameRef name="nodeType"/>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic name="EndElement" dataTypeName="XmlNodeType" type="property"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:body>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="continueLoop"/>
+								</plx:left>
+								<plx:right>
+									<plx:falseKeyword/>
+								</plx:right>
+							</plx:assign>
+						</plx:body>
+					</plx:alternateBranch>
+				</plx:branch>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="DeserializationSecondPassLoopContents">
 		<xsl:param name="ObjectName" select="'Unknown_Object'"/>
-		<xsl:variable name="aoRelatedObjects">
-			<xsl:copy-of select="ao:RelatedObject"/>
-		</xsl:variable>
-		<xsl:for-each select="msxsl:node-set($aoRelatedObjects)/child::*">
+		<xsl:for-each select="ao:RelatedObject">
 			<xsl:choose>
 				<xsl:when test="(@multiplicity = 'ZeroToOne') or (@multiplicity = 'ExactlyOne')">
-					<!--<plx:Condition>-->
-						<plx:Test>
-							<plx:CallStatic name="ReferenceEquals" type="MethodCall" dataTypeName="ElementLoaderSchema">
-								<plx:PassParam>
-									<plx:Value data="localName" type="Local"/>
-								</plx:PassParam>
-								<plx:PassParam>
-									<plx:CallInstance name="{$ObjectName}_Object" type="Property">
-										<plx:CallObject>
-											<plx:Value data="deserializationTable" type="Local"/>
-										</plx:CallObject>
-									</plx:CallInstance>
-								</plx:PassParam>
-							</plx:CallStatic>
-						</plx:Test>
+					<!--<plx:branch>-->
+						<plx:condition>
+							<plx:callStatic name="ReferenceEquals" dataTypeName="ElementLoaderSchema">
+								<plx:passParam>
+									<plx:nameRef name="localName"/>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="{$ObjectName}_Object" type="property">
+										<plx:callObject>
+											<plx:nameRef name="deserializationTable"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:condition>
 
-						<plx:Body>
-							<plx:Variable name="local{$ObjectName}" dataTypeName="{$ObjectName}">
-								<plx:Initialize>
-									<plx:CallInstance name="" type="ArrayIndexer">
-										<plx:CallObject>
-											<plx:Value data="Created{$ObjectName}Dictionary" type="Local"/>
-										</plx:CallObject>
-										<plx:PassParam>
-											<plx:CallInstance name="" type="ArrayIndexer">
-												<plx:CallObject>
-													<plx:Value data="myReader" type="Local"/>
-												</plx:CallObject>
-												<plx:PassParam>
-													<plx:String>
+						<plx:body>
+							<plx:local name="local{$ObjectName}" dataTypeName="{$ObjectName}">
+								<plx:initialize>
+									<plx:callInstance name=".implied" type="indexerCall">
+										<plx:callObject>
+											<plx:nameRef name="Created{$ObjectName}Dictionary"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callInstance name=".implied" type="indexerCall">
+												<plx:callObject>
+													<plx:nameRef name="myReader"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:string>
 														<xsl:value-of select="$ObjectUniqueIdentifier"/>
-													</plx:String>
-												</plx:PassParam>
-											</plx:CallInstance>
-										</plx:PassParam>
-									</plx:CallInstance>
-								</plx:Initialize>
-							</plx:Variable>
-							<plx:Operator type="Assign">
-								<plx:Left>
+													</plx:string>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:initialize>
+							</plx:local>
+							<plx:assign>
+								<plx:left>
 									<!-- TODO: First, the getters and setters for this property need to be created at
 									the factory level.  Next, their names need to reflect the roles that the object types
 									play.  It makes no sense to have Object1 Rs Object2 when there could be many
 									interactions between those two Object Types.  Once the names for the relationships
 									have been formalized, change the name here to reflect the update.  -->
-									<plx:CallInstance name="{@oppositeObjectName}" type="Property">
-										<plx:CallObject>
-											<plx:Value data="local{$ObjectName}" type="Local"/>
-										</plx:CallObject>
-									</plx:CallInstance>
-								</plx:Left>
-								<plx:Right>
-									<plx:CallInstance name="" type="ArrayIndexer">
-										<plx:CallObject>
-											<plx:Value data="Created{@oppositeObjectName}Dictionary" type="Local"/>
-										</plx:CallObject>
-										<plx:PassParam>
-											<plx:CallInstance name="" type="ArrayIndexer">
-												<plx:CallObject>
-													<plx:Value data="myReader" type="Local"/>
-												</plx:CallObject>
-												<plx:PassParam>
-													<plx:String>
+									<plx:callInstance name="{@oppositeObjectName}" type="property">
+										<plx:callObject>
+											<plx:nameRef name="local{$ObjectName}"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name=".implied" type="indexerCall">
+										<plx:callObject>
+											<plx:nameRef name="Created{@oppositeObjectName}Dictionary"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:callInstance name=".implied" type="indexerCall">
+												<plx:callObject>
+													<plx:nameRef name="myReader"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:string>
 														<xsl:value-of select="concat($ObjectName, @oppositeRoleName, @oppositeObjectName, '_Reference')"/>
-													</plx:String>
-												</plx:PassParam>
-											</plx:CallInstance>
-										</plx:PassParam>
-									</plx:CallInstance>
-								</plx:Right>
-							</plx:Operator>
-						</plx:Body>
-					<!--</plx:Condition>-->
+													</plx:string>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:right>
+							</plx:assign>
+						</plx:body>
+					<!--</plx:branch>-->
 				</xsl:when>
 				<xsl:otherwise>
-					<plx:Test>
-						<plx:CallStatic name="ReferenceEquals" type="MethodCall" dataTypeName="ElementLoaderSchema">
-							<plx:PassParam>
-								<plx:Value data="localName" type="Local"/>
-							</plx:PassParam>
-							<plx:PassParam>
-								<plx:CallInstance name="{$ObjectName}{@oppositeRoleName}{@oppositeObjectName}_Reference" type="Property">
-									<plx:CallObject>
-										<plx:Value data="deserializationTable" type="Local"/>
-									</plx:CallObject>
-								</plx:CallInstance>
-							</plx:PassParam>
-						</plx:CallStatic>
-					</plx:Test>
+					<plx:condition>
+						<plx:callStatic name="ReferenceEquals" dataTypeName="ElementLoaderSchema">
+							<plx:passParam>
+								<plx:nameRef name="localName"/>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:callInstance name="{$ObjectName}{@oppositeRoleName}{@oppositeObjectName}_Reference" type="property">
+									<plx:callObject>
+										<plx:nameRef name="deserializationTable"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:condition>
 					<!-- TODO: Create a body for this method.  It should go something like this:
 					Look up the created object that (in the CreatedObjectDictionary) is the parent of the current node.
 					Walk all child elements that match the ao:RelatedObject that we're dealing with right now.

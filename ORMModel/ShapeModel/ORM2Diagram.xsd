@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema targetNamespace="http://Schemas.Neumont.edu/ORM/ORMDiagram" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns="http://Schemas.Neumont.edu/ORM/ORMDiagram" xmlns:mstns="http://tempur.org/XMLSchema.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:derived="http://www.w3.org/2001/XMLSchema">
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/ORM/ORMDiagram"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	xmlns="http://schemas.neumont.edu/ORM/ORMDiagram"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:derived="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="ORMDiagram" type="ORMDiagram"/>
 	<xs:complexType name="Shape" abstract="true">
 		<xs:attribute name="id" type="xs:string" use="required" />

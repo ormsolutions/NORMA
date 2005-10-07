@@ -218,7 +218,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 		private static class SuiteLoaderSchema
 		{
 			#region String Constants
-			public const string SchemaNamespace = "http://Schemas.Neumont.edu/ORM/SDK/TestSuite";
+			public const string SchemaNamespace = "http://schemas.neumont.edu/ORM/SDK/TestSuite";
 			public const string SuitesElement = "Suites";
 			public const string SuiteElement = "Suite";
 			public const string TestAssembliesElement = "TestAssemblies";

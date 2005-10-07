@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<plixLoader:SourceFiles xmlns:plixLoader="http://Schemas.Neumont.edu/CodeGeneration/PlixLoader">
-	<plixLoader:SourceFile file="ExtensionDomainModel.AttachRules.xml" transformFile="..\ORMModel\Transforms\AttachRulesGenerator.xslt"/>
-	<plixLoader:SourceFile file="ExtensionDomainModel.SerializationExtensions.xml" transformFile="..\ORMModel\Transforms\SerializationExtensions.xslt"/>
-</plixLoader:SourceFiles>
+<plixLoader:sourceFiles xmlns:plixLoader="http://schemas.neumont.edu/CodeGeneration/PLiXLoader">
+	<plixLoader:sourceFile file="ExtensionDomainModel.AttachRules.xml" transformFile="..\ORMModel\Transforms\AttachRulesGenerator.xslt"/>
+	<plixLoader:sourceFile file="ExtensionDomainModel.SerializationExtensions.xml" transformFile="..\ORMModel\Transforms\SerializationExtensions.xslt"/>
+</plixLoader:sourceFiles>

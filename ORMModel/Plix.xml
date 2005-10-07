@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<plixLoader:SourceFiles xmlns:plixLoader="http://Schemas.Neumont.edu/CodeGeneration/PlixLoader">
-	<plixLoader:SourceFile file="ObjectModel\ORMCore.AttachRules.xml" transformFile="Transforms\AttachRulesGenerator.xslt"/>
-	<plixLoader:SourceFile file="ShapeModel\ORMShape.AttachRules.xml" transformFile="Transforms\AttachRulesGenerator.xslt"/>
-	<plixLoader:SourceFile file="ObjectModel\ORMCore.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>
-	<plixLoader:SourceFile file="ShapeModel\ORMShape.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>
-</plixLoader:SourceFiles>
+<plixLoader:sourceFiles xmlns:plixLoader="http://schemas.neumont.edu/CodeGeneration/PLiXLoader">
+	<plixLoader:sourceFile file="ObjectModel\ORMCore.AttachRules.xml" transformFile="Transforms\AttachRulesGenerator.xslt"/>
+	<plixLoader:sourceFile file="ShapeModel\ORMShape.AttachRules.xml" transformFile="Transforms\AttachRulesGenerator.xslt"/>
+	<plixLoader:sourceFile file="ObjectModel\ORMCore.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>
+	<plixLoader:sourceFile file="ShapeModel\ORMShape.SerializationExtensions.xml" transformFile="Transforms\SerializationExtensions.xslt"/>
+</plixLoader:sourceFiles>

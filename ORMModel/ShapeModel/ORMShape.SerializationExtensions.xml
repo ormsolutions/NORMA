@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <se:CustomSerializedElements
-    xmlns:se="http://Schemas.Neumont.edu/Private/SerializationExtensions"
-    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix">
+    xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
+    xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<se:MetaModel Class="ORMShapeModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="ormDiagram" URI="http://Schemas.Neumont.edu/ORM/ORMDiagram" SchemaFile="ORM2Diagram.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="ormDiagram" URI="http://schemas.neumont.edu/ORM/ORMDiagram" SchemaFile="ORM2Diagram.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="ORMDiagram"/>

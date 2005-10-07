@@ -86,7 +86,8 @@
       <Link>ORMPackage.snk</Link>
     </None>
     <EmbeddedResource Include="ExtensionDomainModelTest.xsd" />
-    <None Include="Plix.xml" />
+    <None Include="Plix.xml">
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ORMModel\ORMModel.csproj">

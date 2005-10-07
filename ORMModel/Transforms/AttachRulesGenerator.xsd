@@ -2,10 +2,10 @@
 <?xml-stylesheet type="text/xsl" href="XSDtoHTML.xslt"?>
 <xs:schema
 	id="AttachRulesGenerator"
-	targetNamespace="http://Schemas.Neumont.edu/Private/AttachRulesGenerator"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
-	xmlns="http://Schemas.Neumont.edu/Private/AttachRulesGenerator"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" >
 	<xs:element name="Rules" type="RulesType"/>
 	<xs:complexType name="RulesType">

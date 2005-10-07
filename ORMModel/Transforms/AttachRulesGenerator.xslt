@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix"
-    xmlns:arg="http://Schemas.Neumont.edu/Private/AttachRulesGenerator"
+    xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
+    xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
+	<!--<xsl:output indent="yes"/>-->
 	<!-- Pick up param value supplied automatically by plix loader -->
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:template match="arg:Rules">
-		<plx:Root>
-			<plx:Using name="System"/>
-			<plx:Using name="System.Reflection"/>
+		<plx:root>
+			<plx:namespaceImport name="System"/>
+			<plx:namespaceImport name="System.Reflection"/>
 			<xsl:apply-templates select="child::*"/>
-		</plx:Root>
+		</plx:root>
 	</xsl:template>
 	<xsl:template match="arg:Model">
 		<xsl:variable name="namespaceNameTemp">
@@ -25,57 +27,65 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="namespaceName" select="string($namespaceNameTemp)"/>
-		<plx:Namespace name="{$namespaceName}">
-			<plx:Class name="{@class}" visibility="Public" partial="true">
-				<plx:Function name="AllMetaModelTypes" visibility="Protected" override="true">
-					<plx:Param type="RetVal" name="" dataTypeName="Type" dataTypeIsSimpleArray="true"/>
-					<plx:Variable name="retVal" dataTypeName="Type" dataTypeIsSimpleArray="true">
-						<plx:Initialize>
-							<plx:CallNew type="New" dataTypeName="Type" dataTypeIsSimpleArray="true">
-								<plx:ArrayInitializer>
+		<plx:namespace name="{$namespaceName}">
+			<plx:class name="{@class}" visibility="public" partial="true">
+				<plx:leadingInfo>
+					<plx:pragma type="region" data="Attach rules to {@class} model"/>
+				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="Attach rules to {@class} model"/>
+				</plx:trailingInfo>
+				<plx:function name="AllMetaModelTypes" visibility="protected" modifier="override">
+					<plx:leadingInfo>
+						<plx:docComment>
+							<summary>Generated code to attach rules to the store.</summary>
+						</plx:docComment>
+					</plx:leadingInfo>
+					<plx:returns dataTypeName="Type" dataTypeIsSimpleArray="true"/>
+					<plx:local name="retVal" dataTypeName="Type" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callNew dataTypeName="Type" dataTypeIsSimpleArray="true">
+								<plx:arrayInitializer>
 									<xsl:variable name="contextClass" select="@class"/>
 									<xsl:for-each select="arg:Rule">
-										<plx:PassParam>
+										<plx:passParam>
 											<xsl:call-template name="GenerateTypeOf">
 												<xsl:with-param name="className" select="@class"/>
 												<xsl:with-param name="namespace" select="@namespace"/>
 												<xsl:with-param name="contextClass" select="$contextClass"/>
 												<xsl:with-param name="contextNamespace" select="$namespaceName"/>
 											</xsl:call-template>
-										</plx:PassParam>
+										</plx:passParam>
 									</xsl:for-each>
-								</plx:ArrayInitializer>
-							</plx:CallNew>
-						</plx:Initialize>
-					</plx:Variable>
-					<plx:CallStatic name="Assert" dataTypeName="Debug" dataTypeQualifier="System.Diagnostics">
-						<plx:PassParam>
-							<plx:Operator type="BooleanNot">
-								<plx:CallInstance name="Contains">
-									<plx:CallObject>
-										<plx:Cast type="TypeCastException">
-											<plx:TargetType dataTypeName="IList" dataTypeQualifier="System.Collections"/>
-											<plx:CastExpression>
-												<plx:Value type="Local" data="retVal"/>
-											</plx:CastExpression>
-										</plx:Cast>
-									</plx:CallObject>
-									<plx:PassParam>
-										<plx:NullObjectKeyword/>
-									</plx:PassParam>
-								</plx:CallInstance>
-							</plx:Operator>
-						</plx:PassParam>
-						<plx:PassParam>
-							<plx:String>One or more rule types failed to resolve. The file and/or package will fail to load.</plx:String>
-						</plx:PassParam>
-					</plx:CallStatic>
-					<plx:Return>
-						<plx:Value type="Local" data="retVal"/>
-					</plx:Return>
-				</plx:Function>
-			</plx:Class>
-		</plx:Namespace>
+								</plx:arrayInitializer>
+							</plx:callNew>
+						</plx:initialize>
+					</plx:local>
+					<plx:callStatic name="Assert" dataTypeName="Debug" dataTypeQualifier="System.Diagnostics">
+						<plx:passParam>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callInstance name="Contains">
+									<plx:callObject>
+										<plx:cast type="exceptionCast" dataTypeName="IList" dataTypeQualifier="System.Collections">
+											<plx:nameRef name="retVal"/>
+										</plx:cast>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nullKeyword/>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:unaryOperator>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:string>One or more rule types failed to resolve. The file and/or package will fail to load.</plx:string>
+						</plx:passParam>
+					</plx:callStatic>
+					<plx:return>
+						<plx:nameRef name="retVal"/>
+					</plx:return>
+				</plx:function>
+			</plx:class>
+		</plx:namespace>
 	</xsl:template>
 	<xsl:template name="GenerateTypeOf">
 		<xsl:param name="className"/>
@@ -104,7 +114,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:variable name="primaryTypeOf">
-					<plx:TypeOf dataTypeName="{$className}">
+					<plx:typeOf dataTypeName="{$className}">
 						<xsl:if test="string-length($publicPart)">
 							<xsl:attribute name="dataTypeName">
 								<xsl:value-of select="$publicPart"/>
@@ -115,7 +125,7 @@
 								<xsl:value-of select="$namespaceName"/>
 							</xsl:attribute>
 						</xsl:if>
-					</plx:TypeOf>
+					</plx:typeOf>
 				</xsl:variable>
 				<xsl:choose>
 					<xsl:when test="string-length($publicPart)">
@@ -136,12 +146,12 @@
 		<xsl:param name="callObject"/>
 		<xsl:variable name="firstType" select="substring-before($nestedTypes, ' ')"/>
 		<xsl:variable name="nestedTypeCall">
-			<plx:CallInstance name="GetNestedType">
-				<plx:CallObject>
+			<plx:callInstance name="GetNestedType">
+				<plx:callObject>
 					<xsl:copy-of select="$callObject"/>
-				</plx:CallObject>
-				<plx:PassParam>
-					<plx:String>
+				</plx:callObject>
+				<plx:passParam>
+					<plx:string>
 						<xsl:choose>
 							<xsl:when test="string-length($firstType)">
 								<xsl:value-of select="$firstType"/>
@@ -150,19 +160,19 @@
 								<xsl:value-of select="$nestedTypes"/>
 							</xsl:otherwise>
 						</xsl:choose>
-					</plx:String>
-				</plx:PassParam>
-				<plx:PassParam>
-					<plx:Operator type="BitwiseOr">
-						<plx:Left>
-							<plx:CallStatic name="Public" dataTypeName="BindingFlags" type="Field"/>
-						</plx:Left>
-						<plx:Right>
-							<plx:CallStatic name="NonPublic" dataTypeName="BindingFlags" type="Field"/>
-						</plx:Right>
-					</plx:Operator>
-				</plx:PassParam>
-			</plx:CallInstance>
+					</plx:string>
+				</plx:passParam>
+				<plx:passParam>
+					<plx:binaryOperator type="bitwiseOr">
+						<plx:left>
+							<plx:callStatic name="Public" dataTypeName="BindingFlags" type="field"/>
+						</plx:left>
+						<plx:right>
+							<plx:callStatic name="NonPublic" dataTypeName="BindingFlags" type="field"/>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:passParam>
+			</plx:callInstance>
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="string-length($firstType)">

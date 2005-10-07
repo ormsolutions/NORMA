@@ -1,7 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:ormDiagram="http://Schemas.Neumont.edu/ORM/ORMDiagram" xmlns:orm="http://Schemas.Neumont.edu/ORM/ORMCore" xmlns:ormRoot="http://Schemas.Neumont.edu/ORM/ORMRoot" xmlns:ormDerived="http://Schemas.Neumont.edu/ORM/ORMDerived" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://Schemas.Neumont.edu/ORM/ORMRoot" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:import namespace="http://Schemas.Neumont.edu/ORM/ORMCore" />
-	<xs:import namespace="http://Schemas.Neumont.edu/ORM/ORMDiagram" />
+<xs:schema
+	attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/ORMDiagram"
+	xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot"
+	xmlns:ormDerived="http://schemas.neumont.edu/ORM/ORMDerived"
+	targetNamespace="http://schemas.neumont.edu/ORM/ORMRoot"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:import namespace="http://schemas.neumont.edu/ORM/ORMCore" />
+	<xs:import namespace="http://schemas.neumont.edu/ORM/ORMDiagram" />
 	<xs:element name="ORM2">
 		<xs:complexType>
 			<xs:sequence>

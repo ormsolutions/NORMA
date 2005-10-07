@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<VerbalizationRoot xmlns="http://Schemas.Neumont.edu/ORM/SDK/Verbalization">
+<VerbalizationRoot xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization">
 	<Languages>
 		<Language xml:lang="en-US">
 			<Snippets>

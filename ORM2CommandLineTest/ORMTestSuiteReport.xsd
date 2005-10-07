@@ -2,8 +2,8 @@
 <xs:schema id="PlixLoader"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
-	targetNamespace="http://Schemas.Neumont.edu/ORM/SDK/TestSuiteReport"
-	xmlns="http://Schemas.Neumont.edu/ORM/SDK/TestSuiteReport"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/TestSuiteReport"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/TestSuiteReport"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	>
 	<xs:element name="Suites" type="SuitesType"/>
@@ -74,7 +74,7 @@
 			<xs:documentation>The results for a single test, which is defined as a method marked with the Test attribute</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:any namespace="http://schemas.microsoft.com/xmltools/2002/xmldiff http://Schemas.Neumont.edu/ORM/SDK/TestReport" processContents="skip" minOccurs="0">
+			<xs:any namespace="http://schemas.microsoft.com/xmltools/2002/xmldiff http://schemas.neumont.edu/ORM/SDK/TestReport" processContents="skip" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The diffgram between the expected report and final test report, or the full test report</xs:documentation>
 				</xs:annotation>

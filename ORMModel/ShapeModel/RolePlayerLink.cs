@@ -1,3 +1,4 @@
+//#define IMPLIEDJOINPATH
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -76,6 +77,101 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#endregion // (Temporary) CompositeLinkDecorator test
 	public partial class RolePlayerLink
 	{
+#if IMPLIEDJOINPATH
+		#region ImpliedFactJoinPathDecorator class
+		/// <summary>
+		/// A decorator used to display the join path role boxes for
+		/// implied facts when we're in join path editing mode. We only
+		/// decorate one end of a role player link, so we are able to use
+		/// the opposite decorator for nefarious purposes such as this.
+		/// </summary>
+		protected class ImpliedFactJoinPathDecorator : LinkDecorator, ILinkDecoratorSettings
+		{
+			// UNDONE: Constants stolen from FactTypeShape, do something about it
+			private const double RoleBoxHeight = 0.11;
+			private const double RoleBoxWidth = 0.16;
+			private RolePlayerLink myLinkShape;
+			/// <summary>
+			/// Create an ImpliedFactJoinPathDecorator
+			/// </summary>
+			/// <param name="linkShape">The associated link shape</param>
+			public ImpliedFactJoinPathDecorator(RolePlayerLink linkShape)
+			{
+				myLinkShape = linkShape;
+			}
+			/// <summary>
+			/// Return a circle slightly smaller than the standard decorator
+			/// as the path
+			/// </summary>
+			/// <param name="bounds">A bounding rectangle for the decorator</param>
+			/// <returns>A circle path</returns>
+			protected override GraphicsPath GetPath(RectangleD bounds)
+			{
+				GraphicsPath path = new GraphicsPath();
+				bounds.Height /= 2;
+				if (IsFlipped)
+				{
+					bounds.Y += bounds.Height;
+				}
+				path.AddRectangle(RectangleD.ToRectangleF(bounds));
+				return path;
+			}
+			private bool IsFlipped
+			{
+				get
+				{
+					PointD fromPoint = myLinkShape.FromEndPoint;
+					PointD toPoint = myLinkShape.ToEndPoint;
+					return toPoint.X < fromPoint.X;
+				}
+			}
+			#region ILinkDecoratorSettings Implementation
+			/// <summary>
+			/// Implements ILinkDecoratorSettings.DecoratorSize.
+			/// </summary>
+			protected static SizeD DecoratorSize
+			{
+				get
+				{
+					return new SizeD(2 * RoleBoxWidth, 2 * RoleBoxHeight);
+				}
+			}
+			SizeD ILinkDecoratorSettings.DecoratorSize
+			{
+				get
+				{
+					return DecoratorSize;
+				}
+			}
+			/// <summary>
+			/// Implements ILinkDecoratorSettings.OffsetBy
+			/// </summary>
+			protected double OffsetBy
+			{
+				get
+				{
+					// Note: FromShape == FactTypeShape, so the endpoint
+					// is inside the shape. The ToShape will always have the
+					// endpoint attaching at the shape, so we do not have to
+					// recalculate our attach point
+					PointD fromPoint = myLinkShape.FromEndPoint;
+					PointD toPoint = myLinkShape.ToEndPoint;
+					double xDif = toPoint.X - fromPoint.X;
+					double yDif = toPoint.Y - fromPoint.Y;
+					return -Math.Sqrt(xDif * xDif + yDif * yDif) / 2 + RoleBoxWidth ;
+				}
+			}
+			double ILinkDecoratorSettings.OffsetBy
+			{
+				get
+				{
+					return OffsetBy;
+				}
+			}
+			#endregion // ILinkDecoratorSettings Implementation
+		}
+		#endregion // ImpliedFactJoinPathDecorator class
+#endif // IMPLIEDJOINPATH
 		#region MandatoryDotDecorator class
 		/// <summary>
 		/// The link decorator used to draw the mandatory
@@ -156,6 +252,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					return MandatoryDotDecorator.Decorator;
 				}
+#if IMPLIEDJOINPATH
+				else if (OptionsPage.CurrentMandatoryDotPlacement == MandatoryDotPlacement.ObjectShapeEnd)
+				{
+					return new ImpliedFactJoinPathDecorator(this);
+				}
+#endif // IMPLIEDJOINPATH
 				return base.DecoratorFrom;
 			}
 			set
@@ -175,6 +277,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					return MandatoryDotDecorator.Decorator;
 				}
+#if IMPLIEDJOINPATH
+				else if (OptionsPage.CurrentMandatoryDotPlacement == MandatoryDotPlacement.RoleBoxEnd)
+				{
+					return new ImpliedFactJoinPathDecorator(this);
+				}
+#endif // IMPLIEDJOINPATH
 				return base.DecoratorTo;
 			}
 			set

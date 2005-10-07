@@ -2,8 +2,8 @@
 <xs:schema id="PlixLoader"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
-	targetNamespace="http://Schemas.Neumont.edu/ORM/SDK/TestReport"
-	xmlns="http://Schemas.Neumont.edu/ORM/SDK/TestReport"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/TestReport"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	>
 	<xs:element name="TestReport" type="TestReportType"/>
@@ -68,7 +68,7 @@
 			<xs:documentation>The result of a Compare operation, which compares the serialized contents of the current schema with a baseline file.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:any namespace="http://schemas.microsoft.com/xmltools/2002/xmldiff http://Schemas.Neumont.edu/ORM/ORMRoot" processContents="skip" minOccurs="0">
+			<xs:any namespace="http://schemas.microsoft.com/xmltools/2002/xmldiff http://schemas.neumont.edu/ORM/ORMRoot" processContents="skip" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>The diffgram between the expected report and final test report, or the full test report</xs:documentation>
 				</xs:annotation>

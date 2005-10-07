@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <se:CustomSerializedElements
-    xmlns:se="http://Schemas.Neumont.edu/Private/SerializationExtensions"
-    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix">
+    xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
+    xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<se:MetaModel Class="ORMMetaModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="orm" URI="http://Schemas.Neumont.edu/ORM/ORMCore" SchemaFile="ORM2Core.xsd"  DefaultPrefix="true"/>
-			<se:Namespace Prefix="ormDerived" URI="http://Schemas.Neumont.edu/ORM/ORMDerived"/>
+			<se:Namespace Prefix="orm" URI="http://schemas.neumont.edu/ORM/ORMCore" SchemaFile="ORM2Core.xsd"  DefaultPrefix="true"/>
+			<se:Namespace Prefix="ormDerived" URI="http://schemas.neumont.edu/ORM/ORMDerived"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="ORMModel"/>
@@ -56,47 +56,31 @@
 	<!--Object Types-->
 	<se:Element Class="ObjectType" Name="EntityType" SortChildElements="true" Override="true">
 		<se:ConditionalName Name="ValueType">
-			<plx:CallInstance name="IsValueType" type="Property">
-				<plx:CallObject>
-					<plx:ThisKeyword/>
-				</plx:CallObject>
-			</plx:CallInstance>
+			<plx:callThis name="IsValueType" type="property"/>
 		</se:ConditionalName>
 		<se:ConditionalName Name="ObjectifiedType">
-			<plx:Operator type="IdentityInequality">
-				<plx:Left>
-					<plx:CallInstance name="NestedFactType" type="Property">
-						<plx:CallObject>
-							<plx:ThisKeyword/>
-						</plx:CallObject>
-					</plx:CallInstance>
-				</plx:Left>
-				<plx:Right>
-					<plx:NullObjectKeyword/>
-				</plx:Right>
-			</plx:Operator>
+			<plx:binaryOperator type="identityInequality">
+				<plx:left>
+					<plx:callThis name="NestedFactType" type="property"/>
+				</plx:left>
+				<plx:right>
+					<plx:nullKeyword/>
+				</plx:right>
+			</plx:binaryOperator>
 		</se:ConditionalName>
 		<se:Attribute ID="ReferenceModeString"  Name="ReferenceMode" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:CallInstance name="IsValueType" type="Property">
-					<plx:CallObject>
-						<plx:ThisKeyword/>
-					</plx:CallObject>
-				</plx:CallInstance>
+				<plx:callThis name="IsValueType" type="property"/>
 			</se:Condition>
 			<se:Condition WriteStyle="NotWritten">
-				<plx:Operator type="IdentityInequality">
-					<plx:Left>
-						<plx:CallInstance name="NestedFactType" type="Property">
-							<plx:CallObject>
-								<plx:ThisKeyword/>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Left>
-					<plx:Right>
-						<plx:NullObjectKeyword/>
-					</plx:Right>
-				</plx:Operator>
+				<plx:binaryOperator type="identityInequality">
+					<plx:left>
+						<plx:callThis name="NestedFactType" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
 		<se:ChildElement Name="PlayedRoles">
@@ -130,24 +114,20 @@
 				 object type, then don't bother to write it out. These
 				 are intrinsic types and will reappear when the model file
 				 is reloaded. -->
-			<plx:Return>
-				<plx:Operator type="GreaterThan">
-					<plx:Left>
-						<plx:CallInstance name="Count" type="Property">
-							<plx:CallObject>
-								<plx:CallInstance name="GetElementLinks">
-									<plx:CallObject>
-										<plx:ThisKeyword/>
-									</plx:CallObject>
-								</plx:CallInstance>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Left>
-					<plx:Right>
-						<plx:Value type="I4" data="1"/>
-					</plx:Right>
-				</plx:Operator>
-			</plx:Return>
+			<plx:return>
+				<plx:binaryOperator type="greaterThan">
+					<plx:left>
+						<plx:callInstance name="Count" type="property">
+							<plx:callObject>
+								<plx:callThis name="GetElementLinks"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:value type="i4" data="1"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:return>
 		</se:ConditionalSerialization>
 		<se:Link RelationshipName="ValueTypeHasDataType" RoleName="ValueTypeCollection" WriteStyle="NotWritten"/>
 	</se:Element>
@@ -171,18 +151,14 @@
 		<!--TODO: FactNotes-->
 		<!--TODO: Derivation Rule-->
 		<se:ConditionalName Name="ImpliedFact">
-			<plx:Operator type="IdentityInequality">
-				<plx:Left>
-					<plx:CallInstance name="ImpliedByObjectification" type="Property">
-						<plx:CallObject>
-							<plx:ThisKeyword/>
-						</plx:CallObject>
-					</plx:CallInstance>
-				</plx:Left>
-				<plx:Right>
-					<plx:NullObjectKeyword/>
-				</plx:Right>
-			</plx:Operator>
+			<plx:binaryOperator type="identityInequality">
+				<plx:left>
+					<plx:callThis name="ImpliedByObjectification" type="property"/>
+				</plx:left>
+				<plx:right>
+					<plx:nullKeyword/>
+				</plx:right>
+			</plx:binaryOperator>
 		</se:ConditionalName>
 		<se:ChildElement Name="FactRoles">
 			<se:Link RelationshipName="FactTypeHasRole" RoleName="RoleCollection"/>
@@ -255,18 +231,14 @@
 	</se:Element>
 	<se:Element Class="ExternalUniquenessConstraint" Override="true" SortChildElements="true">
 		<se:ConditionalName Name="ImpliedExternalUniquenessConstraint">
-			<plx:Operator type="IdentityInequality">
-				<plx:Left>
-					<plx:CallInstance name="ImpliedByObjectification" type="Property">
-						<plx:CallObject>
-							<plx:ThisKeyword/>
-						</plx:CallObject>
-					</plx:CallInstance>
-				</plx:Left>
-				<plx:Right>
-					<plx:NullObjectKeyword/>
-				</plx:Right>
-			</plx:Operator>
+			<plx:binaryOperator type="identityInequality">
+				<plx:left>
+					<plx:callThis name="ImpliedByObjectification" type="property"/>
+				</plx:left>
+				<plx:right>
+					<plx:nullKeyword/>
+				</plx:right>
+			</plx:binaryOperator>
 		</se:ConditionalName>
 		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesExternalUniquenessConstraint" RoleName="ImpliedByObjectification"/>
@@ -284,18 +256,14 @@
 	</se:Element>
 	<se:Element Class="EqualityConstraint" SortChildElements="true" Override="true" >
 		<se:ConditionalName Name="ImpliedEqualityConstraint">
-			<plx:Operator type="IdentityInequality">
-				<plx:Left>
-					<plx:CallInstance name="ImpliedByObjectification" type="Property">
-						<plx:CallObject>
-							<plx:ThisKeyword/>
-						</plx:CallObject>
-					</plx:CallInstance>
-				</plx:Left>
-				<plx:Right>
-					<plx:NullObjectKeyword/>
-				</plx:Right>
-			</plx:Operator>
+			<plx:binaryOperator type="identityInequality">
+				<plx:left>
+					<plx:callThis name="ImpliedByObjectification" type="property"/>
+				</plx:left>
+				<plx:right>
+					<plx:nullKeyword/>
+				</plx:right>
+			</plx:binaryOperator>
 		</se:ConditionalName>
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesEqualityConstraint" RoleName="ImpliedByObjectification"/>
 		<se:Link RelationshipName="EqualityConstraintHasEqualityIsImpliedByMandatoryError" RoleName="EqualityIsImpliedByMandatoryError" WriteStyle="NotWritten"/>
@@ -368,18 +336,14 @@
 	<se:Element Class="CompatibleRolePlayerTypeError" Override="true">
 		<se:Attribute ID="Column">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:Operator type="IdentityInequality">
-					<plx:Left>
-						<plx:CallInstance name="SingleColumnExternalConstraint" type="Property">
-							<plx:CallObject>
-								<plx:ThisKeyword/>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Left>
-					<plx:Right>
-						<plx:NullObjectKeyword/>
-					</plx:Right>
-				</plx:Operator>
+				<plx:binaryOperator type="identityInequality">
+					<plx:left>
+						<plx:callThis name="SingleColumnExternalConstraint" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
 		<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="MultiColumnExternalConstraint" Name="MultiColumnConstraint"/>

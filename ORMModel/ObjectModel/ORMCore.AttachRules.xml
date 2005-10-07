@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<arg:Rules xmlns:arg="http://Schemas.Neumont.edu/Private/AttachRulesGenerator">
+<arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
 	<arg:Model class="ORMMetaModel">
 		<arg:Rule class="ConstraintUtility.ConstraintRoleSequenceHasRoleRemoved"/>
 		<arg:Rule class="CustomReferenceMode.CustomReferenceModeChangeRule"/>

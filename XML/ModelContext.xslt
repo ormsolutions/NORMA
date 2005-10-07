@@ -2,10 +2,10 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-	xmlns:orm="http://Schemas.Neumont.edu/ORM/ORMCore"
-	xmlns:ormRoot="http://Schemas.Neumont.edu/ORM/ORMRoot"
-	xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix"
-	xmlns:ao="http://Schemas.Neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects">
+	xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
+	xmlns:ao="http://schemas.neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects">
 	<xsl:include href="ModelContextCode.xslt"/>
 
 	<xsl:template match="ao:Object" mode="ForGenerateImplementationClass">
@@ -33,10 +33,10 @@
 	<xsl:template name="GenerateImplementation">
 		<xsl:param name="ModelContextName"/>
 		<xsl:param name="ModelDeserializationName"/>
-		<plx:Class visibility="Public" sealed="true" name="{$ModelContextName}">
-			<plx:ImplementsInterface dataTypeName="I{$ModelContextName}"/>
-			<plx:Function ctor="true" visibility="Public"/>
-			<plx:Field name="{$PrivateMemberPrefix}IsDeserializing" visibility="Private" dataTypeName="Boolean" dataTypeQualifier="System"/>
+		<plx:class visibility="public" modifier="sealed" name="{$ModelContextName}">
+			<plx:implementsInterface dataTypeName="I{$ModelContextName}"/>
+			<plx:function name=".construct"  visibility="public"/>
+			<plx:field name="{$PrivateMemberPrefix}IsDeserializing" visibility="private" dataTypeName=".boolean"/>
 			<xsl:call-template name="GenerateModelContextMethods">
 				<xsl:with-param name="Model" select="."/>
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
@@ -50,7 +50,7 @@
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 				<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
 			</xsl:call-template>
-		</plx:Class>
+		</plx:class>
 	</xsl:template>
 
 	<!--Build the DeserializationFactory class-->
@@ -58,83 +58,71 @@
 		<xsl:param name="Model"/>
 		<xsl:param name="ModelContextName"/>
 		<xsl:param name="ModelDeserializationName"/>
-		<plx:Function name="BeginDeserialization" visibility="Private">
-			<plx:Param name="" type="RetVal" dataTypeName="I{$ModelDeserializationName}"/>
-			<plx:InterfaceMember member="BeginDeserialization" dataTypeName="I{$ModelContextName}"/>
-			<plx:Return>
-				<plx:CallNew dataTypeName="DeserializationFactory">
-					<plx:PassParam>
-						<plx:ThisKeyword/>
-					</plx:PassParam>
-				</plx:CallNew>
-			</plx:Return>
-		</plx:Function>
-		<plx:Class visibility="Private" sealed="true" name="DeserializationFactory">
-			<plx:ImplementsInterface dataTypeName="I{$ModelDeserializationName}"/>
-			<plx:Field name="{$PrivateMemberPrefix}Context" visibility="Private" dataTypeName="{$ModelContextName}"/>
-			<plx:Function ctor="true" visibility="Public">
-				<plx:Param type="In" name="context" dataTypeName="{$ModelContextName}"/>
-				<plx:Operator type="Assign">
-					<plx:Left>
-						<plx:CallInstance name="{$PrivateMemberPrefix}Context" type="Field">
-							<plx:CallObject>
-								<plx:ThisKeyword/>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Left>
-					<plx:Right>
-						<plx:Value type="Parameter" data="context"/>
-					</plx:Right>
-				</plx:Operator>
-				<plx:Operator type="Assign">
-					<plx:Left>
-						<plx:CallInstance name="{$PrivateMemberPrefix}IsDeserializing" type="Field">
-							<plx:CallObject>
-								<plx:Value type="Parameter" data="context"/>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Left>
-					<plx:Right>
-						<plx:TrueKeyword/>
-					</plx:Right>
-				</plx:Operator>
-			</plx:Function>
-			<plx:Function name="Dispose" visibility="Private">
-				<plx:InterfaceMember dataTypeName="IDisposable" member="Dispose"/>
-				<plx:Operator type="Assign">
-					<plx:Left>
-						<plx:CallInstance name="{$PrivateMemberPrefix}IsDeserializing" type="Field">
-							<plx:CallObject>
-								<plx:CallInstance name="{$PrivateMemberPrefix}Context" type="Field">
-									<plx:CallObject>
-										<plx:ThisKeyword/>
-									</plx:CallObject>
-								</plx:CallInstance>
-							</plx:CallObject>
-						</plx:CallInstance>
-					</plx:Left>
-					<plx:Right>
-						<plx:FalseKeyword/>
-					</plx:Right>
-				</plx:Operator>
-			</plx:Function>
+		<plx:function name="BeginDeserialization" visibility="private">
+			<plx:interfaceMember memberName="BeginDeserialization" dataTypeName="I{$ModelContextName}"/>
+			<plx:returns dataTypeName="I{$ModelDeserializationName}"/>
+			<plx:return>
+				<plx:callNew dataTypeName="DeserializationFactory">
+					<plx:passParam>
+						<plx:thisKeyword/>
+					</plx:passParam>
+				</plx:callNew>
+			</plx:return>
+		</plx:function>
+		<plx:class visibility="private" modifier="sealed" name="DeserializationFactory">
+			<plx:implementsInterface dataTypeName="I{$ModelDeserializationName}"/>
+			<plx:field name="{$PrivateMemberPrefix}Context" visibility="private" dataTypeName="{$ModelContextName}"/>
+			<plx:function name=".construct" visibility="public">
+				<plx:param name="context" dataTypeName="{$ModelContextName}"/>
+				<plx:assign>
+					<plx:left>
+						<plx:callThis name="{$PrivateMemberPrefix}Context" type="field"/>
+					</plx:left>
+					<plx:right>
+						<plx:nameRef type="parameter" name="context"/>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="{$PrivateMemberPrefix}IsDeserializing" type="field">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="context"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:trueKeyword/>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
+			<plx:function name="Dispose" visibility="private">
+				<plx:interfaceMember dataTypeName="IDisposable" memberName="Dispose"/>
+				<plx:assign>
+					<plx:left>
+						<plx:callInstance name="{$PrivateMemberPrefix}IsDeserializing" type="field">
+							<plx:callObject>
+								<plx:callThis name="{$PrivateMemberPrefix}Context" type="field"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:falseKeyword/>
+					</plx:right>
+				</plx:assign>
+			</plx:function>
 			<xsl:apply-templates mode="GenerateDeserializationContextMethods" select="$AbsorbedObjects">
 				<xsl:with-param name="Model" select="$Model"/>
 				<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
 			</xsl:apply-templates>
-		</plx:Class>
-		<plx:Property visibility="Public" name="IsDeserializing">
-			<plx:Param type="RetVal" name="" dataTypeName="Boolean" dataTypeQualifier="System"/>
-			<plx:Get>
-				<plx:Return>
-					<plx:CallInstance name="{$PrivateMemberPrefix}IsDeserializing" type="Field">
-						<plx:CallObject>
-							<plx:ThisKeyword/>
-						</plx:CallObject>
-					</plx:CallInstance>
-				</plx:Return>
-			</plx:Get>
-		</plx:Property>
+		</plx:class>
+		<plx:property visibility="public" name="IsDeserializing">
+			<plx:returns dataTypeName=".boolean"/>
+			<plx:get>
+				<plx:return>
+					<plx:callThis name="{$PrivateMemberPrefix}IsDeserializing" type="field"/>
+				</plx:return>
+			</plx:get>
+		</plx:property>
 	</xsl:template>
 
 	<!--Template applied to ao:Object nodes to kick off GenerateDeserializationContextMethod
@@ -172,9 +160,8 @@
 			</xsl:apply-templates>
 		</xsl:variable>
 		<xsl:variable name="properties" select="msxsl:node-set($propertiesFragment)/child::*"/>
-		<plx:Function name="Create{$ClassName}" visibility="Private">
-			<plx:InterfaceMember member="Create{$ClassName}" dataTypeName="I{$ModelDeserializationName}"/>
-			<plx:Param type="RetVal" name="" dataTypeName="{$ClassName}"/>
+		<plx:function name="Create{$ClassName}" visibility="private">
+			<plx:interfaceMember memberName="Create{$ClassName}" dataTypeName="I{$ModelDeserializationName}"/>
 			<xsl:variable name="mandatoryParametersFragment">
 				<xsl:call-template name="GenerateMandatoryParameters">
 					<xsl:with-param name="properties" select="$properties"/>
@@ -182,29 +169,30 @@
 				</xsl:call-template>
 			</xsl:variable>
 			<xsl:variable name="mandatoryParameters" select="msxsl:node-set($mandatoryParametersFragment)"/>
-			<xsl:copy-of select="$mandatoryParameters/plx:Param"/>
-			<plx:Return>
-				<plx:CallNew dataTypeName="{$ClassName}{$ImplementationClassSuffix}">
-					<plx:PassParam>
-						<plx:Value type="Local" data="{$PrivateMemberPrefix}Context"/>
-					</plx:PassParam>
+			<xsl:copy-of select="$mandatoryParameters/plx:param"/>
+			<plx:returns dataTypeName="{$ClassName}"/>
+			<plx:return>
+				<plx:callNew dataTypeName="{$ClassName}{$ImplementationClassSuffix}">
+					<plx:passParam>
+						<plx:nameRef name="{$PrivateMemberPrefix}Context"/>
+					</plx:passParam>
 					<xsl:for-each select="$mandatoryParameters/child::*">
 						<xsl:choose>
-							<!--Change plx:Param tags from the GenerateMandatoryParameters 
-							template to plx:PassParam tags-->
-							<xsl:when test="local-name()='Param'">
-								<plx:PassParam>
-									<plx:Value type="Parameter" data="{@name}"/>
-								</plx:PassParam>
+							<!--Change plx:param tags from the GenerateMandatoryParameters 
+							template to plx:passParam tags-->
+							<xsl:when test="local-name()='param'">
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="{@name}"/>
+								</plx:passParam>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:copy-of select="."/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:for-each>
-				</plx:CallNew>
-			</plx:Return>
-		</plx:Function>
+				</plx:callNew>
+			</plx:return>
+		</plx:function>
 	</xsl:template>
 
 	<xsl:template name="GenerateModelContextMethods">
@@ -323,25 +311,25 @@
 	<xsl:template name="GetValueTypeValueConstraintCode">
 		<xsl:param name="ModelContextName"/>
 		<xsl:param name="name"/>
-		<plx:Condition>
-			<plx:Test>
-				<plx:Operator type="BooleanNot">
-					<plx:CallStatic dataTypeName="{$ModelContextName}" name="{$ValueConstraintFor}{$name}">
-						<plx:PassParam>
-							<plx:Value type="Parameter" data="newValue"/>
-						</plx:PassParam>
-						<plx:PassParam>
-							<plx:Value type="Parameter" data="throwOnFailure"/>
-						</plx:PassParam>
-					</plx:CallStatic>
-				</plx:Operator>
-			</plx:Test>
-			<plx:Body>
-				<plx:Return>
-					<plx:FalseKeyword/>
-				</plx:Return>
-			</plx:Body>
-		</plx:Condition>
+		<plx:branch>
+			<plx:condition>
+				<plx:unaryOperator type="booleanNot">
+					<plx:callStatic dataTypeName="{$ModelContextName}" name="{$ValueConstraintFor}{$name}">
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="newValue"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="throwOnFailure"/>
+						</plx:passParam>
+					</plx:callStatic>
+				</plx:unaryOperator>
+			</plx:condition>
+			<plx:body>
+				<plx:return>
+					<plx:falseKeyword/>
+				</plx:return>
+			</plx:body>
+		</plx:branch>
 	</xsl:template>
 
 	<xsl:template name="BuildValueConstraintValidationFunctions">
@@ -391,123 +379,123 @@
 				<xsl:with-param name="DataType" select="$DataType"/>
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="isStringValue" select="$valueType='String'"/>
-		<plx:Function static="true" name="{$FunctionName}" visibility="Private">
-			<plx:Param name="" type="RetVal" dataTypeName="Boolean" dataTypeQualifier="System"/>
-			<plx:Param name="value" type="In">
+		<xsl:variable name="isStringValue" select="$valueType='string'"/>
+		<plx:function modifier="static" name="{$FunctionName}" visibility="private">
+			<plx:param name="value">
 				<xsl:copy-of select="$DataType/@*"/>
 				<xsl:copy-of select="$DataType/child::*"/>
-			</plx:Param>
-			<plx:Param name="throwOnFailure" dataTypeName="Boolean" dataTypeQualifier="System"/>
+			</plx:param>
+			<plx:param name="throwOnFailure" dataTypeName=".boolean"/>
+			<plx:returns dataTypeName=".boolean"/>
 			<xsl:variable name="ValueRangeOperatorsFragment">
 				<xsl:for-each select="orm:ValueRanges/orm:ValueRange">
 					<xsl:choose>
 						<xsl:when test="@MinValue=@MaxValue">
-							<plx:Operator type="Equality">
-								<plx:Left>
-									<plx:Value type="Parameter" data="value"/>
-								</plx:Left>
-								<plx:Right>
+							<plx:binaryOperator type="equality">
+								<plx:left>
+									<plx:nameRef type="parameter" name="value"/>
+								</plx:left>
+								<plx:right>
 									<xsl:choose>
 										<xsl:when test="$isStringValue">
-											<plx:String>
+											<plx:string>
 												<xsl:value-of select="@MinValue"/>
-											</plx:String>
+											</plx:string>
 										</xsl:when>
 										<xsl:otherwise>
-											<plx:Value type="{$valueType}" data="{@MinValue}"/>
+											<plx:value type="{$valueType}" data="{@MinValue}"/>
 										</xsl:otherwise>
 									</xsl:choose>
-								</plx:Right>
-							</plx:Operator>
+								</plx:right>
+							</plx:binaryOperator>
 						</xsl:when>
 						<xsl:otherwise>
-							<plx:Operator type="BooleanAnd">
-								<plx:Left>
-									<plx:Operator type="LessThanOrEqual">
+							<plx:binaryOperator type="booleanAnd">
+								<plx:left>
+									<plx:binaryOperator type="lessThanOrEqual">
 										<xsl:if test="@MinInclusion='Open'">
 											<xsl:attribute name="type">
-												<xsl:text>LessThan</xsl:text>
+												<xsl:text>lessThan</xsl:text>
 											</xsl:attribute>
 										</xsl:if>
-										<plx:Left>
+										<plx:left>
 											<xsl:choose>
 												<xsl:when test="$isStringValue">
-													<plx:String>
+													<plx:string>
 														<xsl:value-of select="@MinValue"/>
-													</plx:String>
+													</plx:string>
 												</xsl:when>
 												<xsl:otherwise>
-													<plx:Value type="{$valueType}" data="{@MinValue}"/>
+													<plx:value type="{$valueType}" data="{@MinValue}"/>
 												</xsl:otherwise>
 											</xsl:choose>
-										</plx:Left>
-										<plx:Right>
-											<plx:Value type="Parameter" data="value"/>
-										</plx:Right>
-									</plx:Operator>
-								</plx:Left>
-								<plx:Right>
-									<plx:Operator type="LessThanOrEqual">
+										</plx:left>
+										<plx:right>
+											<plx:nameRef type="parameter" name="value"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="lessThanOrEqual">
 										<xsl:if test="@MaxInclusion='Open'">
 											<xsl:attribute name="type">
-												<xsl:text>LessThan</xsl:text>
+												<xsl:text>lessThan</xsl:text>
 											</xsl:attribute>
 										</xsl:if>
-										<plx:Left>
-											<plx:Value type="Parameter" data="value"/>
-										</plx:Left>
-										<plx:Right>
+										<plx:left>
+											<plx:nameRef type="parameter" name="value"/>
+										</plx:left>
+										<plx:right>
 											<xsl:choose>
 												<xsl:when test="$isStringValue">
-													<plx:String>
+													<plx:string>
 														<xsl:value-of select="@MaxValue"/>
-													</plx:String>
+													</plx:string>
 												</xsl:when>
 												<xsl:otherwise>
-													<plx:Value type="{$valueType}" data="{@MaxValue}"/>
+													<plx:value type="{$valueType}" data="{@MaxValue}"/>
 												</xsl:otherwise>
 											</xsl:choose>
-										</plx:Right>
-									</plx:Operator>
-								</plx:Right>
-							</plx:Operator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:binaryOperator>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:for-each>
 			</xsl:variable>
-			<plx:Condition>
-				<plx:Test>
-					<plx:Operator type="BooleanNot">
+			<plx:branch>
+				<plx:condition>
+					<plx:unaryOperator type="booleanNot">
 						<xsl:for-each select="msxsl:node-set($ValueRangeOperatorsFragment)/child::*">
 							<xsl:if test="position()=1">
 								<xsl:call-template name="CombineElements">
-									<xsl:with-param name="OperatorType" select="'BooleanOr'"/>
+									<xsl:with-param name="OperatorType" select="'booleanOr'"/>
 								</xsl:call-template>
 							</xsl:if>
 						</xsl:for-each>
-					</plx:Operator>
-				</plx:Test>
-				<plx:Body>
-					<plx:Condition>
-						<plx:Test>
-							<plx:Value type="Parameter" data="throwOnFailure"/>
-						</plx:Test>
-						<plx:Body>
-							<plx:Throw>
-								<plx:CallNew dataTypeName="ArgumentOutOfRangeException" dataTypeQualifier="System" type="New"/>
-							</plx:Throw>
-						</plx:Body>
-					</plx:Condition>
-					<plx:Return>
-						<plx:FalseKeyword/>
-					</plx:Return>
-				</plx:Body>
-			</plx:Condition>
-			<plx:Return>
-				<plx:TrueKeyword/>
-			</plx:Return>
-		</plx:Function>
+					</plx:unaryOperator>
+				</plx:condition>
+				<plx:body>
+					<plx:branch>
+						<plx:condition>
+							<plx:nameRef type="parameter" name="throwOnFailure"/>
+						</plx:condition>
+						<plx:body>
+							<plx:throw>
+								<plx:callNew dataTypeName="ArgumentOutOfRangeException" dataTypeQualifier="System"/>
+							</plx:throw>
+						</plx:body>
+					</plx:branch>
+					<plx:return>
+						<plx:falseKeyword/>
+					</plx:return>
+				</plx:body>
+			</plx:branch>
+			<plx:return>
+				<plx:trueKeyword/>
+			</plx:return>
+		</plx:function>
 	</xsl:template>
 	<xsl:template name="CombineElements">
 		<xsl:param name="OperatorType"/>
@@ -516,11 +504,11 @@
 				<xsl:copy-of select="."/>
 			</xsl:when>
 			<xsl:otherwise>
-				<plx:Operator type="{$OperatorType}">
-					<plx:Left>
+				<plx:binaryOperator type="{$OperatorType}">
+					<plx:left>
 						<xsl:copy-of select="."/>
-					</plx:Left>
-					<plx:Right>
+					</plx:left>
+					<plx:right>
 						<xsl:for-each select="following-sibling::*">
 							<xsl:if test="position()=1">
 								<xsl:call-template name="CombineElements">
@@ -528,8 +516,8 @@
 								</xsl:call-template>
 							</xsl:if>
 						</xsl:for-each>
-					</plx:Right>
-				</plx:Operator>
+					</plx:right>
+				</plx:binaryOperator>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

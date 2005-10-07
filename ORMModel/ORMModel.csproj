@@ -274,7 +274,6 @@
       <LastGenOutput>ORMCore.AttachRules.cs</LastGenOutput>
     </Content>
     <None Include="Plix.xml">
-      <LastGenOutput>Plix.cs</LastGenOutput>
     </None>
     <Content Include="ObjectModel\VerbalizationGenerator.xml">
       <Generator>NUPlixLoader</Generator>

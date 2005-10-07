@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="ExtensionExample" targetNamespace="http://Schemas.Neumont.edu/ORM/ExtensionExample" elementFormDefault="qualified" xmlns="http://Schemas.Neumont.edu/ORM/ExtensionExample" xmlns:mstns="http://Schemas.Neumont.edu/ORM/ExtensionExample" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema
+	id="ExtensionExample"
+	targetNamespace="http://schemas.neumont.edu/ORM/ExtensionExample"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified" 
+	xmlns="http://schemas.neumont.edu/ORM/ExtensionExample"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="SampleElement">
         <xs:complexType>
             <xs:sequence />

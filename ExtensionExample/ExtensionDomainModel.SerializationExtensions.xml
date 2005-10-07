@@ -1,46 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <se:CustomSerializedElements
-    xmlns:se="http://Schemas.Neumont.edu/Private/SerializationExtensions"
-    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix">
+    xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
+    xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<se:MetaModel Class="ExtensionDomainModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="ormExtension" URI="http://Schemas.Neumont.edu/ORM/ExtensionExample" SchemaFile="ExtensionDomainModelTest.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="ormExtension" URI="http://schemas.neumont.edu/ORM/ExtensionExample" SchemaFile="ExtensionDomainModelTest.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 	</se:MetaModel>
 	<se:Element Class="MyCustomExtensionElement" Name="SampleElement">
 		<se:ConditionalSerialization>
-			<plx:Return>
-				<plx:Operator type="BooleanOr">
-					<plx:Left>
-						<plx:Operator type="Inequality">
-							<plx:Left>
-								<plx:CallStatic name="None" dataTypeName="TestEnumeration" type="Field"/>
-							</plx:Left>
-							<plx:Right>
-								<plx:CallInstance name="CustomEnum" type="Property">
-									<plx:CallObject>
-										<plx:ThisKeyword/>
-									</plx:CallObject>
-								</plx:CallInstance>
-							</plx:Right>
-						</plx:Operator>
-					</plx:Left>
-					<plx:Right>
-						<plx:Operator type="Inequality">
-							<plx:Left>
-								<plx:String>Default value</plx:String>
-							</plx:Left>
-							<plx:Right>
-								<plx:CallInstance name="TestProperty" type="Property">
-									<plx:CallObject>
-										<plx:ThisKeyword/>
-									</plx:CallObject>
-								</plx:CallInstance>
-							</plx:Right>
-						</plx:Operator>
-					</plx:Right>
-				</plx:Operator>
-			</plx:Return>
+			<plx:return>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:callStatic name="None" dataTypeName="TestEnumeration" type="field"/>
+							</plx:left>
+							<plx:right>
+								<plx:callThis name="CustomEnum" type="property"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:string>Default value</plx:string>
+							</plx:left>
+							<plx:right>
+								<plx:callThis name="TestProperty" type="property"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:return>
 		</se:ConditionalSerialization>
 	</se:Element>
 </se:CustomSerializedElements>

@@ -2,8 +2,8 @@
 <xs:schema id="PlixLoader"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
-	targetNamespace="http://Schemas.Neumont.edu/ORM/SDK/TestSuite"
-	xmlns="http://Schemas.Neumont.edu/ORM/SDK/TestSuite"
+	targetNamespace="http://schemas.neumont.edu/ORM/SDK/TestSuite"
+	xmlns="http://schemas.neumont.edu/ORM/SDK/TestSuite"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	>
 	<xs:element name="Suites" type="SuitesType"/>

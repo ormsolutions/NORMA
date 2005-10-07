@@ -610,7 +610,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				CloseReportWriter();
 				XmlWriter writer = XmlTextWriter.Create(myReportStream, DetachableWriterSettings);
 				writer.WriteStartDocument();
-				writer.WriteStartElement("TestReport", "http://Schemas.Neumont.edu/ORM/SDK/TestReport");
+				writer.WriteStartElement("TestReport", "http://schemas.neumont.edu/ORM/SDK/TestReport");
 				myReportWriter = writer;
 			}
 			private void CloseReportWriter()
@@ -649,7 +649,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 				{
 					myWriter = writer;
 					writer.WriteStartDocument();
-					writer.WriteStartElement("Suites", "http://Schemas.Neumont.edu/ORM/SDK/TestSuiteReport");
+					writer.WriteStartElement("Suites", "http://schemas.neumont.edu/ORM/SDK/TestSuiteReport");
 				}
 				#endregion // Constructor
 				#region Console interaction

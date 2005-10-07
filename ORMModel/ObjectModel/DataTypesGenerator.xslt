@@ -2,90 +2,130 @@
 <xsl:stylesheet 
     version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix">
+    xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
+	<!--<xsl:output indent="yes"/>-->
+	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:template match="DataTypes">
-		<plx:Root xmlns:plx="http://Schemas.Neumont.edu/CodeGeneration/Plix">
-			<plx:Using name="System"/>
-			<plx:Namespace name="Neumont.Tools.ORM.ObjectModel">
-				<plx:Enum name="PortableDataType" visibility="Public">
-					<plx:Attribute dataTypeName="CLSCompliant" dataTypeQualifier="System">
-						<plx:PassParam>
-							<plx:TrueKeyword/>
-						</plx:PassParam>
-					</plx:Attribute>
+		<plx:root xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+			<plx:namespaceImport name="System"/>
+			<plx:namespace name="{$CustomToolNamespace}">
+				<plx:enum name="PortableDataType" visibility="public">
+					<plx:leadingInfo>
+						<plx:pragma type="region" data="PortableDataType Enum"/>
+						<plx:docComment>
+							<summary>A list of predefined data types. One DataType-derived class is defined for each value.</summary>
+						</plx:docComment>
+					</plx:leadingInfo>
+					<plx:trailingInfo>
+						<plx:pragma type="closeRegion" data="PortableDataType Enum"/>
+					</plx:trailingInfo>
+					<plx:attribute dataTypeName="CLSCompliant">
+						<plx:passParam>
+							<plx:trueKeyword/>
+						</plx:passParam>
+					</plx:attribute>
 					<xsl:for-each select="DataType">
+						<xsl:variable name="dataTypeName" select="@name"/>
 						<xsl:for-each select="SubType">
-							<!-- UNDONE: Add comment text when comments are supported -->
-							<plx:EnumItem name="{../@name}{@name}"/>
+							<plx:enumItem name="{$dataTypeName}{@name}">
+								<xsl:if test="comment">
+									<plx:leadingInfo>
+										<plx:docComment>
+											<xsl:for-each select="comment">
+												<xsl:element name="{@type}">
+													<xsl:value-of select="."/>
+												</xsl:element>
+											</xsl:for-each>
+										</plx:docComment>
+									</plx:leadingInfo>
+								</xsl:if>
+							</plx:enumItem>
 						</xsl:for-each>
 					</xsl:for-each>
-				</plx:Enum>
-				<plx:Class name="ORMModel" visibility="Public" partial="true">
-					<plx:Class name="AddIntrinsicDataTypesFixupListener" visibility="Private" partial="true" sealed="true">
-						<plx:Field name="typeArray" dataTypeName="Type" dataTypeQualifier="System" dataTypeIsSimpleArray="true" static="true" visibility="Private">
-							<plx:Initialize>
-								<plx:CallNew dataTypeName="Type" dataTypeQualifier="System" dataTypeIsSimpleArray="true" type="New">
-									<plx:ArrayInitializer>
+				</plx:enum>
+				<plx:class name="ORMModel" visibility="public" partial="true">
+					<plx:leadingInfo>
+						<plx:pragma type="region" data="Load-time fixup listeners"/>
+					</plx:leadingInfo>
+					<plx:trailingInfo>
+						<plx:pragma type="closeRegion" data="Load-time fixup listeners"/>
+					</plx:trailingInfo>
+					<plx:class name="AddIntrinsicDataTypesFixupListener" visibility="private" partial="true" modifier="sealed">
+						<plx:field name="typeArray" dataTypeName="Type" dataTypeIsSimpleArray="true" static="true" visibility="private">
+							<plx:initialize>
+								<plx:callNew dataTypeName="Type" dataTypeIsSimpleArray="true">
+									<plx:arrayInitializer>
 										<xsl:for-each select="DataType">
+											<xsl:variable name="dataTypeName" select="@name"/>
 											<xsl:if test="not(@enumOnly)">
 												<xsl:for-each select="SubType">
-													<plx:PassParam passStyle="In">
-														<plx:TypeOf dataTypeName="{@name}{../@name}DataType" />
-													</plx:PassParam>
+													<plx:passParam type="in">
+														<plx:typeOf dataTypeName="{@name}{$dataTypeName}DataType" />
+													</plx:passParam>
 												</xsl:for-each>
 											</xsl:if>
 										</xsl:for-each>
-									</plx:ArrayInitializer>
-								</plx:CallNew>
-							</plx:Initialize>
-						</plx:Field>
-					</plx:Class>
-				</plx:Class>
+									</plx:arrayInitializer>
+								</plx:callNew>
+							</plx:initialize>
+						</plx:field>
+					</plx:class>
+				</plx:class>
+			</plx:namespace>
+			<plx:namespace name="{$CustomToolNamespace}">
+				<plx:leadingInfo>
+					<plx:pragma type="region" data="Bind data types to enums and localized names"/>
+				</plx:leadingInfo>
+				<plx:trailingInfo>
+					<plx:pragma type="closeRegion" data="Bind data types to enums and localized names"/>
+				</plx:trailingInfo>
 				<xsl:for-each select="DataType">
+					<xsl:variable name="dataTypeName" select="@name"/>
 					<xsl:if test="not(@enumOnly)">
 						<xsl:for-each select="SubType">
-							<xsl:choose>
-								<xsl:when test="not(@name = '')">
-									<plx:Class name="{@name}{../@name}DataType" partial="true" visibility="Public">
-										<plx:Property name="PortableDataType" override="true" visibility="Public">
-											<plx:Param name="" type="RetVal" dataTypeName="PortableDataType"/>
-											<plx:Get>
-												<plx:Return>
-													<plx:CallStatic name="{../@name}{@name}" dataTypeName="PortableDataType" type="Field"/>
-												</plx:Return>
-											</plx:Get>
-										</plx:Property>
-										<plx:Function override="true" name="ToString" visibility="Public">
-											<plx:Param name="" type="RetVal" dataTypeName="String" dataTypeQualifier="System"/>
-											<plx:Return>
-												<plx:CallStatic name="PortableDataType{../@name}{@name}" dataTypeName="ResourceStrings" type="Property"/>
-											</plx:Return>
-										</plx:Function>
-									</plx:Class>
-								</xsl:when>
-								<xsl:otherwise>
-									<plx:Class name="{../@name}DataType" partial="true" visibility="Public">
-										<plx:Property name="PortableDataType" override="true" visibility="Public">
-											<plx:Param name="" type="RetVal" dataTypeName="PortableDataType"/>
-											<plx:Get>
-												<plx:Return>
-													<plx:CallStatic name="{../@name}" dataTypeName="PortableDataType" type="Property"/>
-												</plx:Return>
-											</plx:Get>
-										</plx:Property>
-										<plx:Function override="true" name="ToString" visibility="Public">
-											<plx:Param name="" type="RetVal" dataTypeName="String" dataTypeQualifier="System"/>
-											<plx:Return>
-												<plx:CallStatic name="PortableDataType{../@name}" dataTypeName="ResourceStrings" type="Property"/>
-											</plx:Return>
-										</plx:Function>
-									</plx:Class>
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:variable name="subTypeName" select="@name"/>
+							<plx:class name="{$subTypeName}{$dataTypeName}DataType" partial="true" visibility="public">
+								<xsl:if test="comment">
+									<plx:leadingInfo>
+										<plx:docComment>
+											<xsl:for-each select="comment">
+												<xsl:element name="{@type}">
+													<xsl:value-of select="."/>
+												</xsl:element>
+											</xsl:for-each>
+										</plx:docComment>
+									</plx:leadingInfo>
+								</xsl:if>
+								<plx:property name="PortableDataType" modifier="override" visibility="public">
+									<plx:leadingInfo>
+										<plx:docComment>
+											<summary>PortableDataType enum value for this type</summary>
+										</plx:docComment>
+									</plx:leadingInfo>
+									<plx:returns dataTypeName="PortableDataType"/>
+									<plx:get>
+										<plx:return>
+											<plx:callStatic name="{$dataTypeName}{$subTypeName}" dataTypeName="PortableDataType" type="field"/>
+										</plx:return>
+									</plx:get>
+								</plx:property>
+								<plx:function modifier="override" name="ToString" visibility="public">
+									<plx:leadingInfo>
+										<plx:docComment>
+											<summary>Localized data type name</summary>
+										</plx:docComment>
+									</plx:leadingInfo>
+									<plx:returns dataTypeName=".string"/>
+									<plx:return>
+										<plx:callStatic name="PortableDataType{$dataTypeName}{$subTypeName}" dataTypeName="ResourceStrings" type="property"/>
+									</plx:return>
+								</plx:function>
+							</plx:class>
 						</xsl:for-each>
 					</xsl:if>
 				</xsl:for-each>
-			</plx:Namespace>
-		</plx:Root>
+			</plx:namespace>
+		</plx:root>
 	</xsl:template>
 </xsl:stylesheet>
