@@ -6,7 +6,7 @@
 	xmlns="http://schemas.neumont.edu/ORM/SDK/Verbalization"
 	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
 	<xs:simpleType name="ModalityEnum">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="alethic"/>

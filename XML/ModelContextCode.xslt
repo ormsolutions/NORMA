@@ -1170,7 +1170,7 @@
 						</plx:condition>
 						<plx:body>
 							<plx:return>
-								<plx:binaryOperator type="equality">
+								<plx:binaryOperator type="identityEquality">
 									<plx:left>
 										<plx:nameRef name="currentInstance"/>
 									</plx:left>
