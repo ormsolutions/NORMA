@@ -72,6 +72,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// specified by the parameter order
 		/// </summary>
 		/// <param name="readingOrders">The ReadingOrder collection to search</param>
+		/// <param name="ignoreReadingOrder">Ignore this reading order in the readingOrders collection</param>
 		/// <param name="matchLeadRole">Choose any order that begins with this role. If defaultRoleOrder is also
 		/// set and starts with this role and the order is defined, then use it.</param>
 		/// <param name="matchAnyLeadRole">Same as matchAnyLeadRole, except with a set match</param>
@@ -80,7 +81,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="defaultRoleOrder">The default order to match</param>
 		/// <param name="allowAnyOrder">If true, use the first reading order if there are no other matches</param>
 		/// <returns>A matching reading order. Can return null if allowAnyOrder is false, or the readingOrders collection is empty.</returns>
-		public static ReadingOrder GetMatchingReadingOrder(ReadingOrderMoveableCollection readingOrders, Role matchLeadRole, RoleMoveableCollection matchAnyLeadRole, bool invertLeadRoles, bool noForwardText, RoleMoveableCollection defaultRoleOrder, bool allowAnyOrder)
+		public static ReadingOrder GetMatchingReadingOrder(ReadingOrderMoveableCollection readingOrders, ReadingOrder ignoreReadingOrder, Role matchLeadRole, RoleMoveableCollection matchAnyLeadRole, bool invertLeadRoles, bool noForwardText, RoleMoveableCollection defaultRoleOrder, bool allowAnyOrder)
 		{
 			// UNDONE: Implement noForwardText verification
 			int orderCount = readingOrders.Count;
@@ -88,6 +89,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			bool blockTestDefault = false; // If we have specific lead role requirements, then default is only used to enforce them, or as the default for any allowed order
 			if (orderCount != 0)
 			{
+				int ignoreReadingOrderIndex = (ignoreReadingOrder == null) ? -1 : readingOrders.IndexOf(ignoreReadingOrder);
+				if (ignoreReadingOrderIndex != -1 && orderCount == 1)
+				{
+					return null;
+				}
+
 				// Match a single lead role, prefer the default order
 				if (matchLeadRole != null)
 				{
@@ -99,7 +106,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							Role currentRole = defaultRoleOrder[i];
 							if (currentRole != matchLeadRole)
 							{
-								if (GetMatchingReadingOrder(readingOrders, currentRole, defaultRoleOrder, ref retVal))
+								if (GetMatchingReadingOrder(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, ref retVal))
 								{
 									break;
 								}
@@ -108,7 +115,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						GetMatchingReadingOrder(readingOrders, matchLeadRole, defaultRoleOrder, ref retVal);
+						GetMatchingReadingOrder(readingOrders, ignoreReadingOrderIndex, matchLeadRole, defaultRoleOrder, ref retVal);
 					}
 					if (retVal == null && matchAnyLeadRole == null)
 					{
@@ -129,7 +136,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								Role currentRole = defaultRoleOrder[i];
 								if (!matchAnyLeadRole.Contains(currentRole))
 								{
-									if (GetMatchingReadingOrder(readingOrders, currentRole, defaultRoleOrder, ref retVal))
+									if (GetMatchingReadingOrder(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, ref retVal))
 									{
 										break;
 									}
@@ -141,7 +148,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						for (int i = 0; i < matchAnyCount; ++i)
 						{
-							if (GetMatchingReadingOrder(readingOrders, matchAnyLeadRole[i], defaultRoleOrder, ref retVal))
+							if (GetMatchingReadingOrder(readingOrders, ignoreReadingOrderIndex, matchAnyLeadRole[i], defaultRoleOrder, ref retVal))
 							{
 								break;
 							}
@@ -157,6 +164,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					for (int i = 0; i < orderCount; ++i)
 					{
+						if (i == ignoreReadingOrderIndex)
+						{
+							continue;
+						}
 						ReadingOrder testOrder = readingOrders[i];
 						RoleMoveableCollection testRoles = testOrder.RoleCollection;
 						int testRolesCount = testRoles.Count;
@@ -178,7 +189,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				if (retVal == null && allowAnyOrder)
 				{
-					retVal = readingOrders[0];
+					retVal = readingOrders[(ignoreReadingOrderIndex == 0) ? 1 : 0];
 				}
 			}
 			return retVal;
@@ -187,12 +198,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Helper function for public method of the same name
 		/// </summary>
 		/// <param name="readingOrders">The ReadingOrder collection to search</param>
+		/// <param name="ignoreReadingOrderIndex">Ignore the reading order at this index</param>
 		/// <param name="matchLeadRole">The role to match as a lead</param>
 		/// <param name="defaultRoleOrder">The default role order. If not specified, any match will be considered optimal</param>
 		/// <param name="matchingOrder">The matching order. Can be non-null to start with</param>
 		/// <returns>true if an optimal match was found. retVal will be false if a match is found but
 		/// a more optimal match is possible</returns>
-		private static bool GetMatchingReadingOrder(ReadingOrderMoveableCollection readingOrders, Role matchLeadRole, RoleMoveableCollection defaultRoleOrder, ref ReadingOrder matchingOrder)
+		private static bool GetMatchingReadingOrder(ReadingOrderMoveableCollection readingOrders, int ignoreReadingOrderIndex, Role matchLeadRole, RoleMoveableCollection defaultRoleOrder, ref ReadingOrder matchingOrder)
 		{
 			int orderCount = readingOrders.Count;
 			ReadingOrder testOrder;
@@ -205,6 +217,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					for (int i = 0; i < orderCount; ++i)
 					{
+						if (i == ignoreReadingOrderIndex)
+						{
+							continue;
+						}
 						testOrder = readingOrders[i];
 						testRoles = testOrder.RoleCollection;
 						if (testRoles[0] == matchLeadRole)

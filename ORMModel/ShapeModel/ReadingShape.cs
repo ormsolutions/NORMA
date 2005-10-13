@@ -301,6 +301,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 					Debug.Assert(readingOrd != null);
 
 					FactType factType = readingOrd.FactType;
+					if (factType == null || factType.IsRemoved)
+					{
+						return "";
+					}
 					ReadingOrderMoveableCollection readingOrderCollection = factType.ReadingOrderCollection;
 					ReadingOrder primaryReadingOrder = FactType.FindMatchingReadingOrder(factType);
 					int numReadingOrders = readingOrderCollection.Count;

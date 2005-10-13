@@ -3167,6 +3167,10 @@
 								<plx:nameRef name="allReadingOrders"/>
 							</plx:passParam>
 							<plx:passParam>
+								<!-- The ignoreReadingOrder param -->
+								<plx:nullKeyword/>
+							</plx:passParam>
+							<plx:passParam>
 								<!-- The matchLeadRole param -->
 								<xsl:choose>
 									<xsl:when test="contains($ReadingChoice,'PrimaryLeadReading')">

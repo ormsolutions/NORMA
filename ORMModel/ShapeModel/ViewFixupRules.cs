@@ -795,14 +795,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							ReadingOrder order = (ReadingOrder)link.Subject;
 							FactType fact = order.FactType;
-							if (!fact.IsRemoved)
+							if (fact != null && !fact.IsRemoved)
 							{
 								ReadingOrderMoveableCollection remainingOrders = fact.ReadingOrderCollection;
 								if (remainingOrders.Count != 0)
 								{
 									RoleMoveableCollection roles = fact.RoleCollection;
-									readingPel.Associate(FactType.GetMatchingReadingOrder(remainingOrders, roles[0], null, false, false, roles, true));
-									return;
+									ReadingOrder newOrder = FactType.GetMatchingReadingOrder(remainingOrders, order, roles[0], null, false, false, roles, true);
+									if (newOrder != null)
+									{
+										readingPel.Associate(newOrder);
+										return;
+									}
 								}
 							}
 						}
