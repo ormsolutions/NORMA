@@ -72,7 +72,7 @@
 		<xsl:param name="ModelContextName"/>
 		<xsl:param name="properties"/>
 		<xsl:param name="className"/>
-		<plx:function name="Create{$className}" visibility="public">
+		<plx:function name="Create{$className}" visibility="{$ModelContextInterfaceImplementationVisibility}">
 			<plx:interfaceMember memberName="Create{$className}" dataTypeName="I{$ModelContextName}"/>
 			<xsl:variable name="mandatoryParametersFragment">
 				<xsl:call-template name="GenerateMandatoryParameters">
@@ -175,6 +175,9 @@
 			<xsl:with-param name="properties" select="$properties"/>
 			<xsl:with-param name="className" select="$className"/>
 		</xsl:call-template>
+		<!-- PLIX_TODO: Allow comment and pragma elements inside classes. -->
+		<!--<plx:comment blankLine="true"/>
+		<plx:pragma type="region" data="{$className}"/>-->
 		<plx:field visibility="private" readOnly="true" name="{$PrivateMemberPrefix}{$className}Collection" dataTypeName="List">
 			<plx:passTypeParam dataTypeName="{$className}"/>
 			<plx:initialize>
@@ -183,7 +186,7 @@
 				</plx:callNew>
 			</plx:initialize>
 		</plx:field>
-		<plx:property visibility="public" name="{$className}Collection">
+		<plx:property visibility="{$ModelContextInterfaceImplementationVisibility}" name="{$className}Collection">
 			<plx:interfaceMember memberName="{$className}Collection" dataTypeName="I{$ModelContextName}"/>
 			<plx:returns dataTypeName="ReadOnlyCollection">
 				<plx:passTypeParam dataTypeName="{$className}"/>
@@ -226,6 +229,9 @@
 				</xsl:call-template>
 			</xsl:for-each>
 		</plx:class>
+		<!-- PLIX_TODO: Allow comment and pragma elements inside classes. -->
+		<!--<plx:pragma type="closeRegion" data="{$className}"/>
+		<plx:comment blankLine="true"/>-->
 	</xsl:template>
 	<xsl:template name="GenerateImplementationProperty">
 		<xsl:param name="className"/>
@@ -947,7 +953,7 @@
 		<xsl:param name="ModelContextName"/>
 		<xsl:param name="className"/>
 		<xsl:if test="@unique='true' and not(@customType='true')">
-			<plx:function name="Get{$className}By{@name}" visibility="public">
+			<plx:function name="Get{$className}By{@name}" visibility="{$ModelContextInterfaceImplementationVisibility}">
 				<plx:interfaceMember memberName="Get{$className}By{@name}" dataTypeName="I{$ModelContextName}"/>
 				<plx:param name="value">
 					<xsl:copy-of select="DataType/@*"/>
@@ -1248,7 +1254,7 @@
 		<xsl:param name="ModelContextName"/>
 		<xsl:param name="uniqueObjectName"/>
 		<xsl:param name="parameters"/>
-		<plx:function visibility="public" name="Get{$uniqueObjectName}By{@Name}">
+		<plx:function visibility="{$ModelContextInterfaceImplementationVisibility}" name="Get{$uniqueObjectName}By{@Name}">
 			<plx:interfaceMember memberName="Get{$uniqueObjectName}By{@Name}" dataTypeName="I{$ModelContextName}"/>
 			<xsl:for-each select="$parameters">
 				<plx:param name="{@name}">
@@ -1474,14 +1480,14 @@
 				</plx:assign>
 			</plx:function>
 
-			<plx:function visibility="private" name="GetEnumerator">
+			<plx:function visibility="private" name="GetObjectEnumerator">
 				<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable"/>
 				<plx:returns dataTypeName="IEnumerator"/>
 				<plx:return>
 					<plx:callThis name="GetEnumerator"/>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="private" name="GetTypedEnumerator">
+			<plx:function visibility="public" name="GetEnumerator">
 				<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable">
 					<plx:passTypeParam>
 						<xsl:copy-of select="DataType/plx:passTypeParam/@*"/>
@@ -1503,7 +1509,7 @@
 				</plx:return>
 			</plx:function>
 
-			<plx:function visibility="private" name="Add">
+			<plx:function visibility="public" name="Add">
 				<plx:interfaceMember memberName="Add">
 					<xsl:copy-of select="DataType/@*"/>
 					<xsl:copy-of select="DataType/child::*"/>
@@ -1575,7 +1581,7 @@
 				</plx:branch>
 			</plx:function>
 
-			<plx:function visibility="private" name="Remove">
+			<plx:function visibility="public" name="Remove">
 				<plx:interfaceMember memberName="Remove">
 					<xsl:copy-of select="DataType/@*"/>
 					<xsl:copy-of select="DataType/child::*"/>
@@ -1660,7 +1666,7 @@
 				</plx:return>
 			</plx:function>
 
-			<plx:function visibility="private" name="Clear">
+			<plx:function visibility="public" name="Clear">
 				<plx:interfaceMember memberName="Clear">
 					<xsl:copy-of select="DataType/@*"/>
 					<xsl:copy-of select="DataType/child::*"/>
@@ -1713,7 +1719,7 @@
 				</plx:loop>
 			</plx:function>
 			
-			<plx:function visibility="private" name="Contains">
+			<plx:function visibility="public" name="Contains">
 				<plx:interfaceMember memberName="Contains">
 					<xsl:copy-of select="DataType/@*"/>
 					<xsl:copy-of select="DataType/child::*"/>
@@ -1734,7 +1740,7 @@
 					</plx:callInstance>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="private" name="CopyTo">
+			<plx:function visibility="public" name="CopyTo">
 				<plx:interfaceMember memberName="CopyTo">
 					<xsl:copy-of select="DataType/@*"/>
 					<xsl:copy-of select="DataType/child::*"/>
@@ -1755,8 +1761,8 @@
 						<plx:nameRef type="parameter" name="arrayIndex"/>
 					</plx:passParam>
 				</plx:callInstance>
-			</plx:function>		
-			<plx:property visibility="private" name="Count">
+			</plx:function>
+			<plx:property visibility="public" name="Count">
 				<plx:interfaceMember memberName="Count">
 					<xsl:copy-of select="DataType/@*"/>
 					<xsl:copy-of select="DataType/child::*"/>
@@ -1772,7 +1778,7 @@
 					</plx:return>
 				</plx:get>
 			</plx:property>
-			<plx:property visibility="private" name="IsReadOnly">
+			<plx:property visibility="public" name="IsReadOnly">
 				<plx:interfaceMember memberName="IsReadOnly">
 					<xsl:copy-of select="DataType/@*"/>
 					<xsl:copy-of select="DataType/child::*"/>

@@ -34,9 +34,35 @@
 		<xsl:param name="ModelContextName"/>
 		<xsl:param name="ModelDeserializationName"/>
 		<plx:class visibility="public" modifier="sealed" name="{$ModelContextName}">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="{$ModelContextName}"/>
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="{$ModelContextName}"/>
+			</plx:trailingInfo>
 			<plx:implementsInterface dataTypeName="I{$ModelContextName}"/>
 			<plx:function name=".construct"  visibility="public"/>
+			<plx:function visibility="{$ModelContextInterfaceImplementationVisibility}" name="BeginDeserialization">
+				<plx:interfaceMember memberName="BeginDeserialization" dataTypeName="I{$ModelContextName}"/>
+				<plx:returns dataTypeName="I{$ModelDeserializationName}"/>
+				<plx:return>
+					<plx:callNew dataTypeName="{$ModelDeserializationName}">
+						<plx:passParam>
+							<plx:thisKeyword/>
+						</plx:passParam>
+					</plx:callNew>
+				</plx:return>
+			</plx:function>
 			<plx:field name="{$PrivateMemberPrefix}IsDeserializing" visibility="private" dataTypeName=".boolean"/>
+			<plx:property visibility="{$ModelContextInterfaceImplementationVisibility}" name="IsDeserializing">
+				<plx:interfaceMember memberName="IsDeserializing" dataTypeName="I{$ModelContextName}"/>
+				<plx:returns dataTypeName=".boolean"/>
+				<plx:get>
+					<plx:return>
+						<plx:callThis name="{$PrivateMemberPrefix}IsDeserializing" type="field"/>
+					</plx:return>
+				</plx:get>
+			</plx:property>
 			<xsl:call-template name="GenerateModelContextMethods">
 				<xsl:with-param name="Model" select="."/>
 				<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
@@ -58,18 +84,13 @@
 		<xsl:param name="Model"/>
 		<xsl:param name="ModelContextName"/>
 		<xsl:param name="ModelDeserializationName"/>
-		<plx:function name="BeginDeserialization" visibility="private">
-			<plx:interfaceMember memberName="BeginDeserialization" dataTypeName="I{$ModelContextName}"/>
-			<plx:returns dataTypeName="I{$ModelDeserializationName}"/>
-			<plx:return>
-				<plx:callNew dataTypeName="DeserializationFactory">
-					<plx:passParam>
-						<plx:thisKeyword/>
-					</plx:passParam>
-				</plx:callNew>
-			</plx:return>
-		</plx:function>
-		<plx:class visibility="private" modifier="sealed" name="DeserializationFactory">
+		<plx:class visibility="private" modifier="sealed" name="{$ModelDeserializationName}">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="{$ModelDeserializationName}"/>
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="{$ModelDeserializationName}"/>
+			</plx:trailingInfo>
 			<plx:implementsInterface dataTypeName="I{$ModelDeserializationName}"/>
 			<plx:field name="{$PrivateMemberPrefix}Context" visibility="private" dataTypeName="{$ModelContextName}"/>
 			<plx:function name=".construct" visibility="public">
@@ -95,7 +116,7 @@
 					</plx:right>
 				</plx:assign>
 			</plx:function>
-			<plx:function name="Dispose" visibility="private">
+			<plx:function name="Dispose" visibility="public">
 				<plx:interfaceMember dataTypeName="IDisposable" memberName="Dispose"/>
 				<plx:assign>
 					<plx:left>
@@ -115,14 +136,6 @@
 				<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
 			</xsl:apply-templates>
 		</plx:class>
-		<plx:property visibility="public" name="IsDeserializing">
-			<plx:returns dataTypeName=".boolean"/>
-			<plx:get>
-				<plx:return>
-					<plx:callThis name="{$PrivateMemberPrefix}IsDeserializing" type="field"/>
-				</plx:return>
-			</plx:get>
-		</plx:property>
 	</xsl:template>
 
 	<!--Template applied to ao:Object nodes to kick off GenerateDeserializationContextMethod
@@ -160,7 +173,7 @@
 			</xsl:apply-templates>
 		</xsl:variable>
 		<xsl:variable name="properties" select="msxsl:node-set($propertiesFragment)/child::*"/>
-		<plx:function name="Create{$ClassName}" visibility="private">
+		<plx:function name="Create{$ClassName}" visibility="public">
 			<plx:interfaceMember memberName="Create{$ClassName}" dataTypeName="I{$ModelDeserializationName}"/>
 			<xsl:variable name="mandatoryParametersFragment">
 				<xsl:call-template name="GenerateMandatoryParameters">
