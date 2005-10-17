@@ -29,6 +29,28 @@
 			<xsl:with-param name="className" select="concat(@name,$AssociationClassSuffix)"/>
 		</xsl:call-template>
 	</xsl:template>
+	<!--Template applied to ao:Object nodes to kick off GenerateDeserializationContextMethod
+	with the appropriate class name-->
+	<xsl:template match="ao:Object" mode="ForGenerateDeserializationContextMethod">
+		<xsl:param name="Model"/>
+		<xsl:param name="ModelDeserializationName"/>
+		<xsl:call-template name="GenerateDeserializationContextMethod">
+			<xsl:with-param name="Model" select="$Model"/>
+			<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
+			<xsl:with-param name="className" select="@name"/>
+		</xsl:call-template>
+	</xsl:template>
+	<!--Template applied to ao:Association nodes to kick off GenerateDeserializationContextMethod
+	with the appropriate class name-->
+	<xsl:template match="ao:Association" mode="ForGenerateDeserializationContextMethod">
+		<xsl:param name="Model"/>
+		<xsl:param name="ModelDeserializationName"/>
+		<xsl:call-template name="GenerateDeserializationContextMethod">
+			<xsl:with-param name="Model" select="$Model"/>
+			<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
+			<xsl:with-param name="className" select="concat(@name,$AssociationClassSuffix)"/>
+		</xsl:call-template>
+	</xsl:template>
 
 	<xsl:template name="GenerateImplementation">
 		<xsl:param name="ModelContextName"/>
@@ -93,7 +115,7 @@
 			</plx:trailingInfo>
 			<plx:implementsInterface dataTypeName="I{$ModelDeserializationName}"/>
 			<plx:field name="{$PrivateMemberPrefix}Context" visibility="private" dataTypeName="{$ModelContextName}"/>
-			<plx:function name=".construct" visibility="public">
+			<plx:function visibility="public" name=".construct">
 				<plx:param name="context" dataTypeName="{$ModelContextName}"/>
 				<plx:assign>
 					<plx:left>
@@ -116,13 +138,13 @@
 					</plx:right>
 				</plx:assign>
 			</plx:function>
-			<plx:function name="Dispose" visibility="public">
+			<plx:function visibility="public" name="Dispose">
 				<plx:interfaceMember dataTypeName="IDisposable" memberName="Dispose"/>
 				<plx:assign>
 					<plx:left>
-						<plx:callInstance name="{$PrivateMemberPrefix}IsDeserializing" type="field">
+						<plx:callInstance type="field"  name="{$PrivateMemberPrefix}IsDeserializing">
 							<plx:callObject>
-								<plx:callThis name="{$PrivateMemberPrefix}Context" type="field"/>
+								<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}Context"/>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:left>
@@ -131,50 +153,27 @@
 					</plx:right>
 				</plx:assign>
 			</plx:function>
-			<xsl:apply-templates mode="GenerateDeserializationContextMethods" select="$AbsorbedObjects">
+			<xsl:apply-templates select="$AbsorbedObjects" mode="ForGenerateDeserializationContextMethod">
 				<xsl:with-param name="Model" select="$Model"/>
 				<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
 			</xsl:apply-templates>
 		</plx:class>
 	</xsl:template>
 
-	<!--Template applied to ao:Object nodes to kick off GenerateDeserializationContextMethod
-	with the appropriate class name-->
-	<xsl:template match="ao:Object" mode="GenerateDeserializationContextMethods">
-		<xsl:param name="Model"/>
-		<xsl:param name="ModelDeserializationName"/>
-		<xsl:call-template name="GenerateDeserializationContextMethod">
-			<xsl:with-param name="ClassName" select="@name"/>
-			<xsl:with-param name="Model" select="$Model"/>
-			<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
-		</xsl:call-template>
-	</xsl:template>
-	<!--Template applied to ao:Association nodes to kick off GenerateDeserializationContextMethod
-	with the appropriate class name-->
-	<xsl:template match="ao:Association" mode="GenerateDeserializationContextMethods">
-		<xsl:param name="Model"/>
-		<xsl:param name="ModelDeserializationName"/>
-		<xsl:call-template name="GenerateDeserializationContextMethod">
-			<xsl:with-param name="ClassName" select="concat(@name,$AssociationClassSuffix)"/>
-			<xsl:with-param name="Model" select="$Model"/>
-			<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
-		</xsl:call-template>
-	</xsl:template>
-
 	<!--Build the Deserialization methods of the DeserializationFactory class for constructing new
 	core objects.-->
 	<xsl:template name="GenerateDeserializationContextMethod">
 		<xsl:param name="Model"/>
-		<xsl:param name="ClassName"/>
 		<xsl:param name="ModelDeserializationName"/>
+		<xsl:param name="className"/>
 		<xsl:variable name="propertiesFragment">
 			<xsl:apply-templates select="child::*" mode="TransformPropertyObjects">
 				<xsl:with-param name="Model" select="$Model"/>
 			</xsl:apply-templates>
 		</xsl:variable>
 		<xsl:variable name="properties" select="msxsl:node-set($propertiesFragment)/child::*"/>
-		<plx:function name="Create{$ClassName}" visibility="public">
-			<plx:interfaceMember memberName="Create{$ClassName}" dataTypeName="I{$ModelDeserializationName}"/>
+		<plx:function visibility="public" name="Create{$className}">
+			<plx:interfaceMember memberName="Create{$className}" dataTypeName="I{$ModelDeserializationName}"/>
 			<xsl:variable name="mandatoryParametersFragment">
 				<xsl:call-template name="GenerateMandatoryParameters">
 					<xsl:with-param name="properties" select="$properties"/>
@@ -183,11 +182,11 @@
 			</xsl:variable>
 			<xsl:variable name="mandatoryParameters" select="msxsl:node-set($mandatoryParametersFragment)"/>
 			<xsl:copy-of select="$mandatoryParameters/plx:param"/>
-			<plx:returns dataTypeName="{$ClassName}"/>
+			<plx:returns dataTypeName="{$className}"/>
 			<plx:return>
-				<plx:callNew dataTypeName="{$ClassName}{$ImplementationClassSuffix}">
+				<plx:callNew dataTypeName="{$className}{$ImplementationClassSuffix}">
 					<plx:passParam>
-						<plx:nameRef name="{$PrivateMemberPrefix}Context"/>
+						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}Context"/>
 					</plx:passParam>
 					<xsl:for-each select="$mandatoryParameters/child::*">
 						<xsl:choose>
@@ -394,6 +393,10 @@
 		</xsl:variable>
 		<xsl:variable name="isStringValue" select="$valueType='string'"/>
 		<plx:function modifier="static" name="{$FunctionName}" visibility="private">
+			<xsl:call-template name="GenerateSuppressMessageAttribute">
+				<xsl:with-param name="category" select="'Microsoft.Usage'"/>
+				<xsl:with-param name="checkId" select="'CA2208'"/>
+			</xsl:call-template>
 			<plx:param name="value">
 				<xsl:copy-of select="$DataType/@*"/>
 				<xsl:copy-of select="$DataType/child::*"/>

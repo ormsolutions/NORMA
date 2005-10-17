@@ -15,6 +15,8 @@
 	<xsl:param name="PrivateMemberPrefix" select="'my'"/>
 	<xsl:param name="ModelContextInterfaceImplementationVisibility" select="'private'"/>
 	<xsl:param name="GenerateSerializationClasses" select="false()"/>
+	<xsl:param name="GenerateCodeAnalysisAttributes" select="true()"/>
+	<xsl:param name="RaiseEventsAsynchronously" select="true()"/>
 	<xsl:param name="AssociationClassSuffix" select="'Association'"/>
 	<xsl:param name="ImplementationClassSuffix" select="'Core'"/>
 	<xsl:param name="RoleValueConstraintFor" select="'RoleValueConstraintFor'"/>
@@ -844,10 +846,10 @@
 			<xsl:when test="$tagName='FixedLengthTextDataType' or $tagName='VariableLengthTextDataType' or $tagName='LargeLengthTextDataType'">
 				<DataType dataTypeName=".string"/>
 			</xsl:when>
-			<xsl:when test="$tagName='SignedIntegerNumericDataType'">
+			<xsl:when test="$tagName='SignedIntegerNumericDataType' or $tagName='AutoCounterNumericDataType'">
 				<DataType dataTypeName=".i4"/>
 			</xsl:when>
-			<xsl:when test="$tagName='UnsignedIntegerNumericDataType' or $tagName='AutoCounterNumericDataType'">
+			<xsl:when test="$tagName='UnsignedIntegerNumericDataType'">
 				<DataType dataTypeName=".u4"/>
 			</xsl:when>
 			<xsl:when test="$tagName='FloatingPointNumericDataType'">
@@ -866,7 +868,7 @@
 				<DataType dataTypeName=".boolean"/>
 			</xsl:when>
 			<xsl:when test="$tagName='RowIdOtherDataType' or $tagName='ObjectIdOtherDataType'">
-				<DataType dataTypeName=".u4"/>
+				<DataType dataTypeName=".u8"/>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:message terminate="yes">Could not map DataType.</xsl:message>
@@ -1041,6 +1043,24 @@
 		</Parameter>
 	</xsl:template>
 
+	<xsl:template name="GetUniquePropertyDataType">
+		<xsl:if test="not(@unique='true')">
+			<xsl:message terminate="yes">
+				<xsl:text>This template should not be called for Property elements where the unique attribute is not 'true'.</xsl:text>
+			</xsl:message>
+		</xsl:if>
+		<xsl:choose>
+			<xsl:when test="@collection='true'">
+				<xsl:copy-of select="DataType/plx:passTypeParam/@*"/>
+				<xsl:copy-of select="DataType/plx:passTypeParam/child::*"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:copy-of select="DataType/@*"/>
+				<xsl:copy-of select="DataType/child::*"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
 	<xsl:template name="GenerateErrorEnums">
 		<xsl:param name="AbsorbedObjects"/>
 		<xsl:for-each select="$AbsorbedObjects/../ao:Object">
@@ -1070,9 +1090,8 @@
 		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="GenerateErrorGetter">
-		<xsl:param name="Properties"/>
+		<xsl:param name="properties"/>
 
-		<!--<xsl:variable name="oppositeRoleNameFragment" select="child::*/@oppositeRoleName"/>-->
 		<xsl:if test="count(child::*[@mandatory='relaxed']) &gt; 0">
 			<xsl:variable name="returnDataType" select="concat(@name,'Errors')"/>
 			<plx:property visibility="public" name="ErrorState">
@@ -1083,7 +1102,7 @@
 							<plx:callStatic type="field" dataTypeName="{$returnDataType}" name="None"/>
 						</plx:initialize>
 					</plx:local>
-					<xsl:for-each select="$Properties">
+					<xsl:for-each select="$properties">
 						<xsl:choose>
 							<xsl:when test="@mandatory = 'relaxed'">
 								<plx:branch>
@@ -1126,6 +1145,112 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template name="GenerateCLSCompliantAttributeIfNecessary">
+		<xsl:variable name="dataTypeFragment">
+			<xsl:choose>
+				<xsl:when test="string-length(@dataTypeName)">
+					<xsl:copy-of select="."/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:copy-of select="DataType"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="dataType" select="msxsl:node-set($dataTypeFragment)/child::*"/>
+		<xsl:choose>
+			<xsl:when test="starts-with($dataType/@dataTypeName,'.u')">
+				<plx:attribute dataTypeName="CLSCompliantAttribute" dataTypeQualifier="System">
+					<plx:passParam>
+						<plx:falseKeyword/>
+					</plx:passParam>
+				</plx:attribute>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:for-each select="$dataType/child::node()">
+					<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
+				</xsl:for-each>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template name="GenerateSuppressMessageAttribute">
+		<xsl:param name="category"/>
+		<xsl:param name="checkId"/>
+		<xsl:param name="justification"/>
+		<xsl:param name="messageId"/>
+		<xsl:param name="scope"/>
+		<xsl:param name="target"/>
+		<xsl:if test="$GenerateCodeAnalysisAttributes">
+			<plx:attribute dataTypeName="SuppressMessageAttribute" dataTypeQualifier="System.Diagnostics.CodeAnalysis">
+				<plx:passParam>
+					<plx:string>
+						<xsl:value-of select="$category"/>
+					</plx:string>
+				</plx:passParam>
+				<plx:passParam>
+					<plx:string>
+						<xsl:value-of select="$checkId"/>
+					</plx:string>
+				</plx:passParam>
+				<xsl:if test="$justification">
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="Justification"/>
+							</plx:left>
+							<plx:right>
+								<plx:string>
+									<xsl:value-of select="$justification"/>
+								</plx:string>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</xsl:if>
+				<xsl:if test="$messageId">
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="MessageId"/>
+							</plx:left>
+							<plx:right>
+								<plx:string>
+									<xsl:value-of select="$messageId"/>
+								</plx:string>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</xsl:if>
+				<xsl:if test="$scope">
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="Scope"/>
+							</plx:left>
+							<plx:right>
+								<plx:string>
+									<xsl:value-of select="$scope"/>
+								</plx:string>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</xsl:if>
+				<xsl:if test="$target">
+					<plx:passParam>
+						<plx:binaryOperator type="assignNamed">
+							<plx:left>
+								<plx:nameRef type="namedParameter" name="Target"/>
+							</plx:left>
+							<plx:right>
+								<plx:string>
+									<xsl:value-of select="$target"/>
+								</plx:string>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:passParam>
+				</xsl:if>
+			</plx:attribute>
+		</xsl:if>
+	</xsl:template>
+	
 	<xsl:template name="GenerateAbstractClass">
 		<xsl:param name="Model"/>
 		<xsl:param name="ModelContextName"/>
@@ -1136,6 +1261,7 @@
 			</xsl:apply-templates>
 		</xsl:variable>
 		<xsl:variable name="properties" select="msxsl:node-set($propertiesFragment)/child::*"/>
+		<xsl:variable name="events" select="$properties[not(@readOnly='true')]"/>
 		<plx:class visibility="public" modifier="abstract" partial="true" name="{$className}">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="{$className}"/>
@@ -1145,10 +1271,16 @@
 			</plx:trailingInfo>
 			<plx:implementsInterface dataTypeName="INotifyPropertyChanged"/>
 			<plx:function name=".construct" visibility="protected"/>
-			<plx:event visibility="protected" modifier="abstract" name="PropertyChanged">
-				<plx:interfaceMember memberName="PropertyChanged" dataTypeName="INotifyPropertyChanged"/>
-				<plx:explicitDelegateType dataTypeName="PropertyChangedEventHandler"/>
-			</plx:event>
+			<plx:field visibility="private" readOnly="true" name="Events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+				<plx:initialize>
+					<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
+						<plx:passParam>
+							<plx:value type="i4" data="{count($events)+1}"/>
+						</plx:passParam>
+					</plx:callNew>
+				</plx:initialize>
+			</plx:field>
+			<xsl:call-template name="GenerateINotifyPropertyChangedImplementation"/>
 			<xsl:variable name="contextPropertyFragment">
 				<Property name="Context" readOnly="true">
 					<DataType dataTypeName="{$ModelContextName}"/>
@@ -1158,20 +1290,28 @@
 				<xsl:call-template name="GenerateAbstractProperty"/>
 			</xsl:for-each>
 			<xsl:for-each select="$properties">
-				<xsl:call-template name="GenerateAbstractProperty"/>
+				<xsl:call-template name="GenerateAbstractProperty">
+					<xsl:with-param name="className" select="$className"/>
+				</xsl:call-template>
+			</xsl:for-each>
+			<xsl:for-each select="$events">
+				<xsl:call-template name="GeneratePropertyChangeEvents">
+					<xsl:with-param name="eventIndex" select="position()"/>
+				</xsl:call-template>
 			</xsl:for-each>
 			<xsl:call-template name="GenerateToString">
 				<xsl:with-param name="className" select="$className"/>
 				<xsl:with-param name="properties" select="$properties"/>
 			</xsl:call-template>
 			<xsl:call-template name="GenerateErrorGetter">
-				<xsl:with-param name="Properties" select="$properties"/>
+				<xsl:with-param name="properties" select="$properties"/>
 			</xsl:call-template>
 		</plx:class>
 	</xsl:template>
 	<xsl:template name="GenerateAbstractProperty">
 		<xsl:variable name="readOnly" select="@readOnly='true'"/>
 		<plx:property visibility="public" modifier="abstract" name="{@name}" >
+			<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
 			<plx:returns>
 				<xsl:copy-of select="DataType/@*"/>
 				<xsl:copy-of select="DataType/child::*"/>
@@ -1181,42 +1321,382 @@
 				<plx:set/>
 			</xsl:if>
 		</plx:property>
-		<xsl:if test="not($readOnly)">
-			<plx:event visibility="public" modifier="abstract" name="{@name}Changing">
-				<plx:explicitDelegateType dataTypeName="EventHandler"/>
-				<plx:passTypeParam dataTypeName="PropertyChangingEventArgs">
+	</xsl:template>
+	<xsl:template name="GeneratePropertyChangeEvents">
+		<xsl:param name="eventIndex"/>
+		<xsl:call-template name="GeneratePropertyChangeEvent">
+			<xsl:with-param name="changeType" select="'Changing'"/>
+			<xsl:with-param name="eventIndex" select="$eventIndex"/>
+		</xsl:call-template>
+		<xsl:call-template name="GeneratePropertyChangeEventRaiseMethod">
+			<xsl:with-param name="changeType" select="'Changing'"/>
+			<xsl:with-param name="eventIndex" select="$eventIndex"/>
+		</xsl:call-template>
+		<xsl:call-template name="GeneratePropertyChangeEvent">
+			<xsl:with-param name="changeType" select="'Changed'"/>
+			<xsl:with-param name="eventIndex" select="$eventIndex"/>
+		</xsl:call-template>
+		<xsl:call-template name="GeneratePropertyChangeEventRaiseMethod">
+			<xsl:with-param name="changeType" select="'Changed'"/>
+			<xsl:with-param name="eventIndex" select="$eventIndex"/>
+		</xsl:call-template>
+	</xsl:template>
+	<xsl:template name="GeneratePropertyChangeEvent">
+		<xsl:param name="changeType"/>
+		<xsl:param name="eventIndex"/>
+		<xsl:param name="propertyChangedEvent" select="false()"/>
+		<plx:event visibility="public" name="{@name}{$changeType}">
+			<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
+			<xsl:choose>
+				<xsl:when test="$propertyChangedEvent">
+					<xsl:attribute name="visibility">private</xsl:attribute>
+					<xsl:attribute name="name">PropertyChanged</xsl:attribute>
+					<xsl:call-template name="GenerateSuppressMessageAttribute">
+						<xsl:with-param name="category" select="'Microsoft.Design'"/>
+						<xsl:with-param name="checkId" select="'CA1033'"/>
+					</xsl:call-template>
+					<plx:interfaceMember memberName="PropertyChanged" dataTypeName="INotifyPropertyChanged"/>
+					<plx:explicitDelegateType dataTypeName="PropertyChangedEventHandler"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<plx:explicitDelegateType dataTypeName="EventHandler"/>
+					<plx:passTypeParam  dataTypeName="Property{$changeType}EventArgs">
+						<plx:passTypeParam>
+							<xsl:copy-of select="DataType/@*"/>
+							<xsl:copy-of select="DataType/child::*"/>
+						</plx:passTypeParam>
+					</plx:passTypeParam>
+				</xsl:otherwise>
+			</xsl:choose>
+			<plx:onAdd>
+				<xsl:call-template name="GetPropertyChangeEventOnAddRemoveCode">
+					<xsl:with-param name="eventIndex" select="$eventIndex"/>
+					<xsl:with-param name="methodName" select="'Combine'"/>
+				</xsl:call-template>
+			</plx:onAdd>
+			<plx:onRemove>
+				<xsl:call-template name="GetPropertyChangeEventOnAddRemoveCode">
+					<xsl:with-param name="eventIndex" select="$eventIndex"/>
+					<xsl:with-param name="methodName" select="'Remove'"/>
+				</xsl:call-template>
+			</plx:onRemove>
+		</plx:event>
+	</xsl:template>
+	<xsl:template name="GetPropertyChangeEventOnAddRemoveCode">
+		<xsl:param name="eventIndex"/>
+		<xsl:param name="methodName"/>
+		<plx:assign>
+			<plx:left>
+				<plx:callInstance type="arrayIndexer" name=".implied">
+					<plx:callObject>
+						<plx:callThis accessor="this" type="field" name="Events"/>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:value type="i4" data="{$eventIndex}"/>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:left>
+			<plx:right>
+				<plx:callStatic type="methodCall" name="{$methodName}" dataTypeName="Delegate" dataTypeQualifier="System">
+					<plx:passParam>
+						<plx:callInstance type="arrayIndexer" name=".implied">
+							<plx:callObject>
+								<plx:callThis accessor="this" type="field" name="Events"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:value type="i4" data="{$eventIndex}"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:valueKeyword/>
+					</plx:passParam>
+				</plx:callStatic>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template name="GeneratePropertyChangeEventRaiseMethod">
+		<xsl:param name="changeType"/>
+		<xsl:param name="eventIndex"/>
+		<xsl:variable name="changing" select="$changeType='Changing'"/>
+		<xsl:variable name="changed" select="$changeType='Changed'"/>
+		<plx:function visibility="protected" name="Raise{@name}{$changeType}Event">
+			<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
+			<xsl:call-template name="GenerateSuppressMessageAttribute">
+				<xsl:with-param name="category" select="'Microsoft.Design'"/>
+				<xsl:with-param name="checkId" select="'CA1030'"/>
+			</xsl:call-template>
+			<xsl:choose>
+				<xsl:when test="$changing">
+					<plx:param name="newValue">
+						<xsl:copy-of select="DataType/@*"/>
+						<xsl:copy-of select="DataType/child::*"/>
+					</plx:param>
+					<plx:returns dataTypeName=".boolean"/>
+				</xsl:when>
+				<xsl:when test="$changed">
+					<plx:param name="oldValue">
+						<xsl:copy-of select="DataType/@*"/>
+						<xsl:copy-of select="DataType/child::*"/>
+					</plx:param>
+				</xsl:when>
+			</xsl:choose>
+			<plx:local name="eventHandler" dataTypeName="EventHandler">
+				<plx:passTypeParam dataTypeName="Property{$changeType}EventArgs">
 					<plx:passTypeParam>
 						<xsl:copy-of select="DataType/@*"/>
 						<xsl:copy-of select="DataType/child::*"/>
 					</plx:passTypeParam>
 				</plx:passTypeParam>
-			</plx:event>
-			<plx:event visibility="public" modifier="abstract" name="{@name}Changed">
-				<plx:explicitDelegateType dataTypeName="EventHandler"/>
-				<plx:passTypeParam dataTypeName="PropertyChangedEventArgs">
-					<plx:passTypeParam>
-						<xsl:copy-of select="DataType/@*"/>
-						<xsl:copy-of select="DataType/child::*"/>
-					</plx:passTypeParam>
-				</plx:passTypeParam>
-			</plx:event>
-		</xsl:if>
+				<plx:initialize>
+					<plx:cast type="testCast" dataTypeName="EventHandler">
+						<plx:passTypeParam dataTypeName="Property{$changeType}EventArgs">
+							<plx:passTypeParam>
+								<xsl:copy-of select="DataType/@*"/>
+								<xsl:copy-of select="DataType/child::*"/>
+							</plx:passTypeParam>
+						</plx:passTypeParam>
+						<plx:callInstance type="arrayIndexer" name=".implied">
+							<plx:callObject>
+								<plx:callThis name="Events" type="field"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:value type="i4" data="{$eventIndex}"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:cast>
+				</plx:initialize>
+			</plx:local>
+			<plx:branch>
+				<plx:condition>
+					<plx:binaryOperator type="identityInequality">
+						<plx:left>
+							<plx:nameRef name="eventHandler"/>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:condition>
+				<plx:body>
+					<xsl:variable name="createNewEventArgs">
+						<xsl:variable name="currentValue">
+							<plx:callThis type="property"  name="{@name}"/>
+						</xsl:variable>
+						<plx:callNew dataTypeName="Property{$changeType}EventArgs">
+							<plx:passTypeParam>
+								<xsl:copy-of select="DataType/@*"/>
+								<xsl:copy-of select="DataType/child::*"/>
+							</plx:passTypeParam>
+							<plx:passParam>
+								<xsl:choose>
+									<xsl:when test="$changing">
+										<xsl:copy-of select="$currentValue"/>
+									</xsl:when>
+									<xsl:when test="$changed">
+										<plx:nameRef name="oldValue"/>
+									</xsl:when>
+								</xsl:choose>
+							</plx:passParam>
+							<plx:passParam>
+								<xsl:choose>
+									<xsl:when test="$changing">
+										<plx:nameRef name="newValue"/>
+									</xsl:when>
+									<xsl:when test="$changed">
+										<xsl:copy-of select="$currentValue"/>
+									</xsl:when>
+								</xsl:choose>
+							</plx:passParam>
+						</plx:callNew>
+					</xsl:variable>
+					<xsl:if test="$changing">
+						<plx:local name="eventArgs" dataTypeName="PropertyChangingEventArgs">
+							<plx:passTypeParam>
+								<xsl:copy-of select="DataType/@*"/>
+								<xsl:copy-of select="DataType/child::*"/>
+							</plx:passTypeParam>
+							<plx:initialize>
+								<xsl:copy-of select="$createNewEventArgs"/>
+							</plx:initialize>
+						</plx:local>
+					</xsl:if>
+					<xsl:variable name="commonCallCode">
+						<plx:callObject>
+							<plx:nameRef type="local" name="eventHandler"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:thisKeyword/>
+						</plx:passParam>
+						<plx:passParam>
+							<xsl:choose>
+								<xsl:when test="$changing">
+									<plx:nameRef type="local" name="eventArgs"/>
+								</xsl:when>
+								<xsl:when test="$changed">
+									<xsl:copy-of select="$createNewEventArgs"/>
+								</xsl:when>
+							</xsl:choose>
+						</plx:passParam>
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="$changing or not($RaiseEventsAsynchronously)">
+							<plx:callInstance name=".implied" type="delegateCall">
+								<xsl:copy-of select="$commonCallCode"/>
+							</plx:callInstance>
+						</xsl:when>
+						<xsl:when test="$changed and $RaiseEventsAsynchronously">
+							<plx:callInstance type="methodCall" name="BeginInvoke">
+								<xsl:copy-of select="$commonCallCode"/>
+								<plx:passParam>
+									<plx:callNew type="newDelegate" dataTypeName="AsyncCallback" dataTypeQualifier="System">
+										<plx:passParam>
+											<plx:callInstance type="methodReference" name="EndInvoke">
+												<plx:callObject>
+													<plx:nameRef type="local" name="eventHandler"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:passParam>
+									</plx:callNew>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nullKeyword/>
+								</plx:passParam>
+							</plx:callInstance>
+						</xsl:when>
+					</xsl:choose>
+					<xsl:choose>
+						<xsl:when test="$changing">
+							<plx:return>
+								<plx:unaryOperator type="booleanNot">
+									<plx:callInstance name="Cancel" type="property">
+										<plx:callObject>
+											<plx:nameRef name="eventArgs"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:unaryOperator>
+							</plx:return>
+						</xsl:when>
+						<xsl:when test="$changed">
+							<plx:callThis name="RaisePropertyChangedEvent">
+								<plx:passParam>
+									<plx:string>
+										<xsl:value-of select="@name"/>
+									</plx:string>
+								</plx:passParam>
+							</plx:callThis>
+						</xsl:when>
+					</xsl:choose>
+				</plx:body>
+			</plx:branch>
+			<xsl:if test="$changing">
+				<plx:return>
+					<plx:trueKeyword/>
+				</plx:return>
+			</xsl:if>
+		</plx:function>
+	</xsl:template>
+	<xsl:template name="GenerateINotifyPropertyChangedImplementation">
+		<xsl:call-template name="GeneratePropertyChangeEvent">
+			<xsl:with-param name="changeType" select="'Changed'"/>
+			<xsl:with-param name="eventIndex" select="0"/>
+			<xsl:with-param name="propertyChangedEvent" select="true()"/>
+		</xsl:call-template>
+		<plx:function visibility="private" name="RaisePropertyChangedEvent">
+			<plx:param name="propertyName" dataTypeName=".string"/>
+			<plx:local name="eventHandler" dataTypeName="PropertyChangedEventHandler">
+				<plx:initialize>
+					<plx:cast type="testCast" dataTypeName="PropertyChangedEventHandler">
+						<plx:callInstance type="arrayIndexer" name=".implied">
+							<plx:callObject>
+								<plx:callThis name="Events" type="field"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:value type="i4" data="0"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:cast>
+				</plx:initialize>
+			</plx:local>
+			<plx:branch>
+				<plx:condition>
+					<plx:binaryOperator type="identityInequality">
+						<plx:left>
+							<plx:nameRef name="eventHandler"/>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:condition>
+				<plx:body>
+					<xsl:variable name="commonCallCode">
+						<plx:callObject>
+							<plx:nameRef type="local" name="eventHandler"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:thisKeyword/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:callNew dataTypeName="PropertyChangedEventArgs">
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="propertyName"/>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:passParam>
+					</xsl:variable>
+					<xsl:choose>
+						<xsl:when test="$RaiseEventsAsynchronously">
+							<plx:callInstance type="methodCall" name="BeginInvoke">
+								<xsl:copy-of select="$commonCallCode"/>
+								<plx:passParam>
+									<plx:callNew type="newDelegate" dataTypeName="AsyncCallback" dataTypeQualifier="System">
+										<plx:passParam>
+											<plx:callInstance type="methodReference" name="EndInvoke">
+												<plx:callObject>
+													<plx:nameRef type="local" name="eventHandler"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:passParam>
+									</plx:callNew>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nullKeyword/>
+								</plx:passParam>
+							</plx:callInstance>
+						</xsl:when>
+						<xsl:otherwise>
+							<plx:callInstance name=".implied" type="delegateCall">
+								<xsl:copy-of select="$commonCallCode"/>
+							</plx:callInstance>
+						</xsl:otherwise>
+					</xsl:choose>
+				</plx:body>
+			</plx:branch>
+		</plx:function>
 	</xsl:template>
 	<xsl:template name="GenerateToString">
 		<xsl:param name="className"/>
 		<xsl:param name="properties"/>
-		<xsl:variable name="nonCollectionPropertiesFragment">
-			<xsl:for-each select="$properties">
-				<xsl:if test="not(@collection='true')">
-					<xsl:copy-of select="."/>
-				</xsl:if>
-			</xsl:for-each>
-		</xsl:variable>
-		<xsl:variable name="nonCollectionProperties" select="msxsl:node-set($nonCollectionPropertiesFragment)/child::*"/>
-		<plx:function visibility="public" modifier="override" name="ToString">
+		<xsl:variable name="nonCollectionProperties" select="$properties[not(@collection='true')]"/>
+		<plx:function visibility="public" modifier="sealedOverride" overload="true" name="ToString">
+			<plx:returns dataTypeName=".string"/>
+			<plx:return>
+				<plx:callThis accessor="this" type="methodCall" name="ToString">
+					<plx:passParam>
+						<plx:nullKeyword/>
+					</plx:passParam>
+				</plx:callThis>
+			</plx:return>
+		</plx:function>
+		<plx:function visibility="public" overload="true" name="ToString">
+			<plx:param type="in" name="provider" dataTypeName="IFormatProvider"/>
 			<plx:returns dataTypeName=".string"/>
 			<plx:return>
 				<plx:callStatic name="Format" dataTypeName=".string">
+					<plx:passParam>
+						<plx:nameRef type="parameter" name="provider"/>
+					</plx:passParam>
 					<plx:passParam>
 						<plx:string>
 							<xsl:value-of select="concat($className,'{0}{{{0}{1}')"/>
@@ -1237,7 +1717,7 @@
 						</plx:string>
 					</plx:passParam>
 					<plx:passParam>
-						<plx:callStatic type="field" name="NewLine" dataTypeName="Environment" dataTypeQualifier="System"/>
+						<plx:callStatic type="field" name="NewLine" dataTypeName="Environment"/>
 					</plx:passParam>
 					<plx:passParam>
 						<plx:string>
@@ -1251,7 +1731,7 @@
 									<plx:string>TODO: Recursively call ToString for customTypes...</plx:string>
 								</xsl:when>
 								<xsl:otherwise>
-									<plx:callThis type="property" name="{@name}"/>
+									<plx:callThis accessor="this" type="property" name="{@name}"/>
 								</xsl:otherwise>
 							</xsl:choose>
 						</plx:passParam>
@@ -1268,9 +1748,8 @@
 		<!--nullPlaceHolders: set to true to generate a placeholder for custom types when
 		nonCustomOnly = true() (used by GenerateDeserializationContextMethod)-->
 		<xsl:param name="nullPlaceholders" select="false()"/>
-		<xsl:variable name="localName" select="local-name()"/>
 		<xsl:for-each select="$properties">
-			<xsl:if test="(not($nonCustomOnly) or not(@customType='true')) and (@mandatory='true' or @mandatory='relaxed' or $localName='Association')">
+			<xsl:if test="(not($nonCustomOnly) or not(@customType='true')) and (@mandatory='true' or @mandatory='relaxed')">
 				<xsl:choose>
 					<xsl:when test="$nullPlaceholders and @customType='true'">
 						<plx:passParam>
@@ -1288,82 +1767,13 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<xsl:include href="GenerateTuple.xslt"/>
-	<xsl:template name="GenerateGlobalSupportClasses">
-		<xsl:variable name="PropertyChangeEventArgsClassBody">
-			<plx:field visibility="private" readOnly="true" name="{$PrivateMemberPrefix}OldValue" dataTypeName="TProperty"/>
-			<plx:field visibility="private" readOnly="true" name="{$PrivateMemberPrefix}NewValue" dataTypeName="TProperty"/>
-			<plx:function name=".construct"  visibility="public">
-				<plx:param name="oldValue" dataTypeName="TProperty"/>
-				<plx:param name="newValue" dataTypeName="TProperty"/>
-				<plx:assign>
-					<plx:left>
-						<plx:callThis name="{$PrivateMemberPrefix}OldValue" type="field"/>
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="oldValue"/>
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callThis name="{$PrivateMemberPrefix}NewValue" type="field"/>
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="newValue"/>
-					</plx:right>
-				</plx:assign>
-			</plx:function>
-			<plx:property visibility="public" name="OldValue">
-				<plx:returns dataTypeName="TProperty"/>
-				<plx:get>
-					<plx:return>
-						<plx:callThis name="{$PrivateMemberPrefix}OldValue" type="field"/>
-					</plx:return>
-				</plx:get>
-			</plx:property>
-			<plx:property visibility="public" name="NewValue">
-				<plx:returns dataTypeName="TProperty"/>
-				<plx:get>
-					<plx:return>
-						<plx:callThis name="{$PrivateMemberPrefix}NewValue" type="field"/>
-					</plx:return>
-				</plx:get>
-			</plx:property>
-		</xsl:variable>
-		<plx:namespace name="System">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="Global Support Classes"/>
-			</plx:leadingInfo>
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="Global Support Classes"/>
-			</plx:trailingInfo>
-			<xsl:call-template name="GenerateCommonTuples"/>
-			<plx:class visibility="public" modifier="sealed" name="PropertyChangingEventArgs">
-				<plx:leadingInfo>
-					<plx:pragma type="region" data="Property Change Event Support Classes"/>
-				</plx:leadingInfo>
-				<plx:typeParam name="TProperty"/>
-				<plx:derivesFromClass dataTypeName="CancelEventArgs"/>
-				<xsl:copy-of select="$PropertyChangeEventArgsClassBody"/>
-			</plx:class>
-			<plx:class visibility="public" modifier="sealed" name="PropertyChangedEventArgs">
-				<plx:trailingInfo>
-					<plx:pragma type="closeRegion" data="Property Change Event Support Classes"/>
-				</plx:trailingInfo>
-				<plx:typeParam name="TProperty"/>
-				<plx:derivesFromClass dataTypeName="EventArgs"/>
-				<xsl:copy-of select="$PropertyChangeEventArgsClassBody"/>
-			</plx:class>
-		</plx:namespace>
-	</xsl:template>
-
 	<xsl:template name="GenerateModelContextInterfaceMethods">
 		<xsl:param name="Model"/>
 		<xsl:param name="ModelDeserializationName"/>
-		<plx:function visibility="public" name="BeginDeserialization">
+		<plx:function visibility="public" modifier="abstract" name="BeginDeserialization">
 			<plx:returns dataTypeName="I{$ModelDeserializationName}"/>
 		</plx:function>
-		<plx:property visibility="public" name="IsDeserializing">
+		<plx:property visibility="public" modifier="abstract" name="IsDeserializing">
 			<plx:returns dataTypeName=".boolean"/>
 			<plx:get/>
 		</plx:property>
@@ -1435,7 +1845,7 @@
 			<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
 		</xsl:call-template>
 		<xsl:if test="not($nonCustomOnly)">
-			<plx:property visibility="public" name="{$className}Collection">
+			<plx:property visibility="public" modifier="abstract" name="{$className}Collection">
 				<plx:returns dataTypeName="ReadOnlyCollection">
 					<plx:passTypeParam dataTypeName="{$className}"/>
 				</plx:returns>
@@ -1453,7 +1863,7 @@
 		<xsl:param name="className"/>
 		<xsl:param name="properties"/>
 		<xsl:param name="nonCustomOnly"/>
-		<plx:function visibility="public" name="Create{$className}">
+		<plx:function visibility="public" modifier="abstract" name="Create{$className}">
 			<xsl:call-template name="GenerateMandatoryParameters">
 				<xsl:with-param name="properties" select="$properties"/>
 				<xsl:with-param name="nonCustomOnly" select="$nonCustomOnly"/>
@@ -1467,10 +1877,9 @@
 		<xsl:param name="properties"/>
 		<xsl:for-each select="$properties">
 			<xsl:if test="@unique='true' and not(@customType='true')">
-				<plx:function name="Get{$className}By{@name}" visibility="public">
+				<plx:function visibility="public" modifier="abstract" name="Get{$className}By{@name}">
 					<plx:param name="value">
-						<xsl:copy-of select="DataType/@*"/>
-						<xsl:copy-of select="DataType/child::*"/>
+						<xsl:call-template name="GetUniquePropertyDataType"/>
 					</plx:param>
 					<plx:returns dataTypeName="{$className}"/>
 				</plx:function>
@@ -1478,6 +1887,9 @@
 		</xsl:for-each>
 	</xsl:template>
 
+	<xsl:include href="GenerateGlobalSupportClasses.xslt"/>
+	<xsl:include href="ModelContext.xslt"/>
+	<xsl:include href="SerializationEngine.xslt"/>
 	<xsl:template match="ormRoot:ORM2">
 		<plx:root>
 			<plx:namespaceImport name="System"/>
@@ -1501,8 +1913,6 @@
 			</plx:namespace>
 		</plx:root>
 	</xsl:template>
-	<xsl:include href="ModelContext.xslt"/>
-	<xsl:include href="SerializationEngine.xslt"/>
 	<xsl:template match="orm:ORMModel" mode="Main">
 		<xsl:variable name="ModelName" select="@Name"/>
 		<xsl:variable name="ModelContextName" select="concat($ModelName,'Context')"/>
@@ -1708,7 +2118,7 @@
 					</xsl:apply-templates>
 				</xsl:variable>
 				<xsl:variable name="nested" select="msxsl:node-set($nestedFragment)/child::*"/>
-				<Property multiplicity="{@multiplicity}" mandatory="{@mandatory}" unique="{@unique}" realRoleRef="{@thisRoleRef}" customType="{$nested/@customType}" collection="{$nested/@collection}">
+				<Property multiplicity="{@multiplicity}" unique="{@unique}" realRoleRef="{@thisRoleRef}" customType="{$nested/@customType}" collection="{$nested/@collection}">
 					<xsl:attribute name="name">
 						<xsl:choose>
 							<xsl:when test="string-length(@oppositeRoleName)">
@@ -1719,6 +2129,16 @@
 									<xsl:value-of select="@name"/>
 								</xsl:if>
 								<xsl:value-of select="$nested/@name"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+					<xsl:attribute name="mandatory">
+						<xsl:choose>
+							<xsl:when test="local-name(..)='Association'">
+								<xsl:value-of select="true()"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@mandatory"/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>

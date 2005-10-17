@@ -1,10 +1,11 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 	xmlns:gnsoc="urn:schemas-neumont-edu:CodeGeneration:GetNodeSetOfCount"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
->
+	extension-element-prefixes="gnsoc">
+
 	<xsl:variable name="SpecifyParamNameForArgumentNullException" select="false()"/>
 	
 	<msxsl:script language="C#" implements-prefix="gnsoc"><![CDATA[
@@ -280,6 +281,15 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$arity}-ary Tuple"/>
 			</plx:trailingInfo>
+			<xsl:call-template name="GenerateSuppressMessageAttribute">
+				<xsl:with-param name="category" select="'Microsoft.Design'"/>
+				<xsl:with-param name="checkId" select="'CA1005'"/>
+			</xsl:call-template>
+			<plx:attribute dataTypeName="ImmutableObjectAttribute" dataTypeQualifier="System.ComponentModel">
+				<plx:passParam>
+					<plx:trueKeyword/>
+				</plx:passParam>
+			</plx:attribute>
 			<xsl:copy-of select="$typeParams"/>
 			<plx:implementsInterface dataTypeName="IEquatable" dataTypeQualifier="System">
 				<plx:passTypeParam dataTypeName="Tuple">
@@ -288,7 +298,16 @@
 			</plx:implementsInterface>
 
 			<xsl:for-each select="$items">
-				<plx:field visibility="public" readOnly="true" name="{@name}" dataTypeName="{@dataTypeName}"/>
+				<plx:field visibility="public" readOnly="true" name="{@name}" dataTypeName="{@dataTypeName}">
+					<xsl:call-template name="GenerateSuppressMessageAttribute">
+						<xsl:with-param name="category" select="'Microsoft.Design'"/>
+						<xsl:with-param name="checkId" select="'CA1051'"/>
+					</xsl:call-template>
+					<xsl:call-template name="GenerateSuppressMessageAttribute">
+						<xsl:with-param name="category" select="'Microsoft.Security'"/>
+						<xsl:with-param name="checkId" select="'CA2104'"/>
+					</xsl:call-template>
+				</plx:field>
 			</xsl:for-each>
 
 			<plx:function visibility="public" name=".construct">
@@ -368,10 +387,12 @@
 			</plx:function>
 
 			<plx:function visibility="public" overload="true" name="Equals">
-				<plx:interfaceMember dataTypeName="IEquatable" memberName="Equals">
-					<xsl:copy-of select="$passTypeParams"/>
+				<plx:interfaceMember memberName="Equals" dataTypeName="IEquatable" dataTypeQualifier="System">
+					<plx:passTypeParam dataTypeName="Tuple">
+						<xsl:copy-of select="$passTypeParams"/>
+					</plx:passTypeParam>
 				</plx:interfaceMember>
-				<plx:param type="in" name="obj" dataTypeName="Tuple">
+				<plx:param type="in" name="other" dataTypeName="Tuple">
 					<xsl:copy-of select="$passTypeParams"/>
 				</plx:param>
 				<plx:returns dataTypeName=".boolean"/>
@@ -381,7 +402,7 @@
 							<plx:left>
 								<plx:binaryOperator type="identityEquality">
 									<plx:left>
-										<plx:nameRef type="parameter" name="obj"/>
+										<plx:nameRef type="parameter" name="other"/>
 									</plx:left>
 									<plx:right>
 										<plx:nullKeyword/>
@@ -412,7 +433,6 @@
 
 			<plx:function visibility="public" modifier="override" name="GetHashCode">
 				<plx:returns dataTypeName=".i4"/>
-				
 				<plx:return>
 					<plx:binaryOperator type="bitwiseExclusiveOr">
 						<plx:left>
@@ -435,10 +455,24 @@
 				</plx:return>
 			</plx:function>
 
-			<plx:function visibility="public" modifier="override" name="ToString">
+			<plx:function visibility="public" modifier="override" overload="true" name="ToString">
+				<plx:returns dataTypeName=".string"/>
+				<plx:return>
+					<plx:callThis accessor="this" type="methodCall" name="ToString">
+						<plx:passParam>
+							<plx:nullKeyword/>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="public" overload="true" name="ToString">
+				<plx:param type="in" name="provider" dataTypeName="IFormatProvider" dataTypeQualifier="System"/>
 				<plx:returns dataTypeName=".string"/>
 				<plx:return>
 					<plx:callStatic type="methodCall" name="Format" dataTypeName=".string">
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="provider"/>
+						</plx:passParam>
 						<plx:passParam>
 							<plx:string>
 								<xsl:text>(</xsl:text>
@@ -576,7 +610,7 @@
 							<plx:passParam>
 								<plx:callInstance type="field" name="{$currentItem/@name}">
 									<plx:callObject>
-										<plx:nameRef type="parameter" name="obj"/>
+										<plx:nameRef type="parameter" name="other"/>
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:passParam>
