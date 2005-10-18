@@ -161,7 +161,21 @@
 				</plx:local>
 				<plx:local name="isDeontic" dataTypeName=".boolean">
 					<plx:initialize>
-						<plx:falseKeyword/>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callInstance name="Modality" type="property">
+									<plx:callObject>
+										<plx:cast dataTypeName="IConstraint" type="testCast">
+											<plx:thisKeyword/>
+										</plx:cast>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic dataTypeName="ConstraintModality" name="Deontic" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
+						<!--<plx:falseKeyword/>-->
 					</plx:initialize>
 				</plx:local>
 				<plx:local name="sbTemp" dataTypeName="StringBuilder">

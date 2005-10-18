@@ -82,6 +82,13 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="IsPersonal">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsPersonal" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:ChildElement Name="PlayedRoles">
 			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
 		</se:ChildElement>
@@ -210,6 +217,18 @@
 	</se:Element>
 	<!--Constraints-->
 	<se:Element Class="MultiColumnExternalConstraint" SortChildElements="true" Override="true">
+		<se:Attribute ID="Modality">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="Alethic" type="field" dataTypeName="ConstraintModality"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="Modality" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:ChildElement Name="RoleSequences">
 			<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 		</se:ChildElement>
@@ -219,6 +238,18 @@
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 	</se:Element>
 	<se:Element Class="SingleColumnExternalConstraint" SortChildElements="true" Override="true">
+		<se:Attribute ID="Modality">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="Alethic" type="field" dataTypeName="ConstraintModality"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="Modality" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:ChildElement Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 		</se:ChildElement>
@@ -243,6 +274,18 @@
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesExternalUniquenessConstraint" RoleName="ImpliedByObjectification"/>
 	</se:Element>
 	<se:Element Class="InternalConstraint" SortChildElements="true" Override="true">
+		<se:Attribute ID="Modality">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="Alethic" type="field" dataTypeName="ConstraintModality"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="Modality" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:ChildElement Name="RoleSequence">
 			<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection"/>
 		</se:ChildElement>

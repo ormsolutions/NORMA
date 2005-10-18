@@ -40,6 +40,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Retrieve the model for the current constraint
 		/// </summary>
 		ORMModel Model { get; }
+		/// <summary>
+		/// Get the constraint modality.
+		/// </summary>
+		ConstraintModality Modality { get; }
 	}
 	#endregion // IConstraint interface
 	#region Constraint class
@@ -3148,7 +3152,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return GetRepresentedElements();
 		}
-		#endregion //IRepresentModelElements Implementation       
+		#endregion //IRepresentModelElements Implementation
 	}
 	public partial class SimpleMandatoryImpliesDisjunctiveMandatoryError : IRepresentModelElements
 	{
@@ -3352,6 +3356,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		MultiColumnExternalConstraint,
 	}
 	#endregion // ConstraintStorageStyle enum
+	#region ConstraintModality enum
+	/// <summary>
+	/// A list of Constraint Modalities.
+	/// </summary>
+	[CLSCompliant(true)]
+	public enum ConstraintModality
+	{
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		Alethic,
+		/// <summary>
+		/// The constraint should hold
+		/// </summary>
+		Deontic
+	}
+	#endregion
 	#region ConstraintType and RoleSequenceStyles implementation for all constraints
 	public partial class SimpleMandatoryConstraint : IConstraint
 	{

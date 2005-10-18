@@ -65,7 +65,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				attributeGuid == IsMandatoryMetaAttributeGuid ||
 				attributeGuid == MandatoryConstraintNameMetaAttributeGuid ||
 				attributeGuid == MultiplicityMetaAttributeGuid ||
-				attributeGuid == ValueRangeTextMetaAttributeGuid)
+				attributeGuid == ValueRangeTextMetaAttributeGuid ||
+				attributeGuid == MandatoryConstraintModalityMetaAttributeGuid)
 			{
 				// Handled by RoleChangeRule
 				return;
@@ -211,6 +212,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				RoleValueRangeDefinition defn = ValueRangeDefinition;
 				return (defn == null) ? "" : defn.Text;
 			}
+			#region MandatoryConstraintModality
+			else if (attributeGuid == MandatoryConstraintModalityMetaAttributeGuid)
+			{
+				SimpleMandatoryConstraint smc = SimpleMandatoryConstraint;
+				return (smc != null) ? smc.Modality : ConstraintModality.Alethic;
+			}
+			#endregion // MandatoryConstraintModality
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
 		/// <summary>
@@ -241,6 +249,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return SimpleMandatoryConstraint != null;
 			}
+			#region MandatoryConstraintModality
+			else if (attributeGuid == MandatoryConstraintModalityMetaAttributeGuid)
+			{
+				return SimpleMandatoryConstraint != null;
+			}
+			#endregion // MandatoryConstraintModality
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
 		/// <summary>
@@ -675,6 +689,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 				#endregion // Handle Multiplicity attribute changes
+				#region Handle MandatoryConstraintModality attribute changes
+				else if (attributeGuid == Role.MandatoryConstraintModalityMetaAttributeGuid)
+				{
+					Role role = e.ModelElement as Role;
+					SimpleMandatoryConstraint smc = role.SimpleMandatoryConstraint;
+					if (smc != null)
+					{
+						smc.Modality = (ConstraintModality)e.NewValue;
+					}
+				}
+				#endregion // Handle MandatoryConstraintModality attribute changes
 			}
 		}
 		#endregion // RoleChangeRule class

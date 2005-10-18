@@ -647,7 +647,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), "ReferenceMode", Neumont.Tools.ORM.ObjectModel.ObjectType.ReferenceModeMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeReferenceModeFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), "DataTypeDisplay", Neumont.Tools.ORM.ObjectModel.ObjectType.DataTypeDisplayMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeDataTypeDisplayFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), "ValueRangeText", Neumont.Tools.ORM.ObjectModel.ObjectType.ValueRangeTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeValueRangeTextFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), "IsPersonal", Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonalMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeIsPersonalFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactType), "NestingTypeDisplay", Neumont.Tools.ORM.ObjectModel.FactType.NestingTypeDisplayMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FactType.FactTypeNestingTypeDisplayFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint), "Modality", Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.ModalityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.MultiColumnExternalConstraintModalityFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Expression), "Body", Neumont.Tools.ORM.ObjectModel.Expression.BodyMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Expression.ExpressionBodyFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Expression), "Language", Neumont.Tools.ORM.ObjectModel.Expression.LanguageMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Expression.ExpressionLanguageFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Role), "RolePlayerDisplay", Neumont.Tools.ORM.ObjectModel.Role.RolePlayerDisplayMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Role.RoleRolePlayerDisplayFieldHandler)),
@@ -655,7 +657,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Role), "Multiplicity", Neumont.Tools.ORM.ObjectModel.Role.MultiplicityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Role.RoleMultiplicityFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Role), "ValueRangeText", Neumont.Tools.ORM.ObjectModel.Role.ValueRangeTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Role.RoleValueRangeTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Role), "MandatoryConstraintName", Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Role.RoleMandatoryConstraintNameFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Role), "MandatoryConstraintModality", Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModalityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Role.RoleMandatoryConstraintModalityFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraint), "Modality", Neumont.Tools.ORM.ObjectModel.InternalConstraint.ModalityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraint.InternalConstraintModalityFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint), "IsPreferred", Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint.InternalUniquenessConstraintIsPreferredFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint), "Modality", Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.ModalityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.SingleColumnExternalConstraintModalityFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint), "MinFrequency", Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MinFrequencyMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.FrequencyConstraintMinFrequencyFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint), "MaxFrequency", Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequencyMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.FrequencyConstraintMaxFrequencyFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint), "IsPreferred", Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.ExternalUniquenessConstraintIsPreferredFieldHandler)),
@@ -1955,6 +1960,127 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return Neumont.Tools.ORM.ObjectModel.ObjectType.ValueRangeTextMetaAttributeGuid;
 				}
 			}
+		}
+		#endregion
+		#endregion
+		
+		#region IsPersonal's Generated  Field Code
+		#region IsPersonal's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String IsPersonalMetaAttributeGuidString = "f5e0ff79-cd3b-47b3-b876-2b598f01b3be";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid IsPersonalMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonalMetaAttributeGuidString);
+		#endregion
+
+		#region IsPersonal's Generated Property Code
+
+		private System.Boolean isPersonalPropertyStorage = false;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ObjectTypeIsPersonalFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonalMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonal")]
+		public  System.Boolean IsPersonal
+		{
+			get
+			{
+				return isPersonalPropertyStorage;
+			}
+		
+			set
+			{
+				objectTypeIsPersonalFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ObjectTypeIsPersonalFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ObjectType.IsPersonal field
+		/// </summary>
+		private static ObjectTypeIsPersonalFieldHandler	objectTypeIsPersonalFieldHandler	= ObjectTypeIsPersonalFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ObjectType.IsPersonal
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ObjectTypeIsPersonalFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.ObjectType,System.Boolean>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ObjectTypeIsPersonalFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ObjectType.IsPersonal field handler
+			/// </summary>
+			/// <value>ObjectTypeIsPersonalFieldHandler</value>
+			public static ObjectTypeIsPersonalFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.ObjectType.objectTypeIsPersonalFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.ObjectType.objectTypeIsPersonalFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ObjectType will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.ObjectType.objectTypeIsPersonalFieldHandler, so just instantiate one and return it
+						return new ObjectTypeIsPersonalFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ObjectType.IsPersonal field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonalMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the ObjectType</param>
+			protected sealed override System.Boolean GetValue(Neumont.Tools.ORM.ObjectModel.ObjectType element)
+			{
+				return element.isPersonalPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.ObjectType element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
+			{
+				oldValue = element.isPersonalPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.isPersonalPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
 		}
 		#endregion
 		#endregion
@@ -3750,6 +3876,127 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.MetaClassGuidString);
 		#endregion
 
+		#region Modality's Generated  Field Code
+		#region Modality's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ModalityMetaAttributeGuidString = "b007b1c6-5ff2-4926-a0f3-9f5deef69df3";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ModalityMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.ModalityMetaAttributeGuidString);
+		#endregion
+
+		#region Modality's Generated Property Code
+
+		private Neumont.Tools.ORM.ObjectModel.ConstraintModality modalityPropertyStorage = Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Neumont.Tools.ORM.ObjectModel.ConstraintModality),DefaultEnumerationValueName="Alethic")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(MultiColumnExternalConstraintModalityFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.ModalityMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.Modality")]
+		public  Neumont.Tools.ORM.ObjectModel.ConstraintModality Modality
+		{
+			get
+			{
+				return modalityPropertyStorage;
+			}
+		
+			set
+			{
+				multiColumnExternalConstraintModalityFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region MultiColumnExternalConstraintModalityFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for MultiColumnExternalConstraint.Modality field
+		/// </summary>
+		private static MultiColumnExternalConstraintModalityFieldHandler	multiColumnExternalConstraintModalityFieldHandler	= MultiColumnExternalConstraintModalityFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for MultiColumnExternalConstraint.Modality
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class MultiColumnExternalConstraintModalityFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint,Neumont.Tools.ORM.ObjectModel.ConstraintModality>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private MultiColumnExternalConstraintModalityFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the MultiColumnExternalConstraint.Modality field handler
+			/// </summary>
+			/// <value>MultiColumnExternalConstraintModalityFieldHandler</value>
+			public static MultiColumnExternalConstraintModalityFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.multiColumnExternalConstraintModalityFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.multiColumnExternalConstraintModalityFieldHandler;
+					}
+					else
+					{
+						// The static constructor in MultiColumnExternalConstraint will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.multiColumnExternalConstraintModalityFieldHandler, so just instantiate one and return it
+						return new MultiColumnExternalConstraintModalityFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the MultiColumnExternalConstraint.Modality field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.ModalityMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the MultiColumnExternalConstraint</param>
+			protected sealed override Neumont.Tools.ORM.ObjectModel.ConstraintModality GetValue(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint element)
+			{
+				return element.modalityPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint element, Neumont.Tools.ORM.ObjectModel.ConstraintModality value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Neumont.Tools.ORM.ObjectModel.ConstraintModality oldValue)
+			{
+				oldValue = element.modalityPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.modalityPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
 		#region FactTypeCollection's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -5546,6 +5793,94 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
+		#region MandatoryConstraintModality's Generated  Field Code
+		#region MandatoryConstraintModality's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String MandatoryConstraintModalityMetaAttributeGuidString = "0218851c-9d99-480b-80fa-b69c6b6cb045";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid MandatoryConstraintModalityMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModalityMetaAttributeGuidString);
+		#endregion
+
+		#region MandatoryConstraintModality's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Neumont.Tools.ORM.ObjectModel.ConstraintModality),DefaultEnumerationValueName="")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(RoleMandatoryConstraintModalityFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModalityMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModality")]
+		public  Neumont.Tools.ORM.ObjectModel.ConstraintModality MandatoryConstraintModality
+		{
+			get
+			{
+				return roleMandatoryConstraintModalityFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				roleMandatoryConstraintModalityFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region RoleMandatoryConstraintModalityFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Role.MandatoryConstraintModality field
+		/// </summary>
+		private static RoleMandatoryConstraintModalityFieldHandler	roleMandatoryConstraintModalityFieldHandler	= RoleMandatoryConstraintModalityFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Role.MandatoryConstraintModality
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class RoleMandatoryConstraintModalityFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Neumont.Tools.ORM.ObjectModel.Role,Neumont.Tools.ORM.ObjectModel.ConstraintModality>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private RoleMandatoryConstraintModalityFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Role.MandatoryConstraintModality field handler
+			/// </summary>
+			/// <value>RoleMandatoryConstraintModalityFieldHandler</value>
+			public static RoleMandatoryConstraintModalityFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.Role.roleMandatoryConstraintModalityFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.Role.roleMandatoryConstraintModalityFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Role will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.Role.roleMandatoryConstraintModalityFieldHandler, so just instantiate one and return it
+						return new RoleMandatoryConstraintModalityFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Role.MandatoryConstraintModality field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModalityMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
 		#region FactType's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -6636,6 +6971,127 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.InternalConstraint.MetaClassGuidString);
 		#endregion
 
+		#region Modality's Generated  Field Code
+		#region Modality's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ModalityMetaAttributeGuidString = "92d7a1a4-3b81-44ed-8bea-f9b9254007e3";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ModalityMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.InternalConstraint.ModalityMetaAttributeGuidString);
+		#endregion
+
+		#region Modality's Generated Property Code
+
+		private Neumont.Tools.ORM.ObjectModel.ConstraintModality modalityPropertyStorage = Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Neumont.Tools.ORM.ObjectModel.ConstraintModality),DefaultEnumerationValueName="Alethic")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(InternalConstraintModalityFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.InternalConstraint.ModalityMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.InternalConstraint.Modality")]
+		public  Neumont.Tools.ORM.ObjectModel.ConstraintModality Modality
+		{
+			get
+			{
+				return modalityPropertyStorage;
+			}
+		
+			set
+			{
+				internalConstraintModalityFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region InternalConstraintModalityFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for InternalConstraint.Modality field
+		/// </summary>
+		private static InternalConstraintModalityFieldHandler	internalConstraintModalityFieldHandler	= InternalConstraintModalityFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for InternalConstraint.Modality
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class InternalConstraintModalityFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.InternalConstraint,Neumont.Tools.ORM.ObjectModel.ConstraintModality>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private InternalConstraintModalityFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the InternalConstraint.Modality field handler
+			/// </summary>
+			/// <value>InternalConstraintModalityFieldHandler</value>
+			public static InternalConstraintModalityFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.InternalConstraint.internalConstraintModalityFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.InternalConstraint.internalConstraintModalityFieldHandler;
+					}
+					else
+					{
+						// The static constructor in InternalConstraint will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.InternalConstraint.internalConstraintModalityFieldHandler, so just instantiate one and return it
+						return new InternalConstraintModalityFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the InternalConstraint.Modality field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.InternalConstraint.ModalityMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the InternalConstraint</param>
+			protected sealed override Neumont.Tools.ORM.ObjectModel.ConstraintModality GetValue(Neumont.Tools.ORM.ObjectModel.InternalConstraint element)
+			{
+				return element.modalityPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.InternalConstraint element, Neumont.Tools.ORM.ObjectModel.ConstraintModality value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Neumont.Tools.ORM.ObjectModel.ConstraintModality oldValue)
+			{
+				oldValue = element.modalityPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.modalityPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
 		#region FactType's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -7958,6 +8414,127 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.MetaClassGuidString);
 		#endregion
 
+		#region Modality's Generated  Field Code
+		#region Modality's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String ModalityMetaAttributeGuidString = "3841d4c3-d8a0-4c3e-8ebc-964420b5ff90";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid ModalityMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.ModalityMetaAttributeGuidString);
+		#endregion
+
+		#region Modality's Generated Property Code
+
+		private Neumont.Tools.ORM.ObjectModel.ConstraintModality modalityPropertyStorage = Neumont.Tools.ORM.ObjectModel.ConstraintModality.Alethic;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Neumont.Tools.ORM.ObjectModel.ConstraintModality),DefaultEnumerationValueName="Alethic")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(SingleColumnExternalConstraintModalityFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.ModalityMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.Modality")]
+		public  Neumont.Tools.ORM.ObjectModel.ConstraintModality Modality
+		{
+			get
+			{
+				return modalityPropertyStorage;
+			}
+		
+			set
+			{
+				singleColumnExternalConstraintModalityFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region SingleColumnExternalConstraintModalityFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for SingleColumnExternalConstraint.Modality field
+		/// </summary>
+		private static SingleColumnExternalConstraintModalityFieldHandler	singleColumnExternalConstraintModalityFieldHandler	= SingleColumnExternalConstraintModalityFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for SingleColumnExternalConstraint.Modality
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class SingleColumnExternalConstraintModalityFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint,Neumont.Tools.ORM.ObjectModel.ConstraintModality>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private SingleColumnExternalConstraintModalityFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the SingleColumnExternalConstraint.Modality field handler
+			/// </summary>
+			/// <value>SingleColumnExternalConstraintModalityFieldHandler</value>
+			public static SingleColumnExternalConstraintModalityFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.singleColumnExternalConstraintModalityFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.singleColumnExternalConstraintModalityFieldHandler;
+					}
+					else
+					{
+						// The static constructor in SingleColumnExternalConstraint will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.singleColumnExternalConstraintModalityFieldHandler, so just instantiate one and return it
+						return new SingleColumnExternalConstraintModalityFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the SingleColumnExternalConstraint.Modality field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.ModalityMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the SingleColumnExternalConstraint</param>
+			protected sealed override Neumont.Tools.ORM.ObjectModel.ConstraintModality GetValue(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint element)
+			{
+				return element.modalityPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint element, Neumont.Tools.ORM.ObjectModel.ConstraintModality value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Neumont.Tools.ORM.ObjectModel.ConstraintModality oldValue)
+			{
+				oldValue = element.modalityPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.modalityPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
 		#region FactTypeCollection's Generated Accessor Code
 		/// <summary>
 		/// 
@@ -22257,6 +22834,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=true, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.AssociatedFactTypeMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.AssociatedFactType")]
 		public  Neumont.Tools.ORM.ObjectModel.FactType AssociatedFactType
@@ -25712,6 +26290,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasRole.ReadingOrderMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ReadingOrderHasRole.ReadingOrder")]
 		public  Neumont.Tools.ORM.ObjectModel.ReadingOrder ReadingOrder
@@ -26303,6 +26882,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.KindMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ReferenceModeHasReferenceModeKind.Kind")]
 		public  Neumont.Tools.ORM.ObjectModel.ReferenceModeKind Kind
@@ -30193,6 +30773,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtendedElementMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtendedElement")]
 		public  Neumont.Tools.ORM.ObjectModel.ORMNamedElement ExtendedElement
@@ -30346,6 +30927,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtendedElementMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtendedElement")]
 		public  Neumont.Tools.ORM.ObjectModel.ORMModelElement ExtendedElement

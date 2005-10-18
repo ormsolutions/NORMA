@@ -60,6 +60,7 @@
 		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="IsIndependent" type="xs:boolean" default="false"/>
 		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
+		<xs:attribute name="IsPersonal" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<xs:complexType name="EntityType">
 		<xs:complexContent>
@@ -412,6 +413,7 @@
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID"/>
 		<xs:attribute name="Name" type="xs:string"/>
+		<xs:attribute name="Modality" type="ConstraintModality" default="Alethic"/>
 	</xs:complexType>
 	<!--Multicolumn constraints-->
 	<xs:complexType name="MultiColumnExternalConstraint" abstract="true">
@@ -560,7 +562,6 @@
 				<xs:sequence minOccurs="0" maxOccurs="unbounded">
 					<xs:element name="RoleSequence" type="RoleSequence" minOccurs="1" maxOccurs="unbounded"/>
 				</xs:sequence>
-				<xs:attribute name="Name" type="xs:string"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -915,4 +916,10 @@
 		<xs:attribute name="MinInclusion" type="RangeInclusion" default="NotSet" />
 		<xs:attribute name="MaxInclusion" type="RangeInclusion" default="NotSet" />
 	</xs:complexType>
+	<xs:simpleType name="ConstraintModality">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Alethic"/>
+			<xs:enumeration value="Deontic"/>
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

@@ -261,6 +261,9 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.IsIndependent">
     <value xml:space="preserve">IsIndependent</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonal">
+    <value xml:space="preserve">IsPersonal</value>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.ObjectType.IsValueType">
     <value xml:space="preserve">IsValueType</value>
   </data>
@@ -302,6 +305,9 @@
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role.IsMandatory">
     <value xml:space="preserve">IsMandatory</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintModality">
+    <value xml:space="preserve">MandatoryConstraintModality</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Role.MandatoryConstraintName">
     <value xml:space="preserve">MandatoryConstraintName</value>

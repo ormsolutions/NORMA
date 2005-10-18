@@ -43,6 +43,11 @@
 			<xs:enumeration value="ForEachQuantifier"/>
 			<xs:enumeration value="ExistentialQuantifier"/>
 			<xs:enumeration value="IdentityReferenceQuantifier"/>
+			<xs:enumeration value="ImpliedModalNecessityOperator">
+				<xs:annotation>
+					<xs:documentation>No text for alethic, same as ModalNecessityOperator otherwise.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="MoreThanOneQuantifier"/>
 			<xs:enumeration value="ModalPossibilityOperator"/>
 			<xs:enumeration value="ModalNecessityOperator"/>
