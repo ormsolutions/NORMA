@@ -3,10 +3,8 @@
 <xs:schema targetNamespace="http://schemas.neumont.edu/ORM/ORMCore" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified" 
 	xmlns="http://schemas.neumont.edu/ORM/ORMCore" 
-	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-	xmlns:derived="http://schemas.neumont.edu/ORM/ORMDerived">
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-	<!-- <xs:import namespace="http://schemas.neumont.edu/ORM/ORMDerived" /> -->
 	<xs:complexType name="Extensions">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:any namespace="##other" processContents="strict"/>
@@ -71,7 +69,7 @@
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 				<!--ReferenceMode is derived.-->
-				<xs:attribute name="ReferenceMode" type="xs:string"/>
+				<xs:attribute name="_ReferenceMode" type="xs:string"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -141,7 +139,7 @@
 		<xs:choice>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:choice>
-		<xs:attribute name="id" type="xs:ID" use="required"/>		
+		<xs:attribute name="id" type="xs:ID" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="UnspecifiedDataType">
 		<xs:complexContent>
@@ -293,11 +291,9 @@
 		<xs:attribute name="Name" type="xs:string" use="required"/>
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<!--Derived-->
-		<xs:attribute name="IsFunctional" type="xs:boolean" default="false"/>
+		<xs:attribute name="_IsMandatory" type="xs:boolean" default="false"/>
 		<!--Derived-->
-		<xs:attribute name="IsMandatory" type="xs:boolean" default="false"/>
-		<!--Derived-->
-		<xs:attribute name="Multiplicity" type="MultiplicityEnum" default="ZeroToOne"/>
+		<xs:attribute name="_Multiplicity" type="MultiplicityEnum" default="ZeroToOne"/>
 	</xs:complexType>
 	<!--Look up enum values.-->
 	<xs:simpleType name="MultiplicityEnum">
@@ -554,10 +550,10 @@
 	<!--InternalConstraint-note these are owned by FactTypes not the model -->
 	<xs:complexType name="InternalConstraints">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
-				<xs:element name="InternalUniquenessConstraint" type="InternalUniquenessConstraint"/>
-				<xs:element name="SimpleMandatoryConstraint" type="SimpleMandatoryConstraint"/>
-			</xs:choice>
-		</xs:complexType>
+			<xs:element name="InternalUniquenessConstraint" type="InternalUniquenessConstraint"/>
+			<xs:element name="SimpleMandatoryConstraint" type="SimpleMandatoryConstraint"/>
+		</xs:choice>
+	</xs:complexType>
 	<xs:complexType name="InternalConstraint">
 		<xs:complexContent>
 			<xs:extension base="Constraint">
@@ -865,7 +861,7 @@
 	<xs:complexType name="CustomReferenceModes">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="CustomReferenceMode" type="CustomReferenceMode"/>
-		</xs:sequence>	
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="CustomReferenceMode">
 		<xs:sequence minOccurs="0" maxOccurs="1">

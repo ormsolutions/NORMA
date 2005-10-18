@@ -167,7 +167,7 @@
 			</xsl:apply-templates>
 		</xsl:variable>
 		<xsl:variable name="properties" select="msxsl:node-set($propertiesFragment)/child::*"/>
-		<!--<xsl:variable name="AbsorbedMandatory" select="$Model/orm:ORMModel/orm:Facts/orm:Fact/orm:FactRoles/orm:Role[@IsMandatory='true']/@DataType"/>-->
+		<!--<xsl:variable name="AbsorbedMandatory" select="$Model/orm:ORMModel/orm:Facts/orm:Fact/orm:FactRoles/orm:Role[@_IsMandatory='true']/@DataType"/>-->
 		<xsl:for-each select="$properties">
 			<xsl:call-template name="GenerateImplementationSimpleLookupMethod">
 				<xsl:with-param name="className" select="$className"/>

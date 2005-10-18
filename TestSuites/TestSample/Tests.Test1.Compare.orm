@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore" xmlns:ormDerived="http://schemas.neumont.edu/ORM/ORMDerived" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot">
+<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot">
 	<orm:ORMModel id="_CB5D9895-EB40-4628-AE29-3108CC35338F" Name="NewModel">
 		<orm:Objects>
 			<orm:EntityType id="_DCF04807-BCD8-4DFA-8E5D-F34F7D76C0F1" Name="EntityType1" IsExternal="false" IsIndependent="false" ReferenceMode="id">

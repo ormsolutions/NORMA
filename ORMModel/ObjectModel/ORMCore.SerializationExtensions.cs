@@ -32,13 +32,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected static string[,] GetCustomElementNamespaces()
 		{
-			string[,] ret = new string[2, 3];
+			string[,] ret = new string[1, 3];
 			ret[0, 0] = "orm";
 			ret[0, 1] = "http://schemas.neumont.edu/ORM/ORMCore";
 			ret[0, 2] = "ORM2Core.xsd";
-			ret[1, 0] = "ormDerived";
-			ret[1, 1] = "http://schemas.neumont.edu/ORM/ORMDerived";
-			ret[1, 2] = "";
 			return ret;
 		}
 		string[,] IORMCustomSerializedMetaModel.GetCustomElementNamespaces()
@@ -114,7 +111,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				validNamespaces = new Collection<string>();
 				validNamespaces.Add("http://schemas.neumont.edu/ORM/ORMCore");
-				validNamespaces.Add("http://schemas.neumont.edu/ORM/ORMDerived");
 				ORMMetaModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
@@ -774,7 +770,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				return new ORMCustomSerializedAttributeInfo(null, "ReferenceMode", null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+				return new ORMCustomSerializedAttributeInfo(null, "_ReferenceMode", null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -960,7 +956,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (customSerializedAttributes == null)
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
-				customSerializedAttributes.Add("ReferenceMode", ObjectType.ReferenceModeStringMetaAttributeGuid);
+				customSerializedAttributes.Add("_ReferenceMode", ObjectType.ReferenceModeStringMetaAttributeGuid);
 				ObjectType.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;
@@ -2376,11 +2372,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (attributeInfo.Id == Role.IsMandatoryMetaAttributeGuid)
 			{
-				return new ORMCustomSerializedAttributeInfo(null, "IsMandatory", null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+				return new ORMCustomSerializedAttributeInfo(null, "_IsMandatory", null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (attributeInfo.Id == Role.MultiplicityMetaAttributeGuid)
 			{
-				return new ORMCustomSerializedAttributeInfo(null, "Multiplicity", null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
+				return new ORMCustomSerializedAttributeInfo(null, "_Multiplicity", null, true, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -2548,8 +2544,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			if (customSerializedAttributes == null)
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
-				customSerializedAttributes.Add("IsMandatory", Role.IsMandatoryMetaAttributeGuid);
-				customSerializedAttributes.Add("Multiplicity", Role.MultiplicityMetaAttributeGuid);
+				customSerializedAttributes.Add("_IsMandatory", Role.IsMandatoryMetaAttributeGuid);
+				customSerializedAttributes.Add("_Multiplicity", Role.MultiplicityMetaAttributeGuid);
 				Role.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;

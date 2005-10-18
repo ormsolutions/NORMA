@@ -1873,7 +1873,8 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					string attributeName = reader.LocalName;
 					string namespaceName = reader.NamespaceURI;
-					if (!(namespaceName.Length == 0 && (attributeName == "id" || attributeName == "ref")))
+					//derived objects are prefixed by an underscore and do not need to be read in
+					if (!(namespaceName.Length == 0 && (attributeName == "id" || attributeName == "ref" || attributeName[0]='_')))
 					{
 						Guid attributeGuid = new Guid();
 						MetaAttributeInfo attributeInfo = null;

@@ -5,7 +5,6 @@
 	<se:MetaModel Class="ORMMetaModel">
 		<se:Namespaces>
 			<se:Namespace Prefix="orm" URI="http://schemas.neumont.edu/ORM/ORMCore" SchemaFile="ORM2Core.xsd"  DefaultPrefix="true"/>
-			<se:Namespace Prefix="ormDerived" URI="http://schemas.neumont.edu/ORM/ORMDerived"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="ORMModel"/>
@@ -68,7 +67,7 @@
 				</plx:right>
 			</plx:binaryOperator>
 		</se:ConditionalName>
-		<se:Attribute ID="ReferenceModeString"  Name="ReferenceMode" WriteCustomStorage="true">
+		<se:Attribute ID="ReferenceModeString"  Name="_ReferenceMode" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:callThis name="IsValueType" type="property"/>
 			</se:Condition>
@@ -197,8 +196,8 @@
 	</se:Element>
 	<!--Role-->
 	<se:Element Class="Role" Override="true" SortChildElements="true">
-		<se:Attribute ID="IsMandatory" Name ="IsMandatory" WriteCustomStorage="true"/>
-		<se:Attribute ID="Multiplicity" Name ="Multiplicity" WriteCustomStorage="true"/>
+		<se:Attribute ID="IsMandatory" Name ="_IsMandatory" WriteCustomStorage="true"/>
+		<se:Attribute ID="Multiplicity" Name ="_Multiplicity" WriteCustomStorage="true"/>
 		<se:Link Name="RolePlayer" RelationshipName="ObjectTypePlaysRole" RoleName="RolePlayer"/>
 		<se:ChildElement Name="ValueConstraint">
 			<se:Link RelationshipName="RoleHasValueRangeDefinition" RoleName="ValueRangeDefinition"/>

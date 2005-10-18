@@ -5,7 +5,6 @@
 	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/ORMDiagram"
 	xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore"
 	xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot"
-	xmlns:ormDerived="http://schemas.neumont.edu/ORM/ORMDerived"
 	targetNamespace="http://schemas.neumont.edu/ORM/ORMRoot"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:import namespace="http://schemas.neumont.edu/ORM/ORMCore" />
