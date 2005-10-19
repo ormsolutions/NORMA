@@ -511,11 +511,14 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 									if (!knownIds.ContainsKey(newId))
 									{
 										string originalId = docReader.GetAttribute("id");
-										if (retVal == null)
+										if (originalId != null && originalId.Length != 0)
 										{
-											retVal = new StringMapDictionary();
+											if (retVal == null)
+											{
+												retVal = new StringMapDictionary();
+											}
+											retVal[newId] = originalId;
 										}
-										retVal[newId] = originalId;
 									}
 								}
 								diffReader.Skip();

@@ -2,7 +2,7 @@
 <ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot">
 	<orm:ORMModel id="_CB5D9895-EB40-4628-AE29-3108CC35338F" Name="NewModel">
 		<orm:Objects>
-			<orm:EntityType id="_DCF04807-BCD8-4DFA-8E5D-F34F7D76C0F1" Name="EntityType1" IsExternal="false" IsIndependent="false" ReferenceMode="id">
+			<orm:EntityType id="_DCF04807-BCD8-4DFA-8E5D-F34F7D76C0F1" Name="EntityType1" IsExternal="false" IsIndependent="false" _ReferenceMode="id">
 				<orm:PlayedRoles>
 					<orm:Role ref="_0E961155-96F6-422B-93E7-DC90F696EE09" />
 					<orm:Role ref="_793246E9-AF54-4ED9-A067-13177BCA7955" />
@@ -25,10 +25,10 @@
 		<orm:Facts>
 			<orm:Fact id="_CB33E377-9ADC-46BA-8E1B-24AE46BC0854" Name="TestFact" IsExternal="false">
 				<orm:FactRoles>
-					<orm:Role id="_0E961155-96F6-422B-93E7-DC90F696EE09" Name="" IsMandatory="false" Multiplicity="Unspecified">
+					<orm:Role id="_0E961155-96F6-422B-93E7-DC90F696EE09" Name="" _IsMandatory="false" _Multiplicity="Unspecified">
 						<orm:RolePlayer ref="_DCF04807-BCD8-4DFA-8E5D-F34F7D76C0F1" />
 					</orm:Role>
-					<orm:Role id="_A8DC318E-29A5-42FF-B9CA-C7D3FE3DAA5C" Name="" IsMandatory="false" Multiplicity="Unspecified">
+					<orm:Role id="_A8DC318E-29A5-42FF-B9CA-C7D3FE3DAA5C" Name="" _IsMandatory="false" _Multiplicity="Unspecified">
 						<orm:RolePlayer ref="_88929A07-3576-4A65-8A62-2E45E7E82F8C" />
 					</orm:Role>
 				</orm:FactRoles>
@@ -48,10 +48,10 @@
 			</orm:Fact>
 			<orm:Fact id="_A3114D4F-7A9C-47A2-8D32-C2F97EE6B7B4" Name="FactType2" IsExternal="false">
 				<orm:FactRoles>
-					<orm:Role id="_793246E9-AF54-4ED9-A067-13177BCA7955" Name="" IsMandatory="true" Multiplicity="ZeroToOne">
+					<orm:Role id="_793246E9-AF54-4ED9-A067-13177BCA7955" Name="" _IsMandatory="true" _Multiplicity="ZeroToOne">
 						<orm:RolePlayer ref="_DCF04807-BCD8-4DFA-8E5D-F34F7D76C0F1" />
 					</orm:Role>
-					<orm:Role id="_35F50F4A-42BD-47BE-BB70-84378DB9E726" Name="" IsMandatory="false" Multiplicity="ExactlyOne">
+					<orm:Role id="_35F50F4A-42BD-47BE-BB70-84378DB9E726" Name="" _IsMandatory="false" _Multiplicity="ExactlyOne">
 						<orm:RolePlayer ref="_410E1423-1FD6-4836-AD63-9E4681C8AE35" />
 					</orm:Role>
 				</orm:FactRoles>
