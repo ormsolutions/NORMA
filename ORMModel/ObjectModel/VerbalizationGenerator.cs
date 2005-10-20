@@ -62,6 +62,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		CompoundListSeparator,
 		/// <summary>
+		/// The 'DefiniteArticle' format string snippet. Contains 1 replacement field.
+		/// </summary>
+		DefiniteArticle,
+		/// <summary>
 		/// The 'EachInstanceQuantifier' format string snippet. Contains 1 replacement field.
 		/// </summary>
 		EachInstanceQuantifier,
@@ -307,6 +311,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<br/><span class=""smallIndent"">",
 					@"<span class=""listSeparator"">; </span>",
 					@"<span class=""listSeparator"">; </span>",
+					@"<span class=""quantifier"">that</span> {0}",
 					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 					@"<span class=""quantifier"">some</span> {0}",
 					@"<span class=""quantifier"">for each</span> {0}, {1}",
@@ -359,6 +364,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<br/><span class=""smallIndent"">",
 					@"<span class=""listSeparator"">; </span>",
 					@"<span class=""listSeparator"">; </span>",
+					@"<span class=""quantifier"">that</span> {0}",
 					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 					@"<span class=""quantifier"">some</span> {0}",
 					@"<span class=""quantifier"">for each</span> {0}, {1}",
@@ -411,6 +417,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<br/><span class=""smallIndent"">",
 					@"<span class=""listSeparator"">; </span>",
 					@"<span class=""listSeparator"">; </span>",
+					@"<span class=""quantifier"">that</span> {0}",
 					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 					@"<span class=""quantifier"">some</span> {0}",
 					@"<span class=""quantifier"">for each</span> {0}, {1}",
@@ -463,6 +470,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<br/><span class=""smallIndent"">",
 					@"<span class=""listSeparator"">; </span>",
 					@"<span class=""listSeparator"">; </span>",
+					@"<span class=""quantifier"">that</span> {0}",
 					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 					@"<span class=""quantifier"">some</span> {0}",
 					@"<span class=""quantifier"">for each</span> {0}, {1}",
@@ -978,7 +986,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string basicReplacement = basicRoleReplacements[snippet1Replace1ReplaceFactRoleIter2];
 							if (includedRoles.Contains(currentRole))
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
 							else
 							{
@@ -1082,7 +1090,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement = basicRoleReplacements[snippet1Replace1ReplaceFactRoleIter2];
 					if (includedRoles.Contains(currentRole))
 					{
-						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 					}
 					else if (!(includedRoles.Contains(currentRole)))
 					{
@@ -1155,7 +1163,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					string basicReplacement = basicRoleReplacements[snippet1Replace1ReplaceFactRoleIter2];
 					if (includedRoles.Contains(currentRole))
 					{
-						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+						roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 					}
 					else if (!(includedRoles.Contains(currentRole)))
 					{
@@ -1371,7 +1379,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string basicReplacement = basicRoleReplacements[snippet1Replace1ReplaceFactRoleIter2];
 							if (includedRoles.Contains(currentRole))
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
 							else
 							{
@@ -1480,7 +1488,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							string basicReplacement = basicRoleReplacements[snippet1Replace1ReplaceFactRoleIter2];
 							if (includedRoles.Contains(currentRole))
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
 							else
 							{
@@ -2080,7 +2088,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								string basicReplacement = basicRoleReplacements[snippet1Replace2ItemFactRoleIter1];
 								if (currentRole == primaryRole)
 								{
-									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+									roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 								}
 								else if (currentRole != primaryRole)
 								{
@@ -2143,7 +2151,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								Role currentRole = factRoles[snippet1Replace2ItemFactRoleIter2];
 								string roleReplacement = null;
 								string basicReplacement = basicRoleReplacements[snippet1Replace2ItemFactRoleIter2];
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 								if (roleReplacement == null)
 								{
 									roleReplacement = basicReplacement;
@@ -2416,7 +2424,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							else
 							{
-								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ImpersonalPronoun, isDeontic, isNegative), basicReplacement);
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.DefiniteArticle, isDeontic, isNegative), basicReplacement);
 							}
 							if (roleReplacement == null)
 							{

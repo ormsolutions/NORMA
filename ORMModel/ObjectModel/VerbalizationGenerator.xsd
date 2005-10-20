@@ -36,6 +36,12 @@
 			<xs:enumeration value="ObjectTypeMissing"/>
 			<xs:enumeration value="ImpersonalPronoun"/>
 			<xs:enumeration value="PersonalPronoun"/>
+			<xs:enumeration value="DefiniteArticle">
+				<xs:annotation>
+					<xs:documentation>Used for 'that' before an object name. Different than ImpersonalPronoun
+					which is used to refer back to an object and is frequently used conditionally with PersonalPronoun.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="UniversalQuantifier"/>
 			<xs:enumeration value="AtMostOneQuantifier"/>
 			<xs:enumeration value="EachInstanceQuantifier"/>
@@ -187,6 +193,13 @@
 			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:complexType name="SnippetLeafTypeWithMatch">
+		<xs:complexContent>
+			<xs:extension base="SnippetLeafType">
+				<xs:attribute name="match" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="SnippetType">
 		<xs:complexContent>
 			<xs:extension base="SnippetLeafType">
@@ -199,10 +212,16 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="ConditionalSnippetType">
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="Snippet" type="SnippetLeafTypeWithMatch"/>
+		</xs:choice>
+	</xs:complexType>
 	<xs:complexType name="PredicateReplacementType">
-		<xs:sequence>
-			<xs:element name="Snippet" type="SnippetLeafType" minOccurs="0" maxOccurs="1"/>
-		</xs:sequence>
+		<xs:choice minOccurs="1" maxOccurs="1">
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
+			<xs:element name="Snippet" type="SnippetLeafType"/>
+		</xs:choice>
 		<xs:attribute name="match" use="optional" type="PredicateReplacementMatchEnum"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
 	</xs:complexType>
