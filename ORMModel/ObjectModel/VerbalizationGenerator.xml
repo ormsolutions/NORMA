@@ -11,6 +11,8 @@
 				<Snippet type="ObjectTypeWithSubscript"><![CDATA[<span class="objectType">{0}<sub>{1}</sub></span>]]></Snippet>
 				<Snippet type="ObjectTypeMissing"><![CDATA[<span class="objectTypeMissing">Missing<sub>{0}</sub></span>]]></Snippet>
 
+				<Snippet type="DefiniteArticle"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
+
 				<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
 				<Snippet type="PersonalPronoun"><![CDATA[<span class="quantifier">who</span> {0}]]></Snippet>
 				
@@ -160,7 +162,7 @@
 									<IterateRoles listStyle="SimpleList" match="included"/>
 									<Fact>
 										<PredicateReplacement match="included">
-											<Snippet ref="ImpersonalPronoun"/>
+											<Snippet ref="DefiniteArticle"/>
 										</PredicateReplacement>
 										<PredicateReplacement>
 											<Snippet ref="OneQuantifier"/>
@@ -191,7 +193,7 @@
 							<IterateRoles match="included" listStyle="SimpleList"/>
 							<Fact readingChoice="PreferLeadReading">
 								<PredicateReplacement match="included">
-									<Snippet ref="ImpersonalPronoun"/>
+									<Snippet ref="DefiniteArticle"/>
 								</PredicateReplacement>
 								<PredicateReplacement match="excluded">
 									<Snippet ref="OneQuantifier"/>
@@ -207,7 +209,7 @@
 							<IterateRoles match="included" listStyle="SimpleList"/>
 							<Fact>
 								<PredicateReplacement match="included">
-									<Snippet ref="ImpersonalPronoun"/>
+									<Snippet ref="DefiniteArticle"/>
 								</PredicateReplacement>
 								<PredicateReplacement match="excluded">
 									<Snippet ref="OneQuantifier"/>
@@ -259,7 +261,7 @@
 									<IterateRoles match="included" listStyle="SimpleList"/>
 									<Fact>
 										<PredicateReplacement match="included">
-											<Snippet ref="ImpersonalPronoun"/>
+											<Snippet ref="DefiniteArticle"/>
 										</PredicateReplacement>
 										<PredicateReplacement>
 											<Snippet ref="ExistentialQuantifier"/>
@@ -302,7 +304,7 @@
 									<IterateRoles match="included" listStyle="SimpleList"/>
 									<Fact>
 										<PredicateReplacement match="included">
-											<Snippet ref="ImpersonalPronoun"/>
+											<Snippet ref="DefiniteArticle"/>
 										</PredicateReplacement>
 										<PredicateReplacement>
 											<Snippet ref="ExistentialQuantifier"/>
@@ -373,7 +375,7 @@
 									<IterateRoles match="singleColumnConstraintRoles" minFactArity="2">
 										<Fact readingChoice="PreferPrimaryLeadReadingNoForwardText">
 											<PredicateReplacement match="included">
-												<Snippet ref="ImpersonalPronoun"/>
+												<Snippet ref="DefiniteArticle"/>
 											</PredicateReplacement>
 											<PredicateReplacement match="excluded">
 												<Snippet ref="ExistentialQuantifier"/>
@@ -383,7 +385,7 @@
 									<IterateRoles factArity="1" match="singleColumnConstraintRoles">
 										<Fact>
 											<PredicateReplacement>
-												<Snippet ref="ImpersonalPronoun"/>
+												<Snippet ref="DefiniteArticle"/>
 											</PredicateReplacement>
 										</Fact>
 									</IterateRoles>
@@ -410,7 +412,7 @@
 											<Snippet ref="null" />
 										</PredicateReplacement>
 										<PredicateReplacement>
-											<Snippet ref="ImpersonalPronoun" />
+											<Snippet ref="DefiniteArticle"/>
 										</PredicateReplacement>
 									</Fact>
 								</IterateRoles>

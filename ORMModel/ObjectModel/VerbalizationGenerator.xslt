@@ -2029,7 +2029,140 @@
 				</plx:right>
 			</plx:assign>
 		</xsl:for-each>
+		<xsl:for-each select="ve:ConditionalSnippet">
+			<xsl:for-each select="ve:Snippet">
+				<xsl:if test="position()=1">
+					<xsl:call-template name="ProcessConditionalSnippet"/>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:for-each>
 	</xsl:template>
+	<xsl:template name="ProcessConditionalSnippet">
+		<xsl:param name="fallback" select="false()"/>
+		<xsl:variable name="conditionFragment">
+			<xsl:variable name="match" select="@match"/>
+			<xsl:if test="string-length($match)">
+				<xsl:choose>
+					<xsl:when test="$match='IsPersonal'">
+						<plx:callInstance name="IsPersonal" type="property">
+							<plx:callObject>
+								<plx:callInstance name="RolePlayer" type="property">
+									<plx:callObject>
+										<plx:nameRef name="currentRole"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:message terminate="yes">
+							<xsl:text>Unrecognized conditional snippet pattern '</xsl:text>
+							<xsl:value-of select="$match"/>
+							<xsl:text>'.</xsl:text>
+						</xsl:message>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="condition" select="msxsl:node-set($conditionFragment)/child::*"/>
+		<xsl:choose>
+			<xsl:when test="$fallback">
+				<xsl:choose>
+					<xsl:when test="$condition">
+						<plx:alternateBranch>
+							<plx:condition>
+								<xsl:copy-of select="$condition"/>
+							</plx:condition>
+							<plx:body>
+								
+							</plx:body>
+						</plx:alternateBranch>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:fallbackBranch>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="conditionalSnippet"/>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic type="field" dataTypeName="{$VerbalizationTextSnippetType}" name="ImpersonalPronoun"/>
+								</plx:right>
+							</plx:assign>
+						</plx:fallbackBranch>
+					</xsl:otherwise>
+				</xsl:choose>
+				<!-- Get the snippet, assign to variable -->
+
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:choose>
+					<xsl:when test="$condition">
+						<plx:local name="conditionalSnippet" dataTypeName="VerbalizationTextSnippetType"/>
+						<plx:branch>
+							<plx:condition>
+								<xsl:copy-of select="$condition"/>
+							</plx:condition>
+							<plx:body>
+								<!-- Get the snippet, assign to variable -->
+								<plx:assign>
+									<plx:left>
+										<plx:nameRef name="conditionalSnippet"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic type="field" dataTypeName="{$VerbalizationTextSnippetType}" name="PersonalPronoun"/>
+									</plx:right>
+								</plx:assign>
+							</plx:body>
+							<xsl:for-each select="following-sibling::*">
+								<xsl:call-template name="ProcessConditionalSnippet">
+									<xsl:with-param name="fallback" select="true()"/>
+								</xsl:call-template>
+							</xsl:for-each>
+						</plx:branch>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="roleReplacement"/>
+							</plx:left>
+							<plx:right>
+								<xsl:choose>
+									<xsl:when test="@ref='null'">
+										<!-- Special case so that we can eliminate replacement text fields -->
+										<plx:string/>
+									</xsl:when>
+									<xsl:otherwise>
+										<plx:callStatic name="Format" dataTypeName=".string">
+											<plx:passParam>
+												<plx:callInstance name="FormatProvider" type="property">
+													<plx:callObject>
+														<plx:nameRef type="parameter" name="writer"/>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:passParam>
+											<plx:passParam>
+												<xsl:call-template name="SnippetFor">
+													<xsl:with-param name="VariableName" select="'conditionalSnippet'"/>
+												</xsl:call-template>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:nameRef name="basicReplacement"/>
+											</plx:passParam>
+										</plx:callStatic>
+									</xsl:otherwise>
+								</xsl:choose>
+							</plx:right>
+						</plx:assign>
+					</xsl:when>
+					<xsl:otherwise>
+						<!-- The conditional snippet wasn't actually needed, just process the snippet -->
+						<xsl:for-each select="..">
+							<xsl:call-template name="PredicateReplacementBody"/>
+						</xsl:for-each>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
 	<!-- An IterateRoles tag is used to walk a set of roles and combine verbalizations for
 		 the roles into a list. The type of verbalization depends on the match and filter attributes
 		 specified on the list. The list separators are determined by the contents of the listStyle attribute. -->
