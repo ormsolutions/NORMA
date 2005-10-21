@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.ComponentModel.Design;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -8,6 +10,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell
@@ -55,6 +58,7 @@ namespace Neumont.Tools.ORM.Shell
 		#region Member variables
 		private WebBrowser myWebBrowser;
 		private ORMDesignerDocView myCurrentDocumentView;
+		private bool myShowNegativeVerbalizations;
 		private StringWriter myStringWriter;
 
 		/// <summary>
@@ -62,6 +66,26 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private delegate bool VerbalizationHandler(IVerbalize verbalizer, int indentationLevel);
 		#endregion // Member variables
+		#region Accessor Properties
+		/// <summary>
+		/// Show negative verbalizations if available
+		/// </summary>
+		public bool ShowNegativeVerbalizations
+		{
+			get
+			{
+				return myShowNegativeVerbalizations;
+			}
+			set
+			{
+				if (myShowNegativeVerbalizations != value)
+				{
+					myShowNegativeVerbalizations = value;
+					UpdateVerbalization();
+				}
+			}
+		}
+		#endregion // Accessor Properties
 		#region Construction
 		/// <summary>
 		/// Construct a verbalization window with a monitor selection service
@@ -79,6 +103,31 @@ namespace Neumont.Tools.ORM.Shell
 			monitor.DocumentWindowChanged += new MonitorSelectionEventHandler(DocumentWindowChangedEvent);
 			monitor.SelectionChanged += new MonitorSelectionEventHandler(SelectionChangedEvent);
 			CurrentDocumentView = monitor.CurrentDocumentView as ORMDesignerDocView;
+		}
+		/// <summary>
+		/// Initialize here after we have the frame so we can grab the toolbar host
+		/// </summary>
+		protected override void Initialize()
+		{
+			base.Initialize();
+			IVsToolWindowToolbarHost host = ToolbarHost;
+			Debug.Assert(host != null); // Should be set with HasToolbar true
+			if (host != null)
+			{
+				CommandID command = ORMDesignerDocView.ORMDesignerCommandIds.VerbalizationToolBar;
+				Guid commandGuid = command.Guid;
+				host.AddToolbar(VSTWT_LOCATION.VSTWT_LEFT, ref commandGuid, (uint)command.ID);
+			}
+		}
+		/// <summary>
+		/// Make sure the toolbar flag gets set
+		/// </summary>
+		protected override bool HasToolbar
+		{
+			get
+			{
+				return true;
+			}
 		}
 		#endregion // Construction
 		#region Selection monitor event handlers and helpers
@@ -163,7 +212,8 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					myWebBrowser = browser = new WebBrowser();
 					browser.Dock = DockStyle.Fill;
-					browser.DocumentText = "";
+					StringWriter writer = myStringWriter;
+					browser.DocumentText = (writer != null) ? writer.ToString() : "";
 					// The container magically provides resize support, we don't have
 					// to go all the way to a form
 					ContainerControl container = new ContainerControl();
@@ -207,7 +257,7 @@ namespace Neumont.Tools.ORM.Shell
 			myStringWriter.GetStringBuilder().Length = 0;
 
 			ICollection selectedObjects = theView.GetSelectedComponents();
-			bool isNegative = false; // UNDONE: Get this value from somewhere real
+			bool showNegative = myShowNegativeVerbalizations;
 			bool firstCallPending = true;
 			foreach (ModelElement melIter in selectedObjects)
 			{
@@ -219,7 +269,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				if (mel != null)
 				{
-					VerbalizeElement(mel, isNegative, myStringWriter, ref firstCallPending);
+					VerbalizeElement(mel, showNegative, myStringWriter, ref firstCallPending);
 				}
 			}
 			if (!firstCallPending)
@@ -231,7 +281,11 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				// Nothing happened, put in text for nothing happened
 			}
-			myWebBrowser.DocumentText = myStringWriter.ToString();
+			WebBrowser browser = myWebBrowser;
+			if (browser != null)
+			{
+				browser.DocumentText = myStringWriter.ToString();
+			}
 		}
 		/// <summary>
 		/// Determine the indentation level for verbalizing a ModelElement, and fire

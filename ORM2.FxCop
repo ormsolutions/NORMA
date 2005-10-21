@@ -17708,6 +17708,34 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="OnMenuShowNegativeVerbalization(System.Object,System.EventArgs):System.Void">
+            <Messages>
+             <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Status="Excluded" Created="2005-10-21 20:21:52Z">
+              <Issue>
+               <Item>ORMDesignerCommandSet.OnMenuShowNegativeVerbalization(Object, EventArgs):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="jbriggs">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="OnMenuShowPositiveVerbalization(System.Object,System.EventArgs):System.Void">
+            <Messages>
+             <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Status="Excluded" Created="2005-10-21 20:21:52Z">
+              <Issue>
+               <Item>ORMDesignerCommandSet.OnMenuShowPositiveVerbalization(Object, EventArgs):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="jbriggs">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="OnMenuVerbalizationWindow(System.Object,System.EventArgs):System.Void">
             <Messages>
              <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Status="Excluded" Created="2005-09-13 18:45:05Z">
@@ -17787,6 +17815,34 @@
               <Issue>
                <Item>ORMDesignerCommandSet.OnStatusMoveRoleSequenceUp(Object, EventArgs):Void</Item>
               </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="OnStatusShowNegativeVerbalization(System.Object,System.EventArgs):System.Void">
+            <Messages>
+             <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Status="Excluded" Created="2005-10-21 20:21:52Z">
+              <Issue>
+               <Item>ORMDesignerCommandSet.OnStatusShowNegativeVerbalization(Object, EventArgs):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="jbriggs">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="OnStatusShowPositiveVerbalization(System.Object,System.EventArgs):System.Void">
+            <Messages>
+             <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Status="Excluded" Created="2005-10-21 20:21:52Z">
+              <Issue>
+               <Item>ORMDesignerCommandSet.OnStatusShowPositiveVerbalization(Object, EventArgs):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="jbriggs">
+                <Note Id="2" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -18280,6 +18336,7 @@
    <User Name="jbriggs">
     <Note Id="0" Modified="2005-07-25 20:58:15Z">Rule class instantiated by reflection</Note>
     <Note Id="1" Modified="2005-07-28 19:58:43Z">Standard generated code matching interface pattern</Note>
+    <Note Id="2" Modified="2005-10-21 20:24:08Z">Reviewed. Intentional protected methods in a protected class.</Note>
    </User>
    <User Name="jtanner">
     <Note Id="0" Modified="2005-07-25 22:25:45Z">Rule classes instantiated via reflection</Note>

@@ -94,10 +94,6 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusFactEditorWindow),
 				new EventHandler(OnMenuFactEditorWindow),
 				ORMDesignerCommandIds.ViewFactEditor)
-				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusVerbalizationWindow),
-				new EventHandler(OnMenuVerbalizationWindow),
-				ORMDesignerCommandIds.ViewVerbalizationBrowser)
 
 				// Constraint editing commands				
 				,new DynamicStatusMenuCommand(
@@ -120,6 +116,20 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusEditExternalConstraint),
 				new EventHandler(OnMenuEditExternalConstraint),
 				ORMDesignerCommandIds.ViewEditExternalConstraint)
+
+				// Verbalization Commands
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusShowPositiveVerbalization),
+				new EventHandler(OnMenuShowPositiveVerbalization),
+				ORMDesignerCommandIds.ShowPositiveVerbalization)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusShowNegativeVerbalization),
+				new EventHandler(OnMenuShowNegativeVerbalization),
+				ORMDesignerCommandIds.ShowNegativeVerbalization)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusVerbalizationWindow),
+				new EventHandler(OnMenuVerbalizationWindow),
+				ORMDesignerCommandIds.ViewVerbalizationBrowser)
 			};
 				#endregion
 				AddCommands(myCommands);
@@ -358,6 +368,51 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				ORMVerbalizationToolWindow verbWin = ORMDesignerPackage.VerbalizationWindow;
 				verbWin.Show();
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnStatusShowPositiveVerbalization(object sender, EventArgs e)
+			{
+				MenuCommand command = sender as MenuCommand;
+				command.Enabled = true;
+				command.Visible = true;
+				command.Supported = true;
+				command.Checked = !ORMDesignerPackage.VerbalizationWindow.ShowNegativeVerbalizations;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuShowPositiveVerbalization(object sender, EventArgs e)
+			{
+				ORMDesignerPackage.VerbalizationWindow.ShowNegativeVerbalizations = false;
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnStatusShowNegativeVerbalization(object sender, EventArgs e)
+			{
+				MenuCommand command = sender as MenuCommand;
+				command.Enabled = true;
+				command.Visible = true;
+				command.Supported = true;
+				command.Checked = ORMDesignerPackage.VerbalizationWindow.ShowNegativeVerbalizations;
+				
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			/// <param name="sender">Sender</param>
+			/// <param name="e">Event args</param>
+			protected void OnMenuShowNegativeVerbalization(object sender, EventArgs e)
+			{
+				ORMDesignerPackage.VerbalizationWindow.ShowNegativeVerbalizations = true;
 			}
 			/// <summary>
 			/// Status callback
@@ -604,12 +659,24 @@ namespace Neumont.Tools.ORM.Shell
 			/// The ORM Verbalization Browser Window item on the fact type context menu
 			/// </summary>
 			public static readonly CommandID ViewVerbalizationBrowser = new CommandID(guidORMDesignerCommandSet, cmdIdViewVerbalizationBrowser);
+			/// <summary>
+			/// The ORM Verbalization Browser toolbar button for positive verbalization
+			/// </summary>
+			public static readonly CommandID ShowPositiveVerbalization = new CommandID(guidORMDesignerCommandSet, cmdIdShowPositiveVerbalization);
+			/// <summary>
+			/// The ORM Verbalization Browser toolbar button for negative verbalization
+			/// </summary>
+			public static readonly CommandID ShowNegativeVerbalization = new CommandID(guidORMDesignerCommandSet, cmdIdShowNegativeVerbalization);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>
 			public static readonly CommandID ViewContextMenu = new CommandID(guidORMDesignerCommandSet, menuIdContextMenu);
+			/// <summary>
+			/// The toolbar for the verbalization window
+			/// </summary>
+			public static readonly CommandID VerbalizationToolBar = new CommandID(guidORMDesignerCommandSet, menuIdVerbalizationToolBar);
 
 			/// <summary>
 			/// Available on any role belonging to the active RoleSequence in the active MCEC or SCEC.
@@ -691,18 +758,30 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdMoveRoleSequenceDown = 0x290A;
 			/// <summary>
-			/// The ORM Verbalization Browser Window item on the View and context menu
-			/// </summary>
-			private const int cmdIdViewVerbalizationBrowser = 0x290B;
-			/// <summary>
 			/// Copy selected elements as an image.
 			/// </summary>
-			private const int cmdIdCopyImage = 0x290C;
+			private const int cmdIdCopyImage = 0x290B;
+			/// <summary>
+			/// The ORM Verbalization Browser Window item on the View and context menu
+			/// </summary>
+			private const int cmdIdViewVerbalizationBrowser = 0x290C;
+			/// <summary>
+			/// The ORM Verbalization Browser toolbar button for positive verbalization
+			/// </summary>
+			private const int cmdIdShowPositiveVerbalization = 0x290D;
+			/// <summary>
+			/// The ORM Verbalization Browser toolbar button for negative verbalization
+			/// </summary>
+			private const int cmdIdShowNegativeVerbalization = 0x290E;
 
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>
 			private const int menuIdContextMenu = 0x0100;
+			/// <summary>
+			/// The toolbar for the verbalization window
+			/// </summary>
+			private const int menuIdVerbalizationToolBar = 0x0101;
 			#endregion
 		}
 	}

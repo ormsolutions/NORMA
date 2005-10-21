@@ -9,6 +9,8 @@
 // Menu IDs          (0x01xx)
 // IMPORTANT: keep constants in sync with ORMModel\Shell\ORMCommandSet.cs
 #define menuIdContextMenu				0x0100
+#define menuIdVerbalizationToolBar		0x0101
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Menu Group IDs    (0x10xx)
@@ -20,6 +22,7 @@
 #define groupIdRoleCommands				0x1002
 #define groupIdModelCommands			0x1003
 #define groupIdConstraintEditContext	0x1004
+#define groupIdVerbalizationCommands	0x1005
 
 ///////////////////////////////////////////////////////////////////////////////
 // Command IDs       (0x2xxx)
@@ -41,7 +44,9 @@
 #define cmdIdMoveRoleSequenceUp			0x2909
 #define cmdIdMoveRoleSequenceDown		0x290A
 
-#define cmdIdViewVerbalizationBrowser	0x290B
-#define cmdIdCopyImage					0x290C
+#define cmdIdCopyImage					0x290B
+#define cmdIdViewVerbalizationBrowser	0x290C
+#define cmdIdShowPositiveVerbalization	0x290D
+#define cmdIdShowNegativeVerbalization	0x290E
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs

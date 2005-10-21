@@ -24,6 +24,7 @@ CMDS_SECTION guidORMDesignerPackage
     MENUS_BEGIN
 		// Context menus
 		guidORMDesignerCommandSet:menuIdContextMenu,				guidORMDesignerCommandSet:0,				0x0000,     CONTEXT,				"ORM Designer Context Menu",				"ORMDesignerContextMenu";
+		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,	0x0000,	TOOLWINDOWTOOLBAR,	"ORM Verbalization Toolbar",			"ORMDesignerVerbalizationToolbar";
 	MENUS_END
 
     NEWGROUPS_BEGIN
@@ -35,7 +36,8 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:groupIdFactCommands,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0020;
 		guidORMDesignerCommandSet:groupIdDeleteContext,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0030;
 		guidORMDesignerCommandSet:groupIdModelCommands,				guidORMDesignerCommandSet:menuIdContextMenu,	0x0040;
-		guidORMDesignerCommandSet:groupIdConstraintEditContext,			guidORMDesignerCommandSet:menuIdContextMenu,	0x0050;
+		guidORMDesignerCommandSet:groupIdConstraintEditContext,		guidORMDesignerCommandSet:menuIdContextMenu,	0x0050;
+		guidORMDesignerCommandSet:groupIdVerbalizationCommands,		guidORMDesignerCommandSet:menuIdVerbalizationToolBar,	0x0060;
     NEWGROUPS_END
 
     BUTTONS_BEGIN
@@ -58,6 +60,8 @@ CMDS_SECTION guidORMDesignerPackage
 
 		guidORMDesignerCommandSet:cmdIdInsertRoleAfter,				guidORMDesignerCommandSet:groupIdRoleCommands,			0x010,	guidOfficeIcon:msotcidNoIcon,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Insert Role &After";
 		guidORMDesignerCommandSet:cmdIdInsertRoleBefore,			guidORMDesignerCommandSet:groupIdRoleCommands,			0x020,	guidOfficeIcon:msotcidNoIcon,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Insert Role &Before";
+		guidORMDesignerCommandSet:cmdIdShowPositiveVerbalization,	guidORMDesignerCommandSet:groupIdVerbalizationCommands,	0x030, guidOfficeIcon:msotcidIndent,	BUTTON, DEFAULTINVISIBLE|DYNAMICVISIBILITY,	"Show positive verbalization";
+		guidORMDesignerCommandSet:cmdIdShowNegativeVerbalization,	guidORMDesignerCommandSet:groupIdVerbalizationCommands,	0x040, guidOfficeIcon:msotcidOutdent,	BUTTON, DEFAULTINVISIBLE|DYNAMICVISIBILITY,	"Show negative verbalization, if available";
     BUTTONS_END	
 
     COMBOS_BEGIN
