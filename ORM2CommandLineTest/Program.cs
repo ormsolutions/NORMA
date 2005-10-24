@@ -10,38 +10,63 @@ namespace Neumont.Tools.ORM.SDK.TestDriver
 {
 	class Program
 	{
+		public const string SchemaNamespace = "http://schemas.neumont.edu/ORM/SDK/TestSuite";
+		public const string ReportSchemaNamespace = "http://schemas.neumont.edu/ORM/SDK/TestSuiteReport";
+
 		static int Main(string[] args)
 		{
 			string suiteFile = args[0];
-			IList<Suite> suites = Suite.LoadSuiteFile(args[0]);
-			ORMSuiteReportResult result = ORMSuiteReportResult.NoFailure;
-			if (suites != null)
+			FileInfo suiteFileInfo = new FileInfo(suiteFile);
+			string fullName = suiteFileInfo.FullName;
+			string extension = suiteFileInfo.Extension;
+
+			XmlReaderSettings readerSettings = new XmlReaderSettings();
+			readerSettings.CloseInput = false;
+
+			using (FileStream fileStream = suiteFileInfo.OpenRead())
 			{
-				int suiteCount = suites.Count;
-				IORMToolServices services = Suite.CreateServices();
-				FileInfo fileInfo = new FileInfo(suiteFile);
-				string fullName = fileInfo.FullName;
-				string extension = fileInfo.Extension;
-				XmlWriterSettings reportSettings = new XmlWriterSettings();
-				reportSettings.Indent = true;
-				reportSettings.IndentChars = "\t";
-				using (XmlWriter reportWriter = XmlTextWriter.Create(string.Concat(fullName.Substring(0, fullName.Length - extension.Length), ".Report", extension), reportSettings))
+				XmlTextReader suitesReader = new XmlTextReader(new StreamReader(fileStream));
+				using (XmlReader reader = XmlReader.Create(suitesReader, readerSettings))
 				{
-					IORMToolTestSuiteReport report = ((IORMToolTestSuiteReportFactory)services.ServiceProvider.GetService(typeof(IORMToolTestSuiteReportFactory))).Create(reportWriter);
-					try
+					reader.MoveToContent();
+					string LoadingSchemaNamespace = reader.NamespaceURI;
+					ORMSuiteReportResult result = ORMSuiteReportResult.NoFailure;
+					if (LoadingSchemaNamespace == SchemaNamespace)
 					{
-						for (int i = 0; i < suiteCount; ++i)
+						//If the suite is not a report then we need to generate a report.
+						IList<Suite> suites = Suite.LoadSuiteFile(args[0]);
+						if (suites != null)
 						{
-							suites[i].Run(services, report);
+							int suiteCount = suites.Count;
+							IORMToolServices services = Suite.CreateServices();
+							XmlWriterSettings reportSettings = new XmlWriterSettings();
+							reportSettings.Indent = true;
+							reportSettings.IndentChars = "\t";
+							using (XmlWriter reportWriter = XmlTextWriter.Create(string.Concat(fullName.Substring(0, fullName.Length - extension.Length), ".Report", extension), reportSettings))
+							{
+								IORMToolTestSuiteReport report = ((IORMToolTestSuiteReportFactory)services.ServiceProvider.GetService(typeof(IORMToolTestSuiteReportFactory))).Create(reportWriter);
+								try
+								{
+									for (int i = 0; i < suiteCount; ++i)
+									{
+										suites[i].Run(services, report);
+									}
+								}
+								finally
+								{
+									result = report.CloseSuiteReport();
+								}	
+							}
 						}
 					}
-					finally
+					else if (LoadingSchemaNamespace == ReportSchemaNamespace)
 					{
-						result = report.CloseSuiteReport();
+						//TODO:  where to go with a report
+						
 					}
-				}
+					return (int)result;
+				}	
 			}
-			return (int)result;
 		}
 	}
 }
