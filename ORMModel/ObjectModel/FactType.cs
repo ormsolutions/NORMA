@@ -663,15 +663,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ORMModel theModel;
 			if (!IsRemoved && (null != (theModel = Model)))
 			{
-				bool hasError = true;
+				bool hasError = RoleCollection.Count > 1;
 				Store theStore = Store;
-				InternalConstraintMoveableCollection internalConstraints = InternalConstraintCollection;
-				foreach (InternalConstraint constraint in internalConstraints)
+
+				if (hasError)
 				{
-					if (constraint is InternalUniquenessConstraint)
+
+					InternalConstraintMoveableCollection internalConstraints = InternalConstraintCollection;
+					foreach (InternalConstraint constraint in internalConstraints)
 					{
-						hasError = false;
-						break;
+						if (constraint is InternalUniquenessConstraint)
+						{
+							hasError = false;
+							break;
+						}
 					}
 				}
 
@@ -698,11 +703,36 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 		#region Model Validation Rules
-
+		/// <summary>
+		/// Internal uniqueness constraints are required for non-unary facts. Requires
+		/// validation when roles are added and removed.
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasRole), FireTime=TimeToFire.LocalCommit)]
+		private class FactTypeHasRoleAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+				link.FactType.ValidateRequiresInternalUniqueness(null);
+			}
+		}
+		/// <summary>
+		/// Internal uniqueness constraints are required for non-unary facts. Requires
+		/// validation when roles are added and removed.
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class FactTypeHasRoleRemoveRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
+				link.FactType.ValidateRequiresInternalUniqueness(null);
+			}
+		}
 		/// <summary>
 		/// Only validates the InternalUniquenessConstraintRequired error
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint))]
+		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime=TimeToFire.LocalCommit)]
 		private class ModelHasInternalConstraintAddRuleModelValidation : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)

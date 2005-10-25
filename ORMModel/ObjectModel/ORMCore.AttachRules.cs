@@ -25,6 +25,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(FactType).GetNestedType("FactTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("FactTypeHasReadingOrderAddRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("FactTypeHasReadingOrderRemovedRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactType).GetNestedType("FactTypeHasRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(FactType).GetNestedType("FactTypeHasRoleRemoveRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("ModelHasFactTypeAddRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("ModelHasInternalConstraintAddRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactType).GetNestedType("ModelHasInternalConstraintRemoveRuleModelValidation", BindingFlags.Public | BindingFlags.NonPublic),

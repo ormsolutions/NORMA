@@ -15,6 +15,8 @@
 		<arg:Rule class="FactType.FactTypeChangeRule"/>
 		<arg:Rule class="FactType.FactTypeHasReadingOrderAddRuleModelValidation"/>
 		<arg:Rule class="FactType.FactTypeHasReadingOrderRemovedRuleModelValidation"/>
+		<arg:Rule class="FactType.FactTypeHasRoleAddRule"/>
+		<arg:Rule class="FactType.FactTypeHasRoleRemoveRule"/>
 		<arg:Rule class="FactType.ModelHasFactTypeAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ModelHasInternalConstraintAddRuleModelValidation"/>
 		<arg:Rule class="FactType.ModelHasInternalConstraintRemoveRuleModelValidation"/>
