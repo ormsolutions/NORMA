@@ -2694,12 +2694,12 @@
          </Type>
          <Type Name="DisjunctiveMandatoryConstraint">
           <Members>
-           <Member Name="GetVerbalization(System.IO.TextWriter,Neumont.Tools.ORM.ObjectModel.NotifyBeginVerbalization,System.Boolean):System.Boolean">
+           <Member Name="GetVerbalization(System.IO.TextWriter,Neumont.Tools.ORM.ObjectModel.VerbalizationSets,Neumont.Tools.ORM.ObjectModel.NotifyBeginVerbalization,System.Boolean):System.Boolean">
             <Messages>
-             <Message TypeName="AvoidExcessiveLocals" Category="Microsoft.Performance" CheckId="CA1809" Created="2005-09-20 20:18:19Z">
+             <Message TypeName="AvoidExcessiveLocals" Category="Microsoft.Performance" CheckId="CA1809" Created="2005-10-25 17:48:07Z">
               <Issue Name="Compiler">
-               <Item>DisjunctiveMandatoryConstraint.GetVerbalization(TextWriter, NotifyBeginVerbalization, Boolean):Boolean</Item>
-               <Item>70</Item>
+               <Item>DisjunctiveMandatoryConstraint.GetVerbalization(TextWriter, VerbalizationSets, NotifyBeginVerbalization, Boolean):Boolean</Item>
+               <Item>69</Item>
                <Item>4</Item>
               </Issue>
              </Message>
@@ -3476,21 +3476,6 @@
               <Issue>
                <Item>childMetaRoleGuid</Item>
               </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetVerbalization(System.IO.TextWriter,Neumont.Tools.ORM.ObjectModel.NotifyBeginVerbalization,System.Boolean):System.Boolean">
-            <Messages>
-             <Message Id="isNegative" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-09-14 15:07:59Z" FixCategory="Breaking">
-              <Issue>
-               <Item>isNegative</Item>
-               <Item>FactType.GetVerbalization(TextWriter, NotifyBeginVerbalization, Boolean):Boolean</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="60" />
-               </User>
-              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -4685,17 +4670,6 @@
                 <Note Id="25" />
                </User>
               </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetVerbalization(System.IO.TextWriter,Neumont.Tools.ORM.ObjectModel.NotifyBeginVerbalization,System.Boolean):System.Boolean">
-            <Messages>
-             <Message Id="primaryRole" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-09-20 23:05:17Z">
-              <Issue>
-               <Item>InternalUniquenessConstraint.GetVerbalization(TextWriter, NotifyBeginVerbalization, Boolean):Boolean</Item>
-               <Item>primaryRole</Item>
-               <Item>Neumont.Tools.ORM.ObjectModel.Role</Item>
-              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -11598,21 +11572,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="SimpleMandatoryConstraint">
-          <Members>
-           <Member Name="GetVerbalization(System.IO.TextWriter,Neumont.Tools.ORM.ObjectModel.NotifyBeginVerbalization,System.Boolean):System.Boolean">
-            <Messages>
-             <Message Id="primaryRole" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-09-14 21:08:37Z">
-              <Issue>
-               <Item>SimpleMandatoryConstraint.GetVerbalization(TextWriter, NotifyBeginVerbalization, Boolean):Boolean</Item>
-               <Item>primaryRole</Item>
-               <Item>Neumont.Tools.ORM.ObjectModel.Role</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="SimpleMandatoryConstraintElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
@@ -17303,24 +17262,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="IORMFontAndColorService">
-          <Members>
-           <Member Name="GetFont():System.Drawing.Font">
-            <Messages>
-             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Excluded" Created="2005-06-29 21:52:14Z">
-              <Issue Certainty="50">
-               <Item>GetFont</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="23" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="ORMCustomSerializedAttributeInfo">
           <Members>
            <Member Name="Default">
@@ -17850,128 +17791,6 @@
          </Type>
          <Type Name="ORMDesignerFontsAndColors">
           <Members>
-           <Member Name="ChangeDocumentFontAndColors(Neumont.Tools.ORM.Shell.ORMDesignerDocData):System.Void">
-            <Messages>
-             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>docData</Item>
-               <Item>ORMDesignerFontsAndColors.ChangeDocumentFontAndColors(ORMDesignerDocData):Void</Item>
-               <Item>Neumont.Tools.ORM.Shell.ORMDesignerDocData</Item>
-               <Item>Microsoft.VisualStudio.EnterpriseTools.Shell.DocData</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetBaseCategory(System.Guid&amp;):System.Int32">
-            <Messages>
-             <Message Id="0#pguid" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.GetBaseCategory(Guid&amp;):Int32</Item>
-               <Item>pguid</Item>
-               <Item>pguidBase</Item>
-              </Issue>
-             </Message>
-             <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>pguidBase</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="6" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetCategoryName(System.String&amp;):System.Int32">
-            <Messages>
-             <Message Id="0#pbstr" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.GetCategoryName(String&amp;):Int32</Item>
-               <Item>pbstr</Item>
-               <Item>pbstrName</Item>
-              </Issue>
-             </Message>
-             <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>pbstrName</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="6" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetFlags(System.UInt32&amp;):System.Int32">
-            <Messages>
-             <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>dwFlags</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="6" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetFont(Microsoft.VisualStudio.Shell.Interop.FontInfo[]):System.Int32">
-            <Messages>
-             <Message Id="0#p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.GetFont(FontInfo[]):Int32</Item>
-               <Item>p</Item>
-               <Item>pInfo</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetItem(System.Int32,Microsoft.VisualStudio.Shell.Interop.AllColorableItemInfo[]):System.Int32">
-            <Messages>
-             <Message Id="0#i" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.GetItem(Int32, AllColorableItemInfo[]):Int32</Item>
-               <Item>i</Item>
-               <Item>iItem</Item>
-              </Issue>
-             </Message>
-             <Message Id="1#p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.GetItem(Int32, AllColorableItemInfo[]):Int32</Item>
-               <Item>p</Item>
-               <Item>pInfo</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetItemByName(System.String,Microsoft.VisualStudio.Shell.Interop.AllColorableItemInfo[]):System.Int32">
-            <Messages>
-             <Message Id="1#p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.GetItemByName(String, AllColorableItemInfo[]):Int32</Item>
-               <Item>p</Item>
-               <Item>pInfo</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="GetItemCount(System.Int32&amp;):System.Int32">
-            <Messages>
-             <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>pcItems</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="6" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="GetObject(System.Guid&amp;,System.Object&amp;):System.Int32">
             <Messages>
              <Message Id="0#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-04-15 14:45:27Z">
@@ -18003,211 +17822,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="GetPriority(System.UInt16&amp;):System.Int32">
-            <Messages>
-             <Message Id="0#p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.GetPriority(UInt16&amp;):Int32</Item>
-               <Item>p</Item>
-               <Item>pPriority</Item>
-              </Issue>
-             </Message>
-             <Message Id="0#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Status="Excluded" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>pPriority</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="6" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="OnFontChanged(System.Guid&amp;,Microsoft.VisualStudio.Shell.Interop.FontInfo[],Microsoft.VisualStudio.Shell.Interop.LOGFONTW[],System.UInt32):System.Int32">
-            <Messages>
-             <Message Id="0#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-04-15 14:45:27Z">
-              <Issue Certainty="50">
-               <Item>rguidCategory</Item>
-              </Issue>
-             </Message>
-             <Message Id="3#" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>HFONT</Item>
-              </Issue>
-             </Message>
-             <Message Id="0#rguid" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.OnFontChanged(Guid&amp;, FontInfo[], LOGFONTW[], UInt32):Int32</Item>
-               <Item>rguid</Item>
-               <Item>rguidCategory</Item>
-              </Issue>
-             </Message>
-             <Message Id="1#p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.OnFontChanged(Guid&amp;, FontInfo[], LOGFONTW[], UInt32):Int32</Item>
-               <Item>p</Item>
-               <Item>pInfo</Item>
-              </Issue>
-             </Message>
-             <Message Id="2#p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.OnFontChanged(Guid&amp;, FontInfo[], LOGFONTW[], UInt32):Int32</Item>
-               <Item>p</Item>
-               <Item>pLOGFONT</Item>
-              </Issue>
-             </Message>
-             <Message Id="2#" TypeName="LongAcronymsShouldBePascalCased" Category="Microsoft.Naming" CheckId="CA1705" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>pLOGFONT</Item>
-              </Issue>
-             </Message>
-             <Message Id="3#" TypeName="LongAcronymsShouldBePascalCased" Category="Microsoft.Naming" CheckId="CA1705" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>HFONT</Item>
-              </Issue>
-             </Message>
-             <Message Id="HFONT" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
-              <Issue>
-               <Item>HFONT</Item>
-               <Item>ORMDesignerFontsAndColors.OnFontChanged(Guid&amp;, FontInfo[], LOGFONTW[], UInt32):Int32</Item>
-              </Issue>
-             </Message>
-             <Message Id="pInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
-              <Issue>
-               <Item>pInfo</Item>
-               <Item>ORMDesignerFontsAndColors.OnFontChanged(Guid&amp;, FontInfo[], LOGFONTW[], UInt32):Int32</Item>
-              </Issue>
-             </Message>
-             <Message Id="pLOGFONT" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
-              <Issue>
-               <Item>pLOGFONT</Item>
-               <Item>ORMDesignerFontsAndColors.OnFontChanged(Guid&amp;, FontInfo[], LOGFONTW[], UInt32):Int32</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="OnItemChanged(System.Guid&amp;,System.String,System.Int32,Microsoft.VisualStudio.Shell.Interop.ColorableItemInfo[],System.UInt32,System.UInt32):System.Int32">
-            <Messages>
-             <Message Id="0#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-04-15 14:45:27Z">
-              <Issue Certainty="50">
-               <Item>rguidCategory</Item>
-              </Issue>
-             </Message>
-             <Message Id="0#rguid" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
-               <Item>rguid</Item>
-               <Item>rguidCategory</Item>
-              </Issue>
-             </Message>
-             <Message Id="2#i" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
-               <Item>i</Item>
-               <Item>iItem</Item>
-              </Issue>
-             </Message>
-             <Message Id="3#p" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
-               <Item>p</Item>
-               <Item>pInfo</Item>
-              </Issue>
-             </Message>
-             <Message Id="crLiteralBackground" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
-              <Issue>
-               <Item>crLiteralBackground</Item>
-               <Item>ORMDesignerFontsAndColors.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
-              </Issue>
-             </Message>
-             <Message Id="crLiteralForeground" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
-              <Issue>
-               <Item>crLiteralForeground</Item>
-               <Item>ORMDesignerFontsAndColors.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
-              </Issue>
-             </Message>
-             <Message Id="iItem" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
-              <Issue>
-               <Item>iItem</Item>
-               <Item>ORMDesignerFontsAndColors.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
-              </Issue>
-             </Message>
-             <Message Id="pInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
-              <Issue>
-               <Item>pInfo</Item>
-               <Item>ORMDesignerFontsAndColors.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
-              </Issue>
-             </Message>
-             <Message Id="szItem" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2005-04-15 14:45:27Z" FixCategory="Breaking">
-              <Issue>
-               <Item>szItem</Item>
-               <Item>ORMDesignerFontsAndColors.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="OnReset(System.Guid&amp;):System.Int32">
-            <Messages>
-             <Message Id="0#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-04-15 14:45:27Z">
-              <Issue Certainty="50">
-               <Item>rguidCategory</Item>
-              </Issue>
-             </Message>
-             <Message Id="0#rguid" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.OnReset(Guid&amp;):Int32</Item>
-               <Item>rguid</Item>
-               <Item>rguidCategory</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="OnResetToBaseCategory(System.Guid&amp;):System.Int32">
-            <Messages>
-             <Message Id="0#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Created="2005-04-15 14:45:27Z">
-              <Issue Certainty="50">
-               <Item>rguidCategory</Item>
-              </Issue>
-             </Message>
-             <Message Id="0#rguid" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-15 14:45:27Z">
-              <Issue Name="Parameter">
-               <Item>ORMDesignerFontsAndColors.OnResetToBaseCategory(Guid&amp;):Int32</Item>
-               <Item>rguid</Item>
-               <Item>rguidCategory</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="SendMessage(System.IntPtr,System.Int32,System.Int32,System.Int32):System.IntPtr">
-            <Messages>
-             <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Created="2005-04-15 14:45:27Z">
-              <Issue>
-               <Item>ORMDesignerFontsAndColors.SendMessage(IntPtr, Int32, Int32, Int32):IntPtr</Item>
-              </Issue>
-             </Message>
-             <Message Id="2" TypeName="PInvokeDeclarationsShouldBePortable" Category="Microsoft.Portability" CheckId="CA1901" Created="2005-04-15 14:45:27Z" FixCategory="NonBreaking">
-              <Issue Name="Parameter">
-               <Item>wParam</Item>
-               <Item>ORMDesignerFontsAndColors.SendMessage(IntPtr, Int32, Int32, Int32):IntPtr</Item>
-               <Item>4</Item>
-               <Item>64-bit</Item>
-               <Item>8</Item>
-               <Item>System.Int32</Item>
-              </Issue>
-             </Message>
-             <Message Id="3" TypeName="PInvokeDeclarationsShouldBePortable" Category="Microsoft.Portability" CheckId="CA1901" Created="2005-04-15 14:45:27Z" FixCategory="NonBreaking">
-              <Issue Name="Parameter">
-               <Item>lParam</Item>
-               <Item>ORMDesignerFontsAndColors.SendMessage(IntPtr, Int32, Int32, Int32):IntPtr</Item>
-               <Item>4</Item>
-               <Item>64-bit</Item>
-               <Item>8</Item>
-               <Item>System.Int32</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
           </Members>
          </Type>
          <Type Name="ORMDesignerFontsAndColors+ColorRetriever">
@@ -18218,6 +17832,119 @@
               <Issue>
                <Item>ColorRetriever.GetSysColor(Int32):UInt32</Item>
               </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ORMDesignerFontsAndColors+EditorColors">
+          <Members>
+           <Member Name="SendMessage(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr):System.IntPtr">
+            <Messages>
+             <Message TypeName="MovePInvokesToNativeMethodsClass" Category="Microsoft.Design" CheckId="CA1060" Created="2005-10-25 17:48:07Z">
+              <Issue>
+               <Item>EditorColors.SendMessage(IntPtr, Int32, IntPtr, IntPtr):IntPtr</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ORMDesignerFontsAndColors+SettingsCategory">
+          <Members>
+           <Member Name="OnFontChanged(System.Guid&amp;,Microsoft.VisualStudio.Shell.Interop.FontInfo[],Microsoft.VisualStudio.Shell.Interop.LOGFONTW[],System.UInt32):System.Int32">
+            <Messages>
+             <Message Id="HFONT" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-10-25 17:48:07Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>HFONT</Item>
+               <Item>SettingsCategory.OnFontChanged(Guid&amp;, FontInfo[], LOGFONTW[], UInt32):Int32</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="62" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="pInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-10-25 17:48:07Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>pInfo</Item>
+               <Item>SettingsCategory.OnFontChanged(Guid&amp;, FontInfo[], LOGFONTW[], UInt32):Int32</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="62" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="pLOGFONT" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-10-25 17:48:07Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>pLOGFONT</Item>
+               <Item>SettingsCategory.OnFontChanged(Guid&amp;, FontInfo[], LOGFONTW[], UInt32):Int32</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="62" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="OnItemChanged(System.Guid&amp;,System.String,System.Int32,Microsoft.VisualStudio.Shell.Interop.ColorableItemInfo[],System.UInt32,System.UInt32):System.Int32">
+            <Messages>
+             <Message Id="crLiteralBackground" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-10-25 17:48:07Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>crLiteralBackground</Item>
+               <Item>SettingsCategory.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="62" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="crLiteralForeground" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-10-25 17:48:07Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>crLiteralForeground</Item>
+               <Item>SettingsCategory.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="62" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="iItem" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-10-25 17:48:07Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>iItem</Item>
+               <Item>SettingsCategory.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="62" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="pInfo" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-10-25 17:48:07Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>pInfo</Item>
+               <Item>SettingsCategory.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="62" />
+               </User>
+              </Notes>
+             </Message>
+             <Message Id="szItem" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2005-10-25 17:48:07Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>szItem</Item>
+               <Item>SettingsCategory.OnItemChanged(Guid&amp;, String, Int32, ColorableItemInfo[], UInt32, UInt32):Int32</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="62" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -18376,7 +18103,6 @@
     <Note Id="20" Modified="2005-05-18 23:28:20Z">These are different, one has a type parameter, the other doesn't. That gives them a different signature.</Note>
     <Note Id="21" Modified="2005-05-25 19:53:40Z">Defined in IMS-generated code</Note>
     <Note Id="22" Modified="2005-05-27 18:54:31Z">Returned types are immutable</Note>
-    <Note Id="23" Modified="2005-06-29 21:54:40Z">GetFont generates a new font object that needs to be cleaned up property. It is not appropriate to make this a property.</Note>
     <Note Id="24" Modified="2005-05-27 18:56:51Z">Returned data is not sparse, multidimensional is OK</Note>
     <Note Id="25" Modified="2005-05-27 18:58:49Z">Spit code matches regular private interface implementation/protected member pattern</Note>
     <Note Id="26" Modified="2005-05-27 18:59:16Z">IMS-generated code</Note>
@@ -18413,8 +18139,8 @@
     <Note Id="57" Modified="2005-08-22 18:16:12Z">Interface implementation</Note>
     <Note Id="58" Modified="2005-08-22 18:16:31Z">Interface pattern function</Note>
     <Note Id="59" Modified="2005-08-31 15:42:38Z">CodeDom doesn't spit readonly, which is what I really want. The class being spit is not editable.</Note>
-    <Note Id="60" Modified="2005-09-14 15:09:44Z">Signature matches interface pattern</Note>
     <Note Id="61" Modified="2005-09-21 15:49:26Z">Rule class instantiated via reflection</Note>
+    <Note Id="62" Modified="2005-10-25 17:49:21Z">Matching required interface implementation pattern</Note>
    </User>
    <User Name="mouzts">
     <Note Id="0" Modified="2005-09-15 22:08:24Z">Rule classes instantiated via reflection</Note>
@@ -18537,7 +18263,6 @@
    </Rule>
    <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
     <Resolution Name="Member">Correct the casing of member name '{0}'.</Resolution>
-    <Resolution Name="Parameter">Correct the casing of parameter name '{0}'.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
     <Resolution Name="Member">Correct the spelling of the unrecognized token '{0}' in member name '{1}'.</Resolution>
@@ -18584,9 +18309,6 @@
    </Rule>
    <Rule TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725">
     <Resolution Name="Default">Change parameter name '{0}' of method {1} to '{2}' in order to match the identifier as it has been declared in {3}.</Resolution>
-   </Rule>
-   <Rule TypeName="PInvokeDeclarationsShouldBePortable" Category="Microsoft.Portability" CheckId="CA1901">
-    <Resolution Name="Parameter">As it is declared in your code, parameter '{0}' of PInvoke {1} will be {2} bytes wide on {3} platforms. This is not correct, as the actual native declaration of this API indicates it should be {4} bytes wide on {3} platforms. Consult the MSDN Platform SDK documentation for help determining what data type should be used instead of '{5}'.</Resolution>
    </Rule>
    <Rule TypeName="PreferJaggedArraysOverMultidimensional" Category="Microsoft.Performance" CheckId="CA1814">
     <Resolution Name="Body">'{0}' uses a multidimensional array of '{1}'. Replace it with a jagged array if possible. (Jagged arrays are not CLS Compliant.)</Resolution>

@@ -10,7 +10,7 @@ namespace Neumont.Tools.ORM.Shell
 {
 	#region ORMDesignerColor Enum
 	/// <summary>
-	/// Indexed color values in the 'ORM Designer' color category
+	/// Indexed color values in the 'ORM Editor' and 'ORM Verbalizer' color categories
 	/// </summary>
 	public enum ORMDesignerColor
 	{
@@ -18,6 +18,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// The color used to draw all constraints
 		/// </summary>
 		Constraint,
+		/// <summary>
+		/// Used for picking different category ranges out of a single enum
+		/// </summary>
+		FirstEditorColor = Constraint,
 		/// <summary>
 		/// The colors used to draw an active constraint
 		/// and its associated roles.
@@ -33,12 +37,56 @@ namespace Neumont.Tools.ORM.Shell
 		/// during a role picker mouse action
 		/// </summary>
 		RolePicker,
+		/// <summary>
+		/// The color used to draw all constraints when modality is set to deontic
+		/// </summary>
+		DeonticConstraint,
+		/// <summary>
+		/// Used for picking different category ranges out of a single enum
+		/// </summary>
+		LastEditorColor = DeonticConstraint,
+		/// <summary>
+		/// The predicate text portion of a verbalization
+		/// </summary>
+		VerbalizerPredicateText,
+		/// <summary>
+		/// Used for picking different category ranges out of a single enum
+		/// </summary>
+		FirstVerbalizerColor = VerbalizerPredicateText,
+		/// <summary>
+		/// Object names in a verbalization
+		/// </summary>
+		VerbalizerObjectName,
+		/// <summary>
+		/// All other formal items in a verbalization
+		/// </summary>
+		VerbalizerFormalItem,
+		/// <summary>
+		/// Used for picking different category ranges out of a single enum
+		/// </summary>
+		LastVerbalizerColor = VerbalizerFormalItem,
 		// Items here must be in the same order as myDefaultColorSettings
 		// defined in the ORMDesignerFontsAndColors class. Also need to
-		// update NameFromItemIndex when adding/removing items here.
+		// update NameFromItemIndex implementations when adding/removing items here.
 	}
 	#endregion // ORMDesignerColor Enum
-	#region IORMFontAndColorService
+	#region ORMDesignerColorCategory Enum
+	/// <summary>
+	/// Fonts for all of the ORM designer supported fonts and colors categories
+	/// </summary>
+	public enum ORMDesignerColorCategory
+	{
+		/// <summary>
+		/// The core editor color category
+		/// </summary>
+		Editor,
+		/// <summary>
+		/// The verbalizer color category
+		/// </summary>
+		Verbalizer,
+	}
+	#endregion // ORMDesignerColorCategory Enum
+	#region IORMFontAndColorService interface
 	/// <summary>
 	/// Abstract 
 	/// </summary>
@@ -60,8 +108,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// Retrieve font information. A new Font object is generated
 		/// on each call and must be disposed of properly by the caller.
 		/// </summary>
+		/// <param name="fontCategory">The category for the font to retrieve</param>
 		/// <returns>A new font object</returns>
-		Font GetFont();
+		Font GetFont(ORMDesignerColorCategory fontCategory);
 		/// <summary>
 		/// Retrieve font flag information for the specified index
 		/// </summary>
@@ -74,7 +123,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// The class to create the ORM Designer category in the tools/options/environment/fonts and colors page
 	/// </summary>
 	[Guid("C5AA80F8-F730-4809-AAB1-8D925E36F9F5")]
-	public partial class ORMDesignerFontsAndColors : IVsFontAndColorDefaultsProvider, IVsFontAndColorDefaults, IVsFontAndColorEvents, IORMFontAndColorService
+	public partial class ORMDesignerFontsAndColors : IVsFontAndColorDefaultsProvider, IORMFontAndColorService
 	{
 		#region Constant definitions
 		/// <summary>
@@ -104,9 +153,13 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private const uint AllSpecialColorBits = StandardPaletteBit | SystemColorBit | VsColorBit | TrackForegroundColorBit | TrackBackgroundColorBit;
 		/// <summary>
-		/// The guid for the font and color category used for this language service
+		/// The guid for the font and color designer category
 		/// </summary>
-		public static readonly Guid FontAndColorCategory = new Guid("663DE24F-8E3A-4C0F-A307-53053ED6C59B");
+		public static readonly Guid FontAndColorEditorCategory = new Guid("663DE24F-8E3A-4C0F-A307-53053ED6C59B");
+		/// <summary>
+		/// The guid for the font and color verbalizer
+		/// </summary>
+		public static readonly Guid FontAndColorVerbalizerCategory = new Guid("663DE24F-5A08-4490-80E7-EA332DFFE7F0");
 		/// <summary>
 		/// The guid for the TextEditor Category
 		/// </summary>
@@ -115,6 +168,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// The unlocalized name for the constraint display item
 		/// </summary>
 		public const string ConstraintColorName = "ORM Constraint";
+		/// <summary>
+		/// The unlocalized name for the deontic constraint display item
+		/// </summary>
+		public const string DeonticConstraintColorName = "ORM Constraint (Deontic Modality)";
 		/// <summary>
 		/// The unlocalized name for the constraint error display item
 		/// </summary>
@@ -127,6 +184,21 @@ namespace Neumont.Tools.ORM.Shell
 		/// The unlocalized name for the role highlight display item
 		/// </summary>
 		public const string RolePickerColorName = "ORM Role Picker";
+
+		// Verbalization category constant names
+
+		/// <summary>
+		/// The unlocalized name for predicate text in the verbalizer
+		/// </summary>
+		public const string VerbalizerPredicateTextColorName = "ORM Verbalizer (Predicate Text)";
+		/// <summary>
+		/// The unlocalized name for object names in the verbalizer
+		/// </summary>
+		public const string VerbalizerObjectNameColorName = "ORM Verbalizer (Object Name)";
+		/// <summary>
+		/// The unlocalized name for formal items in the verbalizer
+		/// </summary>
+		public const string VerbalizerFormalItemColorName = "ORM Verbalizer (Formal Item)";
 		#endregion // Constant definitions
 		#region Default Settings
 		/// <summary>
@@ -164,7 +236,7 @@ namespace Neumont.Tools.ORM.Shell
 			new DefaultColorSetting(
 			ConstraintColorName,
 			ResourceStrings.FontsAndColorsConstraintColorId,
-			(uint)ColorTranslator.ToWin32(Color.Purple),
+			(uint)COLORINDEX.CI_PURPLE | StandardPaletteBit,
 			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
 			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS,
 			false)
@@ -189,6 +261,34 @@ namespace Neumont.Tools.ORM.Shell
 			(uint)COLORINDEX.CI_YELLOW | StandardPaletteBit,
 			__FCITEMFLAGS.FCIF_ALLOWBGCHANGE | __FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS,
 			false)
+			,new DefaultColorSetting(
+			DeonticConstraintColorName,
+			ResourceStrings.FontsAndColorsDeonticConstraintColorId,
+			(uint)COLORINDEX.CI_BLUE | StandardPaletteBit,
+			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
+			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS,
+			false)
+			,new DefaultColorSetting(
+			VerbalizerPredicateTextColorName,
+			ResourceStrings.FontsAndColorsVerbalizerPredicateTextColorId,
+			(uint)COLORINDEX.CI_DARKGREEN | StandardPaletteBit,
+			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
+			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS | __FCITEMFLAGS.FCIF_ALLOWBOLDCHANGE,
+			false)
+			,new DefaultColorSetting(
+			VerbalizerObjectNameColorName,
+			ResourceStrings.FontsAndColorsVerbalizerObjectNameColorId,
+			(uint)COLORINDEX.CI_PURPLE | StandardPaletteBit,
+			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
+			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS | __FCITEMFLAGS.FCIF_ALLOWBOLDCHANGE,
+			false)
+			,new DefaultColorSetting(
+			VerbalizerFormalItemColorName,
+			ResourceStrings.FontsAndColorsVerbalizerFormalItemColorId,
+			(uint)ColorTranslator.ToWin32(Color.MediumBlue),
+			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
+			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS | __FCITEMFLAGS.FCIF_ALLOWBOLDCHANGE,
+			true)
 		};
 		#endregion // Default Settings
 		#region Constructor
@@ -202,9 +302,78 @@ namespace Neumont.Tools.ORM.Shell
 			myServiceProvider = serviceProvider;
 		}
 		#endregion // Constructor
-		#region Settings Cache
+		#region IVsFontAndColorDefaultsProvider Implementation
+		private EditorColors myEditorColors;
+		private VerbalizerColors myVerbalizerColors;
+		private SettingsCategory CategoryFromDesignerColor(ORMDesignerColor designerColor, out int colorIndex)
+		{
+			SettingsCategory retVal = null;
+			colorIndex = (int)designerColor;
+			if (designerColor >= ORMDesignerColor.FirstEditorColor && designerColor <= ORMDesignerColor.LastEditorColor)
+			{
+				colorIndex -= (int)ORMDesignerColor.FirstEditorColor;
+				retVal = CategoryFromDesignerFont(ORMDesignerColorCategory.Editor);
+			}
+			else if (designerColor >= ORMDesignerColor.FirstVerbalizerColor && designerColor <= ORMDesignerColor.LastVerbalizerColor)
+			{
+				colorIndex -= (int)ORMDesignerColor.FirstVerbalizerColor;
+				retVal = CategoryFromDesignerFont(ORMDesignerColorCategory.Verbalizer);
+			}
+			Debug.Assert(retVal != null); // Value out of range
+			return retVal;
+		}
+		private SettingsCategory CategoryFromDesignerFont(ORMDesignerColorCategory designerColorCategory)
+		{
+			SettingsCategory retVal = null;
+			switch (designerColorCategory)
+			{
+				case ORMDesignerColorCategory.Editor:
+					retVal = myEditorColors;
+					if (retVal == null)
+					{
+						retVal = myEditorColors = new EditorColors(myServiceProvider);
+					}
+					break;
+				case ORMDesignerColorCategory.Verbalizer:
+					retVal = myVerbalizerColors;
+					if (retVal == null)
+					{
+						retVal = myVerbalizerColors = new VerbalizerColors(myServiceProvider);
+					}
+					break;
+			}
+			Debug.Assert(retVal != null); // Unknown font
+			return retVal;
+		}
 		/// <summary>
-		/// Struct for caching values
+		/// Implements IVsFontAndColorDefaultsProvider.GetObject
+		/// </summary>
+		/// <param name="rguidCategory"></param>
+		/// <param name="ppObj"></param>
+		/// <returns></returns>
+		protected int GetObject(ref Guid rguidCategory, out object ppObj)
+		{
+			if (rguidCategory == FontAndColorEditorCategory)
+			{
+				ppObj = CategoryFromDesignerFont(ORMDesignerColorCategory.Editor) as IVsFontAndColorDefaults;
+				return VSConstants.S_OK;
+			}
+			else if (rguidCategory == FontAndColorVerbalizerCategory)
+			{
+				ppObj = CategoryFromDesignerFont(ORMDesignerColorCategory.Verbalizer) as IVsFontAndColorDefaults;
+				return VSConstants.S_OK;
+			}
+			ppObj = null;
+			return VSConstants.E_NOINTERFACE;
+		}
+		int IVsFontAndColorDefaultsProvider.GetObject(ref Guid rguidCategory, out object ppObj)
+		{
+			return GetObject(ref rguidCategory, out ppObj);
+		}
+		#endregion // IVsFontAndColorDefaultsProvider Implementation
+		#region ColorItem stucture
+		/// <summary>
+		/// Struct for caching color values
 		/// </summary>
 		private struct ColorItem
 		{
@@ -212,6 +381,8 @@ namespace Neumont.Tools.ORM.Shell
 			public Color BackColor;
 			public FONTFLAGS FontFlags;
 		}
+		#endregion // ColorItem stucture
+		#region ColorRetriever structure
 		/// <summary>
 		/// Helper structure to retrieve color and font values
 		/// </summary>
@@ -453,27 +624,22 @@ namespace Neumont.Tools.ORM.Shell
 				return ColorTranslator.FromWin32((int)colorValue);
 			}
 		}
-		private ColorItem[] myColors;
-		private LOGFONTW myLogFont = new LOGFONTW();
-		private FontInfo myFontInfo = new FontInfo();
-		private bool mySettingsChangePending; // Set to true on events, no effect until OnApply fires
+		#endregion // ColorRetriever structure
 		#region IORMFontAndColorService implementation
 		/// <summary>
 		/// Retrieve font information. A new Font object is generated
 		/// on each call and must be disposed of properly by the caller.
 		/// Implements IORMFontAndColorService.GetFont
 		/// </summary>
+		/// <param name="fontCategory">Identifies the color category for the font to retrieve</param>
 		/// <returns>A new font object</returns>
-		protected Font GetFont()
+		protected Font GetFont(ORMDesignerColorCategory fontCategory)
 		{
-			EnsureCache();
-			FontInfo fontInfo = myFontInfo;
-			Debug.Assert(fontInfo.bFaceNameValid != 0 && fontInfo.bCharSetValid != 0 && fontInfo.bPointSizeValid != 0);
-			return new Font(fontInfo.bstrFaceName, fontInfo.wPointSize / 72.0f, FontStyle.Regular, GraphicsUnit.World, fontInfo.iCharSet);
+			return CategoryFromDesignerFont(fontCategory).GetFont();
 		}
-		Font IORMFontAndColorService.GetFont()
+		Font IORMFontAndColorService.GetFont(ORMDesignerColorCategory fontCategory)
 		{
-			return GetFont();
+			return GetFont(fontCategory);
 		}
 		/// <summary>
 		/// Retrieve forecolor information for the specified index.
@@ -483,8 +649,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>Color</returns>
 		protected Color GetForeColor(ORMDesignerColor colorIndex)
 		{
-			EnsureCache();
-			return myColors[(int)colorIndex].ForeColor;
+			int index;
+			return CategoryFromDesignerColor(colorIndex, out index).GetColorItem(index).ForeColor;
 		}
 		Color IORMFontAndColorService.GetForeColor(ORMDesignerColor colorIndex)
 		{
@@ -498,8 +664,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>Color</returns>
 		protected Color GetBackColor(ORMDesignerColor colorIndex)
 		{
-			EnsureCache();
-			return myColors[(int)colorIndex].BackColor;
+			int index;
+			return CategoryFromDesignerColor(colorIndex, out index).GetColorItem(index).BackColor;
 		}
 		Color IORMFontAndColorService.GetBackColor(ORMDesignerColor colorIndex)
 		{
@@ -513,353 +679,541 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>FONTFLAGS</returns>
 		protected FONTFLAGS GetFontFlags(ORMDesignerColor colorIndex)
 		{
-			EnsureCache();
-			return myColors[(int)colorIndex].FontFlags;
+			int index;
+			return CategoryFromDesignerColor(colorIndex, out index).GetColorItem(index).FontFlags;
 		}
 		FONTFLAGS IORMFontAndColorService.GetFontFlags(ORMDesignerColor colorIndex)
 		{
 			return GetFontFlags(colorIndex);
 		}
 		#endregion // IORMFontAndColorService implementation
-		private void EnsureCache()
+		#region SettingsCategory class
+		/// <summary>
+		/// A base class for color classes representing different color categories
+		/// </summary>
+		private abstract class SettingsCategory : IVsFontAndColorDefaults, IVsFontAndColorEvents
 		{
-			if (myColors == null)
+			#region Member Variables
+			private ColorItem[] myColors;
+			private LOGFONTW myLogFont;
+			private FontInfo myFontInfo;
+			private bool mySettingsChangePending; // Set to true on events, no effect until OnApply fires
+			private IServiceProvider myServiceProvider;
+			#endregion // Member Variables
+			#region Constructor
+			protected SettingsCategory(IServiceProvider serviceProvider)
 			{
-				FillCache();
+				myServiceProvider = serviceProvider;
 			}
-		}
-		private void ClearCache()
-		{
-			if (myColors != null)
+			#endregion
+			#region Cache Management
+			private void EnsureCache()
 			{
-				myColors = null;
-				myLogFont = new LOGFONTW();
-				myFontInfo = new FontInfo();
-			}
-		}
-		private void FillCache()
-		{
-			Debug.Assert(myColors == null);
-			ColorRetriever retriever = new ColorRetriever(myServiceProvider, FontAndColorCategory, new ColorRetriever.NameFromIndex(NameFromItemIndex));
-			try
-			{
-				retriever.GetFont(out myLogFont, out myFontInfo);
-				int itemCount = myDefaultColorSettings.Length;
-				myColors = new ColorItem[itemCount];
-				for (int i = 0; i < itemCount; ++i)
+				if (myColors == null)
 				{
-					myColors[i] = retriever.GetColorItem(i);
+					FillCache();
 				}
 			}
-			finally
+			private void ClearCache()
 			{
-				retriever.Close();
+				if (myColors != null)
+				{
+					myColors = null;
+					myLogFont = new LOGFONTW();
+					myFontInfo = new FontInfo();
+				}
 			}
-		}
-		private static string NameFromItemIndex(int itemIndex)
-		{
-			return NameFromItemIndex((ORMDesignerColor)itemIndex);
-		}
-		/// <summary>
-		/// Get the name of an item from its index
-		/// </summary>
-		/// <param name="itemIndex">A valid item index</param>
-		/// <returns>A name. Throws on an invalid index</returns>
-		private static string NameFromItemIndex(ORMDesignerColor itemIndex)
-		{
-			string retVal;
-			switch (itemIndex)
+			private void FillCache()
 			{
-				case ORMDesignerColor.Constraint:
-					retVal = ConstraintColorName;
-					break;
-				case ORMDesignerColor.ConstraintError:
-					retVal = ConstraintErrorColorName;
-					break;
-				case ORMDesignerColor.RolePicker:
-					retVal = RolePickerColorName;
-					break;
-				case ORMDesignerColor.ActiveConstraint:
-					retVal = ActiveConstraintColorName;
-					break;
-				default:
-					Debug.Assert(false); // The cases may not match all of the ORMDesignerColor enums.
-					throw new ArgumentOutOfRangeException();
+				Debug.Assert(myColors == null);
+				ColorRetriever retriever = new ColorRetriever(myServiceProvider, CategoryGuid, new ColorRetriever.NameFromIndex(NameFromItemIndex));
+				try
+				{
+					int firstItem = FirstDefaultColorIndex;
+					int lastItem = LastDefaultColorIndex;
+					retriever.GetFont(out myLogFont, out myFontInfo);
+					int itemCount = lastItem - firstItem + 1;
+					myColors = new ColorItem[itemCount];
+					for (int i = 0; i < itemCount; ++i)
+					{
+						myColors[i] = retriever.GetColorItem(i);
+					}
+				}
+				finally
+				{
+					retriever.Close();
+				}
 			}
-			return retVal;
-		}
-		#endregion // Read Cache
-		#region IVsFontAndColorDefaultsProvider Implementation
-		/// <summary>
-		/// Implements IVsFontAndColorDefaultsProvider.GetObject
-		/// </summary>
-		/// <param name="rguidCategory"></param>
-		/// <param name="ppObj"></param>
-		/// <returns></returns>
-		protected int GetObject(ref Guid rguidCategory, out object ppObj)
-		{
-			if (rguidCategory == FontAndColorCategory)
+			#endregion // Cache Management
+			#region Virtual and abstract methods and properties
+			/// <summary>
+			/// Provide the guid for the category to retrieve
+			/// </summary>
+			protected abstract Guid CategoryGuid { get;}
+			/// <summary>
+			/// Map a 0-based index into a name in the category
+			/// </summary>
+			protected abstract string NameFromItemIndex(int itemIndex);
+			/// <summary>
+			/// The index of the first color in the myDefaultColorSettings array that belongs to this category
+			/// </summary>
+			protected abstract int FirstDefaultColorIndex { get;}
+			/// <summary>
+			/// The index of the last color in the myDefaultColorSettings array that belongs to this category
+			/// </summary>
+			protected abstract int LastDefaultColorIndex { get;}
+			/// <summary>
+			/// The localized string for the category name
+			/// </summary>
+			protected abstract string CategoryName { get;}
+			/// <summary>
+			/// The flags for this category
+			/// </summary>
+			protected abstract __FONTCOLORFLAGS FontColorFlags { get;}
+			/// <summary>
+			/// The default font for this category
+			/// </summary>
+			protected abstract FontInfo DefaultFont { get;}
+			/// <summary>
+			/// Called when a settings change is applied in the Font and Colors dialog
+			/// </summary>
+			protected virtual void ApplySettingsChange(IServiceProvider serviceProvider) { }
+			#endregion // Virtual and abstract methods and properties
+			#region Font and Color accessors
+			/// <summary>
+			/// Retrieve font information. A new Font object is generated
+			/// on each call and must be disposed of properly by the caller.
+			/// Implements IORMFontAndColorService.GetFont
+			/// </summary>
+			public Font GetFont()
 			{
-				ppObj = this as IVsFontAndColorDefaults;
+				EnsureCache();
+				FontInfo fontInfo = myFontInfo;
+				Debug.Assert(fontInfo.bFaceNameValid != 0 && fontInfo.bCharSetValid != 0 && fontInfo.bPointSizeValid != 0);
+				return new Font(fontInfo.bstrFaceName, fontInfo.wPointSize / 72.0f, FontStyle.Regular, GraphicsUnit.World, fontInfo.iCharSet);
+			}
+			/// <summary>
+			/// Retrieve the color information at the provided index
+			/// </summary>
+			/// <param name="adjustedColorIndex">The color to retrieve. The color has already been adjusted to a zero-based index
+			/// appropriate for this class.</param>
+			/// <returns>ColorItem structure</returns>
+			public ColorItem GetColorItem(int adjustedColorIndex)
+			{
+				EnsureCache();
+				return myColors[adjustedColorIndex];
+			}
+			#endregion // Font and color accessors
+			#region IVsFontAndColorDefaults Implementation
+			/// <summary>
+			/// Implements IVsFontAndColorDefaults.GetBaseCategory
+			/// </summary>
+			/// <param name="pguidBase"></param>
+			/// <returns></returns>
+			protected static int GetBaseCategory(out Guid pguidBase)
+			{
+				pguidBase = Guid.Empty;
+				return VSConstants.E_NOTIMPL;
+			}
+			int IVsFontAndColorDefaults.GetBaseCategory(out Guid pguidBase)
+			{
+				return GetBaseCategory(out pguidBase);
+			}
+			/// <summary>
+			/// Implements  IVsFontAndColorDefaults.GetCategoryName
+			/// </summary>
+			/// <param name="pbstrName"></param>
+			/// <returns></returns>
+			protected int GetCategoryName(out string pbstrName)
+			{
+				pbstrName = CategoryName;
 				return VSConstants.S_OK;
 			}
-			ppObj = null;
-			return VSConstants.E_NOINTERFACE;
-		}
-		int IVsFontAndColorDefaultsProvider.GetObject(ref Guid rguidCategory, out object ppObj)
-		{
-			return GetObject(ref rguidCategory, out ppObj);
-		}
-		#endregion // IVsFontAndColorDefaultsProvider Implementation
-		#region IVsFontAndColorDefaults Implementation
-		/// <summary>
-		/// Implements IVsFontAndColorDefaults.GetBaseCategory
-		/// </summary>
-		/// <param name="pguidBase"></param>
-		/// <returns></returns>
-		protected static int GetBaseCategory(out Guid pguidBase)
-		{
-			pguidBase = Guid.Empty;
-			return VSConstants.E_NOTIMPL;
-		}
-		int IVsFontAndColorDefaults.GetBaseCategory(out Guid pguidBase)
-		{
-			return GetBaseCategory(out pguidBase);
-		}
-		/// <summary>
-		/// Implements  IVsFontAndColorDefaults.GetCategoryName
-		/// </summary>
-		/// <param name="pbstrName"></param>
-		/// <returns></returns>
-		protected static int GetCategoryName(out string pbstrName)
-		{
-			pbstrName = ResourceStrings.GetColorNameString(ResourceStrings.FontsAndColorsCategoryNameId);
-			return VSConstants.S_OK;
-		}
-		int IVsFontAndColorDefaults.GetCategoryName(out string pbstrName)
-		{
-			return GetCategoryName(out pbstrName);
-		}
-		/// <summary>
-		/// Implements IVsFontAndColorDefaults.GetFlags
-		/// </summary>
-		/// <param name="dwFlags"></param>
-		/// <returns></returns>
-		protected static int GetFlags(out uint dwFlags)
-		{
-			// Pull values from the __FONTCOLORFLAGS enum
-			dwFlags = (uint)(__FONTCOLORFLAGS.FCF_MUSTRESTART);
-			return VSConstants.S_OK;
-		}
-		int IVsFontAndColorDefaults.GetFlags(out uint dwFlags)
-		{
-			return GetFlags(out dwFlags);
-		}
-		/// <summary>
-		/// Implements IVsFontAndColorDefaults.GetFont
-		/// </summary>
-		/// <param name="pInfo"></param>
-		/// <returns></returns>
-		protected static int GetFont(FontInfo[] pInfo)
-		{
-			FontInfo info = new FontInfo();
-			info.bstrFaceName = "Tahoma";
-			info.bFaceNameValid = 1;
-			info.wPointSize = 7;
-			info.bPointSizeValid = 1;
-			info.iCharSet = (byte)EnvDTE.vsFontCharSet.vsFontCharSetDefault;
-			info.bCharSetValid = 1;
-			pInfo[0] = info;
-			return VSConstants.S_OK;
-		}
-		int IVsFontAndColorDefaults.GetFont(FontInfo[] pInfo)
-		{
-			return GetFont(pInfo);
-		}
-		/// <summary>
-		/// Implements IVsFontAndColorDefaults.GetItem
-		/// </summary>
-		/// <param name="iItem"></param>
-		/// <param name="pInfo"></param>
-		/// <returns></returns>
-		protected static int GetItem(int iItem, AllColorableItemInfo[] pInfo)
-		{
-			AllColorableItemInfo allInfo = new AllColorableItemInfo();
-			DefaultColorSetting setting = myDefaultColorSettings[iItem];
-			allInfo.fFlags = (uint)setting.ItemFlags;
-			allInfo.bFlagsValid = 1;
-			allInfo.bstrName = setting.Name;
-			allInfo.bNameValid = 1;
-			allInfo.bstrLocalizedName = ResourceStrings.GetColorNameString(setting.LocalizedNameId);
-			allInfo.bLocalizedNameValid = 1;
-			allInfo.Info.crForeground = allInfo.crAutoForeground = setting.ForegroundColor;
-			allInfo.Info.bForegroundValid = allInfo.bAutoForegroundValid = 1;
-			allInfo.Info.crBackground = allInfo.crAutoBackground = setting.BackgroundColor;
-			allInfo.Info.bBackgroundValid = allInfo.bAutoBackgroundValid = 1;
-			allInfo.Info.dwFontFlags = (setting.DefaultBold) ? (uint)FONTFLAGS.FF_BOLD : 0;
-			allInfo.Info.bFontFlagsValid = 1;
-			pInfo[0] = allInfo;
-			return VSConstants.S_OK;
-		}
-		int IVsFontAndColorDefaults.GetItem(int iItem, AllColorableItemInfo[] pInfo)
-		{
-			return GetItem(iItem, pInfo);
-		}
-		/// <summary>
-		/// Implements IVsFontAndColorDefaults.GetItemByName
-		/// </summary>
-		/// <param name="szItem"></param>
-		/// <param name="pInfo"></param>
-		/// <returns></returns>
-		protected static int GetItemByName(string szItem, AllColorableItemInfo[] pInfo)
-		{
-			DefaultColorSetting[] settings = myDefaultColorSettings;
-			int settingsCount = settings.Length;
-			for (int i = 0; i < settingsCount; ++i)
+			int IVsFontAndColorDefaults.GetCategoryName(out string pbstrName)
 			{
-				if (settings[i].Name == szItem)
+				return GetCategoryName(out pbstrName);
+			}
+			/// <summary>
+			/// Implements IVsFontAndColorDefaults.GetFlags
+			/// </summary>
+			/// <param name="dwFlags"></param>
+			/// <returns></returns>
+			protected int GetFlags(out uint dwFlags)
+			{
+				dwFlags = (uint)FontColorFlags;
+				return VSConstants.S_OK;
+			}
+			int IVsFontAndColorDefaults.GetFlags(out uint dwFlags)
+			{
+				return GetFlags(out dwFlags);
+			}
+			/// <summary>
+			/// Implements IVsFontAndColorDefaults.GetFont
+			/// </summary>
+			/// <param name="pInfo"></param>
+			/// <returns></returns>
+			protected int GetFont(FontInfo[] pInfo)
+			{
+				pInfo[0] = DefaultFont;
+				return VSConstants.S_OK;
+			}
+			int IVsFontAndColorDefaults.GetFont(FontInfo[] pInfo)
+			{
+				return GetFont(pInfo);
+			}
+			/// <summary>
+			/// Implements IVsFontAndColorDefaults.GetItem
+			/// </summary>
+			/// <param name="iItem"></param>
+			/// <param name="pInfo"></param>
+			/// <returns></returns>
+			protected int GetItem(int iItem, AllColorableItemInfo[] pInfo)
+			{
+				AllColorableItemInfo allInfo = new AllColorableItemInfo();
+				DefaultColorSetting setting = myDefaultColorSettings[iItem + FirstDefaultColorIndex];
+				allInfo.fFlags = (uint)setting.ItemFlags;
+				allInfo.bFlagsValid = 1;
+				allInfo.bstrName = setting.Name;
+				allInfo.bNameValid = 1;
+				allInfo.bstrLocalizedName = ResourceStrings.GetColorNameString(setting.LocalizedNameId);
+				allInfo.bLocalizedNameValid = 1;
+				allInfo.Info.crForeground = allInfo.crAutoForeground = setting.ForegroundColor;
+				allInfo.Info.bForegroundValid = allInfo.bAutoForegroundValid = 1;
+				allInfo.Info.crBackground = allInfo.crAutoBackground = setting.BackgroundColor;
+				allInfo.Info.bBackgroundValid = allInfo.bAutoBackgroundValid = 1;
+				allInfo.Info.dwFontFlags = (setting.DefaultBold) ? (uint)FONTFLAGS.FF_BOLD : 0;
+				allInfo.Info.bFontFlagsValid = 1;
+				pInfo[0] = allInfo;
+				return VSConstants.S_OK;
+			}
+			int IVsFontAndColorDefaults.GetItem(int iItem, AllColorableItemInfo[] pInfo)
+			{
+				return GetItem(iItem, pInfo);
+			}
+			/// <summary>
+			/// Implements IVsFontAndColorDefaults.GetItemByName
+			/// </summary>
+			/// <param name="szItem"></param>
+			/// <param name="pInfo"></param>
+			/// <returns></returns>
+			protected int GetItemByName(string szItem, AllColorableItemInfo[] pInfo)
+			{
+				DefaultColorSetting[] settings = myDefaultColorSettings;
+				int firstItem = FirstDefaultColorIndex;
+				int lastItem = LastDefaultColorIndex;
+				for (int i = firstItem; i <= lastItem; ++i)
 				{
-					return GetItem(i, pInfo);
+					if (settings[i].Name == szItem)
+					{
+						return GetItem(i - firstItem, pInfo);
+					}
+				}
+				return VSConstants.E_INVALIDARG;
+			}
+			int IVsFontAndColorDefaults.GetItemByName(string szItem, AllColorableItemInfo[] pInfo)
+			{
+				return GetItemByName(szItem, pInfo);
+			}
+			/// <summary>
+			/// Implements IVsFontAndColorDefaults.GetItemCount
+			/// </summary>
+			/// <param name="pcItems"></param>
+			/// <returns></returns>
+			protected int GetItemCount(out int pcItems)
+			{
+				pcItems = LastDefaultColorIndex - FirstDefaultColorIndex + 1;
+				return VSConstants.S_OK;
+			}
+			int IVsFontAndColorDefaults.GetItemCount(out int pcItems)
+			{
+				return GetItemCount(out pcItems);
+			}
+			/// <summary>
+			/// Implements IVsFontAndColorDefaults.GetPriority
+			/// </summary>
+			/// <param name="pPriority"></param>
+			/// <returns></returns>
+			protected static int GetPriority(out ushort pPriority)
+			{
+				pPriority = (ushort)__FCPRIORITY.FCP_CLIENTS;
+				return VSConstants.S_OK;
+			}
+			int IVsFontAndColorDefaults.GetPriority(out ushort pPriority)
+			{
+				return GetPriority(out pPriority);
+			}
+			#endregion // IVsFontAndColorDefaults Implementation
+			#region IVsFontAndColorEvents Implementation
+			private void OnChange(ref Guid rguidCategory)
+			{
+				if (rguidCategory == CategoryGuid)
+				{
+					mySettingsChangePending = true;
 				}
 			}
-			return VSConstants.E_INVALIDARG;
-		}
-		int IVsFontAndColorDefaults.GetItemByName(string szItem, AllColorableItemInfo[] pInfo)
-		{
-			return GetItemByName(szItem, pInfo);
-		}
-		/// <summary>
-		/// Implements IVsFontAndColorDefaults.GetItemCount
-		/// </summary>
-		/// <param name="pcItems"></param>
-		/// <returns></returns>
-		protected static int GetItemCount(out int pcItems)
-		{
-			pcItems = myDefaultColorSettings.Length;
-			return VSConstants.S_OK;
-		}
-		int IVsFontAndColorDefaults.GetItemCount(out int pcItems)
-		{
-			return GetItemCount(out pcItems);
-		}
-		/// <summary>
-		/// Implements IVsFontAndColorDefaults.GetPriority
-		/// </summary>
-		/// <param name="pPriority"></param>
-		/// <returns></returns>
-		protected static int GetPriority(out ushort pPriority)
-		{
-			pPriority = (ushort)__FCPRIORITY.FCP_CLIENTS;
-			return VSConstants.S_OK;
-		}
-		int IVsFontAndColorDefaults.GetPriority(out ushort pPriority)
-		{
-			return GetPriority(out pPriority);
-		}
-		#endregion // IVsFontAndColorDefaults Implementation
-		#region IVsFontAndColorEvents Implementation
-		private void OnChange(ref Guid rguidCategory)
-		{
-			if (rguidCategory == FontAndColorCategory)
+			/// <summary>
+			/// Implements IVsFontAndColorEvents.OnApply
+			/// </summary>
+			protected int OnApply()
 			{
-				mySettingsChangePending = true;
+				// This is a really unfortunate ommission on the
+				// part of VS because there is an OnApply, but no
+				// OnCancel. All of the new information is provided
+				// in the On*Changed events, but we can't use it
+				// because we don't know when to toss it. Therefore,
+				// we have to go all the way back and reset all
+				// values on any change.
+				// We don't even know if mySettingsChangePending
+				// was set by a previously canceled foray into
+				// the font and color settings!
+				if (mySettingsChangePending)
+				{
+					mySettingsChangePending = false;
+					ClearCache();
+					ApplySettingsChange(myServiceProvider);
+				}
+				return VSConstants.S_OK;
 			}
-		}
-		/// <summary>
-		/// Implements IVsFontAndColorEvents.OnApply
-		/// </summary>
-		protected int OnApply()
-		{
-			// This is a really unfortunate ommission on the
-			// part of VS because there is an OnApply, but no
-			// OnCancel. All of the new information is provided
-			// in the On*Changed events, but we can't use it
-			// because we don't no when to toss it. Therefore,
-			// we have to go all the way back and reset all
-			// values on any change.
-			// We don't even know if mySettingsChangePending
-			// was set by a previously canceled foray into
-			// the font and color settings!
-			if (mySettingsChangePending)
+			int IVsFontAndColorEvents.OnApply()
 			{
-				mySettingsChangePending = false;
-				ClearCache();
-				OptionsPage.NotifySettingsChange(myServiceProvider, ChangeDocumentFontAndColors);
+				return OnApply();
 			}
-			return VSConstants.S_OK;
-		}
-		int IVsFontAndColorEvents.OnApply()
-		{
-			return OnApply();
-		}
-		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		internal static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
-		/// <summary>
-		/// Callback function for modifying a document when font
-		/// and color changes are applied.
-		/// </summary>
-		/// <param name="docData">Currently running docdata</param>
-		protected static void ChangeDocumentFontAndColors(ORMDesignerDocData docData)
-		{
-			foreach (ORMDesignerDocView docView in docData.DocViews)
+			/// <summary>
+			/// Implements IVsFontAndColorEvents.OnFontChanged
+			/// </summary>
+			protected int OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT, uint HFONT)
 			{
-				// UNDONE: This doesn't actually do anything right now. It triggers
-				// RefreshResources on all of the loaded style sets, but this does
-				// not re-retrieve the resources. The FCF_MUSTRESTART flags can be
-				// removed when we find a way to actually trigger a change here.
-				// 0x15 == WM_SYSCOLORCHANGE
-				SendMessage(docView.CurrentDesigner.DiagramClientView.Handle, 0x15, 0, 0);
+				OnChange(ref rguidCategory);
+				return VSConstants.S_OK;
 			}
+			int IVsFontAndColorEvents.OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT, uint HFONT)
+			{
+				return OnFontChanged(ref rguidCategory, pInfo, pLOGFONT, HFONT);
+			}
+			/// <summary>
+			/// Implements IVsFontAndColorEvents.OnItemChanged
+			/// </summary>
+			protected int OnItemChanged(ref Guid rguidCategory, string szItem, int iItem, ColorableItemInfo[] pInfo, uint crLiteralForeground, uint crLiteralBackground)
+			{
+				OnChange(ref rguidCategory);
+				return VSConstants.S_OK;
+			}
+			int IVsFontAndColorEvents.OnItemChanged(ref Guid rguidCategory, string szItem, int iItem, ColorableItemInfo[] pInfo, uint crLiteralForeground, uint crLiteralBackground)
+			{
+				OnChange(ref rguidCategory);
+				return OnItemChanged(ref rguidCategory, szItem, iItem, pInfo, crLiteralForeground, crLiteralBackground);
+			}
+			/// <summary>
+			/// Implements IVsFontAndColorEvents.OnReset
+			/// </summary>
+			protected int OnReset(ref Guid rguidCategory)
+			{
+				OnChange(ref rguidCategory);
+				return VSConstants.S_OK;
+			}
+			int IVsFontAndColorEvents.OnReset(ref Guid rguidCategory)
+			{
+				return OnReset(ref rguidCategory);
+			}
+			/// <summary>
+			/// Implements IVsFontAndColorEvents.OnResetToBaseCategory
+			/// </summary>
+			protected int OnResetToBaseCategory(ref Guid rguidCategory)
+			{
+				OnChange(ref rguidCategory);
+				return VSConstants.S_OK;
+			}
+			int IVsFontAndColorEvents.OnResetToBaseCategory(ref Guid rguidCategory)
+			{
+				return OnResetToBaseCategory(ref rguidCategory);
+			}
+			#endregion // IVsFontAndColorEvents Implementation
 		}
-		/// <summary>
-		/// Implements IVsFontAndColorEvents.OnFontChanged
-		/// </summary>
-		protected int OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT, uint HFONT)
+		#endregion // SettingsCategory class
+		#region EditorColors class
+		private class EditorColors : SettingsCategory
 		{
-			OnChange(ref rguidCategory);
-			return VSConstants.S_OK;
+			#region Constructor
+			public EditorColors(IServiceProvider serviceProvider) : base(serviceProvider) { }
+			#endregion // Constructor
+			#region Base Overrides
+			// Required overrides for SettingsCache
+			protected override Guid CategoryGuid
+			{
+				get { return FontAndColorEditorCategory; }
+			}
+			protected override int FirstDefaultColorIndex
+			{
+				get { return (int)ORMDesignerColor.FirstEditorColor; }
+			}
+			protected override int LastDefaultColorIndex
+			{
+				get { return (int)ORMDesignerColor.LastEditorColor; }
+			}
+			protected override string NameFromItemIndex(int itemIndex)
+			{
+				return NameFromItemIndex((ORMDesignerColor)(itemIndex + ORMDesignerColor.FirstEditorColor));
+			}
+			protected override string CategoryName
+			{
+				get { return ResourceStrings.GetColorNameString(ResourceStrings.FontsAndColorsEditorCategoryNameId); }
+			}
+			protected override __FONTCOLORFLAGS FontColorFlags
+			{
+				get { return __FONTCOLORFLAGS.FCF_MUSTRESTART; }
+			}
+			protected override FontInfo DefaultFont
+			{
+				get
+				{
+					FontInfo info = new FontInfo();
+					info.bstrFaceName = "Tahoma";
+					info.bFaceNameValid = 1;
+					info.wPointSize = 7;
+					info.bPointSizeValid = 1;
+					info.iCharSet = (byte)EnvDTE.vsFontCharSet.vsFontCharSetDefault;
+					info.bCharSetValid = 1;
+					return info;
+				}
+			}
+			protected override void ApplySettingsChange(IServiceProvider serviceProvider)
+			{
+				OptionsPage.NotifySettingsChange(serviceProvider, ChangeDocumentFontAndColors);
+			}
+			[DllImport("user32.dll", CharSet = CharSet.Auto)]
+			private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+			/// <summary>
+			/// Callback function for modifying a document when font
+			/// and color changes are applied.
+			/// </summary>
+			/// <param name="docData">Currently running docdata</param>
+			protected static void ChangeDocumentFontAndColors(ORMDesignerDocData docData)
+			{
+				foreach (ORMDesignerDocView docView in docData.DocViews)
+				{
+					// UNDONE: This doesn't actually do anything right now. It triggers
+					// RefreshResources on all of the loaded style sets, but this does
+					// not re-retrieve the resources. The FCF_MUSTRESTART flags can be
+					// removed when we find a way to actually trigger a change here.
+					// 0x15 == WM_SYSCOLORCHANGE
+					SendMessage(docView.CurrentDesigner.DiagramClientView.Handle, 0x15, IntPtr.Zero, IntPtr.Zero);
+				}
+			}
+			#endregion // Base Overrides
+			#region Index to name mapping
+			/// <summary>
+			/// Get the name of an item from its index
+			/// </summary>
+			/// <param name="itemIndex">A valid item index</param>
+			/// <returns>A name. Throws on an invalid index</returns>
+			private static string NameFromItemIndex(ORMDesignerColor itemIndex)
+			{
+				string retVal;
+				switch (itemIndex)
+				{
+					case ORMDesignerColor.Constraint:
+						retVal = ConstraintColorName;
+						break;
+					case ORMDesignerColor.DeonticConstraint:
+						retVal = DeonticConstraintColorName;
+						break;
+					case ORMDesignerColor.ConstraintError:
+						retVal = ConstraintErrorColorName;
+						break;
+					case ORMDesignerColor.RolePicker:
+						retVal = RolePickerColorName;
+						break;
+					case ORMDesignerColor.ActiveConstraint:
+						retVal = ActiveConstraintColorName;
+						break;
+					default:
+						Debug.Assert(false); // The cases may not match all of the ORMDesignerColor enums.
+						throw new ArgumentOutOfRangeException();
+				}
+				return retVal;
+			}
+			#endregion // Index to name mapping
 		}
-		int IVsFontAndColorEvents.OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT, uint HFONT)
+		#endregion // EditorColors class
+		#region VerbalizerColors class
+		private class VerbalizerColors : SettingsCategory
 		{
-			return OnFontChanged(ref rguidCategory, pInfo, pLOGFONT, HFONT);
+			#region Constructor
+			public VerbalizerColors(IServiceProvider serviceProvider) : base(serviceProvider) { }
+			#endregion // Constructor
+			#region Base Overrides
+			// Required overrides for SettingsCache
+			protected override Guid CategoryGuid
+			{
+				get { return FontAndColorVerbalizerCategory; }
+			}
+			protected override int FirstDefaultColorIndex
+			{
+				get { return (int)ORMDesignerColor.FirstVerbalizerColor; }
+			}
+			protected override int LastDefaultColorIndex
+			{
+				get { return (int)ORMDesignerColor.LastVerbalizerColor; }
+			}
+			protected override string NameFromItemIndex(int itemIndex)
+			{
+				return NameFromItemIndex((ORMDesignerColor)(itemIndex + ORMDesignerColor.FirstVerbalizerColor));
+			}
+			protected override string CategoryName
+			{
+				get { return ResourceStrings.GetColorNameString(ResourceStrings.FontsAndColorsVerbalizerCategoryNameId); }
+			}
+			protected override __FONTCOLORFLAGS FontColorFlags
+			{
+				get { return 0; }
+			}
+			protected override FontInfo DefaultFont
+			{
+				get
+				{
+					FontInfo info = new FontInfo();
+					info.bstrFaceName = "Tahoma";
+					info.bFaceNameValid = 1;
+					info.wPointSize = 9;
+					info.bPointSizeValid = 1;
+					info.iCharSet = (byte)EnvDTE.vsFontCharSet.vsFontCharSetDefault;
+					info.bCharSetValid = 1;
+					return info;
+				}
+			}
+			protected override void ApplySettingsChange(IServiceProvider serviceProvider)
+			{
+				ORMDesignerPackage.VerbalizationWindowSettingsChanged();
+			}
+			#endregion // Base Overrides
+			#region Index to name mapping
+			/// <summary>
+			/// Get the name of an item from its index
+			/// </summary>
+			/// <param name="itemIndex">A valid item index</param>
+			/// <returns>A name. Throws on an invalid index</returns>
+			private static string NameFromItemIndex(ORMDesignerColor itemIndex)
+			{
+				string retVal;
+				switch (itemIndex)
+				{
+					case ORMDesignerColor.VerbalizerPredicateText:
+						retVal = VerbalizerPredicateTextColorName;
+						break;
+					case ORMDesignerColor.VerbalizerObjectName:
+						retVal = VerbalizerObjectNameColorName;
+						break;
+					case ORMDesignerColor.VerbalizerFormalItem:
+						retVal = VerbalizerFormalItemColorName;
+						break;
+					default:
+						Debug.Assert(false); // The cases may not match all of the ORMDesignerColor enums.
+						throw new ArgumentOutOfRangeException();
+				}
+				return retVal;
+			}
+			#endregion // Index to name mapping
 		}
-		/// <summary>
-		/// Implements IVsFontAndColorEvents.OnItemChanged
-		/// </summary>
-		protected int OnItemChanged(ref Guid rguidCategory, string szItem, int iItem, ColorableItemInfo[] pInfo, uint crLiteralForeground, uint crLiteralBackground)
-		{
-			OnChange(ref rguidCategory);
-			return VSConstants.S_OK;
-		}
-		int IVsFontAndColorEvents.OnItemChanged(ref Guid rguidCategory, string szItem, int iItem, ColorableItemInfo[] pInfo, uint crLiteralForeground, uint crLiteralBackground)
-		{
-			OnChange(ref rguidCategory);
-			return OnItemChanged(ref rguidCategory, szItem, iItem, pInfo, crLiteralForeground, crLiteralBackground);
-		}
-		/// <summary>
-		/// Implements IVsFontAndColorEvents.OnReset
-		/// </summary>
-		protected int OnReset(ref Guid rguidCategory)
-		{
-			OnChange(ref rguidCategory);
-			return VSConstants.S_OK;
-		}
-		int IVsFontAndColorEvents.OnReset(ref Guid rguidCategory)
-		{
-			return OnReset(ref rguidCategory);
-		}
-		/// <summary>
-		/// Implements IVsFontAndColorEvents.OnResetToBaseCategory
-		/// </summary>
-		protected int OnResetToBaseCategory(ref Guid rguidCategory)
-		{
-			OnChange(ref rguidCategory);
-			return VSConstants.S_OK;
-		}
-		int IVsFontAndColorEvents.OnResetToBaseCategory(ref Guid rguidCategory)
-		{
-			return OnResetToBaseCategory(ref rguidCategory);
-		}
-		#endregion // IVsFontAndColorEvents Implementation
+		#endregion // VerbalizerColors class
 	}
 }

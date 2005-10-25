@@ -363,6 +363,21 @@ namespace Neumont.Tools.ORM.Shell
 				return (ORMVerbalizationToolWindow)mySingleton.GetToolWindow(typeof(ORMVerbalizationToolWindow), true);
 			}
 		}
+		/// <summary>
+		/// Called if the verbalization window settings change in the options dialog.
+		/// Does nothing if the window has not been created.
+		/// </summary>
+		public static void VerbalizationWindowSettingsChanged()
+		{
+			if (mySingleton != null)
+			{
+				ORMVerbalizationToolWindow window = (ORMVerbalizationToolWindow)mySingleton.GetToolWindow(typeof(ORMVerbalizationToolWindow), false);
+				if (window != null)
+				{
+					window.SettingsChanged();
+				}
+			}
+		}
 		#endregion
 
 		#region Global SubStores

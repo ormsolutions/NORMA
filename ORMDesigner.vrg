@@ -93,6 +93,10 @@ Windows Registry Editor Version 5.00
 "Category"="{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"
 "Package"="{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}"
 
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Verbalizer]
+"Category"="{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"
+"Package"="{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}"
+
 [HKEY_CLASSES_ROOT\.orm]
 @="Neumont.Tools.ORMDesigner.1.0"
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Diagnostics;
 using System.ComponentModel.Design;
 using System.Globalization;
@@ -11,6 +12,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.TextManager.Interop;
 using Neumont.Tools.ORM.ObjectModel;
 
 namespace Neumont.Tools.ORM.Shell
@@ -22,44 +24,12 @@ namespace Neumont.Tools.ORM.Shell
 	[CLSCompliant(false)]
 	public class ORMVerbalizationToolWindow : ToolWindow
 	{
-		#region Constants
-		// UNDONE: Move these constants outside of the compiled code
-		private const string HtmlNewLine = "<br/>\n";
-		private const string HtmlIncreaseIndent = @"<span class=""indent"">";
-		private const string HtmlDecreaseIndent = @"</span>";
-		private const string HtmlOpenNewVerbalization = @"<p class=""verbalization"">";
-		private const string HtmlCloseNewVerbalization = @"</p>";
-		private const string HtmlErrorTagOpen = @"<span class=""error"">";
-		private const string HtmlErrorTagClose = @"</span>";
-		private const string HtmlHeader = @"
-<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
-<html>
-	<head>
-		<title>ORM2 Verbalization</title>
-		<style>
-			body { font-family: Tahoma; font-size: 8pt; padding: 10px; }
-			td{ font-family: Tahoma; font-size: 8pt; }
-			.objectType { color: #ff0000; font-weight: bold; }
-			.objectTypeMissing { font-weight: bold; }
-			.referenceMode { color: #840084; font-weight: bold; }
-			.predicateText { color: #0000ff; }
-			.quantifier { color: #00a500; }
-			.error { color: red; }
-			.verbalization { }
-			.indent { left: 20px; position: relative; }
-			.smallIndent { left: 8px; position: relative; }
-			.listSeparator { color: windowtext; font-weight: 200;}
-		</style>
-	</head>
-	<body>
-";
-		private const string HtmlFooter = @"</body></html>";
-		#endregion // Constants
 		#region Member variables
 		private WebBrowser myWebBrowser;
 		private ORMDesignerDocView myCurrentDocumentView;
 		private bool myShowNegativeVerbalizations;
 		private StringWriter myStringWriter;
+		private static string[] myDocumentHeaderReplacementFields;
 
 		/// <summary>
 		/// Callback for child verbalizations
@@ -97,7 +67,6 @@ namespace Neumont.Tools.ORM.Shell
 			// create the string writer to hold the html
 			StringBuilder builder = new StringBuilder();
 			myStringWriter = new StringWriter(builder, CultureInfo.CurrentUICulture);
-			myStringWriter.NewLine = HtmlNewLine;
 
 			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
 			monitor.DocumentWindowChanged += new MonitorSelectionEventHandler(DocumentWindowChangedEvent);
@@ -187,6 +156,14 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
+		/// <summary>
+		/// Called when the options dialog settings have changed
+		/// </summary>
+		public void SettingsChanged()
+		{
+			myDocumentHeaderReplacementFields = null;
+			UpdateVerbalization();
+		}
 		#endregion // Selection monitor event handlers and helpers
 		#region Overrides
 		/// <summary>
@@ -246,6 +223,42 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Overrides
 		#region Verbalization Implementation
+		/// <summary>
+		/// Get the 8 document header replacement fields from the current font and color settings
+		/// </summary>
+		private static string[] GetDocumentHeaderReplacementFields(ModelElement element, VerbalizationSets snippets)
+		{
+			string[] retVal = myDocumentHeaderReplacementFields;
+			if (retVal == null)
+			{
+				// The replacement fields, pulled from VerbializationGenerator.xsd
+				//{0} font-family
+				//{1} font-size
+				//{2} predicate text color
+				//{3} predicate text bold
+				//{4} object name color
+				//{5} object name bold
+				//{6} formal item color
+				//{7} formal item bold
+				IORMFontAndColorService colorService = ((IORMToolServices)element.Store).FontAndColorService;
+				string boldWeight = snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerFontWeightBold);
+				string normalWeight = snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerFontWeightNormal);
+				retVal = new string[] { "Tahoma", "8", "darkgreen", normalWeight, "purple", normalWeight, "mediumblue", boldWeight };
+				using (Font font = colorService.GetFont(ORMDesignerColorCategory.Verbalizer))
+				{
+					retVal[0] = font.FontFamily.Name;
+					retVal[1] = (font.Size * 72f).ToString(CultureInfo.InvariantCulture);
+					retVal[2] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerPredicateText));
+					retVal[3] = (0 != (colorService.GetFontFlags(ORMDesignerColor.VerbalizerPredicateText) & FONTFLAGS.FF_BOLD)) ? boldWeight : normalWeight;
+					retVal[4] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerObjectName));
+					retVal[5] = (0 != (colorService.GetFontFlags(ORMDesignerColor.VerbalizerObjectName) & FONTFLAGS.FF_BOLD)) ? boldWeight : normalWeight;
+					retVal[6] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerFormalItem));
+					retVal[7] = (0 != (colorService.GetFontFlags(ORMDesignerColor.VerbalizerFormalItem) & FONTFLAGS.FF_BOLD)) ? boldWeight : normalWeight;
+				}
+				myDocumentHeaderReplacementFields = retVal;
+			}
+			return myDocumentHeaderReplacementFields;
+		}
 		private void UpdateVerbalization()
 		{
 			ORMDesignerDocView theView = CurrentDocumentView;
@@ -257,6 +270,8 @@ namespace Neumont.Tools.ORM.Shell
 			myStringWriter.GetStringBuilder().Length = 0;
 
 			ICollection selectedObjects = theView.GetSelectedComponents();
+			VerbalizationSets snippets = VerbalizationSets.Default; // UNDONE: Support loading from somewhere other than default
+			myStringWriter.NewLine = snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerNewLine);
 			bool showNegative = myShowNegativeVerbalizations;
 			bool firstCallPending = true;
 			foreach (ModelElement melIter in selectedObjects)
@@ -269,13 +284,13 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				if (mel != null)
 				{
-					VerbalizeElement(mel, showNegative, myStringWriter, ref firstCallPending);
+					VerbalizeElement(mel, snippets, showNegative, myStringWriter, ref firstCallPending);
 				}
 			}
 			if (!firstCallPending)
 			{
 				// Write footer
-				myStringWriter.Write(HtmlFooter);
+				myStringWriter.Write(snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerDocumentFooter));
 			}
 			else
 			{
@@ -292,28 +307,31 @@ namespace Neumont.Tools.ORM.Shell
 		/// the delegate for verbalization
 		/// </summary>
 		/// <param name="element">The element to verbalize</param>
+		/// <param name="snippets">The default or loaded verbalization sets. Passed through all verbalization calls.</param>
 		/// <param name="isNegative">Use the negative form of the reading</param>
 		/// <param name="writer">The TextWriter for verbalization output</param>
 		/// <param name="firstCallPending"></param>
-		private static void VerbalizeElement(ModelElement element, bool isNegative, TextWriter writer, ref bool firstCallPending)
+		private static void VerbalizeElement(ModelElement element, VerbalizationSets snippets, bool isNegative, TextWriter writer, ref bool firstCallPending)
 		{
 			int lastLevel = 0;
 			bool firstWrite = true;
 			bool localFirstCallPending = firstCallPending;
 			VerbalizeElement(
 				element,
+				snippets,
 				delegate(IVerbalize verbalizer, int indentationLevel)
 				{
 					bool openedErrorReport = false;
 					bool retVal = verbalizer.GetVerbalization(
 						writer,
+						snippets,
 						delegate(VerbalizationContent content)
 						{
 							if (content == VerbalizationContent.ErrorReport)
 							{
 								// spit opening tag for text denoting an error
 								openedErrorReport = true;
-								writer.Write(HtmlErrorTagOpen);
+								writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerOpenError));
 							}
 
 							// Prepare for verbalization on this element. Everything
@@ -325,11 +343,11 @@ namespace Neumont.Tools.ORM.Shell
 								{
 									localFirstCallPending = false;
 									// Write the HTML header to the buffer
-									writer.Write(HtmlHeader);
+									writer.Write(string.Format(CultureInfo.InvariantCulture, snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerDocumentHeader), GetDocumentHeaderReplacementFields(element, snippets)));
 								}
 
 								// write open tag for new verbalization
-								writer.Write(HtmlOpenNewVerbalization);
+								writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerOpenVerbalization));
 
 								localFirstCallPending = false;
 								firstWrite = false;
@@ -345,7 +363,7 @@ namespace Neumont.Tools.ORM.Shell
 							{
 								do
 								{
-									writer.Write(HtmlIncreaseIndent);
+									writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerIncreaseIndent));
 									++lastLevel;
 								} while (lastLevel != indentationLevel);
 							}
@@ -353,7 +371,7 @@ namespace Neumont.Tools.ORM.Shell
 							{
 								do
 								{
-									writer.Write(HtmlDecreaseIndent);
+									writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerDecreaseIndent));
 									--lastLevel;
 								} while (lastLevel != indentationLevel);
 							}
@@ -362,27 +380,27 @@ namespace Neumont.Tools.ORM.Shell
 					if (openedErrorReport)
 					{
 						// Close error report tag
-						writer.Write(HtmlErrorTagClose);
+						writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerCloseError));
 					}
 					return retVal;
 				},
 				0);
 			while (lastLevel > 0)
 			{
-				writer.Write(HtmlDecreaseIndent);
+				writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerDecreaseIndent));
 				--lastLevel;
 			}
 			// close the opening tag for the new verbalization
 			if (!firstWrite)
 			{
-				writer.Write(HtmlCloseNewVerbalization);
+				writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerCloseVerbalization));
 			}
 			firstCallPending = localFirstCallPending;
 		}
 		/// <summary>
 		/// Verbalize the passed in element and all its children
 		/// </summary>
-		private static void VerbalizeElement(ModelElement element, VerbalizationHandler callback, int indentLevel)
+		private static void VerbalizeElement(ModelElement element, VerbalizationSets snippets, VerbalizationHandler callback, int indentLevel)
 		{
 			IVerbalize parentVerbalize = element as IVerbalize;
 			if (parentVerbalize == null && indentLevel == 0)
@@ -411,7 +429,7 @@ namespace Neumont.Tools.ORM.Shell
 						int childCount = children.Count;
 						for (int j = 0; j < childCount; ++j)
 						{
-							VerbalizeElement((ModelElement)children[j], callback, indentLevel);
+							VerbalizeElement((ModelElement)children[j], snippets, callback, indentLevel);
 						}
 					}
 				}

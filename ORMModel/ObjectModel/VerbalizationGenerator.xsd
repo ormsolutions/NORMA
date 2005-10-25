@@ -68,16 +68,26 @@
 			<xs:enumeration value="IndentedListSeparator"/>
 			<xs:enumeration value="IndentedListFinalSeparator"/>
 			<xs:enumeration value="IndentedListClose"/>
-			<xs:enumeration value="IndentedOrListOpen"/>
-			<xs:enumeration value="IndentedOrListPairSeparator"/>
-			<xs:enumeration value="IndentedOrListSeparator"/>
-			<xs:enumeration value="IndentedOrListFinalSeparator"/>
-			<xs:enumeration value="IndentedOrListClose"/>
-			<xs:enumeration value="TopLevelIndentedOrListOpen"/>
-			<xs:enumeration value="TopLevelIndentedOrListPairSeparator"/>
-			<xs:enumeration value="TopLevelIndentedOrListSeparator"/>
-			<xs:enumeration value="TopLevelIndentedOrListFinalSeparator"/>
-			<xs:enumeration value="TopLevelIndentedOrListClose"/>
+			<xs:enumeration value="IndentedLogicalAndListOpen"/>
+			<xs:enumeration value="IndentedLogicalAndListPairSeparator"/>
+			<xs:enumeration value="IndentedLogicalAndListSeparator"/>
+			<xs:enumeration value="IndentedLogicalAndListFinalSeparator"/>
+			<xs:enumeration value="IndentedLogicalAndListClose"/>
+			<xs:enumeration value="IndentedLogicalOrListOpen"/>
+			<xs:enumeration value="IndentedLogicalOrListPairSeparator"/>
+			<xs:enumeration value="IndentedLogicalOrListSeparator"/>
+			<xs:enumeration value="IndentedLogicalOrListFinalSeparator"/>
+			<xs:enumeration value="IndentedLogicalOrListClose"/>
+			<xs:enumeration value="TopLevelIndentedLogicalAndListOpen"/>
+			<xs:enumeration value="TopLevelIndentedLogicalAndListPairSeparator"/>
+			<xs:enumeration value="TopLevelIndentedLogicalAndListSeparator"/>
+			<xs:enumeration value="TopLevelIndentedLogicalAndListFinalSeparator"/>
+			<xs:enumeration value="TopLevelIndentedLogicalAndListClose"/>
+			<xs:enumeration value="TopLevelIndentedLogicalOrListOpen"/>
+			<xs:enumeration value="TopLevelIndentedLogicalOrListPairSeparator"/>
+			<xs:enumeration value="TopLevelIndentedLogicalOrListSeparator"/>
+			<xs:enumeration value="TopLevelIndentedLogicalOrListFinalSeparator"/>
+			<xs:enumeration value="TopLevelIndentedLogicalOrListClose"/>
 			<xs:enumeration value="SimpleListOpen"/>
 			<xs:enumeration value="SimpleListPairSeparator"/>
 			<xs:enumeration value="SimpleListSeparator"/>
@@ -152,11 +162,13 @@
 	<xs:simpleType name="ListStyleEnum">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="CompactSimpleList"/>
-			<xs:enumeration value="SimpleList"/>
-			<xs:enumeration value="IndentedList"/>
 			<xs:enumeration value="CompoundList"/>
-			<xs:enumeration value="IndentedOrList"/>
-			<xs:enumeration value="TopLevelIndentedOrList"/>
+			<xs:enumeration value="IndentedList"/>
+			<xs:enumeration value="IndentedLogicalAndList"/>
+			<xs:enumeration value="IndentedLogicalOrList"/>
+			<xs:enumeration value="SimpleList"/>
+			<xs:enumeration value="TopLevelIndentedLogicalAndList"/>
+			<xs:enumeration value="TopLevelIndentedLogicalOrList"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="PredicateReplacementMatchEnum">
@@ -278,7 +290,81 @@
 							<xs:complexType>
 								<xs:simpleContent>
 									<xs:extension base="xs:string">
-										<xs:attribute name="type" type="SnippetTypeEnum" use="required"/>
+										<xs:attribute name="type" use="required">
+											<xs:simpleType>
+												<xs:union memberTypes="SnippetTypeEnum">
+													<!-- Add extra elements that are reserved for use by the verbalizer -->
+													<xs:simpleType>
+														<xs:restriction base="xs:NMTOKEN">
+															<xs:enumeration value="VerbalizerNewLine">
+																<xs:annotation>
+																	<xs:documentation>Used by the verbalizer to enter a new line</xs:documentation>
+																</xs:annotation>
+															</xs:enumeration>
+															<xs:enumeration value="VerbalizerIncreaseIndent">
+																<xs:annotation>
+																	<xs:documentation>Used by the verbalizer to indent a child verbalization</xs:documentation>
+																</xs:annotation>
+															</xs:enumeration>
+															<xs:enumeration value="VerbalizerDecreaseIndent">
+																<xs:annotation>
+																	<xs:documentation>Used by the verbalizer to close indent opened by VerbalizerIncreaseIndent</xs:documentation>
+																</xs:annotation>
+															</xs:enumeration>
+															<xs:enumeration value="VerbalizerOpenVerbalization">
+																<xs:annotation>
+																	<xs:documentation>Used by the verbalizer around a single verbalization</xs:documentation>
+																</xs:annotation>
+															</xs:enumeration>
+															<xs:enumeration value="VerbalizerCloseVerbalization">
+																<xs:annotation>
+																	<xs:documentation>Used by the verbalizer to close a verbalization opened by VerbalizerOpenVerbalization</xs:documentation>
+																</xs:annotation>
+															</xs:enumeration>
+															<xs:enumeration value="VerbalizerOpenError">
+																<xs:annotation>
+																	<xs:documentation>Used by the verbalizer around an error section</xs:documentation>
+																</xs:annotation>
+															</xs:enumeration>
+															<xs:enumeration value="VerbalizerCloseError">
+																<xs:annotation>
+																	<xs:documentation>Used by the verbalizer to close an error section</xs:documentation>
+																</xs:annotation>
+															</xs:enumeration>
+															<xs:enumeration value="VerbalizerDocumentHeader">
+																<xs:annotation>
+																	<xs:documentation>Used by the verbalizer to open a document. The document header gets replacement fields in the following order:
+																	{0} font-family
+																	{1} font-size
+																	{2} predicate text color
+																	{3} predicate text bold
+																	{4} object name color
+																	{5} object name bold
+																	{6} formal item color
+																	{7} formal item bold
+																	</xs:documentation>
+																</xs:annotation>
+															</xs:enumeration>
+															<xs:enumeration value="VerbalizerDocumentFooter">
+																<xs:annotation>
+																	<xs:documentation>Used by the verbalizer to close a document</xs:documentation>
+																</xs:annotation>
+															</xs:enumeration>
+															<xs:enumeration value="VerbalizerFontWeightBold">
+																<xs:annotation>
+																	<xs:documentation>The text to insert to indicate a bold font.</xs:documentation>
+																</xs:annotation>
+															</xs:enumeration>
+															<xs:enumeration value="VerbalizerFontWeightNormal">
+																<xs:annotation>
+																	<xs:documentation>The text to insert to indicate a normal font weight.</xs:documentation>
+																</xs:annotation>
+															</xs:enumeration>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:union>
+											</xs:simpleType>
+										</xs:attribute>
 										<xs:attribute name="modality" type="ModalityEnum" use="optional"/>
 										<xs:attribute name="sign" type="SignEnum" use="optional"/>
 									</xs:extension>

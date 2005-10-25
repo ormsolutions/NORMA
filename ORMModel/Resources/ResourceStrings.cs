@@ -277,11 +277,19 @@ namespace Neumont.Tools.ORM
 		/// <summary>
 		/// Display name for the ORM Designer fonts and colors category
 		/// </summary>
-		public const string FontsAndColorsCategoryNameId = "FontsAndColors.CategoryName";
+		public const string FontsAndColorsEditorCategoryNameId = "FontsAndColors.EditorCategoryName";
+		/// <summary>
+		/// Display name for the ORM Verbalizer fonts and colors category
+		/// </summary>
+		public const string FontsAndColorsVerbalizerCategoryNameId = "FontsAndColors.VerbalizerCategoryName";
 		/// <summary>
 		/// Display name for the color used to draw an ORM constraint
 		/// </summary>
 		public const string FontsAndColorsConstraintColorId = "FontsAndColors.ConstraintColor";
+		/// <summary>
+		/// Display name for the color used to draw an ORM constraint with deontic modality
+		/// </summary>
+		public const string FontsAndColorsDeonticConstraintColorId = "FontsAndColors.DeonticConstraintColor";
 		/// <summary>
 		/// Display name for the color used to draw an ORM constraint
 		/// </summary>
@@ -294,6 +302,18 @@ namespace Neumont.Tools.ORM
 		/// Display name for the color used to draw the constraint box for role sequence editing
 		/// </summary>
 		public const string FontsAndColorsRolePickerColorId = "FontsAndColors.RolePickerColor";
+		/// <summary>
+		/// Display name for the color used to draw predicate text in the verbalizer
+		/// </summary>
+		public const string FontsAndColorsVerbalizerPredicateTextColorId = "FontsAndColors.VerbalizerPredicateTextColor";
+		/// <summary>
+		/// Display name for the color used to draw object names in the verbalizer
+		/// </summary>
+		public const string FontsAndColorsVerbalizerObjectNameColorId = "FontsAndColors.VerbalizerObjectNameColor";
+		/// <summary>
+		/// Display name for the color used to draw formal items in the verbalizer
+		/// </summary>
+		public const string FontsAndColorsVerbalizerFormalItemColorId = "FontsAndColors.VerbalizerFormalItemColor";
 		/// <summary>
 		/// Display Name of the Quantifier color
 		/// </summary>

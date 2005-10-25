@@ -58,16 +58,27 @@
 				<Snippet type="IndentedListSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 				<Snippet type="IndentedListFinalSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 				<Snippet type="IndentedListClose"><![CDATA[</span>]]></Snippet>
-				<Snippet type="IndentedOrListOpen"><![CDATA[<span class="smallIndent">]]></Snippet>
-				<Snippet type="IndentedOrListPairSeparator"><![CDATA[<br/><span class="listSeparator">or </span>]]></Snippet>
-				<Snippet type="IndentedOrListSeparator"><![CDATA[<br/><span class="listSeparator">or </span>]]></Snippet>
-				<Snippet type="IndentedOrListFinalSeparator"><![CDATA[<br/><span class="listSeparator">or </span>]]></Snippet>
-				<Snippet type="IndentedOrListClose"><![CDATA[</span>]]></Snippet>
-				<Snippet type="TopLevelIndentedOrListOpen"><![CDATA[<span>]]></Snippet>
-				<Snippet type="TopLevelIndentedOrListPairSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="listSeparator">or </span>]]></Snippet>
-				<Snippet type="TopLevelIndentedOrListSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="listSeparator">or </span>]]></Snippet>
-				<Snippet type="TopLevelIndentedOrListFinalSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="listSeparator">or </span>]]></Snippet>
-				<Snippet type="TopLevelIndentedOrListClose"><![CDATA[</span>]]></Snippet>
+				<Snippet type="IndentedLogicalOrListOpen"><![CDATA[<span class="smallIndent">]]></Snippet>
+				<Snippet type="IndentedLogicalOrListPairSeparator"><![CDATA[<br/><span class="logicalOperator">or </span>]]></Snippet>
+				<Snippet type="IndentedLogicalOrListSeparator"><![CDATA[<br/><span class="logicalOperator">or </span>]]></Snippet>
+				<Snippet type="IndentedLogicalOrListFinalSeparator"><![CDATA[<br/><span class="logicalOperator">or </span>]]></Snippet>
+				<Snippet type="IndentedLogicalOrListClose"><![CDATA[</span>]]></Snippet>
+				<Snippet type="TopLevelIndentedLogicalOrListOpen"><![CDATA[<span>]]></Snippet>
+				<Snippet type="TopLevelIndentedLogicalOrListPairSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">or </span>]]></Snippet>
+				<Snippet type="TopLevelIndentedLogicalOrListSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">or </span>]]></Snippet>
+				<Snippet type="TopLevelIndentedLogicalOrListFinalSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">or </span>]]></Snippet>
+				<Snippet type="TopLevelIndentedLogicalOrListClose"><![CDATA[</span>]]></Snippet>
+				<Snippet type="TopLevelIndentedLogicalOrListOpen"><![CDATA[<span>]]></Snippet>
+				<Snippet type="IndentedLogicalAndListOpen"><![CDATA[<span class="smallIndent">]]></Snippet>
+				<Snippet type="IndentedLogicalAndListPairSeparator"><![CDATA[<br/><span class="logicalOperator">and that </span>]]></Snippet>
+				<Snippet type="IndentedLogicalAndListSeparator"><![CDATA[<br/><span class="logicalOperator">and that </span>]]></Snippet>
+				<Snippet type="IndentedLogicalAndListFinalSeparator"><![CDATA[<br/><span class="logicalOperator">and that </span>]]></Snippet>
+				<Snippet type="IndentedLogicalAndListClose"><![CDATA[</span>]]></Snippet>
+				<Snippet type="TopLevelIndentedLogicalAndListOpen"><![CDATA[<span>]]></Snippet>
+				<Snippet type="TopLevelIndentedLogicalAndListPairSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
+				<Snippet type="TopLevelIndentedLogicalAndListSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
+				<Snippet type="TopLevelIndentedLogicalAndListFinalSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
+				<Snippet type="TopLevelIndentedLogicalAndListClose"><![CDATA[</span>]]></Snippet>
 
 				<Snippet type="SimpleListOpen"><![CDATA[]]></Snippet>
 				<Snippet type="SimpleListPairSeparator"><![CDATA[<span class="listSeparator"> and </span>]]></Snippet>
@@ -80,6 +91,36 @@
 				<Snippet type="CompactSimpleListFinalSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
 				<Snippet type="CompactSimpleListClose"><![CDATA[]]></Snippet>
 				<Snippet type="CloseVerbalizationSentence"><![CDATA[<span class="listSeparator">.</span>]]></Snippet>
+				<Snippet type="VerbalizerNewLine"><![CDATA[<br/>\n]]></Snippet>
+				<Snippet type="VerbalizerIncreaseIndent"><![CDATA[<span class="indent">]]></Snippet>
+				<Snippet type="VerbalizerDecreaseIndent"><![CDATA[</span>]]></Snippet>
+				<Snippet type="VerbalizerOpenVerbalization"><![CDATA[<p class="verbalization">]]></Snippet>
+				<Snippet type="VerbalizerCloseVerbalization"><![CDATA[</p>]]></Snippet>
+				<Snippet type="VerbalizerOpenError"><![CDATA[<span class="error">]]></Snippet>
+				<Snippet type="VerbalizerCloseError"><![CDATA[</span>]]></Snippet>
+				<Snippet type="VerbalizerDocumentHeader"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>ORM2 Verbalization</title>
+		<style>
+			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+			.objectType {{ color: {4}; {5} }}
+			.objectTypeMissing {{ color: {4}; {5} }}
+			.referenceMode {{ color: #840084; font-weight: bold;}}
+			.predicateText {{ color: #0000ff; }}
+			.quantifier {{ color: {6}; {7} }}
+			.error {{ color: red; }}
+			.verbalization {{ }}
+			.indent {{ left: 20px; position: relative; }}
+			.smallIndent {{ left: 8px; position: relative;}}
+			.listSeparator {{ color: windowtext; font-weight: 200;}}
+			.logicalOperator {{ color: {6}; {7}}}
+		</style>
+	</head>
+	<body>]]></Snippet>
+				<Snippet type="VerbalizerDocumentFooter"><![CDATA[</body></html>]]></Snippet>
+				<Snippet type="VerbalizerFontWeightBold"><![CDATA[font-weight: bold;]]></Snippet>
+				<Snippet type="VerbalizerFontWeightNormal"><![CDATA[font-weight: normal;]]></Snippet>
 			</Snippets>
 		</Language>
 	</Languages>
@@ -118,6 +159,18 @@
 						 If subscripts are required in all places in any verbalization pattern that uses them, then
 						 the following would be a potential tag for this location (we'd have subscripts off by default). -->
 					<!--<EnableSubscripts minFactArity="3"/>-->
+					<Snippet ref="ModalPossibilityOperator">
+						<IterateRoles listStyle="TopLevelIndentedLogicalAndList">
+							<Fact readingChoice="PreferPrimaryLeadReading">
+								<PredicateReplacement match="primary">
+									<Snippet ref="MoreThanOneQuantifier"/>
+								</PredicateReplacement>
+								<PredicateReplacement>
+									<Snippet ref="IdentityReferenceQuantifier"/>
+								</PredicateReplacement>
+							</Fact>
+						</IterateRoles> 
+					</Snippet>
 					<Snippet ref="ImpliedModalNecessityOperator">
 						<Snippet ref="OccursInPopulation">
 							<Snippet ref="CombinationIdentifier">
@@ -330,7 +383,7 @@
 					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="positive" maxFactArity="1">
-					<IterateRoles listStyle="TopLevelIndentedOrList"  match="singleColumnConstraintRoles">
+					<IterateRoles listStyle="TopLevelIndentedLogicalOrList"  match="singleColumnConstraintRoles">
 						<Fact>
 							<PredicateReplacement match="primary" pass="first">
 								<Snippet ref="UniversalQuantifier"/>
@@ -344,7 +397,7 @@
 				<ConstrainedRoles sign="positive">
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllLeadReading">
-							<CompositeList listStyle="TopLevelIndentedOrList">
+							<CompositeList listStyle="TopLevelIndentedLogicalOrList">
 								<IterateRoles minFactArity="2" match="singleColumnConstraintRoles">
 									<Fact readingChoice="Conditional">
 										<PredicateReplacement match="primary" pass="first">
@@ -371,7 +424,7 @@
 						<ReadingChoice>
 							<Snippet ref="ForEachQuantifier">
 								<IterateRoles match="singleColumnConstraintRoles" pass="first" listStyle="SimpleList"/>
-								<CompositeList listStyle="IndentedOrList">
+								<CompositeList listStyle="IndentedLogicalOrList">
 									<IterateRoles match="singleColumnConstraintRoles" minFactArity="2">
 										<Fact readingChoice="PreferPrimaryLeadReadingNoForwardText">
 											<PredicateReplacement match="included">

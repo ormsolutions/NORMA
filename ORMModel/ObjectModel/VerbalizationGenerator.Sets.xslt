@@ -185,6 +185,11 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$VerbalizationTextSnippetType} enum"/>
 			</plx:trailingInfo>
+			<plx:attribute dataTypeName="CLSCompliant">
+				<plx:passParam>
+					<plx:trueKeyword/>
+				</plx:passParam>
+			</plx:attribute>
 			<xsl:for-each select="$alethicPositive">
 				<plx:enumItem name="{@type}">
 					<plx:leadingInfo>
@@ -310,6 +315,11 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$VerbalizationSets} class"/>
 			</plx:trailingInfo>
+			<plx:attribute dataTypeName="CLSCompliant">
+				<plx:passParam>
+					<plx:trueKeyword/>
+				</plx:passParam>
+			</plx:attribute>
 			<plx:field name="Default" visibility="public" readOnly="true" static="true" dataTypeName="{$VerbalizationSets}">
 				<plx:leadingInfo>
 					<plx:docComment>
@@ -322,6 +332,38 @@
 			</plx:field>
 			<plx:field name="mySets" visibility="private" dataTypeName="{$VerbalizationSet}" dataTypeIsSimpleArray="true"/>
 			<plx:function name=".construct" visibility="private"/>
+			<plx:function name="GetSnippet" visibility="public">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>Retrieve a snippet for the specified type with default criteria.</summary>
+						<param name="snippetType">
+							<xsl:text>A value from the </xsl:text>
+							<xsl:value-of select="$VerbalizationTextSnippetType"/>
+							<xsl:text> enum representing the snippet string to retrieve.</xsl:text>
+						</param>
+						<returns>Snippet string</returns>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:param name="snippetType" dataTypeName="{$VerbalizationTextSnippetType}"/>
+				<plx:returns dataTypeName=".string"/>
+				<plx:return>
+					<plx:callInstance name="GetSnippet">
+						<plx:callObject>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:callThis name="mySets" type="field"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:value type="i4" data="0"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="snippetType"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
 			<plx:function name="GetSnippet" visibility="public">
 				<plx:leadingInfo>
 					<plx:docComment>

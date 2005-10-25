@@ -7,6 +7,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// An enum with one value for each recognized snippet
 	/// </summary>
+	[CLSCompliant(true)]
 	public enum VerbalizationTextSnippetType
 	{
 		/// <summary>
@@ -114,25 +115,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		IndentedListSeparator,
 		/// <summary>
-		/// The 'IndentedOrListClose' simple snippet value.
+		/// The 'IndentedLogicalAndListClose' simple snippet value.
 		/// </summary>
-		IndentedOrListClose,
+		IndentedLogicalAndListClose,
 		/// <summary>
-		/// The 'IndentedOrListFinalSeparator' simple snippet value.
+		/// The 'IndentedLogicalAndListFinalSeparator' simple snippet value.
 		/// </summary>
-		IndentedOrListFinalSeparator,
+		IndentedLogicalAndListFinalSeparator,
 		/// <summary>
-		/// The 'IndentedOrListOpen' simple snippet value.
+		/// The 'IndentedLogicalAndListOpen' simple snippet value.
 		/// </summary>
-		IndentedOrListOpen,
+		IndentedLogicalAndListOpen,
 		/// <summary>
-		/// The 'IndentedOrListPairSeparator' simple snippet value.
+		/// The 'IndentedLogicalAndListPairSeparator' simple snippet value.
 		/// </summary>
-		IndentedOrListPairSeparator,
+		IndentedLogicalAndListPairSeparator,
 		/// <summary>
-		/// The 'IndentedOrListSeparator' simple snippet value.
+		/// The 'IndentedLogicalAndListSeparator' simple snippet value.
 		/// </summary>
-		IndentedOrListSeparator,
+		IndentedLogicalAndListSeparator,
+		/// <summary>
+		/// The 'IndentedLogicalOrListClose' simple snippet value.
+		/// </summary>
+		IndentedLogicalOrListClose,
+		/// <summary>
+		/// The 'IndentedLogicalOrListFinalSeparator' simple snippet value.
+		/// </summary>
+		IndentedLogicalOrListFinalSeparator,
+		/// <summary>
+		/// The 'IndentedLogicalOrListOpen' simple snippet value.
+		/// </summary>
+		IndentedLogicalOrListOpen,
+		/// <summary>
+		/// The 'IndentedLogicalOrListPairSeparator' simple snippet value.
+		/// </summary>
+		IndentedLogicalOrListPairSeparator,
+		/// <summary>
+		/// The 'IndentedLogicalOrListSeparator' simple snippet value.
+		/// </summary>
+		IndentedLogicalOrListSeparator,
 		/// <summary>
 		/// The 'ModalNecessityOperator' format string snippet. Contains 1 replacement field.
 		/// </summary>
@@ -194,29 +215,93 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		SimpleListSeparator,
 		/// <summary>
-		/// The 'TopLevelIndentedOrListClose' simple snippet value.
+		/// The 'TopLevelIndentedLogicalAndListClose' simple snippet value.
 		/// </summary>
-		TopLevelIndentedOrListClose,
+		TopLevelIndentedLogicalAndListClose,
 		/// <summary>
-		/// The 'TopLevelIndentedOrListFinalSeparator' simple snippet value.
+		/// The 'TopLevelIndentedLogicalAndListFinalSeparator' simple snippet value.
 		/// </summary>
-		TopLevelIndentedOrListFinalSeparator,
+		TopLevelIndentedLogicalAndListFinalSeparator,
 		/// <summary>
-		/// The 'TopLevelIndentedOrListOpen' simple snippet value.
+		/// The 'TopLevelIndentedLogicalAndListOpen' simple snippet value.
 		/// </summary>
-		TopLevelIndentedOrListOpen,
+		TopLevelIndentedLogicalAndListOpen,
 		/// <summary>
-		/// The 'TopLevelIndentedOrListPairSeparator' simple snippet value.
+		/// The 'TopLevelIndentedLogicalAndListPairSeparator' simple snippet value.
 		/// </summary>
-		TopLevelIndentedOrListPairSeparator,
+		TopLevelIndentedLogicalAndListPairSeparator,
 		/// <summary>
-		/// The 'TopLevelIndentedOrListSeparator' simple snippet value.
+		/// The 'TopLevelIndentedLogicalAndListSeparator' simple snippet value.
 		/// </summary>
-		TopLevelIndentedOrListSeparator,
+		TopLevelIndentedLogicalAndListSeparator,
+		/// <summary>
+		/// The 'TopLevelIndentedLogicalOrListClose' simple snippet value.
+		/// </summary>
+		TopLevelIndentedLogicalOrListClose,
+		/// <summary>
+		/// The 'TopLevelIndentedLogicalOrListFinalSeparator' simple snippet value.
+		/// </summary>
+		TopLevelIndentedLogicalOrListFinalSeparator,
+		/// <summary>
+		/// The 'TopLevelIndentedLogicalOrListOpen' simple snippet value.
+		/// </summary>
+		TopLevelIndentedLogicalOrListOpen,
+		/// <summary>
+		/// The 'TopLevelIndentedLogicalOrListPairSeparator' simple snippet value.
+		/// </summary>
+		TopLevelIndentedLogicalOrListPairSeparator,
+		/// <summary>
+		/// The 'TopLevelIndentedLogicalOrListSeparator' simple snippet value.
+		/// </summary>
+		TopLevelIndentedLogicalOrListSeparator,
 		/// <summary>
 		/// The 'UniversalQuantifier' format string snippet. Contains 1 replacement field.
 		/// </summary>
 		UniversalQuantifier,
+		/// <summary>
+		/// The 'VerbalizerCloseError' simple snippet value.
+		/// </summary>
+		VerbalizerCloseError,
+		/// <summary>
+		/// The 'VerbalizerCloseVerbalization' simple snippet value.
+		/// </summary>
+		VerbalizerCloseVerbalization,
+		/// <summary>
+		/// The 'VerbalizerDecreaseIndent' simple snippet value.
+		/// </summary>
+		VerbalizerDecreaseIndent,
+		/// <summary>
+		/// The 'VerbalizerDocumentFooter' simple snippet value.
+		/// </summary>
+		VerbalizerDocumentFooter,
+		/// <summary>
+		/// The 'VerbalizerDocumentHeader' format string snippet. Contains 12 replacement fields.
+		/// </summary>
+		VerbalizerDocumentHeader,
+		/// <summary>
+		/// The 'VerbalizerFontWeightBold' simple snippet value.
+		/// </summary>
+		VerbalizerFontWeightBold,
+		/// <summary>
+		/// The 'VerbalizerFontWeightNormal' simple snippet value.
+		/// </summary>
+		VerbalizerFontWeightNormal,
+		/// <summary>
+		/// The 'VerbalizerIncreaseIndent' simple snippet value.
+		/// </summary>
+		VerbalizerIncreaseIndent,
+		/// <summary>
+		/// The 'VerbalizerNewLine' simple snippet value.
+		/// </summary>
+		VerbalizerNewLine,
+		/// <summary>
+		/// The 'VerbalizerOpenError' simple snippet value.
+		/// </summary>
+		VerbalizerOpenError,
+		/// <summary>
+		/// The 'VerbalizerOpenVerbalization' simple snippet value.
+		/// </summary>
+		VerbalizerOpenVerbalization,
 	}
 	#endregion // VerbalizationTextSnippetType enum
 	#region VerbalizationSet structure
@@ -255,6 +340,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <summary>
 	/// A class containing one VerbalizationSet structure for each combination of {alethic,deontic} and {positive,negative} snippets.
 	/// </summary>
+	[CLSCompliant(true)]
 	public class VerbalizationSets
 	{
 		/// <summary>
@@ -264,6 +350,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private VerbalizationSet[] mySets;
 		private VerbalizationSets()
 		{
+		}
+		/// <summary>
+		/// Retrieve a snippet for the specified type with default criteria.
+		/// </summary>
+		/// <param name="snippetType">
+		/// A value from the VerbalizationTextSnippetType enum representing the snippet string to retrieve.
+		/// </param>
+		/// <returns>
+		/// Snippet string
+		/// </returns>
+		public string GetSnippet(VerbalizationTextSnippetType snippetType)
+		{
+			return this.mySets[0].GetSnippet(snippetType);
 		}
 		/// <summary>
 		/// Retrieve a snippet for the specified type and criteria.
@@ -325,10 +424,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""listSeparator""> and </span><br/>",
 					@"<span class=""listSeparator""> and </span><br/>",
 					"</span>",
-					@"<br/><span class=""listSeparator"">or </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
 					@"<span class=""smallIndent"">",
-					@"<br/><span class=""listSeparator"">or </span>",
-					@"<br/><span class=""listSeparator"">or </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
+					"</span>",
+					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""smallIndent"">",
+					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<span class=""quantifier"">it is necessary that</span> {0}",
 					@"<span class=""quantifier"">it is possible that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
@@ -345,11 +449,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
 					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
-					@"<span class=""quantifier"">each</span> {0}"}),
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+					"</span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					"<span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""quantifier"">each</span> {0}",
+					"</span>",
+					"</p>",
+					"</span>",
+					"</body></html>",
+					@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
+<html>
+	<head>
+		<title>ORM2 Verbalization</title>
+		<style>
+			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+			.objectType {{ color: {4}; {5} }}
+			.objectTypeMissing {{ color: {4}; {5} }}
+			.referenceMode {{ color: #840084; font-weight: bold;}}
+			.predicateText {{ color: #0000ff; }}
+			.quantifier {{ color: {6}; {7} }}
+			.error {{ color: red; }}
+			.verbalization {{ }}
+			.indent {{ left: 20px; position: relative; }}
+			.smallIndent {{ left: 8px; position: relative;}}
+			.listSeparator {{ color: windowtext; font-weight: 200;}}
+			.logicalOperator {{ color: {6}; {7}}}
+		</style>
+	</head>
+	<body>",
+					"font-weight: bold;",
+					"font-weight: normal;",
+					@"<span class=""indent"">",
+					"<br/>\n",
+					@"<span class=""error"">",
+					@"<p class=""verbalization"">"}),
 				new VerbalizationSet(new string[]{
 					@"<span class=""quantifier"">at most one</span> {0}",
 					@"<span class=""listSeparator"">.</span>",
@@ -378,10 +517,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""listSeparator""> and </span><br/>",
 					@"<span class=""listSeparator""> and </span><br/>",
 					"</span>",
-					@"<br/><span class=""listSeparator"">or </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
 					@"<span class=""smallIndent"">",
-					@"<br/><span class=""listSeparator"">or </span>",
-					@"<br/><span class=""listSeparator"">or </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
+					"</span>",
+					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""smallIndent"">",
+					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<span class=""quantifier"">it is obligatory that</span> {0}",
 					@"<span class=""quantifier"">it is permitted that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
@@ -398,11 +542,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
 					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
-					@"<span class=""quantifier"">each</span> {0}"}),
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+					"</span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					"<span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""quantifier"">each</span> {0}",
+					"</span>",
+					"</p>",
+					"</span>",
+					"</body></html>",
+					@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
+<html>
+	<head>
+		<title>ORM2 Verbalization</title>
+		<style>
+			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+			.objectType {{ color: {4}; {5} }}
+			.objectTypeMissing {{ color: {4}; {5} }}
+			.referenceMode {{ color: #840084; font-weight: bold;}}
+			.predicateText {{ color: #0000ff; }}
+			.quantifier {{ color: {6}; {7} }}
+			.error {{ color: red; }}
+			.verbalization {{ }}
+			.indent {{ left: 20px; position: relative; }}
+			.smallIndent {{ left: 8px; position: relative;}}
+			.listSeparator {{ color: windowtext; font-weight: 200;}}
+			.logicalOperator {{ color: {6}; {7}}}
+		</style>
+	</head>
+	<body>",
+					"font-weight: bold;",
+					"font-weight: normal;",
+					@"<span class=""indent"">",
+					"<br/>\n",
+					@"<span class=""error"">",
+					@"<p class=""verbalization"">"}),
 				new VerbalizationSet(new string[]{
 					@"<span class=""quantifier"">at most one</span> {0}",
 					@"<span class=""listSeparator"">.</span>",
@@ -431,10 +610,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""listSeparator""> and </span><br/>",
 					@"<span class=""listSeparator""> and </span><br/>",
 					"</span>",
-					@"<br/><span class=""listSeparator"">or </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
 					@"<span class=""smallIndent"">",
-					@"<br/><span class=""listSeparator"">or </span>",
-					@"<br/><span class=""listSeparator"">or </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
+					"</span>",
+					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""smallIndent"">",
+					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<span class=""quantifier"">it is necessary that</span> {0}",
 					@"<span class=""quantifier"">it is impossible that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
@@ -451,11 +635,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
 					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
-					@"<span class=""quantifier"">each</span> {0}"}),
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+					"</span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					"<span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""quantifier"">each</span> {0}",
+					"</span>",
+					"</p>",
+					"</span>",
+					"</body></html>",
+					@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
+<html>
+	<head>
+		<title>ORM2 Verbalization</title>
+		<style>
+			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+			.objectType {{ color: {4}; {5} }}
+			.objectTypeMissing {{ color: {4}; {5} }}
+			.referenceMode {{ color: #840084; font-weight: bold;}}
+			.predicateText {{ color: #0000ff; }}
+			.quantifier {{ color: {6}; {7} }}
+			.error {{ color: red; }}
+			.verbalization {{ }}
+			.indent {{ left: 20px; position: relative; }}
+			.smallIndent {{ left: 8px; position: relative;}}
+			.listSeparator {{ color: windowtext; font-weight: 200;}}
+			.logicalOperator {{ color: {6}; {7}}}
+		</style>
+	</head>
+	<body>",
+					"font-weight: bold;",
+					"font-weight: normal;",
+					@"<span class=""indent"">",
+					"<br/>\n",
+					@"<span class=""error"">",
+					@"<p class=""verbalization"">"}),
 				new VerbalizationSet(new string[]{
 					@"<span class=""quantifier"">at most one</span> {0}",
 					@"<span class=""listSeparator"">.</span>",
@@ -484,10 +703,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""listSeparator""> and </span><br/>",
 					@"<span class=""listSeparator""> and </span><br/>",
 					"</span>",
-					@"<br/><span class=""listSeparator"">or </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
 					@"<span class=""smallIndent"">",
-					@"<br/><span class=""listSeparator"">or </span>",
-					@"<br/><span class=""listSeparator"">or </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
+					@"<br/><span class=""logicalOperator"">and that </span>",
+					"</span>",
+					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""smallIndent"">",
+					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<span class=""quantifier"">it is obligatory that</span> {0}",
 					@"<span class=""quantifier"">it is forbidden that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
@@ -504,11 +728,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
 					"</span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
-					@"</span><span class=""smallIndent""><br/><span class=""listSeparator"">or </span>",
-					@"<span class=""quantifier"">each</span> {0}"})};
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
+					"</span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					"<span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""quantifier"">each</span> {0}",
+					"</span>",
+					"</p>",
+					"</span>",
+					"</body></html>",
+					@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"">
+<html>
+	<head>
+		<title>ORM2 Verbalization</title>
+		<style>
+			body {{ font-family: {0}; font-size: {1}pt; padding: .1em; color: {2}; {3} }}
+			.objectType {{ color: {4}; {5} }}
+			.objectTypeMissing {{ color: {4}; {5} }}
+			.referenceMode {{ color: #840084; font-weight: bold;}}
+			.predicateText {{ color: #0000ff; }}
+			.quantifier {{ color: {6}; {7} }}
+			.error {{ color: red; }}
+			.verbalization {{ }}
+			.indent {{ left: 20px; position: relative; }}
+			.smallIndent {{ left: 8px; position: relative;}}
+			.listSeparator {{ color: windowtext; font-weight: 200;}}
+			.logicalOperator {{ color: {6}; {7}}}
+		</style>
+	</head>
+	<body>",
+					"font-weight: bold;",
+					"font-weight: normal;",
+					@"<span class=""indent"">",
+					"<br/>\n",
+					@"<span class=""error"">",
+					@"<p class=""verbalization"">"})};
 			return retVal;
 		}
 	}
@@ -519,7 +778,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -548,7 +807,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ReadingOrderMoveableCollection allReadingOrders = this.ReadingOrderCollection;
 			const bool isDeontic = false;
 			ReadingOrder readingOrder;
-			VerbalizationSets snippets = VerbalizationSets.Default;
 			string[] basicRoleReplacements = new string[factArity];
 			int i = 0;
 			for (; i < factArity; ++i)
@@ -570,9 +828,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			FactType.WriteVerbalizerSentence(writer, FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // FactType verbalization
@@ -582,7 +840,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -606,7 +864,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
-			VerbalizationSets snippets = VerbalizationSets.Default;
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact = this.FactType;
@@ -685,7 +942,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int snippet1Replace1Replace1ReplaceRoleIter1 = 0;
 				for (; snippet1Replace1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1Replace1ReplaceRoleIter1)
 				{
-					Role primaryRole = includedRoles[snippet1Replace1Replace1ReplaceRoleIter1];
 					VerbalizationTextSnippetType listSnippet;
 					if (snippet1Replace1Replace1ReplaceRoleIter1 == 0)
 					{
@@ -741,7 +997,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int snippet1Replace1Replace1ReplaceRoleIter1 = 0;
 				for (; snippet1Replace1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1Replace1ReplaceRoleIter1)
 				{
-					Role primaryRole = includedRoles[snippet1Replace1Replace1ReplaceRoleIter1];
 					VerbalizationTextSnippetType listSnippet;
 					if (snippet1Replace1Replace1ReplaceRoleIter1 == 0)
 					{
@@ -780,14 +1035,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			else if ((factArity == includedArity) && !(isNegative))
 			{
 				beginVerbalization(VerbalizationContent.Normal);
-				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
-				string snippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.OccursInPopulation, isDeontic, isNegative);
-				string snippet1Replace1Replace1 = null;
-				string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.CombinationIdentifier, isDeontic, isNegative);
-				string snippet1Replace1Replace1Replace1 = null;
-				string snippet1Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative);
-				string snippet1Replace1Replace1Replace1Replace1 = null;
 				if (sbTemp == null)
 				{
 					sbTemp = new StringBuilder();
@@ -796,18 +1045,90 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				int snippet1Replace1Replace1Replace1ReplaceRoleIter1 = 0;
-				for (; snippet1Replace1Replace1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1Replace1Replace1ReplaceRoleIter1)
+				int snippet1ReplaceRoleIter1 = 0;
+				for (; snippet1ReplaceRoleIter1 < factArity; ++snippet1ReplaceRoleIter1)
 				{
-					Role primaryRole = includedRoles[snippet1Replace1Replace1Replace1ReplaceRoleIter1];
+					Role primaryRole = factRoles[snippet1ReplaceRoleIter1];
 					VerbalizationTextSnippetType listSnippet;
-					if (snippet1Replace1Replace1Replace1ReplaceRoleIter1 == 0)
+					if (snippet1ReplaceRoleIter1 == 0)
+					{
+						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListOpen;
+					}
+					else if (snippet1ReplaceRoleIter1 == (factArity - 1))
+					{
+						if (snippet1ReplaceRoleIter1 == 1)
+						{
+							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListPairSeparator;
+						}
+						else
+						{
+							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListFinalSeparator;
+						}
+					}
+					else
+					{
+						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListSeparator;
+					}
+					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+					snippet1Replace1 = null;
+					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, primaryRole, null, false, false, factRoles, true);
+					int snippet1ReplaceFactRoleIter1 = 0;
+					for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
+					{
+						Role currentRole = factRoles[snippet1ReplaceFactRoleIter1];
+						string roleReplacement = null;
+						string basicReplacement = basicRoleReplacements[snippet1ReplaceFactRoleIter1];
+						if (primaryRole == currentRole)
+						{
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.MoreThanOneQuantifier, isDeontic, isNegative), basicReplacement);
+						}
+						else
+						{
+							roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.IdentityReferenceQuantifier, isDeontic, isNegative), basicReplacement);
+						}
+						if (roleReplacement == null)
+						{
+							roleReplacement = basicReplacement;
+						}
+						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
+					}
+					snippet1Replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+					sbTemp.Append(snippet1Replace1);
+					if (snippet1ReplaceRoleIter1 == (factArity - 1))
+					{
+						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListClose, isDeontic, isNegative));
+					}
+				}
+				snippet1Replace1 = sbTemp.ToString();
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				writer.WriteLine();
+				string snippetFormat2 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+				string snippet2Replace1 = null;
+				string snippet2ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.OccursInPopulation, isDeontic, isNegative);
+				string snippet2Replace1Replace1 = null;
+				string snippet2Replace1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.CombinationIdentifier, isDeontic, isNegative);
+				string snippet2Replace1Replace1Replace1 = null;
+				string snippet2Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative);
+				string snippet2Replace1Replace1Replace1Replace1 = null;
+				if (sbTemp == null)
+				{
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				int snippet2Replace1Replace1Replace1ReplaceRoleIter1 = 0;
+				for (; snippet2Replace1Replace1Replace1ReplaceRoleIter1 < includedArity; ++snippet2Replace1Replace1Replace1ReplaceRoleIter1)
+				{
+					VerbalizationTextSnippetType listSnippet;
+					if (snippet2Replace1Replace1Replace1ReplaceRoleIter1 == 0)
 					{
 						listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
 					}
-					else if (snippet1Replace1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					else if (snippet2Replace1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
 					{
-						if (snippet1Replace1Replace1Replace1ReplaceRoleIter1 == 1)
+						if (snippet2Replace1Replace1Replace1ReplaceRoleIter1 == 1)
 						{
 							listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
 						}
@@ -821,20 +1142,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet1Replace1Replace1Replace1ReplaceRoleIter1])]);
-					if (snippet1Replace1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet2Replace1Replace1Replace1ReplaceRoleIter1])]);
+					if (snippet2Replace1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
 					{
 						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 					}
 				}
-				snippet1Replace1Replace1Replace1Replace1 = sbTemp.ToString();
-				snippet1Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1Replace1);
-				snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
-				string snippet1Replace1Replace2 = null;
+				snippet2Replace1Replace1Replace1Replace1 = sbTemp.ToString();
+				snippet2Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet2Replace1Replace1ReplaceFormat1, snippet2Replace1Replace1Replace1Replace1);
+				snippet2Replace1Replace1 = string.Format(writer.FormatProvider, snippet2Replace1ReplaceFormat1, snippet2Replace1Replace1Replace1);
+				string snippet2Replace1Replace2 = null;
 				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-				snippet1Replace1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements);
-				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				snippet2Replace1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements);
+				snippet2Replace1 = string.Format(writer.FormatProvider, snippet2ReplaceFormat1, snippet2Replace1Replace1, snippet2Replace1Replace2);
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (factArity == includedArity)
 			{
@@ -858,7 +1179,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int snippet1Replace1Replace1Replace1ReplaceRoleIter1 = 0;
 				for (; snippet1Replace1Replace1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1Replace1Replace1ReplaceRoleIter1)
 				{
-					Role primaryRole = includedRoles[snippet1Replace1Replace1Replace1ReplaceRoleIter1];
 					VerbalizationTextSnippetType listSnippet;
 					if (snippet1Replace1Replace1Replace1ReplaceRoleIter1 == 0)
 					{
@@ -947,7 +1267,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int snippet1Replace1ReplaceRoleIter1 = 0;
 						for (; snippet1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1ReplaceRoleIter1)
 						{
-							Role primaryRole = includedRoles[snippet1Replace1ReplaceRoleIter1];
 							VerbalizationTextSnippetType listSnippet;
 							if (snippet1Replace1ReplaceRoleIter1 == 0)
 							{
@@ -1051,7 +1370,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int snippet1Replace1ReplaceRoleIter1 = 0;
 				for (; snippet1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1ReplaceRoleIter1)
 				{
-					Role primaryRole = includedRoles[snippet1Replace1ReplaceRoleIter1];
 					VerbalizationTextSnippetType listSnippet;
 					if (snippet1Replace1ReplaceRoleIter1 == 0)
 					{
@@ -1124,7 +1442,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int snippet1Replace1ReplaceRoleIter1 = 0;
 				for (; snippet1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1ReplaceRoleIter1)
 				{
-					Role primaryRole = includedRoles[snippet1Replace1ReplaceRoleIter1];
 					VerbalizationTextSnippetType listSnippet;
 					if (snippet1Replace1ReplaceRoleIter1 == 0)
 					{
@@ -1181,9 +1498,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // InternalUniquenessConstraint verbalization
@@ -1193,7 +1510,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -1217,7 +1534,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
-			VerbalizationSets snippets = VerbalizationSets.Default;
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact = this.FactType;
@@ -1340,7 +1656,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int snippet1Replace1ReplaceRoleIter1 = 0;
 						for (; snippet1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1ReplaceRoleIter1)
 						{
-							Role primaryRole = includedRoles[snippet1Replace1ReplaceRoleIter1];
 							VerbalizationTextSnippetType listSnippet;
 							if (snippet1Replace1ReplaceRoleIter1 == 0)
 							{
@@ -1449,7 +1764,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int snippet1Replace1ReplaceRoleIter1 = 0;
 						for (; snippet1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1ReplaceRoleIter1)
 						{
-							Role primaryRole = includedRoles[snippet1Replace1ReplaceRoleIter1];
 							VerbalizationTextSnippetType listSnippet;
 							if (snippet1Replace1ReplaceRoleIter1 == 0)
 							{
@@ -1508,9 +1822,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // SimpleMandatoryConstraint verbalization
@@ -1520,7 +1834,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -1544,7 +1858,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
-			VerbalizationSets snippets = VerbalizationSets.Default;
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
@@ -1739,22 +2052,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 					VerbalizationTextSnippetType listSnippet;
 					if (factTextRoleIter1 == 0)
 					{
-						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListOpen;
+						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListOpen;
 					}
 					else if (factTextRoleIter1 == (constraintRoleArity - 1))
 					{
 						if (factTextRoleIter1 == 1)
 						{
-							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListPairSeparator;
+							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListPairSeparator;
 						}
 						else
 						{
-							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListFinalSeparator;
+							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListFinalSeparator;
 						}
 					}
 					else
 					{
-						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListSeparator;
+						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					string factText1 = null;
@@ -1783,7 +2096,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					sbTemp.Append(factText1);
 					if (factTextRoleIter1 == (constraintRoleArity - 1))
 					{
-						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedOrListClose, isDeontic, isNegative));
+						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
 					}
 					factTextIsFirstPass1 = false;
 				}
@@ -1864,22 +2177,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 							VerbalizationTextSnippetType listSnippet;
 							if (listCompositeIterator1 == 0)
 							{
-								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListOpen;
+								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListOpen;
 							}
 							else if (listCompositeIterator1 == (listCompositeCount1 - 1))
 							{
 								if (listCompositeIterator1 == 1)
 								{
-									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListPairSeparator;
+									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListPairSeparator;
 								}
 								else
 								{
-									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListFinalSeparator;
+									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListFinalSeparator;
 								}
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListSeparator;
+								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							list1Item1 = null;
@@ -1912,7 +2225,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							sbTemp.Append(list1Item1);
 							if (list1ItemRoleIter1 == (listCompositeCount1 - 1))
 							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedOrListClose, isDeontic, isNegative));
+								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
 							}
 							listCompositeIterator1 = listCompositeIterator1 + 1;
 							list1ItemIsFirstPass1 = false;
@@ -1934,22 +2247,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 							VerbalizationTextSnippetType listSnippet;
 							if (listCompositeIterator1 == 0)
 							{
-								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListOpen;
+								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListOpen;
 							}
 							else if (listCompositeIterator1 == (listCompositeCount1 - 1))
 							{
 								if (listCompositeIterator1 == 1)
 								{
-									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListPairSeparator;
+									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListPairSeparator;
 								}
 								else
 								{
-									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListFinalSeparator;
+									listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListFinalSeparator;
 								}
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedOrListSeparator;
+								listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							list1Item2 = null;
@@ -1971,7 +2284,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							sbTemp.Append(list1Item2);
 							if (list1ItemRoleIter2 == (listCompositeCount1 - 1))
 							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedOrListClose, isDeontic, isNegative));
+								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
 							}
 							listCompositeIterator1 = listCompositeIterator1 + 1;
 						}
@@ -2060,22 +2373,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 							VerbalizationTextSnippetType listSnippet;
 							if (snippet1ReplaceCompositeIterator2 == 0)
 							{
-								listSnippet = VerbalizationTextSnippetType.IndentedOrListOpen;
+								listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListOpen;
 							}
 							else if (snippet1ReplaceCompositeIterator2 == (snippet1ReplaceCompositeCount2 - 1))
 							{
 								if (snippet1ReplaceCompositeIterator2 == 1)
 								{
-									listSnippet = VerbalizationTextSnippetType.IndentedOrListPairSeparator;
+									listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListPairSeparator;
 								}
 								else
 								{
-									listSnippet = VerbalizationTextSnippetType.IndentedOrListFinalSeparator;
+									listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListFinalSeparator;
 								}
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.IndentedOrListSeparator;
+								listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							snippet1Replace2Item1 = null;
@@ -2104,7 +2417,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							sbTemp.Append(snippet1Replace2Item1);
 							if (snippet1Replace2ItemRoleIter1 == (snippet1ReplaceCompositeCount2 - 1))
 							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedOrListClose, isDeontic, isNegative));
+								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedLogicalOrListClose, isDeontic, isNegative));
 							}
 							snippet1ReplaceCompositeIterator2 = snippet1ReplaceCompositeIterator2 + 1;
 						}
@@ -2125,22 +2438,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 							VerbalizationTextSnippetType listSnippet;
 							if (snippet1ReplaceCompositeIterator2 == 0)
 							{
-								listSnippet = VerbalizationTextSnippetType.IndentedOrListOpen;
+								listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListOpen;
 							}
 							else if (snippet1ReplaceCompositeIterator2 == (snippet1ReplaceCompositeCount2 - 1))
 							{
 								if (snippet1ReplaceCompositeIterator2 == 1)
 								{
-									listSnippet = VerbalizationTextSnippetType.IndentedOrListPairSeparator;
+									listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListPairSeparator;
 								}
 								else
 								{
-									listSnippet = VerbalizationTextSnippetType.IndentedOrListFinalSeparator;
+									listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListFinalSeparator;
 								}
 							}
 							else
 							{
-								listSnippet = VerbalizationTextSnippetType.IndentedOrListSeparator;
+								listSnippet = VerbalizationTextSnippetType.IndentedLogicalOrListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							snippet1Replace2Item2 = null;
@@ -2162,7 +2475,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							sbTemp.Append(snippet1Replace2Item2);
 							if (snippet1Replace2ItemRoleIter2 == (snippet1ReplaceCompositeCount2 - 1))
 							{
-								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedOrListClose, isDeontic, isNegative));
+								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedLogicalOrListClose, isDeontic, isNegative));
 							}
 							snippet1ReplaceCompositeIterator2 = snippet1ReplaceCompositeIterator2 + 1;
 						}
@@ -2173,9 +2486,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // DisjunctiveMandatoryConstraint verbalization
@@ -2185,7 +2498,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
 		/// </summary>
-		protected bool GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
 			IModelErrorOwner errorOwner = this as IModelErrorOwner;
 			if (errorOwner != null)
@@ -2209,7 +2522,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
-			VerbalizationSets snippets = VerbalizationSets.Default;
 			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
@@ -2549,9 +2861,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return true;
 		}
-		bool IVerbalize.GetVerbalization(TextWriter writer, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
 		{
-			return this.GetVerbalization(writer, beginVerbalization, isNegative);
+			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
 		}
 	}
 	#endregion // ExternalUniquenessConstraint verbalization

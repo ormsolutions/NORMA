@@ -935,7 +935,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return (this.Store as ObjectModel.IORMToolServices).FontAndColorService.GetFont();
+				return (this.Store as ObjectModel.IORMToolServices).FontAndColorService.GetFont(ORMDesignerColorCategory.Editor);
 			}
 		}
 		#endregion // Other base overrides

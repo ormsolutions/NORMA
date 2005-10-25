@@ -63,6 +63,7 @@
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
 				<plx:param name="writer" dataTypeName="TextWriter"/>
+				<plx:param name="snippets" dataTypeName="{$VerbalizationSets}"/>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
@@ -96,11 +97,6 @@
 					</plx:initialize>
 				</plx:local>
 				<plx:local name="readingOrder" dataTypeName="ReadingOrder"/>
-				<plx:local name="snippets" dataTypeName="{$VerbalizationSets}">
-					<plx:initialize>
-						<plx:callStatic dataTypeName="{$VerbalizationSets}" name="Default" type="property"/>
-					</plx:initialize>
-				</plx:local>
 				<xsl:call-template name="PopulateBasicRoleReplacements"/>
 				<xsl:variable name="factMockup">
 					<ve:Fact/>
@@ -134,6 +130,7 @@
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
 				<plx:param name="writer" dataTypeName="TextWriter"/>
+				<plx:param name="snippets" dataTypeName="{$VerbalizationSets}"/>
 				<plx:param name="beginVerbalization" dataTypeName="NotifyBeginVerbalization"/>
 				<plx:param name="isNegative" dataTypeName=".boolean"/>
 				<plx:returns dataTypeName=".boolean"/>
@@ -154,11 +151,6 @@
 				<xsl:variable name="subscriptConditions" select="msxsl:node-set($subscriptConditionsFragment)/child::*"/>
 
 				<!-- Pick up standard code we'll need for any constraint -->
-				<plx:local name="snippets" dataTypeName="{$VerbalizationSets}">
-					<plx:initialize>
-						<plx:callStatic dataTypeName="{$VerbalizationSets}" name="Default" type="property"/>
-					</plx:initialize>
-				</plx:local>
 				<plx:local name="isDeontic" dataTypeName=".boolean">
 					<plx:initialize>
 						<plx:binaryOperator type="equality">
@@ -1296,7 +1288,7 @@
 							</plx:initialize>
 						</plx:local>
 						<plx:assign>
-								<plx:left>
+							<plx:left>
 								<plx:nameRef name="parentFact"/>
 							</plx:left>
 							<plx:right>
@@ -1308,7 +1300,7 @@
 							</plx:right>
 						</plx:assign>
 						<plx:assign>
-								<plx:left>
+							<plx:left>
 								<plx:nameRef name="factRoles"/>
 							</plx:left>
 							<plx:right>
@@ -1320,7 +1312,7 @@
 							</plx:right>
 						</plx:assign>
 						<plx:assign>
-								<plx:left>
+							<plx:left>
 								<plx:nameRef name="allReadingOrders"/>
 							</plx:left>
 							<plx:right>
@@ -2307,33 +2299,35 @@
 				</plx:increment>
 			</plx:beforeLoop>
 			<plx:body>
-				<plx:local name="primaryRole" dataTypeName="Role">
-					<plx:initialize>
-						<plx:callInstance name=".implied" type="arrayIndexer">
-							<plx:callObject>
-								<plx:nameRef>
-									<xsl:attribute name="name">
-										<xsl:choose>
-											<xsl:when test="$contextMatch='all'">
-												<xsl:text>factRoles</xsl:text>
-											</xsl:when>
-											<xsl:when test="$contextMatch='included'">
-												<xsl:text>includedRoles</xsl:text>
-											</xsl:when>
-											<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
-												<xsl:text>allConstraintRoles</xsl:text>
-											</xsl:when>
-											<!-- UNDONE: Support excluded match -->
-										</xsl:choose>
-									</xsl:attribute>
-								</plx:nameRef>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef name="{$iterVarName}"/>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
+				<xsl:if test="$contextMatch='singleColumnConstraintRoles' or descendant::ve:*[@match='primary' or @match='secondary']">
+					<plx:local name="primaryRole" dataTypeName="Role">
+						<plx:initialize>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef>
+										<xsl:attribute name="name">
+											<xsl:choose>
+												<xsl:when test="$contextMatch='all'">
+													<xsl:text>factRoles</xsl:text>
+												</xsl:when>
+												<xsl:when test="$contextMatch='included'">
+													<xsl:text>includedRoles</xsl:text>
+												</xsl:when>
+												<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
+													<xsl:text>allConstraintRoles</xsl:text>
+												</xsl:when>
+												<!-- UNDONE: Support excluded match -->
+											</xsl:choose>
+										</xsl:attribute>
+									</plx:nameRef>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="{$iterVarName}"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+				</xsl:if>
 				<xsl:if test="$contextMatch='singleColumnConstraintRoles'">
 					<plx:assign>
 						<plx:left>
@@ -3207,7 +3201,7 @@
 		<xsl:param name="VariableName"/>
 		<plx:callInstance name="GetSnippet">
 			<plx:callObject>
-				<plx:nameRef name="snippets"/>
+				<plx:nameRef name="snippets" type="parameter"/>
 			</plx:callObject>
 			<plx:passParam>
 				<xsl:choose>

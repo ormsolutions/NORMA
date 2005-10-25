@@ -67,7 +67,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			{
 				return Color.Black;
 			}
-			Font IORMFontAndColorService.GetFont()
+			Font IORMFontAndColorService.GetFont(ORMDesignerColorCategory fontCategory)
 			{
 				Font font = new Font(new FontFamily("Times New Roman"), 10, FontStyle.Regular);
 				return font;
