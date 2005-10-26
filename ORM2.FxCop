@@ -3580,6 +3580,34 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="FactType+FactTypeHasRoleAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-10-26 14:21:10Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.FactType+FactTypeHasRoleAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FactType+FactTypeHasRoleRemoveRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-10-26 14:21:10Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.FactType+FactTypeHasRoleRemoveRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="23" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="FactType+FactTypeNestingTypeDisplayFieldHandler">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -18103,6 +18131,7 @@
     <Note Id="20" Modified="2005-05-18 23:28:20Z">These are different, one has a type parameter, the other doesn't. That gives them a different signature.</Note>
     <Note Id="21" Modified="2005-05-25 19:53:40Z">Defined in IMS-generated code</Note>
     <Note Id="22" Modified="2005-05-27 18:54:31Z">Returned types are immutable</Note>
+    <Note Id="23" Modified="2005-10-26 14:22:38Z">Rule classes instantiated via reflection</Note>
     <Note Id="24" Modified="2005-05-27 18:56:51Z">Returned data is not sparse, multidimensional is OK</Note>
     <Note Id="25" Modified="2005-05-27 18:58:49Z">Spit code matches regular private interface implementation/protected member pattern</Note>
     <Note Id="26" Modified="2005-05-27 18:59:16Z">IMS-generated code</Note>

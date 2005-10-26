@@ -39,7 +39,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		void StickyRedraw();
 	}
 	#endregion // IStickyObject interface
-	public partial class ORMDiagram
+	public partial class ORMDiagram : IProxyDisplayProvider
 	{
 		#region Toolbox filter strings
 		/// <summary>
@@ -1016,5 +1016,55 @@ namespace Neumont.Tools.ORM.ShapeModel
 				(startLuminosity + luminosityFixedDelta + (int)((double)(luminosityCheck - startLuminosity)/luminosityCheck * luminosityIncrementalDelta));
 		}
 		#endregion // Utility Methods
-	}
+
+		#region IProxyDisplayProvider Implementation
+		/// <summary>
+		/// Implements IProxyDisplayProvider.ElementDisplayedAs
+		/// </summary>
+		protected ModelElement ElementDisplayedAs(ModelElement element)
+		{
+			ObjectType objectElement;
+			EqualityConstraint equalityElement;
+			if (null != (objectElement = element as ObjectType))
+			{
+				if (!ShouldDisplayObjectType(objectElement))
+				{
+					FactType nestedFact = objectElement.NestedFactType;
+					if (nestedFact != null)
+					{
+						return nestedFact;
+					}
+					// Otherwise, every fact type we're a role player for is
+					// part of a collapsed reference mode. Grab the first fact, and
+					// find the corresponding object type.
+					foreach (ConstraintRoleSequence constraintSequence in objectElement.PlayedRoleCollection[0].ConstraintRoleSequenceCollection)
+					{
+						InternalUniquenessConstraint iuc = constraintSequence as InternalUniquenessConstraint;
+						if (iuc != null)
+						{
+							ObjectType displayedType = iuc.PreferredIdentifierFor;
+							if (displayedType != null)
+							{
+								return displayedType;
+							}
+						}
+					}
+				}
+			}
+			else if (null != (equalityElement = element as EqualityConstraint))
+			{
+				Objectification objectificationLink = equalityElement.ImpliedByObjectification;
+				if (objectificationLink != null)
+				{
+					return objectificationLink.NestedFactType;
+				}
+			}
+			return null;
+		}
+		ModelElement IProxyDisplayProvider.ElementDisplayedAs(ModelElement element)
+		{
+			return ElementDisplayedAs(element);
+		}
+		#endregion // IProxyDisplayProvider Implementation
+}
 }

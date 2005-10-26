@@ -268,30 +268,66 @@ namespace Neumont.Tools.ORM.Shell
 						element = elements[0];
 					}
 				}
+				ModelElement startElement = element;
+				IProxyDisplayProvider proxyProvider = null;
+				bool useProxy = false;
 				// UNDONE: Move navigation code from here down into 
 				// docdata and docview classes so we can use it elsewhere
 				while (element != null)
 				{
+					ModelElement selectElement = element;
+					if (useProxy)
+					{
+						// Second pass, we were unable to find a suitable shape for the first
+						selectElement = proxyProvider.ElementDisplayedAs(element);
+						if (selectElement != null && object.ReferenceEquals(selectElement, element))
+						{
+							selectElement = null;
+						}
+					}
+
 					// UNDONE: We should potentially be creating a shape
 					// so we can jump to any error
-					foreach (PresentationElement pel in element.AssociatedPresentationElements)
+					if (selectElement != null)
 					{
-						ShapeElement shape = pel as ShapeElement;
-						if (shape != null)
+						bool continueNow = false;
+						foreach (PresentationElement pel in selectElement.AssociatedPresentationElements)
 						{
-							// Select the shape
-							bool retVal = elementLocator.NavigateTo(Guid.Empty, shape);
-							if (retVal)
+							ShapeElement shape = pel as ShapeElement;
+							if (shape != null)
 							{
-								ModelError error;
-								IModelErrorActivation activator;
-								if (null != (error = locator as ModelError) &
-									null != (activator = shape as IModelErrorActivation))
+								if (proxyProvider == null)
 								{
-									activator.ActivateModelError(error);
+									proxyProvider = shape as IProxyDisplayProvider;
 								}
-								return true;
+								if (element is ORMModel && !useProxy && !object.ReferenceEquals(element, startElement))
+								{
+									if (proxyProvider != null)
+									{
+										useProxy = true;
+										element = startElement;
+										continueNow = true;
+										break;
+									}
+								}
+								// Select the shape
+								bool retVal = elementLocator.NavigateTo(Guid.Empty, shape);
+								if (retVal)
+								{
+									ModelError error;
+									IModelErrorActivation activator;
+									if (null != (error = locator as ModelError) &
+										null != (activator = shape as IModelErrorActivation))
+									{
+										activator.ActivateModelError(error);
+									}
+									return true;
+								}
 							}
+						}
+						if (continueNow)
+						{
+							continue;
 						}
 					}
 					ModelElement nextElement = element;

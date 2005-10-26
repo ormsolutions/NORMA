@@ -73,6 +73,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 		void ActivateModelError(ModelError error);
 	}
 	#endregion // IModelErrorActivation interface
+	#region IProxyDisplayProvider
+	/// <summary>
+	/// Interface to map the display of one element to
+	/// the display of a second element. It is very possible
+	/// to have errors on objects that are not directly displayed
+	/// on the model. Generally, this would force the error
+	/// activation mechanism to simply select the diagram
+	/// displaying the model, as this is the first element in
+	/// the parent chain with a displayable shape. If a display
+	/// proxy is encountered in the parent chain, then the
+	/// selection loop reverts to the starting element and
+	/// an attempt is made at each level to map to a proxy
+	/// element and select the proxy instead.
+	/// </summary>
+	public interface IProxyDisplayProvider
+	{
+		/// <summary>
+		/// Return the element that is used to display the
+		/// passed in element.
+		/// </summary>
+		/// <param name="element">The element to find a proxy for</param>
+		/// <returns>The proxy display element. Return the element itself or null
+		/// if there is no proxy.</returns>
+		ModelElement ElementDisplayedAs(ModelElement element);
+	}
+	#endregion // IProxyDisplayProvider
 	#region ModelError class
 	public abstract partial class ModelError
 	{
