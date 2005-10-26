@@ -13614,6 +13614,27 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="VerbalizationTextSnippetType">
+          <Members>
+           <Member Name="VerbalizerNewLine">
+            <Messages>
+             <Message Id="NewLine" TypeName="CompoundWordsShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1702" Status="Excluded" Created="2005-10-26 20:29:53Z">
+              <Issue Name="ShouldBeDiscreteTerm">
+               <Item>NewLine</Item>
+               <Item>field</Item>
+               <Item>VerbalizerNewLine</Item>
+               <Item>Newline</Item>
+              </Issue>
+              <Notes>
+               <User Name="Mark">
+                <Note Id="0" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="YesOrNoLogicalDataTypeElementFactoryCreator">
           <Members>
            <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
@@ -18106,6 +18127,9 @@
     <Note Id="0" Modified="2005-08-14 22:08:18Z">This field is used by other constant fields. FxCop is unable to detect such usage.</Note>
     <Note Id="1" Modified="2005-08-14 22:13:19Z">N/A</Note>
     <Note Id="2" Modified="2005-08-14 22:16:50Z">This is a wrapper method, so its signature is outside of our control.</Note>
+   </User>
+   <User Name="Mark">
+    <Note Id="0" Modified="2005-10-26 20:34:04Z">We like NewLine. CustomDictionary.xml doesn't let us exclude compound words.</Note>
    </User>
    <User Name="mcurland">
     <Note Id="0" Modified="2005-07-07 00:43:51Z">Reviewed unsed parameters</Note>

@@ -1827,14 +1827,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			/// <summary>
 			/// Returns the index of the associated Role element in its
-			/// containing collection.
+			/// containing collection, or -1 if the role is removed.
 			/// </summary>
 			public int RoleIndex
 			{
 				get
 				{
-					Debug.Assert(myAssociatedRole != null && !myAssociatedRole.IsRemoved);
-					return myAssociatedRole.FactType.RoleCollection.IndexOf(myAssociatedRole);
+					// Be very defensive here. This can get called attempting to
+					// determine a highlighted shape for a deleted item.
+					if (myAssociatedRole != null && !myAssociatedRole.IsRemoved)
+					{
+						FactType factType = myAssociatedRole.FactType;
+						if (factType != null)
+						{
+							return factType.RoleCollection.IndexOf(myAssociatedRole);
+						}
+					}
+					return -1;
 				}
 			}
 			#endregion // Accessor functions

@@ -11,7 +11,6 @@
 #define menuIdContextMenu				0x0100
 #define menuIdVerbalizationToolBar		0x0101
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Menu Group IDs    (0x10xx)
 #ifdef DEBUG
@@ -50,3 +49,5 @@
 #define cmdIdShowNegativeVerbalization	0x290E
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs
+#define bmpIdShowNegativeVerbalization	1
+#define bmpIdShowPositiveVerbalization	2
