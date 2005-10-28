@@ -127,9 +127,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 					RectangleD shrinkBounds = bounds;
 					shrinkBounds.Inflate(-bounds.Width * .22, -bounds.Height * .22);
 					Brush brush = styles.GetBrush(ExternalConstraintBrush);
+					Color startBrushColor = default(Color);
 					SolidBrush coloredBrush = brush as SolidBrush;
-					coloredBrush.Color = pen.Color;
+					if (coloredBrush != null)
+					{
+						startBrushColor = coloredBrush.Color;
+						coloredBrush.Color = pen.Color;
+					}
 					g.FillEllipse(brush, RectangleD.ToRectangleF(shrinkBounds));
+					if (coloredBrush != null)
+					{
+						coloredBrush.Color = startBrushColor;
+					}
 					break;
 				}
 				case ConstraintType.Exclusion:
