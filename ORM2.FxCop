@@ -17522,6 +17522,29 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="OnMenuDelete(System.String):System.Void">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="Excluded" Created="2005-10-28 18:44:19Z">
+              <Issue Name="Local">
+               <Item>selectedObject</Item>
+               <Item>Neumont.Tools.ORM.ObjectModel.InternalConstraint</Item>
+               <Item>ORMDesignerDocView.OnMenuDelete(String):Void</Item>
+               <Item>isint</Item>
+              </Issue>
+              <Issue Name="Local">
+               <Item>selectedObject</Item>
+               <Item>Neumont.Tools.ORM.ObjectModel.Role</Item>
+               <Item>ORMDesignerDocView.OnMenuDelete(String):Void</Item>
+               <Item>isint</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="65" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="OnMenuDeleteRoleSequence():System.Void">
             <Messages>
              <Message Id="System.NotImplementedException.#ctor(System.String)" TypeName="DoNotPassLiteralsAsLocalizedParameters" Category="Microsoft.Globalization" CheckId="CA1303" Created="2005-07-21 19:54:58Z">
@@ -18240,6 +18263,7 @@
     <Note Id="62" Modified="2005-10-25 17:49:21Z">Matching required interface implementation pattern</Note>
     <Note Id="63" Modified="2005-10-28 08:39:45Z">Type is immutable</Note>
     <Note Id="64" Modified="2005-10-28 08:40:00Z">Rule classes instantiated via reflection</Note>
+    <Note Id="65" Modified="2005-10-28 19:05:28Z">Casts happen in different branches</Note>
    </User>
    <User Name="mouzts">
     <Note Id="0" Modified="2005-09-15 22:08:24Z">Rule classes instantiated via reflection</Note>

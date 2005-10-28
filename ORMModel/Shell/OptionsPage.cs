@@ -19,7 +19,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Valid shapes for object types
 	/// </summary>
-	public enum ObjectTypeShape
+	public enum ObjectTypeDisplayShape
 	{
 		/// <summary>
 		/// Draw object shapes with soft rectangles
@@ -38,7 +38,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Valid shapes for objectified facts
 	/// </summary>
-	public enum ObjectifiedFactShape
+	public enum ObjectifiedFactDisplayShape
 	{
 		/// <summary>
 		/// Draw objectified facts with soft rectangles
@@ -132,13 +132,13 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Localized PropertyDescriptor attribute classes
 		#region Member variables
 		// If more settings are added, add a corresponding check in the OnApply override below
-		private const ObjectTypeShape ObjectTypeShape_Default = ObjectTypeShape.SoftRectangle;
-		private static ObjectTypeShape myCurrentObjectTypeShape = ObjectTypeShape_Default;
-		private ObjectTypeShape myObjectTypeShape = ObjectTypeShape_Default;
+		private const ObjectTypeDisplayShape ObjectTypeDisplayShape_Default = ObjectTypeDisplayShape.SoftRectangle;
+		private static ObjectTypeDisplayShape myCurrentObjectTypeDisplayShape = ObjectTypeDisplayShape_Default;
+		private ObjectTypeDisplayShape myObjectTypeDisplayShape = ObjectTypeDisplayShape_Default;
 
-		private const ObjectifiedFactShape ObjectifiedFactShape_Default = ObjectifiedFactShape.SoftRectangle;
-		private static ObjectifiedFactShape myCurrentObjectifiedFactShape = ObjectifiedFactShape_Default;
-		private ObjectifiedFactShape myObjectifiedFactShape = ObjectifiedFactShape_Default;
+		private const ObjectifiedFactDisplayShape ObjectifiedFactDisplayShape_Default = ObjectifiedFactDisplayShape.SoftRectangle;
+		private static ObjectifiedFactDisplayShape myCurrentObjectifiedFactDisplayShape = ObjectifiedFactDisplayShape_Default;
+		private ObjectifiedFactDisplayShape myObjectifiedFactDisplayShape = ObjectifiedFactDisplayShape_Default;
 
 		private const MandatoryDotPlacement MandatoryDotPlacement_Default = MandatoryDotPlacement.RoleBoxEnd;
 		private static MandatoryDotPlacement myCurrentMandatoryDotPlacement = MandatoryDotPlacement_Default;
@@ -160,8 +160,8 @@ namespace Neumont.Tools.ORM.Shell
 		public override void LoadSettingsFromStorage()
 		{
 			base.LoadSettingsFromStorage();
-			myCurrentObjectTypeShape = myObjectTypeShape;
-			myCurrentObjectifiedFactShape = myObjectifiedFactShape;
+			myCurrentObjectTypeDisplayShape = myObjectTypeDisplayShape;
+			myCurrentObjectifiedFactDisplayShape = myObjectifiedFactDisplayShape;
 			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
 			myCurrentDefaultDataType = myDefaultDataType;
@@ -173,8 +173,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="e"></param>
 		protected override void OnActivate(CancelEventArgs e)
 		{
-			myObjectTypeShape = myCurrentObjectTypeShape;
-			myObjectifiedFactShape = myCurrentObjectifiedFactShape;
+			myObjectTypeDisplayShape = myCurrentObjectTypeDisplayShape;
+			myObjectifiedFactDisplayShape = myCurrentObjectifiedFactDisplayShape;
 			myMandatoryDotPlacement = myCurrentMandatoryDotPlacement;
 			myRoleNameDisplay = myCurrentRoleNameDisplay;
 			myDefaultDataType = myCurrentDefaultDataType;
@@ -188,8 +188,8 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			// Get out early if none of the settings have changed
 			if (myCurrentMandatoryDotPlacement == myMandatoryDotPlacement &&
-				myCurrentObjectifiedFactShape == myObjectifiedFactShape &&
-				myCurrentObjectTypeShape == myObjectTypeShape &&
+				myCurrentObjectifiedFactDisplayShape == myObjectifiedFactDisplayShape &&
+				myCurrentObjectTypeDisplayShape == myObjectTypeDisplayShape &&
 				myCurrentRoleNameDisplay == myRoleNameDisplay)
 			{
 				// Non-displayed setting, don't notify
@@ -199,8 +199,8 @@ namespace Neumont.Tools.ORM.Shell
 
 			// Set the new options
 			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
-			myCurrentObjectifiedFactShape = myObjectifiedFactShape;
-			myCurrentObjectTypeShape = myObjectTypeShape;
+			myCurrentObjectifiedFactDisplayShape = myObjectifiedFactDisplayShape;
+			myCurrentObjectTypeDisplayShape = myObjectTypeDisplayShape;
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
 			myCurrentDefaultDataType = myDefaultDataType;
 
@@ -296,43 +296,43 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Object Type Shape option
 		/// </summary>
-		[DefaultValue(ObjectTypeShape_Default)]
+		[DefaultValue(ObjectTypeDisplayShape_Default)]
 		[LocalizedCategory(ResourceStrings.OptionsPageCategoryAppearanceId)]
 		[LocalizedDescription(ResourceStrings.OptionsPagePropertyObjectTypeShapeDescriptionId)]
 		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyObjectTypeShapeDisplayNameId)]
-		public ObjectTypeShape ObjectTypeShape
+		public ObjectTypeDisplayShape ObjectTypeDisplayShape
 		{
-			get { return myObjectTypeShape; }
-			set { myObjectTypeShape = value; }
+			get { return myObjectTypeDisplayShape; }
+			set { myObjectTypeDisplayShape = value; }
 		}
 
 		/// <summary>
-		/// Current VS session-wide setting for ObjectTypeShape
+		/// Current VS session-wide setting for ObjectTypeDisplayShape
 		/// </summary>
-		public static ObjectTypeShape CurrentObjectTypeShape
+		public static ObjectTypeDisplayShape CurrentObjectTypeDisplayShape
 		{
-			get { return myCurrentObjectTypeShape; }
+			get { return myCurrentObjectTypeDisplayShape; }
 		}
 
 		/// <summary>
 		/// Objectified Shape option
 		/// </summary>
-		[DefaultValue(ObjectifiedFactShape_Default)]
+		[DefaultValue(ObjectifiedFactDisplayShape_Default)]
 		[LocalizedCategory(ResourceStrings.OptionsPageCategoryAppearanceId)]
 		[LocalizedDescription(ResourceStrings.OptionsPagePropertyObjectifiedShapeDescriptionId)]
 		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyObjectifiedShapeDisplayNameId)]
-		public ObjectifiedFactShape ObjectifiedFactShape
+		public ObjectifiedFactDisplayShape ObjectifiedFactDisplayShape
 		{
-			get { return myObjectifiedFactShape; }
-			set { myObjectifiedFactShape = value; }
+			get { return myObjectifiedFactDisplayShape; }
+			set { myObjectifiedFactDisplayShape = value; }
 		}
 
 		/// <summary>
 		/// Current VS session-wide setting for ObjectifiedFactShape
 		/// </summary>
-		public static ObjectifiedFactShape CurrentObjectifiedFactShape
+		public static ObjectifiedFactDisplayShape CurrentObjectifiedFactDisplayShape
 		{
-			get { return myCurrentObjectifiedFactShape;  }
+			get { return myCurrentObjectifiedFactDisplayShape;  }
 		}
 
 		/// <summary>

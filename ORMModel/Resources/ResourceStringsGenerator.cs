@@ -837,6 +837,16 @@
 			}
 		}
 		/// <summary>
+		/// This text appears in the edit menu when multiple elements of different types are selected in the diagram.
+		/// </summary>
+		public static string CommandDeleteMultipleText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteMultiple.Text");
+			}
+		}
+		/// <summary>
 		/// This text appears in the edit menu when roles are selected in the diagram.
 		/// </summary>
 		public static string CommandDeleteRoleText

@@ -82,6 +82,20 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		CopyImage = 0x2000,
 		/// <summary>
+		/// Display the verbalization browser toolwindow
+		/// </summary>
+		DisplayVerbalizationWindow = 0x2000,
+		/// <summary>
+		/// Select all top level selectable elements on the current diagram
+		/// </summary>
+		SelectAll = 0x4000,
+		/// <summary>
+		/// Special command used in addition to the specific Delete elements.
+		/// DeleteAny will survive most complex multi-select cases whereas the Delete
+		/// will not. This is handled specially for the delete case.
+		/// </summary>
+		DeleteAny = 0x8000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
@@ -89,14 +103,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// Mask field representing individual RoleSeqeuence edit commands
 		/// </summary>
 		RoleSequenceActions = ActivateRoleSequence | DeleteRoleSequence | MoveRoleSequenceUp | MoveRoleSequenceDown,
-		/// <summary>
-		/// Display the verbalization browser toolwindow
-		/// </summary>
-		DisplayVerbalizationWindow = 0x2000,
-		/// <summary>
-		/// 
-		/// </summary>
-		SelectAll = 0x4000,
 		// Update the multiselect command filter constants in ORMDesignerDocView
 		// when new commands are added
 	}
@@ -110,7 +116,7 @@ namespace Neumont.Tools.ORM.Shell
 		#region Member variables
 		private ORMDesignerCommands myEnabledCommands;
 		private ORMDesignerCommands myVisibleCommands;
-		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll | (ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
+		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll | ORMDesignerCommands.DeleteAny | (ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
 		/// <summary>
 		/// The filter for multi selection when the elements are of different types. This should always be a subset of the simple command filter
 		/// </summary>
@@ -303,19 +309,19 @@ namespace Neumont.Tools.ORM.Shell
 			Role role;
 			if (element is FactType)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow;
 			}
 			else if (element is ObjectType)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteObjectType;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteObjectType | ORMDesignerCommands.DeleteAny;
 			}
 			else if (element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.EditExternalConstraint;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditExternalConstraint;
 			}
 			else if (element is InternalConstraint)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny;
 			}
 			else if (element is ORMModel)
 			{
@@ -407,7 +413,7 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				command.Visible = 0 != (commandFlag & docView.myVisibleCommands);
 				command.Enabled = 0 != (commandFlag & docView.myEnabledCommands);
-				if (0 != (commandFlag & ORMDesignerCommands.Delete))
+				if (0 != (commandFlag & (ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny)))
 				{
 					docView.SetDeleteCommandText((OleMenuCommand)command);
 				}
@@ -439,6 +445,10 @@ namespace Neumont.Tools.ORM.Shell
 				default:
 					commandText = null;
 					break;
+			}
+			if (commandText == null && 0 != (myVisibleCommands & ORMDesignerCommands.DeleteAny))
+			{
+				commandText = ResourceStrings.CommandDeleteMultipleText;
 			}
 			// Setting command.Text to null will pick up
 			// the default command text
@@ -481,32 +491,37 @@ namespace Neumont.Tools.ORM.Shell
 				Store store = docData.Store;
 				Debug.Assert(store != null);
 
+				ORMDesignerCommands enabledCommands = myEnabledCommands;
+
+				// There are a number of things to watch out for in a complex selection.
+				// 1) The type of object needs to be redetermined for each selected object
+				// 2) Deletions may have side effects on other objects, so selected items
+				//    may be deleted already by the time we get to them
+				// 3) The queued selection can have removed elements in it and needs to be cleaned
+				//    up before committing.
+				bool complexSelection = 0 == (enabledCommands & ORMDesignerCommands.Delete);
+
 				Diagram d = null;
 				// Use the localized text from the command for our transaction name
 				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", "")))
 				{
-					bool testRefModeCollapse = 0 != (myEnabledCommands & ORMDesignerCommands.DeleteObjectType);
-
+					IDictionary contextInfo = t.TopLevelTransaction.Context.ContextInfo;
+					IList queuedSelection = docData.QueuedSelection as IList;
 					// account for multiple selection
 					foreach (object selectedObject in GetSelectedComponents())
 					{
 						ShapeElement pel; // just the shape
 						ModelElement mel;
+						bool deleteReferenceModeValueTypeInContext = false;
 						if (null != (pel = selectedObject as ShapeElement))
 						{
-							// Check if the object shape was in expanded mode
-							Neumont.Tools.ORM.ShapeModel.ObjectTypeShape objectShape;
-							if (testRefModeCollapse &&
-								null != (objectShape = pel as Neumont.Tools.ORM.ShapeModel.ObjectTypeShape) &&
-								!objectShape.ExpandRefMode
-								)
+							if (pel.IsRemoved)
 							{
-								t.TopLevelTransaction.Context.ContextInfo[ObjectType.DeleteReferenceModeValueType] = null;
+								continue;
 							}
 							if (d == null)
 							{
 								d = pel.Diagram;
-								(docData.QueuedSelection as IList).Add(d);
 							}
 
 							// Get the actual object inside the pel before
@@ -514,8 +529,28 @@ namespace Neumont.Tools.ORM.Shell
 							mel = pel.ModelElement;
 
 							// Remove the actual object in the model
-							if (mel != null)
+							if (mel != null && !mel.IsRemoved)
 							{
+								// Check if the object shape was in expanded mode
+								bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
+								ObjectTypeShape objectShape;
+								if (testRefModeCollapse &&
+									null != (objectShape = pel as ObjectTypeShape) &&
+									!objectShape.ExpandRefMode
+									)
+								{
+									if (!deleteReferenceModeValueTypeInContext)
+									{
+										contextInfo[ObjectType.DeleteReferenceModeValueType] = null;
+										deleteReferenceModeValueTypeInContext = true;
+									}
+								}
+								else if (deleteReferenceModeValueTypeInContext)
+								{
+									deleteReferenceModeValueTypeInContext = false;
+									contextInfo.Remove(ObjectType.DeleteReferenceModeValueType);
+								}
+
 								// get rid of all visual shapes corresponding to this
 								// model element. pel removal is done in the PresentationLinkRemoved rule
 								mel.PresentationRolePlayers.Clear();
@@ -524,27 +559,43 @@ namespace Neumont.Tools.ORM.Shell
 								mel.Remove();
 							}
 						}
-						else if (null != (mel = selectedObject as ModelElement))
+						else if (null != (mel = selectedObject as ModelElement) && !mel.IsRemoved)
 						{
 							// The object was selected directly (through a shape field or sub field element)
 							ModelElement shapeAssociatedMel = null;
-							switch (myEnabledCommands & ORMDesignerCommands.DeleteRole)
+							if (complexSelection)
 							{
-								case ORMDesignerCommands.DeleteRole:
-									shapeAssociatedMel = (selectedObject as Role).FactType;
-									break;
-								case ORMDesignerCommands.DeleteConstraint:
-									shapeAssociatedMel = (selectedObject as InternalConstraint).FactType;
-									break;
+								InternalConstraint ic;
+								Role role;
+								if (null != (ic = selectedObject as InternalConstraint))
+								{
+									shapeAssociatedMel = ic.FactType;
+								}
+								else if (null != (role = selectedObject as Role))
+								{
+									shapeAssociatedMel = role.FactType;
+								}
+							}
+							else
+							{
+								switch (enabledCommands & ORMDesignerCommands.Delete)
+								{
+									case ORMDesignerCommands.DeleteRole:
+										shapeAssociatedMel = (selectedObject as Role).FactType;
+										break;
+									case ORMDesignerCommands.DeleteConstraint:
+										shapeAssociatedMel = (selectedObject as InternalConstraint).FactType;
+										break;
+								}
 							}
 
 							// Add the parent shape into the queued selection
 							if (shapeAssociatedMel != null)
 							{
 								pel = (CurrentDiagram as ORMDiagram).FindShapeForElement(shapeAssociatedMel);
-								if (pel != null)
+								if (pel != null && !pel.IsRemoved)
 								{
-									(docData.QueuedSelection as IList).Add(pel);
+									queuedSelection.Add(pel);
 								}
 							}
 
@@ -555,6 +606,20 @@ namespace Neumont.Tools.ORM.Shell
 
 					if (t.HasPendingChanges)
 					{
+						if (complexSelection)
+						{
+							for (int i = queuedSelection.Count - 1; i >= 0; --i)
+							{
+								if (((ModelElement)queuedSelection[i]).IsRemoved)
+								{
+									queuedSelection.RemoveAt(i);
+								}
+							}
+						}
+						if (queuedSelection.Count == 0 && d != null)
+						{
+							queuedSelection.Add(d);
+						}
 						t.Commit();
 					}
 				}

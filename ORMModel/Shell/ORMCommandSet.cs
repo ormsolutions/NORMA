@@ -234,7 +234,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private void OnStatusDelete(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.Delete);
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny);
 			}
 
 			/// <summary>

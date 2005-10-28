@@ -100,15 +100,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				ShapeGeometry useShape;
-				switch (Shell.OptionsPage.CurrentObjectTypeShape)
+				switch (Shell.OptionsPage.CurrentObjectTypeDisplayShape)
 				{
-					case Shell.ObjectTypeShape.Ellipse:
+					case Shell.ObjectTypeDisplayShape.Ellipse:
 						useShape = CustomFoldEllipseShapeGeometry.ShapeGeometry;
 						break;
-					case Shell.ObjectTypeShape.HardRectangle:
+					case Shell.ObjectTypeDisplayShape.HardRectangle:
 						useShape = CustomFoldRectangleShapeGeometry.ShapeGeometry;
 						break;
-					case Shell.ObjectTypeShape.SoftRectangle:
+					case Shell.ObjectTypeDisplayShape.SoftRectangle:
 					default:
 						useShape = CustomFoldRoundedRectangleShapeGeometry.ShapeGeometry;
 						break;

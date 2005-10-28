@@ -249,6 +249,9 @@
 	<ResourceString name="CommandDeleteConstraintText" model="Diagram" resourceName="Command.DeleteConstraint.Text">
 		<comment type="summary">This text appears in the edit menu when constraint types are selected in the diagram.</comment>
 	</ResourceString>
+	<ResourceString name="CommandDeleteMultipleText" model="Diagram" resourceName="Command.DeleteMultiple.Text">
+		<comment type="summary">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
+	</ResourceString>
 	<ResourceString name="CommandDeleteRoleText" model="Diagram" resourceName="Command.DeleteRole.Text">
 		<comment type="summary">This text appears in the edit menu when roles are selected in the diagram.</comment>
 	</ResourceString>
@@ -456,7 +459,7 @@
 	<ResourceString name="ModelErrorFrequencyConstraintMinMaxError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintMinMaxError.Text">
 		<comment type="summary">Text displayed in the text of the FrequencyConstraintMinMaxError. {0} is the constraint name and {1} is the model name</comment>
 	</ResourceString>
-    <ResourceString name="ModelVerbalizationWindowTitle" model="Model" resourceName="ModelVerbalization.WindowTitle">
-        <comment type="summary">Text to place in the title of the verbalization tool window.</comment>
-    </ResourceString>
+	<ResourceString name="ModelVerbalizationWindowTitle" model="Model" resourceName="ModelVerbalization.WindowTitle">
+		<comment type="summary">Text to place in the title of the verbalization tool window.</comment>
+	</ResourceString>
 </ResourceStrings>

@@ -2225,12 +2225,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (IsObjectified)
 				{
 					ShapeGeometry useShape;
-					switch (Shell.OptionsPage.CurrentObjectifiedFactShape)
+					switch (Shell.OptionsPage.CurrentObjectifiedFactDisplayShape)
 					{
-						case Shell.ObjectifiedFactShape.HardRectangle:
+						case Shell.ObjectifiedFactDisplayShape.HardRectangle:
 							useShape = CustomFoldRectangleShapeGeometry.ShapeGeometry;
 							break;
-						case Shell.ObjectifiedFactShape.SoftRectangle:
+						case Shell.ObjectifiedFactDisplayShape.SoftRectangle:
 						default:
 							useShape = CustomFoldRoundedRectangleShapeGeometry.ShapeGeometry;
 							break;

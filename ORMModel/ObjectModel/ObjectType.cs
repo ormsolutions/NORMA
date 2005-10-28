@@ -21,8 +21,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 	{
 		#region Public token values
 		/// <summary>
-		/// A key to return from INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
-		/// if duplicate names should be allowed.
+		/// A key to set in the top-level transaction context to indicate that
+		/// we should aggressively kill a value type associated with an entity
+		/// type via the reference mode pattern. This should be set if the reference
+		/// mode is collapsed on an entity type that is being explicitly deleted by
+		/// the user.
 		/// </summary>
 		public static readonly object DeleteReferenceModeValueType = new object();
 		#endregion // Public token values
