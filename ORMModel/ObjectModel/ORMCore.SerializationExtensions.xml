@@ -256,6 +256,9 @@
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 		<se:Link RelationshipName="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeError" WriteStyle="NotWritten"/>
 	</se:Element>
+	<se:Element Class="DisjunctiveMandatoryConstraint" Override="true">
+		<se:Link RelationshipName="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError" RoleName="ImpliedBySimpleMandatoryError" WriteStyle="NotWritten"/>
+	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
 	</se:Element>
@@ -374,6 +377,9 @@
 	</se:Element>
 	<se:Element Class="NMinusOneError" Override="true">
 		<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="InternalUniquenessConstraint"/>
+	</se:Element>
+	<se:Element Class="SimpleMandatoryImpliesDisjunctiveMandatoryError" Override="true">
+		<se:Link RelationshipName="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError" RoleName="DisjunctiveMandatoryConstraint" Name="DisjunctiveMandatoryConstraint"/>
 	</se:Element>
 	<se:Element Class="CompatibleRolePlayerTypeError" Override="true">
 		<se:Attribute ID="Column">

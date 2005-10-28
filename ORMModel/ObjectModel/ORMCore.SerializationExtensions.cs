@@ -140,6 +140,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("MultiColumnExternalConstraint", MultiColumnExternalConstraint.MetaClassGuid);
 				classNameMap.Add("RoleSequence", MultiColumnExternalConstraintRoleSequence.MetaClassGuid);
 				classNameMap.Add("SingleColumnExternalConstraint", SingleColumnExternalConstraint.MetaClassGuid);
+				classNameMap.Add("DisjunctiveMandatoryConstraint", DisjunctiveMandatoryConstraint.MetaClassGuid);
 				classNameMap.Add("FrequencyConstraint", FrequencyConstraint.MetaClassGuid);
 				classNameMap.Add("ExternalUniquenessConstraint", ExternalUniquenessConstraint.MetaClassGuid);
 				classNameMap.Add("ImpliedExternalUniquenessConstraint", ExternalUniquenessConstraint.MetaClassGuid);
@@ -164,6 +165,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("DataTypeNotSpecifiedError", DataTypeNotSpecifiedError.MetaClassGuid);
 				classNameMap.Add("EqualityIsImpliedByMandatoryError", EqualityIsImpliedByMandatoryError.MetaClassGuid);
 				classNameMap.Add("NMinusOneError", NMinusOneError.MetaClassGuid);
+				classNameMap.Add("SimpleMandatoryImpliesDisjunctiveMandatoryError", SimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuid);
 				classNameMap.Add("CompatibleRolePlayerTypeError", CompatibleRolePlayerTypeError.MetaClassGuid);
 				classNameMap.Add("RolePlayerRequiredError", RolePlayerRequiredError.MetaClassGuid);
 				ORMMetaModel.myClassNameMap = classNameMap;
@@ -3208,6 +3210,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // SingleColumnExternalConstraint serialization
+	#region DisjunctiveMandatoryConstraint serialization
+	public partial class DisjunctiveMandatoryConstraint : IORMCustomSerializedElement
+	{
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		/// </summary>
+		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
+		/// </summary>
+		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		{
+			if (rolePlayedInfo.Id == DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo);
+			}
+			return ORMCustomSerializedElementInfo.Default;
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+		}
+	}
+	#endregion // DisjunctiveMandatoryConstraint serialization
 	#region FrequencyConstraint serialization
 	public partial class FrequencyConstraint : IORMCustomSerializedElement
 	{
@@ -5238,6 +5281,73 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // NMinusOneError serialization
+	#region SimpleMandatoryImpliesDisjunctiveMandatoryError serialization
+	public partial class SimpleMandatoryImpliesDisjunctiveMandatoryError : IORMCustomSerializedElement
+	{
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		/// </summary>
+		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
+		/// </summary>
+		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		{
+			if (rolePlayedInfo.Id == DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, "DisjunctiveMandatoryConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo);
+			}
+			return ORMCustomSerializedElementInfo.Default;
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+		}
+		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.MapChildElement
+		/// </summary>
+		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = SimpleMandatoryImpliesDisjunctiveMandatoryError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
+				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
+				match.InitializeRoles(DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|DisjunctiveMandatoryConstraint", match);
+				SimpleMandatoryImpliesDisjunctiveMandatoryError.myChildElementMappings = childElementMappings;
+			}
+			ORMCustomSerializedElementMatch rVal;
+			if (!(childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal)))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+			}
+			return rVal;
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+		}
+	}
+	#endregion // SimpleMandatoryImpliesDisjunctiveMandatoryError serialization
 	#region CompatibleRolePlayerTypeError serialization
 	public partial class CompatibleRolePlayerTypeError : IORMCustomSerializedElement
 	{
