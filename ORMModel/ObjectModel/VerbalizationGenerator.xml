@@ -15,14 +15,15 @@
 
 				<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
 				<Snippet type="PersonalPronoun"><![CDATA[<span class="quantifier">who</span> {0}]]></Snippet>
-				
+
 				<Snippet type="UniversalQuantifier"><![CDATA[<span class="quantifier">each</span> {0}]]></Snippet>
 				<Snippet type="AtMostOneQuantifier"><![CDATA[<span class="quantifier">at most one</span> {0}]]></Snippet>
 				<Snippet type="EachInstanceQuantifier"><![CDATA[<span class="quantifier">each instance of</span> {0} <span class="quantifier">occurs only once</span>]]></Snippet>
 				<Snippet type="ForEachCompactQuantifier"><![CDATA[<span class="quantifier">for each</span> {0}, {1}]]></Snippet>
 				<Snippet type="ForEachQuantifier"><![CDATA[<span class="quantifier">for each</span> {0},<br/><span class="smallIndent">{1}</span>]]></Snippet>
 				<Snippet type="ExistentialQuantifier"><![CDATA[<span class="quantifier">some</span> {0}]]></Snippet>
-					<!-- UNDONE:
+
+				<!-- UNDONE:
 						<Form condition="PreConsonant"><![CDATA[<span class="quantifier">a</span> {0}]]></Form>
 						<Form condition="PreVowel"><![CDATA[<span class="quantifier">an</span> {0}]]></Form>
 					-->
@@ -32,8 +33,8 @@
 				<Snippet type="CombinationIdentifier"><![CDATA[{0} <span class="quantifier">combination</span>]]></Snippet>
 				<Snippet type="OneQuantifier" sign="positive"><![CDATA[<span class="quantifier">at most one</span> {0}]]></Snippet>
 				<Snippet type="OneQuantifier" sign="negative"><![CDATA[<span class="quantifier">more than one</span> {0}]]></Snippet>
-			
-				
+
+
 				<Snippet type="OccursInPopulation" sign="positive"><![CDATA[{0} <span class="quantifier">occurs at most once in the population of</span> {1}]]></Snippet>
 				<Snippet type="OccursInPopulation" sign="negative"><![CDATA[{0} <span class="quantifier">occurs more than once in the population of</span> {1}]]></Snippet>
 
@@ -115,6 +116,7 @@
 			.smallIndent {{ left: 8px; position: relative;}}
 			.listSeparator {{ color: windowtext; font-weight: 200;}}
 			.logicalOperator {{ color: {6}; {7}}}
+			.notAvailable {{ font-style: italic; }}
 		</style>
 	</head>
 	<body>]]></Snippet>
@@ -169,13 +171,13 @@
 									<Snippet ref="IdentityReferenceQuantifier"/>
 								</PredicateReplacement>
 							</Fact>
-						</IterateRoles> 
+						</IterateRoles>
 					</Snippet>
 					<Snippet ref="ImpliedModalNecessityOperator">
 						<Snippet ref="OccursInPopulation">
 							<Snippet ref="CombinationIdentifier">
 								<Snippet ref="UniversalQuantifier">
-									<IterateRoles match="included" listStyle="SimpleList"/>
+									<IterateRoles match="included" listStyle="CompactSimpleList"/>
 								</Snippet>
 							</Snippet>
 							<Fact/>
@@ -229,21 +231,9 @@
 				<ConstrainedRoles factArity="2">
 					<!-- sign="negative" is implied by the previous element -->
 					<!-- The pattern is the same whether or not we have a lead reading, so don't use ConditionalReading here -->
-					<Snippet ref="ModalPossibilityOperator">
-						<Fact readingChoice="PreferLeadReading">
-							<PredicateReplacement match="included">
-								<Snippet ref="IdentityReferenceQuantifier"/>
-							</PredicateReplacement>
-							<PredicateReplacement match="excluded">
-								<Snippet ref="OneQuantifier"/>
-							</PredicateReplacement>
-						</Fact>
-					</Snippet>
-				</ConstrainedRoles>
-				<ConstrainedRoles sign="negative">
-					<Snippet ref="ModalPossibilityOperator">
-						<Snippet ref="IdentityReferenceQuantifier">
-							<IterateRoles match="included" listStyle="SimpleList"/>
+					<Snippet ref="ForEachCompactQuantifier">
+						<IterateRoles match="included" listStyle="CompactSimpleList"/>
+						<Snippet ref="ModalPossibilityOperator">
 							<Fact readingChoice="PreferLeadReading">
 								<PredicateReplacement match="included">
 									<Snippet ref="DefiniteArticle"/>
@@ -253,6 +243,18 @@
 								</PredicateReplacement>
 							</Fact>
 						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles sign="negative">
+					<Snippet ref="ModalPossibilityOperator">
+						<Fact>
+							<PredicateReplacement match="included">
+								<Snippet ref="IdentityReferenceQuantifier"/>
+							</PredicateReplacement>
+							<PredicateReplacement>
+								<Snippet ref="MoreThanOneQuantifier"/>
+							</PredicateReplacement>
+						</Fact>
 					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles>
@@ -369,7 +371,7 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-			
+
 			<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
 				<!-- Unaries are the only reading choice that has an optional negative reading -->
 				<ConstrainedRoles sign="negative" maxFactArity="1">
