@@ -93,6 +93,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// Display the verbalization browser toolwindow
 		/// </summary>
 		DisplayVerbalizationWindow = 0x2000,
+		/// <summary>
+		/// 
+		/// </summary>
+		SelectAll = 0x4000,
 		// Update the multiselect command filter constants in ORMDesignerDocView
 		// when new commands are added
 	}
@@ -106,8 +110,11 @@ namespace Neumont.Tools.ORM.Shell
 		#region Member variables
 		private ORMDesignerCommands myEnabledCommands;
 		private ORMDesignerCommands myVisibleCommands;
-		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow & ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole; // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
-		private const ORMDesignerCommands EnabledComplexMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow & ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole;
+		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll | (ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
+		/// <summary>
+		/// The filter for multi selection when the elements are of different types. This should always be a subset of the simple command filter
+		/// </summary>
+		private const ORMDesignerCommands EnabledComplexMultiSelectCommandFilter = EnabledSimpleMultiSelectCommandFilter;
 		#endregion // Member variables
 		#region Construction/destruction
 		/// <summary>
@@ -201,11 +208,11 @@ namespace Neumont.Tools.ORM.Shell
 						ormDiagram.StickyObject = null;
 					}
 
-					ORMDesignerCommands currentVisible = ORMDesignerCommands.None;
-					ORMDesignerCommands currentEnabled = ORMDesignerCommands.None;
-					visibleCommands = enabledCommands = EnabledSimpleMultiSelectCommandFilter; // UNDONE: state.IsCoercedSelectionMixed ? EnabledComplexMultiSelectCommandFilter : EnabledSimpleMultiSelectCommandFilter;
-					// UNDONE: How do we get the state?
-					//foreach (ModelElement mel in state.CoercedSelectionModelElements)
+					ORMDesignerCommands currentVisible;
+					ORMDesignerCommands currentEnabled;
+					visibleCommands = enabledCommands = EnabledSimpleMultiSelectCommandFilter;
+					Type firstType = null;
+					bool isComplex = false;
 					foreach (ModelElement melIter in GetSelectedComponents())
 					{
 						ModelElement mel = melIter;
@@ -217,6 +224,20 @@ namespace Neumont.Tools.ORM.Shell
 						if (mel != null)
 						{
 							SetCommandStatus(mel, out currentVisible, out currentEnabled);
+							if (!isComplex)
+							{
+								Type currentType = mel.GetType();
+								if (firstType == null)
+								{
+									firstType = currentType;
+								}
+								else if (object.ReferenceEquals(firstType, currentType))
+								{
+									isComplex = true;
+									enabledCommands &= EnabledComplexMultiSelectCommandFilter;
+									visibleCommands &= EnabledComplexMultiSelectCommandFilter;
+								}
+							}
 							enabledCommands &= currentEnabled;
 							visibleCommands &= currentVisible;
 							if (enabledCommands == 0 && visibleCommands == 0)
@@ -228,8 +249,6 @@ namespace Neumont.Tools.ORM.Shell
 				}
 				else
 				{
-					// UNDONE: How do we get the state?
-					//foreach (ModelElement mel in state.CoercedSelectionModelElements)
 					foreach (ModelElement melIter in GetSelectedComponents())
 					{
 						ModelElement mel = melIter;
@@ -369,8 +388,8 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			// Turn on the verbalization window command for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayVerbalizationWindow;
-			enabledCommands |= ORMDesignerCommands.DisplayVerbalizationWindow;
+			visibleCommands |= ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll;
+			enabledCommands |= ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll;
 		}
 		
 		/// <summary>
@@ -548,6 +567,42 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		/// <summary>
+		/// Execute the SelectAll menu command
+		/// </summary>
+		protected virtual void OnMenuSelectAll()
+		{
+			Diagram diagram;
+			DiagramView designer;
+			ShapeElementMoveableCollection nestedShapes;
+			int shapeCount;
+			if (null != (diagram = CurrentDiagram) &&
+				null != (nestedShapes = diagram.NestedChildShapes) &&
+				null != (designer = CurrentDesigner) &&
+				0 != (shapeCount = nestedShapes.Count))
+			{
+				SelectedShapesCollection shapes = designer.Selection;
+				bool firstItem = true;
+				for (int i = 0; i < shapeCount; ++i)
+				{
+					ShapeElement currentShape = nestedShapes[i];
+					if (currentShape.CanSelect)
+					{
+						DiagramItem newItem = new DiagramItem(currentShape);
+						if (firstItem)
+						{
+							firstItem = false;
+							shapes.Clear();
+							shapes.Set(newItem);
+						}
+						else
+						{
+							shapes.Add(newItem);
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// Execute the Insert Role menu commands
 		/// </summary>
 		/// <param name="insertAfter">true to insert the role after the
@@ -587,6 +642,10 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						t.Commit();
 					}
+					// We've just added a role, so we have more than 1 and
+					// can go ahead and enable delete
+					myVisibleCommands |= ORMDesignerCommands.DeleteRole;
+					myEnabledCommands |= ORMDesignerCommands.DeleteRole;
 				}
 			}
 		}

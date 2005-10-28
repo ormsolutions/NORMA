@@ -48,7 +48,10 @@
 		<arg:Rule class="NamedElementDictionary.ElementLinkAddedRule" namespace="Neumont.Tools.ORM.Framework"/>
 		<arg:Rule class="NamedElementDictionary.ElementLinkRemovedRule" namespace="Neumont.Tools.ORM.Framework"/>
 		<arg:Rule class="NamedElementDictionary.NamedElementChangedRule" namespace="Neumont.Tools.ORM.Framework"/>
+		<arg:Rule class="Objectification.EqualityConstraintChangeRule"/>
+		<arg:Rule class="Objectification.ExternalUniquenessConstraintChangeRule"/>
 		<arg:Rule class="Objectification.ImpliedFactTypeAddRule"/>
+		<arg:Rule class="Objectification.InternalConstraintChangeRule"/>
 		<arg:Rule class="Objectification.ObjectificationAddRule"/>
 		<arg:Rule class="Objectification.RoleAddRule"/>
 		<arg:Rule class="Objectification.RolePlayerAddRule"/>

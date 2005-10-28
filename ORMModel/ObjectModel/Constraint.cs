@@ -1999,7 +1999,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			base.ValidateErrors(notifyAdded);
-			VerifyNoRolesAreMandatory(notifyAdded, false);
+			VerifyNotImpliedByMandatoryConstraints(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -2008,49 +2008,62 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IModelErrorOwner Implementation
 		#region Error synchronization rules
 		/// <summary>
-		/// Verifies that no mandatory roles are connected to the equality constraint.
+		/// Verifies that the equality constraint is not implied by mandatory constraints. An equality
+		/// constraint is implied if it has a single column and all of the roles in that column have
+		/// a mandatory constraint.
 		/// </summary>
 		/// <param name="notifyAdded">If not null, this is being called during
 		/// load when rules are not in place. Any elements that are added
 		/// must be notified back to the caller.</param>
-		/// <param name="forceError">We know we need the error, don't check</param>
-		private void VerifyNoRolesAreMandatory(INotifyElementAdded notifyAdded, bool forceError)
+		private void VerifyNotImpliedByMandatoryConstraints(INotifyElementAdded notifyAdded)
 		{
 			if (!IsRemoved)
 			{
 				bool noError = true;
 				EqualityIsImpliedByMandatoryError impliedEqualityError;
-				if (!forceError)
-				{
-					MultiColumnExternalConstraintRoleSequenceMoveableCollection sequences = RoleSequenceCollection;
-					int roleSequenceCount = sequences.Count;
+				MultiColumnExternalConstraintRoleSequenceMoveableCollection sequences = RoleSequenceCollection;
+				int roleSequenceCount = sequences.Count;
 
-					for (int i = 0; i < roleSequenceCount && noError; ++i)
+				if (roleSequenceCount >= 2)
+				{
+					for (int i = 0; i < roleSequenceCount; ++i)
 					{
 						RoleMoveableCollection roleCollection = sequences[i].RoleCollection;
 						int roleCount = roleCollection.Count;
-						for (int j = 0; j < roleCount; ++j)
+						if (roleCount != 1)
 						{
-							Role currentRole = roleCollection[j];
-							ConstraintRoleSequenceMoveableCollection roleConstraints = currentRole.ConstraintRoleSequenceCollection;
-							int constraintCount = roleConstraints.Count;
-							for (int counter = 0; counter < constraintCount; ++counter)
+							break;
+						}
+						Role currentRole = roleCollection[0];
+						ConstraintRoleSequenceMoveableCollection roleConstraints = currentRole.ConstraintRoleSequenceCollection;
+						int constraintCount = roleConstraints.Count;
+						bool haveMandatory = false;
+						for (int counter = 0; counter < constraintCount; ++counter)
+						{
+							IConstraint currentConstraint = roleConstraints[counter].Constraint;
+							if (currentConstraint.ConstraintType == ConstraintType.SimpleMandatory)
 							{
-								IConstraint currentConstraint = roleConstraints[counter].Constraint;
-								if (currentConstraint.ConstraintType == ConstraintType.SimpleMandatory)
+								SimpleMandatoryConstraint mandatory = currentConstraint as SimpleMandatoryConstraint;
+								if (!mandatory.IsRemoving)
 								{
-									SimpleMandatoryConstraint mandatory = currentConstraint as SimpleMandatoryConstraint;
-									if (!mandatory.IsRemoving)
-									{
-										noError = false;
-									}
-									break; // There will only be one simple mandatory constraint on any given role
+									haveMandatory = true;
 								}
+								break; // There will only be one simple mandatory constraint on any given role
 							}
+						}
+						if (!haveMandatory)
+						{
+							break;
+						}
+						else if (i == (roleSequenceCount - 1))
+						{
+							// There are mandatory constraints on all roles
+							noError = false;
 						}
 					}
 				}
-				if (forceError || !noError)
+
+				if (!noError)
 				{
 					if (null == EqualityIsImpliedByMandatoryError)
 					{
@@ -2071,11 +2084,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// 
+		/// Make sure that there are no equality constraints implied by the mandatory constraint
 		/// </summary>
 		/// <param name="mandatoryContraint">The mandatory constraint being added or removed</param>
-		/// <param name="forAdd">This is called from an add rule, so we will always need the error</param>
-		private static void VerifyMandatoryHasNoEqualityConstraints(SimpleMandatoryConstraint mandatoryContraint, bool forAdd)
+		private static void VerifyMandatoryDoesNotImplyEquality(SimpleMandatoryConstraint mandatoryContraint)
 		{
 			RoleMoveableCollection roles = mandatoryContraint.RoleCollection;
 			if (roles.Count != 0)
@@ -2088,7 +2100,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					IConstraint currentConstraint = constraints[i].Constraint;
 					if (currentConstraint.ConstraintType == ConstraintType.Equality)
 					{
-						(currentConstraint as EqualityConstraint).VerifyNoRolesAreMandatory(null, forAdd);
+						(currentConstraint as EqualityConstraint).VerifyNotImpliedByMandatoryConstraints(null);
 					}
 				}
 			}
@@ -2117,14 +2129,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						EqualityConstraint equality = constraint as EqualityConstraint;
 						if (!equality.IsRemoved)
 						{
-							equality.VerifyNoRolesAreMandatory(null, false);
+							equality.VerifyNotImpliedByMandatoryConstraints(null);
 						}
 						break;
 					case ConstraintType.SimpleMandatory:
 						//Find my my equality constraint and check to see if my error message can be
 						//removed.
 						SimpleMandatoryConstraint mandatory = constraint as SimpleMandatoryConstraint;
-						VerifyMandatoryHasNoEqualityConstraints(mandatory, false);
+						VerifyMandatoryDoesNotImplyEquality(mandatory);
 						break;
 				}
 			}
@@ -2151,14 +2163,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						EqualityConstraint equality = constraint as EqualityConstraint;
 						if (!equality.IsRemoved)
 						{
-							equality.VerifyNoRolesAreMandatory(null, false);
+							equality.VerifyNotImpliedByMandatoryConstraints(null);
 						}
 						break;
 					case ConstraintType.SimpleMandatory:
 						//Find my my equality constraint and check to see if my error message can be
 						//removed.
 						SimpleMandatoryConstraint mandatory = constraint as SimpleMandatoryConstraint;
-						VerifyMandatoryHasNoEqualityConstraints(mandatory, true);
+						VerifyMandatoryDoesNotImplyEquality(mandatory);
 						break;
 				}
 			}
@@ -3668,13 +3680,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, OneRolePerSequence}.
+		/// Implements IConstraint.RoleSequenceStyles. Returns {MultipleRowSequences, OneRolePerSequence, CompatibleColumns}.
 		/// </summary>
 		protected static RoleSequenceStyles RoleSequenceStyles
 		{
 			get
 			{
-				return RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.OneRolePerSequence;
+				return RoleSequenceStyles.MultipleRowSequences | RoleSequenceStyles.OneRolePerSequence | RoleSequenceStyles.CompatibleColumns;
 			}
 		}
 		RoleSequenceStyles IConstraint.RoleSequenceStyles

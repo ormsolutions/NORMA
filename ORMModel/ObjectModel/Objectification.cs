@@ -637,6 +637,70 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // UpdateImplicitUniquenessAddRule class
+		#region InternalConstraintChangeRule class
+		/// <summary>
+		/// Ensure that implied internal constraints cannot change the Modality property
+		/// </summary>
+		[RuleOn(typeof(InternalConstraint))]
+		private class InternalConstraintChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == InternalConstraint.ModalityMetaAttributeGuid)
+				{
+					InternalConstraint constraint = e.ModelElement as InternalConstraint;
+					FactType fact = constraint.FactType;
+					if (fact != null && fact.ImpliedByObjectification != null)
+					{
+						ThrowBlockedByObjectificationPatternException();
+					}
+				}
+			}
+		}
+		#endregion // InternalConstraintChangeRule class
+		#region EqualityConstraintChangeRule class
+		/// <summary>
+		/// Ensure that implied internal constraints cannot change the Modality property
+		/// </summary>
+		[RuleOn(typeof(EqualityConstraint))]
+		private class EqualityConstraintChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == EqualityConstraint.ModalityMetaAttributeGuid)
+				{
+					EqualityConstraint constraint = e.ModelElement as EqualityConstraint;
+					if (constraint.ImpliedByObjectification != null)
+					{
+						ThrowBlockedByObjectificationPatternException();
+					}
+				}
+			}
+		}
+		#endregion // EqualityConstraintChangeRule class
+		#region ExternalUniquenessConstraintChangeRule class
+		/// <summary>
+		/// Ensure that implied internal constraints cannot change the Modality property
+		/// </summary>
+		[RuleOn(typeof(ExternalUniquenessConstraint))]
+		private class ExternalUniquenessConstraintChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == ExternalUniquenessConstraint.ModalityMetaAttributeGuid)
+				{
+					ExternalUniquenessConstraint constraint = e.ModelElement as ExternalUniquenessConstraint;
+					if (constraint.ImpliedByObjectification != null)
+					{
+						ThrowBlockedByObjectificationPatternException();
+					}
+				}
+			}
+		}
+		#endregion // ExternalUniquenessConstraintChangeRule class
 		#region Helper functions
 		private static void BuildImpliedConstraintsForRule(ConstraintRoleSequenceHasRole roleSequenceLink)
 		{

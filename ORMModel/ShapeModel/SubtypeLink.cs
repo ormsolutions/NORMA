@@ -34,10 +34,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="classStyleSet">The style set to modify</param>
 		protected override void InitializeResources(StyleSet classStyleSet)
 		{
-			Pen samplePen = classStyleSet.GetPen(DiagramPens.ShapeOutline);
-			Color lineColor = samplePen.Color;
+			IORMFontAndColorService colorService = (this.Store as IORMToolServices).FontAndColorService;
+			Color lineColor = colorService.GetForeColor(ORMDesignerColor.Constraint);
 			PenSettings penSettings = new PenSettings();
-			penSettings.Width = 1.8F / 72.0F; // 1.6 Point. 0 Means 1 pixel, but should only be used for non-printed items
+			penSettings.Width = 1.8F / 72.0F; // 1.8 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			penSettings.Alignment = PenAlignment.Center;
 			penSettings.Color = lineColor;
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, penSettings);

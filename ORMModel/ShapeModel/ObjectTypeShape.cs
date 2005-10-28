@@ -345,19 +345,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 					}
 				}
-				// UNDONE: This doesn't belong here. IsValueType is a derived property.
-				// Add a rule on the ValueTypeHasDataType ElementLink instead of the IsValueType property.
-				else if (attributeGuid == ObjectType.IsValueTypeMetaAttributeGuid)
-				{
-					foreach (object obj in e.ModelElement.AssociatedPresentationElements)
-					{
-						ShapeElement shape = obj as ShapeElement;
-						if (shape != null)
-						{
-							shape.Invalidate();
-						}
-					}
-				}
 			}
 		}
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
@@ -383,6 +370,70 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Shape display update rules
+		#region Store Event Handlers
+		/// <summary>
+		///  Helper function to update the mandatory dot in response to events
+		/// </summary>
+		private static void UpdateObjectTypeDisplay(ObjectType objectType)
+		{
+			foreach (object obj in objectType.AssociatedPresentationElements)
+			{
+				ShapeElement shape = obj as ShapeElement;
+				if (shape != null)
+				{
+					shape.Invalidate();
+				}
+			}
+		}
+		/// <summary>
+		/// Attach event handlers to the store
+		/// </summary>
+		public static void AttachEventHandlers(Store store)
+		{
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(ValueTypeHasDataType.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Add(relInfo, new ElementAddedEventHandler(DataTypeAddedEvent));
+			eventDirectory.ElementRemoved.Add(relInfo, new ElementRemovedEventHandler(DataTypeRemovedEvent));
+		}
+		/// <summary>
+		/// Detach event handlers from the store
+		/// </summary>
+		public static void DetachEventHandlers(Store store)
+		{
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(ValueTypeHasDataType.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Remove(relInfo, new ElementAddedEventHandler(DataTypeAddedEvent));
+			eventDirectory.ElementRemoved.Remove(relInfo, new ElementRemovedEventHandler(DataTypeRemovedEvent));
+		}
+		/// <summary>
+		/// Update the shape when a data type is added from the ObjecType.
+		/// </summary>
+		private static void DataTypeAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+			ObjectType ot = link.ValueTypeCollection;
+			if (!ot.IsRemoved)
+			{
+				UpdateObjectTypeDisplay(ot);
+			}
+		}
+		/// <summary>
+		/// Update the shape when a data type is removed from the ObjecType.
+		/// </summary>
+		private static void DataTypeRemovedEvent(object sender, ElementRemovedEventArgs e)
+		{
+			ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
+			ObjectType ot = link.ValueTypeCollection;
+			if (!ot.IsRemoved)
+			{
+				UpdateObjectTypeDisplay(ot);
+			}
+		}
+		#endregion // Store Event Handlers
 	}
 	/// <summary>
 	/// Temporary class to fer refernce mode to show up.

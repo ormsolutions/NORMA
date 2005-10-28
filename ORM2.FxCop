@@ -7241,6 +7241,34 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="Objectification+EqualityConstraintChangeRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-10-28 08:38:27Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.Objectification+EqualityConstraintChangeRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="64" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Objectification+ExternalUniquenessConstraintChangeRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-10-28 08:38:27Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.Objectification+ExternalUniquenessConstraintChangeRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="64" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="Objectification+ImpliedFactTypeAddRule">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-08-16 18:28:07Z">
@@ -7250,6 +7278,20 @@
             <Notes>
              <User Name="mcurland">
               <Note Id="55" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="Objectification+InternalConstraintChangeRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-10-28 08:38:27Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.Objectification+InternalConstraintChangeRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="64" />
              </User>
             </Notes>
            </Message>
@@ -14710,6 +14752,21 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="DeonticInternalFactConstraintPen">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2005-10-28 08:38:27Z">
+              <Issue>
+               <Item>FactTypeShape.DeonticInternalFactConstraintPen</Item>
+               <Item>Microsoft.VisualStudio.Modeling.Diagrams.StyleSetResourceId</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="63" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="DrawHighlight(System.Drawing.Graphics,System.Drawing.RectangleF,System.Boolean,System.Boolean):System.Void">
             <Messages>
              <Message Id="0#g" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-07-06 21:44:00Z">
@@ -16899,34 +16956,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="RolePlayerLink+InternalConstraintRoleSequenceAdded">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
-            <Issue>
-             <Item>Neumont.Tools.ORM.ShapeModel.RolePlayerLink+InternalConstraintRoleSequenceAdded</Item>
-            </Issue>
-            <Notes>
-             <User Name="mcurland">
-              <Note Id="7" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
-         <Type Name="RolePlayerLink+InternalConstraintRoleSequenceRoleRemoved">
-          <Messages>
-           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
-            <Issue>
-             <Item>Neumont.Tools.ORM.ShapeModel.RolePlayerLink+InternalConstraintRoleSequenceRoleRemoved</Item>
-            </Issue>
-            <Notes>
-             <User Name="mcurland">
-              <Note Id="7" />
-             </User>
-            </Notes>
-           </Message>
-          </Messages>
-         </Type>
          <Type Name="RolePlayerLink+MandatoryDotDecorator">
           <Messages>
            <Message TypeName="NestedTypesShouldNotBeVisible" Category="Microsoft.Design" CheckId="CA1034" Created="2005-02-03 20:22:04Z">
@@ -17698,6 +17727,20 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="OnMenuSelectAll(System.Object,System.EventArgs):System.Void">
+            <Messages>
+             <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Status="Excluded" Created="2005-10-28 08:38:27Z">
+              <Issue>
+               <Item>ORMDesignerCommandSet.OnMenuSelectAll(Object, EventArgs):Void</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="60" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="OnMenuShowNegativeVerbalization(System.Object,System.EventArgs):System.Void">
             <Messages>
              <Message TypeName="ReviewVisibleEventHandlers" Category="Microsoft.Security" CheckId="CA2109" Status="Excluded" Created="2005-10-21 20:21:52Z">
@@ -18192,8 +18235,11 @@
     <Note Id="57" Modified="2005-08-22 18:16:12Z">Interface implementation</Note>
     <Note Id="58" Modified="2005-08-22 18:16:31Z">Interface pattern function</Note>
     <Note Id="59" Modified="2005-08-31 15:42:38Z">CodeDom doesn't spit readonly, which is what I really want. The class being spit is not editable.</Note>
+    <Note Id="60" Modified="2005-10-28 08:39:30Z">Reviewed</Note>
     <Note Id="61" Modified="2005-09-21 15:49:26Z">Rule class instantiated via reflection</Note>
     <Note Id="62" Modified="2005-10-25 17:49:21Z">Matching required interface implementation pattern</Note>
+    <Note Id="63" Modified="2005-10-28 08:39:45Z">Type is immutable</Note>
+    <Note Id="64" Modified="2005-10-28 08:40:00Z">Rule classes instantiated via reflection</Note>
    </User>
    <User Name="mouzts">
     <Note Id="0" Modified="2005-09-15 22:08:24Z">Rule classes instantiated via reflection</Note>

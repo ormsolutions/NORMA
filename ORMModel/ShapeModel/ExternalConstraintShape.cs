@@ -20,6 +20,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected static readonly StyleSetResourceId ExternalConstraintBrush = new StyleSetResourceId("Neumont", "ExternalConstraintBrush");
 		/// <summary>
+		/// A style set used for drawing deontic constraints
+		/// </summary>
+		private static StyleSet myDeonticClassStyleSet;
+		/// <summary>
 		/// Set the default size for this object.
 		/// </summary>
 		public override SizeD DefaultSize
@@ -48,15 +52,41 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			PenSettings penSettings = new PenSettings();
 			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
-			penSettings.Color = colorService.GetForeColor(ORMDesignerColor.Constraint);
+			Color constraintColor = colorService.GetForeColor(ORMDesignerColor.Constraint);;
+			penSettings.Color = constraintColor;
 			penSettings.Width = 1.35F / 72.0F; // 1.35 Point.
 			classStyleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
 			BrushSettings brushSettings = new BrushSettings();
-			brushSettings.Color = penSettings.Color;
+			brushSettings.Color = constraintColor;
 			classStyleSet.AddBrush(ExternalConstraintBrush, DiagramBrushes.ShapeBackground, brushSettings);
 
 			penSettings.Color = colorService.GetBackColor(ORMDesignerColor.ActiveConstraint);
 			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ShapeOutline, penSettings);
+
+			// Set up an alternate style set for drawing deontic constraints
+			StyleSet deonticStyleSet = new StyleSet(classStyleSet);
+			constraintColor = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
+			penSettings.Color = constraintColor;
+			deonticStyleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
+			brushSettings.Color = constraintColor;
+			deonticStyleSet.OverrideBrush(ExternalConstraintBrush, brushSettings);
+			myDeonticClassStyleSet = deonticStyleSet;
+		}
+		/// <summary>
+		/// Switch between alethic and deontic style sets
+		/// </summary>
+		public override StyleSet StyleSet
+		{
+			get
+			{
+				IConstraint constraint = AssociatedConstraint;
+				// Note that we don't do anything with fonts with this style set, so the
+				// static one is sufficient. Instance style sets also go through a font initiation
+				// step inside the framework
+				return (constraint != null && constraint.Modality == ConstraintModality.Deontic) ?
+					myDeonticClassStyleSet :
+					base.StyleSet;
+			}
 		}
 		/// <summary>
 		/// Draw the various constraint types
@@ -65,7 +95,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		public override void OnPaintShape(DiagramPaintEventArgs e)
 		{
 			base.OnPaintShape(e);
-			Pen pen = StyleSet.GetPen(OutlinePenId);
+			StyleSet styles = StyleSet;
+			Pen pen = styles.GetPen(OutlinePenId);
 
 			// Keep the pen color in sync with the color being used for highlighting
 			Color startColor = UpdateGeometryLuminosity(e.View, pen);
@@ -73,6 +104,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			IConstraint constraint = AssociatedConstraint;
 			RectangleD bounds = AbsoluteBounds;
 			Graphics g = e.Graphics;
+			const double cos45 = 0.70710678118654752440084436210485;
 
 			switch (constraint.ConstraintType)
 			{
@@ -92,16 +124,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 				case ConstraintType.DisjunctiveMandatory:
 				{
 					// Draw the dot
-					bounds.Inflate(-Bounds.Width * .22, -Bounds.Height * .22);
-					Brush brush = StyleSet.GetBrush(ExternalConstraintBrush);
+					RectangleD shrinkBounds = bounds;
+					shrinkBounds.Inflate(-bounds.Width * .22, -bounds.Height * .22);
+					Brush brush = styles.GetBrush(ExternalConstraintBrush);
 					SolidBrush coloredBrush = brush as SolidBrush;
 					coloredBrush.Color = pen.Color;
-					g.FillEllipse(brush, RectangleD.ToRectangleF(bounds));
+					g.FillEllipse(brush, RectangleD.ToRectangleF(shrinkBounds));
 					break;
 				}
 				case ConstraintType.Exclusion:
 				{
-					const double cos45 = 0.70710678118654752440084436210485;
 					// Draw the X
 					double offset = (bounds.Width + pen.Width) * (1 - cos45) / 2;
 					float leftX = (float)(bounds.Left + offset);
@@ -155,6 +187,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 					g.DrawLine(pen, (float)arcBounds.Left, y, xRight, y);
 					break;
 				}
+			}
+			if (constraint.Modality == ConstraintModality.Deontic)
+			{
+				float boxSide = (float)((1 - cos45) * bounds.Width);
+				float startPenWidth = pen.Width;
+				pen.Width = startPenWidth * .70f;
+				g.FillEllipse(styles.GetBrush(DiagramBrushes.DiagramBackground), (float)bounds.Left, (float)bounds.Top, boxSide, boxSide);
+				g.DrawArc(pen, (float)bounds.Left, (float)bounds.Top, boxSide, boxSide, 0, 360);
+				pen.Width = startPenWidth;
 			}
 			// Restore pen color
 			if (restoreColor)
@@ -257,7 +298,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected void StickyInitialize()
 		{
-			RedrawAssociatedPels();
+			RedrawAssociatedPels(true);
 		}
 		void IStickyObject.StickyInitialize()
 		{
@@ -301,7 +342,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected void StickyRedraw()
 		{
-			RedrawAssociatedPels();
+			RedrawAssociatedPels(true);
 		}
 		/// <summary>
 		/// Implements IStickyObject.StickySelectable
@@ -310,7 +351,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			StickyRedraw();
 		}
-		private void RedrawAssociatedPels()
+		private void RedrawAssociatedPels(bool includeFacts)
 		{
 			IConstraint constraint = AssociatedConstraint;
 			if (null != constraint)
@@ -324,8 +365,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							// Redraw the line
 							RedrawPelsOnDiagram(factConstraint, diagram);
-							// Redraw the fact type
-							RedrawPelsOnDiagram(factConstraint.FactTypeCollection, diagram);
+							if (includeFacts)
+							{
+								// Redraw the fact type
+								RedrawPelsOnDiagram(factConstraint.FactTypeCollection, diagram);
+							}
 						}
 						break;
 					case ConstraintStorageStyle.MultiColumnExternalConstraint:
@@ -334,8 +378,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							// Redraw the line
 							RedrawPelsOnDiagram(factConstraint, diagram);
-							// Redraw the fact type
-							RedrawPelsOnDiagram(factConstraint.FactTypeCollection, diagram);
+							if (includeFacts)
+							{
+								// Redraw the fact type
+								RedrawPelsOnDiagram(factConstraint.FactTypeCollection, diagram);
+							}
 						}
 						break;
 				}
@@ -392,28 +439,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Attach event handlers to the store
 		/// </summary>
-		/// <param name="s"></param>
-		public static void AttachEventHandlers(Store s)
+		public static void AttachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = s.MetaDataDirectory;
-			EventManagerDirectory eventDirectory = s.EventManagerDirectory;
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			MetaRoleInfo roleInfo = dataDirectory.FindMetaRole(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
 			eventDirectory.RolePlayerOrderChanged.Add(roleInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedEvent));
-			roleInfo = dataDirectory.FindMetaRole(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(MultiColumnExternalConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(MultiColumnConstraintChangedEvent));
+			attributeInfo = dataDirectory.FindMetaAttribute(SingleColumnExternalConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(SingleColumnConstraintChangedEvent));
 		}
 		/// <summary>
 		/// Detach event handlers from the store
 		/// </summary>
-		/// <param name="s"></param>
-		public static void DetachEventHandlers(Store s)
+		public static void DetachEventHandlers(Store store)
 		{
-			MetaDataDirectory dataDirectory = s.MetaDataDirectory;
-			EventManagerDirectory eventDirectory = s.EventManagerDirectory;
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
 
 			MetaRoleInfo roleInfo = dataDirectory.FindMetaRole(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
 			eventDirectory.RolePlayerOrderChanged.Remove(roleInfo, new RolePlayerOrderChangedEventHandler(RolePlayerOrderChangedEvent));
-			roleInfo = dataDirectory.FindMetaRole(MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(MultiColumnExternalConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(MultiColumnConstraintChangedEvent));
+			attributeInfo = dataDirectory.FindMetaAttribute(SingleColumnExternalConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(SingleColumnConstraintChangedEvent));
 		}
 		private static void RolePlayerOrderChangedEvent(object sender, RolePlayerOrderChangedEventArgs e)
 		{
@@ -424,11 +475,50 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				foreach (PresentationElement pel in constraint.AssociatedPresentationElements)
 				{
-					if (null != (ecs = pel as ExternalConstraintShape)
-						&& null != (ormDiagram = ecs.Diagram as ORMDiagram)
-						&& object.ReferenceEquals(ecs, ormDiagram.StickyObject))
+					if (null != (ecs = pel as ExternalConstraintShape))
 					{
-						ormDiagram.StickyObject.StickyRedraw();
+						// If the constraint being changed is also the current stick object,
+						// then refresh the linked facts as well
+						ecs.RedrawAssociatedPels(null != (ormDiagram = ecs.Diagram as ORMDiagram)
+							&& object.ReferenceEquals(ecs, ormDiagram.StickyObject));
+					}
+				}
+			}
+		}
+		private static void MultiColumnConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		{
+			MultiColumnExternalConstraint constraint;
+			ExternalConstraintShape ecs;
+			ORMDiagram ormDiagram;
+			if (null != (constraint = e.ModelElement as MultiColumnExternalConstraint))
+			{
+				foreach (PresentationElement pel in constraint.AssociatedPresentationElements)
+				{
+					if (null != (ecs = pel as ExternalConstraintShape))
+					{
+						// If the constraint being changed is also the current stick object,
+						// then refresh the linked facts as well
+						ecs.RedrawAssociatedPels(null != (ormDiagram = ecs.Diagram as ORMDiagram)
+							&& object.ReferenceEquals(ecs, ormDiagram.StickyObject));
+					}
+				}
+			}
+		}
+		private static void SingleColumnConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		{
+			SingleColumnExternalConstraint constraint;
+			ExternalConstraintShape ecs;
+			ORMDiagram ormDiagram;
+			if (null != (constraint = e.ModelElement as SingleColumnExternalConstraint))
+			{
+				foreach (PresentationElement pel in constraint.AssociatedPresentationElements)
+				{
+					if (null != (ecs = pel as ExternalConstraintShape))
+					{
+						// If the constraint being changed is also the current stick object,
+						// then refresh the linked facts as well
+						ecs.RedrawAssociatedPels(null != (ormDiagram = ecs.Diagram as ORMDiagram)
+							&& object.ReferenceEquals(ecs, ormDiagram.StickyObject));
 					}
 				}
 			}

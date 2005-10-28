@@ -336,11 +336,10 @@ namespace Neumont.Tools.ORM.Shell
 			Store store = Store;
 			AddErrorReportingEvents();
 			NamedElementDictionary.AttachEventHandlers(store);
-			ReadingShape.AttachEventHandlers(store);
-			ExternalConstraintShape.AttachEventHandlers(store);
+			ORMDiagram.AttachEventHandlers(store);
 			SetFlag(PrivateFlags.AddedPostLoadEvents, true);
 		}
-		/// <summary>
+		/// <summary>s
 		/// Detach model events. Adds NamedElementDictionary handling
 		/// to the document's primary store.
 		/// </summary>
@@ -353,8 +352,7 @@ namespace Neumont.Tools.ORM.Shell
 			SetFlag(PrivateFlags.AddedPostLoadEvents, false);
 			Store store = Store;
 			NamedElementDictionary.DetachEventHandlers(store);
-			ReadingShape.DetachEventHandlers(store);
-			ExternalConstraintShape.DetachEventHandlers(store);
+			ORMDiagram.DetachEventHandlers(store);
 			RemoveErrorReportingEvents();
 		}
 		/// <summary>

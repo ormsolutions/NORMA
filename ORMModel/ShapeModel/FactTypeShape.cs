@@ -1047,6 +1047,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				private FactTypeShape myParentShapeElement;
 				private float myGap;
 				private Pen myConstraintPen;
+				private Pen myDeonticConstraintPen;
 				private ConstraintDisplayPosition myPosition;
 
 				/// <summary>
@@ -1061,7 +1062,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					DiagramClientView view = e.View;
 					myHighlightedShapes = (view != null) ? view.HighlightedShapes : null;
 					myParentShapeElement = parentShape;
-					myConstraintPen = myParentShapeElement.StyleSet.GetPen(InternalFactConstraintPen);
+					StyleSet styleSet = myParentShapeElement.StyleSet;
+					myConstraintPen = styleSet.GetPen(InternalFactConstraintPen);
+					myDeonticConstraintPen = styleSet.GetPen(DeonticInternalFactConstraintPen);
 					myGap = myConstraintPen.Width;
 					myPosition = position;
 				}
@@ -1083,19 +1086,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ConstraintBoxRoleActivity[] rolePosToDraw = constraintBox.ActiveRoles;
 					int numRoles = rolePosToDraw.Length;
 					float roleWidth = (float)FactTypeShape.RoleBoxWidth;
-					Color startColor = myConstraintPen.Color;
-					DashStyle startDashStyle = myConstraintPen.DashStyle;
+					bool isDeontic = currentConstraint.Modality == ConstraintModality.Deontic;
+					Pen constraintPen = isDeontic ? myDeonticConstraintPen : myConstraintPen;
+					Color startColor = constraintPen.Color;
+					DashStyle startDashStyle = constraintPen.DashStyle;
 
 					if (isInternalConstraint)
 					{
 						//test if constraint is valid and apply appropriate pen
 						if (!constraintBox.IsValid)
 						{
-							myConstraintPen.Color = myParentShapeElement.ConstraintErrorForeColor;
+							constraintPen.Color = myParentShapeElement.ConstraintErrorForeColor;
 						}
 						if (constraintBox.IsAntiSpanning)
 						{
-							myConstraintPen.DashStyle = DashStyle.Dash;
+							constraintPen.DashStyle = DashStyle.Dash;
 						}
 					}
 
@@ -1112,7 +1117,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							if (object.ReferenceEquals(activeInternalConstraint, targetConstraint))
 							{
 								isSticky = true;
-								myConstraintPen.Color = myParentShapeElement.Diagram.StyleSet.GetPen(ORMDiagram.StickyForegroundResource).Color;
+								constraintPen.Color = myParentShapeElement.Diagram.StyleSet.GetPen(ORMDiagram.StickyForegroundResource).Color;
 							}
 						}
 					}
@@ -1122,7 +1127,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						if (externalConstraintShape != null &&
 							object.ReferenceEquals(externalConstraintShape.AssociatedConstraint, currentConstraint))
 						{
-							myConstraintPen.Color = myParentShapeElement.Diagram.StyleSet.GetPen(ORMDiagram.StickyBackgroundResource).Color;
+							constraintPen.Color = myParentShapeElement.Diagram.StyleSet.GetPen(ORMDiagram.StickyBackgroundResource).Color;
 						}
 					}
 
@@ -1137,7 +1142,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								if (highlightedSubField != null && highlightedSubField.AssociatedConstraint == currentConstraint)
 								{
 									isHighlighted = true;
-									myConstraintPen.Color = ORMDiagram.ModifyLuminosity(myConstraintPen.Color);
+									constraintPen.Color = ORMDiagram.ModifyLuminosity(constraintPen.Color);
 									break;
 								}
 							}
@@ -1156,7 +1161,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							endPos = boundsF.Right;
 							//draw fully spanning constraint
-							DrawInternalConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos, drawConstraintPreffered);
+							DrawInternalConstraintLine(myGraphics, constraintPen, startPos, endPos, verticalPos, drawConstraintPreffered, isDeontic && constraintBox.IsSpanning);
 						}
 						else
 						{
@@ -1164,6 +1169,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							bool constraintHasDrawn = false;
 							int i = 0;
 							ConstraintBoxRoleActivity currentActivity = rolePosToDraw[i];
+							bool drawCalled = false;
 							for (; i < numRoles; ++i)
 							{
 								ConstraintBoxRoleActivity currentBoxActivity = rolePosToDraw[i];
@@ -1174,18 +1180,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 									{
 										if (currentActivity == ConstraintBoxRoleActivity.Active)
 										{
-											myConstraintPen.DashStyle = startDashStyle;
+											constraintPen.DashStyle = startDashStyle;
 											constraintHasDrawn = true;
 										}
 										else
 										{
 											Debug.Assert(currentActivity == ConstraintBoxRoleActivity.Inactive); // enforces if statement above
-											myConstraintPen.DashStyle = DashStyle.Dash;
+											constraintPen.DashStyle = DashStyle.Dash;
 										}
 										//draw constraint
 										if (constraintHasDrawn)
 										{
-											DrawInternalConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos, drawConstraintPreffered);
+											DrawInternalConstraintLine(myGraphics, constraintPen, startPos, endPos, verticalPos, drawConstraintPreffered, isDeontic && !drawCalled);
+											drawCalled = true;
 										}
 										startPos = endPos;
 										positionChanged = false;
@@ -1207,14 +1214,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 								}
 							}
 							// set DashStyle to original setting (solid)
-							if (myConstraintPen.DashStyle != startDashStyle)
+							if (constraintPen.DashStyle != startDashStyle)
 							{
-								myConstraintPen.DashStyle = startDashStyle;
+								constraintPen.DashStyle = startDashStyle;
 							}
 							//We've reached the end. Draw out any right constraints that may exist.
 							if (endPos > startPos && currentActivity == ConstraintBoxRoleActivity.Active)
 							{
-								DrawInternalConstraintLine(myGraphics, myConstraintPen, startPos, endPos, verticalPos, drawConstraintPreffered);
+								DrawInternalConstraintLine(myGraphics, constraintPen, startPos, endPos, verticalPos, drawConstraintPreffered, isDeontic && !drawCalled);
 							}
 						}
 					}
@@ -1248,21 +1255,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 								}
 								lastActive = i;
 								float x = boundsF.Left + (i + .5f) * roleWidth;
-								myGraphics.DrawLine(myConstraintPen, x, verticalPos, x, targetVertical);
+								myGraphics.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
 							}
 						}
-						myGraphics.DrawLine(myConstraintPen, boundsF.Left + (firstActive + .5f) * roleWidth, verticalPos, boundsF.Right - (numRoles - lastActive - .5f) * roleWidth, verticalPos);
+						myGraphics.DrawLine(constraintPen, boundsF.Left + (firstActive + .5f) * roleWidth, verticalPos, boundsF.Right - (numRoles - lastActive - .5f) * roleWidth, verticalPos);
 					}
 
 					// set colors back to normal if they changed
-					if (myConstraintPen.Color != startColor)
+					if (constraintPen.Color != startColor)
 					{
-						myConstraintPen.Color = startColor;
+						constraintPen.Color = startColor;
 					}
 					// set DashStyle to original setting (solid)
-					if (myConstraintPen.DashStyle != startDashStyle)
+					if (constraintPen.DashStyle != startDashStyle)
 					{
-						myConstraintPen.DashStyle = startDashStyle;
+						constraintPen.DashStyle = startDashStyle;
 					}
 
 					return true;
@@ -1277,9 +1284,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 				/// <param name="endPos">The x-coordinate of the right edge to draw at.</param>
 				/// <param name="verticalPos">The y-coordinate to draw at.</param>
 				/// <param name="preferred">Whether or not to draw the constraint as preffered.</param>
-				private void DrawInternalConstraintLine(Graphics g, Pen pen, float startPos, float endPos, float verticalPos, bool preferred)
+				/// <param name="deontic">Whether or not to draw this portion of the constraint as deontic.</param>
+				private void DrawInternalConstraintLine(Graphics g, Pen pen, float startPos, float endPos, float verticalPos, bool preferred, bool deontic)
 				{
 					float gap = myGap;
+					if (deontic)
+					{
+						float deonticRadius = (float)(FactTypeShape.ConstraintHeight / 2)- gap;
+						float deonticDiameter = deonticRadius + deonticRadius;
+						g.DrawArc(pen, startPos + gap, verticalPos - deonticRadius, deonticDiameter, deonticDiameter, 0, 360);
+						startPos += deonticDiameter;
+					}
 					if (preferred)
 					{
 						float vAdjust = gap * .75f;
@@ -1866,6 +1881,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Pen to draw the active part of an internal uniqueness constraint.
 		/// </summary>
 		protected static readonly StyleSetResourceId InternalFactConstraintPen = new StyleSetResourceId("Neumont", "InternalFactConstraintPen");
+		/// <summary>
+		/// Pen to draw the active part of a deontic internal uniqueness constraint.
+		/// </summary>
+		protected static readonly StyleSetResourceId DeonticInternalFactConstraintPen = new StyleSetResourceId("Neumont", "DeonticInternalFactConstraintPen");
 		private static ExternalConstraintConnectAction myActiveExternalConstraintConnectAction;
 		private static InternalUniquenessConstraintConnectAction myActiveInternalUniquenessConstraintConnectAction;
 		#endregion // Member Variables
@@ -1980,6 +1999,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			IORMFontAndColorService fontsAndColors = (Store as IORMToolServices).FontAndColorService;
 			Color constraintForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.Constraint);
+			Color deonticConstraintForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.DeonticConstraint);
 			Color rolePickerForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.RolePicker);
 			Color rolePickerBackColor = fontsAndColors.GetBackColor(ORMDesignerColor.RolePicker);
 
@@ -1998,6 +2018,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 			penSettings.Color = constraintForeColor;
 			classStyleSet.AddPen(InternalFactConstraintPen, DiagramPens.ShapeOutline, penSettings);
+			penSettings.Color = deonticConstraintForeColor;
+			classStyleSet.AddPen(DeonticInternalFactConstraintPen, InternalFactConstraintPen, penSettings);
 
 			FontSettings fontSettings = new FontSettings();
 			fontSettings.Size = 5f / 72f; // 5 Point.
@@ -2170,6 +2192,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						case ConstraintType.Ring:
 						case ConstraintType.Exclusion:
 						case ConstraintType.Subset:
+						case ConstraintType.Equality:
 							resize = true;
 							break;
 					}
@@ -3488,6 +3511,69 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // FactTypeShapeChangeRule class
 		#endregion // Shape display update rules
+		#region Store Event Handlers
+		/// <summary>
+		///  Helper function to update the mandatory dot in response to events
+		/// </summary>
+		private static void UpdateDotDisplayOnMandatoryConstraintChange(Role role)
+		{
+			foreach (ModelElement mel in role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
+			{
+				foreach (PresentationElement pel in mel.PresentationRolePlayers)
+				{
+					ShapeElement shape = pel as ShapeElement;
+					if (shape != null)
+					{
+						shape.Invalidate(true);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Attach event handlers to the store
+		/// </summary>
+		public static void AttachEventHandlers(Store store)
+		{
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(InternalUniquenessConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
+		}
+		/// <summary>
+		/// Detach event handlers from the store
+		/// </summary>
+		public static void DetachEventHandlers(Store store)
+		{
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(InternalUniquenessConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
+		}
+		/// <summary>
+		/// Update the link displays when the modality of an internal uniqueness constraint changes
+		/// </summary>
+		private static void InternalConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		{
+			InternalUniquenessConstraint iuc = e.ModelElement as InternalUniquenessConstraint;
+			if (iuc != null && !iuc.IsRemoved)
+			{
+				FactType factType = iuc.FactType;
+				if (factType != null && !factType.IsRemoved)
+				{
+					foreach (PresentationElement pel in factType.PresentationRolePlayers)
+					{
+						ShapeElement shape = pel as ShapeElement;
+						if (shape != null)
+						{
+							shape.Invalidate(true);
+						}
+					}
+				}
+			}
+		}
+		#endregion // Store Event Handlers
 	}
 	#endregion // FactTypeShape class
 	#region ObjectifiedFactTypeNameShape class

@@ -309,6 +309,33 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// A style set used for drawing deontic constraints
+		/// </summary>
+		private static StyleSet myDeonticClassStyleSet;
+		/// <summary>
+		/// Switch between alethic and deontic style sets to draw
+		/// the mandatory dot correctly
+		/// </summary>
+		public override StyleSet StyleSet
+		{
+			get
+			{
+				Role role;
+				ObjectTypePlaysRole link;
+				if ((null != (link = AssociatedRolePlayerLink)) &&
+					(null != (role = link.PlayedRoleCollection)) &&
+					role.IsMandatory &&
+					role.MandatoryConstraintModality == ConstraintModality.Deontic)
+				{
+					// Note that we don't do anything with fonts with this style set, so the
+					// static one is sufficient. Instance style sets also go through a font initiation
+					// step inside the framework
+					return myDeonticClassStyleSet;
+				}
+				return base.StyleSet;
+			}
+		}
+		/// <summary>
 		/// Change the outline pen to a thin black line for all instances
 		/// of this shape.
 		/// </summary>
@@ -327,6 +354,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 			BrushSettings brushSettings = new BrushSettings();
 			brushSettings.Color = constraintForeColor;
 			classStyleSet.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
+
+			StyleSet deonticStyleSet = new StyleSet(classStyleSet);
+			constraintForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.DeonticConstraint);
+			penSettings.Color = constraintForeColor;
+			deonticStyleSet.OverridePen(DiagramPens.ConnectionLineDecorator, penSettings);
+			SolidBrush backgroundBrush = deonticStyleSet.GetBrush(DiagramBrushes.DiagramBackground) as SolidBrush;
+			brushSettings.Color = (backgroundBrush == null) ? constraintForeColor : backgroundBrush.Color;
+			deonticStyleSet.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
+			myDeonticClassStyleSet = deonticStyleSet;
 		}
 		#endregion // Customize appearance
 		#region RolePlayerLink specific
@@ -362,7 +398,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // RolePlayerLink specific
-		#region Shape display update rules
+		#region Store Event Handlers
+		/// <summary>
+		///  Helper function to update the mandatory dot in response to events
+		/// </summary>
 		private static void UpdateDotDisplayOnMandatoryConstraintChange(Role role)
 		{
 			foreach (ModelElement mel in role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
@@ -378,44 +417,82 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Attach event handlers to the store
+		/// </summary>
+		public static void AttachEventHandlers(Store store)
+		{
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SimpleMandatoryConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
+			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(FactTypeHasInternalConstraint.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Add(relInfo, new ElementAddedEventHandler(InternalConstraintRoleSequenceAddedEvent));
+			relInfo = dataDirectory.FindMetaRelationship(ConstraintRoleSequenceHasRole.MetaRelationshipGuid);
+			eventDirectory.ElementRemoved.Add(relInfo, new ElementRemovedEventHandler(InternalConstraintRoleSequenceRoleRemovedEvent));
+		}
+		/// <summary>
+		/// Detach event handlers from the store
+		/// </summary>
+		public static void DetachEventHandlers(Store store)
+		{
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SimpleMandatoryConstraint.ModalityMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
+			MetaRelationshipInfo relInfo = dataDirectory.FindMetaRelationship(FactTypeHasInternalConstraint.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Remove(relInfo, new ElementAddedEventHandler(InternalConstraintRoleSequenceAddedEvent));
+			relInfo = dataDirectory.FindMetaRelationship(ConstraintRoleSequenceHasRole.MetaRelationshipGuid);
+			eventDirectory.ElementRemoved.Remove(relInfo, new ElementRemovedEventHandler(InternalConstraintRoleSequenceRoleRemovedEvent));
+		}
+		/// <summary>
+		/// Update the link displays when the modality of a simple mandatory constraint changes
+		/// </summary>
+		private static void InternalConstraintChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		{
+			SimpleMandatoryConstraint smc = e.ModelElement as SimpleMandatoryConstraint;
+			if (smc != null && !smc.IsRemoved)
+			{
+				RoleMoveableCollection roles = smc.RoleCollection;
+				if (roles.Count != 0)
+				{
+					UpdateDotDisplayOnMandatoryConstraintChange(roles[0]);
+				}
+			}
+		}
+		/// <summary>
 		/// Update the link displays when a role sequence for a mandatory constraint is added
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.TopLevelCommit)]
-		private class InternalConstraintRoleSequenceAdded : AddRule
+		private static void InternalConstraintRoleSequenceAddedEvent(object sender, ElementAddedEventArgs e)
 		{
-			public override void ElementAdded(ElementAddedEventArgs e)
+			FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
+			SimpleMandatoryConstraint constraint = link.InternalConstraintCollection as SimpleMandatoryConstraint;
+			if (constraint != null && !constraint.IsRemoved)
 			{
-				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
-				SimpleMandatoryConstraint constraint = link.InternalConstraintCollection as SimpleMandatoryConstraint;
-				if (constraint != null)
+				RoleMoveableCollection roles = constraint.RoleCollection;
+				if (roles.Count > 0)
 				{
-					RoleMoveableCollection roles = constraint.RoleCollection;
-					if (roles.Count > 0)
-					{
-						Debug.Assert(roles.Count == 1); // Mandatory constraints have a single role only
-						UpdateDotDisplayOnMandatoryConstraintChange(roles[0]);
-					}
+					Debug.Assert(roles.Count == 1); // Mandatory constraints have a single role only
+					UpdateDotDisplayOnMandatoryConstraintChange(roles[0]);
 				}
 			}
 		}
 		/// <summary>
 		/// Update the link display when a mandatory constraint role is removed
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.TopLevelCommit)]
-		private class InternalConstraintRoleSequenceRoleRemoved : RemoveRule
+		private static void InternalConstraintRoleSequenceRoleRemovedEvent(object sender, ElementRemovedEventArgs e)
 		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
+			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			Role role;
+			if (link.ConstraintRoleSequenceCollection is SimpleMandatoryConstraint &&
+				(null != (role = link.RoleCollection)) &&
+				!role.IsRemoved)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				Role role;
-				if ((null != (link.ConstraintRoleSequenceCollection as SimpleMandatoryConstraint)) &&
-				    (null != (role = link.RoleCollection)))
-				{
-					UpdateDotDisplayOnMandatoryConstraintChange(role);
-				}
+				UpdateDotDisplayOnMandatoryConstraintChange(role);
 			}
 		}
-		#endregion // Shape display update rules
+		#endregion // Store Event Handlers
 		#region Hack code to enable multiple links between the same fact/object pair
 		private bool myHasBeenConnected;
 		/// <summary>

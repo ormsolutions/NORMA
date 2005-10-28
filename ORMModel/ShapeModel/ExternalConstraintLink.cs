@@ -36,7 +36,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					return new SizeD(.07d, .045d);
+					return new SizeD(.09, .07d);
 				}
 			}
 			SizeD ILinkDecoratorSettings.DecoratorSize
@@ -98,6 +98,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // SubsetStickyDecorator class
 		#region Customize appearance
 		/// <summary>
+		/// A style set used for drawing deontic constraints
+		/// </summary>
+		private static StyleSet myDeonticClassStyleSet;
+		/// <summary>
 		/// Override the connection line pen with a dashed pen
 		/// </summary>
 		/// <param name="classStyleSet"></param>
@@ -125,6 +129,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 			classStyleSet.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
 			brushSettings.Color = activeColor;
 			classStyleSet.AddBrush(ORMDiagram.StickyForegroundResource, DiagramBrushes.ConnectionLineDecorator, brushSettings);
+
+			StyleSet deonticStyleSet = new StyleSet(classStyleSet);
+			settings = new PenSettings();
+			constraintColor = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
+			settings.Color = constraintColor;
+			deonticStyleSet.OverridePen(DiagramPens.ConnectionLine, settings);
+			deonticStyleSet.OverridePen(DiagramPens.ConnectionLineDecorator, settings);
+			brushSettings.Color = constraintColor;
+			deonticStyleSet.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
+			myDeonticClassStyleSet = deonticStyleSet;
+		}
+		/// <summary>
+		/// Switch between alethic and deontic style sets
+		/// </summary>
+		public override StyleSet StyleSet
+		{
+			get
+			{
+				IFactConstraint factConstraint;
+				IConstraint constraint;
+				if (null != (factConstraint = AssociatedFactConstraint as IFactConstraint) &&
+					null != (constraint = factConstraint.Constraint) &&
+					constraint.Modality == ConstraintModality.Deontic)
+				{
+					// Note that we don't do anything with fonts with this style set, so the
+					// static one is sufficient. Instance style sets also go through a font initiation
+					// step inside the framework
+					return myDeonticClassStyleSet;
+				}
+				return base.StyleSet;
+			}
 		}
 		/// <summary>
 		/// Draw the connection lines as sticky along with the constraint

@@ -1016,7 +1016,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 				(startLuminosity + luminosityFixedDelta + (int)((double)(luminosityCheck - startLuminosity)/luminosityCheck * luminosityIncrementalDelta));
 		}
 		#endregion // Utility Methods
-
+		#region Object model event handlers
+		/// <summary>
+		/// Attach event handlers to the store. Central location defers to other shape objects.
+		/// </summary>
+		public static void AttachEventHandlers(Store store)
+		{
+			ReadingShape.AttachEventHandlers(store);
+			ExternalConstraintShape.AttachEventHandlers(store);
+			RolePlayerLink.AttachEventHandlers(store);
+			ObjectTypeShape.AttachEventHandlers(store);
+			FactTypeShape.AttachEventHandlers(store);
+		}
+		/// <summary>
+		/// Detach event handlers to the store. Central location defers to other shape objects.
+		/// </summary>
+		public static void DetachEventHandlers(Store store)
+		{
+			FactTypeShape.DetachEventHandlers(store);
+			ObjectTypeShape.DetachEventHandlers(store);
+			RolePlayerLink.DetachEventHandlers(store);
+			ExternalConstraintShape.DetachEventHandlers(store);
+			ReadingShape.DetachEventHandlers(store);
+		}
+		#endregion // Object model event handlers
 		#region IProxyDisplayProvider Implementation
 		/// <summary>
 		/// Implements IProxyDisplayProvider.ElementDisplayedAs

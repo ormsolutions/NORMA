@@ -73,11 +73,14 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusCopyImage),
 				new EventHandler(OnMenuCopyImage),
 				ORMDesignerCommandIds.CopyImage)
-
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusDelete),
 				new EventHandler(OnMenuDelete),				
 				StandardCommands.Delete)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusSelectAll),
+				new EventHandler(OnMenuSelectAll),				
+				StandardCommands.SelectAll)
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusReadingsWindow),
 				new EventHandler(OnMenuReadingsWindow),
@@ -191,8 +194,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Show the ORM Model Explorer
 			/// </summary>
-			/// <param name="sender"></param>
-			/// <param name="e"></param>
 			protected void OnMenuViewORMModelExplorer(object sender, EventArgs e)
 			{
 				ORMDesignerPackage.BrowserWindow.Show();
@@ -201,8 +202,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnStatusCopyImage(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.CopyImage);
@@ -210,8 +209,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Copies as image
 			/// </summary>
-			/// <param name="sender"></param>
-			/// <param name="e"></param>
 			protected void OnMenuCopyImage(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
@@ -226,8 +223,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Show a debug window displaying the contents of the current store
 			/// </summary>
-			/// <param name="sender"></param>
-			/// <param name="e"></param>
 			protected void OnMenuDebugViewStore(object sender, EventArgs e)
 			{
 				Microsoft.VisualStudio.Modeling.Diagnostics.Debug.Assert(((ModelingDocData)CurrentORMView.DocData).Store);
@@ -237,8 +232,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			private void OnStatusDelete(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.Delete);
@@ -247,8 +240,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			private void OnMenuDelete(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
@@ -265,8 +256,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			private void OnStatusReadingsWindow(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayReadingsWindow);
@@ -274,18 +263,30 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuReadingsWindow(object sender, EventArgs e)
 			{
 				ORMReadingEditorToolWindow editorWindow = ORMDesignerPackage.ReadingEditorWindow;
 				editorWindow.Show();
 			}
+			private void OnStatusSelectAll(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.SelectAll);
+			}
+			/// <summary>
+			/// Menu handler for the SelectAll command
+			/// </summary>
+			protected void OnMenuSelectAll(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// call delete on the doc view
+					docView.OnMenuSelectAll();
+				}
+			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			private void OnStatusInsertRole(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.InsertRole);
@@ -293,8 +294,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuInsertRoleAfter(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
@@ -307,8 +306,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuInsertRoleBefore(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
@@ -323,8 +320,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuReferenceModesWindow(object sender, EventArgs e)
 			{
 				ORMDesignerPackage.ReferenceModeEditorWindow.Show();
@@ -333,8 +328,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			private void OnStatusFactEditorWindow(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayFactEditorWindow);
@@ -342,8 +335,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuFactEditorWindow(object sender, EventArgs e)
 			{
 				IVsWindowFrame editorWindow = ORMDesignerPackage.FactEditorWindow;
@@ -353,8 +344,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			private void OnStatusVerbalizationWindow(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayVerbalizationWindow);
@@ -362,8 +351,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuVerbalizationWindow(object sender, EventArgs e)
 			{
 				ORMVerbalizationToolWindow verbWin = ORMDesignerPackage.VerbalizationWindow;
@@ -372,8 +359,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnStatusShowPositiveVerbalization(object sender, EventArgs e)
 			{
 				MenuCommand command = sender as MenuCommand;
@@ -385,8 +370,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuShowPositiveVerbalization(object sender, EventArgs e)
 			{
 				ORMDesignerPackage.VerbalizationWindow.ShowNegativeVerbalizations = false;
@@ -394,8 +377,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnStatusShowNegativeVerbalization(object sender, EventArgs e)
 			{
 				MenuCommand command = sender as MenuCommand;
@@ -408,8 +389,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuShowNegativeVerbalization(object sender, EventArgs e)
 			{
 				ORMDesignerPackage.VerbalizationWindow.ShowNegativeVerbalizations = true;
@@ -417,8 +396,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnStatusEditExternalConstraint(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.EditExternalConstraint);
@@ -426,8 +403,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnStatusActivateRoleSequence(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ActivateRoleSequence);
@@ -435,8 +410,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnStatusDeleteRowSequence(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DeleteRoleSequence);
@@ -444,8 +417,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnStatusMoveRoleSequenceUp(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleSequenceUp);
@@ -453,8 +424,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnStatusMoveRoleSequenceDown(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.MoveRoleSequenceDown);
@@ -464,8 +433,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuEditExternalConstraint(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
@@ -477,8 +444,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuActivateRoleSequence(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
@@ -490,8 +455,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuDeleteRowSequence(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
@@ -504,8 +467,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuMoveRoleSequenceUp(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
@@ -517,8 +478,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			/// <param name="sender">Sender</param>
-			/// <param name="e">Event args</param>
 			protected void OnMenuMoveRoleSequenceDown(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
