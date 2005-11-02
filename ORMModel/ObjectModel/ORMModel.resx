@@ -443,7 +443,7 @@
     <comment xml:space="preserve">Role data type does not match min inclusion. Replace model,fact,role number.</comment>
   </data>
   <data name="ModelError.FactType.DuplicateInternalUniquenessConstraintError.Text">
-    <value xml:space="preserve">{0} contains a duplicate internal uniqueness constraint</value>
+    <value xml:space="preserve">FactType '{0}' in model '{1}' contains one or more duplicate internal uniqueness constraints.</value>
     <comment xml:space="preserve">Text used in the DuplicateInternalUniquenessConstraintError</comment>
   </data>
 </root>

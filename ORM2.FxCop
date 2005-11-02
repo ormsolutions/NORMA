@@ -3538,6 +3538,34 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="FactType+DuplicateInternalUniquenessConstraintAddRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-11-02 23:33:37Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.FactType+DuplicateInternalUniquenessConstraintAddRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="obuhler">
+              <Note Id="2" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FactType+DuplicateInternalUniquenessConstraintRemoveRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-11-02 23:33:37Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.FactType+DuplicateInternalUniquenessConstraintRemoveRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="obuhler">
+              <Note Id="2" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="FactType+FactTypeChangeRule">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-02-03 20:22:04Z">
@@ -3617,6 +3645,34 @@
             <Notes>
              <User Name="mcurland">
               <Note Id="3" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FactType+InternalConstraintCollectionHasConstraintRemovedRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-11-02 23:33:37Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.FactType+InternalConstraintCollectionHasConstraintRemovedRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="obuhler">
+              <Note Id="2" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="FactType+InternalConstraintCollectionHasConstrintAddedRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-11-02 23:33:37Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.FactType+InternalConstraintCollectionHasConstrintAddedRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="obuhler">
+              <Note Id="2" />
              </User>
             </Notes>
            </Message>
@@ -18271,6 +18327,7 @@
    <User Name="obuhler">
     <Note Id="0" Modified="2005-07-29 21:45:56Z">Rule classes instantiated via reflection</Note>
     <Note Id="1" Modified="2005-07-29 21:46:41Z">Standard code spit matching interface pattern</Note>
+    <Note Id="2" Modified="2005-11-02 23:34:36Z">Rule classes instantiated via reflection</Note>
    </User>
    <User Name="pewert">
     <Note Id="0" Modified="2005-04-25 20:13:21Z">Defined in IMS-generated code</Note>

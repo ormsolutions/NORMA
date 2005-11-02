@@ -739,8 +739,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						roleBits[index] = bits;
 						++index;
 					}
-					Array.Sort(roleBits);
-
+					Array.Sort<int>(roleBits);
 					int rbLength = roleBits.Length;
 					for (int i = 0; i < rbLength - 1; ++i)
 					{
@@ -749,12 +748,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							break;
 						}
 					}
-					
-
 				}
-				
 				DuplicateInternalUniquenessConstraintError dupConstraint = DuplicateInternalUniquenessConstraintError;
-				
 				if (hasError)
 				{
 					if (dupConstraint == null)

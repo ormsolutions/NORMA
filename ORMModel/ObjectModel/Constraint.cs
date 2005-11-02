@@ -3135,9 +3135,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override void GenerateErrorText()
 		{
 			FactType parent = FactType;
-			string parentName = (parent == null) ? "" : parent.Name;
+			string modelName = "";
+			string parentName = "";
+			if (parent != null)
+			{
+				parentName = parent.Name;
+				ORMModel model = parent.Model;
+				if (model != null)
+				{
+					modelName = model.Name;
+				}
+			}
 			string currentText = Name;
-			string newText = string.Format(ResourceStrings.ModelErrorDuplicateInternalUniquenessConstraintError, parentName);
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorDuplicateInternalUniquenessConstraintError, parentName, modelName);
 			if (newText != currentText)
 			{
 				Name = newText;
@@ -3149,7 +3159,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
 		{
-			get { return RegenerateErrorTextEvents.OwnerNameChange; }
+			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
 		}
 		#endregion
 		#region IRepresentModelElements Members
