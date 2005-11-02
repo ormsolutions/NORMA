@@ -1537,6 +1537,16 @@
 			}
 		}
 		/// <summary>
+		/// Text displayed in the text of the DuplicateInternalUniquenessConstraintError. {0} is the fact type name
+		/// </summary>
+		public static string ModelErrorDuplicateInternalUniquenessConstraintError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.DuplicateInternalUniquenessConstraintError.Text");
+			}
+		}
+		/// <summary>
 		/// Text to place in the title of the verbalization tool window.
 		/// </summary>
 		public static string ModelVerbalizationWindowTitle

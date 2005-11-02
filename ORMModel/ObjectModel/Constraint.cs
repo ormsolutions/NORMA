@@ -169,6 +169,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // InternalConstraint Specific
 		#region Role owner validation rules
+
+
+
+
 		/// <summary>
 		/// If a role is added to an internal constraint then it must
 		/// have the same owning facttype as the constraint.
@@ -3005,7 +3009,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
-
 	public partial class CompatibleRolePlayerTypeError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -3123,6 +3126,48 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IRepresentModelElements Implementation
 	
 	}
+	public partial class DuplicateInternalUniquenessConstraintError : IRepresentModelElements
+	{
+		#region Base Overrides
+		/// <summary>
+		/// Generate the text for the error 
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			FactType parent = FactType;
+			string parentName = (parent == null) ? "" : parent.Name;
+			string currentText = Name;
+			string newText = string.Format(ResourceStrings.ModelErrorDuplicateInternalUniquenessConstraintError, parentName);
+			if (newText != currentText)
+			{
+				Name = newText;
+			}
+
+		}
+		/// <summary>
+		/// Regenerates the error text when the Fact type changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get { return RegenerateErrorTextEvents.OwnerNameChange; }
+		}
+		#endregion
+		#region IRepresentModelElements Members
+
+		/// <summary>
+		/// Implements IRepresentNodelElements.GetRepresentedElements
+		/// </summary>
+		/// <returns></returns>
+		public ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { FactType };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion
+}
 	public partial class EqualityIsImpliedByMandatoryError : IRepresentModelElements
 	{
 		#region Base overrides

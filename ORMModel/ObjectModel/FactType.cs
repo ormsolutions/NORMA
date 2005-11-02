@@ -549,6 +549,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return noUniquenessError;
 				}
+				// Any duplicate constraint will trigger this. It is possible for multiple duplicated
+				// constraints to exist on the fact type, but only one error is shown per fact type.
+				DuplicateInternalUniquenessConstraintError dupConstraint = this.DuplicateInternalUniquenessConstraintError;
+				if (dupConstraint != null)
+				{
+					yield return dupConstraint;
+				}
 
 				// NMinusOneError is parented off InternalConstraint, but it doesn't have
 				// a name, so we show the FactType as an owner.
@@ -606,6 +613,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateRequiresReading(notifyAdded);
 			ValidateRequiresInternalUniqueness(notifyAdded);
+			ValidateDuplicateInternalUniqueness(notifyAdded);
+			
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -681,6 +690,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 
 				FactTypeRequiresInternalUniquenessConstraintError noUniquenessError = InternalUniquenessConstraintRequiredError;
+				
 				if (hasError)
 				{
 					if (noUniquenessError == null)
@@ -701,7 +711,71 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion
+		private void ValidateDuplicateInternalUniqueness(INotifyElementAdded notifyAdded)
+		{
+
+			ORMModel theModel;
+			if (!IsRemoved && (null != (theModel = Model)))
+			{
+				Store theStore = Store;
+				RoleMoveableCollection factRoles = RoleCollection;
+				bool hasError = false;
+				int iucCount = GetInternalConstraintsCount(ConstraintType.InternalUniqueness);
+				if (iucCount != 0)
+				{
+					int[] roleBits = new int[iucCount];
+					InternalUniquenessConstraint[] iucCollection = new InternalUniquenessConstraint[iucCount];
+					int index = 0;
+					foreach (InternalUniquenessConstraint ic in GetInternalConstraints<InternalUniquenessConstraint>())
+					{
+						iucCollection[index] = ic;
+						int bits = 0;
+						RoleMoveableCollection constraintRoles = ic.RoleCollection;
+						int roleCount = constraintRoles.Count;
+						for (int i = 0; i < roleCount; ++i)
+						{
+							bits |= 1 << factRoles.IndexOf(constraintRoles[i]);
+						}
+						roleBits[index] = bits;
+						++index;
+					}
+					Array.Sort(roleBits);
+
+					int rbLength = roleBits.Length;
+					for (int i = 0; i < rbLength - 1; ++i)
+					{
+						if(roleBits[i] == roleBits[i+1]) {
+							hasError = true;
+							break;
+						}
+					}
+					
+
+				}
+				
+				DuplicateInternalUniquenessConstraintError dupConstraint = DuplicateInternalUniquenessConstraintError;
+				
+				if (hasError)
+				{
+					if (dupConstraint == null)
+					{
+						dupConstraint = DuplicateInternalUniquenessConstraintError.CreateDuplicateInternalUniquenessConstraintError(theStore);
+						dupConstraint.Model = theModel;
+						dupConstraint.FactType = this;
+						dupConstraint.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(dupConstraint);
+						}
+					}
+				}
+				else if (dupConstraint != null)
+				{
+					dupConstraint.Remove();
+				}
+			}
+		}
+		#endregion // Validation Methods
 		#region Model Validation Rules
 		/// <summary>
 		/// Internal uniqueness constraints are required for non-unary facts. Requires
@@ -742,6 +816,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				fact.ValidateRequiresInternalUniqueness(null);
 			}
 		}
+
+
 		/// <summary>
 		/// Only validates the InternalUniquenessConstraintRequired error
 		/// </summary>
@@ -758,6 +834,66 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		/// <summary>
+		///  validates the DuplicateInternalUniquenessConstraintError
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
+		private class DuplicateInternalUniquenessConstraintAddRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
+				FactType fact = link.FactType;
+				fact.ValidateDuplicateInternalUniqueness(null);
+			}
+		}
+		/// <summary>
+		///   needed when changing an implied error to a duplicate error 
+		/// </summary>
+		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
+		private class DuplicateInternalUniquenessConstraintRemoveRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
+				FactType fact = link.FactType;
+				if (!fact.IsRemoved)
+				{
+					fact.ValidateDuplicateInternalUniqueness(null);
+				}
+			}
+		}
+
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class InternalConstraintCollectionHasConstrintAddedRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				InternalUniquenessConstraint constr = link.ConstraintRoleSequenceCollection as InternalUniquenessConstraint;
+				FactType fact = constr.FactType;
+				if (constr != null && !fact.IsRemoved ) {
+					fact.ValidateDuplicateInternalUniqueness(null);
+				}
+			}
+		}
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class InternalConstraintCollectionHasConstraintRemovedRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				InternalUniquenessConstraint constr = link.ConstraintRoleSequenceCollection as InternalUniquenessConstraint;
+				FactType fact = constr.FactType;
+				if (!fact.IsRemoved)
+				{
+					fact.ValidateDuplicateInternalUniqueness(null);
+				}
+			}
+		}
+
 
 		/// <summary>
 		/// Calls the validation of all FactType related errors
@@ -894,7 +1030,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 	}
 	#endregion // class FactTypeRequiresReadingError
-
 	#region class FactTypeRequiresInternalUniquenessConstraintError
 	partial class FactTypeRequiresInternalUniquenessConstraintError : IRepresentModelElements
 	{
@@ -942,7 +1077,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 	}
 	#endregion // class FactTypeRequiresInternalUniquenessConstraintError
-
 	#region class NMinusOneError
 
 	public partial class NMinusOneError : IRepresentModelElements

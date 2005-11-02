@@ -234,6 +234,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraint.ImpliedEqualityConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesEqualityConstraint.ImpliedEqualityConstraintMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint.ImpliedExternalUniquenessConstraintCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint.ImpliedExternalUniquenessConstraintCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid);
 			#endregion
 		}
@@ -430,6 +431,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.MinValueMismatchErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.MaxValueMismatchError),
 				typeof(Neumont.Tools.ORM.ObjectModel.MaxValueMismatchErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError),
+				typeof(Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKind),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKindElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceMode),
@@ -613,6 +616,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraintElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError),
+				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError),
@@ -807,6 +812,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint), "ImpliedByObjectification", Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint.ImpliedByObjectificationMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError), "MaxValueMismatchError", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError), "ValueRange", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError), "DuplicateInternalUniquenessConstraintError", Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError), "FactType", Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.FactTypeMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "DuplicateNameError", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "InternalConstraintCollection", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.InternalConstraintCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError), "MinValueMismatchError", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid),
@@ -3312,6 +3319,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.ImpliedByObjectificationMetaRoleGuid, value);
 					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType.ImpliedFactTypeCollectionMetaRoleGuid, this);
 					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesFactType), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region DuplicateInternalUniquenessConstraintError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError DuplicateInternalUniquenessConstraintError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.FactTypeMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.FactTypeMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.FactTypeMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError), newRoles);
 				}
 			}
 		}
@@ -14170,6 +14222,154 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new MaxValueMismatchErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError")]
+	public  partial class DuplicateInternalUniquenessConstraintError : Neumont.Tools.ORM.ObjectModel.ModelError
+	{
+		#region DuplicateInternalUniquenessConstraintError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "adc762df-377e-4d2a-85a3-a9e051e07f81";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError.MetaClassGuidString);
+		#endregion
+
+		#region FactType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.FactTypeMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.FactType;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.FactTypeMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.FactType counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.FactType;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.FactTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region DuplicateInternalUniquenessConstraintError's Generated Constructor Code
+	public  partial class DuplicateInternalUniquenessConstraintError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DuplicateInternalUniquenessConstraintError CreateDuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateDuplicateInternalUniquenessConstraintError(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DuplicateInternalUniquenessConstraintError CreateAndInitializeDuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeDuplicateInternalUniquenessConstraintError(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DuplicateInternalUniquenessConstraintError CreateDuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (DuplicateInternalUniquenessConstraintError)partition.ElementFactory.CreateElement(typeof(DuplicateInternalUniquenessConstraintError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static DuplicateInternalUniquenessConstraintError CreateAndInitializeDuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (DuplicateInternalUniquenessConstraintError)partition.ElementFactory.CreateElement(typeof(DuplicateInternalUniquenessConstraintError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for DuplicateInternalUniquenessConstraintError
+	/// <summary>
+	/// DuplicateInternalUniquenessConstraintError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError))]
+	public sealed class DuplicateInternalUniquenessConstraintErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public DuplicateInternalUniquenessConstraintErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static DuplicateInternalUniquenessConstraintErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new DuplicateInternalUniquenessConstraintErrorElementFactoryCreator();
 			}
 		}
 	}
@@ -31624,6 +31824,159 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new ValueRangeHasMaxValueMismatchErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError")]
+	public  partial class FactTypeHasDuplicateInternalUniquenessConstraintError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	{
+		#region FactTypeHasDuplicateInternalUniquenessConstraintError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "c570ff8d-3cdf-45b4-8782-6025bd4350fb";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = FactTypeHasDuplicateInternalUniquenessConstraintError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = FactTypeHasDuplicateInternalUniquenessConstraintError.MetaClassGuid;
+		#endregion
+
+		#region DuplicateInternalUniquenessConstraintError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String DuplicateInternalUniquenessConstraintErrorMetaRoleGuidString = "0b8bc62e-210d-4722-b277-ea53bbf77a65";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid DuplicateInternalUniquenessConstraintErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintError")]
+		public  Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError DuplicateInternalUniquenessConstraintError
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.DuplicateInternalUniquenessConstraintError)this.GetRolePlayer(DuplicateInternalUniquenessConstraintErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(DuplicateInternalUniquenessConstraintErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region FactType's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String FactTypeMetaRoleGuidString = "149d8a9d-2e40-40d4-a409-e0434f57f939";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid FactTypeMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.FactTypeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.FactTypeMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError.FactType")]
+		public  Neumont.Tools.ORM.ObjectModel.FactType FactType
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.FactType)this.GetRolePlayer(FactTypeMetaRoleGuid); }
+			set { this.SetRolePlayer(FactTypeMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region FactTypeHasDuplicateInternalUniquenessConstraintError's Generated Constructor Code
+	public  partial class FactTypeHasDuplicateInternalUniquenessConstraintError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasDuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasDuplicateInternalUniquenessConstraintError CreateFactTypeHasDuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateFactTypeHasDuplicateInternalUniquenessConstraintError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasDuplicateInternalUniquenessConstraintError CreateAndInitializeFactTypeHasDuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeFactTypeHasDuplicateInternalUniquenessConstraintError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasDuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasDuplicateInternalUniquenessConstraintError CreateFactTypeHasDuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (FactTypeHasDuplicateInternalUniquenessConstraintError)partition.ElementFactory.CreateElementLink(typeof(FactTypeHasDuplicateInternalUniquenessConstraintError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static FactTypeHasDuplicateInternalUniquenessConstraintError CreateAndInitializeFactTypeHasDuplicateInternalUniquenessConstraintError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (FactTypeHasDuplicateInternalUniquenessConstraintError)partition.ElementFactory.CreateElementLink(typeof(FactTypeHasDuplicateInternalUniquenessConstraintError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for FactTypeHasDuplicateInternalUniquenessConstraintError
+	/// <summary>
+	/// FactTypeHasDuplicateInternalUniquenessConstraintError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError))]
+	public sealed class FactTypeHasDuplicateInternalUniquenessConstraintErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public FactTypeHasDuplicateInternalUniquenessConstraintErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateInternalUniquenessConstraintError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static FactTypeHasDuplicateInternalUniquenessConstraintErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new FactTypeHasDuplicateInternalUniquenessConstraintErrorElementFactoryCreator();
 			}
 		}
 	}
