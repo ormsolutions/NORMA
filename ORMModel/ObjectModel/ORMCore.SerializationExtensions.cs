@@ -153,6 +153,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("ObjectTypeDuplicateNameError", ObjectTypeDuplicateNameError.MetaClassGuid);
 				classNameMap.Add("EntityTypeRequiresReferenceSchemeError", EntityTypeRequiresReferenceSchemeError.MetaClassGuid);
 				classNameMap.Add("ExternalConstraintRoleSequenceArityMismatchError", ExternalConstraintRoleSequenceArityMismatchError.MetaClassGuid);
+				classNameMap.Add("DuplicateInternalUniquenessConstraintError", DuplicateInternalUniquenessConstraintError.MetaClassGuid);
 				classNameMap.Add("FactTypeRequiresInternalUniquenessConstraintError", FactTypeRequiresInternalUniquenessConstraintError.MetaClassGuid);
 				classNameMap.Add("FactTypeRequiresReadingError", FactTypeRequiresReadingError.MetaClassGuid);
 				classNameMap.Add("FrequencyConstraintMinMaxError", FrequencyConstraintMinMaxError.MetaClassGuid);
@@ -573,7 +574,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 6;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -602,10 +603,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -858,7 +855,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 6;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -887,10 +884,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -1061,7 +1054,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -1090,10 +1083,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -1757,6 +1746,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (rolePlayedInfo.Id == FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedLinkInfo(rolePlayedInfo);
@@ -1794,9 +1787,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 6;
 				metaRole = metaDataDir.FindMetaRole(FactTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid);
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 7;
+				metaRole = metaDataDir.FindMetaRole(FactTypeHasDuplicateInternalUniquenessConstraintError.DuplicateInternalUniquenessConstraintErrorMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 8;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -1825,10 +1820,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -2158,7 +2149,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -2187,10 +2178,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -2453,7 +2440,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 4;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -2482,10 +2469,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -2689,7 +2672,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -2718,10 +2701,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -2881,7 +2860,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -2910,10 +2889,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -3089,7 +3064,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -3118,10 +3093,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -3374,7 +3345,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -3403,10 +3374,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -3584,7 +3551,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -3613,10 +3580,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -3765,7 +3728,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -3794,10 +3757,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -3939,7 +3898,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				if (this.myBaseComparer != null)
 				{
@@ -3968,10 +3927,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -4477,6 +4432,73 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // ExternalConstraintRoleSequenceArityMismatchError serialization
+	#region DuplicateInternalUniquenessConstraintError serialization
+	public partial class DuplicateInternalUniquenessConstraintError : IORMCustomSerializedElement
+	{
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		/// </summary>
+		protected new ORMCustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
+		/// </summary>
+		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		{
+			if (rolePlayedInfo.Id == FactTypeHasDuplicateInternalUniquenessConstraintError.FactTypeMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, "Fact", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo);
+			}
+			return ORMCustomSerializedElementInfo.Default;
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+		}
+		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>
+		/// Implements IORMCustomSerializedElement.MapChildElement
+		/// </summary>
+		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = DuplicateInternalUniquenessConstraintError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
+				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
+				match.InitializeRoles(FactTypeHasDuplicateInternalUniquenessConstraintError.FactTypeMetaRoleGuid);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|Fact", match);
+				DuplicateInternalUniquenessConstraintError.myChildElementMappings = childElementMappings;
+			}
+			ORMCustomSerializedElementMatch rVal;
+			if (!(childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal)))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+			}
+			return rVal;
+		}
+		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
+		}
+	}
+	#endregion // DuplicateInternalUniquenessConstraintError serialization
 	#region FactTypeRequiresInternalUniquenessConstraintError serialization
 	public partial class FactTypeRequiresInternalUniquenessConstraintError : IORMCustomSerializedElement
 	{
