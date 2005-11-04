@@ -10,6 +10,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 	{
 		#region Customize appearance
 		/// <summary>
+		/// Make sure our lines never jump
+		/// </summary>
+		protected override void InitializeInstanceResources()
+		{
+			RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
+			base.InitializeInstanceResources();
+		}
+		/// <summary>
 		/// Use a center to center routing style
 		/// </summary>
 		[CLSCompliant(false)]
