@@ -63,6 +63,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		CompoundListSeparator,
 		/// <summary>
+		/// The 'ConstraintProvidesPreferredIdentifier' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		ConstraintProvidesPreferredIdentifier,
+		/// <summary>
 		/// The 'DefiniteArticle' format string snippet. Contains 1 replacement field.
 		/// </summary>
 		DefiniteArticle,
@@ -410,6 +414,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<br/><span class=""smallIndent"">",
 					@"<span class=""listSeparator"">; </span>",
 					@"<span class=""listSeparator"">; </span>",
+					@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
 					@"<span class=""quantifier"">that</span> {0}",
 					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 					@"<span class=""quantifier"">some</span> {0}",
@@ -504,6 +509,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<br/><span class=""smallIndent"">",
 					@"<span class=""listSeparator"">; </span>",
 					@"<span class=""listSeparator"">; </span>",
+					@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
 					@"<span class=""quantifier"">that</span> {0}",
 					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 					@"<span class=""quantifier"">some</span> {0}",
@@ -598,6 +604,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<br/><span class=""smallIndent"">",
 					@"<span class=""listSeparator"">; </span>",
 					@"<span class=""listSeparator"">; </span>",
+					@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
 					@"<span class=""quantifier"">that</span> {0}",
 					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 					@"<span class=""quantifier"">some</span> {0}",
@@ -692,6 +699,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<br/><span class=""smallIndent"">",
 					@"<span class=""listSeparator"">; </span>",
 					@"<span class=""listSeparator"">; </span>",
+					@"<span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}",
 					@"<span class=""quantifier"">that</span> {0}",
 					@"<span class=""quantifier"">each instance of</span> {0} <span class=""quantifier"">occurs only once</span>",
 					@"<span class=""quantifier"">some</span> {0}",
@@ -1325,6 +1333,45 @@ namespace Neumont.Tools.ORM.ObjectModel
 						snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
+				}
+				if (this.IsPreferred)
+				{
+					writer.WriteLine();
+					string snippetFormat2 = snippets.GetSnippet(VerbalizationTextSnippetType.ConstraintProvidesPreferredIdentifier, isDeontic, isNegative);
+					string snippet2Replace1 = null;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					int snippet2ReplaceRoleIter1 = 0;
+					for (; snippet2ReplaceRoleIter1 < includedArity; ++snippet2ReplaceRoleIter1)
+					{
+						sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet2ReplaceRoleIter1])]);
+					}
+					snippet2Replace1 = sbTemp.ToString();
+					string snippet2Replace2 = null;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					int snippet2ReplaceRoleIter2 = 0;
+					for (; snippet2ReplaceRoleIter2 < factArity; ++snippet2ReplaceRoleIter2)
+					{
+						if (includedRoles.IndexOf(factRoles[snippet2ReplaceRoleIter2]) == -1)
+						{
+							sbTemp.Append(basicRoleReplacements[snippet2ReplaceRoleIter2]);
+						}
+					}
+					snippet2Replace2 = sbTemp.ToString();
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1, snippet2Replace2), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 			}
 			else if (factArity == 2)
