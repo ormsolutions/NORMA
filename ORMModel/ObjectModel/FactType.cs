@@ -551,7 +551,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				// Any duplicate constraint will trigger this. It is possible for multiple duplicated
 				// constraints to exist on the fact type, but only one error is shown per fact type.
-				DuplicateInternalUniquenessConstraintError dupConstraint = this.DuplicateInternalUniquenessConstraintError;
+				ImpliedInternalUniquenessConstraintError dupConstraint = this.ImpliedInternalUniquenessConstraintError;
 				if (dupConstraint != null)
 				{
 					yield return dupConstraint;
@@ -613,7 +613,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateRequiresReading(notifyAdded);
 			ValidateRequiresInternalUniqueness(notifyAdded);
-			ValidateDuplicateInternalUniqueness(notifyAdded);
+			ValidateImpliedInternalUniqueness(notifyAdded);
 			
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
@@ -711,7 +711,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		private void ValidateDuplicateInternalUniqueness(INotifyElementAdded notifyAdded)
+		private void ValidateImpliedInternalUniqueness(INotifyElementAdded notifyAdded)
 		{
 
 			ORMModel theModel;
@@ -724,11 +724,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (iucCount != 0)
 				{
 					int[] roleBits = new int[iucCount];
-					InternalUniquenessConstraint[] iucCollection = new InternalUniquenessConstraint[iucCount];
 					int index = 0;
 					foreach (InternalUniquenessConstraint ic in GetInternalConstraints<InternalUniquenessConstraint>())
 					{
-						iucCollection[index] = ic;
 						int bits = 0;
 						RoleMoveableCollection constraintRoles = ic.RoleCollection;
 						int roleCount = constraintRoles.Count;
@@ -739,34 +737,40 @@ namespace Neumont.Tools.ORM.ObjectModel
 						roleBits[index] = bits;
 						++index;
 					}
-					Array.Sort<int>(roleBits);
 					int rbLength = roleBits.Length;
-					for (int i = 0; i < rbLength - 1; ++i)
+					for (int i = 0; !hasError && i < rbLength - 1; ++i)
 					{
-						if(roleBits[i] == roleBits[i+1]) {
-							hasError = true;
-							break;
+						for (int j = i + 1; j < rbLength; ++j)
+						{
+							int left = roleBits[i];
+							int right = roleBits[j];
+							int compare = left & right;
+							if ((compare == left) || (compare == right))
+							{
+								hasError = true;
+								break;
+							}
 						}
 					}
 				}
-				DuplicateInternalUniquenessConstraintError dupConstraint = DuplicateInternalUniquenessConstraintError;
+				ImpliedInternalUniquenessConstraintError impConstraint = ImpliedInternalUniquenessConstraintError;
 				if (hasError)
 				{
-					if (dupConstraint == null)
+					if (impConstraint == null)
 					{
-						dupConstraint = DuplicateInternalUniquenessConstraintError.CreateDuplicateInternalUniquenessConstraintError(theStore);
-						dupConstraint.Model = theModel;
-						dupConstraint.FactType = this;
-						dupConstraint.GenerateErrorText();
+						impConstraint = ImpliedInternalUniquenessConstraintError.CreateImpliedInternalUniquenessConstraintError(theStore);
+						impConstraint.Model = theModel;
+						impConstraint.FactType = this;
+						impConstraint.GenerateErrorText();
 						if (notifyAdded != null)
 						{
-							notifyAdded.ElementAdded(dupConstraint);
+							notifyAdded.ElementAdded(impConstraint);
 						}
 					}
 				}
-				else if (dupConstraint != null)
+				else if (impConstraint != null)
 				{
-					dupConstraint.Remove();
+					impConstraint.Remove();
 				}
 			}
 		}
@@ -830,23 +834,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		///  validates the DuplicateInternalUniquenessConstraintError
+		///  validates the ImpliedInternalUniquenessConstraintError
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class DuplicateInternalUniquenessConstraintAddRule : AddRule
+		private class ImpliedInternalUniquenessConstraintAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
 				FactType fact = link.FactType;
-				fact.ValidateDuplicateInternalUniqueness(null);
+				fact.ValidateImpliedInternalUniqueness(null);
 			}
 		}
 		/// <summary>
 		///   needed when changing an implied error to a duplicate error 
 		/// </summary>
 		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class DuplicateInternalUniquenessConstraintRemoveRule : RemoveRule
+		private class ImpliedInternalUniquenessConstraintRemoveRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
@@ -854,7 +858,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType fact = link.FactType;
 				if (!fact.IsRemoved)
 				{
-					fact.ValidateDuplicateInternalUniqueness(null);
+					fact.ValidateImpliedInternalUniqueness(null);
 				}
 			}
 		}
@@ -867,9 +871,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				InternalUniquenessConstraint constr = link.ConstraintRoleSequenceCollection as InternalUniquenessConstraint;
-				FactType fact = constr.FactType;
-				if (constr != null && !fact.IsRemoved ) {
-					fact.ValidateDuplicateInternalUniqueness(null);
+				if (constr != null)
+				{
+					FactType fact = constr.FactType;
+					if (fact != null && !fact.IsRemoved)
+					{
+						fact.ValidateImpliedInternalUniqueness(null);
+					}
+					
 				}
 			}
 		}
@@ -881,10 +890,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				InternalUniquenessConstraint constr = link.ConstraintRoleSequenceCollection as InternalUniquenessConstraint;
-				FactType fact = constr.FactType;
-				if (!fact.IsRemoved)
+				if (constr != null)
 				{
-					fact.ValidateDuplicateInternalUniqueness(null);
+					FactType fact = constr.FactType;
+					if (fact != null && !fact.IsRemoved)
+					{
+						fact.ValidateImpliedInternalUniqueness(null);
+					}
 				}
 			}
 		}
@@ -899,8 +911,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasFactType link = e.ModelElement as ModelHasFactType;
-				FactType fact = link.FactTypeCollection;
-				fact.ValidateErrors(null);
+				if (link != null)
+				{
+					FactType fact = link.FactTypeCollection;
+					if (fact != null)
+					{
+						fact.ValidateErrors(null);
+					}
+				}
 			}
 		}
 

@@ -3126,7 +3126,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IRepresentModelElements Implementation
 	
 	}
-	public partial class DuplicateInternalUniquenessConstraintError : IRepresentModelElements
+	public partial class ImpliedInternalUniquenessConstraintError : IRepresentModelElements
 	{
 		#region Base Overrides
 		/// <summary>
@@ -3147,7 +3147,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 			string currentText = Name;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorDuplicateInternalUniquenessConstraintError, parentName, modelName);
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorImpliedInternalUniquenessConstraintError, parentName, modelName);
 			if (newText != currentText)
 			{
 				Name = newText;

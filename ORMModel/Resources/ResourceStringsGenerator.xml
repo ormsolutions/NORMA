@@ -462,10 +462,8 @@
 	<ResourceString name="ModelVerbalizationWindowTitle" model="Model" resourceName="ModelVerbalization.WindowTitle">
 		<comment type="summary">Text to place in the title of the verbalization tool window.</comment>
 	</ResourceString>
-	<ResourceString name="ModelErrorDuplicateInternalUniquenessConstraintError" model="Model" resourceName="ModelError.FactType.DuplicateInternalUniquenessConstraintError.Text">
-		<comment type="summary">Text displayed in the text of the DuplicateInternalUniquenessConstraintError. {0} is the fact type name</comment>
+	<ResourceString name="ModelErrorImpliedInternalUniquenessConstraintError" model="Model" resourceName="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text">
+		<comment type="summary">Text displayed in the text of the ImpliedInternalUniquenessConstraintError. {0} is the fact type name</comment>
 	</ResourceString>
-	<ResourceString name="ModelVerbalizationWindowTitle" model="Model" resourceName="ModelVerbalization.WindowTitle">
-        <comment type="summary">Text to place in the title of the verbalization tool window.</comment>
-    </ResourceString>
+
 </ResourceStrings>

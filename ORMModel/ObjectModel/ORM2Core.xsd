@@ -646,7 +646,7 @@
 			<xs:element name="MinValueMismatchError" type="MinValueMismatchError"/>
 			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchError"/>
 			<xs:element name="SimpleMandatoryImpliesDisjunctiveMandatoryError" type="SimpleMandatoryImpliesDisjunctiveMandatoryError"/>
-			<xs:element name="DuplicateInternalUniquenessConstraintError" type="DuplicateInternalUniquenessConstraintError"/>
+			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintError"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
@@ -787,7 +787,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="DuplicateInternalUniquenessConstraintError">
+	<xs:complexType name="ImpliedInternalUniquenessConstraintError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>

@@ -180,7 +180,7 @@
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="InternalUniquenessConstraintRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="ReadingRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeHasDuplicateInternalUniquenessConstraintError" RoleName="DuplicateInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="ImpliedInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true"/>
 	<se:Element Class="Objectification">
@@ -343,8 +343,8 @@
 	<se:Element Class="ExternalConstraintRoleSequenceArityMismatchError" Override="true">
 		<se:Link RelationshipName="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="Constraint" Name="Constraint"/>
 	</se:Element>
-	<se:Element Class="DuplicateInternalUniquenessConstraintError" Override="true">
-		<se:Link RelationshipName="FactTypeHasDuplicateInternalUniquenessConstraintError" RoleName="FactType" Name="Fact"/>
+	<se:Element Class="ImpliedInternalUniquenessConstraintError" Override="true">
+		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="FactType" Name="Fact"/>
 	</se:Element>
 	<se:Element Class="FactTypeRequiresInternalUniquenessConstraintError" Override="true">
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresInternalUniquenessConstraintError" RoleName="FactType" Name="Fact"/>

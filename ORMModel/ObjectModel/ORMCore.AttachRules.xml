@@ -12,13 +12,13 @@
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="EqualityConstraint.ConstraintRoleSequenceHasRoleRemoved"/>
 		<arg:Rule class="ExternalUniquenessConstraint.ExternalUniquenessConstraintChangeRule"/>
-		<arg:Rule class="FactType.DuplicateInternalUniquenessConstraintAddRule"/>
-		<arg:Rule class="FactType.DuplicateInternalUniquenessConstraintRemoveRule"/>
 		<arg:Rule class="FactType.FactTypeChangeRule"/>
 		<arg:Rule class="FactType.FactTypeHasReadingOrderAddRuleModelValidation"/>
 		<arg:Rule class="FactType.FactTypeHasReadingOrderRemovedRuleModelValidation"/>
 		<arg:Rule class="FactType.FactTypeHasRoleAddRule"/>
 		<arg:Rule class="FactType.FactTypeHasRoleRemoveRule"/>
+		<arg:Rule class="FactType.ImpliedInternalUniquenessConstraintAddRule"/>
+		<arg:Rule class="FactType.ImpliedInternalUniquenessConstraintRemoveRule"/>
 		<arg:Rule class="FactType.InternalConstraintCollectionHasConstrintAddedRule"/>
 		<arg:Rule class="FactType.InternalConstraintCollectionHasConstraintRemovedRule"/>
 		<arg:Rule class="FactType.ModelHasFactTypeAddRuleModelValidation"/>
