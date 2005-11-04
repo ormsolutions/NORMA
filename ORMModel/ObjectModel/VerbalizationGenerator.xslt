@@ -6,7 +6,7 @@
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 >
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
-	<!--<xsl:output indent="yes"/>-->
+  <!--<xsl:output indent="yes"/>-->
 	<xsl:preserve-space elements="ve:Snippet"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
@@ -102,13 +102,13 @@
 					<ve:Fact/>
 				</xsl:variable>
 				<xsl:apply-templates select="msxsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
-						<xsl:with-param name="TopLevel" select="true()"/>
+					<xsl:with-param name="TopLevel" select="true()"/>
 				</xsl:apply-templates>
 				<plx:return>
 					<plx:trueKeyword/>
 				</plx:return>
 			</plx:function>
-		</plx:class>	
+		</plx:class>
 	</xsl:template>
 	<xsl:template match="ve:Constraint" mode="ConstraintVerbalization">
 		<xsl:variable name="patternGroup" select="@patternGroup"/>
@@ -400,7 +400,7 @@
 								</plx:branch>
 								<!-- Get the roles and role count for the current fact -->
 								<plx:assign>
-										<plx:left>
+									<plx:left>
 										<plx:nameRef name="factRoles"/>
 									</plx:left>
 									<plx:right>
@@ -412,7 +412,7 @@
 									</plx:right>
 								</plx:assign>
 								<plx:assign>
-										<plx:left>
+									<plx:left>
 										<plx:nameRef name="factArity"/>
 									</plx:left>
 									<plx:right>
@@ -437,7 +437,7 @@
 									</plx:condition>
 									<plx:body>
 										<plx:assign>
-												<plx:left>
+											<plx:left>
 												<plx:nameRef name="minFactArity"/>
 											</plx:left>
 											<plx:right>
@@ -1158,7 +1158,7 @@
 					</plx:body>
 					<plx:fallbackBranch>
 						<plx:assign>
-								<plx:left>
+							<plx:left>
 								<plx:nameRef name="basicReplacement"/>
 							</plx:left>
 							<plx:right>
@@ -1191,7 +1191,7 @@
 					</plx:fallbackBranch>
 				</plx:branch>
 				<plx:assign>
-						<plx:left>
+					<plx:left>
 						<plx:callInstance name=".implied" type="arrayIndexer">
 							<plx:callObject>
 								<plx:nameRef name="basicRoleReplacements"/>
@@ -1363,7 +1363,7 @@
 									<plx:right>
 										<plx:nameRef name="readingOrder"/>
 									</plx:right>
-								</plx:assign> 
+								</plx:assign>
 							</plx:fallbackBranch>
 						</plx:branch>
 					</plx:body>
@@ -1453,6 +1453,17 @@
 		<xsl:param name="TopLevel" select="false()"/>
 		<xsl:param name="IteratorContext" select="'all'"/>
 		<xsl:param name="PatternGroup"/>
+		<xsl:variable name="conditionFragment">
+			<xsl:if test="$TopLevel and string-length(@match)">
+				<xsl:call-template name="ConditionalMatchCondition"/>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="condition" select="msxsl:node-set($conditionFragment)/child::*"/>
+		<xsl:if test="$condition">
+			<xsl:text disable-output-escaping="yes"><![CDATA[<plx:branch><plx:condition>]]></xsl:text>
+			<xsl:copy-of select="$condition"/>
+			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:condition><plx:body>]]></xsl:text>
+		</xsl:if>
 		<xsl:if test="$TopLevel">
 			<xsl:choose>
 				<xsl:when test="position()&gt;1">
@@ -1543,6 +1554,9 @@
 				</plx:assign>
 			</xsl:otherwise>
 		</xsl:choose>
+		<xsl:if test="$condition">
+			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:body></plx:branch>]]></xsl:text>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template match="ve:Fact" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
@@ -1681,8 +1695,8 @@
 													</xsl:when>
 													<xsl:otherwise>
 														<plx:fallbackBranch>
-																<xsl:call-template name="PredicateReplacementBody"/>
-															</plx:fallbackBranch>
+															<xsl:call-template name="PredicateReplacementBody"/>
+														</plx:fallbackBranch>
 													</xsl:otherwise>
 												</xsl:choose>
 											</xsl:for-each>
@@ -2029,32 +2043,38 @@
 			</xsl:for-each>
 		</xsl:for-each>
 	</xsl:template>
+	<xsl:template name="ConditionalMatchCondition">
+		<xsl:variable name="match" select="@match"/>
+		<xsl:if test="string-length($match)">
+			<xsl:choose>
+				<xsl:when test="$match='IsPersonal'">
+					<plx:callInstance name="IsPersonal" type="property">
+						<plx:callObject>
+							<plx:callInstance name="RolePlayer" type="property">
+								<plx:callObject>
+									<plx:nameRef name="currentRole"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:callObject>
+					</plx:callInstance>
+				</xsl:when>
+				<xsl:when test="$match='IsPreferredIdentifier'">
+					<plx:callThis type="property" name="IsPreferred"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:message terminate="yes">
+						<xsl:text>Unrecognized conditional snippet pattern '</xsl:text>
+						<xsl:value-of select="$match"/>
+						<xsl:text>'.</xsl:text>
+					</xsl:message>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+	</xsl:template>
 	<xsl:template name="ProcessConditionalSnippet">
 		<xsl:param name="fallback" select="false()"/>
 		<xsl:variable name="conditionFragment">
-			<xsl:variable name="match" select="@match"/>
-			<xsl:if test="string-length($match)">
-				<xsl:choose>
-					<xsl:when test="$match='IsPersonal'">
-						<plx:callInstance name="IsPersonal" type="property">
-							<plx:callObject>
-								<plx:callInstance name="RolePlayer" type="property">
-									<plx:callObject>
-										<plx:nameRef name="currentRole"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:message terminate="yes">
-							<xsl:text>Unrecognized conditional snippet pattern '</xsl:text>
-							<xsl:value-of select="$match"/>
-							<xsl:text>'.</xsl:text>
-						</xsl:message>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:if>
+			<xsl:call-template name="ConditionalMatchCondition"/>
 		</xsl:variable>
 		<xsl:variable name="condition" select="msxsl:node-set($conditionFragment)/child::*"/>
 		<xsl:choose>
@@ -2066,7 +2086,7 @@
 								<xsl:copy-of select="$condition"/>
 							</plx:condition>
 							<plx:body>
-								
+
 							</plx:body>
 						</plx:alternateBranch>
 					</xsl:when>
@@ -2154,7 +2174,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<!-- An IterateRoles tag is used to walk a set of roles and combine verbalizations for
 		 the roles into a list. The type of verbalization depends on the match and filter attributes
 		 specified on the list. The list separators are determined by the contents of the listStyle attribute. -->
@@ -2167,7 +2187,7 @@
 		<xsl:param name="ListStyle" select="@listStyle"/>
 		<xsl:param name="PatternGroup"/>
 		<!-- Other parameters should be forwarded to IterateRolesConstraintVerbalizationBody -->
-		
+
 		<!-- Normalize the match data -->
 		<xsl:variable name="contextMatchFragment">
 			<xsl:choose>
@@ -2215,7 +2235,9 @@
 			 get a total count so we can build an accurate list during the main iterator -->
 		<xsl:variable name="filterTestFragment">
 			<xsl:variable name="filterOperatorsFragment">
-				<xsl:apply-templates select="@*" mode="IterateRolesFilterOperator"/>
+				<xsl:apply-templates select="@*" mode="IterateRolesFilterOperator">
+					<xsl:with-param name="IteratorVariableName" select="$iterVarName"/>
+				</xsl:apply-templates>
 			</xsl:variable>
 			<xsl:for-each select="msxsl:node-set($filterOperatorsFragment)/child::*">
 				<xsl:if test="position()=1">
@@ -2230,6 +2252,9 @@
 		<xsl:variable name="filteredIterVarName" select="concat($VariablePrefix,'FilteredIter',$VariableDecorator)"/>
 		<xsl:variable name="trackFirstPass" select="0!=count(descendant::ve:PredicateReplacement[@pass='first'])"/>
 		<xsl:variable name="trackFirstPassVarName" select="concat($VariablePrefix,'IsFirstPass',$VariableDecorator)"/>
+		<xsl:variable name="spitList" select="not($ListStyle='null')"/>
+		<xsl:variable name="spitListOrTrackFirstPass" select="$trackFirstPass or $spitList"/>
+
 		<xsl:if test="$trackFirstPass">
 			<plx:local name="{$trackFirstPassVarName}" dataTypeName=".boolean">
 				<plx:initialize>
@@ -2237,19 +2262,21 @@
 				</plx:initialize>
 			</plx:local>
 		</xsl:if>
-		<xsl:if test="$filterTest">
+		<xsl:if test="$filterTest and $spitListOrTrackFirstPass">
 			<xsl:if test="0=string-length($CompositeCount)">
-				<plx:local name="{$filteredCountVarName}" dataTypeName=".i4">
-					<plx:initialize>
-						<plx:value type="i4" data="0"/>
-					</plx:initialize>
-				</plx:local>
 				<plx:local name="{$filteredIterVarName}" dataTypeName=".i4"/>
-				<xsl:apply-templates select="." mode="CompositeOrFilteredListCount">
-					<xsl:with-param name="TotalCountCollectorVariable" select="$filteredCountVarName"/>
-					<xsl:with-param name="IteratorVariableName" select="$filteredIterVarName"/>
-					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-				</xsl:apply-templates>
+				<xsl:if test="$spitList">
+					<plx:local name="{$filteredCountVarName}" dataTypeName=".i4">
+						<plx:initialize>
+							<plx:value type="i4" data="0"/>
+						</plx:initialize>
+					</plx:local>
+					<xsl:apply-templates select="." mode="CompositeOrFilteredListCount">
+						<xsl:with-param name="TotalCountCollectorVariable" select="$filteredCountVarName"/>
+						<xsl:with-param name="IteratorVariableName" select="$filteredIterVarName"/>
+						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+					</xsl:apply-templates>
+				</xsl:if>
 				<plx:assign>
 					<plx:left>
 						<plx:nameRef name="{$filteredIterVarName}"/>
@@ -2284,7 +2311,9 @@
 											<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
 												<xsl:text>constraintRoleArity</xsl:text>
 											</xsl:when>
-											<!-- UNDONE: Support excluded match -->
+											<xsl:when test="$contextMatch='excluded'">
+												<xsl:text>factArity</xsl:text>
+											</xsl:when>
 										</xsl:choose>
 									</xsl:attribute>
 								</plx:nameRef>
@@ -2316,7 +2345,9 @@
 												<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
 													<xsl:text>allConstraintRoles</xsl:text>
 												</xsl:when>
-												<!-- UNDONE: Support excluded match -->
+												<xsl:when test="$contextMatch='excluded'">
+													<xsl:text>factRoles</xsl:text>
+												</xsl:when>
 											</xsl:choose>
 										</xsl:attribute>
 									</plx:nameRef>
@@ -2442,21 +2473,23 @@
 									<xsl:with-param name="contextMatch" select="$contextMatch"/>
 									<xsl:with-param name="iterVarName" select="$iterVarName"/>
 								</xsl:call-template>
-								<plx:assign>
-									<plx:left>
-										<plx:nameRef name="{$passCompositeIterator}"/>
-									</plx:left>
-									<plx:right>
-										<plx:binaryOperator type="add">
-											<plx:left>
-												<plx:nameRef name="{$passCompositeIterator}"/>
-											</plx:left>
-											<plx:right>
-												<plx:value type="i4" data="1"/>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:right>
-								</plx:assign>
+								<xsl:if test="$spitListOrTrackFirstPass">
+									<plx:assign>
+										<plx:left>
+											<plx:nameRef name="{$passCompositeIterator}"/>
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="add">
+												<plx:left>
+													<plx:nameRef name="{$passCompositeIterator}"/>
+												</plx:left>
+												<plx:right>
+													<plx:value type="i4" data="1"/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:assign>
+								</xsl:if>
 								<xsl:if test="$trackFirstPass">
 									<plx:assign>
 										<plx:left>
@@ -2549,8 +2582,12 @@
 		<xsl:param name="contextMatch"/>
 		<xsl:param name="iterVarName"/>
 		<!-- Use the current snippets data to open the list -->
-		<plx:local name="listSnippet" dataTypeName="{$VerbalizationTextSnippetType}"/>
+		<xsl:variable name="spitList" select="not($ListStyle='null')"/>
+		<xsl:if test="$spitList">
+			<plx:local name="listSnippet" dataTypeName="{$VerbalizationTextSnippetType}"/>
+		</xsl:if>
 		<xsl:choose>
+			<xsl:when test="not($spitList)"/>
 			<xsl:when test="@pass='first' and 0=string-length($CompositeCount)">
 				<xsl:call-template name="SetSnippetVariable">
 					<xsl:with-param name="SnippetType" select="concat($ListStyle,'Open')"/>
@@ -2657,7 +2694,7 @@
 								</plx:fallbackBranch>
 							</plx:branch>
 						</plx:body>
-					</plx:alternateBranch>					
+					</plx:alternateBranch>
 					<plx:fallbackBranch>
 						<xsl:call-template name="SetSnippetVariable">
 							<xsl:with-param name="SnippetType" select="concat($ListStyle,'Separator')"/>
@@ -2667,16 +2704,18 @@
 				</plx:branch>
 			</xsl:otherwise>
 		</xsl:choose>
-		<plx:callInstance name="Append">
-			<plx:callObject>
-				<plx:nameRef name="sbTemp"/>
-			</plx:callObject>
-			<plx:passParam>
-				<xsl:call-template name="SnippetFor">
-					<xsl:with-param name="VariableName" select="'listSnippet'"/>
-				</xsl:call-template>
-			</plx:passParam>
-		</plx:callInstance>
+		<xsl:if test="$spitList">
+			<plx:callInstance name="Append">
+				<plx:callObject>
+					<plx:nameRef name="sbTemp"/>
+				</plx:callObject>
+				<plx:passParam>
+					<xsl:call-template name="SnippetFor">
+						<xsl:with-param name="VariableName" select="'listSnippet'"/>
+					</xsl:call-template>
+				</plx:passParam>
+			</plx:callInstance>
+		</xsl:if>
 
 		<!-- Process the child contents for this role -->
 		<xsl:choose>
@@ -2772,6 +2811,7 @@
 
 		<!-- Use the current snippets data to close the list -->
 		<xsl:choose>
+			<xsl:when test="not($spitList)"/>
 			<xsl:when test="@pass='first' and 0=string-length($CompositeCount)">
 				<plx:callInstance name="Append">
 					<plx:callObject>
@@ -2809,7 +2849,9 @@
 													<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
 														<xsl:text>constraintRoleArity</xsl:text>
 													</xsl:when>
-													<!-- UNDONE: Support excluded match -->
+													<xsl:when test="$contextMatch='excluded'">
+														<xsl:text>factArity</xsl:text>
+													</xsl:when>
 												</xsl:choose>
 											</xsl:attribute>
 										</plx:nameRef>
@@ -2973,8 +3015,38 @@
 			</plx:right>
 		</plx:binaryOperator>
 	</xsl:template>
+	<xsl:template match="@match" mode="IterateRolesFilterOperator">
+		<xsl:param name="IteratorVariableName"/>
+		<xsl:variable name="matchValue" select="."/>
+		<xsl:choose>
+			<xsl:when test="$matchValue='excluded'">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callInstance name="IndexOf">
+							<plx:callObject>
+								<plx:nameRef name="includedRoles"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:callInstance name=".implied" type="indexerCall">
+									<plx:callObject>
+										<plx:nameRef name="factRoles"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:nameRef name="{$IteratorVariableName}"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:value data="-1" type="i4"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
 	<!-- Ignore the match attribute, it is not used as a filter -->
-	<xsl:template match="@match|@listStyle|@pass" mode="IterateRolesFilterOperator"/>
+	<xsl:template match="@listStyle|@pass" mode="IterateRolesFilterOperator"/>
 	<!-- Terminate processing if we see an unrecognized operator -->
 	<xsl:template match="@*" mode="IterateRolesFilterOperator">
 		<xsl:call-template name="TerminateForInvalidAttribute">
@@ -2998,7 +3070,9 @@
 		<xsl:variable name="contextMatch" select="string($contextMatchFragment)"/>
 		<xsl:variable name="filterTestFragment">
 			<xsl:variable name="filterOperatorsFragment">
-				<xsl:apply-templates select="@*" mode="IterateRolesFilterOperator"/>
+				<xsl:apply-templates select="@*" mode="IterateRolesFilterOperator">
+					<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
+				</xsl:apply-templates>
 			</xsl:variable>
 			<xsl:for-each select="msxsl:node-set($filterOperatorsFragment)/child::*">
 				<xsl:if test="position()=1">
@@ -3009,7 +3083,7 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="filterTest" select="msxsl:node-set($filterTestFragment)/child::*"/>
-		
+
 		<!-- Get the count for the set in a value, which will be used either to
 			 increment the full count or as a filter upper bound -->
 		<xsl:variable name="setCountValueFragment">
@@ -3030,7 +3104,9 @@
 								<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
 									<xsl:text>constraintRoleArity</xsl:text>
 								</xsl:when>
-								<!-- UNDONE: Support excluded match -->
+								<xsl:when test="$contextMatch='excluded'">
+									<xsl:text>factArity</xsl:text>
+								</xsl:when>
 							</xsl:choose>
 						</xsl:attribute>
 					</plx:nameRef>
@@ -3085,7 +3161,9 @@
 													<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
 														<xsl:text>allConstraintRoles</xsl:text>
 													</xsl:when>
-													<!-- UNDONE: Support excluded match -->
+													<xsl:when test="$contextMatch='excluded'">
+														<xsl:text>factRoles</xsl:text>
+													</xsl:when>
 												</xsl:choose>
 											</xsl:attribute>
 										</plx:nameRef>

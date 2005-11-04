@@ -3,19 +3,19 @@
 	<Languages>
 		<Language xml:lang="en-US">
 			<Snippets>
-
+				<Snippet type="ConstraintProvidesPreferredIdentifier"><![CDATA[<span class="quantifier">this association with</span> {0} <span class="quantifier">provides the preferred identification scheme for</span> {1}]]></Snippet>
+				
 				<!-- All object type names are wrapped with this style automatically.
 						 The objectType class should not be used in other quantifiers because
 						 it will interfere with hyphen-binding and possible other features. -->
 				<Snippet type="ObjectType"><![CDATA[<span class="objectType">{0}</span>]]></Snippet>
 				<Snippet type="ObjectTypeWithSubscript"><![CDATA[<span class="objectType">{0}<sub>{1}</sub></span>]]></Snippet>
 				<Snippet type="ObjectTypeMissing"><![CDATA[<span class="objectTypeMissing">Missing<sub>{0}</sub></span>]]></Snippet>
-
 				<Snippet type="DefiniteArticle"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
 
 				<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
 				<Snippet type="PersonalPronoun"><![CDATA[<span class="quantifier">who</span> {0}]]></Snippet>
-
+				
 				<Snippet type="UniversalQuantifier"><![CDATA[<span class="quantifier">each</span> {0}]]></Snippet>
 				<Snippet type="AtMostOneQuantifier"><![CDATA[<span class="quantifier">at most one</span> {0}]]></Snippet>
 				<Snippet type="EachInstanceQuantifier"><![CDATA[<span class="quantifier">each instance of</span> {0} <span class="quantifier">occurs only once</span>]]></Snippet>
@@ -227,6 +227,10 @@
 							</Snippet>
 						</ReadingChoice>
 					</ConditionalReading>
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" match="IsPreferredIdentifier">
+						<IterateRoles listStyle="null" match="included"/>
+						<IterateRoles listStyle="null" match="excluded"/>
+					</Snippet>
 				</ConstrainedRoles>
 				<ConstrainedRoles factArity="2">
 					<!-- sign="negative" is implied by the previous element -->

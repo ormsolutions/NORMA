@@ -78,6 +78,7 @@
 			<xs:enumeration value="IndentedLogicalOrListSeparator"/>
 			<xs:enumeration value="IndentedLogicalOrListFinalSeparator"/>
 			<xs:enumeration value="IndentedLogicalOrListClose"/>
+			<xs:enumeration value="ConstraintProvidesPreferredIdentifier"/>
 			<xs:enumeration value="TopLevelIndentedLogicalAndListOpen"/>
 			<xs:enumeration value="TopLevelIndentedLogicalAndListPairSeparator"/>
 			<xs:enumeration value="TopLevelIndentedLogicalAndListSeparator"/>
@@ -208,10 +209,24 @@
 	<xs:complexType name="SnippetLeafTypeWithMatch">
 		<xs:complexContent>
 			<xs:extension base="SnippetLeafType">
-				<xs:attribute name="match" use="optional"/>
+				<xs:attribute name="match" use="optional" type="ConditionalMatchPatternType"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:simpleType name="ConditionalMatchPatternType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="IsPersonal">
+				<xs:annotation>
+					<xs:documentation>True if the IsPersonal property for the current role player is true.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IsPreferredIdentifier">
+				<xs:annotation>
+					<xs:documentation>True if the current constraint is a preferred identifier.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="SnippetType">
 		<xs:complexContent>
 			<xs:extension base="SnippetLeafType">
@@ -221,6 +236,13 @@
 					<xs:element name="CompositeList" type="CompositeListType"/>
 					<xs:element name="Fact" type="FactType"/>
 				</xs:choice>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="SnippetTypeWithMatch">
+		<xs:complexContent>
+			<xs:extension base="SnippetType">
+				<xs:attribute name="match" use="optional" type="ConditionalMatchPatternType"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -257,7 +279,17 @@
 	<xs:complexType name="IterateRolesType">
 		<xs:complexContent>
 			<xs:extension base="IterateRolesNoListType">
-				<xs:attribute name="listStyle" type="ListStyleEnum" use="required"/>
+				<xs:attribute name="listStyle" use="required">
+					<xs:simpleType>
+						<xs:union memberTypes="ListStyleEnum">
+							<xs:simpleType>
+								<xs:restriction base="xs:token">
+									<xs:enumeration value="null"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:union>
+					</xs:simpleType>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -395,7 +427,7 @@
 			<xs:element name="ConstrainedRoles" minOccurs="1" maxOccurs="unbounded" >
 				<xs:complexType>
 					<xs:choice minOccurs="1" maxOccurs="unbounded">
-						<xs:element name="Snippet" type="SnippetType"/>
+						<xs:element name="Snippet" type="SnippetTypeWithMatch"/>
 						<xs:element name="IterateRoles" type="IterateRolesType"/>
 						<xs:element name="CompositeList" type="CompositeListType"/>
 						<xs:element name="ConditionalReading" type="ConditionalReadingType">
