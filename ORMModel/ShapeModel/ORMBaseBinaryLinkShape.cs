@@ -10,14 +10,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	{
 		#region Customize appearance
 		/// <summary>
-		/// Make sure our lines never jump
-		/// </summary>
-		protected override void InitializeInstanceResources()
-		{
-			RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
-			base.InitializeInstanceResources();
-		}
-		/// <summary>
 		/// Use a center to center routing style
 		/// </summary>
 		[CLSCompliant(false)]
@@ -73,6 +65,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ModelElement element = ModelElement;
 			return (element != null) ? element.GetClassName() : base.GetClassName();
 		}
+		/// <summary>
+		/// Abstract method to configure this link after it has been added to
+		/// the diagram.
+		/// </summary>
+		/// <param name="diagram">The parent diagram</param>
+		public abstract void ConfiguringAsChildOf(ORMDiagram diagram);
 		#endregion Customize appearance
 		#region Luminosity Modification
 		/// <summary>

@@ -249,7 +249,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Configuring this link after it has been added to the diagram
 		/// </summary>
 		/// <param name="diagram">The parent diagram</param>
-		public void ConfiguringAsChildOf(ORMDiagram diagram)
+		public override void ConfiguringAsChildOf(ORMDiagram diagram)
 		{
 			// If we're already connected then walk away
 			if (FromShape == null && ToShape == null)

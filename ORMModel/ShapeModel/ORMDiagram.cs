@@ -8,6 +8,7 @@ using System.Drawing.Design;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
@@ -341,35 +342,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return null;
 		}
 		/// <summary>
-		/// Defer to ConfiguringAsChildOf for ORMBaseShape children
+		/// Defer to ConfiguringAsChildOf for ORMBaseShape and ORMBaseBinaryLinkShape children
 		/// </summary>
 		/// <param name="child">The child being configured</param>
 		protected override void OnChildConfiguring(ShapeElement child)
 		{
 			ORMBaseShape baseShape;
-			RolePlayerLink roleLink;
-			ExternalConstraintLink constraintLink;
-			ValueRangeLink valueRangeLink;
-			SubtypeLink subtypeLink;
+			ORMBaseBinaryLinkShape baseLinkShape;
 			if (null != (baseShape = child as ORMBaseShape))
 			{
 				baseShape.ConfiguringAsChildOf(this);
 			}
-			else if (null != (roleLink = child as RolePlayerLink))
+			else if (null != (baseLinkShape = child as ORMBaseBinaryLinkShape))
 			{
-				roleLink.ConfiguringAsChildOf(this);
-			}
-			else if (null != (valueRangeLink = child as ValueRangeLink))
-			{
-				valueRangeLink.ConfiguringAsChildOf(this);
-			}
-			else if (null != (constraintLink = child as ExternalConstraintLink))
-			{
-				constraintLink.ConfiguringAsChildOf(this);
-			}
-			else if (null != (subtypeLink = child as SubtypeLink))
-			{
-				subtypeLink.ConfiguringAsChildOf(this);
+				// ORM lines cross, they don't jump. However, the RouteJumpType cannot
+				// be set before the diagram is in place, so this property cannot be set
+				// from initialization code in the shape itself.
+				baseLinkShape.RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
+				baseLinkShape.ConfiguringAsChildOf(this);
 			}
 		}
 		/// <summary>

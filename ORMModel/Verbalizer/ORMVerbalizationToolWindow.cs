@@ -349,7 +349,6 @@ namespace Neumont.Tools.ORM.Shell
 								// write open tag for new verbalization
 								writer.Write(snippets.GetSnippet(VerbalizationTextSnippetType.VerbalizerOpenVerbalization));
 
-								localFirstCallPending = false;
 								firstWrite = false;
 							}
 							else
