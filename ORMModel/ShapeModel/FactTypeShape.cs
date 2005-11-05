@@ -939,44 +939,20 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// will be added if the mouse is over it.</param>
 			public override void DoHitTest(PointD point, ShapeElement parentShape, DiagramHitTestInfo diagramHitTestInfo)
 			{
-				ForHitTest hitTest = new ForHitTest(point, parentShape, this, diagramHitTestInfo);
-				((FactTypeShape)parentShape).WalkConstraintBoxes(this, myDisplayPosition, hitTest.TestForHit);
-			}
-
-			/// <summary>
-			/// Handles hit test of the constraint
-			/// </summary>
-			private class ForHitTest
-			{
-				private PointD myPoint;
-				private ShapeElement myShapeElement;
-				private ConstraintShapeField myConstraintShapeField;
-				private DiagramHitTestInfo myDiagramHitTestInfo;
-
-				public ForHitTest(PointD point, ShapeElement parentShape, ConstraintShapeField shapeField, DiagramHitTestInfo diagramHitTestInfo)
-				{
-					myPoint = point;
-					myShapeElement = parentShape;
-					myConstraintShapeField = shapeField;
-					myDiagramHitTestInfo = diagramHitTestInfo;
-				}
-
-				/// <summary>
-				/// Tests if a specific constraint is at this location.
-				/// </summary>
-				/// <param name="constraintBox">The constraint to look for</param>
-				/// <returns>true</returns>
-				public bool TestForHit(ref ConstraintBox constraintBox)
+				((FactTypeShape)parentShape).WalkConstraintBoxes(
+					this,
+					myDisplayPosition,
+					delegate(ref ConstraintBox constraintBox)
 				{
 					RectangleD fullBounds = constraintBox.Bounds;
-					if (fullBounds.Contains(myPoint))
+					if (fullBounds.Contains(point))
 					{
 						IFactConstraint factConstraint = constraintBox.FactConstraint;
-						myDiagramHitTestInfo.HitDiagramItem = new DiagramItem(myShapeElement, myConstraintShapeField, new ConstraintSubField(factConstraint.Constraint));
+						diagramHitTestInfo.HitDiagramItem = new DiagramItem(parentShape, this, new ConstraintSubField(factConstraint.Constraint));
 						return false; // Don't continue, we got our item
 					}
 					return true;
-				}
+				});
 			}
 
 			/// <summary>
@@ -996,33 +972,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns>The height of the ConstraintShapeField.</returns>
 			public override double GetMinimumHeight(ShapeElement parentShape)
 			{
-				return ForMinimumHeight.CalculateMinimumHeight(parentShape, myDisplayPosition);
-			}
-
-			/// <summary>
-			/// Helper class for GetMinimumHeight.
-			/// </summary>
-			private class ForMinimumHeight
-			{
-				private double minY = double.MaxValue;
-				private double maxY = double.MinValue;
-				private bool wasVisited;
-
-				private ForMinimumHeight() { }
-				public static double CalculateMinimumHeight(ShapeElement parentShape, ConstraintDisplayPosition displayPosition)
-				{
-					ForMinimumHeight fmh = new ForMinimumHeight();
-					((FactTypeShape)parentShape).WalkConstraintBoxes(RectangleD.Empty, displayPosition, fmh.VisitBox);
-					return fmh.wasVisited ? fmh.maxY - fmh.minY : 0;
-				}
-				private bool VisitBox(ref ConstraintBox constraintBox)
+				double minY = double.MaxValue;
+				double maxY = double.MinValue;
+				bool wasVisited = false;
+				((FactTypeShape)parentShape).WalkConstraintBoxes(
+					RectangleD.Empty,
+					myDisplayPosition,
+					delegate(ref ConstraintBox constraintBox)
 				{
 					wasVisited = true;
 					RectangleD bounds = constraintBox.Bounds;
 					minY = Math.Min(minY, bounds.Top);
 					maxY = Math.Max(maxY, bounds.Bottom);
 					return true;
-				}
+				});
+				return wasVisited ? maxY - minY : 0;
 			}
 
 			/// <summary>
@@ -1033,48 +997,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 			public override void DoPaint(DiagramPaintEventArgs e, ShapeElement parentShape)
 			{
 				FactTypeShape factShape = parentShape as FactTypeShape;
-				ForDrawing draw = new ForDrawing(e, factShape, myDisplayPosition);
-				factShape.WalkConstraintBoxes(this, myDisplayPosition, draw.DrawConstraint);
-			}
-
-			/// <summary>
-			/// Helper class for DoPaint().  Handles drawing of the constraint.
-			/// </summary>
-			private class ForDrawing
-			{
-				private Graphics myGraphics;
-				private HighlightedShapesCollection myHighlightedShapes;
-				private FactTypeShape myParentShapeElement;
-				private float myGap;
-				private Pen myConstraintPen;
-				private Pen myDeonticConstraintPen;
-				private ConstraintDisplayPosition myPosition;
-
-				/// <summary>
-				/// Constructor
-				/// </summary>
-				/// <param name="e">DiagramPaintEventArgs with the Graphics object to draw to.</param>
-				/// <param name="parentShape">ConstraintShapeField to draw to.</param>
-				/// <param name="position">The position of the constraint being drawn</param>
-				public ForDrawing(DiagramPaintEventArgs e, FactTypeShape parentShape, ConstraintDisplayPosition position)
+				Graphics g = e.Graphics;
+				HighlightedShapesCollection highlightedShapes = null;
+				SelectedShapesCollection selection = null;
+				ConstraintSubField testSubField = null;
+				DiagramItem testSelect = null;
+				DiagramClientView view = e.View;
+				if (view != null)
 				{
-					myGraphics = e.Graphics;
-					DiagramClientView view = e.View;
-					myHighlightedShapes = (view != null) ? view.HighlightedShapes : null;
-					myParentShapeElement = parentShape;
-					StyleSet styleSet = myParentShapeElement.StyleSet;
-					myConstraintPen = styleSet.GetPen(InternalFactConstraintPen);
-					myDeonticConstraintPen = styleSet.GetPen(DeonticInternalFactConstraintPen);
-					myGap = myConstraintPen.Width;
-					myPosition = position;
+					highlightedShapes = view.HighlightedShapes;
+					selection = view.Selection;
 				}
+				StyleSet styleSet = factShape.StyleSet;
+				Pen alethicConstraintPen = styleSet.GetPen(InternalFactConstraintPen);
+				Pen deonticConstraintPen = styleSet.GetPen(DeonticInternalFactConstraintPen);
+				float gap = alethicConstraintPen.Width;
+				ConstraintDisplayPosition position = myDisplayPosition;
+				ORMDiagram diagram = (ORMDiagram)factShape.Diagram;
+				StyleSet diagramStyleSet = diagram.StyleSet;
 
-				/// <summary>
-				/// Does the actual drawing of a constraint.
-				/// </summary>
-				/// <param name="constraintBox">The constraint to draw.</param>
-				/// <returns>False if constraint is not an internal uniqueness constraint; otherwise, true.</returns>
-				public bool DrawConstraint(ref ConstraintBox constraintBox)
+				factShape.WalkConstraintBoxes(
+					this,
+					position,
+					delegate(ref ConstraintBox constraintBox)
 				{
 					bool isInternalConstraint = constraintBox.ConstraintType == ConstraintType.InternalUniqueness;
 
@@ -1087,7 +1032,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					int numRoles = rolePosToDraw.Length;
 					float roleWidth = (float)FactTypeShape.RoleBoxWidth;
 					bool isDeontic = currentConstraint.Modality == ConstraintModality.Deontic;
-					Pen constraintPen = isDeontic ? myDeonticConstraintPen : myConstraintPen;
+					Pen constraintPen = isDeontic ? deonticConstraintPen : alethicConstraintPen;
 					Color startColor = constraintPen.Color;
 					DashStyle startDashStyle = constraintPen.DashStyle;
 
@@ -1096,7 +1041,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						//test if constraint is valid and apply appropriate pen
 						if (!constraintBox.IsValid)
 						{
-							constraintPen.Color = myParentShapeElement.ConstraintErrorForeColor;
+							constraintPen.Color = factShape.ConstraintErrorForeColor;
 						}
 						if (constraintBox.IsAntiSpanning)
 						{
@@ -1117,26 +1062,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 							if (object.ReferenceEquals(activeInternalConstraint, targetConstraint))
 							{
 								isSticky = true;
-								constraintPen.Color = myParentShapeElement.Diagram.StyleSet.GetPen(ORMDiagram.StickyForegroundResource).Color;
+								constraintPen.Color = diagramStyleSet.GetPen(ORMDiagram.StickyForegroundResource).Color;
 							}
 						}
 					}
 					else
 					{
-						ExternalConstraintShape externalConstraintShape = (myParentShapeElement.Diagram as ORMDiagram).StickyObject as ExternalConstraintShape;
+						ExternalConstraintShape externalConstraintShape = diagram.StickyObject as ExternalConstraintShape;
 						if (externalConstraintShape != null &&
 							object.ReferenceEquals(externalConstraintShape.AssociatedConstraint, currentConstraint))
 						{
-							constraintPen.Color = myParentShapeElement.Diagram.StyleSet.GetPen(ORMDiagram.StickyBackgroundResource).Color;
+							constraintPen.Color = diagramStyleSet.GetPen(ORMDiagram.StickyBackgroundResource).Color;
 						}
 					}
 
 					// test for and draw highlights
-					if (myHighlightedShapes != null)
+					if (highlightedShapes != null)
 					{
-						foreach (DiagramItem item in myHighlightedShapes)
+						foreach (DiagramItem item in highlightedShapes)
 						{
-							if (object.ReferenceEquals(myParentShapeElement, item.Shape))
+							if (object.ReferenceEquals(factShape, item.Shape))
 							{
 								ConstraintSubField highlightedSubField = item.SubField as ConstraintSubField;
 								if (highlightedSubField != null && highlightedSubField.AssociatedConstraint == currentConstraint)
@@ -1150,18 +1095,54 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					if (isHighlighted || isSticky)
 					{
-						myParentShapeElement.DrawHighlight(myGraphics, boundsF, isSticky, isHighlighted);
+						factShape.DrawHighlight(g, boundsF, isSticky, isHighlighted);
 					}
 
 					if (isInternalConstraint)
 					{
+						if (selection != null)
+						{
+							if (testSubField == null)
+							{
+								testSubField = new ConstraintSubField(currentConstraint);
+								testSelect = new DiagramItem(parentShape, this, testSubField);
+							}
+							else
+							{
+								testSubField.AssociatedConstraint = currentConstraint;
+							}
+							if (selection.Contains(testSelect))
+							{
+								RectangleF constraintBounds = boundsF;
+								StyleSetResourceId pen1Id;
+								StyleSetResourceId pen2Id;
+								if (testSelect.Equals(selection.FocusedItem))
+								{
+									pen1Id = DiagramPens.FocusIndicatorBackground;
+									pen2Id = DiagramPens.FocusIndicator;
+								}
+								else
+								{
+									pen1Id = DiagramPens.SelectionBackground;
+									pen2Id = testSelect.Equals(selection.PrimaryItem) ? DiagramPens.SelectionPrimaryOutline : DiagramPens.SelectionNonPrimaryOutline;
+								}
+								Pen pen = styleSet.GetPen(pen1Id);
+								if (pen.Alignment == PenAlignment.Center)
+								{
+									float adjust = -pen.Width / 2;
+									constraintBounds.Inflate(adjust, adjust);
+								}
+								g.DrawRectangle(pen, constraintBounds.Left, constraintBounds.Top, constraintBounds.Width, constraintBounds.Height);
+								g.DrawRectangle(styleSet.GetPen(pen2Id), constraintBounds.Left, constraintBounds.Top, constraintBounds.Width, constraintBounds.Height);
+							}
+						}
 						float startPos = boundsF.Left, endPos = startPos;
-						bool drawConstraintPreffered = myParentShapeElement.ShouldDrawConstraintPreferred(currentConstraint);
+						bool drawConstraintPreffered = factShape.ShouldDrawConstraintPreferred(currentConstraint);
 						if (constraintBox.IsSpanning || constraintBox.IsAntiSpanning)
 						{
 							endPos = boundsF.Right;
 							//draw fully spanning constraint
-							DrawInternalConstraintLine(myGraphics, constraintPen, startPos, endPos, verticalPos, drawConstraintPreffered, isDeontic && constraintBox.IsSpanning);
+							DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && constraintBox.IsSpanning);
 						}
 						else
 						{
@@ -1191,7 +1172,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 										//draw constraint
 										if (constraintHasDrawn)
 										{
-											DrawInternalConstraintLine(myGraphics, constraintPen, startPos, endPos, verticalPos, drawConstraintPreffered, isDeontic && !drawCalled);
+											DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && !drawCalled);
 											drawCalled = true;
 										}
 										startPos = endPos;
@@ -1221,7 +1202,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							//We've reached the end. Draw out any right constraints that may exist.
 							if (endPos > startPos && currentActivity == ConstraintBoxRoleActivity.Active)
 							{
-								DrawInternalConstraintLine(myGraphics, constraintPen, startPos, endPos, verticalPos, drawConstraintPreffered, isDeontic && !drawCalled);
+								DrawInternalConstraintLine(g, constraintPen, startPos, endPos, verticalPos, gap, drawConstraintPreffered, isDeontic && !drawCalled);
 							}
 						}
 					}
@@ -1230,7 +1211,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						int firstActive = -1;
 						int lastActive = -1;
 						float targetVertical;
-						if (myPosition == ConstraintDisplayPosition.Bottom)
+						if (position == ConstraintDisplayPosition.Bottom)
 						{
 							verticalPos += (float)ExternalConstraintBarCenterAdjust;
 							targetVertical = boundsF.Top;
@@ -1255,10 +1236,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 								}
 								lastActive = i;
 								float x = boundsF.Left + (i + .5f) * roleWidth;
-								myGraphics.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
+								g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
 							}
 						}
-						myGraphics.DrawLine(constraintPen, boundsF.Left + (firstActive + .5f) * roleWidth, verticalPos, boundsF.Right - (numRoles - lastActive - .5f) * roleWidth, verticalPos);
+						g.DrawLine(constraintPen, boundsF.Left + (firstActive + .5f) * roleWidth, verticalPos, boundsF.Right - (numRoles - lastActive - .5f) * roleWidth, verticalPos);
 					}
 
 					// set colors back to normal if they changed
@@ -1273,38 +1254,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 
 					return true;
-				}
+				});
+			}
 
-				/// <summary>
-				/// Draws a regular constraint line
-				/// </summary>
-				/// <param name="g">The graphics object to draw to</param>
-				/// <param name="pen">The pen to use</param>
-				/// <param name="startPos">The x-coordinate of the left edge to draw at.</param>
-				/// <param name="endPos">The x-coordinate of the right edge to draw at.</param>
-				/// <param name="verticalPos">The y-coordinate to draw at.</param>
-				/// <param name="preferred">Whether or not to draw the constraint as preffered.</param>
-				/// <param name="deontic">Whether or not to draw this portion of the constraint as deontic.</param>
-				private void DrawInternalConstraintLine(Graphics g, Pen pen, float startPos, float endPos, float verticalPos, bool preferred, bool deontic)
+			/// <summary>
+			/// Draws a regular constraint line
+			/// </summary>
+			/// <param name="g">The graphics object to draw to</param>
+			/// <param name="pen">The pen to use</param>
+			/// <param name="startPos">The x-coordinate of the left edge to draw at.</param>
+			/// <param name="endPos">The x-coordinate of the right edge to draw at.</param>
+			/// <param name="verticalPos">The y-coordinate to draw at.</param>
+			/// <param name="gap">The gap to leave at the ends of the constraint line</param>
+			/// <param name="preferred">Whether or not to draw the constraint as preffered.</param>
+			/// <param name="deontic">Whether or not to draw this portion of the constraint as deontic.</param>
+			private static void DrawInternalConstraintLine(Graphics g, Pen pen, float startPos, float endPos, float verticalPos, float gap, bool preferred, bool deontic)
+			{
+				if (deontic)
 				{
-					float gap = myGap;
-					if (deontic)
-					{
-						float deonticRadius = (float)(FactTypeShape.ConstraintHeight / 2)- gap;
-						float deonticDiameter = deonticRadius + deonticRadius;
-						g.DrawArc(pen, startPos + gap, verticalPos - deonticRadius, deonticDiameter, deonticDiameter, 0, 360);
-						startPos += deonticDiameter;
-					}
-					if (preferred)
-					{
-						float vAdjust = gap * .75f;
-						g.DrawLine(pen, startPos + gap, verticalPos - vAdjust, endPos - gap, verticalPos - vAdjust);
-						g.DrawLine(pen, startPos + gap, verticalPos + vAdjust, endPos - gap, verticalPos + vAdjust);
-					}
-					else
-					{
-						g.DrawLine(pen, startPos + gap, verticalPos, endPos - gap, verticalPos);
-					}
+					float deonticRadius = (float)(FactTypeShape.ConstraintHeight / 2) - gap;
+					float deonticDiameter = deonticRadius + deonticRadius;
+					g.DrawArc(pen, startPos + gap, verticalPos - deonticRadius, deonticDiameter, deonticDiameter, 0, 360);
+					startPos += deonticDiameter;
+				}
+				if (preferred)
+				{
+					float vAdjust = gap * .75f;
+					g.DrawLine(pen, startPos + gap, verticalPos - vAdjust, endPos - gap, verticalPos - vAdjust);
+					g.DrawLine(pen, startPos + gap, verticalPos + vAdjust, endPos - gap, verticalPos + vAdjust);
+				}
+				else
+				{
+					g.DrawLine(pen, startPos + gap, verticalPos, endPos - gap, verticalPos);
 				}
 			}
 		}
@@ -1416,6 +1397,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				get
 				{
 					return myAssociatedConstraint;
+				}
+				set
+				{
+					myAssociatedConstraint = value;
 				}
 			}
 			#endregion // Accessor functions
@@ -3055,6 +3040,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FactType factType = AssociatedFactType;
 				return (factType == null) ? false : (factType.NestingType != null);
 			}
+		}
+		/// <summary>
+		/// Get a diagram item for an internal uniqueness constraint on the associated fact.
+		/// A diagram item is used to represent selection in a DiagramClientView.
+		/// </summary>
+		public DiagramItem GetDiagramItem(InternalUniquenessConstraint constraint)
+		{
+			return new DiagramItem(this, (ConstraintDisplayPosition == ConstraintDisplayPosition.Top) ? myTopConstraintShapeField : myBottomConstraintShapeField, new ConstraintSubField(constraint));
+		}
+		/// <summary>
+		/// Get a diagram item for a role on the associated fact.
+		/// A diagram item is used to represent selection in a DiagramClientView.
+		/// </summary>
+		public DiagramItem GetDiagramItem(Role role)
+		{
+			return new DiagramItem(this, myRolesShapeField, new RoleSubField(role));
 		}
 		/// <summary>
 		/// Gets the attach point of the specific constraint within this shape.

@@ -749,8 +749,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							InternalUniquenessConstraint constraint = action.AddedConstraint;
 							FactTypeShape addedToShape = action.DropTargetShape;
+							DiagramClientView view = e.DiagramClientView;
 							Debug.Assert(constraint != null); // ActionCompleted should be false otherwise
-							InternalUniquenessConstraintConnectAction.ChainMouseAction(addedToShape, constraint, e.DiagramClientView);
+							view.Selection.Set(addedToShape.GetDiagramItem(constraint));
+							InternalUniquenessConstraintConnectAction.ChainMouseAction(addedToShape, constraint, view);
 						}
 					};
 				}

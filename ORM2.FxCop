@@ -14838,6 +14838,23 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="GetDiagramItem(Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint):Microsoft.VisualStudio.Modeling.Diagrams.DiagramItem">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2005-11-05 17:26:02Z">
+              <Issue>
+               <Item>constraint</Item>
+               <Item>FactTypeShape.GetDiagramItem(InternalUniquenessConstraint):DiagramItem</Item>
+               <Item>Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint</Item>
+               <Item>Neumont.Tools.ORM.ObjectModel.IConstraint</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="66" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="InternalFactConstraintPen">
             <Messages>
              <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2005-04-15 14:45:27Z">
@@ -18320,6 +18337,7 @@
     <Note Id="63" Modified="2005-10-28 08:39:45Z">Type is immutable</Note>
     <Note Id="64" Modified="2005-10-28 08:40:00Z">Rule classes instantiated via reflection</Note>
     <Note Id="65" Modified="2005-10-28 19:05:28Z">Casts happen in different branches</Note>
+    <Note Id="66" Modified="2005-11-05 17:27:46Z">The method is only appropriate for internal uniqueness constraints. DiagramItems are not available for other constraint types.</Note>
    </User>
    <User Name="mouzts">
     <Note Id="0" Modified="2005-09-15 22:08:24Z">Rule classes instantiated via reflection</Note>

@@ -249,8 +249,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 			base.OnBoundsFixup(fixupState, iteration);
 			if (fixupState != BoundsFixupState.Invalid)
 			{
+				FactTypeShape factShape = (FactTypeShape)ParentShape;
 				SizeD size = Size;
-				Location = new PointD(0, 1.5 * size.Height);
+				double yOffset;
+				if (factShape.ConstraintDisplayPosition == ConstraintDisplayPosition.Top)
+				{
+					yOffset = factShape.Size.Height + .5 * size.Height;
+				}
+				else
+				{
+					yOffset = -1.5 * size.Height;
+				}
+				Location = new PointD(0, yOffset);
 			}
 		}
 
