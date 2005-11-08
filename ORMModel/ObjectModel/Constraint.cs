@@ -1808,44 +1808,32 @@ namespace Neumont.Tools.ORM.ObjectModel
 				FactType theFactType = FactType;
 				if (theFactType != null && !theFactType.IsRemoved)
 				{
-					if (null != theFactType.InternalUniquenessConstraintRequiredError)
+					NMinusOneError error = NMinusOneError;
+					if (RoleCollection.Count < theFactType.RoleCollection.Count - 1)
 					{
-						if (NMinusOneError != null)
+						//Adding the Error to the model
+						if (error == null)
 						{
-							NMinusOneError.Remove();
+							error = NMinusOneError.CreateNMinusOneError(Store);
+							error.Model = theFactType.Model;
+							error.Constraint = this;
+							error.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(error, true);
+							}
+						}
+						else
+						{
+							//Error is already present, but the number of facts in the sequence could have changed, so we
+							//need to regenerate the error text so the correct number of roles is present.
+							error.GenerateErrorText();
 						}
 					}
-					else
+					else if (error != null)
 					{
-						bool hasError = RoleCollection.Count < theFactType.RoleCollection.Count - 1;
-
-						NMinusOneError noNMinusOneError = NMinusOneError;
-						if (hasError)
-						{
-							//Adding the Error to the model
-							if (noNMinusOneError == null)
-							{
-								noNMinusOneError = NMinusOneError.CreateNMinusOneError(Store);
-								noNMinusOneError.Model = theFactType.Model;
-								noNMinusOneError.Constraint = this;
-								noNMinusOneError.GenerateErrorText();
-								if (notifyAdded != null)
-								{
-									notifyAdded.ElementAdded(noNMinusOneError, true);
-								}
-							}
-							else
-							{
-								//Error is already present, but the number of facts in the sequence could have changed, so we
-								//need to regenerate the error text so the correct number of roles is present.
-								noNMinusOneError.GenerateErrorText();
-							}
-						}
-						else if (noNMinusOneError != null)
-						{
-							//Removing error
-							noNMinusOneError.Remove();
-						}
+						//Removing error
+						error.Remove();
 					}
 				}
 			}

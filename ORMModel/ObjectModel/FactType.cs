@@ -677,15 +677,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				if (hasError)
 				{
-
-					InternalConstraintMoveableCollection internalConstraints = InternalConstraintCollection;
-					foreach (InternalConstraint constraint in internalConstraints)
+					foreach (InternalUniquenessConstraint constraint in GetInternalConstraints<InternalUniquenessConstraint>())
 					{
-						if (constraint is InternalUniquenessConstraint)
-						{
-							hasError = false;
-							break;
-						}
+						hasError = false;
+						break;
 					}
 				}
 
