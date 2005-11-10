@@ -465,5 +465,12 @@
 	<ResourceString name="ModelErrorImpliedInternalUniquenessConstraintError" model="Model" resourceName="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text">
 		<comment type="summary">Text displayed in the text of the ImpliedInternalUniquenessConstraintError. {0} is the fact type name</comment>
 	</ResourceString>
+	<ResourceString name="ImpliedInternalConstraintFixMessage" model="Diagram" resourceName="MesageBox.ImpliedInternalUniquenessConstraint.Message">
+		<comment type="summary">The message of the auto-fix message box for implied internal constraints</comment>
+	</ResourceString>
+	<ResourceString name="RemoveInternalConstraintsTransaction" model="Model" resourceName="FactType.RemoveInternalUniquenessConstraints.TransactionName">
+		<comment type="summary">The name of the transaction that auto-fixes implied and duplicate internal constraints.</comment>
+	</ResourceString>
+
 
 </ResourceStrings>

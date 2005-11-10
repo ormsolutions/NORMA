@@ -386,4 +386,8 @@
     <value xml:space="preserve">Set Base Type</value>
     <comment xml:space="preserve">The transaction name used by the subtype connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="MesageBox.ImpliedInternalUniquenessConstraint.Message">
+    <value xml:space="preserve">One or more of the internal uniqueness constraints over the role boxes is implied by another constraint. Do you wish to remove the implied constraint?</value>
+    <comment xml:space="preserve">The message for the auto-fix implied internal uniqueness constraint message box.</comment>
+  </data>
 </root>

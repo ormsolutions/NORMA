@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Neumont.Tools.ORM.SDK.TestEngine;
 using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
@@ -58,5 +59,31 @@ namespace TestSample
 			// compare at intermediate stages by explicitly running the IORMToolTestServices.Compare function, generally
 			// with a reference name to distinguish the intermediate stages from the automatic comparison.
 		}
+
+
+		[Test("Sample", "InternalConstraints")]
+		public void Test2(Store store)
+		{
+			myTestServices.LogValidationErrors("Before constraint duplication/implication repair");
+
+			// Find the fact that that needs fixing and repair it
+			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
+			FactType fact = (FactType)model.FactTypesDictionary.GetElement("FactType4").SingleElement;
+			fact.RemoveImpliedInternalUniquenessConstraints();
+			myTestServices.LogValidationErrors("After constraint duplication/implication repair");
+			//Role role = fact.RoleCollection[1];
+			//ImpliedInternalUniquenessConstraintError impError1 = fact.ImpliedInternalUniquenessConstraintError;
+			store.UndoManager.Undo();
+			store.UndoManager.Redo();
+
+
+
+
+			// After the method exits, the Compare and LogValidationErrors methods will be run automatically against
+			// the test service. The expected results for the Compare are in Tests.Test1.Compare.orm. You can also
+			// compare at intermediate stages by explicitly running the IORMToolTestServices.Compare function, generally
+			// with a reference name to distinguish the intermediate stages from the automatic comparison.
+		}
+
 	}
 }

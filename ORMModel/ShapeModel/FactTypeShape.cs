@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
+using Microsoft.VisualStudio.Shell.Interop;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Shell;
 
@@ -2892,6 +2893,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			RolePlayerRequiredError requireRolePlayer;
 			FactType fact;
 			ConstraintDuplicateNameError constraintNameError;
+			ImpliedInternalUniquenessConstraintError implConstraint;
 			Reading reading = null;
 			InternalUniquenessConstraint activateConstraint = null;
 			bool selectConstraintOnly = false;
@@ -2961,6 +2963,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 								break;
 						}
 						break;
+					}
+				}
+			}
+			else if (null != (implConstraint = error as ImpliedInternalUniquenessConstraintError))
+			{
+				IServiceProvider provider;
+				IVsUIShell shell;
+				if (null != (provider = (Store as IORMToolServices).ServiceProvider) &&
+					null != (shell = (IVsUIShell)provider.GetService(typeof(IVsUIShell))))
+				{
+					Guid g = new Guid();
+					int pnResult;
+					shell.ShowMessageBox(0, ref g, ResourceStrings.PackageOfficialName, 
+						ResourceStrings.ImpliedInternalConstraintFixMessage, 
+						"", 0, OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
+						OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST, OLEMSGICON.OLEMSGICON_QUERY, 0, out pnResult);
+					if (pnResult == (int)DialogResult.Yes)
+					{
+						implConstraint.FactType.RemoveImpliedInternalUniquenessConstraints();
 					}
 				}
 			}

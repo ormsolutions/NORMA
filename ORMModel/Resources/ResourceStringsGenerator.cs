@@ -1556,6 +1556,26 @@
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text");
 			}
 		}
+		/// <summary>
+		/// The message of the auto-fix message box for implied internal constraints
+		/// </summary>
+		public static string ImpliedInternalConstraintFixMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MesageBox.ImpliedInternalUniquenessConstraint.Message");
+			}
+		}
+		/// <summary>
+		/// The name of the transaction that auto-fixes implied and duplicate internal constraints.
+		/// </summary>
+		public static string RemoveInternalConstraintsTransaction
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "FactType.RemoveInternalUniquenessConstraints.TransactionName");
+			}
+		}
 	}
 	#endregion // ResourceStrings class
 }

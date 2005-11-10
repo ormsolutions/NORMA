@@ -446,4 +446,7 @@
     <value xml:space="preserve">FactType '{0}' in model '{1}' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</value>
     <comment xml:space="preserve">Text used in the ImpliedInternalUniquenessConstraintError</comment>
   </data>
+  <data name="FactType.RemoveInternalUniquenessConstraints.TransactionName">
+    <value xml:space="preserve">FixInternalUniqueness</value>
+  </data>
 </root>

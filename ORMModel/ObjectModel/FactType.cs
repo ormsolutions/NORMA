@@ -739,11 +739,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							int left = roleBits[i];
 							int right = roleBits[j];
-							int compare = left & right;
-							if ((compare == left) || (compare == right))
+							if (left != 0 && right != 0)
 							{
-								hasError = true;
-								break;
+								int	compare = left & right;
+								if ((compare == left) || (compare == right))
+								{
+									hasError = true;
+									break;
+								}
 							}
 						}
 					}
@@ -987,6 +990,108 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region AutoFix Methods
+		/// <summary>
+		/// Remove implied (including duplicate) internal uniquess constraints. Internal
+		/// uniqueness constraint A implies internal uniqueness constraint B if the roles of
+		/// A form a subset of the roles of B. Running this method will fix a
+		/// FactTypeHasImpliedInternalUniquessConstraintError on this FactType.
+		/// </summary>
+		public void RemoveImpliedInternalUniquenessConstraints() 
+		{
+			int iucCount = GetInternalConstraintsCount(ConstraintType.InternalUniqueness);
+			if (iucCount == 0)
+			{
+				return;
+			}
+			using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.RemoveInternalConstraintsTransaction))
+			{
+				RoleMoveableCollection factRoles = RoleCollection;
+				InternalUniquenessConstraint[] iuc = new InternalUniquenessConstraint[iucCount];
+				int[] roleBits = new int[iucCount];
+				int index = 0;
+				foreach (InternalUniquenessConstraint ic in GetInternalConstraints<InternalUniquenessConstraint>())
+				{
+					iuc[index] = ic;
+					int bits = 0;
+					RoleMoveableCollection constraintRoles = ic.RoleCollection;
+					int roleCount = constraintRoles.Count;
+					for (int i = 0; i < roleCount; ++i)
+					{
+						bits |= 1 << factRoles.IndexOf(constraintRoles[i]);
+					}
+					roleBits[index] = bits;
+					++index;
+				}
+				int rbLength = roleBits.Length;
+				int left, right, compare;
+				InternalUniquenessConstraint leftIUC;
+				InternalUniquenessConstraint rightIUC;
+				for (int i = 0; i < rbLength - 1; ++i)
+				{
+					leftIUC = iuc[i];
+					if (leftIUC == null)
+					{
+						continue;
+					}
+
+					// Do duplicates first to simplify processing of implied cases
+					left = roleBits[i];
+					for (int j = i + 1; j < rbLength; ++j)
+					{
+						rightIUC = iuc[j];
+						if (rightIUC == null)
+						{
+							continue;
+						}
+						
+						right = roleBits[j];
+						compare = left & right;
+						if ((compare == left) && (compare == right))
+						{
+							// found a duplicate.
+							// Remove the one on the right so we can
+							// keep processing this element
+							rightIUC.Remove();
+							iuc[j] = null;
+						}
+					}
+					if (left == 0)
+					{
+						continue;
+					}
+					for (int j = i + 1; j < rbLength; ++j)
+					{
+						rightIUC = iuc[j];
+						right = roleBits[j];
+						if (rightIUC == null || right == 0)
+						{
+							continue;
+						}
+
+						compare = left & right;
+						if (compare == left)
+						{
+							// left implies right
+							rightIUC.Remove();
+							iuc[j] = null;
+						}
+						else if (compare == right)
+						{
+							// right implies left
+							leftIUC.Remove();
+							iuc[i] = null;
+							break;
+						}
+					}
+				}
+				if (t.HasPendingChanges)
+				{
+					t.Commit();
+				}
+			}
+		}
+		#endregion // AutoFix Methods
 	}
 
 	#region FactType Model Validation Errors
