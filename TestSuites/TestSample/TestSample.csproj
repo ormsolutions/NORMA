@@ -63,16 +63,11 @@
     <None Include="..\..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
-    <EmbeddedResource Include="Tests.Test2.Compare.orm" />
-    <EmbeddedResource Include="Tests.Test2.Load.orm" />
     <EmbeddedResource Include="Tests.Test1.Compare.orm" />
     <EmbeddedResource Include="Tests.Test1.Load.orm" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Tests.Test1.Report.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Tests.Test2.Report.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -51,6 +51,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			retVal[dataDir.FindMetaClass(ValueRangeLink.MetaClassGuid)] = null;
 			retVal[dataDir.FindMetaClass(RolePlayerLink.MetaClassGuid)] = null;
 			retVal[dataDir.FindMetaClass(SubtypeLink.MetaClassGuid)] = null;
+			retVal[dataDir.FindMetaClass(LinkConnectorShape.MetaClassGuid)] = null;
 			retVal[dataDir.FindMetaRelationship(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode.MetaRelationshipGuid)] = null;
 			return retVal;
 		}

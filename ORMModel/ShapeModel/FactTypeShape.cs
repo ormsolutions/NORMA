@@ -1058,7 +1058,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						InternalUniquenessConstraintConnectAction activeInternalAction = ActiveInternalUniquenessConstraintConnectAction;
 						if (activeInternalAction != null)
 						{
-							InternalUniquenessConstraint activeInternalConstraint = activeInternalAction.SourceInternalUniquenessConstraint;
+							InternalUniquenessConstraint activeInternalConstraint = activeInternalAction.ActiveConstraint;
 							InternalUniquenessConstraint targetConstraint = currentConstraint as InternalUniquenessConstraint;
 							if (object.ReferenceEquals(activeInternalConstraint, targetConstraint))
 							{
@@ -1306,7 +1306,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					ActiveInternalUniquenessConstraintConnectAction = iucca;
 					RoleMoveableCollection roleColl = iuc.RoleCollection;
 					FactTypeShape factShape = e.DiagramHitTestInfo.HitDiagramItem.Shape as FactTypeShape;
-					if (roleColl.Count > 0)
+					if (roleColl.Count != 0)
 					{
 						IList<Role> iuccaRoles = iucca.SelectedRoleCollection;
 						foreach (Role r in roleColl)
@@ -2738,6 +2738,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				if (bestIndex == -1)
 				{
+					if (linkShape == null)
+					{
+						// UNDONE: This is here to stop a subtypelink from an objectified fact
+						// from crashing. However, if there is also a role-player link to the
+						// supertype then the subtype link will overdraw the other line. This
+						// all comes back to the same problem: the framework needs to provide
+						// the link instance we're trying to connect.
+						return PointD.Empty; // Signals a standard attach to the edge of the shape
+					}
 					// There was only one match, we don't have to record anything
 					bestIndex = firstIndex;
 					linkShape.HasBeenConnected = true;

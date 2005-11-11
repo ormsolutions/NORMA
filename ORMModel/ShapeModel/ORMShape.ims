@@ -114,6 +114,10 @@ Information Contained Herein is Proprietary and Confidential.
         </shape>
       </derivedshapes>
     </shape>
+    <shape namespace="Neumont.Tools.ORM.ShapeModel" name="LinkConnectorShape" identity="51770447-28e0-4bff-977f-2d2625f7978d" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.NodeShape" category="" description="" doccomment="" localize="false">
+        <metaattributes />
+        <derivedshapes />
+    </shape>
   </shapes>
   <diagrams>
     <diagram namespace="Neumont.Tools.ORM.ShapeModel" name="ORMDiagram" identity="948f992d-c9b8-46f9-be3c-b48347f8ab0b" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.Diagram" category="" description="" doccomment="" localize="false">

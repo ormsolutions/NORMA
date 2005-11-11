@@ -14,6 +14,7 @@
 			<se:OmitClass Class="ValueRangeLink"/>
 			<se:OmitClass Class="RolePlayerLink"/>
 			<se:OmitClass Class="SubtypeLink"/>
+			<se:OmitClass Class="LinkConnectorShape"/>
 			<se:OmitRelationship Class="LinkConnectsToNode" Namespace="Microsoft.VisualStudio.Modeling.Diagrams"/>
 		</se:OmittedMetaElements>
 	</se:MetaModel>

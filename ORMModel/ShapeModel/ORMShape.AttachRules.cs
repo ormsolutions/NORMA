@@ -20,6 +20,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintAttributeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierRemovedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ObjectTypeShape).GetNestedType("ShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ORMBaseBinaryLinkShape).GetNestedType("LinkChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ConstraintRoleSequenceRoleAdded),
 				typeof(ConstraintRoleSequenceRoleRemoved),
 				typeof(ExternalFactConstraintAdded),

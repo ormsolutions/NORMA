@@ -257,17 +257,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 				IFactConstraint modelLink = ModelElement as IFactConstraint;
 				FactType attachedFact = modelLink.FactType;
 				IConstraint constraint = modelLink.Constraint;
-				NodeShape fromShape;
-				NodeShape toShape;
-				if (null != (fromShape = diagram.FindShapeForElement(constraint as ModelElement) as NodeShape) &&
-					null != (toShape = diagram.FindShapeForElement(attachedFact) as NodeShape))
+				NodeShape fromShape = diagram.FindShapeForElement(constraint as ModelElement) as NodeShape;
+				if (null != fromShape)
 				{
-					// Note that the from/to ordering reversal here is a hack so
-					// the fact type shape folding code can find the opposite constraint
-					// based on its center point. If both ends move the connection point,
-					// then only the first one passed in here can find the opposite shape.
-					// UNDONE: Slimy hack, should be removed if we get better framework support.
-					Connect(toShape, fromShape);
+					ShapeElement untypedToShape = diagram.FindShapeForElement(attachedFact);
+					NodeShape toShape = untypedToShape as NodeShape;
+					if (null == toShape)
+					{
+						SubtypeLink subTypeLink = untypedToShape as SubtypeLink;
+						if (null != subTypeLink)
+						{
+							toShape = subTypeLink.EnsureLinkConnectorShape();
+						}
+					}
+					if (null != toShape)
+					{
+						// Note that the from/to ordering reversal here is a hack so
+						// the fact type shape folding code can find the opposite constraint
+						// based on its center point. If both ends move the connection point,
+						// then only the first one passed in here can find the opposite shape.
+						// UNDONE: Slimy hack, should be removed if we get better framework support.
+						Connect(toShape, fromShape);
+					}
 				}
 			}
 		}

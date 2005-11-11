@@ -677,11 +677,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 				if (hasError)
 				{
-					foreach (InternalUniquenessConstraint constraint in GetInternalConstraints<InternalUniquenessConstraint>())
-					{
-						hasError = false;
-						break;
-					}
+					hasError = !GetInternalConstraints<InternalUniquenessConstraint>().GetEnumerator().MoveNext();
 				}
 
 				FactTypeRequiresInternalUniquenessConstraintError noUniquenessError = InternalUniquenessConstraintRequiredError;

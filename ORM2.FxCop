@@ -15332,6 +15332,33 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="LinkConnectorShape">
+          <Members>
+           <Member Name=".cctor()">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Status="Excluded" Created="2005-11-11 18:36:37Z">
+              <Issue>
+               <Item>LinkConnectorShape.LinkConnectorShape()</Item>
+               <Item>classStyleSet</Item>
+               <Item>Microsoft.VisualStudio.Modeling.Diagrams.StyleSet</Item>
+               <Item>null</Item>
+              </Issue>
+              <Issue>
+               <Item>LinkConnectorShape.LinkConnectorShape()</Item>
+               <Item>shapeFields</Item>
+               <Item>Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection</Item>
+               <Item>null</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="68" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
          <Type Name="ObjectifiedFactTypeNameShape">
           <Members>
            <Member Name=".cctor()">
@@ -15702,6 +15729,20 @@
            </Member>
           </Members>
          </Type>
+         <Type Name="ORMBaseBinaryLinkShape+LinkChangeRule">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-11-11 18:36:37Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape+LinkChangeRule</Item>
+            </Issue>
+            <Notes>
+             <User Name="mcurland">
+              <Note Id="67" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="ORMBaseShape">
           <Members>
            <Member Name=".cctor()">
@@ -15994,6 +16035,36 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="ActiveBackgroundResource">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2005-11-11 18:36:37Z">
+              <Issue>
+               <Item>ORMDiagram.ActiveBackgroundResource</Item>
+               <Item>Microsoft.VisualStudio.Modeling.Diagrams.StyleSetResourceId</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="69" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="ActiveConnectionLineDecoratorResource">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2005-11-11 18:36:37Z">
+              <Issue>
+               <Item>ORMDiagram.ActiveConnectionLineDecoratorResource</Item>
+               <Item>Microsoft.VisualStudio.Modeling.Diagrams.StyleSetResourceId</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="69" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="CustomSerializedElementInfo">
             <Accessors>
              <Accessor Name="get_CustomSerializedElementInfo():Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
@@ -16240,6 +16311,21 @@
               <Notes>
                <User Name="mcurland">
                 <Note Id="10" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="StickyConnectionLineDecoratorResource">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2005-11-11 18:36:37Z">
+              <Issue>
+               <Item>ORMDiagram.StickyConnectionLineDecoratorResource</Item>
+               <Item>Microsoft.VisualStudio.Modeling.Diagrams.StyleSetResourceId</Item>
+              </Issue>
+              <Notes>
+               <User Name="mcurland">
+                <Note Id="69" />
                </User>
               </Notes>
              </Message>
@@ -18338,6 +18424,9 @@
     <Note Id="64" Modified="2005-10-28 08:40:00Z">Rule classes instantiated via reflection</Note>
     <Note Id="65" Modified="2005-10-28 19:05:28Z">Casts happen in different branches</Note>
     <Note Id="66" Modified="2005-11-05 17:27:46Z">The method is only appropriate for internal uniqueness constraints. DiagramItems are not available for other constraint types.</Note>
+    <Note Id="67" Modified="2005-11-11 18:37:52Z">Private rule class instantiated via reflection</Note>
+    <Note Id="68" Modified="2005-11-11 18:38:11Z">DSLTools-generated code</Note>
+    <Note Id="69" Modified="2005-11-11 18:38:28Z">Reviewed to verify immutability</Note>
    </User>
    <User Name="mouzts">
     <Note Id="0" Modified="2005-09-15 22:08:24Z">Rule classes instantiated via reflection</Note>

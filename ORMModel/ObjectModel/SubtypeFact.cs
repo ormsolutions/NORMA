@@ -34,11 +34,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return RoleCollection[0].RolePlayer;
+				return SubtypeRole.RolePlayer;
 			}
 			set
 			{
-				RoleCollection[0].RolePlayer = value;
+				SubtypeRole.RolePlayer = value;
 			}
 		}
 		/// <summary>
@@ -48,11 +48,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return RoleCollection[1].RolePlayer;
+				return SupertypeRole.RolePlayer;
 			}
 			set
 			{
-				RoleCollection[1].RolePlayer = value;
+				SupertypeRole.RolePlayer = value;
+			}
+		}
+		/// <summary>
+		/// Get the Role attached to the subtype object
+		/// </summary>
+		public Role SubtypeRole
+		{
+			get
+			{
+				return RoleCollection[0];
+			}
+		}
+		/// <summary>
+		/// Get the Role attached to the supertype object
+		/// </summary>
+		public Role SupertypeRole
+		{
+			get
+			{
+				return RoleCollection[1];
 			}
 		}
 		#endregion // Accessor functions

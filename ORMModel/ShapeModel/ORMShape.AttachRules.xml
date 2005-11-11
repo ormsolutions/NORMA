@@ -10,6 +10,7 @@
 		<arg:Rule class="FrequencyConstraintShape.FrequencyConstraintAttributeChangeRule"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierRemovedRule"/>
 		<arg:Rule class="ObjectTypeShape.ShapeChangeRule"/>
+		<arg:Rule class="ORMBaseBinaryLinkShape.LinkChangeRule"/>
 		<arg:Rule class="ORMShapeModel.ConstraintRoleSequenceRoleAdded"/>
 		<arg:Rule class="ORMShapeModel.ConstraintRoleSequenceRoleRemoved"/>
 		<arg:Rule class="ORMShapeModel.ExternalFactConstraintAdded"/>

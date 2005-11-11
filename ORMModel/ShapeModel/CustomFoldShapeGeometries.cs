@@ -18,8 +18,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Get the connection point corresponding to the opposite shape element.
 		/// The value returned uses absolute coordinates.
 		/// </summary>
-		/// <param name="oppositeShape"></param>
-		/// <returns></returns>
+		/// <param name="oppositeShape">The opposite shape to attach to</param>
+		/// <returns>An absolute point, or PointD.Empty to proceed with normal shape folding</returns>
 		PointD CalculateConnectionPoint(NodeShape oppositeShape);
 	}
 	#endregion // ICustomShapeFolding interface
@@ -100,7 +100,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 							ICustomShapeFolding customFolding = testShape as ICustomShapeFolding;
 							if (customFolding != null)
 							{
-								vectorEndPoint = customFolding.CalculateConnectionPoint(shape);
+								PointD customEndPoint = customFolding.CalculateConnectionPoint(shape);
+								if (!customEndPoint.IsEmpty)
+								{
+									vectorEndPoint = customEndPoint;
+								}
 							}
 							break;
 						}
@@ -322,24 +326,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Provide custom shape folding for rectangular fact types
 		/// </summary>
-		/// <param name="geometryHost"></param>
-		/// <param name="potentialPoint"></param>
-		/// <param name="vectorEndPoint"></param>
-		/// <returns></returns>
+		/// <param name="geometryHost">The host view</param>
+		/// <param name="potentialPoint">A point on the rectangular boundary of the shape</param>
+		/// <param name="vectorEndPoint">A point on the opposite end of the connecting line</param>
+		/// <returns>A point on the rectangle edge border</returns>
 		public override PointD DoFoldToShape(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint)
 		{
 			NodeShape oppositeShape;
 			ICustomShapeFolding customFolding;
 			vectorEndPoint = GeometryUtility.AdjustVectorEndPoint(geometryHost, potentialPoint, vectorEndPoint, out oppositeShape);
+			PointD customPoint;
 			if (oppositeShape != null &&
-				null != (customFolding = geometryHost as ICustomShapeFolding))
+				null != (customFolding = geometryHost as ICustomShapeFolding) &&
+				!(customPoint = customFolding.CalculateConnectionPoint(oppositeShape)).IsEmpty)
 			{
-				PointD retVal = customFolding.CalculateConnectionPoint(oppositeShape);
-
 				// Translate back to local coordinates
 				PointD location = geometryHost.GeometryBoundingBox.Location;
-				retVal.Offset(-location.X, -location.Y);
-				return retVal;
+				customPoint.Offset(-location.X, -location.Y);
+				return customPoint;
 			}
 			else
 			{
@@ -419,24 +423,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Provide custom shape folding for rectangular fact types
 		/// </summary>
-		/// <param name="geometryHost"></param>
-		/// <param name="potentialPoint"></param>
-		/// <param name="vectorEndPoint"></param>
-		/// <returns></returns>
+		/// <param name="geometryHost">The host view</param>
+		/// <param name="potentialPoint">A point on the rectangular boundary of the shape</param>
+		/// <param name="vectorEndPoint">A point on the opposite end of the connecting line</param>
+		/// <returns>A point on the rounded rectangle border</returns>
 		public override PointD DoFoldToShape(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint)
 		{
 			NodeShape oppositeShape;
 			ICustomShapeFolding customFolding;
 			vectorEndPoint = GeometryUtility.AdjustVectorEndPoint(geometryHost, potentialPoint, vectorEndPoint, out oppositeShape);
+			PointD customPoint;
 			if (oppositeShape != null &&
-				null != (customFolding = geometryHost as ICustomShapeFolding))
+				null != (customFolding = geometryHost as ICustomShapeFolding) &&
+				!(customPoint = customFolding.CalculateConnectionPoint(oppositeShape)).IsEmpty)
 			{
-				PointD retVal = customFolding.CalculateConnectionPoint(oppositeShape);
-
 				// Translate back to local coordinates
 				PointD location = geometryHost.GeometryBoundingBox.Location;
-				retVal.Offset(-location.X, -location.Y);
-				return retVal;
+				customPoint.Offset(-location.X, -location.Y);
+				return customPoint;
 			}
 			else
 			{

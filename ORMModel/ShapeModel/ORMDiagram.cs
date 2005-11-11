@@ -409,6 +409,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public static readonly StyleSetResourceId StickyForegroundResource = new StyleSetResourceId("Neumont", "StickyForegroundResource");
 		/// <summary>
+		/// The brush or pen used to draw a link decorator as sticky
+		/// </summary>
+		public static readonly StyleSetResourceId StickyConnectionLineDecoratorResource = new StyleSetResourceId("Neumont", "StickyConnectionLineDecorator");
+		/// <summary>
+		/// The brush or pen used to draw a link decorator as active. Generally corresponds to the role picker color
+		/// </summary>
+		public static readonly StyleSetResourceId ActiveConnectionLineDecoratorResource = new StyleSetResourceId("Neumont", "ActiveConnectionLineDecorator");
+		/// <summary>
+		/// The brush used to draw a link as active. Generally corresponds to the role picker color.
+		/// </summary>
+		public static readonly StyleSetResourceId ActiveBackgroundResource = new StyleSetResourceId("Neumont", "ActiveBackgroundResource");
+
+		/// <summary>
 		/// Standard override to populate the style set for the shape type
 		/// </summary>
 		protected override void InitializeResources(StyleSet classStyleSet)

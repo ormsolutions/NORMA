@@ -55,6 +55,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (sourceShapeElement is ExternalConstraintShape)
 				{
 					retVal = targetShapeElement is FactTypeShape ||
+						targetShapeElement is SubtypeLink ||
 						object.ReferenceEquals(targetShapeElement, sourceShapeElement.Diagram) ||
 						object.ReferenceEquals(sourceShapeElement, targetShapeElement);
 				}
@@ -73,7 +74,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				bool retVal = false;
 				if (sourceShapeElement is ExternalConstraintShape)
 				{
-					if (targetShapeElement is FactTypeShape)
+					if (targetShapeElement is FactTypeShape || targetShapeElement is SubtypeLink)
 					{
 						// UNDONE: Constrain this, this is overly generous
 						retVal = true;
@@ -175,6 +176,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private IList<Role> myInitialSelectedRoles;
 		private IList<Role> mySelectedRoles;
 		private ExternalConstraintShape mySourceShape;
+		private IConstraint myActiveConstraint;
 		private DiagramItem myLastMouseMoveItem;
 		private static readonly ConnectionType[] EmptyConnectionTypes = {};
 		private enum OnClickedAction
@@ -227,7 +229,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					foreach (ModelElement element in item.RepresentedElements)
 					{
-						if (element is Role)
+						if (element is Role || element is SubtypeLink)
 						{
 							cursor = myAllowedCursor;
 							break;
@@ -293,6 +295,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 				foreach (ModelElement elem in item.RepresentedElements)
 				{
 					currentElement = elem;
+					SubtypeLink subtypeLink = currentElement as SubtypeLink;
+					if (subtypeLink != null)
+					{
+						currentElement = subtypeLink.AssociatedSubtypeFact.SupertypeRole;
+					}
 					break;
 				}
 				ExternalConstraintShape constraintShape;
@@ -304,6 +311,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						// Let the click through to the base to officially begin the drag action
 						base.OnClicked(e);
 						mySourceShape = constraintShape;
+						myActiveConstraint = constraintShape.AssociatedConstraint;
 						if (null != (ormDiagram = mySourceShape.Diagram as ORMDiagram))
 						{
 							ormDiagram.StickyObject = constraintShape;
@@ -373,15 +381,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		/// <summary>
-		/// Redraw fact types for any selected roles, deselect the toolbox item,
-		/// and chain to a new connect action if this one completed successfully.
-		/// </summary>
-		/// <param name="e">DiagramEventArgs</param>
-		protected override void OnMouseActionDeactivated(DiagramEventArgs e)
+		private static void RedrawOwningFactTypes(IList<Role> roles)
 		{
-			base.OnMouseActionDeactivated(e);
-			IList<Role> roles = mySelectedRoles;
 			if (roles != null)
 			{
 				int roleCount = roles.Count;
@@ -390,6 +391,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 					RedrawOwningFactType(roles[i]);
 				}
 			}
+		}
+		/// <summary>
+		/// Redraw fact types for any selected roles, deselect the toolbox item,
+		/// and chain to a new connect action if this one completed successfully.
+		/// </summary>
+		/// <param name="e">DiagramEventArgs</param>
+		protected override void OnMouseActionDeactivated(DiagramEventArgs e)
+		{
+			base.OnMouseActionDeactivated(e);
+			RedrawOwningFactTypes(mySelectedRoles);
+			RedrawOwningFactTypes(myInitialSelectedRoles);
 
 			// Set the selection back to pointer after connect action
 			DiagramView activeView;
@@ -446,12 +458,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // Base overrides
 		#region ExternalConstraintConnectAction specific
+		/// <summary>
+		/// The constraint that acts as the Source object for this mouse action
+		/// </summary>
+		public IConstraint ActiveConstraint
+		{
+			get
+			{
+				return myActiveConstraint;
+			}
+		}
 		private void Reset()
 		{
 			myConstraintRoleSequence = null;
 			myInitialSelectedRoles = null;
 			mySelectedRoles = null;
 			mySourceShape = null;
+			myActiveConstraint = null;
 			myPendingOnClickedAction = OnClickedAction.Normal;
 			FactTypeShape.ActiveExternalConstraintConnectAction = null;
 		}

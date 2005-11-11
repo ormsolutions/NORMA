@@ -194,19 +194,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return mySourceShape;
 			}
 		}
-
-		/// <summary>
-		/// Gets the InternalUniquenessConstraint being worked on.
-		/// </summary>
-		/// <value></value>
-		public InternalUniquenessConstraint SourceInternalUniquenessConstraint
-		{
-			get
-			{
-				return myIUC;
-			}
-		}
-
 		private OnClickedAction myPendingOnClickedAction;
 		#endregion // Member variables
 		#region Constructors
@@ -472,7 +459,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// The constraint that acts as the Source object for this mouse action
 		/// </summary>
-		InternalUniquenessConstraint ActiveConstraint
+		public InternalUniquenessConstraint ActiveConstraint
 		{
 			get
 			{

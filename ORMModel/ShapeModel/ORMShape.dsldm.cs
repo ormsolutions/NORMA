@@ -337,6 +337,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(Neumont.Tools.ORM.ShapeModel.ExternalConstraintLinkElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeLink),
 				typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeLinkElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.LinkConnectorShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.LinkConnectorShapeElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ShapeModel.ORMDiagram),
 				typeof(Neumont.Tools.ORM.ShapeModel.ORMDiagramElementFactoryCreator),
 
@@ -2838,6 +2840,147 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				return new ValueRangeLinkElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ShapeModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.LinkConnectorShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.LinkConnectorShape")]
+	public  partial class LinkConnectorShape : Microsoft.VisualStudio.Modeling.Diagrams.NodeShape
+	{
+		#region LinkConnectorShape's Generated Shape Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "51770447-28e0-4bff-977f-2d2625f7978d";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.LinkConnectorShape.MetaClassGuidString);
+		#region Boilerplate code for every Shape-derived class
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.StyleSet classStyleSet = null;
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection shapeFields = null;
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		protected override Microsoft.VisualStudio.Modeling.Diagrams.StyleSet ClassStyleSet
+		{
+			get
+			{
+				if (classStyleSet == null)
+				{
+					classStyleSet = CreateClassStyleSet();
+				}
+				return classStyleSet;
+			}
+		}
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection ShapeFields
+		{
+			get
+			{
+				if (shapeFields == null)
+				{
+					shapeFields = CreateShapeFields();
+				}
+				return shapeFields;
+			}
+		}
+		#endregion
+		#endregion
+
+	}
+	#region LinkConnectorShape's Generated Constructor Code
+	public  partial class LinkConnectorShape
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public LinkConnectorShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LinkConnectorShape CreateLinkConnectorShape(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateLinkConnectorShape(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LinkConnectorShape CreateAndInitializeLinkConnectorShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeLinkConnectorShape(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public LinkConnectorShape(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LinkConnectorShape CreateLinkConnectorShape(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (LinkConnectorShape)partition.ElementFactory.CreateElement(typeof(LinkConnectorShape));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static LinkConnectorShape CreateAndInitializeLinkConnectorShape(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (LinkConnectorShape)partition.ElementFactory.CreateElement(typeof(LinkConnectorShape), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for LinkConnectorShape
+	/// <summary>
+	/// LinkConnectorShape Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.LinkConnectorShape))]
+	public sealed class LinkConnectorShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public LinkConnectorShapeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ShapeModel.LinkConnectorShape( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static LinkConnectorShapeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new LinkConnectorShapeElementFactoryCreator();
 			}
 		}
 	}
