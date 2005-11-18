@@ -279,6 +279,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // SingleColumnExternalConstraint Specific
 		#region SingleColumnExternalConstraint synchronization rules
+
+		/// <summary>
+		/// Add Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
+		/// </summary>
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class EnforceRoleSequenceValidityForAdd : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				SingleColumnExternalConstraint constraint = link.ConstraintRoleSequenceCollection as SingleColumnExternalConstraint;
+				if (constraint != null)
+				{
+					constraint.VerifyCompatibleRolePlayerTypeForRule(null);
+					constraint.VerifyRoleSequenceCountForRule(null);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Remove Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
+		/// </summary>
+
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		private class EnforceRoleSequenceValidityForRemove : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				SingleColumnExternalConstraint constraint = link.ConstraintRoleSequenceCollection as SingleColumnExternalConstraint;
+				if (constraint != null && !constraint.IsRemoved)
+				{
+					constraint.VerifyCompatibleRolePlayerTypeForRule(null);
+					constraint.VerifyRoleSequenceCountForRule(null);
+				}
+			}
+
+		}
+
+		
 		/// <summary>
 		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding ExternalFactConstraint and ExternalRoleConstraint
@@ -300,6 +340,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+
+		[RuleOn(typeof(ModelHasSingleColumnExternalConstraint), FireTime = TimeToFire.LocalCommit)]
+		private class ConstraintHasRoleSequenceAddedLocalCommit : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ModelHasSingleColumnExternalConstraint link = e.ModelElement as ModelHasSingleColumnExternalConstraint;
+				IModelErrorOwner errorOwner = link.SingleColumnExternalConstraintCollection as IModelErrorOwner;
+				if (errorOwner != null)
+				{
+					errorOwner.ValidateErrors(null);
+				}
+			}
+		}
+
+
 		/// <summary>
 		/// If a role sequence is added that already contains roles, then
 		/// make sure the corresponding ExternalFactConstraint and ExternalRoleConstraint
@@ -361,6 +417,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return typeCompatibility;
 				}
+
+				TooFewRoleSequencesError tooFew;
+				if (null != (tooFew = TooFewRoleSequencesError))
+				{
+					yield return tooFew;
+				}
+				TooManyRoleSequencesError tooMany;
+				if (null != (tooMany = TooManyRoleSequencesError))
+				{
+					yield return tooMany;
+				}
+				 
 			}
 		}
 		/// <summary>
@@ -374,6 +442,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
+			VerifyRoleSequenceCountForRule(notifyAdded);
+			
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -432,12 +502,75 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Deserialization Fixup
 		#region Error synchronization rules
-		// UNDONE: MultiColumnExternalConstraint error checking rules need to be
-		// ported to act on single column as well. Single column needs to look like
-		// multiple role sets to the end user, except that only a single column is allowed
-		// in each row. There, it is appropriate to attach the TooFew/TooMany-RoleSequencesError
-		// objects here as well.
-
+		#region VerifyRoleSequenceCountForRule
+		/// <summary>
+		/// Add, remove, and otherwise validate the current set of
+		/// errors for this constraint.
+		/// </summary>
+		/// <param name="notifyAdded">If not null, this is being called during
+		/// load when rules are not in place. Any elements that are added
+		/// must be notified back to the caller.</param>
+		private void VerifyRoleSequenceCountForRule(INotifyElementAdded notifyAdded)
+		{
+			if (!IsRemoved)
+			{
+				int minCount = ConstraintUtility.RoleSequenceCountMinimum(this);
+				int maxCount;
+				int currentCount = RoleCollection.Count;
+				Store store = Store;
+				TooFewRoleSequencesError insufficientError;
+				TooManyRoleSequencesError extraError;
+				bool removeTooFew = false;
+				bool removeTooMany = false;
+				if (currentCount < minCount)
+				{
+					if (null == TooFewRoleSequencesError)
+					{
+						insufficientError = TooFewRoleSequencesError.CreateTooFewRoleSequencesError(store);
+						insufficientError.Model = Model;
+						insufficientError.SingleColumnConstraint = this;
+						insufficientError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(insufficientError, true);
+						}
+					}
+					removeTooMany = true;
+				}
+				
+				else
+				{
+					removeTooFew = true;
+					if ((-1 != (maxCount = ConstraintUtility.RoleSequenceCountMaximum(this))) && (currentCount > maxCount))
+					{
+						if (null == TooManyRoleSequencesError)
+						{
+							extraError = TooManyRoleSequencesError.CreateTooManyRoleSequencesError(store);
+							extraError.Model = Model;
+							extraError.SingleColumnConstraint = this;
+							extraError.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(extraError, true);
+							}
+						}
+					}
+					else
+					{
+						removeTooMany = true;
+					}
+				}
+				if (removeTooFew && null != (insufficientError = TooFewRoleSequencesError))
+				{
+					insufficientError.Remove();
+				}
+				if (removeTooMany && null != (extraError = TooManyRoleSequencesError))
+				{
+					extraError.Remove();
+				}
+			}
+		}
+		#endregion // VerifyRoleSequenceCountForRule
 
 		/// <summary>
 		/// Verify CompatibleRolePlayertypeForRule Used to verify compatibility for single column constraints.
@@ -536,9 +669,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
-		//		Add and Remove Rules for a Single Column Constraint to enforce the Compatibility between fact types
-
 
 		/// <summary>
 		/// Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
@@ -816,11 +946,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (currentCount < minCount)
 				{
 					tooFewOrTooMany = true;
-					if (null == TooFewRoleSequencesError)
+					if (null == this.TooFewRoleSequencesError)
 					{
 						insufficientError = TooFewRoleSequencesError.CreateTooFewRoleSequencesError(store);
 						insufficientError.Model = Model;
-						insufficientError.Constraint = this;
+						insufficientError.MultiColumnConstraint = this;
 						insufficientError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -839,7 +969,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							extraError = TooManyRoleSequencesError.CreateTooManyRoleSequencesError(store);
 							extraError.Model = Model;
-							extraError.Constraint = this;
+							extraError.MultiColumnConstraint = this;
 							extraError.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -2876,7 +3006,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			MultiColumnExternalConstraint parent = Constraint;
+			NamedElement parent = MultiColumnConstraint;
+			if (parent == null)
+			{
+				parent = SingleColumnConstraint;
+				Debug.Assert(parent != null);
+			}
 			string parentName = (parent != null) ? parent.Name : "";
 			string currentText = Name;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText, parentName);
@@ -2903,7 +3038,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected ModelElement[] GetRepresentedElements()
 		{
-			return new ModelElement[]{Constraint};
+			ModelElement mel = SingleColumnConstraint;
+			if (mel == null)
+			{
+				mel = MultiColumnConstraint;
+			}
+			// it must be either a single or a multi column constraint
+			Debug.Assert(mel != null);
+			return new ModelElement[] { mel };
 		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
 		{
@@ -2919,7 +3061,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			MultiColumnExternalConstraint parent = this.Constraint;
+			NamedElement parent = MultiColumnConstraint;
+			if (parent == null)
+			{
+				parent = SingleColumnConstraint;
+				Debug.Assert(parent != null);
+			}
 			string parentName = (parent != null) ? parent.Name : "";
 			string currentText = Name;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesText, parentName);
@@ -2946,7 +3093,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected ModelElement[] GetRepresentedElements()
 		{
-			return new ModelElement[] { Constraint };
+			MultiColumnExternalConstraint multi = MultiColumnConstraint;
+			SingleColumnExternalConstraint sing = SingleColumnConstraint;
+			// it must be either a single or a multi column constraint
+			Debug.Assert(multi != null || sing != null);
+			if (MultiColumnConstraint != null)
+			{
+				return new ModelElement[] { multi };
+			}
+			else
+			{
+				return new ModelElement[] { sing };
+			}
 		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
 		{

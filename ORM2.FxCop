@@ -3103,42 +3103,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="ExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator">
-          <Members>
-           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
-            <Messages>
-             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue>
-               <Item>ExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="34" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="ExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator">
-          <Members>
-           <Member Name="Create(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.ModelDataBag):Microsoft.VisualStudio.Modeling.ModelElement">
-            <Messages>
-             <Message TypeName="DoNotDeclareVirtualMembersInSealedTypes" Category="Microsoft.Design" CheckId="CA1048" Status="Excluded" Created="2005-07-06 21:44:00Z">
-              <Issue>
-               <Item>ExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator.Create(Partition, ModelDataBag):ModelElement</Item>
-              </Issue>
-              <Notes>
-               <User Name="mcurland">
-                <Note Id="34" />
-               </User>
-              </Notes>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="ExternalConstraintRoleSequenceArityMismatchError">
           <Members>
            <Member Name="GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.MetaRoleInfo):Neumont.Tools.ORM.Shell.ORMCustomSerializedElementInfo">
@@ -6520,6 +6484,280 @@
             </Messages>
            </Member>
           </Members>
+         </Type>
+         <Type Name="MultiColumnExternalConstraintHasTooFewRoleSequencesError">
+          <Messages>
+           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+            <Issue Name="Type">
+             <Item>Multi</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError</Item>
+            </Issue>
+            <Notes>
+             <User Name="obuhler">
+              <Note Id="5" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.CreateAndInitializeMultiColumnExternalConstraintHasTooFewRoleSequencesError(Partition, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasTooFewRoleSequencesError</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.CreateAndInitializeMultiColumnExternalConstraintHasTooFewRoleSequencesError(Store, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasTooFewRoleSequencesError</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="CreateMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.CreateMultiColumnExternalConstraintHasTooFewRoleSequencesError(Partition, RoleAssignment[]):MultiColumnExternalConstraintHasTooFewRoleSequencesError</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="CreateMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.CreateMultiColumnExternalConstraintHasTooFewRoleSequencesError(Store, RoleAssignment[]):MultiColumnExternalConstraintHasTooFewRoleSequencesError</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MultiColumnConstraint">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraint:MultiColumnExternalConstraint</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MultiColumnConstraintMetaRoleGuid">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuid</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MultiColumnConstraintMetaRoleGuidString">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuidString</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MultiColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator">
+          <Messages>
+           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+            <Issue Name="Type">
+             <Item>Multi</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator</Item>
+            </Issue>
+            <Notes>
+             <User Name="obuhler">
+              <Note Id="5" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="MultiColumnExternalConstraintHasTooManyRoleSequencesError">
+          <Messages>
+           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+            <Issue Name="Type">
+             <Item>Multi</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError</Item>
+            </Issue>
+            <Notes>
+             <User Name="obuhler">
+              <Note Id="5" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.CreateAndInitializeMultiColumnExternalConstraintHasTooManyRoleSequencesError(Partition, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasTooManyRoleSequencesError</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="CreateAndInitializeMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.AttributeAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.CreateAndInitializeMultiColumnExternalConstraintHasTooManyRoleSequencesError(Store, RoleAssignment[], AttributeAssignment[]):MultiColumnExternalConstraintHasTooManyRoleSequencesError</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="CreateMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.CreateMultiColumnExternalConstraintHasTooManyRoleSequencesError(Partition, RoleAssignment[]):MultiColumnExternalConstraintHasTooManyRoleSequencesError</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="CreateMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[]):Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.CreateMultiColumnExternalConstraintHasTooManyRoleSequencesError(Store, RoleAssignment[]):MultiColumnExternalConstraintHasTooManyRoleSequencesError</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MultiColumnConstraint">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraint:MultiColumnExternalConstraint</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MultiColumnConstraintMetaRoleGuid">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuid</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MultiColumnConstraintMetaRoleGuidString">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuidString</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MultiColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator">
+          <Messages>
+           <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+            <Issue Name="Type">
+             <Item>Multi</Item>
+             <Item>Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator</Item>
+            </Issue>
+            <Notes>
+             <User Name="obuhler">
+              <Note Id="5" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
          </Type>
          <Type Name="MultiColumnExternalConstraintMoveableCollection">
           <Messages>
@@ -11887,6 +12125,20 @@
            </Message>
           </Messages>
          </Type>
+         <Type Name="SingleColumnExternalConstraint+ConstraintHasRoleSequenceAddedLocalCommit">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-11-17 22:28:49Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+ConstraintHasRoleSequenceAddedLocalCommit</Item>
+            </Issue>
+            <Notes>
+             <User Name="obuhler">
+              <Note Id="4" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
          <Type Name="SingleColumnExternalConstraint+ConstraintRoleSequenceHasRoleAdded">
           <Messages>
            <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-04-15 14:45:27Z">
@@ -11896,6 +12148,20 @@
             <Notes>
              <User Name="mcurland">
               <Note Id="7" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SingleColumnExternalConstraint+EnforceRoleSequenceValidityForAdd">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-11-17 22:28:49Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+EnforceRoleSequenceValidityForAdd</Item>
+            </Issue>
+            <Notes>
+             <User Name="obuhler">
+              <Note Id="4" />
              </User>
             </Notes>
            </Message>
@@ -11924,6 +12190,20 @@
             <Notes>
              <User Name="mcurland">
               <Note Id="45" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="SingleColumnExternalConstraint+EnforceRoleSequenceValidityForRemove">
+          <Messages>
+           <Message TypeName="AvoidUninstantiatedInternalClasses" Category="Microsoft.Performance" CheckId="CA1812" Status="Excluded" Created="2005-11-17 22:28:49Z">
+            <Issue>
+             <Item>Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint+EnforceRoleSequenceValidityForRemove</Item>
+            </Issue>
+            <Notes>
+             <User Name="obuhler">
+              <Note Id="4" />
              </User>
             </Notes>
            </Message>
@@ -12378,6 +12658,21 @@
              </Message>
             </Messages>
            </Member>
+           <Member Name="MultiColumnConstraint">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>TooFewRoleSequencesError.MultiColumnConstraint:MultiColumnExternalConstraint</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="SupportedCustomSerializedOperations">
             <Accessors>
              <Accessor Name="get_SupportedCustomSerializedOperations():Neumont.Tools.ORM.Shell.ORMCustomSerializedElementSupportedOperations">
@@ -12575,6 +12870,21 @@
               <Notes>
                <User Name="mcurland">
                 <Note Id="33" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="MultiColumnConstraint">
+            <Messages>
+             <Message Id="Multi" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2005-11-17 22:28:49Z">
+              <Issue Name="Member">
+               <Item>Multi</Item>
+               <Item>TooManyRoleSequencesError.MultiColumnConstraint:MultiColumnExternalConstraint</Item>
+              </Issue>
+              <Notes>
+               <User Name="obuhler">
+                <Note Id="5" />
                </User>
               </Notes>
              </Message>
@@ -18436,6 +18746,8 @@
     <Note Id="1" Modified="2005-07-29 21:46:41Z">Standard code spit matching interface pattern</Note>
     <Note Id="2" Modified="2005-11-02 23:34:36Z">Rule classes instantiated via reflection</Note>
     <Note Id="3" Modified="2005-11-04 21:33:43Z">Rules classes instantiated via reflection</Note>
+    <Note Id="4" Modified="2005-11-17 22:35:37Z">Rule classes instantiated via reflection</Note>
+    <Note Id="5" Modified="2005-11-17 22:36:02Z">FxCop limitation: can't exclude Multicolumn from the list of compound words.</Note>
    </User>
    <User Name="pewert">
     <Note Id="0" Modified="2005-04-25 20:13:21Z">Defined in IMS-generated code</Note>

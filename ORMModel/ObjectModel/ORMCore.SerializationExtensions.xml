@@ -234,6 +234,8 @@
 			<se:Link RelationshipName="MultiColumnExternalConstraintHasRoleSequence" RoleName="RoleSequenceCollection"/>
 		</se:ChildElement>
 		<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="MultiColumnExternalConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="MultiColumnExternalConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="MultiColumnExternalConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
@@ -256,6 +258,8 @@
 		</se:ChildElement>
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>
 		<se:Link RelationshipName="SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SingleColumnExternalConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SingleColumnExternalConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="DisjunctiveMandatoryConstraint" Override="true">
 		<se:Link RelationshipName="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError" RoleName="ImpliedBySimpleMandatoryError" WriteStyle="NotWritten"/>
@@ -365,13 +369,15 @@
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="Reading" Name="Reading"/>
 	</se:Element>
 	<se:Element Class="TooFewRoleSequencesError" Override="true">
-		<se:Link RelationshipName="ExternalConstraintHasTooFewRoleSequencesError" RoleName="Constraint" Name="Constraint"/>
+		<se:Link RelationshipName="MultiColumnExternalConstraintHasTooFewRoleSequencesError" RoleName="MultiColumnConstraint" Name="MultiColumnConstraint"/>
+		<se:Link RelationshipName="SingleColumnExternalConstraintHasTooFewRoleSequencesError" RoleName="SingleColumnConstraint" Name="SingleColumnConstraint"/>
 	</se:Element>
 	<se:Element Class="TooManyReadingRolesError" Override="true">
 		<se:Link RelationshipName="ReadingHasTooManyRolesError" RoleName="Reading" Name="Reading"/>
 	</se:Element>
 	<se:Element Class="TooManyRoleSequencesError" Override="true">
-		<se:Link RelationshipName="ExternalConstraintHasTooManyRoleSequencesError" RoleName="Constraint" Name="Constraint"/>
+		<se:Link RelationshipName="MultiColumnExternalConstraintHasTooManyRoleSequencesError" RoleName="MultiColumnConstraint" Name="MultiColumnConstraint"/>
+		<se:Link RelationshipName="SingleColumnExternalConstraintHasTooManyRoleSequencesError" RoleName="SingleColumnConstraint" Name="SingleColumnConstraint"/>
 	</se:Element>
 	<se:Element Class="DataTypeNotSpecifiedError" Override="true">
 		<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="ValueTypeHasDataType" Name="ConceptualDataType"/>

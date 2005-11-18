@@ -201,8 +201,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ModelHasFactType.FactTypeCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ModelHasFactType.FactTypeCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasRoleSequence.RoleSequenceCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuid);
-			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
-			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ReadingOrderHasReading.ReadingCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasReadingOrder.ReadingOrderCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ModelHasReferenceModeKind.ReferenceModeKindCollectionMetaRoleGuid);
@@ -235,6 +235,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint.ImpliedExternalUniquenessConstraintCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectificationImpliesExternalUniquenessConstraint.ImpliedExternalUniquenessConstraintCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.MaxValueMismatchErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError.ImpliedInternalUniquenessConstraintErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError.ImpliedInternalUniquenessConstraintErrorMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid);
 			#endregion
 		}
@@ -535,10 +537,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRoleElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError),
 				typeof(Neumont.Tools.ORM.ObjectModel.ModelHasErrorElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError),
-				typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError),
-				typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError),
+				typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError),
+				typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError),
@@ -618,6 +620,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError),
 				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError),
+				typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError),
+				typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError),
@@ -732,10 +738,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole), "RoleCollection", Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError), "ErrorCollection", Neumont.Tools.ORM.ObjectModel.ModelHasError.ErrorCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasError), "Model", Neumont.Tools.ORM.ObjectModel.ModelHasError.ModelMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError), "TooFewRoleSequencesError", Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError), "Constraint", Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError), "TooManyRoleSequencesError", Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError), "Constraint", Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError), "TooFewRoleSequencesError", Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError), "MultiColumnConstraint", Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError), "TooManyRoleSequencesError", Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError), "MultiColumnConstraint", Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError), "DuplicateNameError", Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError), "ObjectTypeCollection", Neumont.Tools.ORM.ObjectModel.ObjectTypeHasDuplicateNameError.ObjectTypeCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError), "DuplicateNameError", Neumont.Tools.ORM.ObjectModel.FactTypeHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid),
@@ -814,6 +820,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError), "ValueRange", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMaxValueMismatchError.ValueRangeMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError), "ImpliedInternalUniquenessConstraintError", Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError.ImpliedInternalUniquenessConstraintErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError), "FactType", Neumont.Tools.ORM.ObjectModel.FactTypeHasImpliedInternalUniquenessConstraintError.FactTypeMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError), "TooFewRoleSequencesError", Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError), "SingleColumnConstraint", Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraintMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError), "TooManyRoleSequencesError", Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError), "SingleColumnConstraint", Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "DuplicateNameError", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "InternalConstraintCollection", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.InternalConstraintCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError), "MinValueMismatchError", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid),
@@ -4075,16 +4085,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError;
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError;
 			}
 			set
 			{
 				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuid);
 				if (links.Count > 0)
 				{
 					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
 					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 					{
 						if (!link.IsRemoved)
@@ -4105,9 +4115,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if ((!sameRolePlayer) && (value != null))
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError), newRoles);
 				}
 			}
 		}
@@ -4120,16 +4130,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError;
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError;
 			}
 			set
 			{
 				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuid);
 				if (links.Count > 0)
 				{
 					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
 					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 					{
 						if (!link.IsRemoved)
@@ -4150,9 +4160,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if ((!sameRolePlayer) && (value != null))
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError), newRoles);
 				}
 			}
 		}
@@ -8731,6 +8741,96 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region TooFewRoleSequencesError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError TooFewRoleSequencesError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraintMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region TooManyRoleSequencesError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError TooManyRoleSequencesError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region Collection Classes for SingleColumnExternalConstraint
 	/// <summary>
@@ -10788,24 +10888,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError.MetaClassGuidString);
 		#endregion
 
-		#region Constraint's Generated Accessor Code
+		#region MultiColumnConstraint's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint Constraint
+		public Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint MultiColumnConstraint
 		{
 			get
 			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint;
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint;
 			}
 			set
 			{
 				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
 				if (links.Count > 0)
 				{
 					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuid);
 					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 					{
 						if (!link.IsRemoved)
@@ -10826,9 +10926,54 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if ((!sameRolePlayer) && (value != null))
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region SingleColumnConstraint's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint SingleColumnConstraint
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraintMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError), newRoles);
 				}
 			}
 		}
@@ -10936,24 +11081,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError.MetaClassGuidString);
 		#endregion
 
-		#region Constraint's Generated Accessor Code
+		#region MultiColumnConstraint's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint Constraint
+		public Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint MultiColumnConstraint
 		{
 			get
 			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint;
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint;
 			}
 			set
 			{
 				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
 				if (links.Count > 0)
 				{
 					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuid);
 					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 					{
 						if (!link.IsRemoved)
@@ -10974,9 +11119,54 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if ((!sameRolePlayer) && (value != null))
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError), newRoles);
+				}
+			}
+		}
+		#endregion
+		#region SingleColumnConstraint's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint SingleColumnConstraint
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError), newRoles);
 				}
 			}
 		}
@@ -25670,10 +25860,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError")]
-	public  partial class ExternalConstraintHasTooFewRoleSequencesError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError")]
+	public  partial class MultiColumnExternalConstraintHasTooFewRoleSequencesError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
 	{
-		#region ExternalConstraintHasTooFewRoleSequencesError's Generated MetaRelationship Code
+		#region MultiColumnExternalConstraintHasTooFewRoleSequencesError's Generated MetaRelationship Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -25681,15 +25871,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MetaClassGuidString);
 		/// <summary>
 		/// MetaRelationship Guid String
 		/// </summary>
-		public new const System.String MetaRelationshipGuidString = ExternalConstraintHasTooFewRoleSequencesError.MetaClassGuidString;
+		public new const System.String MetaRelationshipGuidString = MultiColumnExternalConstraintHasTooFewRoleSequencesError.MetaClassGuidString;
 		/// <summary>
 		/// MetaRelationship Guid
 		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = ExternalConstraintHasTooFewRoleSequencesError.MetaClassGuid;
+		public static readonly new System.Guid MetaRelationshipGuid = MultiColumnExternalConstraintHasTooFewRoleSequencesError.MetaClassGuid;
 		#endregion
 
 		#region TooFewRoleSequencesError's Generated MetaRole Code
@@ -25700,12 +25890,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid TooFewRoleSequencesErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuidString);
+		public static readonly System.Guid TooFewRoleSequencesErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesError")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesError")]
 		public  Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError TooFewRoleSequencesError
 		{
 			get { return (Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError)this.GetRolePlayer(TooFewRoleSequencesErrorMetaRoleGuid); }
@@ -25713,85 +25903,85 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
-		#region Constraint's Generated MetaRole Code
+		#region MultiColumnConstraint's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
 		/// </summary>
-		public const System.String ConstraintMetaRoleGuidString = "fcb1aaae-a4fb-4eac-943b-af02468061d3";
+		public const System.String MultiColumnConstraintMetaRoleGuidString = "fcb1aaae-a4fb-4eac-943b-af02468061d3";
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuidString);
+		public static readonly System.Guid MultiColumnConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError.Constraint")]
-		public  Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint Constraint
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraint")]
+		public  Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint MultiColumnConstraint
 		{
-			get { return (Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(ConstraintMetaRoleGuid); }
-			set { this.SetRolePlayer(ConstraintMetaRoleGuid, value); }
+			get { return (Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(MultiColumnConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(MultiColumnConstraintMetaRoleGuid, value); }
 		}
 		
 		#endregion
 	}
-	#region ExternalConstraintHasTooFewRoleSequencesError's Generated Constructor Code
-	public  partial class ExternalConstraintHasTooFewRoleSequencesError
+	#region MultiColumnExternalConstraintHasTooFewRoleSequencesError's Generated Constructor Code
+	public  partial class MultiColumnExternalConstraintHasTooFewRoleSequencesError
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		public MultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooFewRoleSequencesError CreateExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static MultiColumnExternalConstraintHasTooFewRoleSequencesError CreateMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return CreateExternalConstraintHasTooFewRoleSequencesError(store.DefaultPartition, rolePlayers);
+			return CreateMultiColumnExternalConstraintHasTooFewRoleSequencesError(store.DefaultPartition, rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooFewRoleSequencesError CreateAndInitializeExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static MultiColumnExternalConstraintHasTooFewRoleSequencesError CreateAndInitializeMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return CreateAndInitializeExternalConstraintHasTooFewRoleSequencesError(store.DefaultPartition, rolePlayers, assignments);
+			return CreateAndInitializeMultiColumnExternalConstraintHasTooFewRoleSequencesError(store.DefaultPartition, rolePlayers, assignments);
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		public MultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		    : base(partition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooFewRoleSequencesError CreateExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static MultiColumnExternalConstraintHasTooFewRoleSequencesError CreateMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return (ExternalConstraintHasTooFewRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooFewRoleSequencesError), rolePlayers);
+			return (MultiColumnExternalConstraintHasTooFewRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasTooFewRoleSequencesError), rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooFewRoleSequencesError CreateAndInitializeExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static MultiColumnExternalConstraintHasTooFewRoleSequencesError CreateAndInitializeMultiColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (ExternalConstraintHasTooFewRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooFewRoleSequencesError), rolePlayers, assignments);
+			return (MultiColumnExternalConstraintHasTooFewRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasTooFewRoleSequencesError), rolePlayers, assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for ExternalConstraintHasTooFewRoleSequencesError
+	#region Class Factory Creator for MultiColumnExternalConstraintHasTooFewRoleSequencesError
 	/// <summary>
-	/// ExternalConstraintHasTooFewRoleSequencesError Class Factory Creator
+	/// MultiColumnExternalConstraintHasTooFewRoleSequencesError Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError))]
-	public sealed class ExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError))]
+	public sealed class MultiColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator()
+		public MultiColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -25799,16 +25989,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooFewRoleSequencesError( partition, bag );
+			return new Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooFewRoleSequencesError( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
 		/// </summary>
-		public static ExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator Instance
+		public static MultiColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator Instance
 		{
 			get
 			{
-				return new ExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator();
+				return new MultiColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator();
 			}
 		}
 	}
@@ -25823,10 +26013,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError")]
-	public  partial class ExternalConstraintHasTooManyRoleSequencesError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError")]
+	public  partial class MultiColumnExternalConstraintHasTooManyRoleSequencesError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
 	{
-		#region ExternalConstraintHasTooManyRoleSequencesError's Generated MetaRelationship Code
+		#region MultiColumnExternalConstraintHasTooManyRoleSequencesError's Generated MetaRelationship Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -25834,15 +26024,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MetaClassGuidString);
 		/// <summary>
 		/// MetaRelationship Guid String
 		/// </summary>
-		public new const System.String MetaRelationshipGuidString = ExternalConstraintHasTooManyRoleSequencesError.MetaClassGuidString;
+		public new const System.String MetaRelationshipGuidString = MultiColumnExternalConstraintHasTooManyRoleSequencesError.MetaClassGuidString;
 		/// <summary>
 		/// MetaRelationship Guid
 		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = ExternalConstraintHasTooManyRoleSequencesError.MetaClassGuid;
+		public static readonly new System.Guid MetaRelationshipGuid = MultiColumnExternalConstraintHasTooManyRoleSequencesError.MetaClassGuid;
 		#endregion
 
 		#region TooManyRoleSequencesError's Generated MetaRole Code
@@ -25853,12 +26043,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid TooManyRoleSequencesErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuidString);
+		public static readonly System.Guid TooManyRoleSequencesErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesError")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesError")]
 		public  Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError TooManyRoleSequencesError
 		{
 			get { return (Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError)this.GetRolePlayer(TooManyRoleSequencesErrorMetaRoleGuid); }
@@ -25866,85 +26056,85 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
-		#region Constraint's Generated MetaRole Code
+		#region MultiColumnConstraint's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
 		/// </summary>
-		public const System.String ConstraintMetaRoleGuidString = "943eb43b-956e-4d97-9917-773386b53025";
+		public const System.String MultiColumnConstraintMetaRoleGuidString = "943eb43b-956e-4d97-9917-773386b53025";
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuidString);
+		public static readonly System.Guid MultiColumnConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=false, IsAggregate=false, IsNavigableFrom=true, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError.Constraint")]
-		public  Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint Constraint
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraint")]
+		public  Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint MultiColumnConstraint
 		{
-			get { return (Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(ConstraintMetaRoleGuid); }
-			set { this.SetRolePlayer(ConstraintMetaRoleGuid, value); }
+			get { return (Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)this.GetRolePlayer(MultiColumnConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(MultiColumnConstraintMetaRoleGuid, value); }
 		}
 		
 		#endregion
 	}
-	#region ExternalConstraintHasTooManyRoleSequencesError's Generated Constructor Code
-	public  partial class ExternalConstraintHasTooManyRoleSequencesError
+	#region MultiColumnExternalConstraintHasTooManyRoleSequencesError's Generated Constructor Code
+	public  partial class MultiColumnExternalConstraintHasTooManyRoleSequencesError
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		public MultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooManyRoleSequencesError CreateExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static MultiColumnExternalConstraintHasTooManyRoleSequencesError CreateMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return CreateExternalConstraintHasTooManyRoleSequencesError(store.DefaultPartition, rolePlayers);
+			return CreateMultiColumnExternalConstraintHasTooManyRoleSequencesError(store.DefaultPartition, rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooManyRoleSequencesError CreateAndInitializeExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static MultiColumnExternalConstraintHasTooManyRoleSequencesError CreateAndInitializeMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return CreateAndInitializeExternalConstraintHasTooManyRoleSequencesError(store.DefaultPartition, rolePlayers, assignments);
+			return CreateAndInitializeMultiColumnExternalConstraintHasTooManyRoleSequencesError(store.DefaultPartition, rolePlayers, assignments);
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		public MultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		    : base(partition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooManyRoleSequencesError CreateExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static MultiColumnExternalConstraintHasTooManyRoleSequencesError CreateMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return (ExternalConstraintHasTooManyRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooManyRoleSequencesError), rolePlayers);
+			return (MultiColumnExternalConstraintHasTooManyRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasTooManyRoleSequencesError), rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ExternalConstraintHasTooManyRoleSequencesError CreateAndInitializeExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static MultiColumnExternalConstraintHasTooManyRoleSequencesError CreateAndInitializeMultiColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (ExternalConstraintHasTooManyRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(ExternalConstraintHasTooManyRoleSequencesError), rolePlayers, assignments);
+			return (MultiColumnExternalConstraintHasTooManyRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(MultiColumnExternalConstraintHasTooManyRoleSequencesError), rolePlayers, assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for ExternalConstraintHasTooManyRoleSequencesError
+	#region Class Factory Creator for MultiColumnExternalConstraintHasTooManyRoleSequencesError
 	/// <summary>
-	/// ExternalConstraintHasTooManyRoleSequencesError Class Factory Creator
+	/// MultiColumnExternalConstraintHasTooManyRoleSequencesError Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError))]
-	public sealed class ExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError))]
+	public sealed class MultiColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator()
+		public MultiColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -25952,16 +26142,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Neumont.Tools.ORM.ObjectModel.ExternalConstraintHasTooManyRoleSequencesError( partition, bag );
+			return new Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasTooManyRoleSequencesError( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
 		/// </summary>
-		public static ExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator Instance
+		public static MultiColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator Instance
 		{
 			get
 			{
-				return new ExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator();
+				return new MultiColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator();
 			}
 		}
 	}
@@ -31977,6 +32167,312 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new FactTypeHasImpliedInternalUniquenessConstraintErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError")]
+	public  partial class SingleColumnExternalConstraintHasTooFewRoleSequencesError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	{
+		#region SingleColumnExternalConstraintHasTooFewRoleSequencesError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "354d6ef5-c948-4917-a0ac-c510efa34633";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = SingleColumnExternalConstraintHasTooFewRoleSequencesError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = SingleColumnExternalConstraintHasTooFewRoleSequencesError.MetaClassGuid;
+		#endregion
+
+		#region TooFewRoleSequencesError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String TooFewRoleSequencesErrorMetaRoleGuidString = "8b5fdab2-57ed-4b17-a5a0-8bd667e31b26";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid TooFewRoleSequencesErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesError")]
+		public  Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError TooFewRoleSequencesError
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.TooFewRoleSequencesError)this.GetRolePlayer(TooFewRoleSequencesErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(TooFewRoleSequencesErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region SingleColumnConstraint's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String SingleColumnConstraintMetaRoleGuidString = "3060f3ea-ceae-42dc-93bf-866a8f1c3010";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid SingleColumnConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraintMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraint")]
+		public  Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint SingleColumnConstraint
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)this.GetRolePlayer(SingleColumnConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(SingleColumnConstraintMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region SingleColumnExternalConstraintHasTooFewRoleSequencesError's Generated Constructor Code
+	public  partial class SingleColumnExternalConstraintHasTooFewRoleSequencesError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasTooFewRoleSequencesError CreateSingleColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateSingleColumnExternalConstraintHasTooFewRoleSequencesError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasTooFewRoleSequencesError CreateAndInitializeSingleColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeSingleColumnExternalConstraintHasTooFewRoleSequencesError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasTooFewRoleSequencesError CreateSingleColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (SingleColumnExternalConstraintHasTooFewRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(SingleColumnExternalConstraintHasTooFewRoleSequencesError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasTooFewRoleSequencesError CreateAndInitializeSingleColumnExternalConstraintHasTooFewRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (SingleColumnExternalConstraintHasTooFewRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(SingleColumnExternalConstraintHasTooFewRoleSequencesError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for SingleColumnExternalConstraintHasTooFewRoleSequencesError
+	/// <summary>
+	/// SingleColumnExternalConstraintHasTooFewRoleSequencesError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError))]
+	public sealed class SingleColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static SingleColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new SingleColumnExternalConstraintHasTooFewRoleSequencesErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError")]
+	public  partial class SingleColumnExternalConstraintHasTooManyRoleSequencesError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	{
+		#region SingleColumnExternalConstraintHasTooManyRoleSequencesError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "f685399f-1245-4cf8-a345-d5fdd84f2585";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = SingleColumnExternalConstraintHasTooManyRoleSequencesError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = SingleColumnExternalConstraintHasTooManyRoleSequencesError.MetaClassGuid;
+		#endregion
+
+		#region TooManyRoleSequencesError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String TooManyRoleSequencesErrorMetaRoleGuidString = "622c5d2f-e667-4619-a390-0979056e7c70";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid TooManyRoleSequencesErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesError")]
+		public  Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError TooManyRoleSequencesError
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.TooManyRoleSequencesError)this.GetRolePlayer(TooManyRoleSequencesErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(TooManyRoleSequencesErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region SingleColumnConstraint's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String SingleColumnConstraintMetaRoleGuidString = "3549c902-5897-41c5-a08b-c50d15573fc7";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid SingleColumnConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraint")]
+		public  Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint SingleColumnConstraint
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)this.GetRolePlayer(SingleColumnConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(SingleColumnConstraintMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region SingleColumnExternalConstraintHasTooManyRoleSequencesError's Generated Constructor Code
+	public  partial class SingleColumnExternalConstraintHasTooManyRoleSequencesError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasTooManyRoleSequencesError CreateSingleColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateSingleColumnExternalConstraintHasTooManyRoleSequencesError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasTooManyRoleSequencesError CreateAndInitializeSingleColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeSingleColumnExternalConstraintHasTooManyRoleSequencesError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasTooManyRoleSequencesError CreateSingleColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (SingleColumnExternalConstraintHasTooManyRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(SingleColumnExternalConstraintHasTooManyRoleSequencesError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SingleColumnExternalConstraintHasTooManyRoleSequencesError CreateAndInitializeSingleColumnExternalConstraintHasTooManyRoleSequencesError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (SingleColumnExternalConstraintHasTooManyRoleSequencesError)partition.ElementFactory.CreateElementLink(typeof(SingleColumnExternalConstraintHasTooManyRoleSequencesError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for SingleColumnExternalConstraintHasTooManyRoleSequencesError
+	/// <summary>
+	/// SingleColumnExternalConstraintHasTooManyRoleSequencesError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError))]
+	public sealed class SingleColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SingleColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static SingleColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new SingleColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator();
 			}
 		}
 	}

@@ -94,7 +94,9 @@
 		<arg:Rule class="Role.UpdatedRolePlayerRequiredErrorsRemovedRule"/>
 		<arg:Rule class="RoleValueRangeDefinition.RoleValueRangeDefinitionChangeRule"/>
 		<arg:Rule class="SingleColumnExternalConstraint.ConstraintHasRoleSequenceAdded"/>
+		<arg:Rule class="SingleColumnExternalConstraint.ConstraintHasRoleSequenceAddedLocalCommit"/>
 		<arg:Rule class="SingleColumnExternalConstraint.ConstraintRoleSequenceHasRoleAdded"/>
+		<arg:Rule class="SingleColumnExternalConstraint.EnforceRoleSequenceValidityForAdd"/>
 		<arg:Rule class="SingleColumnExternalConstraint.EnforceRoleSequenceValidityForFactTypeAdd"/>
 		<arg:Rule class="SingleColumnExternalConstraint.EnforceRoleSequenceValidityForFactTypeRemove"/>
 		<arg:Rule class="SubtypeFact.BlockCircularSubtypesAddRule"/>

@@ -737,7 +737,10 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence minOccurs="1" maxOccurs="1">
-					<xs:element name="Constraint" type="ConstraintRef"/>
+					<xs:choice>
+						<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"/>
+						<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"/>
+					</xs:choice>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -809,7 +812,10 @@
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence minOccurs="1" maxOccurs="1">
-					<xs:element name="Constraint" type="ConstraintRef"/>
+					<xs:choice>
+						<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"/>
+						<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"/>
+					</xs:choice>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

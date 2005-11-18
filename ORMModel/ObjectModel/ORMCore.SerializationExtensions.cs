@@ -2645,6 +2645,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (rolePlayedInfo.Id == MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (rolePlayedInfo.Id == MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedLinkInfo(rolePlayedInfo);
@@ -2670,6 +2678,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
 				metaRole = metaDataDir.FindMetaRole(MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid);
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
+				metaRole = metaDataDir.FindMetaRole(MultiColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
+				metaRole = metaDataDir.FindMetaRole(MultiColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 3;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
@@ -3037,6 +3049,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
+			if (rolePlayedInfo.Id == SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
+			if (rolePlayedInfo.Id == SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
+			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedLinkInfo(rolePlayedInfo);
@@ -3062,6 +3082,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
 				metaRole = metaDataDir.FindMetaRole(SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid);
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
+				metaRole = metaDataDir.FindMetaRole(SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
+				metaRole = metaDataDir.FindMetaRole(SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 3;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
@@ -4926,9 +4950,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
 		{
-			if (rolePlayedInfo.Id == ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid)
+			if (rolePlayedInfo.Id == MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuid)
 			{
-				return new ORMCustomSerializedElementInfo(null, "Constraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
+				return new ORMCustomSerializedElementInfo(null, "MultiColumnConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (rolePlayedInfo.Id == SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraintMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, "SingleColumnConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -4951,8 +4979,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(ExternalConstraintHasTooFewRoleSequencesError.ConstraintMetaRoleGuid);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|Constraint", match);
+				match.InitializeRoles(MultiColumnExternalConstraintHasTooFewRoleSequencesError.MultiColumnConstraintMetaRoleGuid);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|MultiColumnConstraint", match);
+				match.InitializeRoles(SingleColumnExternalConstraintHasTooFewRoleSequencesError.SingleColumnConstraintMetaRoleGuid);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|SingleColumnConstraint", match);
 				TooFewRoleSequencesError.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
@@ -5060,9 +5090,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
 		{
-			if (rolePlayedInfo.Id == ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid)
+			if (rolePlayedInfo.Id == MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuid)
 			{
-				return new ORMCustomSerializedElementInfo(null, "Constraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
+				return new ORMCustomSerializedElementInfo(null, "MultiColumnConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			if (rolePlayedInfo.Id == SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, "SingleColumnConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -5085,8 +5119,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(ExternalConstraintHasTooManyRoleSequencesError.ConstraintMetaRoleGuid);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|Constraint", match);
+				match.InitializeRoles(MultiColumnExternalConstraintHasTooManyRoleSequencesError.MultiColumnConstraintMetaRoleGuid);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|MultiColumnConstraint", match);
+				match.InitializeRoles(SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuid);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|SingleColumnConstraint", match);
 				TooManyRoleSequencesError.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
