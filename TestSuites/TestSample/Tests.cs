@@ -73,12 +73,7 @@ namespace TestSample
 			myTestServices.LogValidationErrors("After constraint duplication/implication repair");
 			//Role role = fact.RoleCollection[1];
 			//ImpliedInternalUniquenessConstraintError impError1 = fact.ImpliedInternalUniquenessConstraintError;
-			store.UndoManager.Undo();
-			store.UndoManager.Redo();
-
-
-
-
+			
 			// After the method exits, the Compare and LogValidationErrors methods will be run automatically against
 			// the test service. The expected results for the Compare are in Tests.Test1.Compare.orm. You can also
 			// compare at intermediate stages by explicitly running the IORMToolTestServices.Compare function, generally
