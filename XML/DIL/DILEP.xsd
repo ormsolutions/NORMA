@@ -1,0 +1,1544 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Copyright © 2005 Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, and Neumont University
+
+	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+	1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+	3. This notice may not be removed or altered from any source distribution.
+-->
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/DIL/DILEP.xsd"
+	xmlns:dep="http://schemas.neumont.edu/DIL/DILEP.xsd"
+	xmlns:ddt="http://schemas.neumont.edu/DIL/DILDT.xsd"
+	xmlns:dml="http://schemas.neumont.edu/DIL/DMIL.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Database Intermediate Language Expressions &amp; Predicates</xs:documentation>
+		<xs:documentation>Encompasses SQL Standard Foundation "6 - Scalar Expressions", "8 - Predicates", "10 - Additional common elements", and "15 - Control statements"</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://schemas.neumont.edu/DIL/DILDT.xsd"/>
+	<xs:import namespace="http://schemas.neumont.edu/DIL/DMIL.xsd"/>
+
+
+	<xs:element name="nullKeyword">
+		<xs:annotation>
+			<xs:documentation>NULL</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+	<xs:element name="defaultKeyword">
+		<xs:annotation>
+			<xs:documentation>DEFAULT</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+
+	<xs:element name="columnReference">
+		<xs:annotation>
+			<xs:documentation>A reference to a COLUMN.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" use="required" type="ddt:identifierChain"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="fieldReference">
+		<xs:annotation>
+			<xs:documentation>&lt;value expression primary&gt; . &lt;identifier&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="dep:valueExpressionPrimary"/>
+			<xs:attribute name="name" use="required" type="ddt:identifier"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="rowValueConstructorPredicand">
+		<xs:group ref="dep:rowValueConstructorPredicand"/>
+	</xs:complexType>
+	<xs:group name="rowValueConstructorPredicand">
+		<xs:choice>
+			<xs:group ref="dep:valueExpression"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="rowValueConstructor">
+		<xs:group ref="dep:rowValueConstructor"/>
+	</xs:complexType>
+	<xs:group name="rowValueConstructor">
+		<xs:choice>
+			<xs:group ref="dep:commonValueExpression"/>
+			<xs:group ref="dep:booleanValueExpression"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="valueExpression">
+		<xs:group ref="dep:valueExpression"/>
+	</xs:complexType>
+	<xs:group name="valueExpression">
+		<xs:choice>
+			<xs:group ref="dep:commonValueExpression"/>
+			<xs:group ref="dep:booleanValueExpression"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="commonValueExpression">
+		<xs:group ref="dep:commonValueExpression"/>
+	</xs:complexType>
+	<xs:group name="commonValueExpression">
+		<xs:choice>
+			<xs:group ref="dep:numericValueExpression"/>
+			<xs:group ref="dep:stringValueExpression"/>
+			<xs:group ref="dep:datetimeValueExpression"/>
+			<xs:group ref="dep:intervalValueExpression"/>
+			<xs:group ref="dep:valueExpressionPrimary"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="valueExpressionPrimary">
+		<xs:group ref="dep:valueExpressionPrimary"/>
+	</xs:complexType>
+	<xs:group name="valueExpressionPrimary">
+		<xs:choice>
+			<xs:group ref="dep:valueSpecification"/>
+			<xs:element ref="dep:columnReference"/>
+			<xs:group ref="dep:setFunctionSpecification"/>
+			<xs:element ref="dml:scalarSubquery"/>
+			<xs:group ref="dep:caseExpression"/>
+			<xs:element ref="dep:castSpecification"/>
+			<xs:element ref="dep:fieldReference"/>
+			<xs:element ref="dep:routineInvocation"/>
+			<xs:element ref="dep:nextValueExpression"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="stringValueExpression">
+		<xs:group ref="dep:stringValueExpression"/>
+	</xs:complexType>
+	<xs:group name="stringValueExpression">
+		<xs:choice>
+			<xs:group ref="dep:characterValueExpression"/>
+			<xs:group ref="dep:blobValueExpression"/>
+			<xs:element name="concatenation">
+				<xs:annotation>
+					<xs:documentation>|| (Vertical Line, Vertical Line)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="dep:stringValueExpression"/>
+						<xs:group ref="dep:stringValueExpression"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="characterValueExpression">
+		<xs:group ref="dep:characterValueExpression"/>
+	</xs:complexType>
+	<xs:group name="characterValueExpression">
+		<xs:choice>
+			<xs:group ref="dep:stringPrimary"/>
+			<xs:element name="collateClause">
+				<xs:complexType>
+					<xs:group ref="dep:characterValueExpression"/>
+					<xs:attribute name="collation" use="required" type="ddt:collationTypes"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="blobValueExpression">
+		<xs:group ref="dep:blobValueExpression"/>
+	</xs:complexType>
+	<xs:group name="blobValueExpression">
+		<xs:choice>
+			<xs:group ref="dep:stringPrimary"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="numericValueExpression">
+		<xs:group ref="dep:numericValueExpression"/>
+	</xs:complexType>
+	<xs:group name="numericValueExpression">
+		<xs:choice>
+			<xs:group ref="dep:numericPrimary"/>
+			<xs:element name="numericPositive" type="dep:numericUnaryArithmetic">
+				<xs:annotation>
+					<xs:documentation>+ (Plus Sign)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numericNegative" type="dep:numericUnaryArithmetic">
+				<xs:annotation>
+					<xs:documentation>- (Hyphen-Minus)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numericAddition" type="dep:numericBinaryArithmetic">
+				<xs:annotation>
+					<xs:documentation>+ (Plus Sign)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numericSubtraction" type="dep:numericBinaryArithmetic">
+				<xs:annotation>
+					<xs:documentation>- (Hyphen-Minus)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numericMultiplication" type="dep:numericBinaryArithmetic">
+				<xs:annotation>
+					<xs:documentation>* (Asterisk)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="numericDivision" type="dep:numericBinaryArithmetic">
+				<xs:annotation>
+					<xs:documentation>/ (Solidus)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="numericUnaryArithmetic">
+		<xs:group ref="dep:numericPrimary"/>
+	</xs:complexType>
+	<xs:complexType name="numericBinaryArithmetic">
+		<xs:sequence>
+			<xs:group ref="dep:numericValueExpression"/>
+			<xs:group ref="dep:numericValueExpression"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="datetimeValueExpression">
+		<xs:group ref="dep:datetimeValueExpression"/>
+	</xs:complexType>
+	<xs:group name="datetimeValueExpression">
+		<xs:choice>
+			<xs:group ref="dep:datetimePrimary"/>
+			<xs:element name="local">
+				<xs:annotation>
+					<xs:documentation>&lt;datetime primary&gt; AT LOCAL</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="dep:datetimePrimary"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="timezone">
+				<xs:annotation>
+					<xs:documentation>&lt;datetime primary&gt; AT TIME ZONE &lt;interval primary&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="dep:datetimePrimary"/>
+						<xs:group ref="dep:intervalPrimary"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="datetimeAddition">
+				<xs:annotation>
+					<xs:documentation>+ (Plus Sign)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:sequence>
+							<xs:group ref="dep:intervalValueExpression"/>
+							<xs:group ref="dep:datetimeValueExpression"/>
+						</xs:sequence>
+						<xs:sequence>
+							<xs:group ref="dep:datetimeValueExpression"/>
+							<xs:group ref="dep:intervalValueExpression"/>
+						</xs:sequence>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="datetimeSubtraction">
+				<xs:annotation>
+					<xs:documentation>- (Hyphen-Minus)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="dep:datetimeValueExpression"/>
+						<xs:group ref="dep:intervalValueExpression"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="intervalValueExpression">
+		<xs:group ref="dep:intervalValueExpression"/>
+	</xs:complexType>
+	<xs:group name="intervalValueExpression">
+		<xs:choice>
+			<xs:group ref="dep:intervalPrimary"/>
+			<xs:element name="intervalPositive" type="dep:intervalUnaryArithmetic">
+				<xs:annotation>
+					<xs:documentation>+ (Plus Sign)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="intervalNegative" type="dep:intervalUnaryArithmetic">
+				<xs:annotation>
+					<xs:documentation>- (Hyphen-Minus)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="intervalAddition">
+				<xs:annotation>
+					<xs:documentation>+ (Plus Sign)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="dep:intervalValueExpression"/>
+						<xs:group ref="dep:intervalValueExpression"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="intervalSubtraction">
+				<xs:annotation>
+					<xs:documentation>- (Hyphen-Minus)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:sequence>
+							<xs:group ref="dep:intervalValueExpression"/>
+							<xs:group ref="dep:intervalValueExpression"/>
+						</xs:sequence>
+						<xs:sequence>
+							<xs:group ref="dep:datetimeValueExpression"/>
+							<xs:group ref="dep:datetimeValueExpression"/>
+						</xs:sequence>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="intervalMultiplication">
+				<xs:annotation>
+					<xs:documentation>* (Asterisk)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:sequence>
+							<xs:group ref="dep:intervalValueExpression"/>
+							<xs:group ref="dep:numericValueExpression"/>
+						</xs:sequence>
+						<xs:sequence>
+							<xs:group ref="dep:numericValueExpression"/>
+							<xs:group ref="dep:intervalValueExpression"/>
+						</xs:sequence>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="intervalDivision">
+				<xs:annotation>
+					<xs:documentation>/ (Solidus)</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="dep:intervalValueExpression"/>
+						<xs:group ref="dep:numericValueExpression"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="intervalUnaryArithmetic">
+		<xs:group ref="dep:intervalPrimary"/>
+	</xs:complexType>
+
+
+	<xs:complexType name="booleanValueExpression">
+		<xs:group ref="dep:booleanValueExpression"/>
+	</xs:complexType>
+	<xs:group name="booleanValueExpression">
+		<xs:choice>
+			<xs:group ref="dep:predicate"/>
+			<xs:group ref="dep:valueExpressionPrimary"/>
+			<xs:element name="not">
+				<xs:annotation>
+					<xs:documentation>NOT &lt;boolean value expression&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="dep:booleanValueExpression"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="and" type="dep:booleanLogicalTest">
+				<xs:annotation>
+					<xs:documentation>&lt;boolean value expression&gt; AND &lt;boolean value expression&gt;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="or" type="dep:booleanLogicalTest">
+				<xs:annotation>
+					<xs:documentation>&lt;boolean value expression&gt; OR &lt;boolean value expression&gt;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="is" type="dep:booleanTruthValueTest">
+				<xs:annotation>
+					<xs:documentation>&lt;boolean value expression&gt; IS &lt;truth value&gt;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isNot" type="dep:booleanTruthValueTest">
+				<xs:annotation>
+					<xs:documentation>&lt;boolean value expression&gt; IS NOT &lt;truth value&gt;</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="booleanLogicalTest">
+		<xs:sequence>
+			<xs:group ref="dep:booleanValueExpression"/>
+			<xs:group ref="dep:booleanValueExpression"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="booleanTruthValueTest">
+		<xs:group ref="dep:booleanValueExpression"/>
+		<xs:attribute name="truthValue" use="required" type="ddt:truthValue"/>
+	</xs:complexType>
+
+
+	<!-- p.252 -->
+	<xs:group name="stringPrimary">
+		<xs:choice>
+			<xs:group ref="dep:valueExpressionPrimary"/>
+			<xs:group ref="dep:stringValueFunction"/>
+		</xs:choice>
+	</xs:group>
+
+	<!-- p.256 -->
+	<xs:group name="stringValueFunction">
+		<xs:choice>
+			<xs:group ref="dep:characterValueFunction"/>
+			<xs:group ref="dep:blobValueFunction"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="characterValueFunction">
+		<xs:choice>
+			<xs:element ref="dep:characterSubstringFunction"/>
+			<xs:element ref="dep:regularExpressionSubstringFunction"/>
+			<xs:element ref="dep:fold"/>
+			<xs:element ref="dep:trimFunction"/>
+			<xs:element ref="dep:characterOverlayFunction"/>
+			<xs:element ref="dep:normalizeFunction"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="blobValueFunction">
+		<xs:choice>
+			<xs:element ref="dep:blobSubstringFunction"/>
+			<xs:element ref="dep:blobTrimFunction"/>
+			<xs:element ref="dep:blobOverlayFunction"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="characterSubstringFunction">
+		<xs:annotation>
+			<xs:documentation>SUBSTRING ( &lt;character value expression&gt; FROM &lt;start position&gt; [ FOR &lt;string length&gt; ] [ USING &lt;char length units&gt; ] )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="source" type="dep:characterValueExpression"/>
+				<xs:element name="startPosition" type="dep:numericValueExpression"/>
+				<xs:element name="stringLength" type="dep:numericValueExpression" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="charLengthUnits" use="optional" type="ddt:charLengthUnits" default="CHARACTERS"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="blobSubstringFunction">
+		<xs:annotation>
+			<xs:documentation>SUBSTRING ( &lt;blob value expression&gt; FROM &lt;start position&gt; [ FOR &lt;string length&gt; ] )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="source" type="dep:blobValueExpression"/>
+				<xs:element name="startPosition" type="dep:numericValueExpression"/>
+				<xs:element name="stringLength" type="dep:numericValueExpression" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="regularExpressionSubstringFunction">
+		<xs:annotation>
+			<xs:documentation>SUBSTRING ( &lt;character value expression&gt; SIMILAR &lt;character value expression&gt; ESCAPE &lt;escape character&gt; )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="source" type="dep:characterValueExpression"/>
+				<xs:element name="pattern" type="dep:characterValueExpression"/>
+				<xs:element name="escape" type="dep:characterValueExpression"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="fold">
+		<xs:annotation>
+			<xs:documentation>{ UPPER | LOWER } ( &lt;character value expression&gt; )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="dep:characterValueExpression"/>
+			<xs:attribute name="type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="UPPER"/>
+						<xs:enumeration value="LOWER"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="trimSpecification">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LEADING"/>
+			<xs:enumeration value="TRAILING"/>
+			<xs:enumeration value="BOTH"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="trimFunction">
+		<xs:annotation>
+			<xs:documentation>TRIM [ [ &lt;trim specification&gt; ] [ &lt;trim character&gt; ] FROM ] &lt;trim source&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="trimCharacter" type="dep:characterValueExpression" minOccurs="0"/>
+				<xs:element name="trimSource" type="dep:characterValueExpression"/>
+			</xs:sequence>
+			<xs:attribute name="specification" use="optional" type="dep:trimSpecification" default="BOTH"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="blobTrimFunction">
+		<xs:annotation>
+			<xs:documentation>TRIM [ [ &lt;trim specification&gt; ] [ &lt;trim octet&gt; ] FROM ] &lt;trim source&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="trimOctet" type="dep:blobValueExpression" minOccurs="0"/>
+				<xs:element name="trimSource" type="dep:blobValueExpression"/>
+			</xs:sequence>
+			<xs:attribute name="specification" use="optional" type="dep:trimSpecification" default="BOTH"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="characterOverlayFunction">
+		<xs:annotation>
+			<xs:documentation>OVERLAY ( &lt;character value expression&gt; PLACING &lt;character value expression&gt; FROM &lt;start position&gt; [ FOR &lt;string length&gt; ] [ USING &lt;char length units&gt; ] )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="source" type="dep:characterValueExpression"/>
+				<xs:element name="placing" type="dep:characterValueExpression"/>
+				<xs:element name="startPosition" type="dep:numericValueExpression"/>
+				<xs:element name="stringLength" type="dep:numericValueExpression" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="charLengthUnits" use="optional" type="ddt:charLengthUnits" default="CHARACTERS"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="blobOverlayFunction">
+		<xs:annotation>
+			<xs:documentation>OVERLAY ( &lt;blob value expression&gt; PLACING &lt;blob value expression&gt; FROM &lt;start position&gt; [ FOR &lt;string length&gt; ] )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="source" type="dep:blobValueExpression"/>
+				<xs:element name="placing" type="dep:blobValueExpression"/>
+				<xs:element name="startPosition" type="dep:numericValueExpression"/>
+				<xs:element name="stringLength" type="dep:numericValueExpression" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="normalizeFunction" type="dep:characterValueExpression">
+		<xs:annotation>
+			<xs:documentation>NORMALIZE ( &lt;character value expression&gt; )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+
+	<xs:group name="numericPrimary">
+		<xs:choice>
+			<xs:group ref="dep:valueExpressionPrimary"/>
+			<xs:group ref="dep:numericValueFunction"/>
+		</xs:choice>
+	</xs:group>
+
+	<!-- p.243 -->
+	<xs:group name="numericValueFunction">
+		<xs:choice>
+			<xs:group ref="dep:positionExpression"/>
+			<xs:element ref="dep:lengthExpression"/>
+			<xs:element ref="dep:extractExpression"/>
+			<xs:element ref="dep:absoluteValueExpression"/>
+			<xs:element ref="dep:modulusExpression"/>
+			<xs:element ref="dep:naturalLogarithm"/>
+			<xs:element ref="dep:exponentialFunction"/>
+			<xs:element ref="dep:powerFunction"/>
+			<xs:element ref="dep:squareRoot"/>
+			<xs:element ref="dep:floorFunction"/>
+			<xs:element ref="dep:ceilingFunction"/>
+			<xs:element ref="dep:widthBucketFunction"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="positionExpression">
+		<xs:choice>
+			<xs:element ref="dep:stringPositionExpression"/>
+			<xs:element ref="dep:blobPositionExpression"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="stringPositionExpression">
+		<xs:annotation>
+			<xs:documentation>POSITION ( &lt;string value expression&gt; IN &lt;string value expression&gt; [ USING &lt;char length units&gt; ] )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="lookForString" type="dep:stringValueExpression"/>
+				<xs:element name="inString" type="dep:stringValueExpression"/>
+			</xs:sequence>
+			<xs:attribute name="charLengthUnits" use="optional" type="ddt:charLengthUnits" default="CHARACTERS"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="blobPositionExpression">
+		<xs:annotation>
+			<xs:documentation>POSITION ( &lt;blob value expression&gt; IN &lt;blob value expression&gt; )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="lookForBlob" type="dep:blobValueExpression"/>
+				<xs:element name="inBlob" type="dep:blobValueExpression"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="lengthExpression">
+		<xs:annotation>
+			<xs:documentation>CHARACTER_LENGTH ( &lt;string value expression&gt; USING &lt;char length units&gt; )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="dep:stringValueExpression"/>
+			<xs:attribute name="lengthUnits" use="required" type="ddt:charLengthUnits"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="extractExpression">
+		<xs:annotation>
+			<xs:documentation>EXTRACT ( &lt;extract field&gt; FROM &lt;extract source&gt; )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:group ref="dep:datetimeValueExpression"/>
+					<xs:group ref="dep:intervalValueExpression"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:attribute name="field" use="required" type="ddt:datetimezoneField"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="absoluteValueExpression" type="dep:numericValueExpression">
+		<xs:annotation>
+			<xs:documentation>ABS ( &lt;numeric value expression&gt; )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="modulusExpression">
+		<xs:annotation>
+			<xs:documentation>MOD ( &lt;numeric value expression dividend&gt; , &lt;numeric value expression divisor&gt; )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="dividend" type="dep:numericValueExpression"/>
+				<xs:element name="divisor" type="dep:numericValueExpression"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="naturalLogarithm" type="dep:numericValueExpression">
+		<xs:annotation>
+			<xs:documentation>LN ( &lt;numeric value expression&gt; )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="exponentialFunction" type="dep:numericValueExpression">
+		<xs:annotation>
+			<xs:documentation>EXP ( &lt;numeric value expression&gt; )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="powerFunction">
+		<xs:annotation>
+			<xs:documentation>POWER ( &lt;numeric value expression base&gt; , &lt;numeric value expression exponent&gt; )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="base" type="dep:numericValueExpression"/>
+				<xs:element name="exponent" type="dep:numericValueExpression"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="squareRoot" type="dep:numericValueExpression">
+		<xs:annotation>
+			<xs:documentation>SQRT ( &lt;numeric value expression&gt; )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="floorFunction" type="dep:numericValueExpression">
+		<xs:annotation>
+			<xs:documentation>FLOOR ( &lt;numeric value expression&gt; )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ceilingFunction" type="dep:numericValueExpression">
+		<xs:annotation>
+			<xs:documentation>CEILING ( &lt;numeric value expression&gt; )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="widthBucketFunction">
+		<xs:annotation>
+			<xs:documentation>WIDTH_BUCKET ( &lt;width bucket operand&gt; , &lt;width bucket bound 1&gt; , &lt;width bucket bound 2&gt; , &lt;width bucket count&gt; )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="operand" type="dep:numericValueExpression"/>
+				<xs:element name="bucket1" type="dep:numericValueExpression"/>
+				<xs:element name="bucket2" type="dep:numericValueExpression"/>
+				<xs:element name="count" type="dep:numericValueExpression"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:group name="datetimePrimary">
+		<xs:choice>
+			<xs:group ref="dep:valueExpressionPrimary"/>
+			<xs:group ref="dep:datetimeValueFunction"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="datetimeValueFunction">
+		<xs:choice>
+			<xs:element ref="dep:currentDateKeyword"/>
+			<xs:element ref="dep:currentTimeKeyword"/>
+			<xs:element ref="dep:currentTimestampKeyword"/>
+			<xs:element ref="dep:currentLocalTimeKeyword"/>
+			<xs:element ref="dep:currentLocalTimestampKeyword"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="currentDateKeyword">
+		<xs:annotation>
+			<xs:documentation>CURRENT_DATE</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+	<xs:element name="currentTimeKeyword">
+		<xs:annotation>
+			<xs:documentation>CURRENT_TIME [ ( &lt;time precision&gt; ) ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="precision" use="optional" type="ddt:secondsPrecision"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="currentTimestampKeyword">
+		<xs:annotation>
+			<xs:documentation>CURRENT_TIMESTAMP [ ( &lt;timestamp precision&gt; ) ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="precision" use="optional" type="ddt:secondsPrecision"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="currentLocalTimeKeyword">
+		<xs:annotation>
+			<xs:documentation>LOCALTIME [ ( &lt;time precision&gt; ) ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="precision" use="optional" type="ddt:secondsPrecision"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="currentLocalTimestampKeyword">
+		<xs:annotation>
+			<xs:documentation>LOCALTIMESTAMP [ ( &lt;timestamp precision&gt; ) ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="precision" use="optional" type="ddt:secondsPrecision"/>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:group name="intervalPrimary">
+		<xs:choice>
+			<xs:group ref="dep:valueExpressionPrimary"/>
+			<xs:element ref="dep:intervalQualifier"/>
+			<xs:group ref="dep:intervalValueFunction"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="intervalQualifier">
+		<xs:annotation>
+			<xs:documentation>&lt;value expression primary&gt; &lt;interval qualifier&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="dep:valueExpressionPrimary"/>
+			<xs:attribute name="qualifier" use="required" type="ddt:intervalFields"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="intervalValueFunction">
+		<xs:choice>
+			<xs:element ref="dep:intervalAbsoluteValueFunction"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="intervalAbsoluteValueFunction" type="dep:intervalValueExpression">
+		<xs:annotation>
+			<xs:documentation> ABS ( &lt;interval value expression&gt; )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+
+
+	<xs:group name="setFunctionSpecification">
+		<xs:choice>
+			<xs:group ref="dep:aggregateFunction" minOccurs="1" maxOccurs="1"/>
+			<xs:element ref="dep:groupingOperation" minOccurs="1" maxOccurs="1"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="groupingOperation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dep:columnReference" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:group name="aggregateFunction">
+		<xs:choice>
+			<xs:element ref="dep:countAll"/>
+			<xs:element ref="dep:generalSetFunction"/>
+			<xs:element ref="dep:binarySetFunction"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="countAll">
+		<xs:annotation>
+			<xs:documentation>COUNT ( * ) &lt;filter clause&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dep:filterClause" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="generalSetFunction">
+		<xs:annotation>
+			<xs:documentation>&lt;set function type&gt; ( [ &lt;set quantifier&gt; ] &lt;value expression&gt; ) [ &lt;filter clause&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="dep:valueExpression"/>
+				<xs:element ref="dep:filterClause" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="AVG"/>
+						<xs:enumeration value="MAX"/>
+						<xs:enumeration value="MIN"/>
+						<xs:enumeration value="SUM"/>
+						<xs:enumeration value="EVERY"/>
+						<xs:enumeration value="ANY"/>
+						<xs:enumeration value="SOME"/>
+						<xs:enumeration value="COUNT"/>
+						<xs:enumeration value="STDDEV_POP"/>
+						<xs:enumeration value="STDDEV_SAMP"/>
+						<xs:enumeration value="VAR_SAMP"/>
+						<xs:enumeration value="VAR_POP"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="quantifier" use="optional" default="ALL">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="DISTINCT"/>
+						<xs:enumeration value="ALL"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="binarySetFunction">
+		<xs:annotation>
+			<xs:documentation>&lt;binary set function type&gt; ( &lt;dependent numeric value expression&gt; , &lt;independent numeric value expression&gt; ) [ &lt;filter clause&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="dependent" type="dep:numericValueExpression"/>
+				<xs:element name="independent" type="dep:numericValueExpression"/>
+				<xs:element ref="dep:filterClause" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="COVAR_POP"/>
+						<xs:enumeration value="COVAR_SAMP"/>
+						<xs:enumeration value="CORR"/>
+						<xs:enumeration value="REGR_SLOPE"/>
+						<xs:enumeration value="REGR_INTERCEPT"/>
+						<xs:enumeration value="REGR_COUNT"/>
+						<xs:enumeration value="REGR_R2"/>
+						<xs:enumeration value="REGR_AVGX"/>
+						<xs:enumeration value="REGR_AVGY"/>
+						<xs:enumeration value="REGR_SXX"/>
+						<xs:enumeration value="REGR_SYY"/>
+						<xs:enumeration value="REGR_SXY"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="filterClause" type="dep:booleanValueExpression">
+		<xs:annotation>
+			<xs:documentation>FILTER ( WHERE &lt;search condition&gt; )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+
+	<!-- 6.10 window function - do we need to support these? -->
+
+	<!-- p.197 -->
+	<xs:group name="caseExpression">
+		<xs:choice>
+			<xs:group ref="dep:caseAbbreviation"/>
+			<xs:group ref="dep:caseSpecification"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="caseAbbreviation">
+		<xs:choice>
+			<xs:element ref="dep:nullIf"/>
+			<xs:element ref="dep:coalesce"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="nullIf">
+		<xs:annotation>
+			<xs:documentation>NULLIF ( &lt;value expression&gt; , &lt;value expression&gt; )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="dep:valueExpression"/>
+				<xs:group ref="dep:valueExpression"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="coalesce">
+		<xs:annotation>
+			<xs:documentation>COALESCE ( &lt;value expression&gt; { , &lt;value expression&gt; }... )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="dep:valueExpression" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:group name="caseSpecification">
+		<xs:choice>
+			<xs:element ref="dep:searchedCase"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="searchedCase">
+		<xs:annotation>
+			<xs:documentation>CASE &lt;searched when clause&gt;... [ &lt;else clause&gt; ] END</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="whenClause" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>WHEN &lt;search condition&gt; THEN &lt;result&gt;</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="dep:searchCondition"/>
+							<xs:element name="result" type="dep:returnValue"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="dep:elseClause" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="elseClause" type="dep:returnValue">
+		<xs:annotation>
+			<xs:documentation>ELSE &lt;return value&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="returnStatement" type="dep:returnValue">
+		<xs:annotation>
+			<xs:documentation>RETURN &lt;return value&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="returnValue">
+		<xs:group ref="dep:returnValue"/>
+	</xs:complexType>
+	<xs:group name="returnValue">
+		<xs:choice>
+			<xs:group ref="dep:valueExpression"/>
+			<xs:element ref="dep:nullKeyword"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="searchCondition" type="dep:booleanValueExpression"/>
+
+	<!-- p.201 -->
+	<xs:element name="castSpecification">
+		<xs:annotation>
+			<xs:documentation>CAST (&lt;cast operand&gt; AS &lt;cast target&gt;)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:group ref="dep:valueExpression"/>
+					<xs:group ref="dep:implicitlyTypedValueSpecification"/>
+				</xs:choice>
+				<xs:group ref="ddt:domainOrDataType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:group name="contextuallyTypedValueSpecification">
+		<xs:choice>
+			<xs:group ref="dep:implicitlyTypedValueSpecification"/>
+			<xs:element ref="dep:defaultKeyword"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="implicitlyTypedValueSpecification">
+		<xs:choice>
+			<xs:element ref="dep:nullKeyword"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="valueSpecification">
+		<xs:group ref="dep:valueSpecification"/>
+	</xs:complexType>
+	<xs:group name="valueSpecification">
+		<xs:choice>
+			<xs:group ref="ddt:literal"/>
+			<xs:group ref="dep:generalValueSpecification"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="simpleValueSpecification">
+		<xs:group ref="dep:simpleValueSpecification"/>
+	</xs:complexType>
+	<xs:group name="simpleValueSpecification">
+		<xs:choice>
+			<xs:group ref="ddt:literal"/>
+			<xs:element ref="dep:hostParameterSpecification"/>
+			<xs:element ref="dep:sqlParameterReference"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:complexType name="generalValueSpecification">
+		<xs:group ref="dep:generalValueSpecification"/>
+	</xs:complexType>
+	<xs:group name="generalValueSpecification">
+		<xs:choice>
+			<xs:element ref="dep:hostParameterSpecification"/>
+			<xs:element ref="dep:sqlParameterReference"/>
+			<xs:element ref="dep:dynamicParameterSpecification"/>
+			<xs:element ref="dep:currentCollationSpecification"/>
+			<xs:element ref="dep:currentDefaultTransformGroupKeyword"/>
+			<xs:element ref="dep:currentPathKeyword"/>
+			<xs:element ref="dep:currentRoleKeyword"/>
+			<xs:element ref="dep:currentTransformGroupForTypeKeyword"/>
+			<xs:element ref="dep:currentUserKeyword"/>
+			<xs:element ref="dep:sessionUserKeyword"/>
+			<xs:element ref="dep:systemUserKeyword"/>
+			<xs:element ref="dep:userKeyword"/>
+			<xs:element ref="dep:valueKeyword"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="hostParameterSpecification">
+		<xs:annotation>
+			<xs:documentation>:&lt;identifier&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dep:indicatorParameter" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="name" use="required" type="ddt:identifier">
+				<xs:annotation>
+					<xs:documentation>Do not include the : (Colon) prefix; it will be added automatically.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="indicatorParameter">
+		<xs:annotation>
+			<xs:documentation>[ INDICATOR ] :&lt;identifier&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="hostParameterName" use="required" type="ddt:identifier">
+				<xs:annotation>
+					<xs:documentation>Do not include the colon (:) prefix; it will be added automatically.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="sqlParameterReference">
+		<xs:complexType>
+			<xs:attribute name="name" use="required" type="ddt:identifierChain"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="dynamicParameterSpecification">
+		<xs:annotation>
+			<xs:documentation>? (Question Mark)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+
+	<xs:element name="currentCollationSpecification" type="dep:stringValueExpression">
+		<xs:annotation>
+			<xs:documentation>COLLATION FOR (&gt;string value expression&lt;)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="currentDefaultTransformGroupKeyword">
+		<xs:annotation>
+			<xs:documentation>CURRENT_DEFAULT_TRANSFORM_GROUP</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+	<xs:element name="currentPathKeyword">
+		<xs:annotation>
+			<xs:documentation>CURRENT_PATH</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+	<xs:element name="currentRoleKeyword">
+		<xs:annotation>
+			<xs:documentation>CURRENT_ROLE</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+	<xs:element name="currentTransformGroupForTypeKeyword">
+		<xs:annotation>
+			<xs:documentation>CURRENT_TRANSFORM_GROUP_FOR_TYPE</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ddt:userDefinedType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="currentUserKeyword">
+		<xs:annotation>
+			<xs:documentation>CURRENT_USER</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+	<xs:element name="sessionUserKeyword">
+		<xs:annotation>
+			<xs:documentation>SESSION_USER</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+	<xs:element name="systemUserKeyword">
+		<xs:annotation>
+			<xs:documentation>SYSTEM_USER</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+	<xs:element name="userKeyword">
+		<xs:annotation>
+			<xs:documentation>USER</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+	<xs:element name="valueKeyword">
+		<xs:annotation>
+			<xs:documentation>VALUE</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+
+	<xs:element name="callStatement" type="dep:routineInvocation">
+		<xs:annotation>
+			<xs:documentation>CALL &lt;routine name&gt; ( [ &lt;SQL argument&gt; [ { , &lt;SQL argument&gt; }... ] ] )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="routineInvocation" type="dep:routineInvocation">
+		<xs:annotation>
+			<xs:documentation>&lt;routine name&gt; ( [ &lt;SQL argument&gt; [ { , &lt;SQL argument&gt; }... ] ] )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="routineInvocation">
+		<xs:complexContent>
+			<xs:extension base="ddt:schemaQualifiedName">
+				<xs:group ref="dep:sqlArgument" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:group name="sqlArgument">
+		<xs:choice>
+			<xs:group ref="dep:valueExpression"/>
+			<!--
+				The SQL Standard refers to <value expression> | <target specification> here,
+				but <value expression> alreadys contains everything that is in <target specification>.
+			<xs:group ref="dep:targetSpecification"/>
+			-->
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="targetSpecification">
+		<xs:choice>
+			<xs:element ref="dep:hostParameterSpecification"/>
+			<xs:element ref="dep:sqlParameterReference"/>
+			<xs:element ref="dep:columnReference"/>
+			<xs:element ref="dep:dynamicParameterSpecification"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="nextValueExpression" type="ddt:schemaQualifiedName">
+		<xs:annotation>
+			<xs:documentation>NEXT VALUE FOR &lt;sequence generator name&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="sortSpecification">
+		<xs:annotation>
+			<xs:documentation>&lt;value expression&gt; [ &lt;ordering&gt; ] [ &lt;null ordering&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="dep:valueExpression">
+					<xs:attribute name="ordering" use="optional" default="ASC">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="ASC"/>
+								<xs:enumeration value="DESC"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="nullOrdering" use="optional">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="NULLS FIRST"/>
+								<xs:enumeration value="NULLS LAST"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="constraintNameDefinition" type="ddt:schemaQualifiedName">
+		<xs:annotation>
+			<xs:documentation>CONSTRAINT &lt;schema qualified name&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:attribute name="constraintCharacteristics" default="INITIALLY IMMEDIATE NOT DEFERRABLE">
+		<xs:annotation>
+			<xs:documentation>&lt;constraint check time&gt; [ [ NOT ] DEFERRABLE ]</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="INITIALLY IMMEDIATE NOT DEFERRABLE"/>
+				<xs:enumeration value="INITIALLY IMMEDIATE DEFERRABLE"/>
+				<xs:enumeration value="INITIALLY DEFERRED"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+
+	<xs:attribute name="languageClause" default="SQL">
+		<xs:annotation>
+			<xs:documentation>LANGUAGE &lt;language name&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="ADA"/>
+				<xs:enumeration value="C"/>
+				<xs:enumeration value="COBOL"/>
+				<xs:enumeration value="FORTRAN"/>
+				<xs:enumeration value="M"/>
+				<xs:enumeration value="PASCAL"/>
+				<xs:enumeration value="PLI"/>
+				<xs:enumeration value="SQL"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+
+
+	<!-- p.373 -->
+	<xs:group name="predicate">
+		<xs:choice>
+			<xs:element ref="dep:comparisonPredicate"/>
+			<xs:element ref="dep:betweenPredicate"/>
+			<xs:element ref="dep:inPredicate"/>
+			<xs:group ref="dep:likePredicate"/>
+			<xs:element ref="dep:nullPredicate"/>
+			<xs:element ref="dep:quantifiedComparisonPredicate"/>
+			<xs:element ref="dep:existsPredicate"/>
+			<xs:element ref="dep:uniquePredicate"/>
+			<xs:element ref="dep:normalizedPredicate"/>
+			<xs:element ref="dep:matchPredicate"/>
+			<xs:element ref="dep:overlapsPredicate"/>
+			<xs:element ref="dep:distinctPredicate"/>
+			<xs:element ref="dep:searchCondition"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:simpleType name="comparisonOperator">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="equals">
+				<xs:annotation>
+					<xs:documentation>= (Equals Sign)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="notEquals">
+				<xs:annotation>
+					<xs:documentation>&lt;&gt; (Less-Than Sign, Greater-Than Sign)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lessThan">
+				<xs:annotation>
+					<xs:documentation>&lt; (Less-Than Sign)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="greaterThan">
+				<xs:annotation>
+					<xs:documentation>&gt; (Greater-Than Sign)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lessThanOrEquals">
+				<xs:annotation>
+					<xs:documentation>&lt;= (Less-Than Sign, Equals Sign)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="greaterThanOrEquals">
+				<xs:annotation>
+					<xs:documentation>&gt;= (Greater-Than Sign, Equals Sign)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="comparisonPredicate">
+		<xs:annotation>
+			<xs:documentation>&lt;row value predicand&gt; &lt;comparison operator&gt; &lt;row value predicand&gt; </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+			</xs:sequence>
+			<xs:attribute name="operator" use="required" type="dep:comparisonOperator"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="betweenPredicate">
+		<xs:annotation>
+			<xs:documentation>&lt;row value predicand&gt; [ NOT ] BETWEEN [ ASYMMETRIC | SYMMETRIC ] &lt;row value predicand&gt; AND &lt;row value predicand&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+			</xs:sequence>
+			<xs:attribute name="type" use="optional" default="BETWEEN">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="BETWEEN"/>
+						<xs:enumeration value="NOT BETWEEN"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="symmetry" use="optional" default="ASYMMETRIC">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="ASYMMETRIC"/>
+						<xs:enumeration value="SYMMETRIC"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="inPredicate">
+		<xs:annotation>
+			<xs:documentation>&lt;row value predicand&gt; [ NOT ] { IN &lt;table subquery&gt; | ( &lt;row value expression list&gt; ) } </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+				<xs:choice>
+					<xs:element ref="dml:tableSubquery"/>
+					<xs:group ref="dep:valueExpressionPrimary" maxOccurs="unbounded"/>
+				</xs:choice>
+			</xs:sequence>
+			<xs:attribute name="type" use="optional" default="IN">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="IN"/>
+						<xs:enumeration value="NOT IN"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:group name="likePredicate">
+		<xs:choice>
+			<xs:element ref="dep:characterLikePredicate"/>
+			<xs:element ref="dep:octetLikePredicate"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="characterLikePredicate">
+		<xs:annotation>
+			<xs:documentation>&lt;row value predicand&gt; [ NOT ] LIKE &lt;character pattern&gt; [ ESCAPE &lt;escape character&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="predicand" type="dep:valueExpressionPrimary"/>
+				<xs:element name="pattern" type="dep:characterValueExpression"/>
+				<xs:element name="escape" type="dep:characterValueExpression" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="type" use="optional" default="LIKE">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="LIKE"/>
+						<xs:enumeration value="NOT LIKE"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="octetLikePredicate">
+		<xs:annotation>
+			<xs:documentation>&lt;row value predicand&gt; [ NOT ] LIKE &lt;octet pattern&gt; [ ESCAPE &lt;escape octet&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="predicand" type="dep:valueExpressionPrimary"/>
+				<xs:element name="pattern" type="dep:blobValueExpression"/>
+				<xs:element name="escape" type="dep:blobValueExpression" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="type" use="optional" default="LIKE">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="LIKE"/>
+						<xs:enumeration value="NOT LIKE"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="nullPredicate">
+		<xs:annotation>
+			<xs:documentation>&lt;row value predicand&gt; IS [ NOT ] NULL</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="dep:valueExpressionPrimary">
+					<xs:attribute name="type" use="optional" default="NULL">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="NULL"/>
+								<xs:enumeration value="NOT NULL"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="quantifiedComparisonPredicate">
+		<xs:annotation>
+			<xs:documentation>&lt;row value predicand&gt; &lt;comparison operator&gt; &lt;quantifier&gt; &lt;table subquery&gt; </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+				<xs:element ref="dml:tableSubquery"/>
+			</xs:sequence>
+			<xs:attribute name="operator" use="required" type="dep:comparisonOperator"/>
+			<xs:attribute name="quantifier" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="ALL"/>
+						<xs:enumeration value="SOME"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="existsPredicate" type="dml:queryExpression">
+		<xs:annotation>
+			<xs:documentation>EXISTS &lt;table subquery&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="uniquePredicate" type="dml:queryExpression">
+		<xs:annotation>
+			<xs:documentation>UNIQUE &lt;table subquery&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="normalizedPredicate">
+		<xs:annotation>
+			<xs:documentation>&lt;common value expression&gt; IS [ NOT ] NORMALIZED</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="dep:commonValueExpression">
+					<xs:attribute name="type" use="optional" default="NORMALIZED">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="NORMALIZED"/>
+								<xs:enumeration value="NOT NORMALIZED"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="matchPredicate">
+		<xs:annotation>
+			<xs:documentation>&lt;row value predicand&gt; MATCH [ UNIQUE ] [ SIMPLE | PARTIAL | FULL ] &lt;table subquery&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+				<xs:element ref="dml:tableSubquery"/>
+			</xs:sequence>
+			<xs:attribute name="unique" use="optional" type="xs:boolean" default="false"/>
+			<xs:attribute name="type" use="optional" default="SIMPLE">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="SIMPLE"/>
+						<xs:enumeration value="PARTIAL"/>
+						<xs:enumeration value="FULL"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="overlapsPredicate">
+		<xs:annotation>
+			<xs:documentation>&lt;row value predicand&gt; OVERLAPS &lt;row value predicand&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="distinctPredicate">
+		<xs:annotation>
+			<xs:documentation>&lt;row value predicand&gt; IS [ NOT ] DISTINCT FROM &lt;row value predicand&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+				<xs:group ref="dep:valueExpressionPrimary"/>
+			</xs:sequence>
+			<xs:attribute name="type" use="optional" default="DISTINCT">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="DISTINCT"/>
+						<xs:enumeration value="NOT DISTINCT"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+
+
+</xs:schema>

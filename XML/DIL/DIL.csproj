@@ -1,0 +1,34 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2ED1F5C5-9067-4CE4-B9D2-C1EE732363AC}</ProjectGuid>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="DIL.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DILDT.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DILEP.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DCIL.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DDIL.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DILMS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DMIL.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+</Project>

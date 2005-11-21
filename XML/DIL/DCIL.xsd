@@ -1,0 +1,524 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Copyright © 2005 Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, and Neumont University
+
+	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+	1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+	3. This notice may not be removed or altered from any source distribution.
+-->
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/DIL/DCIL.xsd"
+	xmlns:dcl="http://schemas.neumont.edu/DIL/DCIL.xsd"
+	xmlns:ddt="http://schemas.neumont.edu/DIL/DILDT.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Database Conceptual Intermediate Language</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://schemas.neumont.edu/DIL/DILDT.xsd"/>
+
+	<xs:element name="root">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dcl:database" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="databaseKey">
+			<xs:selector xpath="dcl:database"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+	</xs:element>
+
+	<xs:element name="database">
+		<xs:annotation>
+			<xs:documentation>A named collection of schemas. Equivalent to a 'CATALOG' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dcl:schema"/>
+			</xs:sequence>
+			<xs:attribute name="name" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the database.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:maxLength value="8"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:key name="schemaKey">
+			<xs:selector xpath="dcl:schema"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+	</xs:element>
+
+	<xs:element name="schema">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a 'SCHEMA' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="dcl:schemaContents"/>
+			<xs:attribute name="name" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the schema.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:maxLength value="8"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:key name="tableKey">
+			<xs:selector xpath="dcl:table"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:key name="domainDataTypeKey">
+			<xs:selector xpath="dcl:domainDataType"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:key name="constraintKey">
+			<xs:selector xpath="dcl:table/dcl:constraint"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+		<xs:key name="triggerKey">
+			<xs:selector xpath="dcl:trigger"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+	</xs:element>
+
+	<xs:group name="schemaContents">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="unbounded">
+				<xs:element ref="dcl:table"/>
+				<xs:element ref="dcl:domainDataType"/>
+				<xs:element ref="dcl:trigger"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:group>
+
+	<xs:element name="table">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a 'TABLE' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dcl:column" minOccurs="1" maxOccurs="1012"/>
+				<xs:element ref="dcl:constraint" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="name">
+				<xs:annotation>
+					<xs:documentation>The name of the table.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:key name="columnKey">
+			<xs:selector xpath="dcl:column"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+	</xs:element>
+
+	<xs:element name="column">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a 'COLUMN' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice minOccurs="1" maxOccurs="1">
+					<xs:element name="domainDataTypeRef">
+						<xs:annotation>
+							<xs:documentation>A reference to a user-defined, domain-specific data type.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:attribute name="name">
+								<xs:annotation>
+									<xs:documentation>The name of the domain-specific data type being referenced.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:NMTOKEN">
+										<xs:maxLength value="18"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="predefinedDataType">
+						<xs:complexType>
+							<xs:attribute name="name" use="required" type="ddt:predefinedTypes"/>
+							<xs:attribute name="precision" use="optional">
+								<xs:annotation>
+									<xs:documentation>The number of digits in a NUMERIC or DECIMAL, or the number of characters or bytes in a CHARACTER, CHARACTER VARYING, CHARACTER LARGE OBJECT, or BINARY LARGE OBJECT.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:minInclusive value="0"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+							<xs:attribute name="scale" use="optional">
+								<xs:annotation>
+									<xs:documentation>The number of digits after the decimal point in a NUMERIC or DECIMAL.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:unsignedByte">
+										<xs:minInclusive value="0"/>
+										<xs:maxInclusive value="31"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+				<xs:element name="generationCode" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>The code used in the generation / computation of this column.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<!-- DML code goes here. -->
+							<xs:any namespace="##other" processContents="skip"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="name" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the column.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="isNullable" use="optional" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Is NULL a valid value for this column?</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="isIdentity" use="optional" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Is this an IDENTITY column?</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:keyref name="domainDataTypeKeyRef" refer="dcl:domainDataTypeKey">
+			<xs:selector xpath="dcl:domainDataTypeRef"/>
+			<xs:field xpath="@name"/>
+		</xs:keyref>
+	</xs:element>
+
+	<xs:element name="domainDataType">
+		<xs:annotation>
+			<xs:documentation>A user-defined, domain-specific data type with custom restrictions on it.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<!-- DML code goes here. -->
+				<xs:any namespace="##other" processContents="skip"/>
+			</xs:sequence>
+			<xs:attribute name="name" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the domain-specific data type.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:maxLength value="18"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="extends" use="required" type="ddt:predefinedTypes">
+				<xs:annotation>
+					<xs:documentation>The predefined data type that this domain-specific data type is based on.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="constraint" abstract="true" type="dcl:constraintType">
+		<xs:annotation>
+			<xs:documentation>A constraint on a table.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="constraintType" abstract="true">
+		<xs:attribute name="name" use="required">
+			<xs:annotation>
+				<xs:documentation>The name of the constraint.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:maxLength value="18"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:element name="uniquenessConstraint" substitutionGroup="dcl:constraint">
+		<xs:annotation>
+			<xs:documentation>A constraint on the uniqueness of a collection of columns. Equivalent to a 'UNIQUE' or 'PRIMARY KEY' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="dcl:constraintType">
+					<xs:sequence>
+						<xs:element name="columnRef" minOccurs="1" maxOccurs="16">
+							<xs:annotation>
+								<xs:documentation>A reference to a column.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="name" use="required">
+									<xs:annotation>
+										<xs:documentation>The name of the column being referenced.</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:NMTOKEN">
+											<xs:maxLength value="30"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="isPrimary" use="optional" default="false" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>Is this uniqueness constraint a PRIMARY KEY.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:keyref name="uniquenessConstraintColumnKeyRef" refer="dcl:columnKey">
+			<xs:selector xpath="dcl:columnRef"/>
+			<xs:field xpath="@name"/>
+		</xs:keyref>
+	</xs:element>
+
+	<xs:element name="referenceConstraint" substitutionGroup="dcl:constraint">
+		<xs:annotation>
+			<xs:documentation>A reference to a key in another table. Equivalent to a 'FOREIGN KEY' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="dcl:constraintType">
+					<xs:sequence>
+						<xs:element name="columnRef" minOccurs="1" maxOccurs="16">
+							<xs:annotation>
+								<xs:documentation>A reference from a column in this table to a column in the target table.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:attribute name="sourceName" use="required">
+									<xs:annotation>
+										<xs:documentation>The name of the referencing column in this table.</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:NMTOKEN">
+											<xs:maxLength value="30"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+								<xs:attribute name="targetName" use="required">
+									<xs:annotation>
+										<xs:documentation>The name of the referenced column in the target table.</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:NMTOKEN">
+											<xs:maxLength value="30"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="targetTable" use="required">
+						<xs:annotation>
+							<xs:documentation>The name of the table being referenced.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:NMTOKEN">
+								<xs:maxLength value="128"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+		<xs:keyref name="referenceConstraintTableKeyRef" refer="dcl:tableKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="@tableName"/>
+		</xs:keyref>
+		<xs:keyref name="referenceConstraintSourceColumnKeyRef" refer="dcl:columnKey">
+			<xs:selector xpath="dcl:columnRef"/>
+			<xs:field xpath="@sourceName"/>
+		</xs:keyref>
+	</xs:element>
+
+	<xs:element name="checkConstraint" substitutionGroup="dcl:constraint">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a table-level 'CHECK' clause in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="dcl:constraintType">
+					<xs:sequence>
+						<!-- DML code goes here. -->
+						<xs:any namespace="##other" processContents="skip"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="trigger">
+		<xs:annotation>
+			<xs:documentation>Equivalent to a 'TRIGGER' in the SQL Standard.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="columns" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>The columns that will cause this trigger to fire.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="columnRef" minOccurs="1" maxOccurs="1012">
+								<xs:annotation>
+									<xs:documentation>A reference to a column.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="name" use="required">
+										<xs:annotation>
+											<xs:documentation>The name of the column being referenced.</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:NMTOKEN">
+												<xs:maxLength value="30"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="referencing" minOccurs="0" maxOccurs="2">
+					<xs:annotation>
+						<xs:documentation>Equivalent to the 'REFERENCING' clause in the SQL Standard.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:attribute name="state" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:NMTOKEN">
+									<xs:enumeration value="OLD"/>
+									<xs:enumeration value="NEW"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="name" use="required">
+							<xs:annotation>
+								<xs:documentation>The name of the transition variable or table.</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:NMTOKEN">
+									<xs:maxLength value="30"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="when" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Equivalent to a search condition in the SQL Standard.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<!-- DML code goes here. -->
+							<xs:any namespace="##other" processContents="skip"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="triggeredAction" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<!-- DML code goes here. -->
+							<xs:any namespace="##other" processContents="skip"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="name" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the trigger.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:maxLength value="18"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="targetTable" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the table being referenced.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:maxLength value="128"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="actionTime" use="required">
+				<xs:annotation>
+					<xs:documentation>When the trigger fires.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:enumeration value="BEFORE"/>
+						<xs:enumeration value="AFTER"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="event" use="required">
+				<xs:annotation>
+					<xs:documentation>The event that causes trigger to fire.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:enumeration value="INSERT"/>
+						<xs:enumeration value="DELETE"/>
+						<xs:enumeration value="UPDATE"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="level" use="required">
+				<xs:annotation>
+					<xs:documentation>The level of the trigger.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:enumeration value="STATEMENT"/>
+						<xs:enumeration value="ROW"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+		<xs:keyref name="triggerTableKeyRef" refer="dcl:tableKey">
+			<xs:selector xpath="."/>
+			<xs:field xpath="@targetTable"/>
+		</xs:keyref>
+		<xs:keyref name="triggerColumnKeyRef" refer="dcl:columnKey">
+			<xs:selector xpath="dcl:columns/dcl:columnRef"/>
+			<xs:field xpath="@name"/>
+		</xs:keyref>
+	</xs:element>
+
+</xs:schema>

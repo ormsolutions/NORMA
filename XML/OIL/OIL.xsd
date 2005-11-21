@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/ORM/OIL.xsd"
+	xmlns:oil="http://schemas.neumont.edu/ORM/OIL.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	
+	<xs:simpleType name="guid">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="^_[a-fA-F\d]{8}-([a-fA-F\d]{4}-){3}[a-fA-F\d]{12}$"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="modality">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="alethic"/>
+			<xs:enumeration value="deontic"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="mandatory">
+		<xs:union memberTypes="oil:modality">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="false"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	
+	<xs:element name="model">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="entityType" type="oil:entityType" minOccurs="0" maxOccurs="unbounded">
+					<xs:key name="absorbedTypeKey">
+						<xs:selector xpath="oil:entityType|oil:entityTypeRef|oil:valueType"/>
+						<xs:field xpath="@name"/>
+					</xs:key>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="name" use="required" type="xs:string"/>
+			<xs:attribute name="modelRef" use="required" type="oil:guid"/>
+		</xs:complexType>
+		<xs:key name="typeKey">
+			<xs:selector xpath="oil:entityType|oil:valueType"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
+	</xs:element>
+
+
+	<xs:complexType name="ref">
+		<xs:attribute name="target" use="required" type="xs:string"/>
+	</xs:complexType>
+
+
+	<xs:complexType name="entityType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="entityType" type="oil:absorbedEntityType"/>
+			<xs:element name="valueType" type="oil:valueType"/>
+			<xs:element name="entityTypeRef">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="oil:ref">
+							<xs:group ref="oil:singleRoleConstraint" minOccurs="0" maxOccurs="2"/>
+							<xs:attribute name="name" use="required" type="xs:string"/>
+							<xs:attribute name="mandatory" use="optional" type="oil:modality"/>
+							<xs:attribute name="sourceRoleRef" use="required" type="oil:guid"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:group ref="oil:roleSequenceConstraint"/>
+		</xs:choice>
+		<xs:attribute name="name" use="required" type="xs:string"/>
+		<xs:attribute name="sourceRef" use="required" type="oil:guid"/>
+	</xs:complexType>
+	
+	<xs:complexType name="absorbedEntityType">
+		<xs:complexContent>
+			<xs:extension base="oil:entityType">
+				<xs:group ref="oil:singleRoleConstraint"/>
+				<xs:attribute name="mandatory" use="required" type="oil:mandatory"/>
+				<xs:attribute name="sourceRoleRef" use="required" type="oil:guid"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	
+	<xs:complexType name="valueType">
+		<xs:group ref="oil:singleRoleConstraint" minOccurs="0" maxOccurs="2"/>
+		<xs:attribute name="name" use="required" type="xs:string"/>
+		<xs:attribute name="sourceRef" use="required" type="oil:guid"/>
+		<xs:attribute name="mandatory" use="required" type="oil:mandatory"/>
+		<xs:attribute name="dataType" use="required" type="xs:string"/>
+		<xs:attribute name="scale" use="optional" type="xs:nonNegativeInteger"/>
+		<xs:attribute name="length" use="optional" type="xs:nonNegativeInteger"/>
+		<xs:attribute name="sourceRoleRef" use="optional" type="oil:guid"/>
+	</xs:complexType>
+	
+
+	<xs:complexType name="bound">
+		<xs:attribute name="value" type="xs:string" use="required"/>
+		<xs:attribute name="clusivity" use="optional" default="inclusive">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="inclusive"/>
+					<xs:enumeration value="exclusive"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="roleSequence">
+		<xs:sequence>
+			<xs:element name="typeRef" type="oil:ref" minOccurs="2" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="constraint" abstract="true">
+		<xs:attribute name="name" use="required" type="xs:ID"/>
+		<xs:attribute name="modality" use="optional" type="oil:modality" default="alethic"/>
+		<xs:attribute name="sourceRef" use="optional" type="oil:guid"/>
+	</xs:complexType>
+
+	<xs:group name="singleRoleConstraint">
+		<xs:annotation>
+			<xs:documentation>Constraints that apply to a single role (e.g. value, internal uniqueness, frequency)</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="valueConstraint">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="oil:singleRoleConstraint">
+							<xs:choice maxOccurs="unbounded">
+								<xs:element name="range">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="lowerBound" minOccurs="0" type="oil:bound"/>
+											<xs:element name="upperBound" minOccurs="0" type="oil:bound"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="value">
+									<xs:complexType>
+										<xs:attribute name="value" use="required" type="xs:string"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:choice>
+							<xs:attribute name="appliesTo" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="parent"/>
+										<xs:enumeration value="self"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="singleRoleUniquenessConstraint">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="oil:singleRoleConstraint">
+							<xs:attribute name="isPrimary" use="optional" type="xs:boolean" default="false"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="singleRoleFrequencyConstraint">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="oil:singleRoleConstraint">
+							<xs:sequence>
+								<xs:element name="lowerBound" minOccurs="0" type="oil:bound"/>
+								<xs:element name="upperBound" minOccurs="0" type="oil:bound"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="singleRoleConstraint">
+		<xs:annotation>
+			<xs:documentation>Constraints that apply to a single role (e.g. value, internal uniqueness, frequency)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="oil:constraint"/>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:group name="roleSequenceConstraint">
+		<xs:choice>
+			<xs:group ref="oil:singleRoleSequenceConstraint"/>
+			<xs:group ref="oil:multiRoleSequenceConstraint"/>
+		</xs:choice>
+	</xs:group>
+	
+	<xs:group name="singleRoleSequenceConstraint">
+		<xs:annotation>
+			<xs:documentation>Constraints that apply to a single role sequence (e.g. frequency, ring, disjunctive mandatory, uniqueness)</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="frequencyConstraint">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="oil:singleRoleSequenceConstraint">
+							<xs:sequence>
+								<xs:element name="lowerBound" minOccurs="0" type="oil:bound"/>
+								<xs:element name="upperBound" minOccurs="0" type="oil:bound"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ringConstraint">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="oil:singleRoleSequenceConstraint">
+							<xs:attribute name="type" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="irreflexive"/>
+										<xs:enumeration value="acyclic"/>
+										<xs:enumeration value="intransitive"/>
+										<xs:enumeration value="acyclic intransitive"/>
+										<xs:enumeration value="symmetric"/>
+										<xs:enumeration value="asymmetric"/>
+										<xs:enumeration value="anti-symmetric"/>
+										<xs:enumeration value="pro-symmetric"/>
+										<xs:enumeration value="conservative-symmetric"/>
+										<xs:enumeration value="liberal-symmetric"/>
+										<xs:enumeration value="red-symmetric"/>
+										<xs:enumeration value="blue-symmetric"/>
+										<xs:enumeration value="good-symmetric"/>
+										<xs:enumeration value="bad-symmetric"/>
+										<xs:enumeration value="right-symmetric"/>
+										<xs:enumeration value="left-symmetric"/>
+										<xs:enumeration value="apathetic-symmetric"/>
+										<xs:enumeration value="negative-symmetric"/>
+										<xs:enumeration value="positive-symmetric"/>
+										<xs:enumeration value="symmetric irreflexive"/>
+										<xs:enumeration value="symmetric intransitive"/>
+										<xs:enumeration value="asymmetric intransitive"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="disjunctiveMandatoryConstraint" type="oil:singleRoleSequenceConstraint"/>
+			<xs:element name="uniquenessConstraint">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="oil:singleRoleSequenceConstraint">
+							<xs:attribute name="isPrimary" use="optional" type="xs:boolean" default="false"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="singleRoleSequenceConstraint">
+		<xs:annotation>
+			<xs:documentation>Constraints that apply to a single role sequence (e.g. frequency, ring, disjunctive mandatory, external uniqueness)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="oil:constraint">
+				<xs:sequence>
+					<xs:element name="roleSequence" type="oil:roleSequence"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:group name="multiRoleSequenceConstraint">
+		<xs:annotation>
+			<xs:documentation>Constraints that apply to multiple role sequences (e.g. subset, exclusion, equality)</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="subsetConstraint">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="oil:constraint">
+							<xs:sequence>
+								<xs:element name="referencingRoleSequence" type="oil:roleSequence"/>
+								<xs:element name="referencedRoleSequence" type="oil:roleSequence"/>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="exclusionConstraint" type="oil:multiRoleSequenceConstraint"/>
+			<xs:element name="equalityConstraint" type="oil:multiRoleSequenceConstraint"/>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="multiRoleSequenceConstraint">
+		<xs:annotation>
+			<xs:documentation>Constraints that apply to multiple role sequences (e.g. subset, exclusion, equality)</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="oil:constraint">
+				<xs:sequence>
+					<xs:element name="roleSequence" type="oil:roleSequence" minOccurs="2" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+</xs:schema>

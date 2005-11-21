@@ -1,0 +1,168 @@
+monadic - one operand - operators, functions, procedures
+dyadic - two operands - operators, functions, procedures
+triadic - three operands - functions, procedures
+n-adic - n operands - operators
+niladic - no operands - functions, procedures
+
+character operations:
+concatenationOperator	dyadic
+characterSubstringFunction	triadic
+regularExpressionSubstringFunction	triadic
+characterOverlayFunction	4-adic
+fold	monadic
+	upperFunction
+	lowerFunction
+trimFunction	triadic
+
+
+regular identifier:	128 parts		18 parts without long identifiers (Feature F391)
+delimited identifier body:	128 parts	18 parts without long identifiers (Feature F391)
+
+RegExp for identifiers:	[\p{L}\p{Nl}][\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{0,17}
+
+
+result => return value
+unsigned literal => literal
+unsigned value specification => value specification
+boolean term => boolean value expression
+boolean test => boolean value expression
+boolean factor => boolean value expression
+boolean primary => boolean value expression
+boolean predicand => boolean value expression
+character primary => string primary
+character factor => character value expression
+datetime factor => datetime term
+blob primary => string primary
+blob factor => string primary
+blob concatenation => concatenation
+term => numeric value expression
+factor => numeric value expression
+user defined type value expression => value expression primary
+row value predicand => value expression primary
+row value expression => value expression primary
+table factor => table primary
+sql executable statement => sql procedure statement
+drop data type statement => drop user defined type statement
+grouping set => grouping element
+
+
+transcoding => <omitted> F695 Translation support
+character transliteration => <omitted> F695 Translation support
+
+"unique constraint on entire row" => <omitted>
+
+scope clause => <omitted>
+add column scope clause => <omitted>
+drop column scope clause => <omitted>
+like clause => <omitted>
+typed table clause => <omitted>
+character set definition => <omitted>
+drop character set statement => <omitted>
+collation definition => <omitted>
+drop collation statement => <omitted>
+transliteration definition => <omitted>
+drop transliteration statement => <omitted>
+sample clause => <omitted>
+repeatable caluse => <omitted>
+explicit row value constructor => <omitted>
+embedded variable specification => <omitted>
+window function => <omitted>
+empty specification => <omitted>
+cardinality expression => <omitted>
+simple case => <omitted>
+dereference operation => <omitted>
+reference value expression => <omitted>
+collection value expression => <omitted>
+array value expression => <omitted>
+multiset value expression => <omitted>
+subtype treatment => <omitted>
+method invocation => <omitted>
+static method invocation => <omitted>
+new specification => <omitted>
+attribute or method reference => <omitted>
+reference resolution => <omitted>
+collection value constructor => <omitted>
+array value constructor => <omitted>
+multiset value constructor => <omitted>
+array element reference => <omitted>
+multiset element reference => <omitted>
+generalized expression => <omitted>	SO23 Basic structured types
+target array element specification => <omitted>
+specific type method => <omitted> S261 Specific type method
+specific routine designator => <omitted>
+specific name => <omitted>
+path specification => <omitted>
+ordered set function => <omitted>
+hypothetical set function => <omitted>
+inverse distribution function => <omitted>
+similar predicate => <omitted>
+member predicate => <omitted>
+submultiset predicate => <omitted>
+set predicate => <omitted>
+type predicate => <omitted>
+subtype clause => <omitted>
+user defined type option => <omitted>
+method specification list => <omitted>
+member => <omitted>
+user defined cast definition => <omitted>
+drop user defined cast statement => <omitted>
+user defined ordering definition => <omitted>
+drop user defined ordering statement => <omitted>
+transform definition => <omitted>
+alter transform statement => <omitted>
+add transform element list => <omitted>
+drop transform element list => <omitted>
+drop transform statement => <omitted>
+attribute definition => <omitted>
+alter type statement => <omitted>
+add attribute definition => <omitted>
+drop attribute definition => <omitted>
+add original method specification => <omitted>
+add overriding method specification => <omitted>
+drop method specification => <omitted>
+method specification designator => <omitted>
+WITH HIERARCHY OPTION => <omitted> (on <grant privilege statement>)
+collection derived table => <omitted>
+table function derived table => <omitted>
+
+
+
+
+null specification => null keyword
+default specification => default keyword
+
+current date value function => current date keyword
+current time value function => current time keyword
+current timestamp value function => current timestamp keyword
+current local time value function => current local time keyword
+current local timestamp value function => current local timestamp keyword
+
+
+
+white space:
+U+0009	Horizontal Tabulation
+U+000A	Line Feed
+U+000B	Vertical Tabulation
+U+000C	Form Feed
+U+000D	Carriage Return
+U+0020	Space
+U+0085	Next Line
+U+00A0	No-Break Space
+U+1680	Ogham Space Mark
+U+2000	En Quad
+U+2001	Em Quad
+U+2002	En Space
+U+2003	Em Space
+U+2004	Three-Per-Em Space
+U+2005	Four-Per-Em Space
+U+2006	Six-Per-Em Space
+U+2007	Figure Space
+U+2008	Punctuation Space
+U+2009	Thin Space
+U+200A	Hair Space
+U+2028	Line Separator
+U+2029	Paragraph Separator
+U+202F	Narrow No-Break Space
+U+3000	Ideographic Space
+
+

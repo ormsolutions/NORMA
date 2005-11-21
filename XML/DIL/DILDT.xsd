@@ -1,0 +1,536 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Copyright © 2005 Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, and Neumont University
+
+	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+	1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+	3. This notice may not be removed or altered from any source distribution.
+-->
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/DIL/DILDT.xsd"
+	xmlns:ddt="http://schemas.neumont.edu/DIL/DILDT.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Database Intermediate Language Data Types</xs:documentation>
+		<xs:documentation>Encompasses SQL Standard Foundation "5 - Lexical elements", "6.1 - &lt;data type&gt;", "6.2 - &lt;field definition&gt;", and "6.6 - &lt;identifier chain&gt;"</xs:documentation>
+	</xs:annotation>
+
+	<xs:simpleType name="identifierChain">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17})|(&quot;.{1,18}&quot;))(\.(([\p{L}\p{Nl}][\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17})|(&quot;.{1,18}&quot;)))*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="identifier">
+		<xs:annotation>
+			<xs:documentation>A valid identifier, according to the SQL standard.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17})|(&quot;.{1,18}&quot;))"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="regularIdentifier">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[\p{L}\p{Nl}][\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="delimitedIdentifier">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="&quot;.{1,18}&quot;"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="secondsPrecision">
+		<xs:restriction base="xs:nonNegativeInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="numericPrecision">
+		<xs:restriction base="xs:nonNegativeInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="stringOrLargeObjectLength">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]+[K|M|G]?"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="schemaQualifiedName">
+		<xs:annotation>
+			<xs:documentation>[ [ &lt;catalog name&gt; . ] &lt;schema name&gt; . ] &lt;identifier&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="catalog" use="optional" type="ddt:identifier">
+			<xs:annotation>
+				<xs:documentation>If a value is specified for catalog, a value must also be specified for schema.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="schema" use="optional" type="ddt:identifier"/>
+		<xs:attribute name="name" use="required" type="ddt:identifier"/>
+	</xs:complexType>
+
+
+	<xs:element name="fieldDefinition">
+		<xs:annotation>
+			<xs:documentation>&lt;field name&gt; &lt;data type&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="ddt:dataType"/>
+			<xs:attribute name="name" use="required" type="ddt:identifier"/>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:group name="literal">
+		<xs:choice>
+			<xs:element ref="ddt:characterStringLiteral"/>
+			<xs:element ref="ddt:binaryStringLiteral"/>
+			<xs:group ref="ddt:numericLiteral"/>
+			<xs:group ref="ddt:datetimeLiteral"/>
+			<xs:group ref="ddt:intervalLiteral"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="characterStringLiteral" type="xs:string"/>
+	<xs:element name="binaryStringLiteral" type="xs:hexBinary"/>
+	<xs:group name="numericLiteral">
+		<xs:choice>
+			<xs:element ref="ddt:exactNumericLiteral"/>
+			<xs:element ref="ddt:approximateNumericLiteral"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="exactNumericLiteral" type="xs:decimal"/>
+	<xs:element name="approximateNumericLiteral">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]*[\.]?[0-9]+E[\+|\-]?[0-9]+"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:group name="datetimeLiteral">
+		<xs:choice>
+			<xs:element ref="ddt:dateLiteral"/>
+			<xs:element ref="ddt:timeLiteral"/>
+			<xs:element ref="ddt:timestampLiteral"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="dateLiteral" type="xs:date"/>
+	<xs:element name="timeLiteral" type="xs:time"/>
+	<xs:element name="timestampLiteral" type="xs:dateTime"/>
+	<xs:group name="intervalLiteral">
+		<xs:choice>
+			<xs:element ref="ddt:yearMonthIntervalLiteral"/>
+			<xs:element ref="ddt:dayTimeIntervalLiteral"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="yearMonthIntervalLiteral">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]+(\-[0-9]+)?"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="dayTimeIntervalLiteral">
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="([0-9]+(.[0-9]+)?)|([0-9]+ ([0-9]+(:[0-9]+(:[0-9]+(.[0-9]+)?)?)?))|([0-9]+(:[0-9]+(:[0-9]+(.[0-9]+)?)?)?)"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="booleanLiteral" type="ddt:truthValue"/>
+	<xs:simpleType name="truthValue">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TRUE"/>
+			<xs:enumeration value="FALSE"/>
+			<xs:enumeration value="UNKNOWN"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:group name="domainOrDataType">
+		<xs:choice>
+			<xs:element ref="ddt:domain"/>
+			<xs:group ref="ddt:dataType"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="domain" type="ddt:schemaQualifiedName">
+		<xs:annotation>
+			<xs:documentation>A reference to a user-defined domain.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:group name="dataType">
+		<xs:annotation>
+			<xs:documentation>A reference to a predefined or user-defined data type.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:group ref="ddt:predefinedType"/>
+			<xs:element ref="ddt:userDefinedType"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="userDefinedType" type="ddt:schemaQualifiedName">
+		<xs:annotation>
+			<xs:documentation>A reference to a user-defined data type.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:group name="predefinedType">
+		<xs:annotation>
+			<xs:documentation>A reference to a predefined data type.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element ref="ddt:characterString"/>
+			<xs:element ref="ddt:binaryString"/>
+			<xs:element ref="ddt:numeric"/>
+			<xs:element ref="ddt:boolean"/>
+			<xs:element ref="ddt:datetime"/>
+			<xs:element ref="ddt:interval"/>
+		</xs:choice>
+	</xs:group>
+
+
+	<xs:element name="characterString" type="ddt:characterStringDescriptor"/>
+	<xs:complexType name="characterStringDescriptor">
+		<xs:annotation>
+			<xs:documentation>A character string is a sequence of characters taken from a single character set.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="type" use="required" type="ddt:characterStringTypes"/>
+		<xs:attribute name="length" use="required" type="ddt:stringOrLargeObjectLength">
+			<xs:annotation>
+				<xs:documentation>The length or maximum length of the character string (in CHARACTERS).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="characterSet" use="optional" type="ddt:characterSets" default="UTF8"/>
+		<xs:attribute name="collation" use="optional" type="ddt:collationTypes" default="UNICODE"/>
+	</xs:complexType>
+	<xs:simpleType name="characterSets">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="UTF8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="collationTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="UCS_BASIC">
+				<xs:annotation>
+					<xs:documentation>Ordering is determined entirely by the Unicode scalar values of the characters in the strings being sorted.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UNICODE">
+				<xs:annotation>
+					<xs:documentation>Ordering is determined by applying the Unicode Collation Algorithm with the Default Unicode Collation Element Table, as specified in Unicode Technical Standard #10, Unicode Collation Algorithm (http://www.unicode.org/unicode/reports/tr10/).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="charLengthUnits">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CHARACTERS"/>
+			<xs:enumeration value="OCTETS"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="binaryString" type="ddt:binaryStringDescriptor"/>
+	<xs:complexType name="binaryStringDescriptor">
+		<xs:annotation>
+			<xs:documentation>A binary string is a sequence of octets that has neither a character set nor a collation associated with it.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="type" use="required" type="ddt:binaryStringTypes"/>
+		<xs:attribute name="length" use="required" type="ddt:stringOrLargeObjectLength">
+			<xs:annotation>
+				<xs:documentation>The maximum length of the binary string (in OCTETS).</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:element name="numeric" type="ddt:numericDescriptor" abstract="true"/>
+	<xs:complexType name="numericDescriptor" abstract="true">
+		<xs:annotation>
+			<xs:documentation>A number is either an exact numeric value or an approximate numeric value.</xs:documentation>
+			<xs:documentation>Note: For all numeric types, the least value is less than zero and the greatest value is greater than zero. That is, all numeric types are signed.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="type" use="required" type="ddt:numericTypes"/>
+		<xs:attribute name="precision" use="required" type="ddt:numericPrecision">
+			<xs:annotation>
+				<xs:documentation>The precision of the number.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="scale" use="optional" type="ddt:numericPrecision">
+			<xs:annotation>
+				<xs:documentation>The scale of the exact number. Must be less than or equal to the precision.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="approximateNumeric" type="ddt:approximateNumericDescriptor" substitutionGroup="ddt:numeric"/>
+	<xs:complexType name="approximateNumericDescriptor">
+		<xs:complexContent>
+			<xs:restriction base="ddt:numericDescriptor">
+				<xs:attribute name="type" use="required" type="ddt:approximateNumericTypes"/>
+				<xs:attribute name="precision" use="required" type="ddt:numericPrecision"/>
+				<xs:attribute name="scale" use="prohibited"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="exactNumeric" type="ddt:exactNumericDescriptor" substitutionGroup="ddt:numeric"/>
+	<xs:complexType name="exactNumericDescriptor">
+		<xs:complexContent>
+			<xs:restriction base="ddt:numericDescriptor">
+				<xs:attribute name="type" use="required" type="ddt:exactNumericTypes"/>
+				<xs:attribute name="precision" use="required" type="ddt:numericPrecision"/>
+				<xs:attribute name="scale" use="required" type="ddt:numericPrecision"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:element name="boolean" type="ddt:booleanDescriptor"/>
+	<xs:complexType name="booleanDescriptor">
+		<xs:attribute name="type" use="required" type="ddt:booleanTypes"/>
+	</xs:complexType>
+
+	<xs:element name="datetime" type="ddt:datetimeDescriptor" abstract="true"/>
+	<xs:complexType name="datetimeDescriptor" abstract="true">
+		<xs:annotation>
+			<xs:documentation></xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="type" use="required" type="ddt:datetimeTypes"/>
+		<xs:attribute name="zone" use="optional" type="ddt:zoneOptions" default="WITHOUT TIME ZONE"/>
+		<xs:attribute name="precision" use="optional" type="ddt:secondsPrecision">
+			<xs:annotation>
+				<xs:documentation>The number of decimal digits maintained following the decimal point in the seconds value.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="date" type="ddt:dateDescriptor" substitutionGroup="ddt:datetime"/>
+	<xs:complexType name="dateDescriptor">
+		<xs:complexContent>
+			<xs:restriction base="ddt:datetimeDescriptor">
+				<xs:attribute name="type" use="required" type="ddt:dateTypes"/>
+				<xs:attribute name="zone" use="prohibited"/>
+				<xs:attribute name="precision" use="prohibited"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="time" type="ddt:timeDescriptor" substitutionGroup="ddt:datetime"/>
+	<xs:complexType name="timeDescriptor">
+		<xs:complexContent>
+			<xs:restriction base="ddt:datetimeDescriptor">
+				<xs:attribute name="type" use="required" type="ddt:timeTypes"/>
+				<xs:attribute name="zone" use="optional" type="ddt:zoneOptions" default="WITHOUT TIME ZONE"/>
+				<xs:attribute name="precision" use="optional" type="ddt:secondsPrecision"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="zoneOptions">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="WITHOUT TIME ZONE"/>
+			<xs:enumeration value="WITH TIME ZONE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="datetimezoneField">
+		<xs:union memberTypes="ddt:datetimeField ddt:timezoneField"/>
+	</xs:simpleType>
+	<xs:simpleType name="datetimeField">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="YEAR"/>
+			<xs:enumeration value="MONTH"/>
+			<xs:enumeration value="DAY"/>
+			<xs:enumeration value="HOUR"/>
+			<xs:enumeration value="MINUTE"/>
+			<xs:enumeration value="SECOND"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="timezoneField">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TIMEZONE_HOUR"/>
+			<xs:enumeration value="TIMEZONE_MINUTE"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="interval" type="ddt:intervalDescriptor"/>
+	<xs:complexType name="intervalDescriptor">
+		<xs:annotation>
+			<xs:documentation></xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="type" use="required" type="ddt:intervalTypes"/>
+		<xs:attribute name="fields" use="required" type="ddt:intervalFields"/>
+		<xs:attribute name="precision" use="optional" type="ddt:secondsPrecision">
+			<xs:annotation>
+				<xs:documentation>The number of decimal digits maintained following the decimal point in the seconds value.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="intervalFields">
+		<xs:union memberTypes="ddt:yearMonthIntervalFields ddt:dayTimeIntervalFields"/>
+	</xs:simpleType>
+	<xs:simpleType name="yearMonthIntervalFields">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="YEAR"/>
+			<xs:enumeration value="YEAR TO MONTH"/>
+			<xs:enumeration value="MONTH"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="dayTimeIntervalFields">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DAY"/>
+			<xs:enumeration value="DAY TO HOUR"/>
+			<xs:enumeration value="DAY TO MINUTE"/>
+			<xs:enumeration value="DAY TO SECOND"/>
+			<xs:enumeration value="HOUR"/>
+			<xs:enumeration value="HOUR TO MINUTE"/>
+			<xs:enumeration value="HOUR TO SECOND"/>
+			<xs:enumeration value="MINUTE"/>
+			<xs:enumeration value="MINUTE TO SECOND"/>
+			<xs:enumeration value="SECOND"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="predefinedTypes">
+		<xs:union memberTypes="ddt:stringTypes ddt:numericTypes ddt:booleanTypes ddt:datetimeTypes ddt:intervalTypes"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="stringTypes">
+		<xs:union memberTypes="ddt:characterStringTypes ddt:binaryStringTypes ddt:largeObjectStringTypes"/>
+	</xs:simpleType>
+	<xs:simpleType name="largeObjectStringTypes">
+		<xs:union memberTypes="ddt:characterLargeObjectStringTypes ddt:binaryLargeObjectStringTypes"/>
+	</xs:simpleType>
+	<xs:simpleType name="characterStringTypes">
+		<xs:union memberTypes="ddt:characterLargeObjectStringTypes">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="CHARACTER">
+						<xs:annotation>
+							<xs:documentation></xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="CHARACTER VARYING">
+						<xs:annotation>
+							<xs:documentation></xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="characterLargeObjectStringTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CHARACTER LARGE OBJECT">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="binaryStringTypes">
+		<xs:union memberTypes="ddt:binaryLargeObjectStringTypes"/>
+	</xs:simpleType>
+	<xs:simpleType name="binaryLargeObjectStringTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BINARY LARGE OBJECT">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="numericTypes">
+		<xs:union memberTypes="ddt:exactNumericTypes ddt:approximateNumericTypes"/>
+	</xs:simpleType>
+	<xs:simpleType name="exactNumericTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NUMERIC">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DECIMAL">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SMALLINT">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="INTEGER">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BIGINT">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="approximateNumericTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FLOAT">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="REAL">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DOUBLE PRECISION">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="booleanTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BOOLEAN">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="datetimeTypes">
+		<xs:union memberTypes="ddt:dateTypes ddt:timeTypes"/>
+	</xs:simpleType>
+	<xs:simpleType name="dateTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DATE">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="timeTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="TIME">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TIMESTAMP">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="intervalTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INTERVAL">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

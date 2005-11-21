@@ -1,0 +1,1152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Copyright © 2005 Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, and Neumont University
+
+	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+	1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+	3. This notice may not be removed or altered from any source distribution.
+-->
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/DIL/DDIL.xsd"
+	xmlns:ddl="http://schemas.neumont.edu/DIL/DDIL.xsd"
+	xmlns:dil="http://schemas.neumont.edu/DIL/DIL.xsd"
+	xmlns:dep="http://schemas.neumont.edu/DIL/DILEP.xsd"
+	xmlns:dml="http://schemas.neumont.edu/DIL/DMIL.xsd"
+	xmlns:ddt="http://schemas.neumont.edu/DIL/DILDT.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Data Definition Intermediate Language</xs:documentation>
+		<xs:documentation>Encompasses SQL Standard Foundation "11 - Schema definition and manipulation" and "12 - Access control"</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://schemas.neumont.edu/DIL/DILDT.xsd"/>
+	<xs:import namespace="http://schemas.neumont.edu/DIL/DILEP.xsd"/>
+	<xs:import namespace="http://schemas.neumont.edu/DIL/DMIL.xsd"/>
+	<xs:import namespace="http://schemas.neumont.edu/DIL/DIL.xsd"/>
+
+
+	<xs:simpleType name="dropBehavior">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CASCADE"/>
+			<xs:enumeration value="RESTRICT"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="schemaDefinition">
+		<xs:annotation>
+			<xs:documentation>CREATE SCHEMA [ &lt;catalog name&gt; . ] &lt;schema name&gt; [ AUTHORIZATION &lt;authorization identifier&gt; ]</xs:documentation>
+			<xs:documentation>[ DEFAULT CHARACTER SET &lt;character set name&gt; ]</xs:documentation>
+			<xs:documentation>[ PATH &lt;schema name&gt; [ , &lt;schema name&gt; ]... ]</xs:documentation>
+			<xs:documentation>[ &lt;schema element&gt;... ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="path" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>PATH &lt;schema name&gt; [ , &lt;schema name&gt; ]...</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="schema" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="catalogName" use="optional" type="ddt:identifier"/>
+									<xs:attribute name="schemaName" use="required" type="ddt:identifier"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:group ref="ddl:schemaElement" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="catalogName" use="optional" type="ddt:identifier"/>
+			<xs:attribute name="schemaName" use="required" type="ddt:identifier"/>
+			<xs:attribute name="authorizationIdentifier" use="optional" type="ddt:identifier"/>
+			<xs:attribute name="defaultCharacterSet" use="optional" type="ddt:characterSets"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="dropSchemaStatement">
+		<xs:annotation>
+			<xs:documentation>DROP SCHEMA [ &lt;catalog name&gt; . ] &lt;schema name&gt; &lt;drop behavior&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="catalogName" use="optional" type="ddt:identifier"/>
+			<xs:attribute name="schemaName" use="required" type="ddt:identifier"/>
+			<xs:attribute name="dropBehavior" use="required" type="ddl:dropBehavior"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="schemaElement">
+		<xs:choice>
+			<xs:element ref="ddl:tableDefinition"/>
+			<!-- TODO: view definition -->
+			<xs:element ref="ddl:domainDefinition"/>
+			<xs:element ref="ddl:assertionDefinition"/>
+			<xs:element ref="ddl:triggerDefinition"/>
+			<xs:element ref="ddl:userDefinedTypeDefinition"/>
+			<xs:group ref="ddl:sqlInvokedRoutine"/>
+			<xs:element ref="ddl:sequenceGeneratorDefinition"/>
+			<xs:group ref="ddl:grantStatement"/>
+			<xs:element ref="ddl:roleDefinition"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="tableDefinition">
+		<xs:annotation>
+			<xs:documentation>CREATE [ &lt;table scope&gt; ] TABLE &lt;schema qualified name&gt; &lt;table contents source&gt; [ ON COMMIT &lt;commit action&gt; ROW ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:choice>
+						<xs:group ref="ddl:tableElement" maxOccurs="unbounded"/>
+						<xs:element ref="ddl:asSubqueryClause"/>
+					</xs:choice>
+					<xs:attribute name="scope" use="optional">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="GLOBAL TEMPORARY"/>
+								<xs:enumeration value="LOCAL TEMPORARY"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="commitAction" use="optional" default="DELETE">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="PRESERVE"/>
+								<xs:enumeration value="DELETE"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="asSubqueryClause">
+		<xs:annotation>
+			<xs:documentation>[ ( &lt;column name list&gt; ) ] AS &lt;subquery&gt; { WITH DATA | WITH NO DATA }</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="column" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="name" type="ddt:identifier"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="dml:subquery"/>
+			</xs:sequence>
+			<xs:attribute name="data" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="WITH DATA"/>
+						<xs:enumeration value="WITH NO DATA"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="tableElement">
+		<xs:choice>
+			<xs:element ref="ddl:columnDefinition"/>
+			<xs:element ref="ddl:tableConstraintDefinition"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="tableConstraintDefinition" type="ddl:tableConstraintDefinition"/>
+	<xs:complexType name="tableConstraintDefinition">
+		<xs:sequence>
+			<xs:element ref="dep:constraintNameDefinition"/>
+			<xs:choice>
+				<xs:element ref="ddl:uniqueConstraintDefinition"/>
+				<xs:element ref="ddl:referentialConstraintDefinition"/>
+				<xs:element ref="ddl:checkConstraintDefinition"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute ref="dep:constraintCharacteristics"/>
+	</xs:complexType>
+
+	<xs:element name="alterTableStatement">
+		<xs:annotation>
+			<xs:documentation>ALTER TABLE &lt;schema qualified name&gt; &lt;alter table action&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:choice>
+						<xs:element ref="ddl:addColumnDefinition"/>
+						<xs:element ref="ddl:alterColumnDefinition"/>
+						<xs:element ref="ddl:dropColumnDefinition"/>
+						<xs:element ref="ddl:addTableConstraintDefinition"/>
+						<xs:element ref="ddl:dropTableConstraintDefinition"/>
+					</xs:choice>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="addColumnDefinition">
+		<xs:annotation>
+			<xs:documentation>ADD COLUMN &lt;column definition&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ddl:columnDefinition"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dropColumnDefinition">
+		<xs:annotation>
+			<xs:documentation>DROP COLUMN &lt;column name&gt; &lt;drop behavior&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" use="required" type="ddt:identifier"/>
+			<xs:attribute name="dropBehavior" use="required" type="ddl:dropBehavior"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="addTableConstraintDefinition" type="ddl:tableConstraintDefinition">
+		<xs:annotation>
+			<xs:documentation>ADD &lt;table constraint definition&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="dropTableConstraintDefinition">
+		<xs:annotation>
+			<xs:documentation>DROP CONSTRAINT &lt;constraint name&gt; &lt;drop behavior&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:attribute name="dropBehavior" use="required" type="ddl:dropBehavior"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="dropTableStatement">
+		<xs:annotation>
+			<xs:documentation>DROP TABLE &lt;table name&gt; &lt;drop behavior&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:attribute name="dropBehavior" use="required" type="ddl:dropBehavior"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="uniqueConstraintDefinition">
+		<xs:annotation>
+			<xs:documentation>{ UNIQUE | PRIMARY KEY } ( &lt;column name&gt;... ) </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="column" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="name" use="required" type="ddt:identifier"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="UNIQUE"/>
+						<xs:enumeration value="PRIMARY KEY"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="referentialConstraintDefinition">
+		<xs:annotation>
+			<xs:documentation>FOREIGN KEY ( &lt;column name&gt;... ) &lt;references specification&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="column" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="name" use="required" type="ddt:identifier"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element ref="ddl:referencesSpecification"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="columnDefinition">
+		<xs:annotation>
+			<xs:documentation>&lt;column name&gt; &lt;domain or data type&gt;</xs:documentation>
+			<xs:documentation>[ &lt;default clause&gt; | &lt;identity column specification&gt; | &lt;generation clause&gt; ]</xs:documentation>
+			<xs:documentation>[ &lt;column constraint definition&gt;... ]</xs:documentation>
+			<xs:documentation>[ COLLATE &lt;collation name&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="ddt:domainOrDataType"/>
+				<xs:choice minOccurs="0">
+					<xs:element ref="ddl:defaultClause"/>
+					<xs:element ref="ddl:identityColumnSpecification"/>
+					<xs:element ref="ddl:generationClause"/>
+				</xs:choice>
+				<xs:element name="columnConstraintDefinition" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="dep:constraintNameDefinition"/>
+							<xs:choice>
+								<xs:element name="notNullKeyword">
+									<xs:annotation>
+										<xs:documentation>NOT NULL</xs:documentation>
+									</xs:annotation>
+									<xs:complexType/>
+								</xs:element>
+								<xs:element name="uniqueKeyword">
+									<xs:annotation>
+										<xs:documentation>UNIQUE</xs:documentation>
+									</xs:annotation>
+									<xs:complexType/>
+								</xs:element>
+								<xs:element name="primaryKeyKeyword">
+									<xs:annotation>
+										<xs:documentation>PRIMARY KEY</xs:documentation>
+									</xs:annotation>
+									<xs:complexType/>
+								</xs:element>
+								<xs:element ref="ddl:referencesSpecification"/>
+								<xs:element ref="ddl:checkConstraintDefinition"/>
+							</xs:choice>
+						</xs:sequence>
+						<xs:attribute ref="dep:constraintCharacteristics"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="name" use="required" type="ddt:identifier"/>
+			<xs:attribute name="collation" use="optional" type="ddt:collationTypes"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="alterColumnDefinition">
+		<xs:annotation>
+			<xs:documentation>ALTER COLUMN &lt;column name&gt; &lt;alter column action&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="ddl:setColumnDefaultClause"/>
+				<xs:element ref="ddl:dropColumnDefaultClause"/>
+				<xs:element ref="ddl:alterIdentityColumnSpecification"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="defaultClause">
+		<xs:annotation>
+			<xs:documentation>DEFAULT &lt;default option&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:group ref="ddt:literal"/>
+				<xs:group ref="dep:datetimeValueFunction"/>
+				<xs:element ref="dep:userKeyword"/>
+				<xs:element ref="dep:currentUserKeyword"/>
+				<xs:element ref="dep:currentRoleKeyword"/>
+				<xs:element ref="dep:sessionUserKeyword"/>
+				<xs:element ref="dep:systemUserKeyword"/>
+				<xs:element ref="dep:currentPathKeyword"/>
+				<xs:group ref="dep:implicitlyTypedValueSpecification"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="setColumnDefaultClause">
+		<xs:annotation>
+			<xs:documentation>SET &lt;default clause&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ddl:defaultClause"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dropColumnDefaultClause">
+		<xs:annotation>
+			<xs:documentation>DROP DEFAULT</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+
+
+	<xs:element name="identityColumnSpecification">
+		<xs:annotation>
+			<xs:documentation>GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY [ &lt;common sequence generator options&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="ddl:commonSequenceGeneratorOptions"/>
+			<xs:attribute name="type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="ALWAYS"/>
+						<xs:enumeration value="BY DEFAULT"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="alterIdentityColumnSpecification">
+		<xs:annotation>
+			<xs:documentation>{ &lt;alter sequence generator restart option&gt; | SET &lt;basic sequence generator option&gt; }...</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="ddl:alterSequenceGeneratorOptions"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="generationClause" type="dep:valueExpression">
+		<xs:annotation>
+			<xs:documentation>GENERATED ALWAYS AS ( &lt;value expression&gt; )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="referencesSpecification">
+		<xs:annotation>
+			<xs:documentation>REFERENCES &lt;table name&gt; [ ( &lt;reference column&gt;... ) ]</xs:documentation>
+			<xs:documentation>[ MATCH  { FULL | PARTIAL | SIMPLE } ]</xs:documentation>
+			<xs:documentation>[ ON UPDATE &lt;referential action&gt; ] [ ON DELETE &lt;referential action&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:sequence>
+						<xs:element name="referenceColumn" minOccurs="0">
+							<xs:complexType>
+								<xs:attribute name="name" type="ddt:identifier"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="match" use="optional" default="SIMPLE">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="FULL"/>
+								<xs:enumeration value="PARTIAL"/>
+								<xs:enumeration value="SIMPLE"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="onUpdate" use="optional" type="ddl:referentialAction" default="NO ACTION"/>
+					<xs:attribute name="onDelete" use="optional" type="ddl:referentialAction" default="NO ACTION"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="referentialAction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CASCADE"/>
+			<xs:enumeration value="SET NULL"/>
+			<xs:enumeration value="SET DEFAULT"/>
+			<xs:enumeration value="RESTRICT"/>
+			<xs:enumeration value="NO ACTION"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="checkConstraintDefinition" type="dep:booleanValueExpression">
+		<xs:annotation>
+			<xs:documentation>CHECK ( &lt;search condition&gt; )</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="domainDefinition">
+		<xs:annotation>
+			<xs:documentation>CREATE DOMAIN &lt;domain name&gt; AS &lt;predefined type&gt; [ &lt;default clause&gt; ] [ &lt;domain constraint&gt;... ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:sequence>
+						<xs:group ref="ddt:predefinedType"/>
+						<xs:element ref="ddl:defaultClause" minOccurs="0"/>
+						<xs:element name="domainConstraint" minOccurs="0" maxOccurs="unbounded" type="ddl:domainConstraint"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="domainConstraint">
+		<xs:sequence>
+			<xs:element ref="dep:constraintNameDefinition"/>
+			<xs:element ref="ddl:checkConstraintDefinition"/>
+		</xs:sequence>
+		<xs:attribute ref="dep:constraintCharacteristics"/>
+	</xs:complexType>
+
+	<xs:element name="alterDomainStatement">
+		<xs:annotation>
+			<xs:documentation>ALTER DOMAIN &lt;domain name&gt; &lt;alter domain action&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:choice>
+						<xs:element ref="ddl:setDomainDefaultClause"/>
+						<xs:element ref="ddl:dropDomainDefaultClause"/>
+						<xs:element ref="ddl:addDomainConstraintDefinition"/>
+						<xs:element ref="ddl:dropDomainConstraintDefinition"/>
+					</xs:choice>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="dropDomainStatement">
+		<xs:annotation>
+			<xs:documentation>DROP DOMAIN &lt;domain name&gt; &lt;drop behavior&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:attribute name="dropBehavior" use="required" type="ddl:dropBehavior"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="setDomainDefaultClause">
+		<xs:annotation>
+			<xs:documentation>SET &lt;default clause&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ddl:defaultClause"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dropDomainDefaultClause">
+		<xs:annotation>
+			<xs:documentation>DROP DEFAULT</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+
+	<xs:element name="addDomainConstraintDefinition" type="ddl:domainConstraint">
+		<xs:annotation>
+			<xs:documentation>ADD &lt;domain constraint&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="dropDomainConstraintDefinition" type="ddt:schemaQualifiedName">
+		<xs:annotation>
+			<xs:documentation>DROP CONSTRAINT &lt;constraint name&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="triggerDefinition">
+		<xs:annotation>
+			<xs:documentation>CREATE TRIGGER &lt;trigger name&gt; &lt;trigger action time&gt; &lt;trigger event&gt;</xs:documentation>
+			<xs:documentation>ON &lt;table name&gt; [ REFERENCING &lt;transition table or variable list&gt; ]</xs:documentation>
+			<xs:documentation>[ FOR EACH { ROW | STATEMENT } ] [ WHEN ( &lt;search condition&lt; ) ]</xs:documentation>
+			<xs:documentation>BEGIN ATOMIC { &lt;SQL executable statement&gt; ; }... END</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:sequence>
+						<xs:element name="event">
+							<xs:annotation>
+								<xs:documentation>INSERT | DELETE | UPDATE [ OF &lt;column name&gt;... ]</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="column" minOccurs="0" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:attribute name="name" use="required" type="ddt:identifier"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="type" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="INSERT"/>
+											<xs:enumeration value="DELETE"/>
+											<xs:enumeration value="UPDATE"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="table" type="ddt:schemaQualifiedName"/>
+						<xs:element name="referencing" minOccurs="0">
+							<xs:complexType>
+								<xs:choice maxOccurs="2">
+									<xs:element name="row">
+										<xs:annotation>
+											<xs:documentation>[ OLD | NEW ] ROW AS &lt;identifier&gt;</xs:documentation>
+											<xs:documentation>If trigger action time is BEFORE, then NEW. If trigger action time is AFTER, then OLD.</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:attribute name="name" use="required" type="ddt:identifier"/>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="table">
+										<xs:annotation>
+											<xs:documentation>[ OLD | NEW ] TABLE AS &lt;identifier&gt;</xs:documentation>
+											<xs:documentation>If trigger action time is BEFORE, then NEW. If trigger action time is AFTER, then OLD.</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:attribute name="name" use="required" type="ddt:identifier"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:choice>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="when" type="dep:booleanValueExpression" minOccurs="0"/>
+						<xs:element name="atomicBlock">
+							<xs:complexType>
+								<xs:group ref="dil:sqlProcedureStatement" maxOccurs="unbounded"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="actionTime" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="BEFORE"/>
+								<xs:enumeration value="AFTER"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="forEach" use="optional" default="STATEMENT">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="ROW"/>
+								<xs:enumeration value="STATEMENT"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dropTriggerStatement" type="ddt:schemaQualifiedName">
+		<xs:annotation>
+			<xs:documentation>DROP TRIGGER &lt;trigger name&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="userDefinedTypeDefinition">
+		<xs:annotation>
+			<xs:documentation>CREATE TYPE &lt;schema qualified name&gt; AS &lt;predefined type&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:group ref="ddt:predefinedType"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dropUserDefinedTypeStatement">
+		<xs:annotation>
+			<xs:documentation>DROP TYPE &lt;schema qualified name&gt; &lt;drop behavior&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:attribute name="dropBehavior" use="required" type="ddl:dropBehavior"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="sequenceGeneratorDefinition">
+		<xs:annotation>
+			<xs:documentation>CREATE SEQUENCE &lt;schema qualified name&gt; [ AS &lt;data type&gt; ] [ &lt;common sequence generator options&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:sequence>
+						<xs:group ref="ddt:dataType" minOccurs="0"/>
+						<xs:group ref="ddl:commonSequenceGeneratorOptions" minOccurs="0"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="alterSequenceGeneratorStatement">
+		<xs:annotation>
+			<xs:documentation>ALTER SEQUENCE &lt;schema qualified name&gt; &lt;alter sequence generator options&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:sequence>
+						<xs:group ref="ddl:alterSequenceGeneratorOptions"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dropSequenceGeneratorStatement">
+		<xs:annotation>
+			<xs:documentation>DROP SEQUENCE &lt;schema qualified name&gt; &lt;drop behavior&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:attribute name="dropBehavior" use="required" type="ddl:dropBehavior"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="alterSequenceGeneratorRestartOption">
+		<xs:annotation>
+			<xs:documentation>RESTART WITH &lt;signed numeric literal&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="ddt:numericLiteral"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="alterSequenceGeneratorOptions">
+		<xs:sequence>
+			<xs:element name="alterSequenceGeneratorRestartOption" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>RESTART WITH &lt;signed numeric literal&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="ddt:numericLiteral"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:group ref="ddl:basicSequenceGeneratorOptions"/>
+		</xs:sequence>
+	</xs:group>
+
+	<xs:group name="commonSequenceGeneratorOptions">
+		<xs:sequence>
+			<xs:element ref="ddl:sequenceGeneratorStartWithOption" minOccurs="0"/>
+			<xs:group ref="ddl:basicSequenceGeneratorOptions" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="basicSequenceGeneratorOptions">
+		<xs:sequence>
+			<xs:element ref="ddl:sequenceGeneratorIncrementByOption" minOccurs="0"/>
+			<xs:element ref="ddl:sequenceGeneratorMaxValueOption" minOccurs="0"/>
+			<xs:element ref="ddl:sequenceGeneratorMinValueOption" minOccurs="0"/>
+			<xs:element ref="ddl:sequenceGeneratorCycleOption" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="sequenceGeneratorStartWithOption">
+		<xs:annotation>
+			<xs:documentation>START WITH &lt;numeric literal&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="ddt:numericLiteral"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="sequenceGeneratorIncrementByOption">
+		<xs:annotation>
+			<xs:documentation>INCREMENT BY &lt;numeric literal&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="ddt:numericLiteral"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="sequenceGeneratorMaxValueOption">
+		<xs:annotation>
+			<xs:documentation>MAXVALUE &lt;numeric literal&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="ddt:numericLiteral"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="sequenceGeneratorMinValueOption">
+		<xs:annotation>
+			<xs:documentation>MINVALUE &lt;numeric literal&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="ddt:numericLiteral"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="sequenceGeneratorCycleOption">
+		<xs:annotation>
+			<xs:documentation>CYCLE</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="shouldCycle" use="required" type="xs:boolean"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="assertionDefinition">
+		<xs:annotation>
+			<xs:documentation>CREATE ASSERTION &lt;constraint name&gt; &lt;check constraint&gt; &lt;constraint characteristics&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dep:constraintNameDefinition"/>
+				<xs:element ref="ddl:checkConstraintDefinition"/>
+			</xs:sequence>
+			<xs:attribute ref="dep:constraintCharacteristics"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dropAssertionStatement">
+		<xs:annotation>
+			<xs:documentation>DROP ASSERTION &lt;constraint name&gt; [ &lt;drop behavior&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:attribute name="dropBehavior" use="optional" type="ddl:dropBehavior"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="sqlParameterDeclaration">
+		<xs:annotation>
+			<xs:documentation>[ &lt;parameter mode&gt; ] &lt;parameter name&gt; &lt;data type&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="ddt:dataType"/>
+			</xs:sequence>
+			<xs:attribute name="mode" use="optional" default="IN">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="IN"/>
+						<xs:enumeration value="OUT"/>
+						<xs:enumeration value="INOUT"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="name" use="required" type="ddt:identifier"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="sqlDataAccessIndication">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NO SQL"/>
+			<xs:enumeration value="CONTAINS SQL"/>
+			<xs:enumeration value="READS SQL DATA"/>
+			<xs:enumeration value="MODIFIES SQL DATA"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:attributeGroup name="routineCharacteristics">
+		<xs:attribute ref="dep:languageClause" use="optional"/>
+		<xs:attribute name="parameterStyle" use="optional" default="SQL">
+			<xs:annotation>
+				<xs:documentation>PARAMETER STYLE [ SQL | GENERAL ]</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="SQL"/>
+					<xs:enumeration value="GENERAL"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="deterministicCharacteristic" use="optional" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>[ NOT ] DETERMINISTIC</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="sqlDataAccessIndication" use="optional" type="ddl:sqlDataAccessIndication"/>
+		<xs:attribute name="nullCallClause" use="optional">
+			<xs:annotation>
+				<xs:documentation>[ RETURNS NULL | CALLED ] ON NULL INPUT</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="RETURNS NULL"/>
+					<xs:enumeration value="CALLED"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="dynamicResultSetsCharacteristic" use="optional" type="xs:nonNegativeInteger">
+			<xs:annotation>
+				<xs:documentation>DYNAMIC RESULT SETS &lt;unsigned integer&gt;</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="savepointLevelIndication" use="optional">
+			<xs:annotation>
+				<xs:documentation>[ NEW | OLD ] SAVEPOINT LEVEL</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="NEW"/>
+					<xs:enumeration value="OLD"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+
+	<xs:group name="routineBody">
+		<xs:choice>
+			<xs:element name="sqlRoutineSpec">
+				<xs:annotation>
+					<xs:documentation>[ &lt;rights clause&gt; ] &lt;SQL procedure statement&gt;</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="dil:sqlProcedureStatement"/>
+					<xs:attribute name="rightsClause" use="optional">
+						<xs:annotation>
+							<xs:documentation>SQL SECURITY [ INVOKER | DEFINER ]</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="INVOKER"/>
+								<xs:enumeration value="DEFINER"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<!-- TODO: external body reference -->
+		</xs:choice>
+	</xs:group>
+
+	<xs:group name="sqlInvokedRoutine">
+		<xs:choice>
+			<xs:element ref="ddl:sqlInvokedProcedure"/>
+			<xs:element ref="ddl:sqlInvokedFunction"/>
+		</xs:choice>
+	</xs:group>
+
+	<xs:element name="sqlInvokedProcedure">
+		<xs:annotation>
+			<xs:documentation>PROCEDURE &lt;schema qualified name&gt; ( [ &lt;SQL parameter declaration list&gt; ] ) &lt;routine characteristics&gt; &lt;routine body&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ddt:schemaQualifiedName">
+					<xs:sequence>
+						<xs:element ref="ddl:sqlParameterDeclaration" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:group ref="ddl:routineBody"/>
+					</xs:sequence>
+					<xs:attributeGroup ref="ddl:routineCharacteristics"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="sqlInvokedFunction">
+		<xs:annotation>
+			<xs:documentation>&lt;function specification&gt; &lt;routine body&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element name="functionSpecification">
+						<xs:annotation>
+							<xs:documentation>FUNCTION &lt;schema qualified name&gt; ( [ &lt;SQL parameter declaration list&gt; ] ) &lt;returns clause&gt; &lt;routine characteristics&gt; [ STATIC DISPATCH ]</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:complexContent>
+								<xs:extension base="ddt:schemaQualifiedName">
+									<xs:sequence>
+										<xs:element ref="ddl:sqlParameterDeclaration" minOccurs="0" maxOccurs="unbounded"/>
+										<!-- TODO: returns clause -->
+									</xs:sequence>
+									<xs:attributeGroup ref="ddl:routineCharacteristics"/>
+									<xs:attribute name="staticDispath" use="optional" type="xs:boolean" default="false"/>
+								</xs:extension>
+							</xs:complexContent>
+						</xs:complexType>
+					</xs:element>
+					<!-- method specification designator omitted -->
+				</xs:choice>
+				<xs:group ref="ddl:routineBody"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+
+
+	<xs:element name="roleDefinition">
+		<xs:annotation>
+			<xs:documentation>CREATE ROLE &lt;role name&gt; [ WITH ADMIN &lt;grantor&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" use="required" type="ddt:identifier"/>
+			<xs:attribute name="grantor" use="optional" type="ddl:grantor"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dropRoleStatement">
+		<xs:annotation>
+			<xs:documentation>DROP ROLE &lt;role name&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="name" use="required" type="ddt:identifier"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="grantee">
+		<xs:union memberTypes="ddt:identifier">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="PUBLIC"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="grantor">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CURRENT_USER"/>
+			<xs:enumeration value="CURRENT_ROLE"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="privileges">
+		<xs:annotation>
+			<xs:documentation>&lt;object privileges&gt; ON &lt;object name&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice>
+					<xs:element name="allPrivilegesKeyword">
+						<xs:annotation>
+							<xs:documentation>ALL PRIVILEGES</xs:documentation>
+						</xs:annotation>
+						<xs:complexType/>
+					</xs:element>
+					<xs:element name="action" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>&lt;privilege type&gt; [ ( &lt;privilege column list&gt; ) ]</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="column" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:attribute name="name" use="required" type="ddt:identifier"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="privilegeType" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="SELECT"/>
+										<xs:enumeration value="DELETE"/>
+										<xs:enumeration value="INSERT"/>
+										<xs:enumeration value="UPDATE"/>
+										<xs:enumeration value="REFERENCES"/>
+										<xs:enumeration value="USAGE"/>
+										<xs:enumeration value="TRIGGER"/>
+										<xs:enumeration value="UNDER"/>
+										<xs:enumeration value="EXECUTE"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:choice>
+				<xs:element name="objectName">
+					<xs:annotation>
+						<xs:documentation>&lt;object type&gt; &lt;schema qualified name&gt;</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="ddt:schemaQualifiedName">
+								<xs:attribute name="type" use="required">
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="TABLE"/>
+											<xs:enumeration value="DOMAIN"/>
+											<xs:enumeration value="COLLATION"/>
+											<xs:enumeration value="CHARACTER SET"/>
+											<xs:enumeration value="TRANSLATION"/>
+											<xs:enumeration value="TYPE"/>
+											<xs:enumeration value="SEQUENCE"/>
+											<!-- specific routine designator omitted -->
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="grantStatement">
+		<xs:choice>
+			<xs:element ref="ddl:grantPrivilegeStatement"/>
+			<xs:element ref="ddl:grantRoleStatement"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="grantPrivilegeStatement">
+		<xs:annotation>
+			<xs:documentation>GRANT &lt;privileges&gt; TO &lt;grantee list&gt;... [ WITH GRANT OPTION ] [ GRANTED BY &lt;grantor&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ddl:privileges"/>
+				<xs:element name="grantee" maxOccurs="unbounded" type="ddl:grantee"/>
+			</xs:sequence>
+			<xs:attribute name="grantor" use="optional" type="ddl:grantor"/>
+			<xs:attribute name="withGrantOption" use="optional" type="xs:boolean" default="false"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="grantRoleStatement">
+		<xs:annotation>
+			<xs:documentation>GRANT &lt;role name list&gt;... TO &lt;grantee list&gt; [ WITH ADMIN OPTION ] [ GRANTED BY &lt;grantor&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="role" maxOccurs="unbounded" type="ddt:identifier"/>
+				<xs:element name="grantee" maxOccurs="unbounded" type="ddl:grantee"/>
+			</xs:sequence>
+			<xs:attribute name="grantor" use="optional" type="ddl:grantor"/>
+			<xs:attribute name="withAdminOption" use="optional" type="xs:boolean" default="false"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:group name="revokeStatement">
+		<xs:choice>
+			<xs:element ref="ddl:revokePrivilegeStatement"/>
+			<xs:element ref="ddl:revokeRoleStatement"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="revokePrivilegeStatement">
+		<xs:annotation>
+			<xs:documentation>REVOKE [ &lt;revoke option extension&gt; ] &lt;privileges&gt; FROM &lt;grantee list&gt;... [ GRANTED BY &lt;grantor&gt; ] &lt;drop behavior&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ddl:privileges"/>
+				<xs:element name="grantee" maxOccurs="unbounded" type="ddl:grantee"/>
+			</xs:sequence>
+			<xs:attribute name="revokeOptionExtension" use="optional">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="GRANT OPTION FOR"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="grantor" use="optional" type="ddl:grantor"/>
+			<xs:attribute name="dropBehavior" use="required" type="ddl:dropBehavior"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="revokeRoleStatement">
+		<xs:annotation>
+			<xs:documentation>REVOKE [ ADMIN OPTION FOR ] &lt;role name list&gt;... TO &lt;grantee list&gt; [ GRANTED BY &lt;grantor&gt; ] &lt;drop behavior&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="role" maxOccurs="unbounded" type="ddt:identifier"/>
+				<xs:element name="grantee" maxOccurs="unbounded" type="ddl:grantee"/>
+			</xs:sequence>
+			<xs:attribute name="grantor" use="optional" type="ddl:grantor"/>
+			<xs:attribute name="adminOptionFor" use="optional" type="xs:boolean" default="false"/>
+			<xs:attribute name="dropBehavior" use="required" type="ddl:dropBehavior"/>
+		</xs:complexType>
+	</xs:element>
+
+
+
+</xs:schema>

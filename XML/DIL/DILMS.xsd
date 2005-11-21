@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Copyright © 2005 Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, and Neumont University
+
+	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+	1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+	3. This notice may not be removed or altered from any source distribution.
+-->
+<xs:schema
+	targetNamespace="http://schemas.neumont.edu/DIL/DILMS.xsd"
+	xmlns:dms="http://schemas.neumont.edu/DIL/DILMS.xsd"
+	xmlns:dep="http://schemas.neumont.edu/DIL/DILEP.xsd"
+	xmlns:ddt="http://schemas.neumont.edu/DIL/DILDT.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Database Intermediate Language Management Statements</xs:documentation>
+		<xs:documentation>Encompasses SQL Standard Foundation "16 - Transaction Management", "17 - Connection Management", and "18 - Session Management"</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://schemas.neumont.edu/DIL/DILDT.xsd"/>
+	<xs:import namespace="http://schemas.neumont.edu/DIL/DILEP.xsd"/>
+
+	<xs:complexType name="transactionCharacteristics">
+		<xs:sequence>
+			<xs:element name="diagnosticsSize" type="dep:simpleValueSpecification"/>
+		</xs:sequence>
+		<xs:attribute name="isolationLevel" use="optional" default="SERIALIZABLE">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="READ UNCOMMITTED"/>
+					<xs:enumeration value="READ COMMITTED"/>
+					<xs:enumeration value="REPEATABLE READ"/>
+					<xs:enumeration value="SERIALIZABLE"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="accessMode" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="READ ONLY"/>
+					<xs:enumeration value="READ WRITE"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="startTransactionStatement" type="dms:transactionCharacteristics">
+		<xs:annotation>
+			<xs:documentation>START TRANSACTION [ ISOLATION LEVEL &lt;isolation level&gt; ] [ , &lt;transaction access mode&gt; ] [ , DIAGNOSTICS SIZE &lt;simple value specification&gt; ]</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="setTransactionStatement">
+		<xs:annotation>
+			<xs:documentation>SET [ LOCAL ] TRANSACTION [ ISOLATION LEVEL &lt;isolation level&gt; ] [ , &lt;transaction access mode&gt; ] [ , DIAGNOSTICS SIZE &lt;simple value specification&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="dms:transactionCharacteristics">
+					<xs:attribute name="local" type="xs:boolean" default="false"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="setConstraintsModeStatement">
+		<xs:annotation>
+			<xs:documentation>SET CONSTRAINTS { ALL | &lt;constraint name&gt; [ { , &lt;constraint name&gt; }... ] } { DEFERRED | IMMEDIATE }</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="allKeyword">
+					<xs:complexType/>
+				</xs:element>
+				<xs:sequence>
+					<xs:element name="constraintName" type="ddt:schemaQualifiedName" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:choice>
+			<xs:attribute name="mode" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="DEFERRED"/>
+						<xs:enumeration value="IMMEDIATE"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="savepointSpecifier">
+		<xs:attribute name="name" use="required" type="ddt:identifier"/>
+	</xs:complexType>
+	<xs:element name="savepointStatement" type="dms:savepointSpecifier">
+		<xs:annotation>
+			<xs:documentation>SAVEPOINT &lt;savepoint name&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="releaseSavepointStatement" type="dms:savepointSpecifier">
+		<xs:annotation>
+			<xs:documentation>RELASE SAVEPOINT &lt;savepoint name&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:element name="commitStatement">
+		<xs:annotation>
+			<xs:documentation>COMMIT [ AND [ NO ] CHAIN ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="type" use="optional" default="AND NO CHAIN">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="AND CHAIN"/>
+						<xs:enumeration value="AND NO CHAIN"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="rollbackStatement">
+		<xs:annotation>
+			<xs:documentation>ROLLBACK [ AND [ NO ] CHAIN ] [ TO SAVEPOINT &lt;savepoint name&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="type" use="optional" default="AND NO CHAIN">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="AND CHAIN"/>
+						<xs:enumeration value="AND NO CHAIN"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="savepointName" use="optional" type="ddt:identifier"/>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="connectStatement">
+		<xs:annotation>
+			<xs:documentation>CONNECT TO [ DEFAULT | &lt;server name&gt; [ AS &lt;connection name&gt; ] [ USER &lt;connection user name&gt; ] ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="dep:defaultKeyword"/>
+				<xs:sequence>
+					<xs:element name="serverName" type="dep:simpleValueSpecification"/>
+					<xs:element name="connectionName" type="dep:simpleValueSpecification" minOccurs="0"/>
+					<xs:element name="connectionUserName" type="dep:simpleValueSpecification" minOccurs="0"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="setConnectionStatement">
+		<xs:annotation>
+			<xs:documentation>SET CONNECTION [ DEFAULT | &lt;connection name&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="dep:defaultKeyword"/>
+				<xs:element name="connectionName" type="dep:simpleValueSpecification"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="disconnectStatement">
+		<xs:annotation>
+			<xs:documentation>DISCONNECT [ ALL | CURRENT | DEFAULT | &lt;connection name&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="allKeyword">
+					<xs:complexType/>
+				</xs:element>
+				<xs:element name="currentKeyword">
+					<xs:complexType/>
+				</xs:element>
+				<xs:element ref="dep:defaultKeyword"/>
+				<xs:element name="connectionName" type="dep:simpleValueSpecification"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="setSessionCharacteristicsStatement" type="dms:transactionCharacteristics">
+		<xs:annotation>
+			<xs:documentation>SET SESSION CHARACTERISTICS AS [ ISOLATION LEVEL &lt;isolation level&gt; ] [ , &lt;transaction access mode&gt; ] [ , DIAGNOSTICS SIZE &lt;simple value specification&gt; ]</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="setSessionUserIdentifierStatement" type="dep:valueSpecification">
+		<xs:annotation>
+			<xs:documentation>SET SESSION AUTHORIZATION &lt;value specification&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="setRoleNoneStatement">
+		<xs:annotation>
+			<xs:documentation>SET ROLE NONE</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
+	<xs:element name="setRoleStatement" type="dep:valueSpecification">
+		<xs:annotation>
+			<xs:documentation>SET ROLE &lt;value specification&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="setLocalTimezoneStatement">
+		<xs:annotation>
+			<xs:documentation>SET TIME ZONE { LOCAL | &lt;interval value expression&gt; }</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="localKeyword">
+					<xs:complexType/>
+				</xs:element>
+				<xs:group ref="dep:intervalValueExpression"/>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="setCatalogStatement" type="dep:valueSpecification">
+		<xs:annotation>
+			<xs:documentation>SET CATALOG &lt;value specification&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="setSchemaStatement" type="dep:valueSpecification">
+		<xs:annotation>
+			<xs:documentation>SET SCHEMA &lt;value specification&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="setNamesStatement" type="dep:valueSpecification">
+		<xs:annotation>
+			<xs:documentation>SET NAMES &lt;value specification&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="setPathStatement" type="dep:valueSpecification">
+		<xs:annotation>
+			<xs:documentation>SET PATH &lt;value specification&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="setDefaultTransformGroupStatement" type="dep:valueSpecification">
+		<xs:annotation>
+			<xs:documentation>SET DEFAULT TRANSFORM GROUP &lt;value specification&gt;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="setTransformGroupStatement">
+		<xs:annotation>
+			<xs:documentation>SET TRANSFORM GROUP FOR TYPE &lt;user-defined type name&gt; &lt;value specification&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="userDefinedType" type="ddt:schemaQualifiedName"/>
+				<xs:element name="valueSpecification" type="dep:valueSpecification"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="setCollationStatement">
+		<xs:annotation>
+			<xs:documentation>SET COLLATION &lt;collation specification&gt; [ FOR &lt;character set&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="dep:valueSpecification">
+					<xs:attribute name="characterSet" use="optional" type="ddt:characterSets"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="setNoCollationStatement">
+		<xs:annotation>
+			<xs:documentation>SET NO COLLATION [ FOR &lt;character set&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="characterSet" use="optional" type="ddt:characterSets"/>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
