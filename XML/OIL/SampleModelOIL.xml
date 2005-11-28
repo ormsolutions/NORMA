@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- This file was transformed from SampleModel.orm to OIL by hand. It is no longer up to date with the latest changes to SampleModel.orm. -->
 <oil:model name="SampleModel" modelRef="_AA456D07-4B8E-43CB-9F7B-093F42087891" xmlns:oil="http://schemas.neumont.edu/ORM/OIL.xsd">
-	
+
 	<oil:entityType name="Person" sourceRef="_97C09FEE-69B9-429A-9A7C-9C218CB295BB">
 		<oil:valueType name="Person_id" mandatory="alethic" dataType="AutoCounterNumericDataType" length="0" scale="0" sourceRef="_73D777FE-CDC8-40DB-A544-442931809885" sourceRoleRef="_DC92FEF0-36B3-4145-BDEA-2362CCC79718">
 			<oil:uniquenessConstraint name="person_pk" isPrimary="true" sourceRef="_5A8ED651-59C4-4863-B256-6F353B3E4BA0"/>
@@ -35,7 +36,7 @@
 			<oil:uniquenessConstraint name="InternalUniquenessConstraint1" sourceRef="_50710E80-100C-47A9-B5D3-B86A8E75B7B9"/>
 		</oil:valueType>
 	</oil:entityType>
-	
+
 	<oil:entityType name="FactType14" sourceRef="_E47D212A-E9AD-4F29-AEB1-B50D33CFBF35">
 		<oil:entityTypeRef name="Person" mandatory="alethic" target="Person" sourceRoleRef="_2A32CF98-5EC6-470F-999D-BF8B65CB9B64"/>
 		<oil:valueType name="NickName" mandatory="alethic" dataType="VariableLengthTextDataType" length="0" scale="0" sourceRef="_551FCEDA-66D0-49D3-8D87-B1C551D70A8F" sourceRoleRef="_6FA75148-1A54-4675-BD51-E8C95E37DD51">
@@ -112,5 +113,5 @@
 			</oil:roleSequence>
 		</oil:exclusionConstraint>
 	</oil:entityType>
-	
+
 </oil:model>
