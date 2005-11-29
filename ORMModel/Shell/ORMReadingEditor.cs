@@ -33,8 +33,8 @@ namespace Neumont.Tools.ORM.Shell
 		public ORMReadingEditorToolWindow(IServiceProvider serviceProvider) : base(serviceProvider)
 		{
 			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
-			monitor.DocumentWindowChanged += new MonitorSelectionEventHandler(DocumentWindowChangedEvent);
-			monitor.SelectionChanged += new MonitorSelectionEventHandler(SelectionChangedEvent);
+			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChangedEvent);
+			monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(SelectionChangedEvent);
 			CurrentDocument = monitor.CurrentDocument as ORMDesignerDocData;
 		}
 		#endregion

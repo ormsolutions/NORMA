@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.EnterpriseTools.Validation.UI;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 

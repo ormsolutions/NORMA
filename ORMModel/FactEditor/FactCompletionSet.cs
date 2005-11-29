@@ -47,8 +47,8 @@ namespace Neumont.Tools.ORM.FactEditor
 			myPackage = package;
 			IServiceProvider serviceProvider = (IServiceProvider)myPackage;
 			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
-			monitor.DocumentWindowChanged += new MonitorSelectionEventHandler(DocumentWindowChangedEvent);
-			monitor.SelectionChanged += new MonitorSelectionEventHandler(SelectionChangedEvent);
+			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChangedEvent);
+			monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(SelectionChangedEvent);
 			CurrentDocumentView = monitor.CurrentDocumentView as ORMDesignerDocView;
 			
 			// initialize the comparer used for sorting

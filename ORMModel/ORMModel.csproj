@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50215</ProductVersion>
+    <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{888816BF-5497-49F9-8353-C8EF30CB9226}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -21,7 +21,7 @@
     <Optimize>false</Optimize>
     <OutputPath>.\bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;FACTEDITORPROTOTYPE</DefineConstants>
-    <DocumentationFile>bin\Debug\Neumont.Tools.ORM.XML</DocumentationFile>
+    <DocumentationFile>.\bin\Debug\Neumont.Tools.ORM.XML</DocumentationFile>
     <RunFxCop>false</RunFxCop>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
@@ -238,7 +238,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ORMCore.dsldm.cs</LastGenOutput>
     </None>
-    <None Include="ObjectModel\VerbalizationGenerator.xsd" />
+    <None Include="ObjectModel\VerbalizationGenerator.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Resources\Toolbox.EntityType.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ObjectModel\ORMCore.dsldm.resx">
       <DependentUpon>ORMCore.dsldm.cs</DependentUpon>
@@ -331,6 +333,9 @@
       <Generator>NUImsToDmdGenerator</Generator>
       <LastGenOutput>ORMShape.dsldm</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup Condition="">

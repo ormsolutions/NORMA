@@ -69,8 +69,8 @@ namespace Neumont.Tools.ORM.Shell
 			myStringWriter = new StringWriter(builder, CultureInfo.CurrentUICulture);
 
 			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));
-			monitor.DocumentWindowChanged += new MonitorSelectionEventHandler(DocumentWindowChangedEvent);
-			monitor.SelectionChanged += new MonitorSelectionEventHandler(SelectionChangedEvent);
+			monitor.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(DocumentWindowChangedEvent);
+			monitor.SelectionChanged += new EventHandler<MonitorSelectionEventArgs>(SelectionChangedEvent);
 			CurrentDocumentView = monitor.CurrentDocumentView as ORMDesignerDocView;
 		}
 		/// <summary>
@@ -79,7 +79,7 @@ namespace Neumont.Tools.ORM.Shell
 		protected override void Initialize()
 		{
 			base.Initialize();
-			IVsToolWindowToolbarHost host = ToolbarHost;
+			IVsToolWindowToolbarHost host = ToolBarHost;
 			Debug.Assert(host != null); // Should be set with HasToolbar true
 			if (host != null)
 			{
@@ -91,7 +91,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Make sure the toolbar flag gets set
 		/// </summary>
-		protected override bool HasToolbar
+		protected override bool HasToolBar
 		{
 			get
 			{

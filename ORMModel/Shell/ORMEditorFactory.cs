@@ -136,15 +136,19 @@ namespace Neumont.Tools.ORM.Shell
 				items[itemIndex] = new ModelingToolboxItem(
 					itemBase.Id,
 					itemBase.Position,
-					itemBase.DisplayName,
+					StringNotNull(itemBase.DisplayName),
 					itemBase.Bitmap,
-					itemBase.TabNameId,
-					itemBase.TabName,
-					itemBase.ContextSensitiveHelpKeyword,
-					itemBase.Description,
+					StringNotNull(itemBase.TabNameId),
+					StringNotNull(itemBase.TabName),
+					StringNotNull(itemBase.ContextSensitiveHelpKeyword),
+					StringNotNull(itemBase.Description),
 					itemBase.Prototype,
 					newFilters);
 			}
+		}
+		private static string StringNotNull(string testString)
+		{
+			return (testString != null) ? testString : "";
 		}
 		#endregion // Base overrides
 	}

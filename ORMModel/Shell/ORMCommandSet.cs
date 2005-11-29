@@ -3,7 +3,7 @@ using System.Collections;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
-using Microsoft.VisualStudio.EnterpriseTools.Validation.UI;
+using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Modeling;

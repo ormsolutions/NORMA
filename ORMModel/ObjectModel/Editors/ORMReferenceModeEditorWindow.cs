@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORM.Shell
 			IMonitorSelectionService service = serviceProvder.GetService(typeof(IMonitorSelectionService)) as IMonitorSelectionService;
 			if (service != null)
 			{
-				service.DocumentWindowChanged +=new MonitorSelectionEventHandler(service_DocumentWindowChanged);
+				service.DocumentWindowChanged += new EventHandler<MonitorSelectionEventArgs>(service_DocumentWindowChanged);
 			}
 			ORMDesignerDocView docView = service.CurrentDocumentView as ORMDesignerDocView;
 			LoadWindow(docView);
