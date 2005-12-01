@@ -706,6 +706,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="e">DiagramEventArgs</param>
 		protected override void OnMouseActionDeactivated(DiagramEventArgs e)
 		{
+			if (myInOnClicked)
+			{
+				myDeactivatedDuringOnClick = true;
+				return;
+			}
 			RemoveStoreEvents(e.DiagramClientView.Diagram.Store);
 			base.OnMouseActionDeactivated(e);
 			MouseActionDeactivatedEventHandler handler = AfterMouseActionDeactivated;
@@ -715,6 +720,34 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			Reset();
 		}
+		#region Deactivation order HACK
+		private bool myInOnClicked;
+		private bool myDeactivatedDuringOnClick;
+		/// <summary>
+		/// Hack override to handle MSBUG where the transaction triggered
+		/// by the mouse action is committed after the mouse action is deactivated.
+		/// We don't want this because we end up tossing our state prematurely and
+		/// cannot commit our mouse action.
+		/// </summary>
+		protected override void OnClicked(MouseActionEventArgs e)
+		{
+			try
+			{
+				myInOnClicked = true;
+				myDeactivatedDuringOnClick = false;
+				base.OnClicked(e);
+				myInOnClicked = false;
+				if (myDeactivatedDuringOnClick)
+				{
+					OnMouseActionDeactivated(e);
+				}
+			}
+			finally
+			{
+				myInOnClicked = false;
+			}
+		}
+		#endregion // Deactivation order HACK
 		#endregion // Base overrides
 	}
 }
