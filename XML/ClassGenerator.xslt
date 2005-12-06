@@ -21,6 +21,7 @@
 	<xsl:param name="ImplementationClassSuffix" select="'Core'"/>
 	<xsl:param name="RoleValueConstraintFor" select="'RoleValueConstraintFor'"/>
 	<xsl:param name="ValueConstraintFor" select="'ValueConstraintFor'"/>
+	<xsl:param name="DebugDumpAbsorbedObjects" select="false()"/>
 
 	<!-- 
 	KNOWN ISSUES
@@ -311,8 +312,10 @@
 			<xsl:variable name="RawFacts" select="orm:Facts/child::orm:*"/>
 			<xsl:variable name="RawObjects" select="orm:Objects/child::orm:*"/>
 			<xsl:variable name="BinaryAbsorbedObjectsFragment">
-				<xsl:call-template name="BinaryAbsorbObjects">
-					<xsl:with-param name="Objects">
+					<!-- MSBUG This dummy variable is a workaround to what appears to be a major bug in
+						 the MS RTM xslt processor. Placing this directly inside the with-param works
+						 in the debugger, but not otherwise -->
+					<xsl:variable name="dummy">
 						<xsl:for-each select="$RawObjects">
 							<xsl:variable name="Object" select="."/>
 							<ao:Object type="{local-name()}" id="{@id}" name="{@Name}">
@@ -394,6 +397,9 @@
 								</xsl:for-each>
 							</ao:Object>
 						</xsl:for-each>
+					</xsl:variable>
+				<xsl:call-template name="BinaryAbsorbObjects">
+					<xsl:with-param name="Objects" select="$dummy">
 					</xsl:with-param>
 				</xsl:call-template>
 			</xsl:variable>
@@ -1900,15 +1906,17 @@
 			<plx:namespaceImport name="System.Xml"/>
 			<xsl:call-template name="GenerateGlobalSupportClasses"/>
 			<plx:namespace name="{$CustomToolNamespace}">
-				<plx:leadingInfo>
-					<plx:comment blankLine="true"/>
-					<plx:comment>
-						<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-						<xsl:copy-of select="$AbsorbedObjects"/>
-						<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
-					</plx:comment>
-					<plx:comment blankLine="true"/>
-				</plx:leadingInfo>
+				<xsl:if test="$DebugDumpAbsorbedObjects">
+					<plx:leadingInfo>
+						<plx:comment blankLine="true"/>
+						<plx:comment>
+							<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
+							<xsl:copy-of select="$AbsorbedObjects"/>
+							<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
+						</plx:comment>
+						<plx:comment blankLine="true"/>
+					</plx:leadingInfo>
+				</xsl:if>
 				<xsl:apply-templates mode="Main" select="orm:ORMModel"/>
 			</plx:namespace>
 		</plx:root>
