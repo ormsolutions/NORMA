@@ -63,6 +63,12 @@
     <None Include="..\..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
+    <EmbeddedResource Include="Tests.FCLoadTest2.Load.orm" />
+    <EmbeddedResource Include="Tests.FCLoadTest2.Compare.orm" />
+    <EmbeddedResource Include="Tests.FCLoadTest1.Load.orm" />
+    <EmbeddedResource Include="Tests.FCLoadTest1.Compare.orm" />
+    <EmbeddedResource Include="Tests.FrequencyConstraintErrorTest.Compare.orm" />
+    <EmbeddedResource Include="Tests.FrequencyConstraintErrorTest.Load.orm" />
     <EmbeddedResource Include="Tests.Test2.Compare.orm" />
     <EmbeddedResource Include="Tests.Test2.Load.orm" />
     <EmbeddedResource Include="Tests.Test1.Compare.orm" />
@@ -76,6 +82,15 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tests.FrequencyConstraintErrorTest.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tests.FCLoadTest1.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tests.FCLoadTest2.Report.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

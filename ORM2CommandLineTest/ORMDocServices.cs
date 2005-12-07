@@ -777,7 +777,11 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					{
 						FormatXml(report, myWriter);
 					}
-					myWriter.WriteEndElement();
+					else
+					{
+						// UNDONE: Why the else? Is FormatXml writing an extra end element?
+						myWriter.WriteEndElement();
+					}
 				}
 				/// <summary>
 				/// Get the formatting the way we want it. Duplicates

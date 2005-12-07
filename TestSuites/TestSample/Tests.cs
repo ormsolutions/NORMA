@@ -22,6 +22,8 @@ namespace TestSample
 			// from the code services service provider.
 			myTestServices = (IORMToolTestServices)services.ServiceProvider.GetService(typeof(IORMToolTestServices));
 		}
+
+		#region Sample test - missing internal constraint
 		/// <summary>
 		/// A sample test method.
 		/// </summary>
@@ -59,6 +61,9 @@ namespace TestSample
 			// compare at intermediate stages by explicitly running the IORMToolTestServices.Compare function, generally
 			// with a reference name to distinguish the intermediate stages from the automatic comparison.
 		}
+		#endregion
+		#region constraint duplication error
+
 
 
 		[Test("Sample", "InternalConstraints")]
@@ -73,12 +78,87 @@ namespace TestSample
 			myTestServices.LogValidationErrors("After constraint duplication/implication repair");
 			//Role role = fact.RoleCollection[1];
 			//ImpliedInternalUniquenessConstraintError impError1 = fact.ImpliedInternalUniquenessConstraintError;
-			
+
 			// After the method exits, the Compare and LogValidationErrors methods will be run automatically against
 			// the test service. The expected results for the Compare are in Tests.Test1.Compare.orm. You can also
 			// compare at intermediate stages by explicitly running the IORMToolTestServices.Compare function, generally
 			// with a reference name to distinguish the intermediate stages from the automatic comparison.
 		}
+		#endregion //constraint duplication error
 
-	}
+		#region FrequencyConstraintError
+
+
+
+		/// <summary>
+		/// Opens and closes the test file, to ensure the fidelity of the serialization and deserialization
+		/// </summary>
+		[Test("Sample", "ExternalConstraints")]
+		public void FCLoadTest1(Store store)
+		{/*method body intentionally empty*/}
+		[Test("Sample", "ExternalConstraints")]
+		public void FCLoadTest2(Store store)
+		{
+
+			myTestServices.LogValidationErrors("closing and opening");
+			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
+			FrequencyConstraint constraint = (FrequencyConstraint)model.ConstraintsDictionary.GetElement("FrequencyConstraint1").SingleElement;
+
+		}
+		
+		
+		[Test("Sample", "ExternalConstraints")]
+		public void FrequencyConstraintErrorTest(Store store)
+		{
+			myTestServices.LogValidationErrors("BeforeFrequency constraint min/max repair");
+
+			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
+			FrequencyConstraint constraint = (FrequencyConstraint)model.ConstraintsDictionary.GetElement("FrequencyConstraint1").SingleElement;
+			int min = constraint.MinFrequency;
+			int max = constraint.MaxFrequency;
+			using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
+			{
+				constraint.MinFrequency = max;
+				constraint.MaxFrequency = min;
+				t.Commit();
+			}
+
+			myTestServices.LogValidationErrors("After constraint min/max repair");
+		}
+
+
+		[Test("Sample", "ExternalConstraints")]
+		public void FrequencyConstraintErrorGenerationTest(Store store)
+		{
+			myTestServices.LogValidationErrors("BeforeFrequency constraint min/max repair");
+
+
+			try
+			{
+				ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
+				FrequencyConstraint constraint = (FrequencyConstraint)model.ConstraintsDictionary.GetElement("FrequencyConstraint1").SingleElement;
+				int min = constraint.MinFrequency;
+				int max = constraint.MaxFrequency;
+				using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
+				{
+					constraint.MinFrequency = max;
+					constraint.MaxFrequency = min;
+					t.Commit();
+				}
+			}
+			catch (Exception ex)
+			{
+				myTestServices.LogException(ex);
+			}
+
+			myTestServices.LogValidationErrors("After constraint min/max repair");
+		}
+		#endregion
+        
+
+
+
+
+
+    }
 }
