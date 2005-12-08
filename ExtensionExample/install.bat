@@ -1,4 +1,5 @@
-echo off
+@echo off
+setlocal
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont University\ORM Designer\Extensions\ExtensionExample" /v "AssemblyFilePath" /t REG_EXPAND_SZ /d "%%ProgramFiles%%\Neumont\NORMA\Extensions\ExtensionExample.dll" /f
 set rootPath=%1
 if '%2'=='' (
@@ -7,7 +8,9 @@ set outDir="bin\Debug\"
 set outDir=%2
 )
 set envPath="%ProgramFiles%\Neumont\NORMA\Extensions\"
+if not exist %envPath% (
 mkdir %envPath%
+)
 xcopy /Y /D /Q %rootPath%%outDir%"ExtensionExample.dll" %envPath%
 if exist %rootPath%%outDir%"ExtensionExample.pdb" (
 xcopy /Y /D /Q %rootPath%%outDir%"ExtensionExample.pdb" %envPath%

@@ -6,7 +6,6 @@
 	ProjectGUID="{9331A5F9-FC90-43F0-84C8-4A13115E9357}"
 	RootNamespace="SatDll"
 	Keyword="Win32Proj"
-	SignManifests="true"
 	>
 	<Platforms>
 		<Platform
@@ -164,7 +163,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				ExecutionBucket="14"
-				OutputFile="$(OutDir)/SatDll.dll"
+				OutputFile="$(OutDir)/Neumont.Tools.ORMUI.dll"
 				LinkIncremental="1"
 				GenerateManifest="false"
 				ManifestFile=""

@@ -1,4 +1,5 @@
 @echo off
+setlocal
 set rootPath=%1
 if '%2'=='' (
 set envPath="C:\Program Files\Microsoft Visual Studio 8\"

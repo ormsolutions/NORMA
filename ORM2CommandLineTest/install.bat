@@ -1,4 +1,5 @@
-echo off
+@echo off
+setlocal
 set rootPath=%1
 if '%2'=='' (
 set outDir="bin\Debug\"
