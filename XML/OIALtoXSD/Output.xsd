@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SampleModel" elementFormDefault="qualified" targetNamespace="http://schemas.neumont.edu/ORM/CodeGeneratedSchema/SampleModel" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:oxs="http://schemas.neumont.edu/ORM/CodeGeneratedSchema/{@name}">
+  <xs:simpleType name="Gender_Code">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:minLength value="1" />
+      <xs:enumeration value="M" />
+      <xs:enumeration value="F" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="PersonDrivesCar">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:complexType name="PersonBoughtCarFromPersonOnDate">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:complexType name="Review">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:complexType name="PersonHasNickName">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:complexType name="Person">
+    <xs:sequence>
+      <xs:element name="Death" type="oxs:UNDONE" />
+      <xs:sequence minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Equality Constraint(Both must exist if one exists)</xs:documentation>
+        </xs:annotation>
+        <xs:element name="HatType_ColorARGB" type="oxs:HatType_ColorARGB" />
+        <xs:element name="HatType_HatTypeStyle_HatTypeStyle_Description" type="oxs:HatType_HatTypeStyle_HatTypeStyle_Description" />
+      </xs:sequence>
+    </xs:sequence>
+    <xs:attribute name="FirstName" type="xs:string" use="required" />
+    <xs:attribute name="Person_id" type="xs:integer" use="required" />
+    <xs:attribute name="Date_ymd" type="" use="required" />
+    <xs:attribute name="LastName" type="xs:string" use="required" />
+    <xs:attribute name="Gender_Gender_Code" type="oxs:Gender_Code" use="required" />
+  </xs:complexType>
+  <xs:complexType name="Task">
+    <xs:sequence />
+    <xs:attribute name="Task_id" type="xs:integer" use="required" />
+  </xs:complexType>
+  <xs:complexType name="ValueType1">
+    <xs:sequence />
+    <xs:attribute name="ValueType1Value" type="xs:integer" use="required" />
+  </xs:complexType>
+</xs:schema>

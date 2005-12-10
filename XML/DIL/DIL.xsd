@@ -9,24 +9,25 @@
 	3. This notice may not be removed or altered from any source distribution.
 -->
 <xs:schema
-	targetNamespace="http://schemas.neumont.edu/DIL/DIL.xsd"
-	xmlns:dil="http://schemas.neumont.edu/DIL/DIL.xsd"
-	xmlns:ddl="http://schemas.neumont.edu/DIL/DDIL.xsd"
-	xmlns:dep="http://schemas.neumont.edu/DIL/DILEP.xsd"
-	xmlns:dml="http://schemas.neumont.edu/DIL/DMIL.xsd"
-	xmlns:ddt="http://schemas.neumont.edu/DIL/DILDT.xsd"
+	targetNamespace="http://schemas.orm.net/DIL/DIL"
+	xmlns:dil="http://schemas.orm.net/DIL/DIL"
+	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
+	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
+	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
-	attributeFormDefault="unqualified">
+	attributeFormDefault="unqualified"
+	version="0.1">
 	<xs:annotation>
 		<xs:documentation>Database Intermediate Language</xs:documentation>
 		<xs:documentation>Encompasses SQL Standard Foundation "13 - SQL-client modules"</xs:documentation>
 	</xs:annotation>
 
-	<xs:import namespace="http://schemas.neumont.edu/DIL/DILDT.xsd"/>
-	<xs:import namespace="http://schemas.neumont.edu/DIL/DILEP.xsd"/>
-	<xs:import namespace="http://schemas.neumont.edu/DIL/DMIL.xsd"/>
-	<xs:import namespace="http://schemas.neumont.edu/DIL/DDIL.xsd"/>
+	<xs:import namespace="http://schemas.orm.net/DIL/DILDT"/>
+	<xs:import namespace="http://schemas.orm.net/DIL/DILEP"/>
+	<xs:import namespace="http://schemas.orm.net/DIL/DMIL"/>
+	<xs:import namespace="http://schemas.orm.net/DIL/DDIL"/>
 
 	<xs:group name="sqlProcedureStatement">
 		<xs:choice>

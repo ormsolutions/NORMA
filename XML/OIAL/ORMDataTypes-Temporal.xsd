@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://schemas.orm.net/ORMDataTypes-Temporal"
+	xmlns:odtt="http://schemas.orm.net/ORMDataTypes-Temporal" 
+	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="0.1">
+
+	<xs:import namespace="http://schemas.orm.net/ORMDataTypes"/>
+
+	
+	<xs:complexType name="date">
+		<xs:complexContent>
+			<xs:extension base="odt:dataType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="time">
+		<xs:complexContent>
+			<xs:extension base="odt:dataType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="dateTime">
+		<xs:complexContent>
+			<xs:extension base="odt:dataType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="duration">
+		<xs:complexContent>
+			<xs:extension base="odt:dataType"/>
+		</xs:complexContent>
+	</xs:complexType>
+
+
+</xs:schema>

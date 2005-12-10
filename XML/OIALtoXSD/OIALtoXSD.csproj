@@ -1,0 +1,21 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FAAB6855-B7DE-4A4B-B36C-98928D4F5DF2}</ProjectGuid>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="OIALtoXSD.xslt" />
+    <Content Include="Output.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\OIAL\OIAL.xsd" />
+    <None Include="..\OIAL\ORMDataTypes.xsd" />
+  </ItemGroup>
+</Project>

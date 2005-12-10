@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ddl:schemaDefinition schemaName="SchemaNameAttr" authorizationIdentifier="AuthIdenti" catalogName="CatalName" defaultCharacterSet="UTF8" 
+	 
+	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
+	xmlns:dml="http://schemas.orm.net/DIL/DMIL" 
+	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	xmlns:dep="http://schemas.orm.net/DIL/DILEP">
+	<ddl:path>
+		<ddl:schema schemaName="SchemaNameAtt" catalogName="CatalName"/>
+		<ddl:schema schemaName="SecondSchemaName" catalogName="SecondCatName"/>
+	</ddl:path>
+	<ddl:tableDefinition scope="GLOBAL TEMPORARY" name="nameAtt" catalog="catalogAtt" commitAction="PRESERVE" schema="SchemaNameAtt">
+		<ddl:columnDefinition name="boolName" collation="UNICODE">
+			<ddt:boolean type="BOOLEAN"/>
+			<ddl:defaultClause>
+				<ddt:dayTimeIntervalLiteral fields="DAY TO MINUTE" value="2005-12"/>
+			</ddl:defaultClause>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="boolName2" collation="UCS_BASIC">
+			<ddt:binaryString type="BINARY LARGE OBJECT" length="8"/>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="charStrName" collation="UNICODE">
+			<ddt:characterString characterSet="UTF8" collation="UNICODE" length="8" type="CHARACTER VARYING"/>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="numName" collation="UNICODE">
+			<ddt:interval type="INTERVAL" fields="YEAR TO MONTH" precision="4"/>
+			<ddl:defaultClause>
+				<ddt:timestampLiteral value="2005-12-09T17:07:00"/>
+			</ddl:defaultClause>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="aprxNumName" collation="UNICODE">
+			<ddt:approximateNumeric precision="9" type="FLOAT"/>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="binStrName" collation="UNICODE">
+			<ddt:time type="TIME" precision="10" zone="WITH TIME ZONE"/>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="dateNameVar" collation="UNICODE">
+			<ddt:date type="DATE"/>
+		</ddl:columnDefinition>		
+		<ddl:tableConstraintDefinition dep:constraintCharacteristics="INITIALLY DEFERRED">
+			<dep:constraintNameDefinition catalog="catName" schema="schemName" name="consrtName"/>
+			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
+				<ddl:column name="charStrName"/>
+			</ddl:uniqueConstraintDefinition>
+		</ddl:tableConstraintDefinition>
+	</ddl:tableDefinition>
+</ddl:schemaDefinition>

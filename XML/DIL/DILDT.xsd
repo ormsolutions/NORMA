@@ -9,11 +9,12 @@
 	3. This notice may not be removed or altered from any source distribution.
 -->
 <xs:schema
-	targetNamespace="http://schemas.neumont.edu/DIL/DILDT.xsd"
-	xmlns:ddt="http://schemas.neumont.edu/DIL/DILDT.xsd"
+	targetNamespace="http://schemas.orm.net/DIL/DILDT"
+	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
-	attributeFormDefault="unqualified">
+	attributeFormDefault="unqualified"
+	version="0.9">
 	<xs:annotation>
 		<xs:documentation>Database Intermediate Language Data Types</xs:documentation>
 		<xs:documentation>Encompasses SQL Standard Foundation "5 - Lexical elements", "6.1 - &lt;data type&gt;", "6.2 - &lt;field definition&gt;", and "6.6 - &lt;identifier chain&gt;"</xs:documentation>
@@ -87,23 +88,59 @@
 			<xs:group ref="ddt:numericLiteral"/>
 			<xs:group ref="ddt:datetimeLiteral"/>
 			<xs:group ref="ddt:intervalLiteral"/>
+			<xs:element ref="ddt:booleanLiteral"/>
 		</xs:choice>
 	</xs:group>
-	<xs:element name="characterStringLiteral" type="xs:string"/>
-	<xs:element name="binaryStringLiteral" type="xs:hexBinary"/>
+	<xs:complexType name="literal" abstract="true">
+		<xs:attribute name="value" use="required" type="xs:anySimpleType"/>
+	</xs:complexType>
+	<xs:element name="characterStringLiteral">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="ddt:literal">
+					<xs:attribute name="value" use="required" type="xs:string"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="binaryStringLiteral">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="ddt:literal">
+					<xs:attribute name="value" use="required" type="xs:hexBinary"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 	<xs:group name="numericLiteral">
 		<xs:choice>
 			<xs:element ref="ddt:exactNumericLiteral"/>
 			<xs:element ref="ddt:approximateNumericLiteral"/>
 		</xs:choice>
 	</xs:group>
-	<xs:element name="exactNumericLiteral" type="xs:decimal"/>
+	<xs:element name="exactNumericLiteral">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="ddt:literal">
+					<xs:attribute name="value" use="required" type="xs:decimal"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 	<xs:element name="approximateNumericLiteral">
-		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:pattern value="[0-9]*[\.]?[0-9]+E[\+|\-]?[0-9]+"/>
-			</xs:restriction>
-		</xs:simpleType>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="ddt:literal">
+					<xs:attribute name="value" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="[0-9]*[\.]?[0-9]+E[\+|\-]?[0-9]+"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
 	</xs:element>
 	<xs:group name="datetimeLiteral">
 		<xs:choice>
@@ -112,30 +149,88 @@
 			<xs:element ref="ddt:timestampLiteral"/>
 		</xs:choice>
 	</xs:group>
-	<xs:element name="dateLiteral" type="xs:date"/>
-	<xs:element name="timeLiteral" type="xs:time"/>
-	<xs:element name="timestampLiteral" type="xs:dateTime"/>
+	<xs:element name="dateLiteral">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="ddt:literal">
+					<xs:attribute name="value" use="required" type="xs:date"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="timeLiteral">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="ddt:literal">
+					<xs:attribute name="value" use="required" type="xs:time"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="timestampLiteral">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="ddt:literal">
+					<xs:attribute name="value" use="required" type="xs:dateTime"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 	<xs:group name="intervalLiteral">
 		<xs:choice>
 			<xs:element ref="ddt:yearMonthIntervalLiteral"/>
 			<xs:element ref="ddt:dayTimeIntervalLiteral"/>
 		</xs:choice>
 	</xs:group>
+	<xs:complexType name="intervalLiteral" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="ddt:literal">
+				<xs:attribute name="value" use="required" type="xs:anySimpleType"/>
+				<xs:attribute name="fields" use="required" type="ddt:intervalFields"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:element name="yearMonthIntervalLiteral">
-		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:pattern value="[0-9]+(\-[0-9]+)?"/>
-			</xs:restriction>
-		</xs:simpleType>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="ddt:intervalLiteral">
+					<xs:attribute name="value" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="[\+\-]?[0-9]+(\-[0-9]+)?"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="fields" use="required" type="ddt:yearMonthIntervalFields"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
 	</xs:element>
 	<xs:element name="dayTimeIntervalLiteral">
-		<xs:simpleType>
-			<xs:restriction base="xs:string">
-				<xs:pattern value="([0-9]+(.[0-9]+)?)|([0-9]+ ([0-9]+(:[0-9]+(:[0-9]+(.[0-9]+)?)?)?))|([0-9]+(:[0-9]+(:[0-9]+(.[0-9]+)?)?)?)"/>
-			</xs:restriction>
-		</xs:simpleType>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="ddt:intervalLiteral">
+					<xs:attribute name="value" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:pattern value="[\+\-]?([0-9]+(.[0-9]+)?)|([0-9]+ ([0-9]+(:[0-9]+(:[0-9]+(.[0-9]+)?)?)?))|([0-9]+(:[0-9]+(:[0-9]+(.[0-9]+)?)?)?)"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="fields" use="required" type="ddt:dayTimeIntervalFields"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
 	</xs:element>
-	<xs:element name="booleanLiteral" type="ddt:truthValue"/>
+	<xs:element name="booleanLiteral">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="ddt:literal">
+					<xs:attribute name="value" use="required" type="ddt:truthValue"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
 	<xs:simpleType name="truthValue">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="TRUE"/>
@@ -249,7 +344,7 @@
 			<xs:documentation>Note: For all numeric types, the least value is less than zero and the greatest value is greater than zero. That is, all numeric types are signed.</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="type" use="required" type="ddt:numericTypes"/>
-		<xs:attribute name="precision" use="required" type="ddt:numericPrecision">
+		<xs:attribute name="precision" use="optional" type="ddt:numericPrecision">
 			<xs:annotation>
 				<xs:documentation>The precision of the number.</xs:documentation>
 			</xs:annotation>
@@ -265,7 +360,7 @@
 		<xs:complexContent>
 			<xs:restriction base="ddt:numericDescriptor">
 				<xs:attribute name="type" use="required" type="ddt:approximateNumericTypes"/>
-				<xs:attribute name="precision" use="required" type="ddt:numericPrecision"/>
+				<xs:attribute name="precision" use="optional" type="ddt:numericPrecision"/>
 				<xs:attribute name="scale" use="prohibited"/>
 			</xs:restriction>
 		</xs:complexContent>
@@ -275,8 +370,8 @@
 		<xs:complexContent>
 			<xs:restriction base="ddt:numericDescriptor">
 				<xs:attribute name="type" use="required" type="ddt:exactNumericTypes"/>
-				<xs:attribute name="precision" use="required" type="ddt:numericPrecision"/>
-				<xs:attribute name="scale" use="required" type="ddt:numericPrecision"/>
+				<xs:attribute name="precision" use="optional" type="ddt:numericPrecision"/>
+				<xs:attribute name="scale" use="optional" type="ddt:numericPrecision"/>
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
