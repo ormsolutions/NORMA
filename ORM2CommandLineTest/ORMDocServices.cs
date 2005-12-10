@@ -541,9 +541,15 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 			}
 			void IORMToolTestServices.LogValidationErrors(string referenceName)
 			{
-				ICollection<IORMToolTaskItem> tasks = ((ORMTaskProvider)myTaskProvider).TaskItems;
-				int taskCount = tasks.Count;
+				ICollection<IORMToolTaskItem> tasks = null;
+				int taskCount = 0;
 				string[] taskStrings = null;
+				ORMTaskProvider taskProvider = (ORMTaskProvider)myTaskProvider;
+				if (taskProvider != null)
+				{
+					tasks = taskProvider.TaskItems;
+					taskCount = tasks.Count;
+				}
 				if (taskCount != 0)
 				{
 					taskStrings = new string[taskCount];
@@ -777,11 +783,7 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 					{
 						FormatXml(report, myWriter);
 					}
-					else
-					{
-						// UNDONE: Why the else? Is FormatXml writing an extra end element?
-						myWriter.WriteEndElement();
-					}
+					myWriter.WriteEndElement();
 				}
 				/// <summary>
 				/// Get the formatting the way we want it. Duplicates

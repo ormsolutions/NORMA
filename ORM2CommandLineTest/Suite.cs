@@ -676,7 +676,6 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 											diffStream.Seek(0, SeekOrigin.Begin);
 											using (XmlReader diffReader = XmlTextReader.Create(diffStream, readerSettings))
 											{
-												diffReader.MoveToContent();
 												suiteReport.ReportTestResults(methodName, ORMTestResult.FailReportDiffgram, diffReader);
 											}
 										}
