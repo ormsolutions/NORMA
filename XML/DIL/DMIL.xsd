@@ -48,8 +48,67 @@
 		<xs:annotation>
 			<xs:documentation>[ &lt;with clause&gt; ] &lt;query expression body&gt;</xs:documentation>
 		</xs:annotation>
-		
+		<xs:sequence>
+			<xs:element name="withClause" type="dml:withClause" minOccurs="0"/>
+			<xs:element name="queryExpressionBody" type="dml:queryExpressionBody"/>
+		</xs:sequence>
 	</xs:complexType>
+
+	<xs:complexType name="queryExpressionBody">
+		<xs:annotation>
+			<xs:documentation>&lt;query term&gt; | &lt;query expression body&gt; UNION | EXCEPT  [ ALL | DISTINCT ] [ &lt;corresponding spec&gt; ] &lt;query term&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="queryTerm" type="dml:queryTerm"/>
+			<xs:element name="queryExpressionBody" type="dml:queryExpressionBody" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="queryTerm">
+		<xs:annotation>
+			<xs:documentation>&lt;query primary&gt; | &lt;query term&gt; INTERSECT [ ALL | DISTINCT ] [ &lt;corresponding spec&gt; ] &lt;query primary&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="queryTerm" type="dml:queryTerm" minOccurs="0"/>
+			<xs:element name="queryPrimary" type="dml:queryPrimary"/>
+			<xs:element name="correspondingSpec" type="dml:correspondingSpec" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="correspondingSpec">
+		<xs:attribute name="columnName" type="ddt:identifier"/>
+	</xs:complexType>
+
+	<xs:complexType name="queryPrimary">
+		<xs:annotation>
+			<xs:documentation>&lt;simple table&gt; | ( &lt;query expression body&gt; )</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="simpleTable" type="dml:simpleTable"/>
+			<xs:element name="queryExpressionBody" type="dml:queryExpressionBody"/>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="simpleTable">
+		<xs:annotation>
+			<xs:documentation>&lt;query specification&gt; | &lt;explicit table&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="querySpecification" type="dml:querySpecification"/>
+			<xs:element name="tableOrQueryName" type="dml:tableOrQueryName"/>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:element name="withClause">
+		<xs:annotation>
+			<xs:documentation>WITH [ RECURSIVE ] &lt;with list element&gt; [ , &lt;with list element&gt; ] ...</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="withListElement" type="dml:withListElement"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
 	<!-- p.300 -->
 	<xs:complexType name="tableExpression">
@@ -104,11 +163,83 @@
 			<xs:documentation>WITH [ RECURSIVE ] &lt;with list&gt;</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="queryName" type="ddt:identifier"/>
-			<xs:element name="columnList" type="ddt:identifier" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="queryExpression" type="dml:queryExpression"/>
-			
+			<xs:element name="withListElement" type="dml:withListElement" maxOccurs="unbounded"/>
 		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="withListElement">
+		<xs:annotation>
+			<xs:documentation>&lt;query name&gt; [ ( &lt;with column list&gt; ) ] AS ( &lt;query expression&gt; ) [ &lt;search or cycle clause&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="queryName" type="ddt:identifier"/>
+			<xs:element name="columnName" type="ddt:identifier" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="queryExpression" type="dml:queryExpression"/>
+			<xs:element name="searchOrCycleClause" type="dml:searchOrCycleClause" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="searchClause">
+		<xs:annotation>
+			<xs:documentation>SEARCH &lt;recursive search order&gt; SET &lt;sequence column&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="recursiveSearchOrder">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="sortSpecification" type="dml:sortSpecification" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="type" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="DEPTH FIRST BY"/>
+								<xs:enumeration value="BREADTH FIRST BY"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="sequenceColumn" type="ddt:identifier"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="cycleClause">
+		<xs:annotation>
+			<xs:documentation>CYCLE &lt;cycle column list&gt; SET &lt;cycle mark column&gt; TO &lt;cycle mark value&gt;</xs:documentation>
+			<xs:documentation>DEFAULT &lt;non cycle mark value&gt; USING &lt;path column&gt;</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="cycleColumn" type="ddt:identifier" maxOccurs="unbounded"/>
+			<xs:element name="cycleMarkColumn" type="ddt:identifier"/>
+			<xs:element name="cycleMarkValue" type="dep:valueExpression"/>
+			<xs:element name="nonCycleMarkValue" type="dep:valueExpression"/>
+			<xs:element name="pathColumn" type="ddt:identifier"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="sortSpecification">
+		<xs:annotation>
+			<xs:documentation>&lt;sort key&gt; [ &lt;ordering specification&gt; ] [ &lt;null ordering&gt; ]</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="sortKey" type="dep:valueExpression"/>
+		</xs:sequence>
+		<xs:attribute name="orderingSpecification" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="ASC"/>
+					<xs:enumeration value="DESC"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="nullOrdering" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="NULLS FIRST"/>
+					<xs:enumeration value="NULLS LAST"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 	</xs:complexType>
 
 	<xs:attribute name="setQuantifier">
@@ -181,6 +312,10 @@
 		<xs:annotation>
 			<xs:documentation>&lt;search clause&gt; | &lt;cycle clause&gt; |  &lt;search clause&gt; &lt;cycle clause&gt;</xs:documentation>
 		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="searchClause" type="dml:searchClause" minOccurs="0"/>
+			<xs:element name="cycleClause" type="dml:cycleClause" minOccurs="0"/>
+		</xs:sequence>
 	</xs:complexType>
 
 	<!-- p.340 -->
