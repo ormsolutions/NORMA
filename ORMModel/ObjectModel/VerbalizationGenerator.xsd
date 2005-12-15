@@ -38,8 +38,10 @@
 			<xs:enumeration value="PersonalPronoun"/>
 			<xs:enumeration value="DefiniteArticle">
 				<xs:annotation>
-					<xs:documentation>Used for 'that' before an object name. Different than ImpersonalPronoun
-					which is used to refer back to an object and is frequently used conditionally with PersonalPronoun.</xs:documentation>
+					<xs:documentation>
+						Used for 'that' before an object name. Different than ImpersonalPronoun
+						which is used to refer back to an object and is frequently used conditionally with PersonalPronoun.
+					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="UniversalQuantifier"/>
@@ -103,6 +105,76 @@
 			<xs:enumeration value="CombinationIdentifier"/>
 			<xs:enumeration value="OccursInPopulation"/>
 			<xs:enumeration value="OneQuantifier"/>
+			<xs:enumeration value="PeriodDelimiter">
+				<xs:annotation>
+					<xs:documentation>{0}.{1} :: Used to delimit two snippet replacements by a snippet.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NameWithRefMode">
+				<xs:annotation>
+					<xs:documentation>{0}({1}) :: Used to enclose the second snippet replacement in brackets.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SingleValueValueConstraint">
+				<xs:annotation>
+					<xs:documentation>the possible value of {0} is {1} :: Used to verbalize a value range constraint with one range, where the min value is equal to the max value.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MultiValueValueConstraint">
+				<xs:annotation>
+					<xs:documentation>the possible values of {0} are {1} :: Used to verbalize a value range constraint with multiple values.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SelfReference">
+				<xs:annotation>
+					<xs:documentation>{0} :: Allows the snippet replacement to verbalize itself.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinClosedMaxClosed">
+				<xs:annotation>
+					<xs:documentation>at least {0} to at most {1} :: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound closed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinClosedMaxOpen">
+				<xs:annotation>
+					<xs:documentation>at least {0} to below {1} :: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound open.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinClosedMaxUnbounded">
+				<xs:annotation>
+					<xs:documentation>at least {0} :: Used to verbalize a range inclusion with the minimum bound closed and the maximum unbounded.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinOpenMaxClosed">
+				<xs:annotation>
+					<xs:documentation>above {0} to at most {1} :: Used to verbalize a range inclusion with the minimum bound open and the maximum bound closed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinOpenMaxOpen">
+				<xs:annotation>
+					<xs:documentation>above {0} to below {1} :: Used to verbalize a range inclusion with the minimum bound open and the maximum bound open.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinOpenMaxUnbounded">
+				<xs:annotation>
+					<xs:documentation>above {0} :: Used to verbalize a range inclusion with the minimum bound open and the maximum unbounded.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinUnboundedMaxClosed">
+				<xs:annotation>
+					<xs:documentation>at most {1} :: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound closed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinUnboundedMaxOpen">
+				<xs:annotation>
+					<xs:documentation>below {1} :: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound open.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="InSeparator">
+				<xs:annotation>
+					<xs:documentation>{0} in {1} :: Used to verbalize [RolePlayer in Fact] for role value constraints, e.g. Person in Person has Age.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ConstraintTypeEnum">
@@ -116,6 +188,11 @@
 			<xs:enumeration value="SubsetConstraint"/>
 			<xs:enumeration value="ExclusionConstraint"/>
 			<xs:enumeration value="EqualityConstraint"/>
+			<xs:enumeration value="RoleValueRangeDefinition">
+				<xs:annotation>
+					<xs:documentation>Verbalizes value range constraints on roles.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ConstraintPatternGroupEnum">
@@ -123,6 +200,11 @@
 			<xs:enumeration value="InternalConstraint"/>
 			<xs:enumeration value="SingleColumnExternalConstraint"/>
 			<xs:enumeration value="MultiColumnExternalConstraint"/>
+			<xs:enumeration value="RoleValueConstraint">
+				<xs:annotation>
+					<xs:documentation>Verbalizes role value constraints.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ReadingChoicePreferSingleMatchEnum">
@@ -172,7 +254,16 @@
 			<xs:enumeration value="TopLevelIndentedLogicalOrList"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="PredicateReplacementMatchEnum">
+	<xs:simpleType name="ListStyleEnumOrNull">
+		<xs:union memberTypes="ListStyleEnum">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="null"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<xs:simpleType name="RoleIteratorContextMatchEnum">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="included"/>
 			<xs:enumeration value="excluded"/>
@@ -206,10 +297,10 @@
 			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
-	<xs:complexType name="SnippetLeafTypeWithMatch">
+	<xs:complexType name="SnippetLeafTypeWithConditionalMatch">
 		<xs:complexContent>
 			<xs:extension base="SnippetLeafType">
-				<xs:attribute name="match" use="optional" type="ConditionalMatchPatternType"/>
+				<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -225,53 +316,317 @@
 					<xs:documentation>True if the current constraint is a preferred identifier.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="BinaryWithRoleName">
+				<xs:annotation>
+					<xs:documentation>True if the current role is named and is playing a role within a binary fact type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RolePlayerHasRefScheme">
+				<xs:annotation>
+					<xs:documentation>True if the current role player has a reference scheme</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IsSingleValue">
+				<xs:annotation>
+					<xs:documentation>
+						True if the value range collection has only one value range whose
+						min value is equal to the max value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinEqualsMax">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a value range whose min value is equal to the max value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinClosedMaxUnbounded">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a value range with a closed minimum value and an unbounded maximum value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinOpenMaxUnbounded">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a value range with an open minimum value and an unbounded maximum value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinUnboundedMaxClosed">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a value range with an unbounded minimum value and a closed maximum value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinUnboundedMaxOpen">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a value range with an unbounded minimum value and an open maximum value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinClosedMaxClosed">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a value range with a closed minimum value and an open maximum value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinClosedMaxOpen">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a value range with a closed minimum value and an open maximum value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinOpenMaxClosed">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a value range with an open minimum value and an open maximum value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MinOpenMaxOpen">
+				<xs:annotation>
+					<xs:documentation>
+						Matches a value range with an open minimum value and an open maximum value.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="SnippetType">
 		<xs:complexContent>
 			<xs:extension base="SnippetLeafType">
-				<xs:choice minOccurs="1" maxOccurs="unbounded">
-					<xs:element name="Snippet" type="SnippetType"/>
-					<xs:element name="IterateRoles" type="IterateRolesType"/>
-					<xs:element name="CompositeList" type="CompositeListType"/>
-					<xs:element name="Fact" type="FactType"/>
-				</xs:choice>
+				<xs:group ref="ReplacementElementsGroup" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="SnippetTypeWithMatch">
+	<xs:group name="ReplacementElementsGroup">
+		<xs:choice>
+			<xs:element name="Snippet" type="SnippetType"/>
+			<xs:element name="IterateRoles" type="IterateRolesType"/>
+			<xs:element name="CompositeList" type="CompositeListType"/>
+			<xs:element name="Fact" type="FactType"/>
+			<xs:element name="ConditionalReplacement" type="ConditionalReplacementType"/>
+			<xs:element name="IterateValueRanges" type="IterateValueRangesType"/>
+			<xs:element name="MinValue" type="MinValueType"/>
+			<xs:element name="MaxValue" type="MaxValueType"/>
+			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
+			<xs:element name="RoleName" type="RoleNameType"/>
+			<xs:element name="RolePlayerRefModeScheme" type="RolePlayerRefModeSchemeType"/>
+		</xs:choice>
+	</xs:group>
+	<xs:group name="ReplacementElementsWithConditionalMatchGroup">
+		<xs:annotation>
+			<xs:documentation>The elements listed in ReplacementElementsGroup with a
+			conditionalMatch attribute added. Used inside the ConditionalReplacements element.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch"/>
+			<xs:element name="IterateRoles">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="IterateRolesType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CompositeList">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="CompositeListType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Fact">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="FactType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ConditionalReplacement">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ConditionalReplacementType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IterateValueRanges">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="IterateValueRangesType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MinValue">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="MinValueType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MaxValue">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="MaxValueType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IterateContextRoles">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="IterateContextRolesType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RoleName">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="RoleNameType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RolePlayerRefModeScheme">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="RolePlayerRefModeSchemeType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:group>
+	<xs:complexType name="SnippetTypeWithConditionalMatch">
 		<xs:complexContent>
 			<xs:extension base="SnippetType">
-				<xs:attribute name="match" use="optional" type="ConditionalMatchPatternType"/>
+				<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ConditionalSnippetType">
+		<xs:annotation>
+			<xs:documentation>
+				Provides a commonly matchable pattern.  The ConditionalSnippet holds multiple potential
+				Snippets with match conditions, plus a fallback snippet.  The SnippetReplacements section
+				contains the replacement fields that will be used for all snippets.
+			</xs:documentation>
+		</xs:annotation>
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
-			<xs:element name="Snippet" type="SnippetLeafTypeWithMatch"/>
+			<xs:element name="Snippet" type="SnippetLeafTypeWithConditionalMatch"/>
+			<xs:element name="SnippetReplacements" type="SnippetReplacementsType"/>
 		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SnippetReplacementsType">
+		<xs:annotation>
+			<xs:documentation>
+				Holds potential replacement fields for the conditional snippets listed above.
+				There must be at least as many replacement fields here as there are in the conditional snippet
+				which requires the most replacement fields.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:group ref="ReplacementElementsGroup" minOccurs="0" maxOccurs="unbounded"/>
+	</xs:complexType>
+	<xs:complexType name="ConditionalReplacementType">
+		<xs:annotation>
+			<xs:documentation>
+				Provides a commonly matchable pattern similar to ConditionalSnippet.  ConditionalReplacements
+				are only allowed within SnippetReplacement tags, and they allow a conditional selection of
+				replacement contents for the replacement fields in the ConditionalSnippet.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:group ref="ReplacementElementsWithConditionalMatchGroup" minOccurs="1" maxOccurs="unbounded"/>
+	</xs:complexType>
+	<xs:complexType name="IterateValueRangesType">
+		<xs:annotation>
+			<xs:documentation>
+				Iterates a value range collection.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
+		</xs:choice>
+		<xs:attribute name="listStyle" type="ListStyleEnum"/>
+	</xs:complexType>
+	<xs:complexType name="MinValueType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the minimum value of a value range constraint.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="MaxValueType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the maximum value of a value range constraint.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="RoleNameType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the name of a role.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="RolePlayerRefModeSchemeType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the reference mode scheme of the attached role player.
+			</xs:documentation>
+		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="PredicateReplacementType">
 		<xs:choice minOccurs="1" maxOccurs="1">
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
 			<xs:element name="Snippet" type="SnippetLeafType"/>
 		</xs:choice>
-		<xs:attribute name="match" use="optional" type="PredicateReplacementMatchEnum"/>
+		<xs:attribute name="match" use="optional" type="RoleIteratorContextMatchEnum"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
 	</xs:complexType>
 	<xs:complexType name="FactConstructType">
 		<!-- Nothing here yet, this is for the top-level verbalization of a Fact -->
 	</xs:complexType>
 	<xs:complexType name="FactType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the full verbalization for a fact type, i.e, Company provides Product to Company.
+			</xs:documentation>
+		</xs:annotation>
 		<xs:sequence minOccurs="0" maxOccurs="1">
 			<xs:element name="PredicateReplacement" type="PredicateReplacementType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="readingChoice" use="optional" type="ReadingChoicePreferSingleMatchEnum"/>
 	</xs:complexType>
 	<xs:complexType name="IterateRolesNoListType">
-		<xs:sequence>
-			<xs:element name="Fact" type="FactType" minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Fact" type="FactType"/>
+			<xs:element name="Snippet" type="SnippetType"/>
+			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
+		</xs:choice>
 		<xs:attribute name="match" type="IterateRolesMatchEnum" default="all"/>
 		<xs:attributeGroup ref="FactArityAttributes"/>
 		<xs:attribute name="pass" use="optional" type="PassEnum"/>
@@ -279,19 +634,15 @@
 	<xs:complexType name="IterateRolesType">
 		<xs:complexContent>
 			<xs:extension base="IterateRolesNoListType">
-				<xs:attribute name="listStyle" use="required">
-					<xs:simpleType>
-						<xs:union memberTypes="ListStyleEnum">
-							<xs:simpleType>
-								<xs:restriction base="xs:token">
-									<xs:enumeration value="null"/>
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:union>
-					</xs:simpleType>
-				</xs:attribute>
+				<xs:attribute name="listStyle" use="required" type="ListStyleEnumOrNull"/>
 			</xs:extension>
 		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="IterateContextRolesType">
+		<xs:group ref="ReplacementElementsGroup" minOccurs="0" maxOccurs="unbounded"/>
+		<xs:attribute name="match" type="RoleIteratorContextMatchEnum" use="optional"/>
+		<xs:attribute name="listStyle" type="ListStyleEnumOrNull" use="required"/>
+		<xs:attribute name="pass" use="optional" type="PassEnum"/>
 	</xs:complexType>
 	<xs:complexType name="ReadingChoiceType">
 		<xs:choice minOccurs="1" maxOccurs="unbounded">
@@ -365,15 +716,16 @@
 															</xs:enumeration>
 															<xs:enumeration value="VerbalizerDocumentHeader">
 																<xs:annotation>
-																	<xs:documentation>Used by the verbalizer to open a document. The document header gets replacement fields in the following order:
-																	{0} font-family
-																	{1} font-size
-																	{2} predicate text color
-																	{3} predicate text bold
-																	{4} object name color
-																	{5} object name bold
-																	{6} formal item color
-																	{7} formal item bold
+																	<xs:documentation>
+																		Used by the verbalizer to open a document. The document header gets replacement fields in the following order:
+																		{0} font-family
+																		{1} font-size
+																		{2} predicate text color
+																		{3} predicate text bold
+																		{4} object name color
+																		{5} object name bold
+																		{6} formal item color
+																		{7} formal item bold
 																	</xs:documentation>
 																</xs:annotation>
 															</xs:enumeration>
@@ -423,13 +775,14 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ConstraintType">
-		<xs:sequence>
-			<xs:element name="ConstrainedRoles" minOccurs="1" maxOccurs="unbounded" >
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="ConstrainedRoles">
 				<xs:complexType>
 					<xs:choice minOccurs="1" maxOccurs="unbounded">
-						<xs:element name="Snippet" type="SnippetTypeWithMatch"/>
+						<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch"/>
 						<xs:element name="IterateRoles" type="IterateRolesType"/>
 						<xs:element name="CompositeList" type="CompositeListType"/>
+						<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
 						<xs:element name="ConditionalReading" type="ConditionalReadingType">
 							<xs:unique name="ConditionalReadingReadingChoice">
 								<xs:selector xpath="ve:ReadingChoice"/>
@@ -442,7 +795,8 @@
 					<xs:attributeGroup ref="FactArityAttributes"/>
 				</xs:complexType>
 			</xs:element>
-		</xs:sequence>
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
+		</xs:choice>
 		<xs:attribute name="type" type="ConstraintTypeEnum" use="required"/>
 		<xs:attribute name="patternGroup" type="ConstraintPatternGroupEnum" use="required"/>
 	</xs:complexType>

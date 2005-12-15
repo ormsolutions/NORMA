@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
 namespace Neumont.Tools.ORM.ObjectModel
 {
 	#region VerbalizationTextSnippetType enum
@@ -159,6 +160,42 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		IndentedLogicalOrListSeparator,
 		/// <summary>
+		/// The 'InSeparator' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		InSeparator,
+		/// <summary>
+		/// The 'MinClosedMaxClosed' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		MinClosedMaxClosed,
+		/// <summary>
+		/// The 'MinClosedMaxOpen' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		MinClosedMaxOpen,
+		/// <summary>
+		/// The 'MinClosedMaxUnbounded' format string snippet. Contains 1 replacement field.
+		/// </summary>
+		MinClosedMaxUnbounded,
+		/// <summary>
+		/// The 'MinOpenMaxClosed' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		MinOpenMaxClosed,
+		/// <summary>
+		/// The 'MinOpenMaxOpen' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		MinOpenMaxOpen,
+		/// <summary>
+		/// The 'MinOpenMaxUnbounded' format string snippet. Contains 1 replacement field.
+		/// </summary>
+		MinOpenMaxUnbounded,
+		/// <summary>
+		/// The 'MinUnboundedMaxClosed' format string snippet. Contains 1 replacement field.
+		/// </summary>
+		MinUnboundedMaxClosed,
+		/// <summary>
+		/// The 'MinUnboundedMaxOpen' format string snippet. Contains 1 replacement field.
+		/// </summary>
+		MinUnboundedMaxOpen,
+		/// <summary>
 		/// The 'ModalNecessityOperator' format string snippet. Contains 1 replacement field.
 		/// </summary>
 		ModalNecessityOperator,
@@ -170,6 +207,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The 'MoreThanOneQuantifier' format string snippet. Contains 1 replacement field.
 		/// </summary>
 		MoreThanOneQuantifier,
+		/// <summary>
+		/// The 'MultiValueValueConstraint' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		MultiValueValueConstraint,
+		/// <summary>
+		/// The 'NameWithRefMode' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		NameWithRefMode,
 		/// <summary>
 		/// The 'NegativeReadingForUnaryOnlyDisjunctiveMandatory' format string snippet. Contains 2 replacement fields.
 		/// </summary>
@@ -195,9 +240,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		OneQuantifier,
 		/// <summary>
+		/// The 'PeriodDelimiter' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		PeriodDelimiter,
+		/// <summary>
 		/// The 'PersonalPronoun' format string snippet. Contains 1 replacement field.
 		/// </summary>
 		PersonalPronoun,
+		/// <summary>
+		/// The 'SelfReference' format string snippet. Contains 1 replacement field.
+		/// </summary>
+		SelfReference,
 		/// <summary>
 		/// The 'SimpleListClose' simple snippet value.
 		/// </summary>
@@ -218,6 +271,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// The 'SimpleListSeparator' simple snippet value.
 		/// </summary>
 		SimpleListSeparator,
+		/// <summary>
+		/// The 'SingleValueValueConstraint' format string snippet. Contains 2 replacement fields.
+		/// </summary>
+		SingleValueValueConstraint,
 		/// <summary>
 		/// The 'TopLevelIndentedLogicalAndListClose' simple snippet value.
 		/// </summary>
@@ -438,21 +495,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""smallIndent"">",
 					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""objectType"">{0}</span> in <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span>",
+					@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+					@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+					@"above <span class=""objectType"">{0}</span>",
+					@"at most <span class=""objectType"">{1}</span>",
+					@"below <span class=""objectType"">{1}</span>",
 					@"<span class=""quantifier"">it is necessary that</span> {0}",
 					@"<span class=""quantifier"">it is possible that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
+					@"<span class=""quantifier"">the possible values of {0} are {1}</span>",
+					@"{0}(<span class=""objectType"">{1}</span>)",
 					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 					@"<span class=""objectType"">{0}</span>",
 					@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
 					@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
 					@"{0} <span class=""quantifier"">occurs at most once in the population of</span> {1}",
 					@"<span class=""quantifier"">at most one</span> {0}",
+					@"{0}.<span class=""objectType"">{1}</span>",
 					@"<span class=""quantifier"">who</span> {0}",
+					"{0}",
 					"",
 					@"<span class=""listSeparator"">, and </span>",
 					"",
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
+					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
 					"</span>",
 					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
@@ -533,21 +604,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""smallIndent"">",
 					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""objectType"">{0}</span> in <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span>",
+					@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+					@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+					@"above <span class=""objectType"">{0}</span>",
+					@"at most <span class=""objectType"">{1}</span>",
+					@"below <span class=""objectType"">{1}</span>",
 					@"<span class=""quantifier"">it is obligatory that</span> {0}",
 					@"<span class=""quantifier"">it is permitted that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
+					@"<span class=""quantifier"">the possible values of {0} are {1}</span>",
+					@"{0}(<span class=""objectType"">{1}</span>)",
 					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 					@"<span class=""objectType"">{0}</span>",
 					@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
 					@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
 					@"{0} <span class=""quantifier"">occurs at most once in the population of</span> {1}",
 					@"<span class=""quantifier"">at most one</span> {0}",
+					@"{0}.<span class=""objectType"">{1}</span>",
 					@"<span class=""quantifier"">who</span> {0}",
+					"{0}",
 					"",
 					@"<span class=""listSeparator"">, and </span>",
 					"",
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
+					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
 					"</span>",
 					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
@@ -628,21 +713,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""smallIndent"">",
 					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""objectType"">{0}</span> in <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span>",
+					@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+					@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+					@"above <span class=""objectType"">{0}</span>",
+					@"at most <span class=""objectType"">{1}</span>",
+					@"below <span class=""objectType"">{1}</span>",
 					@"<span class=""quantifier"">it is necessary that</span> {0}",
 					@"<span class=""quantifier"">it is impossible that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
+					@"<span class=""quantifier"">the possible values of {0} are {1}</span>",
+					@"{0}(<span class=""objectType"">{1}</span>)",
 					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 					@"<span class=""objectType"">{0}</span>",
 					@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
 					@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
 					@"{0} <span class=""quantifier"">occurs more than once in the population of</span> {1}",
 					@"<span class=""quantifier"">more than one</span> {0}",
+					@"{0}.<span class=""objectType"">{1}</span>",
 					@"<span class=""quantifier"">who</span> {0}",
+					"{0}",
 					"",
 					@"<span class=""listSeparator"">, and </span>",
 					"",
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
+					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
 					"</span>",
 					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
@@ -723,21 +822,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""smallIndent"">",
 					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<br/><span class=""logicalOperator"">or </span>",
+					@"<span class=""objectType"">{0}</span> in <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+					@"at least <span class=""objectType"">{0}</span>",
+					@"above <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
+					@"above <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
+					@"above <span class=""objectType"">{0}</span>",
+					@"at most <span class=""objectType"">{1}</span>",
+					@"below <span class=""objectType"">{1}</span>",
 					@"<span class=""quantifier"">it is obligatory that</span> {0}",
 					@"<span class=""quantifier"">it is forbidden that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
+					@"<span class=""quantifier"">the possible values of {0} are {1}</span>",
+					@"{0}(<span class=""objectType"">{1}</span>)",
 					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 					@"<span class=""objectType"">{0}</span>",
 					@"<span class=""objectTypeMissing"">Missing<sub>{0}</sub></span>",
 					@"<span class=""objectType"">{0}<sub>{1}</sub></span>",
 					@"{0} <span class=""quantifier"">occurs more than once in the population of</span> {1}",
 					@"<span class=""quantifier"">more than one</span> {0}",
+					@"{0}.<span class=""objectType"">{1}</span>",
 					@"<span class=""quantifier"">who</span> {0}",
+					"{0}",
 					"",
 					@"<span class=""listSeparator"">, and </span>",
 					"",
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
+					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
 					"</span>",
 					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
@@ -818,10 +931,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			int factArity = factRoles.Count;
 			ReadingOrderMoveableCollection allReadingOrders = this.ReadingOrderCollection;
 			const bool isDeontic = false;
-			ReadingOrder readingOrder;
+			Reading reading;
 			string[] basicRoleReplacements = new string[factArity];
-			int i = 0;
-			for (; i < factArity; ++i)
+			for (int i = 0; i < factArity; ++i)
 			{
 				ObjectType rolePlayer = factRoles[i].RolePlayer;
 				string basicReplacement;
@@ -835,9 +947,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				basicRoleReplacements[i] = basicReplacement;
 			}
-			beginVerbalization(VerbalizationContent.Normal);
-			readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-			FactType.WriteVerbalizerSentence(writer, FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
@@ -889,8 +998,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			string[] basicRoleReplacements = new string[factArity];
-			int i = 0;
-			for (; i < factArity; ++i)
+			for (int i = 0; i < factArity; ++i)
 			{
 				ObjectType rolePlayer = factRoles[i].RolePlayer;
 				string basicReplacement;
@@ -933,7 +1041,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				basicRoleReplacements[i] = basicReplacement;
 			}
 			string[] roleReplacements = new string[factArity];
-			ReadingOrder readingOrder;
+			Reading reading;
 			if ((factArity == 1) && !(isNegative))
 			{
 				beginVerbalization(VerbalizationContent.Normal);
@@ -951,17 +1059,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				int snippet1Replace1Replace1ReplaceRoleIter1 = 0;
-				for (; snippet1Replace1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1Replace1ReplaceRoleIter1)
+				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
 					VerbalizationTextSnippetType listSnippet;
-					if (snippet1Replace1Replace1ReplaceRoleIter1 == 0)
+					if (RoleIter1 == 0)
 					{
 						listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
 					}
-					else if (snippet1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					else if (RoleIter1 == (includedArity - 1))
 					{
-						if (snippet1Replace1Replace1ReplaceRoleIter1 == 1)
+						if (RoleIter1 == 1)
 						{
 							listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
 						}
@@ -975,8 +1082,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet1Replace1Replace1ReplaceRoleIter1])]);
-					if (snippet1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
+					if (RoleIter1 == (includedArity - 1))
 					{
 						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 					}
@@ -984,8 +1091,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet1Replace1Replace1Replace1 = sbTemp.ToString();
 				snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
 				string snippet1Replace1Replace2 = null;
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-				snippet1Replace1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements);
+				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+				snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
@@ -1006,17 +1113,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				int snippet1Replace1Replace1ReplaceRoleIter1 = 0;
-				for (; snippet1Replace1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1Replace1ReplaceRoleIter1)
+				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
 					VerbalizationTextSnippetType listSnippet;
-					if (snippet1Replace1Replace1ReplaceRoleIter1 == 0)
+					if (RoleIter1 == 0)
 					{
 						listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
 					}
-					else if (snippet1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					else if (RoleIter1 == (includedArity - 1))
 					{
-						if (snippet1Replace1Replace1ReplaceRoleIter1 == 1)
+						if (RoleIter1 == 1)
 						{
 							listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
 						}
@@ -1030,8 +1136,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet1Replace1Replace1ReplaceRoleIter1])]);
-					if (snippet1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
+					if (RoleIter1 == (includedArity - 1))
 					{
 						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 					}
@@ -1039,8 +1145,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet1Replace1Replace1Replace1 = sbTemp.ToString();
 				snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
 				string snippet1Replace1Replace2 = null;
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-				snippet1Replace1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements);
+				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+				snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
@@ -1057,18 +1163,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				int snippet1ReplaceRoleIter1 = 0;
-				for (; snippet1ReplaceRoleIter1 < factArity; ++snippet1ReplaceRoleIter1)
+				for (int RoleIter1 = 0; RoleIter1 < factArity; ++RoleIter1)
 				{
-					Role primaryRole = factRoles[snippet1ReplaceRoleIter1];
+					Role primaryRole = factRoles[RoleIter1];
 					VerbalizationTextSnippetType listSnippet;
-					if (snippet1ReplaceRoleIter1 == 0)
+					if (RoleIter1 == 0)
 					{
 						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListOpen;
 					}
-					else if (snippet1ReplaceRoleIter1 == (factArity - 1))
+					else if (RoleIter1 == (factArity - 1))
 					{
-						if (snippet1ReplaceRoleIter1 == 1)
+						if (RoleIter1 == 1)
 						{
 							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListPairSeparator;
 						}
@@ -1083,7 +1188,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					snippet1Replace1 = null;
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, primaryRole, null, false, false, factRoles, true);
+					reading = FactType.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, factRoles, true);
 					int snippet1ReplaceFactRoleIter1 = 0;
 					for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 					{
@@ -1104,9 +1209,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+					snippet1Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 					sbTemp.Append(snippet1Replace1);
-					if (snippet1ReplaceRoleIter1 == (factArity - 1))
+					if (RoleIter1 == (factArity - 1))
 					{
 						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalAndListClose, isDeontic, isNegative));
 					}
@@ -1130,17 +1235,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				int snippet2Replace1Replace1Replace1ReplaceRoleIter1 = 0;
-				for (; snippet2Replace1Replace1Replace1ReplaceRoleIter1 < includedArity; ++snippet2Replace1Replace1Replace1ReplaceRoleIter1)
+				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
 					VerbalizationTextSnippetType listSnippet;
-					if (snippet2Replace1Replace1Replace1ReplaceRoleIter1 == 0)
+					if (RoleIter1 == 0)
 					{
 						listSnippet = VerbalizationTextSnippetType.CompactSimpleListOpen;
 					}
-					else if (snippet2Replace1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					else if (RoleIter1 == (includedArity - 1))
 					{
-						if (snippet2Replace1Replace1Replace1ReplaceRoleIter1 == 1)
+						if (RoleIter1 == 1)
 						{
 							listSnippet = VerbalizationTextSnippetType.CompactSimpleListPairSeparator;
 						}
@@ -1154,8 +1258,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = VerbalizationTextSnippetType.CompactSimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet2Replace1Replace1Replace1ReplaceRoleIter1])]);
-					if (snippet2Replace1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
+					if (RoleIter1 == (includedArity - 1))
 					{
 						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
 					}
@@ -1164,8 +1268,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet2Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet2Replace1Replace1ReplaceFormat1, snippet2Replace1Replace1Replace1Replace1);
 				snippet2Replace1Replace1 = string.Format(writer.FormatProvider, snippet2Replace1ReplaceFormat1, snippet2Replace1Replace1Replace1);
 				string snippet2Replace1Replace2 = null;
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-				snippet2Replace1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements);
+				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+				snippet2Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
 				snippet2Replace1 = string.Format(writer.FormatProvider, snippet2ReplaceFormat1, snippet2Replace1Replace1, snippet2Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat2, snippet2Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
@@ -1188,17 +1292,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				int snippet1Replace1Replace1Replace1ReplaceRoleIter1 = 0;
-				for (; snippet1Replace1Replace1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1Replace1Replace1ReplaceRoleIter1)
+				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
 					VerbalizationTextSnippetType listSnippet;
-					if (snippet1Replace1Replace1Replace1ReplaceRoleIter1 == 0)
+					if (RoleIter1 == 0)
 					{
 						listSnippet = VerbalizationTextSnippetType.CompactSimpleListOpen;
 					}
-					else if (snippet1Replace1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					else if (RoleIter1 == (includedArity - 1))
 					{
-						if (snippet1Replace1Replace1Replace1ReplaceRoleIter1 == 1)
+						if (RoleIter1 == 1)
 						{
 							listSnippet = VerbalizationTextSnippetType.CompactSimpleListPairSeparator;
 						}
@@ -1212,8 +1315,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = VerbalizationTextSnippetType.CompactSimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet1Replace1Replace1Replace1ReplaceRoleIter1])]);
-					if (snippet1Replace1Replace1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
+					if (RoleIter1 == (includedArity - 1))
 					{
 						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
 					}
@@ -1222,15 +1325,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				snippet1Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1Replace1);
 				snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
 				string snippet1Replace1Replace2 = null;
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-				snippet1Replace1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements);
+				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+				snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if ((factArity == 2) && !(isNegative))
 			{
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, null, includedRoles, false, false, factRoles, false);
-				if (readingOrder != null)
+				reading = FactType.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, factRoles, false);
+				if (reading != null)
 				{
 					beginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -1255,13 +1358,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+					snippet1Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				else
 				{
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-					if (readingOrder != null)
+					reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+					if (reading != null)
 					{
 						beginVerbalization(VerbalizationContent.Normal);
 						string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -1276,17 +1379,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							sbTemp.Length = 0;
 						}
-						int snippet1Replace1ReplaceRoleIter1 = 0;
-						for (; snippet1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1ReplaceRoleIter1)
+						for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 						{
 							VerbalizationTextSnippetType listSnippet;
-							if (snippet1Replace1ReplaceRoleIter1 == 0)
+							if (RoleIter1 == 0)
 							{
 								listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
 							}
-							else if (snippet1Replace1ReplaceRoleIter1 == (includedArity - 1))
+							else if (RoleIter1 == (includedArity - 1))
 							{
-								if (snippet1Replace1ReplaceRoleIter1 == 1)
+								if (RoleIter1 == 1)
 								{
 									listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
 								}
@@ -1300,15 +1402,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 								listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet1Replace1ReplaceRoleIter1])]);
-							if (snippet1Replace1ReplaceRoleIter1 == (includedArity - 1))
+							sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
+							if (RoleIter1 == (includedArity - 1))
 							{
 								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 							}
 						}
 						snippet1Replace1Replace1 = sbTemp.ToString();
 						string snippet1Replace1Replace2 = null;
-						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+						reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 						int snippet1Replace1ReplaceFactRoleIter2 = 0;
 						for (; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
 						{
@@ -1329,7 +1431,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1Replace1ReplaceFactRoleIter2] = roleReplacement;
 						}
-						snippet1Replace1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+						snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 						snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
@@ -1347,10 +1449,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						sbTemp.Length = 0;
 					}
-					int snippet2ReplaceRoleIter1 = 0;
-					for (; snippet2ReplaceRoleIter1 < includedArity; ++snippet2ReplaceRoleIter1)
+					for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 					{
-						sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet2ReplaceRoleIter1])]);
+						sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
 					}
 					snippet2Replace1 = sbTemp.ToString();
 					string snippet2Replace2 = null;
@@ -1362,12 +1463,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						sbTemp.Length = 0;
 					}
-					int snippet2ReplaceRoleIter2 = 0;
-					for (; snippet2ReplaceRoleIter2 < factArity; ++snippet2ReplaceRoleIter2)
+					for (int RoleIter2 = 0; RoleIter2 < factArity; ++RoleIter2)
 					{
-						if (includedRoles.IndexOf(factRoles[snippet2ReplaceRoleIter2]) == -1)
+						if (includedRoles.IndexOf(factRoles[RoleIter2]) == -1)
 						{
-							sbTemp.Append(basicRoleReplacements[snippet2ReplaceRoleIter2]);
+							sbTemp.Append(basicRoleReplacements[RoleIter2]);
 						}
 					}
 					snippet2Replace2 = sbTemp.ToString();
@@ -1387,17 +1487,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				int snippet1ReplaceRoleIter1 = 0;
-				for (; snippet1ReplaceRoleIter1 < includedArity; ++snippet1ReplaceRoleIter1)
+				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
 					VerbalizationTextSnippetType listSnippet;
-					if (snippet1ReplaceRoleIter1 == 0)
+					if (RoleIter1 == 0)
 					{
 						listSnippet = VerbalizationTextSnippetType.CompactSimpleListOpen;
 					}
-					else if (snippet1ReplaceRoleIter1 == (includedArity - 1))
+					else if (RoleIter1 == (includedArity - 1))
 					{
-						if (snippet1ReplaceRoleIter1 == 1)
+						if (RoleIter1 == 1)
 						{
 							listSnippet = VerbalizationTextSnippetType.CompactSimpleListPairSeparator;
 						}
@@ -1411,8 +1510,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = VerbalizationTextSnippetType.CompactSimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet1ReplaceRoleIter1])]);
-					if (snippet1ReplaceRoleIter1 == (includedArity - 1))
+					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
+					if (RoleIter1 == (includedArity - 1))
 					{
 						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
 					}
@@ -1421,7 +1520,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace2 = null;
 				string snippet1ReplaceFormat2 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace2Replace1 = null;
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, null, includedRoles, false, false, factRoles, true);
+				reading = FactType.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, factRoles, true);
 				int snippet1Replace2ReplaceFactRoleIter1 = 0;
 				for (; snippet1Replace2ReplaceFactRoleIter1 < factArity; ++snippet1Replace2ReplaceFactRoleIter1)
 				{
@@ -1442,7 +1541,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					roleReplacements[snippet1Replace2ReplaceFactRoleIter1] = roleReplacement;
 				}
-				snippet1Replace2Replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+				snippet1Replace2Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 				snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
@@ -1451,7 +1550,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				beginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ModalPossibilityOperator, isDeontic, isNegative);
 				string snippet1Replace1 = null;
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				int snippet1ReplaceFactRoleIter1 = 0;
 				for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 				{
@@ -1472,7 +1571,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 				}
-				snippet1Replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+				snippet1Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else
@@ -1490,17 +1589,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				int snippet1Replace1ReplaceRoleIter1 = 0;
-				for (; snippet1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1ReplaceRoleIter1)
+				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
 					VerbalizationTextSnippetType listSnippet;
-					if (snippet1Replace1ReplaceRoleIter1 == 0)
+					if (RoleIter1 == 0)
 					{
 						listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
 					}
-					else if (snippet1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					else if (RoleIter1 == (includedArity - 1))
 					{
-						if (snippet1Replace1ReplaceRoleIter1 == 1)
+						if (RoleIter1 == 1)
 						{
 							listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
 						}
@@ -1514,15 +1612,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 						listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet1Replace1ReplaceRoleIter1])]);
-					if (snippet1Replace1ReplaceRoleIter1 == (includedArity - 1))
+					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
+					if (RoleIter1 == (includedArity - 1))
 					{
 						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 					}
 				}
 				snippet1Replace1Replace1 = sbTemp.ToString();
 				string snippet1Replace1Replace2 = null;
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 				int snippet1Replace1ReplaceFactRoleIter2 = 0;
 				for (; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
 				{
@@ -1543,7 +1641,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					roleReplacements[snippet1Replace1ReplaceFactRoleIter2] = roleReplacement;
 				}
-				snippet1Replace1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+				snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
@@ -1598,8 +1696,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return false;
 			}
 			string[] basicRoleReplacements = new string[factArity];
-			int i = 0;
-			for (; i < factArity; ++i)
+			for (int i = 0; i < factArity; ++i)
 			{
 				ObjectType rolePlayer = factRoles[i].RolePlayer;
 				string basicReplacement;
@@ -1642,7 +1739,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				basicRoleReplacements[i] = basicReplacement;
 			}
 			string[] roleReplacements = new string[factArity];
-			ReadingOrder readingOrder;
+			Reading reading;
 			if (factArity == 1)
 			{
 				beginVerbalization(VerbalizationContent.Normal);
@@ -1650,15 +1747,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string snippet1Replace1 = null;
 				string snippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.UniversalQuantifier, isDeontic, isNegative);
 				string snippet1Replace1Replace1 = null;
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-				snippet1Replace1Replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements);
+				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+				snippet1Replace1Replace1 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
 				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			else if (factArity == 2)
 			{
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, null, includedRoles, false, false, factRoles, false);
-				if (readingOrder != null)
+				reading = FactType.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, factRoles, false);
+				if (reading != null)
 				{
 					beginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -1683,13 +1780,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+					snippet1Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				else
 				{
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-					if (readingOrder != null)
+					reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+					if (reading != null)
 					{
 						beginVerbalization(VerbalizationContent.Normal);
 						string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -1704,17 +1801,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							sbTemp.Length = 0;
 						}
-						int snippet1Replace1ReplaceRoleIter1 = 0;
-						for (; snippet1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1ReplaceRoleIter1)
+						for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 						{
 							VerbalizationTextSnippetType listSnippet;
-							if (snippet1Replace1ReplaceRoleIter1 == 0)
+							if (RoleIter1 == 0)
 							{
 								listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
 							}
-							else if (snippet1Replace1ReplaceRoleIter1 == (includedArity - 1))
+							else if (RoleIter1 == (includedArity - 1))
 							{
-								if (snippet1Replace1ReplaceRoleIter1 == 1)
+								if (RoleIter1 == 1)
 								{
 									listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
 								}
@@ -1728,15 +1824,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 								listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet1Replace1ReplaceRoleIter1])]);
-							if (snippet1Replace1ReplaceRoleIter1 == (includedArity - 1))
+							sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
+							if (RoleIter1 == (includedArity - 1))
 							{
 								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 							}
 						}
 						snippet1Replace1Replace1 = sbTemp.ToString();
 						string snippet1Replace1Replace2 = null;
-						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+						reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 						int snippet1Replace1ReplaceFactRoleIter2 = 0;
 						for (; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
 						{
@@ -1757,7 +1853,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1Replace1ReplaceFactRoleIter2] = roleReplacement;
 						}
-						snippet1Replace1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+						snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 						snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
@@ -1765,8 +1861,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else
 			{
-				readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, null, includedRoles, false, false, factRoles, false);
-				if (readingOrder != null)
+				reading = FactType.GetMatchingReading(allReadingOrders, null, null, includedRoles, false, false, factRoles, false);
+				if (reading != null)
 				{
 					beginVerbalization(VerbalizationContent.Normal);
 					string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -1791,13 +1887,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 					}
-					snippet1Replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+					snippet1Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				else
 				{
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-					if (readingOrder != null)
+					reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+					if (reading != null)
 					{
 						beginVerbalization(VerbalizationContent.Normal);
 						string snippetFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
@@ -1812,17 +1908,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							sbTemp.Length = 0;
 						}
-						int snippet1Replace1ReplaceRoleIter1 = 0;
-						for (; snippet1Replace1ReplaceRoleIter1 < includedArity; ++snippet1Replace1ReplaceRoleIter1)
+						for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 						{
 							VerbalizationTextSnippetType listSnippet;
-							if (snippet1Replace1ReplaceRoleIter1 == 0)
+							if (RoleIter1 == 0)
 							{
 								listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
 							}
-							else if (snippet1Replace1ReplaceRoleIter1 == (includedArity - 1))
+							else if (RoleIter1 == (includedArity - 1))
 							{
-								if (snippet1Replace1ReplaceRoleIter1 == 1)
+								if (RoleIter1 == 1)
 								{
 									listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
 								}
@@ -1836,15 +1931,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 								listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-							sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[snippet1Replace1ReplaceRoleIter1])]);
-							if (snippet1Replace1ReplaceRoleIter1 == (includedArity - 1))
+							sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
+							if (RoleIter1 == (includedArity - 1))
 							{
 								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 							}
 						}
 						snippet1Replace1Replace1 = sbTemp.ToString();
 						string snippet1Replace1Replace2 = null;
-						readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+						reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 						int snippet1Replace1ReplaceFactRoleIter2 = 0;
 						for (; snippet1Replace1ReplaceFactRoleIter2 < factArity; ++snippet1Replace1ReplaceFactRoleIter2)
 						{
@@ -1865,7 +1960,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1Replace1ReplaceFactRoleIter2] = roleReplacement;
 						}
-						snippet1Replace1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+						snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 						snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
 						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
@@ -1909,7 +2004,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
-			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
+			bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
 			RoleMoveableCollection factRoles;
@@ -1944,8 +2039,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					maxFactArity = factArity;
 				}
 				string[] basicRoleReplacements = new string[factArity];
-				int i = 0;
-				for (; i < factArity; ++i)
+				for (int i = 0; i < factArity; ++i)
 				{
 					ObjectType rolePlayer = factRoles[i].RolePlayer;
 					string basicReplacement;
@@ -1990,9 +2084,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				allBasicRoleReplacements[iFact] = basicRoleReplacements;
 			}
 			int constraintRoleArity = allConstraintRoles.Count;
-			ReadingOrder[] allConstraintRoleReadingOrders = new ReadingOrder[constraintRoleArity];
+			Reading[] allConstraintRoleReadings = new Reading[constraintRoleArity];
 			string[] roleReplacements = new string[maxFactArity];
-			ReadingOrder readingOrder;
+			Reading reading;
 			if (isNegative && (maxFactArity <= 1))
 			{
 				beginVerbalization(VerbalizationContent.Normal);
@@ -2008,10 +2102,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				int snippet1Replace1ReplaceRoleIter1 = 0;
-				for (; snippet1Replace1ReplaceRoleIter1 < 1; ++snippet1Replace1ReplaceRoleIter1)
+				for (int RoleIter1 = 0; RoleIter1 < 1; ++RoleIter1)
 				{
-					Role primaryRole = allConstraintRoles[snippet1Replace1ReplaceRoleIter1];
+					Role primaryRole = allConstraintRoles[RoleIter1];
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					factArity = factRoles.Count;
@@ -2021,7 +2114,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					VerbalizationTextSnippetType listSnippet;
 					listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(allConstraintRoles[snippet1Replace1ReplaceRoleIter1])]);
+					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(allConstraintRoles[RoleIter1])]);
 					sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 				}
 				snippet1Replace1Replace1 = sbTemp.ToString();
@@ -2034,10 +2127,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				int snippet1Replace1ReplaceRoleIter2 = 0;
-				for (; snippet1Replace1ReplaceRoleIter2 < constraintRoleArity; ++snippet1Replace1ReplaceRoleIter2)
+				for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity; ++RoleIter2)
 				{
-					Role primaryRole = allConstraintRoles[snippet1Replace1ReplaceRoleIter2];
+					Role primaryRole = allConstraintRoles[RoleIter2];
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					factArity = factRoles.Count;
@@ -2045,13 +2137,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int currentFactIndex = allFacts.IndexOf(parentFact);
 					string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
 					VerbalizationTextSnippetType listSnippet;
-					if (snippet1Replace1ReplaceRoleIter2 == 0)
+					if (RoleIter2 == 0)
 					{
 						listSnippet = VerbalizationTextSnippetType.CompoundListOpen;
 					}
-					else if (snippet1Replace1ReplaceRoleIter2 == (constraintRoleArity - 1))
+					else if (RoleIter2 == (constraintRoleArity - 1))
 					{
-						if (snippet1Replace1ReplaceRoleIter2 == 1)
+						if (RoleIter2 == 1)
 						{
 							listSnippet = VerbalizationTextSnippetType.CompoundListPairSeparator;
 						}
@@ -2066,10 +2158,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					snippet1Replace1Replace2 = null;
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
-					snippet1Replace1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, basicRoleReplacements);
+					reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+					snippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
 					sbTemp.Append(snippet1Replace1Replace2);
-					if (snippet1Replace1ReplaceRoleIter2 == (constraintRoleArity - 1))
+					if (RoleIter2 == (constraintRoleArity - 1))
 					{
 						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompoundListClose, isDeontic, isNegative));
 					}
@@ -2089,11 +2181,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					sbTemp.Length = 0;
 				}
-				int factTextRoleIter1 = 0;
 				bool factTextIsFirstPass1 = true;
-				for (; factTextRoleIter1 < constraintRoleArity; ++factTextRoleIter1)
+				for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 				{
-					Role primaryRole = allConstraintRoles[factTextRoleIter1];
+					Role primaryRole = allConstraintRoles[RoleIter1];
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					factArity = factRoles.Count;
@@ -2101,13 +2192,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					int currentFactIndex = allFacts.IndexOf(parentFact);
 					string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
 					VerbalizationTextSnippetType listSnippet;
-					if (factTextRoleIter1 == 0)
+					if (RoleIter1 == 0)
 					{
 						listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListOpen;
 					}
-					else if (factTextRoleIter1 == (constraintRoleArity - 1))
+					else if (RoleIter1 == (constraintRoleArity - 1))
 					{
-						if (factTextRoleIter1 == 1)
+						if (RoleIter1 == 1)
 						{
 							listSnippet = VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListPairSeparator;
 						}
@@ -2122,7 +2213,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 					string factText1 = null;
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+					reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 					int factTextFactRoleIter1 = 0;
 					for (; factTextFactRoleIter1 < factArity; ++factTextFactRoleIter1)
 					{
@@ -2143,9 +2234,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						roleReplacements[factTextFactRoleIter1] = roleReplacement;
 					}
-					factText1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+					factText1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 					sbTemp.Append(factText1);
-					if (factTextRoleIter1 == (constraintRoleArity - 1))
+					if (RoleIter1 == (constraintRoleArity - 1))
 					{
 						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
 					}
@@ -2163,14 +2254,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					allReadingOrders = parentFact.ReadingOrderCollection;
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, primaryRole, null, false, false, factRoles, false);
-					if (readingOrder == null)
+					reading = FactType.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, false, factRoles, false);
+					if (reading == null)
 					{
 						missingReading1 = true;
 					}
 					else
 					{
-						allConstraintRoleReadingOrders[readingMatchIndex1] = readingOrder;
+						allConstraintRoleReadings[readingMatchIndex1] = reading;
 					}
 				}
 				if (!(missingReading1))
@@ -2212,11 +2303,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 						sbTemp.Length = 0;
 					}
 					string list1Item1 = null;
-					int list1ItemRoleIter1 = 0;
 					bool list1ItemIsFirstPass1 = true;
-					for (; list1ItemRoleIter1 < constraintRoleArity; ++list1ItemRoleIter1)
+					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 					{
-						Role primaryRole = allConstraintRoles[list1ItemRoleIter1];
+						Role primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -2247,7 +2337,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							list1Item1 = null;
-							readingOrder = allConstraintRoleReadingOrders[list1ItemRoleIter1];
+							reading = allConstraintRoleReadings[RoleIter1];
 							int list1ItemFactRoleIter1 = 0;
 							for (; list1ItemFactRoleIter1 < factArity; ++list1ItemFactRoleIter1)
 							{
@@ -2272,9 +2362,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[list1ItemFactRoleIter1] = roleReplacement;
 							}
-							list1Item1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+							list1Item1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 							sbTemp.Append(list1Item1);
-							if (list1ItemRoleIter1 == (listCompositeCount1 - 1))
+							if (RoleIter1 == (listCompositeCount1 - 1))
 							{
 								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
 							}
@@ -2283,10 +2373,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 					string list1Item2 = null;
-					int list1ItemRoleIter2 = 0;
-					for (; list1ItemRoleIter2 < constraintRoleArity; ++list1ItemRoleIter2)
+					for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity; ++RoleIter2)
 					{
-						Role primaryRole = allConstraintRoles[list1ItemRoleIter2];
+						Role primaryRole = allConstraintRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -2317,7 +2406,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							list1Item2 = null;
-							readingOrder = allConstraintRoleReadingOrders[list1ItemRoleIter2];
+							reading = allConstraintRoleReadings[RoleIter2];
 							int list1ItemFactRoleIter2 = 0;
 							for (; list1ItemFactRoleIter2 < factArity; ++list1ItemFactRoleIter2)
 							{
@@ -2331,9 +2420,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[list1ItemFactRoleIter2] = roleReplacement;
 							}
-							list1Item2 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+							list1Item2 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 							sbTemp.Append(list1Item2);
-							if (list1ItemRoleIter2 == (listCompositeCount1 - 1))
+							if (RoleIter2 == (listCompositeCount1 - 1))
 							{
 								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.TopLevelIndentedLogicalOrListClose, isDeontic, isNegative));
 							}
@@ -2355,10 +2444,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						sbTemp.Length = 0;
 					}
-					int snippet1ReplaceRoleIter1 = 0;
-					for (; snippet1ReplaceRoleIter1 < 1; ++snippet1ReplaceRoleIter1)
+					for (int RoleIter1 = 0; RoleIter1 < 1; ++RoleIter1)
 					{
-						Role primaryRole = allConstraintRoles[snippet1ReplaceRoleIter1];
+						Role primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -2368,7 +2456,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						VerbalizationTextSnippetType listSnippet;
 						listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(allConstraintRoles[snippet1ReplaceRoleIter1])]);
+						sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(allConstraintRoles[RoleIter1])]);
 						sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 					}
 					snippet1Replace1 = sbTemp.ToString();
@@ -2409,10 +2497,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						sbTemp.Length = 0;
 					}
 					string snippet1Replace2Item1 = null;
-					int snippet1Replace2ItemRoleIter1 = 0;
-					for (; snippet1Replace2ItemRoleIter1 < constraintRoleArity; ++snippet1Replace2ItemRoleIter1)
+					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 					{
-						Role primaryRole = allConstraintRoles[snippet1Replace2ItemRoleIter1];
+						Role primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -2443,7 +2530,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							snippet1Replace2Item1 = null;
-							readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, primaryRole, null, false, true, factRoles, true);
+							reading = FactType.GetMatchingReading(allReadingOrders, null, primaryRole, null, false, true, factRoles, true);
 							int snippet1Replace2ItemFactRoleIter1 = 0;
 							for (; snippet1Replace2ItemFactRoleIter1 < factArity; ++snippet1Replace2ItemFactRoleIter1)
 							{
@@ -2464,9 +2551,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace2ItemFactRoleIter1] = roleReplacement;
 							}
-							snippet1Replace2Item1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+							snippet1Replace2Item1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 							sbTemp.Append(snippet1Replace2Item1);
-							if (snippet1Replace2ItemRoleIter1 == (snippet1ReplaceCompositeCount2 - 1))
+							if (RoleIter1 == (snippet1ReplaceCompositeCount2 - 1))
 							{
 								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedLogicalOrListClose, isDeontic, isNegative));
 							}
@@ -2474,10 +2561,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 					string snippet1Replace2Item2 = null;
-					int snippet1Replace2ItemRoleIter2 = 0;
-					for (; snippet1Replace2ItemRoleIter2 < constraintRoleArity; ++snippet1Replace2ItemRoleIter2)
+					for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity; ++RoleIter2)
 					{
-						Role primaryRole = allConstraintRoles[snippet1Replace2ItemRoleIter2];
+						Role primaryRole = allConstraintRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -2508,7 +2594,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 							snippet1Replace2Item2 = null;
-							readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+							reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
 							int snippet1Replace2ItemFactRoleIter2 = 0;
 							for (; snippet1Replace2ItemFactRoleIter2 < factArity; ++snippet1Replace2ItemFactRoleIter2)
 							{
@@ -2522,9 +2608,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 								}
 								roleReplacements[snippet1Replace2ItemFactRoleIter2] = roleReplacement;
 							}
-							snippet1Replace2Item2 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+							snippet1Replace2Item2 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 							sbTemp.Append(snippet1Replace2Item2);
-							if (snippet1Replace2ItemRoleIter2 == (snippet1ReplaceCompositeCount2 - 1))
+							if (RoleIter2 == (snippet1ReplaceCompositeCount2 - 1))
 							{
 								sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedLogicalOrListClose, isDeontic, isNegative));
 							}
@@ -2573,7 +2659,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					return false;
 				}
 			}
-			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
+			bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			FactType parentFact;
 			RoleMoveableCollection factRoles;
@@ -2608,8 +2694,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					maxFactArity = factArity;
 				}
 				string[] basicRoleReplacements = new string[factArity];
-				int i = 0;
-				for (; i < factArity; ++i)
+				for (int i = 0; i < factArity; ++i)
 				{
 					ObjectType rolePlayer = factRoles[i].RolePlayer;
 					string basicReplacement;
@@ -2654,9 +2739,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				allBasicRoleReplacements[iFact] = basicRoleReplacements;
 			}
 			int constraintRoleArity = allConstraintRoles.Count;
-			ReadingOrder[] allConstraintRoleReadingOrders = new ReadingOrder[constraintRoleArity];
+			Reading[] allConstraintRoleReadings = new Reading[constraintRoleArity];
 			string[] roleReplacements = new string[maxFactArity];
-			ReadingOrder readingOrder;
+			Reading reading;
 			if (!(isNegative) && ((minFactArity >= 2) && (maxFactArity <= 2)))
 			{
 				bool missingReading1 = false;
@@ -2667,14 +2752,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					allReadingOrders = parentFact.ReadingOrderCollection;
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, primaryRole, null, true, true, factRoles, false);
-					if (readingOrder == null)
+					reading = FactType.GetMatchingReading(allReadingOrders, null, primaryRole, null, true, true, factRoles, false);
+					if (reading == null)
 					{
 						missingReading1 = true;
 					}
 					else
 					{
-						allConstraintRoleReadingOrders[readingMatchIndex1] = readingOrder;
+						allConstraintRoleReadings[readingMatchIndex1] = reading;
 					}
 				}
 				if (!(missingReading1))
@@ -2690,10 +2775,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						sbTemp.Length = 0;
 					}
-					int snippet1ReplaceRoleIter1 = 0;
-					for (; snippet1ReplaceRoleIter1 < constraintRoleArity; ++snippet1ReplaceRoleIter1)
+					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 					{
-						Role primaryRole = allConstraintRoles[snippet1ReplaceRoleIter1];
+						Role primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -2701,13 +2785,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int currentFactIndex = allFacts.IndexOf(parentFact);
 						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
 						VerbalizationTextSnippetType listSnippet;
-						if (snippet1ReplaceRoleIter1 == 0)
+						if (RoleIter1 == 0)
 						{
 							listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
 						}
-						else if (snippet1ReplaceRoleIter1 == (constraintRoleArity - 1))
+						else if (RoleIter1 == (constraintRoleArity - 1))
 						{
-							if (snippet1ReplaceRoleIter1 == 1)
+							if (RoleIter1 == 1)
 							{
 								listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
 							}
@@ -2721,8 +2805,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 							listSnippet = VerbalizationTextSnippetType.SimpleListSeparator;
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(allConstraintRoles[snippet1ReplaceRoleIter1])]);
-						if (snippet1ReplaceRoleIter1 == (constraintRoleArity - 1))
+						sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(allConstraintRoles[RoleIter1])]);
+						if (RoleIter1 == (constraintRoleArity - 1))
 						{
 							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 						}
@@ -2737,11 +2821,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						sbTemp.Length = 0;
 					}
-					int snippet1ReplaceRoleIter2 = 0;
 					bool snippet1ReplaceIsFirstPass2 = true;
-					for (; snippet1ReplaceRoleIter2 < constraintRoleArity; ++snippet1ReplaceRoleIter2)
+					for (int RoleIter2 = 0; RoleIter2 < constraintRoleArity; ++RoleIter2)
 					{
-						Role primaryRole = allConstraintRoles[snippet1ReplaceRoleIter2];
+						Role primaryRole = allConstraintRoles[RoleIter2];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -2749,13 +2832,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int currentFactIndex = allFacts.IndexOf(parentFact);
 						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
 						VerbalizationTextSnippetType listSnippet;
-						if (snippet1ReplaceRoleIter2 == 0)
+						if (RoleIter2 == 0)
 						{
 							listSnippet = VerbalizationTextSnippetType.IndentedListOpen;
 						}
-						else if (snippet1ReplaceRoleIter2 == (constraintRoleArity - 1))
+						else if (RoleIter2 == (constraintRoleArity - 1))
 						{
-							if (snippet1ReplaceRoleIter2 == 1)
+							if (RoleIter2 == 1)
 							{
 								listSnippet = VerbalizationTextSnippetType.IndentedListPairSeparator;
 							}
@@ -2770,7 +2853,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						snippet1Replace2 = null;
-						readingOrder = allConstraintRoleReadingOrders[snippet1ReplaceRoleIter2];
+						reading = allConstraintRoleReadings[RoleIter2];
 						int snippet1ReplaceFactRoleIter2 = 0;
 						for (; snippet1ReplaceFactRoleIter2 < factArity; ++snippet1ReplaceFactRoleIter2)
 						{
@@ -2795,9 +2878,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1ReplaceFactRoleIter2] = roleReplacement;
 						}
-						snippet1Replace2 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+						snippet1Replace2 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 						sbTemp.Append(snippet1Replace2);
-						if (snippet1ReplaceRoleIter2 == (constraintRoleArity - 1))
+						if (RoleIter2 == (constraintRoleArity - 1))
 						{
 							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.IndentedListClose, isDeontic, isNegative));
 						}
@@ -2817,14 +2900,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 					parentFact = primaryRole.FactType;
 					factRoles = parentFact.RoleCollection;
 					allReadingOrders = parentFact.ReadingOrderCollection;
-					readingOrder = FactType.GetMatchingReadingOrder(allReadingOrders, null, primaryRole, null, true, true, factRoles, false);
-					if (readingOrder == null)
+					reading = FactType.GetMatchingReading(allReadingOrders, null, primaryRole, null, true, true, factRoles, false);
+					if (reading == null)
 					{
 						missingReading1 = true;
 					}
 					else
 					{
-						allConstraintRoleReadingOrders[readingMatchIndex1] = readingOrder;
+						allConstraintRoleReadings[readingMatchIndex1] = reading;
 					}
 				}
 				if (!(missingReading1))
@@ -2840,11 +2923,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						sbTemp.Length = 0;
 					}
-					int snippet1ReplaceRoleIter1 = 0;
 					bool snippet1ReplaceIsFirstPass1 = true;
-					for (; snippet1ReplaceRoleIter1 < constraintRoleArity; ++snippet1ReplaceRoleIter1)
+					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 					{
-						Role primaryRole = allConstraintRoles[snippet1ReplaceRoleIter1];
+						Role primaryRole = allConstraintRoles[RoleIter1];
 						parentFact = primaryRole.FactType;
 						factRoles = parentFact.RoleCollection;
 						factArity = factRoles.Count;
@@ -2852,13 +2934,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int currentFactIndex = allFacts.IndexOf(parentFact);
 						string[] basicRoleReplacements = allBasicRoleReplacements[currentFactIndex];
 						VerbalizationTextSnippetType listSnippet;
-						if (snippet1ReplaceRoleIter1 == 0)
+						if (RoleIter1 == 0)
 						{
 							listSnippet = VerbalizationTextSnippetType.SimpleListOpen;
 						}
-						else if (snippet1ReplaceRoleIter1 == (constraintRoleArity - 1))
+						else if (RoleIter1 == (constraintRoleArity - 1))
 						{
-							if (snippet1ReplaceRoleIter1 == 1)
+							if (RoleIter1 == 1)
 							{
 								listSnippet = VerbalizationTextSnippetType.SimpleListPairSeparator;
 							}
@@ -2873,7 +2955,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						snippet1Replace1 = null;
-						readingOrder = allConstraintRoleReadingOrders[snippet1ReplaceRoleIter1];
+						reading = allConstraintRoleReadings[RoleIter1];
 						int snippet1ReplaceFactRoleIter1 = 0;
 						for (; snippet1ReplaceFactRoleIter1 < factArity; ++snippet1ReplaceFactRoleIter1)
 						{
@@ -2898,9 +2980,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 							}
 							roleReplacements[snippet1ReplaceFactRoleIter1] = roleReplacement;
 						}
-						snippet1Replace1 = FactType.PopulatePredicateText(readingOrder, factRoles, roleReplacements);
+						snippet1Replace1 = FactType.PopulatePredicateText(reading, factRoles, roleReplacements);
 						sbTemp.Append(snippet1Replace1);
-						if (snippet1ReplaceRoleIter1 == (constraintRoleArity - 1))
+						if (RoleIter1 == (constraintRoleArity - 1))
 						{
 							sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.SimpleListClose, isDeontic, isNegative));
 						}
@@ -2918,4 +3000,262 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // ExternalUniquenessConstraint verbalization
+	#region RoleValueRangeDefinition verbalization
+	public partial class RoleValueRangeDefinition : IVerbalize
+	{
+		/// <summary>
+		/// IVerbalize.GetVerbalization implementation
+		/// </summary>
+		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		{
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			if (errorOwner != null)
+			{
+				bool firstElement = true;
+				foreach (ModelError error in errorOwner.ErrorCollection)
+				{
+					if (firstElement)
+					{
+						firstElement = false;
+						beginVerbalization(VerbalizationContent.ErrorReport);
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(error.Name);
+				}
+				if (!(firstElement))
+				{
+					return false;
+				}
+			}
+			Role valueRole = this.Role;
+			bool isDeontic = false;
+			StringBuilder sbTemp = null;
+			FactType parentFact = valueRole.FactType;
+			IList<Role> includedRoles = new Role[]{
+				valueRole};
+			RoleMoveableCollection factRoles = parentFact.RoleCollection;
+			int factArity = factRoles.Count;
+			ReadingOrderMoveableCollection allReadingOrders = parentFact.ReadingOrderCollection;
+			int includedArity = includedRoles.Count;
+			if ((allReadingOrders.Count == 0) || (includedArity == 0))
+			{
+				return false;
+			}
+			string[] basicRoleReplacements = new string[factArity];
+			for (int i = 0; i < factArity; ++i)
+			{
+				ObjectType rolePlayer = factRoles[i].RolePlayer;
+				string basicReplacement;
+				if (rolePlayer != null)
+				{
+					int subscript = 0;
+					bool useSubscript = false;
+					if (true)
+					{
+						int j = 0;
+						for (; j < i; ++j)
+						{
+							if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+							{
+								useSubscript = true;
+								subscript = subscript + 1;
+							}
+						}
+						for (j = i + 1; !(useSubscript) && (j < factArity); ++j)
+						{
+							if (object.ReferenceEquals(rolePlayer, factRoles[j].RolePlayer))
+							{
+								useSubscript = true;
+							}
+						}
+					}
+					if (useSubscript)
+					{
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), rolePlayer.Name, subscript + 1);
+					}
+					else
+					{
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative), rolePlayer.Name);
+					}
+				}
+				else
+				{
+					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(VerbalizationTextSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+				}
+				basicRoleReplacements[i] = basicReplacement;
+			}
+			string[] roleReplacements = new string[factArity];
+			Reading reading;
+			ValueRangeMoveableCollection ranges = this.ValueRangeCollection;
+			bool isSingleValue = (ranges.Count == 1) && (ranges[0].MinValue == ranges[0].MaxValue);
+			VerbalizationTextSnippetType variableSnippetSnippetType1 = 0;
+			if (isSingleValue)
+			{
+				variableSnippetSnippetType1 = VerbalizationTextSnippetType.SingleValueValueConstraint;
+			}
+			else
+			{
+				variableSnippetSnippetType1 = VerbalizationTextSnippetType.MultiValueValueConstraint;
+			}
+			beginVerbalization(VerbalizationContent.Normal);
+			string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
+			string variableSnippet1Replace1 = null;
+			if ((factArity == 2) && (valueRole.Name != ""))
+			{
+				if (sbTemp == null)
+				{
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
+				{
+					Role primaryRole = includedRoles[RoleIter1];
+					variableSnippet1Replace1 = null;
+					string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.PeriodDelimiter, isDeontic, isNegative);
+					string variableSnippet1Replace1Replace1 = null;
+					variableSnippet1Replace1Replace1 = @"<span style=""font:smaller"">undone</span>";
+					string variableSnippet1Replace1Replace2 = null;
+					if ((primaryRole.RolePlayer != null) && (0 != primaryRole.RolePlayer.ReferenceModeString.Length))
+					{
+						string variableSnippet1Replace1ReplaceFormat2 = snippets.GetSnippet(VerbalizationTextSnippetType.NameWithRefMode, isDeontic, isNegative);
+						string variableSnippet1Replace1Replace2Replace1 = valueRole.Name;
+						string variableSnippet1Replace1Replace2Replace2 = valueRole.RolePlayer.ReferenceModeString;
+						variableSnippet1Replace1Replace2 = string.Format(writer.FormatProvider, variableSnippet1Replace1ReplaceFormat2, variableSnippet1Replace1Replace2Replace1, variableSnippet1Replace1Replace2Replace2);
+					}
+					else
+					{
+						string variableSnippet1Replace1ReplaceFormat2 = snippets.GetSnippet(VerbalizationTextSnippetType.SelfReference, isDeontic, isNegative);
+						string variableSnippet1Replace1Replace2Replace1 = valueRole.Name;
+						variableSnippet1Replace1Replace2 = string.Format(writer.FormatProvider, variableSnippet1Replace1ReplaceFormat2, variableSnippet1Replace1Replace2Replace1);
+					}
+					variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
+					sbTemp.Append(variableSnippet1Replace1);
+				}
+				variableSnippet1Replace1 = sbTemp.ToString();
+			}
+			else
+			{
+				string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.InSeparator, isDeontic, isNegative);
+				string variableSnippet1Replace1Replace1 = null;
+				if (sbTemp == null)
+				{
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
+				{
+					sbTemp.Append(basicRoleReplacements[factRoles.IndexOf(includedRoles[RoleIter1])]);
+				}
+				variableSnippet1Replace1Replace1 = sbTemp.ToString();
+				string variableSnippet1Replace1Replace2 = null;
+				reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+				variableSnippet1Replace1Replace2 = FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements);
+				variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
+			}
+			string variableSnippet1Replace2 = null;
+			if (sbTemp == null)
+			{
+				sbTemp = new StringBuilder();
+			}
+			else
+			{
+				sbTemp.Length = 0;
+			}
+			int rangeCount = ranges.Count;
+			for (int i = 0; i < rangeCount; ++i)
+			{
+				string minValue = ranges[i].MinValue;
+				string maxValue = ranges[i].MaxValue;
+				RangeInclusion minInclusion = ranges[i].MinInclusion;
+				RangeInclusion maxInclusion = ranges[i].MaxInclusion;
+				VerbalizationTextSnippetType listSnippet;
+				if (i == 0)
+				{
+					listSnippet = VerbalizationTextSnippetType.CompactSimpleListOpen;
+				}
+				else if (i == (rangeCount - 1))
+				{
+					if (i == 1)
+					{
+						listSnippet = VerbalizationTextSnippetType.CompactSimpleListPairSeparator;
+					}
+					else
+					{
+						listSnippet = VerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
+					}
+				}
+				else
+				{
+					listSnippet = VerbalizationTextSnippetType.CompactSimpleListSeparator;
+				}
+				sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+				variableSnippet1Replace2 = null;
+				VerbalizationTextSnippetType variableSnippet1ReplaceSnippetType2 = 0;
+				if (minValue == maxValue)
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.SelfReference;
+				}
+				else if ((minInclusion != RangeInclusion.Open) && (maxValue.Length == 0))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxUnbounded;
+				}
+				else if ((minInclusion == RangeInclusion.Open) && (maxValue.Length == 0))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxUnbounded;
+				}
+				else if ((minValue.Length == 0) && (maxInclusion != RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinUnboundedMaxClosed;
+				}
+				else if ((minValue.Length == 0) && (maxInclusion == RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinUnboundedMaxOpen;
+				}
+				else if ((minInclusion != RangeInclusion.Open) && (maxInclusion != RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxClosed;
+				}
+				else if ((minInclusion != RangeInclusion.Open) && (maxInclusion == RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxOpen;
+				}
+				else if ((minInclusion == RangeInclusion.Open) && (maxInclusion != RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxClosed;
+				}
+				else if ((minInclusion == RangeInclusion.Open) && (maxInclusion == RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxOpen;
+				}
+				string variableSnippet1ReplaceFormat2 = snippets.GetSnippet(variableSnippet1ReplaceSnippetType2, isDeontic, isNegative);
+				string variableSnippet1Replace2Replace1 = null;
+				variableSnippet1Replace2Replace1 = minValue;
+				string variableSnippet1Replace2Replace2 = null;
+				variableSnippet1Replace2Replace2 = maxValue;
+				variableSnippet1Replace2 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat2, variableSnippet1Replace2Replace1, variableSnippet1Replace2Replace2);
+				sbTemp.Append(variableSnippet1Replace2);
+				if (i == (rangeCount - 1))
+				{
+					sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
+				}
+			}
+			variableSnippet1Replace2 = sbTemp.ToString();
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		{
+			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
+		}
+	}
+	#endregion // RoleValueRangeDefinition verbalization
 }

@@ -801,7 +801,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								if (remainingOrders.Count != 0)
 								{
 									RoleMoveableCollection roles = fact.RoleCollection;
-									ReadingOrder newOrder = FactType.GetMatchingReadingOrder(remainingOrders, order, roles[0], null, false, false, roles, true);
+									ReadingOrder newOrder = FactType.GetMatchingReading(remainingOrders, order, roles[0], null, false, false, roles, true).ReadingOrder;
 									if (newOrder != null)
 									{
 										readingPel.Associate(newOrder);

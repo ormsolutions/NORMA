@@ -49,6 +49,22 @@
 				<!-- Used inside a ModalOperator -->
 				<Snippet type="NegativeReadingForUnaryOnlyDisjunctiveMandatory" sign="negative"><![CDATA[<span class="quantifier">some</span> {0} <span class="quantifier">participates in none of the following:</span>{1}]]></Snippet>
 
+				<!-- Snippets related to value constraint verbalization -->
+				<Snippet type="NameWithRefMode"><![CDATA[{0}(<span class="objectType">{1}</span>)]]></Snippet>
+				<Snippet type="InSeparator"><![CDATA[<span class="objectType">{0}</span> in <span class="objectType">{1}</span>]]></Snippet>
+				<Snippet type="PeriodDelimiter"><![CDATA[{0}.<span class="objectType">{1}</span>]]></Snippet>
+				<Snippet type="SelfReference"><![CDATA[{0}]]></Snippet>
+				<Snippet type="SingleValueValueConstraint"><![CDATA[<span class="quantifier">the possible value of {0} is {1}</span>]]></Snippet>
+				<Snippet type="MultiValueValueConstraint"><![CDATA[<span class="quantifier">the possible values of {0} are {1}</span>]]></Snippet>
+				<Snippet type="MinClosedMaxClosed"><![CDATA[at least <span class="objectType">{0}</span> to at most <span class="objectType">{1}</span>]]></Snippet>
+				<Snippet type="MinClosedMaxOpen"><![CDATA[at least <span class="objectType">{0}</span> to below <span class="objectType">{1}</span>]]></Snippet>
+				<Snippet type="MinClosedMaxUnbounded"><![CDATA[at least <span class="objectType">{0}</span>]]></Snippet>
+				<Snippet type="MinOpenMaxClosed"><![CDATA[above <span class="objectType">{0}</span> to at most <span class="objectType">{1}</span>]]></Snippet>
+				<Snippet type="MinOpenMaxOpen"><![CDATA[above <span class="objectType">{0}</span> to below <span class="objectType">{1}</span>]]></Snippet>
+				<Snippet type="MinOpenMaxUnbounded"><![CDATA[above <span class="objectType">{0}</span>]]></Snippet>
+				<Snippet type="MinUnboundedMaxClosed"><![CDATA[at most <span class="objectType">{1}</span>]]></Snippet>
+				<Snippet type="MinUnboundedMaxOpen"><![CDATA[below <span class="objectType">{1}</span>]]></Snippet>
+				
 				<Snippet type="CompoundListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 				<Snippet type="CompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
 				<Snippet type="CompoundListSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
@@ -227,7 +243,7 @@
 							</Snippet>
 						</ReadingChoice>
 					</ConditionalReading>
-					<Snippet ref="ConstraintProvidesPreferredIdentifier" match="IsPreferredIdentifier">
+					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier">
 						<IterateRoles listStyle="null" match="included"/>
 						<IterateRoles listStyle="null" match="excluded"/>
 					</Snippet>
@@ -503,6 +519,59 @@
 				</ConstrainedRoles>
 			</Constraint>
 			<!-- End External Uniqueness Constraint  -->
+			<!-- Begin Role Value Constraint -->
+			<Constraint patternGroup="RoleValueConstraint" type="RoleValueRangeDefinition">
+				<ConditionalSnippet>
+					<!-- Determine whether the range is degenerate. -->
+					<Snippet ref="SingleValueValueConstraint" conditionalMatch="IsSingleValue"/>
+					<Snippet ref="MultiValueValueConstraint"/>
+					<SnippetReplacements>
+						<ConditionalReplacement>
+							<!-- BinaryWithRoleName matches this pattern: The values of [OpposingRolePlayerName.]roleName[(RolePlayerRefMode)] are value-spec. -->
+							<IterateRoles match="included" listStyle="null" conditionalMatch="BinaryWithRoleName">
+								<Snippet ref="PeriodDelimiter">
+									<IterateContextRoles match="excluded" listStyle="null">
+										<RolePlayer/>
+									</IterateContextRoles>
+									<ConditionalReplacement>
+										<Snippet ref="NameWithRefMode" conditionalMatch="RolePlayerHasRefScheme">
+											<RoleName/>
+											<RolePlayerRefModeScheme/>
+										</Snippet>
+										<Snippet ref="SelfReference">
+											<RoleName/>
+										</Snippet>
+									</ConditionalReplacement>
+								</Snippet>
+							</IterateRoles>
+							<!-- The fallback pattern is: The values of RolePlayer[sub] in Full Fact Verbalization are value-spec. -->
+							<Snippet ref="InSeparator">
+								<IterateRoles match="included" listStyle="null"/>
+								<Fact/>
+							</Snippet>
+						</ConditionalReplacement>
+						<IterateValueRanges listStyle="CompactSimpleList">
+							<ConditionalSnippet>
+								<!-- Match one of the nine possible value range patterns.  MinUnboundedMaxUnbounded is not a valid value range pattern. -->
+								<Snippet ref="SelfReference" conditionalMatch="MinEqualsMax"/>
+								<Snippet ref="MinClosedMaxUnbounded" conditionalMatch="MinClosedMaxUnbounded"/>
+								<Snippet ref="MinOpenMaxUnbounded" conditionalMatch="MinOpenMaxUnbounded"/>
+								<Snippet ref="MinUnboundedMaxClosed" conditionalMatch="MinUnboundedMaxClosed"/>
+								<Snippet ref="MinUnboundedMaxOpen" conditionalMatch="MinUnboundedMaxOpen"/>
+								<Snippet ref="MinClosedMaxClosed" conditionalMatch="MinClosedMaxClosed"/>
+								<Snippet ref="MinClosedMaxOpen" conditionalMatch="MinClosedMaxOpen"/>
+								<Snippet ref="MinOpenMaxClosed" conditionalMatch="MinOpenMaxClosed"/>
+								<Snippet ref="MinOpenMaxOpen" conditionalMatch="MinOpenMaxOpen"/>
+								<SnippetReplacements>
+									<MinValue/>
+									<MaxValue/>
+								</SnippetReplacements>
+							</ConditionalSnippet>
+						</IterateValueRanges>
+					</SnippetReplacements>
+				</ConditionalSnippet>
+			</Constraint>
+			<!-- End Role Value Constraint-->
 		</Constraints>
 	</Constructs>
 </VerbalizationRoot>

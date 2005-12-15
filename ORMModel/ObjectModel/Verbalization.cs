@@ -82,7 +82,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="defaultRoleOrder">The default order to match</param>
 		/// <param name="allowAnyOrder">If true, use the first reading order if there are no other matches</param>
 		/// <returns>A matching reading order. Can return null if allowAnyOrder is false, or the readingOrders collection is empty.</returns>
-		public static ReadingOrder GetMatchingReadingOrder(ReadingOrderMoveableCollection readingOrders, ReadingOrder ignoreReadingOrder, Role matchLeadRole, RoleMoveableCollection matchAnyLeadRole, bool invertLeadRoles, bool noForwardText, RoleMoveableCollection defaultRoleOrder, bool allowAnyOrder)
+		public static Reading GetMatchingReading(ReadingOrderMoveableCollection readingOrders, ReadingOrder ignoreReadingOrder, Role matchLeadRole, RoleMoveableCollection matchAnyLeadRole, bool invertLeadRoles, bool noForwardText, RoleMoveableCollection defaultRoleOrder, bool allowAnyOrder)
 		{
 			// UNDONE: Implement noForwardText verification
 			int orderCount = readingOrders.Count;
@@ -107,7 +107,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 							Role currentRole = defaultRoleOrder[i];
 							if (currentRole != matchLeadRole)
 							{
-								if (GetMatchingReadingOrder(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, ref retVal))
+								if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, ref retVal))
 								{
 									break;
 								}
@@ -116,7 +116,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					else
 					{
-						GetMatchingReadingOrder(readingOrders, ignoreReadingOrderIndex, matchLeadRole, defaultRoleOrder, ref retVal);
+						GetMatchingReading(readingOrders, ignoreReadingOrderIndex, matchLeadRole, defaultRoleOrder, ref retVal);
 					}
 					if (retVal == null && matchAnyLeadRole == null)
 					{
@@ -137,7 +137,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 								Role currentRole = defaultRoleOrder[i];
 								if (!matchAnyLeadRole.Contains(currentRole))
 								{
-									if (GetMatchingReadingOrder(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, ref retVal))
+									if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, currentRole, defaultRoleOrder, ref retVal))
 									{
 										break;
 									}
@@ -149,7 +149,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						for (int i = 0; i < matchAnyCount; ++i)
 						{
-							if (GetMatchingReadingOrder(readingOrders, ignoreReadingOrderIndex, matchAnyLeadRole[i], defaultRoleOrder, ref retVal))
+							if (GetMatchingReading(readingOrders, ignoreReadingOrderIndex, matchAnyLeadRole[i], defaultRoleOrder, ref retVal))
 							{
 								break;
 							}
@@ -193,7 +193,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					retVal = readingOrders[(ignoreReadingOrderIndex == 0) ? 1 : 0];
 				}
 			}
-			return retVal;
+			return retVal.PrimaryReading;
 		}
 		/// <summary>
 		/// Helper function for public method of the same name
@@ -205,7 +205,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="matchingOrder">The matching order. Can be non-null to start with</param>
 		/// <returns>true if an optimal match was found. retVal will be false if a match is found but
 		/// a more optimal match is possible</returns>
-		private static bool GetMatchingReadingOrder(ReadingOrderMoveableCollection readingOrders, int ignoreReadingOrderIndex, Role matchLeadRole, RoleMoveableCollection defaultRoleOrder, ref ReadingOrder matchingOrder)
+		private static bool GetMatchingReading(ReadingOrderMoveableCollection readingOrders, int ignoreReadingOrderIndex, Role matchLeadRole, RoleMoveableCollection defaultRoleOrder, ref ReadingOrder matchingOrder)
 		{
 			int orderCount = readingOrders.Count;
 			ReadingOrder testOrder;
@@ -269,15 +269,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="roleReplacements">The replacement fields. The length of the replacement array can be greater than
 		/// the number of roles in the defaultOrder collection</param>
 		/// <returns>The populated predicate text</returns>
-		public static string PopulatePredicateText(ReadingOrder readingOrder, RoleMoveableCollection defaultOrder, string[] roleReplacements)
+		public static string PopulatePredicateText(Reading reading, RoleMoveableCollection defaultOrder, string[] roleReplacements)
 		{
-			Reading reading = readingOrder.PrimaryReading;
 			string retVal = null;
 			if (reading != null)
 			{
 				string[] useReplacements = roleReplacements;
 				int roleCount = defaultOrder.Count;
-				RoleMoveableCollection readingRoles = readingOrder.RoleCollection;
+				RoleMoveableCollection readingRoles = reading.ReadingOrder.RoleCollection;
 				Debug.Assert(readingRoles.Count >= roleCount);
 				// First, see if anything is out of order
 				int i;
