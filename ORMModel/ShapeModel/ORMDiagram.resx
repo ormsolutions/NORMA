@@ -114,6 +114,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AutoLayout.TransactionName">
+    <value xml:space="preserve">Layout Diagram Shapes</value>
+    <comment xml:space="preserve">The transaction name used by AutoLayout command. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
   <data name="Command.DeleteConstraint.Text">
     <value xml:space="preserve">&amp;Delete Constraint</value>
     <comment xml:space="preserve">This text appears in the edit menu when constraint types are selected in the diagram.</comment>

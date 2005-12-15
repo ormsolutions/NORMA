@@ -5,8 +5,8 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-//using Microsoft.VisualStudio.EnterpriseTools.Designer;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
+using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell;
@@ -96,6 +96,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		DeleteAny = 0x8000,
 		/// <summary>
+		/// Apply an auto-layout algorithm to the selection. Applies to top-level objects.
+		/// </summary>
+		AutoLayout = 0x10000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
@@ -116,11 +120,18 @@ namespace Neumont.Tools.ORM.Shell
 		#region Member variables
 		private ORMDesignerCommands myEnabledCommands;
 		private ORMDesignerCommands myVisibleCommands;
-		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll | ORMDesignerCommands.DeleteAny | (ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
+		/// <summary>
+		/// The filter for multi selection when the elements are all of the same type.
+		/// </summary>
+		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteAny | (ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
 		/// <summary>
 		/// The filter for multi selection when the elements are of different types. This should always be a subset of the simple command filter
 		/// </summary>
 		private const ORMDesignerCommands EnabledComplexMultiSelectCommandFilter = EnabledSimpleMultiSelectCommandFilter;
+		/// <summary>
+		/// A filter to turn off commands for a single selection
+		/// </summary>
+		private const ORMDesignerCommands DisabledSingleSelectCommandFilter = ORMDesignerCommands.AutoLayout;
 		#endregion // Member variables
 		#region Construction/destruction
 		/// <summary>
@@ -288,6 +299,8 @@ namespace Neumont.Tools.ORM.Shell
 						if (mel != null)
 						{
 							SetCommandStatus(mel, out visibleCommands, out enabledCommands);
+							visibleCommands &= ~DisabledSingleSelectCommandFilter;
+							enabledCommands &= ~DisabledSingleSelectCommandFilter;
 						}
 					}
 				}
@@ -307,17 +320,23 @@ namespace Neumont.Tools.ORM.Shell
 			enabledCommands = ORMDesignerCommands.None;
 			visibleCommands = ORMDesignerCommands.None;
 			Role role;
+			ObjectType objectType;
 			if (element is FactType)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.AutoLayout;
 			}
-			else if (element is ObjectType)
+			else if (null != (objectType = element as ObjectType))
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteObjectType | ORMDesignerCommands.DeleteAny;
+				if (objectType.NestedFactType == null)
+				{
+					visibleCommands |= ORMDesignerCommands.AutoLayout;
+					enabledCommands |= ORMDesignerCommands.AutoLayout;
+				}
 			}
 			else if (element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint)
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditExternalConstraint;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditExternalConstraint | ORMDesignerCommands.AutoLayout;
 			}
 			else if (element is InternalConstraint)
 			{
@@ -640,6 +659,7 @@ namespace Neumont.Tools.ORM.Shell
 			DiagramView designer;
 			ShapeElementMoveableCollection nestedShapes;
 			int shapeCount;
+
 			if (null != (diagram = CurrentDiagram) &&
 				null != (nestedShapes = diagram.NestedChildShapes) &&
 				null != (designer = CurrentDesigner) &&
@@ -649,6 +669,10 @@ namespace Neumont.Tools.ORM.Shell
 				bool firstItem = true;
 				for (int i = 0; i < shapeCount; ++i)
 				{
+					// Use deferred selection modification here so that
+					// we don't fire a selection change for each add.
+					// Getting into n(n-1) change events is very
+					// expensive, especially for verbalization
 					ShapeElement currentShape = nestedShapes[i];
 					if (currentShape.CanSelect)
 					{
@@ -656,14 +680,42 @@ namespace Neumont.Tools.ORM.Shell
 						if (firstItem)
 						{
 							firstItem = false;
-							shapes.Clear();
-							shapes.Set(newItem);
+							//spahes.Clear();
+							shapes.DeferredClearBeforeAdditions();
+							//shapes.Set(newItem);
+							shapes.DeferredAdd(newItem);
+							shapes.DeferredPrimaryItem(newItem);
 						}
 						else
 						{
-							shapes.Add(newItem);
+							//shapes.Add(newItem);
+							shapes.DeferredAdd(newItem);
 						}
 					}
+				}
+				if (!firstItem)
+				{
+					// UNDONE: MSBUG shapes.SetDeferredSelection should not
+					// be internal. This is a hack workaround to call something
+					// public that calls it.
+					designer.DiagramClientView.OnElementEventsEnded(null);
+				}
+			}
+		}
+		/// <summary>
+		/// Execute the AutoLayout menu command
+		/// </summary>
+		protected virtual void OnMenuAutoLayout()
+		{
+			Diagram diagram;
+
+			if (null != (diagram = CurrentDiagram))
+			{
+				using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.AutoLayoutTransactionName))
+				{
+					// ORM diagrams don't do line routing, so there is no reason to attempt routing here
+					diagram.AutoLayoutShapeElements(GetSelectedComponents(), VGRoutingStyle.VGRouteNone, PlacementValueStyle.VGPlaceWideSSW, false);
+					t.Commit();
 				}
 			}
 		}

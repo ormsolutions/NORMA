@@ -471,6 +471,7 @@
 	<ResourceString name="RemoveInternalConstraintsTransaction" model="Model" resourceName="FactType.RemoveInternalUniquenessConstraints.TransactionName">
 		<comment type="summary">The name of the transaction that auto-fixes implied and duplicate internal constraints.</comment>
 	</ResourceString>
-
-
+	<ResourceString name="AutoLayoutTransactionName" model="Diagram" resourceName="AutoLayout.TransactionName">
+		<comment type="summary">The transaction name used by AutoLayout command. The text appears in the undo dropdown in the VS IDE.</comment>
+	</ResourceString>
 </ResourceStrings>

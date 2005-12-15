@@ -1576,6 +1576,16 @@
 				return ResourceStrings.GetString(ResourceManagers.Model, "FactType.RemoveInternalUniquenessConstraints.TransactionName");
 			}
 		}
+		/// <summary>
+		/// The transaction name used by AutoLayout command. The text appears in the undo dropdown in the VS IDE.
+		/// </summary>
+		public static string AutoLayoutTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "AutoLayout.TransactionName");
+			}
+		}
 	}
 	#endregion // ResourceStrings class
 }

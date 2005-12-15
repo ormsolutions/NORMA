@@ -133,6 +133,10 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusVerbalizationWindow),
 				new EventHandler(OnMenuVerbalizationWindow),
 				ORMDesignerCommandIds.ViewVerbalizationBrowser)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusAutoLayout),
+				new EventHandler(OnMenuAutoLayout),
+				ORMDesignerCommandIds.AutoLayout)
 			};
 				#endregion
 				AddCommands(myCommands);
@@ -282,6 +286,22 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// call delete on the doc view
 					docView.OnMenuSelectAll();
+				}
+			}
+			private void OnStatusAutoLayout(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.AutoLayout);
+			}
+			/// <summary>
+			/// Menu handler for the SelectAll command
+			/// </summary>
+			protected void OnMenuAutoLayout(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// call auto layout on the doc view
+					docView.OnMenuAutoLayout();
 				}
 			}
 			/// <summary>
@@ -626,6 +646,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// The ORM Verbalization Browser toolbar button for negative verbalization
 			/// </summary>
 			public static readonly CommandID ShowNegativeVerbalization = new CommandID(guidORMDesignerCommandSet, cmdIdShowNegativeVerbalization);
+			/// <summary>
+			/// The AutoLayout command
+			/// </summary>
+			public static readonly CommandID AutoLayout = new CommandID(guidORMDesignerCommandSet, cmdIdAutoLayout);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -732,6 +756,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// The ORM Verbalization Browser toolbar button for negative verbalization
 			/// </summary>
 			private const int cmdIdShowNegativeVerbalization = 0x290E;
+			/// <summary>
+			/// AutoLayout command
+			/// </summary>
+			private const int cmdIdAutoLayout = 0x290F;
 
 			/// <summary>
 			/// The context menu for the diagram

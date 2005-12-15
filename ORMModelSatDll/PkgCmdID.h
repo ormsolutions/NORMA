@@ -47,6 +47,7 @@
 #define cmdIdViewVerbalizationBrowser	0x290C
 #define cmdIdShowPositiveVerbalization	0x290D
 #define cmdIdShowNegativeVerbalization	0x290E
+#define cmdIdAutoLayout					0x290F
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs
 #define bmpIdShowNegativeVerbalization	1
