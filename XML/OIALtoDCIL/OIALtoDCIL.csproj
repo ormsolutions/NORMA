@@ -1,0 +1,14 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{43DCDDBF-5797-4852-A888-9E5FC47B4A12}</ProjectGuid>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="OIALtoDCIL.xslt" />
+  </ItemGroup>
+</Project>

@@ -31,4 +31,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="DILSupportFunctions.xslt" />
+  </ItemGroup>
 </Project>

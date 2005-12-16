@@ -83,10 +83,6 @@
 			<xs:selector xpath="dcl:domainDataType"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
-		<xs:key name="tableChildKey">
-			<xs:selector xpath="dcl:table/child::*"/>
-			<xs:field xpath="@name"/>
-		</xs:key>
 		<xs:key name="triggerKey">
 			<xs:selector xpath="dcl:trigger"/>
 			<xs:field xpath="@name"/>
@@ -108,21 +104,41 @@
 			<xs:documentation>Equivalent to a 'TABLE' in the SQL Standard.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="dcl:column" minOccurs="1" maxOccurs="unbounded"/>
-				<xs:group ref="dcl:constraint" minOccurs="0" maxOccurs="unbounded"/>
-			</xs:sequence>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element ref="dcl:column"/>
+				<xs:group ref="dcl:constraint"/>
+			</xs:choice>
 			<xs:attribute name="name" use="required" type="ddt:identifier">
 				<xs:annotation>
 					<xs:documentation>The name of the table.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
+		<xs:key name="tableChildKey">
+			<xs:selector xpath="dcl:table/child::*"/>
+			<xs:field xpath="@name"/>
+		</xs:key>
 		<xs:key name="columnKey">
 			<xs:selector xpath="dcl:column"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
 	</xs:element>
+
+	<xs:complexType name="predefinedDataType">
+		<xs:attribute name="name" use="required" type="ddt:predefinedTypes"/>
+		<xs:attribute name="precision" use="optional" type="ddt:numericPrecision">
+			<xs:annotation>
+				<xs:documentation>The maximum number of decimal digits in a NUMERIC or DECIMAL, the maximum number of binary digits in the significand (mantissa) of a FLOAT, the number of characters in a CHARACTER, CHARACTER VARYING, or CHARACTER LARGE OBJECT, or the number of bytes in a BINARY LARGE OBJECT.</xs:documentation>
+				<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="scale" use="optional" type="ddt:numericPrecision">
+			<xs:annotation>
+				<xs:documentation>The maximum number of decimal digits after the decimal point in a NUMERIC or DECIMAL.</xs:documentation>
+				<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
 
 	<xs:element name="column">
 		<xs:annotation>
@@ -143,23 +159,7 @@
 							</xs:attribute>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="predefinedDataType">
-						<xs:complexType>
-							<xs:attribute name="name" use="required" type="ddt:predefinedTypes"/>
-							<xs:attribute name="precision" use="optional" type="ddt:numericPrecision">
-								<xs:annotation>
-									<xs:documentation>The maximum number of decimal digits in a NUMERIC or DECIMAL, the maximum number of binary digits in the significand (mantissa) of a FLOAT, the number of characters in a CHARACTER, CHARACTER VARYING, or CHARACTER LARGE OBJECT, or the number of bytes in a BINARY LARGE OBJECT.</xs:documentation>
-									<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-							<xs:attribute name="scale" use="optional" type="ddt:numericPrecision">
-								<xs:annotation>
-									<xs:documentation>The maximum number of decimal digits after the decimal point in a NUMERIC or DECIMAL.</xs:documentation>
-									<xs:documentation>If this is any other data type, a value for this attribute must not be specified.</xs:documentation>
-								</xs:annotation>
-							</xs:attribute>
-						</xs:complexType>
-					</xs:element>
+					<xs:element name="predefinedDataType" type="dcl:predefinedDataType"/>
 				</xs:choice>
 				<xs:element name="generationCode" type="dep:valueExpression" minOccurs="0" maxOccurs="1">
 					<xs:annotation>
@@ -197,6 +197,7 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element name="predefinedDataType" type="dcl:predefinedDataType"/>
 				<xs:element ref="dcl:checkConstraint" minOccurs="0">
 					<xs:annotation>
 						<xs:documentation>The check constraint, if any, on this domain-specific data type.</xs:documentation>
@@ -206,11 +207,6 @@
 			<xs:attribute name="name" use="required" type="ddt:identifier">
 				<xs:annotation>
 					<xs:documentation>The name of the domain-specific data type.</xs:documentation>
-				</xs:annotation>
-			</xs:attribute>
-			<xs:attribute name="extends" use="required" type="ddt:predefinedTypes">
-				<xs:annotation>
-					<xs:documentation>The predefined data type that this domain-specific data type is based on.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>

@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<FxCopProject Version="1.32" Name="ORM2">
+<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="1.35" Name="ORM2">
  <ProjectOptions>
   <SharedProject>True</SharedProject>
-  <Stylesheet Apply="False">c:\program files\microsoft fxcop 1.312\Xml\FxCopReport.Xsl</Stylesheet>
+  <Stylesheet Apply="False">http://www.gotdotnet.com/team/fxcop//xsl/1.35/FxCopReport.xsl</Stylesheet>
   <SaveMessages>
    <Project Status="Active, Excluded" NewOnly="False" />
    <Report Status="Active" NewOnly="False" />
@@ -17,13 +17,9 @@
   <VersionAware>False</VersionAware>
   <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
   <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>True</SearchGlobalAssemblyCache>
  </ProjectOptions>
  <Targets>
-  <AssemblyReferenceDirectories>
-   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/DSLTools/</Directory>
-   <Directory>C:/Program Files/Microsoft Visual Studio 8/Common7/IDE/PublicAssemblies/</Directory>
-   <Directory>C:/Program Files/Visual Studio 2005 SDK/2005-08/VisualStudioIntegration/Common/Assemblies/</Directory>
-  </AssemblyReferenceDirectories>
   <Target Name="$(ProjectDir)/ORMModel/bin/Debug/Neumont.Tools.ORM.dll" Analyze="True" AnalyzeAllChildren="True" />
  </Targets>
  <Rules>
@@ -101,7 +97,7 @@
   <Groups />
   <Settings />
  </Rules>
- <FxCopReport Version="1.32">
+ <FxCopReport Version="1.35">
   <Targets>
    <Target Name="$(ProjectDir)/ORMModel/bin/Debug/Neumont.Tools.ORM.dll">
     <Modules>

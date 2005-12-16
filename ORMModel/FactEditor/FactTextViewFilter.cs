@@ -364,8 +364,17 @@ namespace Neumont.Tools.ORM.FactEditor
 			}
 			else if (FactGuidList.StandardCommandSet2K == pguidCmdGroup)
 			{
-				prgCmds[0].cmdf = (uint)(OLECMDF.OLECMDF_SUPPORTED | OLECMDF.OLECMDF_ENABLED);
-				return VSConstants.S_OK;
+				switch (prgCmds[0].cmdID)
+				{
+					case CmdCompleteWord: // Ctrl-<space> completes a word
+					case CmdShowMemberList: // Ctrl-j drops the statement completion box           
+					case CmdReturn: // dismiss method tip window if it's displayed
+					case CmdBackspace: // dismiss method tip window if it's displayed
+					case CmdControlEnter:
+					case CmdTypeChar: // any character
+						prgCmds[0].cmdf = (uint)(OLECMDF.OLECMDF_SUPPORTED | OLECMDF.OLECMDF_ENABLED);
+						return VSConstants.S_OK;
+				}
 			}
 
 			// pass this cmd on to next in chain (the view so it will show up)

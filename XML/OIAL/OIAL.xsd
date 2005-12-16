@@ -122,7 +122,7 @@
 	</xs:complexType>
 
 	<xs:complexType name="informationType">
-		<xs:group ref="oil:singleRoleConstraint" minOccurs="0" maxOccurs="2"/>
+		<xs:group ref="oil:singleRoleConstraintIncludingUniqueness" minOccurs="0" maxOccurs="2"/>
 		<xs:attribute name="name" use="required" type="xs:token"/>
 		<xs:attribute name="sourceRef" use="required" type="oil:sourceRef"/>
 		<xs:attribute name="mandatory" use="required" type="oil:mandatory"/>
@@ -137,17 +137,25 @@
 
 	<xs:group name="typeRef">
 		<xs:annotation>
-			<xs:documentation>HACK: This is in a group to prevent typeRef from being picked up as a possible root element.</xs:documentation>
+			<xs:documentation>Note: typeRef is in a group to prevent it from being picked up as a possible root element.</xs:documentation>
 		</xs:annotation>
 		<xs:choice>
 			<xs:element name="typeRef">
 				<xs:complexType>
-					<xs:attribute name="conceptTypeTarget" use="required" type="xs:token"/>
-					<xs:attribute name="informationTypeTarget" use="optional" type="xs:token"/>
+					<xs:attribute name="targetConceptType" use="required" type="xs:token">
+						<xs:annotation>
+							<xs:documentation>The oil:conceptType being referenced, or the oil:conceptType containing the oil:conceptTypeRef or oil:informationType being referenced.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="targetChild" use="optional" type="xs:token">
+						<xs:annotation>
+							<xs:documentation>The oil:conceptTypeRef or oil:informationType being referenced. If an oil:conceptType is being referenced, this attribute must not be present.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
 				</xs:complexType>
 				<xs:keyref name="typeRefConceptTypeTarget" refer="oil:conceptTypeKey">
 					<xs:selector xpath="."/>
-					<xs:field xpath="@conceptTypeTarget"/>
+					<xs:field xpath="@targetConceptType"/>
 				</xs:keyref>
 			</xs:element>
 		</xs:choice>
@@ -163,6 +171,20 @@
 		<xs:attribute name="sourceRef" use="optional" type="oil:sourceRef"/>
 	</xs:complexType>
 
+	<xs:group name="singleRoleConstraintIncludingUniqueness">
+		<xs:choice>
+			<xs:element name="singleRoleUniquenessConstraint">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="oil:singleRoleConstraint">
+							<xs:attribute name="isPrimary" use="required" type="xs:boolean"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:group ref="oil:singleRoleConstraint"/>
+		</xs:choice>
+	</xs:group>
 	<xs:group name="singleRoleConstraint">
 		<xs:annotation>
 			<xs:documentation>Constraints that can apply only to a single role (e.g. value, internal uniqueness on a single role, frequency on a single role)</xs:documentation>
@@ -191,15 +213,6 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:attribute>
-						</xs:extension>
-					</xs:complexContent>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="singleRoleUniquenessConstraint">
-				<xs:complexType>
-					<xs:complexContent>
-						<xs:extension base="oil:singleRoleConstraint">
-							<xs:attribute name="isPrimary" use="required" type="xs:boolean"/>
 						</xs:extension>
 					</xs:complexContent>
 				</xs:complexType>

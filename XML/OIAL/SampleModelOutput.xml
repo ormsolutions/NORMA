@@ -45,19 +45,16 @@
     <oil:informationType name="HatType_HatTypeStyle_HatTypeStyle_Description" formatRef="HatTypeStyle_Description" mandatory="false" sourceRef="_61218547-67E0-4452-A1C7-3635431011B4" sourceRoleRef="_AFD8D46E-1189-4B92-A7D3-3EAAC57AD629" />
     <oil:equalityConstraint name="HatType_Equality" modality="alethic" sourceRef="_CFFA4225-A7B4-457F-818B-4D899AA157AB">
       <oil:roleSequence>
-        <oil:typeRef conceptTypeTarget="Person" informationTypeTarget="HatType_ColorARGB" />
+        <oil:typeRef targetConceptType="Person" targetChild="HatType_ColorARGB" />
       </oil:roleSequence>
       <oil:roleSequence>
-        <oil:typeRef conceptTypeTarget="Person" informationTypeTarget="HatType_HatTypeStyle_HatTypeStyle_Description" />
+        <oil:typeRef targetConceptType="Person" targetChild="HatType_HatTypeStyle_HatTypeStyle_Description" />
       </oil:roleSequence>
     </oil:equalityConstraint>
     <oil:informationType name="OwnsCar_vin" formatRef="vin" mandatory="false" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_ED495E3B-6C47-4D22-B01C-0E0C805C6664">
       <oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint22" sourceRef="_50710E80-100C-47A9-B5D3-B86A8E75B7B9" modality="alethic" isPrimary="false" />
     </oil:informationType>
     <oil:conceptType name="Death" sourceRef="_BFB2A8BF-78DB-4EDE-B2ED-24DFF73EAA63" mandatory="false" sourceRoleRef="_D9FAD5DD-0F8F-4685-B7B9-9539CD3E2E86">
-      <oil:conceptTypeRef name="Person" target="Person" mandatory="alethic" sourceRoleRef="_4CB1D9D1-0A61-42B7-8FD6-E1073A40C1C4">
-        <oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint37" sourceRef="_5240D416-AFA7-4736-9362-CEDF99448814" modality="alethic" isPrimary="false" />
-      </oil:conceptTypeRef>
       <oil:informationType name="Date_ymd" formatRef="ymd" mandatory="false" sourceRef="_4907AECD-F205-4A81-BD0F-4ACFB1F99682" sourceRoleRef="_0AE5870D-43CB-45E4-B252-5B06DA9A5443" />
       <oil:informationType name="DeathCause_Type" formatRef="Type" mandatory="alethic" sourceRef="_C0DC452E-A5F4-440D-9474-84D3BD7CBFBF" sourceRoleRef="_90A1343B-5AFD-4EDF-ABF3-868915B25477" />
     </oil:conceptType>

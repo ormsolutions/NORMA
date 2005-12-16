@@ -104,6 +104,11 @@
 	</xs:complexType>
 	<xs:group name="valueExpressionPrimary">
 		<xs:choice>
+			<xs:element name="parenthesizedValueExpression" type="dep:valueExpression">
+				<xs:annotation>
+					<xs:documentation> ( &lt;value expression&gt; ) </xs:documentation>
+				</xs:annotation>
+			</xs:element>
 			<xs:group ref="dep:valueSpecification"/>
 			<xs:element ref="dep:columnReference"/>
 			<xs:group ref="dep:setFunctionSpecification"/>

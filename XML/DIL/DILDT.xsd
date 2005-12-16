@@ -22,7 +22,7 @@
 
 	<xs:simpleType name="identifierChain">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17})|(&quot;.{1,18}&quot;))(\.(([\p{L}\p{Nl}][\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17})|(&quot;.{1,18}&quot;)))*"/>
+			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17})|(&quot;([^&quot;]|&quot;&quot;){1,18}&quot;))(\.(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17})|(&quot;([^&quot;]|&quot;&quot;){1,18}&quot;)))*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="identifier">
@@ -30,17 +30,17 @@
 			<xs:documentation>A valid identifier, according to the SQL standard.</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17})|(&quot;.{1,18}&quot;))"/>
+			<xs:pattern value="(([\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17})|(&quot;([^&quot;]|&quot;&quot;){1,18}&quot;))"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="regularIdentifier">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="[\p{L}\p{Nl}][\p{L}\p{Nl}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17}"/>
+			<xs:pattern value="[\p{L}\p{Nl}][\p{L}\p{Nl}&#x00B7;\p{Mn}\p{Mc}\p{Nd}\p{Pc}\p{Cf}]{1,17}"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="delimitedIdentifier">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="&quot;.{1,18}&quot;"/>
+			<xs:pattern value="&quot;([^&quot;]|&quot;&quot;){1,18}&quot;"/>
 		</xs:restriction>
 	</xs:simpleType>
 

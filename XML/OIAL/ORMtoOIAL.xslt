@@ -481,7 +481,7 @@
 			</xsl:if>
 
 			<!-- Process all functional direct facts that are not absorbed away from us. -->
-			<xsl:for-each select="$thisObjectTypeInformation/functionalDirectFacts/child::*[not(@id=$FactTypeAbsorptions[not(@towards=$thisObjectTypeId)])]">
+			<xsl:for-each select="$thisObjectTypeInformation/functionalDirectFacts/child::*[not(@id=$FactTypeAbsorptions[not(@towards=$thisObjectTypeId)]/@ref)]">
 				<xsl:variable name="thisRole" select="orm:FactRoles/orm:Role[orm:RolePlayer/@ref=$thisObjectTypeId]"/>
 				<xsl:variable name="thisRoleId" select="$thisRole/@id"/>
 				<xsl:variable name="oppositeRole" select="orm:FactRoles/orm:Role[not(orm:RolePlayer/@ref=$thisObjectTypeId)]"/>
@@ -724,7 +724,7 @@
 			<oil:equalityConstraint name="{concat($BaseName,'_Equality')}" modality="alethic" sourceRef="{$RolePlayer/@id}">
 				<xsl:for-each select="$oilInformationTypes">
 					<oil:roleSequence>
-						<oil:typeRef conceptTypeTarget="{$ContainingConceptTypeName}" informationTypeTarget="{@name}"/>
+						<oil:typeRef targetConceptType="{$ContainingConceptTypeName}" targetChild="{@name}"/>
 					</oil:roleSequence>
 				</xsl:for-each>
 			</oil:equalityConstraint>
