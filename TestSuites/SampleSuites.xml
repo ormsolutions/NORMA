@@ -2,7 +2,10 @@
 <Suites xmlns="http://schemas.neumont.edu/ORM/SDK/TestSuite">
 	<Suite name="Sample">
 		<Categories>
-			<IncludeCategory name="Sample"/>
+			<IncludeCategory name="NMinus1"/>
+			<IncludeCategory name="FCMinMax"/>
+			<IncludeCategory name="DTBlank"/>
+			<ExcludeCategory name="NotYet"/>
 		</Categories>
 		<TestAssemblies>
 			<TestAssembly location="TestSample\TestSample.dll"/>

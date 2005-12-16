@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=8.0.1200.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>C:\Program Files\Microsoft Visual Studio 8\Common7\IDE\DSLTools\Microsoft.VisualStudio.Modeling.Sdk.dll</HintPath>
@@ -44,6 +45,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTBlankTests\DTBlankTests.cs" />
+    <Compile Include="FCMinMaxTests\FCMinMaxTests.cs" />
+    <Compile Include="NMinus1Tests\NMinus1Tests.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,12 +67,39 @@
     <None Include="..\..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
-    <EmbeddedResource Include="Tests.FCLoadTest2.Load.orm" />
-    <EmbeddedResource Include="Tests.FCLoadTest2.Compare.orm" />
-    <EmbeddedResource Include="Tests.FCLoadTest1.Load.orm" />
-    <EmbeddedResource Include="Tests.FCLoadTest1.Compare.orm" />
-    <EmbeddedResource Include="Tests.FrequencyConstraintErrorTest.Compare.orm" />
-    <EmbeddedResource Include="Tests.FrequencyConstraintErrorTest.Load.orm" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1c.Load.orm" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1c.Compare.orm" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test2b.Load.orm" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test2b.Compare.orm" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test2a.Compare.orm" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test2a.Load.orm" />
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest1a.Load.orm" />
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest1a.Compare.orm" />
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest1b.Compare.orm" />
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest1b.Load.orm" />
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest1c.Compare.orm" />
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest1c.Load.orm" />
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest2a.Load.orm" />
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest2a.Compare.orm" />
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest2b.Load.orm" />
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest2b.Compare.orm" />
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1a.Load.orm" />
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1a.Compare.orm" />
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1b.Compare.orm" />
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1b.Load.orm" />
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1c.Load.orm" />
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1c.Compare.orm" />
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2a.Load.orm" />
+    <None Include="DTBlankTests\DTBlankTests.DTBlankTest2a.Compare.orm" />
+    <None Include="DTBlankTests\DTBlank.orm" />
+    <None Include="DTBlankTests\DTBlankFixed.orm" />
+    <None Include="FCMinMaxTests\FrequencyConstraintError.orm" />
+    <None Include="FCMinMaxTests\FrequencyConstraintErrorFixed.orm" />
+    <None Include="NMinus1Tests\NMinus1ErrorFixed.orm" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1b.Compare.orm" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1b.Load.orm" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1a.Compare.orm" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1a.Load.orm" />
     <EmbeddedResource Include="Tests.Test2.Compare.orm" />
     <EmbeddedResource Include="Tests.Test2.Load.orm" />
     <EmbeddedResource Include="Tests.Test1.Compare.orm" />
@@ -84,13 +115,43 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Tests.FrequencyConstraintErrorTest.Report.xml" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1a.Report.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tests.FCLoadTest1.Report.xml" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1b.Report.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Tests.FCLoadTest2.Report.xml" />
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1c.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test2b.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test2a.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest1a.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest1b.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest1c.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest2a.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FCMinMaxTests\FCMinMaxTests.FCMinMaxTest2b.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1a.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1b.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1c.Report.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
