@@ -947,6 +947,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				basicRoleReplacements[i] = basicReplacement;
 			}
+			beginVerbalization(VerbalizationContent.Normal);
+			reading = FactType.GetMatchingReading(allReadingOrders, null, factRoles[0], null, false, false, factRoles, true);
+			FactType.WriteVerbalizerSentence(writer, FactType.PopulatePredicateText(reading, factRoles, basicRoleReplacements), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)

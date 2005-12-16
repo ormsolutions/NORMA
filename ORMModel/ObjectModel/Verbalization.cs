@@ -264,7 +264,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Populate the predicate text with the supplied in the
 		/// correct order.
 		/// </summary>
-		/// <param name="readingOrder">The order to populate. The predicate text is pulled from the primary reading.</param>
+		/// <param name="reading">The reading to populate.</param>
 		/// <param name="defaultOrder">The default role order. Corresponds to the order of the role replacement fields</param>
 		/// <param name="roleReplacements">The replacement fields. The length of the replacement array can be greater than
 		/// the number of roles in the defaultOrder collection</param>

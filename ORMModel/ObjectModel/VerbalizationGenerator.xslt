@@ -103,7 +103,7 @@
 				<xsl:variable name="factMockup">
 					<ve:Fact/>
 				</xsl:variable>
-				<xsl:apply-templates select="msxsl:node-set($factMockup)/child::*">
+				<xsl:apply-templates select="msxsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
 					<xsl:with-param name="TopLevel" select="true()"/>
 				</xsl:apply-templates>
 				<plx:return>
