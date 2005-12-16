@@ -15,6 +15,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				yield return new DisplayRolePlayersFixupListener();
+				yield return new DisplayReadingsFixupListener();
 				yield return new DisplayExternalConstraintLinksFixupListener();
 				yield return new DisplaySubtypeLinkFixupListener();
 				yield return new DisplayRoleValueRangeDefinitionFixupListener();

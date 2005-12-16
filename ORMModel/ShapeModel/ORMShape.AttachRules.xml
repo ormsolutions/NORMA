@@ -25,6 +25,7 @@
 		<arg:Rule class="ORMShapeModel.PresentationLinkRemoved"/>
 		<arg:Rule class="ORMShapeModel.PrimaryIdentifierAdded"/>
 		<arg:Rule class="ORMShapeModel.PrimaryIdentifierRemoved"/>
+		<arg:Rule class="ORMShapeModel.ReadingOrderAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleAdded"/>
 		<arg:Rule class="ORMShapeModel.RolePlayerAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleRemoved"/>
@@ -33,7 +34,6 @@
 		<arg:Rule class="ORMShapeModel.SingleColumnExternalConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.ValueTypeValueRangeDefinitionAdded"/>
 		<arg:Rule class="ORMShapeModel.ValueTypeValueRangeDefinitionRemoved"/>
-		<arg:Rule class="ReadingShape.ReadingOrderAdded"/>
 		<arg:Rule class="ReadingShape.ReadingOrderReadingTextChanged"/>
 		<arg:Rule class="ReadingShape.ReadingOrderRemoved"/>
 		<arg:Rule class="ReadingShape.ReadingTextChanged"/>

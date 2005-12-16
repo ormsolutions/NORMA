@@ -397,18 +397,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // properties
 		#region Reading text display update rules
-		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
-		private class ReadingOrderAdded : AddRule
-		{
-			public override void ElementAdded(ElementAddedEventArgs e)
-			{
-				FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
-				ReadingOrder readingOrd = link.ReadingOrderCollection;
-				FactType fact = link.FactType;
-				Diagram.FixUpDiagram(fact.Model, fact); // Make sure the fact is already there
-				Diagram.FixUpDiagram(fact, readingOrd);
-			}
-		}
+		// Note that the corresponding add rule for [RuleOn(typeof(FactTypeHasReadingOrder))] is in the ORMShapeModel
+		// for easy sharing with the deserialization fixup process
 		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
 		private class ReadingOrderRemoved : RemoveRule
 		{

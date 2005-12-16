@@ -846,6 +846,53 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // EliminateOrphanedShapesFixupListener class
 		#endregion // SubjectHasPresentation fixup
+		#region ReadingOrder fixup
+		/// <summary>
+		/// Add shape elements for reading orders. Used during deserialization fixup
+		/// and rules.
+		/// </summary>
+		/// <param name="link"></param>
+		private static void FixupReadingOrderLink(FactTypeHasReadingOrder link)
+		{
+			ReadingOrder readingOrd = link.ReadingOrderCollection;
+			FactType fact = link.FactType;
+			Diagram.FixUpDiagram(fact.Model, fact); // Make sure the fact is already there
+			Diagram.FixUpDiagram(fact, readingOrd);
+		}
+		[RuleOn(typeof(FactTypeHasReadingOrder), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		private class ReadingOrderAdded : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				FixupReadingOrderLink(e.ModelElement as FactTypeHasReadingOrder);
+			}
+		}
+		#region DisplayReadingsFixupListener class
+		/// <summary>
+		/// A fixup class to display role player links
+		/// </summary>
+		private class DisplayReadingsFixupListener : DeserializationFixupListener<FactTypeHasReadingOrder>
+		{
+			/// <summary>
+			/// Create a new DisplayRolePlayersFixupListener
+			/// </summary>
+			public DisplayReadingsFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Add reading shapes when possible
+			/// </summary>
+			/// <param name="element">An FactTypeHasReadingOrder instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(FactTypeHasReadingOrder element, Store store, INotifyElementAdded notifyAdded)
+			{
+				FixupReadingOrderLink(element);
+			}
+		}
+		#endregion // DisplayReadingsFixupListener class
+		#endregion // ReadingOrder fixup
 		#endregion // View Fixup Rules
 	}
 }
