@@ -12,14 +12,21 @@
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="EnableAssertions" select="true()"/>
-	<xsl:variable name="OutputDebugInformation" select="false()"/>
+	<xsl:param name="EnableAssertions" select="true()"/>
+	<xsl:param name="OutputDebugInformation" select="false()"/>
+
+	<xsl:include href="CoRefORM.xslt"/>
 
 	<xsl:template match="ormRoot:ORM2">
 		<xsl:apply-templates select="orm:ORMModel"/>
 	</xsl:template>
 	<xsl:template match="orm:ORMModel">
-		<xsl:variable name="Model" select="."/>
+		<xsl:variable name="ModelFragment">
+			<xsl:call-template name="CoRefORMModel">
+				<xsl:with-param name="Model" select="."/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="Model" select="msxsl:node-set($ModelFragment)/child::*"/>
 		<!-- Any reference to Model after this point should be via the $Model variable. -->
 		<!-- It is not guarenteed that the context node of this template will remain Model. -->
 		
@@ -42,12 +49,20 @@
 		<xsl:variable name="IndependentObjectTypes" select="$ObjectTypeInformation[@IsIndependent='true']"/>
 		<!-- Get subtypes that are not independent. -->
 		<xsl:variable name="NonIndependentSubtypeObjectTypes" select="$ObjectTypeInformation[subtypeMetaFacts/child::* and not(@IsIndependent='true')]"/>
-		<!-- Get the non-objectified fact types that have uniqueness constraints spanning more than one role. -->
-		<xsl:variable name="NonObjectifiedMultiRoleUniquenessFactTypes" select="($Model/orm:Facts/orm:Fact|$Model/orm:Facts/orm:ImpliedFact)[orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[count(orm:Role)>1] and not(@id=$Model/orm:Objects/orm:ObjectifiedType/orm:NestedPredicate/@ref)]"/>
+
+		<xsl:if test="$EnableAssertions">
+			<!-- Get the non-objectified fact types that have uniqueness constraints spanning more than one role. -->
+			<xsl:variable name="MultiRoleUniquenessFactTypes" select="$Model/orm:Facts/orm:Fact[orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[count(orm:Role)>1]]"/>
+			<xsl:if test="$MultiRoleUniquenessFactTypes or $Model/orm:Facts/orm:ImpliedFact">
+				<xsl:message terminate="yes">
+					<xsl:text>After CoRefORM.xslt has been run, there should be no $MultiRoleUniquenessFactTypes or orm:ImpliedFacts left.</xsl:text>
+				</xsl:message>
+			</xsl:if>
+		</xsl:if>
 		
 		<xsl:variable name="FactTypeAbsorptionsFragment">
 			<!-- For each binary, one-to-one fact type... -->
-			<xsl:for-each select="($Model/orm:Facts/orm:Fact|$Model/orm:Facts/orm:ImpliedFact)[count(orm:FactRoles/orm:Role)=2 and count(orm:InternalConstraints/orm:InternalUniquenessConstraint)=2]">
+			<xsl:for-each select="$Model/orm:Facts/orm:Fact[count(orm:FactRoles/orm:Role)=2 and count(orm:InternalConstraints/orm:InternalUniquenessConstraint)=2]">
 				<xsl:variable name="countMandatories" select="count(orm:InternalConstraints/orm:SimpleMandatoryConstraint)"/>
 				<xsl:variable name="rolePlayerIds" select="orm:FactRoles/orm:Role/orm:RolePlayer/@ref"/>
 				<xsl:variable name="rolePlayers" select="$ObjectTypeInformation[@id=$rolePlayerIds]"/>
@@ -55,13 +70,13 @@
 					<xsl:choose>
 						<!-- If only one role is mandatory... -->
 						<xsl:when test="$countMandatories = 1">
-							<xsl:variable name="mandatoryRolePlayerId" select="orm:InternalConstraints/orm:SimpleMandatoryConstraint/orm:RoleSequence/orm:Role/@ref"/>
+							<xsl:variable name="mandatoryRolePlayerId" select="orm:FactRoles/orm:Role[@id=current()/orm:InternalConstraints/orm:SimpleMandatoryConstraint/orm:RoleSequence/orm:Role/@ref]/orm:RolePlayer/@ref"/>
 							<xsl:variable name="nonMandatoryRolePlayer" select="$rolePlayers[not(@id=$mandatoryRolePlayerId)]"/>
 							<xsl:choose>
-								<!-- We know that there is at least one functional role, see if there is another... -->
+								<!-- See if the potential absorber object type plays any functional roles (other than the current one) that are not part of its preferred identifier... -->
 								<!-- TODO: How do we handle Value Types here? Do we even need to? -->
 								<!--<xsl:when test="not(local-name($nonMandatoryRolePlayer)='ValueType') and count($nonMandatoryRolePlayer/functionalNonPreferredIdentifierDirectFacts/child::*) > 1">-->
-								<xsl:when test="count($nonMandatoryRolePlayer/functionalNonPreferredIdentifierDirectFacts/child::*) > 1">
+								<xsl:when test="$nonMandatoryRolePlayer/functionalNonPreferredIdentifierDirectFacts/child::*[not(@id=current()/@id)]">
 									<xsl:attribute name="towards">
 										<xsl:value-of select="$nonMandatoryRolePlayer/@id"/>
 									</xsl:attribute>
@@ -126,10 +141,10 @@
 				<AbsorbObjectType ref="{@id}" towards="{$absorbingSupertype}"/>
 			</xsl:for-each>
 			<!-- Get the non-independent, non-subtype object types that play at least one mandatory functional role in a fact type that that object type is also functionally dependent on. -->
-			<xsl:for-each select="$ObjectTypeInformation[mandatoryDependentFunctionalNonPreferredIdentifierDirectFacts/child::* and not(@id=$IndependentObjectTypes/@id) and not(@id=$NonIndependentSubtypeObjectTypes/@id)]">
+			<xsl:for-each select="$ObjectTypeInformation[mandatoryDependentFunctionalDirectFacts/child::* and not(@id=$IndependentObjectTypes/@id) and not(@id=$NonIndependentSubtypeObjectTypes/@id)]">
 				<xsl:variable name="specialCaseObjectTypeId" select="@id"/>
-				<xsl:for-each select="$FactTypeAbsorptions[@ref=current()/mandatoryDependentFunctionalNonPreferredIdentifierDirectFacts/child::*/@id]">
-					<xsl:if test="@type='fully'">
+				<xsl:for-each select="$FactTypeAbsorptions[@ref=current()/mandatoryDependentFunctionalDirectFacts/child::*/@id]">
+					<xsl:if test="@type='fully' and not(@towards=$specialCaseObjectTypeId)">
 						<AbsorbObjectType ref="{$specialCaseObjectTypeId}" towards="{@towards}"/>
 					</xsl:if>
 				</xsl:for-each>
@@ -139,7 +154,7 @@
 
 		<!-- Get the non-independent, non-subtype object types that play at least one functional role that isn't absorbed away from that object type. -->
 		<xsl:variable name="NonAbsorbedFunctionalRolePlayingObjectTypesFragment">
-			<xsl:for-each select="$ObjectTypeInformation[functionalNonPreferredIdentifierDirectFacts/child::* and not(@id=$IndependentObjectTypes/@id) and not(@id=$NonIndependentSubtypeObjectTypes/@id) and not(@id=$ObjectTypeAbsorptions/@ref)]">
+			<xsl:for-each select="$ObjectTypeInformation[functionalDirectFacts/child::* and not(@id=$IndependentObjectTypes/@id) and not(@id=$NonIndependentSubtypeObjectTypes/@id) and not(@id=$ObjectTypeAbsorptions/@ref)]">
 				<xsl:variable name="factTypeAbsorptionsAwayFromThisObjectType" select="$FactTypeAbsorptions[not(@towards=current()/@id)]"/>
 				<xsl:if test="functionalNonPreferredIdentifierDirectFacts/child::*[not(@id=$factTypeAbsorptionsAwayFromThisObjectType/@ref)]">
 					<xsl:copy-of select="."/>
@@ -152,7 +167,7 @@
 			non-objectified fact types with uniqueness constraints that span more than one role,
 			value types that play functional roles in fact types that they are not also functionally dependent on,
 			and object types that play functional roles that are not fully absorbed by something else. -->
-		<xsl:variable name="TopLevelTypes" select="$IndependentObjectTypes | $NonObjectifiedMultiRoleUniquenessFactTypes | $NonAbsorbedFunctionalRolePlayingObjectTypes"/>
+		<xsl:variable name="TopLevelTypes" select="$IndependentObjectTypes | $NonAbsorbedFunctionalRolePlayingObjectTypes"/>
 		
 		<oil:model name="{$Model/@Name}" sourceRef="{$Model/@id}">
 			
@@ -174,8 +189,7 @@
 			</xsl:if>
 
 			<oil:informationTypeFormats>
-				<!-- TODO: UNDONE: This template should spit oil:informationTypeFormat elements for each orm:ValueType. Since the entire existence and meaning of orm:ValueType is currently in flux, this template currently just serves as a place holder. -->
-				<!-- TODO: UNDONE: We now only have two weeks before we have to demo this, so (the above statement * 10). -->
+				<!-- TODO: UNDONE: This template should spit oil:informationTypeFormat elements for each orm:ValueType. Since the entire existence and meaning of orm:ValueType is currently in flux, this template may change in the future. -->
 				<xsl:comment>These may change in the future once they are integrated into the core ORM model file.</xsl:comment>
 				<xsl:apply-templates select="$Model/orm:Objects/orm:ValueType" mode="GenerateInformationTypeFormats">
 					<xsl:with-param name="Model" select="$Model"/>
@@ -189,7 +203,7 @@
 				<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
 				<xsl:with-param name="TopLevelTypes" select="$TopLevelTypes"/>
 			</xsl:apply-templates>
-			
+
 		</oil:model>
 
 	</xsl:template>
@@ -197,12 +211,6 @@
 	<!-- Returns a variety of useful information for the current context node. Don't call this directly, use the cached info from $ObjectTypeInformation. -->
 	<xsl:template name="GetObjectTypeInformation">
 		<xsl:param name="Model"/>
-
-		<xsl:if test="$EnableAssertions and not(self::orm:EntityType or self::orm:ObjectifiedType or self::orm:ValueType)">
-			<xsl:message terminate="yes">
-				<xsl:text>This template has only been designed to work with EntityType and ObjectifiedType elements. It kind of works for ValueType elements as well.</xsl:text>
-			</xsl:message>
-		</xsl:if>
 
 		<!-- Any subtype meta facts where this object type is the subtype. -->
 		<xsl:variable name="subtypeMetaFacts" select="$Model/orm:Facts/orm:SubtypeFact[orm:FactRoles/orm:Role[1]/orm:RolePlayer/@ref=current()/@id]"/>
@@ -229,18 +237,18 @@
 		<xsl:variable name="directAndInheritedPlayedRoles" select="$directPlayedRoles | $inheritedPlayedRoles"/>
 
 		<!-- All direct and inherited facts participated in by the supertype(s) of this object type. -->
-		<xsl:variable name="inheritedFacts" select="($Model/orm:Facts/orm:Fact|$Model/orm:Facts/orm:ImpliedFact)[orm:FactRoles/orm:Role/@id=$inheritedPlayedRoles/@ref]"/>
+		<xsl:variable name="inheritedFacts" select="$Model/orm:Facts/orm:Fact[orm:FactRoles/orm:Role/@id=$inheritedPlayedRoles/@ref]"/>
 		
 		<!-- Facts that this object type directly participates in. Facts participated in via join paths and subtyping relationships are NOT included. -->
-		<xsl:variable name="directFacts" select="($Model/orm:Facts/orm:Fact|$Model/orm:Facts/orm:ImpliedFact)[orm:FactRoles/orm:Role/@id=current()/orm:PlayedRoles/orm:Role/@ref]"/>
+		<xsl:variable name="directFacts" select="$Model/orm:Facts/orm:Fact[orm:FactRoles/orm:Role/@id=current()/orm:PlayedRoles/orm:Role/@ref]"/>
 
 		<!-- All direct and inherited facts for this object type. -->
 		<xsl:variable name="directAndInheritedFacts" select="$directFacts | $inheritedFacts"/>
 		
 		<!-- The internal or external uniqueness constraint that is the preferred identifier for this object type. -->
-		<xsl:variable name="preferredIdentifier" select="(($Model/orm:Facts/orm:Fact|$Model/orm:Facts/orm:ImpliedFact)/orm:InternalConstraints/orm:InternalUniquenessConstraint|$Model/orm:ExternalConstraints/orm:ExternalUniquenessConstraint)[@id=current()/orm:PreferredIdentifier/@ref]"/>
+		<xsl:variable name="preferredIdentifier" select="($Model/orm:Facts/orm:Fact/orm:InternalConstraints/orm:InternalUniquenessConstraint|$Model/orm:ExternalConstraints/orm:ExternalUniquenessConstraint)[@id=current()/orm:PreferredIdentifier/@ref]"/>
 		<!-- The facts that are directly part of the preferred identifier of this object type. Note that this may include facts that are NOT in $directAndInheritedFacts. -->
-		<xsl:variable name="preferredIdentifierFacts" select="($Model/orm:Facts/orm:Fact|$Model/orm:Facts/orm:ImpliedFact)[orm:FactRoles/orm:Role/@id=$preferredIdentifier/orm:RoleSequence/orm:Role/@ref]"/>
+		<xsl:variable name="preferredIdentifierFacts" select="$Model/orm:Facts/orm:Fact[orm:FactRoles/orm:Role/@id=$preferredIdentifier/orm:RoleSequence/orm:Role/@ref]"/>
 
 		<!-- $directFacts that are not also $preferredIdentifierFacts -->
 		<xsl:variable name="nonPreferredIdentifierDirectFacts" select="$directFacts[not(@id=$preferredIdentifierFacts/@id)]"/>
@@ -251,23 +259,29 @@
 		<!-- $directAndInheritedFacts that are not also $preferredIdentifierFacts -->
 		<xsl:variable name="nonPreferredIdentifierDirectAndInheritedFacts" select="$directAndInheritedFacts[not(@id=$preferredIdentifierFacts/@id)]"/>
 
+		<!-- $directFacts that are alethicly mandatory -->
+		<xsl:variable name="mandatoryDirectFacts" select="$directFacts[orm:InternalConstraints/orm:SimpleMandatoryConstraint[(not(@Modality) or @Modality='Alethic') and orm:RoleSequence/orm:Role/@ref=$directPlayedRoles/@ref]]"/>
+		
 		<!-- $nonPreferredIdentifierDirectFacts that are alethicly mandatory -->
 		<xsl:variable name="mandatoryNonPreferredIdentifierDirectFacts" select="$nonPreferredIdentifierDirectFacts[orm:InternalConstraints/orm:SimpleMandatoryConstraint[(not(@Modality) or @Modality='Alethic') and orm:RoleSequence/orm:Role/@ref=$directPlayedRoles/@ref]]"/>
 
 		<!-- $nonPreferredIdentifierDirectFacts on which this object type is functionally dependent. -->
-		<xsl:variable name="dependentNonPreferredIdentifierDirectFacts" select="$nonPreferredIdentifierDirectFacts[orm:InternalConstraints/orm:InternalUniquenessConstraint[(not(@Modality) or @Modality='Alethic')]/orm:RoleSequence[not(orm:Role/@ref=$directPlayedRoles/@ref)]]"/>
+		<xsl:variable name="dependentDirectFacts" select="$directFacts[orm:InternalConstraints/orm:InternalUniquenessConstraint[(not(@Modality) or @Modality='Alethic')]/orm:RoleSequence[not(orm:Role/@ref=$directPlayedRoles/@ref)]]"/>
 
 		<!-- $directFacts in which this object type plays a functional role -->
 		<xsl:variable name="functionalDirectFacts" select="$directFacts[orm:InternalConstraints/orm:InternalUniquenessConstraint[(not(@Modality) or @Modality='Alethic')]/orm:RoleSequence[count(orm:Role)=1 and orm:Role/@ref=$directPlayedRoles/@ref]]"/>
+
+		<!-- The intersection of $mandatoryDirectFacts, $dependentDirectFacts, and $functionalDirectFacts. -->
+		<xsl:variable name="mandatoryDependentFunctionalDirectFacts" select="$mandatoryDirectFacts[@id=$dependentDirectFacts/@id and @id=$functionalDirectFacts/@id]"/>
 		
 		<!-- $functionalDirectFacts that are not also $preferredIdentifierFacts-->
 		<xsl:variable name="functionalNonPreferredIdentifierDirectFacts" select="$functionalDirectFacts[not(@id=$preferredIdentifierFacts/@id)]"/>
 
-		<!-- $functionalNonPreferredIdentifierDirectFacts that are not also $dependentNonPreferredIdentifierDirectFacts -->
-		<xsl:variable name="nonDependentFunctionalNonPreferredIdentifierDirectFacts" select="$functionalNonPreferredIdentifierDirectFacts[not(@id=$dependentNonPreferredIdentifierDirectFacts/@id)]"/>
+		<!-- $functionalNonPreferredIdentifierDirectFacts that are not also $dependentDirectFacts -->
+		<xsl:variable name="nonDependentFunctionalNonPreferredIdentifierDirectFacts" select="$functionalNonPreferredIdentifierDirectFacts[not(@id=$dependentDirectFacts/@id)]"/>
 		
-		<!-- The intersection of $nonPreferredIdentifierDirectFacts, $nonPreferredIdentifierDirectFacts, and $nonPreferredIdentifierDirectFacts. -->
-		<xsl:variable name="mandatoryDependentFunctionalNonPreferredIdentifierDirectFacts" select="$mandatoryNonPreferredIdentifierDirectFacts[@id=$dependentNonPreferredIdentifierDirectFacts/@id and @id=$functionalNonPreferredIdentifierDirectFacts/@id]"/>
+		<!-- The intersection of $mandatoryNonPreferredIdentifierDirectFacts, $dependentDirectFacts, and $functionalNonPreferredIdentifierDirectFacts. -->
+		<xsl:variable name="mandatoryDependentFunctionalNonPreferredIdentifierDirectFacts" select="$mandatoryNonPreferredIdentifierDirectFacts[@id=$dependentDirectFacts/@id and @id=$functionalNonPreferredIdentifierDirectFacts/@id]"/>
 		
 		<subtypeMetaFacts>
 			<xsl:copy-of select="$subtypeMetaFacts"/>
@@ -308,15 +322,21 @@
 		<nonPreferredIdentifierDirectAndInheritedFacts>
 			<xsl:copy-of select="$nonPreferredIdentifierDirectAndInheritedFacts"/>
 		</nonPreferredIdentifierDirectAndInheritedFacts>
+		<mandatoryDirectFacts>
+			<xsl:copy-of select="$mandatoryDirectFacts"/>
+		</mandatoryDirectFacts>
 		<mandatoryNonPreferredIdentifierDirectFacts>
 			<xsl:copy-of select="$mandatoryNonPreferredIdentifierDirectFacts"/>
 		</mandatoryNonPreferredIdentifierDirectFacts>
-		<dependentNonPreferredIdentifierDirectFacts>
-			<xsl:copy-of select="$dependentNonPreferredIdentifierDirectFacts"/>
-		</dependentNonPreferredIdentifierDirectFacts>
+		<dependentDirectFacts>
+			<xsl:copy-of select="$dependentDirectFacts"/>
+		</dependentDirectFacts>
 		<functionalDirectFacts>
 			<xsl:copy-of select="$functionalDirectFacts"/>
 		</functionalDirectFacts>
+		<mandatoryDependentFunctionalDirectFacts>
+			<xsl:copy-of select="$mandatoryDependentFunctionalDirectFacts"/>
+		</mandatoryDependentFunctionalDirectFacts>
 		<functionalNonPreferredIdentifierDirectFacts>
 			<xsl:copy-of select="$functionalNonPreferredIdentifierDirectFacts"/>
 		</functionalNonPreferredIdentifierDirectFacts>
@@ -450,7 +470,7 @@
 	</xsl:template>
 	
 	
-	<xsl:template match="orm:EntityType | orm:ValueType | orm:ObjectifiedType" mode="GenerateConceptTypes">
+	<xsl:template match="orm:EntityType | orm:ValueType" mode="GenerateConceptTypes">
 		<xsl:param name="Model"/>
 		<xsl:param name="ObjectTypeInformation"/>
 		<xsl:param name="FactTypeAbsorptions"/>
@@ -571,8 +591,6 @@
 						</xsl:call-template>
 					</xsl:when>
 					<xsl:when test="$oppositeRolePlayerTopLevelTypeId = $thisObjectTypeId">
-						<!-- TODO: Absorbed Entity Types still need some testing... -->
-						<!-- TODO: The absorbed type shouldn't contain an entry for the fact through which it is absorbed... Fixing the need-to-exclude-objectified-facts bug should fix this also... -->
 						<xsl:apply-templates select="$oppositeRolePlayer" mode="GenerateConceptTypes">
 							<xsl:with-param name="Model" select="$Model"/>
 							<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
@@ -600,15 +618,6 @@
 			<!-- HACK: This node-set() call doesn't strictly need to be here, but if it is not, the output formatting done by the processor gets screwed up. -->
 			<!-- This copy-of needs to be the last thing to put child elements into this conceptType. -->
 			<xsl:copy-of select="msxsl:node-set($OilConstraintsFromParent)/child::*"/>
-
-		</oil:conceptType>
-	</xsl:template>
-	<xsl:template match="orm:Fact" mode="GenerateConceptTypes">
-		<xsl:param name="Model"/>
-		<xsl:param name="TopLevelTypes"/>
-		<xsl:param name="ObjectTypeInformation"/>
-		<xsl:variable name="thisObjectTypeInformation" select="$ObjectTypeInformation[@id=current()/@id]"/>
-		<oil:conceptType name="{@Name}" sourceRef="{@id}">
 
 		</oil:conceptType>
 	</xsl:template>

@@ -22,6 +22,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CoRefORM.xslt" />
     <Content Include="ORMtoOIAL.xslt" />
     <Content Include="SampleModelOutput.xml" />
   </ItemGroup>

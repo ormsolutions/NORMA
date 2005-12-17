@@ -7,7 +7,8 @@
 	<xsl:param name="CoRefSimpleMandatoryNameDecorator" select="'_mandatory'"/>
 	<xsl:param name="CoRefFactIdDecorator" select="'_coref_fact'"/>
 	<xsl:param name="CoRefFactNameDecorator" select="'_coref_fact'"/>
-	<xsl:output method="xml" omit-xml-declaration="yes" indent="yes"/>
+
+	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	
 	<xs:schema targetNamespace="urn:local-temps" xmlns="urn:local-temps" elementFormDefault="qualified">
 		<xs:element name="mappedRole" type="mappedRoleType"/>
@@ -40,9 +41,9 @@
 
 	<!-- Set the priority low here for testing purposes. This is meant to be directly included in other xsl files, and
 		 we don't want to interfere with other root matches. -->
-	<xsl:template match="/" priority="-3">
+	<xsl:template match="ormRoot:ORM2" priority="-3">
 		<xsl:call-template name="CoRefORMModel">
-			<xsl:with-param name="Model" select="ormRoot:ORM2/orm:ORMModel"/>
+			<xsl:with-param name="Model" select="orm:ORMModel"/>
 		</xsl:call-template>
 	</xsl:template>
 
@@ -284,7 +285,7 @@
 				<xsl:with-param name="BinarizableFacts" select="$BinarizableFacts"/>
 			</xsl:apply-templates>
 			<xsl:for-each select="$BinarizableFacts">
-				<orm:EntityType Name="{@Name}" id="{@id}">
+				<orm:EntityType Name="{@Name}" id="{@id}" IsIndependent="true">
 					<orm:PlayedRoles>
 						<xsl:for-each select="orm:FactRoles/orm:Role">
 							<orm:Role ref="{@id}{$CoRefOppositeRoleIdDecorator}"/>

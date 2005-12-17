@@ -30,10 +30,57 @@
       </dep:and>
     </dcl:checkConstraint>
   </dcl:domainDataType>
-  <dcl:table name="PersonDrivesCar" />
-  <dcl:table name="PBCFPOD" />
-  <dcl:table name="Review" />
-  <dcl:table name="PersonHasNickName" />
+  <dcl:table name="PersonDrivesCar">
+    <dcl:column name="DrivesCar_vin" isNullable="false" isIdentity="false">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
+    <dcl:column isNullable="false" isIdentity="true" name="DrvnByPrsn_Prsn_d">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
+    <dcl:referenceConstraint name="DrivenByPerson_FK" targetTable="Person">
+      <dcl:columnRef sourceName="DrvnByPrsn_Prsn_d" targetName="Person_id" />
+    </dcl:referenceConstraint>
+  </dcl:table>
+  <dcl:table name="PBCFPOD">
+    <dcl:column name="CarSold_vin" isNullable="false" isIdentity="false">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
+    <dcl:column name="SaleDate_ymd" isNullable="false" isIdentity="false" />
+    <dcl:column isNullable="false" isIdentity="true" name="Buyer_Person_id">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
+    <dcl:referenceConstraint name="Buyer_FK" targetTable="Person">
+      <dcl:columnRef sourceName="Buyer_Person_id" targetName="Person_id" />
+    </dcl:referenceConstraint>
+    <dcl:column isNullable="false" isIdentity="true" name="Seller_Person_id">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
+    <dcl:referenceConstraint name="Seller_FK" targetTable="Person">
+      <dcl:columnRef sourceName="Seller_Person_id" targetName="Person_id" />
+    </dcl:referenceConstraint>
+  </dcl:table>
+  <dcl:table name="Review">
+    <dcl:column name="Car_vin" isNullable="false" isIdentity="false">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
+    <dcl:column name="Rating_Nr_Integer" isNullable="false" isIdentity="false">
+      <dcl:domainDataTypeRef name="&quot;Integer&quot;" />
+    </dcl:column>
+    <dcl:column name="Criteria_Name" isNullable="false" isIdentity="false">
+      <dcl:predefinedDataType name="CHARACTER VARYING" />
+    </dcl:column>
+  </dcl:table>
+  <dcl:table name="PersonHasNickName">
+    <dcl:column name="NickName" isNullable="false" isIdentity="false">
+      <dcl:predefinedDataType name="CHARACTER VARYING" />
+    </dcl:column>
+    <dcl:column isNullable="false" isIdentity="true" name="Person_Person_id">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
+    <dcl:referenceConstraint name="Person_FK" targetTable="Person">
+      <dcl:columnRef sourceName="Person_Person_id" targetName="Person_id" />
+    </dcl:referenceConstraint>
+  </dcl:table>
   <dcl:table name="Person">
     <dcl:column name="FirstName" isNullable="false" isIdentity="false">
       <dcl:predefinedDataType name="CHARACTER VARYING" />
