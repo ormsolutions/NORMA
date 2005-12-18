@@ -42,6 +42,7 @@
 		<xsl:apply-templates select="@defaultCharacterSet" mode="ForSchemaDefinition"/>
 		<xsl:apply-templates select="ddl:path" mode="ForSchemaDefinition"/>
 		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$NewLine"/>
 		<xsl:apply-templates>
 			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
 		</xsl:apply-templates>
@@ -85,6 +86,8 @@
 
 	<xsl:template match="ddl:tableDefinition">
 		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>CREATE </xsl:text>
 		<xsl:apply-templates select="@scope" mode="ForTableDefinition"/>
@@ -132,15 +135,15 @@
 		<xsl:param name="indent"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:apply-templates select="@name" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddt:boolean" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddt:characterString" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddt:binaryString" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddt:exactNumeric" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddt:approximateNumeric" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddt:date" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddt:time" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddt:interval" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddl:defaultClause" mode="ForColumnDefinition"/>
+		<xsl:apply-templates select="ddt:boolean"/>
+		<xsl:apply-templates select="ddt:characterString"/>
+		<xsl:apply-templates select="ddt:binaryString"/>
+		<xsl:apply-templates select="ddt:exactNumeric"/>
+		<xsl:apply-templates select="ddt:approximateNumeric"/>
+		<xsl:apply-templates select="ddt:date"/>
+		<xsl:apply-templates select="ddt:time"/>
+		<xsl:apply-templates select="ddt:interval"/>
+		<xsl:apply-templates select="ddl:defaultClause"/>
 		<xsl:apply-templates select="ddl:identityColumnSpecification" mode="ForColumnDefinition"/>
 		<xsl:apply-templates select="ddl:generationClause" mode="ForColumnDefinition"/>
 	</xsl:template>
@@ -152,7 +155,7 @@
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
-	<xsl:template match="ddl:defaultClause" mode="ForColumnDefinition">
+	<xsl:template match="ddl:defaultClause">
 		<xsl:text> DEFAULT </xsl:text>
 		<xsl:apply-templates select="ddt:dateLiteral"/>
 		<xsl:apply-templates select="ddt:characterStringLiteral"/>
@@ -170,11 +173,11 @@
 		<xsl:text> </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="ddt:boolean" mode="ForColumnDefinition">
+	<xsl:template match="ddt:boolean">
 		<xsl:value-of select="@type"/>
 	</xsl:template>
 
-	<xsl:template match="ddt:characterString" mode="ForColumnDefinition">
+	<xsl:template match="ddt:characterString">
 		<xsl:value-of select="@type"/>
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:value-of select="@length"/>
@@ -183,36 +186,36 @@
 		<xsl:apply-templates select="@collate" mode="ForColumnDataType"/>
 	</xsl:template>
 
-	<xsl:template match="ddt:binaryString" mode="ForColumnDefinition">
+	<xsl:template match="ddt:binaryString">
 		<xsl:value-of select="@type"/>
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:value-of select="@length"/>
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
-	<xsl:template match="ddt:exactNumeric" mode="ForColumnDefinition">
+	<xsl:template match="ddt:exactNumeric">
 		<xsl:value-of select="@type"/>
 		<xsl:apply-templates select="@precision" mode="ForExactNumeric"/>
 		<xsl:apply-templates select="@scale" mode="ForExactNumeric"/>
 	</xsl:template>
 
-	<xsl:template match="ddt:approximateNumeric" mode="ForColumnDefinition">
+	<xsl:template match="ddt:approximateNumeric">
 		<xsl:value-of select="@type"/>
 		<xsl:apply-templates select="@precision" mode="ForExactNumeric"/>
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
-	<xsl:template match="ddt:date" mode="ForColumnDefinition">
+	<xsl:template match="ddt:date">
 		<xsl:value-of select="@type"/>
 	</xsl:template>
 
-	<xsl:template match="ddt:time" mode="ForColumnDefinition">
+	<xsl:template match="ddt:time">
 		<xsl:value-of select="@type"/>		
 		<xsl:apply-templates select="@precision" mode="ForTimeDataType"/>
 		<xsl:apply-templates select="@zone" mode="ForDateDataType"/>
 	</xsl:template>
 
-	<xsl:template match="ddt:interval" mode="ForColumnDefinition">
+	<xsl:template match="ddt:interval">
 		<xsl:value-of select="@type"/>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates select="@fields" mode="ForIntervalDataType"/>
@@ -236,7 +239,7 @@
 	</xsl:template>
 
 	<xsl:template match="ddl:sequenceGeneratorIncrementByOption">
-		<xsl:text>INCREMENT BY </xsl:text>
+		<xsl:text> INCREMENT BY </xsl:text>
 		<xsl:apply-templates/>
 	</xsl:template>
 
@@ -541,7 +544,7 @@
 		<xsl:apply-templates select="child::*[1]"/>
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@type"/>
-		<xsl:text> </xsl:text>
+		<!--<xsl:text> </xsl:text>-->
 		<xsl:value-of select="@symmetry"/>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates select="child::*[2]"/>
@@ -573,6 +576,40 @@
 	</xsl:template>
 
 	<!-- End of Value Expression -->
+
+	<!-- Domain Definition -->
+
+	<xsl:template match="ddl:domainDefinition">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$indent"/>
+		<xsl:text>CREATE DOMAIN </xsl:text>
+		<xsl:value-of select="@name"/>
+		<xsl:text> AS </xsl:text>
+		<xsl:apply-templates/>
+		<xsl:value-of select="$NewLine"/>		
+	</xsl:template>
+
+	<xsl:template match="dep:constraintNameDefinition">
+		<xsl:text> CONSTRAINT </xsl:text>
+		<xsl:value-of select="@name"/>
+		<xsl:text> </xsl:text>
+		<xsl:apply-templates/>
+		<xsl:value-of select="@dep:constraintCharacteristics"/>
+	</xsl:template>
+
+	<!-- End of Domain Definition -->
+
+	<!-- Check Constraint Definition -->
+
+	<xsl:template match="ddl:checkConstraintDefinition">
+		<xsl:text>CHECK</xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates/>
+		<xsl:value-of select="$RightParen"/>
+		<xsl:text> </xsl:text>
+	</xsl:template>
+
+	<!-- End of Check Constraint Definition -->
 
 	<xsl:template name="RenderIdentifier">
 		<xsl:param name="name"/>
