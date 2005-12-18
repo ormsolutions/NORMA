@@ -456,6 +456,13 @@
 					</xsl:if>
 				</odt:binary>
 			</xsl:when>
+			<xsl:when test="$modelDataType/self::orm:AutoTimestampTemporalDataType or $modelDataType/self::orm:TimeTemporalDataType or $modelDataType/self::orm:DateTemporalDataType or $modelDataType/self::orm:DateAndTimeTemporalDataType">
+				<!-- TODO: When the ORM2 temporal data types specification has been finalized and support has been implemented in the tool, this section will need to be changed. -->
+				<xsl:comment>
+					<xsl:text>WARNING: ORM2 does not yet support temporal data types, but you tried to transform a model that used an ORM1 temporal data type. This data type has been converted to an arbitrary-precision integer that measures the number of ticks (100 nanosecond increments) since 0000-01-01T00:00:00.</xsl:text>
+				</xsl:comment>
+				<odt:decimalNumber name="{$dataTypeName}" fractionDigits="0"/>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:comment>
 					<xsl:text>WARNING: We currently don't support the data type '</xsl:text>

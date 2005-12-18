@@ -66,6 +66,7 @@
       </ddl:columnConstraintDefinition>
     </ddl:columnDefinition>
     <ddl:columnDefinition name="SaleDate_ymd">
+      <ddt:exactNumeric type="BIGINT" />
       <ddl:columnConstraintDefinition>
         <ddl:notNullKeyword />
       </ddl:columnConstraintDefinition>
@@ -163,6 +164,7 @@
       </ddl:columnConstraintDefinition>
     </ddl:columnDefinition>
     <ddl:columnDefinition name="Date_ymd">
+      <ddt:exactNumeric type="BIGINT" />
       <ddl:columnConstraintDefinition>
         <ddl:notNullKeyword />
       </ddl:columnConstraintDefinition>

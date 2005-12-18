@@ -45,7 +45,9 @@
     <dcl:column name="CarSold_vin" isNullable="false" isIdentity="false">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
-    <dcl:column name="SaleDate_ymd" isNullable="false" isIdentity="false" />
+    <dcl:column name="SaleDate_ymd" isNullable="false" isIdentity="false">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
     <dcl:column isNullable="false" isIdentity="true" name="Buyer_Person_id">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
@@ -91,7 +93,9 @@
     <dcl:uniquenessConstraint name="IUC2" isPrimary="true">
       <dcl:columnRef name="Person_id" />
     </dcl:uniquenessConstraint>
-    <dcl:column name="Date_ymd" isNullable="false" isIdentity="false" />
+    <dcl:column name="Date_ymd" isNullable="false" isIdentity="false">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
     <dcl:column name="LastName" isNullable="false" isIdentity="false">
       <dcl:predefinedDataType name="CHARACTER VARYING" />
     </dcl:column>

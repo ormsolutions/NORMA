@@ -9,7 +9,8 @@
     <odt:decimalNumber name="ColorARGB" fractionDigits="0" />
     <odt:identity name="Task_id" />
     <odt:decimalNumber name="vin" fractionDigits="0" />
-    <!--WARNING: We currently don't support the data type 'DateTemporalDataType' that was chosen for value type "ymd"-->
+    <!--WARNING: ORM2 does not yet support temporal data types, but you tried to transform a model that used an ORM1 temporal data type. This data type has been converted to an arbitrary-precision integer that measures the number of ticks (100 nanosecond increments) since 0000-01-01T00:00:00.-->
+    <odt:decimalNumber name="ymd" fractionDigits="0" />
     <odt:string name="Name" />
     <odt:decimalNumber name="Integer" fractionDigits="0">
       <odt:range>
