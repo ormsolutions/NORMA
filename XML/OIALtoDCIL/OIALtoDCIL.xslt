@@ -37,6 +37,7 @@
 				</xsl:for-each>
 			</xsl:variable>
 			<xsl:variable name="dataTypes" select="msxsl:node-set($dataTypesFragment)/child::*"/>
+
 			<xsl:for-each select="oil:informationTypeFormats/child::*[@name = $dataTypes[dcl:domainDataTypeRef]/@name]">
 				<dcl:domainDataType name="{dsf:makeValidIdentifier(@name)}">
 					<xsl:apply-templates select="." mode="GenerateDomain"/>
@@ -51,9 +52,7 @@
 					</xsl:apply-templates>
 				</dcl:table>
 			</xsl:for-each>
-			
-			
-			
+
 		</dcl:schema>
 	</xsl:template>
 
@@ -379,14 +378,15 @@
 		</xsl:for-each>
 
 		<xsl:for-each select="oil:conceptType">
-			<xsl:apply-templates select="." mode="GenerateTableContents">
+			<xsl:apply-templates select="." mode="GenerateTableContent">
+				<xsl:with-param name="OilModel" select="$OilModel"/>
 				<xsl:with-param name="DataTypes" select="$DataTypes"/>
 				<xsl:with-param name="AlwaysNullable" select="not(@mandatory='alethic')"/>
 			</xsl:apply-templates>
 		</xsl:for-each>
 
 		<xsl:if test="$AlwaysNullable">
-			<!-- We're nested and not-alethicly-mandatory in our parent, so add constraints for enforcing our mandatories. -->
+			<!-- TODO: We're nested and not-alethicly-mandatory in our parent, so add constraints for enforcing our mandatories. -->
 		</xsl:if>
 
 	</xsl:template>
@@ -502,31 +502,53 @@
 		<xsl:param name="DataTypes"/>
 		<xsl:param name="TargetConceptType"/>
 		<xsl:param name="AlwaysNullable" select="false()"/>
-		<xsl:for-each select="$TargetConceptType/oil:informationType[oil:singleRoleUniquenessConstraint[@isPrimary='true']]">
-			<xsl:call-template name="GetColumnForInformationType">
-				<xsl:with-param name="DataTypes" select="$DataTypes"/>
-				<xsl:with-param name="TargetInformationType" select="."/>
-				<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
-			</xsl:call-template>
-		</xsl:for-each>
-		<xsl:for-each select="$TargetConceptType/oil:roleSequenceUniquenessConstraint[@isPrimary='true']/oil:roleSequence/oil:typeRef">
-			<xsl:choose>
-				<xsl:when test="@targetConceptType = $TargetConceptType/@name">
-					<!-- If @targetConceptType is the oil:conceptType that we're processing, it means that there must be a @targetChild that points to an oil:informationType or oil:conceptTypeRef within us. -->
-					<xsl:variable name="targetChild" select="$TargetConceptType/child::*[@name=current()/@targetChild]"/>
+		<xsl:variable name="preferredIdentifierInformationType" select="$TargetConceptType/oil:informationType[oil:singleRoleUniquenessConstraint[@isPrimary='true']]"/>
+		<xsl:variable name="preferredIdentifierRoleSequenceUniquenessConstraint" select="$TargetConceptType/oil:roleSequenceUniquenessConstraint[@isPrimary='true']"/>
+		<xsl:choose>
+			<xsl:when test="$preferredIdentifierInformationType">
+				<xsl:for-each select="$preferredIdentifierInformationType">
+					<xsl:call-template name="GetColumnForInformationType">
+						<xsl:with-param name="DataTypes" select="$DataTypes"/>
+						<xsl:with-param name="TargetInformationType" select="."/>
+						<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
+					</xsl:call-template>
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:when test="$preferredIdentifierRoleSequenceUniquenessConstraint">
+				<xsl:for-each select="$preferredIdentifierRoleSequenceUniquenessConstraint/oil:roleSequence/oil:typeRef">
 					<xsl:choose>
-						<xsl:when test="$targetChild/self::oil:informationType">
-							<xsl:call-template name="GetColumnForInformationType">
-								<xsl:with-param name="DataTypes" select="$DataTypes"/>
-								<xsl:with-param name="TargetInformationType" select="$targetChild"/>
-								<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
-							</xsl:call-template>
+						<xsl:when test="@targetConceptType = $TargetConceptType/@name">
+							<!-- If @targetConceptType is the oil:conceptType that we're processing, it means that there must be a @targetChild that points to an oil:informationType or oil:conceptTypeRef within us. -->
+							<xsl:variable name="targetChild" select="$TargetConceptType/child::*[@name=current()/@targetChild]"/>
+							<xsl:choose>
+								<xsl:when test="$targetChild/self::oil:informationType">
+									<xsl:call-template name="GetColumnForInformationType">
+										<xsl:with-param name="DataTypes" select="$DataTypes"/>
+										<xsl:with-param name="TargetInformationType" select="$targetChild"/>
+										<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
+									</xsl:call-template>
+								</xsl:when>
+								<xsl:when test="$targetChild/self::oil:conceptTypeRef">
+									<xsl:call-template name="GetPreferredIdentifierColumnsForConceptTypeRef">
+										<xsl:with-param name="OilModel" select="$OilModel"/>
+										<xsl:with-param name="DataTypes" select="$DataTypes"/>
+										<xsl:with-param name="TargetConceptTypeRef" select="$targetChild"/>
+										<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
+									</xsl:call-template>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:message terminate="yes">
+										<xsl:text>Something has gone very wrong...</xsl:text>
+									</xsl:message>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
-						<xsl:when test="$targetChild/self::oil:conceptTypeRef">
-							<xsl:call-template name="GetPreferredIdentifierColumnsForConceptTypeRef">
+						<xsl:when test="not(@targetChild)">
+							<!-- Not having a @targetChild means that the ref is to an oil:conceptType -->
+							<xsl:call-template name="GetPreferredIdentifierColumnsForConceptType">
 								<xsl:with-param name="OilModel" select="$OilModel"/>
 								<xsl:with-param name="DataTypes" select="$DataTypes"/>
-								<xsl:with-param name="TargetConceptTypeRef" select="$targetChild"/>
+								<xsl:with-param name="TargetConceptType" select="$OilModel//oil:conceptType[@name=current()/@targetConceptType]"/>
 								<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
 							</xsl:call-template>
 						</xsl:when>
@@ -536,23 +558,22 @@
 							</xsl:message>
 						</xsl:otherwise>
 					</xsl:choose>
-				</xsl:when>
-				<xsl:when test="not(@targetChild)">
-					<!-- Not having a @targetChild means that the ref is to an oil:conceptType -->
-					<xsl:call-template name="GetPreferredIdentifierColumnsForConceptType">
-						<xsl:with-param name="OilModel" select="$OilModel"/>
-						<xsl:with-param name="DataTypes" select="$DataTypes"/>
-						<xsl:with-param name="TargetConceptType" select="$OilModel//oil:conceptType[@name=current()/@targetConceptType]"/>
-						<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:message terminate="yes">
-						<xsl:text>Something has gone very wrong...</xsl:text>
-					</xsl:message>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:for-each>
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:when test="$TargetConceptType/parent::oil:conceptType">
+				<xsl:call-template name="GetPreferredIdentifierColumnsForConceptType">
+					<xsl:with-param name="OilModel" select="$OilModel"/>
+					<xsl:with-param name="DataTypes" select="$DataTypes"/>
+					<xsl:with-param name="TargetConceptType" select="$TargetConceptType/parent::oil:conceptType"/>
+					<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:message terminate="yes">
+					<xsl:text>ERROR: oil:conceptType doesn't contain a preferred uniqueness constraint and isn't nested inside of another oil:conceptType</xsl:text>
+				</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!--

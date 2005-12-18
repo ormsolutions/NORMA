@@ -230,6 +230,43 @@
     <ddl:columnDefinition name="VlTyp1_VlTyp1Vl">
       <ddt:exactNumeric type="BIGINT" />
     </ddl:columnDefinition>
+    <ddl:columnDefinition name="CPBOBON">
+      <ddt:exactNumeric type="BIGINT" />
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Father_Person_id">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:identityColumnSpecification type="ALWAYS">
+        <ddl:sequenceGeneratorStartWithOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorStartWithOption>
+        <ddl:sequenceGeneratorIncrementByOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorIncrementByOption>
+      </ddl:identityColumnSpecification>
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Mother_Person_id">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:identityColumnSpecification type="ALWAYS">
+        <ddl:sequenceGeneratorStartWithOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorStartWithOption>
+        <ddl:sequenceGeneratorIncrementByOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorIncrementByOption>
+      </ddl:identityColumnSpecification>
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Death_Date_YMD">
+      <ddt:exactNumeric type="BIGINT" />
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="DDCDCT">
+      <ddt:domain name="DeathCause_Type" />
+    </ddl:columnDefinition>
     <ddl:tableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
       <dep:constraintNameDefinition name="IUC2" />
       <ddl:uniqueConstraintDefinition type="PRIMARY KEY">
@@ -358,6 +395,28 @@
         <ddl:column name="VlTyp1_VlTyp1Vl" />
         <ddl:referencesSpecification name="ValueType1" onDelete="RESTRICT" onUpdate="RESTRICT">
           <ddl:referenceColumn name="ValueType1Value" />
+        </ddl:referencesSpecification>
+      </ddl:referentialConstraintDefinition>
+    </ddl:addTableConstraintDefinition>
+  </ddl:alterTableStatement>
+  <ddl:alterTableStatement name="Person">
+    <ddl:addTableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+      <dep:constraintNameDefinition name="Father_FK" />
+      <ddl:referentialConstraintDefinition>
+        <ddl:column name="Father_Person_id" />
+        <ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT">
+          <ddl:referenceColumn name="Person_id" />
+        </ddl:referencesSpecification>
+      </ddl:referentialConstraintDefinition>
+    </ddl:addTableConstraintDefinition>
+  </ddl:alterTableStatement>
+  <ddl:alterTableStatement name="Person">
+    <ddl:addTableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+      <dep:constraintNameDefinition name="Mother_FK" />
+      <ddl:referentialConstraintDefinition>
+        <ddl:column name="Mother_Person_id" />
+        <ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT">
+          <ddl:referenceColumn name="Person_id" />
         </ddl:referencesSpecification>
       </ddl:referentialConstraintDefinition>
     </ddl:addTableConstraintDefinition>

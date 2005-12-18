@@ -149,6 +149,27 @@
     <dcl:referenceConstraint name="ValueType1_FK" targetTable="ValueType1">
       <dcl:columnRef sourceName="VlTyp1_VlTyp1Vl" targetName="ValueType1Value" />
     </dcl:referenceConstraint>
+    <dcl:column name="CPBOBON" isNullable="true" isIdentity="false">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
+    <dcl:column isNullable="false" isIdentity="true" name="Father_Person_id">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
+    <dcl:referenceConstraint name="Father_FK" targetTable="Person">
+      <dcl:columnRef sourceName="Father_Person_id" targetName="Person_id" />
+    </dcl:referenceConstraint>
+    <dcl:column isNullable="false" isIdentity="true" name="Mother_Person_id">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
+    <dcl:referenceConstraint name="Mother_FK" targetTable="Person">
+      <dcl:columnRef sourceName="Mother_Person_id" targetName="Person_id" />
+    </dcl:referenceConstraint>
+    <dcl:column name="Death_Date_YMD" isNullable="true" isIdentity="false">
+      <dcl:predefinedDataType name="BIGINT" />
+    </dcl:column>
+    <dcl:column name="DDCDCT" isNullable="true" isIdentity="false">
+      <dcl:domainDataTypeRef name="DeathCause_Type" />
+    </dcl:column>
   </dcl:table>
   <dcl:table name="Task">
     <dcl:column name="Task_id" isNullable="false" isIdentity="true">
