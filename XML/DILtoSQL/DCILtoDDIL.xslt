@@ -31,7 +31,7 @@
 			<dms:startTransactionStatement isolationLevel="SERIALIZABLE" accessMode="READ WRITE"/>
 			<ddl:schemaDefinition schemaName="{@name}" defaultCharacterSet="UTF8"/>
 			<dms:setSchemaStatement>
-				<ddt:characterStringLiteral value="{dsf:getCaseNormalForm(@name)}"/>
+				<ddt:characterStringLiteral value="{dsf:getStringLiteralForm(@name)}"/>
 			</dms:setSchemaStatement>
 			<xsl:apply-templates select="dcl:domainDataType"/>
 			<xsl:apply-templates select="dcl:table" mode="GenerateTableBase"/>
