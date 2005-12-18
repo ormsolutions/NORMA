@@ -98,7 +98,7 @@
 
 	<xs:element name="tableDefinition">
 		<xs:annotation>
-			<xs:documentation>CREATE [ &lt;table scope&gt; ] TABLE &lt;schema qualified name&gt; &lt;table contents source&gt; [ ON COMMIT &lt;commit action&gt; ROW ]</xs:documentation>
+			<xs:documentation>CREATE [ &lt;table scope&gt; ] TABLE &lt;schema qualified name&gt; &lt;table contents source&gt; [ ON COMMIT &lt;commit action&gt; ROWS ]</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:complexContent>
@@ -116,6 +116,9 @@
 						</xs:simpleType>
 					</xs:attribute>
 					<xs:attribute name="commitAction" use="optional" default="DELETE">
+						<xs:annotation>
+							<xs:documentation>@commitAction may only be specified if @scope is specified</xs:documentation>
+						</xs:annotation>
 						<xs:simpleType>
 							<xs:restriction base="xs:string">
 								<xs:enumeration value="PRESERVE"/>
@@ -300,7 +303,7 @@
 				<xs:element name="columnConstraintDefinition" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element ref="dep:constraintNameDefinition"/>
+							<xs:element ref="dep:constraintNameDefinition" minOccurs="0"/>
 							<xs:choice>
 								<xs:element name="notNullKeyword">
 									<xs:annotation>
@@ -581,20 +584,34 @@
 						<xs:element name="table" type="ddt:schemaQualifiedName"/>
 						<xs:element name="referencing" minOccurs="0">
 							<xs:complexType>
-								<xs:choice maxOccurs="2">
-									<xs:element name="row">
+								<xs:choice maxOccurs="4">
+									<xs:element name="oldRow">
 										<xs:annotation>
-											<xs:documentation>[ OLD | NEW ] ROW AS &lt;identifier&gt;</xs:documentation>
-											<xs:documentation>If trigger action time is BEFORE, then NEW. If trigger action time is AFTER, then OLD.</xs:documentation>
+											<xs:documentation>OLD ROW AS &lt;identifier&gt;</xs:documentation>
 										</xs:annotation>
 										<xs:complexType>
 											<xs:attribute name="name" use="required" type="ddt:identifier"/>
 										</xs:complexType>
 									</xs:element>
-									<xs:element name="table">
+									<xs:element name="newRow">
 										<xs:annotation>
-											<xs:documentation>[ OLD | NEW ] TABLE AS &lt;identifier&gt;</xs:documentation>
-											<xs:documentation>If trigger action time is BEFORE, then NEW. If trigger action time is AFTER, then OLD.</xs:documentation>
+											<xs:documentation>NEW ROW AS &lt;identifier&gt;</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:attribute name="name" use="required" type="ddt:identifier"/>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="oldTable">
+										<xs:annotation>
+											<xs:documentation>OLD TABLE AS &lt;identifier&gt;</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:attribute name="name" use="required" type="ddt:identifier"/>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="newTable">
+										<xs:annotation>
+											<xs:documentation>NEW TABLE AS &lt;identifier&gt;</xs:documentation>
 										</xs:annotation>
 										<xs:complexType>
 											<xs:attribute name="name" use="required" type="ddt:identifier"/>

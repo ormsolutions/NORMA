@@ -1239,7 +1239,7 @@
 			<xs:restriction base="xs:string">
 				<xs:enumeration value="INITIALLY IMMEDIATE NOT DEFERRABLE"/>
 				<xs:enumeration value="INITIALLY IMMEDIATE DEFERRABLE"/>
-				<xs:enumeration value="INITIALLY DEFERRED"/>
+				<xs:enumeration value="INITIALLY DEFERRED DEFERRABLE"/>
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:attribute>

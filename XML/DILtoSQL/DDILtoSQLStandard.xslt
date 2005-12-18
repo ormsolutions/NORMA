@@ -23,12 +23,12 @@
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:variable name="Period" select="'.'"/>
-	<xsl:variable name="NewLine" select="'&#x0D;&#x0A;'"/>
-	<xsl:variable name="IndentChar" select="'&#x09;'"/>
-	<xsl:variable name="LeftParen" select="'('"/>
-	<xsl:variable name="RightParen" select="')'"/>
-	<xsl:variable name="ConcatenationOperator" select="'||'"/>
+	<xsl:param name="Period" select="'.'"/>
+	<xsl:param name="NewLine" select="'&#x0D;&#x0A;'"/>
+	<xsl:param name="IndentChar" select="'&#x09;'"/>
+	<xsl:param name="LeftParen" select="'('"/>
+	<xsl:param name="RightParen" select="')'"/>
+	<xsl:param name="ConcatenationOperator" select="'||'"/>
 
 	<!-- Schema Definition pg.519 -->
 

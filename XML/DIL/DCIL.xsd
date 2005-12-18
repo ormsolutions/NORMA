@@ -198,9 +198,9 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="predefinedDataType" type="dcl:predefinedDataType"/>
-				<xs:element ref="dcl:checkConstraint" minOccurs="0">
+				<xs:element ref="dcl:checkConstraint">
 					<xs:annotation>
-						<xs:documentation>The check constraint, if any, on this domain-specific data type.</xs:documentation>
+						<xs:documentation>The check constraint on this domain-specific data type.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 			</xs:sequence>
@@ -349,16 +349,18 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="referencing" minOccurs="0" maxOccurs="2">
+				<xs:element name="referencing" minOccurs="0" maxOccurs="4">
 					<xs:annotation>
 						<xs:documentation>Equivalent to the 'REFERENCING' clause in the SQL Standard.</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:attribute name="state" use="required">
+						<xs:attribute name="target" use="required">
 							<xs:simpleType>
-								<xs:restriction base="xs:NMTOKEN">
-									<xs:enumeration value="OLD"/>
-									<xs:enumeration value="NEW"/>
+								<xs:restriction base="xs:token">
+									<xs:enumeration value="OLD ROW"/>
+									<xs:enumeration value="NEW ROW"/>
+									<xs:enumeration value="OLD TABLE"/>
+									<xs:enumeration value="NEW TABLE"/>
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
@@ -413,7 +415,7 @@
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
-			<xs:attribute name="level" use="required">
+			<xs:attribute name="forEach" use="required">
 				<xs:annotation>
 					<xs:documentation>The level of the trigger.</xs:documentation>
 				</xs:annotation>

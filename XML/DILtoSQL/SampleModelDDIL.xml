@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ddl:schemaDefinition schemaName="SampleModel" defaultCharacterSet="UTF8" xmlns:ddl="http://schemas.orm.net/DIL/DDIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP" xmlns:dml="http://schemas.orm.net/DIL/DMIL" xmlns:dms="http://schemas.orm.net/DIL/DILMS">
+  <ddl:domainDefinition name="&quot;Integer&quot;">
+    <ddt:exactNumeric type="BIGINT" />
+    <ddl:domainConstraint dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+      <dep:constraintNameDefinition name="Integer_Chk" />
+      <ddl:checkConstraintDefinition>
+        <dep:betweenPredicate xmlns:dcl="http://schemas.orm.net/DIL/DCIL">
+          <dep:valueKeyword />
+          <ddt:exactNumericLiteral value="1" />
+          <ddt:exactNumericLiteral value="7" />
+        </dep:betweenPredicate>
+      </ddl:checkConstraintDefinition>
+    </ddl:domainConstraint>
+  </ddl:domainDefinition>
+  <ddl:domainDefinition name="Gender_Code">
+    <ddt:characterString type="CHARACTER" length="1" />
+    <ddl:domainConstraint dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+      <dep:constraintNameDefinition name="Gender_Code_Chk" />
+      <ddl:checkConstraintDefinition>
+        <dep:and xmlns:dcl="http://schemas.orm.net/DIL/DCIL">
+          <dep:comparisonPredicate operator="greaterThanOrEquals">
+            <dep:parenthesizedValueExpression>
+              <dep:lengthExpression lengthUnits="CHARACTERS">
+                <dep:valueKeyword />
+              </dep:lengthExpression>
+            </dep:parenthesizedValueExpression>
+            <ddt:exactNumericLiteral value="1" />
+          </dep:comparisonPredicate>
+          <dep:inPredicate type="IN">
+            <dep:valueKeyword />
+            <ddt:characterStringLiteral value="M" />
+            <ddt:characterStringLiteral value="F" />
+          </dep:inPredicate>
+        </dep:and>
+      </ddl:checkConstraintDefinition>
+    </ddl:domainConstraint>
+  </ddl:domainDefinition>
+  <ddl:tableDefinition name="PersonDrivesCar">
+    <ddl:columnDefinition name="DrivesCar_vin">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="DrvnByPrsn_Prsn_d">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:identityColumnSpecification type="ALWAYS">
+        <ddl:sequenceGeneratorStartWithOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorStartWithOption>
+        <ddl:sequenceGeneratorIncrementByOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorIncrementByOption>
+      </ddl:identityColumnSpecification>
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+  </ddl:tableDefinition>
+  <ddl:tableDefinition name="PBCFPOD">
+    <ddl:columnDefinition name="CarSold_vin">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="SaleDate_ymd">
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Buyer_Person_id">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:identityColumnSpecification type="ALWAYS">
+        <ddl:sequenceGeneratorStartWithOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorStartWithOption>
+        <ddl:sequenceGeneratorIncrementByOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorIncrementByOption>
+      </ddl:identityColumnSpecification>
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Seller_Person_id">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:identityColumnSpecification type="ALWAYS">
+        <ddl:sequenceGeneratorStartWithOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorStartWithOption>
+        <ddl:sequenceGeneratorIncrementByOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorIncrementByOption>
+      </ddl:identityColumnSpecification>
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+  </ddl:tableDefinition>
+  <ddl:tableDefinition name="Review">
+    <ddl:columnDefinition name="Car_vin">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Rating_Nr_Integer">
+      <ddt:domain name="&quot;Integer&quot;" />
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Criteria_Name">
+      <ddt:characterString type="CHARACTER VARYING" length="" />
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+  </ddl:tableDefinition>
+  <ddl:tableDefinition name="PersonHasNickName">
+    <ddl:columnDefinition name="NickName">
+      <ddt:characterString type="CHARACTER VARYING" length="" />
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Person_Person_id">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:identityColumnSpecification type="ALWAYS">
+        <ddl:sequenceGeneratorStartWithOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorStartWithOption>
+        <ddl:sequenceGeneratorIncrementByOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorIncrementByOption>
+      </ddl:identityColumnSpecification>
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+  </ddl:tableDefinition>
+  <ddl:tableDefinition name="Person">
+    <ddl:columnDefinition name="FirstName">
+      <ddt:characterString type="CHARACTER VARYING" length="" />
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Person_id">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:identityColumnSpecification type="ALWAYS">
+        <ddl:sequenceGeneratorStartWithOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorStartWithOption>
+        <ddl:sequenceGeneratorIncrementByOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorIncrementByOption>
+      </ddl:identityColumnSpecification>
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Date_ymd">
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="LastName">
+      <ddt:characterString type="CHARACTER VARYING" length="" />
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="SclScrtyNmbr">
+      <ddt:characterString type="CHARACTER VARYING" length="" />
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="HatType_ColorARGB">
+      <ddt:exactNumeric type="BIGINT" />
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="HTHTSHTSD">
+      <ddt:characterString type="CHARACTER VARYING" length="" />
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="OwnsCar_vin">
+      <ddt:exactNumeric type="BIGINT" />
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Gender_Gender_Code">
+      <ddt:domain name="Gender_Code" />
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="VlTyp1_VlTyp1Vl">
+      <ddt:exactNumeric type="BIGINT" />
+    </ddl:columnDefinition>
+  </ddl:tableDefinition>
+  <ddl:tableDefinition name="Task">
+    <ddl:columnDefinition name="Task_id">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:identityColumnSpecification type="ALWAYS">
+        <ddl:sequenceGeneratorStartWithOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorStartWithOption>
+        <ddl:sequenceGeneratorIncrementByOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorIncrementByOption>
+      </ddl:identityColumnSpecification>
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Person_Person_id">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:identityColumnSpecification type="ALWAYS">
+        <ddl:sequenceGeneratorStartWithOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorStartWithOption>
+        <ddl:sequenceGeneratorIncrementByOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorIncrementByOption>
+      </ddl:identityColumnSpecification>
+    </ddl:columnDefinition>
+  </ddl:tableDefinition>
+  <ddl:tableDefinition name="ValueType1">
+    <ddl:columnDefinition name="ValueType1Value">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:columnConstraintDefinition>
+        <ddl:notNullKeyword />
+      </ddl:columnConstraintDefinition>
+    </ddl:columnDefinition>
+    <ddl:columnDefinition name="Person_Person_id">
+      <ddt:exactNumeric type="BIGINT" />
+      <ddl:identityColumnSpecification type="ALWAYS">
+        <ddl:sequenceGeneratorStartWithOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorStartWithOption>
+        <ddl:sequenceGeneratorIncrementByOption>
+          <ddt:exactNumericLiteral value="1" />
+        </ddl:sequenceGeneratorIncrementByOption>
+      </ddl:identityColumnSpecification>
+    </ddl:columnDefinition>
+  </ddl:tableDefinition>
+</ddl:schemaDefinition>

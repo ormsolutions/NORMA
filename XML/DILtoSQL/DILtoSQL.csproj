@@ -9,10 +9,9 @@
     <OutputPath>.\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="DCILtoDB2.xslt" />
-    <Content Include="DCILtoSQL.xslt" />
+    <Content Include="DCILtoDDIL.xslt" />
     <Content Include="DDILSample.xml" />
     <Content Include="DDILtoSQLStandard.xslt" />
-    <Content Include="SampleModelDB2DDL.sql" />
+    <Content Include="SampleModelDDIL.xml" />
   </ItemGroup>
 </Project>
