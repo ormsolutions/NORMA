@@ -143,16 +143,22 @@
 		<xsl:apply-templates select="ddt:date"/>
 		<xsl:apply-templates select="ddt:time"/>
 		<xsl:apply-templates select="ddt:interval"/>
+		<xsl:apply-templates select="ddt:domain"/>
 		<xsl:apply-templates select="ddl:defaultClause"/>
 		<xsl:apply-templates select="ddl:identityColumnSpecification" mode="ForColumnDefinition"/>
 		<xsl:apply-templates select="ddl:generationClause" mode="ForColumnDefinition"/>
+		<xsl:apply-templates select="ddl:columnConstraintDefinition"/>
+		<xsl:if test="not(position()=last())">
+			<xsl:text>, </xsl:text>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="ddl:generationClause" mode="ForColumnDefinition">
-		<xsl:text> GENERATED ALWAYS AS </xsl:text>
+		<xsl:text>GENERATED ALWAYS AS </xsl:text>
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:apply-templates/>
 		<xsl:value-of select="$RightParen"/>
+		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddl:defaultClause">
@@ -182,8 +188,10 @@
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:value-of select="@length"/>
 		<xsl:value-of select="$RightParen"/>
+		<xsl:text> </xsl:text>
 		<xsl:apply-templates select="@characterSet" mode="ForColumnDataType"/>
 		<xsl:apply-templates select="@collate" mode="ForColumnDataType"/>
+		<!--<xsl:text> </xsl:text>-->
 	</xsl:template>
 
 	<xsl:template match="ddt:binaryString">
@@ -191,28 +199,33 @@
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:value-of select="@length"/>
 		<xsl:value-of select="$RightParen"/>
+		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddt:exactNumeric">
 		<xsl:value-of select="@type"/>
 		<xsl:apply-templates select="@precision" mode="ForExactNumeric"/>
 		<xsl:apply-templates select="@scale" mode="ForExactNumeric"/>
+		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddt:approximateNumeric">
 		<xsl:value-of select="@type"/>
 		<xsl:apply-templates select="@precision" mode="ForExactNumeric"/>
 		<xsl:value-of select="$RightParen"/>
+		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddt:date">
 		<xsl:value-of select="@type"/>
+		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddt:time">
 		<xsl:value-of select="@type"/>		
 		<xsl:apply-templates select="@precision" mode="ForTimeDataType"/>
 		<xsl:apply-templates select="@zone" mode="ForDateDataType"/>
+		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddt:interval">
@@ -220,10 +233,16 @@
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates select="@fields" mode="ForIntervalDataType"/>
 		<xsl:apply-templates select="@precision" mode="ForIntervalDataType"/>
+		<xsl:text> </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="ddt:domain">
+		<xsl:value-of select="@name"/>
+		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddl:identityColumnSpecification" mode="ForColumnDefinition">
-		<xsl:text> GENERATED </xsl:text>
+		<xsl:text>GENERATED </xsl:text>
 		<xsl:value-of select="@type"/>
 		<xsl:text> AS IDENTITY</xsl:text>
 		<xsl:if test="child::*">
@@ -231,6 +250,7 @@
 			<xsl:apply-templates/>
 			<xsl:value-of select="$RightParen"/>
 		</xsl:if>
+		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddl:sequenceGeneratorStartWithOption">
@@ -412,6 +432,18 @@
 		<xsl:text>NULL</xsl:text>
 	</xsl:template>
 
+	<xsl:template match="ddl:notNullKeyword">
+		<xsl:text>NOT NULL</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="ddl:primaryKeyKeyword">
+		<xsl:text>PRIMARY KEY</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="ddl:uniqueKeyword">
+		<xsl:text>UNIQUE</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="dep:currentDefaultTransformGroupKeyword">
 		<xsl:text>CURRENT_DEFAULT_TRANSFORM_GROUP</xsl:text>
 	</xsl:template>
@@ -426,6 +458,14 @@
 	</xsl:template>
 
 	<!-- End of Column Definition -->
+
+	<!-- Column Constraint Definition -->
+
+	<xsl:template match="ddl:columnConstraintDefinition">
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	<!-- End of Column Constraint Definition -->
 
 	<!-- Value Expression -->
 
@@ -544,7 +584,6 @@
 		<xsl:apply-templates select="child::*[1]"/>
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="@type"/>
-		<!--<xsl:text> </xsl:text>-->
 		<xsl:value-of select="@symmetry"/>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates select="child::*[2]"/>
@@ -552,25 +591,66 @@
 		<xsl:apply-templates select="child::*[3]"/>
 	</xsl:template>
 
+	<xsl:template match="dep:inPredicate">
+		<xsl:apply-templates select="child::*[1]"/>
+		<xsl:text> IN</xsl:text>
+		<xsl:choose>
+			<xsl:when test="dml:tableSubquery">
+				<xsl:apply-templates select="child::*[position() > 1]"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$LeftParen"/>
+				<xsl:for-each select="child::*[position() > 1]">
+					<xsl:apply-templates select="."/>
+					<xsl:if test="not(position()=last())">
+						<xsl:text>, </xsl:text>
+					</xsl:if>
+				</xsl:for-each>
+				<xsl:value-of select="$RightParen"/>
+			</xsl:otherwise>
+		</xsl:choose>		
+	</xsl:template>
+
+	<xsl:template match="dep:parenthesizedValueExpression">
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates/>
+		<xsl:value-of select="$RightParen"/>
+	</xsl:template>
+
+	<xsl:template match="dep:lengthExpression">
+		<xsl:text>CHARACTER_LENGTH</xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates/>
+		<xsl:text> USING </xsl:text>
+		<xsl:value-of select="@lengthUnits"/>
+		<xsl:value-of select="$RightParen"/>
+	</xsl:template>
+
+	<xsl:template match="dep:and">
+		<xsl:apply-templates select="child::*[1]"/>
+		<xsl:text> AND </xsl:text>
+		<xsl:apply-templates select="child::*[2]"/>
+	</xsl:template>
+
 	<xsl:template match="@operator">
 		<xsl:choose>
 			<xsl:when test=". = 'equals'">
-				<xsl:text>=</xsl:text>
+				<xsl:text> = </xsl:text>
 			</xsl:when>
 			<xsl:when test=". = 'notEquals'">
-				<xsl:text>=</xsl:text>
+				<xsl:text> &lt;&gt; </xsl:text>
 			</xsl:when>
 			<xsl:when test=". = 'lessThan'">
-				<xsl:text>=</xsl:text>
+				<xsl:text> &lt; </xsl:text>
 			</xsl:when>
 			<xsl:when test=". = 'greaterThan'">
-				<xsl:text>=</xsl:text>
+				<xsl:text> &gt; </xsl:text>
 			</xsl:when>
 			<xsl:when test=". = 'lessThanOrEquals'">
-				<xsl:text>=</xsl:text>
+				<xsl:text> &lt;= </xsl:text>
 			</xsl:when>
 			<xsl:when test=". = 'greaterThanOrEquals'">
-				<xsl:text>=</xsl:text>
+				<xsl:text> &gt;= </xsl:text>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
@@ -589,12 +669,16 @@
 		<xsl:value-of select="$NewLine"/>		
 	</xsl:template>
 
-	<xsl:template match="dep:constraintNameDefinition">
-		<xsl:text> CONSTRAINT </xsl:text>
-		<xsl:value-of select="@name"/>
-		<xsl:text> </xsl:text>
+	<xsl:template match="ddl:domainConstraint">
 		<xsl:apply-templates/>
 		<xsl:value-of select="@dep:constraintCharacteristics"/>
+	</xsl:template>
+
+	<xsl:template match="dep:constraintNameDefinition">
+		<xsl:text>CONSTRAINT </xsl:text>
+		<xsl:value-of select="@name"/>
+		<xsl:text> </xsl:text>
+		<xsl:apply-templates/>		
 	</xsl:template>
 
 	<!-- End of Domain Definition -->
@@ -606,7 +690,7 @@
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:apply-templates/>
 		<xsl:value-of select="$RightParen"/>
-		<xsl:text> </xsl:text>
+		<xsl:text> </xsl:text>		
 	</xsl:template>
 
 	<!-- End of Check Constraint Definition -->
