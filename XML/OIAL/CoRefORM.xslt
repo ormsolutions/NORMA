@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore" xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:loc="urn:local-temps" xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xsl msxsl loc xs">
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore" xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:loc="urn:local-temps" xmlns:xs="http://www.w3.org/2001/XMLSchema" extension-element-prefixes="msxsl" exclude-result-prefixes="loc xs">
 	<xsl:param name="CoRefOppositeRoleIdDecorator" select="'_opposite'"/>
 	<xsl:param name="CoRefInternalUniquenessIdDecorator" select="'_unique'"/>
 	<xsl:param name="CoRefInternalUniquenessNameDecorator" select="'_unique'"/>
@@ -9,6 +9,7 @@
 	<xsl:param name="CoRefFactNameDecorator" select="'_coref_fact'"/>
 
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
+	<xsl:strip-space elements="*"/>
 	
 	<xs:schema targetNamespace="urn:local-temps" xmlns="urn:local-temps" elementFormDefault="qualified">
 		<xs:element name="mappedRole" type="mappedRoleType"/>
@@ -84,7 +85,8 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="ObjectifiedFacts" select="msxsl:node-set($ObjectifiedFactsFragment)/child::*"/>
-		<!-- At one point BinarizableFacts were known as NonObjectifiedMultiRoleUniquenessFactTypes. Enough said. -->
+		<!-- At one point BinarizableFacts were known as MultiRoleUniquenessFactTypes. Enough said. -->
+		<!-- TODO: BinarizableFacts and MultiRoleUniquenessFactTypes are not 100% equivalent; the latter is actually a subset of the former. Unaries are also binarizable, and need to be processed by this transform. -->
 		<xsl:variable name="BinarizableFacts" select="$Model/orm:Facts/orm:Fact[not(@id=$ObjectifiedFacts/@id) and orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[count(orm:Role)>1]]"/>
 		<xsl:apply-templates select="$Model" mode="CoRefORM">
 			<xsl:with-param name="Model" select="$Model"/>
@@ -291,7 +293,7 @@
 							<orm:Role ref="{@id}{$CoRefOppositeRoleIdDecorator}"/>
 						</xsl:for-each>
 					</orm:PlayedRoles>
-					<orm:PreferredIdentifier ref="{orm:InternalConstraints/orm:InternalUniquenessConstraint[not(@Modality) or @Modality!='Deontic'][1]/@id}"/>
+					<orm:PreferredIdentifier ref="{orm:InternalConstraints/orm:InternalUniquenessConstraint[not(@Modality) or @Modality='Alethic'][1]/@id}"/>
 				</orm:EntityType>
 			</xsl:for-each>
 		</xsl:copy>

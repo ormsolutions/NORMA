@@ -10,36 +10,43 @@
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt" 
+	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions" 
 	xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
 	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
-	xmlns:dms="http://schemas.orm.net/DIL/DILMS" 
-	extension-element-prefixes="msxsl"
-	exclude-result-prefixes="dcl">
+	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
+	extension-element-prefixes="msxsl dsf">
 
+	<xsl:import href="../DIL/DILSupportFunctions.xslt"/>
+	
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:template match="dcl:schema">
-		<ddl:schemaDefinition schemaName="{@name}" defaultCharacterSet="UTF8">
+		<dil:root>
+			<dms:startTransactionStatement isolationLevel="SERIALIZABLE" accessMode="READ WRITE"/>
+			<ddl:schemaDefinition schemaName="{@name}" defaultCharacterSet="UTF8"/>
+			<dms:setSchemaStatement>
+				<ddt:characterStringLiteral value="{dsf:getCaseNormalForm(@name)}"/>
+			</dms:setSchemaStatement>
 			<xsl:apply-templates select="dcl:domainDataType"/>
 			<xsl:apply-templates select="dcl:table" mode="GenerateTableBase"/>
 			<xsl:apply-templates select="dcl:table" mode="GenerateTableReferences"/>
 			<xsl:apply-templates select="dcl:trigger"/>
-		</ddl:schemaDefinition>
+			<dms:commitStatement/>
+		</dil:root>
 	</xsl:template>
 
 	<xsl:template match="dcl:domainDataType">
 		<ddl:domainDefinition name="{@name}">
 			<xsl:apply-templates select="dcl:predefinedDataType"/>
-			<ddl:domainConstraint dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
-				<dep:constraintNameDefinition name="{dcl:checkConstraint/@name}"/>
-				<xsl:apply-templates select="dcl:checkConstraint" mode="GenerateConstraintCore"/>
-			</ddl:domainConstraint>
+			<xsl:apply-templates select="dcl:checkConstraint" mode="GenerateConstraint">
+				<xsl:with-param name="ElementName" select="'ddl:domainConstraint'"/>
+			</xsl:apply-templates>
 		</ddl:domainDefinition>
 	</xsl:template>
 
@@ -85,13 +92,20 @@
 	<xsl:template match="dcl:table" mode="GenerateTableBase">
 		<ddl:tableDefinition name="{@name}">
 			<xsl:apply-templates select="dcl:column"/>
-			<xsl:apply-templates select="dcl:uniquenessConstriant" mode="GenerateTableConstraint"/>
-			<xsl:apply-templates select="dcl:checkConstriant" mode="GenerateTableConstraint"/>
+			<xsl:apply-templates select="dcl:uniquenessConstraint" mode="GenerateConstraint"/>
+			<xsl:apply-templates select="dcl:checkConstraint" mode="GenerateConstraint"/>
 		</ddl:tableDefinition>
 	</xsl:template>
 
 	<xsl:template match="dcl:table" mode="GenerateTableReferences">
-		<xsl:apply-templates select="dcl:referenceConstriant" mode="GenerateTableConstraint"/>
+		<xsl:variable name="tableName" select="@name"/>
+		<xsl:for-each select="dcl:referenceConstraint">
+			<ddl:alterTableStatement name="{$tableName}">
+				<xsl:apply-templates select="." mode="GenerateConstraint">
+					<xsl:with-param name="ElementName" select="'ddl:addTableConstraintDefinition'"/>
+				</xsl:apply-templates>
+			</ddl:alterTableStatement>
+		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template match="dcl:column">
@@ -123,11 +137,15 @@
 		</ddl:columnDefinition>
 	</xsl:template>
 
-	<xsl:template match="dcl:checkConstraint | dcl:uniquenessConstraint | dcl:referenceConstraint" mode="GenerateTableConstraint">
-		<ddl:tableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+	<xsl:template match="dcl:checkConstraint | dcl:uniquenessConstraint | dcl:referenceConstraint" mode="GenerateConstraint">
+		<xsl:param name="ElementName" select="'ddl:tableConstraintDefinition'"/>
+		<xsl:element name="{$ElementName}">
+			<xsl:attribute name="dep:constraintCharacteristics">
+				<xsl:value-of select="'INITIALLY IMMEDIATE NOT DEFERRABLE'"/>
+			</xsl:attribute>
 			<dep:constraintNameDefinition name="{@name}"/>
 			<xsl:apply-templates select="." mode="GenerateConstraintCore"/>
-		</ddl:tableConstraintDefinition>
+		</xsl:element>
 	</xsl:template>
 	<xsl:template match="dcl:checkConstraint" mode="GenerateConstraintCore">
 		<ddl:checkConstraintDefinition>

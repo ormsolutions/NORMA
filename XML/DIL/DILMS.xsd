@@ -27,7 +27,7 @@
 
 	<xs:complexType name="transactionCharacteristics">
 		<xs:sequence>
-			<xs:element name="diagnosticsSize" type="dep:simpleValueSpecification"/>
+			<xs:element name="diagnosticsSize" type="dep:simpleValueSpecification" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="isolationLevel" use="optional" default="SERIALIZABLE">
 			<xs:simpleType>
@@ -106,7 +106,7 @@
 
 	<xs:element name="commitStatement">
 		<xs:annotation>
-			<xs:documentation>COMMIT [ AND [ NO ] CHAIN ]</xs:documentation>
+			<xs:documentation>COMMIT WORK [ AND [ NO ] CHAIN ]</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:attribute name="type" use="optional" default="AND NO CHAIN">
@@ -121,7 +121,7 @@
 	</xs:element>
 	<xs:element name="rollbackStatement">
 		<xs:annotation>
-			<xs:documentation>ROLLBACK [ AND [ NO ] CHAIN ] [ TO SAVEPOINT &lt;savepoint name&gt; ]</xs:documentation>
+			<xs:documentation>ROLLBACK WORK [ AND [ NO ] CHAIN ] [ TO SAVEPOINT &lt;savepoint name&gt; ]</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:attribute name="type" use="optional" default="AND NO CHAIN">

@@ -617,7 +617,7 @@
 			</xsl:variable>
 			<xsl:choose>
 				<xsl:when test="$lowerBoundOperator='greaterThanOrEquals' and $upperBoundOperator='lessThanOrEquals'">
-					<dep:betweenPredicate>
+					<dep:betweenPredicate type="BETWEEN">
 						<xsl:copy-of select="$predicandToTest"/>
 						<xsl:copy-of select="$lowerBoundLiteral"/>
 						<xsl:copy-of select="$upperBoundLiteral"/>

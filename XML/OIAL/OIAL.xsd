@@ -94,7 +94,7 @@
 			</xs:element>
 			<xs:element name="conceptTypeRef">
 				<xs:complexType>
-					<xs:group ref="oil:singleRoleConstraint" minOccurs="0" maxOccurs="2"/>
+					<xs:group ref="oil:singleRoleConstraintIncludingUniqueness" minOccurs="0" maxOccurs="2"/>
 					<xs:attribute name="name" use="required" type="xs:token"/>
 					<xs:attribute name="mandatory" use="required" type="oil:mandatory"/>
 					<xs:attribute name="sourceRoleRef" use="required" type="oil:sourceRef"/>
@@ -165,6 +165,21 @@
 		<xs:group ref="oil:typeRef" maxOccurs="unbounded"/>
 	</xs:complexType>
 
+	<xs:complexType name="frequencyBound">
+		<xs:complexContent>
+			<xs:restriction base="odt:bound">
+				<xs:attribute name="value" use="required">
+					<xs:simpleType>
+						<xs:restriction base="xs:positiveInteger">
+							<xs:minInclusive value="2"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="clusivity" use="required" type="odt:clusivity" fixed="inclusive"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+
 	<xs:complexType name="constraint" abstract="true">
 		<xs:attribute name="name" use="required" type="xs:ID"/>
 		<xs:attribute name="modality" use="required" type="oil:modality"/>
@@ -222,8 +237,8 @@
 					<xs:complexContent>
 						<xs:extension base="oil:singleRoleConstraint">
 							<xs:sequence>
-								<xs:element name="lowerBound" minOccurs="0" type="odt:bound"/>
-								<xs:element name="upperBound" minOccurs="0" type="odt:bound"/>
+								<xs:element name="lowerBound" minOccurs="0" type="oil:frequencyBound"/>
+								<xs:element name="upperBound" minOccurs="0" type="oil:frequencyBound"/>
 							</xs:sequence>
 						</xs:extension>
 					</xs:complexContent>
@@ -258,8 +273,8 @@
 					<xs:complexContent>
 						<xs:extension base="oil:singleRoleSequenceConstraint">
 							<xs:sequence>
-								<xs:element name="lowerBound" minOccurs="0" type="odt:bound"/>
-								<xs:element name="upperBound" minOccurs="0" type="odt:bound"/>
+								<xs:element name="lowerBound" minOccurs="0" type="oil:frequencyBound"/>
+								<xs:element name="upperBound" minOccurs="0" type="oil:frequencyBound"/>
 							</xs:sequence>
 						</xs:extension>
 					</xs:complexContent>

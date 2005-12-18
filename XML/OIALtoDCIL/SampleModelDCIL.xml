@@ -1,13 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dcl:schema name="SampleModel" xmlns:dcl="http://schemas.orm.net/DIL/DCIL" xmlns:dil="http://schemas.orm.net/DIL/DIL" xmlns:ddt="http://schemas.orm.net/DIL/DILDT" xmlns:dep="http://schemas.orm.net/DIL/DILEP">
+  <dcl:domainDataType name="SclScrtyNmbr">
+    <dcl:predefinedDataType name="CHARACTER" precision="11" />
+    <dcl:checkConstraint name="SclScrtyNmbr_Chk">
+      <dep:comparisonPredicate operator="greaterThanOrEquals">
+        <dep:parenthesizedValueExpression>
+          <dep:lengthExpression lengthUnits="CHARACTERS">
+            <dep:valueKeyword />
+          </dep:lengthExpression>
+        </dep:parenthesizedValueExpression>
+        <ddt:exactNumericLiteral value="11" />
+      </dep:comparisonPredicate>
+    </dcl:checkConstraint>
+  </dcl:domainDataType>
   <dcl:domainDataType name="&quot;Integer&quot;">
     <dcl:predefinedDataType name="BIGINT" />
     <dcl:checkConstraint name="Integer_Chk">
-      <dep:betweenPredicate>
+      <dep:betweenPredicate type="BETWEEN">
         <dep:valueKeyword />
         <ddt:exactNumericLiteral value="1" />
         <ddt:exactNumericLiteral value="7" />
       </dep:betweenPredicate>
+    </dcl:checkConstraint>
+  </dcl:domainDataType>
+  <dcl:domainDataType name="DeathCause_Type">
+    <dcl:predefinedDataType name="CHARACTER VARYING" precision="14" />
+    <dcl:checkConstraint name="DthCs_Typ_Chk">
+      <dep:inPredicate type="IN">
+        <dep:valueKeyword />
+        <ddt:characterStringLiteral value="natural" />
+        <ddt:characterStringLiteral value="not so natural" />
+      </dep:inPredicate>
     </dcl:checkConstraint>
   </dcl:domainDataType>
   <dcl:domainDataType name="Gender_Code">
@@ -45,7 +68,7 @@
     <dcl:column name="CarSold_vin" isNullable="false" isIdentity="false">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
-    <dcl:column name="SaleDate_ymd" isNullable="false" isIdentity="false">
+    <dcl:column name="SaleDate_YMD" isNullable="false" isIdentity="false">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:column isNullable="false" isIdentity="true" name="Buyer_Person_id">
@@ -69,12 +92,12 @@
       <dcl:domainDataTypeRef name="&quot;Integer&quot;" />
     </dcl:column>
     <dcl:column name="Criteria_Name" isNullable="false" isIdentity="false">
-      <dcl:predefinedDataType name="CHARACTER VARYING" />
+      <dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
     </dcl:column>
   </dcl:table>
   <dcl:table name="PersonHasNickName">
     <dcl:column name="NickName" isNullable="false" isIdentity="false">
-      <dcl:predefinedDataType name="CHARACTER VARYING" />
+      <dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
     </dcl:column>
     <dcl:column isNullable="false" isIdentity="true" name="Person_Person_id">
       <dcl:predefinedDataType name="BIGINT" />
@@ -85,7 +108,7 @@
   </dcl:table>
   <dcl:table name="Person">
     <dcl:column name="FirstName" isNullable="false" isIdentity="false">
-      <dcl:predefinedDataType name="CHARACTER VARYING" />
+      <dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
     </dcl:column>
     <dcl:column name="Person_id" isNullable="false" isIdentity="true">
       <dcl:predefinedDataType name="BIGINT" />
@@ -93,14 +116,14 @@
     <dcl:uniquenessConstraint name="IUC2" isPrimary="true">
       <dcl:columnRef name="Person_id" />
     </dcl:uniquenessConstraint>
-    <dcl:column name="Date_ymd" isNullable="false" isIdentity="false">
+    <dcl:column name="Date_YMD" isNullable="false" isIdentity="false">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:column name="LastName" isNullable="false" isIdentity="false">
-      <dcl:predefinedDataType name="CHARACTER VARYING" />
+      <dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
     </dcl:column>
     <dcl:column name="SclScrtyNmbr" isNullable="true" isIdentity="false">
-      <dcl:predefinedDataType name="CHARACTER VARYING" />
+      <dcl:domainDataTypeRef name="SclScrtyNmbr" />
     </dcl:column>
     <dcl:uniquenessConstraint name="IUC9" isPrimary="false">
       <dcl:columnRef name="SclScrtyNmbr" />
@@ -109,7 +132,7 @@
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:column name="HTHTSHTSD" isNullable="true" isIdentity="false">
-      <dcl:predefinedDataType name="CHARACTER VARYING" />
+      <dcl:predefinedDataType name="CHARACTER VARYING" precision="256" />
     </dcl:column>
     <dcl:column name="OwnsCar_vin" isNullable="true" isIdentity="false">
       <dcl:predefinedDataType name="BIGINT" />

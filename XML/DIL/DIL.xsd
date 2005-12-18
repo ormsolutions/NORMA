@@ -15,6 +15,7 @@
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
+	xmlns:dms="http://schemas.orm.net/DIL/DILMS" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
@@ -29,10 +30,22 @@
 	<xs:import namespace="http://schemas.orm.net/DIL/DMIL"/>
 	<xs:import namespace="http://schemas.orm.net/DIL/DDIL"/>
 
+	<xs:element name="root">
+		<!-- This element is for temporary testing purposes and may be removed. -->
+		<xs:complexType>
+			<xs:group ref="dil:sqlProcedureStatement" maxOccurs="unbounded"/>
+		</xs:complexType>
+	</xs:element>
+	
+
+	<xs:element name="sqlProcedureStatement" type="dil:sqlProcedureStatement"/>
+	<xs:complexType name="sqlProcedureStatement">
+		<xs:group ref="dil:sqlProcedureStatement"/>
+	</xs:complexType>
 	<xs:group name="sqlProcedureStatement">
 		<xs:choice>
-			<!-- TODO -->
-			<xs:element name="placeholder" type="xs:string"/>
+			<!-- TODO: Actually schematize dil:sqlProcedureStatement and remove the xs:any -->
+			<xs:any namespace="##targetNamespace http://schemas.orm.net/DIL/DDIL http://schemas.orm.net/DIL/DMIL http://schemas.orm.net/DIL/DILMS"/>
 		</xs:choice>
 	</xs:group>
 

@@ -61,7 +61,7 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:group ref="ddl:schemaElement" maxOccurs="unbounded"/>
+				<xs:group ref="ddl:schemaElement" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 			<xs:attribute name="catalogName" use="optional" type="ddt:identifier"/>
 			<xs:attribute name="schemaName" use="required" type="ddt:identifier"/>

@@ -14,21 +14,26 @@
 
 	<xsl:param name="EnableAssertions" select="true()"/>
 	<xsl:param name="OutputDebugInformation" select="false()"/>
+	<!-- To use $OutputVerboseDebugInformation, $OutputDebugInformtion must also be set to true() -->
+	<xsl:param name="OutputVerboseDebugInformation" select="false()"/>
 
 	<xsl:include href="CoRefORM.xslt"/>
 
 	<xsl:template match="ormRoot:ORM2">
-		<xsl:apply-templates select="orm:ORMModel"/>
+		<xsl:for-each select="orm:ORMModel">
+			<xsl:call-template name="TransformORMtoOIAL">
+				<xsl:with-param name="SourceModel" select="."/>
+			</xsl:call-template>
+		</xsl:for-each>
 	</xsl:template>
-	<xsl:template match="orm:ORMModel">
+	<xsl:template name="TransformORMtoOIAL">
+		<xsl:param name="SourceModel"/>
 		<xsl:variable name="ModelFragment">
 			<xsl:call-template name="CoRefORMModel">
-				<xsl:with-param name="Model" select="."/>
+				<xsl:with-param name="Model" select="$SourceModel"/>
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="Model" select="msxsl:node-set($ModelFragment)/child::*"/>
-		<!-- Any reference to Model after this point should be via the $Model variable. -->
-		<!-- It is not guarenteed that the context node of this template will remain Model. -->
 		
 		<xsl:variable name="objectsAndFacts" select="($Model/orm:Objects|$Model/orm:Facts)/child::*"/>
 
@@ -67,6 +72,11 @@
 				<xsl:variable name="rolePlayerIds" select="orm:FactRoles/orm:Role/orm:RolePlayer/@ref"/>
 				<xsl:variable name="rolePlayers" select="$ObjectTypeInformation[@id=$rolePlayerIds]"/>
 				<AbsorbFactType ref="{@id}">
+					<xsl:if test="$OutputDebugInformation">
+						<xsl:attribute name="refName">
+							<xsl:value-of select="@Name"/>
+						</xsl:attribute>
+					</xsl:if>
 					<xsl:choose>
 						<!-- If only one role is mandatory... -->
 						<xsl:when test="$countMandatories = 1">
@@ -83,6 +93,14 @@
 									<xsl:attribute name="type">
 										<xsl:value-of select="'fully'"/>
 									</xsl:attribute>
+									<xsl:if test="$OutputDebugInformation">
+										<xsl:attribute name="refName">
+											<xsl:value-of select="@Name"/>
+										</xsl:attribute>
+										<xsl:attribute name="towardsName">
+											<xsl:value-of select="$nonMandatoryRolePlayer/@Name"/>
+										</xsl:attribute>
+									</xsl:if>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:attribute name="towards">
@@ -91,6 +109,14 @@
 									<xsl:attribute name="type">
 										<xsl:value-of select="'factOnly'"/>
 									</xsl:attribute>
+									<xsl:if test="$OutputDebugInformation">
+										<xsl:attribute name="refName">
+											<xsl:value-of select="@Name"/>
+										</xsl:attribute>
+										<xsl:attribute name="towardsName">
+											<xsl:value-of select="$rolePlayers[@id=$mandatoryRolePlayerId]/@Name"/>
+										</xsl:attribute>
+									</xsl:if>
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
@@ -100,7 +126,7 @@
 							<xsl:variable name="secondRolePlayer" select="$rolePlayers[@id=$rolePlayerIds[2]]"/>
 							<xsl:variable name="firstRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts" select="count($firstRolePlayer/nonDependentFunctionalNonPreferredIdentifierDirectFacts/child::*)"/>
 							<xsl:variable name="secondRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts" select="count($secondRolePlayer/nonDependentFunctionalNonPreferredIdentifierDirectFacts/child::*)"/>
-							<xsl:attribute name="towards">
+							<xsl:variable name="towardsId">
 								<xsl:choose>
 									<!-- TODO: How do we handle Value Types here? Do we even need to? -->
 									<!--<xsl:when test="not(local-name($firstRolePlayer)='ValueType') and $firstRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts >= $secondRolePlayerCountNonDependentFunctionalNonPreferredIdentifierDirectFacts">-->
@@ -111,6 +137,9 @@
 										<xsl:value-of select="$secondRolePlayer/@id"/>
 									</xsl:otherwise>
 								</xsl:choose>
+							</xsl:variable>
+							<xsl:attribute name="towards">
+								<xsl:value-of select="$towardsId"/>
 							</xsl:attribute>
 							<xsl:attribute name="type">
 								<xsl:choose>
@@ -127,6 +156,14 @@
 									</xsl:when>
 								</xsl:choose>
 							</xsl:attribute>
+							<xsl:if test="$OutputDebugInformation">
+								<xsl:attribute name="refName">
+									<xsl:value-of select="@Name"/>
+								</xsl:attribute>
+								<xsl:attribute name="towardsName">
+									<xsl:value-of select="$rolePlayers[@id=$towardsId]/@Name"/>
+								</xsl:attribute>
+							</xsl:if>
 						</xsl:otherwise>
 					</xsl:choose>
 				</AbsorbFactType>
@@ -136,23 +173,42 @@
 		
 		<xsl:variable name="ObjectTypeAbsorptionsFragment">
 			<xsl:for-each select="$NonIndependentSubtypeObjectTypes">
-				<!-- TODO: The next line should be selecting the PRIMARY supertype, not the FIRST subtype. -->
-				<xsl:variable name="absorbingSupertype" select="subtypeMetaFacts/child::*[1]/orm:FactRoles/orm:Role[2]/orm:RolePlayer/@ref"/>
-				<AbsorbObjectType ref="{@id}" towards="{$absorbingSupertype}"/>
+				<!-- TODO: The next line should be selecting the PRIMARY supertype, not the FIRST supertype. -->
+				<xsl:variable name="absorbingSupertypeId" select="subtypeMetaFacts/child::*[1]/orm:FactRoles/orm:Role[2]/orm:RolePlayer/@ref"/>
+				<AbsorbObjectType ref="{@id}" towards="{$absorbingSupertypeId}">
+					<xsl:if test="$OutputDebugInformation">
+						<xsl:attribute name="refName">
+							<xsl:value-of select="@Name"/>
+						</xsl:attribute>
+						<xsl:attribute name="towardsName">
+							<xsl:value-of select="$ObjectTypeInformation[@id=$absorbingSupertypeId]/@Name"/>
+						</xsl:attribute>
+					</xsl:if>
+				</AbsorbObjectType>
 			</xsl:for-each>
 			<!-- Get the non-independent, non-subtype object types that play at least one mandatory functional role in a fact type that that object type is also functionally dependent on. -->
 			<xsl:for-each select="$ObjectTypeInformation[mandatoryDependentFunctionalDirectFacts/child::* and not(@id=$IndependentObjectTypes/@id) and not(@id=$NonIndependentSubtypeObjectTypes/@id)]">
 				<xsl:variable name="specialCaseObjectTypeId" select="@id"/>
 				<xsl:for-each select="$FactTypeAbsorptions[@ref=current()/mandatoryDependentFunctionalDirectFacts/child::*/@id]">
+					<!-- If this is a full absorption, make sure we're not trying to absorb ourselves, since that can get awkward. -->
 					<xsl:if test="@type='fully' and not(@towards=$specialCaseObjectTypeId)">
-						<AbsorbObjectType ref="{$specialCaseObjectTypeId}" towards="{@towards}"/>
+						<AbsorbObjectType ref="{$specialCaseObjectTypeId}" towards="{@towards}">
+							<xsl:if test="$OutputDebugInformation">
+								<xsl:attribute name="refName">
+									<xsl:value-of select="$ObjectTypeInformation[@id=$specialCaseObjectTypeId]/@Name"/>
+								</xsl:attribute>
+								<xsl:attribute name="towardsName">
+									<xsl:value-of select="@towardsName"/>
+								</xsl:attribute>
+							</xsl:if>
+						</AbsorbObjectType>
 					</xsl:if>
 				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="ObjectTypeAbsorptions" select="msxsl:node-set($ObjectTypeAbsorptionsFragment)/child::*"/>
 
-		<!-- Get the non-independent, non-subtype object types that play at least one functional role that isn't absorbed away from that object type. -->
+		<!-- Get the non-independent, non-subtype object types that play at least one functional role (not including their preferred identifier) that isn't absorbed away from that object type. -->
 		<xsl:variable name="NonAbsorbedFunctionalRolePlayingObjectTypesFragment">
 			<xsl:for-each select="$ObjectTypeInformation[functionalDirectFacts/child::* and not(@id=$IndependentObjectTypes/@id) and not(@id=$NonIndependentSubtypeObjectTypes/@id) and not(@id=$ObjectTypeAbsorptions/@ref)]">
 				<xsl:variable name="factTypeAbsorptionsAwayFromThisObjectType" select="$FactTypeAbsorptions[not(@towards=current()/@id)]"/>
@@ -163,19 +219,18 @@
 		</xsl:variable>
 		<xsl:variable name="NonAbsorbedFunctionalRolePlayingObjectTypes" select="msxsl:node-set($NonAbsorbedFunctionalRolePlayingObjectTypesFragment)/child::*"/>
 
-		<!-- Get the independent object types,
-			non-objectified fact types with uniqueness constraints that span more than one role,
-			value types that play functional roles in fact types that they are not also functionally dependent on,
-			and object types that play functional roles that are not fully absorbed by something else. -->
+		<!-- Get the independent object types and object types that play functional roles that are not absorbed by something else. -->
 		<xsl:variable name="TopLevelTypes" select="$IndependentObjectTypes | $NonAbsorbedFunctionalRolePlayingObjectTypes"/>
 		
 		<oil:model name="{$Model/@Name}" sourceRef="{$Model/@id}">
 			
 			<xsl:if test="$OutputDebugInformation">
 				<DEBUG_INFORMATION>
-					<ObjectTypeInformation>
-						<xsl:copy-of select="$ObjectTypeInformation"/>
-					</ObjectTypeInformation>
+					<xsl:if test="$OutputVerboseDebugInformation">
+						<ObjectTypeInformation>
+							<xsl:copy-of select="$ObjectTypeInformation"/>
+						</ObjectTypeInformation>
+					</xsl:if>
 					<FactTypeAbsorptions>
 						<xsl:copy-of select="$FactTypeAbsorptions"/>
 					</FactTypeAbsorptions>
@@ -183,7 +238,18 @@
 						<xsl:copy-of select="$ObjectTypeAbsorptions"/>
 					</ObjectTypeAbsorptions>
 					<TopLevelTypes>
-						<xsl:copy-of select="$TopLevelTypes"/>
+						<xsl:choose>
+							<xsl:when test="$OutputVerboseDebugInformation">
+								<xsl:copy-of select="$TopLevelTypes"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:for-each select="$TopLevelTypes">
+									<xsl:copy>
+										<xsl:copy-of select="@*"/>
+									</xsl:copy>
+								</xsl:for-each>
+							</xsl:otherwise>
+						</xsl:choose>
 					</TopLevelTypes>
 				</DEBUG_INFORMATION>
 			</xsl:if>
@@ -218,7 +284,6 @@
 		<!-- Any subtype meta facts where this object type is the supertype. -->
 		<xsl:variable name="supertypeMetaFacts" select="$Model/orm:Facts/orm:SubtypeFact[orm:FactRoles/orm:Role[2]/orm:RolePlayer/@ref=current()/@id]"/>
 
-		<!-- TODO: Filter out roles that are in objectified fact types, since the implied fact types will take care of them. -->
 		<!-- All roles directly played by this object type. -->
 		<xsl:variable name="directPlayedRoles" select="orm:PlayedRoles/orm:Role"/>
 		
@@ -475,8 +540,7 @@
 		</xsl:choose>
 		
 	</xsl:template>
-	
-	
+
 	<xsl:template match="orm:EntityType | orm:ValueType" mode="GenerateConceptTypes">
 		<xsl:param name="Model"/>
 		<xsl:param name="ObjectTypeInformation"/>
@@ -501,14 +565,21 @@
 				</xsl:attribute>
 			</xsl:if>
 
+			<!-- If we're an orm:ValueType, we need to add an oil:informationType to capture the data that we contain. -->
 			<xsl:if test="self::orm:ValueType">
 				<oil:informationType name="{concat($thisObjectTypeName,'Value')}" mandatory="alethic" sourceRef="{$thisObjectTypeId}" formatRef="{$thisObjectTypeName}">
 					<oil:singleRoleUniquenessConstraint name="{concat($thisObjectTypeName,'Value_Unique')}" modality="alethic" sourceRef="{$thisObjectTypeId}" isPrimary="true"/>
 				</oil:informationType>
 			</xsl:if>
 
-			<!-- Process all functional direct facts that are not absorbed away from us. -->
-			<xsl:for-each select="$thisObjectTypeInformation/functionalDirectFacts/child::*[not(@id=$FactTypeAbsorptions[not(@towards=$thisObjectTypeId)]/@ref)]">
+			<!-- Get the orm:SubtypeFacts for the subtypes that we're absorbing. -->
+			<xsl:variable name="absorbedSubtypeMetaFacts" select="$thisObjectTypeInformation/supertypeMetaFacts/child::*[orm:FactRoles/orm:Role[1]/orm:RolePlayer/@ref=$ObjectTypeAbsorptions[@towards=$thisObjectTypeId]/@ref]"/>
+
+			<!-- Get the functional orm:Facts that are not absorbed away from us. -->
+			<xsl:variable name="absorbedFunctionalDirectFacts" select="$thisObjectTypeInformation/functionalDirectFacts/child::*[not(@id=$FactTypeAbsorptions[not(@towards=$thisObjectTypeId)]/@ref)]"/>
+
+			<!-- Process both of the above. -->
+			<xsl:for-each select="$absorbedFunctionalDirectFacts | $absorbedSubtypeMetaFacts">
 				<xsl:variable name="thisRole" select="orm:FactRoles/orm:Role[orm:RolePlayer/@ref=$thisObjectTypeId]"/>
 				<xsl:variable name="thisRoleId" select="$thisRole/@id"/>
 				<xsl:variable name="oppositeRole" select="orm:FactRoles/orm:Role[not(orm:RolePlayer/@ref=$thisObjectTypeId)]"/>
@@ -516,11 +587,12 @@
 				<xsl:variable name="oppositeRolePlayerId" select="$oppositeRole/orm:RolePlayer/@ref"/>
 				<xsl:variable name="oppositeRolePlayer" select="$ObjectTypeInformation[@id=$oppositeRolePlayerId]"/>
 				<xsl:variable name="oppositeRolePlayerName" select="$oppositeRolePlayer/@Name"/>
-				<xsl:variable name="oppositeRolePlayerTopLevelTypeId">
+				<xsl:variable name="oppositeRolePlayerDesiredParentOrTopLevelTypeId">
 					<xsl:call-template name="GetTopLevelTypeId">
 						<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
 						<xsl:with-param name="TopLevelTypes" select="$TopLevelTypes"/>
 						<xsl:with-param name="TargetId" select="$oppositeRolePlayerId"/>
+						<xsl:with-param name="DesiredParentId" select="$thisObjectTypeId"/>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="mandatory">
@@ -585,7 +657,7 @@
 				<!-- HACK: This node-set() call doesn't strictly need to be here, but if it is not, the output formatting done by the processor gets screwed up. -->
 				<xsl:variable name="oilConstraints" select="msxsl:node-set($oilConstraintsFragment)/child::*"/>
 				<xsl:choose>
-					<xsl:when test="not(string-length($oppositeRolePlayerTopLevelTypeId))">
+					<xsl:when test="not(string-length($oppositeRolePlayerDesiredParentOrTopLevelTypeId))">
 						<xsl:call-template name="GetOilInformationTypes">
 							<xsl:with-param name="Model" select="$Model"/>
 							<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
@@ -597,7 +669,7 @@
 							<xsl:with-param name="OilConstraints" select="$oilConstraints"/>
 						</xsl:call-template>
 					</xsl:when>
-					<xsl:when test="$oppositeRolePlayerTopLevelTypeId = $thisObjectTypeId">
+					<xsl:when test="$oppositeRolePlayerDesiredParentOrTopLevelTypeId = $thisObjectTypeId">
 						<xsl:apply-templates select="$oppositeRolePlayer" mode="GenerateConceptTypes">
 							<xsl:with-param name="Model" select="$Model"/>
 							<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
@@ -609,7 +681,7 @@
 							<xsl:with-param name="OilConstraintsFromParent" select="$oilConstraints"/>
 						</xsl:apply-templates>
 					</xsl:when>
-					<xsl:when test="not($EnableAssertions) or ($oppositeRolePlayerTopLevelTypeId=($TopLevelTypes/@id|$ObjectTypeAbsorptions/@ref))">
+					<xsl:when test="not($EnableAssertions) or ($oppositeRolePlayerId=($TopLevelTypes/@id|$ObjectTypeAbsorptions/@ref))">
 						<oil:conceptTypeRef name="{$name}" target="{$oppositeRolePlayerName}" mandatory="{$mandatory}" sourceRoleRef="{$thisRoleId}">
 							<xsl:copy-of select="$oilConstraints"/>
 						</oil:conceptTypeRef>
@@ -620,6 +692,11 @@
 						</xsl:message>
 					</xsl:otherwise>
 				</xsl:choose>
+			</xsl:for-each>
+
+			
+			<xsl:for-each select="$Model/orm:ExternalConstraints/child::*[orm:RoleSequence/orm:Role/@ref=$thisObjectTypeInformation/directPlayedRoles/orm:Role/@ref]">
+				<!-- TODO: Process external constraints here. -->
 			</xsl:for-each>
 
 			<!-- HACK: This node-set() call doesn't strictly need to be here, but if it is not, the output formatting done by the processor gets screwed up. -->
@@ -633,16 +710,23 @@
 		<xsl:param name="ObjectTypeAbsorptions"/>
 		<xsl:param name="TopLevelTypes"/>
 		<xsl:param name="TargetId"/>
+		<!-- If a value is specified for $DesiredParentId, this template will immediately return that value if it is found in the absorption heirarchy. -->
+		<xsl:param name="DesiredParentId"/>
+		<xsl:variable name="towardsId" select="$ObjectTypeAbsorptions[@ref=$TargetId]/@towards"/>
 		<xsl:choose>
 			<xsl:when test="not(string-length($TargetId))"/>
 			<xsl:when test="$TopLevelTypes[@id=$TargetId]">
 				<xsl:value-of select="$TargetId"/>
 			</xsl:when>
+			<xsl:when test="string-length($DesiredParentId) and $DesiredParentId=$towardsId">
+				<xsl:value-of select="$DesiredParentId"/>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:call-template name="GetTopLevelTypeId">
 					<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
 					<xsl:with-param name="TopLevelTypes" select="$TopLevelTypes"/>
-					<xsl:with-param name="TargetId" select="$ObjectTypeAbsorptions[@ref=$TargetId]/@towards"/>
+					<xsl:with-param name="TargetId" select="$towardsId"/>
+					<xsl:with-param name="DesignedParentId" select="$DesiredParentId"/>
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
