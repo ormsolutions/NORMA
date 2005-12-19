@@ -42,9 +42,9 @@
 	</xsl:template>
 
 	<xsl:template name="GenerateSchemaAttribute">
-		<xsl:if test="parent::dcl:schema">
+		<xsl:if test="ancestor::dcl:schema">
 				<xsl:attribute name="schema">
-					<xsl:value-of select="parent::dcl:schema[1]/@name"/>
+					<xsl:value-of select="ancestor::dcl:schema[1]/@name"/>
 				</xsl:attribute>
 			</xsl:if>
 	</xsl:template>
@@ -152,9 +152,7 @@
 	<xsl:template match="dcl:checkConstraint | dcl:uniquenessConstraint | dcl:referenceConstraint" mode="GenerateConstraint">
 		<xsl:param name="ElementName" select="'ddl:tableConstraintDefinition'"/>
 		<xsl:element name="{$ElementName}">
-			<dep:constraintNameDefinition name="{@name}">
-				<xsl:call-template name="GenerateSchemaAttribute"/>
-			</dep:constraintNameDefinition>
+			<dep:constraintNameDefinition name="{@name}"/>
 			<xsl:apply-templates select="." mode="GenerateConstraintCore"/>
 		</xsl:element>
 	</xsl:template>
@@ -186,6 +184,7 @@
 				<ddl:column name="{@sourceName}"/>
 			</xsl:for-each>
 			<ddl:referencesSpecification name="{@targetTable}" onDelete="RESTRICT" onUpdate="RESTRICT">
+				<xsl:call-template name="GenerateSchemaAttribute"/>
 				<xsl:for-each select="dcl:columnRef">
 					<ddl:referenceColumn name="{@targetName}"/>
 				</xsl:for-each>
@@ -195,7 +194,9 @@
 
 
 	<xsl:template match="dcl:domainDataTypeRef">
-		<ddt:domain name="{@name}"/>
+		<ddt:domain name="{@name}">
+			<xsl:call-template name="GenerateSchemaAttribute"/>
+		</ddt:domain>
 	</xsl:template>
 	
 	<xsl:template match="dcl:predefinedDataType[@name='FLOAT' or @name='REAL' or @name='DOUBLE PRECISION']">

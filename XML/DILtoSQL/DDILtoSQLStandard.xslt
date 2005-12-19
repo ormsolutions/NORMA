@@ -29,6 +29,7 @@
 	<xsl:param name="LeftParen" select="'('"/>
 	<xsl:param name="RightParen" select="')'"/>
 	<xsl:param name="ConcatenationOperator" select="'||'"/>
+	<xsl:param name="StatementDelimeter" select="';'"/>
 
 	<!-- Schema Definition pg.519 -->
 
@@ -41,6 +42,7 @@
 		<xsl:apply-templates select="@authorizationIdentifier" mode="ForSchemaDefinition"/>
 		<xsl:apply-templates select="@defaultCharacterSet" mode="ForSchemaDefinition"/>
 		<xsl:apply-templates select="ddl:path" mode="ForSchemaDefinition"/>
+		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:apply-templates>
@@ -83,6 +85,18 @@
 	<xsl:template match="dms:setSchemaStatement">
 		<xsl:text>SET SCHEMA </xsl:text>
 		<xsl:apply-templates/>
+		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+
+	<xsl:template match="dms:commitStatement">
+		<xsl:text>COMMIT WORK</xsl:text>
+		<xsl:if test="@type">
+			<xsl:text> AND </xsl:text>
+			<xsl:value-of select="@type"/>
+		</xsl:if>
+		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
@@ -112,6 +126,7 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:value-of select="$RightParen"/>
+		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
@@ -145,18 +160,10 @@
 		<xsl:param name="indent"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:apply-templates select="@name" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddt:boolean"/>
-		<xsl:apply-templates select="ddt:characterString"/>
-		<xsl:apply-templates select="ddt:binaryString"/>
-		<xsl:apply-templates select="ddt:exactNumeric"/>
-		<xsl:apply-templates select="ddt:approximateNumeric"/>
-		<xsl:apply-templates select="ddt:date"/>
-		<xsl:apply-templates select="ddt:time"/>
-		<xsl:apply-templates select="ddt:interval"/>
-		<xsl:apply-templates select="ddt:domain"/>
+		<xsl:apply-templates select="ddt:boolean | ddt:characterString | ddt:binaryString | ddt:exactNumeric | ddt:approximateNumeric | ddt:date | ddt:time | ddt:interval | ddt:domain"/>		
 		<xsl:apply-templates select="ddl:defaultClause"/>
-		<xsl:apply-templates select="ddl:identityColumnSpecification" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddl:generationClause" mode="ForColumnDefinition"/>
+		<xsl:apply-templates select="ddl:identityColumnSpecification"/>
+		<xsl:apply-templates select="ddl:generationClause"/>
 		<xsl:apply-templates select="ddl:columnConstraintDefinition"/>
 		<xsl:choose>
 			<xsl:when test="position()=last() and not(following-sibling::*)">				
@@ -167,7 +174,7 @@
 		</xsl:choose>		
 	</xsl:template>
 
-	<xsl:template match="ddl:generationClause" mode="ForColumnDefinition">
+	<xsl:template match="ddl:generationClause">
 		<xsl:text>GENERATED ALWAYS AS </xsl:text>
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:apply-templates/>
@@ -250,11 +257,15 @@
 	</xsl:template>
 
 	<xsl:template match="ddt:domain">
+		<xsl:if test="@schema">
+			<xsl:value-of select="@schema"/>
+			<xsl:text>.</xsl:text>
+		</xsl:if>
 		<xsl:value-of select="@name"/>
 		<xsl:text> </xsl:text>		
 	</xsl:template>
 
-	<xsl:template match="ddl:identityColumnSpecification" mode="ForColumnDefinition">
+	<xsl:template match="ddl:identityColumnSpecification">
 		<xsl:text>GENERATED </xsl:text>
 		<xsl:value-of select="@type"/>
 		<xsl:text> AS IDENTITY</xsl:text>
@@ -642,6 +653,24 @@
 		<xsl:value-of select="."/>
 	</xsl:template>
 
+	<xsl:template match="dep:trimFunction">
+		<xsl:text>TRIM</xsl:text>
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:value-of select="@specification"/>
+		<xsl:apply-templates select="dep:trimCharacter"/>
+		<xsl:text> FROM </xsl:text>
+		<xsl:apply-templates select="dep:trimSource"/>
+		<xsl:value-of select="$RightParen"/>
+	</xsl:template>
+
+	<xsl:template match="dep:trimCharacter">
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	<xsl:template match="dep:trimSource">
+		<xsl:apply-templates/>
+	</xsl:template>
+
 	<xsl:template match="dep:and">
 		<xsl:apply-templates select="child::*[1]"/>
 		<xsl:text> AND </xsl:text>
@@ -686,6 +715,7 @@
 		<xsl:value-of select="@name"/>
 		<xsl:text> AS </xsl:text>
 		<xsl:apply-templates/>
+		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
@@ -701,9 +731,13 @@
 			<xsl:value-of select="@schema"/>
 			<xsl:text>.</xsl:text>
 		</xsl:if>
-		<xsl:value-of select="@name"/>
+		<xsl:apply-templates select="@name"/>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates/>		
+	</xsl:template>
+
+	<xsl:template match="@name" mode="ForConstraintNameDefinition">
+		<xsl:value-of select="."/>
 	</xsl:template>
 
 	<!-- End of Domain Definition -->
@@ -741,14 +775,20 @@
 	</xsl:template>
 
 	<xsl:template match="ddl:referentialConstraintDefinition">
-		<xsl:text>FOREIGN KEY</xsl:text>
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:apply-templates/>
+		<xsl:text>FOREIGN KEY </xsl:text>
+		<xsl:value-of select="$LeftParen"/>		
+		<xsl:apply-templates select="ddl:column"/>		
 		<xsl:value-of select="$RightParen"/>
-	</xsl:template>
+		<xsl:text> </xsl:text>
+		<xsl:apply-templates select="child::*[not(self::ddl:column)]"/>
+	</xsl:template>	
 
 	<xsl:template match="ddl:referencesSpecification">
 		<xsl:text> REFERENCES </xsl:text>
+		<xsl:if test="@schema">
+			<xsl:value-of select="@schema"/>
+			<xsl:text>.</xsl:text>
+		</xsl:if>
 		<xsl:value-of select="@name"/>
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="$LeftParen"/>
@@ -758,19 +798,19 @@
 		<xsl:if test="@match">
 			<xsl:text>MATCH </xsl:text>
 			<xsl:value-of select="@match"/>
-		</xsl:if>
-		<xsl:if test="@onUpdate">
-			<xsl:text>ON UPDATE </xsl:text>
-			<xsl:value-of select="@onUpdate"/>
-		</xsl:if>
+		</xsl:if>		
 		<xsl:if test="@onDelete">
 			<xsl:text> ON DELETE </xsl:text>
 			<xsl:value-of select="@onDelete"/>
 		</xsl:if>
+		<xsl:if test="@onUpdate">
+			<xsl:text> ON UPDATE </xsl:text>
+			<xsl:value-of select="@onUpdate"/>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="ddl:checkConstraintDefinition">
-		<xsl:text>CHECK</xsl:text>
+		<xsl:text>CHECK </xsl:text>
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:apply-templates/>
 		<xsl:value-of select="$RightParen"/>
@@ -778,6 +818,48 @@
 	</xsl:template>	
 	
 	<!-- End of Table Constraint Definition -->
+
+	<!-- Start Transaction Statement -->
+
+	<xsl:template match="dms:startTransactionStatement">
+		<xsl:text>START TRANSACTION ISOLATION LEVEL </xsl:text>
+		<xsl:value-of select="@isolationLevel"/>
+		<xsl:text>, </xsl:text>
+		<xsl:value-of select="@accessMode"/>
+		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+	
+	<!-- Start Transaction Statement -->
+
+	<!-- Alter Table Statement -->
+
+	<xsl:template match="ddl:alterTableStatement">
+		<xsl:text>ALTER TABLE </xsl:text>
+		<xsl:if test="@schema">
+			<xsl:value-of select="@schema"/>
+			<xsl:text>.</xsl:text>
+		</xsl:if>
+		<xsl:value-of select="@name"/>
+		<xsl:text> </xsl:text>
+		<xsl:apply-templates/>
+		<xsl:value-of select="$StatementDelimeter"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+
+	<xsl:template match="ddl:addTableConstraintDefinition">
+		<xsl:text>ADD </xsl:text>
+		<xsl:apply-templates/>		
+	</xsl:template>
+
+	<xsl:template match="ddl:addColumnDefinition">
+		<xsl:text>ADD COLUMN </xsl:text>
+		<xsl:apply-templates/>		
+	</xsl:template>
+
+	<!-- End of Alter Table Statement -->
 
 	<xsl:template name="RenderIdentifier">
 		<xsl:param name="name"/>

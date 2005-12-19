@@ -11,6 +11,7 @@
   <ItemGroup>
     <Content Include="DCILtoDDIL.xslt" />
     <Content Include="DDILSample.xml" />
+    <Content Include="DDILtoPostgreSQL.xslt" />
     <Content Include="DDILtoSQLStandard.xslt" />
     <Content Include="SampleModelDDIL.xml" />
   </ItemGroup>
