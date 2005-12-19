@@ -46,49 +46,41 @@ namespace TestSample.DTBlankTests
 			myTestServices.LogValidationErrors("Before adding error");
 
 			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
-            //ObjectType = model.
 
-            foreach(ObjectType o in model.ValueTypeCollection)
+            UnspecifiedDataType unspecified = (UnspecifiedDataType)model.Store.ElementDirectory.GetElements(UnspecifiedDataType.MetaClassGuid)[0];
+            ObjectType o = (ObjectType)model.ObjectTypesDictionary.GetElement("WifeId").SingleElement;
+
+
+            using (Transaction t = store.TransactionManager.BeginTransaction("Add invalid data type error"))
             {
-                o.DataType.GetType();
-               
-                //if(typeof(ValueType) == )
-                {
-                }
+                //Make the error
+                o.DataType = unspecified;
+                t.Commit();
             }
-            //model.ValueTypeCollection
-            //model.DataTypeCollection;
-            
-            //using (Transaction t = store.TransactionManager.BeginTransaction("Add invalid data type error"))
-            //{
-            //    //Make the error
-
-            //    t.Commit();
-            //}
 			
 			myTestServices.LogValidationErrors("After adding error");
 		}
 
-		[Test("ExternalConstraints", "DTBlank", "NotYet")]
+		[Test("ExternalConstraints", "DTBlank")]
 		public void DTBlankTest2b(Store store)
 		{
 
-			myTestServices.LogValidationErrors("Before removing error");
+            myTestServices.LogValidationErrors("Before removing error");
 
-			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
-			FrequencyConstraint constraint = (FrequencyConstraint)model.ConstraintsDictionary.GetElement("FrequencyConstraint1").SingleElement;
-			int min = constraint.MinFrequency;
-			int max = constraint.MaxFrequency;
-			using (Transaction t = store.TransactionManager.BeginTransaction("Fix Constraint"))
-			{
-				//Fix the error
-				constraint.MinFrequency = max;
-				constraint.MaxFrequency = min;
-				t.Commit();
-			}
-			//if (dataType.GetType() == typeof(FixedLengthTextDataType))
-			myTestServices.LogValidationErrors("After removing error");
-		}
+            ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
+            NumericDataType numeric = (NumericDataType)model.Store.ElementDirectory.GetElements(NumericDataType.MetaClassGuid)[0];
+            ObjectType o = (ObjectType)model.ObjectTypesDictionary.GetElement("WifeId").SingleElement;
+
+
+            using (Transaction t = store.TransactionManager.BeginTransaction("Add invalid data type error"))
+            {
+                //remove
+                o.DataType = numeric;
+                t.Commit();
+            }
+
+            myTestServices.LogValidationErrors("After removing error");
+        }
 
 	}
 }
