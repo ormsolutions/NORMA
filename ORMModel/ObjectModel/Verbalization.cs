@@ -193,7 +193,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					retVal = readingOrders[(ignoreReadingOrderIndex == 0) ? 1 : 0];
 				}
 			}
-			return retVal.PrimaryReading;
+			return (retVal != null) ? retVal.PrimaryReading : null;
 		}
 		/// <summary>
 		/// Helper function for public method of the same name
