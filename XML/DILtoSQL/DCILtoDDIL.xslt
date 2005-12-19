@@ -41,8 +41,17 @@
 		</dil:root>
 	</xsl:template>
 
+	<xsl:template name="GenerateSchemaAttribute">
+		<xsl:if test="parent::dcl:schema">
+				<xsl:attribute name="schema">
+					<xsl:value-of select="parent::dcl:schema[1]/@name"/>
+				</xsl:attribute>
+			</xsl:if>
+	</xsl:template>
+	
 	<xsl:template match="dcl:domainDataType">
 		<ddl:domainDefinition name="{@name}">
+			<xsl:call-template name="GenerateSchemaAttribute"/>
 			<xsl:apply-templates select="dcl:predefinedDataType"/>
 			<xsl:apply-templates select="dcl:checkConstraint" mode="GenerateConstraint">
 				<xsl:with-param name="ElementName" select="'ddl:domainConstraint'"/>
@@ -52,6 +61,7 @@
 
 	<xsl:template match="dcl:trigger">
 		<ddl:triggerDefinition name="{@name}" actionTime="{@actionTime}" forEach="{@forEach}">
+			<xsl:call-template name="GenerateSchemaAttribute"/>
 			<ddl:event type="{@event}">
 				<xsl:for-each select="dcl:columns/dcl:columnRef">
 					<ddl:column name="{@name}"/>
@@ -91,6 +101,7 @@
 
 	<xsl:template match="dcl:table" mode="GenerateTableBase">
 		<ddl:tableDefinition name="{@name}">
+			<xsl:call-template name="GenerateSchemaAttribute"/>
 			<xsl:apply-templates select="dcl:column"/>
 			<xsl:apply-templates select="dcl:uniquenessConstraint" mode="GenerateConstraint"/>
 			<xsl:apply-templates select="dcl:checkConstraint" mode="GenerateConstraint"/>
@@ -101,6 +112,7 @@
 		<xsl:variable name="tableName" select="@name"/>
 		<xsl:for-each select="dcl:referenceConstraint">
 			<ddl:alterTableStatement name="{$tableName}">
+				<xsl:call-template name="GenerateSchemaAttribute"/>
 				<xsl:apply-templates select="." mode="GenerateConstraint">
 					<xsl:with-param name="ElementName" select="'ddl:addTableConstraintDefinition'"/>
 				</xsl:apply-templates>
@@ -140,10 +152,9 @@
 	<xsl:template match="dcl:checkConstraint | dcl:uniquenessConstraint | dcl:referenceConstraint" mode="GenerateConstraint">
 		<xsl:param name="ElementName" select="'ddl:tableConstraintDefinition'"/>
 		<xsl:element name="{$ElementName}">
-			<xsl:attribute name="dep:constraintCharacteristics">
-				<xsl:value-of select="'INITIALLY IMMEDIATE NOT DEFERRABLE'"/>
-			</xsl:attribute>
-			<dep:constraintNameDefinition name="{@name}"/>
+			<dep:constraintNameDefinition name="{@name}">
+				<xsl:call-template name="GenerateSchemaAttribute"/>
+			</dep:constraintNameDefinition>
 			<xsl:apply-templates select="." mode="GenerateConstraintCore"/>
 		</xsl:element>
 	</xsl:template>

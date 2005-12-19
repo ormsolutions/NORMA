@@ -5,9 +5,13 @@
     <dcl:checkConstraint name="SclScrtyNmbr_Chk">
       <dep:comparisonPredicate operator="greaterThanOrEquals">
         <dep:parenthesizedValueExpression>
-          <dep:lengthExpression lengthUnits="CHARACTERS">
-            <dep:valueKeyword />
-          </dep:lengthExpression>
+          <dep:charLengthExpression>
+            <dep:trimFunction specification="BOTH">
+              <dep:trimSource>
+                <dep:valueKeyword />
+              </dep:trimSource>
+            </dep:trimFunction>
+          </dep:charLengthExpression>
         </dep:parenthesizedValueExpression>
         <ddt:exactNumericLiteral value="11" />
       </dep:comparisonPredicate>
@@ -39,9 +43,13 @@
       <dep:and>
         <dep:comparisonPredicate operator="greaterThanOrEquals">
           <dep:parenthesizedValueExpression>
-            <dep:lengthExpression lengthUnits="CHARACTERS">
-              <dep:valueKeyword />
-            </dep:lengthExpression>
+            <dep:charLengthExpression>
+              <dep:trimFunction specification="BOTH">
+                <dep:trimSource>
+                  <dep:valueKeyword />
+                </dep:trimSource>
+              </dep:trimFunction>
+            </dep:charLengthExpression>
           </dep:parenthesizedValueExpression>
           <ddt:exactNumericLiteral value="1" />
         </dep:comparisonPredicate>
@@ -57,7 +65,7 @@
     <dcl:column name="DrivesCar_vin" isNullable="false" isIdentity="false">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
-    <dcl:column isNullable="false" isIdentity="true" name="DrvnByPrsn_Prsn_d">
+    <dcl:column isNullable="false" isIdentity="false" name="DrvnByPrsn_Prsn_d">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:referenceConstraint name="DrivenByPerson_FK" targetTable="Person">
@@ -71,13 +79,13 @@
     <dcl:column name="SaleDate_YMD" isNullable="false" isIdentity="false">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
-    <dcl:column isNullable="false" isIdentity="true" name="Buyer_Person_id">
+    <dcl:column isNullable="false" isIdentity="false" name="Buyer_Person_id">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:referenceConstraint name="Buyer_FK" targetTable="Person">
       <dcl:columnRef sourceName="Buyer_Person_id" targetName="Person_id" />
     </dcl:referenceConstraint>
-    <dcl:column isNullable="false" isIdentity="true" name="Seller_Person_id">
+    <dcl:column isNullable="false" isIdentity="false" name="Seller_Person_id">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:referenceConstraint name="Seller_FK" targetTable="Person">
@@ -99,7 +107,7 @@
     <dcl:column name="NickName" isNullable="false" isIdentity="false">
       <dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
     </dcl:column>
-    <dcl:column isNullable="false" isIdentity="true" name="Person_Person_id">
+    <dcl:column isNullable="false" isIdentity="false" name="Person_Person_id">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:referenceConstraint name="Person_FK" targetTable="Person">
@@ -152,13 +160,13 @@
     <dcl:column name="CPBOBON" isNullable="true" isIdentity="false">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
-    <dcl:column isNullable="false" isIdentity="true" name="Father_Person_id">
+    <dcl:column isNullable="false" isIdentity="false" name="Father_Person_id">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:referenceConstraint name="Father_FK" targetTable="Person">
       <dcl:columnRef sourceName="Father_Person_id" targetName="Person_id" />
     </dcl:referenceConstraint>
-    <dcl:column isNullable="false" isIdentity="true" name="Mother_Person_id">
+    <dcl:column isNullable="false" isIdentity="false" name="Mother_Person_id">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:referenceConstraint name="Mother_FK" targetTable="Person">
@@ -178,7 +186,7 @@
     <dcl:uniquenessConstraint name="IUC16" isPrimary="true">
       <dcl:columnRef name="Task_id" />
     </dcl:uniquenessConstraint>
-    <dcl:column isNullable="true" isIdentity="true" name="Person_Person_id">
+    <dcl:column isNullable="true" isIdentity="false" name="Person_Person_id">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:referenceConstraint name="Person_FK" targetTable="Person">
@@ -192,7 +200,7 @@
     <dcl:uniquenessConstraint name="VlTyp1Vl_Unq" isPrimary="true">
       <dcl:columnRef name="ValueType1Value" />
     </dcl:uniquenessConstraint>
-    <dcl:column isNullable="true" isIdentity="true" name="Person_Person_id">
+    <dcl:column isNullable="true" isIdentity="false" name="Person_Person_id">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:referenceConstraint name="Person_FK" targetTable="Person">

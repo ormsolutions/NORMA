@@ -5,25 +5,29 @@
   <dms:setSchemaStatement>
     <ddt:characterStringLiteral value="SAMPLEMODEL" />
   </dms:setSchemaStatement>
-  <ddl:domainDefinition name="SclScrtyNmbr">
+  <ddl:domainDefinition name="SclScrtyNmbr" schema="SampleModel">
     <ddt:characterString type="CHARACTER" length="11" />
-    <ddl:domainConstraint dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:domainConstraint>
       <dep:constraintNameDefinition name="SclScrtyNmbr_Chk" />
       <ddl:checkConstraintDefinition>
         <dep:comparisonPredicate operator="greaterThanOrEquals">
           <dep:parenthesizedValueExpression>
-            <dep:lengthExpression lengthUnits="CHARACTERS">
-              <dep:valueKeyword />
-            </dep:lengthExpression>
+            <dep:charLengthExpression>
+              <dep:trimFunction specification="BOTH">
+                <dep:trimSource>
+                  <dep:valueKeyword />
+                </dep:trimSource>
+              </dep:trimFunction>
+            </dep:charLengthExpression>
           </dep:parenthesizedValueExpression>
           <ddt:exactNumericLiteral value="11" />
         </dep:comparisonPredicate>
       </ddl:checkConstraintDefinition>
     </ddl:domainConstraint>
   </ddl:domainDefinition>
-  <ddl:domainDefinition name="&quot;Integer&quot;">
+  <ddl:domainDefinition name="&quot;Integer&quot;" schema="SampleModel">
     <ddt:exactNumeric type="BIGINT" />
-    <ddl:domainConstraint dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:domainConstraint>
       <dep:constraintNameDefinition name="Integer_Chk" />
       <ddl:checkConstraintDefinition>
         <dep:betweenPredicate type="BETWEEN">
@@ -34,9 +38,9 @@
       </ddl:checkConstraintDefinition>
     </ddl:domainConstraint>
   </ddl:domainDefinition>
-  <ddl:domainDefinition name="DeathCause_Type">
+  <ddl:domainDefinition name="DeathCause_Type" schema="SampleModel">
     <ddt:characterString type="CHARACTER VARYING" length="14" />
-    <ddl:domainConstraint dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:domainConstraint>
       <dep:constraintNameDefinition name="DthCs_Typ_Chk" />
       <ddl:checkConstraintDefinition>
         <dep:inPredicate type="IN">
@@ -47,17 +51,21 @@
       </ddl:checkConstraintDefinition>
     </ddl:domainConstraint>
   </ddl:domainDefinition>
-  <ddl:domainDefinition name="Gender_Code">
+  <ddl:domainDefinition name="Gender_Code" schema="SampleModel">
     <ddt:characterString type="CHARACTER" length="1" />
-    <ddl:domainConstraint dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:domainConstraint>
       <dep:constraintNameDefinition name="Gender_Code_Chk" />
       <ddl:checkConstraintDefinition>
         <dep:and>
           <dep:comparisonPredicate operator="greaterThanOrEquals">
             <dep:parenthesizedValueExpression>
-              <dep:lengthExpression lengthUnits="CHARACTERS">
-                <dep:valueKeyword />
-              </dep:lengthExpression>
+              <dep:charLengthExpression>
+                <dep:trimFunction specification="BOTH">
+                  <dep:trimSource>
+                    <dep:valueKeyword />
+                  </dep:trimSource>
+                </dep:trimFunction>
+              </dep:charLengthExpression>
             </dep:parenthesizedValueExpression>
             <ddt:exactNumericLiteral value="1" />
           </dep:comparisonPredicate>
@@ -70,7 +78,7 @@
       </ddl:checkConstraintDefinition>
     </ddl:domainConstraint>
   </ddl:domainDefinition>
-  <ddl:tableDefinition name="PersonDrivesCar">
+  <ddl:tableDefinition name="PersonDrivesCar" schema="SampleModel">
     <ddl:columnDefinition name="DrivesCar_vin">
       <ddt:exactNumeric type="BIGINT" />
       <ddl:columnConstraintDefinition>
@@ -79,20 +87,12 @@
     </ddl:columnDefinition>
     <ddl:columnDefinition name="DrvnByPrsn_Prsn_d">
       <ddt:exactNumeric type="BIGINT" />
-      <ddl:identityColumnSpecification type="ALWAYS">
-        <ddl:sequenceGeneratorStartWithOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorStartWithOption>
-        <ddl:sequenceGeneratorIncrementByOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorIncrementByOption>
-      </ddl:identityColumnSpecification>
       <ddl:columnConstraintDefinition>
         <ddl:notNullKeyword />
       </ddl:columnConstraintDefinition>
     </ddl:columnDefinition>
   </ddl:tableDefinition>
-  <ddl:tableDefinition name="PBCFPOD">
+  <ddl:tableDefinition name="PBCFPOD" schema="SampleModel">
     <ddl:columnDefinition name="CarSold_vin">
       <ddt:exactNumeric type="BIGINT" />
       <ddl:columnConstraintDefinition>
@@ -107,34 +107,18 @@
     </ddl:columnDefinition>
     <ddl:columnDefinition name="Buyer_Person_id">
       <ddt:exactNumeric type="BIGINT" />
-      <ddl:identityColumnSpecification type="ALWAYS">
-        <ddl:sequenceGeneratorStartWithOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorStartWithOption>
-        <ddl:sequenceGeneratorIncrementByOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorIncrementByOption>
-      </ddl:identityColumnSpecification>
       <ddl:columnConstraintDefinition>
         <ddl:notNullKeyword />
       </ddl:columnConstraintDefinition>
     </ddl:columnDefinition>
     <ddl:columnDefinition name="Seller_Person_id">
       <ddt:exactNumeric type="BIGINT" />
-      <ddl:identityColumnSpecification type="ALWAYS">
-        <ddl:sequenceGeneratorStartWithOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorStartWithOption>
-        <ddl:sequenceGeneratorIncrementByOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorIncrementByOption>
-      </ddl:identityColumnSpecification>
       <ddl:columnConstraintDefinition>
         <ddl:notNullKeyword />
       </ddl:columnConstraintDefinition>
     </ddl:columnDefinition>
   </ddl:tableDefinition>
-  <ddl:tableDefinition name="Review">
+  <ddl:tableDefinition name="Review" schema="SampleModel">
     <ddl:columnDefinition name="Car_vin">
       <ddt:exactNumeric type="BIGINT" />
       <ddl:columnConstraintDefinition>
@@ -154,7 +138,7 @@
       </ddl:columnConstraintDefinition>
     </ddl:columnDefinition>
   </ddl:tableDefinition>
-  <ddl:tableDefinition name="PersonHasNickName">
+  <ddl:tableDefinition name="PersonHasNickName" schema="SampleModel">
     <ddl:columnDefinition name="NickName">
       <ddt:characterString type="CHARACTER VARYING" length="64" />
       <ddl:columnConstraintDefinition>
@@ -163,20 +147,12 @@
     </ddl:columnDefinition>
     <ddl:columnDefinition name="Person_Person_id">
       <ddt:exactNumeric type="BIGINT" />
-      <ddl:identityColumnSpecification type="ALWAYS">
-        <ddl:sequenceGeneratorStartWithOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorStartWithOption>
-        <ddl:sequenceGeneratorIncrementByOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorIncrementByOption>
-      </ddl:identityColumnSpecification>
       <ddl:columnConstraintDefinition>
         <ddl:notNullKeyword />
       </ddl:columnConstraintDefinition>
     </ddl:columnDefinition>
   </ddl:tableDefinition>
-  <ddl:tableDefinition name="Person">
+  <ddl:tableDefinition name="Person" schema="SampleModel">
     <ddl:columnDefinition name="FirstName">
       <ddt:characterString type="CHARACTER VARYING" length="64" />
       <ddl:columnConstraintDefinition>
@@ -194,7 +170,7 @@
         </ddl:sequenceGeneratorIncrementByOption>
       </ddl:identityColumnSpecification>
       <ddl:columnConstraintDefinition>
-		  <ddl:primaryKeyKeyword/>		  
+        <ddl:notNullKeyword />
       </ddl:columnConstraintDefinition>
     </ddl:columnDefinition>
     <ddl:columnDefinition name="Date_YMD">
@@ -235,28 +211,12 @@
     </ddl:columnDefinition>
     <ddl:columnDefinition name="Father_Person_id">
       <ddt:exactNumeric type="BIGINT" />
-      <ddl:identityColumnSpecification type="ALWAYS">
-        <ddl:sequenceGeneratorStartWithOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorStartWithOption>
-        <ddl:sequenceGeneratorIncrementByOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorIncrementByOption>
-      </ddl:identityColumnSpecification>
       <ddl:columnConstraintDefinition>
         <ddl:notNullKeyword />
       </ddl:columnConstraintDefinition>
     </ddl:columnDefinition>
     <ddl:columnDefinition name="Mother_Person_id">
       <ddt:exactNumeric type="BIGINT" />
-      <ddl:identityColumnSpecification type="ALWAYS">
-        <ddl:sequenceGeneratorStartWithOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorStartWithOption>
-        <ddl:sequenceGeneratorIncrementByOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorIncrementByOption>
-      </ddl:identityColumnSpecification>
       <ddl:columnConstraintDefinition>
         <ddl:notNullKeyword />
       </ddl:columnConstraintDefinition>
@@ -267,26 +227,26 @@
     <ddl:columnDefinition name="DDCDCT">
       <ddt:domain name="DeathCause_Type" />
     </ddl:columnDefinition>
-    <ddl:tableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:tableConstraintDefinition>
       <dep:constraintNameDefinition name="IUC2" />
       <ddl:uniqueConstraintDefinition type="PRIMARY KEY">
         <ddl:column name="Person_id" />
       </ddl:uniqueConstraintDefinition>
     </ddl:tableConstraintDefinition>
-    <ddl:tableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:tableConstraintDefinition>
       <dep:constraintNameDefinition name="IUC9" />
       <ddl:uniqueConstraintDefinition type="UNIQUE">
         <ddl:column name="SclScrtyNmbr" />
       </ddl:uniqueConstraintDefinition>
     </ddl:tableConstraintDefinition>
-    <ddl:tableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:tableConstraintDefinition>
       <dep:constraintNameDefinition name="IUC22" />
       <ddl:uniqueConstraintDefinition type="UNIQUE">
         <ddl:column name="OwnsCar_vin" />
       </ddl:uniqueConstraintDefinition>
     </ddl:tableConstraintDefinition>
   </ddl:tableDefinition>
-  <ddl:tableDefinition name="Task">
+  <ddl:tableDefinition name="Task" schema="SampleModel">
     <ddl:columnDefinition name="Task_id">
       <ddt:exactNumeric type="BIGINT" />
       <ddl:identityColumnSpecification type="ALWAYS">
@@ -303,23 +263,15 @@
     </ddl:columnDefinition>
     <ddl:columnDefinition name="Person_Person_id">
       <ddt:exactNumeric type="BIGINT" />
-      <ddl:identityColumnSpecification type="ALWAYS">
-        <ddl:sequenceGeneratorStartWithOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorStartWithOption>
-        <ddl:sequenceGeneratorIncrementByOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorIncrementByOption>
-      </ddl:identityColumnSpecification>
     </ddl:columnDefinition>
-    <ddl:tableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:tableConstraintDefinition>
       <dep:constraintNameDefinition name="IUC16" />
       <ddl:uniqueConstraintDefinition type="PRIMARY KEY">
         <ddl:column name="Task_id" />
       </ddl:uniqueConstraintDefinition>
     </ddl:tableConstraintDefinition>
   </ddl:tableDefinition>
-  <ddl:tableDefinition name="ValueType1">
+  <ddl:tableDefinition name="ValueType1" schema="SampleModel">
     <ddl:columnDefinition name="ValueType1Value">
       <ddt:exactNumeric type="BIGINT" />
       <ddl:columnConstraintDefinition>
@@ -328,16 +280,8 @@
     </ddl:columnDefinition>
     <ddl:columnDefinition name="Person_Person_id">
       <ddt:exactNumeric type="BIGINT" />
-      <ddl:identityColumnSpecification type="ALWAYS">
-        <ddl:sequenceGeneratorStartWithOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorStartWithOption>
-        <ddl:sequenceGeneratorIncrementByOption>
-          <ddt:exactNumericLiteral value="1" />
-        </ddl:sequenceGeneratorIncrementByOption>
-      </ddl:identityColumnSpecification>
     </ddl:columnDefinition>
-    <ddl:tableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:tableConstraintDefinition>
       <dep:constraintNameDefinition name="VlTyp1Vl_Unq" />
       <ddl:uniqueConstraintDefinition type="PRIMARY KEY">
         <ddl:column name="ValueType1Value" />
@@ -345,7 +289,7 @@
     </ddl:tableConstraintDefinition>
   </ddl:tableDefinition>
   <ddl:alterTableStatement name="PersonDrivesCar">
-    <ddl:addTableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:addTableConstraintDefinition>
       <dep:constraintNameDefinition name="DrivenByPerson_FK" />
       <ddl:referentialConstraintDefinition>
         <ddl:column name="DrvnByPrsn_Prsn_d" />
@@ -356,7 +300,7 @@
     </ddl:addTableConstraintDefinition>
   </ddl:alterTableStatement>
   <ddl:alterTableStatement name="PBCFPOD">
-    <ddl:addTableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:addTableConstraintDefinition>
       <dep:constraintNameDefinition name="Buyer_FK" />
       <ddl:referentialConstraintDefinition>
         <ddl:column name="Buyer_Person_id" />
@@ -367,7 +311,7 @@
     </ddl:addTableConstraintDefinition>
   </ddl:alterTableStatement>
   <ddl:alterTableStatement name="PBCFPOD">
-    <ddl:addTableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:addTableConstraintDefinition>
       <dep:constraintNameDefinition name="Seller_FK" />
       <ddl:referentialConstraintDefinition>
         <ddl:column name="Seller_Person_id" />
@@ -378,7 +322,7 @@
     </ddl:addTableConstraintDefinition>
   </ddl:alterTableStatement>
   <ddl:alterTableStatement name="PersonHasNickName">
-    <ddl:addTableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:addTableConstraintDefinition>
       <dep:constraintNameDefinition name="Person_FK" />
       <ddl:referentialConstraintDefinition>
         <ddl:column name="Person_Person_id" />
@@ -389,7 +333,7 @@
     </ddl:addTableConstraintDefinition>
   </ddl:alterTableStatement>
   <ddl:alterTableStatement name="Person">
-    <ddl:addTableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:addTableConstraintDefinition>
       <dep:constraintNameDefinition name="ValueType1_FK" />
       <ddl:referentialConstraintDefinition>
         <ddl:column name="VlTyp1_VlTyp1Vl" />
@@ -400,7 +344,7 @@
     </ddl:addTableConstraintDefinition>
   </ddl:alterTableStatement>
   <ddl:alterTableStatement name="Person">
-    <ddl:addTableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:addTableConstraintDefinition>
       <dep:constraintNameDefinition name="Father_FK" />
       <ddl:referentialConstraintDefinition>
         <ddl:column name="Father_Person_id" />
@@ -411,7 +355,7 @@
     </ddl:addTableConstraintDefinition>
   </ddl:alterTableStatement>
   <ddl:alterTableStatement name="Person">
-    <ddl:addTableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:addTableConstraintDefinition>
       <dep:constraintNameDefinition name="Mother_FK" />
       <ddl:referentialConstraintDefinition>
         <ddl:column name="Mother_Person_id" />
@@ -422,7 +366,7 @@
     </ddl:addTableConstraintDefinition>
   </ddl:alterTableStatement>
   <ddl:alterTableStatement name="Task">
-    <ddl:addTableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:addTableConstraintDefinition>
       <dep:constraintNameDefinition name="Person_FK" />
       <ddl:referentialConstraintDefinition>
         <ddl:column name="Person_Person_id" />
@@ -433,7 +377,7 @@
     </ddl:addTableConstraintDefinition>
   </ddl:alterTableStatement>
   <ddl:alterTableStatement name="ValueType1">
-    <ddl:addTableConstraintDefinition dep:constraintCharacteristics="INITIALLY IMMEDIATE NOT DEFERRABLE">
+    <ddl:addTableConstraintDefinition>
       <dep:constraintNameDefinition name="Person_FK" />
       <ddl:referentialConstraintDefinition>
         <ddl:column name="Person_Person_id" />

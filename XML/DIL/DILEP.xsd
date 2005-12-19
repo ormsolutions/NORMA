@@ -562,7 +562,7 @@
 	<xs:group name="numericValueFunction">
 		<xs:choice>
 			<xs:group ref="dep:positionExpression"/>
-			<xs:element ref="dep:lengthExpression"/>
+			<xs:group ref="dep:lengthExpression"/>
 			<xs:element ref="dep:extractExpression"/>
 			<xs:element ref="dep:absoluteValueExpression"/>
 			<xs:element ref="dep:modulusExpression"/>
@@ -605,13 +605,27 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="lengthExpression">
+	<xs:group name="lengthExpression">
+		<xs:choice>
+			<xs:element ref="dep:charLengthExpression"/>
+			<xs:element ref="dep:octetLengthExpression"/>
+		</xs:choice>
+	</xs:group>
+	<xs:element name="charLengthExpression">
 		<xs:annotation>
-			<xs:documentation>CHARACTER_LENGTH ( &lt;string value expression&gt; USING &lt;char length units&gt; )</xs:documentation>
+			<xs:documentation>CHARACTER_LENGTH ( &lt;string value expression&gt; [ USING &lt;char length units&gt; ] )</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:group ref="dep:stringValueExpression"/>
-			<xs:attribute name="lengthUnits" use="required" type="ddt:charLengthUnits"/>
+			<xs:attribute name="lengthUnits" use="optional" type="ddt:charLengthUnits" default="CHARACTERS"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="octetLengthExpression">
+		<xs:annotation>
+			<xs:documentation>OCTET_LENGTH ( &lt;string value expression&gt; )</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:group ref="dep:stringValueExpression"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="extractExpression">

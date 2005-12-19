@@ -57,7 +57,7 @@
 	</xsl:template>
 
 	<xsl:template match="odt:identity" mode="GenerateDataTypeReference">
-		<xsl:attribute name="isIdentity">
+		<xsl:attribute name="isForIdentity">
 			<xsl:value-of select="true()"/>
 		</xsl:attribute>
 		<dcl:predefinedDataType name="BIGINT"/>
@@ -264,9 +264,13 @@
 				<xsl:if test="@minLength">
 					<dep:comparisonPredicate operator="greaterThanOrEquals">
 						<dep:parenthesizedValueExpression>
-							<dep:lengthExpression lengthUnits="CHARACTERS">
-								<dep:valueKeyword/>
-							</dep:lengthExpression>
+							<dep:charLengthExpression>
+								<dep:trimFunction specification="BOTH">
+									<dep:trimSource>
+										<dep:valueKeyword/>
+									</dep:trimSource>
+								</dep:trimFunction>
+							</dep:charLengthExpression>
 						</dep:parenthesizedValueExpression>
 						<ddt:exactNumericLiteral value="{@minLength}"/>
 					</dep:comparisonPredicate>
@@ -329,6 +333,7 @@
 				<xsl:with-param name="DataTypes" select="$DataTypes"/>
 				<xsl:with-param name="TargetInformationType" select="."/>
 				<xsl:with-param name="AlwaysNullable" select="$AlwaysNullable"/>
+				<xsl:with-param name="AllowIdentity" select="true()"/>
 				<xsl:with-param name="Prefix" select="$prefix"/>
 			</xsl:call-template>
 			<xsl:for-each select="oil:singleRoleUniquenessConstraint[@modality='alethic']">
@@ -475,13 +480,14 @@
 		<xsl:param name="DataTypes"/>
 		<xsl:param name="TargetInformationType"/>
 		<xsl:param name="AlwaysNullable" select="false()"/>
+		<xsl:param name="AllowIdentity" select="false()"/>
 		<xsl:param name="Prefix">
 			<xsl:call-template name="GetPrefix">
 				<xsl:with-param name="Target" select="$TargetInformationType"/>
 			</xsl:call-template>
 		</xsl:param>
 		<xsl:variable name="dataType" select="$DataTypes[@name=$TargetInformationType/@formatRef]"/>
-		<dcl:column name="{dsf:makeValidIdentifier(concat($Prefix,@name))}" isNullable="{$AlwaysNullable or not(@mandatory='alethic')}" isIdentity="{$dataType/@isIdentity='true'}">
+		<dcl:column name="{dsf:makeValidIdentifier(concat($Prefix,@name))}" isNullable="{$AlwaysNullable or not(@mandatory='alethic')}" isIdentity="{$AllowIdentity and $dataType/@isForIdentity='true'}">
 			<xsl:copy-of select="$dataType/child::*"/>
 		</dcl:column>
 	</xsl:template>
