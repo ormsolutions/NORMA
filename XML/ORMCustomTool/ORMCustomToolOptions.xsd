@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:oct="http://schemas.neumont.edu/ORM/ORMCustomToolOptions" targetNamespace="http://schemas.neumont.edu/ORM/ORMCustomToolOptions">
+	<xs:element name="ormCustomToolOptions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="transformation" type="oct:Transformation"/>
+			</xs:sequence>
+			<xs:attribute name="outputFileExtension">
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:pattern value="\..+"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="Transformation">
+		<xs:choice>
+			<xs:element name="transformation" type="oct:Transformation"/>
+			<xs:element name="file">
+				<xs:complexType>
+					<xs:attribute name="href" use="required" type="xs:anyURI"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="stylesheet" use="required" type="xs:anyURI"/>
+	</xs:complexType>
+</xs:schema>

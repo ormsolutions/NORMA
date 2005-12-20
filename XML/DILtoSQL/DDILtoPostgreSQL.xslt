@@ -43,10 +43,10 @@
 	<xsl:template match="ddt:exactNumeric | ddt:approximateNumeric" mode="ForPostgresIdentityColumn">
 		<xsl:choose>
 			<xsl:when test="@type='INTEGER' or @type='SMALLINT'">
-				<xsl:text> SERIAL </xsl:text>
+				<xsl:text>SERIAL </xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:text> BIGSERIAL </xsl:text>
+				<xsl:text>BIGSERIAL </xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>		
 	</xsl:template>
