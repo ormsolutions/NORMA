@@ -596,6 +596,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
+
+				// The fact name is used in the generated error text, it needs to be an owner
+				foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError frequencyContradictionError in  FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
+				{
+					yield return frequencyContradictionError;
+				}
 			}
 		}
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection

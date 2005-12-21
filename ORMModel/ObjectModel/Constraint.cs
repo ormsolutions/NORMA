@@ -2897,6 +2897,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return minMaxError;
 				}
+				foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError contradictionError in FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
+				{
+					yield return contradictionError;
+				}
 			}
 		}
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
@@ -2913,12 +2917,129 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			base.ValidateErrors(notifyAdded);
 			VerifyMinMaxRule(notifyAdded);
+			VerifyContradictionErrorsWithFactTypeRule(notifyAdded);
 		}
+
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateErrors(notifyAdded);
 		}
 		#endregion //IModelErrorOwner Implementation
+
+		#region VerifyContradictionErrorsWithFactTypeRule
+		/// <summary>
+		/// Called when the model is loaded to verify that the 
+		/// FrequencyConstraintContradictsInternalUniquenessConstraintErrors
+		/// are still nessecary, or add any that are needed
+		/// </summary>
+		/// <param name="notifyAdded"></param>
+		private void VerifyContradictionErrorsWithFactTypeRule(INotifyElementAdded notifyAdded)
+		{
+			//create a list of the links between the constraint and the fact types it is attached to
+			//to preserve all information between the constraint and each fact type
+			IList factLinks = this.GetElementLinks(SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid);
+			int linkCount = factLinks.Count;
+			//if there are no fact links, there is no reason to step further into the method
+			if (linkCount != 0)
+			{
+				//create local variables that will be recreated regularly
+				SingleColumnExternalFactConstraint factLink;
+				FactType factType;
+				ConstraintRoleSequenceHasRoleMoveableCollection roleLinks;
+				Role roleOnFact;
+				//the error collection only needs to be called for once
+				FrequencyConstraintContradictsInternalUniquenessConstraintErrorMoveableCollection errors = this.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection;
+				for (int i = 0; i < linkCount; ++i)
+				{
+					bool needError = false, haveError = false;//booleans to determine what to do as far as the error is concerned
+					factLink = (SingleColumnExternalFactConstraint)factLinks[i];
+					factType = factLink.FactTypeCollection;
+					roleLinks = factLink.ConstrainedRoleCollection;
+					//determine if an error is needed
+					RoleMoveableCollection factRoles = factType.RoleCollection;//localize the role collection
+					int iucCount = factType.GetInternalConstraintsCount(ConstraintType.InternalUniqueness);//count of the IUCs
+					if (iucCount >= 0)//not passing this means needError stays false
+					{
+						int[] roleBits = new int[iucCount];//int array to accomodate the bit representation of the IUCs
+						int bits, roleCount, index = 0;//declare local integer variables which will see frequent use in the upcoming loop
+						RoleMoveableCollection constraintRoles;//declare local role collection which will be reset several times in the upcoming loop
+						foreach (InternalUniquenessConstraint ic in factType.GetInternalConstraints<InternalUniquenessConstraint>())
+						{
+							bits = 0;
+							constraintRoles = ic.RoleCollection;
+							roleCount = constraintRoles.Count;
+							for (int j = 0; j < roleCount; ++j)
+							{
+								bits |= 1 << factRoles.IndexOf(constraintRoles[j]);//bit shift the roles applied to by the internal uniqueness constraints
+							}
+							roleBits[index] = bits;
+							++index;
+						}
+						int fqBits = 0;//representation of the roles covered by the frequency constraint
+						//create similar bit for roles covered by the frequency constraint
+						roleCount = roleLinks.Count;//reuse roleCount
+						for (int j = 0; j < roleCount; ++j) 
+						{
+							roleOnFact = roleLinks[j].RoleCollection;
+							fqBits |= 1 << factRoles.IndexOf(roleOnFact);//hoping it's safe to assume the role is on the factType
+						}
+
+						int rbLength = roleBits.Length;
+						for (int j = 0; !needError && j < rbLength; ++j)
+						{
+							//compare roleBits[i] with fqBits
+							//set needError to true if an error needs to be added for this factType
+							int iBits = roleBits[j];
+							if (iBits != 0)
+							{
+								if ((fqBits & iBits) == iBits)
+								{
+									needError = true;
+									break;
+								}
+							}
+						}
+					}//end IUC count check
+					//walk the error collection (backwards) and determine if there is an error for this factType
+					//during the walk of the collection, if the error is not needed and found, remove it
+					int errorCount = errors.Count;
+					for (int j = errorCount - 1; j >= 0; --j)
+					{
+						FrequencyConstraintContradictsInternalUniquenessConstraintError error = errors[j];
+						if (object.ReferenceEquals(error.FactType, factType))
+						{
+							if (needError)
+							{
+								haveError = true;//have it, need it, good
+								break;
+							}
+							else
+							{
+								error.Remove();//have it, don't need it, get rid of it
+								continue;//continue checking the collection in case of duplicates
+							}//no reason to set haveError because needError is false
+						}
+					}
+					if (needError && !haveError)//need the error, but don't have it
+					{
+						//add the error - don't know how to do this part...
+						FrequencyConstraintContradictsInternalUniquenessConstraintError contraError = FrequencyConstraintContradictsInternalUniquenessConstraintError.CreateFrequencyConstraintContradictsInternalUniquenessConstraintError(Store);
+						contraError.FrequencyConstraint = this;
+						contraError.FactType = factType;
+						contraError.Model = this.Model;
+						contraError.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(contraError, true);
+						}
+					}
+					//repeat for the next factType
+				}//end fact type collection foreach
+			}//end ftCount check
+			//method ends at this point
+		}		
+		#endregion //VerifyContradictionErrorsWithFactTypeRule
+
 		#region MinMaxError Validation
 		/// <summary>
 		/// Add, remove, and otherwise validate the current NMinusOne errors
@@ -2994,7 +3115,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		}
 		#endregion // FrequencyConstraintMinMaxAddRule class
-
+		#region RemoveContraditionErrorsWithFactTypeRule class
+		/// <summary>
+		/// There is no automatic delete propagation when a role used by the
+		/// frequency constraint is removed and the role is the last role of that
+		/// fact used by the constraint. However, the ExternalFactConstraint link
+		/// is removed automatically for us in this case, so we go ahead and clear
+		/// out the appropriate errors here.
+		/// </summary>
+		[RuleOn(typeof(SingleColumnExternalFactConstraint))]
+		private class RemoveContraditionErrorsWithFactTypeRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				SingleColumnExternalFactConstraint link = e.ModelElement as SingleColumnExternalFactConstraint;
+				FrequencyConstraint fc = link.SingleColumnExternalConstraintCollection as FrequencyConstraint;
+				if (fc != null)
+				{
+					FactType fact = link.FactTypeCollection;
+					foreach (FrequencyConstraintContradictsInternalUniquenessConstraintError contradictionError in fc.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection)
+					{
+						Debug.Assert(!contradictionError.IsRemoved); // Removed errors should not be in the collection
+						if (object.ReferenceEquals(contradictionError.FactType, fact))
+						{
+							contradictionError.Remove();
+							// Note we can break here because there will only be one error per fact, and we must break here because we've modified the collection
+							break;
+						}
+					}
+				}
+			}
+		}
+		#endregion // RemoveContraditionErrorsWithFactTypeRule class
 	}
 	#endregion // FrequencyConstraint class
 	#region ModelError classes
@@ -3272,6 +3424,50 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IRepresentModelElements Implementation
 	
 	}
+	public partial class FrequencyConstraintContradictsInternalUniquenessConstraintError : IRepresentModelElements
+	{
+		#region Base Overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			FrequencyConstraint parent = this.FrequencyConstraint;
+			FactType fact = this.FactType;
+			string parentName = (parent != null) ? parent.Name : "";
+			string factName = (fact != null) ? fact.Name : "";
+			string currentText = Name;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.FrequencyConstraintContradictsInternalUniquenessConstraintText, parentName, factName, Model.Name);
+			if (currentText != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get 
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion// Base overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Implements IRepresentModelElements.GetRepresentedElements
+		/// </summary>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[]{FrequencyConstraint, FactType};
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
 	public partial class ImpliedInternalUniquenessConstraintError : IRepresentModelElements
 	{
 		#region Base Overrides
@@ -3323,7 +3519,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetRepresentedElements();
 		}
 		#endregion
-}
+	}
 	public partial class EqualityIsImpliedByMandatoryError : IRepresentModelElements
 	{
 		#region Base overrides

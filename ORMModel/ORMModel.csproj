@@ -268,7 +268,9 @@
     </None>
     <None Include="Transforms\SerializationExtensions.xsd" />
     <None Include="Transforms\SerializationExtensions.xslt" />
-    <EmbeddedResource Include="ObjectModel\ORM2Core.xsd" />
+    <EmbeddedResource Include="ObjectModel\ORM2Core.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\ORM2Diagram.xsd" />
     <EmbeddedResource Include="Shell\ORM2Root.xsd" />
     <Content Include="ObjectModel\ORMCore.AttachRules.xml">

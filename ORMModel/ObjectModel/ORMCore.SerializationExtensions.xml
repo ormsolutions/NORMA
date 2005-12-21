@@ -181,6 +181,7 @@
 		<se:Link RelationshipName="FactTypeHasFactTypeRequiresReadingError" RoleName="ReadingRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="ImpliedInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true"/>
 	<se:Element Class="Objectification">
@@ -201,6 +202,8 @@
 	<se:Element Class="Reading" HasMixedTypedAttributes="true" Override="true">
 		<se:Attribute ID="Text" Name="Data" WriteStyle="Element"/>
 		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ReadingHasTooManyRolesError" RoleName="TooManyRolesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="TooFewRolesError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Role-->
 	<se:Element Class="Role" Override="true" SortChildElements="true">
@@ -266,6 +269,7 @@
 	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ExternalUniquenessConstraint" Override="true" SortChildElements="true">
 		<se:ConditionalName Name="ImpliedExternalUniquenessConstraint">
@@ -409,5 +413,9 @@
 	</se:Element>
 	<se:Element Class="RolePlayerRequiredError" Override="true">
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="Role" Name="Role"/>
+	</se:Element>
+	<se:Element Class="FrequencyConstraintContradictsInternalUniquenessConstraintError" Override="true">
+		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FactType" Name="Fact"/>
+		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError" RoleName="FrequencyConstraint" Name="FrequencyConstraint"/>
 	</se:Element>
 </se:CustomSerializedElements>

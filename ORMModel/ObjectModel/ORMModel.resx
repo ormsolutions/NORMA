@@ -449,4 +449,8 @@
   <data name="FactType.RemoveInternalUniquenessConstraints.TransactionName">
     <value xml:space="preserve">FixInternalUniqueness</value>
   </data>
+  <data name="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text">
+    <value xml:space="preserve">Frequency constraint '{0}' in model '{2}' contradicts one or more internal uniqueness constraints on fact '{1}'.</value>
+    <comment xml:space="preserve">Model validation error text used when a frequency constraint contradicts an internal uniqueness constraint</comment>
+  </data>
 </root>

@@ -637,6 +637,16 @@
 			}
 		}
 		/// <summary>
+		/// Model validation error text used when a frequency constraint contradicts an internal uniqueness constraint
+		/// </summary>
+		public static string FrequencyConstraintContradictsInternalUniquenessConstraintText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text");
+			}
+		}
+		/// <summary>
 		/// Model validation error shown when too many role sequences are defined for a constraint. This is an infrequent occurrence which should not be attainable via the UI
 		/// </summary>
 		public static string ModelErrorConstraintHasTooManyRoleSequencesText

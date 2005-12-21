@@ -189,6 +189,9 @@
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text">
 		<comment type="summary">Model validation error shown when too few role sequences are defined for a constraint. This is a frequent occurrence as external constraints are easily created in this state.</comment>
 	</ResourceString>
+	<ResourceString name="FrequencyConstraintContradictsInternalUniquenessConstraintText" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text">
+		<comment type="summary">Model validation error text used when a frequency constraint contradicts an internal uniqueness constraint</comment>
+	</ResourceString>
 	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.Text">
 		<comment type="summary">Model validation error shown when too many role sequences are defined for a constraint. This is an infrequent occurrence which should not be attainable via the UI</comment>
 	</ResourceString>
