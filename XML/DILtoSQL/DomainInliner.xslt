@@ -28,15 +28,21 @@
 		<xsl:apply-templates select="." mode="DomainInliner"/>
 	</xsl:template>
 	<xsl:template match="*" mode="DomainInliner">
+		<xsl:param name="columnName"/>
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
-			<xsl:apply-templates mode="DomainInliner"/>
+			<xsl:apply-templates mode="DomainInliner">
+				<xsl:with-param name="columnName" select="$columnName"/>
+			</xsl:apply-templates>
 		</xsl:copy>
 	</xsl:template>
+
+	<xsl:template match="ddl:domainDefinition" mode="DomainInliner"/>
 	
 	<xsl:template match="ddl:columnDefinition[ddt:domain]" mode="DomainInliner">
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
+			<xsl:variable name="columnName" select="@name"/>
 			<xsl:variable name="domain" select="ddt:domain"/>
 			<xsl:variable name="domainDefinition" select="$domainDefinitions[@name=$domain/@name and (string-length(@schema)=0 or @schema=$domain/@schema or string-length($domain/@schema)=0) and (string-length(@catalog)=0 or @catalog=$domain/@catalog or string-length($domain/@catalog)=0)]"/>
 			<xsl:if test="not(count($domainDefinition)=1)">
@@ -49,13 +55,19 @@
 			<xsl:for-each select="$domainDefinition/ddl:domainConstraint">
 				<ddl:columnConstraintDefinition>
 					<xsl:copy-of select="@*"/>
-					<xsl:copy-of select="*"/>
+					<xsl:apply-templates mode="DomainInliner">
+						<xsl:with-param name="columnName" select="$columnName"/>
+					</xsl:apply-templates>
 				</ddl:columnConstraintDefinition>
 			</xsl:for-each>
 			<xsl:copy-of select="ddl:columnConstraintDefinition"/>
 		</xsl:copy>
 	</xsl:template>
 
-	<xsl:template match="ddl:domainDefinition" mode="DomainInliner"/>
+	<xsl:template match="dep:valueKeyword" mode="DomainInliner">
+		<xsl:param name="columnName"/>
+		<dep:columnReference name="{$columnName}"/>
+	</xsl:template>
+	
 	
 </xsl:stylesheet>
