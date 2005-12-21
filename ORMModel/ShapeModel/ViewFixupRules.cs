@@ -801,11 +801,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 								if (remainingOrders.Count != 0)
 								{
 									RoleMoveableCollection roles = fact.RoleCollection;
-									ReadingOrder newOrder = FactType.GetMatchingReading(remainingOrders, order, roles[0], null, false, false, roles, true).ReadingOrder;
-									if (newOrder != null)
+									Reading newReading = FactType.GetMatchingReading(remainingOrders, order, roles[0], null, false, false, roles, true);
+									if (newReading != null)
 									{
-										readingPel.Associate(newOrder);
-										return;
+										ReadingOrder newOrder = newReading.ReadingOrder;
+										if (newOrder != null)
+										{
+											readingPel.Associate(newOrder);
+											return;
+										}
 									}
 								}
 							}
