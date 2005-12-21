@@ -135,8 +135,6 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			return VSConstants.S_OK;
 		}
 
-		private static readonly byte[] preamble = Encoding.UTF8.GetPreamble();
-
 		[CLSCompliant(false)]
 		public int Generate(string wszInputFilePath, string bstrInputFileContents, string wszDefaultNamespace, IntPtr[] rgbOutputFileContents, out uint pcbOutput, IVsGeneratorProgress pGenerateProgress)
 		{
@@ -166,10 +164,9 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			byte[] buffer;
 			using (Stream output = options.Transformation.GetOutput())
 			{
-				buffer = new byte[preamble.Length + output.Length];
-				output.Read(buffer, preamble.Length, (int)output.Length);
+				buffer = new byte[output.Length];
+				output.Read(buffer, 0, (int)output.Length);
 			}
-			Buffer.BlockCopy(preamble, 0, buffer, 0, preamble.Length);
 			IntPtr outputFileContents = Marshal.AllocCoTaskMem(buffer.Length);
 			Marshal.Copy(buffer, 0, outputFileContents, buffer.Length);
 			rgbOutputFileContents[0] = outputFileContents;
