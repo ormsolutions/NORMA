@@ -26,6 +26,8 @@
 	<xsl:param name="Period" select="'.'"/>
 	<xsl:param name="NewLine" select="'&#x0D;&#x0A;'"/>
 	<xsl:param name="IndentChar" select="'&#x09;'"/>
+	<xsl:param name="StatementStartBracket" select="'('"/>
+	<xsl:param name="StatementEndBracket" select="')'"/>
 	<xsl:param name="LeftParen" select="'('"/>
 	<xsl:param name="RightParen" select="')'"/>
 	<xsl:param name="ConcatenationOperator" select="'||'"/>
@@ -116,7 +118,7 @@
 		<xsl:apply-templates select="@name" mode="ForTableDefinition"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
-		<xsl:value-of select="$LeftParen"/>
+		<xsl:value-of select="$StatementStartBracket"/>
 		<xsl:apply-templates select="ddl:columnDefinition">
 			<xsl:with-param name="indent" select="concat($NewLine, concat($indent, $IndentChar))"/>
 		</xsl:apply-templates>
@@ -125,7 +127,7 @@
 		</xsl:apply-templates>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$indent"/>
-		<xsl:value-of select="$RightParen"/>
+		<xsl:value-of select="$StatementEndBracket"/>
 		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
@@ -617,7 +619,7 @@
 
 	<xsl:template match="dep:inPredicate">
 		<xsl:apply-templates select="child::*[1]"/>
-		<xsl:text> IN</xsl:text>
+		<xsl:text> IN </xsl:text>
 		<xsl:choose>
 			<xsl:when test="dml:tableSubquery">
 				<xsl:apply-templates select="child::*[position() > 1]"/>
@@ -795,18 +797,24 @@
 		<xsl:apply-templates/>
 		<xsl:value-of select="$RightParen"/>
 		<xsl:text> </xsl:text>
-		<xsl:if test="@match">
-			<xsl:text>MATCH </xsl:text>
-			<xsl:value-of select="@match"/>
-		</xsl:if>		
-		<xsl:if test="@onDelete">
-			<xsl:text> ON DELETE </xsl:text>
-			<xsl:value-of select="@onDelete"/>
-		</xsl:if>
-		<xsl:if test="@onUpdate">
-			<xsl:text> ON UPDATE </xsl:text>
-			<xsl:value-of select="@onUpdate"/>
-		</xsl:if>
+		<xsl:apply-templates select="@match" mode="ForReferenceSpecification"/>
+		<xsl:apply-templates select="@onDelete" mode="ForReferenceSpecification"/>
+		<xsl:apply-templates select="@onUpdate" mode="ForReferenceSpecification"/>
+	</xsl:template>
+
+	<xsl:template match="@onUpdate" mode="ForReferenceSpecification">
+		<xsl:text> ON UPDATE </xsl:text>
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="@onDelete" mode="ForReferenceSpecification">
+		<xsl:text> ON DELETE </xsl:text>
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="@match" mode="ForReferenceSpecification">
+		<xsl:text> MATCH </xsl:text>
+		<xsl:value-of select="."/>
 	</xsl:template>
 
 	<xsl:template match="ddl:checkConstraintDefinition">
@@ -843,15 +851,20 @@
 		</xsl:if>
 		<xsl:value-of select="@name"/>
 		<xsl:text> </xsl:text>
-		<xsl:apply-templates/>
+		<xsl:apply-templates>
+			<xsl:with-param name="tableName" select="@name"/>
+		</xsl:apply-templates>
 		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
 
 	<xsl:template match="ddl:addTableConstraintDefinition">
+		<xsl:param name="tableName"/>
 		<xsl:text>ADD </xsl:text>
-		<xsl:apply-templates/>		
+		<xsl:apply-templates>
+			<xsl:with-param name="tableName" select="$tableName"/>
+		</xsl:apply-templates>
 	</xsl:template>
 
 	<xsl:template match="ddl:addColumnDefinition">

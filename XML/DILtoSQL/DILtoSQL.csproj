@@ -9,10 +9,15 @@
     <OutputPath>.\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="SampleModelORMtoSQLServer.xml">
+      <Generator>ORMCustomTool</Generator>
+      <LastGenOutput>SampleModelORMtoSQLServer.sql</LastGenOutput>
+    </Content>
     <Content Include="DomainInliner.xslt" />
     <Content Include="DCILtoDDIL.xslt" />
     <Content Include="DDILSample.xml" />
     <Content Include="DDILtoPostgreSQL.xslt" />
+    <Content Include="DDILtoSQLServer.xslt" />
     <Content Include="DDILtoSQLStandard.xslt" />
     <Content Include="SampleModelDDIL.xml" />
     <Content Include="SampleModelORMtoPostgreSQL.xml">
@@ -21,6 +26,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="SampleModelORMtoSQLServer.sql">
+      <DependentUpon>SampleModelORMtoSQLServer.xml</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </None>
     <None Include="SampleModelORMtoPostgreSQL.sql">
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModelORMtoPostgreSQL.xml</DependentUpon>
