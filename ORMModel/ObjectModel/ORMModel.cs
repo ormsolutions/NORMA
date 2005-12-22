@@ -48,6 +48,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion // ORMDeserializationFixupPhase enum
 	public partial class ORMModel
 	{
+		#region Root Xml Element Names
+		/// <summary>
+		/// The tag name for the element used as the root node of an ORM model
+		/// </summary>
+		public const string RootXmlElementName = "ORMModel";
+		/// <summary>
+		/// The namespace for the root node of an ORM model
+		/// </summary>
+		public const string RootXmlNamespace = "http://schemas.neumont.edu/ORM/ORMCore";
+		#endregion // Root Xml Element Names
 		#region Entity- and ValueType specific collections
 		/// <summary>
 		/// All of the entity types in the object types collection.

@@ -13,6 +13,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Framework;
 using EnvDTE;
+using Microsoft.VisualStudio.Shell.Interop;
 
 #if ATTACHELEMENTPROVIDERS
 using Neumont.Tools.ORM.DocumentSynchronization;
@@ -87,6 +88,7 @@ namespace Neumont.Tools.ORM.Shell
 
 			Store store = this.Store;
 			Diagram diagram = null;
+			bool dontSave = false;
 			if (fileName.EndsWith(@"\default.orm", true, CultureInfo.CurrentCulture))
 			{
 				#region Generate Test Object Model
@@ -190,20 +192,26 @@ namespace Neumont.Tools.ORM.Shell
 			else
 			{
 				Synchronize();
-				using (FileStream stream = File.OpenRead(fileName))
+				using (FileStream fileStream = File.OpenRead(fileName))
 				{
-					if (stream.Length > 1)
+					ORMDesignerSettings settings = ORMDesignerPackage.DesignerSettings;
+					using (Stream convertedStream = settings.ConvertStream(fileStream))
 					{
-						DeserializationFixupManager fixupManager = new DeserializationFixupManager(DeserializationFixupPhaseType, store);
-						foreach (IDeserializationFixupListener listener in DeserializationFixupListeners)
+						Stream stream = (convertedStream != null) ? convertedStream : fileStream;
+						dontSave = convertedStream != null;
+						if (stream.Length > 1)
 						{
-							fixupManager.AddListener(listener);
-						}
-						(new ORMSerializer(store)).Load(stream, fixupManager);
-						IList diagrams = store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid);
-						if (diagrams.Count != 0)
-						{
-							diagram = (Diagram)diagrams[0];
+							DeserializationFixupManager fixupManager = new DeserializationFixupManager(DeserializationFixupPhaseType, store);
+							foreach (IDeserializationFixupListener listener in DeserializationFixupListeners)
+							{
+								fixupManager.AddListener(listener);
+							}
+							(new ORMSerializer(store)).Load(stream, fixupManager);
+							IList diagrams = store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid);
+							if (diagrams.Count != 0)
+							{
+								diagram = (Diagram)diagrams[0];
+							}
 						}
 					}
 				}
@@ -244,6 +252,12 @@ namespace Neumont.Tools.ORM.Shell
 
 			// Make sure all of the shapes are set up correctly
 			diagram.PerformShapeAnchoringRule();
+
+			if (dontSave)
+			{
+				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
+				docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
+			}
 		}
 
 		/// <summary>

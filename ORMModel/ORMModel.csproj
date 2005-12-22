@@ -222,6 +222,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Shell\ORMSerializer.cs" />
+    <Compile Include="Shell\ORMDesignerSettings.cs" />
     <Compile Include="SyncDoc\ORMElementProvider.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -266,13 +267,18 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.SerializationExtensions.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="Shell\ORMDesignerSettings.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="Transforms\SerializationExtensions.xsd" />
     <None Include="Transforms\SerializationExtensions.xslt" />
     <EmbeddedResource Include="ObjectModel\ORM2Core.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\ORM2Diagram.xsd" />
-    <EmbeddedResource Include="Shell\ORM2Root.xsd" />
+    <EmbeddedResource Include="Shell\ORM2Root.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="ObjectModel\ORMCore.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.AttachRules.cs</LastGenOutput>
@@ -291,6 +297,8 @@
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
     </Content>
     <Content Include="Resources\ResourceStringsGenerator.xslt" />
+    <Content Include="Shell\Converters\CoreModelImport.xslt" />
+    <Content Include="Shell\ORMDesignerSettings.xml" />
     <None Include="ShapeModel\ORMShape.SerializationExtensions.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMShape.SerializationExtensions.cs</LastGenOutput>

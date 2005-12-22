@@ -21,6 +21,7 @@ Windows Registry Editor Version 5.00
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Editors\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}\Extensions]
 "orm"=dword:00000032
+"xml"=dword:00000010
 
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\8.0Exp\ToolsOptionsPages\ORM Designer]
 @="#105"

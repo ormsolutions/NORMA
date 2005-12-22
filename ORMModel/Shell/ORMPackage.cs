@@ -46,6 +46,7 @@ namespace Neumont.Tools.ORM.Shell
 		private object myCommandSet;
 		private IVsWindowFrame myFactEditorToolWindow;
 		private ORMDesignerFontsAndColors myFontAndColorService;
+		private ORMDesignerSettings myDesignerSettings;
 		private static ORMDesignerPackage mySingleton;
 		#endregion
 		#region Construction/destruction
@@ -79,6 +80,27 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				ORMDesignerPackage package = mySingleton;
 				return (package != null) ? package.myFontAndColorService : null;
+			}
+		}
+		/// <summary>
+		/// Get the designer settings for this package
+		/// </summary>
+		public static ORMDesignerSettings DesignerSettings
+		{
+			get
+			{
+				ORMDesignerPackage package = mySingleton;
+				if (package != null)
+				{
+					ORMDesignerSettings retVal = package.myDesignerSettings;
+					if (retVal == null)
+					{
+						package.myDesignerSettings = new ORMDesignerSettings(package);
+						retVal = package.myDesignerSettings;
+					}
+					return retVal;
+				}
+				return null;
 			}
 		}
 		/// <summary>

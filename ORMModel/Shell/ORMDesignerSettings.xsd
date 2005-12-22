@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	attributeFormDefault="unqualified"
+	elementFormDefault="qualified"
+	targetNamespace="http://schemas.neumont.edu/ORM/DesignerSettings"
+	xmlns="http://schemas.neumont.edu/ORM/DesignerSettings" 
+	xmlns:ds="http://schemas.neumont.edu/ORM/DesignerSettings" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="settings" type="DesignerSettingsType"/>
+	<xs:complexType name="DesignerSettingsType">
+		<xs:all>
+			<xs:element name="xmlConverters" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element ref="xmlConverter"/>
+					</xs:sequence>
+				</xs:complexType>
+				<xs:key name="ConverterDescriptionKey">
+					<xs:selector xpath="ds:xmlConverter"/>
+					<xs:field xpath="@description"/>
+				</xs:key>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:element name="xmlConverter" type="xmlConverterType"/>
+	<xs:complexType name="xmlConverterType">
+		<xs:annotation>
+			<xs:documentation>Specify a transform to run to convert a document with a root element of the specified sourceElement type to a document with the specified targetElement type.</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="extensionClass">
+				<xs:annotation>
+					<xs:documentation>A class to create and load to provide extension functions to the importer</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="xslNamespace" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>The namespace for this extension in the transform file</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="className" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>A fully qualified name for loading the class to instantiate and use with this extension</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="transformParameter">
+				<xs:annotation>
+					<xs:documentation>A parameter value to pass to the transform</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence></xs:sequence>
+					<xs:attribute name="name" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>The name of the param in the transform file</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="value" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>The value to pass to the parameter</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+		<xs:attribute name="description" type="xs:token" use="required">
+			<xs:annotation>
+				<xs:documentation>A short description of the converter. Used for conflict resolution if	multiple converters are specified for the same element.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="sourceElement" type="elementName" use="required">
+			<xs:annotation>
+				<xs:documentation>The type of document to convert from.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="targetElement" type="elementName" use="required">
+			<xs:annotation>
+				<xs:documentation>The type of document to convert to.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="transformFile" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>The transform file to load. Paths are relative to the XmlConverters directory.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="elementName">
+		<xs:annotation>
+			<xs:documentation>The name for the root element of a document. This is prefix-qualified name: any namespace prefixes defined in the designer document at this point (including the default namespace) will be applied to the applied to resolve the specified prefix.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="xs:QName">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value=".ORMRoot">
+						<xs:annotation>
+							<xs:documentation>An expandable element value indicating the schema for the root document in the current version of the designer. Root elements contain models, diagrams, and possibly other extension elements.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value=".ORMModel">
+						<xs:annotation>
+							<xs:documentation>An expandable element value indicating the schema for a standalone ORM model in the current version of the designer.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+</xs:schema>

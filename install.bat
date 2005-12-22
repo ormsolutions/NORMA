@@ -20,5 +20,11 @@ xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ProjectItems\FactEditor.fct" %envPath%"
 xcopy /Y /D /Q %rootPath%"ORMModel\ObjectModel\ORM2Core.xsd" %envPath%"Xml\Schemas\"
 xcopy /Y /D /Q %rootPath%"ORMModel\ShapeModel\ORM2Diagram.xsd" %envPath%"Xml\Schemas\"
 xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ORM2Root.xsd" %envPath%"Xml\Schemas\"
+xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ORMDesignerSettings.xsd" %envPath%"Xml\Schemas\"
+if not exist %envPath%"Neumont\ORMDesigner\XmlConverters" (
+mkdir %envPath%"Neumont\ORMDesigner\XmlConverters"
+)
+xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ORMDesignerSettings.xml" %envPath%"Neumont\ORMDesigner"
+xcopy /Y /D /Q %rootPath%"ORMModel\Shell\Converters\CoreModelImport.xslt" %envPath%"Neumont\ORMDesigner\XmlConverters"
 regedit /s %rootPath%ORMDesigner.vrg
 regedit /s %rootPath%FactEditor.vrg
