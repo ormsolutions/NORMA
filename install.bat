@@ -26,5 +26,6 @@ mkdir %envPath%"Neumont\ORMDesigner\XmlConverters"
 )
 xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ORMDesignerSettings.xml" %envPath%"Neumont\ORMDesigner"
 xcopy /Y /D /Q %rootPath%"ORMModel\Shell\Converters\CoreModelImport.xslt" %envPath%"Neumont\ORMDesigner\XmlConverters"
+xcopy /Y /D /Q %rootPath%"ORMModel\Shell\Converters\VisioToCoreModelImport.xslt" %envPath%"Neumont\ORMDesigner\XmlConverters"
 regedit /s %rootPath%ORMDesigner.vrg
 regedit /s %rootPath%FactEditor.vrg

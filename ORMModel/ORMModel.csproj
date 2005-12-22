@@ -298,6 +298,7 @@
     </Content>
     <Content Include="Resources\ResourceStringsGenerator.xslt" />
     <Content Include="Shell\Converters\CoreModelImport.xslt" />
+    <Content Include="Shell\Converters\VisioToCoreModelImport.xslt" />
     <Content Include="Shell\ORMDesignerSettings.xml" />
     <None Include="ShapeModel\ORMShape.SerializationExtensions.xml">
       <Generator>NUPlixLoader</Generator>
