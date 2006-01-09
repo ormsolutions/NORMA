@@ -81,7 +81,7 @@
 			<plx:branch>
 				<plx:condition>
 					<xsl:choose>
-						<xsl:when test="$ModelContextInterfaceImplementationVisibility='private'">
+						<xsl:when test="starts-with($ModelContextInterfaceImplementationVisibility,'private')">
 							<plx:callInstance type="property" name="IsDeserializing">
 								<plx:callObject>
 									<plx:cast type="testCast" dataTypeName="I{$ModelContextName}">
@@ -95,15 +95,13 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</plx:condition>
-				<plx:body>
-					<plx:throw>
-						<plx:callNew dataTypeName="InvalidOperationException">
-							<plx:passParam>
-								<plx:string>This factory method cannot be called while IsDeserializing returns true.</plx:string>
-							</plx:passParam>
-						</plx:callNew>
-					</plx:throw>
-				</plx:body>
+				<plx:throw>
+					<plx:callNew dataTypeName="InvalidOperationException">
+						<plx:passParam>
+							<plx:string>This factory method cannot be called while IsDeserializing returns true.</plx:string>
+						</plx:passParam>
+					</plx:callNew>
+				</plx:throw>
 			</plx:branch>
 			<!-- UNDONE: We currently aren't validating multi-role constraints prior to object creation. -->
 			<xsl:for-each select="$mandatoryParameters">
@@ -123,22 +121,20 @@
 							</plx:callThis>
 						</plx:unaryOperator>
 					</plx:condition>
-					<plx:body>
-						<plx:throw>
-							<!-- Not all constraints are capable of throwing on their own,
-							so we provide a default exception for them here if they return false. -->
-							<plx:callNew dataTypeName="ArgumentException" dataTypeQualifier="System">
-								<plx:passParam>
-									<plx:string>An argument failed constraint enforcement.</plx:string>
-								</plx:passParam>
-								<plx:passParam>
-									<plx:string>
-										<xsl:value-of select="@name"/>
-									</plx:string>
-								</plx:passParam>
-							</plx:callNew>
-						</plx:throw>
-					</plx:body>
+					<plx:throw>
+						<!-- Not all constraints are capable of throwing on their own,
+						so we provide a default exception for them here if they return false. -->
+						<plx:callNew dataTypeName="ArgumentException" dataTypeQualifier="System">
+							<plx:passParam>
+								<plx:string>An argument failed constraint enforcement.</plx:string>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:string>
+									<xsl:value-of select="@name"/>
+								</plx:string>
+							</plx:passParam>
+						</plx:callNew>
+					</plx:throw>
 				</plx:branch>
 			</xsl:for-each>
 			<plx:return>
@@ -280,20 +276,18 @@
 								</plx:right>
 							</plx:binaryOperator>
 						</plx:condition>
-						<plx:body>
-							<plx:assign>
-								<plx:left>
-									<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{@name}"/>
-								</plx:left>
-								<plx:right>
-									<plx:callNew dataTypeName="{@name}Collection">
-										<plx:passParam>
-											<plx:thisKeyword/>
-										</plx:passParam>
-									</plx:callNew>
-								</plx:right>
-							</plx:assign>
-						</plx:body>
+						<plx:assign>
+							<plx:left>
+								<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{@name}"/>
+							</plx:left>
+							<plx:right>
+								<plx:callNew dataTypeName="{@name}Collection">
+									<plx:passParam>
+										<plx:thisKeyword/>
+									</plx:passParam>
+								</plx:callNew>
+							</plx:right>
+						</plx:assign>
 					</plx:branch>
 				</xsl:if>
 				<plx:return>
@@ -316,71 +310,65 @@
 								</plx:callStatic>
 							</plx:unaryOperator>
 						</plx:condition>
-						<plx:body>
-							<!-- Notify the ModelContext that we're changing the value of a property. -->
+						<!-- Notify the ModelContext that we're changing the value of a property. -->
+						<plx:branch>
+							<plx:condition>
+								<plx:callInstance type="methodCall" name="On{$className}{@name}Changing">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="property" name="Context"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:thisKeyword />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:valueKeyword />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:trueKeyword/>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:condition>
 							<plx:branch>
 								<plx:condition>
-									<plx:callInstance type="methodCall" name="On{$className}{@name}Changing">
-										<plx:callObject>
-											<plx:callThis accessor="this" type="property" name="Context"/>
-										</plx:callObject>
+									<plx:callThis accessor="base" type="methodCall" name="Raise{@name}ChangingEvent">
 										<plx:passParam>
-											<plx:thisKeyword />
+											<plx:valueKeyword/>
 										</plx:passParam>
-										<plx:passParam>
-											<plx:valueKeyword />
-										</plx:passParam>
-										<plx:passParam>
-											<plx:trueKeyword/>
-										</plx:passParam>
-									</plx:callInstance>
+									</plx:callThis>
 								</plx:condition>
-								<plx:body>
-									<plx:branch>
-										<plx:condition>
-											<plx:callThis accessor="base" type="methodCall" name="Raise{@name}ChangingEvent">
-												<plx:passParam>
-													<plx:valueKeyword/>
-												</plx:passParam>
-											</plx:callThis>
-										</plx:condition>
-										<plx:body>
-											<plx:local name="oldValue">
-												<xsl:copy-of select="DataType/@*"/>
-												<xsl:copy-of select="DataType/child::*"/>
-												<plx:initialize>
-													<plx:callThis accessor="this" type="property" name="{@name}"/>
-												</plx:initialize>
-											</plx:local>
-											<plx:assign>
-												<plx:left>
-													<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{@name}"/>
-												</plx:left>
-												<plx:right>
-													<plx:valueKeyword/>
-												</plx:right>
-											</plx:assign>
-											<plx:callInstance name="On{$className}{@name}Changed">
-												<plx:callObject>
-													<plx:callThis accessor="this" type="property" name="Context"/>
-												</plx:callObject>
-												<plx:passParam>
-													<plx:thisKeyword />
-												</plx:passParam>
-												<plx:passParam>
-													<plx:nameRef type="local" name="oldValue"/>
-												</plx:passParam>
-											</plx:callInstance>
-											<plx:callThis accessor="base" type="methodCall" name="Raise{@name}ChangedEvent">
-												<plx:passParam>
-													<plx:nameRef type="local" name="oldValue"/>
-												</plx:passParam>
-											</plx:callThis>
-										</plx:body>
-									</plx:branch>
-								</plx:body>
+								<plx:local name="oldValue">
+									<xsl:copy-of select="DataType/@*"/>
+									<xsl:copy-of select="DataType/child::*"/>
+									<plx:initialize>
+										<plx:callThis accessor="this" type="property" name="{@name}"/>
+									</plx:initialize>
+								</plx:local>
+								<plx:assign>
+									<plx:left>
+										<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{@name}"/>
+									</plx:left>
+									<plx:right>
+										<plx:valueKeyword/>
+									</plx:right>
+								</plx:assign>
+								<plx:callInstance name="On{$className}{@name}Changed">
+									<plx:callObject>
+										<plx:callThis accessor="this" type="property" name="Context"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:thisKeyword />
+									</plx:passParam>
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue"/>
+									</plx:passParam>
+								</plx:callInstance>
+								<plx:callThis accessor="base" type="methodCall" name="Raise{@name}ChangedEvent">
+									<plx:passParam>
+										<plx:nameRef type="local" name="oldValue"/>
+									</plx:passParam>
+								</plx:callThis>
 							</plx:branch>
-						</plx:body>
+						</plx:branch>
 					</plx:branch>
 				</plx:set>
 			</xsl:if>
@@ -516,11 +504,9 @@
 										</plx:callStatic>
 									</plx:unaryOperator>
 								</plx:condition>
-								<plx:body>
-									<plx:return>
-										<plx:falseKeyword/>
-									</plx:return>
-								</plx:body>
+								<plx:return>
+									<plx:falseKeyword/>
+								</plx:return>
 							</plx:branch>
 						</xsl:when>
 						<xsl:otherwise>
@@ -564,88 +550,80 @@
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:condition>
-							<plx:body>
-								<xsl:choose>
-									<xsl:when test="@customType='true'">
+							<xsl:choose>
+								<xsl:when test="@customType='true'">
+									<plx:branch>
+										<plx:condition>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:thisKeyword/>
+												</plx:left>
+												<plx:right>
+													<plx:callInstance type="property" name="Context">
+														<plx:callObject>
+															<plx:nameRef type="parameter" name="newValue"/>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:condition>
+										<plx:throw>
+											<plx:callNew dataTypeName="ArgumentException">
+												<plx:passParam>
+													<plx:string>All objects in a relationship must be part of the same Context.</plx:string>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:string>value</plx:string>
+												</plx:passParam>
+											</plx:callNew>
+										</plx:throw>
+									</plx:branch>
+								</xsl:when>
+								<xsl:when test="@unique='true' and not(@customType='true')">
+									<plx:local name="currentInstance" dataTypeName="{$className}">
+										<plx:initialize>
+											<plx:nameRef type="parameter" name="instance"/>
+										</plx:initialize>
+									</plx:local>
+									<plx:branch>
+										<plx:condition>
+											<plx:callInstance name="TryGetValue">
+												<plx:callObject>
+													<plx:callThis name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" type="field"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:nameRef type="parameter" name="newValue"/>
+												</plx:passParam>
+												<plx:passParam type="out">
+													<plx:nameRef name="currentInstance"/>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:condition>
 										<plx:branch>
 											<plx:condition>
-												<plx:binaryOperator type="identityInequality">
-													<plx:left>
-														<plx:thisKeyword/>
-													</plx:left>
-													<plx:right>
-														<plx:callInstance type="property" name="Context">
-															<plx:callObject>
-																<plx:nameRef type="parameter" name="newValue"/>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:right>
-												</plx:binaryOperator>
-											</plx:condition>
-											<plx:body>
-												<plx:throw>
-													<plx:callNew dataTypeName="ArgumentException">
+												<plx:unaryOperator type="booleanNot">
+													<plx:callStatic name="Equals" dataTypeName=".object">
 														<plx:passParam>
-															<plx:string>All objects in a relationship must be part of the same Context.</plx:string>
+															<plx:nameRef name="currentInstance"/>
 														</plx:passParam>
 														<plx:passParam>
-															<plx:string>value</plx:string>
+															<plx:nameRef type="parameter" name="instance"/>
 														</plx:passParam>
-													</plx:callNew>
-												</plx:throw>
-											</plx:body>
-										</plx:branch>
-									</xsl:when>
-									<xsl:when test="@unique='true' and not(@customType='true')">
-										<plx:local name="currentInstance" dataTypeName="{$className}">
-											<plx:initialize>
-												<plx:nameRef type="parameter" name="instance"/>
-											</plx:initialize>
-										</plx:local>
-										<plx:branch>
-											<plx:condition>
-												<plx:callInstance name="TryGetValue">
-													<plx:callObject>
-														<plx:callThis name="{$PrivateMemberPrefix}{$className}{@name}Dictionary" type="field"/>
-													</plx:callObject>
-													<plx:passParam>
-														<plx:nameRef type="parameter" name="newValue"/>
-													</plx:passParam>
-													<plx:passParam type="out">
-														<plx:nameRef name="currentInstance"/>
-													</plx:passParam>
-												</plx:callInstance>
+													</plx:callStatic>
+												</plx:unaryOperator>
 											</plx:condition>
-											<plx:body>
-												<plx:branch>
-													<plx:condition>
-														<plx:unaryOperator type="booleanNot">
-															<plx:callStatic name="Equals" dataTypeName=".object">
-																<plx:passParam>
-																	<plx:nameRef name="currentInstance"/>
-																</plx:passParam>
-																<plx:passParam>
-																	<plx:nameRef type="parameter" name="instance"/>
-																</plx:passParam>
-															</plx:callStatic>
-														</plx:unaryOperator>
-													</plx:condition>
-													<plx:body>
-														<plx:return>
-															<plx:falseKeyword/>
-														</plx:return>
-													</plx:body>
-												</plx:branch>
-											</plx:body>
+											<plx:return>
+												<plx:falseKeyword/>
+											</plx:return>
 										</plx:branch>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:message terminate="yes">
-											<xsl:text>Sanity Check (this should never be executed)</xsl:text>
-										</xsl:message>
-									</xsl:otherwise>
-								</xsl:choose>
-							</plx:body>
+									</plx:branch>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:message terminate="yes">
+										<xsl:text>Sanity Check (this should never be executed)</xsl:text>
+									</xsl:message>
+								</xsl:otherwise>
+							</xsl:choose>
 						</plx:branch>
 						<xsl:if test="not(@customType='true')">
 							<plx:pragma type="warningRestore" data="0472"/>
@@ -795,48 +773,46 @@
 					</plx:right>
 				</plx:binaryOperator>
 			</plx:condition>
-			<plx:body>
-				<xsl:choose>
-					<xsl:when test="@unique='true' and @customType='true'">
-						<plx:assign>
-							<plx:left>
-								<plx:callInstance type="property" name="{@oppositeName}">
-									<plx:callObject>
-										<xsl:copy-of select="$oldValue"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword/>
-							</plx:right>
-						</plx:assign>
-					</xsl:when>
-					<xsl:when test="@unique='true' and not(@customType='true')">
-						<plx:callInstance name="Remove">
-							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{$className}{@name}Dictionary"/>
-							</plx:callObject>
-							<plx:passParam>
-								<xsl:copy-of select="$oldValue"/>
-							</plx:passParam>
-						</plx:callInstance>
-					</xsl:when>
-					<xsl:when test="not(@unique='true') and @customType='true'">
-						<plx:callInstance name="Remove">
-							<plx:callObject>
-								<plx:callInstance type="property" name="{@oppositeName}">
-									<plx:callObject>
-										<xsl:copy-of select="$oldValue"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="instance"/>
-							</plx:passParam>
-						</plx:callInstance>
-					</xsl:when>
-				</xsl:choose>
-			</plx:body>
+			<xsl:choose>
+				<xsl:when test="@unique='true' and @customType='true'">
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance type="property" name="{@oppositeName}">
+								<plx:callObject>
+									<xsl:copy-of select="$oldValue"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:assign>
+				</xsl:when>
+				<xsl:when test="@unique='true' and not(@customType='true')">
+					<plx:callInstance name="Remove">
+						<plx:callObject>
+							<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{$className}{@name}Dictionary"/>
+						</plx:callObject>
+						<plx:passParam>
+							<xsl:copy-of select="$oldValue"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</xsl:when>
+				<xsl:when test="not(@unique='true') and @customType='true'">
+					<plx:callInstance name="Remove">
+						<plx:callObject>
+							<plx:callInstance type="property" name="{@oppositeName}">
+								<plx:callObject>
+									<xsl:copy-of select="$oldValue"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="instance"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</xsl:when>
+			</xsl:choose>
 		</plx:branch>
 	</xsl:template>
 	<xsl:template name="GetImplementationPropertyChangedMethodUpdateNewOppositeObjectCode">
@@ -853,51 +829,49 @@
 					</plx:right>
 				</plx:binaryOperator>
 			</plx:condition>
-			<plx:body>
-				<xsl:choose>
-					<xsl:when test="@unique='true' and @customType='true'">
-						<plx:assign>
-							<plx:left>
-								<plx:callInstance type="property" name="{@oppositeName}">
-									<plx:callObject>
-										<xsl:copy-of select="$newValue"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:left>
-							<plx:right>
-								<plx:nameRef type="parameter" name="instance"/>
-							</plx:right>
-						</plx:assign>
-					</xsl:when>
-					<xsl:when test="@unique='true' and not(@customType='true')">
-						<plx:callInstance name="Add">
-							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{$className}{@name}Dictionary"/>
-							</plx:callObject>
-							<plx:passParam>
-								<xsl:copy-of select="$newValue"/>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="instance"/>
-							</plx:passParam>
-						</plx:callInstance>
-					</xsl:when>
-					<xsl:when test="not(@unique='true') and @customType='true'">
-						<plx:callInstance name="Add">
-							<plx:callObject>
-								<plx:callInstance type="property" name="{@oppositeName}">
-									<plx:callObject>
-										<xsl:copy-of select="$newValue"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="instance"/>
-							</plx:passParam>
-						</plx:callInstance>
-					</xsl:when>
-				</xsl:choose>
-			</plx:body>
+			<xsl:choose>
+				<xsl:when test="@unique='true' and @customType='true'">
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance type="property" name="{@oppositeName}">
+								<plx:callObject>
+									<xsl:copy-of select="$newValue"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:nameRef type="parameter" name="instance"/>
+						</plx:right>
+					</plx:assign>
+				</xsl:when>
+				<xsl:when test="@unique='true' and not(@customType='true')">
+					<plx:callInstance name="Add">
+						<plx:callObject>
+							<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}{$className}{@name}Dictionary"/>
+						</plx:callObject>
+						<plx:passParam>
+							<xsl:copy-of select="$newValue"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="instance"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</xsl:when>
+				<xsl:when test="not(@unique='true') and @customType='true'">
+					<plx:callInstance name="Add">
+						<plx:callObject>
+							<plx:callInstance type="property" name="{@oppositeName}">
+								<plx:callObject>
+									<xsl:copy-of select="$newValue"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="instance"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</xsl:when>
+			</xsl:choose>
 		</plx:branch>
 		<xsl:if test="not(@customType='true')">
 			<plx:pragma type="warningRestore" data="0472"/>
@@ -947,40 +921,36 @@
 						</plx:right>
 					</plx:binaryOperator>
 				</plx:condition>
-				<plx:body>
-					<plx:local name="currentInstance" dataTypeName="{$uniqueObjectName}">
-						<plx:initialize>
-							<plx:nameRef type="parameter" name="instance"/>
-						</plx:initialize>
-					</plx:local>
-					<plx:branch>
-						<plx:condition>
-							<plx:callInstance name="TryGetValue">
-								<plx:callObject>
-									<plx:callThis name="{$PrivateMemberPrefix}{@Name}Dictionary" type="field"/>
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef type="parameter" name="newValue"/>
-								</plx:passParam>
-								<plx:passParam type="out">
-									<plx:nameRef name="currentInstance"/>
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:condition>
-						<plx:body>
-							<plx:return>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:nameRef name="currentInstance"/>
-									</plx:left>
-									<plx:right>
-										<plx:nameRef type="parameter" name="instance"/>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:return>
-						</plx:body>
-					</plx:branch>
-				</plx:body>
+				<plx:local name="currentInstance" dataTypeName="{$uniqueObjectName}">
+					<plx:initialize>
+						<plx:nameRef type="parameter" name="instance"/>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:callInstance name="TryGetValue">
+							<plx:callObject>
+								<plx:callThis name="{$PrivateMemberPrefix}{@Name}Dictionary" type="field"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="newValue"/>
+							</plx:passParam>
+							<plx:passParam type="out">
+								<plx:nameRef name="currentInstance"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:condition>
+					<plx:return>
+						<plx:binaryOperator type="identityEquality">
+							<plx:left>
+								<plx:nameRef name="currentInstance"/>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef type="parameter" name="instance"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:return>
+				</plx:branch>
 			</plx:branch>
 			<plx:return>
 				<plx:trueKeyword/>
@@ -1005,16 +975,14 @@
 						</plx:right>
 					</plx:binaryOperator>
 				</plx:condition>
-				<plx:body>
-					<plx:callInstance name="Remove">
-						<plx:callObject>
-							<plx:callThis name="{$PrivateMemberPrefix}{@Name}Dictionary" type="field"/>
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef type="parameter" name="oldValue"/>
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:body>
+				<plx:callInstance name="Remove">
+					<plx:callObject>
+						<plx:callThis name="{$PrivateMemberPrefix}{@Name}Dictionary" type="field"/>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef type="parameter" name="oldValue"/>
+					</plx:passParam>
+				</plx:callInstance>
 			</plx:branch>
 			<plx:branch>
 				<plx:condition>
@@ -1027,19 +995,17 @@
 						</plx:right>
 					</plx:binaryOperator>
 				</plx:condition>
-				<plx:body>
-					<plx:callInstance name="Add">
-						<plx:callObject>
-							<plx:callThis name="{$PrivateMemberPrefix}{@Name}Dictionary" type="field"/>
-						</plx:callObject>
-						<plx:passParam>
-							<plx:nameRef type="parameter" name="newValue"/>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:nameRef type="parameter" name="instance"/>
-						</plx:passParam>
-					</plx:callInstance>
-				</plx:body>
+				<plx:callInstance name="Add">
+					<plx:callObject>
+						<plx:callThis name="{$PrivateMemberPrefix}{@Name}Dictionary" type="field"/>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:nameRef type="parameter" name="newValue"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:nameRef type="parameter" name="instance"/>
+					</plx:passParam>
+				</plx:callInstance>
 			</plx:branch>
 		</plx:function>
 	</xsl:template>
@@ -1123,12 +1089,10 @@
 					</plx:right>
 				</plx:binaryOperator>
 			</plx:condition>
-			<plx:body>
-				<plx:return>
-					<!-- UNDONE: We currently aren't validating multi-role constraints prior to object creation. -->
-					<plx:trueKeyword/>
-				</plx:return>
-			</plx:body>
+			<plx:return>
+				<!-- UNDONE: We currently aren't validating multi-role constraints prior to object creation. -->
+				<plx:trueKeyword/>
+			</plx:return>
 		</plx:branch>
 		<plx:branch>
 			<plx:condition>
@@ -1146,11 +1110,9 @@
 					</plx:callThis>
 				</plx:unaryOperator>
 			</plx:condition>
-			<plx:body>
-				<plx:return>
-					<plx:falseKeyword />
-				</plx:return>
-			</plx:body>
+			<plx:return>
+				<plx:falseKeyword />
+			</plx:return>
 		</plx:branch>
 	</xsl:template>
 	<xsl:template name="GetSimpleBinaryUniquenessPropertyChangedCode">
@@ -1314,20 +1276,18 @@
 							<xsl:with-param name="action" select="'Adding'"/>
 						</xsl:call-template>
 					</plx:condition>
-					<plx:body>
-						<plx:callInstance type="methodCall" name="Add">
-							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}List"/>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef type="parameter" name="item"/>
-							</plx:passParam>
-						</plx:callInstance>
-						<xsl:call-template name="GetCollectionClassNotfiyContextCode">
-							<xsl:with-param name="className" select="$className"/>
-							<xsl:with-param name="action" select="'Added'"/>
-						</xsl:call-template>
-					</plx:body>
+					<plx:callInstance type="methodCall" name="Add">
+						<plx:callObject>
+							<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}List"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="item"/>
+						</plx:passParam>
+					</plx:callInstance>
+					<xsl:call-template name="GetCollectionClassNotfiyContextCode">
+						<xsl:with-param name="className" select="$className"/>
+						<xsl:with-param name="action" select="'Added'"/>
+					</xsl:call-template>
 				</plx:branch>
 			</plx:function>
 
@@ -1348,29 +1308,25 @@
 							<xsl:with-param name="action" select="'Removing'"/>
 						</xsl:call-template>
 					</plx:condition>
-					<plx:body>
-						<plx:branch>
-							<plx:condition>
-								<plx:callInstance type="methodCall" name="Remove">
-									<plx:callObject>
-										<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}List"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef type="parameter" name="item"/>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:condition>
-							<plx:body>
-								<xsl:call-template name="GetCollectionClassNotfiyContextCode">
-									<xsl:with-param name="className" select="$className"/>
-									<xsl:with-param name="action" select="'Removed'"/>
-								</xsl:call-template>
-								<plx:return>
-									<plx:trueKeyword/>
-								</plx:return>
-							</plx:body>
-						</plx:branch>
-					</plx:body>
+					<plx:branch>
+						<plx:condition>
+							<plx:callInstance type="methodCall" name="Remove">
+								<plx:callObject>
+									<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}List"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef type="parameter" name="item"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:condition>
+						<xsl:call-template name="GetCollectionClassNotfiyContextCode">
+							<xsl:with-param name="className" select="$className"/>
+							<xsl:with-param name="action" select="'Removed'"/>
+						</xsl:call-template>
+						<plx:return>
+							<plx:trueKeyword/>
+						</plx:return>
+					</plx:branch>
 				</plx:branch>
 				<plx:return>
 					<plx:falseKeyword/>
@@ -1409,20 +1365,18 @@
 							<plx:nameRef name="i"/>
 						</plx:increment>
 					</plx:beforeLoop>
-					<plx:body>
-						<plx:callThis accessor="this" type="methodCall" name="Remove">
-							<plx:passParam>
-								<plx:callInstance type="indexerCall" name=".implied">
-									<plx:callObject>
-										<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}List"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="i"/>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:passParam>
-						</plx:callThis>
-					</plx:body>
+					<plx:callThis accessor="this" type="methodCall" name="Remove">
+						<plx:passParam>
+							<plx:callInstance type="indexerCall" name=".implied">
+								<plx:callObject>
+									<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}List"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="i"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:passParam>
+					</plx:callThis>
 				</plx:loop>
 			</plx:function>
 			

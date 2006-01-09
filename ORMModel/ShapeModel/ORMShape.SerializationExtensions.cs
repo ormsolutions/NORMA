@@ -238,7 +238,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				int xPos;
 				if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
@@ -259,10 +259,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>
@@ -446,7 +442,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 2;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
-			private int Compare(MetaRoleInfo x, MetaRoleInfo y)
+			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
 			{
 				int xPos;
 				if (!(this.myRoleOrderDictionary.TryGetValue(x.FullName, out xPos)))
@@ -467,10 +463,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 					return -1;
 				}
 				return 1;
-			}
-			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
-			{
-				return this.Compare(x, y);
 			}
 		}
 		/// <summary>

@@ -336,11 +336,9 @@
 					</plx:callStatic>
 				</plx:unaryOperator>
 			</plx:condition>
-			<plx:body>
-				<plx:return>
-					<plx:falseKeyword/>
-				</plx:return>
-			</plx:body>
+			<plx:return>
+				<plx:falseKeyword/>
+			</plx:return>
 		</plx:branch>
 	</xsl:template>
 
@@ -492,21 +490,17 @@
 						</xsl:for-each>
 					</plx:unaryOperator>
 				</plx:condition>
-				<plx:body>
-					<plx:branch>
-						<plx:condition>
-							<plx:nameRef type="parameter" name="throwOnFailure"/>
-						</plx:condition>
-						<plx:body>
-							<plx:throw>
-								<plx:callNew dataTypeName="ArgumentOutOfRangeException" dataTypeQualifier="System"/>
-							</plx:throw>
-						</plx:body>
-					</plx:branch>
-					<plx:return>
-						<plx:falseKeyword/>
-					</plx:return>
-				</plx:body>
+				<plx:branch>
+					<plx:condition>
+						<plx:nameRef type="parameter" name="throwOnFailure"/>
+					</plx:condition>
+					<plx:throw>
+						<plx:callNew dataTypeName="ArgumentOutOfRangeException" dataTypeQualifier="System"/>
+					</plx:throw>
+				</plx:branch>
+				<plx:return>
+					<plx:falseKeyword/>
+				</plx:return>
 			</plx:branch>
 			<plx:return>
 				<plx:trueKeyword/>

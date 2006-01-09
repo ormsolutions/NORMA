@@ -95,11 +95,9 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
-					<plx:body>
-						<plx:return>
-							<plx:nameRef type="parameter" name="value"/>
-						</plx:return>
-					</plx:body>
+					<plx:return>
+						<plx:nameRef type="parameter" name="value"/>
+					</plx:return>
 				</plx:branch>
 				<plx:local name="mask" dataTypeName=".i4">
 					<plx:initialize>
@@ -258,11 +256,9 @@
 							<xsl:with-param name="operator" select="'booleanOr'"/>
 						</xsl:call-template>
 					</plx:condition>
-					<plx:body>
-						<plx:return>
-							<plx:nullKeyword/>
-						</plx:return>
-					</plx:body>
+					<plx:return>
+						<plx:nullKeyword/>
+					</plx:return>
 				</plx:branch>
 				<plx:return>
 					<plx:callNew dataTypeName="Tuple">
@@ -326,17 +322,15 @@
 										</plx:right>
 									</plx:binaryOperator>
 								</plx:condition>
-								<plx:body>
-									<plx:throw>
-										<plx:callNew dataTypeName="ArgumentNullException" dataTypeQualifier="System">
-											<plx:passParam>
-												<plx:string>
-													<xsl:value-of select="@paramName"/>
-												</plx:string>
-											</plx:passParam>
-										</plx:callNew>
-									</plx:throw>
-								</plx:body>
+								<plx:throw>
+									<plx:callNew dataTypeName="ArgumentNullException" dataTypeQualifier="System">
+										<plx:passParam>
+											<plx:string>
+												<xsl:value-of select="@paramName"/>
+											</plx:string>
+										</plx:passParam>
+									</plx:callNew>
+								</plx:throw>
 							</plx:branch>
 						</xsl:for-each>
 					</xsl:when>
@@ -351,11 +345,9 @@
 									<xsl:with-param name="operator" select="'booleanOr'"/>
 								</xsl:call-template>
 							</plx:condition>
-							<plx:body>
-								<plx:throw>
-									<plx:callNew dataTypeName="ArgumentNullException" dataTypeQualifier="System"/>
-								</plx:throw>
-							</plx:body>
+							<plx:throw>
+								<plx:callNew dataTypeName="ArgumentNullException" dataTypeQualifier="System"/>
+							</plx:throw>
 						</plx:branch>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -420,11 +412,9 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
-					<plx:body>
-						<plx:return>
-							<plx:falseKeyword/>
-						</plx:return>
-					</plx:body>
+					<plx:return>
+						<plx:falseKeyword/>
+					</plx:return>
 				</plx:branch>
 				<plx:return>
 					<plx:trueKeyword/>
@@ -494,8 +484,7 @@
 				</plx:return>
 			</plx:function>
 
-			<!-- PLIX_TODO: Once Plix supports real operator overloading, these hacks won't be necessary. -->
-			<plx:function visibility="public" modifier="static" name="operator==">
+			<plx:operatorFunction type="equality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
 					<xsl:copy-of select="$passTypeParams"/>
 				</plx:param>
@@ -516,18 +505,16 @@
 							</plx:callStatic>
 						</plx:unaryOperator>
 					</plx:condition>
-					<plx:body>
-						<plx:return>
-							<plx:callInstance type="methodCall" name="Equals">
-								<plx:callObject>
-									<plx:nameRef type="parameter" name="tuple1"/>
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef type="parameter" name="tuple2"/>
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:return>
-					</plx:body>
+					<plx:return>
+						<plx:callInstance type="methodCall" name="Equals">
+							<plx:callObject>
+								<plx:nameRef type="parameter" name="tuple1"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef type="parameter" name="tuple2"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:return>
 				</plx:branch>
 				<plx:return>
 					<plx:callStatic type="methodCall" dataTypeName=".object" name="ReferenceEquals">
@@ -539,10 +526,9 @@
 						</plx:passParam>
 					</plx:callStatic>
 				</plx:return>
-			</plx:function>
+			</plx:operatorFunction>
 				
-			<!-- PLIX_TODO: Once Plix supports real operator overloading, these hacks won't be necessary. -->
-			<plx:function visibility="public" modifier="static" name="operator!=">
+			<plx:operatorFunction type="inequality">
 				<plx:param type="in" name="tuple1" dataTypeName="Tuple">
 					<xsl:copy-of select="$passTypeParams"/>
 				</plx:param>
@@ -562,7 +548,7 @@
 						</plx:binaryOperator>
 					</plx:unaryOperator>
 				</plx:return>
-			</plx:function>
+			</plx:operatorFunction>
 
 		</plx:class>
 	</xsl:template>

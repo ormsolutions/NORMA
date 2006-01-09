@@ -391,45 +391,41 @@
 					<plx:condition>
 						<plx:nameRef type="parameter" name="isDeontic"/>
 					</plx:condition>
-					<plx:body>
-						<plx:assign>
+					<plx:assign>
+							<plx:left>
+							<plx:nameRef name="setIndex"/>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="add">
 								<plx:left>
-								<plx:nameRef name="setIndex"/>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="add">
-									<plx:left>
-										<plx:nameRef name="setIndex"/>
-									</plx:left>
-									<plx:right>
-										<plx:value type="i4" data="1"/>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:assign>
-					</plx:body>
+									<plx:nameRef name="setIndex"/>
+								</plx:left>
+								<plx:right>
+									<plx:value type="i4" data="1"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:assign>
 				</plx:branch>
 				<plx:branch>
 					<plx:condition>
 						<plx:nameRef type="parameter" name="isNegative"/>
 					</plx:condition>
-					<plx:body>
-						<plx:assign>
+					<plx:assign>
+							<plx:left>
+							<plx:nameRef name="setIndex"/>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="add">
 								<plx:left>
-								<plx:nameRef name="setIndex"/>
-							</plx:left>
-							<plx:right>
-								<plx:binaryOperator type="add">
-									<plx:left>
-										<plx:nameRef name="setIndex"/>
-									</plx:left>
-									<plx:right>
-										<plx:value type="i4" data="2"/>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:right>
-						</plx:assign>
-					</plx:body>
+									<plx:nameRef name="setIndex"/>
+								</plx:left>
+								<plx:right>
+									<plx:value type="i4" data="2"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:assign>
 				</plx:branch>
 				<plx:return>
 					<plx:callInstance name="GetSnippet">

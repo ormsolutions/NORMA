@@ -295,13 +295,11 @@
 								</plx:right>
 							</plx:binaryOperator>
 						</plx:condition>
-						<plx:body>
-							<plx:return>
-								<!-- This should be an error on the constraint, but be defensive and bail
-									if we have no facts -->
-								<plx:falseKeyword/>
-							</plx:return>
-						</plx:body>
+						<plx:return>
+							<!-- This should be an error on the constraint, but be defensive and bail
+								if we have no facts -->
+							<plx:falseKeyword/>
+						</plx:return>
 					</plx:branch>
 				</xsl:if>
 				<xsl:choose>
@@ -346,11 +344,9 @@
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:condition>
-							<plx:body>
-								<plx:return>
-									<plx:falseKeyword/>
-								</plx:return>
-							</plx:body>
+							<plx:return>
+								<plx:falseKeyword/>
+							</plx:return>
 						</plx:branch>
 					</xsl:when>
 					<xsl:when test="$isSingleColumn">
@@ -400,136 +396,128 @@
 									<plx:nameRef name="iFact"/>
 								</plx:increment>
 							</plx:beforeLoop>
-							<plx:body>
-								<!-- Return if there are no readings. We need readings for all facts
-									 to verbalize the constraint -->
-								<plx:local name="currentFact" dataTypeName="FactType">
-									<plx:initialize>
-										<plx:callInstance name=".implied" type="arrayIndexer">
-											<plx:callObject>
-												<plx:nameRef name="allFacts"/>
-											</plx:callObject>
-											<plx:passParam>
-												<plx:nameRef name="iFact"/>
-											</plx:passParam>
-										</plx:callInstance>
-									</plx:initialize>
-								</plx:local>
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="equality">
-											<plx:left>
-												<plx:callInstance name="Count" type="property">
-													<plx:callObject>
-														<plx:callInstance name="ReadingOrderCollection" type="property">
-															<plx:callObject>
-																<plx:nameRef name="currentFact"/>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:value type="i4" data="0"/>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<plx:body>
-										<plx:return>
-											<plx:falseKeyword/>
-										</plx:return>
-									</plx:body>
-								</plx:branch>
-								<!-- Get the roles and role count for the current fact -->
+							<!-- Return if there are no readings. We need readings for all facts
+								 to verbalize the constraint -->
+							<plx:local name="currentFact" dataTypeName="FactType">
+								<plx:initialize>
+									<plx:callInstance name=".implied" type="arrayIndexer">
+										<plx:callObject>
+											<plx:nameRef name="allFacts"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="iFact"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:initialize>
+							</plx:local>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="equality">
+										<plx:left>
+											<plx:callInstance name="Count" type="property">
+												<plx:callObject>
+													<plx:callInstance name="ReadingOrderCollection" type="property">
+														<plx:callObject>
+															<plx:nameRef name="currentFact"/>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:value type="i4" data="0"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:return>
+									<plx:falseKeyword/>
+								</plx:return>
+							</plx:branch>
+							<!-- Get the roles and role count for the current fact -->
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="factRoles"/>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="RoleCollection" type="property">
+										<plx:callObject>
+											<plx:nameRef name="currentFact"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:assign>
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="factArity"/>
+								</plx:left>
+								<plx:right>
+									<plx:callInstance name="Count" type="property">
+										<plx:callObject>
+											<plx:nameRef name="factRoles"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:right>
+							</plx:assign>
+							<!-- Track the min and max values for our current fact arity -->
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="lessThan">
+										<plx:left>
+											<plx:nameRef name="factArity"/>
+										</plx:left>
+										<plx:right>
+											<plx:nameRef name="minFactArity"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:nameRef name="factRoles"/>
+										<plx:nameRef name="minFactArity"/>
 									</plx:left>
 									<plx:right>
-										<plx:callInstance name="RoleCollection" type="property">
-											<plx:callObject>
-												<plx:nameRef name="currentFact"/>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:right>
-								</plx:assign>
-								<plx:assign>
-									<plx:left>
 										<plx:nameRef name="factArity"/>
-									</plx:left>
-									<plx:right>
-										<plx:callInstance name="Count" type="property">
-											<plx:callObject>
-												<plx:nameRef name="factRoles"/>
-											</plx:callObject>
-										</plx:callInstance>
 									</plx:right>
 								</plx:assign>
-								<!-- Track the min and max values for our current fact arity -->
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="lessThan">
-											<plx:left>
-												<plx:nameRef name="factArity"/>
-											</plx:left>
-											<plx:right>
-												<plx:nameRef name="minFactArity"/>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<plx:body>
-										<plx:assign>
-											<plx:left>
-												<plx:nameRef name="minFactArity"/>
-											</plx:left>
-											<plx:right>
-												<plx:nameRef name="factArity"/>
-											</plx:right>
-										</plx:assign>
-									</plx:body>
-								</plx:branch>
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="greaterThan">
-											<plx:left>
-												<plx:nameRef name="factArity"/>
-											</plx:left>
-											<plx:right>
-												<plx:nameRef name="maxFactArity"/>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<plx:body>
-										<plx:assign>
-											<plx:left>
-												<plx:nameRef name="maxFactArity"/>
-											</plx:left>
-											<plx:right>
-												<plx:nameRef name="factArity"/>
-											</plx:right>
-										</plx:assign>
-									</plx:body>
-								</plx:branch>
-								<!-- Populate the basic replacements for this fact -->
-								<xsl:call-template name="PopulateBasicRoleReplacements">
-									<xsl:with-param name="SubscriptConditions" select="$subscriptConditions"/>
-								</xsl:call-template>
+							</plx:branch>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="greaterThan">
+										<plx:left>
+											<plx:nameRef name="factArity"/>
+										</plx:left>
+										<plx:right>
+											<plx:nameRef name="maxFactArity"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callInstance name=".implied" type="arrayIndexer">
-											<plx:callObject>
-												<plx:nameRef name="allBasicRoleReplacements"/>
-											</plx:callObject>
-											<plx:passParam>
-												<plx:nameRef name="iFact"/>
-											</plx:passParam>
-										</plx:callInstance>
+										<plx:nameRef name="maxFactArity"/>
 									</plx:left>
 									<plx:right>
-										<plx:nameRef name="basicRoleReplacements"/>
+										<plx:nameRef name="factArity"/>
 									</plx:right>
 								</plx:assign>
-							</plx:body>
+							</plx:branch>
+							<!-- Populate the basic replacements for this fact -->
+							<xsl:call-template name="PopulateBasicRoleReplacements">
+								<xsl:with-param name="SubscriptConditions" select="$subscriptConditions"/>
+							</xsl:call-template>
+							<plx:assign>
+								<plx:left>
+									<plx:callInstance name=".implied" type="arrayIndexer">
+										<plx:callObject>
+											<plx:nameRef name="allBasicRoleReplacements"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:nameRef name="iFact"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:nameRef name="basicRoleReplacements"/>
+								</plx:right>
+							</plx:assign>
 						</plx:loop>
 						<plx:local name="constraintRoleArity" dataTypeName=".i4">
 							<plx:initialize>
@@ -643,11 +631,9 @@
 	</xsl:template>
 	<xsl:template match="ve:ConstrainedRoles" mode="ConstraintVerbalization">
 		<xsl:param name="PatternGroup"/>
-		<xsl:if test="position()=1">
-			<xsl:call-template name="ConstraintConditions">
-				<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-			</xsl:call-template>
-		</xsl:if>
+		<xsl:call-template name="ConstraintConditions">
+			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+		</xsl:call-template>
 	</xsl:template>
 	<xsl:template name="CheckErrorConditions">
 		<!-- Don't proceed with verbalization if errors are present -->
@@ -669,76 +655,70 @@
 					</plx:right>
 				</plx:binaryOperator>
 			</plx:condition>
-			<plx:body>
-				<plx:local name="firstElement" dataTypeName=".boolean">
-					<plx:initialize>
-						<plx:trueKeyword/>
-					</plx:initialize>
-				</plx:local>
-				<plx:iterator localName="error" dataTypeName="ModelError">
-					<plx:initialize>
-						<plx:callInstance name="ErrorCollection" type="property">
-							<plx:callObject>
-								<plx:nameRef name="errorOwner"/>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-					<plx:branch>
-						<plx:condition>
+			<plx:local name="firstElement" dataTypeName=".boolean">
+				<plx:initialize>
+					<plx:trueKeyword/>
+				</plx:initialize>
+			</plx:local>
+			<plx:iterator localName="error" dataTypeName="ModelError">
+				<plx:initialize>
+					<plx:callInstance name="ErrorCollection" type="property">
+						<plx:callObject>
+							<plx:nameRef name="errorOwner"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:initialize>
+				<plx:branch>
+					<plx:condition>
+						<plx:nameRef name="firstElement"/>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
 							<plx:nameRef name="firstElement"/>
-						</plx:condition>
-						<plx:body>
-							<plx:assign>
-								<plx:left>
-									<plx:nameRef name="firstElement"/>
-								</plx:left>
-								<plx:right>
-									<plx:falseKeyword/>
-								</plx:right>
-							</plx:assign>
-							<plx:callInstance name=".implied" type="delegateCall">
-								<plx:callObject>
-									<plx:nameRef type="parameter" name="beginVerbalization"/>
-								</plx:callObject>
-								<plx:passParam>
-									<plx:callStatic name="ErrorReport" dataTypeName="VerbalizationContent" type="field"/>
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:body>
-						<plx:fallbackBranch>
-							<plx:callInstance name="WriteLine">
-								<plx:callObject>
-									<plx:nameRef type="parameter" name="writer"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:fallbackBranch>
-					</plx:branch>
-					<plx:callInstance name="Write">
+						</plx:left>
+						<plx:right>
+							<plx:falseKeyword/>
+						</plx:right>
+					</plx:assign>
+					<plx:callInstance name=".implied" type="delegateCall">
+						<plx:callObject>
+							<plx:nameRef type="parameter" name="beginVerbalization"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:callStatic name="ErrorReport" dataTypeName="VerbalizationContent" type="field"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:branch>
+				<plx:fallbackBranch>
+					<plx:callInstance name="WriteLine">
 						<plx:callObject>
 							<plx:nameRef type="parameter" name="writer"/>
 						</plx:callObject>
-						<plx:passParam>
-							<plx:callInstance name="Name" type="property">
-								<plx:callObject>
-									<plx:nameRef name="error"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:passParam>
 					</plx:callInstance>
-				</plx:iterator>
-				<plx:branch>
-					<plx:condition>
-						<plx:unaryOperator type="booleanNot">
-							<plx:nameRef name="firstElement"/>
-						</plx:unaryOperator>
-					</plx:condition>
-					<plx:body>
-						<plx:return>
-							<plx:falseKeyword/>
-						</plx:return>
-					</plx:body>
-				</plx:branch>
-			</plx:body>
+				</plx:fallbackBranch>
+				<plx:callInstance name="Write">
+					<plx:callObject>
+						<plx:nameRef type="parameter" name="writer"/>
+					</plx:callObject>
+					<plx:passParam>
+						<plx:callInstance name="Name" type="property">
+							<plx:callObject>
+								<plx:nameRef name="error"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+				</plx:callInstance>
+			</plx:iterator>
+			<plx:branch>
+				<plx:condition>
+					<plx:unaryOperator type="booleanNot">
+						<plx:nameRef name="firstElement"/>
+					</plx:unaryOperator>
+				</plx:condition>
+				<plx:return>
+					<plx:falseKeyword/>
+				</plx:return>
+			</plx:branch>
 		</plx:branch>
 	</xsl:template>
 	<!-- Handle the span constraint condition attribute -->
@@ -836,7 +816,7 @@
 		 is sorted last. -->
 	<xsl:template name="ConstraintConditions">
 		<xsl:param name="PatternGroup"/>
-		<xsl:param name="fallback" select="false()"/>
+		<xsl:variable name="fallback" select="position()!=1"/>
 		<xsl:variable name="conditionTestFragment">
 			<xsl:variable name="conditionOperatorsFragment">
 				<xsl:apply-templates select="@*" mode="ConstraintConditionOperator"/>
@@ -851,55 +831,37 @@
 		</xsl:variable>
 		<xsl:variable name="conditionTest" select="msxsl:node-set($conditionTestFragment)/child::*"/>
 		<xsl:choose>
+			<xsl:when test="$conditionTest">
+				<xsl:variable name="branchType">
+					<xsl:choose>
+						<xsl:when test="$fallback">
+							<xsl:text>plx:alternateBranch</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>plx:branch</xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:element name="{$branchType}">
+					<plx:condition>
+						<xsl:copy-of select="$conditionTest"/>
+					</plx:condition>
+					<xsl:call-template name="ConstraintBodyContent">
+						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+					</xsl:call-template>
+				</xsl:element>
+			</xsl:when>
 			<xsl:when test="$fallback">
-				<xsl:choose>
-					<xsl:when test="$conditionTest">
-						<plx:alternateBranch>
-							<plx:condition>
-								<xsl:copy-of select="$conditionTest"/>
-							</plx:condition>
-							<plx:body>
-								<xsl:call-template name="ConstraintBodyContent">
-									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-								</xsl:call-template>
-							</plx:body>
-						</plx:alternateBranch>
-					</xsl:when>
-					<xsl:otherwise>
-						<plx:fallbackBranch>
-							<xsl:call-template name="ConstraintBodyContent">
-								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-							</xsl:call-template>
-						</plx:fallbackBranch>
-					</xsl:otherwise>
-				</xsl:choose>
+				<plx:fallbackBranch>
+					<xsl:call-template name="ConstraintBodyContent">
+						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+					</xsl:call-template>
+				</plx:fallbackBranch>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:choose>
-					<xsl:when test="$conditionTest">
-						<plx:branch>
-							<plx:condition>
-								<xsl:copy-of select="$conditionTest"/>
-							</plx:condition>
-							<plx:body>
-								<xsl:call-template name="ConstraintBodyContent">
-									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-								</xsl:call-template>
-							</plx:body>
-							<xsl:for-each select="following-sibling::*">
-								<xsl:call-template name="ConstraintConditions">
-									<xsl:with-param name="fallback" select="true()"/>
-									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-								</xsl:call-template>
-							</xsl:for-each>
-						</plx:branch>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:call-template name="ConstraintBodyContent">
-							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-						</xsl:call-template>
-					</xsl:otherwise>
-				</xsl:choose>
+				<xsl:call-template name="ConstraintBodyContent">
+					<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -967,38 +929,241 @@
 					<plx:nameRef name="i"/>
 				</plx:increment>
 			</plx:beforeLoop>
-			<plx:body>
-				<plx:local name="rolePlayer" dataTypeName="ObjectType">
-					<plx:initialize>
-						<plx:callInstance name="RolePlayer" type="property">
-							<plx:callObject>
-								<plx:callInstance name=".implied" type="indexerCall">
-									<plx:callObject>
-										<plx:nameRef name="factRoles"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="i"/>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="basicReplacement" dataTypeName=".string"/>
-				<plx:branch>
-					<plx:condition>
-						<plx:binaryOperator type="identityInequality">
-							<plx:left>
-								<plx:nameRef name="rolePlayer"/>
-							</plx:left>
-							<plx:right>
-								<plx:nullKeyword/>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:condition>
-					<plx:body>
-						<!-- Generation of the non-subscripted basic replacement -->
-						<xsl:variable name="nonSubscriptedObjectTypeBody">
+			<plx:local name="rolePlayer" dataTypeName="ObjectType">
+				<plx:initialize>
+					<plx:callInstance name="RolePlayer" type="property">
+						<plx:callObject>
+							<plx:callInstance name=".implied" type="indexerCall">
+								<plx:callObject>
+									<plx:nameRef name="factRoles"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="i"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:initialize>
+			</plx:local>
+			<plx:local name="basicReplacement" dataTypeName=".string"/>
+			<plx:branch>
+				<plx:condition>
+					<plx:binaryOperator type="identityInequality">
+						<plx:left>
+							<plx:nameRef name="rolePlayer"/>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:condition>
+				<!-- Generation of the non-subscripted basic replacement -->
+				<xsl:variable name="nonSubscriptedObjectTypeBody">
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="basicReplacement"/>
+						</plx:left>
+						<plx:right>
+							<plx:callStatic name="Format" dataTypeName=".string">
+								<plx:passParam>
+									<plx:callInstance name="FormatProvider" type="property">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="writer"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+								<plx:passParam>
+									<xsl:call-template name="SnippetFor">
+										<xsl:with-param name="SnippetType" select="'ObjectType'"/>
+									</xsl:call-template>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:callInstance name="Name" type="property">
+										<plx:callObject>
+											<plx:nameRef name="rolePlayer"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:passParam>
+							</plx:callStatic>
+						</plx:right>
+					</plx:assign>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="$SubscriptConditions">
+						<!-- Portions of the subscripting code that are conditional placed in
+							 different spots -->
+						<xsl:variable name="subscriptBody">
+							<plx:local name="j" dataTypeName=".i4">
+								<plx:initialize>
+									<plx:value type="i4" data="0"/>
+								</plx:initialize>
+							</plx:local>
+							<plx:loop>
+								<plx:condition>
+									<plx:binaryOperator type="lessThan">
+										<plx:left>
+											<plx:nameRef name="j"/>
+										</plx:left>
+										<plx:right>
+											<plx:nameRef name="i"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:beforeLoop>
+									<plx:increment>
+										<plx:nameRef name="j"/>
+									</plx:increment>
+								</plx:beforeLoop>
+								<plx:branch>
+									<plx:condition>
+										<plx:callStatic name="ReferenceEquals" dataTypeName=".object">
+											<plx:passParam>
+												<plx:nameRef name="rolePlayer"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:callInstance name="RolePlayer" type="property">
+													<plx:callObject>
+														<plx:callInstance name=".implied" type="indexerCall">
+															<plx:callObject>
+																<plx:nameRef name="factRoles"/>
+															</plx:callObject>
+															<plx:passParam>
+																<plx:nameRef name="j"/>
+															</plx:passParam>
+														</plx:callInstance>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:passParam>
+										</plx:callStatic>
+									</plx:condition>
+									<plx:assign>
+										<plx:left>
+											<plx:nameRef name="useSubscript"/>
+										</plx:left>
+										<plx:right>
+											<plx:trueKeyword/>
+										</plx:right>
+									</plx:assign>
+									<plx:assign>
+										<plx:left>
+											<plx:nameRef name="subscript"/>
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="add">
+												<plx:left>
+													<plx:nameRef name="subscript"/>
+												</plx:left>
+												<plx:right>
+													<plx:value type="i4" data="1"/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:assign>
+								</plx:branch>
+							</plx:loop>
+							<plx:loop>
+								<plx:initializeLoop>
+									<plx:assign>
+										<plx:left>
+											<plx:nameRef name="j"/>
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="add">
+												<plx:left>
+													<plx:nameRef name="i"/>
+												</plx:left>
+												<plx:right>
+													<plx:value type="i4" data="1"/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:assign>
+								</plx:initializeLoop>
+								<plx:condition>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:unaryOperator type="booleanNot">
+												<plx:nameRef name="useSubscript"/>
+											</plx:unaryOperator>
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="lessThan">
+												<plx:left>
+													<plx:nameRef name="j"/>
+												</plx:left>
+												<plx:right>
+													<plx:nameRef name="factArity"/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:beforeLoop>
+									<plx:increment>
+										<plx:nameRef name="j"/>
+									</plx:increment>
+								</plx:beforeLoop>
+								<plx:branch>
+									<plx:condition>
+										<plx:callStatic name="ReferenceEquals" dataTypeName=".object">
+											<plx:passParam>
+												<plx:nameRef name="rolePlayer"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:callInstance name="RolePlayer" type="property">
+													<plx:callObject>
+														<plx:callInstance name=".implied" type="indexerCall">
+															<plx:callObject>
+																<plx:nameRef name="factRoles"/>
+															</plx:callObject>
+															<plx:passParam>
+																<plx:nameRef name="j"/>
+															</plx:passParam>
+														</plx:callInstance>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:passParam>
+										</plx:callStatic>
+									</plx:condition>
+									<plx:assign>
+										<plx:left>
+											<plx:nameRef name="useSubscript"/>
+										</plx:left>
+										<plx:right>
+											<plx:trueKeyword/>
+										</plx:right>
+									</plx:assign>
+								</plx:branch>
+							</plx:loop>
+						</xsl:variable>
+						<!-- See if we need a subscript by comparing to other role players before and after this one -->
+						<plx:local name="subscript" dataTypeName=".i4">
+							<plx:initialize>
+								<plx:value type="i4" data="0"/>
+							</plx:initialize>
+						</plx:local>
+						<plx:local name="useSubscript" dataTypeName=".boolean">
+							<plx:initialize>
+								<plx:falseKeyword/>
+							</plx:initialize>
+						</plx:local>
+						<xsl:choose>
+							<xsl:when test="count($SubscriptConditions)=1 and local-name($SubscriptConditions)='TrueKeyword'">
+								<xsl:copy-of select="$subscriptBody"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<plx:branch>
+									<plx:condition>
+										<xsl:copy-of select="$SubscriptConditions"/>
+									</plx:condition>
+									<xsl:copy-of select="$subscriptBody"/>
+								</plx:branch>
+							</xsl:otherwise>
+						</xsl:choose>
+						<plx:branch>
+							<plx:condition>
+								<plx:nameRef name="useSubscript"/>
+							</plx:condition>
 							<plx:assign>
 								<plx:left>
 									<plx:nameRef name="basicReplacement"/>
@@ -1014,7 +1179,7 @@
 										</plx:passParam>
 										<plx:passParam>
 											<xsl:call-template name="SnippetFor">
-												<xsl:with-param name="SnippetType" select="'ObjectType'"/>
+												<xsl:with-param name="SnippetType" select="'ObjectTypeWithSubscript'"/>
 											</xsl:call-template>
 										</plx:passParam>
 										<plx:passParam>
@@ -1024,296 +1189,77 @@
 												</plx:callObject>
 											</plx:callInstance>
 										</plx:passParam>
+										<plx:passParam>
+											<plx:binaryOperator type="add">
+												<plx:left>
+													<plx:nameRef name="subscript"/>
+												</plx:left>
+												<plx:right>
+													<plx:value type="i4" data="1"/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:passParam>
 									</plx:callStatic>
 								</plx:right>
 							</plx:assign>
-						</xsl:variable>
-						<xsl:choose>
-							<xsl:when test="$SubscriptConditions">
-								<!-- Portions of the subscripting code that are conditional placed in
-									 different spots -->
-								<xsl:variable name="subscriptBody">
-									<plx:local name="j" dataTypeName=".i4">
-										<plx:initialize>
-											<plx:value type="i4" data="0"/>
-										</plx:initialize>
-									</plx:local>
-									<plx:loop>
-										<plx:condition>
-											<plx:binaryOperator type="lessThan">
-												<plx:left>
-													<plx:nameRef name="j"/>
-												</plx:left>
-												<plx:right>
-													<plx:nameRef name="i"/>
-												</plx:right>
-											</plx:binaryOperator>
-										</plx:condition>
-										<plx:beforeLoop>
-											<plx:increment>
-												<plx:nameRef name="j"/>
-											</plx:increment>
-										</plx:beforeLoop>
-										<plx:body>
-											<plx:branch>
-												<plx:condition>
-													<plx:callStatic name="ReferenceEquals" dataTypeName=".object">
-														<plx:passParam>
-															<plx:nameRef name="rolePlayer"/>
-														</plx:passParam>
-														<plx:passParam>
-															<plx:callInstance name="RolePlayer" type="property">
-																<plx:callObject>
-																	<plx:callInstance name=".implied" type="indexerCall">
-																		<plx:callObject>
-																			<plx:nameRef name="factRoles"/>
-																		</plx:callObject>
-																		<plx:passParam>
-																			<plx:nameRef name="j"/>
-																		</plx:passParam>
-																	</plx:callInstance>
-																</plx:callObject>
-															</plx:callInstance>
-														</plx:passParam>
-													</plx:callStatic>
-												</plx:condition>
-												<plx:body>
-													<plx:assign>
-														<plx:left>
-															<plx:nameRef name="useSubscript"/>
-														</plx:left>
-														<plx:right>
-															<plx:trueKeyword/>
-														</plx:right>
-													</plx:assign>
-													<plx:assign>
-														<plx:left>
-															<plx:nameRef name="subscript"/>
-														</plx:left>
-														<plx:right>
-															<plx:binaryOperator type="add">
-																<plx:left>
-																	<plx:nameRef name="subscript"/>
-																</plx:left>
-																<plx:right>
-																	<plx:value type="i4" data="1"/>
-																</plx:right>
-															</plx:binaryOperator>
-														</plx:right>
-													</plx:assign>
-												</plx:body>
-											</plx:branch>
-										</plx:body>
-									</plx:loop>
-									<plx:loop>
-										<plx:initializeLoop>
-											<plx:assign>
-												<plx:left>
-													<plx:nameRef name="j"/>
-												</plx:left>
-												<plx:right>
-													<plx:binaryOperator type="add">
-														<plx:left>
-															<plx:nameRef name="i"/>
-														</plx:left>
-														<plx:right>
-															<plx:value type="i4" data="1"/>
-														</plx:right>
-													</plx:binaryOperator>
-												</plx:right>
-											</plx:assign>
-										</plx:initializeLoop>
-										<plx:condition>
-											<plx:binaryOperator type="booleanAnd">
-												<plx:left>
-													<plx:unaryOperator type="booleanNot">
-														<plx:nameRef name="useSubscript"/>
-													</plx:unaryOperator>
-												</plx:left>
-												<plx:right>
-													<plx:binaryOperator type="lessThan">
-														<plx:left>
-															<plx:nameRef name="j"/>
-														</plx:left>
-														<plx:right>
-															<plx:nameRef name="factArity"/>
-														</plx:right>
-													</plx:binaryOperator>
-												</plx:right>
-											</plx:binaryOperator>
-										</plx:condition>
-										<plx:beforeLoop>
-											<plx:increment>
-												<plx:nameRef name="j"/>
-											</plx:increment>
-										</plx:beforeLoop>
-										<plx:body>
-											<plx:branch>
-												<plx:condition>
-													<plx:callStatic name="ReferenceEquals" dataTypeName=".object">
-														<plx:passParam>
-															<plx:nameRef name="rolePlayer"/>
-														</plx:passParam>
-														<plx:passParam>
-															<plx:callInstance name="RolePlayer" type="property">
-																<plx:callObject>
-																	<plx:callInstance name=".implied" type="indexerCall">
-																		<plx:callObject>
-																			<plx:nameRef name="factRoles"/>
-																		</plx:callObject>
-																		<plx:passParam>
-																			<plx:nameRef name="j"/>
-																		</plx:passParam>
-																	</plx:callInstance>
-																</plx:callObject>
-															</plx:callInstance>
-														</plx:passParam>
-													</plx:callStatic>
-												</plx:condition>
-												<plx:body>
-													<plx:assign>
-														<plx:left>
-															<plx:nameRef name="useSubscript"/>
-														</plx:left>
-														<plx:right>
-															<plx:trueKeyword/>
-														</plx:right>
-													</plx:assign>
-												</plx:body>
-											</plx:branch>
-										</plx:body>
-									</plx:loop>
-								</xsl:variable>
-								<!-- See if we need a subscript by comparing to other role players before and after this one -->
-								<plx:local name="subscript" dataTypeName=".i4">
-									<plx:initialize>
-										<plx:value type="i4" data="0"/>
-									</plx:initialize>
-								</plx:local>
-								<plx:local name="useSubscript" dataTypeName=".boolean">
-									<plx:initialize>
-										<plx:falseKeyword/>
-									</plx:initialize>
-								</plx:local>
-								<xsl:choose>
-									<xsl:when test="count($SubscriptConditions)=1 and local-name($SubscriptConditions)='TrueKeyword'">
-										<xsl:copy-of select="$subscriptBody"/>
-									</xsl:when>
-									<xsl:otherwise>
-										<plx:branch>
-											<plx:condition>
-												<xsl:copy-of select="$SubscriptConditions"/>
-											</plx:condition>
-											<plx:body>
-												<xsl:copy-of select="$subscriptBody"/>
-											</plx:body>
-										</plx:branch>
-									</xsl:otherwise>
-								</xsl:choose>
-								<plx:branch>
-									<plx:condition>
-										<plx:nameRef name="useSubscript"/>
-									</plx:condition>
-									<plx:body>
-										<plx:assign>
-											<plx:left>
-												<plx:nameRef name="basicReplacement"/>
-											</plx:left>
-											<plx:right>
-												<plx:callStatic name="Format" dataTypeName=".string">
-													<plx:passParam>
-														<plx:callInstance name="FormatProvider" type="property">
-															<plx:callObject>
-																<plx:nameRef type="parameter" name="writer"/>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:passParam>
-													<plx:passParam>
-														<xsl:call-template name="SnippetFor">
-															<xsl:with-param name="SnippetType" select="'ObjectTypeWithSubscript'"/>
-														</xsl:call-template>
-													</plx:passParam>
-													<plx:passParam>
-														<plx:callInstance name="Name" type="property">
-															<plx:callObject>
-																<plx:nameRef name="rolePlayer"/>
-															</plx:callObject>
-														</plx:callInstance>
-													</plx:passParam>
-													<plx:passParam>
-														<plx:binaryOperator type="add">
-															<plx:left>
-																<plx:nameRef name="subscript"/>
-															</plx:left>
-															<plx:right>
-																<plx:value type="i4" data="1"/>
-															</plx:right>
-														</plx:binaryOperator>
-													</plx:passParam>
-												</plx:callStatic>
-											</plx:right>
-										</plx:assign>
-									</plx:body>
-									<plx:fallbackBranch>
-										<xsl:copy-of select="$nonSubscriptedObjectTypeBody"/>
-									</plx:fallbackBranch>
-								</plx:branch>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:copy-of select="$nonSubscriptedObjectTypeBody"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</plx:body>
-					<plx:fallbackBranch>
-						<plx:assign>
-							<plx:left>
-								<plx:nameRef name="basicReplacement"/>
-							</plx:left>
-							<plx:right>
-								<plx:callStatic name="Format" dataTypeName=".string">
-									<plx:passParam>
-										<plx:callInstance name="FormatProvider" type="property">
-											<plx:callObject>
-												<plx:nameRef type="parameter" name="writer"/>
-											</plx:callObject>
-										</plx:callInstance>
-									</plx:passParam>
-									<plx:passParam>
-										<xsl:call-template name="SnippetFor">
-											<xsl:with-param name="SnippetType" select="'ObjectTypeMissing'"/>
-										</xsl:call-template>
-									</plx:passParam>
-									<plx:passParam>
-										<plx:binaryOperator type="add">
-											<plx:left>
-												<plx:nameRef name="i"/>
-											</plx:left>
-											<plx:right>
-												<plx:value type="i4" data="1"/>
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:passParam>
-								</plx:callStatic>
-							</plx:right>
-						</plx:assign>
-					</plx:fallbackBranch>
-				</plx:branch>
+						</plx:branch>
+						<plx:fallbackBranch>
+							<xsl:copy-of select="$nonSubscriptedObjectTypeBody"/>
+						</plx:fallbackBranch>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:copy-of select="$nonSubscriptedObjectTypeBody"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</plx:branch>
+			<plx:fallbackBranch>
 				<plx:assign>
 					<plx:left>
-						<plx:callInstance name=".implied" type="arrayIndexer">
-							<plx:callObject>
-								<plx:nameRef name="basicRoleReplacements"/>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:nameRef name="i"/>
-							</plx:passParam>
-						</plx:callInstance>
+						<plx:nameRef name="basicReplacement"/>
 					</plx:left>
 					<plx:right>
-						<plx:nameRef name="basicReplacement"/>
+						<plx:callStatic name="Format" dataTypeName=".string">
+							<plx:passParam>
+								<plx:callInstance name="FormatProvider" type="property">
+									<plx:callObject>
+										<plx:nameRef type="parameter" name="writer"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:passParam>
+							<plx:passParam>
+								<xsl:call-template name="SnippetFor">
+									<xsl:with-param name="SnippetType" select="'ObjectTypeMissing'"/>
+								</xsl:call-template>
+							</plx:passParam>
+							<plx:passParam>
+								<plx:binaryOperator type="add">
+									<plx:left>
+										<plx:nameRef name="i"/>
+									</plx:left>
+									<plx:right>
+										<plx:value type="i4" data="1"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:passParam>
+						</plx:callStatic>
 					</plx:right>
 				</plx:assign>
-			</plx:body>
+			</plx:fallbackBranch>
+			<plx:assign>
+				<plx:left>
+					<plx:callInstance name=".implied" type="arrayIndexer">
+						<plx:callObject>
+							<plx:nameRef name="basicRoleReplacements"/>
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef name="i"/>
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:left>
+				<plx:right>
+					<plx:nameRef name="basicReplacement"/>
+				</plx:right>
+			</plx:assign>
 		</plx:loop>
 	</xsl:template>
 	<xsl:template name="ConstraintBodyContent">
@@ -1382,99 +1328,95 @@
 							<plx:nameRef name="readingMatchIndex{$VariableDecorator}"/>
 						</plx:increment>
 					</plx:beforeLoop>
-					<plx:body>
-						<plx:local name="primaryRole" dataTypeName="Role">
-							<plx:initialize>
-								<plx:callInstance name=".implied" type="indexerCall">
+					<plx:local name="primaryRole" dataTypeName="Role">
+						<plx:initialize>
+							<plx:callInstance name=".implied" type="indexerCall">
+								<plx:callObject>
+									<plx:nameRef name="allConstraintRoles"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="readingMatchIndex{$VariableDecorator}"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="parentFact"/>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="FactType" type="property">
+								<plx:callObject>
+									<plx:nameRef name="primaryRole"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="factRoles"/>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="RoleCollection" type="property">
+								<plx:callObject>
+									<plx:nameRef name="parentFact"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="allReadingOrders"/>
+						</plx:left>
+						<plx:right>
+							<plx:callInstance name="ReadingOrderCollection" type="property">
+								<plx:callObject>
+									<plx:nameRef name="parentFact"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:right>
+					</plx:assign>
+					<xsl:call-template name="PopulateReadingOrder">
+						<xsl:with-param name="ReadingChoice" select="$singleMatch"/>
+						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+					</xsl:call-template>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef name="reading"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="missingReading{$VariableDecorator}"/>
+							</plx:left>
+							<plx:right>
+								<plx:trueKeyword/>
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
+					<plx:fallbackBranch>
+						<plx:assign>
+							<plx:left>
+								<plx:callInstance name=".implied" type="arrayIndexer">
 									<plx:callObject>
-										<plx:nameRef name="allConstraintRoles"/>
+										<plx:nameRef name="allConstraintRoleReadings"/>
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="readingMatchIndex{$VariableDecorator}"/>
 									</plx:passParam>
 								</plx:callInstance>
-							</plx:initialize>
-						</plx:local>
-						<plx:assign>
-							<plx:left>
-								<plx:nameRef name="parentFact"/>
 							</plx:left>
 							<plx:right>
-								<plx:callInstance name="FactType" type="property">
-									<plx:callObject>
-										<plx:nameRef name="primaryRole"/>
-									</plx:callObject>
-								</plx:callInstance>
+								<plx:nameRef name="reading"/>
 							</plx:right>
 						</plx:assign>
-						<plx:assign>
-							<plx:left>
-								<plx:nameRef name="factRoles"/>
-							</plx:left>
-							<plx:right>
-								<plx:callInstance name="RoleCollection" type="property">
-									<plx:callObject>
-										<plx:nameRef name="parentFact"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:right>
-						</plx:assign>
-						<plx:assign>
-							<plx:left>
-								<plx:nameRef name="allReadingOrders"/>
-							</plx:left>
-							<plx:right>
-								<plx:callInstance name="ReadingOrderCollection" type="property">
-									<plx:callObject>
-										<plx:nameRef name="parentFact"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:right>
-						</plx:assign>
-						<xsl:call-template name="PopulateReadingOrder">
-							<xsl:with-param name="ReadingChoice" select="$singleMatch"/>
-							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-						</xsl:call-template>
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:nameRef name="reading"/>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword/>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:body>
-								<plx:assign>
-									<plx:left>
-										<plx:nameRef name="missingReading{$VariableDecorator}"/>
-									</plx:left>
-									<plx:right>
-										<plx:trueKeyword/>
-									</plx:right>
-								</plx:assign>
-							</plx:body>
-							<plx:fallbackBranch>
-								<plx:assign>
-									<plx:left>
-										<plx:callInstance name=".implied" type="arrayIndexer">
-											<plx:callObject>
-												<plx:nameRef name="allConstraintRoleReadings"/>
-											</plx:callObject>
-											<plx:passParam>
-												<plx:nameRef name="readingMatchIndex{$VariableDecorator}"/>
-											</plx:passParam>
-										</plx:callInstance>
-									</plx:left>
-									<plx:right>
-										<plx:nameRef name="reading"/>
-									</plx:right>
-								</plx:assign>
-							</plx:fallbackBranch>
-						</plx:branch>
-					</plx:body>
+					</plx:fallbackBranch>
 				</plx:loop>
 				<plx:branch>
 					<plx:condition>
@@ -1483,28 +1425,26 @@
 						</plx:unaryOperator>
 					</plx:condition>
 					<!-- The rest of this block is duplicated in otherwise condition, keep in sync -->
-					<plx:body>
-						<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
-							<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
-							<xsl:with-param name="TopLevel" select="$TopLevel"/>
-							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-						</xsl:apply-templates>
-					</plx:body>
-					<xsl:if test="position()!=last()">
-						<plx:fallbackBranch>
-							<xsl:for-each select="following-sibling::*">
-								<xsl:if test="position()=1">
-									<xsl:call-template name="ProcessConditionalReadingChoice">
-										<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
-										<xsl:with-param name="VariableDecorator" select="$VariableDecorator + 1"/>
-										<xsl:with-param name="TopLevel" select="$TopLevel"/>
-										<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-									</xsl:call-template>
-								</xsl:if>
-							</xsl:for-each>
-						</plx:fallbackBranch>
-					</xsl:if>
+					<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
+						<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+						<xsl:with-param name="TopLevel" select="$TopLevel"/>
+						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+					</xsl:apply-templates>
 				</plx:branch>
+				<xsl:if test="position()!=last()">
+					<plx:fallbackBranch>
+						<xsl:for-each select="following-sibling::*">
+							<xsl:if test="position()=1">
+								<xsl:call-template name="ProcessConditionalReadingChoice">
+									<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+									<xsl:with-param name="VariableDecorator" select="$VariableDecorator + 1"/>
+									<xsl:with-param name="TopLevel" select="$TopLevel"/>
+									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+								</xsl:call-template>
+							</xsl:if>
+						</xsl:for-each>
+					</plx:fallbackBranch>
+				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$PatternGroup='SingleColumnExternalConstraint'">
 				<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
@@ -1530,28 +1470,26 @@
 						</plx:binaryOperator>
 					</plx:condition>
 					<!-- The rest of this block is duplicated in when condition, keep in sync -->
-					<plx:body>
-						<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
-							<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
-							<xsl:with-param name="TopLevel" select="$TopLevel"/>
-							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-						</xsl:apply-templates>
-					</plx:body>
-					<xsl:if test="position()!=last()">
-						<plx:fallbackBranch>
-							<xsl:for-each select="following-sibling::*">
-								<xsl:if test="position()=1">
-									<xsl:call-template name="ProcessConditionalReadingChoice">
-										<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
-										<xsl:with-param name="VariableDecorator" select="$VariableDecorator + 1"/>
-										<xsl:with-param name="TopLevel" select="$TopLevel"/>
-										<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-									</xsl:call-template>
-								</xsl:if>
-							</xsl:for-each>
-						</plx:fallbackBranch>
-					</xsl:if>
+					<xsl:apply-templates select="child::*" mode="ConstraintVerbalization">
+						<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+						<xsl:with-param name="TopLevel" select="$TopLevel"/>
+						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+					</xsl:apply-templates>
 				</plx:branch>
+				<xsl:if test="position()!=last()">
+					<plx:fallbackBranch>
+						<xsl:for-each select="following-sibling::*">
+							<xsl:if test="position()=1">
+								<xsl:call-template name="ProcessConditionalReadingChoice">
+									<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+									<xsl:with-param name="VariableDecorator" select="$VariableDecorator + 1"/>
+									<xsl:with-param name="TopLevel" select="$TopLevel"/>
+									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+								</xsl:call-template>
+							</xsl:if>
+						</xsl:for-each>
+					</plx:fallbackBranch>
+				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -1630,12 +1568,10 @@
 							<plx:condition>
 								<xsl:copy-of select="$condition"/>
 							</plx:condition>
-							<plx:body>
-								<xsl:call-template name="SetSnippetVariable">
-									<xsl:with-param name="SnippetType" select="@ref"/>
-									<xsl:with-param name="VariableName" select="$SnippetTypeVariable"/>
-								</xsl:call-template>
-							</plx:body>
+							<xsl:call-template name="SetSnippetVariable">
+								<xsl:with-param name="SnippetType" select="@ref"/>
+								<xsl:with-param name="VariableName" select="$SnippetTypeVariable"/>
+							</xsl:call-template>
 						</plx:alternateBranch>
 					</xsl:when>
 					<xsl:otherwise>
@@ -1660,21 +1596,19 @@
 							<plx:condition>
 								<xsl:copy-of select="$condition"/>
 							</plx:condition>
-							<plx:body>
-								<xsl:call-template name="SetSnippetVariable">
-									<xsl:with-param name="SnippetType" select="@ref"/>
-									<xsl:with-param name="VariableName" select="$SnippetTypeVariable"/>
-								</xsl:call-template>
-							</plx:body>
-							<xsl:for-each select="following-sibling::ve:Snippet">
-								<xsl:call-template name="ProcessSnippetConditions">
-									<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
-									<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
-									<xsl:with-param name="SnippetTypeVariable" select="$SnippetTypeVariable"/>
-									<xsl:with-param name="fallback" select="true()"/>
-								</xsl:call-template>
-							</xsl:for-each>
+							<xsl:call-template name="SetSnippetVariable">
+								<xsl:with-param name="SnippetType" select="@ref"/>
+								<xsl:with-param name="VariableName" select="$SnippetTypeVariable"/>
+							</xsl:call-template>
 						</plx:branch>
+						<xsl:for-each select="following-sibling::ve:Snippet">
+							<xsl:call-template name="ProcessSnippetConditions">
+								<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+								<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+								<xsl:with-param name="SnippetTypeVariable" select="$SnippetTypeVariable"/>
+								<xsl:with-param name="fallback" select="true()"/>
+							</xsl:call-template>
+						</xsl:for-each>
 					</xsl:when>
 				</xsl:choose>
 			</xsl:otherwise>
@@ -1719,16 +1653,14 @@
 							<plx:condition>
 								<xsl:copy-of select="$condition"/>
 							</plx:condition>
-							<plx:body>
-								<xsl:call-template name="ProcessSnippet">
-									<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
-									<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
-									<xsl:with-param name="TopLevel" select="$TopLevel"/>
-									<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
-									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-									<xsl:with-param name="ConditionalMatch" select="''"/>
-								</xsl:call-template>
-							</plx:body>
+							<xsl:call-template name="ProcessSnippet">
+								<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+								<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+								<xsl:with-param name="TopLevel" select="$TopLevel"/>
+								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+								<xsl:with-param name="ConditionalMatch" select="''"/>
+							</xsl:call-template>
 						</plx:alternateBranch>
 					</xsl:when>
 					<xsl:otherwise>
@@ -1752,28 +1684,26 @@
 							<plx:condition>
 								<xsl:copy-of select="$condition"/>
 							</plx:condition>
-							<plx:body>
-								<xsl:apply-templates select="." mode="ConstraintVerbalization">
-									<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
-									<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
-									<xsl:with-param name="TopLevel" select="$TopLevel"/>
-									<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
-									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-									<xsl:with-param name="ConditionalMatch" select="''"/>
-								</xsl:apply-templates>
-							</plx:body>
-							<xsl:for-each select="following-sibling::ve:Snippet">
-								<xsl:call-template name="ProcessConditionalReplacements">
-									<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
-									<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
-									<xsl:with-param name="TopLevel" select="$TopLevel"/>
-									<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
-									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-									<xsl:with-param name="ConditionalMatch" select="''"/>
-									<xsl:with-param name="fallback" select="true()"/>
-								</xsl:call-template>
-							</xsl:for-each>
+							<xsl:apply-templates select="." mode="ConstraintVerbalization">
+								<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+								<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+								<xsl:with-param name="TopLevel" select="$TopLevel"/>
+								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+								<xsl:with-param name="ConditionalMatch" select="''"/>
+							</xsl:apply-templates>
 						</plx:branch>
+						<xsl:for-each select="following-sibling::ve:Snippet">
+							<xsl:call-template name="ProcessConditionalReplacements">
+								<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+								<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+								<xsl:with-param name="TopLevel" select="$TopLevel"/>
+								<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+								<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+								<xsl:with-param name="ConditionalMatch" select="''"/>
+								<xsl:with-param name="fallback" select="true()"/>
+							</xsl:call-template>
+						</xsl:for-each>
 					</xsl:when>
 				</xsl:choose>
 			</xsl:otherwise>
@@ -1800,7 +1730,7 @@
 		<xsl:if test="$condition">
 			<xsl:text disable-output-escaping="yes"><![CDATA[<plx:branch><plx:condition>]]></xsl:text>
 			<xsl:copy-of select="$condition"/>
-			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:condition><plx:body>]]></xsl:text>
+			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:condition>]]></xsl:text>
 		</xsl:if>
 		<xsl:if test="$TopLevel">
 			<xsl:choose>
@@ -1931,7 +1861,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:if test="$condition">
-			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:body></plx:branch>]]></xsl:text>
+			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:branch>]]></xsl:text>
 		</xsl:if>
 	</xsl:template>
 	<xsl:template match="ve:Fact" mode="ConstraintVerbalization">
@@ -1997,133 +1927,125 @@
 							<plx:nameRef name="{$iterVarName}"/>
 						</plx:increment>
 					</plx:beforeLoop>
-					<plx:body>
-						<!-- Initialize variables used for all styles of predicate replacement -->
-						<plx:local name="currentRole" dataTypeName="Role">
-							<plx:initialize>
-								<plx:callInstance name=".implied" type="arrayIndexer">
-									<plx:callObject>
-										<plx:nameRef name="factRoles"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="{$iterVarName}"/>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:initialize>
-						</plx:local>
-						<plx:local name="roleReplacement" dataTypeName=".string">
-							<plx:initialize>
-								<plx:nullKeyword/>
-							</plx:initialize>
-						</plx:local>
-						<plx:local name="basicReplacement" dataTypeName=".string">
-							<plx:initialize>
-								<plx:callInstance name=".implied" type="arrayIndexer">
-									<plx:callObject>
-										<plx:nameRef name="basicRoleReplacements"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="{$iterVarName}"/>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:initialize>
-						</plx:local>
+					<!-- Initialize variables used for all styles of predicate replacement -->
+					<plx:local name="currentRole" dataTypeName="Role">
+						<plx:initialize>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="factRoles"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="{$iterVarName}"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="roleReplacement" dataTypeName=".string">
+						<plx:initialize>
+							<plx:nullKeyword/>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="basicReplacement" dataTypeName=".string">
+						<plx:initialize>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="basicRoleReplacements"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="{$iterVarName}"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
 
-						<!-- Do specialized replacement for different role matches -->
-						<xsl:for-each select="ve:PredicateReplacement">
-							<!-- The assumption is made here that predicate replacement quantifiers
-								 are single-valued. -->
-							<xsl:if test="position()=1">
-								<xsl:choose>
-									<xsl:when test="(position()!=last()) or (string-length(@match) and not(@match='all'))">
-										<plx:branch>
-											<plx:condition>
-												<xsl:call-template name="PredicateReplacementConditionTest">
-													<xsl:with-param name="Match" select="@match"/>
-													<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
-													<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-													<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
-													<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
-													<xsl:with-param name="FirstPassVariable" select="$FirstPassVariable"/>
-												</xsl:call-template>
-											</plx:condition>
-											<plx:body>
-												<xsl:call-template name="PredicateReplacementBody"/>
-											</plx:body>
-											<xsl:for-each select="following-sibling::*">
-												<xsl:choose>
-													<xsl:when test="(position()!=last()) or (string-length(@match) and not(@match='all'))">
-														<plx:alternateBranch>
-															<plx:condition>
-																<xsl:call-template name="PredicateReplacementConditionTest">
-																	<xsl:with-param name="Match" select="@match"/>
-																	<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
-																	<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-																	<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
-																	<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
-																	<xsl:with-param name="FirstPassVariable" select="$FirstPassVariable"/>
-																</xsl:call-template>
-															</plx:condition>
-															<plx:body>
-																<xsl:call-template name="PredicateReplacementBody"/>
-															</plx:body>
-														</plx:alternateBranch>
-													</xsl:when>
-													<xsl:otherwise>
-														<plx:fallbackBranch>
-															<xsl:call-template name="PredicateReplacementBody"/>
-														</plx:fallbackBranch>
-													</xsl:otherwise>
-												</xsl:choose>
-											</xsl:for-each>
-										</plx:branch>
-									</xsl:when>
-									<xsl:otherwise>
+					<!-- Do specialized replacement for different role matches -->
+					<xsl:for-each select="ve:PredicateReplacement">
+						<!-- The assumption is made here that predicate replacement quantifiers
+							 are single-valued. -->
+						<xsl:if test="position()=1">
+							<xsl:choose>
+								<xsl:when test="(position()!=last()) or (string-length(@match) and not(@match='all'))">
+									<plx:branch>
+										<plx:condition>
+											<xsl:call-template name="PredicateReplacementConditionTest">
+												<xsl:with-param name="Match" select="@match"/>
+												<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+												<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+												<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+												<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+												<xsl:with-param name="FirstPassVariable" select="$FirstPassVariable"/>
+											</xsl:call-template>
+										</plx:condition>
 										<xsl:call-template name="PredicateReplacementBody"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:if>
-						</xsl:for-each>
+									</plx:branch>
+									<xsl:for-each select="following-sibling::*">
+										<xsl:choose>
+											<xsl:when test="(position()!=last()) or (string-length(@match) and not(@match='all'))">
+												<plx:alternateBranch>
+													<plx:condition>
+														<xsl:call-template name="PredicateReplacementConditionTest">
+															<xsl:with-param name="Match" select="@match"/>
+															<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
+															<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+															<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+															<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+															<xsl:with-param name="FirstPassVariable" select="$FirstPassVariable"/>
+														</xsl:call-template>
+													</plx:condition>
+													<xsl:call-template name="PredicateReplacementBody"/>
+												</plx:alternateBranch>
+											</xsl:when>
+											<xsl:otherwise>
+												<plx:fallbackBranch>
+													<xsl:call-template name="PredicateReplacementBody"/>
+												</plx:fallbackBranch>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:for-each>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:call-template name="PredicateReplacementBody"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:if>
+					</xsl:for-each>
 
-						<!-- Use the default replacement for the predicate text if nothing was specified -->
-						<plx:branch>
-							<plx:condition>
-								<plx:binaryOperator type="identityEquality">
-									<plx:left>
-										<plx:nameRef name="roleReplacement"/>
-									</plx:left>
-									<plx:right>
-										<plx:nullKeyword/>
-									</plx:right>
-								</plx:binaryOperator>
-							</plx:condition>
-							<plx:body>
-								<plx:assign>
-									<plx:left>
-										<plx:nameRef name="roleReplacement"/>
-									</plx:left>
-									<plx:right>
-										<plx:nameRef name="basicReplacement"/>
-									</plx:right>
-								</plx:assign>
-							</plx:body>
-						</plx:branch>
+					<!-- Use the default replacement for the predicate text if nothing was specified -->
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityEquality">
+								<plx:left>
+									<plx:nameRef name="roleReplacement"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
 						<plx:assign>
 							<plx:left>
-								<plx:callInstance name=".implied" type="arrayIndexer">
-									<plx:callObject>
-										<plx:nameRef name="roleReplacements"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="{$iterVarName}"/>
-									</plx:passParam>
-								</plx:callInstance>
+								<plx:nameRef name="roleReplacement"/>
 							</plx:left>
 							<plx:right>
-								<plx:nameRef name="roleReplacement"/>
+								<plx:nameRef name="basicReplacement"/>
 							</plx:right>
 						</plx:assign>
-					</plx:body>
+					</plx:branch>
+					<plx:assign>
+						<plx:left>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef name="roleReplacements"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="{$iterVarName}"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:nameRef name="roleReplacement"/>
+						</plx:right>
+					</plx:assign>
 				</plx:loop>
 			</xsl:when>
 		</xsl:choose>
@@ -2774,81 +2696,79 @@
 					<plx:nameRef name="i" type="local"/>
 				</plx:increment>
 			</plx:beforeLoop>
-			<plx:body>
-				<plx:local name="minValue" dataTypeName=".string">
-					<plx:initialize>
-						<plx:callInstance name="MinValue" type="property">
-							<plx:callObject>
-								<plx:callInstance name=".implied" type="indexerCall">
-									<plx:callObject>
-										<plx:nameRef name="ranges"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="i" type="local"/>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="maxValue" dataTypeName=".string">
-					<plx:initialize>
-						<plx:callInstance name="MaxValue" type="property">
-							<plx:callObject>
-								<plx:callInstance name=".implied" type="indexerCall">
-									<plx:callObject>
-										<plx:nameRef name="ranges"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="i" type="local"/>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="minInclusion" dataTypeName="RangeInclusion">
-					<plx:initialize>
-						<plx:callInstance name="MinInclusion" type="property">
-							<plx:callObject>
-								<plx:callInstance name=".implied" type="indexerCall">
-									<plx:callObject>
-										<plx:nameRef name="ranges"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="i" type="local"/>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="maxInclusion" dataTypeName="RangeInclusion">
-					<plx:initialize>
-						<plx:callInstance name="MaxInclusion" type="property">
-							<plx:callObject>
-								<plx:callInstance name=".implied" type="indexerCall">
-									<plx:callObject>
-										<plx:nameRef name="ranges"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="i" type="local"/>
-									</plx:passParam>
-								</plx:callInstance>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:initialize>
-				</plx:local>
+			<plx:local name="minValue" dataTypeName=".string">
+				<plx:initialize>
+					<plx:callInstance name="MinValue" type="property">
+						<plx:callObject>
+							<plx:callInstance name=".implied" type="indexerCall">
+								<plx:callObject>
+									<plx:nameRef name="ranges"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="i" type="local"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:initialize>
+			</plx:local>
+			<plx:local name="maxValue" dataTypeName=".string">
+				<plx:initialize>
+					<plx:callInstance name="MaxValue" type="property">
+						<plx:callObject>
+							<plx:callInstance name=".implied" type="indexerCall">
+								<plx:callObject>
+									<plx:nameRef name="ranges"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="i" type="local"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:initialize>
+			</plx:local>
+			<plx:local name="minInclusion" dataTypeName="RangeInclusion">
+				<plx:initialize>
+					<plx:callInstance name="MinInclusion" type="property">
+						<plx:callObject>
+							<plx:callInstance name=".implied" type="indexerCall">
+								<plx:callObject>
+									<plx:nameRef name="ranges"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="i" type="local"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:initialize>
+			</plx:local>
+			<plx:local name="maxInclusion" dataTypeName="RangeInclusion">
+				<plx:initialize>
+					<plx:callInstance name="MaxInclusion" type="property">
+						<plx:callObject>
+							<plx:callInstance name=".implied" type="indexerCall">
+								<plx:callObject>
+									<plx:nameRef name="ranges"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="i" type="local"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:initialize>
+			</plx:local>
 
-				<xsl:call-template name="IterateRolesConstraintVerbalizationBody">
-					<xsl:with-param name="iterVarName" select="'i'"/>
-					<xsl:with-param name="contextMatch" select="'rangeCount'"/>
-					<xsl:with-param name="ListStyle" select="@listStyle"/>
-					<xsl:with-param name="CompositeIterator" select="'i'"/>
-					<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
-					<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
-				</xsl:call-template>
-			</plx:body>
+			<xsl:call-template name="IterateRolesConstraintVerbalizationBody">
+				<xsl:with-param name="iterVarName" select="'i'"/>
+				<xsl:with-param name="contextMatch" select="'rangeCount'"/>
+				<xsl:with-param name="ListStyle" select="@listStyle"/>
+				<xsl:with-param name="CompositeIterator" select="'i'"/>
+				<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+				<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+			</xsl:call-template>
 		</plx:loop>
 		<plx:assign>
 			<plx:left>
@@ -3018,189 +2938,143 @@
 					<plx:nameRef name="{$iterVarName}"/>
 				</plx:increment>
 			</plx:beforeLoop>
-			<plx:body>
-				<xsl:if test="$contextMatch='singleColumnConstraintRoles' or descendant::ve:*[@match='primary' or @match='secondary' or @conditionMatch='RolePlayerHasRefScheme'] or descendant::ve:RoleName">
-					<plx:local name="primaryRole" dataTypeName="Role">
-						<plx:initialize>
-							<plx:callInstance name=".implied" type="arrayIndexer">
-								<plx:callObject>
-									<plx:nameRef>
-										<xsl:attribute name="name">
-											<xsl:choose>
-												<xsl:when test="$contextMatch='all'">
-													<xsl:text>factRoles</xsl:text>
-												</xsl:when>
-												<xsl:when test="$contextMatch='included'">
-													<xsl:text>includedRoles</xsl:text>
-												</xsl:when>
-												<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
-													<xsl:text>allConstraintRoles</xsl:text>
-												</xsl:when>
-												<xsl:when test="$contextMatch='excluded'">
-													<xsl:text>factRoles</xsl:text>
-												</xsl:when>
-											</xsl:choose>
-										</xsl:attribute>
-									</plx:nameRef>
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef name="{$iterVarName}"/>
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:initialize>
-					</plx:local>
-				</xsl:if>
-				<xsl:if test="$contextMatch='singleColumnConstraintRoles'">
-					<plx:assign>
-						<plx:left>
-							<plx:nameRef name="parentFact"/>
-						</plx:left>
-						<plx:right>
-							<plx:callInstance name="FactType" type="property">
-								<plx:callObject>
-									<plx:nameRef name="primaryRole"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:nameRef name="factRoles"/>
-						</plx:left>
-						<plx:right>
-							<plx:callInstance name="RoleCollection" type="property">
-								<plx:callObject>
-									<plx:nameRef name="parentFact"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:nameRef name="factArity"/>
-						</plx:left>
-						<plx:right>
-							<plx:callInstance name="Count" type="property">
-								<plx:callObject>
-									<plx:nameRef name="factRoles"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:right>
-					</plx:assign>
-					<plx:assign>
-						<plx:left>
-							<plx:nameRef name="allReadingOrders"/>
-						</plx:left>
-						<plx:right>
-							<plx:callInstance name="ReadingOrderCollection" type="property">
-								<plx:callObject>
-									<plx:nameRef name="parentFact"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:right>
-					</plx:assign>
-					<plx:local name="currentFactIndex" dataTypeName=".i4">
-						<plx:initialize>
-							<plx:callInstance name="IndexOf">
-								<plx:callObject>
-									<plx:nameRef name="allFacts"/>
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef name="parentFact"/>
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:initialize>
-					</plx:local>
-					<plx:local name="basicRoleReplacements" dataTypeName=".string" dataTypeIsSimpleArray="true">
-						<plx:initialize>
-							<plx:callInstance name=".implied" type="arrayIndexer">
-								<plx:callObject>
-									<plx:nameRef name="allBasicRoleReplacements"/>
-								</plx:callObject>
-								<plx:passParam>
-									<plx:nameRef name="currentFactIndex"/>
-								</plx:passParam>
-							</plx:callInstance>
-						</plx:initialize>
-					</plx:local>
-				</xsl:if>
-				<xsl:choose>
-					<xsl:when test="$filterTest">
-						<plx:branch>
-							<plx:condition>
-								<xsl:copy-of select="$filterTest"/>
-							</plx:condition>
-							<plx:body>
-								<xsl:variable name="passCompositeCount">
-									<xsl:choose>
-										<xsl:when test="string-length($CompositeCount)">
-											<xsl:value-of select="$CompositeCount"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="$filteredCountVarName"/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:variable name="passCompositeIterator">
-									<xsl:choose>
-										<xsl:when test="string-length($CompositeIterator)">
-											<xsl:value-of select="$CompositeIterator"/>
-										</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="$filteredIterVarName"/>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<xsl:call-template name="IterateRolesConstraintVerbalizationBody">
-									<xsl:with-param name="TopLevel" select="$TopLevel"/>
-									<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
-									<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
-									<xsl:with-param name="CompositeCount" select="string($passCompositeCount)"/>
-									<xsl:with-param name="CompositeIterator" select="string($passCompositeIterator)"/>
-									<xsl:with-param name="ListStyle" select="$ListStyle"/>
-									<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-									<xsl:with-param name="FirstPassVariable" select="$trackFirstPassVarName"/>
-									<!-- Forwarded local parameters -->
-									<xsl:with-param name="contextMatch" select="$contextMatch"/>
-									<xsl:with-param name="iterVarName" select="$iterVarName"/>
-								</xsl:call-template>
-								<xsl:if test="$createListOrTrackFirstPass">
-									<plx:assign>
-										<plx:left>
-											<plx:nameRef name="{$passCompositeIterator}"/>
-										</plx:left>
-										<plx:right>
-											<plx:binaryOperator type="add">
-												<plx:left>
-													<plx:nameRef name="{$passCompositeIterator}"/>
-												</plx:left>
-												<plx:right>
-													<plx:value type="i4" data="1"/>
-												</plx:right>
-											</plx:binaryOperator>
-										</plx:right>
-									</plx:assign>
-								</xsl:if>
-								<xsl:if test="$trackFirstPass">
-									<plx:assign>
-										<plx:left>
-											<plx:nameRef name="{$trackFirstPassVarName}"/>
-										</plx:left>
-										<plx:right>
-											<plx:falseKeyword/>
-										</plx:right>
-									</plx:assign>
-								</xsl:if>
-							</plx:body>
-						</plx:branch>
-					</xsl:when>
-					<xsl:otherwise>
+			<xsl:if test="$contextMatch='singleColumnConstraintRoles' or descendant::ve:*[@match='primary' or @match='secondary' or @conditionMatch='RolePlayerHasRefScheme'] or descendant::ve:RoleName">
+				<plx:local name="primaryRole" dataTypeName="Role">
+					<plx:initialize>
+						<plx:callInstance name=".implied" type="arrayIndexer">
+							<plx:callObject>
+								<plx:nameRef>
+									<xsl:attribute name="name">
+										<xsl:choose>
+											<xsl:when test="$contextMatch='all'">
+												<xsl:text>factRoles</xsl:text>
+											</xsl:when>
+											<xsl:when test="$contextMatch='included'">
+												<xsl:text>includedRoles</xsl:text>
+											</xsl:when>
+											<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
+												<xsl:text>allConstraintRoles</xsl:text>
+											</xsl:when>
+											<xsl:when test="$contextMatch='excluded'">
+												<xsl:text>factRoles</xsl:text>
+											</xsl:when>
+										</xsl:choose>
+									</xsl:attribute>
+								</plx:nameRef>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef name="{$iterVarName}"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+			</xsl:if>
+			<xsl:if test="$contextMatch='singleColumnConstraintRoles'">
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="parentFact"/>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="FactType" type="property">
+							<plx:callObject>
+								<plx:nameRef name="primaryRole"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="factRoles"/>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="RoleCollection" type="property">
+							<plx:callObject>
+								<plx:nameRef name="parentFact"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="factArity"/>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="Count" type="property">
+							<plx:callObject>
+								<plx:nameRef name="factRoles"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:right>
+				</plx:assign>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="allReadingOrders"/>
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="ReadingOrderCollection" type="property">
+							<plx:callObject>
+								<plx:nameRef name="parentFact"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:right>
+				</plx:assign>
+				<plx:local name="currentFactIndex" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:callInstance name="IndexOf">
+							<plx:callObject>
+								<plx:nameRef name="allFacts"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef name="parentFact"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="basicRoleReplacements" dataTypeName=".string" dataTypeIsSimpleArray="true">
+					<plx:initialize>
+						<plx:callInstance name=".implied" type="arrayIndexer">
+							<plx:callObject>
+								<plx:nameRef name="allBasicRoleReplacements"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:nameRef name="currentFactIndex"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+			</xsl:if>
+			<xsl:choose>
+				<xsl:when test="$filterTest">
+					<plx:branch>
+						<plx:condition>
+							<xsl:copy-of select="$filterTest"/>
+						</plx:condition>
+						<xsl:variable name="passCompositeCount">
+							<xsl:choose>
+								<xsl:when test="string-length($CompositeCount)">
+									<xsl:value-of select="$CompositeCount"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$filteredCountVarName"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:variable name="passCompositeIterator">
+							<xsl:choose>
+								<xsl:when test="string-length($CompositeIterator)">
+									<xsl:value-of select="$CompositeIterator"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$filteredIterVarName"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
 						<xsl:call-template name="IterateRolesConstraintVerbalizationBody">
 							<xsl:with-param name="TopLevel" select="$TopLevel"/>
 							<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
 							<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
-							<xsl:with-param name="CompositeCount" select="$CompositeCount"/>
-							<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
+							<xsl:with-param name="CompositeCount" select="string($passCompositeCount)"/>
+							<xsl:with-param name="CompositeIterator" select="string($passCompositeIterator)"/>
 							<xsl:with-param name="ListStyle" select="$ListStyle"/>
 							<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 							<xsl:with-param name="FirstPassVariable" select="$trackFirstPassVarName"/>
@@ -3208,6 +3082,23 @@
 							<xsl:with-param name="contextMatch" select="$contextMatch"/>
 							<xsl:with-param name="iterVarName" select="$iterVarName"/>
 						</xsl:call-template>
+						<xsl:if test="$createListOrTrackFirstPass">
+							<plx:assign>
+								<plx:left>
+									<plx:nameRef name="{$passCompositeIterator}"/>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="add">
+										<plx:left>
+											<plx:nameRef name="{$passCompositeIterator}"/>
+										</plx:left>
+										<plx:right>
+											<plx:value type="i4" data="1"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:right>
+							</plx:assign>
+						</xsl:if>
 						<xsl:if test="$trackFirstPass">
 							<plx:assign>
 								<plx:left>
@@ -3218,9 +3109,34 @@
 								</plx:right>
 							</plx:assign>
 						</xsl:if>
-					</xsl:otherwise>
-				</xsl:choose>
-			</plx:body>
+					</plx:branch>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="IterateRolesConstraintVerbalizationBody">
+						<xsl:with-param name="TopLevel" select="$TopLevel"/>
+						<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+						<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+						<xsl:with-param name="CompositeCount" select="$CompositeCount"/>
+						<xsl:with-param name="CompositeIterator" select="$CompositeIterator"/>
+						<xsl:with-param name="ListStyle" select="$ListStyle"/>
+						<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
+						<xsl:with-param name="FirstPassVariable" select="$trackFirstPassVarName"/>
+						<!-- Forwarded local parameters -->
+						<xsl:with-param name="contextMatch" select="$contextMatch"/>
+						<xsl:with-param name="iterVarName" select="$iterVarName"/>
+					</xsl:call-template>
+					<xsl:if test="$trackFirstPass">
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="{$trackFirstPassVarName}"/>
+							</plx:left>
+							<plx:right>
+								<plx:falseKeyword/>
+							</plx:right>
+						</plx:assign>
+					</xsl:if>
+				</xsl:otherwise>
+			</xsl:choose>
 		</plx:loop>
 		<xsl:variable name="getListText">
 			<plx:callInstance name="ToString">
@@ -3304,15 +3220,59 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
-					<plx:body>
-						<xsl:call-template name="SetSnippetVariable">
-							<xsl:with-param name="SnippetType" select="concat($ListStyle,'Open')"/>
-							<xsl:with-param name="VariableName" select="'listSnippet'"/>
-						</xsl:call-template>
-					</plx:body>
-					<!-- UNDONE: We could spit less code here if we pass the arity
+					<xsl:call-template name="SetSnippetVariable">
+						<xsl:with-param name="SnippetType" select="concat($ListStyle,'Open')"/>
+						<xsl:with-param name="VariableName" select="'listSnippet'"/>
+					</xsl:call-template>
+				</plx:branch>
+				<!-- UNDONE: We could spit less code here if we pass the arity
 						 in from the ConstrainedRoles tag. -->
-					<plx:alternateBranch>
+				<plx:alternateBranch>
+					<plx:condition>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:nameRef name="{$iterVarName}">
+									<xsl:if test="string-length($CompositeIterator)">
+										<xsl:attribute name="name">
+											<xsl:value-of select="$CompositeIterator"/>
+										</xsl:attribute>
+									</xsl:if>
+								</plx:nameRef>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="subtract">
+									<plx:left>
+										<plx:nameRef>
+											<xsl:attribute name="name">
+												<xsl:choose>
+													<xsl:when test="string-length($CompositeCount)">
+														<xsl:value-of select="$CompositeCount"/>
+													</xsl:when>
+													<xsl:when test="$contextMatch='all'">
+														<xsl:text>factArity</xsl:text>
+													</xsl:when>
+													<xsl:when test="$contextMatch='included'">
+														<xsl:text>includedArity</xsl:text>
+													</xsl:when>
+													<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
+														<xsl:text>constraintRoleArity</xsl:text>
+													</xsl:when>
+													<xsl:when test="$contextMatch='rangeCount'">
+														<xsl:text>rangeCount</xsl:text>
+													</xsl:when>
+													<!-- UNDONE: Support excluded match -->
+												</xsl:choose>
+											</xsl:attribute>
+										</plx:nameRef>
+									</plx:left>
+									<plx:right>
+										<plx:value type="i4" data="1"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:branch>
 						<plx:condition>
 							<plx:binaryOperator type="equality">
 								<plx:left>
@@ -3325,78 +3285,28 @@
 									</plx:nameRef>
 								</plx:left>
 								<plx:right>
-									<plx:binaryOperator type="subtract">
-										<plx:left>
-											<plx:nameRef>
-												<xsl:attribute name="name">
-													<xsl:choose>
-														<xsl:when test="string-length($CompositeCount)">
-															<xsl:value-of select="$CompositeCount"/>
-														</xsl:when>
-														<xsl:when test="$contextMatch='all'">
-															<xsl:text>factArity</xsl:text>
-														</xsl:when>
-														<xsl:when test="$contextMatch='included'">
-															<xsl:text>includedArity</xsl:text>
-														</xsl:when>
-														<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
-															<xsl:text>constraintRoleArity</xsl:text>
-														</xsl:when>
-														<xsl:when test="$contextMatch='rangeCount'">
-															<xsl:text>rangeCount</xsl:text>
-														</xsl:when>
-														<!-- UNDONE: Support excluded match -->
-													</xsl:choose>
-												</xsl:attribute>
-											</plx:nameRef>
-										</plx:left>
-										<plx:right>
-											<plx:value type="i4" data="1"/>
-										</plx:right>
-									</plx:binaryOperator>
+									<plx:value type="i4" data="1"/>
 								</plx:right>
 							</plx:binaryOperator>
 						</plx:condition>
-						<plx:body>
-							<plx:branch>
-								<plx:condition>
-									<plx:binaryOperator type="equality">
-										<plx:left>
-											<plx:nameRef name="{$iterVarName}">
-												<xsl:if test="string-length($CompositeIterator)">
-													<xsl:attribute name="name">
-														<xsl:value-of select="$CompositeIterator"/>
-													</xsl:attribute>
-												</xsl:if>
-											</plx:nameRef>
-										</plx:left>
-										<plx:right>
-											<plx:value type="i4" data="1"/>
-										</plx:right>
-									</plx:binaryOperator>
-								</plx:condition>
-								<plx:body>
-									<xsl:call-template name="SetSnippetVariable">
-										<xsl:with-param name="SnippetType" select="concat($ListStyle,'PairSeparator')"/>
-										<xsl:with-param name="VariableName" select="'listSnippet'"/>
-									</xsl:call-template>
-								</plx:body>
-								<plx:fallbackBranch>
-									<xsl:call-template name="SetSnippetVariable">
-										<xsl:with-param name="SnippetType" select="concat($ListStyle,'FinalSeparator')"/>
-										<xsl:with-param name="VariableName" select="'listSnippet'"/>
-									</xsl:call-template>
-								</plx:fallbackBranch>
-							</plx:branch>
-						</plx:body>
-					</plx:alternateBranch>
+						<xsl:call-template name="SetSnippetVariable">
+							<xsl:with-param name="SnippetType" select="concat($ListStyle,'PairSeparator')"/>
+							<xsl:with-param name="VariableName" select="'listSnippet'"/>
+						</xsl:call-template>
+					</plx:branch>
 					<plx:fallbackBranch>
 						<xsl:call-template name="SetSnippetVariable">
-							<xsl:with-param name="SnippetType" select="concat($ListStyle,'Separator')"/>
+							<xsl:with-param name="SnippetType" select="concat($ListStyle,'FinalSeparator')"/>
 							<xsl:with-param name="VariableName" select="'listSnippet'"/>
 						</xsl:call-template>
 					</plx:fallbackBranch>
-				</plx:branch>
+				</plx:alternateBranch>
+				<plx:fallbackBranch>
+					<xsl:call-template name="SetSnippetVariable">
+						<xsl:with-param name="SnippetType" select="concat($ListStyle,'Separator')"/>
+						<xsl:with-param name="VariableName" select="'listSnippet'"/>
+					</xsl:call-template>
+				</plx:fallbackBranch>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:if test="$createList">
@@ -3561,18 +3471,16 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
-					<plx:body>
-						<plx:callInstance name="Append">
-							<plx:callObject>
-								<plx:nameRef name="sbTemp"/>
-							</plx:callObject>
-							<plx:passParam>
-								<xsl:call-template name="SnippetFor">
-									<xsl:with-param name="SnippetType" select="concat($ListStyle,'Close')"/>
-								</xsl:call-template>
-							</plx:passParam>
-						</plx:callInstance>
-					</plx:body>
+					<plx:callInstance name="Append">
+						<plx:callObject>
+							<plx:nameRef name="sbTemp"/>
+						</plx:callObject>
+						<plx:passParam>
+							<xsl:call-template name="SnippetFor">
+								<xsl:with-param name="SnippetType" select="concat($ListStyle,'Close')"/>
+							</xsl:call-template>
+						</plx:passParam>
+					</plx:callInstance>
 				</plx:branch>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -3860,111 +3768,107 @@
 							<plx:nameRef name="{$IteratorVariableName}"/>
 						</plx:increment>
 					</plx:beforeLoop>
-					<plx:body>
-						<!-- UNDONE: We may not need this for all cases, it depends on the
-							 filters in place. -->
-						<plx:local name="primaryRole" dataTypeName="Role">
-							<plx:initialize>
-								<plx:callInstance name=".implied" type="arrayIndexer">
+					<!-- UNDONE: We may not need this for all cases, it depends on the
+						 filters in place. -->
+					<plx:local name="primaryRole" dataTypeName="Role">
+						<plx:initialize>
+							<plx:callInstance name=".implied" type="arrayIndexer">
+								<plx:callObject>
+									<plx:nameRef>
+										<xsl:attribute name="name">
+											<xsl:choose>
+												<xsl:when test="$contextMatch='all'">
+													<xsl:text>factRoles</xsl:text>
+												</xsl:when>
+												<xsl:when test="$contextMatch='included'">
+													<xsl:text>includedRoles</xsl:text>
+												</xsl:when>
+												<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
+													<xsl:text>allConstraintRoles</xsl:text>
+												</xsl:when>
+												<xsl:when test="$contextMatch='excluded'">
+													<xsl:text>factRoles</xsl:text>
+												</xsl:when>
+											</xsl:choose>
+										</xsl:attribute>
+									</plx:nameRef>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:nameRef name="{$IteratorVariableName}"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<xsl:if test="$contextMatch='singleColumnConstraintRoles'">
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="parentFact"/>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name="FactType" type="property">
 									<plx:callObject>
-										<plx:nameRef>
-											<xsl:attribute name="name">
-												<xsl:choose>
-													<xsl:when test="$contextMatch='all'">
-														<xsl:text>factRoles</xsl:text>
-													</xsl:when>
-													<xsl:when test="$contextMatch='included'">
-														<xsl:text>includedRoles</xsl:text>
-													</xsl:when>
-													<xsl:when test="$contextMatch='singleColumnConstraintRoles'">
-														<xsl:text>allConstraintRoles</xsl:text>
-													</xsl:when>
-													<xsl:when test="$contextMatch='excluded'">
-														<xsl:text>factRoles</xsl:text>
-													</xsl:when>
-												</xsl:choose>
-											</xsl:attribute>
-										</plx:nameRef>
+										<plx:nameRef name="primaryRole"/>
 									</plx:callObject>
-									<plx:passParam>
-										<plx:nameRef name="{$IteratorVariableName}"/>
-									</plx:passParam>
 								</plx:callInstance>
-							</plx:initialize>
-						</plx:local>
-						<xsl:if test="$contextMatch='singleColumnConstraintRoles'">
-							<plx:assign>
-								<plx:left>
-									<plx:nameRef name="parentFact"/>
-								</plx:left>
-								<plx:right>
-									<plx:callInstance name="FactType" type="property">
-										<plx:callObject>
-											<plx:nameRef name="primaryRole"/>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:right>
-							</plx:assign>
-							<plx:assign>
-								<plx:left>
-									<plx:nameRef name="factRoles"/>
-								</plx:left>
-								<plx:right>
-									<plx:callInstance name="RoleCollection" type="property">
-										<plx:callObject>
-											<plx:nameRef name="parentFact"/>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:right>
-							</plx:assign>
-							<plx:assign>
-								<plx:left>
-									<plx:nameRef name="factArity"/>
-								</plx:left>
-								<plx:right>
-									<plx:callInstance name="Count" type="property">
-										<plx:callObject>
-											<plx:nameRef name="factRoles"/>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:right>
-							</plx:assign>
-							<plx:assign>
-								<plx:left>
-									<plx:nameRef name="allReadingOrders"/>
-								</plx:left>
-								<plx:right>
-									<plx:callInstance name="ReadingOrderCollection" type="property">
-										<plx:callObject>
-											<plx:nameRef name="parentFact"/>
-										</plx:callObject>
-									</plx:callInstance>
-								</plx:right>
-							</plx:assign>
-						</xsl:if>
-						<plx:branch>
-							<plx:condition>
-								<xsl:copy-of select="$filterTest"/>
-							</plx:condition>
-							<plx:body>
-								<plx:assign>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="factRoles"/>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name="RoleCollection" type="property">
+									<plx:callObject>
+										<plx:nameRef name="parentFact"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="factArity"/>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name="Count" type="property">
+									<plx:callObject>
+										<plx:nameRef name="factRoles"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="allReadingOrders"/>
+							</plx:left>
+							<plx:right>
+								<plx:callInstance name="ReadingOrderCollection" type="property">
+									<plx:callObject>
+										<plx:nameRef name="parentFact"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:right>
+						</plx:assign>
+					</xsl:if>
+					<plx:branch>
+						<plx:condition>
+							<xsl:copy-of select="$filterTest"/>
+						</plx:condition>
+						<plx:assign>
+							<plx:left>
+								<plx:nameRef name="{$TotalCountCollectorVariable}"/>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="add">
 									<plx:left>
 										<plx:nameRef name="{$TotalCountCollectorVariable}"/>
 									</plx:left>
 									<plx:right>
-										<plx:binaryOperator type="add">
-											<plx:left>
-												<plx:nameRef name="{$TotalCountCollectorVariable}"/>
-											</plx:left>
-											<plx:right>
-												<plx:value type="i4" data="1"/>
-											</plx:right>
-										</plx:binaryOperator>
+										<plx:value type="i4" data="1"/>
 									</plx:right>
-								</plx:assign>
-							</plx:body>
-						</plx:branch>
-					</plx:body>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:assign>
+					</plx:branch>
 				</plx:loop>
 			</xsl:when>
 			<xsl:otherwise>
@@ -4043,31 +3947,29 @@
 					</plx:right>
 				</plx:binaryOperator>
 			</plx:condition>
-			<plx:body>
-				<plx:assign>
-					<plx:left>
-						<plx:nameRef name="sbTemp"/>
-					</plx:left>
-					<plx:right>
-						<plx:callNew dataTypeName="StringBuilder"/>
-					</plx:right>
-				</plx:assign>
-			</plx:body>
-			<plx:fallbackBranch>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="Length" type="property">
-							<plx:callObject>
-								<plx:nameRef name="sbTemp"/>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:value type="i4" data="0"/>
-					</plx:right>
-				</plx:assign>
-			</plx:fallbackBranch>
+			<plx:assign>
+				<plx:left>
+					<plx:nameRef name="sbTemp"/>
+				</plx:left>
+				<plx:right>
+					<plx:callNew dataTypeName="StringBuilder"/>
+				</plx:right>
+			</plx:assign>
 		</plx:branch>
+		<plx:fallbackBranch>
+			<plx:assign>
+				<plx:left>
+					<plx:callInstance name="Length" type="property">
+						<plx:callObject>
+							<plx:nameRef name="sbTemp"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:left>
+				<plx:right>
+					<plx:value type="i4" data="0"/>
+				</plx:right>
+			</plx:assign>
+		</plx:fallbackBranch>
 	</xsl:template>
 	<xsl:template name="PopulateReadingOrder">
 		<!-- Support readings for {Conditional, {Prefer|Require}[Non][Primary]LeadReading[NoForwardText], null} ReadingChoice values -->
