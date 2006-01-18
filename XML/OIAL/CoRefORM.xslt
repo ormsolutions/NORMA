@@ -7,16 +7,31 @@
 	<xsl:param name="CoRefSimpleMandatoryNameDecorator" select="'_mandatory'"/>
 	<xsl:param name="CoRefFactIdDecorator" select="'_coref_fact'"/>
 	<xsl:param name="CoRefFactNameDecorator" select="'_coref_fact'"/>
+	<xsl:param name="CoRefValueDataTypeIdDecorator" select="'_Data_Type'"/>
+	<xsl:variable name="ExistingTrueOrFalseLogicalDataType" select="ormRoot:ORM2/orm:ORMModel/orm:DataTypes/orm:TrueOrFalseLogicalDataType"/>
+	<xsl:variable name="CoRefLogicalDataTypeIdDecoratorFragment">
+		<xsl:choose>
+			<xsl:when test="$ExistingTrueOrFalseLogicalDataType">
+				<xsl:value-of select="orm:TrueOrFalseLogicalDataType/@id"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="'_true_or_false_logical_Data_Type'"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="CoRefLogicalDataTypeIdDecorator" select="string($CoRefLogicalDataTypeIdDecoratorFragment)"/>
 
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
-	
+
 	<xs:schema targetNamespace="urn:local-temps" xmlns="urn:local-temps" elementFormDefault="qualified">
 		<xs:element name="mappedRole" type="mappedRoleType"/>
 		<xs:complexType name="mappedRoleType">
 			<xs:annotation>
-				<xs:documentation>Indicates that a role has been deleted and any reference to it
-				needs to map to another role.</xs:documentation>
+				<xs:documentation>
+					Indicates that a role has been deleted and any reference to it
+					needs to map to another role.
+				</xs:documentation>
 			</xs:annotation>
 			<xs:attribute name="fromRoleRef" type="xs:NMTOKEN"/>
 			<xs:attribute name="toRoleRef" type="xs:NMTOKEN"/>
@@ -87,7 +102,8 @@
 		<xsl:variable name="ObjectifiedFacts" select="msxsl:node-set($ObjectifiedFactsFragment)/child::*"/>
 		<!-- At one point BinarizableFacts were known as MultiRoleUniquenessFactTypes. Enough said. -->
 		<!-- TODO: BinarizableFacts and MultiRoleUniquenessFactTypes are not 100% equivalent; the latter is actually a subset of the former. Unaries are also binarizable, and need to be processed by this transform. -->
-		<xsl:variable name="BinarizableFacts" select="$Model/orm:Facts/orm:Fact[not(@id=$ObjectifiedFacts/@id) and orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[count(orm:Role)>1]]"/>
+		<xsl:variable name="BinarizableFacts" select="$Model/orm:Facts/orm:Fact[not(@id=$ObjectifiedFacts/@id) and (orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[count(orm:Role)>1] or count(orm:FactRoles/orm:Role)=1)]"/>
+
 		<xsl:apply-templates select="$Model" mode="CoRefORM">
 			<xsl:with-param name="Model" select="$Model"/>
 			<xsl:with-param name="RoleMap" select="$RoleMap"/>
@@ -138,7 +154,6 @@
 		</orm:ExternalUniquenessConstraint>
 	</xsl:template>
 	<xsl:template match="orm:ImpliedByObjectification | orm:ImpliedEqualityConstraint | orm:NestedPredicate" mode="CoRefORM"/>
-	
 	<xsl:template match="orm:ObjectifiedType" mode="CoRefORM">
 		<xsl:param name="Model" />
 		<xsl:param name="RoleMap"/>
@@ -287,19 +302,47 @@
 				<xsl:with-param name="BinarizableFacts" select="$BinarizableFacts"/>
 			</xsl:apply-templates>
 			<xsl:for-each select="$BinarizableFacts">
-				<orm:EntityType Name="{@Name}" id="{@id}" IsIndependent="true">
-					<orm:PlayedRoles>
-						<xsl:for-each select="orm:FactRoles/orm:Role">
-							<orm:Role ref="{@id}{$CoRefOppositeRoleIdDecorator}"/>
-						</xsl:for-each>
-					</orm:PlayedRoles>
-					<orm:PreferredIdentifier ref="{orm:InternalConstraints/orm:InternalUniquenessConstraint[not(@Modality) or @Modality='Alethic'][1]/@id}"/>
-				</orm:EntityType>
+				<xsl:choose>
+					<xsl:when test="orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[count(orm:Role)>1]">
+						<orm:EntityType Name="{@Name}" id="{@id}" IsIndependent="true">
+							<orm:PlayedRoles>
+								<xsl:for-each select="orm:FactRoles/orm:Role">
+									<orm:Role ref="{@id}{$CoRefOppositeRoleIdDecorator}"/>
+								</xsl:for-each>
+							</orm:PlayedRoles>
+							<orm:PreferredIdentifier ref="{orm:InternalConstraints/orm:InternalUniquenessConstraint[not(@Modality) or @Modality='Alethic'][1]/@id}"/>
+						</orm:EntityType>
+					</xsl:when>
+					<xsl:otherwise>
+						<orm:ValueType Name="{@Name}" id="{@id}" IsExternal="false" IsIndependent="false">
+							<orm:PlayedRoles>
+								<xsl:for-each select="orm:FactRoles/orm:Role">
+									<orm:Role ref="{@id}{$CoRefOppositeRoleIdDecorator}"/>
+								</xsl:for-each>
+							</orm:PlayedRoles>
+							<xsl:choose>
+								<xsl:when test="$ExistingTrueOrFalseLogicalDataType">
+									<orm:ConceptualDataType id="{@id}{$CoRefValueDataTypeIdDecorator}" ref="{$CoRefLogicalDataTypeIdDecorator}" Scale="0" Length="0" />
+								</xsl:when>
+								<xsl:otherwise>
+									<!--need to add logical data type to the model-->
+									<xsl:apply-templates select="orm:DataTypes" />
+									<orm:ConceptualDataType id="{@id}{$CoRefValueDataTypeIdDecorator}" ref="{$CoRefLogicalDataTypeIdDecorator}" Scale="0" Length="0" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</orm:ValueType>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:for-each>
 		</xsl:copy>
 	</xsl:template>
+	<xsl:template match="orm:DataTypes" mode="CoRefORM">
+		<xsl:copy>
+			<xsl:if test="not($ExistingTrueOrFalseLogicalDataType)">
+				<orm:TrueOrFalseLogicalDataType id="{$CoRefLogicalDataTypeIdDecorator}" />
+			</xsl:if>
+			<xsl:copy-of select="@*"/>
+			<xsl:copy-of select="child::*"/>
+		</xsl:copy>
+	</xsl:template>
 </xsl:stylesheet>
-
-<!--
-		Create ExternalConstraints with identity theft of ImpliedExternalConstraints
--->
