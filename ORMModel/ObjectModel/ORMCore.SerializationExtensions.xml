@@ -322,6 +322,9 @@
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesEqualityConstraint" RoleName="ImpliedByObjectification"/>
 		<se:Link RelationshipName="EqualityConstraintHasEqualityIsImpliedByMandatoryError" RoleName="EqualityIsImpliedByMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
+	<se:Element Class="RingConstraint" Override="true">
+		<se:Attribute ID="RingType" Name="Type"/>
+	</se:Element>
 	<!--Errors-->
 	<se:Element Class="ConstraintDuplicateNameError" Override="true">
 		<se:ChildElement Name="Constraints">

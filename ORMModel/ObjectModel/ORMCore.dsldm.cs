@@ -680,6 +680,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraint), "Modality", Neumont.Tools.ORM.ObjectModel.InternalConstraint.ModalityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraint.InternalConstraintModalityFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint), "IsPreferred", Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint.IsPreferredMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.InternalUniquenessConstraint.InternalUniquenessConstraintIsPreferredFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint), "Modality", Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.ModalityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint.SingleColumnExternalConstraintModalityFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraint), "RingType", Neumont.Tools.ORM.ObjectModel.RingConstraint.RingTypeMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.RingConstraint.RingConstraintRingTypeFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint), "MinFrequency", Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MinFrequencyMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.FrequencyConstraintMinFrequencyFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint), "MaxFrequency", Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.MaxFrequencyMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint.FrequencyConstraintMaxFrequencyFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint), "IsPreferred", Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.IsPreferredMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ExternalUniquenessConstraint.ExternalUniquenessConstraintIsPreferredFieldHandler)),
@@ -9242,6 +9243,127 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RingConstraint.MetaClassGuidString);
 		#endregion
 
+		#region RingType's Generated  Field Code
+		#region RingType's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String RingTypeMetaAttributeGuidString = "83d36429-a9c8-405e-aab1-937045b79804";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid RingTypeMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RingConstraint.RingTypeMetaAttributeGuidString);
+		#endregion
+
+		#region RingType's Generated Property Code
+
+		private Neumont.Tools.ORM.ObjectModel.RingConstraintType ringTypePropertyStorage = Neumont.Tools.ORM.ObjectModel.RingConstraintType.Undefined;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.EnumerationDomainAttribute(EnumerationType=typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintType),DefaultEnumerationValueName="Undefined")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(RingConstraintRingTypeFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RingConstraint.RingTypeMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.RingConstraint.RingType")]
+		public  Neumont.Tools.ORM.ObjectModel.RingConstraintType RingType
+		{
+			get
+			{
+				return ringTypePropertyStorage;
+			}
+		
+			set
+			{
+				ringConstraintRingTypeFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region RingConstraintRingTypeFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for RingConstraint.RingType field
+		/// </summary>
+		private static RingConstraintRingTypeFieldHandler	ringConstraintRingTypeFieldHandler	= RingConstraintRingTypeFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for RingConstraint.RingType
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class RingConstraintRingTypeFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.RingConstraint,Neumont.Tools.ORM.ObjectModel.RingConstraintType>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private RingConstraintRingTypeFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the RingConstraint.RingType field handler
+			/// </summary>
+			/// <value>RingConstraintRingTypeFieldHandler</value>
+			public static RingConstraintRingTypeFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.RingConstraint.ringConstraintRingTypeFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.RingConstraint.ringConstraintRingTypeFieldHandler;
+					}
+					else
+					{
+						// The static constructor in RingConstraint will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.RingConstraint.ringConstraintRingTypeFieldHandler, so just instantiate one and return it
+						return new RingConstraintRingTypeFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the RingConstraint.RingType field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.RingConstraint.RingTypeMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the RingConstraint</param>
+			protected sealed override Neumont.Tools.ORM.ObjectModel.RingConstraintType GetValue(Neumont.Tools.ORM.ObjectModel.RingConstraint element)
+			{
+				return element.ringTypePropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.RingConstraint element, Neumont.Tools.ORM.ObjectModel.RingConstraintType value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref Neumont.Tools.ORM.ObjectModel.RingConstraintType oldValue)
+			{
+				oldValue = element.ringTypePropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.ringTypePropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
 	}
 	#region RingConstraint's Generated Constructor Code
 	public  partial class RingConstraint

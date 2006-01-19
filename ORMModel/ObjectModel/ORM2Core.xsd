@@ -489,7 +489,7 @@
 		<xs:complexContent>
 			<xs:extension base="Constraint">
 				<xs:sequence minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="RoleSequence" type="RoleSequence" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="RoleSequence" type="RoleSequence" minOccurs="1" maxOccurs="1"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -548,9 +548,25 @@
 				<xs:sequence>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
+				<xs:attribute name="Type" type="RingConstraintType" use="required"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:simpleType name="RingConstraintType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Undefined"/>
+			<xs:enumeration value="Irreflexive"/>
+			<xs:enumeration value="Acyclic"/>
+			<xs:enumeration value="Intransitive"/>
+			<xs:enumeration value="Symmetric"/>
+			<xs:enumeration value="Asymmetric"/>
+			<xs:enumeration value="AntiSymmetric"/>
+			<xs:enumeration value="AcyclicIntransitive"/>
+			<xs:enumeration value="SymmetricIrreflexive"/>
+			<xs:enumeration value="SymmetricIntransitive"/>
+			<xs:enumeration value="AsymmetricIntransitive"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<!--End Singlecolumn constraints-->
 	<!--InternalConstraint-note these are owned by FactTypes not the model -->
 	<xs:complexType name="InternalConstraints">

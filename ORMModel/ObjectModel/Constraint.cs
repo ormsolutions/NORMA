@@ -3782,6 +3782,59 @@ namespace Neumont.Tools.ORM.ObjectModel
 		Deontic
 	}
 	#endregion
+	#region RingConstraintType enum
+	/// <summary>
+	/// A list of Ring Constraints.
+	/// </summary>
+	[CLSCompliant(true)]
+	public enum RingConstraintType
+	{
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		Undefined = 0,
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		Irreflexive = 1,
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		Symmetric = 2,
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		Asymmetric = 4,
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		Antisymmetric = 8,
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		Intransitive = 16,
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		Acyclic = 32,
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		AcyclicIntransitive = 64,
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		AsymmetricIntransitive = 128,
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		SymmetricIntransitive = 256,
+		/// <summary>
+		/// The constraint must hold
+		/// </summary>
+		SymmetricIrreflexive = 512
+	}
+	#endregion
 	#region ConstraintType and RoleSequenceStyles implementation for all constraints
 	public partial class SimpleMandatoryConstraint : IConstraint
 	{

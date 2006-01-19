@@ -34,6 +34,9 @@ Information Contained Herein is Proprietary and Confidential.
       <enumeration name="ConstraintModality" identity="7f2085b2-337c-47c0-8f7a-5706eb9f9949" namespace="Neumont.Tools.ORM.ObjectModel" id="i7f2085b2z337cz47c0z8f7az5706eb9f9949">
         <literals />
       </enumeration>
+      <enumeration name="RingConstraintType" identity="29fa971c-b5bb-407c-82f2-e0ece20351aa" namespace="Neumont.Tools.ORM.ObjectModel" id="i29fa971czb5bbz407cz82f2ze0ece20351aa">
+        <literals />
+      </enumeration>
     </enumerations>
     <relationships>
       <relationship name="ValueTypeHasDataType" identity="eaf3a24b-8adc-4836-a901-6eaa560946d1" namespace="Neumont.Tools.ORM.ObjectModel" id="ieaf3a24bz8adcz4836za901z6eaa560946d1" isLoaded="true" isAbstract="false">
@@ -3542,6 +3545,10 @@ Information Contained Herein is Proprietary and Confidential.
             <source>iebb4d437ze4e6z4df1zb3d7z229210809f3f</source>
             <role>id8da60bbz53e7z4977zb905z7863cbd8b9ab</role>
           </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="9348f140-9d3b-434d-9856-b8843da24a00" id="i9348f140z9d3bz434dz9856zb8843da24a00">
+            <source />
+            <property>i83d36429za9c8z405ezaab1z937045b79804</property>
+          </treeExpression>
         </expressions>
         <roots>
           <root name="ModelElement" identity="7ff516db-ce3c-4610-a36c-ec835c0f8057" id="i7ff516dbzce3cz4610za36czec835c0f8057">
@@ -4264,6 +4271,14 @@ Information Contained Herein is Proprietary and Confidential.
       <concept name="RingConstraint" identity="c0f29d7a-f057-49a6-87df-7abcbb55d471" namespace="Neumont.Tools.ORM.ObjectModel" id="ic0f29d7azf057z49a6z87dfz7abcbb55d471" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" />
         <superType>i5b304d59z8d34z45c5z80fcz4a0fe122aa0a</superType>
+        <valueProperties>
+          <property name="RingType" identity="83d36429-a9c8-405e-aab1-937045b79804" id="i83d36429za9c8z405ezaab1z937045b79804">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
+            <propertyInfo xsi:type="EnumerationPropertyInfo" name="RingConstraintType" identity="00000000-0000-0000-0000-000000000000" default="Undefined">
+              <enumeration>i29fa971czb5bbz407cz82f2ze0ece20351aa</enumeration>
+            </propertyInfo>
+          </property>
+        </valueProperties>
       </concept>
       <concept name="FrequencyConstraint" identity="cee1eaf8-155f-4646-acb3-bf2e87be032a" namespace="Neumont.Tools.ORM.ObjectModel" id="icee1eaf8z155fz4646zacb3zbf2e87be032a" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" />
