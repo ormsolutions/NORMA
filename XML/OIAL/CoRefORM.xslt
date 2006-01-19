@@ -101,7 +101,6 @@
 		</xsl:variable>
 		<xsl:variable name="ObjectifiedFacts" select="msxsl:node-set($ObjectifiedFactsFragment)/child::*"/>
 		<!-- At one point BinarizableFacts were known as MultiRoleUniquenessFactTypes. Enough said. -->
-		<!-- TODO: BinarizableFacts and MultiRoleUniquenessFactTypes are not 100% equivalent; the latter is actually a subset of the former. Unaries are also binarizable, and need to be processed by this transform. -->
 		<xsl:variable name="BinarizableFacts" select="$Model/orm:Facts/orm:Fact[not(@id=$ObjectifiedFacts/@id) and (orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[count(orm:Role)>1] or count(orm:FactRoles/orm:Role)=1)]"/>
 
 		<xsl:apply-templates select="$Model" mode="CoRefORM">
@@ -245,7 +244,7 @@
 							<xsl:copy-of select="$fact/orm:InternalConstraints/orm:SimpleMandatoryConstraint[orm:RoleSequence/orm:Role[@ref=current()/@id]]"/>
 							<orm:InternalUniquenessConstraint id="{@id}{$CoRefInternalUniquenessIdDecorator}" Name="{$fact/@Name}{$CoRefInternalUniquenessNameDecorator}">
 								<orm:RoleSequence>
-									<orm:Role ref="{@id}{$CoRefOppositeRoleIdDecorator}"/>
+									<orm:Role ref="{@id}"/>
 								</orm:RoleSequence>
 							</orm:InternalUniquenessConstraint>
 							<orm:SimpleMandatoryConstraint id="{@id}{$CoRefSimpleMandatoryIdDecorator}" Name="{$fact/@Name}{$CoRefSimpleMandatoryNameDecorator}">
@@ -330,6 +329,14 @@
 									<orm:ConceptualDataType id="{@id}{$CoRefValueDataTypeIdDecorator}" ref="{$CoRefLogicalDataTypeIdDecorator}" Scale="0" Length="0" />
 								</xsl:otherwise>
 							</xsl:choose>
+							<!--UNDONE:  To support relative closure do not include the value constraint-->
+							<orm:ValueConstraint>
+								<orm:ValueRangeDefinition id="{@id}_Value_Range_Definition">
+									<orm:ValueRanges>
+										<orm:ValueRange id="{@id}_True_Value" MinValue="true" MaxValue="true" MinInclusion="NotSet" MaxInclusion="NotSet" />
+									</orm:ValueRanges>
+								</orm:ValueRangeDefinition>
+							</orm:ValueConstraint>
 						</orm:ValueType>
 					</xsl:otherwise>
 				</xsl:choose>
