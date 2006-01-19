@@ -211,6 +211,10 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string ToolboxInternalUniquenessConstraintConnectorItemId = "Toolbox.InternalUniquenessConstraintConnector.Item.Id";
 		/// <summary>
+		/// The identifier for a Ring Constraint
+		/// </summary>
+		public const string ToolboxRingConstraintItemId = "Toolbox.RingConstraint.Item.Id";
+		/// <summary>
 		/// Category name for options page
 		/// </summary>
 		public const string OptionsPageCategoryAppearanceId = "OptionsPage.Category.Appearance";

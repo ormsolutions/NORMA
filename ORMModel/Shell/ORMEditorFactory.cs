@@ -104,6 +104,7 @@ namespace Neumont.Tools.ORM.Shell
 				ResourceStrings.ToolboxExclusiveOrConstraintItemId,
 				ResourceStrings.ToolboxExternalUniquenessConstraintItemId,
 				ResourceStrings.ToolboxInclusiveOrConstraintItemId,
+				ResourceStrings.ToolboxRingConstraintItemId,
 				ResourceStrings.ToolboxSubsetConstraintItemId,
 				ResourceStrings.ToolboxFrequencyConstraintItemId
 			};
@@ -148,7 +149,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		private static string StringNotNull(string testString)
 		{
-			return (testString != null) ? testString : "";
+				return (testString != null) ? testString : "";
 		}
 		#endregion // Base overrides
 	}

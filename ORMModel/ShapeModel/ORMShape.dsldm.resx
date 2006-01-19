@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,25 +112,25 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConstraintDisplayPosition.Bottom">
-    <value xml:space="preserve">Bottom</value>
+  <data name="ConstraintDisplayPosition.Bottom" xml:space="preserve">
+    <value>Bottom</value>
   </data>
-  <data name="ConstraintDisplayPosition.Top">
-    <value xml:space="preserve">Top</value>
+  <data name="ConstraintDisplayPosition.Top" xml:space="preserve">
+    <value>Top</value>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPosition">
-    <value xml:space="preserve">ConstraintDisplayPosition</value>
+  <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPosition" xml:space="preserve">
+    <value>ConstraintDisplayPosition</value>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode">
-    <value xml:space="preserve">ExpandRefMode</value>
+  <data name="Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefMode" xml:space="preserve">
+    <value>ExpandRefMode</value>
   </data>
-  <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeModel">
-    <value xml:space="preserve">ORMShapeModel</value>
+  <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeModel" xml:space="preserve">
+    <value>ORMShapeModel</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="Toolbox.BinaryFactType.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -139,17 +142,17 @@
         qqqqqqqq
 </value>
   </data>
-  <data name="Toolbox.BinaryFactType.Caption.Id">
-    <value xml:space="preserve">Binary Fact</value>
+  <data name="Toolbox.BinaryFactType.Caption.Id" xml:space="preserve">
+    <value>Binary Fact</value>
   </data>
-  <data name="Toolbox.BinaryFactType.Item.Id">
-    <value xml:space="preserve">Toolbox.BinaryFactType.Item.Id</value>
+  <data name="Toolbox.BinaryFactType.Item.Id" xml:space="preserve">
+    <value>Toolbox.BinaryFactType.Item.Id</value>
   </data>
-  <data name="Toolbox.BinaryFactType.Tooltip.Id">
-    <value xml:space="preserve">New Binary Fact</value>
+  <data name="Toolbox.BinaryFactType.Tooltip.Id" xml:space="preserve">
+    <value>New Binary Fact</value>
   </data>
-  <data name="Toolbox.DefaultTabName">
-    <value xml:space="preserve">ORM Designer</value>
+  <data name="Toolbox.DefaultTabName" xml:space="preserve">
+    <value>ORM Designer</value>
   </data>
   <data name="Toolbox.EntityType.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -160,14 +163,14 @@
         qqqqqqqq
 </value>
   </data>
-  <data name="Toolbox.EntityType.Caption.Id">
-    <value xml:space="preserve">Entity Type</value>
+  <data name="Toolbox.EntityType.Caption.Id" xml:space="preserve">
+    <value>Entity Type</value>
   </data>
-  <data name="Toolbox.EntityType.Item.Id">
-    <value xml:space="preserve">Toolbox.EntityType.Item.Id</value>
+  <data name="Toolbox.EntityType.Item.Id" xml:space="preserve">
+    <value>Toolbox.EntityType.Item.Id</value>
   </data>
-  <data name="Toolbox.EntityType.Tooltip.Id">
-    <value xml:space="preserve">New EntityType</value>
+  <data name="Toolbox.EntityType.Tooltip.Id" xml:space="preserve">
+    <value>New EntityType</value>
   </data>
   <data name="Toolbox.EqualityConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -178,14 +181,14 @@
         rd3d2qqq
 </value>
   </data>
-  <data name="Toolbox.EqualityConstraint.Caption.Id">
-    <value xml:space="preserve">Equality Constraint</value>
+  <data name="Toolbox.EqualityConstraint.Caption.Id" xml:space="preserve">
+    <value>Equality Constraint</value>
   </data>
-  <data name="Toolbox.EqualityConstraint.Item.Id">
-    <value xml:space="preserve">Toolbox.EqualityConstraint.Item.Id</value>
+  <data name="Toolbox.EqualityConstraint.Item.Id" xml:space="preserve">
+    <value>Toolbox.EqualityConstraint.Item.Id</value>
   </data>
-  <data name="Toolbox.EqualityConstraint.Tooltip.Id">
-    <value xml:space="preserve">New Equality Constraint</value>
+  <data name="Toolbox.EqualityConstraint.Tooltip.Id" xml:space="preserve">
+    <value>New Equality Constraint</value>
   </data>
   <data name="Toolbox.ExclusionConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -196,14 +199,14 @@
         rd3d2qqq
 </value>
   </data>
-  <data name="Toolbox.ExclusionConstraint.Caption.Id">
-    <value xml:space="preserve">Exclusion Constraint</value>
+  <data name="Toolbox.ExclusionConstraint.Caption.Id" xml:space="preserve">
+    <value>Exclusion Constraint</value>
   </data>
-  <data name="Toolbox.ExclusionConstraint.Item.Id">
-    <value xml:space="preserve">Toolbox.ExclusionConstraint.Item.Id</value>
+  <data name="Toolbox.ExclusionConstraint.Item.Id" xml:space="preserve">
+    <value>Toolbox.ExclusionConstraint.Item.Id</value>
   </data>
-  <data name="Toolbox.ExclusionConstraint.Tooltip.Id">
-    <value xml:space="preserve">New Exclusion Constraint</value>
+  <data name="Toolbox.ExclusionConstraint.Tooltip.Id" xml:space="preserve">
+    <value>New Exclusion Constraint</value>
   </data>
   <data name="Toolbox.ExclusiveOrConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -214,14 +217,14 @@
         rd3d2qqq
 </value>
   </data>
-  <data name="Toolbox.ExclusiveOrConstraint.Caption.Id">
-    <value xml:space="preserve">Exclusive Or Constraint</value>
+  <data name="Toolbox.ExclusiveOrConstraint.Caption.Id" xml:space="preserve">
+    <value>Exclusive Or Constraint</value>
   </data>
-  <data name="Toolbox.ExclusiveOrConstraint.Item.Id">
-    <value xml:space="preserve">Toolbox.ExclusiveOrConstraint.Item.Id</value>
+  <data name="Toolbox.ExclusiveOrConstraint.Item.Id" xml:space="preserve">
+    <value>Toolbox.ExclusiveOrConstraint.Item.Id</value>
   </data>
-  <data name="Toolbox.ExclusiveOrConstraint.Tooltip.Id">
-    <value xml:space="preserve">New Exclusive Or Constraint</value>
+  <data name="Toolbox.ExclusiveOrConstraint.Tooltip.Id" xml:space="preserve">
+    <value>New Exclusive Or Constraint</value>
   </data>
   <data name="Toolbox.ExternalConstraintConnector.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -232,14 +235,14 @@
         AAAKqqqq
 </value>
   </data>
-  <data name="Toolbox.ExternalConstraintConnector.Caption.Id">
-    <value xml:space="preserve">Constraint Connector</value>
+  <data name="Toolbox.ExternalConstraintConnector.Caption.Id" xml:space="preserve">
+    <value>Constraint Connector</value>
   </data>
-  <data name="Toolbox.ExternalConstraintConnector.Item.Id">
-    <value xml:space="preserve">Toolbox.ExternalConstraintConnector.Item.Id</value>
+  <data name="Toolbox.ExternalConstraintConnector.Item.Id" xml:space="preserve">
+    <value>Toolbox.ExternalConstraintConnector.Item.Id</value>
   </data>
-  <data name="Toolbox.ExternalConstraintConnector.Tooltip.Id">
-    <value xml:space="preserve">Constraint Connector Tool</value>
+  <data name="Toolbox.ExternalConstraintConnector.Tooltip.Id" xml:space="preserve">
+    <value>Constraint Connector Tool</value>
   </data>
   <data name="Toolbox.ExternalUniquenessConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -250,14 +253,14 @@
         rd3d2qqq
 </value>
   </data>
-  <data name="Toolbox.ExternalUniquenessConstraint.Caption.Id">
-    <value xml:space="preserve">External Uniqueness Constraint</value>
+  <data name="Toolbox.ExternalUniquenessConstraint.Caption.Id" xml:space="preserve">
+    <value>External Uniqueness Constraint</value>
   </data>
-  <data name="Toolbox.ExternalUniquenessConstraint.Item.Id">
-    <value xml:space="preserve">Toolbox.ExternalUniquenessConstraint.Item.Id</value>
+  <data name="Toolbox.ExternalUniquenessConstraint.Item.Id" xml:space="preserve">
+    <value>Toolbox.ExternalUniquenessConstraint.Item.Id</value>
   </data>
-  <data name="Toolbox.ExternalUniquenessConstraint.Tooltip.Id">
-    <value xml:space="preserve">New External Uniqueness Constraint</value>
+  <data name="Toolbox.ExternalUniquenessConstraint.Tooltip.Id" xml:space="preserve">
+    <value>New External Uniqueness Constraint</value>
   </data>
   <data name="Toolbox.FrequencyConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -268,14 +271,14 @@
         rd3d2qqq
 </value>
   </data>
-  <data name="Toolbox.FrequencyConstraint.Caption.Id">
-    <value xml:space="preserve">Frequency Constraint</value>
+  <data name="Toolbox.FrequencyConstraint.Caption.Id" xml:space="preserve">
+    <value>Frequency Constraint</value>
   </data>
-  <data name="Toolbox.FrequencyConstraint.Item.Id">
-    <value xml:space="preserve">Toolbox.FrequencyConstraint.Item.Id</value>
+  <data name="Toolbox.FrequencyConstraint.Item.Id" xml:space="preserve">
+    <value>Toolbox.FrequencyConstraint.Item.Id</value>
   </data>
-  <data name="Toolbox.FrequencyConstraint.Tooltip.Id">
-    <value xml:space="preserve">New Frequency Constraint</value>
+  <data name="Toolbox.FrequencyConstraint.Tooltip.Id" xml:space="preserve">
+    <value>New Frequency Constraint</value>
   </data>
   <data name="Toolbox.InclusiveOrConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -286,14 +289,14 @@
         rd3d2qqq
 </value>
   </data>
-  <data name="Toolbox.InclusiveOrConstraint.Caption.Id">
-    <value xml:space="preserve">Inclusive Or Constraint</value>
+  <data name="Toolbox.InclusiveOrConstraint.Caption.Id" xml:space="preserve">
+    <value>Inclusive Or Constraint</value>
   </data>
-  <data name="Toolbox.InclusiveOrConstraint.Item.Id">
-    <value xml:space="preserve">Toolbox.InclusiveOrConstraint.Item.Id</value>
+  <data name="Toolbox.InclusiveOrConstraint.Item.Id" xml:space="preserve">
+    <value>Toolbox.InclusiveOrConstraint.Item.Id</value>
   </data>
-  <data name="Toolbox.InclusiveOrConstraint.Tooltip.Id">
-    <value xml:space="preserve">New Inclusive Or Constraint</value>
+  <data name="Toolbox.InclusiveOrConstraint.Tooltip.Id" xml:space="preserve">
+    <value>New Inclusive Or Constraint</value>
   </data>
   <data name="Toolbox.InternalUniquenessConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -304,14 +307,33 @@
         qqqqqqqq
 </value>
   </data>
-  <data name="Toolbox.InternalUniquenessConstraint.Caption.Id">
-    <value xml:space="preserve">Internal Uniqueness Constraint</value>
+  <data name="Toolbox.InternalUniquenessConstraint.Caption.Id" xml:space="preserve">
+    <value>Internal Uniqueness Constraint</value>
   </data>
-  <data name="Toolbox.InternalUniquenessConstraint.Item.Id">
-    <value xml:space="preserve">Toolbox.InternalUniquenessConstraint.Item.Id</value>
+  <data name="Toolbox.InternalUniquenessConstraint.Item.Id" xml:space="preserve">
+    <value>Toolbox.InternalUniquenessConstraint.Item.Id</value>
   </data>
-  <data name="Toolbox.InternalUniquenessConstraint.Tooltip.Id">
-    <value xml:space="preserve">New Internal Uniqueness Constraint</value>
+  <data name="Toolbox.InternalUniquenessConstraint.Tooltip.Id" xml:space="preserve">
+    <value>New Internal Uniqueness Constraint</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="Toolbox.RingConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA
+        gP8AgAD/AICA/4AAAP+AAID/gIAA/8DAwP+AgID/AAD//wD/AP8A/////wAA//8A/////wD//////6qq
+        rd3d2qqqqqrd3d3dqqqq3dqqqq3dqqrdqqqqqt2qrdqqqqqqrdrdqqqqqqqq3d2qqqqqqqrd3aqqqqqq
+        qt3dqqqqqqqq3d2qqqqqqqrd3aqqqqqqqt2t2qqqqqqt2qrdqqqqqt2qqt3aqqqt3aqqqt3d3d2qqqqq
+        rd3d2qqq
+</value>
+  </data>
+  <data name="Toolbox.RingConstraint.Caption.Id" xml:space="preserve">
+    <value>Ring Constraint</value>
+  </data>
+  <data name="Toolbox.RingConstraint.Item.Id" xml:space="preserve">
+    <value>Toolbox.RingConstraint.Item.Id</value>
+  </data>
+  <data name="Toolbox.RoleConnector.Tooltip.Id" xml:space="preserve">
+    <value>Role Connector Tool</value>
   </data>
   <data name="Toolbox.RoleConnector.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -322,14 +344,11 @@
         qqqqqqqq
 </value>
   </data>
-  <data name="Toolbox.RoleConnector.Caption.Id">
-    <value xml:space="preserve">Role Connector</value>
+  <data name="Toolbox.RoleConnector.Caption.Id" xml:space="preserve">
+    <value>Role Connector</value>
   </data>
-  <data name="Toolbox.RoleConnector.Item.Id">
-    <value xml:space="preserve">Toolbox.RoleConnector.Item.Id</value>
-  </data>
-  <data name="Toolbox.RoleConnector.Tooltip.Id">
-    <value xml:space="preserve">Role Connector Tool</value>
+  <data name="Toolbox.RoleConnector.Item.Id" xml:space="preserve">
+    <value>Toolbox.RoleConnector.Item.Id</value>
   </data>
   <data name="Toolbox.SubsetConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -340,14 +359,14 @@
         rd3d2qqq
 </value>
   </data>
-  <data name="Toolbox.SubsetConstraint.Caption.Id">
-    <value xml:space="preserve">Subset Constraint</value>
+  <data name="Toolbox.SubsetConstraint.Caption.Id" xml:space="preserve">
+    <value>Subset Constraint</value>
   </data>
-  <data name="Toolbox.SubsetConstraint.Item.Id">
-    <value xml:space="preserve">Toolbox.SubsetConstraint.Item.Id</value>
+  <data name="Toolbox.SubsetConstraint.Item.Id" xml:space="preserve">
+    <value>Toolbox.SubsetConstraint.Item.Id</value>
   </data>
-  <data name="Toolbox.SubsetConstraint.Tooltip.Id">
-    <value xml:space="preserve">New Subset Constraint</value>
+  <data name="Toolbox.SubsetConstraint.Tooltip.Id" xml:space="preserve">
+    <value>New Subset Constraint</value>
   </data>
   <data name="Toolbox.SubtypeConnector.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -358,14 +377,14 @@
         qqqqqqqq
 </value>
   </data>
-  <data name="Toolbox.SubtypeConnector.Caption.Id">
-    <value xml:space="preserve">Subtype Connector</value>
+  <data name="Toolbox.SubtypeConnector.Caption.Id" xml:space="preserve">
+    <value>Subtype Connector</value>
   </data>
-  <data name="Toolbox.SubtypeConnector.Item.Id">
-    <value xml:space="preserve">Toolbox.SubtypeConnector.Item.Id</value>
+  <data name="Toolbox.SubtypeConnector.Item.Id" xml:space="preserve">
+    <value>Toolbox.SubtypeConnector.Item.Id</value>
   </data>
-  <data name="Toolbox.SubtypeConnector.Tooltip.Id">
-    <value xml:space="preserve">Subtype Creator Tool</value>
+  <data name="Toolbox.SubtypeConnector.Tooltip.Id" xml:space="preserve">
+    <value>Subtype Creator Tool</value>
   </data>
   <data name="Toolbox.TernaryFactType.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -376,14 +395,14 @@
         qqqqqqqq
 </value>
   </data>
-  <data name="Toolbox.TernaryFactType.Caption.Id">
-    <value xml:space="preserve">Ternary Fact</value>
+  <data name="Toolbox.TernaryFactType.Caption.Id" xml:space="preserve">
+    <value>Ternary Fact</value>
   </data>
-  <data name="Toolbox.TernaryFactType.Item.Id">
-    <value xml:space="preserve">Toolbox.TernaryFactType.Item.Id</value>
+  <data name="Toolbox.TernaryFactType.Item.Id" xml:space="preserve">
+    <value>Toolbox.TernaryFactType.Item.Id</value>
   </data>
-  <data name="Toolbox.TernaryFactType.Tooltip.Id">
-    <value xml:space="preserve">New Ternary Fact</value>
+  <data name="Toolbox.TernaryFactType.Tooltip.Id" xml:space="preserve">
+    <value>New Ternary Fact</value>
   </data>
   <data name="Toolbox.UnaryFactType.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -394,14 +413,14 @@
         qqqqqqqq
 </value>
   </data>
-  <data name="Toolbox.UnaryFactType.Caption.Id">
-    <value xml:space="preserve">Unary Fact</value>
+  <data name="Toolbox.UnaryFactType.Caption.Id" xml:space="preserve">
+    <value>Unary Fact</value>
   </data>
-  <data name="Toolbox.UnaryFactType.Item.Id">
-    <value xml:space="preserve">Toolbox.UnaryFactType.Item.Id</value>
+  <data name="Toolbox.UnaryFactType.Item.Id" xml:space="preserve">
+    <value>Toolbox.UnaryFactType.Item.Id</value>
   </data>
-  <data name="Toolbox.UnaryFactType.Tooltip.Id">
-    <value xml:space="preserve">New Unary Fact</value>
+  <data name="Toolbox.UnaryFactType.Tooltip.Id" xml:space="preserve">
+    <value>New Unary Fact</value>
   </data>
   <data name="Toolbox.ValueType.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -412,13 +431,13 @@
         qqqqqqqq
 </value>
   </data>
-  <data name="Toolbox.ValueType.Caption.Id">
-    <value xml:space="preserve">Value Type</value>
+  <data name="Toolbox.ValueType.Caption.Id" xml:space="preserve">
+    <value>Value Type</value>
   </data>
-  <data name="Toolbox.ValueType.Item.Id">
-    <value xml:space="preserve">Toolbox.ValueType.Item.Id</value>
+  <data name="Toolbox.ValueType.Item.Id" xml:space="preserve">
+    <value>Toolbox.ValueType.Item.Id</value>
   </data>
-  <data name="Toolbox.ValueType.Tooltip.Id">
-    <value xml:space="preserve">New ValueType</value>
+  <data name="Toolbox.ValueType.Tooltip.Id" xml:space="preserve">
+    <value>New ValueType</value>
   </data>
 </root>

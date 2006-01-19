@@ -256,6 +256,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\ORMShape.dsldm.resx">
       <DependentUpon>ORMShape.dsldm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="ObjectModel\VerbalizationGenerator.Sets.xslt" />
     <Content Include="ObjectModel\DataTypesGenerator.xslt" />
@@ -291,6 +292,7 @@
     </Content>
     <Content Include="ObjectModel\VerbalizationGenerator.xslt" />
     <Content Include="Resources\AboutBox.ico" />
+    <None Include="Resources\Toolbox.RingConstraint.Bitmap.Id.bmp" />
     <Content Include="Resources\ORM.ico" />
     <Content Include="Resources\ResourceStringsGenerator.xml">
       <Generator>NUPlixLoader</Generator>

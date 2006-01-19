@@ -541,8 +541,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 				case ResourceStrings.ToolboxSubtypeConnectorItemId:
 					// Intentionally unprototyped item
 					break;
+				case ResourceStrings.ToolboxRingConstraintItemId:
+					RingConstraint ring = RingConstraint.CreateRingConstraint(store);
+					group.AddGraph(ring);
+					retVal = group.CreatePrototype(ring);
+					break;
 				default:
-					Debug.Assert(false); // Unknown Id
+					Debug.Assert(false, "Unkown ResourceString Id"); // Unknown Id
 					break;
 			}
 			if (retVal == null)
