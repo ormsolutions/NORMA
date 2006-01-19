@@ -244,7 +244,14 @@
 							<xsl:copy-of select="$fact/orm:InternalConstraints/orm:SimpleMandatoryConstraint[orm:RoleSequence/orm:Role[@ref=current()/@id]]"/>
 							<orm:InternalUniquenessConstraint id="{@id}{$CoRefInternalUniquenessIdDecorator}" Name="{$fact/@Name}{$CoRefInternalUniquenessNameDecorator}">
 								<orm:RoleSequence>
-									<orm:Role ref="{@id}"/>
+									<xsl:choose>
+										<xsl:when test="$fact/orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[count(orm:Role)>1]">
+											<orm:Role ref="{@id}{$CoRefOppositeRoleIdDecorator}"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<orm:Role ref="{@id}"/>
+										</xsl:otherwise>
+									</xsl:choose>
 								</orm:RoleSequence>
 							</orm:InternalUniquenessConstraint>
 							<orm:SimpleMandatoryConstraint id="{@id}{$CoRefSimpleMandatoryIdDecorator}" Name="{$fact/@Name}{$CoRefSimpleMandatoryNameDecorator}">
