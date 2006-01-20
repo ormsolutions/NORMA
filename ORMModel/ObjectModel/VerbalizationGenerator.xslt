@@ -114,6 +114,7 @@
 	</xsl:template>
 	<xsl:template match="ve:Constraint" mode="ConstraintVerbalization">
 		<xsl:variable name="patternGroup" select="@patternGroup"/>
+		<xsl:variable name="isValueTypeValueConstraint" select="$patternGroup='ValueTypeValueConstraint'"/>
 		<xsl:variable name="isRoleValue" select="$patternGroup='RoleValueConstraint'"/>
 		<xsl:variable name="isInternal" select="$patternGroup='InternalConstraint' or $isRoleValue"/>
 		<xsl:variable name="isSingleColumn" select="$patternGroup='SingleColumnExternalConstraint'"/>
@@ -161,10 +162,10 @@
 						</plx:initialize>
 					</plx:local>
 				</xsl:if>
-				<plx:local name="isDeontic" dataTypeName=".boolean">
-					<plx:initialize>
-						<xsl:choose>
-							<xsl:when test="$isInternal and not($isRoleValue)">
+				<xsl:choose>
+					<xsl:when test="$isInternal and not($isRoleValue)">
+						<plx:local name="isDeontic" dataTypeName=".boolean">
+							<plx:initialize>
 								<plx:binaryOperator type="equality">
 									<plx:left>
 										<plx:callInstance name="Modality" type="property">
@@ -179,36 +180,49 @@
 										<plx:callStatic dataTypeName="ConstraintModality" name="Deontic" type="field"/>
 									</plx:right>
 								</plx:binaryOperator>
-							</xsl:when>
-							<xsl:otherwise>
+							</plx:initialize>
+						</plx:local>
+					</xsl:when>
+					<xsl:when test="$isValueTypeValueConstraint">
+						<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
+							<plx:initialize>
 								<plx:falseKeyword/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</plx:initialize>
-				</plx:local>
+							</plx:initialize>
+						</plx:local>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:local name="isDeontic" dataTypeName=".boolean">
+							<plx:initialize>
+								<plx:falseKeyword/>
+							</plx:initialize>
+						</plx:local>
+					</xsl:otherwise>
+				</xsl:choose>
 				<plx:local name="sbTemp" dataTypeName="StringBuilder">
 					<plx:initialize>
 						<plx:nullKeyword/>
 					</plx:initialize>
 				</plx:local>
-				<plx:local name="parentFact" dataTypeName="FactType">
-					<xsl:choose>
-						<xsl:when test="$isInternal and not($isRoleValue)">
-							<plx:initialize>
-								<plx:callThis name="FactType" type="property"/>
-							</plx:initialize>
-						</xsl:when>
-						<xsl:when test="$isRoleValue">
-							<plx:initialize>
-								<plx:callInstance name="FactType" type="property">
-									<plx:callObject>
-										<plx:nameRef name="valueRole" type="local"/>
-									</plx:callObject>
-								</plx:callInstance>
-							</plx:initialize>
-						</xsl:when>
-					</xsl:choose>
-				</plx:local>
+				<xsl:if test="not($isValueTypeValueConstraint)">
+					<plx:local name="parentFact" dataTypeName="FactType">
+						<xsl:choose>
+							<xsl:when test="$isInternal and not($isRoleValue)">
+								<plx:initialize>
+									<plx:callThis name="FactType" type="property"/>
+								</plx:initialize>
+							</xsl:when>
+							<xsl:when test="$isRoleValue">
+								<plx:initialize>
+									<plx:callInstance name="FactType" type="property">
+										<plx:callObject>
+											<plx:nameRef name="valueRole" type="local"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:initialize>
+							</xsl:when>
+						</xsl:choose>
+					</plx:local>
+				</xsl:if>
 				<xsl:if test="$isInternal and not($isRoleValue)">
 					<plx:local name="includedRoles" dataTypeName="RoleMoveableCollection">
 						<plx:initialize>
@@ -231,40 +245,42 @@
 						</plx:initialize>
 					</plx:local>
 				</xsl:if>
-				<plx:local name="factRoles" dataTypeName="RoleMoveableCollection">
-					<xsl:if test="$isInternal">
-						<plx:initialize>
-							<plx:callInstance name="RoleCollection" type="property">
-								<plx:callObject>
-									<plx:nameRef name="parentFact"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:initialize>
-					</xsl:if>
-				</plx:local>
-				<plx:local name="factArity" dataTypeName=".i4">
-					<xsl:if test="$isInternal">
-						<plx:initialize>
-							<plx:callInstance name="Count" type="property">
-								<plx:callObject>
-									<plx:nameRef name="factRoles"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:initialize>
-					</xsl:if>
-				</plx:local>
-				<plx:local name="allReadingOrders" dataTypeName="ReadingOrderMoveableCollection">
-					<xsl:if test="$isInternal">
-						<plx:initialize>
-							<plx:callInstance name="ReadingOrderCollection" type="property">
-								<plx:callObject>
-									<plx:nameRef name="parentFact"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:initialize>
-					</xsl:if>
-				</plx:local>
-				<xsl:if test="not($isInternal)">
+				<xsl:if test="not($isValueTypeValueConstraint)">
+					<plx:local name="factRoles" dataTypeName="RoleMoveableCollection">
+						<xsl:if test="$isInternal">
+							<plx:initialize>
+								<plx:callInstance name="RoleCollection" type="property">
+									<plx:callObject>
+										<plx:nameRef name="parentFact"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:initialize>
+						</xsl:if>
+					</plx:local>
+					<plx:local name="factArity" dataTypeName=".i4">
+						<xsl:if test="$isInternal">
+							<plx:initialize>
+								<plx:callInstance name="Count" type="property">
+									<plx:callObject>
+										<plx:nameRef name="factRoles"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:initialize>
+						</xsl:if>
+					</plx:local>
+					<plx:local name="allReadingOrders" dataTypeName="ReadingOrderMoveableCollection">
+						<xsl:if test="$isInternal">
+							<plx:initialize>
+								<plx:callInstance name="ReadingOrderCollection" type="property">
+									<plx:callObject>
+										<plx:nameRef name="parentFact"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:initialize>
+						</xsl:if>
+					</plx:local>
+				</xsl:if>
+				<xsl:if test="not($isInternal) and not($isValueTypeValueConstraint)">
 					<plx:local name="allConstraintRoles" dataTypeName="RoleMoveableCollection">
 						<plx:initialize>
 							<plx:callThis name="RoleCollection" type="property"/>
@@ -544,23 +560,25 @@
 						<xsl:with-param name="SubscriptConditions" select="$subscriptConditions"/>
 					</xsl:call-template>
 				</xsl:if>
-				<plx:local name="roleReplacements" dataTypeName=".string" dataTypeIsSimpleArray="true">
-					<plx:initialize>
-						<plx:callNew dataTypeName=".string" dataTypeIsSimpleArray="true">
-							<plx:passParam>
-								<plx:nameRef name="factArity">
-									<xsl:if test="not($isInternal)">
-										<xsl:attribute name="name">
-											<xsl:text>maxFactArity</xsl:text>
-										</xsl:attribute>
-									</xsl:if>
-								</plx:nameRef>
-							</plx:passParam>
-						</plx:callNew>
-					</plx:initialize>
-				</plx:local>
-				<plx:local name="reading" dataTypeName="Reading"/>
-				<xsl:if test="$isRoleValue">
+				<xsl:if test="not($isValueTypeValueConstraint)">
+					<plx:local name="roleReplacements" dataTypeName=".string" dataTypeIsSimpleArray="true">
+						<plx:initialize>
+							<plx:callNew dataTypeName=".string" dataTypeIsSimpleArray="true">
+								<plx:passParam>
+									<plx:nameRef name="factArity">
+										<xsl:if test="not($isInternal)">
+											<xsl:attribute name="name">
+												<xsl:text>maxFactArity</xsl:text>
+											</xsl:attribute>
+										</xsl:if>
+									</plx:nameRef>
+								</plx:passParam>
+							</plx:callNew>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="reading" dataTypeName="Reading"/>
+				</xsl:if>
+				<xsl:if test="$isRoleValue or $isValueTypeValueConstraint">
 					<plx:local name="ranges" dataTypeName="ValueRangeMoveableCollection">
 						<plx:initialize>
 							<plx:callThis name="ValueRangeCollection" type="property"/>
@@ -1769,6 +1787,15 @@
 							<plx:callInstance name="Name" type="property">
 								<plx:callObject>
 									<plx:nameRef name="valueRole"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</xsl:when>
+					<xsl:when test="name()='ValueRangeValueTypeName'">
+						<plx:initialize>
+							<plx:callInstance name="Name" type="property">
+								<plx:callObject>
+									<plx:callThis name="ValueType" type="property"/>
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:initialize>

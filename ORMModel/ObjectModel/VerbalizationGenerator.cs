@@ -495,7 +495,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""smallIndent"">",
 					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""objectType"">{0}</span> in <span class=""objectType"">{1}</span>",
+					@"<span class=""objectType"">{0}</span> in {1}",
 					@"at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
 					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
 					@"at least <span class=""objectType"">{0}</span>",
@@ -507,7 +507,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""quantifier"">it is necessary that</span> {0}",
 					@"<span class=""quantifier"">it is possible that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
-					@"<span class=""quantifier"">the possible values of {0} are {1}</span>",
+					@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are {1}</span>",
 					@"{0}(<span class=""objectType"">{1}</span>)",
 					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 					@"<span class=""objectType"">{0}</span>",
@@ -523,7 +523,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					"",
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
+					@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is {1}</span>",
 					"</span>",
 					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
@@ -604,7 +604,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""smallIndent"">",
 					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""objectType"">{0}</span> in <span class=""objectType"">{1}</span>",
+					@"<span class=""objectType"">{0}</span> in {1}",
 					@"at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
 					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
 					@"at least <span class=""objectType"">{0}</span>",
@@ -616,7 +616,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""quantifier"">it is obligatory that</span> {0}",
 					@"<span class=""quantifier"">it is permitted that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
-					@"<span class=""quantifier"">the possible values of {0} are {1}</span>",
+					@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are {1}</span>",
 					@"{0}(<span class=""objectType"">{1}</span>)",
 					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 					@"<span class=""objectType"">{0}</span>",
@@ -632,7 +632,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					"",
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
+					@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is {1}</span>",
 					"</span>",
 					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
@@ -713,7 +713,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""smallIndent"">",
 					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""objectType"">{0}</span> in <span class=""objectType"">{1}</span>",
+					@"<span class=""objectType"">{0}</span> in {1}",
 					@"at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
 					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
 					@"at least <span class=""objectType"">{0}</span>",
@@ -725,7 +725,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""quantifier"">it is necessary that</span> {0}",
 					@"<span class=""quantifier"">it is impossible that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
-					@"<span class=""quantifier"">the possible values of {0} are {1}</span>",
+					@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are {1}</span>",
 					@"{0}(<span class=""objectType"">{1}</span>)",
 					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 					@"<span class=""objectType"">{0}</span>",
@@ -741,7 +741,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					"",
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
+					@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is {1}</span>",
 					"</span>",
 					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
@@ -822,7 +822,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""smallIndent"">",
 					@"<br/><span class=""logicalOperator"">or </span>",
 					@"<br/><span class=""logicalOperator"">or </span>",
-					@"<span class=""objectType"">{0}</span> in <span class=""objectType"">{1}</span>",
+					@"<span class=""objectType"">{0}</span> in {1}",
 					@"at least <span class=""objectType"">{0}</span> to at most <span class=""objectType"">{1}</span>",
 					@"at least <span class=""objectType"">{0}</span> to below <span class=""objectType"">{1}</span>",
 					@"at least <span class=""objectType"">{0}</span>",
@@ -834,7 +834,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					@"<span class=""quantifier"">it is obligatory that</span> {0}",
 					@"<span class=""quantifier"">it is forbidden that</span> {0}",
 					@"<span class=""quantifier"">more than one</span> {0}",
-					@"<span class=""quantifier"">the possible values of {0} are {1}</span>",
+					@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are {1}</span>",
 					@"{0}(<span class=""objectType"">{1}</span>)",
 					@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 					@"<span class=""objectType"">{0}</span>",
@@ -850,7 +850,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					"",
 					@"<span class=""listSeparator""> and </span>",
 					@"<span class=""listSeparator"">, </span>",
-					@"<span class=""quantifier"">the possible value of {0} is {1}</span>",
+					@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is {1}</span>",
 					"</span>",
 					@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">and that </span>",
 					"<span>",
@@ -3261,4 +3261,150 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // RoleValueRangeDefinition verbalization
+	#region ValueTypeValueRangeDefinition verbalization
+	public partial class ValueTypeValueRangeDefinition : IVerbalize
+	{
+		/// <summary>
+		/// IVerbalize.GetVerbalization implementation
+		/// </summary>
+		protected bool GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		{
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			if (errorOwner != null)
+			{
+				bool firstElement = true;
+				foreach (ModelError error in errorOwner.ErrorCollection)
+				{
+					if (firstElement)
+					{
+						firstElement = false;
+						beginVerbalization(VerbalizationContent.ErrorReport);
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(error.Name);
+				}
+				if (!(firstElement))
+				{
+					return false;
+				}
+			}
+			const bool isDeontic = false;
+			StringBuilder sbTemp = null;
+			ValueRangeMoveableCollection ranges = this.ValueRangeCollection;
+			bool isSingleValue = (ranges.Count == 1) && (ranges[0].MinValue == ranges[0].MaxValue);
+			VerbalizationTextSnippetType variableSnippetSnippetType1 = 0;
+			if (isSingleValue)
+			{
+				variableSnippetSnippetType1 = VerbalizationTextSnippetType.SingleValueValueConstraint;
+			}
+			else
+			{
+				variableSnippetSnippetType1 = VerbalizationTextSnippetType.MultiValueValueConstraint;
+			}
+			beginVerbalization(VerbalizationContent.Normal);
+			string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
+			string variableSnippet1Replace1 = null;
+			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(VerbalizationTextSnippetType.ObjectType, isDeontic, isNegative);
+			string variableSnippet1Replace1Replace1 = this.ValueType.Name;
+			variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1);
+			string variableSnippet1Replace2 = null;
+			if (sbTemp == null)
+			{
+				sbTemp = new StringBuilder();
+			}
+			else
+			{
+				sbTemp.Length = 0;
+			}
+			int rangeCount = ranges.Count;
+			for (int i = 0; i < rangeCount; ++i)
+			{
+				string minValue = ranges[i].MinValue;
+				string maxValue = ranges[i].MaxValue;
+				RangeInclusion minInclusion = ranges[i].MinInclusion;
+				RangeInclusion maxInclusion = ranges[i].MaxInclusion;
+				VerbalizationTextSnippetType listSnippet;
+				if (i == 0)
+				{
+					listSnippet = VerbalizationTextSnippetType.CompactSimpleListOpen;
+				}
+				else if (i == (rangeCount - 1))
+				{
+					if (i == 1)
+					{
+						listSnippet = VerbalizationTextSnippetType.CompactSimpleListPairSeparator;
+					}
+					else
+					{
+						listSnippet = VerbalizationTextSnippetType.CompactSimpleListFinalSeparator;
+					}
+				}
+				else
+				{
+					listSnippet = VerbalizationTextSnippetType.CompactSimpleListSeparator;
+				}
+				sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+				variableSnippet1Replace2 = null;
+				VerbalizationTextSnippetType variableSnippet1ReplaceSnippetType2 = 0;
+				if (minValue == maxValue)
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.SelfReference;
+				}
+				else if ((minInclusion != RangeInclusion.Open) && (maxValue.Length == 0))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxUnbounded;
+				}
+				else if ((minInclusion == RangeInclusion.Open) && (maxValue.Length == 0))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxUnbounded;
+				}
+				else if ((minValue.Length == 0) && (maxInclusion != RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinUnboundedMaxClosed;
+				}
+				else if ((minValue.Length == 0) && (maxInclusion == RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinUnboundedMaxOpen;
+				}
+				else if ((minInclusion != RangeInclusion.Open) && (maxInclusion != RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxClosed;
+				}
+				else if ((minInclusion != RangeInclusion.Open) && (maxInclusion == RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinClosedMaxOpen;
+				}
+				else if ((minInclusion == RangeInclusion.Open) && (maxInclusion != RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxClosed;
+				}
+				else if ((minInclusion == RangeInclusion.Open) && (maxInclusion == RangeInclusion.Open))
+				{
+					variableSnippet1ReplaceSnippetType2 = VerbalizationTextSnippetType.MinOpenMaxOpen;
+				}
+				string variableSnippet1ReplaceFormat2 = snippets.GetSnippet(variableSnippet1ReplaceSnippetType2, isDeontic, isNegative);
+				string variableSnippet1Replace2Replace1 = null;
+				variableSnippet1Replace2Replace1 = minValue;
+				string variableSnippet1Replace2Replace2 = null;
+				variableSnippet1Replace2Replace2 = maxValue;
+				variableSnippet1Replace2 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat2, variableSnippet1Replace2Replace1, variableSnippet1Replace2Replace2);
+				sbTemp.Append(variableSnippet1Replace2);
+				if (i == (rangeCount - 1))
+				{
+					sbTemp.Append(snippets.GetSnippet(VerbalizationTextSnippetType.CompactSimpleListClose, isDeontic, isNegative));
+				}
+			}
+			variableSnippet1Replace2 = sbTemp.ToString();
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(VerbalizationTextSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, VerbalizationSets snippets, NotifyBeginVerbalization beginVerbalization, bool isNegative)
+		{
+			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
+		}
+	}
+	#endregion // ValueTypeValueRangeDefinition verbalization
 }

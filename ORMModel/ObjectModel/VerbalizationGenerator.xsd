@@ -193,6 +193,11 @@
 					<xs:documentation>Verbalizes value range constraints on roles.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="ValueTypeValueRangeDefinition">
+				<xs:annotation>
+					<xs:documentation>Verbalizes value range constraints on value types.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ConstraintPatternGroupEnum">
@@ -203,6 +208,11 @@
 			<xs:enumeration value="RoleValueConstraint">
 				<xs:annotation>
 					<xs:documentation>Verbalizes role value constraints.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ValueTypeValueConstraint">
+				<xs:annotation>
+					<xs:documentation>Verbalizes value type value constraints.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -419,6 +429,7 @@
 			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
 			<xs:element name="RoleName" type="RoleNameType"/>
 			<xs:element name="RolePlayerRefModeScheme" type="RolePlayerRefModeSchemeType"/>
+			<xs:element name="ValueRangeValueTypeName" type="ValueRangeValueTypeNameType"/>
 		</xs:choice>
 	</xs:group>
 	<xs:group name="ReplacementElementsWithConditionalMatchGroup">
@@ -570,6 +581,13 @@
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
 		</xs:choice>
 		<xs:attribute name="listStyle" type="ListStyleEnum"/>
+	</xs:complexType>
+	<xs:complexType name="ValueRangeValueTypeNameType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the name of the value type.
+			</xs:documentation>
+		</xs:annotation>
 	</xs:complexType>
 	<xs:complexType name="MinValueType">
 		<xs:annotation>
