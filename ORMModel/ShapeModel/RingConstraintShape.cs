@@ -57,30 +57,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Triangle = 3
 		}
 
+		private RingConstraintOuterShape? myOuterShape;
 		private RingConstraintOuterShape OuterShape
 		{
 			get
 			{
-				const RingConstraintType circleTypes = RingConstraintType.Irreflexive | RingConstraintType.Acyclic | RingConstraintType.AcyclicIntransitive;
+				if (this.myOuterShape == null)
+				{
+					const RingConstraintType circleTypes = RingConstraintType.Irreflexive | RingConstraintType.Acyclic | RingConstraintType.AcyclicIntransitive;
 
-				RingConstraint constraint = AssociatedRingConstraint;
-				RingConstraintType ringConstraintType = (constraint != null) ? constraint.RingType : RingConstraintType.Undefined;
-				if (ringConstraintType == RingConstraintType.Undefined)
-				{
-					return RingConstraintOuterShape.None;
+					RingConstraint constraint = this.AssociatedRingConstraint;
+					RingConstraintType ringConstraintType = (constraint != null) ? constraint.RingType : RingConstraintType.Undefined;
+					if (ringConstraintType == RingConstraintType.Undefined)
+					{
+						this.myOuterShape = RingConstraintOuterShape.None;
+					}
+					else if ((ringConstraintType & circleTypes) != 0)
+					{
+						this.myOuterShape = RingConstraintOuterShape.Circle;
+					}
+					else if (ringConstraintType == RingConstraintType.Intransitive)
+					{
+						this.myOuterShape = RingConstraintOuterShape.Triangle;
+					}
+					else
+					{
+						this.myOuterShape = RingConstraintOuterShape.Oval;
+					}
 				}
-				else if ((ringConstraintType & circleTypes) != 0)
-				{
-					return RingConstraintOuterShape.Circle;
-				}
-				else if (ringConstraintType == RingConstraintType.Intransitive)
-				{
-					return RingConstraintOuterShape.Triangle;
-				}
-				else
-				{
-					return RingConstraintOuterShape.Oval;
-				}
+				return this.myOuterShape.Value;
 			}
 		}
 
@@ -343,6 +348,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 							RingConstraintShape ringConstraintShape = obj as RingConstraintShape;
 							if (ringConstraintShape != null)
 							{
+								ringConstraintShape.myOuterShape = null;
 								SizeD oldSize = ringConstraintShape.myContentSize;
 								ringConstraintShape.myContentSize = SizeD.Empty;
 								if (!oldSize.IsEmpty)
