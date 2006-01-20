@@ -309,10 +309,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// A style set used for drawing deontic constraints
-		/// </summary>
-		private static StyleSet myDeonticClassStyleSet;
-		/// <summary>
 		/// Switch between alethic and deontic style sets to draw
 		/// the mandatory dot correctly
 		/// </summary>
@@ -330,7 +326,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// Note that we don't do anything with fonts with this style set, so the
 					// static one is sufficient. Instance style sets also go through a font initiation
 					// step inside the framework
-					return myDeonticClassStyleSet;
+					return DeonticClassStyleSet;
 				}
 				return base.StyleSet;
 			}
@@ -354,15 +350,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 			BrushSettings brushSettings = new BrushSettings();
 			brushSettings.Color = constraintForeColor;
 			classStyleSet.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
-
-			StyleSet deonticStyleSet = new StyleSet(classStyleSet);
-			constraintForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.DeonticConstraint);
-			penSettings.Color = constraintForeColor;
-			deonticStyleSet.OverridePen(DiagramPens.ConnectionLineDecorator, penSettings);
-			SolidBrush backgroundBrush = deonticStyleSet.GetBrush(DiagramBrushes.DiagramBackground) as SolidBrush;
-			brushSettings.Color = (backgroundBrush == null) ? constraintForeColor : backgroundBrush.Color;
-			deonticStyleSet.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
-			myDeonticClassStyleSet = deonticStyleSet;
+		}
+		/// <summary>
+		/// A style set used for drawing deontic mandatory decorators
+		/// </summary>
+		private static StyleSet myDeonticClassStyleSet;
+		/// <summary>
+		/// Create an alternate style set for drawing deontic mandatory constraint decorators
+		/// </summary>
+		protected virtual StyleSet DeonticClassStyleSet
+		{
+			get
+			{
+				StyleSet retVal = myDeonticClassStyleSet;
+				if (retVal == null)
+				{
+					retVal = new StyleSet(ClassStyleSet);
+					IORMFontAndColorService fontsAndColors = (Store as IORMToolServices).FontAndColorService;
+					Color constraintForeColor = fontsAndColors.GetForeColor(ORMDesignerColor.DeonticConstraint);
+					PenSettings penSettings = new PenSettings();
+					penSettings.Color = constraintForeColor;
+					retVal.OverridePen(DiagramPens.ConnectionLineDecorator, penSettings);
+					SolidBrush backgroundBrush = retVal.GetBrush(DiagramBrushes.DiagramBackground) as SolidBrush;
+					BrushSettings brushSettings = new BrushSettings();
+					brushSettings.Color = (backgroundBrush == null) ? constraintForeColor : backgroundBrush.Color;
+					retVal.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
+					myDeonticClassStyleSet = retVal;
+				}
+				return retVal;
+			}
 		}
 		#endregion // Customize appearance
 		#region RolePlayerLink specific

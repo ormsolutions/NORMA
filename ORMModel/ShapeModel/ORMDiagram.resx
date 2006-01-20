@@ -307,12 +307,20 @@
     <comment xml:space="preserve">This is the title of the category on the options page.</comment>
   </data>
   <data name="OptionsPage.Property.DataType.Description">
-    <value xml:space="preserve">The data type for objects. This will be the default data type used when creating new fact types.</value>
+    <value xml:space="preserve">The data type for objects. This will be the default data type used when creating new value types.</value>
     <comment xml:space="preserve">The data type property description.</comment>
   </data>
   <data name="OptionsPage.Property.DataType.DisplayName">
     <value xml:space="preserve">Initial Data Type</value>
     <comment xml:space="preserve">The display name for the data type property.</comment>
+  </data>
+  <data name="OptionsPage.Property.ExternalConstraintRoleBarDisplay.Description">
+    <value xml:space="preserve">The style used to draw external constraint role  bars. Role bars appear at the end of lines attaching an external constraint to roles in a fact.</value>
+    <comment xml:space="preserve">Description of the external constraint role bar display option.</comment>
+  </data>
+  <data name="OptionsPage.Property.ExternalConstraintRoleBarDisplay.DisplayName">
+    <value xml:space="preserve">Constraint Role Bar Display</value>
+    <comment xml:space="preserve">Description of the external constraint role bar display option.</comment>
   </data>
   <data name="OptionsPage.Property.MandatoryDot.Description">
     <value xml:space="preserve">Specify which end of the role connector you wish to place mandatory dots.</value>

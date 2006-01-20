@@ -223,13 +223,21 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string OptionsPageCategoryDataTypesId = "OptionsPage.Category.DataTypes";
 		/// <summary>
-		/// Display Name of the Role Name Display option
+		/// Description of the default data type option
 		/// </summary>
 		public const string OptionsPagePropertyDataTypeDescriptionId = "OptionsPage.Property.DataType.Description";
 		/// <summary>
-		/// Display Name of the Role Name Display option
+		/// Display Name of the default data type option
 		/// </summary>
 		public const string OptionsPagePropertyDataTypeDisplayNameId = "OptionsPage.Property.DataType.DisplayName";
+		/// <summary>
+		/// Description of the external constraint role bar display option
+		/// </summary>
+		public const string OptionsPagePropertyExternalConstraintRoleBarDisplayDescriptionId = "OptionsPage.Property.ExternalConstraintRoleBarDisplay.Description";
+		/// <summary>
+		/// Display name of the external constraint role bar display option
+		/// </summary>
+		public const string OptionsPagePropertyExternalConstraintRoleBarDisplayNameId = "OptionsPage.Property.ExternalConstraintRoleBarDisplay.DisplayName";
 		/// <summary>
 		/// Description of the object type shape
 		/// </summary>

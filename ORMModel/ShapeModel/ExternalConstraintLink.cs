@@ -98,10 +98,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // SubsetStickyDecorator class
 		#region Customize appearance
 		/// <summary>
-		/// A style set used for drawing deontic constraints
-		/// </summary>
-		private static StyleSet myDeonticClassStyleSet;
-		/// <summary>
 		/// Override the connection line pen with a dashed pen
 		/// </summary>
 		/// <param name="classStyleSet"></param>
@@ -129,16 +125,36 @@ namespace Neumont.Tools.ORM.ShapeModel
 			classStyleSet.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
 			brushSettings.Color = activeColor;
 			classStyleSet.AddBrush(ORMDiagram.StickyForegroundResource, DiagramBrushes.ConnectionLineDecorator, brushSettings);
-
-			StyleSet deonticStyleSet = new StyleSet(classStyleSet);
-			settings = new PenSettings();
-			constraintColor = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
-			settings.Color = constraintColor;
-			deonticStyleSet.OverridePen(DiagramPens.ConnectionLine, settings);
-			deonticStyleSet.OverridePen(DiagramPens.ConnectionLineDecorator, settings);
-			brushSettings.Color = constraintColor;
-			deonticStyleSet.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
-			myDeonticClassStyleSet = deonticStyleSet;
+		}
+		/// <summary>
+		/// A style set used for drawing deontic constraints
+		/// </summary>
+		private static StyleSet myDeonticClassStyleSet;
+		/// <summary>
+		/// Create an alternate style set for drawing deontic constraints
+		/// </summary>
+		protected virtual StyleSet DeonticClassStyleSet
+		{
+			get
+			{
+				StyleSet retVal = myDeonticClassStyleSet;
+				if (retVal == null)
+				{
+					retVal = new StyleSet(ClassStyleSet);
+					IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
+					Color constraintColor = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
+					PenSettings penSettings = new PenSettings();
+					constraintColor = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
+					penSettings.Color = constraintColor;
+					retVal.OverridePen(DiagramPens.ConnectionLine, penSettings);
+					retVal.OverridePen(DiagramPens.ConnectionLineDecorator, penSettings);
+					BrushSettings brushSettings = new BrushSettings();
+					brushSettings.Color = constraintColor;
+					retVal.OverrideBrush(DiagramBrushes.ConnectionLineDecorator, brushSettings);
+					myDeonticClassStyleSet = retVal;
+				}
+				return retVal;
+			}
 		}
 		/// <summary>
 		/// Switch between alethic and deontic style sets
@@ -156,7 +172,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					// Note that we don't do anything with fonts with this style set, so the
 					// static one is sufficient. Instance style sets also go through a font initiation
 					// step inside the framework
-					return myDeonticClassStyleSet;
+					return DeonticClassStyleSet;
 				}
 				return base.StyleSet;
 			}

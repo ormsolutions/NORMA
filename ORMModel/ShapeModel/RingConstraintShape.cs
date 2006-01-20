@@ -63,7 +63,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				const RingConstraintType circleTypes = RingConstraintType.Irreflexive | RingConstraintType.Acyclic | RingConstraintType.AcyclicIntransitive;
 
-				RingConstraintType ringConstraintType = this.AssociatedRingConstraint.RingType;
+				RingConstraint constraint = AssociatedRingConstraint;
+				RingConstraintType ringConstraintType = (constraint != null) ? constraint.RingType : RingConstraintType.Undefined;
 				if (ringConstraintType == RingConstraintType.Undefined)
 				{
 					return RingConstraintOuterShape.None;

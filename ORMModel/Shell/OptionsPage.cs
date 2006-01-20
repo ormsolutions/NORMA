@@ -64,6 +64,32 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		RoleBoxEnd,
 	}
+	/// <summary>
+	/// Determines when to display external constraint attach
+	/// point bars.
+	/// </summary>
+	public enum ExternalConstraintRoleBarDisplay
+	{
+		/// <summary>
+		/// Only display a bar if one or more roles in
+		/// the set of associated roles have a role in between them.
+		/// This is the default setting.
+		/// </summary>
+		SplitRoles,
+		/// <summary>
+		/// Display a bar if there is more than one role, even
+		/// if the roles are adjacent.
+		/// </summary>
+		AdjacentRoles,
+		/// <summary>
+		/// Display a bar even if there is only a single role.
+		/// This is useful for navigation with keyboard and
+		/// accessibility readers because it guarantees that all
+		/// constraints attached to a fact have an associated
+		/// visible and selectable item in a constraint box.
+		/// </summary>
+		AnyRole,
+	}
 	#endregion // Shape enums
 	#region Other Options Enums
 	/// <summary>
@@ -151,6 +177,10 @@ namespace Neumont.Tools.ORM.Shell
 		private const PortableDataType DefaultDataType_Default = PortableDataType.Unspecified;
 		private static PortableDataType myCurrentDefaultDataType = DefaultDataType_Default;
 		private PortableDataType myDefaultDataType = DefaultDataType_Default;
+
+		private const ExternalConstraintRoleBarDisplay ExternalConstraintRoleBarDisplay_Default = ExternalConstraintRoleBarDisplay.SplitRoles;
+		private static ExternalConstraintRoleBarDisplay myCurrentExternalConstraintRoleBarDisplay = ExternalConstraintRoleBarDisplay_Default;
+		private ExternalConstraintRoleBarDisplay myExternalConstraintRoleBarDisplay = ExternalConstraintRoleBarDisplay_Default;
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -165,6 +195,7 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
 			myCurrentDefaultDataType = myDefaultDataType;
+			myCurrentExternalConstraintRoleBarDisplay = myExternalConstraintRoleBarDisplay;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -178,6 +209,7 @@ namespace Neumont.Tools.ORM.Shell
 			myMandatoryDotPlacement = myCurrentMandatoryDotPlacement;
 			myRoleNameDisplay = myCurrentRoleNameDisplay;
 			myDefaultDataType = myCurrentDefaultDataType;
+			myExternalConstraintRoleBarDisplay = myCurrentExternalConstraintRoleBarDisplay;
 		}
 
 		/// <summary>
@@ -190,48 +222,57 @@ namespace Neumont.Tools.ORM.Shell
 			if (myCurrentMandatoryDotPlacement == myMandatoryDotPlacement &&
 				myCurrentObjectifiedFactDisplayShape == myObjectifiedFactDisplayShape &&
 				myCurrentObjectTypeDisplayShape == myObjectTypeDisplayShape &&
-				myCurrentRoleNameDisplay == myRoleNameDisplay)
+				myCurrentRoleNameDisplay == myRoleNameDisplay &&
+				myCurrentExternalConstraintRoleBarDisplay == myExternalConstraintRoleBarDisplay)
 			{
 				// Non-displayed setting, don't notify
 				myCurrentDefaultDataType = myDefaultDataType;
 				return;
 			}
 
+			// See if facts need resizing
+			bool resizeFactShapes = myCurrentExternalConstraintRoleBarDisplay != myExternalConstraintRoleBarDisplay;
+
 			// Set the new options
 			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
 			myCurrentObjectifiedFactDisplayShape = myObjectifiedFactDisplayShape;
 			myCurrentObjectTypeDisplayShape = myObjectTypeDisplayShape;
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
+			myCurrentExternalConstraintRoleBarDisplay = myExternalConstraintRoleBarDisplay;
 			myCurrentDefaultDataType = myDefaultDataType;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
-			NotifySettingsChange(Site, FixupDocument);
-		}
-		/// <summary>
-		/// Modify the specified document layout when options are changed
-		/// </summary>
-		/// <param name="docData"></param>
-		private void FixupDocument(ORMDesignerDocData docData)
-		{
-			IList diagrams = docData.Store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid);
-			int diagramCount = diagrams.Count;
-			for (int i = 0; i < diagramCount; ++i)
+			NotifySettingsChange(
+				Site,
+				delegate(ORMDesignerDocData docData)
 			{
-				ORMDiagram diagram = (ORMDiagram)diagrams[i];
-				using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.OptionsPageChangeTransactionName))
+				IList diagrams = docData.Store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid);
+				int diagramCount = diagrams.Count;
+				for (int i = 0; i < diagramCount; ++i)
 				{
-					Store store = diagram.Store;
-					foreach (BinaryLinkShape link in store.ElementDirectory.GetElements(BinaryLinkShape.MetaClassGuid, true))
+					ORMDiagram diagram = (ORMDiagram)diagrams[i];
+					using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.OptionsPageChangeTransactionName))
 					{
-						link.RipUp();
+						Store store = diagram.Store;
+						foreach (BinaryLinkShape link in store.ElementDirectory.GetElements(BinaryLinkShape.MetaClassGuid, true))
+						{
+							link.RipUp();
+						}
+						if (resizeFactShapes)
+						{
+							foreach (FactTypeShape factShape in store.ElementDirectory.GetElements(FactTypeShape.MetaClassGuid, true))
+							{
+								factShape.AutoResize();
+							}
+						}
+						if (t.HasPendingChanges)
+						{
+							t.Commit();
+						}
 					}
-					if (t.HasPendingChanges)
-					{
-						t.Commit();
-					}
+					diagram.Invalidate(true);
 				}
-				diagram.Invalidate(true);
-			}
+			});
 		}
 		#endregion // Base overrides
 		#region Change Notification Functions
@@ -404,6 +445,28 @@ namespace Neumont.Tools.ORM.Shell
 		public static PortableDataType CurrentDefaultDataType
 		{
 			get { return myCurrentDefaultDataType; }
+		}
+
+
+		/// <summary>
+		/// Display of external constraint bars
+		/// </summary>
+		[DefaultValue(ExternalConstraintRoleBarDisplay_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryAppearanceId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyExternalConstraintRoleBarDisplayDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyExternalConstraintRoleBarDisplayNameId)]
+		public ExternalConstraintRoleBarDisplay ExternalConstraintRoleBarDisplay
+		{
+			get { return myExternalConstraintRoleBarDisplay; }
+			set { myExternalConstraintRoleBarDisplay = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for ExternalConstraintRoleBarDisplay
+		/// </summary>
+		public static ExternalConstraintRoleBarDisplay CurrentExternalConstraintRoleBarDisplay
+		{
+			get { return myCurrentExternalConstraintRoleBarDisplay; }
 		}
 		#endregion // Accessor properties
 	}

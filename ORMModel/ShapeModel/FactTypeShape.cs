@@ -91,6 +91,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// The cached role collection
 			/// </summary>
 			private IList<Role> myRoleCollection;
+			private bool? myIsValid;
 			#endregion // Member Variables
 			#region Constructors
 			/// <summary>
@@ -111,6 +112,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				myFactConstraint = factConstraint;
 				myRoleCollection = null;
 				myIsHidden = false;
+				myIsValid = null;
 			}
 			/// <summary>
 			/// Constructor
@@ -137,6 +139,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				myFactConstraint = factConstraint;
 				myRoleCollection = null;
 				myIsHidden = false;
+				myIsValid = null;
 			}
 			#endregion // Constructors
 			#region Accessor Properties
@@ -173,6 +176,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 				get
 				{
 					return myActiveRoles;
+				}
+			}
+			/// <summary>
+			/// If a binary ActiveRoles set is marked as Active/Inactive or
+			/// Inactive/Active, then change the Inactive to NotInBox
+			/// </summary>
+			public void CompressBinaryActiveRoles()
+			{
+				ConstraintBoxRoleActivity[] roles = myActiveRoles;
+				if (roles.Length == 2)
+				{
+					if (roles[0] == ConstraintBoxRoleActivity.Inactive)
+					{
+						myActiveRoles = PreDefinedConstraintBoxRoleActivities_BinaryRightCompressed;
+					}
+					else
+					{
+						Debug.Assert(roles[1] == ConstraintBoxRoleActivity.Inactive); // Spanning of anti-spanning otherwise
+						myActiveRoles = PreDefinedConstraintBoxRoleActivities_BinaryLeftCompressed;
+					}
 				}
 			}
 			/// <summary>
@@ -246,12 +269,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					//UNDONE: Test if this constraint is valid on the fact type
-					if (IsAntiSpanning)
+					if (!myIsValid.HasValue)
 					{
-						return false;
+						bool retVal = true;
+						if (IsAntiSpanning)
+						{
+							retVal = false;
+						}
+						else
+						{
+							IModelErrorOwner errorOwner = myFactConstraint.Constraint as IModelErrorOwner;
+							if (errorOwner != null)
+							{
+								using (IEnumerator<ModelError> errors = errorOwner.ErrorCollection.GetEnumerator())
+								{
+									retVal = !errors.MoveNext();
+								}
+							}
+						}
+						myIsValid = retVal;
+						return retVal;
 					}
-					return true;
+					return myIsValid.Value;
 				}
 			}
 			#endregion // Accessor Properties
@@ -455,23 +494,43 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an n-1 binary fact with the first role active.
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_BinaryLeft = new ConstraintBoxRoleActivity[2] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.NotInBox };
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_BinaryLeft = new ConstraintBoxRoleActivity[2] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive };
+		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for an n-1 binary fact with the first role active, compressed alongside a BinaryRightCompressed.
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_BinaryLeftCompressed = new ConstraintBoxRoleActivity[2] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.NotInBox };
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an n-1 binary fact with the second role active.
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_BinaryRight = new ConstraintBoxRoleActivity[2] { ConstraintBoxRoleActivity.NotInBox, ConstraintBoxRoleActivity.Active };
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_BinaryRight = new ConstraintBoxRoleActivity[2] { ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active };
+		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for an n-1 binary fact with the second role active, compressed alongside a BinaryLeftCompressed.
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_BinaryRightCompressed = new ConstraintBoxRoleActivity[2] { ConstraintBoxRoleActivity.NotInBox, ConstraintBoxRoleActivity.Active };
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an n-1 ternary fact with the first and second roles active.
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryLeft = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive };
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryLeftCenter = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive };
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an n-1 ternary fact with the first and third roles active.
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryCenter = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active };
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryLeftRight = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active };
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an n-1 ternary fact with the second and third roles active.
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryRight = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Active };
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryCenterRight = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Active };
+		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for an ternary facts with first role only
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_Left = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Inactive };
+		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for an ternary facts with second role only
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_Center = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive };
+		/// <summary>
+		/// A ConstraintBoxRoleActivity[] for an ternary facts with third role only
+		/// </summary>
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_Right = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active };
 		#endregion //Pre-defined ConstraintBoxRoleActivity arrays
 		#region WalkConstraintBoxes implementation
 		/// <summary>
@@ -571,6 +630,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 							case 3:
 								switch (constraintRoleCount)
 								{
+									case 1:
+										int roleIndex = factRoles.IndexOf(constraintRoles[0]);
+										Debug.Assert(roleIndex != -1); // This violates the IFactConstraint contract
+										switch (roleIndex)
+										{
+											case 0:
+												predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_Left;
+												break;
+											case 1:
+												predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_Center;
+												break;
+											case 2:
+												predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_Right;
+												break;
+										}
+										break;
 									case 2:
 										int roleIndex0 = factRoles.IndexOf(constraintRoles[0]);
 										int roleIndex1 = factRoles.IndexOf(constraintRoles[1]);
@@ -581,31 +656,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 											case 0:
 												if (roleIndex1 == 1)
 												{
-													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryLeft;
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryLeftCenter;
 												}
 												else if (roleIndex1 == 2)
 												{
-													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryCenter;
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryLeftRight;
 												}
 												break;
 											case 1:
 												if (roleIndex1 == 0)
 												{
-													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryLeft;
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryLeftCenter;
 												}
 												else if (roleIndex1 == 2)
 												{
-													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryRight;
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryCenterRight;
 												}
 												break;
 											case 2:
 												if (roleIndex1 == 0)
 												{
-													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryCenter;
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryLeftRight;
 												}
 												else if (roleIndex1 == 1)
 												{
-													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryRight;
+													predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryCenterRight;
 												}
 												break;
 										}
@@ -719,20 +794,35 @@ namespace Neumont.Tools.ORM.ShapeModel
 					for (int i = internalsCount; i < significantConstraintCount; ++i)
 					{
 						bool showConstraint;
-						IList<Role> roles = constraintBoxes[i].RoleCollection;
-						switch (roles.Count)
+						ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
+						if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
 						{
-							case 1:
-								showConstraint = false;
-								break;
-							case 2:
-								int index1 = factRoles.IndexOf(roles[0]);
-								int index2 = factRoles.IndexOf(roles[1]);
-								showConstraint = Math.Abs(index1 - index2) > 1;
-								break;
-							default:
-								showConstraint = true;
-								break;
+							showConstraint = true;
+						}
+						else
+						{
+							IList<Role> roles = constraintBoxes[i].RoleCollection;
+							switch (roles.Count)
+							{
+								case 1:
+									showConstraint = false;
+									break;
+								case 2:
+									if (displayOption == ExternalConstraintRoleBarDisplay.AdjacentRoles)
+									{
+										showConstraint = true;
+									}
+									else
+									{
+										int index1 = factRoles.IndexOf(roles[0]);
+										int index2 = factRoles.IndexOf(roles[1]);
+										showConstraint = Math.Abs(index1 - index2) > 1;
+									}
+									break;
+								default:
+									showConstraint = true;
+									break;
+							}
 						}
 						if (showConstraint)
 						{
@@ -769,49 +859,68 @@ namespace Neumont.Tools.ORM.ShapeModel
 				double constraintHeight = ConstraintHeight;
 				double constraintWidth = fullBounds.Width / (double)factRoleCount;
 				fullBounds.Height = constraintHeight;
-				int heightLeft = 0;
-				int heightRight = 0;
-				int lastUncompressedConstraint = 0;
-				double initialBottom = fullBounds.Bottom;
-				#region Compressing the ConstraintRoleBoxes of binary fact types.
-				if (factRoleCount == 2 && significantConstraintCount <= 2)
+				int iBox;
+				int incr;
+				if (ConstraintDisplayPosition == ConstraintDisplayPosition.Bottom)
 				{
-					for (int i = significantConstraintCount - 1; i >= 0; --i)
+					// walk the constraints from top to bottom
+					iBox = significantConstraintCount - 1;
+					incr = -1;
+				}
+				else
+				{
+					// walk the constraints from bottom to top
+					iBox = 0;
+					incr = 1;
+				}
+				#region Compressing the ConstraintRoleBoxes of binary fact types.
+				if (factRoleCount == 2)
+				{
+					bool skippedRow = false;
+					int nextCompressedConstraint = -1;
+					double lastCompressedBottom = 0;
+					for (; iBox >= 0 && iBox < significantConstraintCount; iBox += incr)
 					{
-						ConstraintBox box = constraintBoxes[i];
+						ConstraintBox box = constraintBoxes[iBox];
 						box.Bounds = fullBounds;
 						RectangleD bounds = box.Bounds;
 
 						ConstraintBoxRoleActivity[] activeRoles = box.ActiveRoles;
-						if (activeRoles.Length == 2)
+						if (activeRoles.Length == 2) // Weed out fully spanning and antispanning
 						{
-							if (activeRoles[0] == ConstraintBoxRoleActivity.NotInBox)
+							if (nextCompressedConstraint == iBox)
 							{
-								bounds.X = bounds.X + constraintWidth;
-								bounds.Width = bounds.Width - constraintWidth;
-
-								if (heightLeft > 0)
+								nextCompressedConstraint = -1;
+								if (activeRoles[0] == ConstraintBoxRoleActivity.Inactive)
 								{
-									bounds.Y = initialBottom - ((double)lastUncompressedConstraint * constraintHeight);
-									--heightLeft;
+									bounds.X += constraintWidth;
 								}
-								else if (heightRight++ == 0)
-								{
-									lastUncompressedConstraint = i;
-								}
+								box.CompressBinaryActiveRoles();
+								bounds.Width -= constraintWidth;
+								bounds.Y = lastCompressedBottom;
+								skippedRow = true;
 							}
-							else if (activeRoles[1] == ConstraintBoxRoleActivity.NotInBox)
+							else
 							{
-								bounds.Width = bounds.Width - constraintWidth;
-
-								if (heightRight > 0)
+								int checkSide = (activeRoles[0] == ConstraintBoxRoleActivity.Inactive) ? 0 : 1;
+								for (int j = iBox + incr; j >= 0 && j < significantConstraintCount; j += incr)
 								{
-									bounds.Y = initialBottom - ((double)lastUncompressedConstraint * constraintHeight);
-									--heightRight;
+									ConstraintBoxRoleActivity[] testActiveRoles = constraintBoxes[j].ActiveRoles;
+									if (testActiveRoles.Length == 2 && testActiveRoles[checkSide] == ConstraintBoxRoleActivity.Active)
+									{
+										nextCompressedConstraint = j;
+										break;
+									}
 								}
-								else if (heightLeft++ == 0)
+								if (nextCompressedConstraint != -1)
 								{
-									lastUncompressedConstraint = i;
+									lastCompressedBottom = bounds.Y;
+									if (checkSide == 0)
+									{
+										bounds.X += constraintWidth;
+									}
+									box.CompressBinaryActiveRoles();
+									bounds.Width -= constraintWidth;
 								}
 							}
 						}
@@ -820,7 +929,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							break;
 						}
-						fullBounds.Offset(0, constraintHeight);
+						if (skippedRow)
+						{
+							skippedRow = false;
+						}
+						else
+						{
+							fullBounds.Offset(0, constraintHeight);
+						}
 					}
 				}
 				#endregion // Compressing the ConstraintRoleBoxes of binary fact types.
@@ -829,23 +945,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// This will also run if a binary has too many constraints.
 				else
 				{
-					int i;
-					int j;
-					if (ConstraintDisplayPosition == ConstraintDisplayPosition.Bottom)
+					for (; iBox >= 0 && iBox < significantConstraintCount; iBox += incr)
 					{
-						// walk the constraints from top to bottom
-						i = significantConstraintCount - 1;
-						j = -1;
-					}
-					else 
-					{
-						// walk the constraints from bottom to top
-						i = 0;
-						j = 1;
-					}
-					for (; i >= 0 && i < significantConstraintCount; i += j)
-					{
-						ConstraintBox box = constraintBoxes[i];
+						ConstraintBox box = constraintBoxes[iBox];
 						box.Bounds = fullBounds;
 						if (!boxUser(ref box))
 						{
@@ -935,7 +1037,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Find the constraint sub shape at this location
 			/// </summary>
 			/// <param name="point">The point being hit-tested.</param>
-			/// <param name="parentShape">The current ShapeField that the mouse is over.</param>
+			/// <param name="parentShape">The current FactTypeShape that the mouse is over.</param>
 			/// <param name="diagramHitTestInfo">The DiagramHitTestInfo to which the ConstraintSubShapField
 			/// will be added if the mouse is over it.</param>
 			public override void DoHitTest(PointD point, ShapeElement parentShape, DiagramHitTestInfo diagramHitTestInfo)
@@ -955,7 +1057,48 @@ namespace Neumont.Tools.ORM.ShapeModel
 					return true;
 				});
 			}
-
+			/// <summary>
+			/// Return the number of child constraints displayed in this shape
+			/// </summary>
+			/// <param name="parentShape">The current FactTypeShape to retrieve information for</param>
+			/// <returns>Total number of child items</returns>
+			public override int GetAccessibleChildCount(ShapeElement parentShape)
+			{
+				int total = 0;
+				((FactTypeShape)parentShape).WalkConstraintBoxes(
+					this,
+					myDisplayPosition,
+					delegate(ref ConstraintBox constraintBox)
+				{
+					++total;
+					return true; // Keep going to get the full total
+				});
+				return total;
+			}
+			/// <summary>
+			/// Return the child shape field corresponding to the specified index
+			/// </summary>
+			/// <param name="parentShape">The current FactTypeShape to retrieve information for</param>
+			/// <param name="index">The 0-based index of the child to retrieve</param>
+			/// <returns>ShapeSubField for the specified constraint</returns>
+			public override ShapeSubField GetAccessibleChild(ShapeElement parentShape, int index)
+			{
+				ShapeSubField retVal = null;
+				((FactTypeShape)parentShape).WalkConstraintBoxes(
+					this,
+					myDisplayPosition,
+					delegate(ref ConstraintBox constraintBox)
+				{
+					if (index == 0)
+					{
+						retVal = new ConstraintSubField(constraintBox.FactConstraint.Constraint);
+						return false; // Don't continue, we got our item
+					}
+					--index;
+					return true; // Keep going
+				});
+				return retVal;
+			}
 			/// <summary>
 			/// Get the minimum width of the ConstraintShapeField.
 			/// </summary>
@@ -1227,20 +1370,46 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							numRoles = factConstraint.FactType.RoleCollection.Count;
 						}
+						float startPos = boundsF.Left;
 						for (int i = 0; i < numRoles; ++i)
 						{
-							if (fullySpanning || rolePosToDraw[i] == ConstraintBoxRoleActivity.Active)
+							ConstraintBoxRoleActivity currentActivity = fullySpanning ? ConstraintBoxRoleActivity.Active : rolePosToDraw[i];
+							if (currentActivity == ConstraintBoxRoleActivity.Active)
 							{
 								if (firstActive == -1)
 								{
 									firstActive = i;
 								}
+								else
+								{
+									float x = startPos + (firstActive + .5f) * roleWidth;
+									g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
+									x += (i - firstActive) * roleWidth;
+									g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
+								}
 								lastActive = i;
-								float x = boundsF.Left + (i + .5f) * roleWidth;
-								g.DrawLine(constraintPen, x, verticalPos, x, targetVertical);
+							}
+							else if (firstActive == -1 && currentActivity == ConstraintBoxRoleActivity.NotInBox)
+							{
+								startPos -= roleWidth;
 							}
 						}
-						g.DrawLine(constraintPen, boundsF.Left + (firstActive + .5f) * roleWidth, verticalPos, boundsF.Right - (numRoles - lastActive - .5f) * roleWidth, verticalPos);
+						if (lastActive == firstActive)
+						{
+							// Draw a box on a single role. This is used only for accessibility
+							// cases when the ExternalConstraintRoleBarDisplay is set to AnyRole.
+							// This is designed to provide a selectable accessibility object for
+							// all constraints associated with a fact.
+							float x1 = startPos + (firstActive + .3f) * roleWidth;
+							float x2 = x1 + .4f * roleWidth;
+							g.DrawLine(constraintPen, x1, verticalPos, x1, targetVertical);
+							g.DrawLine(constraintPen, x1, verticalPos, x2, verticalPos);
+							g.DrawLine(constraintPen, x2, verticalPos, x2, targetVertical);
+						}
+						else
+						{
+							g.DrawLine(constraintPen, startPos + (firstActive + .5f) * roleWidth, verticalPos, boundsF.Right - (numRoles - lastActive - .5f) * roleWidth, verticalPos);
+						}
 					}
 
 					// set colors back to normal if they changed
@@ -1422,9 +1591,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Find the role sub shape at this location
 			/// </summary>
-			/// <param name="point"></param>
-			/// <param name="parentShape"></param>
-			/// <param name="diagramHitTestInfo"></param>
 			public override void DoHitTest(PointD point, ShapeElement parentShape, DiagramHitTestInfo diagramHitTestInfo)
 			{
 				RectangleD fullBounds = GetBounds(parentShape);
@@ -1439,6 +1605,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 						diagramHitTestInfo.HitDiagramItem = new DiagramItem(parentShape, this, new RoleSubField(roles[roleIndex]));
 					}
 				}
+			}
+			/// <summary>
+			/// Return the number of children in this shape field.
+			/// Maps to the number of roles on the FactTypeShape
+			/// </summary>
+			public override int GetAccessibleChildCount(ShapeElement parentShape)
+			{
+				return (parentShape as FactTypeShape).AssociatedFactType.RoleCollection.Count;
+			}
+			/// <summary>
+			/// Return the RoleSubField corresponding to the role at the requested index
+			/// </summary>
+			public override ShapeSubField GetAccessibleChild(ShapeElement parentShape, int index)
+			{
+				return new RoleSubField((parentShape as FactTypeShape).AssociatedFactType.RoleCollection[index]);
 			}
 			/// <summary>
 			/// Get the minimum width of this RolesShapeField.
@@ -1997,6 +2178,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			classStyleSet.AddBrush(RoleBoxResource, DiagramBrushes.DiagramBackground, brushSettings);
 
 			PenSettings penSettings = new PenSettings();
+			penSettings.Width = 1.2f / 72f; // 1.2 point
+			classStyleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
+
 			penSettings.Color = SystemColors.WindowText;
 			penSettings.Width = 1.0F / 72.0F; // 1 Point. 0 Means 1 pixel, but should only be used for non-printed items
 			penSettings.Alignment = PenAlignment.Center;
@@ -2628,26 +2812,43 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						if (roles != null)
 						{
-							RoleMoveableCollection factRoles = factType.RoleCollection;
-							factRoleCount = factRoles.Count;
-
-							switch (roles.Count)
+							ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
+							if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
 							{
-								case 1:
-									roleIndex = factRoles.IndexOf(roles[0]);
-									break;
-								case 2:
-									int index1 = factRoles.IndexOf(roles[0]);
-									int index2 = factRoles.IndexOf(roles[1]);
-									if (Math.Abs(index1 - index2) > 1)
-									{
-										goto default;
-									}
-									roleIndex = (index1 + index2 + 1) / 2;
-									attachBeforeRole = true;
-									break;
-								default:
-									return GetAbsoluteConstraintAttachPoint(constraint);
+								return GetAbsoluteConstraintAttachPoint(constraint);
+							}
+							else
+							{
+								RoleMoveableCollection factRoles;
+								switch (roles.Count)
+								{
+									case 1:
+										factRoles = factType.RoleCollection;
+										factRoleCount = factRoles.Count;
+										roleIndex = factRoles.IndexOf(roles[0]);
+										break;
+									case 2:
+										if (displayOption == ExternalConstraintRoleBarDisplay.AdjacentRoles)
+										{
+											goto default;
+										}
+										else
+										{
+											factRoles = factType.RoleCollection;
+											factRoleCount = factRoles.Count;
+											int index1 = factRoles.IndexOf(roles[0]);
+											int index2 = factRoles.IndexOf(roles[1]);
+											if (Math.Abs(index1 - index2) > 1)
+											{
+												goto default;
+											}
+											roleIndex = (index1 + index2 + 1) / 2;
+											attachBeforeRole = true;
+										}
+										break;
+									default:
+										return GetAbsoluteConstraintAttachPoint(constraint);
+								}
 							}
 						}
 					}
@@ -3137,6 +3338,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 							int roleCount = roles.Length;
 							int firstActive = -1;
 							int lastActive = -1;
+							int leadingNotInBox = 0;
+							int trailingNotInBox = 0;
 							if (roleCount == 0)
 							{
 								if (roles == PreDefinedConstraintBoxRoleActivities_FullySpanning)
@@ -3150,24 +3353,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 							{
 								for (int i = 0; i < roleCount; ++i)
 								{
-									if (roles[i] == ConstraintBoxRoleActivity.Active)
+									switch (roles[i])
 									{
-										if (firstActive == -1)
-										{
-											firstActive = i;
-										}
-										lastActive = i;
+										case ConstraintBoxRoleActivity.Active:
+											if (firstActive == -1)
+											{
+												firstActive = i;
+											}
+											lastActive = i;
+											break;
+										case ConstraintBoxRoleActivity.NotInBox:
+											if (firstActive == -1)
+											{
+												++leadingNotInBox;
+											}
+											else
+											{
+												++trailingNotInBox;
+											}
+											break;
 									}
 								}
 							}
 							Debug.Assert(firstActive != -1 && lastActive != -1);
 							if (firstActive > 0)
 							{
-								double adjust = firstActive * RoleBoxWidth;
-								rect.X += adjust;
-								rect.Width -= adjust;
+								rect.X += (firstActive - leadingNotInBox) * RoleBoxWidth;
+								if (leadingNotInBox == 0 && firstActive != 0)
+								{
+									rect.Width -= firstActive * RoleBoxWidth;
+								}
 							}
-							int trailingCount = roleCount - lastActive - 1;
+							int trailingCount = roleCount - trailingNotInBox - lastActive - 1;
 							if (trailingCount > 0)
 							{
 								rect.Width -= trailingCount * RoleBoxWidth;
@@ -3513,17 +3730,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 									if (null != (factConstraint = binaryLink.ModelElement as IFactConstraint) &&
 										null != (roles = factConstraint.RoleCollection))
 									{
+										ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
 										bool constraintBarVisible;
+										RoleMoveableCollection factRoles = null;
 										switch (roles.Count)
 										{
 											case 0:
-											case 1:
 												constraintBarVisible = false;
+												break;
+											case 1:
+												constraintBarVisible = displayOption == ExternalConstraintRoleBarDisplay.AnyRole;
 												break;
 											case 2:
 												{
-													RoleMoveableCollection factRoles = factShape.AssociatedFactType.RoleCollection;
-													constraintBarVisible = Math.Abs(factRoles.IndexOf(roles[0]) - factRoles.IndexOf(roles[1])) > 1;
+													if (displayOption == ExternalConstraintRoleBarDisplay.SplitRoles)
+													{
+														factRoles = factConstraint.FactType.RoleCollection;
+														constraintBarVisible = Math.Abs(factRoles.IndexOf(roles[0]) - factRoles.IndexOf(roles[1])) > 1;
+													}
+													else
+													{
+														constraintBarVisible = true;
+													}
 												}
 												break;
 											default:
@@ -3532,6 +3760,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 										}
 										if (constraintBarVisible)
 										{
+											if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
+											{
+												if (factRoles == null)
+												{
+													factRoles = factConstraint.FactType.RoleCollection;
+												}
+												if (factRoles.Count == 2)
+												{
+													// If AnyRole is on, then a binary fact can compress the display
+													// of an external constraint role. Moving the connection point from
+													// the top to the bottom will require more space and change the
+													// size of the fact shape.
+													factShape.AutoResize();
+												}
+											}
 											// All links going into the FactTypeShape are
 											// suspect, get rid of all of them.
 											foreach (LinkConnectsToNode factConnection in factShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
