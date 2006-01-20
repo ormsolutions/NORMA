@@ -37,6 +37,7 @@
 		<arg:Rule class="ReadingShape.ReadingOrderReadingTextChanged"/>
 		<arg:Rule class="ReadingShape.ReadingOrderRemoved"/>
 		<arg:Rule class="ReadingShape.ReadingTextChanged"/>
+		<arg:Rule class="RingConstraintShape.RingConstraintAttributeChangeRule"/>
 		<arg:Rule class="RolePlayerLink.RolePlayerRemoving"/>
 		<arg:Rule class="ValueRangeShape.ValueRangeChanged"/>
 		<arg:Rule class="ValueRangeShape.ValueRangeDefinitionAdded"/>

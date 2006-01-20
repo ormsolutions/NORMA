@@ -84,6 +84,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="e">DiagramPaintEventArgs</param>
 		public override void OnPaintShape(DiagramPaintEventArgs e)
 		{
+			this.InitializePaintTools(e);
 			base.OnPaintShape(e);
 			RectangleD bounds = AbsoluteBounds;
 			Graphics g = e.Graphics;
@@ -91,8 +92,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			stringFormat.LineAlignment = StringAlignment.Center;
 			stringFormat.Alignment = StringAlignment.Center;
 			Font font = StyleSet.GetFont(DiagramFonts.CommentText);
-			Brush brush = StyleSet.GetBrush(ExternalConstraintBrush);
+			Brush brush = this.PaintBrush;
 			g.DrawString(GetFrequencyString(), font, brush, RectangleD.ToRectangleF(bounds), stringFormat);
+			this.DisposePaintTools();
 		}
 		/// <summary>
 		/// Builds a string representing a Frequency Constraint

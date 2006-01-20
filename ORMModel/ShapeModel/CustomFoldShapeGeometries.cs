@@ -124,6 +124,33 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			return new PointD(-(vectorEndPoint.X - potentialPoint.X), -(vectorEndPoint.Y - potentialPoint.Y));
 		}
+
+		/// <summary>
+		/// Gets the <see cref="System.Drawing.PointF"/>s of a triangle that fills the circle that files <paramref name="boundingBox"/>.
+		/// </summary>
+		/// <param name="boundingBox">The <see cref="System.Drawing.RectangleF"/> that the triangle should fill the circle that fills.</param>
+		/// <returns>An array of <see cref="System.Drawing.PointF"/>s that represent a triangle that fills the circle that fills <paramref name="boundingBox"/>.</returns>
+		/// <remarks>
+		/// Four <see cref="System.Drawing.PointF"/>s are returned in the array.
+		/// The first <see cref="System.Drawing.PointF"/> (index 0) is the top center corner of the triangle.
+		/// The second <see cref="System.Drawing.PointF"/> (index 1) is the bottom left corner of the triangle.
+		/// The third <see cref="System.Drawing.PointF"/> (index 2) is the bottom right corner of the triangle.
+		/// The fourth <see cref="System.Drawing.PointF"/> (index 3) is the top center corner of the triangle.
+		/// The first and fourth <see cref="System.Drawing.PointF"/>s are equivalent.
+		/// </remarks>
+		public static System.Drawing.PointF[] GetTrianglePoints(System.Drawing.RectangleF boundingBox)
+		{
+			float radius = boundingBox.Width / 2f;
+			float bottomOffsetX = (float)(Math.Sqrt(3) * radius / 2);
+			float bottomOffsetY = radius / 2f;
+			float centerX = boundingBox.X + radius;
+			float centerY = boundingBox.Y + radius;
+
+			System.Drawing.PointF topPoint = new System.Drawing.PointF(centerX, boundingBox.Y);
+			System.Drawing.PointF leftPoint = new System.Drawing.PointF(centerX - bottomOffsetX, centerY + bottomOffsetY);
+			System.Drawing.PointF rightPoint = new System.Drawing.PointF(centerX + bottomOffsetX, centerY + bottomOffsetY);
+			return new System.Drawing.PointF[] { topPoint, leftPoint, rightPoint, topPoint };
+		}
 	}
 	#endregion // GeometryUtility class
 	#region CustomFoldEllipseShapeGeometry class
@@ -221,10 +248,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// Attach connection lines correctly to circular border. Designed
 	/// to work with CenterToCenter routing.
 	/// </summary>
-	public class CustomFoldCircleShapeGeometry : EllipseShapeGeometry
+	public class CustomFoldCircleShapeGeometry : CircleShapeGeometry
 	{
 		/// <summary>
-		/// Singleton CustomFoldEllipseShapeGeometry instance
+		/// Singleton CustomFoldCircleShapeGeometry instance
 		/// </summary>
 		public static readonly ShapeGeometry ShapeGeometry = new CustomFoldCircleShapeGeometry();
 		/// <summary>
@@ -550,4 +577,48 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 	}
 	#endregion // CustomFoldRoundedRectangleShapeGeometry class
+	#region CustomFoldTriangleShapeGeometry class
+	/// <summary>
+	/// Attach connection lines correctly to triangular border. Designed
+	/// to work with CenterToCenter routing.
+	/// </summary>
+	public class CustomFoldTriangleShapeGeometry : NodeShapeGeometry
+	{
+		/// <summary>
+		/// Singleton CustomFoldTriangleShapeGeometry instance
+		/// </summary>
+		public static readonly ShapeGeometry ShapeGeometry = new CustomFoldTriangleShapeGeometry();
+		/// <summary>
+		/// Protected default constructor. The class should be used
+		/// as a singleton instead of being publicly constructed.
+		/// </summary>
+		protected CustomFoldTriangleShapeGeometry()
+		{
+		}
+		/// <summary>
+		/// Implement shape folding on the triangle boundary
+		/// </summary>
+		/// <param name="geometryHost">The host view</param>
+		/// <param name="potentialPoint">A point on the rectangular boundary of the shape</param>
+		/// <param name="vectorEndPoint">A point on the opposite end of the connecting line</param>
+		/// <returns>A point on the triangular border</returns>
+		public override PointD DoFoldToShape(IGeometryHost geometryHost, PointD potentialPoint, PointD vectorEndPoint)
+		{
+			// UNDONE: Triangles aren't ellipses, so this isn't going to work right.
+			// UNDONE: DoHitTest needs to be overridden as well.
+			return potentialPoint;
+		}
+
+		/// <summary>
+		/// See <see cref="M:ShapeGeometry.GetPath"/>.
+		/// </summary>
+		protected override System.Drawing.Drawing2D.GraphicsPath GetPath(RectangleD boundingBox)
+		{
+			System.Drawing.Drawing2D.GraphicsPath graphicsPath = base.UninitializedPath;
+			graphicsPath.Reset();
+			graphicsPath.AddPolygon(GeometryUtility.GetTrianglePoints(RectangleD.ToRectangleF(boundingBox)));
+			return graphicsPath;
+		}
+	}
+	#endregion // CustomFoldTriangleShapeGeometry class
 } 

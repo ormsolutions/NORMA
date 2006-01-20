@@ -162,6 +162,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ORMShape.SerializationExtensions.xml</DependentUpon>
     </Compile>
+    <Compile Include="ShapeModel\RingConstraintShape.cs" />
     <Compile Include="ShapeModel\SubtypeLink.cs" />
     <Compile Include="ShapeModel\SubtypeConnectorAction.cs" />
     <Compile Include="ShapeModel\ValueRangeLink.cs" />
@@ -276,7 +277,9 @@
     <EmbeddedResource Include="ObjectModel\ORM2Core.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ShapeModel\ORM2Diagram.xsd" />
+    <EmbeddedResource Include="ShapeModel\ORM2Diagram.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Shell\ORM2Root.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -52,7 +52,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			PenSettings penSettings = new PenSettings();
 			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
-			Color constraintColor = colorService.GetForeColor(ORMDesignerColor.Constraint);;
+			Color constraintColor = colorService.GetForeColor(ORMDesignerColor.Constraint);
 			penSettings.Color = constraintColor;
 			penSettings.Width = 1.35F / 72.0F; // 1.35 Point.
 			classStyleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
@@ -62,15 +62,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 			penSettings.Color = colorService.GetBackColor(ORMDesignerColor.ActiveConstraint);
 			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ShapeOutline, penSettings);
-
-			// Set up an alternate style set for drawing deontic constraints
-			StyleSet deonticStyleSet = new StyleSet(classStyleSet);
-			constraintColor = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
-			penSettings.Color = constraintColor;
-			deonticStyleSet.OverridePen(DiagramPens.ShapeOutline, penSettings);
-			brushSettings.Color = constraintColor;
-			deonticStyleSet.OverrideBrush(ExternalConstraintBrush, brushSettings);
-			myDeonticClassStyleSet = deonticStyleSet;
 		}
 		/// <summary>
 		/// Switch between alethic and deontic style sets
@@ -84,30 +75,161 @@ namespace Neumont.Tools.ORM.ShapeModel
 				// static one is sufficient. Instance style sets also go through a font initiation
 				// step inside the framework
 				return (constraint != null && constraint.Modality == ConstraintModality.Deontic) ?
-					myDeonticClassStyleSet :
+					DeonticClassStyleSet :
 					base.StyleSet;
 			}
 		}
+		/// <summary>
+		/// Create an alternate style set for deontic constraints
+		/// </summary>
+		protected virtual StyleSet DeonticClassStyleSet
+		{
+			get
+			{
+				StyleSet retVal = myDeonticClassStyleSet;
+				if (retVal == null)
+				{
+					// Set up an alternate style set for drawing deontic constraints
+					retVal = new StyleSet(ClassStyleSet);
+					IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
+					Color constraintColor = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
+					PenSettings penSettings = new PenSettings();
+					penSettings.Color = constraintColor;
+					retVal.OverridePen(DiagramPens.ShapeOutline, penSettings);
+					BrushSettings brushSettings = new BrushSettings();
+					brushSettings.Color = constraintColor;
+					retVal.OverrideBrush(ExternalConstraintBrush, brushSettings);
+					myDeonticClassStyleSet = retVal;
+				}
+				return retVal;
+			}
+		}
+
+		#region Setup Paint Tools
+		// Warning: This will break horribly if this code is ever run on multiple threads simultaneously.
+		private Color myPaintPenStartColor;
+		private Color myPaintBrushStartColor;
+		private int myPaintRefCount;
+		private bool myPaintRestoreColor;
+		private Pen myPaintPen;
+		private Brush myPaintBrush;
+		/// <summary>
+		/// The <see cref="Pen"/> to use for painting.
+		/// </summary>
+		protected Pen PaintPen
+		{
+			get
+			{
+				return this.myPaintPen;
+			}
+		}
+		/// <summary>
+		/// The <see cref="Brush"/> to use for painting.
+		/// </summary>
+		protected Brush PaintBrush
+		{
+			get
+			{
+				return this.myPaintBrush;
+			}
+		}
+		/// <summary>
+		/// Setup the tools (<see cref="Pen"/>s and <see cref="Brush"/>s) used for painting, as appropriate.
+		/// </summary>
+		/// <remarks>
+		/// Make sure that you call <see cref="DisposePaintTools"/> when you are done with the paint tools.
+		/// </remarks>
+		protected void InitializePaintTools(DiagramPaintEventArgs e)
+		{
+			if (this.myPaintRefCount++ == 0)
+			{
+				base.OnPaintShape(e);
+				StyleSet styles = this.StyleSet;
+				this.myPaintPen = styles.GetPen(OutlinePenId);
+				this.myPaintBrush = styles.GetBrush(ExternalConstraintBrush);
+				SolidBrush coloredBrush = this.myPaintBrush as SolidBrush;
+
+				// Keep the pen color in sync with the color being used for highlighting
+				this.myPaintPenStartColor = this.UpdateGeometryLuminosity(e.View, this.myPaintPen);
+				this.myPaintBrushStartColor = default(Color);
+				if (coloredBrush != null)
+				{
+					this.myPaintBrushStartColor = coloredBrush.Color;
+					coloredBrush.Color = this.myPaintPen.Color;
+				}
+				this.myPaintRestoreColor = this.myPaintPenStartColor != this.myPaintPen.Color;
+				if (!this.myPaintRestoreColor && coloredBrush != null)
+				{
+					this.myPaintRestoreColor = this.myPaintBrushStartColor != coloredBrush.Color;
+				}
+			}
+		}
+		/// <summary>
+		/// Restore the original settings for the paint tools.
+		/// </summary>
+		/// <seealso cref="InitializePaintTools"/>
+		protected void DisposePaintTools()
+		{
+			if (--this.myPaintRefCount == 0)
+			{
+				// Restore pen and/or brush color
+				if (this.myPaintRestoreColor)
+				{
+					this.myPaintPen.Color = this.myPaintPenStartColor;
+					SolidBrush coloredBrush = this.myPaintBrush as SolidBrush;
+					if (coloredBrush != null)
+					{
+						coloredBrush.Color = this.myPaintBrushStartColor;
+					}
+				}
+
+				this.myPaintBrush = null;
+				this.myPaintPen = null;
+				this.myPaintPenStartColor = default(Color);
+				this.myPaintBrushStartColor = default(Color);
+				this.myPaintRestoreColor = false;
+			}
+		}
+		#endregion
+
 		/// <summary>
 		/// Draw the various constraint types
 		/// </summary>
 		/// <param name="e">DiagramPaintEventArgs</param>
 		public override void OnPaintShape(DiagramPaintEventArgs e)
 		{
-			base.OnPaintShape(e);
-			StyleSet styles = StyleSet;
-			Pen pen = styles.GetPen(OutlinePenId);
+			// In this method, and this method only, don't call base.OnPaintShape,
+			// since this.InitializePaintTools does it for us
+			this.InitializePaintTools(e);
 
-			// Keep the pen color in sync with the color being used for highlighting
-			Color startColor = UpdateGeometryLuminosity(e.View, pen);
-			bool restoreColor = startColor != pen.Color;
 			IConstraint constraint = AssociatedConstraint;
 			RectangleD bounds = AbsoluteBounds;
+			RectangleF boundsF = RectangleD.ToRectangleF(bounds);
 			Graphics g = e.Graphics;
 			const double cos45 = 0.70710678118654752440084436210485;
 
+			Pen pen = this.PaintPen;
+			Brush brush = this.myPaintBrush;
+
 			switch (constraint.ConstraintType)
 			{
+				#region Frequency
+				case ConstraintType.Frequency:
+				{
+					break;
+				}
+				#endregion
+				#region Ring
+				case ConstraintType.Ring:
+				{
+					if (((RingConstraint)constraint).RingType == RingConstraintType.Undefined)
+					{
+						goto default;
+					}
+					break;
+				}
+				#endregion
+				#region Equality
 				case ConstraintType.Equality:
 				{
 					double xOffset = bounds.Width * .3;
@@ -121,26 +243,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 					g.DrawLine(pen, xLeft, y, xRight, y);
 					break;
 				}
+				#endregion
+				#region DisjunctiveMandatory
 				case ConstraintType.DisjunctiveMandatory:
 				{
 					// Draw the dot
-					RectangleD shrinkBounds = bounds;
-					shrinkBounds.Inflate(-bounds.Width * .22, -bounds.Height * .22);
-					Brush brush = styles.GetBrush(ExternalConstraintBrush);
-					Color startBrushColor = default(Color);
-					SolidBrush coloredBrush = brush as SolidBrush;
-					if (coloredBrush != null)
-					{
-						startBrushColor = coloredBrush.Color;
-						coloredBrush.Color = pen.Color;
-					}
-					g.FillEllipse(brush, RectangleD.ToRectangleF(shrinkBounds));
-					if (coloredBrush != null)
-					{
-						coloredBrush.Color = startBrushColor;
-					}
+					RectangleF shrinkBounds = boundsF;
+					shrinkBounds.Inflate(-boundsF.Width * .22f, -boundsF.Height * .22f);
+					g.FillEllipse(brush, shrinkBounds);
 					break;
 				}
+				#endregion
+				#region Exclusion
 				case ConstraintType.Exclusion:
 				{
 					// Draw the X
@@ -153,6 +267,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 					g.DrawLine(pen, leftX, bottomY, rightX, topY);
 					break;
 				}
+				#endregion
+				#region ExternalUniqueness
 				case ConstraintType.ExternalUniqueness:
 				{
 					// Draw a single line for a uniqueness constraint and a double
@@ -177,6 +293,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					break;
 				}
+				#endregion
+				#region Subset
 				case ConstraintType.Subset:
 				{
 					RectangleD arcBounds = bounds;
@@ -196,21 +314,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 					g.DrawLine(pen, (float)arcBounds.Left, y, xRight, y);
 					break;
 				}
+				#endregion
+				#region Fallback (default)
+				default:
+				{
+					float eyeY = boundsF.Y + (boundsF.Height / 3);
+					PointF leftEyeStart = new PointF(boundsF.X + (boundsF.Width * 0.3f), eyeY);
+					PointF leftEyeEnd = new PointF(boundsF.X + (boundsF.Width * 0.4f), eyeY);
+					PointF rightEyeStart = new PointF(boundsF.X + (boundsF.Width * 0.6f), eyeY);
+					PointF rightEyeEnd = new PointF(boundsF.X + (boundsF.Width * 0.7f), eyeY);
+					g.DrawLine(pen, leftEyeStart, leftEyeEnd);
+					g.DrawLine(pen, rightEyeStart, rightEyeEnd);
+
+					float mouthLeft = boundsF.X + (boundsF.Width * 0.25f);
+					float mouthTop = boundsF.Y + (boundsF.Height * 0.55f);
+					RectangleF mouthRectangle = new RectangleF(mouthLeft, mouthTop, boundsF.Width * 0.5f, boundsF.Height * 0.25f);
+					g.DrawArc(pen, mouthRectangle, 180, 180);
+
+					break;
+				}
+				#endregion
 			}
-			if (constraint.Modality == ConstraintModality.Deontic)
+			if (constraint.Modality == ConstraintModality.Deontic && constraint.ConstraintType != ConstraintType.Ring)
 			{
-				float boxSide = (float)((1 - cos45) * bounds.Width);
 				float startPenWidth = pen.Width;
 				pen.Width = startPenWidth * .70f;
-				g.FillEllipse(styles.GetBrush(DiagramBrushes.DiagramBackground), (float)bounds.Left, (float)bounds.Top, boxSide, boxSide);
+				float boxSide = (float)((1 - cos45) * bounds.Width);
+				g.FillEllipse(this.StyleSet.GetBrush(DiagramBrushes.DiagramBackground), (float)bounds.Left, (float)bounds.Top, boxSide, boxSide);
 				g.DrawArc(pen, (float)bounds.Left, (float)bounds.Top, boxSide, boxSide, 0, 360);
 				pen.Width = startPenWidth;
 			}
-			// Restore pen color
-			if (restoreColor)
-			{
-				pen.Color = startColor;
-			}
+			this.DisposePaintTools();
 		}
 		/// <summary>
 		/// Use the sticky object pen to draw the outline

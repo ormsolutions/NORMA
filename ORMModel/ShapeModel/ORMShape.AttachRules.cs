@@ -47,6 +47,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(ReadingShape).GetNestedType("ReadingOrderReadingTextChanged", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReadingShape).GetNestedType("ReadingOrderRemoved", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReadingShape).GetNestedType("ReadingTextChanged", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(RingConstraintShape).GetNestedType("RingConstraintAttributeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(RolePlayerLink).GetNestedType("RolePlayerRemoving", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ValueRangeShape).GetNestedType("ValueRangeChanged", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ValueRangeShape).GetNestedType("ValueRangeDefinitionAdded", BindingFlags.Public | BindingFlags.NonPublic),

@@ -1,148 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" namespace="Neumont.Tools.ORM.ShapeModel" name="ORMShapeModel" identity="c52fb9a5-6bf4-4267-8716-71d74c7aa89c" majorversion="1" minorversion="0" category="" description="" doccomment="" localize="true" alwaysgeneratecollection="false" xmlns="urn:schemas-microsoft-com:phoenix">
-  <copyright>------------------------------------------------------------------------------
+	<copyright>------------------------------------------------------------------------------
 Copyright (c) Neumont University. All Rights Reserved.
 Information Contained Herein is Proprietary and Confidential.
 ------------------------------------------------------------------------------</copyright>
-  <extendsmetamodel model="2b131234-7959-458d-834f-2dc0769ce683" />
-  <extendsmetamodel model="91d59b16-e488-4a28-8d51-59273ad5bf2e" />
-  <stringtable resxfile="ORMShape.dsldm.resx" resourcesfile="Neumont.Tools.ORM.ShapeModel.ORMShapeModel" usefullyqualifiedname="true" />
-  <copyclosure name="ORMShapeModelCopyClosure" classmodifier="sealed" doccomment="Copy closure visitor filter" />
-  <removeclosure name="ORMShapeModelRemoveClosure" classmodifier="sealed" doccomment="Remove closure visitor filter" />
-  <metaclasses />
-  <shapes>
-    <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ORMBaseShape" identity="55131f4b-0f9a-408d-bed0-79451ba7f4f0" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.NodeShape" category="" description="" doccomment="" localize="false">
-      <metaattributes />
-      <derivedshapes>
-        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ObjectTypeShape" identity="00c1f246-d8f1-4eea-ac88-39ba238143a8" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)" />
-          <metaattributes>
-            <metaattribute name="ShapeName" identity="b70a72b8-282e-403a-aad6-50d75a2f071c" type="System.String" xpathexpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
-              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
-              <stringdomain default="" max="2147483647" />
-            </metaattribute>
-            <metaattribute name="ReferenceModeName" identity="55d073e6-a77b-4440-a881-b2a8222b6c8b" type="System.String" xpathexpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/ObjectType/SubjectHasPresentation.Presentation/Presentation" realattributename="ReferenceModeString" proxyattributename="ReferenceModeString" category="" description="" doccomment="" localize="false" tag="">
-              <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
-              <stringdomain default="" max="2147483647" />
-            </metaattribute>
-            <metaattribute name="ExpandRefMode" identity="b2415bb1-1c83-4f0b-b2c3-58b67bc620dd" type="System.Boolean" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
-              <booleandomain default="false" />
-            </metaattribute>
-          </metaattributes>
-          <derivedshapes />
-        </shape>
-        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="FactTypeShape" identity="8e440a3b-275e-42f7-868b-d5d473158acd" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.FactType)" />
-          <metaattributes>
-            <metaattribute name="ConstraintDisplayPosition" identity="802767fd-de7d-4541-b42b-90b613dfe22d" type="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
-              <enumerationdomain type="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition" default="ConstraintDisplayPosition.Top" />
-            </metaattribute>
-          </metaattributes>
-          <derivedshapes />
-        </shape>
-        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ExternalConstraintShape" identity="00a08f56-73ba-4c8f-8fa1-ae61b8fc1cae" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)" />
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)" />
-          <metaattributes />
-          <derivedshapes>
-            <shape namespace="Neumont.Tools.ORM.ShapeModel" name="FrequencyConstraintShape" identity="ec47cd7d-023b-4971-8b5b-1242dbc7356f" accessmodifier="public" category="" description="" doccomment="" localize="false">
-            <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)" />
-            <metaattributes />
-            <derivedshapes />
-            </shape>
-          </derivedshapes>
-        </shape>
-        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="FloatingTextShape" identity="0904999f-d9c5-4c4e-a08f-f8dd4b2f29a3" accessmodifier="public" classmodifier="abstract" category="" description="" doccomment="" localize="false">
-          <metaattributes />
-          <derivedshapes>
-            <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ObjectifiedFactTypeNameShape" identity="7fd5183a-8bc2-43bb-8474-a0a2d558d90a" accessmodifier="public" category="" description="" doccomment="" localize="false">
-              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)" />
-              <metaattributes>
-                <metaattribute name="ObjectTypeName" identity="4c9bb78d-6290-455e-b844-e7bcc01676f8" type="System.String" xpathexpression="/ObjectifiedFactTypeNameShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
-                  <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
-                  <stringdomain default="" max="2147483647" />
-                </metaattribute>
-              </metaattributes>
-              <derivedshapes />
-            </shape>
-            <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ReadingShape" identity="c567ed6d-d0a6-4fd8-a974-c567aa309d5e" accessmodifier="public" category="" description="" doccomment="" localize="false">
-              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrder)" />
-              <metaattributes>
-                <metaattribute name="ReadingText" identity="22bf9cf7-715c-4159-9ef0-1bdf98647f9c" type="System.String" xpathexpression="/ReadingShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/Reading/SubjectHasPresentation.Presentation/Presentation" realattributename="ReadingText" proxyattributename="ReadingText" category="" description="" doccomment="" localize="false" tag="">
-                  <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
-                  <stringdomain default="" max="2147483647" />
-                </metaattribute>
-              </metaattributes>
-              <derivedshapes />
-            </shape>
-            <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ValueRangeShape" identity="b65f916a-06a5-4efe-bbf9-8d8e55b5c7eb" accessmodifier="public" category="" description="" doccomment="" localize="false">
-              <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition)" />
-              <metaattributes>
-                <metaattribute name="ValueRangeText" identity="107e2630-8d2f-43fd-b58a-76577e85cdfa" type="System.String" xpathexpression="/ValueRangeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/ValueRangeDefinition/SubjectHasPresentation.Presentation/Presentation" realattributename="Text" proxyattributename="Text" category="" description="" doccomment="" localize="false" tag="">
-                  <clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
-                  <stringdomain default="" max="2147483647" />
-                </metaattribute>
-              </metaattributes>
-              <derivedshapes />
-            </shape>
-          </derivedshapes>
-        </shape>
-      </derivedshapes>
-    </shape>
-    <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ORMBaseBinaryLinkShape" identity="ceff4339-48d0-4ffe-b052-2f9da167b1db" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
-      <metaattributes />
-      <derivedshapes>
-        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="RolePlayerLink" identity="2b3f0aae-b1b1-4727-8862-5c34b494b499" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)" />
-          <metaattributes />
-          <derivedshapes />
-        </shape>
-        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="SubtypeLink" identity="87ddaeda-1fd8-4433-bb1e-7482c7f471a7" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.SubtypeFact)" />
-          <metaattributes />
-          <derivedshapes />
-        </shape>
-        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ExternalConstraintLink" identity="8815e6d8-238b-422c-a4b3-29fdc8de9ea5" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ExternalFactConstraint)" />
-          <metaattributes />
-          <derivedshapes />
-        </shape>
-        <shape namespace="Neumont.Tools.ORM.ShapeModel" name="ValueRangeLink" identity="374e43c3-c294-49c4-8a61-3c3ca5fc86e8" accessmodifier="public" category="" description="" doccomment="" localize="false">
-          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition)" />
-          <metaattributes />
-          <derivedshapes />
-        </shape>
-      </derivedshapes>
-    </shape>
-    <shape namespace="Neumont.Tools.ORM.ShapeModel" name="LinkConnectorShape" identity="51770447-28e0-4bff-977f-2d2625f7978d" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.NodeShape" category="" description="" doccomment="" localize="false">
-        <metaattributes />
-        <derivedshapes />
-    </shape>
-  </shapes>
-  <diagrams>
-    <diagram namespace="Neumont.Tools.ORM.ShapeModel" name="ORMDiagram" identity="948f992d-c9b8-46f9-be3c-b48347f8ab0b" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.Diagram" category="" description="" doccomment="" localize="false">
-      <toolboxitem toolboxitemid="Toolbox.EntityType.Item.Id" position="0" bitmapresourceid="Toolbox.EntityType.Bitmap.Id" captionresourceid="Toolbox.EntityType.Caption.Id" tooltipresourceid="Toolbox.EntityType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.ValueType.Item.Id" position="5" bitmapresourceid="Toolbox.ValueType.Bitmap.Id" captionresourceid="Toolbox.ValueType.Caption.Id" tooltipresourceid="Toolbox.ValueType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.UnaryFactType.Item.Id" position="10" bitmapresourceid="Toolbox.UnaryFactType.Bitmap.Id" captionresourceid="Toolbox.UnaryFactType.Caption.Id" tooltipresourceid="Toolbox.UnaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.BinaryFactType.Item.Id" position="15" bitmapresourceid="Toolbox.BinaryFactType.Bitmap.Id" captionresourceid="Toolbox.BinaryFactType.Caption.Id" tooltipresourceid="Toolbox.BinaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.TernaryFactType.Item.Id" position="20" bitmapresourceid="Toolbox.TernaryFactType.Bitmap.Id" captionresourceid="Toolbox.TernaryFactType.Caption.Id" tooltipresourceid="Toolbox.TernaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.RoleConnector.Item.Id" position="21" bitmapresourceid="Toolbox.RoleConnector.Bitmap.Id" captionresourceid="Toolbox.RoleConnector.Caption.Id" tooltipresourceid="Toolbox.RoleConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.SubtypeConnector.Item.Id" position="22" bitmapresourceid="Toolbox.SubtypeConnector.Bitmap.Id" captionresourceid="Toolbox.SubtypeConnector.Caption.Id" tooltipresourceid="Toolbox.SubtypeConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.InternalUniquenessConstraint.Item.Id" position="23" bitmapresourceid="Toolbox.InternalUniquenessConstraint.Bitmap.Id" captionresourceid="Toolbox.InternalUniquenessConstraint.Caption.Id" tooltipresourceid="Toolbox.InternalUniquenessConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.ExternalUniquenessConstraint.Item.Id" position="25" bitmapresourceid="Toolbox.ExternalUniquenessConstraint.Bitmap.Id" captionresourceid="Toolbox.ExternalUniquenessConstraint.Caption.Id" tooltipresourceid="Toolbox.ExternalUniquenessConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.EqualityConstraint.Item.Id" position="35" bitmapresourceid="Toolbox.EqualityConstraint.Bitmap.Id" captionresourceid="Toolbox.EqualityConstraint.Caption.Id" tooltipresourceid="Toolbox.EqualityConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.ExclusionConstraint.Item.Id" position="40" bitmapresourceid="Toolbox.ExclusionConstraint.Bitmap.Id" captionresourceid="Toolbox.ExclusionConstraint.Caption.Id" tooltipresourceid="Toolbox.ExclusionConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.InclusiveOrConstraint.Item.Id" position="45" bitmapresourceid="Toolbox.InclusiveOrConstraint.Bitmap.Id" captionresourceid="Toolbox.InclusiveOrConstraint.Caption.Id" tooltipresourceid="Toolbox.InclusiveOrConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.ExclusiveOrConstraint.Item.Id" position="50" bitmapresourceid="Toolbox.ExclusiveOrConstraint.Bitmap.Id" captionresourceid="Toolbox.ExclusiveOrConstraint.Caption.Id" tooltipresourceid="Toolbox.ExclusiveOrConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.SubsetConstraint.Item.Id" position="55" bitmapresourceid="Toolbox.SubsetConstraint.Bitmap.Id" captionresourceid="Toolbox.SubsetConstraint.Caption.Id" tooltipresourceid="Toolbox.SubsetConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.FrequencyConstraint.Item.Id" position="57" bitmapresourceid="Toolbox.FrequencyConstraint.Bitmap.Id" captionresourceid="Toolbox.FrequencyConstraint.Caption.Id" tooltipresourceid="Toolbox.FrequencyConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <toolboxitem toolboxitemid="Toolbox.RingConstraint.Item.Id" position="58" bitmapresourceid="Toolbox.RingConstraint.Bitmap.Id" captionresourceid="Toolbox.RingConstraint.Caption.Id" tooltipresourceid="Toolbox.RingConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" cshkeywordid="" />
-      <toolboxitem toolboxitemid="Toolbox.ExternalConstraintConnector.Item.Id" position="60" bitmapresourceid="Toolbox.ExternalConstraintConnector.Bitmap.Id" captionresourceid="Toolbox.ExternalConstraintConnector.Caption.Id" tooltipresourceid="Toolbox.ExternalConstraintConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
-      <clrattribute name="System.ComponentModel.ToolboxItemFilterAttribute" parametertext="ORMDiagram.ORMDiagramDefaultFilterString, System.ComponentModel.ToolboxItemFilterType.Require" />
-      <metaattributes />
-      <deriveddiagrams />
-    </diagram>
-  </diagrams>
-  <metarelationships />
-  <visualdata />
+	<extendsmetamodel model="2b131234-7959-458d-834f-2dc0769ce683" />
+	<extendsmetamodel model="91d59b16-e488-4a28-8d51-59273ad5bf2e" />
+	<stringtable resxfile="ORMShape.dsldm.resx" resourcesfile="Neumont.Tools.ORM.ShapeModel.ORMShapeModel" usefullyqualifiedname="true" />
+	<copyclosure name="ORMShapeModelCopyClosure" classmodifier="sealed" doccomment="Copy closure visitor filter" />
+	<removeclosure name="ORMShapeModelRemoveClosure" classmodifier="sealed" doccomment="Remove closure visitor filter" />
+	<metaclasses />
+	<shapes>
+		<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ORMBaseShape" identity="55131f4b-0f9a-408d-bed0-79451ba7f4f0" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.NodeShape" category="" description="" doccomment="" localize="false">
+			<metaattributes />
+			<derivedshapes>
+				<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ObjectTypeShape" identity="00c1f246-d8f1-4eea-ac88-39ba238143a8" accessmodifier="public" category="" description="" doccomment="" localize="false">
+					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)" />
+					<metaattributes>
+						<metaattribute name="ShapeName" identity="b70a72b8-282e-403a-aad6-50d75a2f071c" type="System.String" xpathexpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
+							<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+							<stringdomain default="" max="2147483647" />
+						</metaattribute>
+						<metaattribute name="ReferenceModeName" identity="55d073e6-a77b-4440-a881-b2a8222b6c8b" type="System.String" xpathexpression="/ObjectTypeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/ObjectType/SubjectHasPresentation.Presentation/Presentation" realattributename="ReferenceModeString" proxyattributename="ReferenceModeString" category="" description="" doccomment="" localize="false" tag="">
+							<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+							<stringdomain default="" max="2147483647" />
+						</metaattribute>
+						<metaattribute name="ExpandRefMode" identity="b2415bb1-1c83-4f0b-b2c3-58b67bc620dd" type="System.Boolean" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
+							<booleandomain default="false" />
+						</metaattribute>
+					</metaattributes>
+					<derivedshapes />
+				</shape>
+				<shape namespace="Neumont.Tools.ORM.ShapeModel" name="FactTypeShape" identity="8e440a3b-275e-42f7-868b-d5d473158acd" accessmodifier="public" category="" description="" doccomment="" localize="false">
+					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.FactType)" />
+					<metaattributes>
+						<metaattribute name="ConstraintDisplayPosition" identity="802767fd-de7d-4541-b42b-90b613dfe22d" type="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
+							<enumerationdomain type="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition" default="ConstraintDisplayPosition.Top" />
+						</metaattribute>
+					</metaattributes>
+					<derivedshapes />
+				</shape>
+				<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ExternalConstraintShape" identity="00a08f56-73ba-4c8f-8fa1-ae61b8fc1cae" accessmodifier="public" category="" description="" doccomment="" localize="false">
+					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint)" />
+					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraint)" />
+					<metaattributes />
+					<derivedshapes>
+						<shape namespace="Neumont.Tools.ORM.ShapeModel" name="FrequencyConstraintShape" identity="ec47cd7d-023b-4971-8b5b-1242dbc7356f" accessmodifier="public" category="" description="" doccomment="" localize="false">
+							<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)" />
+							<metaattributes />
+							<derivedshapes />
+						</shape>
+						<shape namespace="Neumont.Tools.ORM.ShapeModel" name="RingConstraintShape" identity="61b334c5-d37f-4a74-90e9-ac793d35bdf1" accessmodifier="public" category="" description="" doccomment="" localize="false">
+							<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.RingConstraint)" />
+							<metaattributes />
+							<derivedshapes />
+						</shape>
+					</derivedshapes>
+				</shape>
+				<shape namespace="Neumont.Tools.ORM.ShapeModel" name="FloatingTextShape" identity="0904999f-d9c5-4c4e-a08f-f8dd4b2f29a3" accessmodifier="public" classmodifier="abstract" category="" description="" doccomment="" localize="false">
+					<metaattributes />
+					<derivedshapes>
+						<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ObjectifiedFactTypeNameShape" identity="7fd5183a-8bc2-43bb-8474-a0a2d558d90a" accessmodifier="public" category="" description="" doccomment="" localize="false">
+							<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ObjectType)" />
+							<metaattributes>
+								<metaattribute name="ObjectTypeName" identity="4c9bb78d-6290-455e-b844-e7bcc01676f8" type="System.String" xpathexpression="/ObjectifiedFactTypeNameShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
+									<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+									<stringdomain default="" max="2147483647" />
+								</metaattribute>
+							</metaattributes>
+							<derivedshapes />
+						</shape>
+						<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ReadingShape" identity="c567ed6d-d0a6-4fd8-a974-c567aa309d5e" accessmodifier="public" category="" description="" doccomment="" localize="false">
+							<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrder)" />
+							<metaattributes>
+								<metaattribute name="ReadingText" identity="22bf9cf7-715c-4159-9ef0-1bdf98647f9c" type="System.String" xpathexpression="/ReadingShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/Reading/SubjectHasPresentation.Presentation/Presentation" realattributename="ReadingText" proxyattributename="ReadingText" category="" description="" doccomment="" localize="false" tag="">
+									<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+									<stringdomain default="" max="2147483647" />
+								</metaattribute>
+							</metaattributes>
+							<derivedshapes />
+						</shape>
+						<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ValueRangeShape" identity="b65f916a-06a5-4efe-bbf9-8d8e55b5c7eb" accessmodifier="public" category="" description="" doccomment="" localize="false">
+							<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition)" />
+							<metaattributes>
+								<metaattribute name="ValueRangeText" identity="107e2630-8d2f-43fd-b58a-76577e85cdfa" type="System.String" xpathexpression="/ValueRangeShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/ValueRangeDefinition/SubjectHasPresentation.Presentation/Presentation" realattributename="Text" proxyattributename="Text" category="" description="" doccomment="" localize="false" tag="">
+									<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+									<stringdomain default="" max="2147483647" />
+								</metaattribute>
+							</metaattributes>
+							<derivedshapes />
+						</shape>
+					</derivedshapes>
+				</shape>
+			</derivedshapes>
+		</shape>
+		<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ORMBaseBinaryLinkShape" identity="ceff4339-48d0-4ffe-b052-2f9da167b1db" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape" category="" description="" doccomment="" localize="false">
+			<metaattributes />
+			<derivedshapes>
+				<shape namespace="Neumont.Tools.ORM.ShapeModel" name="RolePlayerLink" identity="2b3f0aae-b1b1-4727-8862-5c34b494b499" accessmodifier="public" category="" description="" doccomment="" localize="false">
+					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypePlaysRole)" />
+					<metaattributes />
+					<derivedshapes />
+				</shape>
+				<shape namespace="Neumont.Tools.ORM.ShapeModel" name="SubtypeLink" identity="87ddaeda-1fd8-4433-bb1e-7482c7f471a7" accessmodifier="public" category="" description="" doccomment="" localize="false">
+					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.SubtypeFact)" />
+					<metaattributes />
+					<derivedshapes />
+				</shape>
+				<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ExternalConstraintLink" identity="8815e6d8-238b-422c-a4b3-29fdc8de9ea5" accessmodifier="public" category="" description="" doccomment="" localize="false">
+					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.ExternalFactConstraint)" />
+					<metaattributes />
+					<derivedshapes />
+				</shape>
+				<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ValueRangeLink" identity="374e43c3-c294-49c4-8a61-3c3ca5fc86e8" accessmodifier="public" category="" description="" doccomment="" localize="false">
+					<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition)" />
+					<metaattributes />
+					<derivedshapes />
+				</shape>
+			</derivedshapes>
+		</shape>
+		<shape namespace="Neumont.Tools.ORM.ShapeModel" name="LinkConnectorShape" identity="51770447-28e0-4bff-977f-2d2625f7978d" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.NodeShape" category="" description="" doccomment="" localize="false">
+			<metaattributes />
+			<derivedshapes />
+		</shape>
+	</shapes>
+	<diagrams>
+		<diagram namespace="Neumont.Tools.ORM.ShapeModel" name="ORMDiagram" identity="948f992d-c9b8-46f9-be3c-b48347f8ab0b" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.Diagram" category="" description="" doccomment="" localize="false">
+			<toolboxitem toolboxitemid="Toolbox.EntityType.Item.Id" position="0" bitmapresourceid="Toolbox.EntityType.Bitmap.Id" captionresourceid="Toolbox.EntityType.Caption.Id" tooltipresourceid="Toolbox.EntityType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.ValueType.Item.Id" position="5" bitmapresourceid="Toolbox.ValueType.Bitmap.Id" captionresourceid="Toolbox.ValueType.Caption.Id" tooltipresourceid="Toolbox.ValueType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.UnaryFactType.Item.Id" position="10" bitmapresourceid="Toolbox.UnaryFactType.Bitmap.Id" captionresourceid="Toolbox.UnaryFactType.Caption.Id" tooltipresourceid="Toolbox.UnaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.BinaryFactType.Item.Id" position="15" bitmapresourceid="Toolbox.BinaryFactType.Bitmap.Id" captionresourceid="Toolbox.BinaryFactType.Caption.Id" tooltipresourceid="Toolbox.BinaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.TernaryFactType.Item.Id" position="20" bitmapresourceid="Toolbox.TernaryFactType.Bitmap.Id" captionresourceid="Toolbox.TernaryFactType.Caption.Id" tooltipresourceid="Toolbox.TernaryFactType.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.RoleConnector.Item.Id" position="21" bitmapresourceid="Toolbox.RoleConnector.Bitmap.Id" captionresourceid="Toolbox.RoleConnector.Caption.Id" tooltipresourceid="Toolbox.RoleConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.SubtypeConnector.Item.Id" position="22" bitmapresourceid="Toolbox.SubtypeConnector.Bitmap.Id" captionresourceid="Toolbox.SubtypeConnector.Caption.Id" tooltipresourceid="Toolbox.SubtypeConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.InternalUniquenessConstraint.Item.Id" position="23" bitmapresourceid="Toolbox.InternalUniquenessConstraint.Bitmap.Id" captionresourceid="Toolbox.InternalUniquenessConstraint.Caption.Id" tooltipresourceid="Toolbox.InternalUniquenessConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.ExternalUniquenessConstraint.Item.Id" position="25" bitmapresourceid="Toolbox.ExternalUniquenessConstraint.Bitmap.Id" captionresourceid="Toolbox.ExternalUniquenessConstraint.Caption.Id" tooltipresourceid="Toolbox.ExternalUniquenessConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.EqualityConstraint.Item.Id" position="35" bitmapresourceid="Toolbox.EqualityConstraint.Bitmap.Id" captionresourceid="Toolbox.EqualityConstraint.Caption.Id" tooltipresourceid="Toolbox.EqualityConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.ExclusionConstraint.Item.Id" position="40" bitmapresourceid="Toolbox.ExclusionConstraint.Bitmap.Id" captionresourceid="Toolbox.ExclusionConstraint.Caption.Id" tooltipresourceid="Toolbox.ExclusionConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.InclusiveOrConstraint.Item.Id" position="45" bitmapresourceid="Toolbox.InclusiveOrConstraint.Bitmap.Id" captionresourceid="Toolbox.InclusiveOrConstraint.Caption.Id" tooltipresourceid="Toolbox.InclusiveOrConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.ExclusiveOrConstraint.Item.Id" position="50" bitmapresourceid="Toolbox.ExclusiveOrConstraint.Bitmap.Id" captionresourceid="Toolbox.ExclusiveOrConstraint.Caption.Id" tooltipresourceid="Toolbox.ExclusiveOrConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.SubsetConstraint.Item.Id" position="55" bitmapresourceid="Toolbox.SubsetConstraint.Bitmap.Id" captionresourceid="Toolbox.SubsetConstraint.Caption.Id" tooltipresourceid="Toolbox.SubsetConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.FrequencyConstraint.Item.Id" position="57" bitmapresourceid="Toolbox.FrequencyConstraint.Bitmap.Id" captionresourceid="Toolbox.FrequencyConstraint.Caption.Id" tooltipresourceid="Toolbox.FrequencyConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.RingConstraint.Item.Id" position="58" bitmapresourceid="Toolbox.RingConstraint.Bitmap.Id" captionresourceid="Toolbox.RingConstraint.Caption.Id" tooltipresourceid="Toolbox.RingConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<toolboxitem toolboxitemid="Toolbox.ExternalConstraintConnector.Item.Id" position="60" bitmapresourceid="Toolbox.ExternalConstraintConnector.Bitmap.Id" captionresourceid="Toolbox.ExternalConstraintConnector.Caption.Id" tooltipresourceid="Toolbox.ExternalConstraintConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
+			<clrattribute name="System.ComponentModel.ToolboxItemFilterAttribute" parametertext="ORMDiagram.ORMDiagramDefaultFilterString, System.ComponentModel.ToolboxItemFilterType.Require" />
+			<metaattributes />
+			<deriveddiagrams />
+		</diagram>
+	</diagrams>
+	<metarelationships />
+	<visualdata />
 </metamodel>

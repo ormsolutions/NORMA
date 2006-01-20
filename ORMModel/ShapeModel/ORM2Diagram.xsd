@@ -7,30 +7,31 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:derived="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="ORMDiagram" type="ORMDiagram"/>
-	<xs:complexType name="Shape" abstract="true">
-		<xs:attribute name="id" type="xs:string" use="required" />
-		<xs:attribute name="IsExpanded" type="xs:boolean" />
-		<xs:attribute name="AbsoluteBounds" type="xs:string"  />
-	</xs:complexType>
 	<xs:complexType name="ORMDiagram">
 		<xs:sequence>
 			<xs:element name="Shapes" minOccurs="0">
 				<xs:complexType>
 					<xs:choice minOccurs="0" maxOccurs="unbounded">
-						<xs:element name="ObjectTypeShape" type="ObjectTypeShape" minOccurs="0" maxOccurs="unbounded"></xs:element>
-						<xs:element name="FactTypeShape" type="FactTypeShape" minOccurs="0"  maxOccurs="unbounded"></xs:element>
-						<xs:element name="ExternalConstraintShape" type="ExternalConstraintShape" minOccurs="0"  maxOccurs="unbounded"></xs:element>						
-						<xs:element name="FrequencyConstraintShape" type="FrequencyConstraintShape" minOccurs="0"  maxOccurs="unbounded"></xs:element>						
+						<xs:element name="ObjectTypeShape" type="ObjectTypeShape" minOccurs="0" maxOccurs="unbounded" />
+						<xs:element name="FactTypeShape" type="FactTypeShape" minOccurs="0" maxOccurs="unbounded" />
+						<xs:element name="ExternalConstraintShape" type="ExternalConstraintShape" minOccurs="0" maxOccurs="unbounded" />
+						<xs:element name="FrequencyConstraintShape" type="FrequencyConstraintShape" minOccurs="0" maxOccurs="unbounded" />
+						<xs:element name="RingConstraintShape" type="RingConstraintShape" minOccurs="0" maxOccurs="unbounded" />
 					</xs:choice>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="Subject" type="SubjectRef"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:string" use="required" />
+		<xs:attribute name="id" type="xs:ID" use="required" />
 		<xs:attribute name="IsCompleteView" type="xs:boolean" use="required" />
 		<xs:attribute name="Name" type="xs:string" use="required" />
 		<xs:attribute name="BaseFontName" type="xs:string" use="required" />
 		<xs:attribute name="BaseFontSize" type="xs:decimal" use="required" />
+	</xs:complexType>
+	<xs:complexType name="Shape" abstract="true">
+		<xs:attribute name="id" type="xs:ID" use="required" />
+		<xs:attribute name="IsExpanded" type="xs:boolean" />
+		<xs:attribute name="AbsoluteBounds" type="xs:string"  />
 	</xs:complexType>
 	<xs:complexType name="ObjectTypeShape">
 		<xs:complexContent>
@@ -39,7 +40,7 @@
 					<xs:element name="RelativeShapes" minOccurs="0">
 						<xs:complexType>
 							<xs:sequence >
-								<xs:element name="ValueRangeShape" type="ValueRangeShape" minOccurs="0"  maxOccurs="unbounded"></xs:element>
+								<xs:element name="ValueRangeShape" type="ValueRangeShape" minOccurs="0"  maxOccurs="unbounded" />
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -93,7 +94,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ExternalConstraintShape">
+	<xs:complexType name="ValueRangeShape">
 		<xs:complexContent>
 			<xs:extension base="Shape">
 				<xs:sequence>
@@ -102,7 +103,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ValueRangeShape">
+	<xs:complexType name="ExternalConstraintShape">
 		<xs:complexContent>
 			<xs:extension base="Shape">
 				<xs:sequence>
@@ -113,11 +114,12 @@
 	</xs:complexType>
 	<xs:complexType name="FrequencyConstraintShape">
 		<xs:complexContent>
-			<xs:extension base="Shape">
-				<xs:sequence>
-					<xs:element name="Subject" type="SubjectRef"/>
-				</xs:sequence>
-			</xs:extension>
+			<xs:extension base="ExternalConstraintShape"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RingConstraintShape">
+		<xs:complexContent>
+			<xs:extension base="ExternalConstraintShape"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SubjectRef">

@@ -42,6 +42,11 @@ Information Contained Herein is Proprietary and Confidential.
             <superType>i00a08f56z73baz4c8fz8fa1zae61b8fc1cae</superType>
             <subType>iec47cd7dz023bz4971z8b5bz1242dbc7356f</subType>
           </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="RingConstraintShape-ExternalConstraintShape" identity="aa454dac-b9ce-4357-9e5f-188d0fbfdd3b" id="iaa454daczb9cez4357z9e5fz188d0fbfdd3b" definitionlevel="none">
+            <source />
+            <superType>i00a08f56z73baz4c8fz8fa1zae61b8fc1cae</superType>
+            <subType>i61b334c5zd37fz4a74z90e9zac793d35bdf1</subType>
+          </treeExpression>
           <treeExpression xsi:type="InheritanceExpression" name="FloatingTextShape-ORMBaseShape" identity="cee3ab73-1d29-4c00-817d-5db02cd3de39" id="icee3ab73z1d29z4c00z817dz5db02cd3de39" definitionlevel="none">
             <source />
             <superType>i55131f4bz0f9az408dzbed0z79451ba7f4f0</superType>
@@ -142,6 +147,11 @@ Information Contained Herein is Proprietary and Confidential.
             <source>i5a95a61czfe7fz46e3z861fz8fdd261191df</source>
             <superType>i00a08f56z73baz4c8fz8fa1zae61b8fc1cae</superType>
             <subType>iec47cd7dz023bz4971z8b5bz1242dbc7356f</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="RingConstraintShape-ExternalConstraintShape" identity="1b7787db-01fe-4e2f-8b9a-23cf9d092dd3" id="i1b7787dbz01fez4e2fz8b9az23cf9d092dd3" definitionlevel="definition">
+            <source>iaa454daczb9cez4357z9e5fz188d0fbfdd3b</source>
+            <superType>i00a08f56z73baz4c8fz8fa1zae61b8fc1cae</superType>
+            <subType>i61b334c5zd37fz4a74z90e9zac793d35bdf1</subType>
           </treeExpression>
           <treeExpression xsi:type="InheritanceExpression" name="FloatingTextShape-ORMBaseShape" identity="e4c394dd-3080-4a27-adc2-590afcf4ed89" id="ie4c394ddz3080z4a27zadc2z590afcf4ed89" definitionlevel="definition">
             <source>icee3ab73z1d29z4c00z817dz5db02cd3de39</source>
@@ -287,6 +297,13 @@ Information Contained Herein is Proprietary and Confidential.
       <shape name="FrequencyConstraintShape" identity="ec47cd7d-023b-4971-8b5b-1242dbc7356f" namespace="Neumont.Tools.ORM.ShapeModel" id="iec47cd7dz023bz4971z8b5bz1242dbc7356f" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false">
           <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraint)" />
+        </mdfmetadata>
+        <superType>i00a08f56z73baz4c8fz8fa1zae61b8fc1cae</superType>
+        <concepts />
+      </shape>
+      <shape name="RingConstraintShape" identity="61b334c5-d37f-4a74-90e9-ac793d35bdf1" namespace="Neumont.Tools.ORM.ShapeModel" id="i61b334c5zd37fz4a74z90e9zac793d35bdf1" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false">
+          <clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.RingConstraint)" />
         </mdfmetadata>
         <superType>i00a08f56z73baz4c8fz8fa1zae61b8fc1cae</superType>
         <concepts />

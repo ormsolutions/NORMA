@@ -2166,16 +2166,12 @@
 				</orm:RoleSequence>
 				<orm:PreferredIdentifierFor ref="_CFFA4225-A7B4-457F-818B-4D899AA157AB" />
 			</orm:ExternalUniquenessConstraint>
-			<orm:ExclusionConstraint id="_A8FB10ED-DD06-4C59-9AD4-C686D9D43AA2" Name="ExclusionConstraint1">
-				<orm:RoleSequences>
-					<orm:RoleSequence id="_968471B9-407F-4708-9305-0190E0C41BD1" Name="">
-						<orm:Role ref="_9496C251-F06F-4383-93FB-F9BF04A523CB" />
-					</orm:RoleSequence>
-					<orm:RoleSequence id="_251E8126-669F-4B45-8933-4656286EF6BB" Name="">
-						<orm:Role ref="_7C8166A7-F037-493E-BFB7-2A1634AB2238" />
-					</orm:RoleSequence>
-				</orm:RoleSequences>
-			</orm:ExclusionConstraint>
+			<orm:RingConstraint id="_A8FB10ED-DD06-4C59-9AD4-C686D9D43AA2" Type="Irreflexive" Name="RingConstraint1">
+				<orm:RoleSequence>
+					<orm:Role ref="_9496C251-F06F-4383-93FB-F9BF04A523CB" />
+					<orm:Role ref="_7C8166A7-F037-493E-BFB7-2A1634AB2238" />
+				</orm:RoleSequence>
+			</orm:RingConstraint>
 			<orm:ExclusionConstraint id="_38FAC3C9-2930-4D3A-A3BF-5AED59D6AC37" Name="ExclusionConstraint2">
 				<orm:RoleSequences>
 					<orm:RoleSequence id="_4E59DCE5-D9B5-4933-855A-1DE1768A8B29" Name="">
@@ -2336,9 +2332,9 @@
 				</ormDiagram:RelativeShapes>
 				<ormDiagram:Subject ref="_06C709AC-304C-491C-8846-D2A1630F51F2" />
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:ExternalConstraintShape id="_82F6AC9C-7FCD-45BE-BEC0-7A14A58F061F" IsExpanded="true" AbsoluteBounds="4.5375000000000005, 3.6125000000000003, 0.16, 0.16">
+			<ormDiagram:RingConstraintShape id="_82F6AC9C-7FCD-45BE-BEC0-7A14A58F061F" IsExpanded="true" AbsoluteBounds="4.5375000000000005, 3.6125000000000003, 0.16, 0.16">
 				<ormDiagram:Subject ref="_A8FB10ED-DD06-4C59-9AD4-C686D9D43AA2" />
-			</ormDiagram:ExternalConstraintShape>
+			</ormDiagram:RingConstraintShape>
 			<ormDiagram:ExternalConstraintShape id="_50A40240-0F83-4713-8347-FCF569E2CF5F" IsExpanded="true" AbsoluteBounds="6, 3.25, 0.16, 0.16">
 				<ormDiagram:Subject ref="_F40FEEF1-947A-453D-8B63-C791930EB877" />
 			</ormDiagram:ExternalConstraintShape>

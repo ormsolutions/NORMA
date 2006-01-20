@@ -321,6 +321,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(Neumont.Tools.ORM.ShapeModel.ExternalConstraintShapeElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShape),
 				typeof(Neumont.Tools.ORM.ShapeModel.FrequencyConstraintShapeElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.RingConstraintShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.RingConstraintShapeElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ShapeModel.FloatingTextShape),
 				typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape),
 				typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShapeElementFactoryCreator),
@@ -1431,6 +1433,148 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				return new FrequencyConstraintShapeElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ShapeModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraint))]
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.RingConstraintShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.RingConstraintShape")]
+	public  partial class RingConstraintShape : Neumont.Tools.ORM.ShapeModel.ExternalConstraintShape
+	{
+		#region RingConstraintShape's Generated Shape Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "61b334c5-d37f-4a74-90e9-ac793d35bdf1";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.RingConstraintShape.MetaClassGuidString);
+		#region Boilerplate code for every Shape-derived class
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.StyleSet classStyleSet = null;
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		private static Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection shapeFields = null;
+		/// <summary>
+		/// Style Set
+		/// </summary>
+		protected override Microsoft.VisualStudio.Modeling.Diagrams.StyleSet ClassStyleSet
+		{
+			get
+			{
+				if (classStyleSet == null)
+				{
+					classStyleSet = CreateClassStyleSet();
+				}
+				return classStyleSet;
+			}
+		}
+		/// <summary>
+		/// Shape Fields
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.Diagrams.ShapeFieldCollection ShapeFields
+		{
+			get
+			{
+				if (shapeFields == null)
+				{
+					shapeFields = CreateShapeFields();
+				}
+				return shapeFields;
+			}
+		}
+		#endregion
+		#endregion
+
+	}
+	#region RingConstraintShape's Generated Constructor Code
+	public  partial class RingConstraintShape
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RingConstraintShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintShape CreateRingConstraintShape(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateRingConstraintShape(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintShape CreateAndInitializeRingConstraintShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeRingConstraintShape(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RingConstraintShape(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintShape CreateRingConstraintShape(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (RingConstraintShape)partition.ElementFactory.CreateElement(typeof(RingConstraintShape));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintShape CreateAndInitializeRingConstraintShape(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (RingConstraintShape)partition.ElementFactory.CreateElement(typeof(RingConstraintShape), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for RingConstraintShape
+	/// <summary>
+	/// RingConstraintShape Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.RingConstraintShape))]
+	public sealed class RingConstraintShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RingConstraintShapeElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ShapeModel.RingConstraintShape( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static RingConstraintShapeElementFactoryCreator Instance
+		{
+			get
+			{
+				return new RingConstraintShapeElementFactoryCreator();
 			}
 		}
 	}
