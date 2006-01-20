@@ -1,3 +1,5 @@
+// Turn this on to block hiding of shapes implied by an objectification pattern
+//#define SHOW_IMPLIED_SHAPES
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -139,16 +141,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					return true;
 				}
+#if !SHOW_IMPLIED_SHAPES
 				else if (factType.ImpliedByObjectification != null)
 				{
 					return false;
 				}
+#endif // !SHOW_IMPLIED_SHAPES
 				return ShouldDisplayPartOfReferenceMode(factType);
 			}
 			else if (null != (objectTypePlaysRole = element as ObjectTypePlaysRole))
 			{
 				FactType fact = objectTypePlaysRole.PlayedRoleCollection.FactType;
-				if (fact is SubtypeFact || fact.ImpliedByObjectification != null)
+				if (fact is SubtypeFact
+#if !SHOW_IMPLIED_SHAPES
+					|| fact.ImpliedByObjectification != null
+#endif // !SHOW_IMPLIED_SHAPES
+					)
 				{
 					return false;
 				}
@@ -156,14 +164,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (equalityConstraint = element as EqualityConstraint))
 			{
+#if SHOW_IMPLIED_SHAPES
+				return true;
+#else
 				return equalityConstraint.ImpliedByObjectification == null;
+#endif // SHOW_IMPLIED_SHAPES
 			}
 			else if (null != (externalUniquenessConstraint = element as ExternalUniquenessConstraint))
 			{
+#if SHOW_IMPLIED_SHAPES
+				return true;
+#else
 				return externalUniquenessConstraint.ImpliedByObjectification == null;
+#endif // SHOW_IMPLIED_SHAPES
 			}
 			else if (null != (factConstraint = element as ExternalFactConstraint))
 			{
+#if !SHOW_IMPLIED_SHAPES
 				IConstraint constraint = ((IFactConstraint)factConstraint).Constraint;
 				switch (constraint.ConstraintType)
 				{
@@ -180,6 +197,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 						break;
 				}
+#endif // !SHOW_IMPLIED_SHAPES
 				return true;
 			}
 			else if (element is SingleColumnExternalConstraint ||

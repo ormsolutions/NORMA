@@ -572,8 +572,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				Role role = link.PlayedRoleCollection;
+				ObjectType rolePlayer = link.RolePlayer;
 				FactType fact = role.FactType;
-				if (fact != null)
+				// Note if the roleplayer is removed, then the links all go away
+				// automatically. There is no additional work to do or checks to make.
+				if (!(rolePlayer.IsRemoved || rolePlayer .IsRemoving) &&
+					(null != (fact = role.FactType)))
 				{
 					Objectification objectificationLink;
 					if (null != (objectificationLink = fact.ImpliedByObjectification))
