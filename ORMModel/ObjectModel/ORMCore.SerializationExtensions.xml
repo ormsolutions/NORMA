@@ -239,6 +239,7 @@
 		<se:Link RelationshipName="MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError" RoleName="CompatibleRolePlayerTypeErrorCollection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="MultiColumnExternalConstraintHasTooFewRoleSequencesError" RoleName="TooFewRoleSequencesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="MultiColumnExternalConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="MultiColumnExternalConstraintHasExternalConstraintRoleSequenceArityMismatchError" RoleName="ArityMismatchError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="MultiColumnExternalConstraintRoleSequence" Name="RoleSequence" SortChildElements="true" Override="true">
 		<se:Link RelationshipName="ConstraintRoleSequenceHasRole" RoleName="RoleCollection" Name="Role"/>

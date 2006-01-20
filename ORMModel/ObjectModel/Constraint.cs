@@ -3784,55 +3784,55 @@ namespace Neumont.Tools.ORM.ObjectModel
 	#endregion
 	#region RingConstraintType enum
 	/// <summary>
-	/// A list of Ring Constraints.
+	/// Types of valid ring constraints
 	/// </summary>
 	[CLSCompliant(true)]
 	public enum RingConstraintType
 	{
 		/// <summary>
-		/// The constraint must hold
+		/// The type of the constraint has not been defined
 		/// </summary>
 		Undefined = 0,
 		/// <summary>
-		/// The constraint must hold
+		/// Irreflexive
 		/// </summary>
 		Irreflexive = 1,
 		/// <summary>
-		/// The constraint must hold
+		/// Symmetric
 		/// </summary>
 		Symmetric = 2,
 		/// <summary>
-		/// The constraint must hold
+		/// Asymmetric
 		/// </summary>
-		Asymmetric = 4,
+		Asymmetric = 3,
 		/// <summary>
-		/// The constraint must hold
+		/// Antisymmetric
 		/// </summary>
-		Antisymmetric = 8,
+		Antisymmetric = 4,
 		/// <summary>
-		/// The constraint must hold
+		/// Intransitive
 		/// </summary>
-		Intransitive = 16,
+		Intransitive = 5,
 		/// <summary>
-		/// The constraint must hold
+		/// Acyclic
 		/// </summary>
-		Acyclic = 32,
+		Acyclic = 6,
 		/// <summary>
-		/// The constraint must hold
+		/// Acyclic and Intransitive
 		/// </summary>
-		AcyclicIntransitive = 64,
+		AcyclicIntransitive = 7,
 		/// <summary>
-		/// The constraint must hold
+		/// Asymmetric and Intransitive
 		/// </summary>
-		AsymmetricIntransitive = 128,
+		AsymmetricIntransitive = 8,
 		/// <summary>
-		/// The constraint must hold
+		/// Symmetric and Intransitive
 		/// </summary>
-		SymmetricIntransitive = 256,
+		SymmetricIntransitive = 9,
 		/// <summary>
-		/// The constraint must hold
+		/// Symmetric and Irreflexive
 		/// </summary>
-		SymmetricIrreflexive = 512
+		SymmetricIrreflexive = 10
 	}
 	#endregion
 	#region ConstraintType and RoleSequenceStyles implementation for all constraints
