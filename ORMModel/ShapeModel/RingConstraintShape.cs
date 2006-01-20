@@ -348,6 +348,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 							RingConstraintShape ringConstraintShape = obj as RingConstraintShape;
 							if (ringConstraintShape != null)
 							{
+								foreach (LinkConnectsToNode connection in ringConstraintShape.GetElementLinks(LinkConnectsToNode.NodesMetaRoleGuid))
+								{
+									BinaryLinkShape binaryLink = connection.Link as BinaryLinkShape;
+									if (binaryLink != null)
+									{
+										binaryLink.RipUp();
+									}
+								}
 								ringConstraintShape.myOuterShape = null;
 								SizeD oldSize = ringConstraintShape.myContentSize;
 								ringConstraintShape.myContentSize = SizeD.Empty;
