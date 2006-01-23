@@ -23,8 +23,6 @@
 		<arg:Rule class="ORMShapeModel.ObjectTypePlaysRoleRemoved"/>
 		<arg:Rule class="ORMShapeModel.ObjectTypeShapeChangeRule"/>
 		<arg:Rule class="ORMShapeModel.PresentationLinkRemoved"/>
-		<arg:Rule class="ORMShapeModel.PrimaryIdentifierAdded"/>
-		<arg:Rule class="ORMShapeModel.PrimaryIdentifierRemoved"/>
 		<arg:Rule class="ORMShapeModel.ReadingOrderAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleAdded"/>
 		<arg:Rule class="ORMShapeModel.RolePlayerAdded"/>

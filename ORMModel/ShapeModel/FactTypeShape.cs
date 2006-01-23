@@ -1463,6 +1463,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region ConstraintSubField class
 		private class ConstraintSubField : ShapeSubField
 		{
+			#region Mouse handling
 			public override void OnDoubleClick(DiagramPointEventArgs e)
 			{
 				DiagramClientView clientView = e.DiagramClientView;
@@ -1493,6 +1494,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				//e.Handled = true;
 				base.OnDoubleClick(e);
 			}
+			#endregion // Mouse handling
 			#region Member variables
 			private IConstraint myAssociatedConstraint;
 			#endregion // Member variables
@@ -3469,8 +3471,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>true if the PreferredIdentifierFor property on the role is not null.</returns>
 		protected virtual bool ShouldDrawConstraintPreferred(IConstraint constraint)
 		{
-			ConstraintRoleSequence sequence = constraint as ConstraintRoleSequence;
-			return (sequence != null) ? (sequence.PreferredIdentifierFor != null) : false;
+			return constraint.PreferredIdentifierFor != null;
 		}
 		#endregion // FactTypeShape specific
 		#region Shape display update rules
@@ -3883,6 +3884,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(InternalUniquenessConstraint.ModalityMetaAttributeGuid);
 			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
+
+			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(PreferredIdentifierAddedEvent));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(PreferredIdentifierRemovedEvent));
 		}
 		/// <summary>
 		/// Detach event handlers from the store
@@ -3894,6 +3899,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(InternalUniquenessConstraint.ModalityMetaAttributeGuid);
 			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(InternalConstraintChangedEvent));
+
+			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(PreferredIdentifierAddedEvent));
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(PreferredIdentifierRemovedEvent));
 		}
 		/// <summary>
 		/// Update the link displays when the modality of an internal uniqueness constraint changes
@@ -3913,6 +3922,49 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							shape.Invalidate(true);
 						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Event handler that listens for preferred identifiers being added.
+		/// </summary>
+		public static void PreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+			InternalUniquenessConstraint constraint;
+			FactType factType;
+			if ((null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint)) &&
+				(null != (factType = constraint.FactType)))
+			{
+				foreach (PresentationElement pel in factType.PresentationRolePlayers)
+				{
+					FactTypeShape factShape = pel as FactTypeShape;
+					if (factShape != null)
+					{
+						factShape.Invalidate(true);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Event handler that listens for preferred identifiers being removed.
+		/// </summary>
+		public static void PreferredIdentifierRemovedEvent(object sender, ElementRemovedEventArgs e)
+		{
+			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+			InternalUniquenessConstraint constraint;
+			FactType factType;
+			if ((null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint)) &&
+				!constraint.IsRemoved &&
+				(null != (factType = constraint.FactType)))
+			{
+				foreach (PresentationElement pel in factType.PresentationRolePlayers)
+				{
+					FactTypeShape factShape = pel as FactTypeShape;
+					if (factShape != null)
+					{
+						factShape.Invalidate(true);
 					}
 				}
 			}

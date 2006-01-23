@@ -195,7 +195,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo;
+				return ORMCustomSerializedElementSupportedOperations.ChildElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo;
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -257,7 +257,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
 		{
-			throw new NotSupportedException();
+			if (rolePlayedInfo.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid)
+			{
+				return new ORMCustomSerializedElementInfo(null, "PreferredIdentifierFor", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+			return ORMCustomSerializedElementInfo.Default;
 		}
 		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
 		{
@@ -292,6 +296,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
+				match.InitializeRoles(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|PreferredIdentifierFor", match);
 				match.InitializeRoles(ORMNamedElementHasExtensionElement.ExtensionCollectionMetaRoleGuid);
 				childElementMappings.Add("http://schemas.neumont.edu/ORM/ORMCore|Extensions||", match);
 				ORMNamedElement.myChildElementMappings = childElementMappings;
@@ -3375,10 +3381,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
 		{
-			if (rolePlayedInfo.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid)
-			{
-				return new ORMCustomSerializedElementInfo(null, "PreferredIdentifierFor", null, ORMCustomSerializedElementWriteStyle.Element, null);
-			}
 			if (rolePlayedInfo.Id == ObjectificationImpliesExternalUniquenessConstraint.ImpliedByObjectificationMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "ImpliedByObjectification", null, ORMCustomSerializedElementWriteStyle.Element, null);
@@ -3404,10 +3406,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				MetaDataDirectory metaDataDir = store.MetaDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
 				MetaRoleInfo metaRole;
-				metaRole = metaDataDir.FindMetaRole(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
 				metaRole = metaDataDir.FindMetaRole(ObjectificationImpliesExternalUniquenessConstraint.ImpliedByObjectificationMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
@@ -3481,8 +3481,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|PreferredIdentifierFor", match);
 				match.InitializeRoles(ObjectificationImpliesExternalUniquenessConstraint.ImpliedByObjectificationMetaRoleGuid);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|ImpliedByObjectification", match);
 				ExternalUniquenessConstraint.myChildElementMappings = childElementMappings;
@@ -3758,10 +3756,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
 		{
-			if (rolePlayedInfo.Id == EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid)
-			{
-				return new ORMCustomSerializedElementInfo(null, "PreferredIdentifierFor", null, ORMCustomSerializedElementWriteStyle.Element, null);
-			}
 			if (rolePlayedInfo.Id == InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
@@ -3787,10 +3781,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				MetaDataDirectory metaDataDir = store.MetaDataDirectory;
 				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
 				MetaRoleInfo metaRole;
-				metaRole = metaDataDir.FindMetaRole(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
 				metaRole = metaDataDir.FindMetaRole(InternalUniquenessConstraintHasNMinusOneError.NMinusOneErrorMetaRoleGuid);
-				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 1;
+				roleOrderDictionary[metaRole.OppositeMetaRole.FullName] = 0;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<MetaRoleInfo>.Compare(MetaRoleInfo x, MetaRoleInfo y)
@@ -3852,32 +3844,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return this.CustomSerializedChildRoleComparer;
 			}
-		}
-		private static Dictionary<string, ORMCustomSerializedElementMatch> myChildElementMappings;
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.MapChildElement
-		/// </summary>
-		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-		{
-			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = InternalUniquenessConstraint.myChildElementMappings;
-			if (childElementMappings == null)
-			{
-				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
-				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMCore|PreferredIdentifierFor", match);
-				InternalUniquenessConstraint.myChildElementMappings = childElementMappings;
-			}
-			ORMCustomSerializedElementMatch rVal;
-			if (!(childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal)))
-			{
-				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
-			}
-			return rVal;
-		}
-		ORMCustomSerializedElementMatch IORMCustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
-		{
-			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
 		}
 	}
 	#endregion // InternalUniquenessConstraint serialization

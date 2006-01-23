@@ -337,7 +337,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 								// Only remove a role when the control key is down. Otherwise,
 								// there is no way to double-click on a previously selected
 								// role without turning it off, and this is a natural gesture.
-								if (0 != (0xff00 & GetKeyState(Keys.ControlKey)))
+								// Add shift key as well for discoverability.
+								if (0 != (0xff00 & GetKeyState(Keys.ControlKey)) ||
+									0 != (0xff00 & GetKeyState(Keys.ShiftKey)))
 								{
 									forceRedraw = true;
 									roles.RemoveAt(roleIndex);

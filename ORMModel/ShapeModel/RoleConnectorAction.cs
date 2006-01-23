@@ -44,6 +44,55 @@ namespace Neumont.Tools.ORM.ShapeModel
 				diagram.RoleConnectAction.ChainMouseAction(this.MouseDownPoint, clientView, true);
 			}
 		}
+		private bool myAllowDoubleClick;
+		/// <summary>
+		/// Track information for OnDoubleClick
+		/// </summary>
+		protected override void OnMouseDown(DiagramMouseEventArgs e)
+		{
+			myAllowDoubleClick = e.Clicks == 2 && e.Button == MouseButtons.Left;
+			base.OnMouseDown(e);
+		}
+		/// <summary>
+		/// If the role object is part of a sticky external constraint shape
+		/// object then activate it on a double click. Equivalent to the
+		/// 'ActiveRoleSequence' diagram command.
+		/// </summary>
+		protected override void OnDoubleClick(DiagramPointEventArgs e)
+		{
+			// Note this looks like a strange place to put this, but this
+			// is the mouse action that is active when a role is clicked on.
+			if (myAllowDoubleClick)
+			{
+				ORMDiagram ormDiagram = Diagram as ORMDiagram;
+				IStickyObject sticky;
+				ExternalConstraintShape constraintShape;
+				if (null != (sticky = ormDiagram.StickyObject) &&
+					null != (constraintShape = sticky as ExternalConstraintShape))
+				{
+					foreach (Role role in e.DiagramHitTestInfo.HitDiagramItem.RepresentedElements)
+					{
+						if (sticky.StickySelectable(role))
+						{
+							IConstraint constraint = constraintShape.AssociatedConstraint;
+							foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+							{
+								if (object.ReferenceEquals(constraint, sequence.Constraint))
+								{
+									ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
+									connectAction.ConstraintRoleSequenceToEdit = sequence;
+									connectAction.ChainMouseAction(constraintShape, e.DiagramClientView);
+									e.Handled = true;
+									return;
+								}
+							}
+						}
+						break;
+					}
+				}
+			}
+			base.OnDoubleClick(e);
+		}
 	}
 	#endregion // RoleDragPendingAction Class
 	#region RoleConnectAction class

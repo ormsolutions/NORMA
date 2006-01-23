@@ -224,6 +224,93 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}
 		#endregion // CustomStorage handlers
+		#region PreferredIdentifier Property
+		/// <summary>
+		/// Get the preferred identifier for this object. The preferred identifier is
+		/// either and InternalUniquenessConstraint or an ExternalUniquenessConstraint.
+		/// </summary>
+		public IConstraint PreferredIdentifier
+		{
+			// Note that this is all based on spit code. However, the internal and external
+			// uniqueness constraints do not share a useful base class (ORMNamedElement is the
+			// closest and the one used in the model), and the IMS engine needs classes, not
+			// interfaces. Because of this limitation, and the poor code spit for 1-1 relationships
+			// coming from the Phoenix engine (the 1-1 is not properly enforced), we do the normal
+			// code spit by hand.
+			get
+			{
+				return GetCounterpartRolePlayer(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, false) as IConstraint;
+			}
+			set
+			{
+				// Note that type enforcement is done in the EntityTypeHasPreferredIdentifier.EntityTypeAddedRule
+				// which is guaranteed to run for all object model modifications. We defer validation of the constraint
+				// types to that routine. However, the IConstraint passed in must be an ORMNamedElement, so we
+				// use an exception cast here to do a minimal sanity check before proceeding.
+				ORMNamedElement typedValue = (ORMNamedElement)value;
+				bool sameRolePlayer = false;
+				MetaRoleInfo roleInfo = Partition.MetaDataDirectory.FindMetaRole(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid);
+				IList links = GetElementLinks(roleInfo);
+				int linkCount = links.Count;
+				if (linkCount != 0)
+				{
+					for (int i = linkCount - 1; i >= 0; --i)
+					{
+						ElementLink link = links[i] as ElementLink;
+						if (!link.IsRemoved)
+						{
+							ORMNamedElement counterpart = link.GetRolePlayer(roleInfo.OppositeMetaRole) as ORMNamedElement;
+							if (counterpart != null && object.ReferenceEquals(counterpart, typedValue))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				else if (typedValue != null)
+				{
+					// Check the relationship on the other end to enforce 1-1
+					links = typedValue.GetElementLinks(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
+					linkCount = links.Count;
+					if (linkCount != 0)
+					{
+						for (int i = linkCount - 1; i >= 0; --i)
+						{
+							ElementLink link = links[i] as ElementLink;
+							if (!link.IsRemoved)
+							{
+								ObjectType counterpart = link.GetRolePlayer(roleInfo) as ObjectType;
+								if (counterpart != null && object.ReferenceEquals(counterpart, this))
+								{
+									sameRolePlayer = true;
+								}
+								else
+								{
+									link.Remove();
+								}
+								break;
+							}
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (typedValue != null))
+				{
+					this.Partition.ElementFactory.CreateElementLink(
+						typeof(EntityTypeHasPreferredIdentifier),
+						new RoleAssignment[]
+						{
+							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, typedValue),
+							new RoleAssignment(EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, this)
+						});
+				}
+			}
+		}
+		#endregion // PreferredIdentifier Property
 		#region Customize property display
 		/// <summary>
 		/// Distinguish between a value type and object
@@ -505,7 +592,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			if (HasReferenceMode)
 			{
-				ConstraintRoleSequence sequence = PreferredIdentifier;
+				InternalUniquenessConstraint sequence = PreferredIdentifier as InternalUniquenessConstraint;
 				RoleMoveableCollection roleCollection = sequence.RoleCollection;
 				if (roleCollection.Count == 1)
 				{
@@ -921,6 +1008,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (IsValueType == true || NestedFactType != null || this.PreferredIdentifier != null)
 				{
 					hasError = false;
+				}
+				else
+				{
+					// We can get the preferred identifier from the supert type if it exists. The error
+					// should appear on the supertype, not here.
+					using (IEnumerator<ObjectType> superTypes = SupertypeCollection.GetEnumerator())
+					{
+						hasError = !superTypes.MoveNext();
+					}
 				}
 
 				EntityTypeRequiresReferenceSchemeError noRefSchemeError = ReferenceSchemeError;

@@ -317,8 +317,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 								IConstraint associatedConstraint = currentConstraintRoleSequence.Constraint;
 								if (associatedConstraint.ConstraintType == ConstraintType.InternalUniqueness)
 								{
-									InternalUniquenessConstraint iuc = (InternalUniquenessConstraint)associatedConstraint;
-									ObjectType identifierFor = iuc.PreferredIdentifierFor;
+									ObjectType identifierFor = associatedConstraint.PreferredIdentifierFor;
 									if (identifierFor != null)
 									{
 										PresentationElementMoveableCollection pels = identifierFor.PresentationRolePlayers;

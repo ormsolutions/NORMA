@@ -41,9 +41,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		ORMModel Model { get; }
 		/// <summary>
-		/// Get the constraint modality.
+		/// Get or set the constraint modality.
 		/// </summary>
-		ConstraintModality Modality { get; }
+		ConstraintModality Modality { get; set; }
+		/// <summary>
+		/// Get or set the preferred identifier for this constraint.
+		/// Valid for uniqueness constraint types.
+		/// </summary>
+		ObjectType PreferredIdentifierFor { get; set; }
 	}
 	#endregion // IConstraint interface
 	#region Constraint class
@@ -110,8 +115,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private class ConstraintRoleSequenceHasRoleRemoved : RemoveRule
 		{
 			/// <summary>
-			/// Runs when roleset element is removed.  If there are no more roles in the role collection
-			/// then the entire roleset is removed
+			/// Runs when ConstraintRoleSequenceHasRole element is removed. 
+			/// If there are no more roles in the role collection then the
+			/// entire ConstraintRoleSequence is removed
 			/// </summary>
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
@@ -1419,6 +1425,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 				throw new NotImplementedException();
 			}
 		}
+		ObjectType IConstraint.PreferredIdentifierFor
+		{
+			get
+			{
+				return null;
+			}
+			set
+			{
+			}
+		}
 		#endregion // IConstraint Implementation
 	}
 	public partial class SingleColumnExternalConstraint : IConstraint
@@ -1445,6 +1461,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				Debug.Assert(false); // Implement on derived class
 				throw new NotImplementedException();
+			}
+		}
+		ObjectType IConstraint.PreferredIdentifierFor
+		{
+			get
+			{
+				return null;
+			}
+			set
+			{
 			}
 		}
 		#endregion // IConstraint Implementation
@@ -1529,6 +1555,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				Debug.Assert(false); // Implement on derived class
 				throw new NotImplementedException();
+			}
+		}
+		ObjectType IConstraint.PreferredIdentifierFor
+		{
+			get
+			{
+				return null;
+			}
+			set
+			{
 			}
 		}
 		#endregion // IConstraint Implementation
@@ -2319,7 +2355,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				// the generated property accessors unless they have
 				// remove propagation set on the opposite end.
 				bool remove = true;
-				ConstraintRoleSequence constraint = PreferredIdentifier;
+				ORMNamedElement constraint = PreferredIdentifier;
 				if (!constraint.IsRemoving && !constraint.IsRemoved)
 				{
 					ObjectType forType = PreferredIdentifierFor;
@@ -2488,7 +2524,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactType fact = roleLink.FactType;
 					foreach (InternalConstraint constraint in fact.GetInternalConstraints(ConstraintType.InternalUniqueness))
 					{
-						constraint.PreferredIdentifierFor = null;
+						(constraint as IConstraint).PreferredIdentifierFor = null;
 					}
 				}
 				else if (null != (constraintLink = element as ConstraintRoleSequenceHasRole))
@@ -2501,7 +2537,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// the constraint to have one role only. If we already have a preferred
 						// identifier on this role, then we must have one already, so adding an
 						// additional role is bad.
-						sequence.PreferredIdentifierFor = null;
+						constraint.PreferredIdentifierFor = null;
 					}
 				}
 			}
@@ -2583,7 +2619,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						// UNDONE: Preferred external uniqueness. Requires path information.
 						break;
 					default:
-						throw new InvalidOperationException(ResourceStrings.ModelExceptionPreferredIdentifierMustBeUniquenessConstraint);
+						throw new InvalidCastException(ResourceStrings.ModelExceptionPreferredIdentifierMustBeUniquenessConstraint);
 				}
 			}
 			/// <summary>
@@ -3149,6 +3185,75 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // RemoveContraditionErrorsWithFactTypeRule class
 	}
 	#endregion // FrequencyConstraint class
+	#region PreferredIdentifierFor implementation
+	public partial class ORMNamedElement
+	{
+		/// <summary>
+		/// Helper property to share implementation of the PreferredIdentifierFor
+		/// property for the derived uniqueness constraints that expose it publicly.
+		/// </summary>
+		protected ObjectType PreferredIdentifierFor
+		{
+			get
+			{
+				return GetCounterpartRolePlayer(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid, EntityTypeHasPreferredIdentifier.PreferredIdentifierForMetaRoleGuid, false) as ObjectType;
+			}
+			set
+			{
+				if (value != null)
+				{
+					// The relationship is 1-1, just use the code on the other end
+					value.PreferredIdentifier = (IConstraint)this;
+				}
+				else
+				{
+					// Clear the links
+					IList links = this.GetElementLinks(EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuid);
+					int linkCount = links.Count;
+					if (linkCount != 0)
+					{
+						for (int i = linkCount - 1; i >= 0; --i)
+						{
+							ElementLink link = links[i] as ElementLink;
+							if (!link.IsRemoved)
+							{
+								link.Remove();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	public partial class InternalUniquenessConstraint
+	{
+		ObjectType IConstraint.PreferredIdentifierFor
+		{
+			get
+			{
+				return PreferredIdentifierFor;
+			}
+			set
+			{
+				PreferredIdentifierFor = value;
+			}
+		}
+	}
+	public partial class ExternalUniquenessConstraint
+	{
+		ObjectType IConstraint.PreferredIdentifierFor
+		{
+			get
+			{
+				return PreferredIdentifierFor;
+			}
+			set
+			{
+				PreferredIdentifierFor = value;
+			}
+		}
+	}
+	#endregion // PreferredIdentifierFor implementation
 	#region ModelError classes
 	public partial class TooManyRoleSequencesError : IRepresentModelElements
 	{

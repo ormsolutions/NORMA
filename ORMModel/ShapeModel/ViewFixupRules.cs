@@ -251,29 +251,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // FactTypeHasInternalConstraintRemoved class
-		#region PrimaryIdentifierAdded class
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class PrimaryIdentifierAdded : AddRule
-		{
-			public override void ElementAdded(ElementAddedEventArgs e)
-			{
-				EntityTypeHasPreferredIdentifier link;
-				InternalUniquenessConstraint constraint;
-				if (null != (link = e.ModelElement as EntityTypeHasPreferredIdentifier) &&
-					null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint))
-				{
-					foreach (PresentationElement pel in constraint.FactType.PresentationRolePlayers)
-					{
-						FactTypeShape factShape = pel as FactTypeShape;
-						if (factShape != null)
-						{
-							factShape.Invalidate(true);
-						}
-					}
-				}
-			}
-		}
-		#endregion // PrimaryIdentifierAdded class
 		#region ConstraintRoleSequenceRoleAdded class
 		/// <summary>
 		/// Update the fact type when constraint roles are removed
@@ -319,32 +296,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ConstraintRoleSequenceRoleRemoved class
-		#region PrimaryIdentifierRemoved class
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class PrimaryIdentifierRemoved : RemoveRule
-		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
-			{
-				EntityTypeHasPreferredIdentifier link;
-				InternalUniquenessConstraint constraint;
-				if (null != (link = e.ModelElement as EntityTypeHasPreferredIdentifier) &&
-					null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint))
-				{
-					if (!constraint.IsRemoved)
-					{
-						foreach (PresentationElement pel in constraint.FactType.PresentationRolePlayers)
-						{
-							FactTypeShape factShape = pel as FactTypeShape;
-							if (factShape != null)
-							{
-								factShape.Invalidate(true);
-							}
-						}
-					}
-				}
-			}
-		}
-		#endregion // PrimaryIdentifierRemoved class
 		#endregion // InternalConstraint fixup
 		#endregion // ModelHasConstraint fixup
 		#region FactTypeHasRole fixup

@@ -235,9 +235,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		private bool ShouldDisplayPartOfReferenceMode(FactType factType)
 		{
-			foreach (InternalConstraint constraint in factType.InternalConstraintCollection)
+			foreach (InternalUniquenessConstraint constraint in factType.GetInternalConstraints<InternalUniquenessConstraint>())
 			{
-				ObjectType entity = constraint.PreferredIdentifierFor;
+				ObjectType entity = (constraint as IConstraint).PreferredIdentifierFor;
 				if (entity != null)
 				{
 					return !ShouldCollapseReferenceMode(entity);
@@ -1093,7 +1093,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						InternalUniquenessConstraint iuc = constraintSequence as InternalUniquenessConstraint;
 						if (iuc != null)
 						{
-							ObjectType displayedType = iuc.PreferredIdentifierFor;
+							ObjectType displayedType = (iuc as IConstraint).PreferredIdentifierFor;
 							if (displayedType != null)
 							{
 								return displayedType;

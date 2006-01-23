@@ -456,22 +456,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			bool rVal = false;
 			Role r;
-			if (mel == this.AssociatedConstraint)
+			IConstraint constraint = AssociatedConstraint;
+			if (object.ReferenceEquals(mel, constraint))
 			{
 				rVal = true;
 			}
 			else if (null != (r = mel as Role))
 			{
-				MultiColumnExternalConstraint mcec;
-				if (null != (mcec = AssociatedConstraint as MultiColumnExternalConstraint))
+				switch (constraint.ConstraintStorageStyle)
 				{
-					foreach (MultiColumnExternalConstraintRoleSequence roleSequence in mcec.RoleSequenceCollection)
-					{
-						if (roleSequence.RoleCollection.IndexOf(r) >= 0)
+					case ConstraintStorageStyle.SingleColumnExternalConstraint:
+						rVal = (constraint as SingleColumnExternalConstraint).RoleCollection.Contains(r);
+						break;
+					case ConstraintStorageStyle.MultiColumnExternalConstraint:
+						foreach (MultiColumnExternalConstraintRoleSequence roleSequence in (constraint as MultiColumnExternalConstraint).RoleSequenceCollection)
 						{
-							rVal = true;
+							if (roleSequence.RoleCollection.Contains(r))
+							{
+								rVal = true;
+								break;
+							}
 						}
-					}
+						break;
 				}
 			}
 			return rVal;
