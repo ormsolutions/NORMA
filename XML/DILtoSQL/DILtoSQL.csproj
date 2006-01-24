@@ -9,6 +9,11 @@
     <OutputPath>.\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="DDILtoDB2.xslt" />
+    <Content Include="SampleModelORMtoDB2.xml">
+      <Generator>ORMCustomTool</Generator>
+      <LastGenOutput>SampleModelORMtoDB2.sql</LastGenOutput>
+    </Content>
     <Content Include="SampleModelORMtoSQLServer.xml">
       <Generator>ORMCustomTool</Generator>
       <LastGenOutput>SampleModelORMtoSQLServer.sql</LastGenOutput>
@@ -26,6 +31,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="SampleModelORMtoDB2.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModelORMtoDB2.xml</DependentUpon>
+    </None>
     <None Include="SampleModelORMtoSQLServer.sql">
       <DependentUpon>SampleModelORMtoSQLServer.xml</DependentUpon>
       <AutoGen>True</AutoGen>
