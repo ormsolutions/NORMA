@@ -186,6 +186,10 @@
     <value xml:space="preserve">Too many roles for the reading with text '{0}' in model '{1}'</value>
     <comment xml:space="preserve">Text displayed in the text of the TooManyRolesError</comment>
   </data>
+  <data name="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message">
+    <value xml:space="preserve">The ring type for ring constraint '{0}' in model '{1}' is not specified.</value>
+    <comment xml:space="preserve">The ring constraint type must be specified. {0} is the constraint name and {1} is the model name.</comment>
+  </data>
   <data name="ModelError.Role.RolePlayerRequired.Message">
     <value xml:space="preserve">Role '{0}' in fact '{1}' in model '{2}' requires a role player.</value>
     <comment xml:space="preserve">Text displayed in the text of the RoleRequiresRolePlayerError. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>

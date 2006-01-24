@@ -88,6 +88,7 @@
 		<arg:Rule class="ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindChangeRule"/>
 		<arg:Rule class="ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindRemovingRule"/>
 		<arg:Rule class="ReferenceModeKind.ReferenceModeKindChangeRule"/>
+		<arg:Rule class="RingConstraint.RingConstraintTypeChangeRule"/>
 		<arg:Rule class="Role.RoleChangeRule"/>
 		<arg:Rule class="Role.RolePlayerRequiredAddRule"/>
 		<arg:Rule class="Role.RolePlayerRequiredForNewRoleAddRule"/>

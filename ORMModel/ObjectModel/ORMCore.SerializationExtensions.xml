@@ -324,6 +324,7 @@
 	</se:Element>
 	<se:Element Class="RingConstraint" Override="true">
 		<se:Attribute ID="RingType" Name="Type"/>
+		<se:Link RelationshipName="RingConstraintHasRingConstraintTypeNotSpecifiedError" RoleName="RingConstraintTypeNotSpecifiedError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Errors-->
 	<se:Element Class="ConstraintDuplicateNameError" Override="true">
@@ -371,6 +372,9 @@
 	</se:Element>
 	<se:Element Class="MaxValueMismatchError" Override="true">
 		<se:Link RelationshipName="ValueRangeHasMaxValueMismatchError" RoleName="ValueRange" Name="ValueRange"/>
+	</se:Element>
+	<se:Element Class="RingConstraintTypeNotSpecifiedError" Override="true">
+		<se:Link RelationshipName="RingConstraintHasRingConstraintTypeNotSpecifiedError" RoleName="RingConstraint" Name="RingConstraint"/>
 	</se:Element>
 	<se:Element Class="TooFewReadingRolesError" Override="true">
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="Reading" Name="Reading"/>

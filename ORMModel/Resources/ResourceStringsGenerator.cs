@@ -1537,6 +1537,16 @@
 			}
 		}
 		/// <summary>
+		/// The ring constraint type must be specified. {0} is the constraint name and {1} is the model name.
+		/// </summary>
+		public static string RingConstraintTypeNotSpecifiedError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message");
+			}
+		}
+		/// <summary>
 		/// Text displayed in the text of the FrequencyConstraintMinMaxError. {0} is the constraint name and {1} is the model name
 		/// </summary>
 		public static string ModelErrorFrequencyConstraintMinMaxError

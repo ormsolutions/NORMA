@@ -421,7 +421,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				CompatibleRolePlayerTypeError typeCompatibility;
 				if (null != (typeCompatibility = CompatibleRolePlayerTypeError))
 				{
-					yield return typeCompatibility;
+					yield return typeCompatibility; 
 				}
 
 				TooFewRoleSequencesError tooFew;
@@ -723,6 +723,44 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Error synchronization rules
+	}
+	public partial class SingleColumnExternalConstraint : IConstraint
+	{
+		#region IConstraint Implementation
+		ORMModel IConstraint.Model
+		{
+			get
+			{
+				return Model;
+			}
+		}
+		ConstraintType IConstraint.ConstraintType
+		{
+			get
+			{
+				Debug.Assert(false); // Implement on derived class
+				throw new NotImplementedException();
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				Debug.Assert(false); // Implement on derived class
+				throw new NotImplementedException();
+			}
+		}
+		ObjectType IConstraint.PreferredIdentifierFor
+		{
+			get
+			{
+				return null;
+			}
+			set
+			{
+			}
+		}
+		#endregion // IConstraint Implementation
 	}
 	#endregion // SingleColumnExternalConstraint class
 	#region MultiColumnExternalConstraint class
@@ -1400,44 +1438,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IModelErrorOwner Implementation
 	}
 	public partial class MultiColumnExternalConstraint : IConstraint
-	{
-		#region IConstraint Implementation
-		ORMModel IConstraint.Model
-		{
-			get
-			{
-				return Model;
-			}
-		}
-		ConstraintType IConstraint.ConstraintType
-		{
-			get
-			{
-				Debug.Assert(false); // Implement on derived class
-				throw new NotImplementedException();
-			}
-		}
-		RoleSequenceStyles IConstraint.RoleSequenceStyles
-		{
-			get
-			{
-				Debug.Assert(false); // Implement on derived class
-				throw new NotImplementedException();
-			}
-		}
-		ObjectType IConstraint.PreferredIdentifierFor
-		{
-			get
-			{
-				return null;
-			}
-			set
-			{
-			}
-		}
-		#endregion // IConstraint Implementation
-	}
-	public partial class SingleColumnExternalConstraint : IConstraint
 	{
 		#region IConstraint Implementation
 		ORMModel IConstraint.Model
@@ -2961,7 +2961,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			ValidateErrors(notifyAdded);
 		}
 		#endregion //IModelErrorOwner Implementation
-
 		#region VerifyContradictionErrorsWithFactTypeRule
 		/// <summary>
 		/// Called when the model is loaded to verify that the 
@@ -3137,18 +3136,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[RuleOn(typeof(FrequencyConstraint), FireTime = TimeToFire.LocalCommit)]
 		private class FrequencyConstraintMinMaxAddRule : AddRule
 		{
-
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-
 				FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
 				if (!fc.IsRemoved)
 				{
 					fc.VerifyMinMaxRule(null);
 				}
-				
 			}
-
 		}
 		#endregion // FrequencyConstraintMinMaxAddRule class
 		#region RemoveContraditionErrorsWithFactTypeRule class
@@ -3185,6 +3180,108 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // RemoveContraditionErrorsWithFactTypeRule class
 	}
 	#endregion // FrequencyConstraint class
+	#region Ring Constraint class
+	public partial class RingConstraint : IModelErrorOwner
+	{
+		#region IModelErrorOwner Members
+		/// <summary>
+		/// Return errors associated with the constraint
+		/// </summary>
+		[CLSCompliant(false)]
+		protected new IEnumerable<ModelError> ErrorCollection
+		{
+			get
+			{
+				foreach (ModelError error in base.ErrorCollection)
+				{
+					yield return error;
+				}
+				RingConstraintTypeNotSpecifiedError notSpecified = this.RingConstraintTypeNotSpecifiedError;
+				if (notSpecified != null)
+				{
+					yield return notSpecified;
+				}
+			}
+		}
+
+		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
+		{
+			get
+			{
+				return this.ErrorCollection;
+			}
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// </summary>
+		/// <param name="notifyAdded">INotifyElementAdded</param>
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			base.ValidateErrors(notifyAdded);
+			VerifyTypeNotSpecifiedRule(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			this.ValidateErrors(notifyAdded);
+		}
+
+		#endregion//Ring Constraint class
+		#region RingConstraintTypeNotSpecifiedError Rule
+		/// <summary>
+		/// Add, remove, and otherwise validate RingConstraintTypeNotSpecified error
+		/// </summary>
+		/// <param name="notifyAdded">If not null, this is being called during
+		/// load when rules are not in place. Any elements that are added
+		/// must be notified back to the caller.</param>
+		private void VerifyTypeNotSpecifiedRule(INotifyElementAdded notifyAdded)
+		{
+			if (this.IsRemoved)
+			{
+				return;
+			}
+
+			RingConstraintTypeNotSpecifiedError notSpecified = this.RingConstraintTypeNotSpecifiedError;
+			//error should only appear if ring constraint type is not definded
+			if (this.RingType == RingConstraintType.Undefined)
+			{
+				if (notSpecified == null)
+				{
+					notSpecified = RingConstraintTypeNotSpecifiedError.CreateRingConstraintTypeNotSpecifiedError(this.Store);
+					notSpecified.RingConstraint = this;
+					notSpecified.Model = this.Model;
+					notSpecified.GenerateErrorText(); 
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(notSpecified);
+					}
+				}
+			}
+			else if (notSpecified != null)
+			{
+				notSpecified.Remove();
+			}
+		}
+		#endregion //Type Not Specified Error Rule
+		#region RingConstraintTypeChangeRule class
+		[RuleOn(typeof(RingConstraint), FireTime = TimeToFire.LocalCommit)]
+		private class RingConstraintTypeChangeRule : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == RingConstraint.RingTypeMetaAttributeGuid)
+				{
+					RingConstraint rc = e.ModelElement as RingConstraint;
+					if (!rc.IsRemoved)
+					{
+						rc.VerifyTypeNotSpecifiedRule(null);
+					}
+				}
+			}
+		}
+		#endregion // RingConstraintTypeChangeRule class
+	}
+		#endregion //Ring Constraint class
 	#region PreferredIdentifierFor implementation
 	public partial class ORMNamedElement
 	{
@@ -3263,13 +3360,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			NamedElement parent = MultiColumnConstraint;
+			NamedElement parent = MultiColumnConstraint; 
 			if (parent == null)
 			{
 				parent = SingleColumnConstraint;
 				Debug.Assert(parent != null);
 			}
-			string parentName = (parent != null) ? parent.Name : "";
+			string parentName = (parent != null) ? parent.Name : ""; 
 			string currentText = Name;
 			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText, parentName);
 			if (currentText != newText)
@@ -3711,6 +3808,55 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetRepresentedElements();
 		}
 		#endregion // IRepresentModelElements Implementation
+	}
+	public partial class RingConstraintTypeNotSpecifiedError : IRepresentModelElements
+	{
+		#region Base overrides
+		/// <summary>
+		/// Get Text to display for the RingConstraintTypeNotSpecified error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			RingConstraint parent = this.RingConstraint; 
+			string parentName = (parent != null) ? parent.Name : "";
+			string modelName = this.Model.Name;
+			string currentText = this.Name;
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.RingConstraintTypeNotSpecifiedError, parentName, modelName);
+			if (currentText != newText)
+			{
+				this.Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get 
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion //Base overrides
+		#region IRepresentModelElementsImplementation
+		/// <summary>
+		/// Returns the ring constraint associated with this ring constraint error
+		/// </summary>
+		/// <returns>ModelElement[]</returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.RingConstraint };
+		}
+		/// <summary>
+		/// Returns the ring constraint associated with this ring constraint error
+		/// </summary>
+		/// <returns>ModelElement[]</returns>
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+
+		#endregion //IRepresentModelElements Implementation
 	}
 	#endregion // ModelError classes
 	#region ExclusionType enum

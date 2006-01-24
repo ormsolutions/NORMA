@@ -238,6 +238,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid);
 			#endregion
@@ -439,6 +440,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ImpliedInternalUniquenessConstraintErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintContradictsInternalUniquenessConstraintError),
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintContradictsInternalUniquenessConstraintErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError),
+				typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKind),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKindElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceMode),
@@ -630,6 +633,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError),
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError),
+				typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError),
@@ -835,6 +840,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError), "SingleColumnConstraint", Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.SingleColumnConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError), "FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection", Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError), "FrequencyConstraint", Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError), "RingConstraintTypeNotSpecifiedError", Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError), "RingConstraint", Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "DuplicateNameError", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "InternalConstraintCollection", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.InternalConstraintCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError), "MinValueMismatchError", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid),
@@ -9274,6 +9281,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
+		#region RingConstraintTypeNotSpecifiedError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError RingConstraintTypeNotSpecifiedError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region RingConstraint's Generated Constructor Code
 	public  partial class RingConstraint
@@ -15169,6 +15221,154 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new FrequencyConstraintContradictsInternalUniquenessConstraintErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError")]
+	public  partial class RingConstraintTypeNotSpecifiedError : Neumont.Tools.ORM.ObjectModel.ModelError
+	{
+		#region RingConstraintTypeNotSpecifiedError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "5c7caee2-7993-44fd-9ea3-d57cfd445757";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError.MetaClassGuidString);
+		#endregion
+
+		#region RingConstraint's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.RingConstraint RingConstraint
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.RingConstraint;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.RingConstraint counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.RingConstraint;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region RingConstraintTypeNotSpecifiedError's Generated Constructor Code
+	public  partial class RingConstraintTypeNotSpecifiedError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintTypeNotSpecifiedError CreateRingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateRingConstraintTypeNotSpecifiedError(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintTypeNotSpecifiedError CreateAndInitializeRingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeRingConstraintTypeNotSpecifiedError(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintTypeNotSpecifiedError CreateRingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (RingConstraintTypeNotSpecifiedError)partition.ElementFactory.CreateElement(typeof(RingConstraintTypeNotSpecifiedError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintTypeNotSpecifiedError CreateAndInitializeRingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (RingConstraintTypeNotSpecifiedError)partition.ElementFactory.CreateElement(typeof(RingConstraintTypeNotSpecifiedError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for RingConstraintTypeNotSpecifiedError
+	/// <summary>
+	/// RingConstraintTypeNotSpecifiedError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError))]
+	public sealed class RingConstraintTypeNotSpecifiedErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RingConstraintTypeNotSpecifiedErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static RingConstraintTypeNotSpecifiedErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new RingConstraintTypeNotSpecifiedErrorElementFactoryCreator();
 			}
 		}
 	}
@@ -33237,6 +33437,159 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError")]
+	public  partial class RingConstraintHasRingConstraintTypeNotSpecifiedError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	{
+		#region RingConstraintHasRingConstraintTypeNotSpecifiedError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "9e0a3cd0-d451-407d-9611-0fb4cb820365";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = RingConstraintHasRingConstraintTypeNotSpecifiedError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = RingConstraintHasRingConstraintTypeNotSpecifiedError.MetaClassGuid;
+		#endregion
+
+		#region RingConstraintTypeNotSpecifiedError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String RingConstraintTypeNotSpecifiedErrorMetaRoleGuidString = "98abb08f-429a-4272-840d-32f6c472cf99";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid RingConstraintTypeNotSpecifiedErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedError")]
+		public  Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError RingConstraintTypeNotSpecifiedError
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError)this.GetRolePlayer(RingConstraintTypeNotSpecifiedErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(RingConstraintTypeNotSpecifiedErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region RingConstraint's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String RingConstraintMetaRoleGuidString = "7c7dc555-457d-4391-9d6c-a19f2b06c544";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid RingConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraint")]
+		public  Neumont.Tools.ORM.ObjectModel.RingConstraint RingConstraint
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.RingConstraint)this.GetRolePlayer(RingConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(RingConstraintMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region RingConstraintHasRingConstraintTypeNotSpecifiedError's Generated Constructor Code
+	public  partial class RingConstraintHasRingConstraintTypeNotSpecifiedError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RingConstraintHasRingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintHasRingConstraintTypeNotSpecifiedError CreateRingConstraintHasRingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateRingConstraintHasRingConstraintTypeNotSpecifiedError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintHasRingConstraintTypeNotSpecifiedError CreateAndInitializeRingConstraintHasRingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeRingConstraintHasRingConstraintTypeNotSpecifiedError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RingConstraintHasRingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintHasRingConstraintTypeNotSpecifiedError CreateRingConstraintHasRingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (RingConstraintHasRingConstraintTypeNotSpecifiedError)partition.ElementFactory.CreateElementLink(typeof(RingConstraintHasRingConstraintTypeNotSpecifiedError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RingConstraintHasRingConstraintTypeNotSpecifiedError CreateAndInitializeRingConstraintHasRingConstraintTypeNotSpecifiedError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (RingConstraintHasRingConstraintTypeNotSpecifiedError)partition.ElementFactory.CreateElementLink(typeof(RingConstraintHasRingConstraintTypeNotSpecifiedError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for RingConstraintHasRingConstraintTypeNotSpecifiedError
+	/// <summary>
+	/// RingConstraintHasRingConstraintTypeNotSpecifiedError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError))]
+	public sealed class RingConstraintHasRingConstraintTypeNotSpecifiedErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RingConstraintHasRingConstraintTypeNotSpecifiedErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static RingConstraintHasRingConstraintTypeNotSpecifiedErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new RingConstraintHasRingConstraintTypeNotSpecifiedErrorElementFactoryCreator();
 			}
 		}
 	}
