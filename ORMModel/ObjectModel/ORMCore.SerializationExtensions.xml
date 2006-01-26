@@ -22,7 +22,6 @@
 		<se:ChildElement Name="Extensions">
 			<se:Link RelationshipName="ORMNamedElementHasExtensionElement" RoleName="ExtensionCollection"/>
 		</se:ChildElement>
-		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 	</se:Element>
 	<se:Element Class="ORMModelElement">
 		<se:ChildElement Name="Extensions">
@@ -284,6 +283,7 @@
 				</plx:right>
 			</plx:binaryOperator>
 		</se:ConditionalName>
+		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesExternalUniquenessConstraint" RoleName="ImpliedByObjectification"/>
 	</se:Element>
 	<se:Element Class="InternalConstraint" SortChildElements="true" Override="true">
@@ -306,6 +306,7 @@
 		<se:Link RelationshipName="InternalConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="InternalUniquenessConstraint" SortChildElements="true" Override="true">
+		<se:Link Name="PreferredIdentifierFor" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifierFor"/>
 		<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="NMinusOneError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="EqualityConstraint" SortChildElements="true" Override="true" >

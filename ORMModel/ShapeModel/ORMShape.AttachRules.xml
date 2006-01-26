@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
 	<arg:Model class="ORMShapeModel">
-		<arg:Rule class="ExternalConstraintShape.ShapeChangeRule"/>
 		<arg:Rule class="FactTypeShape.ConstraintDisplayPositionChangeRule"/>
 		<arg:Rule class="FactTypeShape.ExternalConstraintShapeChangeRule"/>
 		<arg:Rule class="FactTypeShape.FactTypeShapeChangeRule"/>

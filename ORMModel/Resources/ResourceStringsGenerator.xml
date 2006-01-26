@@ -237,6 +237,9 @@
 	<ResourceString name="ModelExceptionPreferredIdentifierMustBeUniquenessConstraint" model="Model" resourceName="ModelException.Constraint.PreferredIdentifierMustBeUniquenessConstraint">
 		<comment type="summary">Exception message when an attempt is made to create a preferred identifier relationship with an incompatible constraint type.</comment>
 	</ResourceString>
+	<ResourceString name="ModelExceptionInvalidExternalPreferredIdentifierPreConditions" model="Model" resourceName="ModelException.ExternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions">
+		<comment type="summary">Exception message when an attempt is made to set an external uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
+	</ResourceString>
 	<ResourceString name="ModelExceptionInvalidInternalPreferredIdentifierPreConditions" model="Model" resourceName="ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions">
 		<comment type="summary">Exception message when an attempt is made to set an internal uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
 	</ResourceString>

@@ -11,7 +11,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected override Type[] AllMetaModelTypes()
 		{
 			Type[] retVal = new Type[]{
-				typeof(ExternalConstraintShape).GetNestedType("ShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactTypeShape).GetNestedType("ConstraintDisplayPositionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactTypeShape).GetNestedType("ExternalConstraintShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactTypeShape).GetNestedType("FactTypeShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),

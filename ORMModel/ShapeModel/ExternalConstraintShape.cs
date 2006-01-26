@@ -367,21 +367,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return id;
 			}
 		}
-		/// <summary>
-		/// Helper function for rules
-		/// </summary>
-		/// <param name="element">The model element to redraw</param>
-		private static void InvalidateElementPresentation(ModelElement element)
-		{
-			foreach (object obj in element.AssociatedPresentationElements)
-			{
-				ShapeElement shape = obj as ShapeElement;
-				if (shape != null)
-				{
-					shape.Invalidate();
-				}
-			}
-		}
 		#endregion // Customize appearance
 		#region ExternalConstraintShape specific
 		/// <summary>
@@ -395,25 +380,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ExternalConstraintShape specific
-		#region Shape display update rules
-		#region ExternalUniquenessConstraint ShapeChangeRule class
-		[RuleOn(typeof(ExternalUniquenessConstraint), FireTime = TimeToFire.TopLevelCommit)]
-		private class ShapeChangeRule : ChangeRule
-		{
-			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
-			{
-				// UNDONE: Why is this here? A rule on a derived attribute
-				// is highly questionable. Any updates should be made based on
-				// changes to the underlying relationship.
-				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == ExternalUniquenessConstraint.IsPreferredMetaAttributeGuid)
-				{
-					InvalidateElementPresentation(e.ModelElement);
-				}
-			}
-		}
-		#endregion // ExternalUniquenessConstraint ShapeChangeRule class
-		#endregion // Shape display update rules
 		#region IModelErrorActivation Implementation
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError
@@ -599,6 +565,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(MultiColumnConstraintChangedEvent));
 			attributeInfo = dataDirectory.FindMetaAttribute(SingleColumnExternalConstraint.ModalityMetaAttributeGuid);
 			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(SingleColumnConstraintChangedEvent));
+
+			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(PreferredIdentifierAddedEvent));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(PreferredIdentifierRemovedEvent));
 		}
 		/// <summary>
 		/// Detach event handlers from the store
@@ -614,6 +584,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(MultiColumnConstraintChangedEvent));
 			attributeInfo = dataDirectory.FindMetaAttribute(SingleColumnExternalConstraint.ModalityMetaAttributeGuid);
 			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(SingleColumnConstraintChangedEvent));
+
+			MetaClassInfo classInfo = dataDirectory.FindMetaRelationship(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(PreferredIdentifierAddedEvent));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(PreferredIdentifierRemovedEvent));
 		}
 		private static void RolePlayerOrderChangedEvent(object sender, RolePlayerOrderChangedEventArgs e)
 		{
@@ -668,6 +642,45 @@ namespace Neumont.Tools.ORM.ShapeModel
 						// then refresh the linked facts as well
 						ecs.RedrawAssociatedPels(null != (ormDiagram = ecs.Diagram as ORMDiagram)
 							&& object.ReferenceEquals(ecs, ormDiagram.StickyObject));
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Event handler that listens for preferred identifiers being added.
+		/// </summary>
+		public static void PreferredIdentifierAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+			ExternalUniquenessConstraint constraint;
+			if (null != (constraint = link.PreferredIdentifier as ExternalUniquenessConstraint))
+			{
+				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
+				{
+					ExternalConstraintShape constraintShape = pel as ExternalConstraintShape;
+					if (constraintShape != null)
+					{
+						constraintShape.Invalidate(true);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Event handler that listens for preferred identifiers being removed.
+		/// </summary>
+		public static void PreferredIdentifierRemovedEvent(object sender, ElementRemovedEventArgs e)
+		{
+			EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
+			ExternalUniquenessConstraint constraint;
+			if (null != (constraint = link.PreferredIdentifier as ExternalUniquenessConstraint) &&
+				!constraint.IsRemoved)
+			{
+				foreach (PresentationElement pel in constraint.PresentationRolePlayers)
+				{
+					ExternalConstraintShape constraintShape = pel as ExternalConstraintShape;
+					if (constraintShape != null)
+					{
+						constraintShape.Invalidate(true);
 					}
 				}
 			}

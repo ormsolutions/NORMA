@@ -28,7 +28,7 @@
 		<arg:Rule class="FactType.ReadingOrderHasReadingRemoveRuleModelValidation"/>
 		<arg:Rule class="FrequencyConstraint.FrequencyConstraintMinMaxAddRule"/>
 		<arg:Rule class="FrequencyConstraint.FrequencyConstraintMinMaxRule"/>
-		<arg:Rule class="FrequencyConstraint.RemoveContraditionErrorsWithFactTypeRule"/>
+		<arg:Rule class="FrequencyConstraint.RemoveContradictionErrorsWithFactTypeRule"/>
 		<arg:Rule class="InternalConstraint.ConstraintRoleSequenceHasRoleAdded"/>
 		<arg:Rule class="InternalConstraint.FactTypeHasInternalConstraintAdded"/>
 		<arg:Rule class="InternalUniquenessConstraint.InternalUniquenessConstraintChangeRule"/>
@@ -49,6 +49,7 @@
 		<arg:Rule class="MultiColumnExternalConstraint.EnforceRoleSequenceValidityForFactTypeAdd"/>
 		<arg:Rule class="MultiColumnExternalConstraint.EnforceRoleSequenceValidityForFactTypeRemove"/>
 		<arg:Rule class="MultiColumnExternalConstraint.EnforceRoleSequenceValidityForRemove"/>
+		<arg:Rule class="MultiColumnExternalConstraint.EnforceRoleSequenceValidityForReorder"/>
 		<arg:Rule class="MultiColumnExternalConstraint.ExternalRoleConstraintRemoved"/>
 		<arg:Rule class="NamedElementDictionary.ElementLinkAddedRule" namespace="Neumont.Tools.ORM.Framework"/>
 		<arg:Rule class="NamedElementDictionary.ElementLinkRemovedRule" namespace="Neumont.Tools.ORM.Framework"/>

@@ -797,6 +797,16 @@
 			}
 		}
 		/// <summary>
+		/// Exception message when an attempt is made to set an external uniqueness constraint as a preferred identifier when the preconditions are not met.
+		/// </summary>
+		public static string ModelExceptionInvalidExternalPreferredIdentifierPreConditions
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ExternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions");
+			}
+		}
+		/// <summary>
 		/// Exception message when an attempt is made to set an internal uniqueness constraint as a preferred identifier when the preconditions are not met.
 		/// </summary>
 		public static string ModelExceptionInvalidInternalPreferredIdentifierPreConditions

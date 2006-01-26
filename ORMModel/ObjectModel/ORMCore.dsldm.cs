@@ -29003,9 +29003,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
 		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifier")]
-		public  Neumont.Tools.ORM.ObjectModel.ORMNamedElement PreferredIdentifier
+		public  Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence PreferredIdentifier
 		{
-			get { return (Neumont.Tools.ORM.ObjectModel.ORMNamedElement)this.GetRolePlayer(PreferredIdentifierMetaRoleGuid); }
+			get { return (Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence)this.GetRolePlayer(PreferredIdentifierMetaRoleGuid); }
 			set { this.SetRolePlayer(PreferredIdentifierMetaRoleGuid, value); }
 		}
 		

@@ -112,6 +112,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					MultiColumnExternalConstraint mcConstraint;
 					SingleColumnExternalConstraint scConstraint;
+					ConstraintRoleSequence modifyRoleSequence = null;
 					if (null != (mcConstraint = constraint as MultiColumnExternalConstraint))
 					{
 						ConstraintRoleSequence constraintRoleSequenceBeingEdited = action.ConstraintRoleSequenceToEdit;
@@ -130,22 +131,50 @@ namespace Neumont.Tools.ORM.ShapeModel
 						// Edit the existing role set.
 						else
 						{
-							RoleMoveableCollection roles = constraintRoleSequenceBeingEdited.RoleCollection;
-							roles.Clear();
-							foreach (Role role in action.SelectedRoleCollection)
-							{
-								roles.Add(role);
-							}
+							modifyRoleSequence = constraintRoleSequenceBeingEdited;
 						}
 					}
 					else if (null != (scConstraint = constraint as SingleColumnExternalConstraint))
 					{
-						// The single-column constraint is its own role set, just add the roles
-						RoleMoveableCollection roles = scConstraint.RoleCollection;
-						roles.Clear();
+						// The single-column constraint is its own role set, just add the roles.
+						modifyRoleSequence = scConstraint;
+					}
+					if (modifyRoleSequence != null)
+					{
+						// Note that we don't just blow away the collection here, there are too
+						// many side effects (such as removing the preferred identifier when a compatible
+						// link is added)
+						RoleMoveableCollection roles = modifyRoleSequence.RoleCollection;
+						int existingRolesCount = roles.Count;
+						for (int i = existingRolesCount - 1; i >= 0; --i)
+						{
+							Role testRole = roles[i];
+							if (!selectedRoles.Contains(testRole))
+							{
+								roles.Remove(testRole);
+								--existingRolesCount;
+							}
+						}
 						for (int i = 0; i < rolesCount; ++i)
 						{
-							roles.Add(selectedRoles[i]);
+							Role selectedRole = selectedRoles[i];
+							int existingIndex = roles.IndexOf(selectedRole);
+							if (existingIndex == -1)
+							{
+								if (i < existingRolesCount)
+								{
+									roles.Insert(i, selectedRole);
+								}
+								else
+								{
+									roles.Add(selectedRole);
+								}
+								++existingRolesCount;
+							}
+							else if (existingIndex != i)
+							{
+								roles.Move(existingIndex, i);
+							}
 						}
 					}
 				}

@@ -219,8 +219,12 @@
     <comment xml:space="preserve">Exception message when an attempt is made to add roles from different fact types to a role sequence owned by an internal constraint.</comment>
   </data>
   <data name="ModelException.InternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions">
-    <value xml:space="preserve">Conditions of the uniqueness constraint, other constraints on the owning fact type, or the types of attached role players are incompatible with making it the preferred uniqueness constraint.</value>
+    <value xml:space="preserve">Conditions of the internal uniqueness constraint, other constraints on the owning fact type, or the types of attached role players are incompatible with making it the preferred uniqueness constraint.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to set an internal uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
+  </data>
+  <data name="ModelException.ExternalUniquenessConstraint.InvalidPreferredIdentifierPreConditions">
+    <value xml:space="preserve">The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on a binary fact types, and all opposite roles must be attached to the same non-ValueType ObjectType. All opposite roles must also have single-column uniqueness constraints, but this precondition is applied automatically by the object model if it is not satisfied.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to set an external uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
   </data>
   <data name="ModelException.Model.DuplicateName.Text">
     <value xml:space="preserve">The name '{0}' is already in use in this model.</value>
