@@ -270,6 +270,10 @@
     <value xml:space="preserve">≥{0}</value>
     <comment xml:space="preserve">The format to be used in frequency constraints for a minimum value (eg: Minimum of {0}).</comment>
   </data>
+  <data name="AddInternalUniquenessConstraint.TransactionName">
+    <value xml:space="preserve">Add Internal Uniqueness Constraint</value>
+    <comment xml:space="preserve">The name given to the transaction used when adding an internal uniqueness constraint.</comment>
+  </data>
   <data name="InsertRole.TransactionName">
     <value xml:space="preserve">Insert Role</value>
     <comment xml:space="preserve">The transaction name used by the InsertRoleBefore/InsertRoleAfter commands. The text appears in the undo dropdown in the VS IDE.</comment>
@@ -395,7 +399,7 @@
     <comment xml:space="preserve">The transaction name used by the role connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
   <data name="SubtypeConnectAction.TransactionName">
-    <value xml:space="preserve">Set Base Type</value>
+    <value xml:space="preserve">Set Super Type</value>
     <comment xml:space="preserve">The transaction name used by the subtype connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
   <data name="MesageBox.ImpliedInternalUniquenessConstraint.Message">

@@ -1009,7 +1009,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				return;
 			}
-			using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.RemoveInternalConstraintsTransaction))
+			using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.RemoveImpliedInternalUniquenessConstraintsTransactionName))
 			{
 				RoleMoveableCollection factRoles = RoleCollection;
 				InternalUniquenessConstraint[] iuc = new InternalUniquenessConstraint[iucCount];

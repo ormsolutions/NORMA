@@ -3130,7 +3130,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				fact = noUniqueness.FactType;
 				Store theStore = fact.Store;
-				using (Transaction tran = theStore.TransactionManager.BeginTransaction(ResourceStrings.ModelErrorFactTypeRequiresIUCActivateTransactionName))
+				using (Transaction tran = theStore.TransactionManager.BeginTransaction(ResourceStrings.AddInternalConstraintTransactionName))
 				{
 					InternalUniquenessConstraint theConstraint = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(theStore);
 					activateConstraint = theConstraint;

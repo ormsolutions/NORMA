@@ -100,6 +100,15 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		AutoLayout = 0x10000,
 		/// <summary>
+		/// Toggle the IsMandatory property on the selected role. Applies to a single role.
+		/// </summary>
+		ToggleSimpleMandatory = 0x20000,
+		/// <summary>
+		/// Add an internal uniqueness constraint for the selected roles.
+		/// Applies to one or more roles from the same fact type.
+		/// </summary>
+		AddInternalUniqueness = 0x40000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
@@ -120,10 +129,11 @@ namespace Neumont.Tools.ORM.Shell
 		#region Member variables
 		private ORMDesignerCommands myEnabledCommands;
 		private ORMDesignerCommands myVisibleCommands;
+		private ORMDesignerCommands myCheckedCommands;
 		/// <summary>
 		/// The filter for multi selection when the elements are all of the same type.
 		/// </summary>
-		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteAny | (ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
+		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AddInternalUniqueness | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.DeleteAny | (ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
 		/// <summary>
 		/// The filter for multi selection when the elements are of different types. This should always be a subset of the simple command filter
 		/// </summary>
@@ -188,7 +198,7 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		/// <summary>
 		/// Call to refresh the command status for a client view.
-		/// This is required when actions my update the currently
+		/// This is required when actions may update the currently
 		/// enabled commands, but do not change the selection.
 		/// </summary>
 		/// <param name="clientView">The modified (presumably active) view</param>
@@ -212,6 +222,8 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			ORMDesignerCommands visibleCommands = ORMDesignerCommands.None;
 			ORMDesignerCommands enabledCommands = ORMDesignerCommands.None;
+			ORMDesignerCommands checkableCommands = ORMDesignerCommands.None;
+			ORMDesignerCommands checkedCommands = ORMDesignerCommands.None;
 			int count = SelectionCount;
 			if (count != 0)
 			{
@@ -227,7 +239,9 @@ namespace Neumont.Tools.ORM.Shell
 
 					ORMDesignerCommands currentVisible;
 					ORMDesignerCommands currentEnabled;
-					visibleCommands = enabledCommands = EnabledSimpleMultiSelectCommandFilter;
+					ORMDesignerCommands currentCheckable;
+					ORMDesignerCommands currentChecked;
+					visibleCommands = enabledCommands = checkableCommands = checkedCommands = EnabledSimpleMultiSelectCommandFilter;
 					Type firstType = null;
 					bool isComplex = false;
 					foreach (ModelElement melIter in GetSelectedComponents())
@@ -240,7 +254,23 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						if (mel != null)
 						{
-							SetCommandStatus(mel, out currentVisible, out currentEnabled);
+							SetCommandStatus(mel, out currentVisible, out currentEnabled, out currentCheckable, out currentChecked);
+							Debug.Assert(0 == (currentEnabled & ~currentVisible)); // Everthing enabled should be visible
+							Debug.Assert(0 == (currentChecked & ~currentCheckable)); // Everything checked should be checkable
+
+							if (firstType != null)
+							{
+								ORMDesignerCommands checkedConflict = checkedCommands & (currentCheckable & ~currentChecked);
+								if (checkedConflict != 0)
+								{
+									// A single menu item has different checked states for different selected items
+									ORMDesignerCommands turnOff = ~checkedConflict;
+									enabledCommands &= turnOff;
+									visibleCommands &= turnOff;
+									checkableCommands &= turnOff;
+									checkedCommands &= turnOff;
+								}
+							}
 							if (!isComplex)
 							{
 								Type currentType = mel.GetType();
@@ -248,15 +278,19 @@ namespace Neumont.Tools.ORM.Shell
 								{
 									firstType = currentType;
 								}
-								else if (object.ReferenceEquals(firstType, currentType))
+								else if (!object.ReferenceEquals(firstType, currentType))
 								{
 									isComplex = true;
 									enabledCommands &= EnabledComplexMultiSelectCommandFilter;
 									visibleCommands &= EnabledComplexMultiSelectCommandFilter;
+									checkedCommands &= EnabledComplexMultiSelectCommandFilter;
+									checkableCommands &= EnabledComplexMultiSelectCommandFilter;
 								}
 							}
 							enabledCommands &= currentEnabled;
 							visibleCommands &= currentVisible;
+							checkableCommands &= currentCheckable;
+							checkedCommands &= currentChecked;
 							if (enabledCommands == 0 && visibleCommands == 0)
 							{
 								break;
@@ -298,7 +332,9 @@ namespace Neumont.Tools.ORM.Shell
 
 						if (mel != null)
 						{
-							SetCommandStatus(mel, out visibleCommands, out enabledCommands);
+							SetCommandStatus(mel, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands);
+							Debug.Assert(0 == (enabledCommands & ~visibleCommands)); // Everthing enabled should be visible
+							Debug.Assert(0 == (checkedCommands & ~checkableCommands)); // Everything checked should be checkable
 							visibleCommands &= ~DisabledSingleSelectCommandFilter;
 							enabledCommands &= ~DisabledSingleSelectCommandFilter;
 						}
@@ -307,6 +343,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			myVisibleCommands = visibleCommands;
 			myEnabledCommands = enabledCommands;
+			myCheckedCommands = checkedCommands & visibleCommands;
 		}
 		/// <summary>
 		/// Determine which commands are visible and enabled for the
@@ -315,10 +352,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="element">A single model element. Should be a backing object, not a presentation element.</param>
 		/// <param name="visibleCommands">(output) The set of visible commands</param>
 		/// <param name="enabledCommands">(output) The set of enabled commands</param>
-		protected virtual void SetCommandStatus(ModelElement element, out ORMDesignerCommands visibleCommands, out ORMDesignerCommands enabledCommands)
+		/// <param name="checkableCommands">(output) The set of commands that are checked in some circumstances</param>
+		/// <param name="checkedCommands">(output) The set of checked commands</param>
+		protected virtual void SetCommandStatus(ModelElement element, out ORMDesignerCommands visibleCommands, out ORMDesignerCommands enabledCommands, out ORMDesignerCommands checkableCommands, out ORMDesignerCommands checkedCommands)
 		{
 			enabledCommands = ORMDesignerCommands.None;
 			visibleCommands = ORMDesignerCommands.None;
+			checkableCommands = ORMDesignerCommands.None;
+			checkedCommands = ORMDesignerCommands.None;
 			Role role;
 			ObjectType objectType;
 			if (element is FactType)
@@ -349,7 +390,12 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else if (null != (role = element as Role))
 			{
-				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.DisplayFactEditorWindow;
+				visibleCommands = enabledCommands = ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.InsertRole | ORMDesignerCommands.DeleteRole | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.AddInternalUniqueness;
+				checkableCommands = ORMDesignerCommands.ToggleSimpleMandatory;
+				if (role.IsMandatory)
+				{
+					checkedCommands = ORMDesignerCommands.ToggleSimpleMandatory;
+				}
 				// Disable role deletion if the role count == 1
 				visibleCommands |= ORMDesignerCommands.DeleteRole;
 				if (role.FactType.RoleCollection.Count == 1)
@@ -432,9 +478,101 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				command.Visible = 0 != (commandFlag & docView.myVisibleCommands);
 				command.Enabled = 0 != (commandFlag & docView.myEnabledCommands);
+				command.Checked = 0 != (commandFlag & docView.myCheckedCommands);
 				if (0 != (commandFlag & (ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny)))
 				{
 					docView.SetDeleteCommandText((OleMenuCommand)command);
+				}
+				else if (commandFlag == ORMDesignerCommands.ToggleSimpleMandatory && command.Enabled)
+				{
+					foreach (ModelElement mel in docView.GetSelectedComponents())
+					{
+						Role role = mel as Role;
+						if (role != null)
+						{
+							// The command is only enabled when all selected roles have
+							// the same mandatory state. A quick check will let us know when
+							// the state has been changed.
+							command.Checked = role.IsMandatory;
+							break;
+						}
+					}
+				}
+				else if (commandFlag == ORMDesignerCommands.AddInternalUniqueness && command.Enabled)
+				{
+					// Determine if a unique internal uniqueness constraint can
+					// be added at this point.
+
+					// Delay processing for this one until this point. There
+					// is no need to run it whenever the selection changes to include
+					// a role, given than it is only used when the context menu is opened.
+					bool disable = false;
+					bool hide = false;
+					int selCount = docView.SelectionCount;
+					if (selCount != 0)
+					{
+						Role[] roles = new Role[selCount];
+						FactType fact = null;
+						int currentRoleIndex = 0;
+						foreach (ModelElement mel in docView.GetSelectedComponents())
+						{
+							Role role = mel as Role;
+							if (role == null)
+							{
+								break;
+							}
+							FactType testFact = role.FactType;
+							if (fact == null)
+							{
+								fact = testFact;
+							}
+							else if (!object.ReferenceEquals(fact, testFact))
+							{
+								fact = null;
+								break;
+							}
+							roles[currentRoleIndex] = role;
+							++currentRoleIndex;
+						}
+						if (currentRoleIndex == selCount && fact != null)
+						{
+							foreach (InternalUniquenessConstraint iuc in fact.GetInternalConstraints<InternalUniquenessConstraint>())
+							{
+								RoleMoveableCollection factRoles = iuc.RoleCollection;
+								if (factRoles.Count == selCount)
+								{
+									int i = 0;
+									for (; i < selCount; ++i)
+									{
+										if (!factRoles.Contains(roles[i]))
+										{
+											break;
+										}
+									}
+									if (i == selCount)
+									{
+										disable = true;
+										break;
+									}
+								}
+							}
+						}
+						else
+						{
+							hide = true;
+							disable = true;
+						}
+					}
+					if (disable)
+					{
+						docView.myEnabledCommands &= ~ORMDesignerCommands.AddInternalUniqueness;
+						command.Enabled = false;
+						if (hide)
+						{
+							docView.myVisibleCommands &= ~ORMDesignerCommands.AddInternalUniqueness;
+							command.Visible = false;
+						}
+					}
 				}
 			}
 		}
@@ -763,6 +901,68 @@ namespace Neumont.Tools.ORM.Shell
 					// can go ahead and enable delete
 					myVisibleCommands |= ORMDesignerCommands.DeleteRole;
 					myEnabledCommands |= ORMDesignerCommands.DeleteRole;
+				}
+			}
+		}
+		/// <summary>
+		/// Execute the Toggle Simple Mandatory menu command
+		/// </summary>
+		protected virtual void OnMenuToggleSimpleMandatory()
+		{
+			ICollection components = GetSelectedComponents();
+			foreach (object component in components)
+			{
+				Role role = component as Role;
+				if (role != null)
+				{
+					// Use the standard property descriptor to pick up the
+					// same transaction name, etc. This emulates toggling the
+					// property in the properties window.
+					role.CreatePropertyDescriptor(role.Store.MetaDataDirectory.FindMetaAttribute(Role.IsMandatoryMetaAttributeGuid), role).SetValue(role, !role.IsMandatory);
+				}
+			}
+		}
+		/// <summary>
+		/// Execute the Add Internal Uniqueness menu command
+		/// </summary>
+		protected virtual void OnMenuAddInternalUniqueness()
+		{
+			ORMDiagram diagram;
+			ORMModel model;
+			if ((null != (diagram = CurrentDiagram as ORMDiagram)) &&
+				(null != (model = diagram.ModelElement as ORMModel)))
+			{
+				Store store = model.Store;
+				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.AddInternalConstraintTransactionName))
+				{
+					FactType parentFact = null;
+					RoleMoveableCollection constraintRoles = null;
+					bool abort = false;
+					foreach (ModelElement mel in GetSelectedComponents())
+					{
+						Role role = mel as Role;
+						if (role != null)
+						{
+							FactType testFact = role.FactType;
+							if (parentFact == null)
+							{
+								parentFact = testFact;
+								InternalUniquenessConstraint iuc = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
+								iuc.FactType = parentFact;
+								constraintRoles = iuc.RoleCollection;
+							}
+							else if (!object.ReferenceEquals(testFact, parentFact))
+							{
+								abort = true; // Transaction will rollback when it disposes if we don't commit
+								break;
+							}
+							constraintRoles.Add(role);
+						}
+					}
+					if (!abort && t.HasPendingChanges)
+					{
+						t.Commit();
+					}
 				}
 			}
 		}

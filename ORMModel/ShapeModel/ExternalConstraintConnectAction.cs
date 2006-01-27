@@ -54,9 +54,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 				bool retVal = false;
 				if (sourceShapeElement is ExternalConstraintShape)
 				{
+					// The source and target shapes are allowed here so we can display instructions in CanCreateConnection
 					retVal = targetShapeElement is FactTypeShape ||
 						targetShapeElement is SubtypeLink ||
-						object.ReferenceEquals(targetShapeElement, sourceShapeElement.Diagram) ||
 						object.ReferenceEquals(sourceShapeElement, targetShapeElement);
 				}
 				return retVal;
@@ -83,9 +83,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 					{
 						Debug.Assert(IsValidSourceAndTarget(sourceShapeElement, targetShapeElement)); // The condition that got us here
 						connectionWarning = ResourceStrings.ExternalConstraintConnectActionInstructions;
-						// Let the click through for the diagram to generate a completion request so we can
-						// effect a cancel by ignoring it.
-						retVal = object.ReferenceEquals(targetShapeElement, sourceShapeElement.Diagram);
 					}
 				}
 				return retVal;
@@ -178,6 +175,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 					}
 				}
+			}
+			/// <summary>
+			/// Provide the transaction name. The name is displayed in the undo and redo lists.
+			/// </summary>
+			public override string GetConnectTransactionName(ShapeElement sourceShape, ShapeElement targetShape)
+			{
+				return ResourceStrings.ExternalConstraintConnectActionTransactionName;
 			}
 			/// <summary>
 			/// Move the feedback dragline to the center
@@ -473,18 +477,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="e">DiagramEventArgs</param>
 		protected override void OnMouseActionCompleted(DiagramEventArgs e)
 		{
-			if (MouseDownHitShape == Diagram)
-			{
-				return; // Effect a cancel for a click on the diagram
-			}
-			using (Transaction t = Diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.ExternalConstraintConnectActionTransactionName))
-			{
-				base.OnMouseActionCompleted(e);
-				if (t.HasPendingChanges)
-				{
-					t.Commit();
-				}
-			}
+			base.OnMouseActionCompleted(e);
 			myPendingOnClickedAction = OnClickedAction.Complete;
 		}
 		#endregion // Base overrides

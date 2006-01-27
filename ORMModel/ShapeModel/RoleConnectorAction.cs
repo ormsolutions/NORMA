@@ -192,6 +192,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
+			/// <summary>
+			/// Provide the transaction name. The name is displayed in the undo and redo lists.
+			/// </summary>
+			public override string GetConnectTransactionName(ShapeElement sourceShape, ShapeElement targetShape)
+			{
+				return ResourceStrings.RoleConnectActionTransactionName;
+			}
 		}
 		#endregion // ExternalConstraintConnectionType class
 		#region Member variables
@@ -246,26 +253,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 
 			Reset();
-		}
-		/// <summary>
-		/// Cancel if the last hit shape is the Diagram by not forwarding
-		/// to the base class. Otherwise, complete the action.
-		/// </summary>
-		/// <param name="e">DiagramEventArgs</param>
-		protected override void OnMouseActionCompleted(DiagramEventArgs e)
-		{
-			if (MouseDownHitShape == Diagram)
-			{
-				return; // Effect a cancel for a click on the diagram
-			}
-			using (Transaction t = Diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.RoleConnectActionTransactionName))
-			{
-				base.OnMouseActionCompleted(e);
-				if (t.HasPendingChanges)
-				{
-					t.Commit();
-				}
-			}
 		}
 		/// <summary>
 		/// Get the source object type or role after the

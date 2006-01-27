@@ -137,6 +137,14 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusAutoLayout),
 				new EventHandler(OnMenuAutoLayout),
 				ORMDesignerCommandIds.AutoLayout)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusToggleSimpleMandatory),
+				new EventHandler(OnMenuToggleSimpleMandatory),
+				ORMDesignerCommandIds.ToggleSimpleMandatory)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusAddInternalUniqueness),
+				new EventHandler(OnMenuAddInternalUniqueness),
+				ORMDesignerCommandIds.AddInternalUniqueness)
 			};
 				#endregion
 				AddCommands(myCommands);
@@ -319,7 +327,7 @@ namespace Neumont.Tools.ORM.Shell
 				ORMDesignerDocView docView = CurrentORMView;
 				if (docView != null)
 				{
-					// call delete on the doc view
+					// Defer to the doc view
 					docView.OnMenuInsertRole(true);
 				}
 			}
@@ -331,8 +339,46 @@ namespace Neumont.Tools.ORM.Shell
 				ORMDesignerDocView docView = CurrentORMView;
 				if (docView != null)
 				{
-					// call delete on the doc view
+					// Defer to the doc view
 					docView.OnMenuInsertRole(false);
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusToggleSimpleMandatory(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ToggleSimpleMandatory);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuToggleSimpleMandatory(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuToggleSimpleMandatory();
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusAddInternalUniqueness(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.AddInternalUniqueness);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuAddInternalUniqueness(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuAddInternalUniqueness();
 				}
 			}
 			#region External Constraint editing menu options
@@ -650,6 +696,16 @@ namespace Neumont.Tools.ORM.Shell
 			/// The AutoLayout command
 			/// </summary>
 			public static readonly CommandID AutoLayout = new CommandID(guidORMDesignerCommandSet, cmdIdAutoLayout);
+			/// <summary>
+			/// Toggle simple mandatory command. Available on a single role selection.
+			/// </summary>
+			public static readonly CommandID ToggleSimpleMandatory = new CommandID(guidORMDesignerCommandSet, cmdIdToggleSimpleMandatory);
+			/// <summary>
+			/// Add internal uniqueness command. Available on a single or multi role
+			/// role selection if all roles are in the same fact and an internal
+			/// uniqueness constraint is not yet defined for the combination.
+			/// </summary>
+			public static readonly CommandID AddInternalUniqueness = new CommandID(guidORMDesignerCommandSet, cmdIdAddInternalUniqueness);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -760,6 +816,16 @@ namespace Neumont.Tools.ORM.Shell
 			/// AutoLayout command
 			/// </summary>
 			private const int cmdIdAutoLayout = 0x290F;
+			/// <summary>
+			/// Toggle simple mandatory command. Available on a single role selection.
+			/// </summary>
+			private const int cmdIdToggleSimpleMandatory = 0x2910;
+			/// <summary>
+			/// Add internal uniqueness command. Available on a single or multi role
+			/// role selection if all roles are in the same fact and an internal
+			/// uniqueness constraint is not yet defined for the combination.
+			/// </summary>
+			private const int cmdIdAddInternalUniqueness = 0x2911;
 
 			/// <summary>
 			/// The context menu for the diagram

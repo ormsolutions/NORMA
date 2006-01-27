@@ -18,16 +18,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	[CLSCompliant(true)]
 	public class InternalUniquenessConstraintConnectAction : ConnectAction
 	{
-
-		/// <summary>
-		/// Override DoPaintFeedback in order to stop connect line from drawing when mouse
-		/// is over invalid object. We won't do anything.
-		/// </summary>
-		/// <param name="e"></param>
-		public override void DoPaintFeedback(DiagramPaintEventArgs e)
-		{
-		}
-
 		#region InternalUniquenessConstraintConnectionType class
 		/// <summary>
 		/// The ConnectionType used with this ConnectAction. The type
@@ -62,6 +52,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <returns></returns>
 			public override bool IsValidSourceAndTarget(ShapeElement sourceShapeElement, ShapeElement targetShapeElement)
 			{
+				// The source and target shapes are allowed here so we can display instructions in CanCreateConnection
 				return (object.ReferenceEquals(targetShapeElement, sourceShapeElement.Diagram) || object.ReferenceEquals(targetShapeElement, sourceShapeElement));
 			}
 			/// <summary>
@@ -89,9 +80,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 						{
 							connectionWarning = ResourceStrings.InternalUniquenessConstraintConnectActionInstructions;
 						}
-						// Let the click through for the diagram to generate a completion request so we can
-						// effect a cancel by ignoring it.
-						retVal = object.ReferenceEquals(targetShapeElement, sourceShapeElement.Diagram);
 					}
 				}
 				return retVal;
@@ -148,6 +136,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 						}
 					}
 				}
+			}
+			/// <summary>
+			/// Provide the transaction name. The name is displayed in the undo and redo lists.
+			/// </summary>
+			public override string GetConnectTransactionName(ShapeElement sourceShape, ShapeElement targetShape)
+			{
+				return ResourceStrings.InternalUniquenessConstraintConnectActionTransactionName;
 			}
 			/// <summary>
 			/// Controls the PaintFeedbackArgs for while building an internal uniqueness constraint.
@@ -402,19 +397,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="e">DiagramEventArgs</param>
 		protected override void OnMouseActionCompleted(DiagramEventArgs e)
 		{
-			if (MouseDownHitShape == Diagram)
-			{
-				return; // Effect a cancel for a click on the diagram
-			}
-			using (Transaction t = Diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.InternalUniquenessConstraintConnectActionTransactionName))
-			{
-				base.OnMouseActionCompleted(e);
-				if (t.HasPendingChanges)
-				{
-					t.Commit();
-				}
-			}
+			base.OnMouseActionCompleted(e);
 			myPendingOnClickedAction = OnClickedAction.Complete;
+		}
+		/// <summary>
+		/// Override DoPaintFeedback in order to stop connect line from drawing when mouse
+		/// is over invalid object. We won't do anything.
+		/// </summary>
+		/// <param name="e"></param>
+		public override void DoPaintFeedback(DiagramPaintEventArgs e)
+		{
 		}
 		#endregion // Base overrides
 		#region InternalUniquenessConstraintConnectAction specific

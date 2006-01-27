@@ -48,6 +48,9 @@
 #define cmdIdShowPositiveVerbalization	0x290D
 #define cmdIdShowNegativeVerbalization	0x290E
 #define cmdIdAutoLayout					0x290F
+
+#define cmdIdToggleSimpleMandatory		0x2910
+#define cmdIdAddInternalUniqueness		0x2911
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs
 #define bmpIdShowNegativeVerbalization	1

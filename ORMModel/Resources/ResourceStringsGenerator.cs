@@ -427,6 +427,16 @@
 			}
 		}
 		/// <summary>
+		/// The name given to the transaction used when adding an internal uniqueness constraint to correct the error of lacking one.
+		/// </summary>
+		public static string AddInternalConstraintTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "AddInternalUniquenessConstraint.TransactionName");
+			}
+		}
+		/// <summary>
 		/// The instructions shown when creating an external constraint
 		/// </summary>
 		public static string ExternalConstraintConnectActionInstructions
@@ -1347,16 +1357,6 @@
 			}
 		}
 		/// <summary>
-		/// The name given to the transaction used when adding an internal uniqueness constraint to correct the error of lacking one.
-		/// </summary>
-		public static string ModelErrorFactTypeRequiresIUCActivateTransactionName
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresIUC.ActivateTransactionName");
-			}
-		}
-		/// <summary>
 		/// Pattern showing left- and right-string to use for containing a value range definition.
 		/// </summary>
 		public static string ValueRangeDefinitionDefinitionContainerPattern
@@ -1599,11 +1599,11 @@
 		/// <summary>
 		/// The name of the transaction that auto-fixes implied and duplicate internal constraints.
 		/// </summary>
-		public static string RemoveInternalConstraintsTransaction
+		public static string RemoveImpliedInternalUniquenessConstraintsTransactionName
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "FactType.RemoveInternalUniquenessConstraints.TransactionName");
+				return ResourceStrings.GetString(ResourceManagers.Model, "FactType.RemoveImpliedInternalUniquenessConstraints.TransactionName");
 			}
 		}
 		/// <summary>

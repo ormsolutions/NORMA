@@ -158,10 +158,6 @@
     <value xml:space="preserve">Internal uniqueness constraint required for fact '{0}' in the model '{1}'.</value>
     <comment xml:space="preserve">Text displayed in the text of the FactTypeRequiresInternalUniquessContraintError</comment>
   </data>
-  <data name="ModelError.FactType.RequiresIUC.ActivateTransactionName">
-    <value xml:space="preserve">Adding Internal Uniqueness Constraint</value>
-    <comment xml:space="preserve">The name given to the transaction used when adding an internal uniqueness constraint to correct the error of lacking one.</comment>
-  </data>
   <data name="ModelError.FactType.RequiresReading.Message">
     <value xml:space="preserve">At least one reading is required for the fact '{0}' in the model '{1}'.</value>
     <comment xml:space="preserve">Text displayed in the text of the FactTypeRequiresReadingError</comment>
@@ -454,8 +450,9 @@
     <value xml:space="preserve">FactType '{0}' in model '{1}' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</value>
     <comment xml:space="preserve">Text used in the ImpliedInternalUniquenessConstraintError</comment>
   </data>
-  <data name="FactType.RemoveInternalUniquenessConstraints.TransactionName">
-    <value xml:space="preserve">FixInternalUniqueness</value>
+  <data name="FactType.RemoveImpliedInternalUniquenessConstraints.TransactionName">
+    <value xml:space="preserve">Remove Implied Internal Uniqueness Constraints</value>
+    <comment xml:space="preserve">The message of the auto-fix message box for implied internal constraints</comment>
   </data>
   <data name="ModelError.Constraint.FrequencyConstraintContradictsInternalUniquenessConstraintError.Text">
     <value xml:space="preserve">Frequency constraint '{0}' in model '{2}' contradicts one or more internal uniqueness constraints on fact '{1}'.</value>
