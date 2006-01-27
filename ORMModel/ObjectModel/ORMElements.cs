@@ -14,6 +14,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return ExtendableElementUtility.MergeExtensionProperties(this, base.GetDisplayProperties(requestor, ref defaultPropertyDescriptor));
 		}
+		/// <summary>
+		/// Get the default accessible name for this element. Defers to GetClassName
+		/// </summary>
+		public override string AccessibleName
+		{
+			get
+			{
+				return GetClassName();
+			}
+		}
+		/// <summary>
+		/// Get the default accessible value for this element. Defers to GetComponentName
+		/// </summary>
+		public override string AccessibleValue
+		{
+			get
+			{
+				return GetComponentName();
+			}
+		}
 	}
 	#endregion // ORMModelElement
 
@@ -24,6 +44,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public override PropertyDescriptorCollection GetDisplayProperties(ModelElement requestor, ref PropertyDescriptor defaultPropertyDescriptor)
 		{
 			return ExtendableElementUtility.MergeExtensionProperties(this, base.GetDisplayProperties(requestor, ref defaultPropertyDescriptor));
+		}
+		/// <summary>
+		/// Get the default accessible name for this element. Defers to GetClassName
+		/// </summary>
+		public override string AccessibleName
+		{
+			get
+			{
+				return GetClassName();
+			}
+		}
+		/// <summary>
+		/// Get the default accessible name for this element. Returns the Name.
+		/// </summary>
+		public override string AccessibleValue
+		{
+			get
+			{
+				return Name;
+			}
 		}
 	}
 	#endregion // ORMNamedElement

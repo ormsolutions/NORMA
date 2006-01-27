@@ -122,6 +122,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return (element != null) ? element.GetClassName() : base.GetClassName();
 		}
 		#endregion // Customize property display
+		#region Accessibility Properties
+		/// <summary>
+		/// Return the class name as the accessible name
+		/// </summary>
+		public override string AccessibleName
+		{
+			get
+			{
+				return GetClassName();
+			}
+		}
+		/// <summary>
+		/// Return the component name as the accessible value
+		/// </summary>
+		public override string AccessibleValue
+		{
+			get
+			{
+				return GetComponentName();
+			}
+		}
+		#endregion // Accessibility Properties
 		#region Luminosity Modification
 		/// <summary>
 		/// Redirect all luminosity modification to the ORMDiagram.ModifyLuminosity

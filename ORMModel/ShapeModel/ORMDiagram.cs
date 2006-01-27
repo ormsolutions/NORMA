@@ -1002,6 +1002,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return base.ShouldCreatePropertyDescriptor(metaAttrInfo);
 		}
 		#endregion // Display Properties
+		#region Accessibility Properties
+		/// <summary>
+		/// Return the class name as the accessible name
+		/// </summary>
+		public override string AccessibleName
+		{
+			get
+			{
+				return GetClassName();
+			}
+		}
+		/// <summary>
+		/// Return the component name as the accessible value
+		/// </summary>
+		public override string AccessibleValue
+		{
+			get
+			{
+				return GetComponentName();
+			}
+		}
+		#endregion // Accessibility Properties
 		#region Utility Methods
 		/// <summary>
 		/// Modify the luminosity for a given color. This
