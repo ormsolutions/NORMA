@@ -81,6 +81,7 @@ IF NOT EXIST "%~1" (MKDIR "%~1")
 GOTO:EOF
 
 :_Cleanup
+REG DELETE "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Packages\{efddc549-1646-4451-8a51-e5a5e94d647c}" /f 1>NUL
 REG DELETE "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\InstalledProducts\ORM Designer" /f 1>NUL
 REG DELETE "HKCR\.orm" /f 1>NUL
 REG DELETE "HKCR\Neumont.Tools.ORMDesigner.1.0" /f 1>NUL
