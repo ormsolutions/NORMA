@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/ORMCore" href="ORM2Core.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/ORMDiagram" href="ORM2Diagram.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/ORMRoot" href="ORM2Root.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/OIAL" href="OIAL.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/ORMDataTypes" href="ORMDataTypes.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/ORMDataTypes-Temporal" href="ORMDataTypes-Temporal.xsd"/>
+</SchemaCatalog>

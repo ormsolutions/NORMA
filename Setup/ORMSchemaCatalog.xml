@@ -1,3 +1,4 @@
-﻿<SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
-	<Catalog href="%CommonProgramFiles%/ORM/Schemas"/>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
+	<Catalog href="%CommonProgramFiles%/ORM/Schemas/catalog.xml"/>
 </SchemaCatalog>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DIL" href="DIL.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DILDT" href="DILDT.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DILEP" href="DILEP.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DILMS" href="DILMS.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DCIL" href="DCIL.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DDIL" href="DDIL.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DMIL" href="DMIL.xsd"/>
+</SchemaCatalog>

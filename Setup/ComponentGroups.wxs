@@ -6,6 +6,7 @@
 			<ComponentRef Id="NORMAVSPackageComponent"/>
 			<ComponentRef Id="NORMAVSPackageSatelliteComponent_$(var.DefaultLCID)"/>
 			<ComponentRef Id="NORMAVSSchemaCatalogComponent"/>
+			<ComponentRef Id="NORMAVSSchemasLocalCatalogComponent"/>
 			<ComponentRef Id="NORMAVSSettingsSchemaComponent"/>
 			<ComponentRef Id="NORMAVSSettingsComponent"/>
 			<ComponentRef Id="NORMAVSConvertersComponent"/>
@@ -15,6 +16,7 @@
 			<ComponentRef Id="NORMAVSProjectItemsVJSharpComponent"/>
 			<ComponentRef Id="ORMSchemaCatalogComponent"/>
 			<ComponentRef Id="ORMSchemasComponent"/>
+			<ComponentRef Id="ORMSchemasLocalCatalogComponent"/>
 			<ComponentRef Id="ORMTransformsComponent"/>
 		</ComponentGroup>
 		<ComponentGroup Id="HelpFeatureComponents">

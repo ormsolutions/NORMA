@@ -1,3 +1,4 @@
-﻿<SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
-	<Catalog href="%ProgramFiles%/Neumont/ORM Architect for Visual Studio/Xml/Schemas"/>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
+	<Catalog href="%ProgramFiles%/Neumont/ORM Architect for Visual Studio/Xml/Schemas/catalog.xml"/>
 </SchemaCatalog>

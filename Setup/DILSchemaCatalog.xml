@@ -1,3 +1,4 @@
-﻿<SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
-	<Catalog href="%CommonProgramFiles%/DIL/Schemas"/>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
+	<Catalog href="%CommonProgramFiles%/DIL/Schemas/catalog.xml"/>
 </SchemaCatalog>

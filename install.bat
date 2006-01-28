@@ -1,7 +1,7 @@
 @ECHO OFF
 SETLOCAL
 IF "%~1"=="" (SET OutDir=bin\Debug) ELSE (SET OutDir=%~1)
-SET RootDir=%~dp0
+SET RootDir=%~dp0.
 SET VSDir=%ProgramFiles%\Microsoft Visual Studio 8
 SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
 SET ORMDir=%CommonProgramFiles%\ORM
@@ -35,8 +35,14 @@ XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ProjectItems\ORMModel.orm" "%NORMADi
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\ORM2Core.xsd" "%ORMDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ShapeModel\ORM2Diagram.xsd" "%ORMDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORM2Root.xsd" "%ORMDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\OIAL.xsd" "%ORMDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\ORMDataTypes.xsd" "%ORMDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\ORMDataTypes-Temporal.xsd" "%ORMDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\catalog.xml" "%ORMDir%\Schemas\"
 
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xsd" "%NORMADir%\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\ORMCustomTool\ORMCustomToolOptions.xsd" "%NORMADir%\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\catalog.xml" "%NORMADir%\Xml\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xml" "%NORMADir%\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\CoreModelImport.xslt" "%NORMADir%\Xml\Transforms\Converters\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\VisioToCoreModelImport.xslt" "%NORMADir%\Xml\Transforms\Converters\"
@@ -48,6 +54,7 @@ XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILMS.xsd" "%DILDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DMIL.xsd" "%DILDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DCIL.xsd" "%DILDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DDIL.xsd" "%DILDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\catalog.xml" "%DILDir%\Schemas\"
 
 XCOPY /Y /D /V /Q "%RootDir%\Setup\NORMASchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\Setup\ORMSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"

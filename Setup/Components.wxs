@@ -185,6 +185,10 @@
 						<Directory Id="Xml" Name="Xml">
 							<Directory Id="Schemas" Name="Schemas">
 								<!-- XSDs specific to NORMA for VS go here. Anything potentially applicable to other programs should go under ORMCOMMONSCHEMASDIR or DILCOMMONSCHEMASDIR. -->
+								<Component Id="NORMAVSSchemasLocalCatalogComponent" Guid="BCC47EB8-CEFC-421F-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+									<File Id="NORMAcatalog.xml" Name="catalog.xml" src="..\ORMModel\Shell\catalog.xml"
+										DefaultLanguage="0" CompanionFile="NORMASchemaCatalog.xml"/>
+								</Component>
 								<Component Id="NORMAVSSettingsSchemaComponent" Guid="B2DEF872-436C-4BED-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="ORMDesignerSettings.xsd" Name="DsgnrStg.xsd" LongName="ORMDesignerSettings.xsd" src="..\ORMModel\Shell\ORMDesignerSettings.xsd"
 										DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
@@ -222,6 +226,10 @@
 				
 				<Directory Id="ORMCOMMONFILESDIR" Name="ORM">
 					<Directory Id="ORMCOMMONSCHEMASDIR" Name="Schemas">
+						<Component Id="ORMSchemasLocalCatalogComponent" Guid="CA6158D1-A87F-413B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+							<File Id="ORMcatalog.xml" Name="catalog.xml" src="..\catalog.xml"
+								DefaultLanguage="0" CompanionFile="ORMSchemaCatalog.xml"/>
+						</Component>
 						<Component Id="ORMSchemasComponent" Guid="55B51F55-EB34-4AC4-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 							<File Id="ORM2Core.xsd" Name="ORM2Core.xsd" src="..\ORMModel\ObjectModel\ORM2Core.xsd"
 								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
@@ -266,8 +274,10 @@
 				<Directory Id="DILCOMMONFILESDIR" Name="DIL">
 					<Directory Id="DILCOMMONSCHEMASDIR" Name="Schemas">
 						<Component Id="DILSchemasComponent" Guid="BC36206D-B106-42E0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+							<File Id="DILcatalog.xml" Name="catalog.xml" src="..\XML\DIL\catalog.xml"
+								DefaultLanguage="0" CompanionFile="DILSchemaCatalog.xml"/>
 							<File Id="DIL.xsd" Name="DIL.xsd" src="..\XML\DIL\DIL.xsd"
-								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+								DefaultLanguage="0" CompanionFile="DILcatalog.xml"/>
 							<File Id="DCIL.xsd" Name="DCIL.xsd" src="..\XML\DIL\DCIL.xsd"
 								DefaultLanguage="0" CompanionFile="DIL.xsd"/>
 							<File Id="DDIL.xsd" Name="DDIL.xsd" src="..\XML\DIL\DDIL.xsd"
