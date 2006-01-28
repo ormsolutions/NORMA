@@ -20,60 +20,30 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 	[System.Runtime.InteropServices.Guid("977BD01E-F2B4-4341-9C47-459420624A21")]
 	public class ORMCustomTool : IVsSingleFileGenerator, IObjectWithSite
 	{
-		private delegate object get_XmlILCommand(XslCompiledTransform @this);
-		private delegate void Execute(object @this, XmlReader contextDocument, XmlResolver dataSources, XsltArgumentList argumentList, Stream results);
-
-		private static get_XmlILCommand GetXmlILCommand;
-		private static Execute XmlILCommandExecute;
-
-		static ORMCustomTool()
-		{
-			Type xmlILCommand = typeof(System.Xml.Xsl.Runtime.XmlQueryRuntime).Assembly.GetType("System.Xml.Xsl.XmlILCommand", true, false);
-			
-			DynamicMethod getXmlILCommand = new DynamicMethod("GetXmlILCommand", xmlILCommand, new Type[] { typeof(XslCompiledTransform) }, typeof(XslCompiledTransform), true);
-			ILGenerator getXmlILCommandIL = getXmlILCommand.GetILGenerator(6);
-			getXmlILCommandIL.Emit(OpCodes.Ldarg_0);
-			getXmlILCommandIL.Emit(OpCodes.Ldfld, typeof(XslCompiledTransform).GetField("command", BindingFlags.Instance | BindingFlags.NonPublic));
-			getXmlILCommandIL.Emit(OpCodes.Ret);
-			GetXmlILCommand = (get_XmlILCommand)getXmlILCommand.CreateDelegate(typeof(get_XmlILCommand));
-
-			DynamicMethod execute = new DynamicMethod("Execute", null, new Type[] { typeof(object), typeof(XmlReader), typeof(XmlResolver), typeof(XsltArgumentList), typeof(Stream) }, xmlILCommand, true);
-			ILGenerator executeIL = execute.GetILGenerator(12);
-			executeIL.Emit(OpCodes.Ldarg_0);
-			executeIL.Emit(OpCodes.Ldarg_1);
-			executeIL.Emit(OpCodes.Ldarg_2);
-			executeIL.Emit(OpCodes.Ldarg_3);
-			executeIL.Emit(OpCodes.Ldarg_S, 4);
-			executeIL.Emit(OpCodes.Tailcall);
-			executeIL.Emit(OpCodes.Call, xmlILCommand.GetMethod("Execute", BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(XmlReader), typeof(XmlResolver), typeof(XsltArgumentList), typeof(Stream) }, null));
-			executeIL.Emit(OpCodes.Ret);
-			XmlILCommandExecute = (Execute)execute.CreateDelegate(typeof(Execute));
-		}
-
-		private static XmlUrlResolver xmlResolver = new XmlUrlResolver();
-		private static ORMCustomToolOptionsSerializer optionsSerializer = new ORMCustomToolOptionsSerializer();
+		private static readonly XmlUrlResolver xmlResolver = new XmlUrlResolver();
+		private static readonly ORMCustomToolOptionsSerializer optionsSerializer = new ORMCustomToolOptionsSerializer();
 
 		#region CompiledStylesheet
 		private struct CompiledStylesheet : IEquatable<CompiledStylesheet>
 		{
-			public CompiledStylesheet(DateTime lastWriteTimeUtc, object xmlILCommand)
+			public CompiledStylesheet(DateTime lastWriteTimeUtc, XslCompiledTransform transform)
 			{
 				this.LastWriteTimeUtc = lastWriteTimeUtc;
-				this.XmlILCommand = xmlILCommand;
+				this.Transform = transform;
 			}
 
 			public readonly DateTime LastWriteTimeUtc;
-			public readonly object XmlILCommand;
+			public readonly XslCompiledTransform Transform;
 
 			public bool Equals(CompiledStylesheet other)
 			{
-				return (this.LastWriteTimeUtc == other.LastWriteTimeUtc) && (this.XmlILCommand == other.XmlILCommand);
+				return (this.LastWriteTimeUtc == other.LastWriteTimeUtc) && (this.Transform == other.Transform);
 			}
 		}
 		#endregion
 
-		private static Dictionary<string, CompiledStylesheet> xmlCommands = new Dictionary<string, CompiledStylesheet>(StringComparer.OrdinalIgnoreCase);
-		private static Dictionary<string, FileSystemWatcher> fileSystemWatchers = new Dictionary<string, FileSystemWatcher>(StringComparer.OrdinalIgnoreCase);
+		private static readonly Dictionary<string, CompiledStylesheet> compiledStylesheets = new Dictionary<string, CompiledStylesheet>(StringComparer.OrdinalIgnoreCase);
+		private static readonly Dictionary<string, FileSystemWatcher> fileSystemWatchers = new Dictionary<string, FileSystemWatcher>(StringComparer.OrdinalIgnoreCase);
 
 		private static Uri ResolveUri(string uri)
 		{
@@ -84,9 +54,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 		{
 			Uri uri = ResolveUri(stylesheetUri);
 			string canonicalUri = uri.ToString();
-
-			
-			
+	
 			DateTime lastWriteTimeUtc = default(DateTime);
 			if (uri.IsFile || uri.IsUnc)
 			{
@@ -95,34 +63,34 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 					FileInfo fileInfo = new FileInfo(uri.OriginalString);
 					lastWriteTimeUtc = fileInfo.LastWriteTimeUtc;
 				}
-				catch { }
+				catch { /* Not being able to get the LastWriteTime of the file isn't a problem... */ }
 			}
 
 			CompiledStylesheet compiledStylesheet = default(CompiledStylesheet);
-			if (xmlCommands.ContainsKey(canonicalUri))
+			if (compiledStylesheets.ContainsKey(canonicalUri))
 			{
-				compiledStylesheet = xmlCommands[canonicalUri];
+				compiledStylesheet = compiledStylesheets[canonicalUri];
 				if (compiledStylesheet.LastWriteTimeUtc < lastWriteTimeUtc)
 				{
 					compiledStylesheet = default(CompiledStylesheet);
-					xmlCommands.Remove(canonicalUri);
+					compiledStylesheets.Remove(canonicalUri);
 				}
 			}
 			
-			if (compiledStylesheet.XmlILCommand == null)
+			if (compiledStylesheet.Transform == null)
 			{
 				XslCompiledTransform xslCompiledTransform = new XslCompiledTransform(false);
 				// Note: We should probably mention in the documentation that only trusted stylesheets should be used with this custom tool.
 				xslCompiledTransform.Load(canonicalUri, XsltSettings.TrustedXslt, xmlResolver);
-				xmlCommands[canonicalUri] = compiledStylesheet = new CompiledStylesheet(lastWriteTimeUtc, GetXmlILCommand(xslCompiledTransform));
+				compiledStylesheets[canonicalUri] = compiledStylesheet = new CompiledStylesheet(lastWriteTimeUtc, xslCompiledTransform);
 				try
 				{
 					xslCompiledTransform.TemporaryFiles.Delete();
 				}
-				catch { }
+				catch { /* Not being able to delete the temporary files isn't a problem... */ }
 			}
-			
-			XmlILCommandExecute(compiledStylesheet.XmlILCommand, inputDocument, xmlResolver, null, outputDocument);
+
+			compiledStylesheet.Transform.Transform(inputDocument, null, outputDocument);
 		}
 
 		#region IVsSingleFileGenerator Members

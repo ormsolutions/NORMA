@@ -1,31 +1,106 @@
-@echo off
-setlocal
-set rootPath=%1
-if '%2'=='' (
-set envPath="C:\Program Files\Microsoft Visual Studio 8\"
-) else (
-set envPath=%2
-)
-xcopy /Y /D /Q %rootPath%"ORMModel\bin\Debug\Neumont.Tools.ORM.dll" %envPath%"Common7\IDE\PrivateAssemblies\"
-xcopy /Y /D /Q %rootPath%"ORMModel\bin\Debug\Neumont.Tools.ORM.pdb" %envPath%"Common7\IDE\PrivateAssemblies\"
-xcopy /Y /D /Q %rootPath%"ORMModel\bin\Debug\Neumont.Tools.ORM.XML" %envPath%"Common7\IDE\PrivateAssemblies\"
-xcopy /Y /D /Q %rootPath%"ORMModelSatDll\Debug\Neumont.Tools.ORMUI.dll" %envPath%"Common7\IDE\PrivateAssemblies\1033"
-xcopy /Y /D /Q %rootPath%"ORMModelSatDll\Debug\Neumont.Tools.ORMUI.pdb" %envPath%"Common7\IDE\PrivateAssemblies\1033"
-xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ProjectItems\ORMProjectItems.vsdir" %envPath%"VC#\CSharpProjectItems"
-xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ProjectItems\ORMModel.orm" %envPath%"VC#\CSharpProjectItems"
-xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ProjectItems\FactEditor.fct" %envPath%"VC#\CSharpProjectItems"
-xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ProjectItems\ORMProjectItems.vsdir" %envPath%"Common7\IDE\NewFileItems"
-xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ProjectItems\ORMModel.orm" %envPath%"Common7\IDE\NewFileItems"
-xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ProjectItems\FactEditor.fct" %envPath%"Common7\IDE\NewFileItems"
-xcopy /Y /D /Q %rootPath%"ORMModel\ObjectModel\ORM2Core.xsd" %envPath%"Xml\Schemas\"
-xcopy /Y /D /Q %rootPath%"ORMModel\ShapeModel\ORM2Diagram.xsd" %envPath%"Xml\Schemas\"
-xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ORM2Root.xsd" %envPath%"Xml\Schemas\"
-xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ORMDesignerSettings.xsd" %envPath%"Xml\Schemas\"
-if not exist %envPath%"Neumont\ORMDesigner\XmlConverters" (
-mkdir %envPath%"Neumont\ORMDesigner\XmlConverters"
-)
-xcopy /Y /D /Q %rootPath%"ORMModel\Shell\ORMDesignerSettings.xml" %envPath%"Neumont\ORMDesigner"
-xcopy /Y /D /Q %rootPath%"ORMModel\Shell\Converters\CoreModelImport.xslt" %envPath%"Neumont\ORMDesigner\XmlConverters"
-xcopy /Y /D /Q %rootPath%"ORMModel\Shell\Converters\VisioToCoreModelImport.xslt" %envPath%"Neumont\ORMDesigner\XmlConverters"
-regedit /s %rootPath%ORMDesigner.vrg
-regedit /s %rootPath%FactEditor.vrg
+@ECHO OFF
+SETLOCAL
+IF "%~1"=="" (SET OutDir=bin\Debug) ELSE (SET OutDir=%~1)
+SET RootDir=%~dp0
+SET VSDir=%ProgramFiles%\Microsoft Visual Studio 8
+SET NORMADir=%ProgramFiles%\Neumont\ORM Architect for Visual Studio
+SET ORMDir=%CommonProgramFiles%\ORM
+SET DILDir=%CommonProgramFiles%\DIL
+
+FOR /F "usebackq skip=3 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE\Microsoft\VisualStudio\VSIP\8.0" /v "InstallDir"`) DO SET VSIPDir=%%B
+SET RegPkg="%VSIPDir%\VisualStudioIntegration\Tools\Bin\regpkg.exe"
+
+IF EXIST "%NORMADir%\bin\Neumont.Tools.ORM.dll" (%RegPkg% /unregister "%NORMADir%\bin\Neumont.Tools.ORM.dll")
+
+IF NOT EXIST "%NORMADir%" (CALL:_Cleanup)
+
+CALL:_MakeDir "%NORMADir%\bin\1033"
+CALL:_MakeDir "%NORMADir%\Help"
+CALL:_MakeDir "%NORMADir%\Xml\Schemas"
+CALL:_MakeDir "%NORMADir%\Xml\Transforms\Converters"
+CALL:_MakeDir "%NORMADir%\ORMProjectItems"
+CALL:_MakeDir "%ORMDir%\Schemas"
+CALL:_MakeDir "%ORMDir%\Transforms"
+CALL:_MakeDir "%DILDir%\Schemas"
+CALL:_MakeDir "%DILDir%\Transforms"
+
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%OutDir%\Neumont.Tools.ORM.dll" "%NORMADir%\bin\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%OutDir%\Neumont.Tools.ORM.pdb" "%NORMADir%\bin\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%OutDir%\Neumont.Tools.ORM.xml" "%NORMADir%\bin\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModelSatDll\bin\Neumont.Tools.ORMUI.dll" "%NORMADir%\bin\1033\"
+
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ProjectItems\ORMProjectItems.vsdir" "%NORMADir%\ORMProjectItems\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ProjectItems\ORMModel.orm" "%NORMADir%\ORMProjectItems\"
+
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\ORM2Core.xsd" "%ORMDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ShapeModel\ORM2Diagram.xsd" "%ORMDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORM2Root.xsd" "%ORMDir%\Schemas\"
+
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xsd" "%NORMADir%\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xml" "%NORMADir%\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\CoreModelImport.xslt" "%NORMADir%\Xml\Transforms\Converters\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\VisioToCoreModelImport.xslt" "%NORMADir%\Xml\Transforms\Converters\"
+
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DIL.xsd" "%DILDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILDT.xsd" "%DILDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILEP.xsd" "%DILDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILMS.xsd" "%DILDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DMIL.xsd" "%DILDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DCIL.xsd" "%DILDir%\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DDIL.xsd" "%DILDir%\Schemas\"
+
+XCOPY /Y /D /V /Q "%RootDir%\Setup\NORMASchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\Setup\ORMSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%\Setup\DILSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
+
+%RegPkg% "%NORMADir%\bin\Neumont.Tools.ORM.dll"
+
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "SettingsDir" /d "%NORMADir%" /f 1>NUL
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters" /f 1>NUL
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Designer" /v "Category" /d "{663DE24F-8E3A-4C0F-A307-53053ED6C59B}" /f 1>NUL
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Designer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Verbalizer" /v "Category" /d "{663DE24F-5A08-4490-80E7-EA332DFFE7F0}" /f 1>NUL
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Verbalizer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
+
+REG ADD "HKCR\MIME\Database\Content Type\application/orm+xml" /v "Extension" /d ".orm" /f 1>NUL
+REG ADD "HKCR\.orm" /ve /d "ormfile" /f 1>NUL
+REG ADD "HKCR\.orm" /v "Content Type" /d "application/orm+xml" /f 1>NUL
+REG ADD "HKCR\ormfile" /ve /d "Object Role Modeling File" /f 1>NUL
+REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\Neumont.Tools.ORM.dll,0" /f 1>NUL
+REG ADD "HKCR\ormfile\shell\open" /ve /d "&Open" /f 1>NUL
+REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSDir%\Common7\IDE\devenv.exe\" /dde \"%1\"" /f 1>NUL
+REG ADD "HKCR\ormfile\shell\open\ddeexec" /ve /d "Open(\"%1\")" /f 1>NUL
+REG ADD "HKCR\ormfile\shell\open\ddeexec\application" /ve /d "VisualStudio.8.0" /f 1>NUL
+REG ADD "HKCR\ormfile\shell\open\ddeexec\topic" /ve /d "system" /f 1>NUL
+
+GOTO:EOF
+
+
+:_MakeDir
+IF NOT EXIST "%~1" (MKDIR "%~1")
+GOTO:EOF
+
+:_Cleanup
+REG DELETE "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\InstalledProducts\ORM Designer" /f 1>NUL
+REG DELETE "HKCR\.orm" /f 1>NUL
+REG DELETE "HKCR\Neumont.Tools.ORMDesigner.1.0" /f 1>NUL
+RMDIR /S /Q "%VSDir%\Neumont\ORMDesigner\"
+CALL:_CleanupFile "%VSDir%\Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.dll"
+CALL:_CleanupFile "%VSDir%\Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.pdb"
+CALL:_CleanupFile "%VSDir%\Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.xml"
+CALL:_CleanupFile "%VSDir%\Common7\IDE\PrivateAssemblies\1033\Neumont.Tools.ORMUI.dll"
+CALL:_CleanupFile "%VSDir%\Common7\IDE\NewFileItems\ORMProjectItems.vsdir"
+CALL:_CleanupFile "%VSDir%\Common7\IDE\NewFileItems\ORMModel.orm"
+CALL:_CleanupFile "%VSDir%\Common7\IDE\NewFileItems\FactEditor.fct"
+CALL:_CleanupFile "%VSDir%\VC#\CSharpProjectItems\ORMProjectItems.vsdir"
+CALL:_CleanupFile "%VSDir%\VC#\CSharpProjectItems\ORMModel.orm"
+CALL:_CleanupFile "%VSDir%\VC#\CSharpProjectItems\FactEditor.fct"
+CALL:_CleanupFile "%VSDir%\Xml\Schemas\ORM2Core.xsd"
+CALL:_CleanupFile "%VSDir%\Xml\Schemas\ORM2Diagram.xsd"
+CALL:_CleanupFile "%VSDir%\Xml\Schemas\ORM2Root.xsd"
+CALL:_CleanupFile "%VSDir%\Xml\Schemas\ORMDesignerSettings.xsd"
+GOTO:EOF
+
+:_CleanupFile
+IF EXIST "%~1" (DEL /F /Q "%~1")
+GOTO:EOF

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization xmlns="http://schemas.microsoft.com/wix/2003/11/localization">
+	<String Id="Manufacturer">Neumont University</String>
+	<String Id="ProductName">Neumont ORM Architect for Visual Studio</String>
+	<String Id="ReleaseVersion">2006-02 CTP</String>
+	<String Id="PackageCommentsPrefix">This installer database contains the logic and data required to install&#x20;</String>
+	<String Id="PackageCommentsSuffix">.</String>
+
+	<String Id="MainFeatureDescription">Neumont ORM Architect for Visual Studio. Includes the Visual Studio Package.</String>
+	<String Id="HelpFeatureTitle">Help</String>
+	<String Id="HelpFeatureDescription">Help</String>
+	<String Id="GenerationFeatureTitle">Generation</String>
+	<String Id="GenerationFeatureDescription">Generation</String>
+	<String Id="ClassModelGenerationFeatureTitle">ClassGeneration</String>
+	<String Id="ClassModelGenerationFeatureDescription">ClassGeneration</String>
+	<String Id="XmlSchemaGenerationFeatureTitle">XmlSchemaGeneration</String>
+	<String Id="XmlSchemaGenerationFeatureDescription">XmlSchemaGeneration</String>
+	<String Id="RelationalSchemaGenerationFeatureTitle">RelationalSchemaGeneration</String>
+	<String Id="RelationalSchemaGenerationFeatureDescription">RelationalSchemaGeneration</String>
+
+	<String Id="RegNORMAPackageName">Neumont ORM Architect Package</String>
+	<String Id="RegNORMAEditorName">ORM Designer</String>
+	<String Id="RegNORMAFactEditorName">ORM Fact Editor</String>
+	<String Id="RegNORMAReadingEditorName">ORM Reading Editor</String>
+	<String Id="RegNORMAReferenceModeEditorName">ORM Reference Mode Editor</String>
+	<String Id="RegNORMAModelBrowserName">ORM Model Browser</String>
+	<String Id="RegNORMAVerbalizationBrowserName">ORM Verbalization Browser</String>
+	
+	<String Id="ORMFileDescription">Object Role Modeling File</String>
+	<String Id="ORMFileOpenCommand">Open</String>
+	
+	<String Id="ORMCustomToolDescription">ORM Custom Tool</String>
+	
+	<!-- Some of the following strings were taken from the DSL Tools generated setup. They will not normally need to be changed. -->
+	<String Id="Windows2000OrHigherRequired">This setup requires Microsoft Windows 2000 or later.</String>
+	<String Id="NetFrameworkRequired">This setup requires the Microsoft .NET Framework 2.0.  Please install the .NET Framework and run this setup again.</String>
+	<String Id="VisualStudio2005Required">This setup requires Microsoft Visual Studio 2005.  Please install Microsoft Visual Studio 2005 and run this setup again.</String>
+	<String Id="DSLToolsRequired">This setup requires Microsoft Domain Specific Language Tools. Please install Microsoft Domain Specific Language Tools and run this setup again.</String>
+	<String Id="ExistingVersionInstalled">Unable to install because an existing version of this product is already installed.  You must uninstall this version before installing the product.</String>
+	<String Id="AdminOrAdvertised">This installer package does not support Admin or Advertised installations.</String>
+	<String Id="MenuLocal">Will be installed on local hard drive</String>
+	<String Id="CloseButtonText">{\VSI_MS_Sans_Serif13.0_0_0}&amp;Close</String>
+	<String Id="OKButtonText">{\VSI_MS_Sans_Serif13.0_0_0}OK</String>
+	<String Id="CancelButtonText">{\VSI_MS_Sans_Serif13.0_0_0}Cancel</String>
+	<String Id="BackButtonText">{\VSI_MS_Sans_Serif13.0_0_0}&lt; &amp;Back</String>
+	<String Id="NextButtonText">{\VSI_MS_Sans_Serif13.0_0_0}&amp;Next &gt;</String>
+	<String Id="FinishButtonText">{\VSI_MS_Sans_Serif13.0_0_0}&amp;Finish</String>
+	<String Id="AgreeButtonText">{\VSI_MS_Sans_Serif13.0_0_0} I &amp;Agree</String>
+	<String Id="DoNotAgreeButtonText">{\VSI_MS_Sans_Serif13.0_0_0} I &amp;Do Not Agree</String>
+	<String Id="ExitButtonText">{\VSI_MS_Sans_Serif13.0_0_0}E&amp;xit Installation</String>
+	<String Id="ContinueButtonText">{\VSI_MS_Sans_Serif13.0_0_0}C&amp;ontinue</String>
+	<String Id="TryAgainButtonText">{\VSI_MS_Sans_Serif13.0_0_0}&amp;Try Again</String>
+	<String Id="EveryoneRadioText">{\VSI_MS_Sans_Serif13.0_0_0}&amp;Everyone</String>
+	<String Id="JustMeRadioText">{\VSI_MS_Sans_Serif13.0_0_0}Just &amp;me</String>
+	<String Id="NoButtonText">{\VSI_MS_Sans_Serif13.0_0_0}&amp;No</String>
+	<String Id="YesButtonText">{\VSI_MS_Sans_Serif13.0_0_0}&amp;Yes</String>
+	<String Id="BrowseButtonText">{\VSI_MS_Sans_Serif13.0_0_0}B&amp;rowse...</String>
+	<String Id="BrowseForFolderTitle">Browse for Folder</String>
+	<String Id="InterruptedBannerText">{\VSI_MS_Sans_Serif16.0_1_0}Installation Interrupted</String>
+	<String Id="InterruptedRemoveBodyText">{\VSI_MS_Sans_Serif13.0_0_0}The installer was interrupted before [ProductName] could be removed. You need to restart the installer to try again.</String>
+	<String Id="InterruptedInstallBodyText">{\VSI_MS_Sans_Serif13.0_0_0}The installation was interrupted before [ProductName] could be installed. You need to restart the installer to try again.</String>
+	<String Id="IncompleteBannerText">{\VSI_MS_Sans_Serif16.0_1_0}Installation Incomplete</String>
+	<String Id="RepairProduct">{\VSI_MS_Sans_Serif13.0_0_0}&amp;Repair [ProductName]</String>
+	<String Id="RemoveProduct">{\VSI_MS_Sans_Serif13.0_0_0}Re&amp;move [ProductName]</String>
+	<String Id="WelcomeBanner">{\VSI_MS_Sans_Serif16.0_1_0}Welcome to the [ProductName] Setup Wizard</String>
+	<String Id="RepairRemoveBodyText">{\VSI_MS_Sans_Serif13.0_0_0}Select whether you want to repair or remove [ProductName].</String>
+	<String Id="ResumeBodyText">{\VSI_MS_Sans_Serif13.0_0_0}The installer will resume the installation of [ProductName] on your computer.
+
+Click "Finish" to continue.</String>
+	<String Id="FinishedBanner">{\VSI_MS_Sans_Serif16.0_1_0}Installation Complete</String>
+
+	<String Id="FinishedRemoveBodyText">{\VSI_MS_Sans_Serif13.0_0_0}[ProductName] has been successfully removed.
+
+Click "Close" to exit.</String>
+	<String Id="UpdateNetFramework">{\VSI_MS_Sans_Serif13.0_0_0}Please use Windows Update to check for any critical updates to the .NET Framework.</String>
+	<String Id="FinishedInstallBodyText">{\VSI_MS_Sans_Serif13.0_0_0}[ProductName] has been successfully installed.
+
+Click "Close" to exit.</String>
+	<String Id="IncompleteBodyText">{\VSI_MS_Sans_Serif13.0_0_0}The installation is not yet complete. Are you sure you want to exit?</String>
+	<String Id="CopyrightWarning">{\VSI_MS_Sans_Serif13.0_0_0}WARNING: This computer program is protected by copyright law and international treaties. Unauthorized duplication or distribution of this program, or any portion of it, may result in severe civil or criminal penalties, and will be prosecuted to the maximum extent possible under the law.</String>
+	<String Id="WelcomeBodyText">{\VSI_MS_Sans_Serif13.0_0_0}The installer will guide you through the steps required to install [ProductName] on your computer.</String>
+	<String Id="FolderLabel">{\VSI_MS_Sans_Serif13.0_0_0}&amp;Folder:</String>
+	<String Id="BrowseLabel">{\VSI_MS_Sans_Serif13.0_0_0}&amp;Browse:</String>
+	<String Id="SelectFolderBanner">{\VSI_MS_Sans_Serif16.0_1_0}Select Installation Folder</String>
+	<String Id="SelectFolderBodyText">{\VSI_MS_Sans_Serif13.0_0_0}The installer will install [ProductName] to the following folder.
+
+To install in this folder, click "Next". To install to a different folder, enter it below or click "Browse".</String>
+	<String Id="AllUsersText">{\VSI_MS_Shell_Dlg13.0_0_0}Install [ProductName] for yourself, or for anyone who uses this computer:</String>
+	<String Id="AvailableDrivesBodyText">{\VSI_MS_Sans_Serif13.0_0_0}The list below includes the drives you can install [ProductName] to, along with each drive's available and required disk space.</String>
+	<String Id="UnavailableDrivesBodyText">{\VSI_MS_Sans_Serif13.0_0_0}The amount of required disk space exceeds the amount of available disk space. The highlighted items indicate the drives with insufficient disk space.</String>
+	<String Id="ConfirmBanner">{\VSI_MS_Sans_Serif16.0_1_0}Confirm Installation</String>
+	<String Id="ConfirmBodyText">{\VSI_MS_Sans_Serif13.0_0_0}The installer is ready to install [ProductName] on your computer.
+
+Click "Next" to start the installation.</String>
+	<String Id="LicenseBanner">{\VSI_MS_Sans_Serif16.0_1_0}License Agreement</String>
+	<String Id="LicenseBodyText">{\VSI_MS_Sans_Serif13.0_0_0}Please take a moment to read the license agreement now. If you accept the terms below, click "I Agree", then "Next". Otherwise click "Cancel".</String>
+	<String Id="ProgressLabel">{\VSI_MS_Sans_Serif13.0_0_0}Please wait...</String>
+	<String Id="InstallingBanner">{\VSI_MS_Sans_Serif16.0_1_0}Installing [ProductName]</String>
+	<String Id="InstallingBodyText">{\VSI_MS_Sans_Serif13.0_0_0}[ProductName] is being installed.</String>
+	<String Id="RemovingBanner">{\VSI_MS_Sans_Serif16.0_1_0}Removing [ProductName]</String>
+	<String Id="RemovingBodyText">{\VSI_MS_Sans_Serif13.0_0_0}[ProductName] is being removed.</String>
+	<String Id="ConfirmRemoveTitle">Remove [ProductName]</String>
+	<String Id="ConfirmRemoveBodyText">{\VSI_MS_Sans_Serif13.0_0_0}You have chosen to remove [ProductName] from your computer. Are you sure you want to remove it?</String>
+	<String Id="InstallFilesInUseBodyText">{\VSI_MS_Sans_Serif13.0_0_0}The following applications are using files which the installer must update. You can either close the applications and click "Try Again", or click "Continue" so that the installer continues the installation, and replaces these files when your system restarts.</String>
+	<String Id="RemoveFilesInUseBodyText">{\VSI_MS_Sans_Serif13.0_0_0}The following applications are using files which the installer must remove. You can either close the applications and click "Try Again", or click "Continue" so that the installer continues the installation, and replaces these files when your system restarts.</String>
+	<String Id="FilesInUseTitle">[ProductName] Files in Use</String>
+</WixLocalization>

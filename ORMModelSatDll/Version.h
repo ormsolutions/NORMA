@@ -1,0 +1,3 @@
+
+#define NORMA_VERSION 1,0,602,1
+#define NORMA_VERSION_STRING "1,0,602,1"

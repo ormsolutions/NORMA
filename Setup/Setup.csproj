@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration>Setup</Configuration>
+    <Platform>AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EFDDC549-1646-4451-8AFF-FFFFFFFFFFFF}</ProjectGuid>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <SourceExt>.wxs</SourceExt>
+    <TargetExt>.msi</TargetExt>
+    <IntermediateExt>.wixobj</IntermediateExt>
+    <SetupIniFile>settings.ini</SetupIniFile>
+    <OutputName>Neumont ORM Architect for Visual Studio</OutputName>
+    <OutputPath>bin\</OutputPath>
+    <BaseOutputPath>obj\</BaseOutputPath>
+    <IntermediateOutputPath>$(BaseOutputPath)</IntermediateOutputPath>
+    <LocalizedStringFile>Strings.wxl</LocalizedStringFile>
+    <VerboseOutput>true</VerboseOutput>
+    <NoLogo>true</NoLogo>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\DSLTools\v2.0\wix.targets" />
+  <ItemGroup>
+    <SetupFiles Include="settings.ini" />
+    <Compile Include="Components.wxs" />
+    <Compile Include="ComponentGroups.wxs" />
+    <None Include="Config.wxi" />
+    <None Include="NORMAVSPackageRegistry.wxi" />
+    <None Include="Product.wxs" />
+    <None Include="Features.wxs" />
+    <None Include="Strings.wxl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DILSchemaCatalog.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NORMASchemaCatalog.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ORMSchemaCatalog.xml" />
+  </ItemGroup>
+</Project>

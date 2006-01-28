@@ -367,11 +367,11 @@
     <comment xml:space="preserve">The window title for the ORM model browser window</comment>
   </data>
   <data name="Package.OfficialName">
-    <value xml:space="preserve">ORM Designer</value>
+    <value xml:space="preserve">Neumont ORM Architect</value>
     <comment xml:space="preserve">The official name of the package</comment>
   </data>
   <data name="Package.ProductDetails">
-    <value xml:space="preserve">Designer for Object Role Modeling (ORM) diagrams</value>
+    <value xml:space="preserve">NORMA - Neumont Object Role Modeling Architect</value>
     <comment xml:space="preserve">The extra information that appears in the about box of Visual Studio</comment>
   </data>
   <data name="ReadingShape.AttachedRoleDisplay">

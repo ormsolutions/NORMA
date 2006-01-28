@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
-			IntermediateDirectory=".\Debug"
+			OutputDirectory="bin"
+			IntermediateDirectory=".\bin"
 			ConfigurationType="2"
 			ATLMinimizesCRunTimeLibraryUsage="true"
 			CharacterSet="2"
@@ -75,11 +75,11 @@
 				GenerateManifest="false"
 				ManifestFile=""
 				IgnoreAllDefaultLibraries="true"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
+				GenerateDebugInformation="false"
+				ProgramDatabaseFile=""
 				SubSystem="2"
 				ResourceOnlyDLL="true"
-				ImportLibrary="$(OutDir)/$(TargetName).lib"
+				ImportLibrary=""
 				TargetMachine="1"
 			/>
 			<Tool
@@ -114,8 +114,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="bin"
+			IntermediateDirectory=".\bin"
 			ConfigurationType="2"
 			ATLMinimizesCRunTimeLibraryUsage="true"
 			CharacterSet="2"
@@ -168,12 +168,13 @@
 				GenerateManifest="false"
 				ManifestFile=""
 				IgnoreAllDefaultLibraries="true"
-				GenerateDebugInformation="true"
+				GenerateDebugInformation="false"
+				ProgramDatabaseFile=""
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ResourceOnlyDLL="true"
-				ImportLibrary="$(OutDir)/$(TargetName).lib"
+				ImportLibrary=""
 				TargetMachine="1"
 			/>
 			<Tool

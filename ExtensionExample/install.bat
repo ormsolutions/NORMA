@@ -1,13 +1,13 @@
 @echo off
 setlocal
-REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont University\ORM Designer\Extensions\ExtensionExample" /v "AssemblyFilePath" /t REG_EXPAND_SZ /d "%%ProgramFiles%%\Neumont\NORMA\Extensions\ExtensionExample.dll" /f
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect\Extensions\ExtensionExample" /v "AssemblyFilePath" /t REG_EXPAND_SZ /d "%%ProgramFiles%%\Neumont\ORM Architect for Visual Studio\bin\Extensions\ExtensionExample.dll" /f
 set rootPath=%1
 if '%2'=='' (
 set outDir="bin\Debug\"
 ) else (
 set outDir=%2
 )
-set envPath="%ProgramFiles%\Neumont\NORMA\Extensions\"
+set envPath="%ProgramFiles%\Neumont\ORM Architect for Visual Studio\bin\Extensions\"
 if not exist %envPath% (
 mkdir %envPath%
 )

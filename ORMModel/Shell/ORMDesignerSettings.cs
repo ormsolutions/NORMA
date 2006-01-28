@@ -131,13 +131,12 @@ namespace Neumont.Tools.ORM.Shell
 		#region Member Variables
 		private IServiceProvider myServiceProvider;
 		private bool myIsLoaded;
-		private const string ORMDesignerRelativeDirectory = @"\..\..\Neumont\ORMDesigner\";
-		private const string XmlConvertersDirectory = @"XmlConverters\";
 		private const string ORMDesignerGlobalSettingsFile = "ORMDesignerSettings.xml";
 		private Dictionary<XmlElementIdentifier, LinkedList<TransformNode>> myXmlConverters;
 		#endregion // Member Variables
 		#region Static Variables
 		private static string mySettingsDirectory;
+		private static string myXmlConvertersDirectory;
 		private static object myLockObject;
 		private static object LockObject
 		{
@@ -157,9 +156,13 @@ namespace Neumont.Tools.ORM.Shell
 		/// Construct new designer settings
 		/// </summary>
 		/// <param name="serviceProvider">The service provider to use</param>
-		public ORMDesignerSettings(IServiceProvider serviceProvider)
+		/// <param name="settingsDirectory">The directory where the settings file is located.</param>
+		/// <param name="xmlConvertersDirectory">The directory where the XML converters are located.</param>
+		public ORMDesignerSettings(IServiceProvider serviceProvider, string settingsDirectory, string xmlConvertersDirectory)
 		{
 			myServiceProvider = serviceProvider;
+			mySettingsDirectory = settingsDirectory;
+			myXmlConvertersDirectory = xmlConvertersDirectory;
 		}
 		#endregion // Constructors
 		#region SettingsDirectory property
@@ -167,22 +170,14 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			get
 			{
-				string retVal = mySettingsDirectory;
-				if (retVal == null)
-				{
-					lock (LockObject)
-					{
-						if (null == (retVal = mySettingsDirectory))
-						{
-							IVsShell shellService = (IVsShell)myServiceProvider.GetService(typeof(IVsShell));
-							object installVar;
-							ErrorHandler.ThrowOnFailure(shellService.GetProperty((int)__VSSPROPID.VSSPROPID_InstallDirectory, out installVar));
-							string vsInstallDir = (string)installVar;
-							mySettingsDirectory = retVal = (new FileInfo(vsInstallDir + ORMDesignerRelativeDirectory)).FullName;
-						}
-					}
-				}
-				return retVal;
+				return mySettingsDirectory;
+			}
+		}
+		private string XmlConvertersDirectory
+		{
+			get
+			{
+				return myXmlConvertersDirectory;
 			}
 		}
 		#endregion // SettingsDirectory property
@@ -269,7 +264,7 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 			}
 			myIsLoaded = false;
-			string settingsFile = SettingsDirectory + ORMDesignerGlobalSettingsFile;
+			string settingsFile = Path.Combine(SettingsDirectory, ORMDesignerGlobalSettingsFile);
 			if (File.Exists(settingsFile))
 			{
 				ORMDesignerNameTable names = ORMDesignerSchema.Names;
@@ -551,7 +546,7 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			TransformNode transformNode = new TransformNode(targetIdentifier, description, SettingsDirectory + XmlConvertersDirectory + transformFile, arguments);
+			TransformNode transformNode = new TransformNode(targetIdentifier, description, Path.Combine(XmlConvertersDirectory, transformFile), arguments);
 			LinkedList<TransformNode> nodes;
 			if (myXmlConverters.TryGetValue(sourceIdentifier, out nodes))
 			{

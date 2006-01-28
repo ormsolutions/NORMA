@@ -8,9 +8,12 @@
 #define IDS_BASEFILENAME						104
 #define IDS_OPTIONSCATEGORY						105
 #define IDS_OPTIONSGENERAL						106
+#define IDS_ORMPROJECTITEMS						107
+#define IDS_EDITORNAME							108
 #define IDI_HELPICON							110
 #define IDI_POSICON								123
 #define IDI_ORMDESGNERTOOLBARIMAGES				124
+#define IDS_PACKAGELOADKEY						150
 
 // Next default values for new objects
 // 

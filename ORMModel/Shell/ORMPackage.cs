@@ -26,17 +26,44 @@ namespace Neumont.Tools.ORM.Shell
 	[Guid("EFDDC549-1646-4451-8A51-E5A5E94D647C")]
 	[CLSCompliant(false)]
 
-	// "ORM Designer" and "General" correspond and must be in sync with
-	// the VRG file and are defined also in ORMDesignerUI.rc
+	// "ORM Designer" and "General" correspond and must be in sync with ORMDesignerUI.rc
 	[ProvideOptionPage(typeof(OptionsPage), "ORM Designer", "General", 105, 106, false)]
+	[ProvideMenuResource(1000, 1)]
+	[ProvideEditorFactory(typeof(ORMDesignerEditorFactory), 108)]
+	// The following ProvideEditorExtension attributes are for {General, Misc, Solution, VB, C#, J#} Items, in that order
+	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="2150E333-8FDC-42A3-9474-1A3956D46DE8")]
+	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3")]
+	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="D1DCDB85-C5E8-11d2-BFCA-00C04F990235")]
+	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="164B10B9-B200-11D0-8C61-00A0C91E29D5")]
+	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="FAE04EC1-301F-11D3-BF4B-00C04F79EFBC")]
+	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="E6FDF8B0-F3D1-11D4-8576-0002A516ECE8")]
+	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".xml", 0x10)]
+	[ProvideService(typeof(ORMDesignerFontsAndColors), ServiceName="OrmDesignerFontAndColorProvider")]
+	[ProvideLanguageService(typeof(ORMDesignerEditorFactory), "ORM Fact Editor", 103, ShowCompletion=true, ShowSmartIndent=false, RequestStockColors=false, ShowHotURLs=false, DefaultToNonHotURLs=false, DefaultToInsertSpaces=false, ShowDropDownOptions=false, SingleCodeWindowOnly=true, EnableAdvancedMembersOption=false, SupportCopyPasteOfHTML=true)]
+	[ProvideToolWindow(typeof(ORMReadingEditorToolWindow), Style=VsDockStyle.Tabbed)]
+	[ProvideToolWindow(typeof(ORMReferenceModeEditorToolWindow), Style=VsDockStyle.Tabbed)]
+	[ProvideToolWindow(typeof(ORMDesignerPackage.FactEditorToolWindowShim), Style=VsDockStyle.Tabbed)]
+	[ProvideToolWindow(typeof(ORMBrowserToolWindow), Style = VsDockStyle.Tabbed)]
+	[ProvideToolWindow(typeof(ORMVerbalizationToolWindow), Style = VsDockStyle.Tabbed)]
 	[ProvideToolboxItems(1, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
+	[DefaultRegistryRoot(@"SOFTWARE\Microsoft\VisualStudio\8.0Exp")]
+	[PackageRegistration(UseManagedResourcesOnly=false, RegisterUsing=RegistrationMethod.CodeBase, SatellitePath=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\bin\")]
 	[InstalledProductRegistration(true, "#103", "#103", "1.0", IconResourceID=110)]
+	[ProvideLoadKey("Standard", "1.0", "Neumont ORM Architect for Visual Studio", "Neumont University", 150)]
 	public sealed class ORMDesignerPackage : ModelingPackage, IVsInstalledProduct
 	{
+		#region FactEditorToolWindow Shim
+		// HACK: This exists only so that the ProvideToolWindowAttribute can pull the GUID off of it.
+		[Guid(FactGuidList.FactEditorToolWindowGuidString)]
+		private static class FactEditorToolWindowShim { }
+		#endregion
+
 		#region Constants
-		private const string REGISTRYROOT_PACKAGE = @"Neumont University\ORM Designer";
+		private const string REGISTRYROOT_PACKAGE = @"Neumont\ORM Architect";
 		private const string REGISTRYROOT_EXTENSIONS = REGISTRYROOT_PACKAGE + @"\Extensions";
+		private const string REGISTRYVALUE_SETTINGSDIR = "SettingsDir";
+		private const string REGISTRYVALUE_CONVERTERSDIR = "ConvertersDir";
 		#endregion
 
 		#region Member variables
@@ -95,7 +122,27 @@ namespace Neumont.Tools.ORM.Shell
 					ORMDesignerSettings retVal = package.myDesignerSettings;
 					if (retVal == null)
 					{
-						package.myDesignerSettings = new ORMDesignerSettings(package);
+						RegistryKey applicationRegistryRoot = null;
+						RegistryKey normaRegistryRoot = null;
+						try
+						{
+							applicationRegistryRoot = package.ApplicationRegistryRoot;
+							normaRegistryRoot = applicationRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadSubTree);
+							string settingsDir = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_SETTINGSDIR);
+							string xmlConvertersDir = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_CONVERTERSDIR);
+							package.myDesignerSettings = new ORMDesignerSettings(package, settingsDir, xmlConvertersDir);
+						}
+						finally
+						{
+							if (applicationRegistryRoot != null)
+							{
+								applicationRegistryRoot.Close();
+							}
+							if (normaRegistryRoot != null)
+							{
+								normaRegistryRoot.Close();
+							}
+						}
 						retVal = package.myDesignerSettings;
 					}
 					return retVal;
@@ -132,19 +179,12 @@ namespace Neumont.Tools.ORM.Shell
 			// register the class designer editor factory
 			RegisterModelingEditorFactory(new ORMDesignerEditorFactory(this));
 
-#if FACTEDITORPROTOTYPE
-			FactEditorFactory factEditorFactory = new FactEditorFactory(this);
-			base.RegisterEditorFactory(factEditorFactory);
-#endif // FACTEDITORPROTOTYPE
-
 			if (!SetupMode)
 			{
 				IServiceContainer service = (IServiceContainer)this;
 				myFontAndColorService = new ORMDesignerFontsAndColors(this);
 				service.AddService(typeof(ORMDesignerFontsAndColors), myFontAndColorService, true);
-#if FACTEDITORPROTOTYPE
 				service.AddService(typeof(FactLanguageService), new FactLanguageService(this), true);
-#endif // FACTEDITORPROTOTYPE
 				
 				// setup commands
 				myCommandSet = ORMDesignerDocView.CreateCommandSet(this);
@@ -171,14 +211,13 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				IServiceContainer service = (IServiceContainer)this;
 				service.RemoveService(typeof(ORMDesignerFontsAndColors), true);
-#if FACTEDITORPROTOTYPE
+
 				if (myFactEditorToolWindow != null)
 				{
 					myFactEditorToolWindow.CloseFrame(0);
 				}
 
 				service.RemoveService(typeof(FactLanguageService), true);
-#endif // FACTEDITORPROTOTYPE
 				// dispose of any private objects here
 			}
 			base.Dispose(disposing);
@@ -479,13 +518,13 @@ namespace Neumont.Tools.ORM.Shell
 			RegistryKey hkeyExtensions = null;
 			try
 			{
-				hkeyExtensions = hkeyBase.OpenSubKey(extensionPath);
+				hkeyExtensions = hkeyBase.OpenSubKey(extensionPath, RegistryKeyPermissionCheck.ReadSubTree);
 
 				if (hkeyExtensions != null)
 				{
 					foreach (string extensionKeyName in hkeyExtensions.GetSubKeyNames())
 					{
-						using (RegistryKey hkeyExtension = hkeyExtensions.OpenSubKey(extensionKeyName))
+						using (RegistryKey hkeyExtension = hkeyExtensions.OpenSubKey(extensionKeyName, RegistryKeyPermissionCheck.ReadSubTree))
 						{
 							if (hkeyExtension != null)
 							{

@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- NOTE: All comments and instructions in this file are specifically for NORMA setup, and do not necessarily apply to setup packages in general. -->
+<Include xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+	<!-- The processor architecture of the product. Possible values (without quotes) are '32' for the 32-bit x86 (IA-32) architecture. Support for '64' for the 64-bit x86-64 (x64, AMD64, EM64T) architecture may be added in the future. -->
+	<?define Architecture="32"?>
+	<!-- Possible values (without quotes) are '0' for Release build or '1' for Debug build. -->
+	<?define Debug="1"?>
+	<!-- Possible values (without quotes) are '0' for regular Visual Studio registry root or '1' for Exp ("Experimental") registry root. -->
+	<?define ExperimentalHive="0"?>
+	<!-- MAJOR and MINOR portions of ProductVersion, for use in assembly strong names. -->
+	<?define MajorMinorVersion="1.0"?>
+	<!-- Overall NORMA version number. Format is MAJOR.MINOR.(((RELEASEYEAR - 2000) * 100) + RELEASEMONTH).BUILD. -->
+	<?define ProductVersion="$(var.MajorMinorVersion).602.1"?>
+	<!-- VersionGuidSuffix should be distinct for every MSI. The last section of the GUID should match the product version (two hexits for MAJOR, two hexits for MINOR, four hexits for RELEASEYER, two hexits for RELEASEMONTH, two hexits for BUILD). The version number should NOT be translated into hexadecimal; that is, digits 10 should become hexits 10, not hexits 0A. -->
+	<?define VersionGuidSuffix="$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-010020060201"?>
+	<?define PackageCode="EFDDC549-0000-5653-$(var.VersionGuidSuffix)"?>
+	<!-- ProductCode should be changed for each MAJOR version. Specifically, the first and second hexits of the last section of the GUID should match the two digits of the major version.-->
+	<?define ProductCode="EFDDC549-0000-5653-$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-010000000000"?>
+	<!-- UpgradeCode should NOT be changed. -->
+	<?define UpgradeCode="EFDDC549-0000-5653-0000-000000000000"?>
+	<!-- Public token for NORMA strong name key. -->
+	<?define PublicKeyToken="957d5b7d5e79e25f"?>
+	<!-- GUID for NORMA Visual Studio Package (NOT MSI package!) -->
+	<?define NORMAVSPackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"?>
+	<?define NORMAVSPackageAssemblyName="Neumont.Tools.ORM, Version=$(var.MajorMinorVersion), Culture=neutral, PublicKeyToken=$(var.PublicKeyToken)"?>
+	<?define NORMAVSEditorGuid="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"?>
+	<?define NORMAVSFactEditorGuid="044DD982-9DD6-42AC-8C70-BA6A4565E0AE"?>
+	<?define NORMAVSFontAndColorsServiceGuid="C5AA80F8-F730-4809-AAB1-8D925E36F9F5"?>
+	<?define ORMCustomToolGuid="977BD01E-F2B4-4341-9C47-459420624A20"?>
+	<?define ORMCustomToolAssemblyName="Neumont.Tools.ORM.ORMCustomTool, Version=$(var.MajorMinorVersion), Culture=neutral, PublicKeyToken=$(var.PublicKeyToken)"?>
+	<!-- Default settings for ToolWindows -->
+	<?define DefaultToolWindowFloat="200, 100, 400, 300"?>
+	<?define DefaultToolWindowStyle="Tabbed"?>
+	<!-- The LCID of the MSI and the fallback resources. This should NOT be changed. -->
+	<?define DefaultLCID="1033"?>
+	<!-- The Package Load Key information. -->
+	<?define PLKResourceID="150"?>
+	<?define PLKMinEdition="Standard"?>
+	<?define PLKProductVersion="1.0"?>
+	<?define PLKProductName="Neumont ORM Architect for Visual Studio"?>
+	<?define PLKCompanyName="Neumont University"?>
+
+	<?if $(var.Architecture)=64?>
+		<?define Win64="yes"?>
+		<?define ProgramFilesFolder="ProgramFiles64Folder"?>
+		<?define SystemFolder="System64Folder"?>
+		<?define CommonFilesFolder="CommonFiles64Folder"?>
+	<?else?>
+		<?define Win64="no"?>
+		<?define ProgramFilesFolder="ProgramFilesFolder"?>
+		<?define SystemFolder="SystemFolder"?>
+		<?define CommonFilesFolder="CommonFilesFolder"?>
+	<?endif?>
+	<?if $(var.Debug)=1?>
+		<?define BuildConfiguration="Debug"?>
+	<?else?>
+		<?define BuildConfiguration="Release"?>
+	<?endif?>
+	<?if $(var.ExperimentalHive)=1?>
+		<?define RootSuffix="8.0Exp"?>
+		<?define RootSuffixCmd="/RootSuffix Exp "?>
+	<?else?>
+		<?define RootSuffix="8.0"?>
+		<?define RootSuffixCmd=""?>
+	<?endif?>
+	<!-- The Visual Studio registry root used for installation. -->
+	<?define VSRegRoot="SOFTWARE\Microsoft\VisualStudio\$(var.RootSuffix)"?>
+	<?define NORMAVSRegRoot="$(var.VSRegRoot)\Neumont\ORM Architect"?>
+	<!-- The default target directory for installation (under ProgramFilesFolder). -->
+	<!-- NOTE: This is intentionally not being localized, so that the installation location is constant. -->
+	<?define DefaultCompanyDir="Neumont"?>
+	<?define DefaultShortProductDir="NORMAVS"?>
+	<?define DefaultProductDir="ORM Architect for Visual Studio"?>
+
+	<!-- Visual Studio General Project GUID -->
+	<?define VSGeneralProjectGuid="2150E333-8FDC-42A3-9474-1A3956D46DE8"?>
+	<?define VSMiscProjectGuid="A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3"?>
+	<?define VSSolutionItemsProjectGuid="D1DCDB85-C5E8-11d2-BFCA-00C04F990235"?>
+</Include>

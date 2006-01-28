@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+	<Registry Root="HKLM" Key="$(var.VSRegRoot)">
+		
+		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Packages\{$(var.NORMAVSPackageGuid)}">
+			<Registry Value="Neumont.Tools.ORM.Shell.ORMDesignerPackage, $(var.NORMAVSPackageAssemblyName)" Type="string" />
+			<Registry Name="InprocServer32" Value="[$(var.SystemFolder)]\mscoree.dll" Type="string"/>
+			<Registry Name="CodeBase" Value="[#Neumont.Tools.ORM.dll]" Type="string"/>
+			<Registry Name="Class" Value="Neumont.Tools.ORM.Shell.ORMDesignerPackage" Type="string"/>
+			<Registry Name="ID" Value="$(var.PLKResourceID)" Type="integer"/>
+			<Registry Name="MinEdition" Value="$(var.PLKMinEdition)" Type="string"/>
+			<Registry Name="ProductVersion" Value="$(var.PLKProductVersion)" Type="string"/>
+			<Registry Name="ProductName" Value="$(var.PLKProductName)" Type="string"/>
+			<Registry Name="CompanyName" Value="$(var.PLKCompanyName)" Type="string"/>
+			<Registry Action="createKey" Key="SatelliteDll">
+				<Registry Name="Path" Value="[BINDIR]" Type="string"/>
+				<Registry Name="DllName" Value="Neumont.Tools.ORMUI.dll" Type="string"/>
+			</Registry>
+			<Registry Action="createKey" Key="ToolBox">
+				<Registry Name="Default Items" Value="1" Type="integer"/>
+				<Registry Name="Formats" Value="Microsoft.VisualStudio.Modeling.ElementGroupPrototype" Type="string"/>
+				<Registry Name="NeedsCallbackAfterReset" Value="1" Type="integer"/>
+			</Registry>
+		</Registry>
+
+		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="InstalledProducts\Neumont ORM Architect">
+			<Registry Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+			<Registry Name="UseInterface" Value="1" Type="integer"/>
+			<Registry Name="DefaultProductAttribute" Value="ORM" Type="string"/>
+		</Registry>
+
+		<Registry Action="createKey" Key="Menus">
+			<Registry Name="{$(var.NORMAVSPackageGuid)}" Value=", 1000, 1" Type="string"/>
+		</Registry>
+
+		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Editors\{$(var.NORMAVSEditorGuid)}">
+			<Registry Value="$(loc.RegNORMAEditorName)" Type="string"/>
+			<Registry Name="DisplayName" Value="##108" Type="string"/>
+			<Registry Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+			<Registry Name="ExcludeDefTextEditor" Value="1" Type="integer"/>
+			<Registry Action="createKey" Key="Extensions">
+				<Registry Name="orm" Value="50" Type="integer"/>
+				<Registry Name="xml" Value="16" Type="integer"/>
+			</Registry>
+		</Registry>
+
+		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="ToolsOptionsPages\ORM Designer">
+			<Registry Value="##105" Type="string"/>
+			<Registry Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+			<Registry Action="createKey" Key="General">
+				<Registry Value="##106" Type="string"/>
+				<Registry Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<Registry Name="Page" Value="{B4ABD9FD-CE79-4B26-8D36-F345CB53B525}" Type="string"/>
+			</Registry>
+		</Registry>
+
+		<Registry Action="createKey" Key="ToolWindows">
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{992C221B-4BE5-4A9B-900D-9882B4FA0F99}">
+				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<Registry Name="Name" Value="$(loc.RegNORMAReadingEditorName)" Type="string"/>
+				<Registry Name="Float" Value="$(var.DefaultToolWindowFloat)" Type="string"/>
+				<Registry Name="Style" Value="$(var.DefaultToolWindowStyle)" Type="string"/>
+				<Registry Name="Window" Value="{992C221B-4BE5-4A9B-900D-9882B4FA0F99}" Type="string"/>
+				<Registry Action="createKey" Key="Visibility">
+					<Registry Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
+				</Registry>
+			</Registry>
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{C2415D9F-DBA8-49BC-8BF2-008F24F10559}">
+				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<Registry Name="Name" Value="$(loc.RegNORMAReferenceModeEditorName)" Type="string"/>
+				<Registry Name="Float" Value="$(var.DefaultToolWindowFloat)" Type="string"/>
+				<Registry Name="Style" Value="$(var.DefaultToolWindowStyle)" Type="string"/>
+				<Registry Name="Window" Value="{C2415D9F-DBA8-49BC-8BF2-008F24F10559}" Type="string"/>
+				<Registry Action="createKey" Key="Visibility">
+					<Registry Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
+				</Registry>
+			</Registry>
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{63B6F84D-DF09-4E65-86EA-6BC1B856837B}">
+				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<Registry Name="Name" Value="$(loc.RegNORMAFactEditorName)" Type="string"/>
+				<Registry Name="Float" Value="$(var.DefaultToolWindowFloat)" Type="string"/>
+				<Registry Name="Style" Value="$(var.DefaultToolWindowStyle)" Type="string"/>
+				<Registry Name="Window" Value="{63B6F84D-DF09-4E65-86EA-6BC1B856837B}" Type="string"/>
+				<Registry Action="createKey" Key="Visibility">
+					<Registry Name="{$(var.NORMAVSFactEditorGuid)}" Value="0" Type="integer"/>
+				</Registry>
+			</Registry>
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A}">
+				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<Registry Name="Name" Value="$(loc.RegNORMAModelBrowserName)" Type="string"/>
+				<Registry Name="Float" Value="$(var.DefaultToolWindowFloat)" Type="string"/>
+				<Registry Name="Style" Value="$(var.DefaultToolWindowStyle)" Type="string"/>
+				<Registry Name="Window" Value="{DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A}" Type="string"/>
+				<Registry Action="createKey" Key="Visibility">
+					<Registry Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
+				</Registry>
+			</Registry>
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{C9AA5E71-9193-46C9-971A-CB6365ACA338}">
+				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<Registry Name="Name" Value="$(loc.RegNORMAVerbalizationBrowserName)" Type="string"/>
+				<Registry Name="Float" Value="$(var.DefaultToolWindowFloat)" Type="string"/>
+				<Registry Name="Style" Value="$(var.DefaultToolWindowStyle)" Type="string"/>
+				<Registry Name="Window" Value="{C9AA5E71-9193-46C9-971A-CB6365ACA338}" Type="string"/>
+				<Registry Action="createKey"  Key="Visibility">
+					<Registry Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
+				</Registry>
+			</Registry>
+		</Registry>
+
+		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Services\{$(var.NORMAVSFontAndColorsServiceGuid)}">
+			<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+			<Registry Name="Name" Value="OrmDesignerFontAndColorProvider" Type="string"/>
+		</Registry>
+		
+		<Registry Action="createKey" Key="FontAndColors">
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Orm Designer">
+				<Registry Name="Category" Value="{663DE24F-8E3A-4C0F-A307-53053ED6C59B}" Type="string"/>
+				<Registry Name="Package" Value="{$(var.NORMAVSFontAndColorsServiceGuid)}" Type="string"/>
+			</Registry>
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Orm Verbalizer">
+				<Registry Name="Category" Value="{663DE24F-5A08-4490-80E7-EA332DFFE7F0}" Type="string"/>
+				<Registry Name="Package" Value="{$(var.NORMAVSFontAndColorsServiceGuid)}" Type="string"/>
+			</Registry>
+		</Registry>
+
+		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Languages\Language Services\ORM Fact Editor">
+			<Registry Value="{C50CD300-9D1E-4AB0-B494-73FA23D14D2B}" Type="string"/>
+			<Registry Name="LangResID" Value="103" Type="integer"/>
+			<Registry Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+			<Registry Name="ShowCompletion" Value="1" Type="integer"/>
+			<Registry Name="ShowSmartIndent" Value="0" Type="integer"/>
+			<Registry Name="RequestStockColors" Value="0" Type="integer"/>
+			<Registry Name="ShowHotURLs" Value="0" Type="integer"/>
+			<Registry Name="Default to Non Hot URLs" Value="0" Type="integer"/>
+			<Registry Name="DefaultToInsertSpaces" Value="0" Type="integer"/>
+			<Registry Name="ShowDropdownBarOption" Value="0" Type="integer"/>
+			<Registry Name="Single Code Window Only" Value="1" Type="integer"/>
+			<Registry Name="EnableAdvancedMembersOption" Value="0" Type="integer"/>
+			<Registry Name="Support CF_HTML" Value="1" Type="integer"/>
+		</Registry>
+
+	</Registry>
+</Include>

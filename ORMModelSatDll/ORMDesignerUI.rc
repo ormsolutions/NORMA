@@ -1,6 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
+#include "Version.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -27,23 +28,62 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE 
+2 TEXTINCLUDE
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE 
+3 TEXTINCLUDE
 BEGIN
     "\0"
 END
 
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION NORMA_VERSION
+ PRODUCTVERSION NORMA_VERSION
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_DLL
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Neumont University"
+            VALUE "FileDescription", "Neumont ORM Architect for Visual Studio - Satellite Resource DLL (en-US)"
+            VALUE "FileVersion", NORMA_VERSION_STRING
+            VALUE "InternalName", "Neumont.Tools.ORMUI.dll"
+            VALUE "LegalCopyright", "Copyright © Neumont University. All rights reserved."
+            VALUE "OriginalFilename", "Neumont.Tools.ORMUI.dll"
+            VALUE "ProductName", "Neumont ORM Architect for Visual Studio"
+            VALUE "ProductVersion", NORMA_VERSION_STRING
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -74,13 +114,16 @@ IDI_ORMDESGNERTOOLBARIMAGES	BITMAP		DISCARDABLE			"..\\ORMModel\\Resources\\ORMD
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    IDS_DISPLAYNAME         "ORM Model File"
-    IDS_DESCRIPTION         "ORM Model Designer"
+	IDS_PACKAGELOADKEY		"ETDZA3QMCCACH1EJAZZRDACMQQDZP1R0EHC9HJCQPZA0D3DZKTMCIEZIH3PJIKEPEJJ3A9K1PJP1MRR8J9IHC1HCM3RADIK9QMKCM8AEAHE8DMMCQ0AZITHAHQPMMZRT"
+    IDS_DISPLAYNAME         "Object Role Modeling File"
+    IDS_DESCRIPTION         "Neumont ORM Architect"
     IDS_BASEFILENAME        "ORMModel.orm"
     IDS_OPTIONSCATEGORY     "ORM Designer"
     IDS_OPTIONSGENERAL      "General"
+	IDS_ORMPROJECTITEMS		"ORM"
+	IDS_EDITORNAME			"ORM Designer"
 END
 
 #endif    // English (U.S.) resources
