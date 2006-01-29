@@ -13,10 +13,15 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Editor factory for ORM Designer. 
 	/// </summary>
-	[Guid("EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B")]
+	[Guid(ORMDesignerEditorFactory.GuidString)]
 	[CLSCompliant(false)]
 	public class ORMDesignerEditorFactory : ModelingEditorFactory
 	{
+		/// <summary>
+		/// The <see cref="String"/> form of the <see cref="Guid"/> for <see cref="ORMDesignerEditorFactory"/>.
+		/// </summary>
+		public const string GuidString = "EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B";
+
         #region Construction/destruction
 		/// <summary>
 		/// Public constructor for our editor factory.

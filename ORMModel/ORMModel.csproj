@@ -220,9 +220,6 @@
     <Compile Include="Shell\ORMEditorFactory.cs" />
     <Compile Include="Shell\ORMPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="..\ORMDesigner.vrg">
-      <Link>Shell\ProjectItems\ORMDesigner.vrg</Link>
-    </None>
     <None Include="..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
@@ -240,7 +237,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Verbalizer\ORMVerbalizationToolWindow.cs" />
-    <Content Include="Shell\ProjectItems\ORMProjectItems.vsdir" />
+    <None Include="Shell\ProjectItems\ORMProjectItems.vsdir" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -281,6 +278,12 @@
     <EmbeddedResource Include="Shell\ORMDesignerSettings.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Shell\ProjectItems\CSharp.zip" />
+    <None Include="Shell\ProjectItems\JSharp.zip" />
+    <None Include="Shell\ProjectItems\ORMModel.orm" />
+    <None Include="Shell\ProjectItems\VisualBasic.zip" />
+    <None Include="Shell\ProjectItems\VisualC.zip" />
+    <None Include="Shell\ProjectItems\Web.zip" />
     <None Include="Transforms\SerializationExtensions.xsd" />
     <None Include="Transforms\SerializationExtensions.xslt" />
     <EmbeddedResource Include="ObjectModel\ORM2Core.xsd">
@@ -303,14 +306,16 @@
       <LastGenOutput>VerbalizationGenerator.cs</LastGenOutput>
     </Content>
     <Content Include="ObjectModel\VerbalizationGenerator.xslt" />
-    <Content Include="Resources\AboutBox.ico" />
+    <None Include="Resources\AboutBox.ico" />
     <None Include="Resources\Toolbox.RingConstraint.Bitmap.Id.bmp" />
-    <Content Include="Resources\ORM.ico" />
+    <None Include="Resources\ORM.ico" />
+    <None Include="Resources\ORMDesignerToolbarImages.bmp" />
     <Content Include="Resources\ResourceStringsGenerator.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
     </Content>
     <Content Include="Resources\ResourceStringsGenerator.xslt" />
+    <None Include="Shell\catalog.xml" />
     <Content Include="Shell\Converters\CoreModelImport.xslt" />
     <Content Include="Shell\Converters\VisioToCoreModelImport.xslt" />
     <Content Include="Shell\ORMDesignerSettings.xml" />

@@ -27,18 +27,18 @@
 
 		<Condition Message="$(loc.Windows2000OrHigherRequired)">VersionNT >= 500</Condition>
 
-		<Property Id="VSINSTALLDIR">
-			<RegistrySearch Id="VSInstallDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)" Name="InstallDir" Type="directory" Win64="$(var.Win64)" />
-		</Property>
 		<Property Id="VSPRODUCTDIR">
 			<RegistrySearch Id="VSProductDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="ProductDir" Type="directory" Win64="$(var.Win64)" />
+		</Property>
+		<Property Id="VSTEMPLATEITEMDIR">
+			<RegistrySearch Id="VSTemplateItemDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\VSTemplate\Item" Name="UserFolder" Type="directory" Win64="$(var.Win64)" />
 		</Property>
 		<Property Id="VSENVIRONMENTPATH">
 			<RegistrySearch Id="VSEnvironmentPathRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="EnvironmentPath" Type="raw" Win64="$(var.Win64)" />
 		</Property>
 		<!-- Make sure Visual Studio 2005 is installed. Since VS requires .NET, we don't need to check for it separately. -->
 		<!-- Technically, since DSL Tools requires VS, we don't even need to do this check, but since we have to get the properties anyway, we might as well. It gives the user a more appropriate error message, anyway. -->
-		<Condition Message="$(loc.VisualStudio2005Required)">(VSINSTALLDIR AND VSPRODUCTDIR AND VSENVIRONMENTPATH) OR Installed</Condition>
+		<Condition Message="$(loc.VisualStudio2005Required)">(VSPRODUCTDIR AND VSTEMPLATEITEMDIR AND VSENVIRONMENTPATH) OR Installed</Condition>
 		
 		<Property Id="DSLTOOLSREDISTINSTALLDIR">
 			<RegistrySearch Id="DSLToolsRedistInstallDirRegistrySearch" Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\DSLTools\2.0" Name="RedistInstallDir" Type="raw" Win64="$(var.Win64)" />
@@ -49,7 +49,7 @@
 		<!-- Make sure the DSL Tools redistributable is installed. -->
 		<Condition Message="$(loc.DSLToolsRequired)">DSLTOOLSREDISTINSTALLDIR OR DSLTOOLSINSTALLDIR OR Installed</Condition>
 
-		<!-- Get the package GUIDs for the various languages. -->
+		<!-- Get the package GUIDs for the various VS packages. -->
 		<Property Id="VCSHARPPACKAGEGUID">
 			<RegistrySearch Id="VCSharpPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual C#" Name="Package" Type="raw" Win64="$(var.Win64)" />
 		</Property>
@@ -58,6 +58,12 @@
 		</Property>
 		<Property Id="VJSHARPPACKAGEGUID">
 			<RegistrySearch Id="VJSharpPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual J#" Name="Package" Type="raw" Win64="$(var.Win64)" />
+		</Property>
+		<Property Id="VCPLUSPLUSPACKAGEGUID">
+			<RegistrySearch Id="VCPlusPlusPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual C++" Name="Package" Type="raw" Win64="$(var.Win64)" />
+		</Property>
+		<Property Id="VWEBDEVPACKAGEGUID">
+			<RegistrySearch Id="VWebDevPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Visual Web Developer" Name="Package" Type="raw" Win64="$(var.Win64)" />
 		</Property>
 
 		<!-- Only support per-machine installation. -->

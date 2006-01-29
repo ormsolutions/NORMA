@@ -19,6 +19,7 @@ using SubStore = Microsoft.VisualStudio.Modeling.SubStore;
 
 namespace Neumont.Tools.ORM.Shell
 {
+	#region Attributes
 	/// <summary>
 	/// Entry point for the ORMPackage package. An instance of this class is created by the VS
 	/// shell whenever one of our services is required.
@@ -28,41 +29,44 @@ namespace Neumont.Tools.ORM.Shell
 
 	// "ORM Designer" and "General" correspond and must be in sync with ORMDesignerUI.rc
 	[ProvideOptionPage(typeof(OptionsPage), "ORM Designer", "General", 105, 106, false)]
-	[ProvideMenuResource(1000, 1)]
-	[ProvideEditorFactory(typeof(ORMDesignerEditorFactory), 108)]
-	// The following ProvideEditorExtension attributes are for {General, Misc, Solution, VB, C#, J#} Items, in that order
-	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="2150E333-8FDC-42A3-9474-1A3956D46DE8")]
-	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3")]
-	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="D1DCDB85-C5E8-11d2-BFCA-00C04F990235")]
-	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="164B10B9-B200-11D0-8C61-00A0C91E29D5")]
-	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="FAE04EC1-301F-11D3-BF4B-00C04F79EFBC")]
-	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, EditorFactoryNotify=true, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems", ProjectGuid="E6FDF8B0-F3D1-11D4-8576-0002A516ECE8")]
+	[ProvideEditorFactory(typeof(ORMDesignerEditorFactory), 108, TrustLevel=__VSEDITORTRUSTLEVEL.ETL_AlwaysTrusted)]
+	// The following ProvideEditorExtension attributes are for {General, Misc, Solution} Items, in that order
+	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems\", ProjectGuid="2150E333-8FDC-42A3-9474-1A3956D46DE8")]
+	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems\", ProjectGuid="A2FE74E1-B743-11d0-AE1A-00A0C90FFFC3")]
+	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".orm", 0x32, NameResourceID=107, TemplateDir=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\ORMProjectItems\", ProjectGuid="D1DCDB85-C5E8-11d2-BFCA-00C04F990235")]
 	[ProvideEditorExtension(typeof(ORMDesignerEditorFactory), ".xml", 0x10)]
 	[ProvideService(typeof(ORMDesignerFontsAndColors), ServiceName="OrmDesignerFontAndColorProvider")]
-	[ProvideLanguageService(typeof(ORMDesignerEditorFactory), "ORM Fact Editor", 103, ShowCompletion=true, ShowSmartIndent=false, RequestStockColors=false, ShowHotURLs=false, DefaultToNonHotURLs=false, DefaultToInsertSpaces=false, ShowDropDownOptions=false, SingleCodeWindowOnly=true, EnableAdvancedMembersOption=false, SupportCopyPasteOfHTML=true)]
-	[ProvideToolWindow(typeof(ORMReadingEditorToolWindow), Style=VsDockStyle.Tabbed)]
-	[ProvideToolWindow(typeof(ORMReferenceModeEditorToolWindow), Style=VsDockStyle.Tabbed)]
-	[ProvideToolWindow(typeof(ORMDesignerPackage.FactEditorToolWindowShim), Style=VsDockStyle.Tabbed)]
-	[ProvideToolWindow(typeof(ORMBrowserToolWindow), Style = VsDockStyle.Tabbed)]
-	[ProvideToolWindow(typeof(ORMVerbalizationToolWindow), Style = VsDockStyle.Tabbed)]
+	[ProvideLanguageService(typeof(FactLanguageService), "ORM Fact Editor", 109, ShowCompletion=true, ShowSmartIndent=false, RequestStockColors=false, ShowHotURLs=false, DefaultToNonHotURLs=false, DefaultToInsertSpaces=false, ShowDropDownOptions=false, SingleCodeWindowOnly=true, EnableAdvancedMembersOption=false, SupportCopyPasteOfHTML=true)]
+	[ProvideToolWindow(typeof(ORMDesignerPackage.FactEditorToolWindowShim), Style=VsDockStyle.Float, Transient=true, PositionX=200, PositionY=500, Width=800, Height=250, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
+	[ProvideToolWindow(typeof(ORMReferenceModeEditorToolWindow), Style=VsDockStyle.Float, Transient=true, PositionX=200, PositionY=100, Width=500, Height=350, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
+	[ProvideToolWindow(typeof(ORMReadingEditorToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
+	[ProvideToolWindow(typeof(ORMVerbalizationToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
+	[ProvideToolWindow(typeof(ORMBrowserToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
+	[ProvideToolWindowVisibility(typeof(ORMDesignerPackage.FactEditorToolWindowShim), ORMDesignerEditorFactory.GuidString)]
+	[ProvideToolWindowVisibility(typeof(ORMReferenceModeEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
+	[ProvideToolWindowVisibility(typeof(ORMReadingEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
+	[ProvideToolWindowVisibility(typeof(ORMVerbalizationToolWindow), ORMDesignerEditorFactory.GuidString)]
+	[ProvideToolWindowVisibility(typeof(ORMBrowserToolWindow), ORMDesignerEditorFactory.GuidString)]
+	[ProvideMenuResource(1000, 1)]
 	[ProvideToolboxItems(1, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
 	[DefaultRegistryRoot(@"SOFTWARE\Microsoft\VisualStudio\8.0Exp")]
 	[PackageRegistration(UseManagedResourcesOnly=false, RegisterUsing=RegistrationMethod.CodeBase, SatellitePath=@"C:\Program Files\Neumont\ORM Architect for Visual Studio\bin\")]
-	[InstalledProductRegistration(true, "#103", "#103", "1.0", IconResourceID=110)]
+	[InstalledProductRegistration(true, null, null, null, LanguageIndependentName="Neumont ORM Architect")]
 	[ProvideLoadKey("Standard", "1.0", "Neumont ORM Architect for Visual Studio", "Neumont University", 150)]
+	#endregion // Attributes
 	public sealed class ORMDesignerPackage : ModelingPackage, IVsInstalledProduct
 	{
 		#region FactEditorToolWindow Shim
 		// HACK: This exists only so that the ProvideToolWindowAttribute can pull the GUID off of it.
 		[Guid(FactGuidList.FactEditorToolWindowGuidString)]
 		private static class FactEditorToolWindowShim { }
-		#endregion
+		#endregion // FactEditorToolWindow Shim
 
 		#region Constants
 		private const string REGISTRYROOT_PACKAGE = @"Neumont\ORM Architect";
 		private const string REGISTRYROOT_EXTENSIONS = REGISTRYROOT_PACKAGE + @"\Extensions";
-		private const string REGISTRYVALUE_SETTINGSDIR = "SettingsDir";
+		private const string REGISTRYVALUE_SETTINGSPATH = "SettingsPath";
 		private const string REGISTRYVALUE_CONVERTERSDIR = "ConvertersDir";
 		#endregion
 
@@ -128,9 +132,9 @@ namespace Neumont.Tools.ORM.Shell
 						{
 							applicationRegistryRoot = package.ApplicationRegistryRoot;
 							normaRegistryRoot = applicationRegistryRoot.OpenSubKey(REGISTRYROOT_PACKAGE, RegistryKeyPermissionCheck.ReadSubTree);
-							string settingsDir = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_SETTINGSDIR);
-							string xmlConvertersDir = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_CONVERTERSDIR);
-							package.myDesignerSettings = new ORMDesignerSettings(package, settingsDir, xmlConvertersDir);
+							string settingsPath = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_SETTINGSPATH, String.Empty);
+							string xmlConvertersDir = (string)normaRegistryRoot.GetValue(REGISTRYVALUE_CONVERTERSDIR, String.Empty);
+							package.myDesignerSettings = new ORMDesignerSettings(package, settingsPath, xmlConvertersDir);
 						}
 						finally
 						{
@@ -181,6 +185,9 @@ namespace Neumont.Tools.ORM.Shell
 
 			if (!SetupMode)
 			{
+				base.ToolboxInitialized += this.ToolboxHandler;
+				base.ToolboxUpgraded += this.ToolboxHandler;
+
 				IServiceContainer service = (IServiceContainer)this;
 				myFontAndColorService = new ORMDesignerFontsAndColors(this);
 				service.AddService(typeof(ORMDesignerFontsAndColors), myFontAndColorService, true);
@@ -194,13 +201,19 @@ namespace Neumont.Tools.ORM.Shell
 				AddToolWindow(typeof(ORMReadingEditorToolWindow));
 				AddToolWindow(typeof(ORMReferenceModeEditorToolWindow));
 				AddToolWindow(typeof(ORMVerbalizationToolWindow));
+				EnsureFactEditorToolWindow();
 				
 				// Make sure our options are loaded from the registry
 				GetDialogPage(typeof(OptionsPage));
-
-				SetupDynamicToolbox(); // UNDONE: MSBUG We should not need this, but the toolbox is not being initialized
 			}
 
+		}
+		/// <summary>
+		/// Handles the <see cref="Package.ToolboxInitialized"/> and <see cref="Package.ToolboxUpgraded"/> events.
+		/// </summary>
+		private void ToolboxHandler(object sender, EventArgs e)
+		{
+			base.SetupDynamicToolbox();
 		}
 		/// <summary>
 		/// This is called by the package base class when our package gets unloaded.

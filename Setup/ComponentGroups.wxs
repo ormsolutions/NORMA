@@ -14,6 +14,8 @@
 			<ComponentRef Id="NORMAVSProjectItemsVBasicComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVCSharpComponent"/>
 			<ComponentRef Id="NORMAVSProjectItemsVJSharpComponent"/>
+			<ComponentRef Id="NORMAVSProjectItemsVCPlusPlusComponent"/>
+			<ComponentRef Id="NORMAVSProjectItemsVWebDevComponent"/>
 			<ComponentRef Id="ORMSchemaCatalogComponent"/>
 			<ComponentRef Id="ORMSchemasComponent"/>
 			<ComponentRef Id="ORMSchemasLocalCatalogComponent"/>

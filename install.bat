@@ -31,6 +31,7 @@ XCOPY /Y /D /V /Q "%RootDir%\ORMModelSatDll\bin\Neumont.Tools.ORMUI.dll" "%NORMA
 
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ProjectItems\ORMProjectItems.vsdir" "%NORMADir%\ORMProjectItems\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ProjectItems\ORMModel.orm" "%NORMADir%\ORMProjectItems\"
+FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSDir%\Common7\IDE\ItemTemplates\%%~nA\ORMModel.zip"
 
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\ORM2Core.xsd" "%ORMDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ShapeModel\ORM2Diagram.xsd" "%ORMDir%\Schemas\"
@@ -44,8 +45,7 @@ XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xsd" "%NORMADir%
 XCOPY /Y /D /V /Q "%RootDir%\XML\ORMCustomTool\ORMCustomToolOptions.xsd" "%NORMADir%\Xml\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\catalog.xml" "%NORMADir%\Xml\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xml" "%NORMADir%\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\CoreModelImport.xslt" "%NORMADir%\Xml\Transforms\Converters\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\VisioToCoreModelImport.xslt" "%NORMADir%\Xml\Transforms\Converters\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\*.xslt" "%NORMADir%\Xml\Transforms\Converters\"
 
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DIL.xsd" "%DILDir%\Schemas\"
 XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILDT.xsd" "%DILDir%\Schemas\"
@@ -62,7 +62,9 @@ XCOPY /Y /D /V /Q "%RootDir%\Setup\DILSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
 
 %RegPkg% "%NORMADir%\bin\Neumont.Tools.ORM.dll"
 
-REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "SettingsDir" /d "%NORMADir%" /f 1>NUL
+REG DELETE "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\InstalledProducts\Neumont ORM Architect" /v "UseRegNameAsSplashName" /f 1>NUL
+
+REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "SettingsPath" /d "%NORMADir%\ORMDesignerSettings.xml" /f 1>NUL
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Neumont\ORM Architect" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters" /f 1>NUL
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Designer" /v "Category" /d "{663DE24F-8E3A-4C0F-A307-53053ED6C59B}" /f 1>NUL
 REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Designer" /v "Package" /d "{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}" /f 1>NUL
@@ -75,10 +77,13 @@ REG ADD "HKCR\.orm" /v "Content Type" /d "application/orm+xml" /f 1>NUL
 REG ADD "HKCR\ormfile" /ve /d "Object Role Modeling File" /f 1>NUL
 REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\Neumont.Tools.ORM.dll,0" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open" /ve /d "&Open" /f 1>NUL
-REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSDir%\Common7\IDE\devenv.exe\" /dde \"%1\"" /f 1>NUL
+REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSDir%\Common7\IDE\devenv.exe\" /RootSuffix Exp /dde \"%1\"" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\ddeexec" /ve /d "Open(\"%1\")" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\ddeexec\application" /ve /d "VisualStudio.8.0" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\ddeexec\topic" /ve /d "system" /f 1>NUL
+
+
+IF /I "%RunDevEnvSetup%"=="True" (ECHO Running "devenv.exe /RootSuffix Exp /Setup"... This may take a few minutes... && "%VSDir%\Common7\IDE\devenv.exe" /RootSuffix Exp /Setup)
 
 GOTO:EOF
 
@@ -88,11 +93,12 @@ IF NOT EXIST "%~1" (MKDIR "%~1")
 GOTO:EOF
 
 :_Cleanup
-REG DELETE "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Packages\{efddc549-1646-4451-8a51-e5a5e94d647c}" /f 1>NUL
-REG DELETE "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\InstalledProducts\ORM Designer" /f 1>NUL
-REG DELETE "HKCR\.orm" /f 1>NUL
-REG DELETE "HKCR\Neumont.Tools.ORMDesigner.1.0" /f 1>NUL
-RMDIR /S /Q "%VSDir%\Neumont\ORMDesigner\"
+SET RunDevEnvSetup=True
+REG DELETE "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\Packages\{efddc549-1646-4451-8a51-e5a5e94d647c}" /f 1>NUL 2>&1
+REG DELETE "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\InstalledProducts\ORM Designer" /f 1>NUL 2>&1
+REG DELETE "HKCR\.orm" /f 1>NUL 2>&1
+REG DELETE "HKCR\Neumont.Tools.ORMDesigner.1.0" /f 1>NUL 2>&1
+RMDIR /S /Q "%VSDir%\Neumont\ORMDesigner\" 1>NUL 2>&1
 CALL:_CleanupFile "%VSDir%\Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.dll"
 CALL:_CleanupFile "%VSDir%\Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.pdb"
 CALL:_CleanupFile "%VSDir%\Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.xml"

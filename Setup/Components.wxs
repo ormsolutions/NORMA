@@ -25,7 +25,7 @@
 										<Verb Id="Open" Sequence="0" Command="$(loc.ORMFileOpenCommand)" Target="[VSENVIRONMENTPATH]" Argument="$(var.RootSuffixCmd)/dde &quot;%1&quot;"/>
 									</Extension>
 								</ProgId>
-								<Registry Action="createKey" Root="HKCR" Key="ormfile\shell\open\ddeexec">
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKCR" Key="ormfile\shell\open\ddeexec">
 									<Registry Value="Open(&quot;%1&quot;)" Type="string"/>
 									<Registry Key="application" Value="VisualStudio.8.0" Type="string"/>
 									<Registry Key="topic" Value="system" Type="string"/>
@@ -87,89 +87,20 @@
 									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
 								<File Id="ORMModel.orm" Name="ORMModel.orm" src="..\ORMModel\Shell\ProjectItems\ORMModel.orm"
 									DefaultLanguage="0" CompanionFile="ORMProjectItems.vsdir"/>
-								<Registry Id="regORMProjectItemsGeneral" Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\{$(var.VSGeneralProjectGuid)}">
-									<Registry Id="regORMProjectItemsGeneralTemplates" Key="AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}\/1">
-										<Registry Type="string" Value="##107"/>
-										<Registry Type="string" Name="Package" Value="{$(var.NORMAVSPackageGuid)}"/>
-										<!-- The TemplatesDir does NOT like ending with a backslash, but that is the only way the Windows Installer will give us a directory... -->
-										<Registry Type="string" Name="TemplatesDir" Value="[$(var.DefaultShortProductDir)]ORMProjectItems"/>
-										<Registry Type="integer" Name="SortPriority" Value="50"/>
-									</Registry>
-									<Registry Id="regORMProjectItemsGeneralExtensions" Key="FileExtensions\.orm">
-										<Registry Type="string" Name="EditorFactoryNotify" Value="{$(var.NORMAVSEditorGuid)}"/>
-									</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\{$(var.VSGeneralProjectGuid)}\AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}">
+									<Registry Key="/1" Type="string" Value="##107"/>
+									<Registry Key="/1" Type="string" Name="TemplatesDir" Value="[PROJECTITEMSDIR]"/>
+									<Registry Key="/1" Type="integer" Name="SortPriority" Value="50"/>
 								</Registry>
-								<Registry Id="regORMProjectItemsMisc" Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\{$(var.VSMiscProjectGuid)}">
-									<Registry Id="regORMProjectItemsMiscTemplates" Key="AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}\/1">
-										<Registry Type="string" Value="##107"/>
-										<Registry Type="string" Name="Package" Value="{$(var.NORMAVSPackageGuid)}"/>
-										<!-- The TemplatesDir does NOT like ending with a backslash, but that is the only way the Windows Installer will give us a directory... -->
-										<Registry Type="string" Name="TemplatesDir" Value="[$(var.DefaultShortProductDir)]ORMProjectItems"/>
-										<Registry Type="integer" Name="SortPriority" Value="50"/>
-									</Registry>
-									<Registry Id="regORMProjectItemsMiscExtensions" Key="FileExtensions\.orm">
-										<Registry Type="string" Name="EditorFactoryNotify" Value="{$(var.NORMAVSEditorGuid)}"/>
-									</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\{$(var.VSMiscProjectGuid)}\AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}">
+									<Registry Key="/1" Type="string" Value="##107"/>
+									<Registry Key="/1" Type="string" Name="TemplatesDir" Value="[PROJECTITEMSDIR]"/>
+									<Registry Key="/1" Type="integer" Name="SortPriority" Value="50"/>
 								</Registry>
-								<Registry Id="regORMProjectItemsSolution" Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\{$(var.VSSolutionItemsProjectGuid)}">
-									<Registry Id="regORMProjectItemsSolutionTemplates" Key="AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}\/1">
-										<Registry Type="string" Value="##107"/>
-										<Registry Type="string" Name="Package" Value="{$(var.NORMAVSPackageGuid)}"/>
-										<!-- The TemplatesDir does NOT like ending with a backslash, but that is the only way the Windows Installer will give us a directory... -->
-										<Registry Type="string" Name="TemplatesDir" Value="[$(var.DefaultShortProductDir)]ORMProjectItems"/>
-										<Registry Type="integer" Name="SortPriority" Value="50"/>
-									</Registry>
-									<Registry Id="regORMProjectItemsSolutionExtensions" Key="FileExtensions\.orm">
-										<Registry Type="string" Name="EditorFactoryNotify" Value="{$(var.NORMAVSEditorGuid)}"/>
-									</Registry>
-								</Registry>
-							</Component>
-							<Component Id="NORMAVSProjectItemsVBasicComponent" Guid="5D140A94-9C4A-4B60-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-								<CreateFolder/>
-								<Condition>VBASICPACKAGEGUID OR Installed</Condition>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\[VBASICPACKAGEGUID]">
-									<Registry Id="regORMProjectItemsVBTemplates" Key="AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}\/1">
-										<Registry Type="string" Value="##107"/>
-										<Registry Type="string" Name="Package" Value="{$(var.NORMAVSPackageGuid)}"/>
-										<!-- The TemplatesDir does NOT like ending with a backslash, but that is the only way the Windows Installer will give us a directory... -->
-										<Registry Type="string" Name="TemplatesDir" Value="[$(var.DefaultShortProductDir)]ORMProjectItems"/>
-										<Registry Type="integer" Name="SortPriority" Value="50"/>
-									</Registry>
-									<Registry Id="regORMProjectItemsVBExtensions" Key="FileExtensions\.orm">
-										<Registry Type="string" Name="EditorFactoryNotify" Value="{$(var.NORMAVSEditorGuid)}"/>
-									</Registry>
-								</Registry>
-							</Component>
-							<Component Id="NORMAVSProjectItemsVCSharpComponent" Guid="C1AAAF79-FA94-45C0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-								<CreateFolder/>
-								<Condition>VCSHARPPACKAGEGUID OR Installed</Condition>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\[VCSHARPPACKAGEGUID]">
-									<Registry Id="regORMProjectItemsCSTemplates" Key="AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}\/1">
-										<Registry Type="string" Value="##107"/>
-										<Registry Type="string" Name="Package" Value="{$(var.NORMAVSPackageGuid)}"/>
-										<!-- The TemplatesDir does NOT like ending with a backslash, but that is the only way the Windows Installer will give us a directory... -->
-										<Registry Type="string" Name="TemplatesDir" Value="[$(var.DefaultShortProductDir)]ORMProjectItems"/>
-										<Registry Type="integer" Name="SortPriority" Value="50"/>
-									</Registry>
-									<Registry Id="regORMProjectItemsCSExtensions" Key="FileExtensions\.orm">
-										<Registry Type="string" Name="EditorFactoryNotify" Value="{$(var.NORMAVSEditorGuid)}"/>
-									</Registry>
-								</Registry>
-							</Component>
-							<Component Id="NORMAVSProjectItemsVJSharpComponent" Guid="B6ACBD38-3FAD-4C24-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-								<CreateFolder/>
-								<Condition>VJSHARPPACKAGEGUID OR Installed</Condition>
-								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\[VJSHARPPACKAGEGUID]">
-									<Registry Id="regORMProjectItemsJSTemplates" Key="AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}\/1">
-										<Registry Type="string" Value="##107"/>
-										<Registry Type="string" Name="Package" Value="{$(var.NORMAVSPackageGuid)}"/>
-										<!-- The TemplatesDir does NOT like ending with a backslash, but that is the only way the Windows Installer will give us a directory... -->
-										<Registry Type="string" Name="TemplatesDir" Value="[$(var.DefaultShortProductDir)]ORMProjectItems"/>
-										<Registry Type="integer" Name="SortPriority" Value="50"/>
-									</Registry>
-									<Registry Id="regORMProjectItemsJSExtensions" Key="FileExtensions\.orm">
-										<Registry Type="string" Name="EditorFactoryNotify" Value="{$(var.NORMAVSEditorGuid)}"/>
-									</Registry>
+								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\{$(var.VSSolutionItemsProjectGuid)}\AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}">
+									<Registry Key="/1" Type="string" Value="##107"/>
+									<Registry Key="/1" Type="string" Name="TemplatesDir" Value="[PROJECTITEMSDIR]"/>
+									<Registry Key="/1" Type="integer" Name="SortPriority" Value="50"/>
 								</Registry>
 							</Component>
 						</Directory>
@@ -215,7 +146,7 @@
 						<Component Id="NORMAVSSettingsComponent" Guid="956063F7-13D9-4083-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 							<File Id="ORMDesignerSettings.xml" Name="DsgnrStg.xml" LongName="ORMDesignerSettings.xml" src="..\ORMModel\Shell\ORMDesignerSettings.xml"
 								DefaultLanguage="0" KeyPath="yes"/>
-							<Registry Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="SettingsDir" Value="[$(var.DefaultShortProductDir)]"/>
+							<Registry Root="HKLM" Key="$(var.NORMAVSRegRoot)" Type="string" Name="SettingsPath" Value="[#ORMDesignerSettings.xml]"/>
 						</Component>
 						
 					</Directory>
@@ -312,6 +243,44 @@
 				
 			</Directory>
 
+			<Directory Id="VSTEMPLATEITEMDIR">
+				<Directory Id="VisualBasic" Name="VBasic" LongName="VisualBasic">
+					<Component Id="NORMAVSProjectItemsVBasicComponent" Guid="5D140A94-9C4A-4B60-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+						<Condition>VBASICPACKAGEGUID OR Installed</Condition>
+						<File Id="VisualBasic.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\VisualBasic.zip"
+							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+					</Component>
+				</Directory>
+				<Directory Id="CSharp" Name="CSharp">
+					<Component Id="NORMAVSProjectItemsVCSharpComponent" Guid="C1AAAF79-FA94-45C0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+						<Condition>VCSHARPPACKAGEGUID OR Installed</Condition>
+						<File Id="CSharp.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\CSharp.zip"
+							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+					</Component>
+				</Directory>
+				<Directory Id="JSharp" Name="JSharp">
+					<Component Id="NORMAVSProjectItemsVJSharpComponent" Guid="B6ACBD38-3FAD-4C24-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+						<Condition>VJSHARPPACKAGEGUID OR Installed</Condition>
+						<File Id="JSharp.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\JSharp.zip"
+							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+					</Component>
+				</Directory>
+				<Directory Id="VisualC" Name="VisualC">
+					<Component Id="NORMAVSProjectItemsVCPlusPlusComponent" Guid="16B28893-FE72-4BBF-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+						<Condition>VCPLUSPLUSPACKAGEGUID OR Installed</Condition>
+						<File Id="VisualC.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\VisualC.zip"
+							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+					</Component>
+				</Directory>
+				<Directory Id="Web" Name="Web">
+					<Component Id="NORMAVSProjectItemsVWebDevComponent" Guid="2A56826D-7449-46E1-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+						<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
+						<File Id="Web.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\Web.zip"
+							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+					</Component>
+				</Directory>
+			</Directory>
+			
 			<Directory Id="VSPRODUCTDIR">
 				<Directory Id="VSXMLDIR" Name="Xml">
 					<Directory Id="VSXMLSCHEMASDIR" Name="Schemas">

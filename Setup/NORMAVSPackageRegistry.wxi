@@ -12,11 +12,11 @@
 			<Registry Name="ProductVersion" Value="$(var.PLKProductVersion)" Type="string"/>
 			<Registry Name="ProductName" Value="$(var.PLKProductName)" Type="string"/>
 			<Registry Name="CompanyName" Value="$(var.PLKCompanyName)" Type="string"/>
-			<Registry Action="createKey" Key="SatelliteDll">
+			<Registry Key="SatelliteDll">
 				<Registry Name="Path" Value="[BINDIR]" Type="string"/>
 				<Registry Name="DllName" Value="Neumont.Tools.ORMUI.dll" Type="string"/>
 			</Registry>
-			<Registry Action="createKey" Key="ToolBox">
+			<Registry Key="ToolBox">
 				<Registry Name="Default Items" Value="1" Type="integer"/>
 				<Registry Name="Formats" Value="Microsoft.VisualStudio.Modeling.ElementGroupPrototype" Type="string"/>
 				<Registry Name="NeedsCallbackAfterReset" Value="1" Type="integer"/>
@@ -29,16 +29,16 @@
 			<Registry Name="DefaultProductAttribute" Value="ORM" Type="string"/>
 		</Registry>
 
-		<Registry Action="createKey" Key="Menus">
+		<Registry Key="Menus">
 			<Registry Name="{$(var.NORMAVSPackageGuid)}" Value=", 1000, 1" Type="string"/>
 		</Registry>
 
 		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Editors\{$(var.NORMAVSEditorGuid)}">
-			<Registry Value="$(loc.RegNORMAEditorName)" Type="string"/>
+			<Registry Value="ORMDesignerEditorFactory" Type="string"/>
 			<Registry Name="DisplayName" Value="##108" Type="string"/>
 			<Registry Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-			<Registry Name="ExcludeDefTextEditor" Value="1" Type="integer"/>
-			<Registry Action="createKey" Key="Extensions">
+			<Registry Name="TrustLevel" Value="1" Type="integer"/>
+			<Registry Key="Extensions">
 				<Registry Name="orm" Value="50" Type="integer"/>
 				<Registry Name="xml" Value="16" Type="integer"/>
 			</Registry>
@@ -54,56 +54,53 @@
 			</Registry>
 		</Registry>
 
-		<Registry Action="createKey" Key="ToolWindows">
-			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{992C221B-4BE5-4A9B-900D-9882B4FA0F99}">
+		<Registry Key="ToolWindows">
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{63B6F84D-DF09-4E65-86EA-6BC1B856837B}">
 				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<Registry Name="Name" Value="$(loc.RegNORMAReadingEditorName)" Type="string"/>
-				<Registry Name="Float" Value="$(var.DefaultToolWindowFloat)" Type="string"/>
-				<Registry Name="Style" Value="$(var.DefaultToolWindowStyle)" Type="string"/>
-				<Registry Name="Window" Value="{992C221B-4BE5-4A9B-900D-9882B4FA0F99}" Type="string"/>
-				<Registry Action="createKey" Key="Visibility">
-					<Registry Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
-				</Registry>
+				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMDesignerPackage+FactEditorToolWindowShim" Type="string"/>
+				<Registry Name="Float" Value="200, 500, 1000, 750" Type="string"/>
+				<Registry Name="Style" Value="Float" Type="string"/>
+				<Registry Name="Orientation" Value="Right" Type="string"/>
+				<Registry Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
+				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
+				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</Registry>
 			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{C2415D9F-DBA8-49BC-8BF2-008F24F10559}">
 				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<Registry Name="Name" Value="$(loc.RegNORMAReferenceModeEditorName)" Type="string"/>
-				<Registry Name="Float" Value="$(var.DefaultToolWindowFloat)" Type="string"/>
-				<Registry Name="Style" Value="$(var.DefaultToolWindowStyle)" Type="string"/>
-				<Registry Name="Window" Value="{C2415D9F-DBA8-49BC-8BF2-008F24F10559}" Type="string"/>
-				<Registry Action="createKey" Key="Visibility">
-					<Registry Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
-				</Registry>
+				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMReferenceModeEditorToolWindow" Type="string"/>
+				<Registry Name="Float" Value="200, 100, 700, 450" Type="string"/>
+				<Registry Name="Style" Value="Float" Type="string"/>
+				<Registry Name="Orientation" Value="Right" Type="string"/>
+				<Registry Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
+				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
+				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</Registry>
-			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{63B6F84D-DF09-4E65-86EA-6BC1B856837B}">
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{992C221B-4BE5-4A9B-900D-9882B4FA0F99}">
 				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<Registry Name="Name" Value="$(loc.RegNORMAFactEditorName)" Type="string"/>
-				<Registry Name="Float" Value="$(var.DefaultToolWindowFloat)" Type="string"/>
-				<Registry Name="Style" Value="$(var.DefaultToolWindowStyle)" Type="string"/>
-				<Registry Name="Window" Value="{63B6F84D-DF09-4E65-86EA-6BC1B856837B}" Type="string"/>
-				<Registry Action="createKey" Key="Visibility">
-					<Registry Name="{$(var.NORMAVSFactEditorGuid)}" Value="0" Type="integer"/>
-				</Registry>
-			</Registry>
-			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A}">
-				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<Registry Name="Name" Value="$(loc.RegNORMAModelBrowserName)" Type="string"/>
-				<Registry Name="Float" Value="$(var.DefaultToolWindowFloat)" Type="string"/>
-				<Registry Name="Style" Value="$(var.DefaultToolWindowStyle)" Type="string"/>
-				<Registry Name="Window" Value="{DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A}" Type="string"/>
-				<Registry Action="createKey" Key="Visibility">
-					<Registry Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
-				</Registry>
+				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMReadingEditorToolWindow" Type="string"/>
+				<Registry Name="Style" Value="Tabbed" Type="string"/>
+				<Registry Name="Orientation" Value="Right" Type="string"/>
+				<Registry Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
+				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
+				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</Registry>
 			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{C9AA5E71-9193-46C9-971A-CB6365ACA338}">
 				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-				<Registry Name="Name" Value="$(loc.RegNORMAVerbalizationBrowserName)" Type="string"/>
-				<Registry Name="Float" Value="$(var.DefaultToolWindowFloat)" Type="string"/>
-				<Registry Name="Style" Value="$(var.DefaultToolWindowStyle)" Type="string"/>
-				<Registry Name="Window" Value="{C9AA5E71-9193-46C9-971A-CB6365ACA338}" Type="string"/>
-				<Registry Action="createKey"  Key="Visibility">
-					<Registry Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
-				</Registry>
+				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMVerbalizationToolWindow" Type="string"/>
+				<Registry Name="Style" Value="Tabbed" Type="string"/>
+				<Registry Name="Orientation" Value="Right" Type="string"/>
+				<Registry Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
+				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
+				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
+			</Registry>
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A}">
+				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMBrowserToolWindow" Type="string"/>
+				<Registry Name="Style" Value="Tabbed" Type="string"/>
+				<Registry Name="Orientation" Value="Right" Type="string"/>
+				<Registry Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
+				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
+				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</Registry>
 		</Registry>
 
@@ -112,7 +109,7 @@
 			<Registry Name="Name" Value="OrmDesignerFontAndColorProvider" Type="string"/>
 		</Registry>
 		
-		<Registry Action="createKey" Key="FontAndColors">
+		<Registry Key="FontAndColors">
 			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Orm Designer">
 				<Registry Name="Category" Value="{663DE24F-8E3A-4C0F-A307-53053ED6C59B}" Type="string"/>
 				<Registry Name="Package" Value="{$(var.NORMAVSFontAndColorsServiceGuid)}" Type="string"/>
@@ -125,7 +122,7 @@
 
 		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Languages\Language Services\ORM Fact Editor">
 			<Registry Value="{C50CD300-9D1E-4AB0-B494-73FA23D14D2B}" Type="string"/>
-			<Registry Name="LangResID" Value="103" Type="integer"/>
+			<Registry Name="LangResID" Value="109" Type="integer"/>
 			<Registry Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 			<Registry Name="ShowCompletion" Value="1" Type="integer"/>
 			<Registry Name="ShowSmartIndent" Value="0" Type="integer"/>

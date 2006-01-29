@@ -17,14 +17,6 @@
 	<String Id="XmlSchemaGenerationFeatureDescription">XmlSchemaGeneration</String>
 	<String Id="RelationalSchemaGenerationFeatureTitle">RelationalSchemaGeneration</String>
 	<String Id="RelationalSchemaGenerationFeatureDescription">RelationalSchemaGeneration</String>
-
-	<String Id="RegNORMAPackageName">Neumont ORM Architect Package</String>
-	<String Id="RegNORMAEditorName">ORM Designer</String>
-	<String Id="RegNORMAFactEditorName">ORM Fact Editor</String>
-	<String Id="RegNORMAReadingEditorName">ORM Reading Editor</String>
-	<String Id="RegNORMAReferenceModeEditorName">ORM Reference Mode Editor</String>
-	<String Id="RegNORMAModelBrowserName">ORM Model Browser</String>
-	<String Id="RegNORMAVerbalizationBrowserName">ORM Verbalization Browser</String>
 	
 	<String Id="ORMFileDescription">Object Role Modeling File</String>
 	<String Id="ORMFileOpenCommand">Open</String>

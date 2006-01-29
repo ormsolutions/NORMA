@@ -131,11 +131,10 @@ namespace Neumont.Tools.ORM.Shell
 		#region Member Variables
 		private IServiceProvider myServiceProvider;
 		private bool myIsLoaded;
-		private const string ORMDesignerGlobalSettingsFile = "ORMDesignerSettings.xml";
 		private Dictionary<XmlElementIdentifier, LinkedList<TransformNode>> myXmlConverters;
 		#endregion // Member Variables
 		#region Static Variables
-		private static string mySettingsDirectory;
+		private static string mySettingsPath;
 		private static string myXmlConvertersDirectory;
 		private static object myLockObject;
 		private static object LockObject
@@ -156,21 +155,21 @@ namespace Neumont.Tools.ORM.Shell
 		/// Construct new designer settings
 		/// </summary>
 		/// <param name="serviceProvider">The service provider to use</param>
-		/// <param name="settingsDirectory">The directory where the settings file is located.</param>
+		/// <param name="settingsPath">The full path to the settings file.</param>
 		/// <param name="xmlConvertersDirectory">The directory where the XML converters are located.</param>
-		public ORMDesignerSettings(IServiceProvider serviceProvider, string settingsDirectory, string xmlConvertersDirectory)
+		public ORMDesignerSettings(IServiceProvider serviceProvider, string settingsPath, string xmlConvertersDirectory)
 		{
 			myServiceProvider = serviceProvider;
-			mySettingsDirectory = settingsDirectory;
+			mySettingsPath = settingsPath;
 			myXmlConvertersDirectory = xmlConvertersDirectory;
 		}
 		#endregion // Constructors
 		#region SettingsDirectory property
-		private string SettingsDirectory
+		private string SettingsPath
 		{
 			get
 			{
-				return mySettingsDirectory;
+				return mySettingsPath;
 			}
 		}
 		private string XmlConvertersDirectory
@@ -264,7 +263,7 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 			}
 			myIsLoaded = false;
-			string settingsFile = Path.Combine(SettingsDirectory, ORMDesignerGlobalSettingsFile);
+			string settingsFile = SettingsPath;
 			if (File.Exists(settingsFile))
 			{
 				ORMDesignerNameTable names = ORMDesignerSchema.Names;
