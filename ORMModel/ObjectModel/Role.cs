@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		OneToMany,
 	}
 	#endregion // RoleMultiplicity enum
-	public partial class Role : IModelErrorOwner, IRedirectVerbalization
+	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren
 	{
 		#region CustomStorage handlers
 		/// <summary>

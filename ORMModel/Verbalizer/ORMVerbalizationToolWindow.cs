@@ -414,12 +414,18 @@ namespace Neumont.Tools.ORM.Shell
 					}
 				}
 			}
-			if (parentVerbalize != null)
+			bool parentVerbalizeOK = (parentVerbalize != null) ? callback(parentVerbalize, indentLevel) : false;
+			bool verbalizeChildren = parentVerbalizeOK ? (element != null) : (element is IVerbalizeChildren);
+			if (verbalizeChildren)
 			{
-				if (callback(parentVerbalize, indentLevel) && element != null)
+				if (parentVerbalizeOK)
 				{
 					++indentLevel;
-					IList aggregateList = element.MetaClass.AggregatedRoles;
+				}
+				MetaClassInfo currentMetaClass = element.MetaClass;
+				while (currentMetaClass != null)
+				{
+					IList aggregateList = currentMetaClass.AggregatedRoles;
 					int aggregateCount = aggregateList.Count;
 					for (int i = 0; i < aggregateCount; ++i)
 					{
@@ -431,7 +437,10 @@ namespace Neumont.Tools.ORM.Shell
 							VerbalizeElement((ModelElement)children[j], snippets, callback, indentLevel);
 						}
 					}
+					currentMetaClass = currentMetaClass.BaseMetaClass;
 				}
+				// TODO: Custom child verbalization goes here. Need BeforeNaturalChildren/AfterNaturalChildren/SkipNaturalChildren setting
+				// on IVerbalizeCustomChildren
 			}
 		}
 		#endregion // Verbalization Implementation

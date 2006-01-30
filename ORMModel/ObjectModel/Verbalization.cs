@@ -65,6 +65,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		IVerbalize SurrogateVerbalizer { get;}
 	}
 	#endregion // IVerbalize interface
+	#region IVerbalizeChildren interface
+	/// <summary>
+	/// Implement this interface to let the verbalization engine
+	/// automatically verbalize child elements without implementing
+	/// IVerbalize. IVerbalizeChildren is ignored for the top-level
+	/// verbalization object if IRedirectVerbalization is specified.
+	/// </summary>
+	[CLSCompliant(true)]
+	public interface IVerbalizeChildren { }
+	#endregion // IVerbalizeChildren interface
 	#region Static verbalization helpers on FactType class
 	public partial class FactType
 	{
