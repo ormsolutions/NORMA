@@ -1593,7 +1593,7 @@
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "MesageBox.ImpliedInternalUniquenessConstraint.Message");
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.ImpliedInternalUniquenessConstraint.Message");
 			}
 		}
 		/// <summary>
@@ -1614,6 +1614,106 @@
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "AutoLayout.TransactionName");
+			}
+		}
+		/// <summary>
+		/// Return the default format string for any link shape. Replacement field {0} is the accessible name for the from object, field {1} is the accessible name for the to object.
+		/// </summary>
+		public static string DefaultLinkShapeAccessibleValueFormat
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMBaseBinaryLinkShape.Accessible.ValueFormat");
+			}
+		}
+		/// <summary>
+		/// Returned as the accessible description for a role player link
+		/// </summary>
+		public static string RolePlayerLinkAccessibleDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "RolePlayerLink.Accessible.Description");
+			}
+		}
+		/// <summary>
+		/// Returned as the accessible name for a role player link
+		/// </summary>
+		public static string RolePlayerLinkAccessibleName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "RolePlayerLink.Accessible.Name");
+			}
+		}
+		/// <summary>
+		/// The end point of a role player link is described in terms of the fact name and the role name. Replacement field {0} is the fact name, {1} is the role name, and {2} is the role position.
+		/// </summary>
+		public static string RolePlayerLinkAccessibleFromValueFormat
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "RolePlayerLink.Accessible.FromValueFormat");
+			}
+		}
+		/// <summary>
+		/// Returned as the accessible description for a subtype link
+		/// </summary>
+		public static string SubtypeLinkAccessibleDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "SubtypeLink.Accessible.Description");
+			}
+		}
+		/// <summary>
+		/// Returned as the accessible name for a subtype link
+		/// </summary>
+		public static string SubtypeLinkAccessibleName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "SubtypeLink.Accessible.Name");
+			}
+		}
+		/// <summary>
+		/// Returned as the accessible description for an external constraint link
+		/// </summary>
+		public static string ExternalConstraintLinkAccessibleDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintLink.Accessible.Description");
+			}
+		}
+		/// <summary>
+		/// Returned as the accessible name for an external constraint link
+		/// </summary>
+		public static string ExternalConstraintLinkAccessibleName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExternalConstraintLink.Accessible.Name");
+			}
+		}
+		/// <summary>
+		/// Returned as the accessible description for a value range link
+		/// </summary>
+		public static string ValueRangeLinkAccessibleDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ValueRangeLink.Accessible.Description");
+			}
+		}
+		/// <summary>
+		/// Returned as the accessible name for a value range link
+		/// </summary>
+		public static string ValueRangeLinkAccessibleName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ValueRangeLink.Accessible.Name");
 			}
 		}
 	}

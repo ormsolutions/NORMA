@@ -154,6 +154,14 @@
     <value xml:space="preserve">Add Constraint Role Sequence</value>
     <comment xml:space="preserve">The transaction name used by the external constraint connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="ExternalConstraintLink.Accessible.Description">
+    <value xml:space="preserve">Connects a fact with roles used in a constraint displayed outside the fact</value>
+    <comment xml:space="preserve">Returned as the accessible description for an external constraint link</comment>
+  </data>
+  <data name="ExternalConstraintLink.Accessible.Name">
+    <value xml:space="preserve">ConstraintLink</value>
+    <comment xml:space="preserve">Returned as the accessible name for an external constraint link</comment>
+  </data>
   <data name="FactEditor.Intellisense.ImageList" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFpTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMzYw
@@ -290,6 +298,10 @@
     <value xml:space="preserve">Interpret Fact Editor Line</value>
     <comment xml:space="preserve">The transaction name used for changes made in response to committing a modified line in the fact editor. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="MesageBox.ImpliedInternalUniquenessConstraint.Message">
+    <value xml:space="preserve">One or more of the internal uniqueness constraints are implied by other internal uniqueness constraints. Do you wish to remove the implied constraints?</value>
+    <comment xml:space="preserve">The message for the auto-fix implied internal uniqueness constraint message box.</comment>
+  </data>
   <data name="MoveRoleSequenceDown.TransactionName">
     <value xml:space="preserve">Move Role Sequence Down</value>
     <comment xml:space="preserve">The transaction name used for moving a role sequence down in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
@@ -362,6 +374,10 @@
     <value xml:space="preserve">Update Diagram Layout</value>
     <comment xml:space="preserve">The transaction name used when an options page change modifies diagram layout and connections. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="ORMBaseBinaryLinkShape.Accessible.ValueFormat">
+    <value xml:space="preserve">{{{0}, {1}}}</value>
+    <comment xml:space="preserve">Return the default format string for any link shape. Replacement field {0} is the accessible name for the from object, field {1} is the accessible name for the to object.</comment>
+  </data>
   <data name="ORMModelBrowser.WindowTitle">
     <value xml:space="preserve">ORM Model Browser</value>
     <comment xml:space="preserve">The window title for the ORM model browser window</comment>
@@ -398,12 +414,36 @@
     <value xml:space="preserve">Set Role Player</value>
     <comment xml:space="preserve">The transaction name used by the role connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="RolePlayerLink.Accessible.Description">
+    <value xml:space="preserve">Connects a role to its role player</value>
+    <comment xml:space="preserve">Returned as the accessible description for a role player link</comment>
+  </data>
+  <data name="RolePlayerLink.Accessible.Name">
+    <value xml:space="preserve">RolePlayerLink</value>
+    <comment xml:space="preserve">Returned as the accessible name for a role player link</comment>
+  </data>
+  <data name="RolePlayerLink.Accessible.FromValueFormat">
+    <value xml:space="preserve">{0}.{1}(Role {2})</value>
+    <comment xml:space="preserve">The end point of a role player link is described in terms of the fact name and the role name. Replacement field {0} is the fact name, {1} is the role name, and {2} is the role position.</comment>
+  </data>
   <data name="SubtypeConnectAction.TransactionName">
     <value xml:space="preserve">Set Super Type</value>
     <comment xml:space="preserve">The transaction name used by the subtype connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
-  <data name="MesageBox.ImpliedInternalUniquenessConstraint.Message">
-    <value xml:space="preserve">One or more of the internal uniqueness constraints are implied by other internal uniqueness constraints. Do you wish to remove the implied constraints?</value>
-    <comment xml:space="preserve">The message for the auto-fix implied internal uniqueness constraint message box.</comment>
+  <data name="SubtypeLink.Accessible.Description">
+    <value xml:space="preserve">Connects a subtype to its supertype</value>
+    <comment xml:space="preserve">Returned as the accessible description for a subtype link</comment>
+  </data>
+  <data name="SubtypeLink.Accessible.Name">
+    <value xml:space="preserve">SubtypeLink</value>
+    <comment xml:space="preserve">Returned as the accessible name for a subtype link</comment>
+  </data>
+  <data name="ValueRangeLink.Accessible.Description">
+    <value xml:space="preserve">Connects a ValueType or Role with an element displaying its valid range of values.</value>
+    <comment xml:space="preserve">Returned as the accessible description for a value range link</comment>
+  </data>
+  <data name="ValueRangeLink.Accessible.Name">
+    <value xml:space="preserve">ValueRangeLink</value>
+    <comment xml:space="preserve">Returned as the accessible name for a value range link</comment>
   </data>
 </root>

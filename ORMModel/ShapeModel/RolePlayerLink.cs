@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Globalization;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using Microsoft.VisualStudio.Modeling;
@@ -414,6 +415,41 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // RolePlayerLink specific
+		#region Accessibility Properties
+		/// <summary>
+		/// Return the localized accessible name for the link
+		/// </summary>
+		public override string AccessibleName
+		{
+			get
+			{
+				return ResourceStrings.RolePlayerLinkAccessibleName;
+			}
+		}
+		/// <summary>
+		/// Return the localized accessible description
+		/// </summary>
+		public override string AccessibleDescription
+		{
+			get
+			{
+				return ResourceStrings.RolePlayerLinkAccessibleDescription;
+			}
+		}
+		/// <summary>
+		/// Describe the from role in terms of FactName.RoleName(RolePosition)
+		/// </summary>
+		protected override string FromAccessibleValue
+		{
+			get
+			{
+				ObjectTypePlaysRole link = ModelElement as ObjectTypePlaysRole;
+				Role role = link.PlayedRoleCollection;
+				FactType fact = role.FactType;
+				return string.Format(CultureInfo.InvariantCulture, ResourceStrings.RolePlayerLinkAccessibleFromValueFormat, fact.Name, role.Name, (fact.RoleCollection.IndexOf(role) + 1).ToString(CultureInfo.CurrentCulture));
+			}
+		}
+		#endregion // Accessibility Properties
 		#region Store Event Handlers
 		/// <summary>
 		///  Helper function to update the mandatory dot in response to events

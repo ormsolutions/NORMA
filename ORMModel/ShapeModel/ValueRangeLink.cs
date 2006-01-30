@@ -74,5 +74,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ValueRangeLink specific
+		#region Accessibility Properties
+		/// <summary>
+		/// Return the localized accessible name for the link
+		/// </summary>
+		public override string AccessibleName
+		{
+			get
+			{
+				return ResourceStrings.ValueRangeLinkAccessibleName;
+			}
+		}
+		/// <summary>
+		/// Return the localized accessible description
+		/// </summary>
+		public override string AccessibleDescription
+		{
+			get
+			{
+				return ResourceStrings.ValueRangeLinkAccessibleDescription;
+			}
+		}
+		#endregion // Accessibility Properties
 	}
 }

@@ -474,7 +474,7 @@
 	<ResourceString name="ModelErrorImpliedInternalUniquenessConstraintError" model="Model" resourceName="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text">
 		<comment type="summary">Text displayed in the text of the ImpliedInternalUniquenessConstraintError. {0} is the fact type name</comment>
 	</ResourceString>
-	<ResourceString name="ImpliedInternalConstraintFixMessage" model="Diagram" resourceName="MesageBox.ImpliedInternalUniquenessConstraint.Message">
+	<ResourceString name="ImpliedInternalConstraintFixMessage" model="Diagram" resourceName="MessageBox.ImpliedInternalUniquenessConstraint.Message">
 		<comment type="summary">The message of the auto-fix message box for implied internal constraints</comment>
 	</ResourceString>
 	<ResourceString name="RemoveImpliedInternalUniquenessConstraintsTransactionName" model="Model" resourceName="FactType.RemoveImpliedInternalUniquenessConstraints.TransactionName">
@@ -482,5 +482,35 @@
 	</ResourceString>
 	<ResourceString name="AutoLayoutTransactionName" model="Diagram" resourceName="AutoLayout.TransactionName">
 		<comment type="summary">The transaction name used by AutoLayout command. The text appears in the undo dropdown in the VS IDE.</comment>
+	</ResourceString>
+	<ResourceString name="DefaultLinkShapeAccessibleValueFormat" model="Diagram" resourceName="ORMBaseBinaryLinkShape.Accessible.ValueFormat">
+		<comment type="summary">Return the default format string for any link shape. Replacement field {0} is the accessible name for the from object, field {1} is the accessible name for the to object.</comment>
+	</ResourceString>
+	<ResourceString name="RolePlayerLinkAccessibleDescription" model="Diagram" resourceName="RolePlayerLink.Accessible.Description">
+		<comment type="summary">Returned as the accessible description for a role player link</comment>
+	</ResourceString>
+	<ResourceString name="RolePlayerLinkAccessibleName" model="Diagram" resourceName="RolePlayerLink.Accessible.Name">
+		<comment type="summary">Returned as the accessible name for a role player link</comment>
+	</ResourceString>
+	<ResourceString name="RolePlayerLinkAccessibleFromValueFormat" model="Diagram" resourceName="RolePlayerLink.Accessible.FromValueFormat">
+		<comment type="summary">The end point of a role player link is described in terms of the fact name and the role name. Replacement field {0} is the fact name, {1} is the role name, and {2} is the role position.</comment>
+	</ResourceString>
+	<ResourceString name="SubtypeLinkAccessibleDescription" model="Diagram" resourceName="SubtypeLink.Accessible.Description">
+		<comment type="summary">Returned as the accessible description for a subtype link</comment>
+	</ResourceString>
+	<ResourceString name="SubtypeLinkAccessibleName" model="Diagram" resourceName="SubtypeLink.Accessible.Name">
+		<comment type="summary">Returned as the accessible name for a subtype link</comment>
+	</ResourceString>
+	<ResourceString name="ExternalConstraintLinkAccessibleDescription" model="Diagram" resourceName="ExternalConstraintLink.Accessible.Description">
+		<comment type="summary">Returned as the accessible description for an external constraint link</comment>
+	</ResourceString>
+	<ResourceString name="ExternalConstraintLinkAccessibleName" model="Diagram" resourceName="ExternalConstraintLink.Accessible.Name">
+		<comment type="summary">Returned as the accessible name for an external constraint link</comment>
+	</ResourceString>
+	<ResourceString name="ValueRangeLinkAccessibleDescription" model="Diagram" resourceName="ValueRangeLink.Accessible.Description">
+		<comment type="summary">Returned as the accessible description for a value range link</comment>
+	</ResourceString>
+	<ResourceString name="ValueRangeLinkAccessibleName" model="Diagram" resourceName="ValueRangeLink.Accessible.Name">
+		<comment type="summary">Returned as the accessible name for a value range link</comment>
 	</ResourceString>
 </ResourceStrings>

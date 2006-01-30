@@ -265,6 +265,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // SubtypeLink specific
+		#region Accessibility Properties
+		/// <summary>
+		/// Return the localized accessible name for the link
+		/// </summary>
+		public override string AccessibleName
+		{
+			get
+			{
+				return ResourceStrings.SubtypeLinkAccessibleName;
+			}
+		}
+		/// <summary>
+		/// Return the localized accessible description
+		/// </summary>
+		public override string AccessibleDescription
+		{
+			get
+			{
+				return ResourceStrings.SubtypeLinkAccessibleDescription;
+			}
+		}
+		#endregion // Accessibility Properties
 	}
 	public partial class ORMShapeModel
 	{

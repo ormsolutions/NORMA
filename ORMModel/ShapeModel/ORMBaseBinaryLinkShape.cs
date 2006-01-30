@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Diagrams.GraphObject;
@@ -162,6 +163,44 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // LinkChangeRule class
 		#endregion // LinkConnectorShape management
+		#region Accessibility Properties
+		/// <summary>
+		/// Return the localized accessible value. Obtained by combining
+		/// the accessible name of the from shape with the accessible name
+		/// of the to shape.
+		/// </summary>
+		public override string AccessibleValue
+		{
+			get
+			{
+				return string.Format(CultureInfo.InvariantCulture, ResourceStrings.DefaultLinkShapeAccessibleValueFormat, FromAccessibleValue, ToAccessibleValue);
+			}
+		}
+		/// <summary>
+		/// Combined with the ToAccessibleValue to form an AccessibleValue for
+		/// the link. Defaults to the accessible value for the model element
+		/// associated with the FromShape.
+		/// </summary>
+		protected virtual string FromAccessibleValue
+		{
+			get
+			{
+				return FromShape.ModelElement.AccessibleValue;
+			}
+		}
+		/// <summary>
+		/// Combined with the FromAccessibleValue to form an AccessibleValue for
+		/// the link. Defaults to the accessible value for the model element
+		/// associated with the ToShape.
+		/// </summary>
+		protected virtual string ToAccessibleValue
+		{
+			get
+			{
+				return ToShape.ModelElement.AccessibleValue;
+			}
+		}
+		#endregion // Accessibility Properties
 	}
 	#region LinkConnectorShape class
 	public partial class LinkConnectorShape
