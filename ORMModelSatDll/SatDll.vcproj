@@ -25,6 +25,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="&quot;$(SolutionDir)VersionGenerator.exe&quot;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -122,6 +123,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="&quot;$(SolutionDir)VersionGenerator.exe&quot;"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -255,6 +257,10 @@
 		</File>
 		<File
 			RelativePath=".\Resource.h"
+			>
+		</File>
+		<File
+			RelativePath="..\Version.h"
 			>
 		</File>
 	</Files>

@@ -1,7 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
-#include "Version.h"
+#include "../Version.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -53,8 +53,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION NORMA_VERSION
- PRODUCTVERSION NORMA_VERSION
+ FILEVERSION NORMA_FILEVERSION
+ PRODUCTVERSION NORMA_PRODUCTVERSION
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS VS_FF_DEBUG
@@ -71,12 +71,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Neumont University"
             VALUE "FileDescription", "Neumont ORM Architect for Visual Studio - Satellite Resource DLL (en-US)"
-            VALUE "FileVersion", NORMA_VERSION_STRING
+            VALUE "FileVersion", NORMA_FILEVERSION_STRING
             VALUE "InternalName", "Neumont.Tools.ORMUI.dll"
             VALUE "LegalCopyright", "Copyright © Neumont University. All rights reserved."
             VALUE "OriginalFilename", "Neumont.Tools.ORMUI.dll"
             VALUE "ProductName", "Neumont ORM Architect for Visual Studio"
-            VALUE "ProductVersion", NORMA_VERSION_STRING
+            VALUE "ProductVersion", NORMA_PRODUCTVERSION_STRING
         END
     END
     BLOCK "VarFileInfo"

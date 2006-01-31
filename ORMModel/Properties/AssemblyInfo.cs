@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant(false)]
 [assembly: ComVisible(false)]
-[assembly: AssemblyTitle("Neumont ORM Architect for Visual Studio")]
+[assembly: AssemblyTitle("Neumont.Tools.ORM.dll")]
 [assembly: AssemblyProduct("Neumont ORM Architect for Visual Studio")]
 [assembly: AssemblyDescription("Neumont ORM Architect for Visual Studio - Package DLL")]
 [assembly: AssemblyCompany("Neumont University")]
@@ -16,4 +16,3 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 
-[assembly: AssemblyVersion("1.0.602.*")]

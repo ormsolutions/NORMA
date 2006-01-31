@@ -23,6 +23,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DocumentationFile>.\bin\Debug\Neumont.Tools.ORM.xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
+    <NoWarn>1607</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <DocumentationFile>bin\Release\Neumont.Tools.ORM.xml</DocumentationFile>
     <ErrorReport>prompt</ErrorReport>
+    <NoWarn>1607</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
@@ -220,6 +222,9 @@
     <Compile Include="Shell\ORMEditorFactory.cs" />
     <Compile Include="Shell\ORMPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Version.cs">
+      <Link>Properties\Version.cs</Link>
+    </Compile>
     <None Include="..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
@@ -370,5 +375,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(SolutionDir)install.bat" "bin\$(ConfigurationName)"</PostBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)VersionGenerator.exe"</PreBuildEvent>
   </PropertyGroup>
 </Project>

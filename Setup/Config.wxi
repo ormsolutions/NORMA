@@ -7,15 +7,20 @@
 	<?define Debug="1"?>
 	<!-- Possible values (without quotes) are '0' for regular Visual Studio registry root or '1' for Exp ("Experimental") registry root. -->
 	<?define ExperimentalHive="0"?>
-	<!-- MAJOR and MINOR portions of ProductVersion, for use in assembly strong names. -->
+	<!-- These are now pulled in via the include. The syntax and meaning remains the same.
+	<!- - MAJOR and MINOR portions of ProductVersion, for use in assembly strong names. - ->
 	<?define MajorMinorVersion="1.0"?>
-	<!-- Overall NORMA version number. Format is MAJOR.MINOR.(((RELEASEYEAR - 2000) * 100) + RELEASEMONTH).BUILD. -->
+	<!- - Two hexits representing the MAJOR version. - ->
+	<?define MajorVersionHexits="01"?>
+	<!- - Overall NORMA version number. Format is MAJOR.MINOR.(((RELEASEYEAR - 2000) * 100) + RELEASEMONTH).BUILD. - ->
 	<?define ProductVersion="$(var.MajorMinorVersion).602.1"?>
-	<!-- VersionGuidSuffix should be distinct for every MSI. The last section of the GUID should match the product version (two hexits for MAJOR, two hexits for MINOR, four hexits for RELEASEYER, two hexits for RELEASEMONTH, two hexits for BUILD). The version number should NOT be translated into hexadecimal; that is, digits 10 should become hexits 10, not hexits 0A. -->
-	<?define VersionGuidSuffix="$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-010020060201"?>
+	<!- - VersionGuidSuffix should be distinct for every MSI. The last section of the GUID should match the product version (two hexits for MAJOR, two hexits for MINOR, two hexits for RELEASEYER, two hexits for RELEASEMONTH, four hexits for BUILD). The version number should NOT be translated into hexadecimal; that is, digits 10 should become hexits 10, not hexits 0A. - ->
+	<?define VersionGuidSuffix="$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-010006020130"?>
+	-->
+	<?include ../Version.wxi?>
 	<?define PackageCode="EFDDC549-0000-5653-$(var.VersionGuidSuffix)"?>
 	<!-- ProductCode should be changed for each MAJOR version. Specifically, the first and second hexits of the last section of the GUID should match the two digits of the major version.-->
-	<?define ProductCode="EFDDC549-0000-5653-$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-010000000000"?>
+	<?define ProductCode="EFDDC549-0000-5653-$(var.Debug)$(var.ExperimentalHive)$(var.Architecture)-$(var.MajorVersionHexits)0000000000"?>
 	<!-- UpgradeCode should NOT be changed. -->
 	<?define UpgradeCode="EFDDC549-0000-5653-0000-000000000000"?>
 	<!-- Public token for NORMA strong name key. -->

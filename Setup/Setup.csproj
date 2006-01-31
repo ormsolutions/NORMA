@@ -39,4 +39,7 @@
   <ItemGroup>
     <None Include="ORMSchemaCatalog.xml" />
   </ItemGroup>
+  <PropertyGroup>
+    <PreBuildEvent>"$(SolutionDir)..\VersionGenerator.exe"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

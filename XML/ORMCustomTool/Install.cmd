@@ -20,7 +20,7 @@ CALL:_AddRegGenerator "8.0Exp" "{e6fdf8b0-f3d1-11d4-8576-0002a516ece8}"
 GOTO:EOF
 
 :_AddRegCR
-REG ADD HKLM\SOFTWARE\Classes\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20} /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
+REG ADD HKLM\SOFTWARE\Classes\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20} /f /ve /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool, Neumont.Tools.ORM.ORMCustomTool, Version=1.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
 REG ADD HKLM\SOFTWARE\Classes\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /ve /d "%SystemRoot%\System32\mscoree.dll"
 REG ADD HKLM\SOFTWARE\Classes\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "ThreadingModel" /d "Both"
 REG ADD HKLM\SOFTWARE\Classes\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32 /f /v "Class" /d "Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"
