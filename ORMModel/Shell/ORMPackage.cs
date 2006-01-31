@@ -205,6 +205,8 @@ namespace Neumont.Tools.ORM.Shell
 				
 				// Make sure our options are loaded from the registry
 				GetDialogPage(typeof(OptionsPage));
+				
+				base.SetupDynamicToolbox();
 			}
 
 		}
