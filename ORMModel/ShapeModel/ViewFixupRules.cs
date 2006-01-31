@@ -38,97 +38,110 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
-				ObjectTypeShape objectTypeShape = e.ModelElement as ObjectTypeShape;
-				if (objectTypeShape != null)
+				ObjectTypeShape objectTypeShape;
+				if (null != (objectTypeShape = e.ModelElement as ObjectTypeShape) &&
+					e.MetaAttribute.Id == ObjectTypeShape.ExpandRefModeMetaAttributeGuid)
 				{
-					Guid attributeId = e.MetaAttribute.Id;
-					#region ExpandRefMode
-					if (attributeId == ObjectTypeShape.ExpandRefModeMetaAttributeGuid)
+					objectTypeShape.AutoResize();
+
+					ObjectType objectType = objectTypeShape.ModelElement as ObjectType;
+					InternalUniquenessConstraint preferredConstraint;
+					if (null != (preferredConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint))
 					{
-						bool turnOn = (bool)e.NewValue;
-						ObjectType objectType =  objectTypeShape.ModelElement as ObjectType;
-						objectTypeShape.AutoResize();
-						InternalUniquenessConstraint preferredConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint;
+
+						bool expandingRefMode = (bool)e.NewValue;
 						ORMDiagram parentDiagram = objectTypeShape.Diagram as ORMDiagram;
 						Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
 
-						if (preferredConstraint != null)
+						// View or Hide FactType
+						FactType factType = preferredConstraint.FactType;
+						if (!expandingRefMode)
 						{
-							// View or Hide FactType
-							FactType factType = preferredConstraint.FactType;
-							if (turnOn)
+							RemoveShapesFromDiagram(factType, parentDiagram);
+						}
+						else
+						{
+							bool fixUpReadings = false;
+							ShapeElement shapeOnDiagram;
+							if (null == (shapeOnDiagram = parentDiagram.FindShapeForElement(factType)))
 							{
 								Diagram.FixUpDiagram(objectType.Model, factType);
+								shapeOnDiagram = parentDiagram.FindShapeForElement(factType);
+								shapeElements.Add(shapeOnDiagram, true);
+								fixUpReadings = true;
+							}
+
+							if (fixUpReadings)
+							{
 								foreach (ReadingOrder readingOrder in factType.ReadingOrderCollection)
 								{
 									Diagram.FixUpDiagram(factType, readingOrder);
 								}
-								shapeElements.Add(parentDiagram.FindShapeForElement(factType), true);
+							}
+						}
+
+						//View or Hide value type
+						ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
+						if (valueType != null)
+						{
+							if (expandingRefMode)
+							{
+								ShapeElement shapeOnDiagram;
+								if (null == (shapeOnDiagram = parentDiagram.FindShapeForElement(valueType)))
+								{
+									Diagram.FixUpDiagram(objectType.Model, valueType);
+									shapeOnDiagram = parentDiagram.FindShapeForElement(valueType);
+									shapeElements.Add(shapeOnDiagram, true);
+								}
+
+								foreach (ValueTypeHasValueConstraint link in valueType.GetElementLinks(ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid))
+								{
+									FixupValueTypeValueConstraintLink(link, null);
+								}
 							}
 							else
 							{
-								RemoveShapesFromDiagram(factType, parentDiagram);
-							}
-							//View or Hide value type
-							ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
-							if (valueType != null)
-							{
-								if (turnOn)
+								if (!objectType.ReferenceModeSharesValueType || // Easy check first
+									!parentDiagram.ShouldDisplayObjectType(valueType)) // More involved check second
 								{
-									bool moveValueType = true;
-									if (parentDiagram.FindShapeForElement(valueType) != null)
-									{
-										moveValueType = false;
-									}
-									Diagram.FixUpDiagram(objectType.Model, valueType);
-									shapeElements.Add(parentDiagram.FindShapeForElement(valueType), moveValueType);
-									foreach (ValueTypeHasValueConstraint link in valueType.GetElementLinks(ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid))
-									{
-										FixupValueTypeValueConstraintLink(link, null);
-									}
+									RemoveShapesFromDiagram(valueType, parentDiagram);
+								}
+							}
+						}
+
+						//View or Hide ObjectTypePlaysRole links
+						foreach (Role role in factType.RoleCollection)
+						{
+							foreach (ObjectTypePlaysRole link in role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
+							{
+								if (expandingRefMode)
+								{
+									Diagram.FixUpDiagram(objectType.Model, link);
 								}
 								else
 								{
-									if (!objectType.ReferenceModeSharesValueType || // Easy check first
-										!parentDiagram.ShouldDisplayObjectType(valueType)) // More involved check second
-									{
-										RemoveShapesFromDiagram(valueType, parentDiagram);
-									}
+									RemoveShapesFromDiagram(link, parentDiagram);
 								}
 							}
-							//View or Hide ObjectTypePlaysRole links
-							foreach (Role role in factType.RoleCollection)
+							foreach (RoleHasValueConstraint link in role.GetElementLinks(RoleHasValueConstraint.RoleMetaRoleGuid))
 							{
-								foreach (ObjectTypePlaysRole link in role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid))
+								if (expandingRefMode)
 								{
-									if (turnOn)
-									{
-										Diagram.FixUpDiagram(objectType.Model, link);
-									}
-									else
-									{
-										RemoveShapesFromDiagram(link, parentDiagram);
-									}
+									FixupRoleValueConstraintLink(link, null);
 								}
-								foreach (RoleHasValueConstraint link in role.GetElementLinks(RoleHasValueConstraint.RoleMetaRoleGuid))
+								else
 								{
-									if (turnOn)
-									{
-										FixupRoleValueConstraintLink(link, null);
-									}
-									else
-									{
-										FixupValueTypeValueConstraintLink(link, null);
-										RemoveShapesFromDiagram(link, parentDiagram);
-									}
+									FixupValueTypeValueConstraintLink(link, null);
+									RemoveShapesFromDiagram(link, parentDiagram);
 								}
 							}
-							parentDiagram.AutoLayoutChildShapes(shapeElements);
 						}
+
+						parentDiagram.AutoLayoutChildShapes(shapeElements);
+
 					}
-					#endregion //ExpandRefMode
 				}
-			}
+			}//end method
 			/// <summary>
 			/// Helper function to remove shapes on the diagram for a specific element.
 			/// All child shapes will also be removed.

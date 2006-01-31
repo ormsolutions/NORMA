@@ -368,6 +368,37 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.Inline, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class PreferredIdentifierAddedRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				EntityTypeHasPreferredIdentifier link;
+				InternalUniquenessConstraint constraint;
+				if (null != (link = e.ModelElement as EntityTypeHasPreferredIdentifier) &&
+					null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint))
+				{
+					//Get the object that represents the item with the preferred identifier. 
+					ObjectTypeShape objectShape = link.PreferredIdentifierFor.PresentationRolePlayers[0] as ObjectTypeShape;
+
+					//If there is a fact shape and it is visible then we need to 
+					//set ExpandRefMode to true, otherwise set it to false.
+					FactTypeShape factShape;
+					if (constraint.FactType.PresentationRolePlayers.Count > 0 &&
+						null != (factShape = constraint.FactType.PresentationRolePlayers[0] as FactTypeShape) &&
+						factShape.IsVisible)
+					{
+						objectShape.ExpandRefMode = true;
+					}
+					else
+					{
+						objectShape.ExpandRefMode = false;
+					}
+				}
+
+			} //method
+		} //class
+
 		#endregion // Shape display update rules
 		#region Store Event Handlers
 		/// <summary>
