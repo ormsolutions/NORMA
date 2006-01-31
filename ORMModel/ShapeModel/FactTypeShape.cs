@@ -2427,7 +2427,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Debug.Assert(
 					(element is ObjectType && ((ObjectType)element).NestedFactType == AssociatedFactType)
 					|| (element is ReadingOrder && ((ReadingOrder)element).FactType == AssociatedFactType)
-					|| (element is RoleValueRangeDefinition && ((RoleValueRangeDefinition)element).Role.FactType == AssociatedFactType)
+					|| (element is RoleValueConstraint && ((RoleValueConstraint)element).Role.FactType == AssociatedFactType)
 				);
 			if (element is ReadingOrder)
 			{
@@ -2460,14 +2460,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return base.ChooseShape(element, shapeTypes);
 		}
 		/// <summary>
-		/// Makes an ObjectifiedFactTypeNameShape, ReadingShape, or ValueRangeShape a
+		/// Makes an ObjectifiedFactTypeNameShape, ReadingShape, or ValueConstraintShape a
 		/// relative child element.
 		/// </summary>
 		/// <param name="childShape">The ShapeElement to get the ReleationshipType for.</param>
 		/// <returns>RelationshipType.Relative</returns>
 		protected override RelationshipType ChooseRelationship(ShapeElement childShape)
 		{
-			Debug.Assert(childShape is ObjectifiedFactTypeNameShape || childShape is ReadingShape || childShape is ValueRangeShape);
+			Debug.Assert(childShape is ObjectifiedFactTypeNameShape || childShape is ReadingShape || childShape is ValueConstraintShape);
 			return RelationshipType.Relative;
 		}
 		#endregion // Customize appearance
@@ -2755,7 +2755,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			ObjectTypeShape objectShape;
 			FactTypeShape factShape;
 			ExternalConstraintShape constraintShape;
-			ValueRangeShape rangeShape;
+			ValueConstraintShape rangeShape;
 			FactType factType = null;
 			ObjectType objectType = null;
 			int factRoleCount = 0;
@@ -2775,12 +2775,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				factType = AssociatedFactType;
 				objectType = objectShape.AssociatedObjectType;
 			}
-			else if (null != (rangeShape = oppositeShape as ValueRangeShape))
+			else if (null != (rangeShape = oppositeShape as ValueConstraintShape))
 			{
 				factType = AssociatedFactType;
 				RoleMoveableCollection factRoles = factType.RoleCollection;
 				factRoleCount = factRoles.Count;
-				roleIndex = factRoles.IndexOf(((RoleValueRangeDefinition)rangeShape.AssociatedRangeDefinition).Role);
+				roleIndex = factRoles.IndexOf(((RoleValueConstraint)rangeShape.AssociatedValueConstraint).Role);
 			}
 			else if (null != (constraintShape = oppositeShape as ExternalConstraintShape))
 			{

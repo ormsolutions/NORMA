@@ -587,9 +587,26 @@ namespace Neumont.Tools.ORM.Framework
 				if (duplicateAction != DuplicateNameAction.RetrieveDuplicateCollection)
 				{
 					Debug.Assert(element.Store.TransactionManager.InTransaction);
-					element.Name = GenerateUniqueName(element);
+					elementName = GenerateUniqueName(element);
+					if (elementName != null && elementName.Length != 0)
+					{
+						element.Name = elementName;
+						if (notifyAdded == null)
+						{
+							// The name change rule will not fire during deserialization, just fall through here
+							// if we're deserializing
+							return;
+						}
+					}
+					else
+					{
+						return;
+					}
 				}
-				return;
+				else
+				{
+					return;
+				}
 			}
 			LocatedElement locateData = GetElement(elementName);
 			bool afterTransaction = duplicateAction == DuplicateNameAction.RetrieveDuplicateCollection;

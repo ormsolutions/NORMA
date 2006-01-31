@@ -495,19 +495,21 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 								{
 									// Treat this just like an end element
 									--currentLevel;
-									docReader.Skip();
+									PassEndElement(docReader);
 								}
 							}
 							else if (localName == "change")
 							{
 								// Note that this is the only part of this
 								// routine that is id-specific. The bulk of the
-								// routine could be moved to a helper function, and
+								// routine could be moved to C:\Documents and Settings\MCurland\My Documents\Visual Studio 2005\Projects\ORMPackage\ORMModel\ObjectModel\ORMCore.dsldma helper function, and
 								// this could be a delegate callback
 								string attr = diffReader.GetAttribute("match");
+								bool readString = false;
 								if (attr != null && attr == "@id")
 								{
 									string newId = diffReader.ReadString();
+									readString = true;
 									if (!knownIds.ContainsKey(newId))
 									{
 										string originalId = docReader.GetAttribute("id");
@@ -521,21 +523,25 @@ namespace Neumont.Tools.ORM.SDK.TestEngine
 										}
 									}
 								}
-								diffReader.Skip();
+								if (!readString)
+								{
+									// ReadString causes the reader to advance, don't advance it again.
+									PassEndElement(diffReader);
+								}
 							}
 							else
 							{
-								diffReader.Skip();
+								PassEndElement(diffReader);
 							}
 							break;
 						case XmlNodeType.EndElement:
 							if (diffReader.LocalName == "node")
 							{
 								--currentLevel;
-								docReader.Skip();
+								PassEndElement(docReader);
 							}
 							break;
-				    }
+					}
 				}
 				return retVal;
 			}

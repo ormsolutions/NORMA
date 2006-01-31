@@ -333,27 +333,27 @@
   <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern">
     <value xml:space="preserve">Subtype{0}</value>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern">
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ClosedInclusionPattern">
     <value xml:space="preserve">[{0}]</value>
     <comment xml:space="preserve">Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern">
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.DefinitionContainerPattern">
     <value xml:space="preserve">{ {0} }</value>
     <comment xml:space="preserve">Pattern showing left- and right-string to use for containing a value range definition.</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern">
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.OpenInclusionPattern">
     <value xml:space="preserve">({0})</value>
     <comment xml:space="preserve">Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter">
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.RangeDelimiter">
     <value xml:space="preserve">, </value>
     <comment xml:space="preserve">String used to delimit sets of value ranges in a definition.</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern">
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.StringContainerPattern">
     <value xml:space="preserve">'{0}'</value>
     <comment xml:space="preserve">Pattern showing left- and right-string to use for containing a value range as a string.</comment>
   </data>
-  <data name="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueDelimiter">
+  <data name="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueDelimiter">
     <value xml:space="preserve">..</value>
     <comment xml:space="preserve">String used to delimit the min- and max-values of a value range.</comment>
   </data>

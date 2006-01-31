@@ -36,14 +36,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ValueRange : IModelErrorOwner
 	{
 		#region variables
-		private static readonly string valueDelim = ResourceStrings.ValueRangeDefinitionValueDelimiter;
-		private static readonly string stringContainerString = ResourceStrings.ValueRangeDefinitionStringContainerPattern;
+		private static readonly string valueDelim = ResourceStrings.ValueConstraintValueDelimiter;
+		private static readonly string stringContainerString = ResourceStrings.ValueConstraintStringContainerPattern;
 		private static readonly string leftStringContainerMark = GetLeftMark(stringContainerString);
 		private static readonly string rightStringContainerMark = GetRightMark(stringContainerString);
-		private static readonly string openInclusionContainerString = ResourceStrings.ValueRangeDefinitionOpenInclusionContainer;
+		private static readonly string openInclusionContainerString = ResourceStrings.ValueConstraintOpenInclusionContainer;
 		private static readonly string minOpenInclusionMark = GetLeftMark(openInclusionContainerString);
 		private static readonly string maxOpenInclusionMark = GetRightMark(openInclusionContainerString);
-		private static readonly string closedInclusionContainerString = ResourceStrings.ValueRangeDefinitionClosedInclusionContainer;
+		private static readonly string closedInclusionContainerString = ResourceStrings.ValueConstraintClosedInclusionContainer;
 		private static readonly string minClosedInclusionMark = GetLeftMark(closedInclusionContainerString);
 		private static readonly string maxClosedInclusionMark = GetRightMark(closedInclusionContainerString);
 		private static readonly string[] minInclusionMarks = new string[] { "", minOpenInclusionMark, minClosedInclusionMark };
@@ -99,7 +99,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		private void VerifyValueMatch(INotifyElementAdded notifyAdded)
 		{
-			DataType dataType = ValueRangeDefinition.DataType;
+			DataType dataType = ValueConstraint.DataType;
 			bool needMinError = false;
 			bool needMaxError = false;
 			MinValueMismatchError minMismatch;
@@ -153,7 +153,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				maxMismatch.Remove();
 			}
 		}
-		private static void ValidateValueRangeDefinitionForRule(ValueRangeDefinition valueConstraint)
+		private static void ValidateValueConstraintForRule(ValueConstraint valueConstraint)
 		{
 			if (valueConstraint == null)
 			{
@@ -177,12 +177,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
 				ObjectType valueType = link.ValueTypeCollection;
-				ValidateValueRangeDefinitionForRule(valueType.ValueRangeDefinition);
+				ValidateValueConstraintForRule(valueType.ValueConstraint);
 				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
 				int rolesCount = roles.Count;
 				for (int i = 0; i < rolesCount; ++i)
 				{
-					ValidateValueRangeDefinitionForRule(roles[i].ValueRangeDefinition);
+					ValidateValueConstraintForRule(roles[i].ValueConstraint);
 				}
 			}
 		}
@@ -198,17 +198,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
 				ObjectType valueType = link.ValueTypeCollection;
-				ValidateValueRangeDefinitionForRule(valueType.ValueRangeDefinition);
+				ValidateValueConstraintForRule(valueType.ValueConstraint);
 				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
 				int rolesCount = roles.Count;
 				for (int i = 0; i < rolesCount; ++i)
 				{
-					ValidateValueRangeDefinitionForRule(roles[i].ValueRangeDefinition);
+					ValidateValueConstraintForRule(roles[i].ValueConstraint);
 				}
 			}
 		}
-		[RuleOn (typeof (ValueTypeHasValueRangeDefinition), FireTime = TimeToFire.LocalCommit)]
-		private class ValueRangeDefinitionAddRule: AddRule
+		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.LocalCommit)]
+		private class ValueConstraintAddRule : AddRule
 		{
 			/// <summary>
 			/// checks if the new value range definition matches the data type
@@ -216,19 +216,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="e"></param>
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ValueTypeHasValueRangeDefinition link = e.ModelElement as ValueTypeHasValueRangeDefinition;
+				ValueTypeHasValueConstraint link = e.ModelElement as ValueTypeHasValueConstraint;
 				ObjectType valueType = link.ValueType;
-				ValidateValueRangeDefinitionForRule(valueType.ValueRangeDefinition);
+				ValidateValueConstraintForRule(valueType.ValueConstraint);
 				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
 				int rolesCount = roles.Count;
 				for (int i = 0; i < rolesCount; ++i)
 				{
-					ValidateValueRangeDefinitionForRule(roles[i].ValueRangeDefinition);
+					ValidateValueConstraintForRule(roles[i].ValueConstraint);
 				}
 			}
 		}
-		[RuleOn(typeof(RoleHasValueRangeDefinition), FireTime= TimeToFire.LocalCommit)]
-		private class RoleValueRangeDefinitionAdded: AddRule
+		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.LocalCommit)]
+		private class RoleValueConstraintAdded : AddRule
 		{
 			/// <summary>
 			/// checks if the the value range matches the specified date type
@@ -236,14 +236,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="e"></param>
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				RoleHasValueRangeDefinition link = e.ModelElement as RoleHasValueRangeDefinition;
+				RoleHasValueConstraint link = e.ModelElement as RoleHasValueConstraint;
 				ObjectType valueType = link.Role.RolePlayer;
-				ValidateValueRangeDefinitionForRule(valueType.ValueRangeDefinition);
+				ValidateValueConstraintForRule(valueType.ValueConstraint);
 				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
 				int rolesCount = roles.Count;
 				for (int i = 0; i < rolesCount; ++i)
 				{
-					ValidateValueRangeDefinitionForRule(roles[i].ValueRangeDefinition);
+					ValidateValueConstraintForRule(roles[i].ValueConstraint);
 				}
 			}
 		}
@@ -258,21 +258,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				ObjectType valueType = link.RolePlayer;
-				ValidateValueRangeDefinitionForRule(valueType.ValueRangeDefinition);
+				ValidateValueConstraintForRule(valueType.ValueConstraint);
 				RoleMoveableCollection roles = valueType.PlayedRoleCollection;
 				int rolesCount = roles.Count;
 				for (int i = 0; i < rolesCount; ++i)
 				{
-					ValidateValueRangeDefinitionForRule(roles[i].ValueRangeDefinition);
+					ValidateValueConstraintForRule(roles[i].ValueConstraint);
 				}
 			}
 		}
-		[RuleOn(typeof(ValueRangeDefinitionHasValueRange), FireTime=TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.LocalCommit)]
 		private class ValueRangeAdded : AddRule
 		{
 			public override void  ElementAdded(ElementAddedEventArgs e)
 			{
-				ValueRangeDefinitionHasValueRange link = e.ModelElement as ValueRangeDefinitionHasValueRange;
+				ValueConstraintHasValueRange link = e.ModelElement as ValueConstraintHasValueRange;
 				link.ValueRangeCollection.VerifyValueMatch(null);
 			}
 		}
@@ -373,16 +373,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Tests if the associated data type is a text type.
 		/// </summary>
-		/// <returns>ValueRangeDefinition.IsText() if definition exists; otherwise, true.</returns>
+		/// <returns>ValueConstraint.IsText() if definition exists; otherwise, true.</returns>
 		/// <remarks>Since text is by far the minority of all the data types and
 		/// the only type to require string container marks, we do not put values inside 
 		/// those marks by default whenever we can't determine the data type (i.e. no
-		/// ValueRangeDefinition exists).</remarks>
+		/// ValueConstraint exists).</remarks>
 		protected bool IsText()
 		{
-			if (this.ValueRangeDefinition != null)
+			if (this.ValueConstraint != null)
 			{
-				return ValueRangeDefinition.IsText();
+				return ValueConstraint.IsText();
 			}
 			return false;
 		}
@@ -474,13 +474,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // CustomStorage handlers
 	}
-	public partial class ValueRangeDefinition
+	public partial class ValueConstraint
 	{
 		#region variables
-		private static readonly string defnContainerString = ResourceStrings.ValueRangeDefinitionDefinitionContainerPattern;
+		private static readonly string defnContainerString = ResourceStrings.ValueConstraintDefinitionContainerPattern;
 		private static readonly string leftContainerMark = defnContainerString.Substring(0, defnContainerString.IndexOf("{0}"));
 		private static readonly string rightContainerMark = defnContainerString.Substring(defnContainerString.IndexOf("{0}") + 3);
-		private static readonly string rangeDelim = ResourceStrings.ValueRangeDefinitionRangeDelimiter;
+		private static readonly string rangeDelim = ResourceStrings.ValueConstraintRangeDelimiter;
 		private static readonly string delimSansSpace = rangeDelim.Trim();
 		private static readonly string delimSansSpaceEscaped = Regex.Escape(delimSansSpace);
 		#endregion // variables
@@ -535,13 +535,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Guid attributeGuid = attribute.Id;
 			if (attributeGuid == TextMetaAttributeGuid)
 			{
-				// Handled by ValueRangeDefinitionChangeRule
+				// Handled by ValueConstraintChangeRule
 				return;
 			}
 			base.SetValueForCustomStoredAttribute(attribute, newValue);
 		}
 		#endregion // CustomStorage handlers
-		#region ValueRangeDefinition specific
+		#region ValueConstraint specific
 		/// <summary>
 		/// Tests if the associated data type is a text type.
 		/// </summary>
@@ -593,10 +593,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return definition;
 		}
-		#endregion //ValueRangeDefinition specific
+		#endregion //ValueConstraint specific
 	}
-	#region ValueTypeValueRangeDefinition class
-	public partial class ValueTypeValueRangeDefinition
+	#region ValueTypeValueConstraint class
+	public partial class ValueTypeValueConstraint
 	{
 		/// <summary>
 		/// Tests if the associated data type is a text type.
@@ -619,9 +619,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return ValueType.DataType;
 			}
 		}
-		#region ValueTypeValueRangeDefinitionChangeRule class
-		[RuleOn(typeof(ValueTypeValueRangeDefinition))]
-		private class ValueTypeValueRangeDefinitionChangeRule : ChangeRule
+		#region ValueTypeValueConstraintChangeRule class
+		[RuleOn(typeof(ValueTypeValueConstraint))]
+		private class ValueTypeValueConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Translate the Text property
@@ -630,9 +630,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
 				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == ValueTypeValueRangeDefinition.TextMetaAttributeGuid)
+				if (attributeGuid == ValueTypeValueConstraint.TextMetaAttributeGuid)
 				{
-					ValueTypeValueRangeDefinition valueRangeDefn = e.ModelElement as ValueTypeValueRangeDefinition;
+					ValueTypeValueConstraint valueRangeDefn = e.ModelElement as ValueTypeValueConstraint;
 					//Set the new definition
 					string newText = (string)e.NewValue;
 					if (newText.Length == 0)
@@ -646,11 +646,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // ValueTypeValueRangeDefinitionChangeRule class
+		#endregion // ValueTypeValueConstraintChangeRule class
 	}
-	#endregion // ValueTypeValueRangeDefinition class
-	#region RoleValueRangeDefinition class
-	public partial class RoleValueRangeDefinition
+	#endregion // ValueTypeValueConstraint class
+	#region RoleValueConstraint class
+	public partial class RoleValueConstraint
 	{
 		/// <summary>
 		/// Tests if the associated data type is a text type.
@@ -684,9 +684,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return retVal;
 			}
 		}
-		#region RoleValueRangeDefinitionChangeRule class
-		[RuleOn(typeof(RoleValueRangeDefinition))]
-		private class RoleValueRangeDefinitionChangeRule : ChangeRule
+		#region RoleValueConstraintChangeRule class
+		[RuleOn(typeof(RoleValueConstraint))]
+		private class RoleValueConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// Translate the Text property
@@ -695,9 +695,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
 				Guid attributeGuid = e.MetaAttribute.Id;
-				if (attributeGuid == ValueRangeDefinition.TextMetaAttributeGuid)
+				if (attributeGuid == ValueConstraint.TextMetaAttributeGuid)
 				{
-					RoleValueRangeDefinition valueRangeDefn = e.ModelElement as RoleValueRangeDefinition;
+					RoleValueConstraint valueRangeDefn = e.ModelElement as RoleValueConstraint;
 					string newText = (string)e.NewValue;
 					if (newText.Length == 0)
 					{
@@ -710,9 +710,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion // RoleValueRangeDefinitionChangeRule class
+		#endregion // RoleValueConstraintChangeRule class
 	}
-	#endregion // RoleValueRangeDefinition class
+	#endregion // RoleValueConstraint class
 	/// <summary>
 	/// 
 	/// </summary>
@@ -740,13 +740,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ValueRangeDefinition defn = ValueRange.ValueRangeDefinition;
-			RoleValueRangeDefinition roleDefn;
-			ValueTypeValueRangeDefinition valueDefn;
+			ValueConstraint defn = ValueRange.ValueConstraint;
+			RoleValueConstraint roleDefn;
+			ValueTypeValueConstraint valueDefn;
 			string value = null;
 			string newText = null;
 			string currentText = Name;
-			if (null != (roleDefn = defn as RoleValueRangeDefinition))
+			if (null != (roleDefn = defn as RoleValueConstraint))
 			{
 				Role attachedRole = roleDefn.Role;
 				FactType roleFact = attachedRole.FactType;
@@ -755,7 +755,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string model = this.Model.Name;
 				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorRoleValueRangeMinValueMismatchError, model, name, index);
 			}
-			else if (null != (valueDefn = defn as ValueTypeValueRangeDefinition))
+			else if (null != (valueDefn = defn as ValueTypeValueConstraint))
 			{
 				value = valueDefn.ValueType.Name;
 				string model = this.Model.Name;
@@ -774,7 +774,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected ModelElement[] GetRepresentedElements()
 		{
-			return new ModelElement[] { this.ValueRange.ValueRangeDefinition };
+			return new ModelElement[] { this.ValueRange.ValueConstraint };
 		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
 		{
@@ -791,13 +791,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ValueRangeDefinition defn = ValueRange.ValueRangeDefinition;
-			RoleValueRangeDefinition roleDefn;
-			ValueTypeValueRangeDefinition valueDefn;
+			ValueConstraint defn = ValueRange.ValueConstraint;
+			RoleValueConstraint roleDefn;
+			ValueTypeValueConstraint valueDefn;
 			string value = null;
 			string newText = null;
 			string currentText = Name;
-			if (null != (roleDefn = defn as RoleValueRangeDefinition))
+			if (null != (roleDefn = defn as RoleValueConstraint))
 			{
 				Role attachedRole = roleDefn.Role;
 				FactType roleFact = attachedRole.FactType;
@@ -806,7 +806,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				string model = this.Model.Name;
 				newText = string.Format(CultureInfo.CurrentUICulture, ResourceStrings.ModelErrorRoleValueRangeMaxValueMismatchError, model, name, index);
 			}
-			else if (null != (valueDefn = defn as ValueTypeValueRangeDefinition))
+			else if (null != (valueDefn = defn as ValueTypeValueConstraint))
 			{
 				value = valueDefn.ValueType.Name;
 				string model = this.Model.Name;
@@ -823,7 +823,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns></returns>
 		protected ModelElement[] GetRepresentedElements()
 		{
-			return new ModelElement[] { this.ValueRange.ValueRangeDefinition };
+			return new ModelElement[] { this.ValueRange.ValueConstraint };
 		}
 		ModelElement[] IRepresentModelElements.GetRepresentedElements()
 		{

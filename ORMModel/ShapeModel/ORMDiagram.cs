@@ -202,7 +202,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (element is SingleColumnExternalConstraint ||
 					 element is MultiColumnExternalConstraint ||
-					 element is RoleHasValueRangeDefinition)
+					 element is RoleHasValueConstraint)
 			{
 				return true;
 			}

@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		OneToMany,
 	}
 	#endregion // RoleMultiplicity enum
-	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren
+	public partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent
 	{
 		#region CustomStorage handlers
 		/// <summary>
@@ -209,8 +209,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (attributeGuid == ValueRangeTextMetaAttributeGuid)
 			{
-				RoleValueRangeDefinition defn = ValueRangeDefinition;
-				return (defn == null) ? "" : defn.Text;
+				RoleValueConstraint valueConstraint = ValueConstraint;
+				return (valueConstraint == null) ? "" : valueConstraint.Text;
 			}
 			#region MandatoryConstraintModality
 			else if (attributeGuid == MandatoryConstraintModalityMetaAttributeGuid)
@@ -405,12 +405,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (attributeGuid == Role.ValueRangeTextMetaAttributeGuid)
 				{
 					Role role = e.ModelElement as Role;
-					RoleValueRangeDefinition defn = role.ValueRangeDefinition;
-					if (defn == null)
+					RoleValueConstraint valueConstraint = role.ValueConstraint;
+					if (valueConstraint == null)
 					{
-						role.ValueRangeDefinition = defn = RoleValueRangeDefinition.CreateRoleValueRangeDefinition(role.Store);
+						role.ValueConstraint = valueConstraint = RoleValueConstraint.CreateRoleValueConstraint(role.Store);
 					}
-					defn.Text = (string)e.NewValue;
+					valueConstraint.Text = (string)e.NewValue;
 				}
 				#region Handle IsMandatory attribute changes
 				else if (attributeGuid == Role.IsMandatoryMetaAttributeGuid)
@@ -816,7 +816,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						{
 							error.GenerateErrorText();
 						}
-						RoleValueRangeDefinition valueConstraint = currentRole.ValueRangeDefinition;
+						RoleValueConstraint valueConstraint = currentRole.ValueConstraint;
 						if (valueConstraint != null)
 						{
 							foreach (ValueRange range in valueConstraint.ValueRangeCollection)
@@ -902,6 +902,60 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // IRedirectVerbalization Implementation
+		#region INamedElementDictionaryParent implementation
+		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			return GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryParent.GetCounterpartRoleDictionary
+		/// </summary>
+		/// <param name="parentMetaRoleGuid">Guid</param>
+		/// <param name="childMetaRoleGuid">Guid</param>
+		/// <returns>Model-owned dictionary for constraints</returns>
+		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			if (parentMetaRoleGuid == RoleHasValueConstraint.RoleMetaRoleGuid)
+			{
+				FactType fact;
+				ORMModel model;
+				if ((null != (fact = FactType)) &&
+					(null != (model = fact.Model)))
+				{
+					return ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
+				}
+			}
+			return null;
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
+		/// </summary>
+		protected static object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			// Use the default settings (allow duplicates during load time only)
+			return null;
+		}
+		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			return GetAllowDuplicateNamesContextKey(parentMetaRoleGuid, childMetaRoleGuid);
+		}
+		#endregion // INamedElementDictionaryParent implementation
+		#region INamedElementDictionaryRemoteParent implementation
+		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { RoleHasValueConstraint.RoleMetaRoleGuid };
+		/// <summary>
+		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles. Identifies
+		/// this as a remote parent for the 'ModelHasConstraint' naming set.
+		/// </summary>
+		/// <returns>Guid for the ValueTypeHasValueConstraint.ValueType role</returns>
+		protected static Guid[] GetNamedElementDictionaryLinkRoles()
+		{
+			return myRemoteNamedElementDictionaryRoles;
+		}
+		Guid[] INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles()
+		{
+			return GetNamedElementDictionaryLinkRoles();
+		}
+		#endregion // INamedElementDictionaryRemoteParent implementation
 	}
 	public partial class RolePlayerRequiredError : IRepresentModelElements
 	{

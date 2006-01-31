@@ -55,8 +55,8 @@ namespace Neumont.Tools.ORM.Shell
 	<xsl:template match=""om:Property[@Name='Text']"">
 		<xsl:choose>
 			<xsl:when test=""parent::om:ModelElement[@Type='Neumont.Tools.ORM.ObjectModel.ValueRange']""/>
-			<xsl:when test=""parent::om:ModelElement[@Type='Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition']""/>
-			<xsl:when test=""parent::om:ModelElement[@Type='Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition']""/>
+			<xsl:when test=""parent::om:ModelElement[@Type='Neumont.Tools.ORM.ObjectModel.RoleValueConstraint']""/>
+			<xsl:when test=""parent::om:ModelElement[@Type='Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint']""/>
 			<xsl:otherwise>
 				<xsl:copy-of select="".""/>
 			</xsl:otherwise>

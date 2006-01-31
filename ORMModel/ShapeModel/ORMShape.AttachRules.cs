@@ -36,19 +36,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(RoleAdded),
 				typeof(RolePlayerAdded),
 				typeof(RoleRemoved),
-				typeof(RoleValueRangeDefinitionAdded),
-				typeof(RoleValueRangeDefinitionRemoved),
+				typeof(RoleValueConstraintAdded),
+				typeof(RoleValueConstraintRemoved),
 				typeof(SingleColumnExternalConstraintAdded),
-				typeof(ValueTypeValueRangeDefinitionAdded),
-				typeof(ValueTypeValueRangeDefinitionRemoved),
+				typeof(ValueTypeValueConstraintAdded),
+				typeof(ValueTypeValueConstraintRemoved),
 				typeof(ReadingShape).GetNestedType("ReadingOrderReadingTextChanged", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReadingShape).GetNestedType("ReadingOrderRemoved", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReadingShape).GetNestedType("ReadingTextChanged", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(RingConstraintShape).GetNestedType("RingConstraintAttributeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(RolePlayerLink).GetNestedType("RolePlayerRemoving", BindingFlags.Public | BindingFlags.NonPublic),
-				typeof(ValueRangeShape).GetNestedType("ValueRangeChanged", BindingFlags.Public | BindingFlags.NonPublic),
-				typeof(ValueRangeShape).GetNestedType("ValueRangeDefinitionAdded", BindingFlags.Public | BindingFlags.NonPublic),
-				typeof(ValueRangeShape).GetNestedType("ValueTypeHasDataTypeAdded", BindingFlags.Public | BindingFlags.NonPublic)};
+				typeof(ValueConstraintShape).GetNestedType("ValueRangeChanged", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ValueConstraintShape).GetNestedType("ValueConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ValueConstraintShape).GetNestedType("ValueTypeHasDataTypeAdded", BindingFlags.Public | BindingFlags.NonPublic)};
 			System.Diagnostics.Debug.Assert(!(((System.Collections.IList)retVal).Contains(null)), "One or more rule types failed to resolve. The file and/or package will fail to load.");
 			return retVal;
 		}

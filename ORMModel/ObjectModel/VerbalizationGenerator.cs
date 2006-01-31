@@ -3003,8 +3003,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // ExternalUniquenessConstraint verbalization
-	#region RoleValueRangeDefinition verbalization
-	public partial class RoleValueRangeDefinition : IVerbalize
+	#region RoleValueConstraint verbalization
+	public partial class RoleValueConstraint : IVerbalize
 	{
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
@@ -3260,9 +3260,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
 		}
 	}
-	#endregion // RoleValueRangeDefinition verbalization
-	#region ValueTypeValueRangeDefinition verbalization
-	public partial class ValueTypeValueRangeDefinition : IVerbalize
+	#endregion // RoleValueConstraint verbalization
+	#region ValueTypeValueConstraint verbalization
+	public partial class ValueTypeValueConstraint : IVerbalize
 	{
 		/// <summary>
 		/// IVerbalize.GetVerbalization implementation
@@ -3406,5 +3406,5 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return this.GetVerbalization(writer, snippets, beginVerbalization, isNegative);
 		}
 	}
-	#endregion // ValueTypeValueRangeDefinition verbalization
+	#endregion // ValueTypeValueConstraint verbalization
 }

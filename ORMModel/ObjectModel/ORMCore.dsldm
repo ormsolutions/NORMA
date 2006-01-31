@@ -815,15 +815,15 @@ Information Contained Herein is Proprietary and Confidential.
           </role>
         </roles>
       </relationship>
-      <relationship name="ValueTypeHasValueRangeDefinition" identity="1fa7d98b-ef7e-4dad-b5e7-94097daeb0f8" namespace="Neumont.Tools.ORM.ObjectModel" id="i1fa7d98bzef7ez4dadzb5e7z94097daeb0f8" isLoaded="true" isAbstract="false">
+      <relationship name="ValueTypeHasValueConstraint" identity="1fa7d98b-ef7e-4dad-b5e7-94097daeb0f8" namespace="Neumont.Tools.ORM.ObjectModel" id="i1fa7d98bzef7ez4dadzb5e7z94097daeb0f8" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
-          <role name="ValueRangeDefinition" identity="e96a260b-3621-44e6-ba61-9f1b8f929489" id="ie96a260bz3621z44e6zba61z9f1b8f929489" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="ValueConstraint" identity="e96a260b-3621-44e6-ba61-9f1b8f929489" id="ie96a260bz3621z44e6zba61z9f1b8f929489" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i910a08efze1a5z461azbebdz150932f12aad</source>
             <type>i05587b6czd9e7z4717zb20cz93b4c0f60c38</type>
-            <generatedProperty name="ValueRangeDefinition" identity="4276fa75-aa63-4305-844c-9a86ad1ce3c2">
+            <generatedProperty name="ValueConstraint" identity="4276fa75-aa63-4305-844c-9a86ad1ce3c2">
               <referenceType>i05587b6czd9e7z4717zb20cz93b4c0f60c38</referenceType>
             </generatedProperty>
           </role>
@@ -837,15 +837,15 @@ Information Contained Herein is Proprietary and Confidential.
           </role>
         </roles>
       </relationship>
-      <relationship name="RoleHasValueRangeDefinition" identity="45bc2557-b58c-44d6-81d1-f0f7ed6f524e" namespace="Neumont.Tools.ORM.ObjectModel" id="i45bc2557zb58cz44d6z81d1zf0f7ed6f524e" isLoaded="true" isAbstract="false">
+      <relationship name="RoleHasValueConstraint" identity="45bc2557-b58c-44d6-81d1-f0f7ed6f524e" namespace="Neumont.Tools.ORM.ObjectModel" id="i45bc2557zb58cz44d6z81d1zf0f7ed6f524e" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
-          <role name="ValueRangeDefinition" identity="a58e8573-d27a-4529-83d0-cb9a9cbb6f71" id="ia58e8573zd27az4529z83d0zcb9a9cbb6f71" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="ValueConstraint" identity="a58e8573-d27a-4529-83d0-cb9a9cbb6f71" id="ia58e8573zd27az4529z83d0zcb9a9cbb6f71" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i393d854fz34c5z4dc5z86c6z56816581b957</source>
             <type>i588ce2cez1025z4a7az8964z6d99ccb2d2aa</type>
-            <generatedProperty name="ValueRangeDefinition" identity="9772bb27-85e4-4b6b-8a2d-baa9ca2a75b5">
+            <generatedProperty name="ValueConstraint" identity="9772bb27-85e4-4b6b-8a2d-baa9ca2a75b5">
               <referenceType>i588ce2cez1025z4a7az8964z6d99ccb2d2aa</referenceType>
             </generatedProperty>
           </role>
@@ -859,7 +859,7 @@ Information Contained Herein is Proprietary and Confidential.
           </role>
         </roles>
       </relationship>
-      <relationship name="ValueRangeDefinitionHasValueRange" identity="26e66737-a802-457e-bb69-f19005fca896" namespace="Neumont.Tools.ORM.ObjectModel" id="i26e66737za802z457ezbb69zf19005fca896" isLoaded="true" isAbstract="false">
+      <relationship name="ValueConstraintHasValueRange" identity="26e66737-a802-457e-bb69-f19005fca896" namespace="Neumont.Tools.ORM.ObjectModel" id="i26e66737za802z457ezbb69zf19005fca896" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
@@ -871,11 +871,11 @@ Information Contained Herein is Proprietary and Confidential.
               <referenceType>i1d6eaad6z7c7fz4762z8e61z2755a063b2c2</referenceType>
             </generatedProperty>
           </role>
-          <role name="ValueRangeDefinition" identity="f406b051-c206-4535-8334-f39187e3362f" id="if406b051zc206z4535z8334zf39187e3362f" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="ValueConstraint" identity="f406b051-c206-4535-8334-f39187e3362f" id="if406b051zc206z4535z8334zf39187e3362f" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i1d6eaad6z7c7fz4762z8e61z2755a063b2c2</source>
             <type>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</type>
-            <generatedProperty name="ValueRangeDefinition" identity="dc31cb24-55f0-4f6c-9d44-c4c1aaca3364">
+            <generatedProperty name="ValueConstraint" identity="dc31cb24-55f0-4f6c-9d44-c4c1aaca3364">
               <referenceType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</referenceType>
             </generatedProperty>
           </role>
@@ -1388,6 +1388,27 @@ Information Contained Herein is Proprietary and Confidential.
           </role>
         </roles>
       </relationship>
+      <relationship name="ValueConstraintHasDuplicateNameError" identity="6dc7e1a9-206b-4a4e-9cdb-1872036a4025" namespace="Neumont.Tools.ORM.ObjectModel" id="i6dc7e1a9z206bz4a4ez9cdbz1872036a4025" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <roles>
+          <role name="DuplicateNameError" identity="8d5882fa-60f0-4c5b-8d57-727c5af15d53" id="i8d5882faz60f0z4c5bz8d57z727c5af15d53" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</source>
+            <type>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</type>
+            <generatedProperty name="DuplicateNameError" identity="3e280445-d918-4165-8f00-2e5fcf868594">
+              <referenceType>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="ValueConstraintCollection" identity="49832416-d3dd-4ce0-b930-3802e23d44a1" id="i49832416zd3ddz4ce0zb930z3802e23d44a1" min="1" max="0" isUnbounded="true" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i0ecf0d2dzb3a3z4652z9e77z48fa7765d08f</source>
+            <type>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</type>
+            <generatedProperty name="ValueConstraintCollection" identity="ed3e1f9c-84d9-47bc-bf92-acb032538191">
+              <referenceType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
     </relationships>
     <trees>
       <treenavigator name="intrinsic" identity="ba1d8762-3be9-41fa-b3ad-3a2bc978f8fe" id="iba1d8762z3be9z41fazb3adz3a2bc978f8fe">
@@ -1777,17 +1798,12 @@ Information Contained Herein is Proprietary and Confidential.
             <superType>ib5e86643zb849z47f8zafc8z70ace49cc51a</superType>
             <subType>i1d6eaad6z7c7fz4762z8e61z2755a063b2c2</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ValueRangeDefinition-ORMModelElement" identity="16f79edd-693a-463b-8609-56448caa0baa" id="i16f79eddz693az463bz8609z56448caa0baa" definitionlevel="none">
-            <source />
-            <superType>ib5e86643zb849z47f8zafc8z70ace49cc51a</superType>
-            <subType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</subType>
-          </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ValueTypeValueRangeDefinition-ValueRangeDefinition" identity="87b8151d-4e10-4812-8a90-a1f085810b76" id="i87b8151dz4e10z4812z8a90za1f085810b76" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ValueTypeValueConstraint-ValueConstraint" identity="87b8151d-4e10-4812-8a90-a1f085810b76" id="i87b8151dz4e10z4812z8a90za1f085810b76" definitionlevel="none">
             <source />
             <superType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</superType>
             <subType>i05587b6czd9e7z4717zb20cz93b4c0f60c38</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="RoleValueRangeDefinition-ValueRangeDefinition" identity="304e063a-f201-4acb-ba0e-6fd7704cffb0" id="i304e063azf201z4acbzba0ez6fd7704cffb0" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="RoleValueConstraint-ValueConstraint" identity="304e063a-f201-4acb-ba0e-6fd7704cffb0" id="i304e063azf201z4acbzba0ez6fd7704cffb0" definitionlevel="none">
             <source />
             <superType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</superType>
             <subType>i588ce2cez1025z4a7az8964z6d99ccb2d2aa</subType>
@@ -1972,17 +1988,17 @@ Information Contained Herein is Proprietary and Confidential.
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ic9aaf11fz827fz44bdz9933zccdbe24c65ee</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ValueTypeHasValueRangeDefinition-ORMElementLink" identity="409e5378-96e0-4196-8833-5e854f8b6bad" id="i409e5378z96e0z4196z8833z5e854f8b6bad" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ValueTypeHasValueConstraint-ORMElementLink" identity="409e5378-96e0-4196-8833-5e854f8b6bad" id="i409e5378z96e0z4196z8833z5e854f8b6bad" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i1fa7d98bzef7ez4dadzb5e7z94097daeb0f8</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="RoleHasValueRangeDefinition-ORMElementLink" identity="fea59740-b3b8-4df8-9bdb-4ff44ab66145" id="ifea59740zb3b8z4df8z9bdbz4ff44ab66145" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="RoleHasValueConstraint-ORMElementLink" identity="fea59740-b3b8-4df8-9bdb-4ff44ab66145" id="ifea59740zb3b8z4df8z9bdbz4ff44ab66145" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i45bc2557zb58cz44d6z81d1zf0f7ed6f524e</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ValueRangeDefinitionHasValueRange-ORMElementLink" identity="9900c5b2-2347-4051-b5ce-9770d2619fd9" id="i9900c5b2z2347z4051zb5cez9770d2619fd9" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ValueConstraintHasValueRange-ORMElementLink" identity="9900c5b2-2347-4051-b5ce-9770d2619fd9" id="i9900c5b2z2347z4051zb5cez9770d2619fd9" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i26e66737za802z457ezbb69zf19005fca896</subType>
@@ -2172,15 +2188,15 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <role>iee6e1fa4z7bcfz44a0za3faz57f7cc1deea9</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ValueTypeHasValueRangeDefinition.ValueRangeDefinition" identity="bb98380f-8bf4-4270-8bf9-9ab66d3c65c9" id="ibb98380fz8bf4z4270z8bf9z9ab66d3c65c9" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="ValueTypeHasValueConstraint.ValueConstraint" identity="bb98380f-8bf4-4270-8bf9-9ab66d3c65c9" id="ibb98380fz8bf4z4270z8bf9z9ab66d3c65c9" definitionlevel="none" containmentstyle="embedding">
             <source />
             <role>ie96a260bz3621z44e6zba61z9f1b8f929489</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="RoleHasValueRangeDefinition.ValueRangeDefinition" identity="6a486918-9bdc-43df-affe-1d5a35ce02f4" id="i6a486918z9bdcz43dfzaffez1d5a35ce02f4" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="RoleHasValueConstraint.ValueConstraint" identity="6a486918-9bdc-43df-affe-1d5a35ce02f4" id="i6a486918z9bdcz43dfzaffez1d5a35ce02f4" definitionlevel="none" containmentstyle="embedding">
             <source />
             <role>ia58e8573zd27az4529z83d0zcb9a9cbb6f71</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ValueRangeDefinitionHasValueRange.ValueRangeCollection" identity="e56d31db-c692-4aad-b215-050e372ba3ac" id="ie56d31dbzc692z4aadzb215z050e372ba3ac" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasValueRange.ValueRangeCollection" identity="e56d31db-c692-4aad-b215-050e372ba3ac" id="ie56d31dbzc692z4aadzb215z050e372ba3ac" definitionlevel="none" containmentstyle="embedding">
             <source />
             <role>ica257569zac45z47ebzb670z2efcbe637104</role>
           </treeExpression>
@@ -2395,6 +2411,15 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i9e0a3cd0zd451z407dz9611z0fb4cb820365</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ValueConstraint-ORMNamedElement" identity="75b4681d-4f32-4048-84e6-2bbfdd0d1b4a" id="i75b4681dz4f32z4048z84e6z2bbfdd0d1b4a" definitionlevel="none">
+            <source />
+            <superType>id18ac149z4ff4z433bzbc8ez440e96842cbb</superType>
+            <subType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasConstraintDuplicateNameError.ConstraintDuplicateNameError" identity="28177a8e-3631-4bd1-96fc-31cc9e5830ba" id="i28177a8ez3631z4bd1z96fcz31cc9e5830ba" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i8d5882faz60f0z4c5bz8d57z727c5af15d53</role>
           </treeExpression>
         </expressions>
         <roots />
@@ -2930,21 +2955,16 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <property>iac948ffbz8da6z4affzad60z40472c3cc868</property>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ValueRangeDefinition-ORMModelElement" identity="9a210025-d7a8-420f-8deb-7c179f8193c0" id="i9a210025zd7a8z420fz8debz7c179f8193c0" definitionlevel="definition">
-            <source>i16f79eddz693az463bz8609z56448caa0baa</source>
-            <superType>ib5e86643zb849z47f8zafc8z70ace49cc51a</superType>
-            <subType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</subType>
-          </treeExpression>
           <treeExpression xsi:type="ValuePropertyExpression" name="Text" identity="e1781780-a0a5-4ed5-aaeb-b793e6cac65c" id="ie1781780za0a5z4ed5zaaebzb793e6cac65c">
             <source />
             <property>ibcb9afd4z188cz4d98z9429z88544e85adaf</property>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ValueTypeValueRangeDefinition-ValueRangeDefinition" identity="07201fdf-b9f9-47a7-9f62-6300720630e9" id="i07201fdfzb9f9z47a7z9f62z6300720630e9" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="ValueTypeValueConstraint-ValueConstraint" identity="07201fdf-b9f9-47a7-9f62-6300720630e9" id="i07201fdfzb9f9z47a7z9f62z6300720630e9" definitionlevel="definition">
             <source>i87b8151dz4e10z4812z8a90za1f085810b76</source>
             <superType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</superType>
             <subType>i05587b6czd9e7z4717zb20cz93b4c0f60c38</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="RoleValueRangeDefinition-ValueRangeDefinition" identity="fe05903f-e288-403c-8c73-15ef36512905" id="ife05903fze288z403cz8c73z15ef36512905" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="RoleValueConstraint-ValueConstraint" identity="fe05903f-e288-403c-8c73-15ef36512905" id="ife05903fze288z403cz8c73z15ef36512905" definitionlevel="definition">
             <source>i304e063azf201z4acbzba0ez6fd7704cffb0</source>
             <superType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</superType>
             <subType>i588ce2cez1025z4a7az8964z6d99ccb2d2aa</subType>
@@ -3141,17 +3161,17 @@ Information Contained Herein is Proprietary and Confidential.
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>ic9aaf11fz827fz44bdz9933zccdbe24c65ee</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ValueTypeHasValueRangeDefinition-ORMElementLink" identity="d81ca378-046a-4549-840e-05aec599cc97" id="id81ca378z046az4549z840ez05aec599cc97" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="ValueTypeHasValueConstraint-ORMElementLink" identity="d81ca378-046a-4549-840e-05aec599cc97" id="id81ca378z046az4549z840ez05aec599cc97" definitionlevel="definition">
             <source>i409e5378z96e0z4196z8833z5e854f8b6bad</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i1fa7d98bzef7ez4dadzb5e7z94097daeb0f8</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="RoleHasValueRangeDefinition-ORMElementLink" identity="500f7e70-61ab-48f7-adf4-50ccb8830b09" id="i500f7e70z61abz48f7zadf4z50ccb8830b09" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="RoleHasValueConstraint-ORMElementLink" identity="500f7e70-61ab-48f7-adf4-50ccb8830b09" id="i500f7e70z61abz48f7zadf4z50ccb8830b09" definitionlevel="definition">
             <source>ifea59740zb3b8z4df8z9bdbz4ff44ab66145</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i45bc2557zb58cz44d6z81d1zf0f7ed6f524e</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ValueRangeDefinitionHasValueRange-ORMElementLink" identity="4ed9d060-74d9-487d-a85f-8c129a093f6a" id="i4ed9d060z74d9z487dza85fz8c129a093f6a" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="ValueConstraintHasValueRange-ORMElementLink" identity="4ed9d060-74d9-487d-a85f-8c129a093f6a" id="i4ed9d060z74d9z487dza85fz8c129a093f6a" definitionlevel="definition">
             <source>i9900c5b2z2347z4051zb5cez9770d2619fd9</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i26e66737za802z457ezbb69zf19005fca896</subType>
@@ -3341,15 +3361,15 @@ Information Contained Herein is Proprietary and Confidential.
             <source>ib7d2102cz3528z46b7zaea4z610613fd117a</source>
             <role>iee6e1fa4z7bcfz44a0za3faz57f7cc1deea9</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ValueTypeHasValueRangeDefinition.ValueRangeDefinition" identity="c20dc4f8-0833-44f1-8f2a-31302a49b559" id="ic20dc4f8z0833z44f1z8f2az31302a49b559" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="ValueTypeHasValueConstraint.ValueConstraint" identity="c20dc4f8-0833-44f1-8f2a-31302a49b559" id="ic20dc4f8z0833z44f1z8f2az31302a49b559" definitionlevel="use" containmentstyle="fromsource">
             <source>ibb98380fz8bf4z4270z8bf9z9ab66d3c65c9</source>
             <role>ie96a260bz3621z44e6zba61z9f1b8f929489</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="RoleHasValueRangeDefinition.ValueRangeDefinition" identity="893c0435-de5d-493e-be71-e556b1659e0a" id="i893c0435zde5dz493ezbe71ze556b1659e0a" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="RoleHasValueConstraint.ValueConstraint" identity="893c0435-de5d-493e-be71-e556b1659e0a" id="i893c0435zde5dz493ezbe71ze556b1659e0a" definitionlevel="use" containmentstyle="fromsource">
             <source>i6a486918z9bdcz43dfzaffez1d5a35ce02f4</source>
             <role>ia58e8573zd27az4529z83d0zcb9a9cbb6f71</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ValueRangeDefinitionHasValueRange.ValueRangeCollection" identity="d6fdc794-6a87-4af7-96ba-5a42dde83468" id="id6fdc794z6a87z4af7z96baz5a42dde83468" definitionlevel="definition" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasValueRange.ValueRangeCollection" identity="d6fdc794-6a87-4af7-96ba-5a42dde83468" id="id6fdc794z6a87z4af7z96baz5a42dde83468" definitionlevel="definition" containmentstyle="fromsource">
             <source>ie56d31dbzc692z4aadzb215z050e372ba3ac</source>
             <role>ica257569zac45z47ebzb670z2efcbe637104</role>
           </treeExpression>
@@ -3592,6 +3612,15 @@ Information Contained Herein is Proprietary and Confidential.
             <source>i73b5e6efzeb3bz4f78z92bbz3212e186bae8</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i9e0a3cd0zd451z407dz9611z0fb4cb820365</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ValueConstraint-ORMNamedElement" identity="fab99758-1f38-4c16-8df4-316dc14dc8f0" id="ifab99758z1f38z4c16z8df4z316dc14dc8f0" definitionlevel="definition">
+            <source>i75b4681dz4f32z4048z84e6z2bbfdd0d1b4a</source>
+            <superType>id18ac149z4ff4z433bzbc8ez440e96842cbb</superType>
+            <subType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasConstraintDuplicateNameError.ConstraintDuplicateNameError" identity="20ec985f-c9bb-47d8-8294-96dc000b5572" id="i20ec985fzc9bbz47d8z8294z96dc000b5572" definitionlevel="use" containmentstyle="fromsource">
+            <source>i28177a8ez3631z4bd1z96fcz31cc9e5830ba</source>
+            <role>i8d5882faz60f0z4c5bz8d57z727c5af15d53</role>
           </treeExpression>
         </expressions>
         <roots>
@@ -3898,27 +3927,27 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <role>iad65ad56z50e9z4485z8997zefbe76216174</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ValueTypeHasValueRangeDefinition.ValueRangeDefinition" identity="82d2ce7e-e0af-40a7-b46c-47afa047a40e" id="i82d2ce7eze0afz40a7zb46cz47afa047a40e" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="ValueTypeHasValueConstraint.ValueConstraint" identity="82d2ce7e-e0af-40a7-b46c-47afa047a40e" id="i82d2ce7eze0afz40a7zb46cz47afa047a40e" definitionlevel="none" containmentstyle="embedding">
             <source>ibb98380fz8bf4z4270z8bf9z9ab66d3c65c9</source>
             <role>ie96a260bz3621z44e6zba61z9f1b8f929489</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ValueTypeHasValueRangeDefinition.ValueType" identity="3b94d73c-915e-4211-9fb4-167ce6751515" id="i3b94d73cz915ez4211z9fb4z167ce6751515" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="ValueTypeHasValueConstraint.ValueType" identity="3b94d73c-915e-4211-9fb4-167ce6751515" id="i3b94d73cz915ez4211z9fb4z167ce6751515" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i46c627ddz36f8z4223zb6ffz8a7f015e77ac</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="RoleHasValueRangeDefinition.ValueRangeDefinition" identity="ff22efc0-79af-4798-87d6-2e6db774ebe4" id="iff22efc0z79afz4798z87d6z2e6db774ebe4" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="RoleHasValueConstraint.ValueConstraint" identity="ff22efc0-79af-4798-87d6-2e6db774ebe4" id="iff22efc0z79afz4798z87d6z2e6db774ebe4" definitionlevel="none" containmentstyle="embedding">
             <source>i6a486918z9bdcz43dfzaffez1d5a35ce02f4</source>
             <role>ia58e8573zd27az4529z83d0zcb9a9cbb6f71</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="RoleHasValueRangeDefinition.Role" identity="9fb22e16-0abd-4379-9095-eec282d6855a" id="i9fb22e16z0abdz4379z9095zeec282d6855a" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="RoleHasValueConstraint.Role" identity="9fb22e16-0abd-4379-9095-eec282d6855a" id="i9fb22e16z0abdz4379z9095zeec282d6855a" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i18050dbez6c56z4fe3z8427z14219ffec899</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ValueRangeDefinitionHasValueRange.ValueRangeCollection" identity="059645dc-2647-45c0-9ab5-5471c6593de1" id="i059645dcz2647z45c0z9ab5z5471c6593de1" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasValueRange.ValueRangeCollection" identity="059645dc-2647-45c0-9ab5-5471c6593de1" id="i059645dcz2647z45c0z9ab5z5471c6593de1" definitionlevel="none" containmentstyle="embedding">
             <source>ie56d31dbzc692z4aadzb215z050e372ba3ac</source>
             <role>ica257569zac45z47ebzb670z2efcbe637104</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ValueRangeDefinitionHasValueRange.ValueRangeDefinition" identity="71d39b6b-96ba-4485-b12b-8fddeaa5c1a1" id="i71d39b6bz96baz4485zb12bz8fddeaa5c1a1" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasValueRange.ValueConstraint" identity="71d39b6b-96ba-4485-b12b-8fddeaa5c1a1" id="i71d39b6bz96baz4485zb12bz8fddeaa5c1a1" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>if406b051zc206z4535z8334zf39187e3362f</role>
           </treeExpression>
@@ -4105,6 +4134,14 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="RoleExpression" name="RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraint" identity="3c9c92aa-2e25-497e-839f-f4e485811599" id="i3c9c92aaz2e25z497ez839fzf4e485811599" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i7c7dc555z457dz4391z9d6cza19f2b06c544</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasConstraintDuplicateNameError.ConstraintDuplicateNameError" identity="5d10773a-2e06-4ae7-9b11-3efe2fbe56e6" id="i5d10773az2e06z4ae7z9b11z3efe2fbe56e6" definitionlevel="none" containmentstyle="fromsource">
+            <source>i28177a8ez3631z4bd1z96fcz31cc9e5830ba</source>
+            <role>i8d5882faz60f0z4c5bz8d57z727c5af15d53</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasConstraintDuplicateNameError.ValueConstraint" identity="6b23847d-0f87-43ff-9250-08661b77c8bd" id="i6b23847dz0f87z43ffz9250z08661b77c8bd" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i49832416zd3ddz4ce0zb930z3802e23d44a1</role>
           </treeExpression>
         </expressions>
         <roots />
@@ -4694,17 +4731,17 @@ Information Contained Herein is Proprietary and Confidential.
           </property>
         </valueProperties>
       </concept>
-      <concept name="ValueTypeValueRangeDefinition" identity="05587b6c-d9e7-4717-b20c-93b4c0f60c38" namespace="Neumont.Tools.ORM.ObjectModel" id="i05587b6czd9e7z4717zb20cz93b4c0f60c38" isLoaded="true" isAbstract="false">
+      <concept name="ValueTypeValueConstraint" identity="05587b6c-d9e7-4717-b20c-93b4c0f60c38" namespace="Neumont.Tools.ORM.ObjectModel" id="i05587b6czd9e7z4717zb20cz93b4c0f60c38" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</superType>
       </concept>
-      <concept name="RoleValueRangeDefinition" identity="588ce2ce-1025-4a7a-8964-6d99ccb2d2aa" namespace="Neumont.Tools.ORM.ObjectModel" id="i588ce2cez1025z4a7az8964z6d99ccb2d2aa" isLoaded="true" isAbstract="false">
+      <concept name="RoleValueConstraint" identity="588ce2ce-1025-4a7a-8964-6d99ccb2d2aa" namespace="Neumont.Tools.ORM.ObjectModel" id="i588ce2cez1025z4a7az8964z6d99ccb2d2aa" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1</superType>
       </concept>
-      <concept name="ValueRangeDefinition" identity="48ce9fde-500d-4066-bdcb-bb3cf7fb72f1" namespace="Neumont.Tools.ORM.ObjectModel" id="i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1" isLoaded="true" isAbstract="false">
+      <concept name="ValueConstraint" identity="48ce9fde-500d-4066-bdcb-bb3cf7fb72f1" namespace="Neumont.Tools.ORM.ObjectModel" id="i48ce9fdez500dz4066zbdcbzbb3cf7fb72f1" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" classmodifier="abstract" />
-        <superType>ib5e86643zb849z47f8zafc8z70ace49cc51a</superType>
+        <superType>id18ac149z4ff4z433bzbc8ez440e96842cbb</superType>
         <valueProperties>
           <property name="Text" identity="bcb9afd4-188c-4d98-9429-88544e85adaf" id="ibcb9afd4z188cz4d98z9429z88544e85adaf">
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="" />

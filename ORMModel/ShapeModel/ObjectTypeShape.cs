@@ -232,14 +232,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		protected override bool ShouldAddShapeForElement(ModelElement element)
 		{
 #if DEBUG
-			//RoleValueRangeDefinitions added should be for a role opposite of
-			//this object's role player. The test below allows a RoleValueRangeDefinition
+			//RoleValueConstraints added should be for a role opposite of
+			//this object's role player. The test below allows a RoleValueConstraint
 			//to be added on the opposite role even if that opposite role is played
-			//by the same ObjectType as the RoleValueRangeDefinition's role (i.e. allows
+			//by the same ObjectType as the RoleValueConstraint's role (i.e. allows
 			//for ring constraints).
 			bool isRoleValueRangeDefn = false;
-			RoleValueRangeDefinition roleDefn;
-			if (null != (roleDefn = element as RoleValueRangeDefinition))
+			RoleValueConstraint roleDefn;
+			if (null != (roleDefn = element as RoleValueConstraint))
 			{
 				Role roleInDefn = roleDefn.Role;
 				FactType factType = roleInDefn.FactType;
@@ -256,7 +256,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 			Debug.Assert(
-				(element is ValueTypeValueRangeDefinition && ((ValueTypeValueRangeDefinition)element).ValueType == AssociatedObjectType) ||
+				(element is ValueTypeValueConstraint && ((ValueTypeValueConstraint)element).ValueType == AssociatedObjectType) ||
 				isRoleValueRangeDefn
 			);
 #endif // DEBUG
@@ -281,7 +281,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>RelationshipType.Relative</returns>
 		protected override RelationshipType ChooseRelationship(ShapeElement childShape)
 		{
-			Debug.Assert(childShape is ValueRangeShape);
+			Debug.Assert(childShape is ValueConstraintShape);
 			return RelationshipType.Relative;
 		}
 

@@ -18,8 +18,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				yield return new DisplayReadingsFixupListener();
 				yield return new DisplayExternalConstraintLinksFixupListener();
 				yield return new DisplaySubtypeLinkFixupListener();
-				yield return new DisplayRoleValueRangeDefinitionFixupListener();
-				yield return new DisplayValueTypeValueRangeDefinitionFixupListener();
+				yield return new DisplayRoleValueConstraintFixupListener();
+				yield return new DisplayValueTypeValueConstraintFixupListener();
 				yield return new EliminateOrphanedShapesFixupListener();
 			}
 		}

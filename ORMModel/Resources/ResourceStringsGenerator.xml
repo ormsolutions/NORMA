@@ -405,22 +405,22 @@
 	<ResourceString name="ModelErrorValueTypeDataTypeNotSpecifiedMessage" model="Model" resourceName="ModelError.ValueType.DataTypeNotSpecified.Message">
 		<comment type="summary">Text displayed for an unspecified data type.</comment>
 	</ResourceString>
-	<ResourceString name="ValueRangeDefinitionDefinitionContainerPattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern">
+	<ResourceString name="ValueConstraintDefinitionContainerPattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.DefinitionContainerPattern">
 		<comment type="summary">Pattern showing left- and right-string to use for containing a value range definition.</comment>
 	</ResourceString>
-	<ResourceString name="ValueRangeDefinitionRangeDelimiter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter">
+	<ResourceString name="ValueConstraintRangeDelimiter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.RangeDelimiter">
 		<comment type="summary">String used to delimit sets of value ranges in a definition.</comment>
 	</ResourceString>
-	<ResourceString name="ValueRangeDefinitionValueDelimiter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueDelimiter">
+	<ResourceString name="ValueConstraintValueDelimiter" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueDelimiter">
 		<comment type="summary">String used to delimit the min- and max-values of a value range.</comment>
 	</ResourceString>
-	<ResourceString name="ValueRangeDefinitionStringContainerPattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern">
+	<ResourceString name="ValueConstraintStringContainerPattern" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.StringContainerPattern">
 		<comment type="summary">Pattern showing left- and right-string to use for containing a value range as a string.</comment>
 	</ResourceString>
-	<ResourceString name="ValueRangeDefinitionOpenInclusionContainer" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern">
+	<ResourceString name="ValueConstraintOpenInclusionContainer" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.OpenInclusionPattern">
 		<comment type="summary">Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).</comment>
 	</ResourceString>
-	<ResourceString name="ValueRangeDefinitionClosedInclusionContainer" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern">
+	<ResourceString name="ValueConstraintClosedInclusionContainer" model="ObjectModel" resourceName="Neumont.Tools.ORM.ObjectModel.ValueConstraint.ClosedInclusionPattern">
 		<comment type="summary">Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).</comment>
 	</ResourceString>
 	<ResourceString name="ObjectTypeShapeIsIndependentReading" model="Diagram" resourceName="ObjectTypeShape.IsIndependentReading">

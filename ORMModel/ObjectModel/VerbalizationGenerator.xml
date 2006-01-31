@@ -520,7 +520,7 @@
 			</Constraint>
 			<!-- End External Uniqueness Constraint  -->
 			<!-- Begin Role Value Constraint -->
-			<Constraint patternGroup="RoleValueConstraint" type="RoleValueRangeDefinition">
+			<Constraint patternGroup="RoleValueConstraint" type="RoleValueConstraint">
 				<ConditionalSnippet>
 					<!-- Determine whether the range is degenerate. -->
 					<Snippet ref="SingleValueValueConstraint" conditionalMatch="IsSingleValue"/>
@@ -573,7 +573,7 @@
 			</Constraint>
 			<!-- End Role Value Constraint-->
 			<!-- Begin Value Type Value Constraint -->
-			<Constraint patternGroup="ValueTypeValueConstraint" type="ValueTypeValueRangeDefinition">
+			<Constraint patternGroup="ValueTypeValueConstraint" type="ValueTypeValueConstraint">
 				<ConditionalSnippet>
 					<!-- Determine whether the range is degenerate. -->
 					<Snippet ref="SingleValueValueConstraint" conditionalMatch="IsSingleValue"/>

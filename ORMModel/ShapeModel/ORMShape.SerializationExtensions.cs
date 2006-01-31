@@ -122,7 +122,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				classNameMap.Add("ObjectTypeShape", ObjectTypeShape.MetaClassGuid);
 				classNameMap.Add("ObjectifiedFactTypeNameShape", ObjectifiedFactTypeNameShape.MetaClassGuid);
 				classNameMap.Add("ReadingShape", ReadingShape.MetaClassGuid);
-				classNameMap.Add("ValueRangeShape", ValueRangeShape.MetaClassGuid);
+				classNameMap.Add("ValueRangeShape", ValueConstraintShape.MetaClassGuid);
 				ORMShapeModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -683,8 +683,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 	}
 	#endregion // ReadingShape serialization
-	#region ValueRangeShape serialization
-	public partial class ValueRangeShape : IORMCustomSerializedElement
+	#region ValueConstraintShape serialization
+	public partial class ValueConstraintShape : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -693,7 +693,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo;
+				return base.SupportedCustomSerializedOperations | (ORMCustomSerializedElementSupportedOperations.ElementInfo | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -704,11 +704,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
+		/// </summary>
+		protected new ORMCustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				return new ORMCustomSerializedElementInfo(null, "ValueRangeShape", null, ORMCustomSerializedElementWriteStyle.Element, null);
+			}
+		}
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedAttributeInfo
 		/// </summary>
 		protected new ORMCustomSerializedAttributeInfo GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
 		{
-			if (attributeInfo.Id == ValueRangeShape.ValueRangeTextMetaAttributeGuid)
+			if (attributeInfo.Id == ValueConstraintShape.ValueRangeTextMetaAttributeGuid)
 			{
 				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
 			}
@@ -723,5 +740,5 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return this.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);
 		}
 	}
-	#endregion // ValueRangeShape serialization
+	#endregion // ValueConstraintShape serialization
 }

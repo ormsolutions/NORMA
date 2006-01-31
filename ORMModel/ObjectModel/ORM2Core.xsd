@@ -486,6 +486,9 @@
 	<xs:complexType name="InternalConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF" />
 	</xs:complexType>
+	<xs:complexType name="ValueConstraintRef">
+		<xs:attribute name="ref" type="xs:IDREF" />
+	</xs:complexType>
 	<!-- end Multicolumn constraints-->
 	<!--Singlecolumn constraints-->
 	<xs:complexType name="SingleColumnExternalConstraint">
@@ -684,6 +687,7 @@
 								<xs:element name="MultiColumnConstraint" type="MultiColumnConstraintRef"/>
 								<xs:element name="SingleColumnConstraint" type="SingleColumnConstraintRef"/>
 								<xs:element name="InternalConstraint" type="InternalConstraintRef"/>
+								<xs:element name="ValueConstraint" type="ValueConstraintRef"/>
 							</xs:choice>
 						</xs:complexType>
 					</xs:element>
@@ -949,6 +953,7 @@
 					<xs:sequence>
 						<xs:element name="ValueRanges" type="ValueRangeCollection"/>
 					</xs:sequence>
+					<xs:attribute name="Name" type="xs:string" use="optional"/> <!-- UNDONE: Transitional, switch to required for new format -->
 					<xs:attribute name="id" type="xs:ID" use="required" />
 				</xs:complexType>
 			</xs:element>

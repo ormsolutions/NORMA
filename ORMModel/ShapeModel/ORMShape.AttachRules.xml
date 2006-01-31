@@ -26,18 +26,18 @@
 		<arg:Rule class="ORMShapeModel.RoleAdded"/>
 		<arg:Rule class="ORMShapeModel.RolePlayerAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleRemoved"/>
-		<arg:Rule class="ORMShapeModel.RoleValueRangeDefinitionAdded"/>
-		<arg:Rule class="ORMShapeModel.RoleValueRangeDefinitionRemoved"/>
+		<arg:Rule class="ORMShapeModel.RoleValueConstraintAdded"/>
+		<arg:Rule class="ORMShapeModel.RoleValueConstraintRemoved"/>
 		<arg:Rule class="ORMShapeModel.SingleColumnExternalConstraintAdded"/>
-		<arg:Rule class="ORMShapeModel.ValueTypeValueRangeDefinitionAdded"/>
-		<arg:Rule class="ORMShapeModel.ValueTypeValueRangeDefinitionRemoved"/>
+		<arg:Rule class="ORMShapeModel.ValueTypeValueConstraintAdded"/>
+		<arg:Rule class="ORMShapeModel.ValueTypeValueConstraintRemoved"/>
 		<arg:Rule class="ReadingShape.ReadingOrderReadingTextChanged"/>
 		<arg:Rule class="ReadingShape.ReadingOrderRemoved"/>
 		<arg:Rule class="ReadingShape.ReadingTextChanged"/>
 		<arg:Rule class="RingConstraintShape.RingConstraintAttributeChangeRule"/>
 		<arg:Rule class="RolePlayerLink.RolePlayerRemoving"/>
-		<arg:Rule class="ValueRangeShape.ValueRangeChanged"/>
-		<arg:Rule class="ValueRangeShape.ValueRangeDefinitionAdded"/>
-		<arg:Rule class="ValueRangeShape.ValueTypeHasDataTypeAdded"/>
+		<arg:Rule class="ValueConstraintShape.ValueRangeChanged"/>
+		<arg:Rule class="ValueConstraintShape.ValueConstraintAdded"/>
+		<arg:Rule class="ValueConstraintShape.ValueTypeHasDataTypeAdded"/>
 	</arg:Model>
 </arg:Rules>

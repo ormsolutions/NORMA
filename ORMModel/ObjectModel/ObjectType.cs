@@ -17,7 +17,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// <returns>true to continue iteration, false to stop</returns>
 	[CLSCompliant(true)]
 	public delegate bool ObjectTypeVisitor(ObjectType type);
-	public partial class ObjectType : INamedElementDictionaryChild, IModelErrorOwner
+	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner
 	{
 		#region Public token values
 		/// <summary>
@@ -112,8 +112,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (attributeGuid == ValueRangeTextMetaAttributeGuid)
 			{
-				ValueRangeDefinition defn = FindValueRangeDefinition(false);
-				return (defn == null) ? "" : defn.Text;
+				ValueConstraint valueConstraint = FindValueConstraint(false);
+				return (valueConstraint == null) ? "" : valueConstraint.Text;
 			}
 			return base.GetValueForCustomStoredAttribute(attribute);
 		}
@@ -582,13 +582,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Retrieves the ValueRangeDefinition to use for this ObjectType.
+		/// Retrieves the ValueConstraint to use for this ObjectType.
 		/// </summary>
-		/// <param name="autoCreate">If the ValueRangeDefinition is null, should one be created?
+		/// <param name="autoCreate">If the ValueConstraint is null, should one be created?
 		/// This should be false if we're simply reading the definition.</param>
-		/// <returns>For ObjectTypes with a ref mode, this returns the ValueRangeDefinition
+		/// <returns>For ObjectTypes with a ref mode, this returns the ValueConstraint
 		/// found on the ObjectType's preferred identifier role.</returns>
-		public ValueRangeDefinition FindValueRangeDefinition(bool autoCreate)
+		public ValueConstraint FindValueConstraint(bool autoCreate)
 		{
 			if (HasReferenceMode)
 			{
@@ -597,20 +597,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (roleCollection.Count == 1)
 				{
 					Role role = roleCollection[0];
-					RoleValueRangeDefinition defn = role.ValueRangeDefinition;
-					if (defn == null && autoCreate)
+					RoleValueConstraint roleValueConstraint = role.ValueConstraint;
+					if (roleValueConstraint == null && autoCreate)
 					{
-						role.ValueRangeDefinition = defn = RoleValueRangeDefinition.CreateRoleValueRangeDefinition(role.Store);
+						role.ValueConstraint = roleValueConstraint = RoleValueConstraint.CreateRoleValueConstraint(role.Store);
 					}
-					return defn as ValueRangeDefinition;
+					return roleValueConstraint as ValueConstraint;
 				}
 			}
-			ValueTypeValueRangeDefinition valueDefn = this.ValueRangeDefinition;
-			if (valueDefn == null && autoCreate)
+			ValueTypeValueConstraint valueConstraint = this.ValueConstraint;
+			if (valueConstraint == null && autoCreate)
 			{
-				this.ValueRangeDefinition = valueDefn = ValueTypeValueRangeDefinition.CreateValueTypeValueRangeDefinition(this.Store);
+				this.ValueConstraint = valueConstraint = ValueTypeValueConstraint.CreateValueTypeValueConstraint(this.Store);
 			}
-			return valueDefn as ValueRangeDefinition;
+			return valueConstraint as ValueConstraint;
 		}
 		#endregion // Customize property display
 		#region Subtype and Supertype routines
@@ -823,8 +823,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (attributeGuid == ObjectType.ValueRangeTextMetaAttributeGuid)
 				{
 					ObjectType objectType = e.ModelElement as ObjectType;
-					ValueRangeDefinition defn = objectType.FindValueRangeDefinition(true);
-					defn.Text = (string)e.NewValue;
+					ValueConstraint valueConstraint = objectType.FindValueConstraint(true);
+					valueConstraint.Text = (string)e.NewValue;
 				}
 			}
 			/// <summary>
@@ -941,6 +941,58 @@ namespace Neumont.Tools.ORM.ObjectModel
 			childMetaRoleGuid = ModelHasObjectType.ObjectTypeCollectionMetaRoleGuid;
 		}
 		#endregion // INamedElementDictionaryChild implementation
+		#region INamedElementDictionaryRemoteParent implementation
+		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid };
+		/// <summary>
+		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles. Identifies
+		/// this as a remote parent for the 'ModelHasConstraint' naming set.
+		/// </summary>
+		/// <returns>Guid for the ValueTypeHasValueConstraint.ValueType role</returns>
+		protected static Guid[] GetNamedElementDictionaryLinkRoles()
+		{
+			return myRemoteNamedElementDictionaryRoles;
+		}
+		Guid[] INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles()
+		{
+			return GetNamedElementDictionaryLinkRoles();
+		}
+		#endregion // INamedElementDictionaryRemoteParent implementation
+		#region INamedElementDictionaryParent implementation
+		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			return GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryParent.GetCounterpartRoleDictionary
+		/// </summary>
+		/// <param name="parentMetaRoleGuid">Guid</param>
+		/// <param name="childMetaRoleGuid">Guid</param>
+		/// <returns>Model-owned dictionary for constraints</returns>
+		public INamedElementDictionary GetCounterpartRoleDictionary(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			if (parentMetaRoleGuid == ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid)
+			{
+				ORMModel model = Model;
+				if (model != null)
+				{
+					return ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentMetaRoleGuid, childMetaRoleGuid);
+				}
+			}
+			return null;
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
+		/// </summary>
+		protected static object GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			// Use the default settings (allow duplicates during load time only)
+			return null;
+		}
+		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentMetaRoleGuid, Guid childMetaRoleGuid)
+		{
+			return GetAllowDuplicateNamesContextKey(parentMetaRoleGuid, childMetaRoleGuid);
+		}
+		#endregion // INamedElementDictionaryParent implementation
 		#region DataTypeNotSpecifiedError retrieval and validation
 		/// <summary>
 		/// Returns an error object if the data type is the unspecified data
@@ -1134,7 +1186,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					yield return requiredReferenceSchemeError;
 				}
 
-				ValueTypeValueRangeDefinition valueConstraint = ValueRangeDefinition;
+				ValueTypeValueConstraint valueConstraint = ValueConstraint;
 				if (valueConstraint != null)
 				{
 					foreach (ValueRange range in valueConstraint.ValueRangeCollection)

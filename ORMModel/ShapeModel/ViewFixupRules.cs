@@ -82,9 +82,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 									}
 									Diagram.FixUpDiagram(objectType.Model, valueType);
 									shapeElements.Add(parentDiagram.FindShapeForElement(valueType), moveValueType);
-									foreach (ValueTypeHasValueRangeDefinition link in valueType.GetElementLinks(ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid))
+									foreach (ValueTypeHasValueConstraint link in valueType.GetElementLinks(ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid))
 									{
-										FixupValueTypeValueRangeDefinitionLink(link, null);
+										FixupValueTypeValueConstraintLink(link, null);
 									}
 								}
 								else
@@ -110,15 +110,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 										RemoveShapesFromDiagram(link, parentDiagram);
 									}
 								}
-								foreach (RoleHasValueRangeDefinition link in role.GetElementLinks(RoleHasValueRangeDefinition.RoleMetaRoleGuid))
+								foreach (RoleHasValueConstraint link in role.GetElementLinks(RoleHasValueConstraint.RoleMetaRoleGuid))
 								{
 									if (turnOn)
 									{
-										FixupRoleValueRangeDefinitionLink(link, null);
+										FixupRoleValueConstraintLink(link, null);
 									}
 									else
 									{
-										FixupValueTypeValueRangeDefinitionLink(link, null);
+										FixupValueTypeValueConstraintLink(link, null);
 										RemoveShapesFromDiagram(link, parentDiagram);
 									}
 								}
@@ -423,67 +423,68 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ObjectTypePlaysRole fixup
-		#region RoleHasValueRangeDefinition fixup
-		#region RoleValueRangeDefinitionAdded class
-		[RuleOn(typeof(RoleHasValueRangeDefinition), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class RoleValueRangeDefinitionAdded : AddRule
+		#region RoleHasValueConstraint fixup
+		#region RoleValueConstraintAdded class
+		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
+		private class RoleValueConstraintAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				RoleHasValueRangeDefinition link = e.ModelElement as RoleHasValueRangeDefinition;
+				RoleHasValueConstraint link = e.ModelElement as RoleHasValueConstraint;
 				if (link != null)
 				{
 					Role r = link.Role;
 					FactType factType = r.FactType;
 					IList links = factType.GetElementLinks(SubjectHasPresentation.SubjectMetaRoleGuid);
 					//If the factType has no presentation elements, it must be hidden. In which case,
-					//we need to fixup the ValueTypeValueRangeDefinition with this link.
+					//we need to fixup the ValueTypeValueConstraint with this link.
 					if (links.Count > 0)
 					{
-						FixupRoleValueRangeDefinitionLink(link, null);
+						FixupRoleValueConstraintLink(link, null);
 					}
 					else
 					{
-						FixupValueTypeValueRangeDefinitionLink(link, null);
+						FixupValueTypeValueConstraintLink(link, null);
 					}
 				}
 			}
 		}
-		#endregion // RoleValueRangeDefinitionAdded class
-		#region DisplayValueRangeDefinitionFixupListener class
+		#endregion // RoleValueConstraintAdded class
+		#region DisplayValueConstraintFixupListener class
 		/// <summary>
 		/// A fixup class to display role player links
 		/// </summary>
-		private class DisplayRoleValueRangeDefinitionFixupListener : DeserializationFixupListener<RoleHasValueRangeDefinition>
+		private class DisplayRoleValueConstraintFixupListener : DeserializationFixupListener<RoleHasValueConstraint>
 		{
 			/// <summary>
-			/// Create a new DisplayValueRangeDefinitionFixupListener
+			/// Create a new DisplayValueConstraintFixupListener
 			/// </summary>
-			public DisplayRoleValueRangeDefinitionFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			public DisplayRoleValueConstraintFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
 			{
 			}
 			/// <summary>
 			/// Add value range links when possible
 			/// </summary>
-			/// <param name="element">A RoleHasValueRangeDefinition instance</param>
+			/// <param name="element">A RoleHasValueConstraint instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(RoleHasValueRangeDefinition element, Store store, INotifyElementAdded notifyAdded)
+			protected override void ProcessElement(RoleHasValueConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
-				FixupRoleValueRangeDefinitionLink(element, notifyAdded);
+				FixupRoleValueConstraintLink(element, notifyAdded);
 			}
 		}
-		#endregion // DisplayValueRangeDefinitionFixupListener class
-		#region RoleValueRangeDefinitionRemoved class
-		[RuleOn(typeof(RoleHasValueRangeDefinition), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class RoleValueRangeDefinitionRemoved : RemoveRule
+		#endregion // DisplayValueConstraintFixupListener class
+		#region RoleValueConstraintRemoved class
+		[RuleOn(typeof(RoleHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
+		private class RoleValueConstraintRemoved : RemoveRule
 		{
 			/// <summary>
 			/// Remove presentation elements when the associated ValueRange link is removed
 			/// </summary>
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				RoleHasValueRangeDefinition link = e.ModelElement as RoleHasValueRangeDefinition;
+				RoleHasValueConstraint link = e.ModelElement as RoleHasValueConstraint;
 				if (link != null)
 				{
 					// This will fire the PresentationLinkRemoved rule
@@ -491,17 +492,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // RoleValueRangeDefinitionRemoved class
+		#endregion // RoleValueConstraintRemoved class
 		/// <summary>
 		/// Helper function to display role player links.
 		/// </summary>
-		/// <param name="link">A RoleHasValueRangeDefinition element</param>
+		/// <param name="link">A RoleHasValueConstraint element</param>
 		/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-		private static void FixupRoleValueRangeDefinitionLink(RoleHasValueRangeDefinition link, INotifyElementAdded notifyAdded)
+		private static void FixupRoleValueConstraintLink(RoleHasValueConstraint link, INotifyElementAdded notifyAdded)
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			RoleValueRangeDefinition roleValueRangeDefn = link.ValueRangeDefinition;
+			RoleValueConstraint roleValueRangeDefn = link.ValueConstraint;
 			Role role = roleValueRangeDefn.Role;
 			FactType factType = role.FactType;
 			if (factType != null)
@@ -518,56 +519,57 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // RoleHasValueRangeDefinition fixup
-		#region ValueTypeHasValueRangeDefinition fixup
-		#region ValueRangeDefinitionAdded class
-		[RuleOn(typeof(ValueTypeHasValueRangeDefinition), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class ValueTypeValueRangeDefinitionAdded : AddRule
+		#endregion // RoleHasValueConstraint fixup
+		#region ValueTypeHasValueConstraint fixup
+		#region ValueConstraintAdded class
+		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
+		private class ValueTypeValueConstraintAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ValueTypeHasValueRangeDefinition link = e.ModelElement as ValueTypeHasValueRangeDefinition;
+				ValueTypeHasValueConstraint link = e.ModelElement as ValueTypeHasValueConstraint;
 				if (link != null)
 				{
-					FixupValueTypeValueRangeDefinitionLink(link, null);
+					FixupValueTypeValueConstraintLink(link, null);
 				}
 			}
 		}
-		#endregion // ValueTypeValueRangeDefinitionAdded class
-		#region DisplayValueTypeValueRangeDefinitionFixupListener class
+		#endregion // ValueTypeValueConstraintAdded class
+		#region DisplayValueTypeValueConstraintFixupListener class
 		/// <summary>
 		/// A fixup class to display role player links
 		/// </summary>
-		private class DisplayValueTypeValueRangeDefinitionFixupListener : DeserializationFixupListener<ValueTypeHasValueRangeDefinition>
+		private class DisplayValueTypeValueConstraintFixupListener : DeserializationFixupListener<ValueTypeHasValueConstraint>
 		{
 			/// <summary>
-			/// Create a new DisplayValueRangeDefinitionFixupListener
+			/// Create a new DisplayValueConstraintFixupListener
 			/// </summary>
-			public DisplayValueTypeValueRangeDefinitionFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			public DisplayValueTypeValueConstraintFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
 			{
 			}
 			/// <summary>
 			/// Add value range links when possible
 			/// </summary>
-			/// <param name="element">A RoleHasValueRangeDefinition instance</param>
+			/// <param name="element">A RoleHasValueConstraint instance</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected override void ProcessElement(ValueTypeHasValueRangeDefinition element, Store store, INotifyElementAdded notifyAdded)
+			protected override void ProcessElement(ValueTypeHasValueConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
-				FixupValueTypeValueRangeDefinitionLink(element, notifyAdded);
+				FixupValueTypeValueConstraintLink(element, notifyAdded);
 			}
 		}
-		#endregion // DisplayValueTypeValueRangeDefinitionFixupListener class
-		#region ValueTypeValueRangeDefinitionRemoved class
-		[RuleOn(typeof(ValueTypeHasValueRangeDefinition), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class ValueTypeValueRangeDefinitionRemoved : RemoveRule
+		#endregion // DisplayValueTypeValueConstraintFixupListener class
+		#region ValueTypeValueConstraintRemoved class
+		[RuleOn(typeof(ValueTypeHasValueConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
+		private class ValueTypeValueConstraintRemoved : RemoveRule
 		{
 			/// <summary>
 			/// Remove presentation elements when the associated ValueRange link is removed
 			/// </summary>
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
-				ValueTypeHasValueRangeDefinition link = e.ModelElement as ValueTypeHasValueRangeDefinition;
+				ValueTypeHasValueConstraint link = e.ModelElement as ValueTypeHasValueConstraint;
 				if (link != null)
 				{
 					// This will fire the PresentationLinkRemoved rule
@@ -575,17 +577,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		#endregion // ValueTypeValueRangeDefinitionRemoved class
+		#endregion // ValueTypeValueConstraintRemoved class
 		/// <summary>
 		/// Helper function to display value type value ranges.
 		/// </summary>
-		/// <param name="link">A ValueTypeHasValueRangeDefinition element</param>
+		/// <param name="link">A ValueTypeHasValueConstraint element</param>
 		/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-		private static void FixupValueTypeValueRangeDefinitionLink(ValueTypeHasValueRangeDefinition link, INotifyElementAdded notifyAdded)
+		private static void FixupValueTypeValueConstraintLink(ValueTypeHasValueConstraint link, INotifyElementAdded notifyAdded)
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			ValueTypeValueRangeDefinition valueTypeValueRangeDefn = link.ValueRangeDefinition;
+			ValueTypeValueConstraint valueTypeValueRangeDefn = link.ValueConstraint;
 			ObjectType objectType = valueTypeValueRangeDefn.ValueType;
 			if (objectType != null)
 			{
@@ -604,13 +606,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Helper function to display value type value ranges.
 		/// </summary>
-		/// <param name="link">A ValueTypeHasValueRangeDefinition element</param>
+		/// <param name="link">A ValueTypeHasValueConstraint element</param>
 		/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-		private static void FixupValueTypeValueRangeDefinitionLink(RoleHasValueRangeDefinition link, INotifyElementAdded notifyAdded)
+		private static void FixupValueTypeValueConstraintLink(RoleHasValueConstraint link, INotifyElementAdded notifyAdded)
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			RoleValueRangeDefinition roleValueRangeDefn = link.ValueRangeDefinition;
+			RoleValueConstraint roleValueRangeDefn = link.ValueConstraint;
 			Role role = roleValueRangeDefn.Role;
 			FactType factType = role.FactType;
 			ObjectType objectType = null;
@@ -636,7 +638,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 
-		#endregion // ValueTypeHasValueRangeDefinition fixup
+		#endregion // ValueTypeHasValueConstraint fixup
 		#region ExternalFactConstraint fixup
 		#region ExternalFactConstraintAdded class
 		[RuleOn(typeof(ExternalFactConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]

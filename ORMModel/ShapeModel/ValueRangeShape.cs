@@ -11,7 +11,7 @@ using Neumont.Tools.ORM.Shell;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	public partial class ValueRangeShape : IModelErrorActivation
+	public partial class ValueConstraintShape : IModelErrorActivation
 	{
 		private static AutoSizeTextField myTextShapeField;
 		private string myDisplayText;
@@ -67,13 +67,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Get the ValueRangeDefinition associated with this shape
+		/// Get the ValueConstraint associated with this shape
 		/// </summary>s
-		public ValueRangeDefinition AssociatedRangeDefinition
+		public ValueConstraint AssociatedValueConstraint
 		{
 			get
 			{
-				return ModelElement as ValueRangeDefinition;
+				return ModelElement as ValueConstraint;
 			}
 		}
 		/// <summary>
@@ -131,19 +131,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		/// <summary>
 		/// Invalidate the display text on all presentation role players associated
-		/// with the given ValueRangeDefinition.
+		/// with the given ValueConstraint.
 		/// </summary>
-		/// <param name="e">The ValueRangeDefinition to update.</param>
+		/// <param name="e">The ValueConstraint to update.</param>
 		protected static void UpdatePresentationRolePlayers(ModelElement e)
 		{
 			if (e != null && !e.IsRemoved)
 			{
 				foreach (ShapeElement pel in e.PresentationRolePlayers)
 				{
-					ValueRangeShape valueRangeShape = pel as ValueRangeShape;
-					if (valueRangeShape != null)
+					ValueConstraintShape valueConstraintShape = pel as ValueConstraintShape;
+					if (valueConstraintShape != null)
 					{
-						valueRangeShape.InvalidateDisplayText();
+						valueConstraintShape.InvalidateDisplayText();
 					}
 				}
 			}
@@ -160,7 +160,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				String retval = null;
 				if (myDisplayText == null)
 				{
-					ValueRangeDefinition defn = this.ModelElement as ValueRangeDefinition;
+					ValueConstraint defn = this.ModelElement as ValueConstraint;
 					Debug.Assert(defn != null);
 					retval = defn.Text;
 					myDisplayText = retval;
@@ -175,7 +175,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // properties
 		#region change rules
 		/// <summary>
-		/// Rule to update an associated ValueRangeShape when a DataType is added (or changed).
+		/// Rule to update an associated ValueConstraintShape when a DataType is added (or changed).
 		/// </summary>
 		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
 		private class ValueTypeHasDataTypeAdded : AddRule
@@ -185,7 +185,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				base.ElementAdded(e);
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
 				ObjectType objectType = link.ValueTypeCollection;
-				ValueRangeDefinition defn = objectType.ValueRangeDefinition;
+				ValueConstraint defn = objectType.ValueConstraint;
 				//Update the display on the objectType
 				UpdatePresentationRolePlayers(defn);
 				//Update the display on any attached roles
@@ -193,7 +193,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					foreach (Role r in objectType.PlayedRoleCollection)
 					{
-						defn = r.ValueRangeDefinition;
+						defn = r.ValueConstraint;
 						UpdatePresentationRolePlayers(defn);
 					}
 				}
@@ -208,7 +208,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			/// <summary>
 			/// Notice when the Min or Max attributes are changed and invalidate
-			/// display text of the ValueRangeShapes.
+			/// display text of the ValueConstraintShapes.
 			/// </summary>
 			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
 			{
@@ -218,27 +218,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (attrId == ValueRange.MaxValueMetaAttributeGuid ||
 					attrId == ValueRange.MinValueMetaAttributeGuid)
 				{
-					Debug.Assert(valueRange.ValueRangeDefinition != null);
-					ValueRangeDefinition defn = valueRange.ValueRangeDefinition;
+					Debug.Assert(valueRange.ValueConstraint != null);
+					ValueConstraint defn = valueRange.ValueConstraint;
 					UpdatePresentationRolePlayers(defn);
 				}
 			}
 		}
 		/// <summary>
-		/// Rule to notice the addition of ValueRangeDefinitionHasValueRange links so that the
+		/// Rule to notice the addition of ValueConstraintHasValueRange links so that the
 		/// value range shapes can have their display text invalidated.
 		/// </summary>
-		[RuleOn(typeof(ValueRangeDefinitionHasValueRange), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
-		private class ValueRangeDefinitionAdded : AddRule
+		[RuleOn(typeof(ValueConstraintHasValueRange), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class ValueConstraintAdded : AddRule
 		{
 			/// <summary>
-			/// Notice when the ValueRangeDefinitionHasValueRange link is added
-			/// and invalidate display text of the ValueRangeShapes.
+			/// Notice when the ValueConstraintHasValueRange link is added
+			/// and invalidate display text of the ValueConstraintShapes.
 			/// </summary>
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ValueRangeDefinitionHasValueRange link = e.ModelElement as ValueRangeDefinitionHasValueRange;
-				ValueRangeDefinition defn = link.ValueRangeDefinition;
+				ValueConstraintHasValueRange link = e.ModelElement as ValueConstraintHasValueRange;
+				ValueConstraint defn = link.ValueConstraint;
 				UpdatePresentationRolePlayers(defn);
 			}
 		}
@@ -270,31 +270,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 	public class ValueRangeAutoSizeTextField : AutoSizeTextField
 	{
 		/// <summary>
-		/// Code that handles retrieval of the text to display in ValueRangeShape.
+		/// Code that handles retrieval of the text to display in ValueConstraintShape.
 		/// </summary>
 		public override string GetDisplayText(ShapeElement parentShape)
 		{
 			string retval = null;
-			ValueRangeShape parentValueRangeShape = parentShape as ValueRangeShape;
+			ValueConstraintShape parentValueConstraintShape = parentShape as ValueConstraintShape;
 			if (parentShape is ObjectTypeShape)
 			{
 				PresentationElementMoveableCollection pelList = parentShape.PresentationRolePlayers;
 				foreach (ShapeElement pel in pelList)
 				{
-					ValueRangeShape valueRangeShape = pel as ValueRangeShape;
-					if (valueRangeShape != null)
+					ValueConstraintShape valueConstraintShape = pel as ValueConstraintShape;
+					if (valueConstraintShape != null)
 					{
-						parentValueRangeShape = valueRangeShape;
+						parentValueConstraintShape = valueConstraintShape;
 					}
 				}
 			}
-			if (parentValueRangeShape == null)
+			if (parentValueConstraintShape == null)
 			{
 				retval = base.GetDisplayText(parentShape);
 			}
 			else
 			{
-				retval = parentValueRangeShape.DisplayText;
+				retval = parentValueConstraintShape.DisplayText;
 			}
 			return retval;
 		}

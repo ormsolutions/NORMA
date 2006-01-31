@@ -216,9 +216,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresReadingError.ReadingRequiredErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ModelHasDataType.DataTypeCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid);
-			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
-			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
-			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorMetaRoleGuid);
@@ -451,6 +451,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.CustomReferenceModeElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ORMModel),
 				typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraintElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.RoleValueConstraint),
+				typeof(Neumont.Tools.ORM.ObjectModel.RoleValueConstraintElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ORMModelElement),
 				typeof(Neumont.Tools.ORM.ObjectModel.DataType),
 				typeof(Neumont.Tools.ORM.ObjectModel.UnspecifiedDataType),
@@ -511,11 +516,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRange),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition),
-				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition),
-				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinitionElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition),
-				typeof(Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinitionElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ORMElementLink),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataTypeElementFactoryCreator),
@@ -588,12 +588,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ModelHasDataTypeElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError),
 				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintErrorElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition),
-				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinitionElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition),
-				typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinitionElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange),
-				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRangeElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraintElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint),
+				typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraintElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRangeElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError),
@@ -641,6 +641,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError),
 				typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError),
+				typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameErrorElementFactoryCreator),
 
 			};
 			return typeArray;
@@ -694,6 +696,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKind), "ReferenceModeType", Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeTypeMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKind.ReferenceModeKindReferenceModeTypeFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ReferenceMode), "KindDisplay", Neumont.Tools.ORM.ObjectModel.ReferenceMode.KindDisplayMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ReferenceMode.ReferenceModeKindDisplayFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.CustomReferenceMode), "CustomFormatString", Neumont.Tools.ORM.ObjectModel.CustomReferenceMode.CustomFormatStringMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.CustomReferenceMode.CustomReferenceModeCustomFormatStringFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint), "Text", Neumont.Tools.ORM.ObjectModel.ValueConstraint.TextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueConstraintTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Reading), "Text", Neumont.Tools.ORM.ObjectModel.Reading.TextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Reading.ReadingTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Reading), "IsPrimary", Neumont.Tools.ORM.ObjectModel.Reading.IsPrimaryMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Reading.ReadingIsPrimaryFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Reading), "Language", Neumont.Tools.ORM.ObjectModel.Reading.LanguageMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Reading.ReadingLanguageFieldHandler)),
@@ -703,7 +706,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRange), "Text", Neumont.Tools.ORM.ObjectModel.ValueRange.TextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueRange.ValueRangeTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRange), "MinInclusion", Neumont.Tools.ORM.ObjectModel.ValueRange.MinInclusionMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueRange.ValueRangeMinInclusionFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRange), "MaxInclusion", Neumont.Tools.ORM.ObjectModel.ValueRange.MaxInclusionMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueRange.ValueRangeMaxInclusionFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition), "Text", Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.TextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueRangeDefinitionTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "Scale", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ScaleMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeHasDataTypeScaleFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "Length", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.LengthMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeHasDataTypeLengthFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation), "IsStored", Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.IsStoredMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.FactTypeDerivationIsStoredFieldHandler)),
@@ -796,12 +798,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ModelHasDataType), "Model", Neumont.Tools.ORM.ObjectModel.ModelHasDataType.ModelMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError), "InternalUniquenessConstraintRequiredError", Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.InternalUniquenessConstraintRequiredErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError), "FactType", Neumont.Tools.ORM.ObjectModel.FactTypeHasFactTypeRequiresInternalUniquenessConstraintError.FactTypeMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition), "ValueRangeDefinition", Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition), "ValueType", Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition), "ValueRangeDefinition", Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition), "Role", Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange), "ValueRangeCollection", Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange), "ValueRangeDefinition", Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint), "ValueConstraint", Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint), "ValueType", Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), "ValueConstraint", Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), "Role", Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.RoleMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange), "ValueRangeCollection", Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange), "ValueConstraint", Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError), "DataTypeNotSpecifiedError", Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.DataTypeNotSpecifiedErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError), "ValueTypeHasDataType", Neumont.Tools.ORM.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.ValueTypeHasDataTypeMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError), "CompatibleRolePlayerTypeErrorCollection", Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraintHasCompatibleRolePlayerTypeError.CompatibleRolePlayerTypeErrorCollectionMetaRoleGuid),
@@ -848,6 +850,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError), "ValueRange", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.ValueRangeMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError), "FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection", Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError), "FactType", Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FactTypeMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError), "DuplicateNameError", Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError), "ValueConstraintCollection", Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.ValueConstraintCollectionMetaRoleGuid),
 
 			};
 			return typeArray;
@@ -2311,29 +2315,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-		#region ValueRangeDefinition's Generated Accessor Code
+		#region ValueConstraint's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition ValueRangeDefinition
+		public Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint ValueConstraint
 		{
 			get
 			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition;
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint;
 			}
 			set
 			{
 				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid);
 				if (links.Count > 0)
 				{
 					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid);
 					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 					{
 						if (!link.IsRemoved)
 						{
-							Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition;
+							Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint;
 							if (counterpart != null && object.ReferenceEquals(counterpart, value))
 							{
 								sameRolePlayer = true;
@@ -2349,9 +2353,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if ((!sameRolePlayer) && (value != null))
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint), newRoles);
 				}
 			}
 		}
@@ -6026,29 +6030,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get { return new Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.RoleCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid); }
 		}
 		#endregion
-		#region ValueRangeDefinition's Generated Accessor Code
+		#region ValueConstraint's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition ValueRangeDefinition
+		public Neumont.Tools.ORM.ObjectModel.RoleValueConstraint ValueConstraint
 		{
 			get
 			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition;
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.RoleMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.RoleValueConstraint;
 			}
 			set
 			{
 				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.RoleMetaRoleGuid);
 				if (links.Count > 0)
 				{
 					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintMetaRoleGuid);
 					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 					{
 						if (!link.IsRemoved)
 						{
-							Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition;
+							Neumont.Tools.ORM.ObjectModel.RoleValueConstraint counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.RoleValueConstraint;
 							if (counterpart != null && object.ReferenceEquals(counterpart, value))
 							{
 								sameRolePlayer = true;
@@ -6064,9 +6068,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if ((!sameRolePlayer) && (value != null))
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.RoleMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), newRoles);
 				}
 			}
 		}
@@ -11675,6 +11679,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get { return new Neumont.Tools.ORM.ObjectModel.InternalConstraintMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.InternalConstraintCollectionMetaRoleGuid); }
 		}
 		#endregion
+		#region ValueConstraintCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ValueConstraintMoveableCollection ValueConstraintCollection
+		{
+			get { return new Neumont.Tools.ORM.ObjectModel.ValueConstraintMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.ValueConstraintCollectionMetaRoleGuid); }
+		}
+		#endregion
 	}
 	#region ConstraintDuplicateNameError's Generated Constructor Code
 	public  partial class ConstraintDuplicateNameError
@@ -17162,6 +17175,834 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueConstraint.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.ValueConstraint")]
+	public abstract partial class ValueConstraint : Neumont.Tools.ORM.ObjectModel.ORMNamedElement
+	{
+		#region ValueConstraint's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "48ce9fde-500d-4066-bdcb-bb3cf7fb72f1";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueConstraint.MetaClassGuidString);
+		#endregion
+
+		#region Text's Generated  Field Code
+		#region Text's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String TextMetaAttributeGuidString = "bcb9afd4-188c-4d98-9429-88544e85adaf";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid TextMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueConstraint.TextMetaAttributeGuidString);
+		#endregion
+
+		#region Text's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ValueConstraintTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueConstraint.TextMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.Text")]
+		public  System.String Text
+		{
+			get
+			{
+				return valueConstraintTextFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				valueConstraintTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ValueConstraintTextFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ValueConstraint.Text field
+		/// </summary>
+		private static ValueConstraintTextFieldHandler	valueConstraintTextFieldHandler	= ValueConstraintTextFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ValueConstraint.Text
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ValueConstraintTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Neumont.Tools.ORM.ObjectModel.ValueConstraint,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ValueConstraintTextFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ValueConstraint.Text field handler
+			/// </summary>
+			/// <value>ValueConstraintTextFieldHandler</value>
+			public static ValueConstraintTextFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.ValueConstraint.valueConstraintTextFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.ValueConstraint.valueConstraintTextFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ValueConstraint will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.ValueConstraint.valueConstraintTextFieldHandler, so just instantiate one and return it
+						return new ValueConstraintTextFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ValueConstraint.Text field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.ValueConstraint.TextMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+		#region ValueRangeCollection's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ValueRangeMoveableCollection ValueRangeCollection
+		{
+			get { return new Neumont.Tools.ORM.ObjectModel.ValueRangeMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuid); }
+		}
+		#endregion
+		#region DuplicateNameError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ConstraintDuplicateNameError DuplicateNameError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.ValueConstraintCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ConstraintDuplicateNameError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.ValueConstraintCollectionMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.ConstraintDuplicateNameError counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ConstraintDuplicateNameError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.ValueConstraintCollectionMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region Collection Classes for ValueConstraint
+	/// <summary>
+	/// Neumont.Tools.ORM.ObjectModel.ValueConstraint Collection class, strongly-typed collection
+	/// </summary>
+	[System.CLSCompliant(true)]
+	public sealed partial class ValueConstraintMoveableCollection : Microsoft.VisualStudio.Modeling.IMoveableCollection
+	{
+		private Microsoft.VisualStudio.Modeling.ModelElement counterpartMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo sourceRoleMember;
+		private Microsoft.VisualStudio.Modeling.MetaRoleInfo targetRoleMember;
+		/// <summary>
+		/// Counterpart
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.ModelElement Counterpart
+		{
+			get { return this.counterpartMember; }
+		}
+		/// <summary>
+		/// Source Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo SourceRole
+		{
+			get { return this.sourceRoleMember; }
+		}
+		/// <summary>
+		/// Target Role
+		/// </summary>
+		public Microsoft.VisualStudio.Modeling.MetaRoleInfo TargetRole
+		{
+			get { return this.targetRoleMember; }
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="counterpart">Counterpart to create relationship with</param>
+		/// <param name="sourceMetaRoleGuid">Source's meta role in this relationship</param>
+		/// <param name="targetMetaRoleGuid">Target's meta role in this relationship</param>
+		public ValueConstraintMoveableCollection(Microsoft.VisualStudio.Modeling.ModelElement counterpart, System.Guid sourceMetaRoleGuid, System.Guid targetMetaRoleGuid)
+		{
+			this.counterpartMember = counterpart;
+			this.sourceRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(sourceMetaRoleGuid);
+			this.targetRoleMember = counterpart.Partition.MetaDataDirectory.FindMetaRole(targetMetaRoleGuid);
+		}
+		/// <summary>
+		/// Returns an enumerator that can iterate through a collection
+		/// </summary>
+		/// <returns>Enumerator</returns>
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).GetEnumerator();
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		void System.Collections.ICollection.CopyTo(System.Array array, System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).CopyTo(array, index);
+		}
+		/// <summary>
+		/// When implemented by a class, gets the number of elements contained in the System.Collections.ICollection
+		/// </summary>
+		System.Int32 System.Collections.ICollection.Count
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Count; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether access to the System.Collections.ICollection is synchronized (thread-safe)
+		/// </summary>
+		System.Boolean System.Collections.ICollection.IsSynchronized
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsSynchronized; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets an object that can be used to synchronize access to the System.Collections.ICollection
+		/// </summary>
+		System.Object System.Collections.ICollection.SyncRoot
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).SyncRoot; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList has a fixed size
+		/// </summary>
+		System.Boolean System.Collections.IList.IsFixedSize
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsFixedSize; }
+		}
+		/// <summary>
+		/// When implemented by a class, gets a value indicating whether the System.Collections.IList is read-only
+		/// </summary>
+		System.Boolean System.Collections.IList.IsReadOnly
+		{
+			get { return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>object at that index</returns>
+		System.Object System.Collections.IList.this[System.Int32 index]
+		{
+			get
+			{
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				return list[index];
+			}
+			set
+			{
+				if (value == null || (value.GetType() != typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint) && !value.GetType().IsSubclassOf(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint))))
+				{
+					throw new System.InvalidCastException();
+				}
+				Microsoft.VisualStudio.Modeling.IMoveableCollection list = this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole);
+				list[index] = value;
+			}
+		}
+		/// <summary>
+		/// When implemented by a class, adds an item to the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to add to the System.Collections.IList</param>
+		/// <returns>index where object was added</returns>
+		System.Int32 System.Collections.IList.Add(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint) && !value.GetType().IsSubclassOf(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Add(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes all items from the System.Collections.IList
+		/// </summary>
+		void System.Collections.IList.Clear()
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Clear();
+		}
+		/// <summary>
+		/// When implemented by a class, determines whether the System.Collections.IList has a specific value
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		System.Boolean System.Collections.IList.Contains(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint) && !value.GetType().IsSubclassOf(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Contains(value);
+		}
+		/// <summary>
+		/// When implemented by a class, determines the index of a specific item in the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to locate in the System.Collections.IList</param>
+		/// <returns>index of object</returns>
+		System.Int32 System.Collections.IList.IndexOf(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint) && !value.GetType().IsSubclassOf(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			return this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).IndexOf(value);
+		}
+		/// <summary>
+		/// When implemented by a class, inserts an item to the System.Collections.IList at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The System.Object to insert into the System.Collections.IList</param>
+		void System.Collections.IList.Insert(System.Int32 index, System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint) && !value.GetType().IsSubclassOf(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Insert(index, value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the first occurrence of a specific object from the System.Collections.IList
+		/// </summary>
+		/// <param name="value">The System.Object to remove from the System.Collections.IList</param>
+		void System.Collections.IList.Remove(System.Object value)
+		{
+			if (value == null || (value.GetType() != typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint) && !value.GetType().IsSubclassOf(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Remove(value);
+		}
+		/// <summary>
+		/// When implemented by a class, removes the System.Collections.IList item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		void System.Collections.IList.RemoveAt(System.Int32 index)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(Microsoft.VisualStudio.Modeling.ModelElement rolePlayer, System.Int32 newPosition)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(rolePlayer, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		void Microsoft.VisualStudio.Modeling.IMoveableCollection.ReplaceAt(System.Int32 position, Microsoft.VisualStudio.Modeling.ModelElement rolePlayer)
+		{
+			if (rolePlayer == null || (rolePlayer.GetType() != typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint) && !rolePlayer.GetType().IsSubclassOf(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint))))
+			{
+				throw new System.InvalidCastException();
+			}
+			this.Counterpart.GetMoveableRolePlayers(this.SourceRole, this.TargetRole).ReplaceAt(position, rolePlayer);
+		}
+		/// <summary>
+		/// When implemented by a class, copies the elements of the System.Collection.ICollections to an System.Array, starting at a particular System.Array index
+		/// </summary>
+		/// <param name="array">The one-dimensional System.Array that is the destination of the elements copied from System.Collections.ICollection.  The System.Array must have zero-based indexing</param>
+		/// <param name="index">The zero-based index in array at which copying begins</param>
+		public void CopyTo(Neumont.Tools.ORM.ObjectModel.ValueConstraint[] array, System.Int32 index)
+		{
+			((System.Collections.ICollection)this).CopyTo(array, index);
+		}
+		/// <summary>
+		/// Gets the number of elements contained in the collection
+		/// </summary>
+		public System.Int32 Count
+		{
+			get { return ((System.Collections.ICollection)this).Count; }
+		}
+		/// <summary>
+		/// Gets a value indicating whether the list is read-only
+		/// </summary>
+		public System.Boolean IsReadOnly
+		{
+			get { return ((System.Collections.IList)this).IsReadOnly; }
+		}
+		/// <summary>
+		/// Indexed accessor
+		/// </summary>
+		/// <param name="index">Index to access</param>
+		/// <returns>Neumont.Tools.ORM.ObjectModel.ValueConstraint at that index</returns>
+		public Neumont.Tools.ORM.ObjectModel.ValueConstraint this[System.Int32 index]
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ValueConstraint)(((System.Collections.IList)this)[index]); }
+			set { ((System.Collections.IList)this)[index] = value as System.Object; }
+		}
+		/// <summary>
+		/// Adds an item to the list
+		/// </summary>
+		/// <param name="value">The Neumont.Tools.ORM.ObjectModel.ValueConstraint to add to the list</param>
+		/// <returns>index where object was added</returns>
+		public System.Int32 Add(Neumont.Tools.ORM.ObjectModel.ValueConstraint value)
+		{
+			return ((System.Collections.IList)this).Add(value as System.Object);
+		}
+		/// <summary>
+		/// Removes all items from the list
+		/// </summary>
+		public void Clear()
+		{
+			((System.Collections.IList)this).Clear();
+		}
+		/// <summary>
+		/// Determines whether the list has a specific value
+		/// </summary>
+		/// <param name="value">The Neumont.Tools.ORM.ObjectModel.ValueConstraint to locate in the list</param>
+		/// <returns>true if object is contained, false otherwise</returns>
+		public System.Boolean Contains(Neumont.Tools.ORM.ObjectModel.ValueConstraint value)
+		{
+			return ((System.Collections.IList)this).Contains(value as System.Object);
+		}
+		/// <summary>
+		/// Determines the index of a specific item in the list
+		/// </summary>
+		/// <param name="value">The Neumont.Tools.ORM.ObjectModel.ValueConstraint to locate in the list</param>
+		/// <returns>index of object</returns>
+		public System.Int32 IndexOf(Neumont.Tools.ORM.ObjectModel.ValueConstraint value)
+		{
+			return ((System.Collections.IList)this).IndexOf(value as System.Object);
+		}
+		/// <summary>
+		/// Inserts an item to the list at the specified position
+		/// </summary>
+		/// <param name="index">The zero-based index at which the value should be inserted</param>
+		/// <param name="value">The Neumont.Tools.ORM.ObjectModel.ValueConstraint to insert into the list</param>
+		public void Insert(System.Int32 index, Neumont.Tools.ORM.ObjectModel.ValueConstraint value)
+		{
+			((System.Collections.IList)this).Insert(index, value as System.Object);
+		}
+		/// <summary>
+		/// Removes the first occurrence of a specific object from the list
+		/// </summary>
+		/// <param name="value">The Neumont.Tools.ORM.ObjectModel.ValueConstraint to remove from the list</param>
+		public void Remove(Neumont.Tools.ORM.ObjectModel.ValueConstraint value)
+		{
+			((System.Collections.IList)this).Remove(value as System.Object);
+		}
+		/// <summary>
+		/// Removes the list item at the specified index
+		/// </summary>
+		/// <param name="index">The zero-based index of the item to remove</param>
+		public void RemoveAt(System.Int32 index)
+		{
+			((System.Collections.IList)this).RemoveAt(index);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="rolePlayer">The role player to move</param>
+		/// <param name="newPosition">The position to move to</param>
+		public void Move(Neumont.Tools.ORM.ObjectModel.ValueConstraint rolePlayer, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement, newPosition);
+		}
+		/// <summary>
+		/// Move the roleplayer to the new position in the collection
+		/// </summary>
+		/// <param name="oldPosition">The position of the role player to move from</param>
+		/// <param name="newPosition">The position of the role player to move to</param>
+		public void Move(System.Int32 oldPosition, System.Int32 newPosition)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).Move(oldPosition, newPosition);
+		}
+		/// <summary>
+		/// Insert a roleplayer in the specified location
+		/// </summary>
+		/// <param name="position">The index of the roleplayer that needs to be replaced</param>
+		/// <param name="rolePlayer">The role player that will be inserted</param>
+		public void ReplaceAt(System.Int32 position, Neumont.Tools.ORM.ObjectModel.ValueConstraint rolePlayer)
+		{
+			((Microsoft.VisualStudio.Modeling.IMoveableCollection)this).ReplaceAt(position, rolePlayer as Microsoft.VisualStudio.Modeling.ModelElement);
+		}
+
+	}
+	#endregion
+
+	#region ValueConstraint's Generated Constructor Code
+	public abstract partial class ValueConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		protected ValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+	}
+	#endregion
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint")]
+	public  partial class ValueTypeValueConstraint : Neumont.Tools.ORM.ObjectModel.ValueConstraint
+	{
+		#region ValueTypeValueConstraint's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "05587b6c-d9e7-4717-b20c-93b4c0f60c38";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint.MetaClassGuidString);
+		#endregion
+
+		#region ValueType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ObjectType ValueType
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ObjectType;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.ObjectType counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ObjectType;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region ValueTypeValueConstraint's Generated Constructor Code
+	public  partial class ValueTypeValueConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueTypeValueConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueTypeValueConstraint CreateValueTypeValueConstraint(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateValueTypeValueConstraint(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueTypeValueConstraint CreateAndInitializeValueTypeValueConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeValueTypeValueConstraint(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueTypeValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueTypeValueConstraint CreateValueTypeValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (ValueTypeValueConstraint)partition.ElementFactory.CreateElement(typeof(ValueTypeValueConstraint));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueTypeValueConstraint CreateAndInitializeValueTypeValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueTypeValueConstraint)partition.ElementFactory.CreateElement(typeof(ValueTypeValueConstraint), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueTypeValueConstraint
+	/// <summary>
+	/// ValueTypeValueConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint))]
+	public sealed class ValueTypeValueConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueTypeValueConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ValueTypeValueConstraintElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ValueTypeValueConstraintElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RoleValueConstraint.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.RoleValueConstraint")]
+	public  partial class RoleValueConstraint : Neumont.Tools.ORM.ObjectModel.ValueConstraint
+	{
+		#region RoleValueConstraint's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "588ce2ce-1025-4a7a-8964-6d99ccb2d2aa";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RoleValueConstraint.MetaClassGuidString);
+		#endregion
+
+		#region Role's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.Role Role
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.RoleMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.Role;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.RoleMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.Role counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.Role;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.RoleMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region RoleValueConstraint's Generated Constructor Code
+	public  partial class RoleValueConstraint
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RoleValueConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RoleValueConstraint CreateRoleValueConstraint(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateRoleValueConstraint(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RoleValueConstraint CreateAndInitializeRoleValueConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeRoleValueConstraint(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RoleValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RoleValueConstraint CreateRoleValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (RoleValueConstraint)partition.ElementFactory.CreateElement(typeof(RoleValueConstraint));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RoleValueConstraint CreateAndInitializeRoleValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (RoleValueConstraint)partition.ElementFactory.CreateElement(typeof(RoleValueConstraint), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for RoleValueConstraint
+	/// <summary>
+	/// RoleValueConstraint Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.RoleValueConstraint))]
+	public sealed class RoleValueConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RoleValueConstraintElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.RoleValueConstraint( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static RoleValueConstraintElementFactoryCreator Instance
+		{
+			get
+			{
+				return new RoleValueConstraintElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMModelElement.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.ORMModelElement")]
 	public abstract partial class ORMModelElement : Microsoft.VisualStudio.Modeling.ModelElement
 	{
@@ -22387,29 +23228,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
-		#region ValueRangeDefinition's Generated Accessor Code
+		#region ValueConstraint's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition ValueRangeDefinition
+		public Neumont.Tools.ORM.ObjectModel.ValueConstraint ValueConstraint
 		{
 			get
 			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition;
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ValueConstraint;
 			}
 			set
 			{
 				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuid);
 				if (links.Count > 0)
 				{
 					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuid);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueConstraintMetaRoleGuid);
 					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 					{
 						if (!link.IsRemoved)
 						{
-							Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition;
+							Neumont.Tools.ORM.ObjectModel.ValueConstraint counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ValueConstraint;
 							if (counterpart != null && object.ReferenceEquals(counterpart, value))
 							{
 								sameRolePlayer = true;
@@ -22425,9 +23266,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if ((!sameRolePlayer) && (value != null))
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange), newRoles);
 				}
 			}
 		}
@@ -22951,435 +23792,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new ValueRangeElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Neumont.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition")]
-	public abstract partial class ValueRangeDefinition : Neumont.Tools.ORM.ObjectModel.ORMModelElement
-	{
-		#region ValueRangeDefinition's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "48ce9fde-500d-4066-bdcb-bb3cf7fb72f1";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.MetaClassGuidString);
-		#endregion
-
-		#region Text's Generated  Field Code
-		#region Text's Generated  MetaAttribute Code
-		/// <summary>
-		/// MetaAttribute Guid String
-		/// </summary>
-		public const System.String TextMetaAttributeGuidString = "bcb9afd4-188c-4d98-9429-88544e85adaf";
-
-		/// <summary>
-		/// MetaAttribute Guid
-		/// </summary>
-		public static readonly System.Guid TextMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.TextMetaAttributeGuidString);
-		#endregion
-
-		#region Text's Generated Property Code
-
-		/// <summary>
-		/// 
-		/// </summary>
-		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(ValueRangeDefinitionTextFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.TextMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.Text")]
-		public  System.String Text
-		{
-			get
-			{
-				return valueRangeDefinitionTextFieldHandler.GetFieldValue(this);
-			}
-		
-			set
-			{
-				valueRangeDefinitionTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
-			}
-		}
-		#endregion
-
-		#region ValueRangeDefinitionTextFieldHandler Generated Code
-		/// <summary>
-		/// FieldHandler for ValueRangeDefinition.Text field
-		/// </summary>
-		private static ValueRangeDefinitionTextFieldHandler	valueRangeDefinitionTextFieldHandler	= ValueRangeDefinitionTextFieldHandler.Instance;
-
-		/// <summary>
-		/// Implement the field handler for ValueRangeDefinition.Text
-		/// </summary>
-		[System.CLSCompliant(false)]
-		public sealed partial class ValueRangeDefinitionTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition,System.String>
-		{
-			/// <summary>
-			/// Constructor
-			/// </summary>
-			private ValueRangeDefinitionTextFieldHandler() { }
-
-			/// <summary>
-			/// Returns the singleton instance of the ValueRangeDefinition.Text field handler
-			/// </summary>
-			/// <value>ValueRangeDefinitionTextFieldHandler</value>
-			public static ValueRangeDefinitionTextFieldHandler Instance
-			{
-				get
-				{
-					if (Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.valueRangeDefinitionTextFieldHandler != null)
-					{
-						return Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.valueRangeDefinitionTextFieldHandler;
-					}
-					else
-					{
-						// The static constructor in ValueRangeDefinition will assign this value to
-						// Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.valueRangeDefinitionTextFieldHandler, so just instantiate one and return it
-						return new ValueRangeDefinitionTextFieldHandler();
-					}
-				}
-			}
-
-			/// <summary>
-			/// Returns the meta attribute id for the ValueRangeDefinition.Text field handler
-			/// </summary>
-			/// <value>Guid</value>
-			public sealed override System.Guid Id
-			{
-				get
-				{
-					return Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.TextMetaAttributeGuid;
-				}
-			}
-		}
-		#endregion
-		#endregion
-		
-		#region ValueRangeCollection's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.ValueRangeMoveableCollection ValueRangeCollection
-		{
-			get { return new Neumont.Tools.ORM.ObjectModel.ValueRangeMoveableCollection(this, Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuid); }
-		}
-		#endregion
-	}
-	#region ValueRangeDefinition's Generated Constructor Code
-	public abstract partial class ValueRangeDefinition
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		protected ValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-	}
-	#endregion
-}
-namespace Neumont.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition")]
-	public  partial class ValueTypeValueRangeDefinition : Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition
-	{
-		#region ValueTypeValueRangeDefinition's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "05587b6c-d9e7-4717-b20c-93b4c0f60c38";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition.MetaClassGuidString);
-		#endregion
-
-		#region ValueType's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.ObjectType ValueType
-		{
-			get
-			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ObjectType;
-			}
-			set
-			{
-				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
-				if (links.Count > 0)
-				{
-					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid);
-					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-					{
-						if (!link.IsRemoved)
-						{
-							Neumont.Tools.ORM.ObjectModel.ObjectType counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ObjectType;
-							if (counterpart != null && object.ReferenceEquals(counterpart, value))
-							{
-								sameRolePlayer = true;
-							}
-							else
-							{
-								link.Remove();
-							}
-							break;
-						}
-					}
-				}
-				if ((!sameRolePlayer) && (value != null))
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition), newRoles);
-				}
-			}
-		}
-		#endregion
-	}
-	#region ValueTypeValueRangeDefinition's Generated Constructor Code
-	public  partial class ValueTypeValueRangeDefinition
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ValueTypeValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ValueTypeValueRangeDefinition CreateValueTypeValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateValueTypeValueRangeDefinition(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ValueTypeValueRangeDefinition CreateAndInitializeValueTypeValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeValueTypeValueRangeDefinition(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ValueTypeValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ValueTypeValueRangeDefinition CreateValueTypeValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (ValueTypeValueRangeDefinition)partition.ElementFactory.CreateElement(typeof(ValueTypeValueRangeDefinition));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static ValueTypeValueRangeDefinition CreateAndInitializeValueTypeValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (ValueTypeValueRangeDefinition)partition.ElementFactory.CreateElement(typeof(ValueTypeValueRangeDefinition), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for ValueTypeValueRangeDefinition
-	/// <summary>
-	/// ValueTypeValueRangeDefinition Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition))]
-	public sealed class ValueTypeValueRangeDefinitionElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public ValueTypeValueRangeDefinitionElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static ValueTypeValueRangeDefinitionElementFactoryCreator Instance
-		{
-			get
-			{
-				return new ValueTypeValueRangeDefinitionElementFactoryCreator();
-			}
-		}
-	}
-	#endregion
-
-}
-namespace Neumont.Tools.ORM.ObjectModel
-{
-	/// <summary>
-	/// 
-	/// </summary>
-	[System.CLSCompliant(true)]
-	[System.Serializable]
-	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition")]
-	public  partial class RoleValueRangeDefinition : Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition
-	{
-		#region RoleValueRangeDefinition's Generated MetaClass Code
-		/// <summary>
-		/// MetaClass Guid String
-		/// </summary>
-		public new const System.String MetaClassGuidString = "588ce2ce-1025-4a7a-8964-6d99ccb2d2aa";
-		/// <summary>
-		/// MetaClass Guid
-		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition.MetaClassGuidString);
-		#endregion
-
-		#region Role's Generated Accessor Code
-		/// <summary>
-		/// 
-		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.Role Role
-		{
-			get
-			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.Role;
-			}
-			set
-			{
-				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid);
-				if (links.Count > 0)
-				{
-					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid);
-					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
-					{
-						if (!link.IsRemoved)
-						{
-							Neumont.Tools.ORM.ObjectModel.Role counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.Role;
-							if (counterpart != null && object.ReferenceEquals(counterpart, value))
-							{
-								sameRolePlayer = true;
-							}
-							else
-							{
-								link.Remove();
-							}
-							break;
-						}
-					}
-				}
-				if ((!sameRolePlayer) && (value != null))
-				{
-					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition), newRoles);
-				}
-			}
-		}
-		#endregion
-	}
-	#region RoleValueRangeDefinition's Generated Constructor Code
-	public  partial class RoleValueRangeDefinition
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public RoleValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static RoleValueRangeDefinition CreateRoleValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store)
-		{
-			return CreateRoleValueRangeDefinition(store.DefaultPartition);
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static RoleValueRangeDefinition CreateAndInitializeRoleValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return CreateAndInitializeRoleValueRangeDefinition(store.DefaultPartition, assignments);
-		}
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public RoleValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-			: base(partition, bag)
-		{
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static RoleValueRangeDefinition CreateRoleValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition)
-		{
-			return (RoleValueRangeDefinition)partition.ElementFactory.CreateElement(typeof(RoleValueRangeDefinition));
-		}
-		/// <summary>
-		/// Class Factory
-		/// </summary>
-		public static RoleValueRangeDefinition CreateAndInitializeRoleValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
-		{
-			return (RoleValueRangeDefinition)partition.ElementFactory.CreateElement(typeof(RoleValueRangeDefinition), assignments);
-		}
-	}
-	#endregion
-	#region Class Factory Creator for RoleValueRangeDefinition
-	/// <summary>
-	/// RoleValueRangeDefinition Class Factory Creator
-	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition))]
-	public sealed class RoleValueRangeDefinitionElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
-	{
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public RoleValueRangeDefinitionElementFactoryCreator()
-		{
-		}
-		/// <summary>
-		/// Class Factory Create Method
-		/// </summary>
-		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
-		{
-			return new Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition( partition, bag );
-		}
-		/// <summary>
-		/// Create an instance of the createor object
-		/// </summary>
-		public static RoleValueRangeDefinitionElementFactoryCreator Instance
-		{
-			get
-			{
-				return new RoleValueRangeDefinitionElementFactoryCreator();
 			}
 		}
 	}
@@ -30039,10 +30451,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition")]
-	public  partial class ValueTypeHasValueRangeDefinition : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint")]
+	public  partial class ValueTypeHasValueConstraint : Neumont.Tools.ORM.ObjectModel.ORMElementLink
 	{
-		#region ValueTypeHasValueRangeDefinition's Generated MetaRelationship Code
+		#region ValueTypeHasValueConstraint's Generated MetaRelationship Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -30050,35 +30462,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.MetaClassGuidString);
 		/// <summary>
 		/// MetaRelationship Guid String
 		/// </summary>
-		public new const System.String MetaRelationshipGuidString = ValueTypeHasValueRangeDefinition.MetaClassGuidString;
+		public new const System.String MetaRelationshipGuidString = ValueTypeHasValueConstraint.MetaClassGuidString;
 		/// <summary>
 		/// MetaRelationship Guid
 		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = ValueTypeHasValueRangeDefinition.MetaClassGuid;
+		public static readonly new System.Guid MetaRelationshipGuid = ValueTypeHasValueConstraint.MetaClassGuid;
 		#endregion
 
-		#region ValueRangeDefinition's Generated MetaRole Code
+		#region ValueConstraint's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
 		/// </summary>
-		public const System.String ValueRangeDefinitionMetaRoleGuidString = "e96a260b-3621-44e6-ba61-9f1b8f929489";
+		public const System.String ValueConstraintMetaRoleGuidString = "e96a260b-3621-44e6-ba61-9f1b8f929489";
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ValueRangeDefinitionMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuidString);
+		public static readonly System.Guid ValueConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueRangeDefinition")]
-		public  Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition ValueRangeDefinition
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueConstraint")]
+		public  Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint ValueConstraint
 		{
-			get { return (Neumont.Tools.ORM.ObjectModel.ValueTypeValueRangeDefinition)this.GetRolePlayer(ValueRangeDefinitionMetaRoleGuid); }
-			set { this.SetRolePlayer(ValueRangeDefinitionMetaRoleGuid, value); }
+			get { return (Neumont.Tools.ORM.ObjectModel.ValueTypeValueConstraint)this.GetRolePlayer(ValueConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueConstraintMetaRoleGuid, value); }
 		}
 		
 		#endregion
@@ -30090,12 +30502,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ValueTypeMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuidString);
+		public static readonly System.Guid ValueTypeMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueTypeMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueTypeMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition.ValueType")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueTypeMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint.ValueType")]
 		public  Neumont.Tools.ORM.ObjectModel.ObjectType ValueType
 		{
 			get { return (Neumont.Tools.ORM.ObjectModel.ObjectType)this.GetRolePlayer(ValueTypeMetaRoleGuid); }
@@ -30104,63 +30516,63 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		#endregion
 	}
-	#region ValueTypeHasValueRangeDefinition's Generated Constructor Code
-	public  partial class ValueTypeHasValueRangeDefinition
+	#region ValueTypeHasValueConstraint's Generated Constructor Code
+	public  partial class ValueTypeHasValueConstraint
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ValueTypeHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		public ValueTypeHasValueConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueTypeHasValueRangeDefinition CreateValueTypeHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static ValueTypeHasValueConstraint CreateValueTypeHasValueConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return CreateValueTypeHasValueRangeDefinition(store.DefaultPartition, rolePlayers);
+			return CreateValueTypeHasValueConstraint(store.DefaultPartition, rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueTypeHasValueRangeDefinition CreateAndInitializeValueTypeHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static ValueTypeHasValueConstraint CreateAndInitializeValueTypeHasValueConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return CreateAndInitializeValueTypeHasValueRangeDefinition(store.DefaultPartition, rolePlayers, assignments);
+			return CreateAndInitializeValueTypeHasValueConstraint(store.DefaultPartition, rolePlayers, assignments);
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ValueTypeHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		public ValueTypeHasValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		    : base(partition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueTypeHasValueRangeDefinition CreateValueTypeHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static ValueTypeHasValueConstraint CreateValueTypeHasValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return (ValueTypeHasValueRangeDefinition)partition.ElementFactory.CreateElementLink(typeof(ValueTypeHasValueRangeDefinition), rolePlayers);
+			return (ValueTypeHasValueConstraint)partition.ElementFactory.CreateElementLink(typeof(ValueTypeHasValueConstraint), rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueTypeHasValueRangeDefinition CreateAndInitializeValueTypeHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static ValueTypeHasValueConstraint CreateAndInitializeValueTypeHasValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (ValueTypeHasValueRangeDefinition)partition.ElementFactory.CreateElementLink(typeof(ValueTypeHasValueRangeDefinition), rolePlayers, assignments);
+			return (ValueTypeHasValueConstraint)partition.ElementFactory.CreateElementLink(typeof(ValueTypeHasValueConstraint), rolePlayers, assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for ValueTypeHasValueRangeDefinition
+	#region Class Factory Creator for ValueTypeHasValueConstraint
 	/// <summary>
-	/// ValueTypeHasValueRangeDefinition Class Factory Creator
+	/// ValueTypeHasValueConstraint Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition))]
-	public sealed class ValueTypeHasValueRangeDefinitionElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint))]
+	public sealed class ValueTypeHasValueConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ValueTypeHasValueRangeDefinitionElementFactoryCreator()
+		public ValueTypeHasValueConstraintElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -30168,16 +30580,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueRangeDefinition( partition, bag );
+			return new Neumont.Tools.ORM.ObjectModel.ValueTypeHasValueConstraint( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
 		/// </summary>
-		public static ValueTypeHasValueRangeDefinitionElementFactoryCreator Instance
+		public static ValueTypeHasValueConstraintElementFactoryCreator Instance
 		{
 			get
 			{
-				return new ValueTypeHasValueRangeDefinitionElementFactoryCreator();
+				return new ValueTypeHasValueConstraintElementFactoryCreator();
 			}
 		}
 	}
@@ -30192,10 +30604,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition")]
-	public  partial class RoleHasValueRangeDefinition : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint")]
+	public  partial class RoleHasValueConstraint : Neumont.Tools.ORM.ObjectModel.ORMElementLink
 	{
-		#region RoleHasValueRangeDefinition's Generated MetaRelationship Code
+		#region RoleHasValueConstraint's Generated MetaRelationship Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -30203,35 +30615,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.MetaClassGuidString);
 		/// <summary>
 		/// MetaRelationship Guid String
 		/// </summary>
-		public new const System.String MetaRelationshipGuidString = RoleHasValueRangeDefinition.MetaClassGuidString;
+		public new const System.String MetaRelationshipGuidString = RoleHasValueConstraint.MetaClassGuidString;
 		/// <summary>
 		/// MetaRelationship Guid
 		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = RoleHasValueRangeDefinition.MetaClassGuid;
+		public static readonly new System.Guid MetaRelationshipGuid = RoleHasValueConstraint.MetaClassGuid;
 		#endregion
 
-		#region ValueRangeDefinition's Generated MetaRole Code
+		#region ValueConstraint's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
 		/// </summary>
-		public const System.String ValueRangeDefinitionMetaRoleGuidString = "a58e8573-d27a-4529-83d0-cb9a9cbb6f71";
+		public const System.String ValueConstraintMetaRoleGuidString = "a58e8573-d27a-4529-83d0-cb9a9cbb6f71";
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ValueRangeDefinitionMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuidString);
+		public static readonly System.Guid ValueConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinitionMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.ValueRangeDefinition")]
-		public  Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition ValueRangeDefinition
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.ValueConstraint")]
+		public  Neumont.Tools.ORM.ObjectModel.RoleValueConstraint ValueConstraint
 		{
-			get { return (Neumont.Tools.ORM.ObjectModel.RoleValueRangeDefinition)this.GetRolePlayer(ValueRangeDefinitionMetaRoleGuid); }
-			set { this.SetRolePlayer(ValueRangeDefinitionMetaRoleGuid, value); }
+			get { return (Neumont.Tools.ORM.ObjectModel.RoleValueConstraint)this.GetRolePlayer(ValueConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueConstraintMetaRoleGuid, value); }
 		}
 		
 		#endregion
@@ -30243,12 +30655,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid RoleMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuidString);
+		public static readonly System.Guid RoleMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.RoleMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.RoleMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition.Role")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.RoleMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint.Role")]
 		public  Neumont.Tools.ORM.ObjectModel.Role Role
 		{
 			get { return (Neumont.Tools.ORM.ObjectModel.Role)this.GetRolePlayer(RoleMetaRoleGuid); }
@@ -30257,63 +30669,63 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		#endregion
 	}
-	#region RoleHasValueRangeDefinition's Generated Constructor Code
-	public  partial class RoleHasValueRangeDefinition
+	#region RoleHasValueConstraint's Generated Constructor Code
+	public  partial class RoleHasValueConstraint
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public RoleHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		public RoleHasValueConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static RoleHasValueRangeDefinition CreateRoleHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static RoleHasValueConstraint CreateRoleHasValueConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return CreateRoleHasValueRangeDefinition(store.DefaultPartition, rolePlayers);
+			return CreateRoleHasValueConstraint(store.DefaultPartition, rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static RoleHasValueRangeDefinition CreateAndInitializeRoleHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static RoleHasValueConstraint CreateAndInitializeRoleHasValueConstraint(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return CreateAndInitializeRoleHasValueRangeDefinition(store.DefaultPartition, rolePlayers, assignments);
+			return CreateAndInitializeRoleHasValueConstraint(store.DefaultPartition, rolePlayers, assignments);
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public RoleHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		public RoleHasValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		    : base(partition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static RoleHasValueRangeDefinition CreateRoleHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static RoleHasValueConstraint CreateRoleHasValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return (RoleHasValueRangeDefinition)partition.ElementFactory.CreateElementLink(typeof(RoleHasValueRangeDefinition), rolePlayers);
+			return (RoleHasValueConstraint)partition.ElementFactory.CreateElementLink(typeof(RoleHasValueConstraint), rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static RoleHasValueRangeDefinition CreateAndInitializeRoleHasValueRangeDefinition(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static RoleHasValueConstraint CreateAndInitializeRoleHasValueConstraint(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (RoleHasValueRangeDefinition)partition.ElementFactory.CreateElementLink(typeof(RoleHasValueRangeDefinition), rolePlayers, assignments);
+			return (RoleHasValueConstraint)partition.ElementFactory.CreateElementLink(typeof(RoleHasValueConstraint), rolePlayers, assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for RoleHasValueRangeDefinition
+	#region Class Factory Creator for RoleHasValueConstraint
 	/// <summary>
-	/// RoleHasValueRangeDefinition Class Factory Creator
+	/// RoleHasValueConstraint Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition))]
-	public sealed class RoleHasValueRangeDefinitionElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint))]
+	public sealed class RoleHasValueConstraintElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public RoleHasValueRangeDefinitionElementFactoryCreator()
+		public RoleHasValueConstraintElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -30321,16 +30733,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition( partition, bag );
+			return new Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
 		/// </summary>
-		public static RoleHasValueRangeDefinitionElementFactoryCreator Instance
+		public static RoleHasValueConstraintElementFactoryCreator Instance
 		{
 			get
 			{
-				return new RoleHasValueRangeDefinitionElementFactoryCreator();
+				return new RoleHasValueConstraintElementFactoryCreator();
 			}
 		}
 	}
@@ -30345,10 +30757,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange")]
-	public  partial class ValueRangeDefinitionHasValueRange : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange")]
+	public  partial class ValueConstraintHasValueRange : Neumont.Tools.ORM.ObjectModel.ORMElementLink
 	{
-		#region ValueRangeDefinitionHasValueRange's Generated MetaRelationship Code
+		#region ValueConstraintHasValueRange's Generated MetaRelationship Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -30356,15 +30768,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.MetaClassGuidString);
 		/// <summary>
 		/// MetaRelationship Guid String
 		/// </summary>
-		public new const System.String MetaRelationshipGuidString = ValueRangeDefinitionHasValueRange.MetaClassGuidString;
+		public new const System.String MetaRelationshipGuidString = ValueConstraintHasValueRange.MetaClassGuidString;
 		/// <summary>
 		/// MetaRelationship Guid
 		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = ValueRangeDefinitionHasValueRange.MetaClassGuid;
+		public static readonly new System.Guid MetaRelationshipGuid = ValueConstraintHasValueRange.MetaClassGuid;
 		#endregion
 
 		#region ValueRangeCollection's Generated MetaRole Code
@@ -30375,12 +30787,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ValueRangeCollectionMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuidString);
+		public static readonly System.Guid ValueRangeCollectionMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollectionMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeCollection")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeCollectionMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueRangeCollection")]
 		public  Neumont.Tools.ORM.ObjectModel.ValueRange ValueRangeCollection
 		{
 			get { return (Neumont.Tools.ORM.ObjectModel.ValueRange)this.GetRolePlayer(ValueRangeCollectionMetaRoleGuid); }
@@ -30388,85 +30800,85 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		
 		#endregion
-		#region ValueRangeDefinition's Generated MetaRole Code
+		#region ValueConstraint's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
 		/// </summary>
-		public const System.String ValueRangeDefinitionMetaRoleGuidString = "f406b051-c206-4535-8334-f39187e3362f";
+		public const System.String ValueConstraintMetaRoleGuidString = "f406b051-c206-4535-8334-f39187e3362f";
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ValueRangeDefinitionMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuidString);
+		public static readonly System.Guid ValueConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueConstraintMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinitionMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange.ValueRangeDefinition")]
-		public  Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition ValueRangeDefinition
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange.ValueConstraint")]
+		public  Neumont.Tools.ORM.ObjectModel.ValueConstraint ValueConstraint
 		{
-			get { return (Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition)this.GetRolePlayer(ValueRangeDefinitionMetaRoleGuid); }
-			set { this.SetRolePlayer(ValueRangeDefinitionMetaRoleGuid, value); }
+			get { return (Neumont.Tools.ORM.ObjectModel.ValueConstraint)this.GetRolePlayer(ValueConstraintMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueConstraintMetaRoleGuid, value); }
 		}
 		
 		#endregion
 	}
-	#region ValueRangeDefinitionHasValueRange's Generated Constructor Code
-	public  partial class ValueRangeDefinitionHasValueRange
+	#region ValueConstraintHasValueRange's Generated Constructor Code
+	public  partial class ValueConstraintHasValueRange
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ValueRangeDefinitionHasValueRange(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		public ValueConstraintHasValueRange(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueRangeDefinitionHasValueRange CreateValueRangeDefinitionHasValueRange(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static ValueConstraintHasValueRange CreateValueConstraintHasValueRange(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return CreateValueRangeDefinitionHasValueRange(store.DefaultPartition, rolePlayers);
+			return CreateValueConstraintHasValueRange(store.DefaultPartition, rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueRangeDefinitionHasValueRange CreateAndInitializeValueRangeDefinitionHasValueRange(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static ValueConstraintHasValueRange CreateAndInitializeValueConstraintHasValueRange(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return CreateAndInitializeValueRangeDefinitionHasValueRange(store.DefaultPartition, rolePlayers, assignments);
+			return CreateAndInitializeValueConstraintHasValueRange(store.DefaultPartition, rolePlayers, assignments);
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ValueRangeDefinitionHasValueRange(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		public ValueConstraintHasValueRange(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		    : base(partition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueRangeDefinitionHasValueRange CreateValueRangeDefinitionHasValueRange(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static ValueConstraintHasValueRange CreateValueConstraintHasValueRange(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return (ValueRangeDefinitionHasValueRange)partition.ElementFactory.CreateElementLink(typeof(ValueRangeDefinitionHasValueRange), rolePlayers);
+			return (ValueConstraintHasValueRange)partition.ElementFactory.CreateElementLink(typeof(ValueConstraintHasValueRange), rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueRangeDefinitionHasValueRange CreateAndInitializeValueRangeDefinitionHasValueRange(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static ValueConstraintHasValueRange CreateAndInitializeValueConstraintHasValueRange(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (ValueRangeDefinitionHasValueRange)partition.ElementFactory.CreateElementLink(typeof(ValueRangeDefinitionHasValueRange), rolePlayers, assignments);
+			return (ValueConstraintHasValueRange)partition.ElementFactory.CreateElementLink(typeof(ValueConstraintHasValueRange), rolePlayers, assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for ValueRangeDefinitionHasValueRange
+	#region Class Factory Creator for ValueConstraintHasValueRange
 	/// <summary>
-	/// ValueRangeDefinitionHasValueRange Class Factory Creator
+	/// ValueConstraintHasValueRange Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange))]
-	public sealed class ValueRangeDefinitionHasValueRangeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange))]
+	public sealed class ValueConstraintHasValueRangeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ValueRangeDefinitionHasValueRangeElementFactoryCreator()
+		public ValueConstraintHasValueRangeElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -30474,16 +30886,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Neumont.Tools.ORM.ObjectModel.ValueRangeDefinitionHasValueRange( partition, bag );
+			return new Neumont.Tools.ORM.ObjectModel.ValueConstraintHasValueRange( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
 		/// </summary>
-		public static ValueRangeDefinitionHasValueRangeElementFactoryCreator Instance
+		public static ValueConstraintHasValueRangeElementFactoryCreator Instance
 		{
 			get
 			{
-				return new ValueRangeDefinitionHasValueRangeElementFactoryCreator();
+				return new ValueConstraintHasValueRangeElementFactoryCreator();
 			}
 		}
 	}
@@ -34049,6 +34461,159 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError")]
+	public  partial class ValueConstraintHasDuplicateNameError : Microsoft.VisualStudio.Modeling.ElementLink
+	{
+		#region ValueConstraintHasDuplicateNameError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "6dc7e1a9-206b-4a4e-9cdb-1872036a4025";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = ValueConstraintHasDuplicateNameError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = ValueConstraintHasDuplicateNameError.MetaClassGuid;
+		#endregion
+
+		#region DuplicateNameError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String DuplicateNameErrorMetaRoleGuidString = "8d5882fa-60f0-4c5b-8d57-727c5af15d53";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid DuplicateNameErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.DuplicateNameError")]
+		public  Neumont.Tools.ORM.ObjectModel.ConstraintDuplicateNameError DuplicateNameError
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ConstraintDuplicateNameError)this.GetRolePlayer(DuplicateNameErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(DuplicateNameErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region ValueConstraintCollection's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ValueConstraintCollectionMetaRoleGuidString = "49832416-d3dd-4ce0-b930-3802e23d44a1";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ValueConstraintCollectionMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.ValueConstraintCollectionMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.Many)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.ValueConstraintCollectionMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError.ValueConstraintCollection")]
+		public  Neumont.Tools.ORM.ObjectModel.ValueConstraint ValueConstraintCollection
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ValueConstraint)this.GetRolePlayer(ValueConstraintCollectionMetaRoleGuid); }
+			set { this.SetRolePlayer(ValueConstraintCollectionMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region ValueConstraintHasDuplicateNameError's Generated Constructor Code
+	public  partial class ValueConstraintHasDuplicateNameError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueConstraintHasDuplicateNameError CreateValueConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateValueConstraintHasDuplicateNameError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueConstraintHasDuplicateNameError CreateAndInitializeValueConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeValueConstraintHasDuplicateNameError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueConstraintHasDuplicateNameError CreateValueConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ValueConstraintHasDuplicateNameError)partition.ElementFactory.CreateElementLink(typeof(ValueConstraintHasDuplicateNameError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ValueConstraintHasDuplicateNameError CreateAndInitializeValueConstraintHasDuplicateNameError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ValueConstraintHasDuplicateNameError)partition.ElementFactory.CreateElementLink(typeof(ValueConstraintHasDuplicateNameError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ValueConstraintHasDuplicateNameError
+	/// <summary>
+	/// ValueConstraintHasDuplicateNameError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError))]
+	public sealed class ValueConstraintHasDuplicateNameErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ValueConstraintHasDuplicateNameErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.ValueConstraintHasDuplicateNameError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ValueConstraintHasDuplicateNameErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ValueConstraintHasDuplicateNameErrorElementFactoryCreator();
 			}
 		}
 	}

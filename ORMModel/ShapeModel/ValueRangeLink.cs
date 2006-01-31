@@ -45,11 +45,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Get the ObjectTypePlaysRole link associated with this link shape
 		/// </summary>
-		public RoleHasValueRangeDefinition AssociatedRangeDefinitionLink
+		public RoleHasValueConstraint AssociatedValueConstraintLink
 		{
 			get
 			{
-				return ModelElement as RoleHasValueRangeDefinition;
+				return ModelElement as RoleHasValueConstraint;
 			}
 		}
 		/// <summary>
@@ -61,8 +61,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// If we're already connected then walk away
 			if (FromShape == null && ToShape == null)
 			{
-				RoleHasValueRangeDefinition modelLink = ModelElement as RoleHasValueRangeDefinition;
-				ValueRangeDefinition valueRangeDefn = modelLink.ValueRangeDefinition;
+				RoleHasValueConstraint modelLink = ModelElement as RoleHasValueConstraint;
+				ValueConstraint valueRangeDefn = modelLink.ValueConstraint;
 				Role role = modelLink.Role;
 				NodeShape fromShape;
 				NodeShape toShape;

@@ -46,7 +46,7 @@
 	<se:Element Class="ReadingShape" Override="true">
 		<se:Attribute ID="ReadingText" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="ValueRangeShape" Override="true">
+	<se:Element Class="ValueConstraintShape" Name="ValueRangeShape" Override="true">
 		<se:Attribute ID="ValueRangeText" WriteStyle="NotWritten"/>
 	</se:Element>
 </se:CustomSerializedElements>

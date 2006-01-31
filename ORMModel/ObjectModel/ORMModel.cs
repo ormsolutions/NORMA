@@ -229,7 +229,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			else if (parentMetaRoleGuid == ModelHasMultiColumnExternalConstraint.ModelMetaRoleGuid ||
 					 parentMetaRoleGuid == ModelHasSingleColumnExternalConstraint.ModelMetaRoleGuid ||
-					 parentMetaRoleGuid == FactTypeHasInternalConstraint.FactTypeMetaRoleGuid)
+					 parentMetaRoleGuid == FactTypeHasInternalConstraint.FactTypeMetaRoleGuid ||
+					 parentMetaRoleGuid == ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid ||
+					 parentMetaRoleGuid == RoleHasValueConstraint.RoleMetaRoleGuid)
 			{
 				return ConstraintsDictionary;
 			}
@@ -554,6 +556,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					SingleColumnExternalConstraint scConstraint = null;
 					MultiColumnExternalConstraint mcConstraint = null;
 					InternalConstraint iConstraint = null;
+					ValueConstraint vConstraint = null;
 					ConstraintDuplicateNameError existingError = null;
 					if (null != (scConstraint = element as SingleColumnExternalConstraint))
 					{
@@ -567,7 +570,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						existingError = iConstraint.DuplicateNameError;
 					}
-					Debug.Assert(scConstraint != null || mcConstraint != null || iConstraint != null);
+					else if (null != (vConstraint = element as ValueConstraint))
+					{
+						existingError = vConstraint.DuplicateNameError;
+					}
+					Debug.Assert(scConstraint != null || mcConstraint != null || iConstraint != null || vConstraint != null);
 					if (afterTransaction)
 					{
 						// We're not in a transaction, but the object model will be in
@@ -611,6 +618,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 									iConstraint.DuplicateNameError = error;
 									Debug.Assert(iConstraint.FactType != null && iConstraint.FactType.Model != null); // Can't get here unless the constraint is attached to an attached fact
 									error.Model = iConstraint.FactType.Model;
+								}
+								else if (vConstraint != null)
+								{
+									vConstraint.DuplicateNameError = error;
+									ValueTypeValueConstraint vTypeValue;
+									RoleValueConstraint roleValue;
+									if (null != (vTypeValue = vConstraint as ValueTypeValueConstraint))
+									{
+										error.Model = vTypeValue.ValueType.Model;
+									}
+									else if (null != (roleValue = vConstraint as RoleValueConstraint))
+									{
+										error.Model = roleValue.Role.FactType.Model;
+									}
 								}
 								error.GenerateErrorText();
 								if (notifyAdded != null)
@@ -675,7 +696,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <returns>A base name string pattern</returns>
 			protected override string GetRootNamePattern(NamedElement element)
 			{
-				Debug.Assert(element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint || element is InternalConstraint);
+				Debug.Assert(element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint || element is InternalConstraint || element is ValueConstraint);
 				// UNDONE: How explicit do we want to be on constraint naming?
 				return base.GetRootNamePattern(element);
 			}
@@ -728,9 +749,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
 		/// Returns null.
 		/// </summary>
-		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
 		{
-			get { return null; }
+			get { return ObjectTypeCollection; }
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
@@ -918,6 +939,129 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
+	public partial class ValueTypeHasValueConstraint : INamedElementDictionaryLink
+	{
+		#region INamedElementDictionaryLink implementation
+		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		{
+			get { return ParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ParentRolePlayer
+		/// Returns FactType.
+		/// </summary>
+		protected INamedElementDictionaryParent ParentRolePlayer
+		{
+			get { return ValueType; }
+		}
+		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		{
+			get { return ChildRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ChildRolePlayer
+		/// Returns InternalConstraintCollection.
+		/// </summary>
+		protected INamedElementDictionaryChild ChildRolePlayer
+		{
+			get { return ValueConstraint; }
+		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
+		/// Returns null
+		/// </summary>
+		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		{
+			get { return null; }
+		}
+		#endregion // INamedElementDictionaryLink implementation
+	}
+	public partial class RoleHasValueConstraint : INamedElementDictionaryLink
+	{
+		#region INamedElementDictionaryLink implementation
+		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		{
+			get { return ParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ParentRolePlayer
+		/// Returns FactType.
+		/// </summary>
+		protected INamedElementDictionaryParent ParentRolePlayer
+		{
+			get { return Role; }
+		}
+		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		{
+			get { return ChildRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ChildRolePlayer
+		/// Returns InternalConstraintCollection.
+		/// </summary>
+		protected INamedElementDictionaryChild ChildRolePlayer
+		{
+			get { return ValueConstraint; }
+		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
+		/// Returns null
+		/// </summary>
+		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		{
+			get { return null; }
+		}
+		#endregion // INamedElementDictionaryLink implementation
+	}
+	public partial class FactTypeHasRole : INamedElementDictionaryLink
+	{
+		#region INamedElementDictionaryLink implementation
+		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		{
+			get { return ParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ParentRolePlayer
+		/// Returns FactType.
+		/// </summary>
+		protected static INamedElementDictionaryParent ParentRolePlayer
+		{
+			get { return null; }
+		}
+		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		{
+			get { return ChildRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ChildRolePlayer
+		/// Returns InternalConstraintCollection.
+		/// </summary>
+		protected static INamedElementDictionaryChild ChildRolePlayer
+		{
+			get { return null; }
+		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
+		/// Returns null
+		/// </summary>
+		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		{
+			get { return RoleCollection; }
+		}
+		#endregion // INamedElementDictionaryLink implementation
+	}
 	public partial class SingleColumnExternalConstraint : INamedElementDictionaryChild
 	{
 		#region INamedElementDictionaryChild implementation
@@ -955,6 +1099,46 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			parentMetaRoleGuid = FactTypeHasInternalConstraint.FactTypeMetaRoleGuid;
 			childMetaRoleGuid = FactTypeHasInternalConstraint.InternalConstraintCollectionMetaRoleGuid;
+		}
+		#endregion // INamedElementDictionaryChild implementation
+	}
+	public partial class ValueTypeValueConstraint : INamedElementDictionaryChild
+	{
+		#region INamedElementDictionaryChild implementation
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+		}
+		/// <summary>
+		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
+		/// this child as participating in the 'ModelHasConstraint' naming set.
+		/// </summary>
+		/// <param name="parentMetaRoleGuid">Guid</param>
+		/// <param name="childMetaRoleGuid">Guid</param>
+		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			parentMetaRoleGuid = ValueTypeHasValueConstraint.ValueTypeMetaRoleGuid;
+			childMetaRoleGuid = ValueTypeHasValueConstraint.ValueConstraintMetaRoleGuid;
+		}
+		#endregion // INamedElementDictionaryChild implementation
+	}
+	public partial class RoleValueConstraint : INamedElementDictionaryChild
+	{
+		#region INamedElementDictionaryChild implementation
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			GetRoleGuids(out parentMetaRoleGuid, out childMetaRoleGuid);
+		}
+		/// <summary>
+		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
+		/// this child as participating in the 'ModelHasConstraint' naming set.
+		/// </summary>
+		/// <param name="parentMetaRoleGuid">Guid</param>
+		/// <param name="childMetaRoleGuid">Guid</param>
+		protected static void GetRoleGuids(out Guid parentMetaRoleGuid, out Guid childMetaRoleGuid)
+		{
+			parentMetaRoleGuid = RoleHasValueConstraint.RoleMetaRoleGuid;
+			childMetaRoleGuid = RoleHasValueConstraint.ValueConstraintMetaRoleGuid;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
@@ -1224,6 +1408,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			private IList myList1;
 			private IList myList2;
 			private IList myList3;
+			private IList myList4;
 			#endregion // Member Variables
 			#region Constructors
 			public CompositeCollection(ConstraintDuplicateNameError error)
@@ -1231,6 +1416,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				myList1 = error.MultiColumnExternalConstraintCollection;
 				myList2 = error.SingleColumnExternalConstraintCollection;
 				myList3 = error.InternalConstraintCollection;
+				myList4 = error.ValueConstraintCollection;
 			}
 			#endregion // Constructors
 			#region ICollection Implementation
@@ -1242,12 +1428,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				myList2.CopyTo(array, baseIndex);
 				baseIndex += myList2.Count;
 				myList3.CopyTo(array, baseIndex);
+				baseIndex += myList3.Count;
+				myList4.CopyTo(array, baseIndex);
 			}
 			int ICollection.Count
 			{
 				get
 				{
-					return myList1.Count + myList2.Count + myList3.Count;
+					return myList1.Count + myList2.Count + myList3.Count + myList4.Count;
 				}
 			}
 			bool ICollection.IsSynchronized
@@ -1280,6 +1468,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return obj;
 				}
+				foreach (object obj in myList4)
+				{
+					yield return obj;
+				}
 			}
 			#endregion // IEnumerable Implementation
 			#region IList Implementation
@@ -1303,6 +1495,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					return myList3.Contains(value);
 				}
+				else if (value is ValueConstraint)
+				{
+					return myList4.Contains(value);
+				}
 				return false;
 			}
 			int IList.IndexOf(object value)
@@ -1321,6 +1517,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 						if (retVal != -1)
 						{
 							retVal += myList1.Count + myList2.Count;
+						}
+						else
+						{
+							retVal = myList4.IndexOf(value);
+							if (retVal != -1)
+							{
+								retVal += myList1.Count + myList2.Count + myList3.Count;
+							}
 						}
 					}
 				}
@@ -1349,7 +1553,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						index -= list1Count;
 						int list2Count = myList2.Count;
-						return (index >= list2Count) ? myList3[index - list2Count] : myList2[index];
+						if (index >= list2Count)
+						{
+							index -= list2Count;
+							int list3Count = myList3.Count;
+							return (index >= list3Count) ? myList4[index - list3Count] : myList3[index];
+						}
+						return myList2[index];
 					}
 					return myList1[index];
 				}
@@ -1362,7 +1572,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 						int list2Count = myList2.Count;
 						if (index >= list2Count)
 						{
-							myList3[index - list2Count] = value;
+							index -= list2Count;
+							int list3Count = myList3.Count;
+							if (index >= list3Count)
+							{
+								myList4[index - list3Count] = value;
+							}
+							else
+							{
+								myList3[index] = value;
+							}
 						}
 						else
 						{
@@ -1380,6 +1599,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				InternalConstraint ic;
 				MultiColumnExternalConstraint mcec;
 				SingleColumnExternalConstraint scec;
+				ValueConstraint vc;
 				if (null != (ic = value as InternalConstraint))
 				{
 					return myList3.Add(ic) + myList1.Count + myList2.Count;
@@ -1391,6 +1611,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				else if (null != (mcec = value as MultiColumnExternalConstraint))
 				{
 					return myList1.Add(mcec);
+				}
+				else if (null != (vc = value as ValueConstraint))
+				{
+					return myList4.Add(vc);
 				}
 				else
 				{

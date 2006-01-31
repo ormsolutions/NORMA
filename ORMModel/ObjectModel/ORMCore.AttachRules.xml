@@ -95,7 +95,7 @@
 		<arg:Rule class="Role.RolePlayerRequiredForNewRoleAddRule"/>
 		<arg:Rule class="Role.RolePlayerRequiredRemovedRule"/>
 		<arg:Rule class="Role.UpdatedRolePlayerRequiredErrorsRemovedRule"/>
-		<arg:Rule class="RoleValueRangeDefinition.RoleValueRangeDefinitionChangeRule"/>
+		<arg:Rule class="RoleValueConstraint.RoleValueConstraintChangeRule"/>
 		<arg:Rule class="SingleColumnExternalConstraint.ConstraintHasRoleSequenceAdded"/>
 		<arg:Rule class="SingleColumnExternalConstraint.ConstraintHasRoleSequenceAddedLocalCommit"/>
 		<arg:Rule class="SingleColumnExternalConstraint.ConstraintRoleSequenceHasRoleAdded"/>
@@ -114,10 +114,10 @@
 		<arg:Rule class="ValueRange.DataTypeAddRule"/>
 		<arg:Rule class="ValueRange.DataTypeChangeRule"/>
 		<arg:Rule class="ValueRange.ObjectTypeRoleAdded"/>
-		<arg:Rule class="ValueRange.RoleValueRangeDefinitionAdded"/>
+		<arg:Rule class="ValueRange.RoleValueConstraintAdded"/>
 		<arg:Rule class="ValueRange.ValueRangeAdded"/>
 		<arg:Rule class="ValueRange.ValueRangeChangeRule"/>
-		<arg:Rule class="ValueRange.ValueRangeDefinitionAddRule"/>
-		<arg:Rule class="ValueTypeValueRangeDefinition.ValueTypeValueRangeDefinitionChangeRule"/>
+		<arg:Rule class="ValueRange.ValueConstraintAddRule"/>
+		<arg:Rule class="ValueTypeValueConstraint.ValueTypeValueConstraintChangeRule"/>
 	</arg:Model>
 </arg:Rules>

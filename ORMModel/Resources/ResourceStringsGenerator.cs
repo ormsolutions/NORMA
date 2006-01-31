@@ -1359,61 +1359,61 @@
 		/// <summary>
 		/// Pattern showing left- and right-string to use for containing a value range definition.
 		/// </summary>
-		public static string ValueRangeDefinitionDefinitionContainerPattern
+		public static string ValueConstraintDefinitionContainerPattern
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.DefinitionContainerPattern");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.DefinitionContainerPattern");
 			}
 		}
 		/// <summary>
 		/// String used to delimit sets of value ranges in a definition.
 		/// </summary>
-		public static string ValueRangeDefinitionRangeDelimiter
+		public static string ValueConstraintRangeDelimiter
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.RangeDelimiter");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.RangeDelimiter");
 			}
 		}
 		/// <summary>
 		/// String used to delimit the min- and max-values of a value range.
 		/// </summary>
-		public static string ValueRangeDefinitionValueDelimiter
+		public static string ValueConstraintValueDelimiter
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ValueDelimiter");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.ValueDelimiter");
 			}
 		}
 		/// <summary>
 		/// Pattern showing left- and right-string to use for containing a value range as a string.
 		/// </summary>
-		public static string ValueRangeDefinitionStringContainerPattern
+		public static string ValueConstraintStringContainerPattern
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.StringContainerPattern");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.StringContainerPattern");
 			}
 		}
 		/// <summary>
 		/// Pattern showing left- and right-string to use to indicate the min- and max-values are open (i.e. the value itself is not a member of the range).
 		/// </summary>
-		public static string ValueRangeDefinitionOpenInclusionContainer
+		public static string ValueConstraintOpenInclusionContainer
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.OpenInclusionPattern");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.OpenInclusionPattern");
 			}
 		}
 		/// <summary>
 		/// Pattern showing left- and right-string to use to indicate the min- and max-values are closed (i.e. the value itself is a member of the range).
 		/// </summary>
-		public static string ValueRangeDefinitionClosedInclusionContainer
+		public static string ValueConstraintClosedInclusionContainer
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition.ClosedInclusionPattern");
+				return ResourceStrings.GetString(ResourceManagers.ObjectModel, "Neumont.Tools.ORM.ObjectModel.ValueConstraint.ClosedInclusionPattern");
 			}
 		}
 		/// <summary>

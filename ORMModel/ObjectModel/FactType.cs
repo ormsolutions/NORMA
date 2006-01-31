@@ -578,7 +578,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						yield return rolePlayerRequired;
 					}
-					RoleValueRangeDefinition valueConstraint = role.ValueRangeDefinition;
+					RoleValueConstraint valueConstraint = role.ValueConstraint;
 					if (valueConstraint != null)
 					{
 						foreach (ValueRange range in valueConstraint.ValueRangeCollection)

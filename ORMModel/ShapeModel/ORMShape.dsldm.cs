@@ -328,8 +328,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShapeElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape),
 				typeof(Neumont.Tools.ORM.ShapeModel.ReadingShapeElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeShape),
-				typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeShapeElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape),
+				typeof(Neumont.Tools.ORM.ShapeModel.ValueConstraintShapeElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ShapeModel.ORMBaseBinaryLinkShape),
 				typeof(Neumont.Tools.ORM.ShapeModel.RolePlayerLink),
 				typeof(Neumont.Tools.ORM.ShapeModel.RolePlayerLinkElementFactoryCreator),
@@ -368,7 +368,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape), "ConstraintDisplayPosition", Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeConstraintDisplayPositionFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape), "ObjectTypeName", Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectifiedFactTypeNameShapeObjectTypeNameFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape), "ReadingText", Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingShapeReadingTextFieldHandler)),
-				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeShape), "ValueRangeText", Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeShapeValueRangeTextFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape), "ValueRangeText", Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueRangeTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueConstraintShapeValueRangeTextFieldHandler)),
 
 			};
 			return typeArray;
@@ -2122,14 +2122,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeDefinition))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.ValueConstraint))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ValueRangeShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ValueRangeShape")]
-	public  partial class ValueRangeShape : Neumont.Tools.ORM.ShapeModel.FloatingTextShape
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.MetaClassGuidString, "Neumont.Tools.ORM.ShapeModel.ValueConstraintShape")]
+	public  partial class ValueConstraintShape : Neumont.Tools.ORM.ShapeModel.FloatingTextShape
 	{
-		#region ValueRangeShape's Generated Shape Code
+		#region ValueConstraintShape's Generated Shape Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -2137,7 +2137,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ValueRangeShape.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.MetaClassGuidString);
 		#region Boilerplate code for every Shape-derived class
 		/// <summary>
 		/// Style Set
@@ -2188,7 +2188,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// MetaAttribute Guid
 		/// </summary>
-		public static readonly System.Guid ValueRangeTextMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuidString);
+		public static readonly System.Guid ValueRangeTextMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueRangeTextMetaAttributeGuidString);
 		#endregion
 
 		#region ValueRangeText's Generated Property Code
@@ -2198,69 +2198,69 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		[System.ComponentModel.Browsable(false)]
 		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
-		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ValueRangeShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/ValueRangeDefinition/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="Text", ProxyAttributeName="Text", FieldHandlerType=typeof(ValueRangeShapeValueRangeTextFieldHandler))]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeText")]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(XPathExpression="/ValueConstraintShape/SubjectHasPresentation.Subject/Subject", ReverseXPathExpression="/ValueConstraint/SubjectHasPresentation.Presentation/Presentation", RealAttributeName="Text", ProxyAttributeName="Text", FieldHandlerType=typeof(ValueConstraintShapeValueRangeTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueRangeTextMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueRangeText")]
 		public  System.String ValueRangeText
 		{
 			get
 			{
-				return valueRangeShapeValueRangeTextFieldHandler.GetFieldValue(this);
+				return valueConstraintShapeValueRangeTextFieldHandler.GetFieldValue(this);
 			}
 		
 			set
 			{
-				valueRangeShapeValueRangeTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+				valueConstraintShapeValueRangeTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
 			}
 		}
 		#endregion
 
-		#region ValueRangeShapeValueRangeTextFieldHandler Generated Code
+		#region ValueConstraintShapeValueRangeTextFieldHandler Generated Code
 		/// <summary>
-		/// FieldHandler for ValueRangeShape.ValueRangeText field
+		/// FieldHandler for ValueConstraintShape.ValueRangeText field
 		/// </summary>
-		private static ValueRangeShapeValueRangeTextFieldHandler	valueRangeShapeValueRangeTextFieldHandler	= ValueRangeShapeValueRangeTextFieldHandler.Instance;
+		private static ValueConstraintShapeValueRangeTextFieldHandler	valueConstraintShapeValueRangeTextFieldHandler	= ValueConstraintShapeValueRangeTextFieldHandler.Instance;
 
 		/// <summary>
-		/// Implement the field handler for ValueRangeShape.ValueRangeText
+		/// Implement the field handler for ValueConstraintShape.ValueRangeText
 		/// </summary>
 		[System.CLSCompliant(false)]
-		public sealed partial class ValueRangeShapeValueRangeTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Neumont.Tools.ORM.ShapeModel.ValueRangeShape,System.String>
+		public sealed partial class ValueConstraintShapeValueRangeTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementPassThroughFieldHandler<Neumont.Tools.ORM.ShapeModel.ValueConstraintShape,System.String>
 		{
 			/// <summary>
 			/// Constructor
 			/// </summary>
-			private ValueRangeShapeValueRangeTextFieldHandler() { }
+			private ValueConstraintShapeValueRangeTextFieldHandler() { }
 
 			/// <summary>
-			/// Returns the singleton instance of the ValueRangeShape.ValueRangeText field handler
+			/// Returns the singleton instance of the ValueConstraintShape.ValueRangeText field handler
 			/// </summary>
-			/// <value>ValueRangeShapeValueRangeTextFieldHandler</value>
-			public static ValueRangeShapeValueRangeTextFieldHandler Instance
+			/// <value>ValueConstraintShapeValueRangeTextFieldHandler</value>
+			public static ValueConstraintShapeValueRangeTextFieldHandler Instance
 			{
 				get
 				{
-					if (Neumont.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler != null)
+					if (Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.valueConstraintShapeValueRangeTextFieldHandler != null)
 					{
-						return Neumont.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler;
+						return Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.valueConstraintShapeValueRangeTextFieldHandler;
 					}
 					else
 					{
-						// The static constructor in ValueRangeShape will assign this value to
-						// Neumont.Tools.ORM.ShapeModel.ValueRangeShape.valueRangeShapeValueRangeTextFieldHandler, so just instantiate one and return it
-						return new ValueRangeShapeValueRangeTextFieldHandler();
+						// The static constructor in ValueConstraintShape will assign this value to
+						// Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.valueConstraintShapeValueRangeTextFieldHandler, so just instantiate one and return it
+						return new ValueConstraintShapeValueRangeTextFieldHandler();
 					}
 				}
 			}
 
 			/// <summary>
-			/// Returns the meta attribute id for the ValueRangeShape.ValueRangeText field handler
+			/// Returns the meta attribute id for the ValueConstraintShape.ValueRangeText field handler
 			/// </summary>
 			/// <value>Guid</value>
 			public sealed override System.Guid Id
 			{
 				get
 				{
-					return Neumont.Tools.ORM.ShapeModel.ValueRangeShape.ValueRangeTextMetaAttributeGuid;
+					return Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueRangeTextMetaAttributeGuid;
 				}
 			}
 		}
@@ -2268,63 +2268,63 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 		
 	}
-	#region ValueRangeShape's Generated Constructor Code
-	public  partial class ValueRangeShape
+	#region ValueConstraintShape's Generated Constructor Code
+	public  partial class ValueConstraintShape
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ValueRangeShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		public ValueConstraintShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueRangeShape CreateValueRangeShape(Microsoft.VisualStudio.Modeling.Store store)
+		public static ValueConstraintShape CreateValueConstraintShape(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			return CreateValueRangeShape(store.DefaultPartition);
+			return CreateValueConstraintShape(store.DefaultPartition);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueRangeShape CreateAndInitializeValueRangeShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static ValueConstraintShape CreateAndInitializeValueConstraintShape(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return CreateAndInitializeValueRangeShape(store.DefaultPartition, assignments);
+			return CreateAndInitializeValueConstraintShape(store.DefaultPartition, assignments);
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ValueRangeShape(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		public ValueConstraintShape(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 			: base(partition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueRangeShape CreateValueRangeShape(Microsoft.VisualStudio.Modeling.Partition partition)
+		public static ValueConstraintShape CreateValueConstraintShape(Microsoft.VisualStudio.Modeling.Partition partition)
 		{
-			return (ValueRangeShape)partition.ElementFactory.CreateElement(typeof(ValueRangeShape));
+			return (ValueConstraintShape)partition.ElementFactory.CreateElement(typeof(ValueConstraintShape));
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static ValueRangeShape CreateAndInitializeValueRangeShape(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static ValueConstraintShape CreateAndInitializeValueConstraintShape(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (ValueRangeShape)partition.ElementFactory.CreateElement(typeof(ValueRangeShape), assignments);
+			return (ValueConstraintShape)partition.ElementFactory.CreateElement(typeof(ValueConstraintShape), assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for ValueRangeShape
+	#region Class Factory Creator for ValueConstraintShape
 	/// <summary>
-	/// ValueRangeShape Class Factory Creator
+	/// ValueConstraintShape Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.ValueRangeShape))]
-	public sealed class ValueRangeShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape))]
+	public sealed class ValueConstraintShapeElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public ValueRangeShapeElementFactoryCreator()
+		public ValueConstraintShapeElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -2332,16 +2332,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Neumont.Tools.ORM.ShapeModel.ValueRangeShape( partition, bag );
+			return new Neumont.Tools.ORM.ShapeModel.ValueConstraintShape( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
 		/// </summary>
-		public static ValueRangeShapeElementFactoryCreator Instance
+		public static ValueConstraintShapeElementFactoryCreator Instance
 		{
 			get
 			{
-				return new ValueRangeShapeElementFactoryCreator();
+				return new ValueConstraintShapeElementFactoryCreator();
 			}
 		}
 	}
@@ -2853,7 +2853,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// <summary>
 	/// 
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueRangeDefinition))]
+	[Microsoft.VisualStudio.Modeling.ShapeForAttribute(typeof(Neumont.Tools.ORM.ObjectModel.RoleHasValueConstraint))]
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("c52fb9a5-6bf4-4267-8716-71d74c7aa89c")]

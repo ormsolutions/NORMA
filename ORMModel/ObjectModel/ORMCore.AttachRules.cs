@@ -105,7 +105,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Role).GetNestedType("RolePlayerRequiredForNewRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(Role).GetNestedType("RolePlayerRequiredRemovedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(Role).GetNestedType("UpdatedRolePlayerRequiredErrorsRemovedRule", BindingFlags.Public | BindingFlags.NonPublic),
-				typeof(RoleValueRangeDefinition).GetNestedType("RoleValueRangeDefinitionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(RoleValueConstraint).GetNestedType("RoleValueConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SingleColumnExternalConstraint).GetNestedType("ConstraintHasRoleSequenceAdded", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SingleColumnExternalConstraint).GetNestedType("ConstraintHasRoleSequenceAddedLocalCommit", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SingleColumnExternalConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
@@ -124,11 +124,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(ValueRange).GetNestedType("DataTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ValueRange).GetNestedType("DataTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ValueRange).GetNestedType("ObjectTypeRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
-				typeof(ValueRange).GetNestedType("RoleValueRangeDefinitionAdded", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ValueRange).GetNestedType("RoleValueConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ValueRange).GetNestedType("ValueRangeAdded", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ValueRange).GetNestedType("ValueRangeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
-				typeof(ValueRange).GetNestedType("ValueRangeDefinitionAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-				typeof(ValueTypeValueRangeDefinition).GetNestedType("ValueTypeValueRangeDefinitionChangeRule", BindingFlags.Public | BindingFlags.NonPublic)};
+				typeof(ValueRange).GetNestedType("ValueConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ValueTypeValueConstraint).GetNestedType("ValueTypeValueConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic)};
 			System.Diagnostics.Debug.Assert(!(((System.Collections.IList)retVal).Contains(null)), "One or more rule types failed to resolve. The file and/or package will fail to load.");
 			return retVal;
 		}

@@ -188,12 +188,12 @@
 			<xs:enumeration value="SubsetConstraint"/>
 			<xs:enumeration value="ExclusionConstraint"/>
 			<xs:enumeration value="EqualityConstraint"/>
-			<xs:enumeration value="RoleValueRangeDefinition">
+			<xs:enumeration value="RoleValueConstraint">
 				<xs:annotation>
 					<xs:documentation>Verbalizes value range constraints on roles.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="ValueTypeValueRangeDefinition">
+			<xs:enumeration value="ValueTypeValueConstraint">
 				<xs:annotation>
 					<xs:documentation>Verbalizes value range constraints on value types.</xs:documentation>
 				</xs:annotation>
