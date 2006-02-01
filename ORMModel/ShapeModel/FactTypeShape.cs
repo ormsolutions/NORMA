@@ -39,6 +39,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region FactTypeShape class
 	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation
 	{
+
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
 		/// The activity of a role in a ConstraintBox
@@ -1032,6 +1033,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 				DefaultSelectable = true;
 				DefaultVisibility = true;
 				myDisplayPosition = displayPosition;
+			}
+			/// <summary>
+			/// Accessor property for display position provided to constructor
+			/// </summary>
+			public ConstraintDisplayPosition DisplayPosition
+			{
+				get
+				{
+					return myDisplayPosition;
+				}
 			}
 			/// <summary>
 			/// Find the constraint sub shape at this location
@@ -2744,6 +2755,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Customize property display
+		#region Accessibility Settings
+		/// <summary>
+		/// Get the accessible name for a shape field
+		/// </summary>
+		public override string GetFieldAccessibleName(ShapeField field)
+		{
+			// UNDONE: Localize these values
+			ConstraintShapeField constraintField;
+			if (null != (constraintField = field as ConstraintShapeField))
+			{
+				return "Constraints";
+			}
+			else if (field is RolesShapeField)
+			{
+				return "Roles";
+			}
+			return base.GetFieldAccessibleName(field);
+		}
+		/// <summary>
+		/// Get the accessible value for a shape field
+		/// </summary>
+		public override string GetFieldAccessibleValue(ShapeField field)
+		{
+			ConstraintShapeField constraintField;
+			if (null != (constraintField = field as ConstraintShapeField))
+			{
+				ConstraintDisplayPosition position = constraintField.DisplayPosition;
+				return ORMShapeModel.SingletonResourceManager.GetString("ConstraintDisplayPosition." + position.ToString());
+			}
+			return base.GetFieldAccessibleValue(field);
+		}
+		#endregion // Accessibility Settings
 		#region ICustomShapeFolding implementation
 		/// <summary>
 		/// Implements ICustomShapeFolding.CalculateConnectionPoint
