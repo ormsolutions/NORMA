@@ -35,7 +35,7 @@
 
 		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Editors\{$(var.NORMAVSEditorGuid)}">
 			<Registry Value="ORMDesignerEditorFactory" Type="string"/>
-			<Registry Name="DisplayName" Value="##108" Type="string"/>
+			<Registry Name="DisplayName" Value="#108" Type="string"/>
 			<Registry Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 			<Registry Name="TrustLevel" Value="1" Type="integer"/>
 			<Registry Key="Extensions">
@@ -45,10 +45,10 @@
 		</Registry>
 
 		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="ToolsOptionsPages\ORM Designer">
-			<Registry Value="##105" Type="string"/>
+			<Registry Value="#105" Type="string"/>
 			<Registry Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 			<Registry Action="createKey" Key="General">
-				<Registry Value="##106" Type="string"/>
+				<Registry Value="#106" Type="string"/>
 				<Registry Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<Registry Name="Page" Value="{B4ABD9FD-CE79-4B26-8D36-F345CB53B525}" Type="string"/>
 			</Registry>

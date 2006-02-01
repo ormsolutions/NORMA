@@ -185,9 +185,6 @@ namespace Neumont.Tools.ORM.Shell
 
 			if (!SetupMode)
 			{
-				base.ToolboxInitialized += this.ToolboxHandler;
-				base.ToolboxUpgraded += this.ToolboxHandler;
-
 				IServiceContainer service = (IServiceContainer)this;
 				myFontAndColorService = new ORMDesignerFontsAndColors(this);
 				service.AddService(typeof(ORMDesignerFontsAndColors), myFontAndColorService, true);
@@ -205,17 +202,10 @@ namespace Neumont.Tools.ORM.Shell
 				
 				// Make sure our options are loaded from the registry
 				GetDialogPage(typeof(OptionsPage));
-				
+
 				base.SetupDynamicToolbox();
 			}
 
-		}
-		/// <summary>
-		/// Handles the <see cref="Package.ToolboxInitialized"/> and <see cref="Package.ToolboxUpgraded"/> events.
-		/// </summary>
-		private void ToolboxHandler(object sender, EventArgs e)
-		{
-			base.SetupDynamicToolbox();
 		}
 		/// <summary>
 		/// This is called by the package base class when our package gets unloaded.

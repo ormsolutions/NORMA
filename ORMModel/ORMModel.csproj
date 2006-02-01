@@ -288,7 +288,9 @@
     <None Include="Shell\ProjectItems\ORMModel.orm" />
     <None Include="Shell\ProjectItems\VisualBasic.zip" />
     <None Include="Shell\ProjectItems\VisualC.zip" />
-    <None Include="Shell\ProjectItems\Web.zip" />
+    <None Include="Shell\ProjectItems\Web\CSharp.zip" />
+    <None Include="Shell\ProjectItems\Web\JSharp.zip" />
+    <None Include="Shell\ProjectItems\Web\VisualBasic.zip" />
     <None Include="Transforms\SerializationExtensions.xsd" />
     <None Include="Transforms\SerializationExtensions.xslt" />
     <EmbeddedResource Include="ObjectModel\ORM2Core.xsd">

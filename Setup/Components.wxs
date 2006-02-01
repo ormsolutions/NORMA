@@ -88,17 +88,17 @@
 								<File Id="ORMModel.orm" Name="ORMModel.orm" src="..\ORMModel\Shell\ProjectItems\ORMModel.orm"
 									DefaultLanguage="0" CompanionFile="ORMProjectItems.vsdir"/>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\{$(var.VSGeneralProjectGuid)}\AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}">
-									<Registry Key="/1" Type="string" Value="##107"/>
+									<Registry Key="/1" Type="string" Value="#107"/>
 									<Registry Key="/1" Type="string" Name="TemplatesDir" Value="[PROJECTITEMSDIR]"/>
 									<Registry Key="/1" Type="integer" Name="SortPriority" Value="50"/>
 								</Registry>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\{$(var.VSMiscProjectGuid)}\AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}">
-									<Registry Key="/1" Type="string" Value="##107"/>
+									<Registry Key="/1" Type="string" Value="#107"/>
 									<Registry Key="/1" Type="string" Name="TemplatesDir" Value="[PROJECTITEMSDIR]"/>
 									<Registry Key="/1" Type="integer" Name="SortPriority" Value="50"/>
 								</Registry>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Projects\{$(var.VSSolutionItemsProjectGuid)}\AddItemTemplates\TemplateDirs\{$(var.NORMAVSPackageGuid)}">
-									<Registry Key="/1" Type="string" Value="##107"/>
+									<Registry Key="/1" Type="string" Value="#107"/>
 									<Registry Key="/1" Type="string" Name="TemplatesDir" Value="[PROJECTITEMSDIR]"/>
 									<Registry Key="/1" Type="integer" Name="SortPriority" Value="50"/>
 								</Registry>
@@ -273,11 +273,27 @@
 					</Component>
 				</Directory>
 				<Directory Id="Web" Name="Web">
-					<Component Id="NORMAVSProjectItemsVWebDevComponent" Guid="2A56826D-7449-46E1-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-						<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
-						<File Id="Web.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\Web.zip"
-							DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
-					</Component>
+					<Directory Id="WebVisualBasic" Name="VBasic" LongName="VisualBasic">
+						<Component Id="NORMAVSProjectItemsVWebDevVBasicComponent" Guid="4EC6EE56-3F04-4F0F-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
+							<File Id="WebVisualBasic.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\Web\VisualBasic.zip"
+								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+						</Component>
+					</Directory>
+					<Directory Id="WebCSharp" Name="CSharp">
+						<Component Id="NORMAVSProjectItemsVWebDevCSharpComponent" Guid="7E4BA3AB-3831-4520-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
+							<File Id="WebCSharp.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\Web\CSharp.zip"
+								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+						</Component>
+					</Directory>
+					<Directory Id="WebJSharp" Name="JSharp">
+						<Component Id="NORMAVSProjectItemsVWebDevJSharpComponent" Guid="E68504E4-D956-4A87-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+							<Condition>VWEBDEVPACKAGEGUID OR Installed</Condition>
+							<File Id="WebJSharp.zip" Name="ORMModel.zip" src="..\ORMModel\Shell\ProjectItems\Web\JSharp.zip"
+								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+						</Component>
+					</Directory>
 				</Directory>
 			</Directory>
 			

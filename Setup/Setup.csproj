@@ -22,12 +22,12 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\DSLTools\v2.0\wix.targets" />
   <ItemGroup>
     <SetupFiles Include="settings.ini" />
+    <Compile Include="Product.wxs" />
+    <Compile Include="Features.wxs" />
     <Compile Include="Components.wxs" />
     <Compile Include="ComponentGroups.wxs" />
     <None Include="Config.wxi" />
     <None Include="NORMAVSPackageRegistry.wxi" />
-    <None Include="Product.wxs" />
-    <None Include="Features.wxs" />
     <None Include="Strings.wxl" />
   </ItemGroup>
   <ItemGroup>
@@ -39,7 +39,4 @@
   <ItemGroup>
     <None Include="ORMSchemaCatalog.xml" />
   </ItemGroup>
-  <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)..\VersionGenerator.exe"</PreBuildEvent>
-  </PropertyGroup>
 </Project>
