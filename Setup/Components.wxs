@@ -237,6 +237,8 @@
 								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
 							<File Id="DomainInliner.xslt" Name="DmnInlnr.xsl" LongName="DomainInliner.xslt" src="..\XML\DILtoSQL\DomainInliner.xslt"
 								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+							<File Id="DCILtoDDIL.xslt" Name="DCIL2DDL.xsl" LongName="DCILtoDDIL.xslt" src="..\XML\DILtoSQL\DCILtoDDIL.xslt"
+								DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
 						</Component>
 					</Directory>
 				</Directory>
