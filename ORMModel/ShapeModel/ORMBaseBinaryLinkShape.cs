@@ -114,8 +114,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			Store store = this.Store;
 			retVal = LinkConnectorShape.CreateLinkConnectorShape(store);
 			RectangleD bounds = AbsoluteBoundingBox;
-			retVal.Location = new PointD(bounds.Width / 2, bounds.Height / 2);
 			childShapes.Add(retVal);
+			retVal.Location = new PointD(bounds.Width / 2, bounds.Height / 2);
 			return retVal;
 		}
 		#region LinkChangeRule class
