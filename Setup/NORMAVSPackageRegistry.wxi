@@ -4,7 +4,7 @@
 		
 		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Packages\{$(var.NORMAVSPackageGuid)}">
 			<Registry Value="Neumont.Tools.ORM.Shell.ORMDesignerPackage, $(var.NORMAVSPackageAssemblyName)" Type="string" />
-			<Registry Name="InprocServer32" Value="[$(var.SystemFolder)]\mscoree.dll" Type="string"/>
+			<Registry Name="InprocServer32" Value="[$(var.SystemFolder)]mscoree.dll" Type="string"/>
 			<Registry Name="CodeBase" Value="[#Neumont.Tools.ORM.dll]" Type="string"/>
 			<Registry Name="Class" Value="Neumont.Tools.ORM.Shell.ORMDesignerPackage" Type="string"/>
 			<Registry Name="ID" Value="$(var.PLKResourceID)" Type="integer"/>

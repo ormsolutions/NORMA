@@ -44,14 +44,17 @@
 
 							<Component Id="ORMCustomToolComponent" Guid="9B2F677A-1D14-4E9E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<File Id="Neumont.Tools.ORM.ORMCustomTool.dll" Name="ORMCstTl.dll" LongName="Neumont.Tools.ORM.ORMCustomTool.dll" src="..\XML\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.dll"
-									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.ORMCustomTool.dll" ProcessorArchitecture="msil"/>
+									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="Neumont.Tools.ORM.ORMCustomTool.dll" AssemblyApplication="Neumont.Tools.ORM.ORMCustomTool.dll" ProcessorArchitecture="msil"/>
+								<File Id="Neumont.Tools.ORM.ORMCustomTool.pdb" Name="ORMCstTl.pdb" LongName="Neumont.Tools.ORM.ORMCustomTool.pdb" src="..\XML\ORMCustomTool\bin\Neumont.Tools.ORM.ORMCustomTool.pdb"
+									DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.ORMCustomTool.dll"/>
 								<Registry Action="createKeyAndRemoveKeyOnUninstall" Root="HKCR" Key="CLSID\{$(var.ORMCustomToolGuid)}">
 									<Registry Type="string" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool, $(var.ORMCustomToolAssemblyName)"/>
 									<Registry Action="createKey" Key="InprocServer32">
-										<Registry Type="string" Value="[$(var.SystemFolder)]\mscoree.dll"/>
+										<Registry Type="string" Value="[$(var.SystemFolder)]mscoree.dll"/>
 										<Registry Type="string" Name="ThreadingModel" Value="Both"/>
 										<Registry Type="string" Name="Class" Value="Neumont.Tools.ORM.ORMCustomTool.ORMCustomTool"/>
 										<Registry Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
+										<Registry Type="string" Name="CodeBase" Value="[#Neumont.Tools.ORM.ORMCustomTool.dll]"/>
 									</Registry>
 								</Registry>
 							</Component>
