@@ -265,9 +265,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>An ObjectType, or null</returns>
 		protected static ObjectType ObjectTypeFromShape(PresentationElement shape)
 		{
-			ModelElement backingElement = shape.ModelElement;
 			ObjectType objectType = null;
 			FactType factType;
+			ModelElement backingElement = (shape != null) ? shape.ModelElement : null;
 			if (null == (objectType = backingElement as ObjectType))
 			{
 				if (null != (factType = backingElement as FactType))

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Todo: Is external on object type?  What am I supposed to do with object shapes and data types? -->
-<xs:schema targetNamespace="http://schemas.neumont.edu/ORM/ORMCore" 
+<xs:schema targetNamespace="http://schemas.neumont.edu/ORM/2006-01/ORMCore" 
 	elementFormDefault="qualified" attributeFormDefault="unqualified" 
-	xmlns="http://schemas.neumont.edu/ORM/ORMCore" 
+	xmlns="http://schemas.neumont.edu/ORM/2006-01/ORMCore" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
 	<xs:complexType name="Extensions">
@@ -48,7 +48,7 @@
 	<xs:complexType name="ObjectType" abstract="true">
 		<xs:sequence>
 			<xs:element name="ObjectNotes" type="Data" minOccurs="0"/>
-			<xs:element name="PlayedRoles" type="RoleSequence" minOccurs="0"/>
+			<xs:element name="PlayedRoles" type="PlayedRoles" minOccurs="0"/>
 			<!--Subtypes is derived.-->
 			<!--We need to be able to reference elements from the derived schema without introducing ambiguity.-->
 			<!--<xs:element ref="derived:test"></xs:element>-->
@@ -91,7 +91,7 @@
 			<xs:extension base="ObjectType">
 				<xs:sequence>
 					<xs:element name="ConceptualDataType" type="DataTypeRef" minOccurs="1" maxOccurs="1"/>
-					<xs:element name="ValueConstraint" type="ValueRangeDefinition" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="ValueRestriction" type="ValueRestriction" minOccurs="0" maxOccurs="1"/>
 					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
@@ -267,6 +267,13 @@
 			<xs:element name="RoleSequence" type="RoleSequence" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="PlayedRoles">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Role" type="RoleRef"/>
+			<xs:element name="SubtypeMetaRole" type="RoleRef"/>
+			<xs:element name="SupertypeMetaRole" type="RoleRef"/>
+		</xs:choice>
+	</xs:complexType>
 	<xs:complexType name="RoleSequence">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Role" type="RoleRef" minOccurs="1" maxOccurs="1"/>
@@ -277,16 +284,28 @@
 	<xs:complexType name="RoleRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
+	<xs:complexType name="SubtypeMetaRoleRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
+	<xs:complexType name="SupertypeMetaRoleRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
 	<!--end RoleRef, RoleSequence and  RoleSequences-->
 	<xs:complexType name="Roles">
 		<xs:sequence>
 			<xs:element name="Role" type="Role" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="SubtypeRoles">
+		<xs:all>
+			<xs:element name="SupertypeMetaRole" type="Role"/>
+			<xs:element name="SubtypeMetaRole" type="Role"/>
+		</xs:all>
+	</xs:complexType>
 	<xs:complexType name="Role">
 		<xs:all>
 			<xs:element name="RolePlayer" type="ObjectRef" minOccurs="0"/>
-			<xs:element name="ValueConstraint" type="RoleValueRangeDefinition" minOccurs="0"/>
+			<xs:element name="ValueRestriction" type="RoleValueRestriction" minOccurs="0"/>
 			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
 		</xs:all>
 		<xs:attribute name="Name" type="xs:string" use="required"/>
@@ -336,6 +355,7 @@
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="BaseFact" abstract="true">
+		<!-- These are duplicated in SubtypeFact without type extension -->
 		<xs:sequence minOccurs="0" maxOccurs="1">
 			<xs:element name="FactNotes" type="Data" minOccurs="0"/>
 			<xs:element name="DerivationRule" type="Data" minOccurs="0"/>
@@ -368,13 +388,20 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SubtypeFact">
-		<xs:complexContent>
-			<xs:extension base="BaseFact">
-				<xs:sequence>
-					<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<!-- This is a straight copy from BaseFact with a change to FactRoles and an Extensions element-->
+		<xs:sequence minOccurs="0" maxOccurs="1">
+			<xs:element name="FactNotes" type="Data" minOccurs="0"/>
+			<xs:element name="DerivationRule" type="Data" minOccurs="0"/>
+			<xs:element name="FactRoles" type="SubtypeRoles" minOccurs="1"/>
+			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
+			<xs:element name="InternalConstraints" type="InternalConstraints" minOccurs="0"/>
+			<xs:element name="ExternalConstraints" type="ConstraintRefs" minOccurs="0"/>
+			<xs:element name="Extensions" type="Extensions" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="Name" use="required" type="xs:string"/>
+		<xs:attribute name="id" use="required" type="xs:ID"/>
+		<xs:attribute name="IsExternal" type="xs:boolean" default="false"/>
+		<xs:attribute name="IsPrimary" type="xs:boolean" default="false"/>
 	</xs:complexType>
 	<!-- End Facts -->
 	<!--Constraints-->
@@ -397,6 +424,9 @@
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<xs:complexType name="RingConstraintRef">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:complexType>
+	<xs:complexType name="ObjectTypeRequiresPrimarySubtypeRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<!--end ConstraintRef and  ConstraintRefs-->
@@ -669,8 +699,9 @@
 			<xs:element name="MinValueMismatchError" type="MinValueMismatchError"/>
 			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchError"/>
 			<xs:element name="RingConstraintTypeNotSpecifiedError" type="RingConstraintTypeNotSpecifiedError"/>
-			<xs:element name="SimpleMandatoryImpliesDisjunctiveMandatoryError" type="SimpleMandatoryImpliesDisjunctiveMandatoryError"/>
+			<xs:element name="DisjunctiveMandatoryImpliedByMandatoryError" type="DisjunctiveMandatoryImpliedByMandatoryError"/>
 			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintError"/>
+			<xs:element name="ObjectTypeRequiresPrimarySubtypeError" type="ObjectTypeRequiresPrimarySubtypeError"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
@@ -834,6 +865,15 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="ObjectTypeRequiresPrimarySubtypeError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ObjectType" type="ObjectTypeRequiresPrimarySubtypeRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="RingConstraintTypeNotSpecifiedError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
@@ -843,7 +883,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="SimpleMandatoryImpliesDisjunctiveMandatoryError">
+	<xs:complexType name="DisjunctiveMandatoryImpliedByMandatoryError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
@@ -946,27 +986,28 @@
 		<xs:attribute name="Name" type="xs:string" default=""/>
 	</xs:complexType>
 	<!--End Custom Reference Modes-->
-	<xs:complexType name="ValueRangeDefinition">
+	<xs:complexType name="ValueRestriction">
 		<xs:sequence>
-			<xs:element name="ValueRangeDefinition">
+			<xs:element name="ValueConstraint">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="ValueRanges" type="ValueRangeCollection"/>
 					</xs:sequence>
-					<xs:attribute name="Name" type="xs:string" use="optional"/> <!-- UNDONE: Transitional, switch to required for new format -->
+					<xs:attribute name="Name" type="xs:string" use="required"/>
 					<xs:attribute name="id" type="xs:ID" use="required" />
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="RoleValueRangeDefinition">
+	<xs:complexType name="RoleValueRestriction">
 		<xs:sequence>
-			<xs:element name="RoleValueRangeDefinition">
+			<xs:element name="RoleValueConstraint">
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="ValueRanges" type="ValueRangeCollection"/>
 					</xs:sequence>
 					<xs:attribute name="id" type="xs:ID" use="required" />
+					<xs:attribute name="Name" type="xs:string" use="required"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>

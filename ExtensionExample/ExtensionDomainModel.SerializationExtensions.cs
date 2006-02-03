@@ -170,13 +170,13 @@ namespace ExtensionExample
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			throw new NotSupportedException();
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer

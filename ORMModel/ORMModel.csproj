@@ -257,9 +257,11 @@
     <None Include="Resources\Toolbox.EntityType.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ObjectModel\ORMCore.dsldm.resx">
       <DependentUpon>ORMCore.dsldm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectModel\ORMModel.resx">
       <DependentUpon>ORMModel.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ShapeModel\ConnectExternalConstraintAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectExternalConstraintSearching.cur" />
@@ -324,6 +326,8 @@
     <Content Include="Resources\ResourceStringsGenerator.xslt" />
     <None Include="Shell\catalog.xml" />
     <Content Include="Shell\Converters\CoreModelImport.xslt" />
+    <Content Include="Shell\Converters\CoreUpgradeTo2006-01.xslt" />
+    <Content Include="Shell\Converters\RootUpgradeTo2006-01.xslt" />
     <Content Include="Shell\Converters\VisioToCoreModelImport.xslt" />
     <Content Include="Shell\ORMDesignerSettings.xml" />
     <None Include="ShapeModel\ORMShape.SerializationExtensions.xml">

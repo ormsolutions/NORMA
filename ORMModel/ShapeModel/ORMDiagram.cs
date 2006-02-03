@@ -1077,12 +1077,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 			RolePlayerLink.AttachEventHandlers(store);
 			ObjectTypeShape.AttachEventHandlers(store);
 			FactTypeShape.AttachEventHandlers(store);
+			SubtypeLink.AttachEventHandlers(store);
 		}
 		/// <summary>
 		/// Detach event handlers to the store. Central location defers to other shape objects.
 		/// </summary>
 		public static void DetachEventHandlers(Store store)
 		{
+			SubtypeLink.DetachEventHandlers(store);
 			FactTypeShape.DetachEventHandlers(store);
 			ObjectTypeShape.DetachEventHandlers(store);
 			RolePlayerLink.DetachEventHandlers(store);

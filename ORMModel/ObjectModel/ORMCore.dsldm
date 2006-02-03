@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <dmd xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:schemas-microsoft-com:dmd">
   <model name="ORMMetaModel" identity="83ad9e12-0e90-47cd-8e2f-a79f8d9c7288" id="i83ad9e12z0e90z47cdz8e2fza79f8d9c7288" namespace="Neumont.Tools.ORM.ObjectModel" isLoaded="true">
-    <mdfmetadata xsi:type="modelmdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" majorversion="1" minorversion="0" alwaysgeneratecollection="false">
+    <mdfmetadata xsi:type="modelmdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" majorversion="1" minorversion="1" alwaysgeneratecollection="false">
       <copyright>------------------------------------------------------------------------------
 Copyright (c) Neumont University. All Rights Reserved.
 Information Contained Herein is Proprietary and Confidential.
@@ -1409,6 +1409,28 @@ Information Contained Herein is Proprietary and Confidential.
           </role>
         </roles>
       </relationship>
+      <relationship name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError" identity="68e3a5d5-bb3c-4c0c-bb6d-245d5531fcb8" namespace="Neumont.Tools.ORM.ObjectModel" id="i68e3a5d5zbb3cz4c0czbb6dz245d5531fcb8" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+        <roles>
+          <role name="ObjectTypeRequiresPrimarySubtypeError" identity="ae7f8f8f-ae73-4a18-bc68-a5138a579f5c" id="iae7f8f8fzae73z4a18zbc68za5138a579f5c" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i910a08efze1a5z461azbebdz150932f12aad</source>
+            <type>i24f4068fz8eeaz4cedzb5f7zddff7838cab4</type>
+            <generatedProperty name="ObjectTypeRequiresPrimarySubtypeError" identity="f22bda35-013e-49ad-98c7-abc4cbb287d7">
+              <referenceType>i24f4068fz8eeaz4cedzb5f7zddff7838cab4</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="ObjectType" identity="7e7e5ec4-1810-4427-93bd-711e5ac95dc8" id="i7e7e5ec4z1810z4427z93bdz711e5ac95dc8" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i24f4068fz8eeaz4cedzb5f7zddff7838cab4</source>
+            <type>i910a08efze1a5z461azbebdz150932f12aad</type>
+            <generatedProperty name="ObjectType" identity="89356686-da60-40df-86d7-8089d8776e5e">
+              <referenceType>i910a08efze1a5z461azbebdz150932f12aad</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
     </relationships>
     <trees>
       <treenavigator name="intrinsic" identity="ba1d8762-3be9-41fa-b3ad-3a2bc978f8fe" id="iba1d8762z3be9z41fazb3adz3a2bc978f8fe">
@@ -2420,6 +2442,30 @@ Information Contained Herein is Proprietary and Confidential.
           <treeExpression xsi:type="RoleExpression" name="ValueConstraintHasConstraintDuplicateNameError.ConstraintDuplicateNameError" identity="28177a8e-3631-4bd1-96fc-31cc9e5830ba" id="i28177a8ez3631z4bd1z96fcz31cc9e5830ba" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i8d5882faz60f0z4c5bz8d57z727c5af15d53</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="SubtypeMetaRole-Role" identity="dfdcf772-7667-40fa-b9d5-ab2a2272e030" id="idfdcf772z7667z40fazb9d5zab2a2272e030" definitionlevel="none">
+            <source />
+            <superType>i393d854fz34c5z4dc5z86c6z56816581b957</superType>
+            <subType>id8a4599bz4477z4f41z8eedz1c67f4c02d93</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="SupertypeMetaRole-Role" identity="fb219153-037c-4028-982d-385c8b733b6c" id="ifb219153z037cz4028z982dz385c8b733b6c" definitionlevel="none">
+            <source />
+            <superType>i393d854fz34c5z4dc5z86c6z56816581b957</superType>
+            <subType>ia1ee563az1bd4z47e0z9aabz3d82083e4202</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeRequiresPrimarySubtypeError-ModelError" identity="7af24c7b-7aff-4ff3-ad0e-b57cf2cc897d" id="i7af24c7bz7affz4ff3zad0ezb57cf2cc897d" definitionlevel="none">
+            <source />
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i24f4068fz8eeaz4cedzb5f7zddff7838cab4</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeError" identity="083f5805-7f87-41ae-a04c-9d33dd732325" id="i083f5805z7f87z41aeza04cz9d33dd732325" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>iae7f8f8fzae73z4a18zbc68za5138a579f5c</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError-ORMElementLink" identity="2d3ab6da-ef7a-4656-b1ea-dce1ee33ce47" id="i2d3ab6dazef7az4656zb1eazdce1ee33ce47" definitionlevel="none">
+            <source />
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>i68e3a5d5zbb3cz4c0czbb6dz245d5531fcb8</subType>
           </treeExpression>
         </expressions>
         <roots />
@@ -3622,6 +3668,34 @@ Information Contained Herein is Proprietary and Confidential.
             <source>i28177a8ez3631z4bd1z96fcz31cc9e5830ba</source>
             <role>i8d5882faz60f0z4c5bz8d57z727c5af15d53</role>
           </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="SubtypeMetaRole-Role" identity="45f535a7-3764-4d8c-94c4-5ce98e1edbc3" id="i45f535a7z3764z4d8cz94c4z5ce98e1edbc3" definitionlevel="definition">
+            <source>idfdcf772z7667z40fazb9d5zab2a2272e030</source>
+            <superType>i393d854fz34c5z4dc5z86c6z56816581b957</superType>
+            <subType>id8a4599bz4477z4f41z8eedz1c67f4c02d93</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="SupertypeMetaRole-Role" identity="6d0c4e8c-7bc7-48d1-8d61-743d2739e59b" id="i6d0c4e8cz7bc7z48d1z8d61z743d2739e59b" definitionlevel="definition">
+            <source>ifb219153z037cz4028z982dz385c8b733b6c</source>
+            <superType>i393d854fz34c5z4dc5z86c6z56816581b957</superType>
+            <subType>ia1ee563az1bd4z47e0z9aabz3d82083e4202</subType>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="7a77bc4c-d005-48e9-8569-7bb357f36226" id="i7a77bc4czd005z48e9z8569z7bb357f36226">
+            <source />
+            <property>i2d2a56cezc311z49b5zb375ze6cecab3ea00</property>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeRequiresPrimarySubtypeError-ModelError" identity="ed14b5eb-8871-4585-8495-cfc9876a75a7" id="ied14b5ebz8871z4585z8495zcfc9876a75a7" definitionlevel="definition">
+            <source>i7af24c7bz7affz4ff3zad0ezb57cf2cc897d</source>
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i24f4068fz8eeaz4cedzb5f7zddff7838cab4</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeError" identity="b67b2484-0809-4a87-aee5-2ecbe349bead" id="ib67b2484z0809z4a87zaee5z2ecbe349bead" definitionlevel="use" containmentstyle="fromsource">
+            <source>i083f5805z7f87z41aeza04cz9d33dd732325</source>
+            <role>iae7f8f8fzae73z4a18zbc68za5138a579f5c</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError-ORMElementLink" identity="186da005-52f5-4849-b825-a9c3bc0c83da" id="i186da005z52f5z4849zb825za9c3bc0c83da" definitionlevel="definition">
+            <source>i2d3ab6dazef7az4656zb1eazdce1ee33ce47</source>
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>i68e3a5d5zbb3cz4c0czbb6dz245d5531fcb8</subType>
+          </treeExpression>
         </expressions>
         <roots>
           <root name="ModelElement" identity="7ff516db-ce3c-4610-a36c-ec835c0f8057" id="i7ff516dbzce3cz4610za36czec835c0f8057">
@@ -4143,6 +4217,14 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <role>i49832416zd3ddz4ce0zb930z3802e23d44a1</role>
           </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeError" identity="9bc7f45a-0290-425a-b34b-38a58e2b4459" id="i9bc7f45az0290z425azb34bz38a58e2b4459" definitionlevel="none" containmentstyle="embedding">
+            <source>i083f5805z7f87z41aeza04cz9d33dd732325</source>
+            <role>iae7f8f8fzae73z4a18zbc68za5138a579f5c</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectType" identity="292e4656-fd71-43f8-9989-830630dd5588" id="i292e4656zfd71z43f8z9989z830630dd5588" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i7e7e5ec4z1810z4427z93bdz711e5ac95dc8</role>
+          </treeExpression>
         </expressions>
         <roots />
         <source>iba1d8762z3be9z41fazb3adz3a2bc978f8fe</source>
@@ -4223,6 +4305,12 @@ Information Contained Herein is Proprietary and Confidential.
       <concept name="SubtypeFact" identity="012ad46d-6e3e-4ca2-97e8-44ea4f27ca75" namespace="Neumont.Tools.ORM.ObjectModel" id="i012ad46dz6e3ez4ca2z97e8z44ea4f27ca75" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>ia3acc35azce71z4cb8z8770zb87fbfa462d8</superType>
+        <valueProperties>
+          <property name="IsPrimary" identity="2d2a56ce-c311-49b5-b375-e6cecab3ea00" id="i2d2a56cezc311z49b5zb375ze6cecab3ea00">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="sometimesuireadonlypreferfalse" tag="" />
+            <propertyInfo xsi:type="BooleanPropertyInfo" name="" identity="00000000-0000-0000-0000-000000000000" default="false" />
+          </property>
+        </valueProperties>
       </concept>
       <concept name="FactType" identity="a3acc35a-ce71-4cb8-8770-b87fbfa462d8" namespace="Neumont.Tools.ORM.ObjectModel" id="ia3acc35azce71z4cb8z8770zb87fbfa462d8" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
@@ -4785,6 +4873,18 @@ Information Contained Herein is Proprietary and Confidential.
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
       <concept name="RingConstraintTypeNotSpecifiedError" identity="5c7caee2-7993-44fd-9ea3-d57cfd445757" namespace="Neumont.Tools.ORM.ObjectModel" id="i5c7caee2z7993z44fdz9ea3zd57cfd445757" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+      </concept>
+      <concept name="SubtypeMetaRole" identity="d8a4599b-4477-4f41-8eed-1c67f4c02d93" namespace="Neumont.Tools.ORM.ObjectModel" id="id8a4599bz4477z4f41z8eedz1c67f4c02d93" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i393d854fz34c5z4dc5z86c6z56816581b957</superType>
+      </concept>
+      <concept name="SupertypeMetaRole" identity="a1ee563a-1bd4-47e0-9aab-3d82083e4202" namespace="Neumont.Tools.ORM.ObjectModel" id="ia1ee563az1bd4z47e0z9aabz3d82083e4202" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i393d854fz34c5z4dc5z86c6z56816581b957</superType>
+      </concept>
+      <concept name="ObjectTypeRequiresPrimarySubtypeError" identity="24f4068f-8eea-4ced-b5f7-ddff7838cab4" namespace="Neumont.Tools.ORM.ObjectModel" id="i24f4068fz8eeaz4cedzb5f7zddff7838cab4" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>

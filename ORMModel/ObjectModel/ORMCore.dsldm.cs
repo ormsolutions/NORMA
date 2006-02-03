@@ -239,6 +239,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.SingleColumnExternalConstraintHasTooManyRoleSequencesError.TooManyRoleSequencesErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid);
 			#endregion
@@ -376,6 +377,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ExpressionElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.Role),
 				typeof(Neumont.Tools.ORM.ObjectModel.RoleElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.SubtypeMetaRole),
+				typeof(Neumont.Tools.ORM.ObjectModel.SubtypeMetaRoleElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.SupertypeMetaRole),
+				typeof(Neumont.Tools.ORM.ObjectModel.SupertypeMetaRoleElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ConstraintRoleSequence),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraint),
 				typeof(Neumont.Tools.ORM.ObjectModel.SimpleMandatoryConstraint),
@@ -442,6 +447,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintContradictsInternalUniquenessConstraintErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedError),
 				typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintTypeNotSpecifiedErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError),
+				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKind),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceModeKindElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ReferenceMode),
@@ -635,6 +642,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError),
 				typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError),
+				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError),
@@ -675,6 +684,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), "ValueRangeText", Neumont.Tools.ORM.ObjectModel.ObjectType.ValueRangeTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeValueRangeTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), "IsPersonal", Neumont.Tools.ORM.ObjectModel.ObjectType.IsPersonalMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeIsPersonalFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactType), "NestingTypeDisplay", Neumont.Tools.ORM.ObjectModel.FactType.NestingTypeDisplayMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FactType.FactTypeNestingTypeDisplayFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.SubtypeFact), "IsPrimary", Neumont.Tools.ORM.ObjectModel.SubtypeFact.IsPrimaryMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.SubtypeFact.SubtypeFactIsPrimaryFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint), "Modality", Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.ModalityMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.MultiColumnExternalConstraint.MultiColumnExternalConstraintModalityFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Expression), "Body", Neumont.Tools.ORM.ObjectModel.Expression.BodyMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Expression.ExpressionBodyFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Expression), "Language", Neumont.Tools.ORM.ObjectModel.Expression.LanguageMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Expression.ExpressionLanguageFieldHandler)),
@@ -844,6 +854,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError), "FrequencyConstraint", Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError), "RingConstraintTypeNotSpecifiedError", Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError), "RingConstraint", Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError), "ObjectTypeRequiresPrimarySubtypeError", Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError), "ObjectType", Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "DuplicateNameError", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "InternalConstraintCollection", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.InternalConstraintCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError), "MinValueMismatchError", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid),
@@ -2405,6 +2417,51 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
+		#region ObjectTypeRequiresPrimarySubtypeError's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError ObjectTypeRequiresPrimarySubtypeError
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region Collection Classes for ObjectType
 	/// <summary>
@@ -3823,6 +3880,128 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SubtypeFact.MetaClassGuidString);
 		#endregion
 
+		#region IsPrimary's Generated  Field Code
+		#region IsPrimary's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String IsPrimaryMetaAttributeGuidString = "2d2a56ce-c311-49b5-b375-e6cecab3ea00";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid IsPrimaryMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SubtypeFact.IsPrimaryMetaAttributeGuidString);
+		#endregion
+
+		#region IsPrimary's Generated Property Code
+
+		private System.Boolean isPrimaryPropertyStorage = false;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.ReadOnly(State=Microsoft.VisualStudio.Modeling.ReadOnlyAttributeValue.SometimesUIReadOnlyPreferFalse)]
+		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(SubtypeFactIsPrimaryFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.SubtypeFact.IsPrimaryMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.SubtypeFact.IsPrimary")]
+		public  System.Boolean IsPrimary
+		{
+			get
+			{
+				return isPrimaryPropertyStorage;
+			}
+		
+			set
+			{
+				subtypeFactIsPrimaryFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region SubtypeFactIsPrimaryFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for SubtypeFact.IsPrimary field
+		/// </summary>
+		private static SubtypeFactIsPrimaryFieldHandler	subtypeFactIsPrimaryFieldHandler	= SubtypeFactIsPrimaryFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for SubtypeFact.IsPrimary
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class SubtypeFactIsPrimaryFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.SubtypeFact,System.Boolean>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private SubtypeFactIsPrimaryFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the SubtypeFact.IsPrimary field handler
+			/// </summary>
+			/// <value>SubtypeFactIsPrimaryFieldHandler</value>
+			public static SubtypeFactIsPrimaryFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.SubtypeFact.subtypeFactIsPrimaryFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.SubtypeFact.subtypeFactIsPrimaryFieldHandler;
+					}
+					else
+					{
+						// The static constructor in SubtypeFact will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.SubtypeFact.subtypeFactIsPrimaryFieldHandler, so just instantiate one and return it
+						return new SubtypeFactIsPrimaryFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the SubtypeFact.IsPrimary field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.SubtypeFact.IsPrimaryMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the SubtypeFact</param>
+			protected sealed override System.Boolean GetValue(Neumont.Tools.ORM.ObjectModel.SubtypeFact element)
+			{
+				return element.isPrimaryPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.SubtypeFact element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
+			{
+				oldValue = element.isPrimaryPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.isPrimaryPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
 	}
 	#region SubtypeFact's Generated Constructor Code
 	public  partial class SubtypeFact
@@ -6549,6 +6728,212 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new RoleElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.SubtypeMetaRole.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.SubtypeMetaRole")]
+	public  partial class SubtypeMetaRole : Neumont.Tools.ORM.ObjectModel.Role
+	{
+		#region SubtypeMetaRole's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "d8a4599b-4477-4f41-8eed-1c67f4c02d93";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SubtypeMetaRole.MetaClassGuidString);
+		#endregion
+
+	}
+	#region SubtypeMetaRole's Generated Constructor Code
+	public  partial class SubtypeMetaRole
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SubtypeMetaRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SubtypeMetaRole CreateSubtypeMetaRole(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateSubtypeMetaRole(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SubtypeMetaRole CreateAndInitializeSubtypeMetaRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeSubtypeMetaRole(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SubtypeMetaRole(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SubtypeMetaRole CreateSubtypeMetaRole(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (SubtypeMetaRole)partition.ElementFactory.CreateElement(typeof(SubtypeMetaRole));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SubtypeMetaRole CreateAndInitializeSubtypeMetaRole(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (SubtypeMetaRole)partition.ElementFactory.CreateElement(typeof(SubtypeMetaRole), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for SubtypeMetaRole
+	/// <summary>
+	/// SubtypeMetaRole Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.SubtypeMetaRole))]
+	public sealed class SubtypeMetaRoleElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SubtypeMetaRoleElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.SubtypeMetaRole( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static SubtypeMetaRoleElementFactoryCreator Instance
+		{
+			get
+			{
+				return new SubtypeMetaRoleElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.SupertypeMetaRole.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.SupertypeMetaRole")]
+	public  partial class SupertypeMetaRole : Neumont.Tools.ORM.ObjectModel.Role
+	{
+		#region SupertypeMetaRole's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "a1ee563a-1bd4-47e0-9aab-3d82083e4202";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SupertypeMetaRole.MetaClassGuidString);
+		#endregion
+
+	}
+	#region SupertypeMetaRole's Generated Constructor Code
+	public  partial class SupertypeMetaRole
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SupertypeMetaRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SupertypeMetaRole CreateSupertypeMetaRole(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateSupertypeMetaRole(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SupertypeMetaRole CreateAndInitializeSupertypeMetaRole(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeSupertypeMetaRole(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SupertypeMetaRole(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SupertypeMetaRole CreateSupertypeMetaRole(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (SupertypeMetaRole)partition.ElementFactory.CreateElement(typeof(SupertypeMetaRole));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static SupertypeMetaRole CreateAndInitializeSupertypeMetaRole(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (SupertypeMetaRole)partition.ElementFactory.CreateElement(typeof(SupertypeMetaRole), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for SupertypeMetaRole
+	/// <summary>
+	/// SupertypeMetaRole Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.SupertypeMetaRole))]
+	public sealed class SupertypeMetaRoleElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public SupertypeMetaRoleElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.SupertypeMetaRole( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static SupertypeMetaRoleElementFactoryCreator Instance
+		{
+			get
+			{
+				return new SupertypeMetaRoleElementFactoryCreator();
 			}
 		}
 	}
@@ -15382,6 +15767,154 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new RingConstraintTypeNotSpecifiedErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError")]
+	public  partial class ObjectTypeRequiresPrimarySubtypeError : Neumont.Tools.ORM.ObjectModel.ModelError
+	{
+		#region ObjectTypeRequiresPrimarySubtypeError's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "24f4068f-8eea-4ced-b5f7-ddff7838cab4";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError.MetaClassGuidString);
+		#endregion
+
+		#region ObjectType's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.ObjectType ObjectType
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.ObjectType;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.ObjectType counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.ObjectType;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region ObjectTypeRequiresPrimarySubtypeError's Generated Constructor Code
+	public  partial class ObjectTypeRequiresPrimarySubtypeError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeRequiresPrimarySubtypeError CreateObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateObjectTypeRequiresPrimarySubtypeError(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeRequiresPrimarySubtypeError CreateAndInitializeObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeObjectTypeRequiresPrimarySubtypeError(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeRequiresPrimarySubtypeError CreateObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (ObjectTypeRequiresPrimarySubtypeError)partition.ElementFactory.CreateElement(typeof(ObjectTypeRequiresPrimarySubtypeError));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeRequiresPrimarySubtypeError CreateAndInitializeObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ObjectTypeRequiresPrimarySubtypeError)partition.ElementFactory.CreateElement(typeof(ObjectTypeRequiresPrimarySubtypeError), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ObjectTypeRequiresPrimarySubtypeError
+	/// <summary>
+	/// ObjectTypeRequiresPrimarySubtypeError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError))]
+	public sealed class ObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator();
 			}
 		}
 	}
@@ -34002,6 +34535,159 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new RingConstraintHasRingConstraintTypeNotSpecifiedErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError")]
+	public  partial class ObjectTypeHasObjectTypeRequiresPrimarySubtypeError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	{
+		#region ObjectTypeHasObjectTypeRequiresPrimarySubtypeError's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "68e3a5d5-bb3c-4c0c-bb6d-245d5531fcb8";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.MetaClassGuid;
+		#endregion
+
+		#region ObjectTypeRequiresPrimarySubtypeError's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuidString = "ae7f8f8f-ae73-4a18-bc68-a5138a579f5c";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeError")]
+		public  Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError ObjectTypeRequiresPrimarySubtypeError
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ObjectTypeRequiresPrimarySubtypeError)this.GetRolePlayer(ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region ObjectType's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ObjectTypeMetaRoleGuidString = "7e7e5ec4-1810-4427-93bd-711e5ac95dc8";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ObjectTypeMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectType")]
+		public  Neumont.Tools.ORM.ObjectModel.ObjectType ObjectType
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.ObjectType)this.GetRolePlayer(ObjectTypeMetaRoleGuid); }
+			set { this.SetRolePlayer(ObjectTypeMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region ObjectTypeHasObjectTypeRequiresPrimarySubtypeError's Generated Constructor Code
+	public  partial class ObjectTypeHasObjectTypeRequiresPrimarySubtypeError
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeHasObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeHasObjectTypeRequiresPrimarySubtypeError CreateObjectTypeHasObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateObjectTypeHasObjectTypeRequiresPrimarySubtypeError(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeHasObjectTypeRequiresPrimarySubtypeError CreateAndInitializeObjectTypeHasObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeObjectTypeHasObjectTypeRequiresPrimarySubtypeError(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeHasObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeHasObjectTypeRequiresPrimarySubtypeError CreateObjectTypeHasObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (ObjectTypeHasObjectTypeRequiresPrimarySubtypeError)partition.ElementFactory.CreateElementLink(typeof(ObjectTypeHasObjectTypeRequiresPrimarySubtypeError), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static ObjectTypeHasObjectTypeRequiresPrimarySubtypeError CreateAndInitializeObjectTypeHasObjectTypeRequiresPrimarySubtypeError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (ObjectTypeHasObjectTypeRequiresPrimarySubtypeError)partition.ElementFactory.CreateElementLink(typeof(ObjectTypeHasObjectTypeRequiresPrimarySubtypeError), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for ObjectTypeHasObjectTypeRequiresPrimarySubtypeError
+	/// <summary>
+	/// ObjectTypeHasObjectTypeRequiresPrimarySubtypeError Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError))]
+	public sealed class ObjectTypeHasObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public ObjectTypeHasObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static ObjectTypeHasObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator Instance
+		{
+			get
+			{
+				return new ObjectTypeHasObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator();
 			}
 		}
 	}

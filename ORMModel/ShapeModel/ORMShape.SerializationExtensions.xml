@@ -4,7 +4,7 @@
     xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<se:MetaModel Class="ORMShapeModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="ormDiagram" URI="http://schemas.neumont.edu/ORM/ORMDiagram" SchemaFile="ORM2Diagram.xsd" DefaultPrefix="true"/>
+			<se:Namespace Prefix="ormDiagram" URI="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram" SchemaFile="ORM2Diagram.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="ORMDiagram"/>
@@ -46,7 +46,7 @@
 	<se:Element Class="ReadingShape" Override="true">
 		<se:Attribute ID="ReadingText" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="ValueConstraintShape" Name="ValueRangeShape" Override="true">
+	<se:Element Class="ValueConstraintShape" Override="true">
 		<se:Attribute ID="ValueRangeText" WriteStyle="NotWritten"/>
 	</se:Element>
 </se:CustomSerializedElements>

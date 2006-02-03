@@ -400,7 +400,8 @@
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="GetCustomSerializedLinkInfo"/>
-					<plx:param name="rolePlayedInfo" dataTypeName="MetaRoleInfo"></plx:param>
+					<plx:param name="rolePlayedInfo" dataTypeName="MetaRoleInfo"/>
+					<plx:param name="elementLink" dataTypeName="ElementLink"/>
 					<plx:returns dataTypeName="ORMCustomSerializedElementInfo"/>
 					<xsl:choose>
 						<xsl:when test="$haveCustomLinkInfo">
@@ -446,6 +447,9 @@
 										<plx:callThis accessor="base" name="GetCustomSerializedLinkInfo">
 											<plx:passParam>
 												<plx:nameRef type="parameter" name="rolePlayedInfo"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:nameRef type="parameter" name="elementLink"/>
 											</plx:passParam>
 										</plx:callThis>
 									</plx:return>

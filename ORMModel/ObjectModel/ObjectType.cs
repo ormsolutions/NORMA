@@ -625,14 +625,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				foreach (Role role in PlayedRoleCollection)
 				{
-					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
-					if (subtypeFact != null)
+					if (role is SupertypeMetaRole)
 					{
-						// If we're the derived type
-						if (subtypeFact.Supertype == this)
-						{
-							yield return subtypeFact.Subtype;
-						}
+						yield return (role.FactType as SubtypeFact).Subtype;
 					}
 				}
 			}
@@ -641,21 +636,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Get the super types for this type
 		/// </summary>
 		/// <returns>Enumeration of ObjectType</returns>
-		[CLSCompliant(false)]
 		public IEnumerable<ObjectType> SupertypeCollection
 		{
 			get
 			{
 				foreach (Role role in PlayedRoleCollection)
 				{
-					SubtypeFact subtypeFact = role.FactType as SubtypeFact;
-					if (subtypeFact != null)
+					if (role is SubtypeMetaRole)
 					{
-						// If we're the derived type
-						if (subtypeFact.Subtype == this)
-						{
-							yield return subtypeFact.Supertype;
-						}
+						yield return (role.FactType as SubtypeFact).Supertype;
 					}
 				}
 			}
@@ -1063,7 +1052,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 				else
 				{
-					// We can get the preferred identifier from the supert type if it exists. The error
+					// We can get the preferred identifier from the super type if it exists. The error
 					// should appear on the supertype, not here.
 					using (IEnumerator<ObjectType> superTypes = SupertypeCollection.GetEnumerator())
 					{
@@ -1097,6 +1086,108 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		#endregion // EntityTypeRequiresReferenceSchemeError Validation
+		#region ObectTypeRequiresPrimarySubtype Validation
+		/// <summary>
+		/// Rule helper to determine whether or not ObjectTypeRequiresPrimarySubtypeError should appear
+		/// will assign SubFact as primary if only one exists.
+		/// </summary>
+		/// <param name="notifyAdded"></param>
+		private void ValidateObjectTypeRequiresPrimarySubtypeError(INotifyElementAdded notifyAdded)
+		{
+			if (!IsRemoved)
+			{
+				bool hasError = false;
+				IList links = GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid);
+				int linkCount = links.Count;
+				if (linkCount != 0)
+				{
+					SubtypeFact firstSubtypeFact = null;
+					int subtypeFactCount = 0;
+					//bool hasPrimarySubtypeFact = false;
+					int primaryFactCount = 0;
+					for (int i = 0; i < linkCount; ++i)
+					{
+						ObjectTypePlaysRole link = links[i] as ObjectTypePlaysRole;
+						SubtypeMetaRole subtypeRole = link.PlayedRoleCollection as SubtypeMetaRole;
+						if (subtypeRole != null)
+						{
+							SubtypeFact subtypeFact = subtypeRole.FactType as SubtypeFact;
+							if (subtypeFact != null)
+							{
+								if (subtypeFact.IsPrimary)
+								{
+									++primaryFactCount;
+									firstSubtypeFact = subtypeFact;
+									if (notifyAdded == null)
+									{
+										break;
+									}
+									if (primaryFactCount > 1)
+									{
+										for (int j = 0; j < linkCount; ++j)
+										{
+											link = links[j] as ObjectTypePlaysRole;
+											subtypeRole = link.PlayedRoleCollection as SubtypeMetaRole;
+
+											if (subtypeRole != null)
+											{
+												subtypeFact = subtypeRole.FactType as SubtypeFact;
+												if (subtypeFact != null)
+												{
+													subtypeFact.IsPrimary = false;
+												}
+											}
+										}
+										break;
+									}
+									//hasPrimarySubtypeFact = true;
+								}
+								else if (firstSubtypeFact == null)
+								{
+									++subtypeFactCount;
+									firstSubtypeFact = subtypeFact;
+								}
+								else
+								{
+									++subtypeFactCount;
+								}
+							}
+						}
+					}
+					if (primaryFactCount != 1 && firstSubtypeFact != null)
+					{
+						if (subtypeFactCount == 1 && primaryFactCount == 0)
+						{
+							firstSubtypeFact.IsPrimary = true;
+						}
+						else
+						{
+							hasError = true;
+						}
+					}
+				}
+				ObjectTypeRequiresPrimarySubtypeError primaryRequired = this.ObjectTypeRequiresPrimarySubtypeError;
+				if (hasError)
+				{
+					if (primaryRequired == null)
+					{
+						primaryRequired = ObjectTypeRequiresPrimarySubtypeError.CreateObjectTypeRequiresPrimarySubtypeError(this.Store);
+						primaryRequired.ObjectType = this;
+						primaryRequired.Model = this.Model;
+						primaryRequired.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(primaryRequired);
+						}
+					}
+				}
+				else if (primaryRequired != null)
+				{
+					primaryRequired.Remove();
+				}
+			}
+		}
+		#endregion //ObectTypeRequiresPrimarySubtype Validation
 		#region EntityTypeRequiresReferenceSchemeError Rules
 		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.LocalCommit)]
 		private class VerifyReferenceSchemeAddRule : AddRule
@@ -1155,7 +1246,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Calls the validation of all FactType related errors
 		/// </summary>
-		[RuleOn(typeof(ModelHasObjectType), FireTime=TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ModelHasObjectType), FireTime = TimeToFire.LocalCommit)]
 		private class ModelHasObjectTypeAddRuleModelValidation : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -1164,7 +1255,102 @@ namespace Neumont.Tools.ORM.ObjectModel
 				link.ObjectTypeCollection.ValidateErrors(null);
 			}
 		}
+		/// <summary>
+		/// The reference scheme requirements change when the supertype changes
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		private class SupertypeAddedRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				SubtypeMetaRole role = link.PlayedRoleCollection as SubtypeMetaRole;
+				if (role != null)
+				{
+					ObjectType objectType = link.RolePlayer;
+					objectType.ValidateRequiresReferenceScheme(null);
+					objectType.ValidateObjectTypeRequiresPrimarySubtypeError(null);
+				}
+			}
+		}
+		/// <summary>
+		/// The reference scheme requirements change when the supertype changes
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		private class SupertypeRemoveRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				SubtypeMetaRole role = link.PlayedRoleCollection as SubtypeMetaRole;
+				if (role != null)
+				{
+					ObjectType objectType = link.RolePlayer;
+					objectType.ValidateRequiresReferenceScheme(null);
+					objectType.ValidateObjectTypeRequiresPrimarySubtypeError(null);
+				}
+			}
+		}
 		#endregion // EntityTypeRequiresReferenceSchemeError Rules
+		#region ObjectTypeRequiresPrimarySubtypeError Rules
+		/// <summary>
+		/// 
+		/// </summary>
+		[RuleOn(typeof(SubtypeFact), FireTime = TimeToFire.LocalCommit)]
+		private class SubtypeFactChangeRule : ChangeRule
+		{
+			private bool myIgnoreRule;
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				if (myIgnoreRule)
+				{
+					return;
+				}
+				Guid attributeId = e.MetaAttribute.Id;
+				if (attributeId == SubtypeFact.IsPrimaryMetaAttributeGuid)
+				{
+					bool newValue = (bool)e.NewValue;
+					if (!newValue)
+					{
+						throw new InvalidOperationException("UNDONE: Add something to resource strings, search for 'ModelException.'");
+					}
+					SubtypeFact changedFact = e.ModelElement as SubtypeFact;
+					ObjectType subtype = changedFact.Subtype;
+					try
+					{
+						myIgnoreRule = true;
+						using (Transaction t = subtype.Store.TransactionManager.BeginTransaction(""))
+						{
+							foreach (Role role in subtype.PlayedRoleCollection)
+							{
+								if (role is SubtypeMetaRole)
+								{
+									SubtypeFact subtypeFact = role.FactType as SubtypeFact;
+									if (!object.ReferenceEquals(subtypeFact, changedFact))
+									{
+										subtypeFact.IsPrimary = false;
+									}
+								}
+							}
+							if (t.HasPendingChanges)
+							{
+								t.Commit();
+							}
+						}
+					}
+					finally
+					{
+						if (!subtype.IsRemoved)
+						{
+							subtype.ValidateObjectTypeRequiresPrimarySubtypeError(null);
+						}
+						myIgnoreRule = false;
+					}
+
+				}
+			}
+		}
+		#endregion //ObjectTypeRequiresPrimarySubtypeError Rules
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the errors associated with the object.
@@ -1203,6 +1389,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
+
+				ObjectTypeRequiresPrimarySubtypeError primarySubtypeRequired = ObjectTypeRequiresPrimarySubtypeError;
+				if (primarySubtypeRequired != null)
+				{
+					yield return primarySubtypeRequired;
+				}
 			}
 		}
 		IEnumerable<ModelError> IModelErrorOwner.ErrorCollection
@@ -1219,6 +1411,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateDataTypeNotSpecifiedError(notifyAdded);
 			ValidateRequiresReferenceScheme(notifyAdded);
+			ValidateObjectTypeRequiresPrimarySubtypeError(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -1350,7 +1543,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// <param name="requestor">Passed to base</param>
 			/// <param name="attributes">Passed to base</param>
 			public ReferenceModeDisplayPropertyDescriptor(ModelElement modelElement, MetaAttributeInfo metaAttributeInfo, ModelElement requestor, Attribute[] attributes)
-				: base(modelElement, metaAttributeInfo, requestor, attributes)
+				: base (modelElement , metaAttributeInfo, requestor, attributes)
 			{
 			}
 			/// <summary>
@@ -1466,4 +1659,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 	}
 	#endregion // class EntityTypeRequiresReferenceSchemeError
+	#region class ObjectTypeRequiresPrimarySubtypeError
+	public partial class ObjectTypeRequiresPrimarySubtypeError : IRepresentModelElements
+	{
+		#region Base Overrides
+		/// <summary>
+		/// Generates the text for the error to be displayed.
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeRequiresPrimarySubtypeError, ObjectType.Name, Model.Name);
+			if (Name != newText)
+			{
+				Name = newText;
+			}
+		}
+		/// <summary>
+		/// Regenerate error text when the object name changes or model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
+		}
+		#endregion //Base Overrides
+		#region Implimentations
+		/// <summary>
+		/// Returns object associated with this error
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.ObjectType };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion //Implimentations
+	}
+	#endregion //class ObjectTypeRequiresPrimarySubtypeError
 }

@@ -56,7 +56,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// The namespace for the root node of an ORM model
 		/// </summary>
-		public const string RootXmlNamespace = "http://schemas.neumont.edu/ORM/ORMCore";
+		public const string RootXmlNamespace = "http://schemas.neumont.edu/ORM/2006-01/ORMCore";
 		#endregion // Root Xml Element Names
 		#region Entity- and ValueType specific collections
 		/// <summary>

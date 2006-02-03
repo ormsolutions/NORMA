@@ -25,6 +25,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			retVal.Supertype = supertype;
 			return retVal;
 		}
+
 		#endregion // Create functions
 		#region Accessor functions
 		/// <summary>
@@ -34,7 +35,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return SubtypeRole.RolePlayer;
+				Role role = SubtypeRole;
+				return (role != null) ? role.RolePlayer : null;
 			}
 			set
 			{
@@ -48,7 +50,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return SupertypeRole.RolePlayer;
+				Role role = SupertypeRole;
+				return (role != null) ? role.RolePlayer : null;
 			}
 			set
 			{
@@ -58,21 +61,47 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Get the Role attached to the subtype object
 		/// </summary>
-		public Role SubtypeRole
+		public SubtypeMetaRole SubtypeRole
 		{
 			get
 			{
-				return RoleCollection[0];
+				RoleMoveableCollection roles = RoleCollection;
+				SubtypeMetaRole retVal = null;
+				if (roles.Count == 2)
+				{
+					retVal = roles[0] as SubtypeMetaRole;
+					if (retVal == null)
+					{
+						retVal = roles[1] as SubtypeMetaRole;
+						Debug.Assert(retVal != null); // One of them better be a subtype
+					}
+				}
+				return retVal;
 			}
 		}
 		/// <summary>
 		/// Get the Role attached to the supertype object
 		/// </summary>
-		public Role SupertypeRole
+		public SupertypeMetaRole SupertypeRole
 		{
 			get
 			{
-				return RoleCollection[1];
+				RoleMoveableCollection roles = RoleCollection;
+				// Start with checking role 1, not 0. This corresponds
+				// to the indices we set in the InitializeSubtypeAddRule.
+				// This is not guaranteed (the user can switch them in the xml),
+				// but will be the most common case, so we check it first.
+				SupertypeMetaRole retVal = null;
+				if (roles.Count == 2)
+				{
+					retVal = roles[1] as SupertypeMetaRole;
+					if (retVal == null)
+					{
+						retVal = roles[0] as SupertypeMetaRole;
+						Debug.Assert(retVal != null); // One of them better be a supertype
+					}
+				}
+				return retVal;
 			}
 		}
 		#endregion // Accessor functions
@@ -128,25 +157,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 				FactType fact = e.ModelElement as FactType;
 				Store store = fact.Store;
-
+			
 				// Establish role collecton
 				RoleMoveableCollection roles = fact.RoleCollection;
-				Role role0 = Role.CreateRole(store);
-				Role role1 = Role.CreateRole(store);
-				roles.Add(role0);
-				roles.Add(role1);
-
+				SubtypeMetaRole subTypeMetaRole = SubtypeMetaRole.CreateSubtypeMetaRole(store);
+				SupertypeMetaRole superTypeMetaRole = SupertypeMetaRole.CreateSupertypeMetaRole(store);
+				roles.Add(subTypeMetaRole);
+				roles.Add(superTypeMetaRole);
+			
 				// Add injection constraints
-				role0.Multiplicity = RoleMultiplicity.ZeroToOne;
-				role1.Multiplicity = RoleMultiplicity.ExactlyOne;
+				superTypeMetaRole.Multiplicity = RoleMultiplicity.ZeroToOne;
+				subTypeMetaRole.Multiplicity = RoleMultiplicity.ExactlyOne;
 
 				// Add forward reading
 				ReadingOrderMoveableCollection readingOrders = fact.ReadingOrderCollection;
 				ReadingOrder order = ReadingOrder.CreateReadingOrder(store);
 				readingOrders.Add(order);
 				roles = order.RoleCollection;
-				roles.Add(role0);
-				roles.Add(role1);
+				roles.Add(subTypeMetaRole);
+				roles.Add(superTypeMetaRole);
 				Reading reading = Reading.CreateReading(store);
 				order.ReadingCollection.Add(reading);
 				reading.Text = ResourceStrings.SubtypeFactPredicateReading;
@@ -155,8 +184,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				order = ReadingOrder.CreateReadingOrder(store);
 				readingOrders.Add(order);
 				roles = order.RoleCollection;
-				roles.Add(role1);
-				roles.Add(role0);
+				roles.Add(superTypeMetaRole);
+				roles.Add(subTypeMetaRole);
 				reading = Reading.CreateReading(store);
 				order.ReadingCollection.Add(reading);
 				reading.Text = ResourceStrings.SubtypeFactPredicateInverseReading;
@@ -376,5 +405,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // Circular reference check rule
+		#region override property readOnly
+		/// <summary>
+		/// Checks to see if subtype is set as primary, if so makes it's property descriptor read only
+		/// </summary>
+		/// <param name="propertyDescriptor"></param>
+		/// <returns>whether or not property descriptor is read only</returns>
+		public override bool IsPropertyDescriptorReadOnly(System.ComponentModel.PropertyDescriptor propertyDescriptor)
+		{
+			ElementPropertyDescriptor elementDescriptor = propertyDescriptor as ElementPropertyDescriptor;
+			if(elementDescriptor != null && elementDescriptor.MetaAttributeInfo.Id == IsPrimaryMetaAttributeGuid)
+			{
+				return IsPrimary;
+			}
+			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
+		}
+		#endregion //property readOnly
 	}
 }

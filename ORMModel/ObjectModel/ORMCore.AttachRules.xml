@@ -69,6 +69,9 @@
 		<arg:Rule class="ObjectType.ModelHasObjectTypeAddRuleModelValidation"/>
 		<arg:Rule class="ObjectType.ObjectTypeChangeRule"/>
 		<arg:Rule class="ObjectType.ObjectTypeRemoveRule"/>
+		<arg:Rule class="ObjectType.SubtypeFactChangeRule"/>
+		<arg:Rule class="ObjectType.SupertypeAddedRule"/>
+		<arg:Rule class="ObjectType.SupertypeRemoveRule"/>
 		<arg:Rule class="ObjectType.VerifyObjectificationAddRule"/>
 		<arg:Rule class="ObjectType.VerifyObjectificationRemoveRule"/>
 		<arg:Rule class="ObjectType.VerifyReferenceSchemeAddRule"/>

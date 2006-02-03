@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			string[,] ret = new string[1, 3];
 			ret[0, 0] = "ormDiagram";
-			ret[0, 1] = "http://schemas.neumont.edu/ORM/ORMDiagram";
+			ret[0, 1] = "http://schemas.neumont.edu/ORM/2006-01/ORMDiagram";
 			ret[0, 2] = "ORM2Diagram.xsd";
 			return ret;
 		}
@@ -91,7 +91,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected static Guid MapRootElement(string xmlNamespace, string elementName)
 		{
-			if ((elementName == "ORMDiagram") && (xmlNamespace == "http://schemas.neumont.edu/ORM/ORMDiagram"))
+			if ((elementName == "ORMDiagram") && (xmlNamespace == "http://schemas.neumont.edu/ORM/2006-01/ORMDiagram"))
 			{
 				return ORMDiagram.MetaClassGuid;
 			}
@@ -111,7 +111,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (validNamespaces == null)
 			{
 				validNamespaces = new Collection<string>();
-				validNamespaces.Add("http://schemas.neumont.edu/ORM/ORMDiagram");
+				validNamespaces.Add("http://schemas.neumont.edu/ORM/2006-01/ORMDiagram");
 				ORMShapeModel.myValidNamespaces = validNamespaces;
 			}
 			if (classNameMap == null)
@@ -122,7 +122,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				classNameMap.Add("ObjectTypeShape", ObjectTypeShape.MetaClassGuid);
 				classNameMap.Add("ObjectifiedFactTypeNameShape", ObjectifiedFactTypeNameShape.MetaClassGuid);
 				classNameMap.Add("ReadingShape", ReadingShape.MetaClassGuid);
-				classNameMap.Add("ValueRangeShape", ValueConstraintShape.MetaClassGuid);
+				classNameMap.Add("ValueConstraintShape", ValueConstraintShape.MetaClassGuid);
 				ORMShapeModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -211,7 +211,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			if (rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid)
 			{
@@ -219,9 +219,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
 		private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
 		private class CustomSortChildComparer : IComparer<MetaRoleInfo>
@@ -297,9 +297,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMDiagram|Subject", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|Subject", match);
 				match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-				childElementMappings.Add("http://schemas.neumont.edu/ORM/ORMDiagram|Shapes||", match);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|Shapes||", match);
 				ORMDiagram.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
@@ -413,7 +413,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
-		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		protected ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			if (rolePlayedInfo.Id == SubjectHasPresentation.SubjectMetaRoleGuid)
 			{
@@ -421,9 +421,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return ORMCustomSerializedElementInfo.Default;
 		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo)
+		ORMCustomSerializedElementInfo IORMCustomSerializedElement.GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			return this.GetCustomSerializedLinkInfo(rolePlayedInfo);
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
 		}
 		private static IComparer<MetaRoleInfo> myCustomSortChildComparer;
 		private class CustomSortChildComparer : IComparer<MetaRoleInfo>
@@ -501,11 +501,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
 				match.InitializeRoles(SubjectHasPresentation.SubjectMetaRoleGuid);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/ORMDiagram|Subject", match);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|Subject", match);
 				match.InitializeRoles(ParentShapeHasRelativeChildShapes.RelativeChildShapesMetaRoleGuid);
-				childElementMappings.Add("http://schemas.neumont.edu/ORM/ORMDiagram|RelativeShapes||", match);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|RelativeShapes||", match);
 				match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesMetaRoleGuid);
-				childElementMappings.Add("http://schemas.neumont.edu/ORM/ORMDiagram|NestedShapes||", match);
+				childElementMappings.Add("http://schemas.neumont.edu/ORM/2006-01/ORMDiagram|NestedShapes||", match);
 				ORMBaseShape.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
@@ -693,7 +693,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | (ORMCustomSerializedElementSupportedOperations.ElementInfo | ORMCustomSerializedElementSupportedOperations.AttributeInfo);
+				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.AttributeInfo;
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -701,23 +701,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			get
 			{
 				return this.SupportedCustomSerializedOperations;
-			}
-		}
-		/// <summary>
-		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
-		/// </summary>
-		protected new ORMCustomSerializedElementInfo CustomSerializedElementInfo
-		{
-			get
-			{
-				return new ORMCustomSerializedElementInfo(null, "ValueRangeShape", null, ORMCustomSerializedElementWriteStyle.Element, null);
-			}
-		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				return this.CustomSerializedElementInfo;
 			}
 		}
 		/// <summary>

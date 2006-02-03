@@ -2,13 +2,13 @@
 <xs:schema
 	attributeFormDefault="unqualified"
 	elementFormDefault="qualified"
-	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/ORMDiagram"
-	xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore"
-	xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot"
-	targetNamespace="http://schemas.neumont.edu/ORM/ORMRoot"
+	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
+	targetNamespace="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:import namespace="http://schemas.neumont.edu/ORM/ORMCore" />
-	<xs:import namespace="http://schemas.neumont.edu/ORM/ORMDiagram" />
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-01/ORMCore" />
+	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram" />
 	<xs:element name="ORM2">
 		<xs:complexType>
 			<xs:sequence>

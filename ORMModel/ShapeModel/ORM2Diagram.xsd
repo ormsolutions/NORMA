@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema
-	targetNamespace="http://schemas.neumont.edu/ORM/ORMDiagram"
+	targetNamespace="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram"
 	elementFormDefault="qualified"
 	attributeFormDefault="unqualified"
-	xmlns="http://schemas.neumont.edu/ORM/ORMDiagram"
+	xmlns="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:derived="http://www.w3.org/2001/XMLSchema">
 	<xs:element name="ORMDiagram" type="ORMDiagram"/>
@@ -40,7 +40,7 @@
 					<xs:element name="RelativeShapes" minOccurs="0">
 						<xs:complexType>
 							<xs:sequence >
-								<xs:element name="ValueRangeShape" type="ValueRangeShape" minOccurs="0"  maxOccurs="unbounded" />
+								<xs:element name="ValueConstraintShape" type="ValueConstraintShape" minOccurs="0"  maxOccurs="unbounded" />
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -59,7 +59,7 @@
 							<xs:choice minOccurs="0" maxOccurs="unbounded">
 								<xs:element name="ObjectifiedFactTypeNameShape" type="ObjectifiedFactTypeNameShape"/>
 								<xs:element name="ReadingShape" type="ReadingShape"/>
-								<xs:element name="ValueRangeShape" type="ValueRangeShape"/>
+								<xs:element name="ValueConstraintShape" type="ValueConstraintShape"/>
 							</xs:choice>
 						</xs:complexType>
 					</xs:element>
@@ -94,7 +94,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ValueRangeShape">
+	<xs:complexType name="ValueConstraintShape">
 		<xs:complexContent>
 			<xs:extension base="Shape">
 				<xs:sequence>

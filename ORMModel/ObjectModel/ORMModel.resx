@@ -174,6 +174,10 @@
     <value xml:space="preserve">Model '{0}' contains multiple object types named '{1}'. Type names must be unique across all entity and value types in a model.</value>
     <comment xml:space="preserve">Model validation error text used when multiple object types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
   </data>
+	<data name="ModelError.ObjectType.ObjectTypeRequiresPrimarySubtypeError.Message">
+		<value xml:space="preserve">Object type '{0}' in model '{1}' requires a primary subtype.</value>
+		<comment xml:space="preserve">Text displayed in the text of the ObjectTypeRequiresPrimarySubtypeError.</comment>
+	</data>
   <data name="ModelError.Reading.TooFewRoles.Message">
     <value xml:space="preserve">Too few roles for the reading with text '{0}' in model '{1}'</value>
     <comment xml:space="preserve">Text displayed in the text of the TooFewRolesError</comment>

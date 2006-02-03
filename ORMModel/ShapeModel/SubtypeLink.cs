@@ -15,6 +15,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 	public partial class SubtypeLink
 	{
 		#region Customize appearance
+		//The Resource ID's for the given subtype drawing type.
+		/// <summary>
+		/// resource id for pen to draw non primary subtype facts that are using the normal pen
+		/// </summary>
+		protected static readonly StyleSetResourceId NonPrimaryNormalResource = new StyleSetResourceId("Neumont", "NonPrimarySubtypeLinkNormalResource");
+		/// <summary>
+		/// resource id for pen to draw non primary subtype facts that are using the sticky pen
+		/// </summary>
+		protected static readonly StyleSetResourceId NonPrimaryStickyResource = new StyleSetResourceId("Neumont", "NonPrimarySubtypeLinkStickyResource");
+		/// <summary>
+		/// resource id for pen to draw non primary subtype facts that are using the active pen
+		/// </summary>
+		protected static readonly StyleSetResourceId NonPrimaryActiveResource = new StyleSetResourceId("Neumont", "NonPrimarySubtypeLinkActiveResource");
 		/// <summary>
 		/// Change the outline pen to a thin black line for all instances
 		/// of this shape.
@@ -31,10 +44,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 			penSettings.Alignment = PenAlignment.Center;
 			penSettings.Color = lineColor;
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, penSettings);
+			//Supporting Dashed subtypefacts when not primary
+			penSettings.DashStyle = DashStyle.Dash;
+			classStyleSet.AddPen(NonPrimaryNormalResource, DiagramPens.ConnectionLine, penSettings);
+			penSettings.DashStyle = DashStyle.Solid;
 			penSettings.Color = stickyColor;
 			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ConnectionLine, penSettings);
+
+			penSettings.DashStyle = DashStyle.Dash;
+			classStyleSet.AddPen(NonPrimaryStickyResource, DiagramPens.ConnectionLine, penSettings);
+			penSettings.DashStyle = DashStyle.Solid;
 			penSettings.Color = activeColor;
 			classStyleSet.AddPen(ORMDiagram.ActiveBackgroundResource, DiagramPens.ConnectionLine, penSettings);
+
+			penSettings.DashStyle = DashStyle.Dash;
+			classStyleSet.AddPen(NonPrimaryActiveResource, DiagramPens.ConnectionLine, penSettings);
+			penSettings.DashStyle = DashStyle.Solid;
+
 			penSettings = new PenSettings();
 			penSettings.Width = 1.4F / 72.0F; // Soften the arrow a bit
 			penSettings.Color = lineColor;
@@ -196,16 +222,46 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				DrawColorStyle style = ColorStyle;
-				switch (style)
+				SubtypeFact associatedFact = AssociatedSubtypeFact;
+				if (associatedFact != null)
 				{
-					case DrawColorStyle.Sticky:
-						return ORMDiagram.StickyBackgroundResource;
-					case DrawColorStyle.Active:
-						return ORMDiagram.ActiveBackgroundResource;
-					default:
-						Debug.Assert(style == DrawColorStyle.Normal);
-						return DiagramPens.ConnectionLine;
+					bool isPrimary = associatedFact.IsPrimary;
+					DrawColorStyle style = ColorStyle;
+					switch (style)
+					{
+						case DrawColorStyle.Sticky:
+							if (isPrimary)
+							{
+								return ORMDiagram.StickyBackgroundResource;
+							}
+							else
+							{
+								return NonPrimaryStickyResource;
+							}
+						case DrawColorStyle.Active:
+							if (isPrimary)
+							{
+								return ORMDiagram.ActiveBackgroundResource;
+							}
+							else
+							{
+								return NonPrimaryActiveResource;
+							}
+						default:
+							Debug.Assert(style == DrawColorStyle.Normal);
+							if (isPrimary)
+							{
+								return DiagramPens.ConnectionLine;
+							}
+							else
+							{
+								return NonPrimaryNormalResource;
+							}
+					}
+				}
+				else
+				{
+					return DiagramPens.ConnectionLine;
 				}
 			}
 		}
@@ -265,6 +321,51 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // SubtypeLink specific
+		#region Store Event Handlers
+		/// <summary>
+		/// Attach event handlers to the store
+		/// </summary>
+		public static void AttachEventHandlers(Store store)
+		{
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SubtypeFact.IsPrimaryMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Add(attributeInfo, new ElementAttributeChangedEventHandler(IsPrimaryChangedEvent));
+		}
+		/// <summary>
+		/// Detach event handlers from the store
+		/// </summary>
+		public static void DetachEventHandlers(Store store)
+		{
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+
+			MetaAttributeInfo attributeInfo = dataDirectory.FindMetaAttribute(SubtypeFact.IsPrimaryMetaAttributeGuid);
+			eventDirectory.ElementAttributeChanged.Remove(attributeInfo, new ElementAttributeChangedEventHandler(IsPrimaryChangedEvent));
+		}
+		/// <summary>
+		/// Event handler for IsPrimary property on the associated subtype fact
+		/// </summary>
+		private static void IsPrimaryChangedEvent(object sender, ElementAttributeChangedEventArgs e)
+		{
+			SubtypeFact fact;
+			if (null != (fact = e.ModelElement as SubtypeFact))
+			{
+				if (!fact.IsRemoved)
+				{
+					foreach (PresentationElement pel in fact.AssociatedPresentationElements)
+					{
+						SubtypeLink linkShape;
+						if (null != (linkShape = pel as SubtypeLink))
+						{
+							linkShape.Invalidate(true);
+						}
+					}
+				}
+			}
+		}
+		#endregion // Store Event Handlers
 		#region Accessibility Properties
 		/// <summary>
 		/// Return the localized accessible name for the link
@@ -299,7 +400,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// Create a new DisplayRolePlayersFixupListener
 			/// </summary>
-			public DisplaySubtypeLinkFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			public DisplaySubtypeLinkFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
 			{
 			}
 			/// <summary>

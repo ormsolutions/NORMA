@@ -4,7 +4,7 @@
     xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
 	<se:MetaModel Class="ORMMetaModel">
 		<se:Namespaces>
-			<se:Namespace Prefix="orm" URI="http://schemas.neumont.edu/ORM/ORMCore" SchemaFile="ORM2Core.xsd"  DefaultPrefix="true"/>
+			<se:Namespace Prefix="orm" URI="http://schemas.neumont.edu/ORM/2006-01/ORMCore" SchemaFile="ORM2Core.xsd"  DefaultPrefix="true"/>
 		</se:Namespaces>
 		<se:RootElements>
 			<se:RootElement Class="ORMModel"/>
@@ -93,16 +93,50 @@
 			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
 		</se:ChildElement>
 		<se:Link Name="ConceptualDataType" RelationshipName="ValueTypeHasDataType" RoleName="DataType" WriteStyle="PrimaryLinkElement" />
-		<se:ChildElement Name="ValueConstraint">
+		<se:ChildElement Name="ValueRestriction">
 			<se:Link RelationshipName="ValueTypeHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:ChildElement>
-		<se:Link Name="Role" RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection"/>
+		<se:Link Name="Role"  RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRoleCollection">
+			<se:ConditionalName Name="SubtypeMetaRole">
+				<plx:binaryOperator type="typeEquality">
+					<plx:left>
+						<plx:callInstance name="GetRolePlayer" type="methodCall">
+							<plx:callObject>
+								<plx:nameRef name="elementLink" type="parameter"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:callStatic dataTypeName="ObjectTypePlaysRole" name="PlayedRoleCollectionMetaRoleGuid" type="property"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:directTypeReference dataTypeName="SubtypeMetaRole"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+			<se:ConditionalName Name="SupertypeMetaRole">
+				<plx:binaryOperator type="typeEquality">
+					<plx:left>
+						<plx:callInstance name="GetRolePlayer" type="methodCall">
+							<plx:callObject>
+								<plx:nameRef name="elementLink" type="parameter"/>
+							</plx:callObject>
+							<plx:passParam>
+								<plx:callStatic dataTypeName="ObjectTypePlaysRole" name="PlayedRoleCollectionMetaRoleGuid" type="property"/>
+							</plx:passParam>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:directTypeReference dataTypeName="SupertypeMetaRole"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+		</se:Link>
 		<se:Link Name="NestedPredicate" RelationshipName="Objectification" RoleName="NestedFactType" WriteStyle="PrimaryLinkElement" />
 		<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
-		<!--TODO:Subtypes-->
-		<!--TODO:Supertypes-->
+		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError" RoleName="ObjectTypeRequiresPrimarySubtypeError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CustomReferenceMode" HasMixedTypedAttributes="true" SortChildElements="true" Override="true">
 		<se:Attribute ID="CustomFormatString" WriteStyle="Element"/>
@@ -141,14 +175,14 @@
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceModeCollection" WriteStyle="NotWritten" />
 	</se:Element>
-	<se:Element Name="BaseValueRangeDefinition" Class="ValueConstraint" Override="true">
+	<se:Element Name="BaseValueConstraint" Class="ValueConstraint" Override="true">
 		<se:ChildElement Name="ValueRanges">
 			<se:Link RelationshipName="ValueConstraintHasValueRange" RoleName="ValueRangeCollection"/>
 		</se:ChildElement>
 		<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="ValueTypeValueConstraint" Name="ValueRangeDefinition" Override="true"/>
-	<se:Element Class="RoleValueConstraint" Name="RoleValueRangeDefinition" Override="true"/>
+	<se:Element Class="ValueTypeValueConstraint" Name="ValueConstraint" Override="true"/>
+	<se:Element Class="RoleValueConstraint" Name="RoleValueConstraint" Override="true"/>
 	<se:Element Class="ValueRange" Override="true">
 		<se:Link RelationshipName="ValueRangeHasMinValueMismatchError" RoleName="MinValueMismatchError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueRangeHasMaxValueMismatchError" RoleName="MaxValueMismatchError" WriteStyle="NotWritten"/>
@@ -184,7 +218,15 @@
 		<se:Link RelationshipName="FactTypeHasImpliedInternalUniquenessConstraintError" RoleName="ImpliedInternalUniquenessConstraintError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError" RoleName="FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollection" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true"/>
+	<se:Element Class="SubtypeFact" Name="SubtypeFact" Override="true">
+		<se:Attribute ID="IsPrimary">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsPrimary" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+	</se:Element>
 	<se:Element Class="Objectification">
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesFactType" RoleName="ImpliedFactTypeCollection" WriteStyle="NotWritten"/>
 		<se:Link Name="ImpliedByObjectification" RelationshipName="ObjectificationImpliesEqualityConstraint" RoleName="ImpliedEqualityConstraint" WriteStyle="NotWritten"/>
@@ -211,7 +253,7 @@
 		<se:Attribute ID="IsMandatory" Name ="_IsMandatory" WriteCustomStorage="true"/>
 		<se:Attribute ID="Multiplicity" Name ="_Multiplicity" WriteCustomStorage="true"/>
 		<se:Link Name="RolePlayer" RelationshipName="ObjectTypePlaysRole" RoleName="RolePlayer"/>
-		<se:ChildElement Name="ValueConstraint">
+		<se:ChildElement Name="ValueRestriction">
 			<se:Link RelationshipName="RoleHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:ChildElement>
 		<!--Need to add this attribute as custom storage.-->
@@ -403,8 +445,11 @@
 	<se:Element Class="NMinusOneError" Override="true">
 		<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="InternalUniquenessConstraint"/>
 	</se:Element>
-	<se:Element Class="SimpleMandatoryImpliesDisjunctiveMandatoryError" Override="true">
+	<se:Element Class="SimpleMandatoryImpliesDisjunctiveMandatoryError" Name="DisjunctiveMandatoryImpliedByMandatoryError" Override="true">
 		<se:Link RelationshipName="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError" RoleName="DisjunctiveMandatoryConstraint" Name="DisjunctiveMandatoryConstraint"/>
+	</se:Element>
+	<se:Element Class="ObjectTypeRequiresPrimarySubtypeError" Override="true">
+		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError" RoleName="ObjectType" Name="ObjectType"/>
 	</se:Element>
 	<se:Element Class="CompatibleRolePlayerTypeError" Override="true">
 		<se:Attribute ID="Column">

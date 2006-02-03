@@ -565,8 +565,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// Returns custom serialization information for links.
 		/// </summary>
 		/// <param name="rolePlayedInfo">The role played.</param>
+		/// <param name="elementLink">The link instance</param>
 		/// <returns>Custom serialization information for links.</returns>
-		ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo);
+		ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink);
 		/// <summary>
 		/// Get a comparer to sort custom role elements. Affects the element order
 		/// for nested child (aggregated) and link (referenced) elements
@@ -617,7 +618,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// The namespace for the root node of the ORM document
 		/// </summary>
-		public const string RootXmlNamespace = "http://schemas.neumont.edu/ORM/ORMRoot";
+		public const string RootXmlNamespace = "http://schemas.neumont.edu/ORM/2006-01/ORMRoot";
 
 		/// <summary>
 		/// Used for sorting.
@@ -1090,7 +1091,7 @@ namespace Neumont.Tools.ORM.Shell
 			IORMCustomSerializedElement customElement = rolePlayerCustomElement;
 			bool writeContents = customElement != null &&
 				0 != (customElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo) &&
-				customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole).WriteStyle == ORMCustomSerializedElementWriteStyle.PrimaryLinkElement;
+				customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole, link).WriteStyle == ORMCustomSerializedElementWriteStyle.PrimaryLinkElement;
 
 			if (writeContents)
 			{
@@ -1121,13 +1122,13 @@ namespace Neumont.Tools.ORM.Shell
 					{
 						if (0 != (tagCustomElement.SupportedCustomSerializedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo))
 						{
-							customInfo = tagCustomElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole);
+							customInfo = tagCustomElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole, link);
 						}
 					}
 				}
 				else if ((supportedOperations & ORMCustomSerializedElementSupportedOperations.LinkInfo) != 0)
 				{
-					customInfo = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole);
+					customInfo = customElement.GetCustomSerializedLinkInfo(rolePlayedInfo.OppositeMetaRole, link);
 				}
 			}
 

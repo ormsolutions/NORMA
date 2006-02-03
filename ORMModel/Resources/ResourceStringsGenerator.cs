@@ -1527,6 +1527,16 @@
 			}
 		}
 		/// <summary>
+		/// Text displayed in the text of the ObjectTypeRequiresPrimarySubtypeError. {0} is the name of the object type and {1} is the name of the model.
+		/// </summary>
+		public static string ObjectTypeRequiresPrimarySubtypeError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.ObjectTypeRequiresPrimarySubtypeError.Message");
+			}
+		}
+		/// <summary>
 		/// An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.
 		/// </summary>
 		public static string ModelErrorEntityTypeRequiresReferenceSchemeMessage

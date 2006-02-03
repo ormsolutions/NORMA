@@ -330,6 +330,9 @@
   <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact">
     <value xml:space="preserve">Subtype</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact.IsPrimary">
+    <value xml:space="preserve">IsPrimary</value>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SubtypeFact.DefaultNamePattern">
     <value xml:space="preserve">Subtype{0}</value>
   </data>

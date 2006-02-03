@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot"
-	xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore"
-	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/ORMDiagram"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
+	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram"
 	exclude-result-prefixes="#default xsl">
 	<xsl:template match="orm:ORMModel">
 		<ormRoot:ORM2>
