@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore" xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:loc="urn:local-temps" xmlns:xs="http://www.w3.org/2001/XMLSchema" extension-element-prefixes="msxsl" exclude-result-prefixes="loc xs">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:loc="urn:local-temps" xmlns:xs="http://www.w3.org/2001/XMLSchema" extension-element-prefixes="msxsl" exclude-result-prefixes="loc xs">
 	<xsl:param name="CoRefOppositeRoleIdDecorator" select="'_opposite'"/>
 	<xsl:param name="CoRefInternalUniquenessIdDecorator" select="'_unique'"/>
 	<xsl:param name="CoRefInternalUniquenessNameDecorator" select="'_unique'"/>
