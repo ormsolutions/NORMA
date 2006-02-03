@@ -695,7 +695,7 @@
 			</xsl:for-each>
 
 			
-			<xsl:for-each select="$Model/orm:ExternalConstraints/child::*[orm:RoleSequence/orm:Role/@ref=$thisObjectTypeInformation/directPlayedRoles/orm:Role/@ref]">
+			<xsl:for-each select="$Model/orm:ExternalConstraints/child::*[orm:RoleSequence/orm:Role/@ref=$thisObjectTypeInformation/directPlayedRoles/child::*/@ref]">
 				<!-- TODO: Process external constraints here. -->
 			</xsl:for-each>
 
