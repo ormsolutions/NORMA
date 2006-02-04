@@ -74,12 +74,37 @@
     <xsl:value-of select="$indent"/>
     <xsl:choose>
       <xsl:when test="parent::ddl:tableDefinition/ddl:columnDefinition[@name=current()/ddl:uniqueConstraintDefinition/ddl:column/@name and not(ddl:columnConstraintDefinition/ddl:notNullKeyword)]">
-        
+				<!-- Rather than just absorb the constraints, triggers need to be generated. -->
       </xsl:when>
       <xsl:otherwise>
-        <xsl:apply-imports/>
+				<xsl:apply-templates/>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>    
-  
+		<xsl:if test="not(position()=last())">
+			<xsl:choose>
+				<xsl:when test="following-sibling::ddl:tableConstraintDefinition[child::ddl:uniqueConstraintDefinition]">
+					<xsl:call-template name="ColumnLineTerminator">
+						<xsl:with-param name="tableConstraint" select="following-sibling::ddl:tableConstraintDefinition"/>
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>, </xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+  </xsl:template>
+
+	<xsl:template name="ColumnLineTerminator">
+		<xsl:param name="tableConstraint"/>
+		<xsl:for-each select="$tableConstraint/ddl:tableConstraintDefinition">
+			<xsl:choose>
+				<xsl:when test="parent::ddl:tableDefinition/ddl:columnDefinition[@name=current()/ddl:uniqueConstraintDefinition/ddl:column/@name and not(ddl:columnConstraintDefinition/ddl:notNullKeyword)]">
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>, </xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
+	</xsl:template>
+
 </xsl:stylesheet>
