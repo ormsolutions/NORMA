@@ -264,7 +264,7 @@
 	<!-- RoleRef, RoleSequence and  RoleSequences define references to roles and collections of roles and collections of collections of roles-->
 	<xs:complexType name="RoleSequences">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="RoleSequence" type="RoleSequence" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="RoleSequence" type="RoleSequence"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="PlayedRoles">
@@ -274,12 +274,16 @@
 			<xs:element name="SupertypeMetaRole" type="RoleRef"/>
 		</xs:choice>
 	</xs:complexType>
+	<xs:complexType name="RoleContainer">
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="Role" type="RoleRef"/>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="RoleSequence">
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
-			<xs:element name="Role" type="RoleRef" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Role" type="RoleRef"/>
 		</xs:sequence>
-		<xs:attribute name="id" type="xs:ID" use="optional"/>
-		<xs:attribute name="Name" type="xs:string" use="optional"/>
+		<xs:attribute name="id" type="xs:ID" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="RoleRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
@@ -456,7 +460,7 @@
 		<xs:complexContent>
 			<xs:extension base="Constraint">
 				<xs:sequence>
-					<xs:element name="RoleSequences" type="RoleSequences"/>
+					<xs:element name="RoleSequences" type="RoleSequences" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -524,8 +528,8 @@
 	<xs:complexType name="SingleColumnExternalConstraint">
 		<xs:complexContent>
 			<xs:extension base="Constraint">
-				<xs:sequence minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="RoleSequence" type="RoleSequence" minOccurs="1" maxOccurs="1"/>
+				<xs:sequence>
+					<xs:element name="RoleSequence" type="RoleContainer" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -614,8 +618,8 @@
 	<xs:complexType name="InternalConstraint">
 		<xs:complexContent>
 			<xs:extension base="Constraint">
-				<xs:sequence minOccurs="0" maxOccurs="unbounded">
-					<xs:element name="RoleSequence" type="RoleSequence" minOccurs="1" maxOccurs="unbounded"/>
+				<xs:sequence>
+					<xs:element name="RoleSequence" type="RoleContainer" minOccurs="0"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -656,7 +660,7 @@
 	<xs:complexType name="ReadingOrder">
 		<xs:sequence minOccurs="1" maxOccurs="1">
 			<xs:element name="Readings" type="Readings"/>
-			<xs:element name="RoleSequence" type="RoleSequence" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RoleSequence" type="RoleContainer"/>
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID"/>
 	</xs:complexType>

@@ -120,4 +120,6 @@
 			</xsl:apply-templates>
 		</orm:DisjunctiveMandatoryImpliedByMandatoryError>
 	</xsl:template>
+	<!-- RoleSequence names not needed on multicolumn externals, eliminate them here -->
+	<xsl:template match="oldCore:RoleSequences/oldCore:RoleSequence/@Name"/>
 </xsl:stylesheet>
