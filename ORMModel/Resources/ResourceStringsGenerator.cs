@@ -1547,13 +1547,13 @@
 			}
 		}
 		/// <summary>
-		/// The mandatory disjunctive constraint is implied by a simple mandatory constraint. Replacement field {0} is the constraint name and {1} is the model name.
+		/// The mandatory disjunctive constraint is implied by one or more mandatory constraints. Replacement field {0} is the constraint name and {1} is the model name.
 		/// </summary>
-		public static string SimpleMandatoryImpliesDisjunctiveMandatoryError
+		public static string DisjunctiveMandatoryImpliedByMandatoryError
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SimpleMandatoryImpliesDisjunctiveMandatoryError.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.DisjunctiveMandatoryImpliedByMandatoryError.Message");
 			}
 		}
 		/// <summary>

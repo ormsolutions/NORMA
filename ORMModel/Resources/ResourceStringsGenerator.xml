@@ -462,8 +462,8 @@
 	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message">
 		<comment type="summary">An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
 	</ResourceString>
-	<ResourceString name="SimpleMandatoryImpliesDisjunctiveMandatoryError" model="Model" resourceName="ModelError.Constraint.SimpleMandatoryImpliesDisjunctiveMandatoryError.Message">
-		<comment type="summary">The mandatory disjunctive constraint is implied by a simple mandatory constraint. Replacement field {0} is the constraint name and {1} is the model name.</comment>
+	<ResourceString name="DisjunctiveMandatoryImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.DisjunctiveMandatoryImpliedByMandatoryError.Message">
+		<comment type="summary">The mandatory disjunctive constraint is implied by one or more mandatory constraints. Replacement field {0} is the constraint name and {1} is the model name.</comment>
 	</ResourceString>
 	<ResourceString name="RingConstraintTypeNotSpecifiedError" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message">
 		<comment type="summary">The ring constraint type must be specified. {0} is the constraint name and {1} is the model name.</comment>

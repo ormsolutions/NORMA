@@ -115,6 +115,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(SingleColumnExternalConstraint).GetNestedType("EnforceRoleSequenceValidityForAdd", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SingleColumnExternalConstraint).GetNestedType("EnforceRoleSequenceValidityForFactTypeAdd", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SingleColumnExternalConstraint).GetNestedType("EnforceRoleSequenceValidityForFactTypeRemove", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(SingleColumnExternalConstraint).GetNestedType("EnforceRoleSequenceValidityForRemove", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SubtypeFact).GetNestedType("BlockCircularSubtypesAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SubtypeFact).GetNestedType("InitializeSubtypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SubtypeFact).GetNestedType("LimitSubtypeConstraintRolesAddRule", BindingFlags.Public | BindingFlags.NonPublic),

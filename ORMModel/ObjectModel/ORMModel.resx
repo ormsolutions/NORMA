@@ -418,9 +418,9 @@
     <value xml:space="preserve">Entity type '{0}' in model '{1}' requires a primary reference scheme.</value>
     <comment xml:space="preserve">An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
   </data>
-  <data name="ModelError.Constraint.SimpleMandatoryImpliesDisjunctiveMandatoryError.Message">
-    <value xml:space="preserve">Constraint '{0}' in model '{1}' is implied by a simple mandatory constraint.</value>
-    <comment xml:space="preserve">The mandatory disjunctive constraint is implied by a simple mandatory constraint. Replacement field {0} is the constraint name and {1} is the model name.</comment>
+  <data name="ModelError.Constraint.DisjunctiveMandatoryImpliedByMandatoryError.Message">
+    <value xml:space="preserve">Constraint '{0}' in model '{1}' is implied by at least one mandatory constraint attached to a subset of the same roles.</value>
+    <comment xml:space="preserve">The mandatory disjunctive constraint is implied by one or more mandatory constraints. Replacement field {0} is the constraint name and {1} is the model name.</comment>
   </data>
   <data name="ModelException.Objectification.ModelNotSpecified">
     <value xml:space="preserve">Objectification requires the Model property to be set on either the NestingType or the NestedFactType role players.</value>

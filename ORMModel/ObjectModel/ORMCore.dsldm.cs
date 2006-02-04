@@ -226,7 +226,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RoleHasRolePlayerRequiredError.RolePlayerRequiredErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityIsImpliedByMandatoryErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid);
-			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtensionCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtensionCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtensionCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ORMModelElementHasExtensionElement.ExtensionCollectionMetaRoleGuid);
@@ -432,8 +432,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.EqualityIsImpliedByMandatoryErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeError),
 				typeof(Neumont.Tools.ORM.ObjectModel.EntityTypeRequiresReferenceSchemeErrorElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError),
-				typeof(Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError),
+				typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxError),
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintMinMaxErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueMismatchError),
@@ -615,8 +615,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeErrorElementFactoryCreator),
-				typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError),
-				typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError),
+				typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError),
 				typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ORMExtendableElementHasExtensionElement),
@@ -828,8 +828,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError), "EqualityConstraint", Neumont.Tools.ORM.ObjectModel.EqualityConstraintHasEqualityIsImpliedByMandatoryError.EqualityConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError), "ReferenceSchemeError", Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ReferenceSchemeErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError), "ObjectType", Neumont.Tools.ORM.ObjectModel.ObjectTypeHasEntityTypeRequiresReferenceSchemeError.ObjectTypeMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), "ImpliedBySimpleMandatoryError", Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid),
-				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), "DisjunctiveMandatoryConstraint", Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError), "ImpliedByMandatoryError", Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError), "DisjunctiveMandatoryConstraint", Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError), "FrequencyConstraintMinMaxError", Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMinMaxErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError), "FrequencyConstraint", Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintMinMaxError.FrequencyConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement), "ExtensionCollection", Neumont.Tools.ORM.ObjectModel.ORMNamedElementHasExtensionElement.ExtensionCollectionMetaRoleGuid),
@@ -10808,29 +10808,29 @@ namespace Neumont.Tools.ORM.ObjectModel
 		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint.MetaClassGuidString);
 		#endregion
 
-		#region ImpliedBySimpleMandatoryError's Generated Accessor Code
+		#region ImpliedByMandatoryError's Generated Accessor Code
 		/// <summary>
 		/// 
 		/// </summary>
-		public Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError ImpliedBySimpleMandatoryError
+		public Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError ImpliedByMandatoryError
 		{
 			get
 			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError;
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError;
 			}
 			set
 			{
 				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid);
 				if (links.Count > 0)
 				{
 					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid);
 					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 					{
 						if (!link.IsRemoved)
 						{
-							Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError;
+							Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError;
 							if (counterpart != null && object.ReferenceEquals(counterpart, value))
 							{
 								sameRolePlayer = true;
@@ -10846,9 +10846,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if ((!sameRolePlayer) && (value != null))
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError), newRoles);
 				}
 			}
 		}
@@ -14310,10 +14310,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError")]
-	public  partial class SimpleMandatoryImpliesDisjunctiveMandatoryError : Neumont.Tools.ORM.ObjectModel.ModelError
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError")]
+	public  partial class DisjunctiveMandatoryImpliedByMandatoryError : Neumont.Tools.ORM.ObjectModel.ModelError
 	{
-		#region SimpleMandatoryImpliesDisjunctiveMandatoryError's Generated MetaClass Code
+		#region DisjunctiveMandatoryImpliedByMandatoryError's Generated MetaClass Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -14321,7 +14321,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError.MetaClassGuidString);
 		#endregion
 
 		#region DisjunctiveMandatoryConstraint's Generated Accessor Code
@@ -14332,16 +14332,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint;
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint;
 			}
 			set
 			{
 				bool sameRolePlayer = false;
-				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid);
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid);
 				if (links.Count > 0)
 				{
 					System.Diagnostics.Debug.Assert(1 == links.Count);
-					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid);
 					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
 					{
 						if (!link.IsRemoved)
@@ -14362,71 +14362,71 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if ((!sameRolePlayer) && (value != null))
 				{
 					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
-					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, value);
-					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid, this);
-					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), newRoles);
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError), newRoles);
 				}
 			}
 		}
 		#endregion
 	}
-	#region SimpleMandatoryImpliesDisjunctiveMandatoryError's Generated Constructor Code
-	public  partial class SimpleMandatoryImpliesDisjunctiveMandatoryError
+	#region DisjunctiveMandatoryImpliedByMandatoryError's Generated Constructor Code
+	public  partial class DisjunctiveMandatoryImpliedByMandatoryError
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public SimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		public DisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static SimpleMandatoryImpliesDisjunctiveMandatoryError CreateSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store)
+		public static DisjunctiveMandatoryImpliedByMandatoryError CreateDisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store)
 		{
-			return CreateSimpleMandatoryImpliesDisjunctiveMandatoryError(store.DefaultPartition);
+			return CreateDisjunctiveMandatoryImpliedByMandatoryError(store.DefaultPartition);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static SimpleMandatoryImpliesDisjunctiveMandatoryError CreateAndInitializeSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static DisjunctiveMandatoryImpliedByMandatoryError CreateAndInitializeDisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return CreateAndInitializeSimpleMandatoryImpliesDisjunctiveMandatoryError(store.DefaultPartition, assignments);
+			return CreateAndInitializeDisjunctiveMandatoryImpliedByMandatoryError(store.DefaultPartition, assignments);
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public SimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		public DisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 			: base(partition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static SimpleMandatoryImpliesDisjunctiveMandatoryError CreateSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition)
+		public static DisjunctiveMandatoryImpliedByMandatoryError CreateDisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition)
 		{
-			return (SimpleMandatoryImpliesDisjunctiveMandatoryError)partition.ElementFactory.CreateElement(typeof(SimpleMandatoryImpliesDisjunctiveMandatoryError));
+			return (DisjunctiveMandatoryImpliedByMandatoryError)partition.ElementFactory.CreateElement(typeof(DisjunctiveMandatoryImpliedByMandatoryError));
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static SimpleMandatoryImpliesDisjunctiveMandatoryError CreateAndInitializeSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static DisjunctiveMandatoryImpliedByMandatoryError CreateAndInitializeDisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (SimpleMandatoryImpliesDisjunctiveMandatoryError)partition.ElementFactory.CreateElement(typeof(SimpleMandatoryImpliesDisjunctiveMandatoryError), assignments);
+			return (DisjunctiveMandatoryImpliedByMandatoryError)partition.ElementFactory.CreateElement(typeof(DisjunctiveMandatoryImpliedByMandatoryError), assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for SimpleMandatoryImpliesDisjunctiveMandatoryError
+	#region Class Factory Creator for DisjunctiveMandatoryImpliedByMandatoryError
 	/// <summary>
-	/// SimpleMandatoryImpliesDisjunctiveMandatoryError Class Factory Creator
+	/// DisjunctiveMandatoryImpliedByMandatoryError Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError))]
-	public sealed class SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError))]
+	public sealed class DisjunctiveMandatoryImpliedByMandatoryErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator()
+		public DisjunctiveMandatoryImpliedByMandatoryErrorElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -14434,16 +14434,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError( partition, bag );
+			return new Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
 		/// </summary>
-		public static SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator Instance
+		public static DisjunctiveMandatoryImpliedByMandatoryErrorElementFactoryCreator Instance
 		{
 			get
 			{
-				return new SimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator();
+				return new DisjunctiveMandatoryImpliedByMandatoryErrorElementFactoryCreator();
 			}
 		}
 	}
@@ -32514,10 +32514,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	[System.CLSCompliant(true)]
 	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
-	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError")]
-	public  partial class DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError")]
+	public  partial class DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError : Neumont.Tools.ORM.ObjectModel.ORMElementLink
 	{
-		#region DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError's Generated MetaRelationship Code
+		#region DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError's Generated MetaRelationship Code
 		/// <summary>
 		/// MetaClass Guid String
 		/// </summary>
@@ -32525,35 +32525,35 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaClass Guid
 		/// </summary>
-		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuidString);
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.MetaClassGuidString);
 		/// <summary>
 		/// MetaRelationship Guid String
 		/// </summary>
-		public new const System.String MetaRelationshipGuidString = DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuidString;
+		public new const System.String MetaRelationshipGuidString = DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.MetaClassGuidString;
 		/// <summary>
 		/// MetaRelationship Guid
 		/// </summary>
-		public static readonly new System.Guid MetaRelationshipGuid = DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuid;
+		public static readonly new System.Guid MetaRelationshipGuid = DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.MetaClassGuid;
 		#endregion
 
-		#region ImpliedBySimpleMandatoryError's Generated MetaRole Code
+		#region ImpliedByMandatoryError's Generated MetaRole Code
 		/// <summary>
 		/// MetaRole Guid String
 		/// </summary>
-		public const System.String ImpliedBySimpleMandatoryErrorMetaRoleGuidString = "3e6d6499-cad9-4764-8387-4f8a4d4ecf05";
+		public const System.String ImpliedByMandatoryErrorMetaRoleGuidString = "3e6d6499-cad9-4764-8387-4f8a4d4ecf05";
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid ImpliedBySimpleMandatoryErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuidString);
+		public static readonly System.Guid ImpliedByMandatoryErrorMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryError")]
-		public  Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError ImpliedBySimpleMandatoryError
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryError")]
+		public  Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError ImpliedByMandatoryError
 		{
-			get { return (Neumont.Tools.ORM.ObjectModel.SimpleMandatoryImpliesDisjunctiveMandatoryError)this.GetRolePlayer(ImpliedBySimpleMandatoryErrorMetaRoleGuid); }
-			set { this.SetRolePlayer(ImpliedBySimpleMandatoryErrorMetaRoleGuid, value); }
+			get { return (Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryImpliedByMandatoryError)this.GetRolePlayer(ImpliedByMandatoryErrorMetaRoleGuid); }
+			set { this.SetRolePlayer(ImpliedByMandatoryErrorMetaRoleGuid, value); }
 		}
 		
 		#endregion
@@ -32565,12 +32565,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// MetaRole Guid
 		/// </summary>
-		public static readonly System.Guid DisjunctiveMandatoryConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuidString);
+		public static readonly System.Guid DisjunctiveMandatoryConstraintMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuidString);
 		/// <summary>
 		/// 
 		/// </summary>
 		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
-		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraint")]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraint")]
 		public  Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint DisjunctiveMandatoryConstraint
 		{
 			get { return (Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraint)this.GetRolePlayer(DisjunctiveMandatoryConstraintMetaRoleGuid); }
@@ -32579,63 +32579,63 @@ namespace Neumont.Tools.ORM.ObjectModel
 		
 		#endregion
 	}
-	#region DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError's Generated Constructor Code
-	public  partial class DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError
+	#region DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError's Generated Constructor Code
+	public  partial class DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		public DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError CreateDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError CreateDisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return CreateDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(store.DefaultPartition, rolePlayers);
+			return CreateDisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError(store.DefaultPartition, rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError CreateAndInitializeDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError CreateAndInitializeDisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return CreateAndInitializeDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(store.DefaultPartition, rolePlayers, assignments);
+			return CreateAndInitializeDisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError(store.DefaultPartition, rolePlayers, assignments);
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		public DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		    : base(partition, bag)
 		{
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError CreateDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		public static DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError CreateDisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
 		{
-			return (DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError)partition.ElementFactory.CreateElementLink(typeof(DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), rolePlayers);
+			return (DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError)partition.ElementFactory.CreateElementLink(typeof(DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError), rolePlayers);
 		}
 		/// <summary>
 		/// Class Factory
 		/// </summary>
-		public static DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError CreateAndInitializeDisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		public static DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError CreateAndInitializeDisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
 		{
-			return (DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError)partition.ElementFactory.CreateElementLink(typeof(DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError), rolePlayers, assignments);
+			return (DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError)partition.ElementFactory.CreateElementLink(typeof(DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError), rolePlayers, assignments);
 		}
 	}
 	#endregion
-	#region Class Factory Creator for DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError
+	#region Class Factory Creator for DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError
 	/// <summary>
-	/// DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError Class Factory Creator
+	/// DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError Class Factory Creator
 	/// </summary>
-	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError))]
-	public sealed class DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError))]
+	public sealed class DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryErrorElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
 	{
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator()
+		public DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryErrorElementFactoryCreator()
 		{
 		}
 		/// <summary>
@@ -32643,16 +32643,16 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
 		{
-			return new Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError( partition, bag );
+			return new Neumont.Tools.ORM.ObjectModel.DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError( partition, bag );
 		}
 		/// <summary>
 		/// Create an instance of the createor object
 		/// </summary>
-		public static DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator Instance
+		public static DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryErrorElementFactoryCreator Instance
 		{
 			get
 			{
-				return new DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryErrorElementFactoryCreator();
+				return new DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryErrorElementFactoryCreator();
 			}
 		}
 	}

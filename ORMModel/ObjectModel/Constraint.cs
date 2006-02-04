@@ -3123,7 +3123,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					yield return baseError;
 				}
-				SimpleMandatoryImpliesDisjunctiveMandatoryError impliedDisjunctive = ImpliedBySimpleMandatoryError;
+				DisjunctiveMandatoryImpliedByMandatoryError impliedDisjunctive = ImpliedByMandatoryError;
 				if (impliedDisjunctive != null)
 				{
 					yield return impliedDisjunctive;
@@ -3141,7 +3141,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			base.ValidateErrors(notifyAdded);
-			ValidateImpliedDisjunctiveError(notifyAdded, false);
+			ValidateImpliedDisjunctiveError(notifyAdded, false, false, null);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -3156,7 +3156,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded">Set during deserialization</param>
 		/// <param name="forceError">Set to true if we already know that the error condition will be there,
 		/// such as when a simplemandatory constraint is added</param>
-		private void ValidateImpliedDisjunctiveError(INotifyElementAdded notifyAdded, bool forceError)
+		/// <param name="simpleMandatoryChange">This is being called as a result of changing a simple mandatory
+		/// value on a role attached to this disjunctive mandatory constraint. In this case, there is no reason
+		/// to also modify intersecting disjunctive mandatories because the intersecting mandatory will also be called.</param>
+		/// <param name="intersectingMandatoryConstraint">If the rolesequence of a mandatory constraint that intersects another mandatory
+		/// constraint is modified, then the error state of the intersecting constraint may change. The opposite constraint
+		/// is called automatically by this method, but should not call back to here.</param>
+		private void ValidateImpliedDisjunctiveError(INotifyElementAdded notifyAdded, bool forceError, bool simpleMandatoryChange, DisjunctiveMandatoryConstraint intersectingMandatoryConstraint)
 		{
 			if (!IsRemoved)
 			{
@@ -3164,11 +3170,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 				Store theStore = Store;
 				if (!hasError)
 				{
-					RoleMoveableCollection roles = RoleCollection;
-					int roleCount = roles.Count;
-					for (int i = 0; !hasError && i < roleCount; i++)
+					// This can be called from a Removing rule, so use GetElementLinks explicitly instead
+					// of the generated RoleCollection so we can see distinguish between the links removing
+					// and the role removing.
+					IList roleLinks = GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
+					int roleCount = roleLinks.Count;
+					int verifiedRoleCount = -1;
+					bool checkIntersectingMandatories = !simpleMandatoryChange && notifyAdded == null;
+					bool continueProcessing = true;
+					for (int i = 0; continueProcessing && i < roleCount; i++)
 					{
-						Role role = roles[i];
+						ConstraintRoleSequenceHasRole roleLink = (ConstraintRoleSequenceHasRole)roleLinks[i];
+						Role role = roleLink.RoleCollection;
+						// If the role is removing, then any checks on the intersecting mandatory
+						// will run in the course of normal processing. However, if only the link is
+						// removing, then an intersecting mandatory will not get any notifications
+						// that one of the intersecting objects has been modified.
 						if (!role.IsRemoving)
 						{
 							ConstraintRoleSequenceMoveableCollection attachedSequences = role.ConstraintRoleSequenceCollection;
@@ -3179,39 +3196,147 @@ namespace Neumont.Tools.ORM.ObjectModel
 								if (!roleSequence.IsRemoving)
 								{
 									IConstraint constraint = roleSequence.Constraint;
-									if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
+									switch (constraint.ConstraintType)
 									{
-										hasError = true;
-										break;
+										case ConstraintType.SimpleMandatory:
+											if (!roleLink.IsRemoving)
+											{
+												hasError = true;
+												// If there aren't any intersecting mandatories to process then we have all the
+												// information we need.
+												continueProcessing = checkIntersectingMandatories;
+											}
+											break;
+										case ConstraintType.DisjunctiveMandatory:
+											if (!object.ReferenceEquals(this, roleSequence))
+											{
+												DisjunctiveMandatoryConstraint intersectedMandatory = (DisjunctiveMandatoryConstraint)roleSequence;
+												if (hasError)
+												{
+													Debug.Assert(checkIntersectingMandatories); // Loop should break otherwise
+													if (!object.ReferenceEquals(intersectedMandatory, intersectingMandatoryConstraint))
+													{
+														Debug.Assert(!simpleMandatoryChange && null == notifyAdded); // Conditions from checkIntersectingMandatories error, constant values passed here
+														intersectedMandatory.ValidateImpliedDisjunctiveError(null, false, false, this);
+													}
+												}
+												else
+												{
+													// If the intersected mandatory is a subset of the constraint we're testing
+													// then it implies this constraint. If they're equal you'll get an error on each one.
+													// If this is a subset of the other, then the other will have an error.
+													IList intersectedLinks = intersectedMandatory.GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
+													// Note that we can't do a sanity check here with counts because we could be in a Removing state
+													int intersectedLinksCount = intersectedLinks.Count;
+													hasError = true; // Assume they're all contained, prove otherwise
+													int verifiedIntersectedCount = 0;
+													for (int iIntersectedLink = 0; hasError && iIntersectedLink < intersectedLinksCount; ++iIntersectedLink)
+													{
+														ConstraintRoleSequenceHasRole intersectedRoleLink = (ConstraintRoleSequenceHasRole)intersectedLinks[iIntersectedLink];
+														Role intersectedRole = intersectedRoleLink.RoleCollection;
+														if (!intersectedRoleLink.IsRemoving && !intersectedRole.IsRemoving)
+														{
+															++verifiedIntersectedCount;
+															if (object.ReferenceEquals(intersectedRole, role))
+															{
+																if (roleLink.IsRemoving)
+																{
+																	hasError = false;
+																	break;
+																}
+															}
+															else
+															{
+																int iTestCurrent = 0;
+																for (; iTestCurrent < roleCount; ++iTestCurrent)
+																{
+																	ConstraintRoleSequenceHasRole testRoleLink = (ConstraintRoleSequenceHasRole)roleLinks[iTestCurrent];
+																	Role testRole = testRoleLink.RoleCollection;
+																	if (!testRoleLink.IsRemoving && !testRole.IsRemoving)
+																	{
+																		if (object.ReferenceEquals(intersectedRole, testRole))
+																		{
+																			break;
+																		}
+																	}
+																}
+																if (iTestCurrent == roleCount)
+																{
+																	hasError = false;
+																	break;
+																}
+															}
+														}
+													}
+													if (checkIntersectingMandatories)
+													{
+														if (!object.ReferenceEquals(intersectedMandatory, intersectingMandatoryConstraint))
+														{
+															// The intersecting mandatory also needs to be processed
+															bool forceIntersectingError = false;
+															if (hasError && verifiedIntersectedCount <= roleCount)
+															{
+																// To simplify conditioning on the opposite error, see if the
+																// role counts are the same. If they are, then we can completely
+																// bypass the opposite processing.
+																// The error might go both ways
+																if (verifiedRoleCount == -1)
+																{
+																	// Get an accurate role count
+																	verifiedRoleCount = 0;
+																	for (int k = 0; k < roleCount; ++k)
+																	{
+																		if (!((ConstraintRoleSequenceHasRole)roleLinks[k]).IsRemoving)
+																		{
+																			++verifiedRoleCount;
+																		}
+																	}
+																}
+																forceIntersectingError = verifiedRoleCount == verifiedIntersectedCount;
+															}
+															Debug.Assert(!simpleMandatoryChange && null == notifyAdded); // Conditions from checkIntersectingMandatories error, constant values passed here
+															intersectedMandatory.ValidateImpliedDisjunctiveError(null, forceIntersectingError, false, this);
+														}
+													}
+													else if (hasError)
+													{
+														continueProcessing = false;
+													}
+												}
+											}
+											break;
 									}
 								}
 							}
 						}
 					}
 				}
-				SimpleMandatoryImpliesDisjunctiveMandatoryError noImpliedMandatoryError = ImpliedBySimpleMandatoryError;
-				if (hasError)
+				if (!IsRemoving)
 				{
-					if (noImpliedMandatoryError == null)
+					DisjunctiveMandatoryImpliedByMandatoryError noImpliedMandatoryError = ImpliedByMandatoryError;
+					if (hasError)
 					{
-						noImpliedMandatoryError = SimpleMandatoryImpliesDisjunctiveMandatoryError.CreateSimpleMandatoryImpliesDisjunctiveMandatoryError(theStore);
-						noImpliedMandatoryError.Model = Model;
-						noImpliedMandatoryError.DisjunctiveMandatoryConstraint = this;
-						noImpliedMandatoryError.GenerateErrorText();
-						if (notifyAdded != null)
+						if (noImpliedMandatoryError == null)
 						{
-							notifyAdded.ElementAdded(noImpliedMandatoryError, true);
+							noImpliedMandatoryError = DisjunctiveMandatoryImpliedByMandatoryError.CreateDisjunctiveMandatoryImpliedByMandatoryError(theStore);
+							noImpliedMandatoryError.Model = Model;
+							noImpliedMandatoryError.DisjunctiveMandatoryConstraint = this;
+							noImpliedMandatoryError.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(noImpliedMandatoryError, true);
+							}
 						}
 					}
-				}
-				else if (noImpliedMandatoryError != null)
-				{
-					noImpliedMandatoryError.Remove();
+					else if (noImpliedMandatoryError != null)
+					{
+						noImpliedMandatoryError.Remove();
+					}
 				}
 			}
 		}
 		/// <summary>
-		/// Verify that the SimpleMandatoryImpliesDisjunctiveMandatoryError is present/not present when
+		/// Verify that the DisjunctiveMandatoryImpliedByMandatoryError is present/not present when
 		/// a simple mandatory constraint is added to a role that also participates in a DisjunctiveMandatoryConstraint
 		/// </summary>
 		/// <param name="mandatoryContraint">The SimpleMandatoryConstraint to test</param>
@@ -3230,7 +3355,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					currentConstraint = constraints[i].Constraint;
 					if (currentConstraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
 					{
-						(currentConstraint as DisjunctiveMandatoryConstraint).ValidateImpliedDisjunctiveError(null, forAdd);
+						(currentConstraint as DisjunctiveMandatoryConstraint).ValidateImpliedDisjunctiveError(null, forAdd, true, null);
 					}
 				}
 			}
@@ -3253,7 +3378,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						break;
 					case ConstraintType.DisjunctiveMandatory:
 						DisjunctiveMandatoryConstraint mandatory = constraint as DisjunctiveMandatoryConstraint;
-						mandatory.ValidateImpliedDisjunctiveError(null, false);
+						mandatory.ValidateImpliedDisjunctiveError(null, false, false, null);
 						break;
 
 				}
@@ -3278,7 +3403,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 						break;
 					case ConstraintType.DisjunctiveMandatory:
 						DisjunctiveMandatoryConstraint mandatory = constraint as DisjunctiveMandatoryConstraint;
-						mandatory.ValidateImpliedDisjunctiveError(null, false);
+						mandatory.ValidateImpliedDisjunctiveError(null, false, false, null);
 						break;
 
 				}
@@ -4140,7 +4265,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion //IRepresentModelElements Implementation
 	}
-	public partial class SimpleMandatoryImpliesDisjunctiveMandatoryError : IRepresentModelElements
+	public partial class DisjunctiveMandatoryImpliedByMandatoryError : IRepresentModelElements
 	{
 		#region Base overrides
 		/// <summary>
@@ -4152,7 +4277,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			string parentName = (parent != null) ? parent.Name : "";
 			string modelName = this.Model.Name;
 			string currentText = Name;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.SimpleMandatoryImpliesDisjunctiveMandatoryError, parentName, modelName);
+			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.DisjunctiveMandatoryImpliedByMandatoryError, parentName, modelName);
 			if (currentText != newText)
 			{
 				Name = newText;

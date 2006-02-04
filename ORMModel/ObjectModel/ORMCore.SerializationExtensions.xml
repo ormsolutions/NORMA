@@ -309,7 +309,7 @@
 		<se:Link RelationshipName="SingleColumnExternalConstraintHasTooManyRoleSequencesError" RoleName="TooManyRoleSequencesError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="DisjunctiveMandatoryConstraint" Override="true">
-		<se:Link RelationshipName="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError" RoleName="ImpliedBySimpleMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError" RoleName="ImpliedByMandatoryError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="FrequencyConstraint" Override="true">
 		<se:Link RelationshipName="FrequencyConstraintHasFrequencyConstraintMinMaxError" RoleName="FrequencyConstraintMinMaxError" WriteStyle="NotWritten"/>
@@ -445,8 +445,8 @@
 	<se:Element Class="NMinusOneError" Override="true">
 		<se:Link RelationshipName="InternalUniquenessConstraintHasNMinusOneError" RoleName="Constraint" Name="InternalUniquenessConstraint"/>
 	</se:Element>
-	<se:Element Class="SimpleMandatoryImpliesDisjunctiveMandatoryError" Name="DisjunctiveMandatoryImpliedByMandatoryError" Override="true">
-		<se:Link RelationshipName="DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError" RoleName="DisjunctiveMandatoryConstraint" Name="DisjunctiveMandatoryConstraint"/>
+	<se:Element Class="DisjunctiveMandatoryImpliedByMandatoryError" Override="true">
+		<se:Link RelationshipName="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError" RoleName="DisjunctiveMandatoryConstraint" Name="DisjunctiveMandatoryConstraint"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeRequiresPrimarySubtypeError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError" RoleName="ObjectType" Name="ObjectType"/>

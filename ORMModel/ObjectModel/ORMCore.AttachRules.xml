@@ -105,6 +105,7 @@
 		<arg:Rule class="SingleColumnExternalConstraint.EnforceRoleSequenceValidityForAdd"/>
 		<arg:Rule class="SingleColumnExternalConstraint.EnforceRoleSequenceValidityForFactTypeAdd"/>
 		<arg:Rule class="SingleColumnExternalConstraint.EnforceRoleSequenceValidityForFactTypeRemove"/>
+		<arg:Rule class="SingleColumnExternalConstraint.EnforceRoleSequenceValidityForRemove"/>
 		<arg:Rule class="SubtypeFact.BlockCircularSubtypesAddRule"/>
 		<arg:Rule class="SubtypeFact.InitializeSubtypeAddRule"/>
 		<arg:Rule class="SubtypeFact.LimitSubtypeConstraintRolesAddRule"/>

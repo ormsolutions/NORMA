@@ -168,7 +168,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				classNameMap.Add("DataTypeNotSpecifiedError", DataTypeNotSpecifiedError.MetaClassGuid);
 				classNameMap.Add("EqualityIsImpliedByMandatoryError", EqualityIsImpliedByMandatoryError.MetaClassGuid);
 				classNameMap.Add("NMinusOneError", NMinusOneError.MetaClassGuid);
-				classNameMap.Add("DisjunctiveMandatoryImpliedByMandatoryError", SimpleMandatoryImpliesDisjunctiveMandatoryError.MetaClassGuid);
+				classNameMap.Add("DisjunctiveMandatoryImpliedByMandatoryError", DisjunctiveMandatoryImpliedByMandatoryError.MetaClassGuid);
 				classNameMap.Add("ObjectTypeRequiresPrimarySubtypeError", ObjectTypeRequiresPrimarySubtypeError.MetaClassGuid);
 				classNameMap.Add("CompatibleRolePlayerTypeError", CompatibleRolePlayerTypeError.MetaClassGuid);
 				classNameMap.Add("RolePlayerRequiredError", RolePlayerRequiredError.MetaClassGuid);
@@ -3355,7 +3355,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.ImpliedBySimpleMandatoryErrorMetaRoleGuid)
+			if (rolePlayedInfo.Id == DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.ImpliedByMandatoryErrorMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, null, null, ORMCustomSerializedElementWriteStyle.NotWritten, null);
 			}
@@ -5630,8 +5630,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 	}
 	#endregion // NMinusOneError serialization
-	#region SimpleMandatoryImpliesDisjunctiveMandatoryError serialization
-	public partial class SimpleMandatoryImpliesDisjunctiveMandatoryError : IORMCustomSerializedElement
+	#region DisjunctiveMandatoryImpliedByMandatoryError serialization
+	public partial class DisjunctiveMandatoryImpliedByMandatoryError : IORMCustomSerializedElement
 	{
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5640,7 +5640,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | (ORMCustomSerializedElementSupportedOperations.ElementInfo | ORMCustomSerializedElementSupportedOperations.LinkInfo);
+				return base.SupportedCustomSerializedOperations | ORMCustomSerializedElementSupportedOperations.LinkInfo;
 			}
 		}
 		ORMCustomSerializedElementSupportedOperations IORMCustomSerializedElement.SupportedCustomSerializedOperations
@@ -5651,28 +5651,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Implements IORMCustomSerializedElement.CustomSerializedElementInfo
-		/// </summary>
-		protected new ORMCustomSerializedElementInfo CustomSerializedElementInfo
-		{
-			get
-			{
-				return new ORMCustomSerializedElementInfo(null, "DisjunctiveMandatoryImpliedByMandatoryError", null, ORMCustomSerializedElementWriteStyle.Element, null);
-			}
-		}
-		ORMCustomSerializedElementInfo IORMCustomSerializedElement.CustomSerializedElementInfo
-		{
-			get
-			{
-				return this.CustomSerializedElementInfo;
-			}
-		}
-		/// <summary>
 		/// Implements IORMCustomSerializedElement.GetCustomSerializedLinkInfo
 		/// </summary>
 		protected new ORMCustomSerializedElementInfo GetCustomSerializedLinkInfo(MetaRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
-			if (rolePlayedInfo.Id == DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid)
+			if (rolePlayedInfo.Id == DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid)
 			{
 				return new ORMCustomSerializedElementInfo(null, "DisjunctiveMandatoryConstraint", null, ORMCustomSerializedElementWriteStyle.Element, null);
 			}
@@ -5692,14 +5675,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected new ORMCustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName)
 		{
-			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = SimpleMandatoryImpliesDisjunctiveMandatoryError.myChildElementMappings;
+			Dictionary<string, ORMCustomSerializedElementMatch> childElementMappings = DisjunctiveMandatoryImpliedByMandatoryError.myChildElementMappings;
 			if (childElementMappings == null)
 			{
 				childElementMappings = new Dictionary<string, ORMCustomSerializedElementMatch>();
 				ORMCustomSerializedElementMatch match = new ORMCustomSerializedElementMatch();
-				match.InitializeRoles(DisjunctiveMandatoryConstraintHasSimpleMandatoryImpliesDisjunctiveMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid);
+				match.InitializeRoles(DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError.DisjunctiveMandatoryConstraintMetaRoleGuid);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/ORMCore|DisjunctiveMandatoryConstraint", match);
-				SimpleMandatoryImpliesDisjunctiveMandatoryError.myChildElementMappings = childElementMappings;
+				DisjunctiveMandatoryImpliedByMandatoryError.myChildElementMappings = childElementMappings;
 			}
 			ORMCustomSerializedElementMatch rVal;
 			if (!(childElementMappings.TryGetValue(string.Concat(containerNamespace, "|", containerName, "|", elementNamespace, "|", elementName), out rVal)))
@@ -5713,7 +5696,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName);
 		}
 	}
-	#endregion // SimpleMandatoryImpliesDisjunctiveMandatoryError serialization
+	#endregion // DisjunctiveMandatoryImpliedByMandatoryError serialization
 	#region ObjectTypeRequiresPrimarySubtypeError serialization
 	public partial class ObjectTypeRequiresPrimarySubtypeError : IORMCustomSerializedElement
 	{
