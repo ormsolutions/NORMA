@@ -1726,6 +1726,29 @@
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ValueRangeLink.Accessible.Name");
 			}
 		}
+		/// <summary>
+		/// The title of the message shown when a registered extension fails to load.
+		/// </summary>
+		public static string ExtensionLoadFailureTitle
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExtensionLoadFailure.Title");
+			}
+		}
+		/// <summary>
+		/// The format string for the content of the message shown when a registered extension fails to load.
+		/// </summary>
+		/// <remarks>
+		/// {0} will be <see cref="System.Environment.NewLine"/>. {1} will be the registered name of the extension that failed to load. {2} will be the result of calling <see cref="System.Exception.ToString">ToString()</see> on the <see cref="System.Exception"/> that caused the load failure.
+		/// </remarks>
+		public static string ExtensionLoadFailureMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExtensionLoadFailure.Message");
+			}
+		}
 	}
 	#endregion // ResourceStrings class
 }

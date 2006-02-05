@@ -370,11 +370,21 @@ namespace Neumont.Tools.ORM.Shell
 
 		int IVsInstalledProduct.ProductID(out string pbstrPID)
 		{
-			pbstrPID = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			pbstrPID = null;
+			object[] customAttributes = Assembly.GetExecutingAssembly().GetCustomAttributes(false);
+			for (int i = 0; i < customAttributes.Length; i++)
+			{
+				AssemblyInformationalVersionAttribute informationalVersion = customAttributes[i] as AssemblyInformationalVersionAttribute;
+				if (informationalVersion != null)
+				{
+					pbstrPID = informationalVersion.InformationalVersion;
+					break;
+				}
+			}
 			return VSConstants.S_OK;
 		}
 
-#endregion
+		#endregion
 		#region Tool Window properties
 		/// <summary>
 		/// Browser tool window.
@@ -537,59 +547,44 @@ namespace Neumont.Tools.ORM.Shell
 							LABEL_RETRY:
 								try
 								{
-									Assembly extensionAssembly = null;
-									string extension;
-
-									// First see if the extension is in the GAC, and if it is, load it from there
-									if ((extension = hkeyExtension.GetValue("AssemblyGacName") as string) != null)
+									string extensionTypeString = hkeyExtension.GetValue("Class") as string;
+									if (string.IsNullOrEmpty(extensionTypeString))
 									{
-										extensionAssembly = Assembly.Load(extension);
-									}
-									// If it isn't in the GAC, see if it is in a file
-									else if ((extension = hkeyExtension.GetValue("AssemblyFilePath") as string) != null)
-									{
-										extensionAssembly = Assembly.LoadFrom(extension);
+										// If we don't have an extension type name, just go on to the next registered extension
+										continue;
 									}
 
-									// If we found and loaded an Assembly for the extension, check each Type in it
-									// to find any SubStores
-									if (extensionAssembly != null)
+									AssemblyName extensionAssemblyName;
+									string extensionAssemblyNameString = hkeyExtension.GetValue("Assembly") as string;
+									if (!string.IsNullOrEmpty(extensionAssemblyNameString))
 									{
-										foreach (Type type in extensionAssembly.GetTypes())
-										{
-											if (type.IsSubclassOf(typeof(SubStore)))
-											{
-												extensionSubStoreTypes.Add(type);
-											}
-										}
+										extensionAssemblyName = new AssemblyName(extensionAssemblyNameString);
+									}
+									else
+									{
+										extensionAssemblyName = new AssemblyName();
+									}
+									extensionAssemblyName.CodeBase = hkeyExtension.GetValue("CodeBase") as string;
+
+									Type extensionType = Assembly.Load(extensionAssemblyName).GetType(extensionTypeString, true, false);
+									
+									if (extensionType.IsSubclassOf(typeof(SubStore)))
+									{
+										extensionSubStoreTypes.Add(extensionType);
 									}
 								}
-								catch (SystemException ex)
+								catch (Exception ex)
 								{
-									// A SystemException can occur for a number of reasons, including the user not having the correct
-									// registry or file permissions or the referenced assmebly or file not existing or being corrupt
+									// An Exception can occur for a number of reasons, such as the user not having the correct
+									// registry or file permissions, or the referenced assmebly or file not existing or being corrupt
 
-									// Get the IVsUIShell from the Singleton
-									IVsUIShell vsUIShell = Singleton.GetService(typeof(SVsUIShell)) as IVsUIShell;
-									Debug.Assert(vsUIShell != null);	// vsUIShell will only be null if it cannot be found, which normally should not happen
-
-									// UNDONE: Retrieve a localized format string from a resource and use that as the message
-									string message = string.Format(System.Globalization.CultureInfo.CurrentUICulture,
-										"ORM Designer extension '{1}' failed to load.{0}{0}" +
-										"{0}----BEGIN EXCEPTION----{0}{0}{2}{0}----END EXCEPTION----{0}{0}{0}" +
-										"Abort  = Allow ORM Designer package load to fail and signal a breakpoint{0}" +
-										"Retry  = Retry loading the extension{0}" +
-										"Ignore = Ignore the extension load failure and continue with the next extension{0}",
-										Environment.NewLine, extensionKeyName, ex);
-									int pnResult;
-									uint notUsedUInt32 = 0;
-									Guid notUsedGuid = Guid.Empty;
-									ErrorHandler.ThrowOnFailure(vsUIShell.ShowMessageBox(notUsedUInt32, ref notUsedGuid, "Extension Load Failure", message, String.Empty, notUsedUInt32, OLEMSGBUTTON.OLEMSGBUTTON_ABORTRETRYIGNORE, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_THIRD, OLEMSGICON.OLEMSGICON_WARNING, Convert.ToInt32(false), out pnResult));
-									if (pnResult == (int)DialogResult.Retry)
+									string message = string.Format(System.Globalization.CultureInfo.CurrentUICulture, ResourceStrings.ExtensionLoadFailureMessage, Environment.NewLine, extensionKeyName, ex);
+									int result = VsShellUtilities.ShowMessageBox(Singleton, message, ResourceStrings.ExtensionLoadFailureTitle, OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_ABORTRETRYIGNORE, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_THIRD);
+									if (result == (int)DialogResult.Retry)
 									{
 										goto LABEL_RETRY;
 									}
-									else if (pnResult != (int)DialogResult.Ignore)
+									else if (result != (int)DialogResult.Ignore)
 									{
 										// If a debugger is already attached, Launch() has no effect, so we can always safely call it
 										Debugger.Launch();
