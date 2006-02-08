@@ -10,9 +10,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="DDILtoDB2.xslt" />
+    <Content Include="DDILtoOracle.xslt" />
     <Content Include="SampleModelORMtoDB2.xml">
       <Generator>ORMCustomTool</Generator>
       <LastGenOutput>SampleModelORMtoDB2.sql</LastGenOutput>
+    </Content>
+    <Content Include="SampleModelORMtoOracle.xml">
+      <Generator>ORMCustomTool</Generator>
+      <LastGenOutput>SampleModelORMtoOracle.sql</LastGenOutput>
     </Content>
     <Content Include="SampleModelORMtoSQLServer.xml">
       <Generator>ORMCustomTool</Generator>
@@ -34,6 +39,10 @@
     <None Include="SampleModelORMtoDB2.sql">
       <AutoGen>True</AutoGen>
       <DependentUpon>SampleModelORMtoDB2.xml</DependentUpon>
+    </None>
+    <None Include="SampleModelORMtoOracle.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModelORMtoOracle.xml</DependentUpon>
     </None>
     <None Include="SampleModelORMtoSQLServer.sql">
       <DependentUpon>SampleModelORMtoSQLServer.xml</DependentUpon>

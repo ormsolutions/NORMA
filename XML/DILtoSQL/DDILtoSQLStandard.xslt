@@ -733,9 +733,9 @@
 			<xsl:value-of select="@schema"/>
 			<xsl:text>.</xsl:text>
 		</xsl:if>
-		<xsl:apply-templates select="@name"/>
+		<xsl:apply-templates select="@name" mode="ForConstraintNameDefinition"/>
 		<xsl:text> </xsl:text>
-		<xsl:apply-templates/>		
+		<xsl:apply-templates/>	
 	</xsl:template>
 
 	<xsl:template match="@name" mode="ForConstraintNameDefinition">
