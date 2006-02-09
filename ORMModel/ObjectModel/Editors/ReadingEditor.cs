@@ -118,6 +118,55 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				}
 			}
 		}
+
+		/// <summary>
+		/// The reading that is being edited in the control, or that needs to be edited.
+		/// </summary>
+		public Reading CurrentReading
+		{
+			get
+			{
+				ITree tree = vtrReadings.Tree;
+				int currentIndex = vtrReadings.CurrentIndex;
+				if (currentIndex >= 0)
+				{
+					VirtualTreeItemInfo itemInfo = tree.GetItemInfo(currentIndex, vtrReadings.CurrentColumn, false);
+					int options = 0;
+					ReadingEntry entry = itemInfo.Branch.GetObject(itemInfo.Row, itemInfo.Column, ObjectStyle.TrackingObject, ref options) as ReadingEntry;
+					return (entry == null) ? null : entry.Reading;
+				}
+				return null;
+			}
+		}
+
+		/// <summary>
+		/// Returns true if a reading is currently in edit mode.
+		/// </summary>
+		public bool InLabelEdit
+		{
+			get
+			{
+				return vtrReadings.InLabelEdit;
+			}
+		}
+		/// <summary>
+		/// Returns true if the reading pane is active
+		/// </summary>
+		public bool IsReadingPaneActive
+		{
+			get
+			{
+				if (vtrReadings != null)
+				{
+					ContainerControl sc = this.ActiveControl as ContainerControl;
+					if (sc != null)
+					{
+						return object.ReferenceEquals(vtrReadings, sc.ActiveControl);
+					}
+				}
+				return false;
+			}
+		}
 		#endregion
 		#region PopulateControl and helpers
 		private void PopulateControl()
@@ -362,6 +411,35 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 					{
 						vtrReadings.BeginLabelEdit();
 					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Puts the reading that is currently selected in the reading order
+		/// into edit mode.
+		/// </summary>
+		public void EditSelectedReading()
+		{
+			using (Transaction t = myFact.Store.TransactionManager.BeginTransaction(ResourceStrings.CommandEditReadingText))
+			{
+				vtrReadings.BeginLabelEdit();
+			}
+		}
+
+		/// <summary>
+		/// Deletes the reading that is currently selected in the reading order
+		/// if the virtual tree is not in edit mode.
+		/// </summary>
+		public void DeleteSelectedReading()
+		{
+			using (Transaction t = myFact.Store.TransactionManager.BeginTransaction(ResourceStrings.CommandDeleteReadingText))
+			{
+				if (!vtrReadings.InLabelEdit)
+				{
+					Reading reading = myReadingList[vtrReadings.CurrentIndex].Reading;
+					reading.Remove();
+					if (t.HasPendingChanges) t.Commit();
 				}
 			}
 		}

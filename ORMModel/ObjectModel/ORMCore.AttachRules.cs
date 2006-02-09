@@ -93,6 +93,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(ORMModel).GetNestedType("RemoveDuplicateObjectTypeNameErrorRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(Reading).GetNestedType("ReadingOrderHasRoleRemoved", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(Reading).GetNestedType("ReadingPropertiesChanged", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ReadingOrder).GetNestedType("EnforceNoEmptyReadingOrder", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReadingOrder).GetNestedType("FactTypeHasRoleAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReadingOrder).GetNestedType("ReadingOrderHasReadingAdded", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ReadingOrder).GetNestedType("ReadingOrderHasReadingRemoved", BindingFlags.Public | BindingFlags.NonPublic),

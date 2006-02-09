@@ -5,10 +5,15 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Editors;
+using MSOLE = Microsoft.VisualStudio.OLE.Interop;
+using System.Diagnostics;
+using Microsoft.VisualStudio;
+using System.ComponentModel.Design;
 
 #endregion
 
@@ -19,7 +24,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("992C221B-4BE5-4A9B-900D-9882B4FA0F99")]
 	[CLSCompliant(false)]
-	public class ORMReadingEditorToolWindow : ToolWindow
+	public class ORMReadingEditorToolWindow : ToolWindow, MSOLE.IOleCommandTarget
 	{
 		#region Member variables
 		private ReadingsViewForm myForm = new ReadingsViewForm();
@@ -71,7 +76,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		public override string WindowTitle
 		{
-			get 
+			get
 			{
 				return ResourceStrings.ModelReadingEditorWindowTitle;
 			}
@@ -82,7 +87,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		public override IWin32Window Window
 		{
-			get 
+			get
 			{
 				return myForm;
 			}
@@ -227,8 +232,177 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				myReadingEditor.ActivateReading(fact);
 			}
+
+			public void DeleteSelectedReading()
+			{
+				myReadingEditor.DeleteSelectedReading();
+			}
+
+			public void EditSelectedReading()
+			{
+				myReadingEditor.EditSelectedReading();
+			}
 			#endregion // Reading activation helper
 		}
+		#endregion
+
+		#region IOleCommandTarget Members
+
+		/// <summary>
+		/// Provides a first chance to handle any command that MSOLE.IOleCommandTarget.QueryStatus
+		/// informed the shell to pass to this window. Implements IOleCommandTarget.Exec
+		/// </summary>
+		protected int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
+		{
+			int hr = 0;
+			bool handled = true;
+			// Only handle commands from the Office 97 Command Set (aka VSStandardCommandSet97).
+			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
+			{
+				ReadingEditor myReadingEditor = this.myForm.ReadingEditor;
+				// Default to a not-supported status.
+				hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
+				switch ((VSConstants.VSStd97CmdID)nCmdID)
+				{
+					case VSConstants.VSStd97CmdID.Delete:
+						// If we aren't in label edit (in which case the commands should be passed down to the
+						// VirtualTreeView control), handle the delete command and set the hresult to a handled status.
+						if (this.myForm.ReadingEditor.EditingFactType != null)
+						{
+							if (!myReadingEditor.InLabelEdit)
+							{
+								if (myReadingEditor.IsReadingPaneActive && myReadingEditor.CurrentReading != null)
+								{
+									myForm.DeleteSelectedReading();
+								}
+							}
+							// We enabled the command, so we say we handled it regardless of the further conditions
+							hr = VSConstants.S_OK;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+
+					case VSConstants.VSStd97CmdID.EditLabel:
+						// If we aren't in label edit (in which case the commands should be passed down to the
+						// VirtualTreeView control), handle the edit command and set the hresult to a handled status.
+						if (this.myForm.ReadingEditor.EditingFactType != null)
+						{
+							if (myReadingEditor.CurrentReading != null)
+							{
+								if (myReadingEditor.IsReadingPaneActive)
+								{
+									myForm.EditSelectedReading();
+								}
+							}
+							// We enabled the command, so we say we handled it regardless of the further conditions
+							hr = VSConstants.S_OK;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+
+					default:
+						// If the command is from our command set, but not explicitly handled, inform the shell
+						// that we didn't handle the command.
+						handled = false;
+						hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
+						break;
+				}
+			}
+			// The command is from an unknown group.
+			else
+			{
+				handled = false;
+				hr = (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
+			}
+
+			if (!handled)
+			{
+				Debug.Assert(ErrorHandler.Failed(hr));
+				MSOLE.IOleCommandTarget forwardTo = myCurrentDocument.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
+				// If the command wasn't handled already, give the undo manager a chance to handle the command.
+				hr = forwardTo.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+			}
+			return hr;
+		}
+		int MSOLE.IOleCommandTarget.Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
+		{
+			return Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+		}
+
+		/// <summary>
+		/// Provides a first chance to tell the shell that this window is capable of handling certain commands. Implements IOleCommandTarget.QueryStatus
+		/// </summary>
+		protected int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, MSOLE.OLECMD[] prgCmds, IntPtr pCmdText)
+		{
+			int hr = VSConstants.S_OK;
+			bool handled = true;
+			// Only handle commands from the Office 97 Command Set (aka VSStandardCommandSet97).
+			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
+			{
+				// There typically is only one command passed in to this array - in any case, we only care
+				// about the first command.
+				MSOLE.OLECMD cmd = prgCmds[0];
+				switch ((VSConstants.VSStd97CmdID)cmd.cmdID)
+				{
+					case VSConstants.VSStd97CmdID.Delete:
+						// Inform the shell that we should have a chance to handle the delete command.
+						if (this.myForm.ReadingEditor.EditingFactType != null)
+						{
+							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
+							prgCmds[0] = cmd;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+
+					case VSConstants.VSStd97CmdID.EditLabel:
+						// Inform the shell that we should have a chance to handle the edit label (rename) command.
+						if (this.myForm.ReadingEditor.EditingFactType != null)
+						{
+							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
+							prgCmds[0] = cmd;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+
+					default:
+						// Inform the shell that we don't support any other commands.
+						handled = false;
+						hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
+						break;
+				}
+			}
+			else
+			{
+				// Inform the shell that we don't recognize this command group.
+				handled = false;
+				hr = (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
+			}
+			if (!handled)
+			{
+				Debug.Assert(ErrorHandler.Failed(hr));
+				MSOLE.IOleCommandTarget forwardTo = myCurrentDocument.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
+				// If the command wasn't handled already, forward it to the undo manager.
+				hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+			}
+			return hr;
+		}
+		int MSOLE.IOleCommandTarget.QueryStatus(ref Guid pguidCmdGroup, uint cCmds, MSOLE.OLECMD[] prgCmds, IntPtr pCmdText)
+		{
+			return QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+		}
+
 		#endregion
 	}
 }

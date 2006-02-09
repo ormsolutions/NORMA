@@ -83,6 +83,7 @@
 		<arg:Rule class="ORMModel.RemoveDuplicateObjectTypeNameErrorRule"/>
 		<arg:Rule class="Reading.ReadingOrderHasRoleRemoved"/>
 		<arg:Rule class="Reading.ReadingPropertiesChanged"/>
+		<arg:Rule class="ReadingOrder.EnforceNoEmptyReadingOrder"/>
 		<arg:Rule class="ReadingOrder.FactTypeHasRoleAddedRule"/>
 		<arg:Rule class="ReadingOrder.ReadingOrderHasReadingAdded"/>
 		<arg:Rule class="ReadingOrder.ReadingOrderHasReadingRemoved"/>

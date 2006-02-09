@@ -310,6 +310,12 @@
 	<ResourceString name="CommandDeleteRoleText" model="Diagram" resourceName="Command.DeleteRole.Text">
 		<comment type="summary">This text appears in the edit menu when roles are selected in the diagram.</comment>
 	</ResourceString>
+	<ResourceString name="CommandDeleteReadingText" model="Diagram" resourceName="Command.DeleteReading.Text">
+		<comment type="summary">This text appears on the undo/redo menu when a reading is deleted.</comment>
+	</ResourceString>
+	<ResourceString name="CommandEditReadingText" model="Diagram" resourceName="Command.EditReading.Text">
+		<comment type="summary">This text appears on the undo/redo menu when a reading is edited.</comment>
+	</ResourceString>
 	<ResourceString name="ModelReadingEditorListColumnHeaderReadingText" model="Model" resourceName="ModelReadingEditor.ListColumnHeader.ReadingText">
 		<comment type="summary">Text that appears in the headers of the reading editor tool window for the reading text Text that appears in the headers of the reading editor tool window for the reading text</comment>
 	</ResourceString>

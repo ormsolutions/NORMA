@@ -205,7 +205,26 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
+		[RuleOn(typeof(ReadingOrderHasReading), FireTime = TimeToFire.LocalCommit)]
+		private class EnforceNoEmptyReadingOrder : RemoveRule
+		{
+			/// <summary>
+			/// If the ReadingOrder.ReadingCollection is empty then remove the ReadingOrder
+			/// </summary>
+			/// <param name="e"></param>
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
+				ReadingOrder readOrd = link.ReadingOrder;
+				if (!readOrd.IsRemoved)
+				{
+					if (readOrd.ReadingCollection.Count == 0)
+					{
+						readOrd.Remove();
+					}
+				}
+			}
+		}
 		#endregion FactTypeReadingRoleRemoved rule class
 		#region ReadingOrderHasRoleRemoving rule class
 		/// <summary>

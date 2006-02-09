@@ -887,6 +887,26 @@
 			}
 		}
 		/// <summary>
+		/// This text appears on the undo/redo menu when a reading is deleted.
+		/// </summary>
+		public static string CommandDeleteReadingText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteReading.Text");
+			}
+		}
+		/// <summary>
+		/// This text appears on the undo/redo menu when a reading is edited.
+		/// </summary>
+		public static string CommandEditReadingText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.EditReading.Text");
+			}
+		}
+		/// <summary>
 		/// Text that appears in the headers of the reading editor tool window for the reading text Text that appears in the headers of the reading editor tool window for the reading text
 		/// </summary>
 		public static string ModelReadingEditorListColumnHeaderReadingText
