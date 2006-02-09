@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.Framework;
+using Neumont.Tools.ORM.Shell;
 namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ORMShapeModel
@@ -194,6 +195,27 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // FactTypeAdded class
+		#region FactTypeChanged
+		[RuleOn(typeof(FactTypeShape), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		private class FactTypeShapeChanged : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				FactTypeShape fts = e.ModelElement as FactTypeShape;
+				if (fts != null)
+				{
+					if (e.MetaAttribute.Id == FactTypeShape.DisplayRoleNamesMetaAttributeGuid)
+					{
+						FactType fact = fts.ModelElement as FactType;
+						if (fact != null)
+						{
+							RoleNameShape.SetRoleNameDisplay(fact);
+						}
+					}
+				}
+			}
+		}
+		#endregion // FactTypechanged
 		#endregion // ModelHasFactType fixup
 		#region ModelHasConstraint fixup
 		#region MultiColumnExternalConstraintAdded class
@@ -355,9 +377,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // RoleRemoved class
 		#endregion // FactTypeHasRole fixup
 		#region ObjectTypePlaysRole fixup
-		#region RolePlayerAdded class
+		#region ObjectTypePlaysRoleAdded class
 		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddConnectionRulePriority)]
-		private class RolePlayerAdded : AddRule
+		private class ObjectTypePlaysRoleAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
@@ -365,10 +387,11 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (link != null)
 				{
 					FixupRolePlayerLink(link);
+					Diagram.FixUpDiagram(link, link.PlayedRoleCollection);
 				}
 			}
 		}
-		#endregion // RolePlayerAdded class
+		#endregion // ObjectTypePlaysRoleAdded class
 		#region DisplayRolePlayersFixupListener class
 		/// <summary>
 		/// A fixup class to display role player links
@@ -405,6 +428,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				if (link != null)
 				{
+					RoleNameShape.RemoveRoleNameShapeFromRole(link.PlayedRoleCollection);
 					// This will fire the PresentationLinkRemoved rule
 					link.PresentationRolePlayers.Clear();
 				}
@@ -862,6 +886,71 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // DisplayReadingsFixupListener class
 		#endregion // ReadingOrder fixup
+		#region RoleName fixup
+		/// <summary>
+		/// Add shape elements for role names. Used during deserialization fixup
+		/// and rules.
+		/// </summary>
+		[RuleOn(typeof(Role), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.AddShapeRulePriority)]
+		private class RoleChange : ChangeRule
+		{
+			public override void ElementAttributeChanged(ElementAttributeChangedEventArgs e)
+			{
+				if (e.MetaAttribute.Id == NamedElement.NameMetaAttributeGuid)
+				{
+						Role role = (Role)e.ModelElement;
+						if (!role.IsRemoved)
+						{
+							if (string.IsNullOrEmpty(role.Name))
+							{
+								RoleNameShape.RemoveRoleNameShapeFromRole(role);
+							}
+							else
+							{
+								Diagram.FixUpDiagram(role.FactType, role);
+								if (OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off)
+								{
+									foreach (PresentationElement element in role.FactType.PresentationRolePlayers)
+									{
+										FactTypeShape fts = element as FactTypeShape;
+										if (fts != null
+											&& fts.DisplayRoleNames == DisplayRoleNames.UserDefault)
+										{
+											RoleNameShape.SetRoleNameDisplay(role.FactType);
+										}
+									}
+								}
+							}
+						}
+				}
+			}
+		}
+		#endregion // RoleName fixup
+		#region DisplayRolePlayersFixupListener class
+		/// <summary>
+		/// A fixup class to display role name
+		/// </summary>
+		private class DisplayRoleNameFixupListener : DeserializationFixupListener<Role>
+		{
+			/// <summary>
+			/// Create a new DisplayRoleNameFixupListener
+			/// </summary>
+			public DisplayRoleNameFixupListener() : base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Add role name when possible
+			/// </summary>
+			/// <param name="role">A Role instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected override void ProcessElement(Role role, Store store, INotifyElementAdded notifyAdded)
+			{
+				RoleNameShape.SetRoleNameDisplay(role.FactType);
+			}
+		}
+		#endregion // DisplayRolePlayersFixupListener class
+
 		#endregion // View Fixup Rules
 	}
 }

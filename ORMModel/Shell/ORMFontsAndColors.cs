@@ -38,6 +38,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		RolePicker,
 		/// <summary>
+		/// The color used to draw all role names
+		/// </summary>
+		RoleName,
+		/// <summary>
 		/// The color used to draw all constraints when modality is set to deontic
 		/// </summary>
 		DeonticConstraint,
@@ -184,6 +188,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// The unlocalized name for the role highlight display item
 		/// </summary>
 		public const string RolePickerColorName = "ORM Role Picker";
+		/// <summary>
+		/// The unlocalized name for the role name display item
+		/// </summary>
+		public const string RoleNameColorName = "ORM Role Name";
 
 		// Verbalization category constant names
 
@@ -260,6 +268,13 @@ namespace Neumont.Tools.ORM.Shell
 			(uint)COLORINDEX.CI_SYSPLAINTEXT_FG | StandardPaletteBit,
 			(uint)COLORINDEX.CI_YELLOW | StandardPaletteBit,
 			__FCITEMFLAGS.FCIF_ALLOWBGCHANGE | __FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS,
+			false)
+			,new DefaultColorSetting(
+			RoleNameColorName,
+			ResourceStrings.FontsAndColorsRoleNameColorId,
+			(uint)COLORINDEX.CI_BLUE | StandardPaletteBit,
+			(int)COLORINDEX.CI_SYSPLAINTEXT_BK | StandardPaletteBit,
+			__FCITEMFLAGS.FCIF_ALLOWFGCHANGE | __FCITEMFLAGS.FCIF_ALLOWCUSTOMCOLORS,
 			false)
 			,new DefaultColorSetting(
 			DeonticConstraintColorName,
@@ -1122,6 +1137,9 @@ namespace Neumont.Tools.ORM.Shell
 						break;
 					case ORMDesignerColor.RolePicker:
 						retVal = RolePickerColorName;
+						break;
+					case ORMDesignerColor.RoleName:
+						retVal = RoleNameColorName;
 						break;
 					case ORMDesignerColor.ActiveConstraint:
 						retVal = ActiveConstraintColorName;

@@ -246,6 +246,10 @@
     <value xml:space="preserve">ORM Fact Editor</value>
     <comment xml:space="preserve">This is the caption that appears in the title bar of the Fact Editor tool window.</comment>
   </data>
+	<data name="FontsAndColors.RoleNameColor">
+		<value xml:space="preserve">Role Name</value>
+		<comment xml:space="preserve">Display name for the color used to draw an ORM role name</comment>
+	</data>
   <data name="FontsAndColors.ActiveConstraintColor">
     <value xml:space="preserve">Constraint (Activated)</value>
     <comment xml:space="preserve">Display name for the color used to draw an active ORM constraint and associated roles</comment>
@@ -379,11 +383,11 @@
     <comment xml:space="preserve">The human readable name for the object shape property</comment>
   </data>
   <data name="OptionsPage.Property.RoleNameDisplay.Description">
-    <value xml:space="preserve">Object Types can have Role Names associated with them. This options turns the display of role names On or Off.</value>
+    <value xml:space="preserve">Object Types can have Role Names associated with them. This option set the default value of the DisplayRoleNames property on a Fact to On or Off.</value>
     <comment xml:space="preserve">The description for the Display Role Names option.</comment>
   </data>
   <data name="OptionsPage.Property.RoleNameDisplay.DisplayName">
-    <value xml:space="preserve">Display Role Names</value>
+    <value xml:space="preserve">Display Role Names Default</value>
     <comment xml:space="preserve">The display name for the Display Role Names option.</comment>
   </data>
   <data name="OptionsPageChange.TransactionName">

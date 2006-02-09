@@ -49,4 +49,21 @@
 	<se:Element Class="ValueConstraintShape" Override="true">
 		<se:Attribute ID="ValueRangeText" WriteStyle="NotWritten"/>
 	</se:Element>
+	<se:Element Class="RoleNameShape" Override="true">
+		<se:Attribute ID="RoleName" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="FactTypeShape" Override="true">
+		<se:Attribute ID="DisplayRoleNames" WriteStyle="Attribute">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DisplayRoleNames" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="DisplayRoleNames" name="UserDefault" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+	</se:Element>
 </se:CustomSerializedElements>

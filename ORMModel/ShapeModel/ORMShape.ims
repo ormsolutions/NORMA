@@ -11,6 +11,16 @@ Information Contained Herein is Proprietary and Confidential.
 	<removeclosure name="ORMShapeModelRemoveClosure" classmodifier="sealed" doccomment="Remove closure visitor filter" />
 	<metaclasses />
 	<shapes>
+		<!--<shape namespace="Neumont.Tools.ORM.ShapeModel" name="RoleNameShape" identity="2cb7393c-4502-4c59-979d-94d6c89b4080" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.LineLabelShape" category="" description="" doccomment="" localize="false">
+			<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.Role)" />
+			<metaattributes>
+				<metaattribute name="RoleName" identity="5713319e-4003-4766-9ad3-143a048cb611" type="System.String" xpathexpression="/RoleNameShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
+					<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+					<stringdomain default="" max="2147483647" />
+				</metaattribute>
+			</metaattributes>
+		</shape>-->
+
 		<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ORMBaseShape" identity="55131f4b-0f9a-408d-bed0-79451ba7f4f0" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.NodeShape" category="" description="" doccomment="" localize="false">
 			<metaattributes />
 			<derivedshapes>
@@ -36,6 +46,9 @@ Information Contained Herein is Proprietary and Confidential.
 					<metaattributes>
 						<metaattribute name="ConstraintDisplayPosition" identity="802767fd-de7d-4541-b42b-90b613dfe22d" type="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
 							<enumerationdomain type="Neumont.Tools.ORM.ShapeModel.ConstraintDisplayPosition" default="ConstraintDisplayPosition.Top" />
+						</metaattribute>
+						<metaattribute name ="DisplayRoleNames" identity="9607af0f-2e12-4215-b8a5-91b67c1a9f08" type="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
+							<enumerationdomain type="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames" default="DisplayRoleNames.UserDefault"/>
 						</metaattribute>
 					</metaattributes>
 					<derivedshapes />
@@ -89,6 +102,15 @@ Information Contained Herein is Proprietary and Confidential.
 								</metaattribute>
 							</metaattributes>
 							<derivedshapes />
+						</shape>
+						<shape namespace="Neumont.Tools.ORM.ShapeModel" name="RoleNameShape" identity="2cb7393c-4502-4c59-979d-94d6c89b4080" accessmodifier="public" category="" description="" doccomment="" localize="false">
+							<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.Role)" />
+							<metaattributes>
+								<metaattribute name="RoleName" identity="5713319e-4003-4766-9ad3-143a048cb611" type="System.String" xpathexpression="/RoleNameShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
+									<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+									<stringdomain default="" max="2147483647" />
+								</metaattribute>
+							</metaattributes>
 						</shape>
 					</derivedshapes>
 				</shape>
@@ -148,6 +170,6 @@ Information Contained Herein is Proprietary and Confidential.
 			<deriveddiagrams />
 		</diagram>
 	</diagrams>
-	<metarelationships />
+	<metarelationships/>
 	<visualdata />
 </metamodel>

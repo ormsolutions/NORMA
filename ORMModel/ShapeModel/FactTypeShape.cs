@@ -36,6 +36,28 @@ namespace Neumont.Tools.ORM.ShapeModel
 		Bottom
 	}
 	#endregion ConstraintDisplayPosition enum
+	#region DisplayRoleNames enum
+	/// <summary>
+	/// Determines whether RoleNameShapes will be
+	/// drawn for this fact, overrides global settings
+	/// </summary>
+	[CLSCompliant(true)]
+	public enum DisplayRoleNames
+	{
+		/// <summary>
+		/// Use the global setting
+		/// </summary>
+		UserDefault,
+		/// <summary>
+		/// Draw the RoleNameShape for the fact 
+		/// </summary>
+		On,
+		/// <summary>
+		/// Do not draw RoleNameShapes for the fact
+		/// </summary>
+		Off,
+	}
+	#endregion // DisplayRoleNames
 	#region FactTypeShape class
 	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation
 	{
@@ -2435,8 +2457,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>true</returns>
 		protected override bool ShouldAddShapeForElement(ModelElement element)
 		{
-			Debug.Assert(
-					(element is ObjectType && ((ObjectType)element).NestedFactType == AssociatedFactType)
+			Debug.Assert(element is Role
+					|| (element is ObjectType && ((ObjectType)element).NestedFactType == AssociatedFactType)
 					|| (element is ReadingOrder && ((ReadingOrder)element).FactType == AssociatedFactType)
 					|| (element is RoleValueConstraint && ((RoleValueConstraint)element).Role.FactType == AssociatedFactType)
 				);
@@ -2451,7 +2473,57 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 				}
 			}
+			else if (element is Role)
+			{
+				Role role = element as Role;
+				foreach(PresentationElement pElement in role.FactType.PresentationRolePlayers)
+				{
+					FactTypeShape fts = pElement as FactTypeShape;
+					if (fts != null)
+					{
+						if (fts.DisplayRoleNames == DisplayRoleNames.Off)
+						{
+							return false;
+						}
+					}
+				}
+				return !string.IsNullOrEmpty(role.Name);
+			}
 			return true;
+		}
+
+		/// <summary>
+		/// Checks the location of the RoleNameShape. 
+		/// If its in the default location it moves it next to the associated FactTypeShape, otherwise leaves it alone
+		/// </summary>
+		protected override void OnChildConfigured(ShapeElement child, bool childWasPlaced)
+		{
+			base.OnChildConfigured(child, childWasPlaced);
+			if (child is RoleNameShape)
+			{
+				RoleNameShape roleName = child as RoleNameShape;
+				FactTypeShape fts = roleName.ParentShape as FactTypeShape;
+
+				// Checks to see of RoleNameShape is placed in the upper left corner
+				if (roleName.Location == new PointD(-fts.Location.X, -fts.Location.Y))
+				{
+					double x = -0.2;
+					double y = -0.15;
+					FactType ft = fts.ModelElement as FactType;
+					// Cascades RoleNameShapes for facts that contain more than one role
+					for (int i = 0; i < ft.RoleCollection.Count; i++)
+					{
+						Role role = ft.RoleCollection[i];
+						if (role == roleName.ModelElement)
+						{
+							x += i * 0.15;
+							y -= i * 0.15;
+							break;
+						}
+					}
+					roleName.Location = new PointD(x, y);
+				}
+			}
 		}
 		/// <summary>
 		/// An object type is displayed as an ObjectTypeShape unless it is
@@ -2478,7 +2550,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>RelationshipType.Relative</returns>
 		protected override RelationshipType ChooseRelationship(ShapeElement childShape)
 		{
-			Debug.Assert(childShape is ObjectifiedFactTypeNameShape || childShape is ReadingShape || childShape is ValueConstraintShape);
+			Debug.Assert(childShape is ObjectifiedFactTypeNameShape || childShape is ReadingShape || childShape is ValueConstraintShape || childShape is RoleNameShape);
 			return RelationshipType.Relative;
 		}
 		#endregion // Customize appearance

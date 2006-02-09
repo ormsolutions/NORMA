@@ -16,6 +16,7 @@
 		<arg:Rule class="ORMShapeModel.ExternalFactConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.ExternalFactConstraintRemoved"/>
 		<arg:Rule class="ORMShapeModel.FactTypedAdded"/>
+		<arg:Rule class="ORMShapeModel.FactTypeShapeChanged"/>
 		<arg:Rule class="ORMShapeModel.FactTypeHasInternalConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.FactTypeHasInternalConstraintRemoved"/>
 		<arg:Rule class="ORMShapeModel.MultiColumnExternalConstraintAdded"/>
@@ -25,7 +26,8 @@
 		<arg:Rule class="ORMShapeModel.PresentationLinkRemoved"/>
 		<arg:Rule class="ORMShapeModel.ReadingOrderAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleAdded"/>
-		<arg:Rule class="ORMShapeModel.RolePlayerAdded"/>
+		<arg:Rule class="ORMShapeModel.RoleChange"/>
+		<arg:Rule class="ORMShapeModel.ObjectTypePlaysRoleAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleRemoved"/>
 		<arg:Rule class="ORMShapeModel.RoleValueConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleValueConstraintRemoved"/>

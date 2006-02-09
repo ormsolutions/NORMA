@@ -232,6 +232,7 @@ namespace Neumont.Tools.ORM.Shell
 
 			// See if facts need resizing
 			bool resizeFactShapes = myCurrentExternalConstraintRoleBarDisplay != myExternalConstraintRoleBarDisplay;
+			bool updateRoleNames = myCurrentRoleNameDisplay != myRoleNameDisplay;
 
 			// Set the new options
 			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
@@ -263,6 +264,13 @@ namespace Neumont.Tools.ORM.Shell
 							foreach (FactTypeShape factShape in store.ElementDirectory.GetElements(FactTypeShape.MetaClassGuid, true))
 							{
 								factShape.AutoResize();
+							}
+						}
+						if (updateRoleNames)
+						{
+							foreach (Role role in store.ElementDirectory.GetElements(Role.MetaClassGuid, false))
+							{
+								RoleNameShape.SetRoleNameDisplay(role.FactType);
 							}
 						}
 						if (t.HasPendingChanges)

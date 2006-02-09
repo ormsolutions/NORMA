@@ -60,11 +60,21 @@
 								<xs:element name="ObjectifiedFactTypeNameShape" type="ObjectifiedFactTypeNameShape"/>
 								<xs:element name="ReadingShape" type="ReadingShape"/>
 								<xs:element name="ValueConstraintShape" type="ValueConstraintShape"/>
+								<xs:element name="RoleNameShape" type="RoleNameShape"/>
 							</xs:choice>
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="Subject" type="SubjectRef"/>
 				</xs:sequence>
+				<xs:attribute name="DisplayRoleName" default="UserDefault">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="UserDefault"/>
+							<xs:enumeration value="Off"/>
+							<xs:enumeration value="On"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
 				<xs:attribute name="ConstraintDisplayPosition" default="Top">
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
@@ -95,6 +105,15 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ValueConstraintShape">
+		<xs:complexContent>
+			<xs:extension base="Shape">
+				<xs:sequence>
+					<xs:element name="Subject" type="SubjectRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="RoleNameShape">
 		<xs:complexContent>
 			<xs:extension base="Shape">
 				<xs:sequence>

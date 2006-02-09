@@ -295,6 +295,10 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string FontsAndColorsVerbalizerCategoryNameId = "FontsAndColors.VerbalizerCategoryName";
 		/// <summary>
+		/// Display name for the color used to draw an ORM Role Name
+		/// </summary>
+		public const string FontsAndColorsRoleNameColorId = "FontsAndColors.RoleNameColor";
+		/// <summary>
 		/// Display name for the color used to draw an ORM constraint
 		/// </summary>
 		public const string FontsAndColorsConstraintColorId = "FontsAndColors.ConstraintColor";
