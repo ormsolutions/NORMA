@@ -363,29 +363,16 @@ namespace Neumont.Tools.ORM.Shell
 			/// <param name="reader">A reader used to resolve namespace prefixes</param>
 			public XmlElementIdentifier(string elementName, XmlReader reader)
 			{
-				if (elementName == ".ORMRoot")
+				int colonIndex = elementName.IndexOf(':');
+				if (colonIndex != -1)
 				{
-					myNamespaceURI = ORMSerializer.RootXmlNamespace;
-					myLocalName = ORMSerializer.RootXmlElementName;
-				}
-				else if (elementName == ".ORMModel")
-				{
-					myNamespaceURI = ORMModel.RootXmlNamespace;
-					myLocalName = ORMModel.RootXmlElementName;
+					myLocalName = elementName.Substring(colonIndex + 1);
+					myNamespaceURI = reader.LookupNamespace(elementName.Substring(0, colonIndex));
 				}
 				else
 				{
-					int colonIndex = elementName.IndexOf(':');
-					if (colonIndex != -1)
-					{
-						myLocalName = elementName.Substring(colonIndex + 1);
-						myNamespaceURI = reader.LookupNamespace(elementName.Substring(0, colonIndex));
-					}
-					else
-					{
-						myNamespaceURI = "";
-						myLocalName = elementName;
-					}
+					myNamespaceURI = "";
+					myLocalName = elementName;
 				}
 			}
 			#endregion // Constructors

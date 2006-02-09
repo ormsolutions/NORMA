@@ -518,16 +518,22 @@ namespace Neumont.Tools.ORM.ShapeModel
 			RoleValueConstraint roleValueRangeDefn = link.ValueConstraint;
 			Role role = roleValueRangeDefn.Role;
 			FactType factType = role.FactType;
-			if (factType != null)
+			ObjectType objectType = null;
+			foreach(Role r in factType.RoleCollection)
 			{
-				ORMModel model = factType.Model;
-				if (model != null)
+				if(!Object.ReferenceEquals(r, role))
 				{
-					if (notifyAdded == null) // These elements will already exist during fixup
-					{
-						Diagram.FixUpDiagram(model, factType);
-						Diagram.FixUpDiagram(factType, roleValueRangeDefn);
-					}
+					objectType = r.RolePlayer;
+				}
+			}
+
+			if(objectType != null)
+			{
+				ORMModel model = objectType.Model;
+				if(model != null)
+				{
+					Diagram.FixUpDiagram(model, objectType);
+					Diagram.FixUpDiagram(objectType, roleValueRangeDefn);
 					Diagram.FixUpDiagram(model, link);
 				}
 			}
@@ -607,19 +613,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMModel model = objectType.Model;
 				if (model != null)
 				{
-					if (notifyAdded == null)
-					{
-						Diagram.FixUpDiagram(objectType, valueTypeValueRangeDefn);
-						Diagram.FixUpDiagram(model, objectType);
-					}
+					Diagram.FixUpDiagram(model, objectType);
+					Diagram.FixUpDiagram(objectType, valueTypeValueRangeDefn);
 					Diagram.FixUpDiagram(model, link);
 				}
 			}
 		}
 		/// <summary>
-		/// Helper function to display value type value ranges.
+		/// Helper function to display role value ranges on object types with a ref mode.
 		/// </summary>
-		/// <param name="link">A ValueTypeHasValueConstraint element</param>
+		/// <param name="link">A RoleHasValueConstraint element</param>
 		/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 		private static void FixupValueTypeValueConstraintLink(RoleHasValueConstraint link, INotifyElementAdded notifyAdded)
 		{
@@ -641,16 +644,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ORMModel model = objectType.Model;
 				if (model != null)
 				{
-					if (notifyAdded == null)
-					{
-						Diagram.FixUpDiagram(objectType, roleValueRangeDefn);
-						Diagram.FixUpDiagram(model, objectType);
-					}
+					Diagram.FixUpDiagram(model, objectType);
+					Diagram.FixUpDiagram(objectType, roleValueRangeDefn);
 					Diagram.FixUpDiagram(model, link);
 				}
 			}
 		}
-
 		#endregion // ValueTypeHasValueConstraint fixup
 		#region ExternalFactConstraint fixup
 		#region ExternalFactConstraintAdded class
