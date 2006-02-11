@@ -42,6 +42,16 @@
 						</plx:docComment>
 					</plx:leadingInfo>
 					<plx:returns dataTypeName="Type" dataTypeIsSimpleArray="true"/>
+					<plx:branch>
+						<plx:condition>
+							<plx:unaryOperator type="booleanNot">
+								<plx:callStatic dataTypeName="ORMMetaModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" name="ReflectRules" type="property"/>
+							</plx:unaryOperator>
+						</plx:condition>
+						<plx:return>
+							<plx:callStatic dataTypeName="Type" name="EmptyTypes" type="property"/>
+						</plx:return>
+					</plx:branch>
 					<plx:local name="retVal" dataTypeName="Type" dataTypeIsSimpleArray="true">
 						<plx:initialize>
 							<plx:callNew dataTypeName="Type" dataTypeIsSimpleArray="true">

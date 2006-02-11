@@ -10,6 +10,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected override Type[] AllMetaModelTypes()
 		{
+			if (!(Neumont.Tools.ORM.ObjectModel.ORMMetaModel.ReflectRules))
+			{
+				return Type.EmptyTypes;
+			}
 			Type[] retVal = new Type[]{
 				typeof(ConstraintUtility).GetNestedType("ConstraintRoleSequenceHasRoleRemoved", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(CustomReferenceMode).GetNestedType("CustomReferenceModeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),

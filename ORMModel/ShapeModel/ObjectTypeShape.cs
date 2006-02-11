@@ -368,7 +368,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.Inline, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.Inline)]
 		private class PreferredIdentifierAddedRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -379,23 +379,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 					null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint))
 				{
 					//Get the object that represents the item with the preferred identifier. 
-					ObjectTypeShape objectShape = link.PreferredIdentifierFor.PresentationRolePlayers[0] as ObjectTypeShape;
-
-					//If there is a fact shape and it is visible then we need to 
-					//set ExpandRefMode to true, otherwise set it to false.
-					FactTypeShape factShape;
-					if (constraint.FactType.PresentationRolePlayers.Count > 0 &&
-						null != (factShape = constraint.FactType.PresentationRolePlayers[0] as FactTypeShape) &&
-						factShape.IsVisible)
+					foreach (PresentationElement pel in link.PreferredIdentifierFor.PresentationRolePlayers)
 					{
-						objectShape.ExpandRefMode = true;
-					}
-					else
-					{
-						objectShape.ExpandRefMode = false;
+						ObjectTypeShape objectShape = pel as ObjectTypeShape;
+						if (objectShape != null)
+						{
+							//If there is a fact shape and it is visible then we need to 
+							//set ExpandRefMode to true, otherwise set it to false.
+							FactTypeShape factShape = (objectShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(constraint.FactType);
+							objectShape.ExpandRefMode = factShape != null && factShape.IsVisible;
+						}
 					}
 				}
-
 			} //method
 		} //class
 

@@ -45,6 +45,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				attributeGuid == LengthMetaAttributeGuid ||
 				attributeGuid == NestedFactTypeDisplayMetaAttributeGuid ||
 				attributeGuid == ReferenceModeDisplayMetaAttributeGuid ||
+				attributeGuid == ReferenceModeMetaAttributeGuid ||
+				attributeGuid == ReferenceModeStringMetaAttributeGuid ||
 				attributeGuid == ValueRangeTextMetaAttributeGuid)
 			{
 				// Handled by ObjectTypeChangeRule

@@ -10,6 +10,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected override Type[] AllMetaModelTypes()
 		{
+			if (!(Neumont.Tools.ORM.ObjectModel.ORMMetaModel.ReflectRules))
+			{
+				return Type.EmptyTypes;
+			}
 			Type[] retVal = new Type[]{
 				typeof(FactTypeShape).GetNestedType("ConstraintDisplayPositionChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(FactTypeShape).GetNestedType("ExternalConstraintShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),

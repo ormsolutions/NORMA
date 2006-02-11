@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.EnterpriseTools.Shell;
 using VsShell = Microsoft.VisualStudio.Shell.Interop;
+using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 namespace Neumont.Tools.ORM.Shell
 {
@@ -74,7 +75,16 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>ModelingToolboxItem[]</returns>
 		public override ModelingToolboxItem[] GetToolboxItems()
 		{
-			ModelingToolboxItem[] items = base.GetToolboxItems();
+			ModelingToolboxItem[] items = null;
+			ORMMetaModel.ReflectRules = false;
+			try
+			{
+				items = base.GetToolboxItems();
+			}
+			finally
+			{
+				ORMMetaModel.ReflectRules = true;
+			}
 
 			// Build up a dictionary of items so we can add filter strings. This is
 			// much easier than trying to maintain all of the filter strings at the ims level,
