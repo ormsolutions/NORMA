@@ -2125,6 +2125,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // RoleSubField integration
 		#region Customize appearance
 		/// <summary>
+		/// Show a shadow if this <see cref="FactTypeShape"/> represents a <see cref="FactType"/> that appears
+		/// in more than one location.
+		/// </summary>
+		public override bool HasShadow
+		{
+			get
+			{
+				return ORMBaseShape.ShouldHaveShadow(this);
+			}
+		}
+		/// <summary>
 		/// The color to use when drawing constraint errors.
 		/// </summary>
 		protected Color ConstraintErrorForeColor

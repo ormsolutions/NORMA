@@ -23,6 +23,7 @@
 		<arg:Rule class="ORMShapeModel.ObjectTypedAdded"/>
 		<arg:Rule class="ORMShapeModel.ObjectTypePlaysRoleRemoved"/>
 		<arg:Rule class="ORMShapeModel.ObjectTypeShapeChangeRule"/>
+		<arg:Rule class="ORMShapeModel.ParentShapeRemoved"/>
 		<arg:Rule class="ORMShapeModel.PresentationLinkRemoved"/>
 		<arg:Rule class="ORMShapeModel.ReadingOrderAdded"/>
 		<arg:Rule class="ORMShapeModel.RoleAdded"/>

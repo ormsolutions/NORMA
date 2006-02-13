@@ -44,6 +44,41 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#endregion // IStickyObject interface
 	public partial class ORMDiagram : IProxyDisplayProvider
 	{
+		# region drag drop overrides
+		/// <summary>
+		/// check to see if dragged object is a type that can be dropped on the diagram, if so change drag drop effects
+		/// </summary>
+		/// <param name="e"></param>
+		public override void OnDragOver(DiagramDragEventArgs e)
+		{
+			if (e.Data.GetData(typeof(ObjectType)) != null || e.Data.GetData(typeof(FactType)) != null)
+			{
+				e.Effect = DragDropEffects.All;
+				e.Handled = true;
+			}
+			base.OnDragOver(e);
+		}
+		/// <summary>
+		/// check to see if dragged object is a type that can be dropped on the diagram, if so allow it to be added to form by calling FixUpDiagram
+		/// </summary>
+		/// <param name="e"></param>
+		public override void OnDragDrop(DiagramDragEventArgs e)
+		{
+			ModelElement element = e.Data.GetData(typeof(ObjectType)) as ModelElement;
+			if (element != null || (element = e.Data.GetData(typeof(FactType)) as ModelElement) != null)
+			{
+				e.Effect = DragDropEffects.All;
+				e.Handled = true;
+				using (Transaction transaction = this.TransactionManager.BeginTransaction())
+				{
+					DropTargetContext.Set(transaction, Id, e.MousePosition, null);
+					Diagram.FixUpDiagram(this.ModelElement, element);
+					transaction.Commit();
+				}
+			}
+			base.OnDragDrop(e);
+		}
+		# endregion //drag drop overrides
 		#region Toolbox filter strings
 		/// <summary>
 		/// The filter string used for simple actions
@@ -129,6 +164,38 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// surface. Nesting object types are not displayed.</returns>
 		protected override bool ShouldAddShapeForElement(ModelElement element)
 		{
+			if (!this.AutoPopulateShapes && this.ActiveDiagramView == null)
+			{
+				ElementLink link = element as ElementLink;
+				SubtypeFact subtypeFact;
+				ModelElement element1 = null;
+				ModelElement element2 = null;
+				if (link != null)
+				{
+					element1 = link.GetRolePlayer(0);
+					Role role1 = element1 as Role;
+					if (role1 != null)
+					{
+						element1 = role1.FactType;
+					}
+					element2 = link.GetRolePlayer(1);
+					Role role2 = element2 as Role;
+					if (role2 != null)
+					{
+						element2 = role2.FactType;
+					}
+				}
+				else if ((subtypeFact = element as SubtypeFact) != null)
+				{
+					element1 = subtypeFact.Subtype;
+					element2 = subtypeFact.Supertype;
+				}
+
+				if (element1 == null || element2 == null || FindShapeForElement(element1) == null || FindShapeForElement(element2) == null)
+				{
+					return false;
+				}
+			}
 			ObjectType objType;
 			FactType factType;
 			ObjectTypePlaysRole objectTypePlaysRole;
@@ -238,7 +305,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 			foreach (InternalUniquenessConstraint constraint in factType.GetInternalConstraints<InternalUniquenessConstraint>())
 			{
 				ObjectType entity = (constraint as IConstraint).PreferredIdentifierFor;
-				if (entity != null)
+				// We only consider this to be a collapsible ref mode if its roleplayer is a value type
+				if (entity != null && constraint.RoleCollection[0].RolePlayer.IsValueType)
 				{
 					return !ShouldCollapseReferenceMode(entity);
 				}
@@ -307,17 +375,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>True if the object type has a collapsed reference mode</returns>
 		private bool ShouldCollapseReferenceMode(ObjectType objectType)
 		{
-			ShapeElement shapeElement = FindShapeForElement(objectType);
-			ObjectTypeShape objectTypeShape = shapeElement as ObjectTypeShape;
+			ObjectTypeShape objectTypeShape = FindShapeForElement<ObjectTypeShape>(objectType);
 			if (objectTypeShape != null)
 			{
-				ObjectType obj = objectTypeShape.AssociatedObjectType;
-				if (obj.HasReferenceMode)
+				if (objectType.HasReferenceMode)
 				{
 					return !objectTypeShape.ExpandRefMode;
 				}
 			}
-			return false;
+			return objectType.HasReferenceMode;
 		}
 		/// <summary>
 		/// An object type is displayed as an ObjectTypeShape unless it is
@@ -387,15 +453,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <returns>An existing shape, or null if not found</returns>
 		public ShapeElement FindShapeForElement(ModelElement element)
 		{
-			foreach (PresentationElement pel in element.AssociatedPresentationElements)
-			{
-				ShapeElement shape = pel as ShapeElement;
-				if (shape != null && shape.Diagram == this)
-				{
-					return shape;
-				}
-			}
-			return null;
+			return FindShapeForElement<ShapeElement>(element);
 		}
 		/// <summary>
 		/// Locate an existing typed shape on this diagram corresponding to this element
@@ -403,10 +461,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <typeparam name="ShapeType">The type of the shape to return</typeparam>
 		/// <param name="element">The element to search</param>
 		/// <returns>An existing shape, or null if not found</returns>
-		[CLSCompliant(false)]
 		public ShapeType FindShapeForElement<ShapeType>(ModelElement element) where ShapeType : ShapeElement
 		{
-			foreach (PresentationElement pel in element.AssociatedPresentationElements)
+			foreach (PresentationElement pel in element.PresentationRolePlayers)
 			{
 				ShapeType shape = pel as ShapeType;
 				if (shape != null && shape.Diagram == this)
@@ -888,6 +945,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Subtype create action
 		#endregion // Toolbox support
 		#region Other base overrides
+		/// <summary>
+		/// Set the initial diagram name. We always set it to 'New Page' for now
+		/// </summary>
+		public override void OnInitialized()
+		{
+			base.OnInitialized();
+			Name = ResourceStrings.DiagramDefaultNewPageName;
+		}
 		/// <summary>
 		/// Clean up disposable members (connection actions)
 		/// </summary>

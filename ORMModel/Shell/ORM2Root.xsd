@@ -13,7 +13,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="orm:ORMModel" />
-				<xs:element ref="ormDiagram:ORMDiagram" />
+				<xs:element ref="ormDiagram:ORMDiagram" maxOccurs="unbounded" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

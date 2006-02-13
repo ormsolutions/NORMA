@@ -124,7 +124,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// DocView designed to contain a single ORM Diagram
 	/// </summary>
 	[CLSCompliant(false)]
-	public partial class ORMDesignerDocView : SingleDiagramDocView
+	public partial class ORMDesignerDocView : TabbedDiagramDocView
 	{
 		#region Member variables
 		private ORMDesignerCommands myEnabledCommands;
@@ -154,6 +154,81 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Construction/destruction
 		#region Base overrides
+		/// <summary>
+		/// See <see cref="TabbedDiagramDocView.CreateDiagram"/>.
+		/// </summary>
+		protected override Diagram CreateDiagram(Store store)
+		{
+			Diagram diagram = ORMDiagram.CreateORMDiagram(store);
+			if (diagram.ModelElement == null)
+			{
+				// Make sure the diagram element is correctly attached to the model, and
+				// create a model if we don't have one yet.
+				IList elements = store.ElementDirectory.GetElements(ORMModel.MetaClassGuid, true);
+				if (elements.Count == 0)
+				{
+					diagram.Associate(ORMModel.CreateORMModel(store));
+				}
+				else
+				{
+					Debug.Assert(elements.Count == 1);
+					diagram.Associate((ModelElement)elements[0]);
+				}
+			}
+			base.Diagrams.Add(diagram, true);
+			return diagram;
+		}
+		/// <summary>
+		/// See <see cref="TabbedDiagramDocView.LoadView"/>.
+		/// </summary>
+		protected override bool LoadView()
+		{
+			if (base.LoadView())
+			{
+				ORMDesignerDocData document = (ORMDesignerDocData)this.DocData;
+				// Try to replace the default tab image with our tab image.
+				// HACK: MSBUG: The TabStrip property on TabbedDiagramDocView is private, so we have to use reflection to get it
+				System.Reflection.PropertyInfo tabStripPropertyInfo = typeof(TabbedDiagramDocView).GetProperty("TabStrip", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+				if (tabStripPropertyInfo != null)
+				{
+					TabStrip tabStrip = tabStripPropertyInfo.GetValue(this, null) as TabStrip;
+					if (tabStrip != null)
+					{
+						System.Drawing.Bitmap tabImage = ResourceStrings.DiagramTabImage;
+						tabStrip.TabImageList.Images.Clear();
+						tabStrip.TabImageList.ImageSize = tabImage.Size;
+						tabStrip.TabImageList.Images.Add(tabImage);
+					}
+				}
+
+				// Add our existing diagrams, or make a new one if we don't already have one
+				IList existingDiagrams = document.Store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid, true);
+				if (existingDiagrams.Count > 0)
+				{
+					for (int i = 0; i < existingDiagrams.Count; i++)
+					{
+						// Make the first diagram be selected
+						base.Diagrams.Add((Diagram)existingDiagrams[i], i == 0);
+					}
+				}
+				else
+				{
+					base.AddDiagram();
+				}
+
+				// TODO: We don't know where this call should go, because we're not even sure what it does...
+				// Make sure all of the shapes are set up correctly
+				base.CurrentDiagram.PerformShapeAnchoringRule();
+
+				// Make sure we get a closing notification so we can clear the
+				// selected components
+				document.DocumentClosing += new EventHandler(DocumentClosing);
+
+				return true;
+			}
+			return false;
+		}
+
 		/// <summary>
 		/// Get the default context menu for this view
 		/// </summary>
@@ -616,22 +691,15 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Called by ORMDesignerDocData during Load
 		/// </summary>
-		/// <param name="diagram">The diagram object. Passed to the base class.</param>
 		/// <param name="document">ORMDesignerDocData</param>
-		public void InitializeView(Diagram diagram, ORMDesignerDocData document)
+		public void InitializeView(ORMDesignerDocData document)
 		{
-			// Important to set this value via the Diagram member on SingleDiagramDocView as the 
-			// side effects are vital to the diagram being hooked to the view correctly.
-			base.Diagram = diagram;
-
-			// Make sure we get a closing notification so we can clear the
-			// selected components
-			document.DocumentClosing += new EventHandler(DocumentClosing);
+			
 		}
 		private void DocumentClosing(object sender, EventArgs e)
 		{
 			(sender as DocData).DocumentClosing -= new EventHandler(DocumentClosing);
-			SetSelectedComponents(new object[]{});
+			SetSelectedComponents(null);
 		}
 		/// <summary>
 		/// Execute the delete command
@@ -1127,11 +1195,53 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			if (this.CurrentDiagram != null && this.CurrentDiagram.ActiveDiagramView != null)
 			{
+				// Get the links for which both endpoints are in our selection
+				ArrayList selectedElements = this.SelectedElements.Clone() as ArrayList;
+				for (int i = 0; i < selectedElements.Count; i++)
+				{
+					ShapeElement element = selectedElements[i] as ShapeElement;
+					if (element != null)
+					{
+						foreach (ElementLink link in element.ModelElement.GetElementLinks())
+						{
+							ModelElement element1;
+							ModelElement element2;
+							element1 = link.GetRolePlayer(0);
+							Role role1 = element1 as Role;
+							if (role1 != null)
+							{
+								element1 = role1.FactType;
+							}
+							element2 = link.GetRolePlayer(1);
+							Role role2 = element2 as Role;
+							if (role2 != null)
+							{
+								element2 = role2.FactType;
+							}
+
+							foreach (PresentationElement presentationElement1 in element1.PresentationRolePlayers)
+							{
+								if (selectedElements.Contains(presentationElement1))
+								{
+									foreach (PresentationElement presentationElement2 in element2.PresentationRolePlayers)
+									{
+										if (selectedElements.Contains(presentationElement2))
+										{
+											selectedElements.AddRange(link.PresentationRolePlayers);
+											break;
+										}
+									}
+									break;
+								}
+							}
+						}
+					}
+				}
 #if !CUSTOM_COPY_IMAGE
-				this.CurrentDiagram.CopyImageToClipboard(this.CurrentDiagram.NestedChildShapes);
+				this.CurrentDiagram.CopyImageToClipboard(selectedElements);
 #else
 #if CUSTOM_COPY_IMAGE_VIA_MAKE_TRANSPARENT
-				System.Drawing.Imaging.Metafile createdMetafile = this.CurrentDiagram.CreateMetafile(this.CurrentDiagram.NestedChildShapes);
+				System.Drawing.Imaging.Metafile createdMetafile = this.CurrentDiagram.CreateMetafile(selectedElements);
 				
 				NativeMethods.MakeBackgroundTransparent(createdMetafile);
 				NativeMethods.CopyMetafileToClipboard(this.CurrentDiagram.ActiveDiagramView.Handle, createdMetafile);
@@ -1146,7 +1256,7 @@ namespace Neumont.Tools.ORM.Shell
 				}
 								
 				RectangleD rect = default(RectangleD);
-				object[] parameters = new object[] { this.CurrentDiagram.NestedChildShapes, rect };
+				object[] parameters = new object[] { selectedElements, rect };
 
 				ArrayList shapesToDraw = getShapesToDraw.Invoke(this.CurrentDiagram, parameters) as ArrayList;
 				rect = (RectangleD)parameters[1];

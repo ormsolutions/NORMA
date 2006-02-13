@@ -7,7 +7,7 @@
 	<xsl:template match="orm:ORMModel">
 		<ormRoot:ORM2>
 			<xsl:copy-of select="."/>
-			<ormDiagram:ORMDiagram id="{@id}_diagram" IsCompleteView="false" Name="" BaseFontName="Tahoma" BaseFontSize="0.0972222238779068">
+			<ormDiagram:ORMDiagram id="{@id}_diagram" AutoPopulateShapes="true" IsCompleteView="false" Name="{@Name}" BaseFontName="Tahoma" BaseFontSize="0.0972222238779068">
 				<ormDiagram:Shapes></ormDiagram:Shapes>
 				<ormDiagram:Subject ref="{@id}"/>
 			</ormDiagram:ORMDiagram>

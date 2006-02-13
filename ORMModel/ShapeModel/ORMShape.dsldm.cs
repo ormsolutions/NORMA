@@ -373,6 +373,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape), "ReadingText", Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingShapeReadingTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape), "ValueRangeText", Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueRangeTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueConstraintShapeValueRangeTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.RoleNameShape), "RoleName", Neumont.Tools.ORM.ShapeModel.RoleNameShape.RoleNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.RoleNameShape.RoleNameShapeRoleNameFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ORMDiagram), "AutoPopulateShapes", Neumont.Tools.ORM.ShapeModel.ORMDiagram.AutoPopulateShapesMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ORMDiagram.ORMDiagramAutoPopulateShapesFieldHandler)),
 
 			};
 			return typeArray;
@@ -3565,6 +3566,128 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion
 		#endregion
 
+		#region AutoPopulateShapes's Generated  Field Code
+		#region AutoPopulateShapes's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String AutoPopulateShapesMetaAttributeGuidString = "d3f7a171-ce39-4944-be80-d55127423c83";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid AutoPopulateShapesMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.ORMDiagram.AutoPopulateShapesMetaAttributeGuidString);
+		#endregion
+
+		#region AutoPopulateShapes's Generated Property Code
+
+		private System.Boolean autoPopulateShapesPropertyStorage = false;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[Microsoft.VisualStudio.Modeling.BooleanDomainAttribute(DefaultBoolean=false)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(ORMDiagramAutoPopulateShapesFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.ORMDiagram.AutoPopulateShapesMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.ORMDiagram.AutoPopulateShapes")]
+		public  System.Boolean AutoPopulateShapes
+		{
+			get
+			{
+				return autoPopulateShapesPropertyStorage;
+			}
+		
+			set
+			{
+				oRMDiagramAutoPopulateShapesFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region ORMDiagramAutoPopulateShapesFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for ORMDiagram.AutoPopulateShapes field
+		/// </summary>
+		private static ORMDiagramAutoPopulateShapesFieldHandler	oRMDiagramAutoPopulateShapesFieldHandler	= ORMDiagramAutoPopulateShapesFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for ORMDiagram.AutoPopulateShapes
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class ORMDiagramAutoPopulateShapesFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ShapeModel.ORMDiagram,System.Boolean>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private ORMDiagramAutoPopulateShapesFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the ORMDiagram.AutoPopulateShapes field handler
+			/// </summary>
+			/// <value>ORMDiagramAutoPopulateShapesFieldHandler</value>
+			public static ORMDiagramAutoPopulateShapesFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ShapeModel.ORMDiagram.oRMDiagramAutoPopulateShapesFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ShapeModel.ORMDiagram.oRMDiagramAutoPopulateShapesFieldHandler;
+					}
+					else
+					{
+						// The static constructor in ORMDiagram will assign this value to
+						// Neumont.Tools.ORM.ShapeModel.ORMDiagram.oRMDiagramAutoPopulateShapesFieldHandler, so just instantiate one and return it
+						return new ORMDiagramAutoPopulateShapesFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the ORMDiagram.AutoPopulateShapes field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ShapeModel.ORMDiagram.AutoPopulateShapesMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the ORMDiagram</param>
+			protected sealed override System.Boolean GetValue(Neumont.Tools.ORM.ShapeModel.ORMDiagram element)
+			{
+				return element.autoPopulateShapesPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ShapeModel.ORMDiagram element, System.Boolean value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Boolean oldValue)
+			{
+				oldValue = element.autoPopulateShapesPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.autoPopulateShapesPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
 	}
 	#region ORMDiagram's Generated Constructor Code
 	public  partial class ORMDiagram

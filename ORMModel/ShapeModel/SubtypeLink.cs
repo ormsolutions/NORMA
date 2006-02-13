@@ -398,7 +398,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		private class DisplaySubtypeLinkFixupListener : DeserializationFixupListener<ModelHasFactType>
 		{
 			/// <summary>
-			/// Create a new DisplayRolePlayersFixupListener
+			/// Create a new DisplaySubtypeLinkFixupListener
 			/// </summary>
 			public DisplaySubtypeLinkFixupListener()
 				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
@@ -415,7 +415,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 				SubtypeFact subTypeFact = element.FactTypeCollection as SubtypeFact;
 				if (subTypeFact != null)
 				{
-					Diagram.FixUpDiagram(subTypeFact.Model, subTypeFact);
+					ORMModel model = subTypeFact.Model;
+					ObjectType rolePlayer = subTypeFact.Subtype;
+					FactType nestedFact = rolePlayer.NestedFactType;
+					if (nestedFact != null)
+					{
+						Diagram.FixUpDiagram(model, nestedFact);
+						Diagram.FixUpDiagram(nestedFact, rolePlayer);
+					}
+					else
+					{
+						Diagram.FixUpDiagram(model, rolePlayer);
+					}
+					rolePlayer = subTypeFact.Supertype;
+					nestedFact = rolePlayer.NestedFactType;
+					if (nestedFact != null)
+					{
+						Diagram.FixUpDiagram(model, nestedFact);
+						Diagram.FixUpDiagram(nestedFact, rolePlayer);
+					}
+					else
+					{
+						Diagram.FixUpDiagram(model, rolePlayer);
+					}
+					Diagram.FixUpDiagram(model, subTypeFact);
 				}
 			}
 		}

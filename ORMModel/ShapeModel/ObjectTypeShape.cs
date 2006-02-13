@@ -55,6 +55,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Member Variables
 		#region Customize appearance
 		/// <summary>
+		/// Show a shadow if this <see cref="ObjectTypeShape"/> represents an <see cref="ObjectType"/> that appears
+		/// in more than one location.
+		/// </summary>
+		public override bool HasShadow
+		{
+			get
+			{
+				return ORMBaseShape.ShouldHaveShadow(this);
+			}
+		}
+		/// <summary>
 		/// Switch between the standard solid pen and
 		/// a dashed pen depending on the objectification settings
 		/// </summary>

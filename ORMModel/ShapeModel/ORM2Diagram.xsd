@@ -27,6 +27,11 @@
 		<xs:attribute name="Name" type="xs:string" use="required" />
 		<xs:attribute name="BaseFontName" type="xs:string" use="required" />
 		<xs:attribute name="BaseFontSize" type="xs:decimal" use="required" />
+		<xs:attribute name="AutoPopulateShapes" type="xs:boolean" default="false">
+			<derived:annotation>
+				<derived:documentation>If this is set to true, then all shapes in the model will be loaded onto this diagram when the diagram is first loaded. AutoPopulateShapes is never written, but is useful for importing models with no diagram information.</derived:documentation>
+			</derived:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="Shape" abstract="true">
 		<xs:attribute name="id" type="xs:ID" use="required" />

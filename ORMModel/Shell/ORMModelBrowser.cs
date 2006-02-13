@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using Neumont.Tools.ORM.ObjectModel;
+using Neumont.Tools.ORM.ObjectModel.Editors;
 
 namespace Neumont.Tools.ORM.Shell
 {
@@ -29,6 +30,22 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private sealed class ORMModelExplorerTreeContainer : ModelExplorerTreeContainer
 		{
+			protected override void OnCreateControl()
+			{
+				base.OnCreateControl();
+				TreeView browser = ObjectModelBrowser;
+				browser.ItemDrag += new ItemDragEventHandler(browser_ItemDrag);
+			}
+
+			private void browser_ItemDrag(object sender, ItemDragEventArgs e)
+			{
+				object resolvedObject = EditorUtility.ResolveContextInstance(e.Item, false);
+				ModelElement element = resolvedObject as ObjectType;
+				if (element != null || (element  = resolvedObject as FactType)!= null)
+				{
+					ObjectModelBrowser.DoDragDrop(element, DragDropEffects.All);
+				}
+			}
 			#region Constructor
 			/// <summary>
 			/// Constructor

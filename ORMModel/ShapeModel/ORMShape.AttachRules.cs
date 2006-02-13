@@ -37,6 +37,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(ObjectTypedAdded),
 				typeof(ObjectTypePlaysRoleRemoved),
 				typeof(ObjectTypeShapeChangeRule),
+				typeof(ParentShapeRemoved),
 				typeof(PresentationLinkRemoved),
 				typeof(ReadingOrderAdded),
 				typeof(RoleAdded),

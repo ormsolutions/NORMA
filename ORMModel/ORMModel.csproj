@@ -321,6 +321,7 @@
     <None Include="Resources\Toolbox.RingConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\ORM.ico" />
     <None Include="Resources\ORMDesignerToolbarImages.bmp" />
+    <None Include="Resources\DiagramTabImage.png" />
     <Content Include="Resources\ResourceStringsGenerator.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>

@@ -11,16 +11,6 @@ Information Contained Herein is Proprietary and Confidential.
 	<removeclosure name="ORMShapeModelRemoveClosure" classmodifier="sealed" doccomment="Remove closure visitor filter" />
 	<metaclasses />
 	<shapes>
-		<!--<shape namespace="Neumont.Tools.ORM.ShapeModel" name="RoleNameShape" identity="2cb7393c-4502-4c59-979d-94d6c89b4080" accessmodifier="public" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.LineLabelShape" category="" description="" doccomment="" localize="false">
-			<clrattribute name="Microsoft.VisualStudio.Modeling.ShapeForAttribute" parametertext="typeof(Neumont.Tools.ORM.ObjectModel.Role)" />
-			<metaattributes>
-				<metaattribute name="RoleName" identity="5713319e-4003-4766-9ad3-143a048cb611" type="System.String" xpathexpression="/RoleNameShape/SubjectHasPresentation.Subject/Subject" reversexpathexpression="/NamedElement/SubjectHasPresentation.Presentation/Presentation" realattributename="Name" proxyattributename="Name" category="" description="" doccomment="" localize="false" tag="">
-					<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
-					<stringdomain default="" max="2147483647" />
-				</metaattribute>
-			</metaattributes>
-		</shape>-->
-
 		<shape namespace="Neumont.Tools.ORM.ShapeModel" name="ORMBaseShape" identity="55131f4b-0f9a-408d-bed0-79451ba7f4f0" accessmodifier="public" classmodifier="abstract" baseclass="Microsoft.VisualStudio.Modeling.Diagrams.NodeShape" category="" description="" doccomment="" localize="false">
 			<metaattributes />
 			<derivedshapes>
@@ -166,7 +156,12 @@ Information Contained Herein is Proprietary and Confidential.
 			<toolboxitem toolboxitemid="Toolbox.RingConstraint.Item.Id" position="58" bitmapresourceid="Toolbox.RingConstraint.Bitmap.Id" captionresourceid="Toolbox.RingConstraint.Caption.Id" tooltipresourceid="Toolbox.RingConstraint.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
 			<toolboxitem toolboxitemid="Toolbox.ExternalConstraintConnector.Item.Id" position="60" bitmapresourceid="Toolbox.ExternalConstraintConnector.Bitmap.Id" captionresourceid="Toolbox.ExternalConstraintConnector.Caption.Id" tooltipresourceid="Toolbox.ExternalConstraintConnector.Tooltip.Id" toolboxtab="Toolbox.DefaultTabName" />
 			<clrattribute name="System.ComponentModel.ToolboxItemFilterAttribute" parametertext="ORMDiagram.ORMDiagramDefaultFilterString, System.ComponentModel.ToolboxItemFilterType.Require" />
-			<metaattributes />
+			<metaattributes>
+				<metaattribute name="AutoPopulateShapes" identity="d3f7a171-ce39-4944-be80-d55127423c83" type="System.Boolean" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="false" tag="">
+					<booleandomain default="false" />
+					<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+				</metaattribute>
+			</metaattributes>
 			<deriveddiagrams />
 		</diagram>
 	</diagrams>

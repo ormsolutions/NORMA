@@ -1769,6 +1769,16 @@
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ExtensionLoadFailure.Message");
 			}
 		}
+		/// <summary>
+		/// The text shown for a new page on the tabbed diagram.
+		/// </summary>
+		public static string DiagramDefaultNewPageName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.DefaultNewPageName");
+			}
+		}
 	}
 	#endregion // ResourceStrings class
 }

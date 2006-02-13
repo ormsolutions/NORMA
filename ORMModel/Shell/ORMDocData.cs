@@ -87,7 +87,6 @@ namespace Neumont.Tools.ORM.Shell
 				return;
 
 			Store store = this.Store;
-			Diagram diagram = null;
 			bool dontSave = false;
 			if (fileName.EndsWith(@"\default.orm", true, CultureInfo.CurrentCulture))
 			{
@@ -207,56 +206,27 @@ namespace Neumont.Tools.ORM.Shell
 								fixupManager.AddListener(listener);
 							}
 							(new ORMSerializer(store)).Load(stream, fixupManager);
-							IList diagrams = store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid);
-							if (diagrams.Count != 0)
-							{
-								diagram = (Diagram)diagrams[0];
-							}
 						}
 					}
 				}
 			}
 
-			// Make sure we have a diagram and a model associated with it
-			if (diagram == null)
-			{
-				diagram = ORMDiagram.CreateORMDiagram(store);
-			}
-
-			if (diagram.ModelElement == null)
-			{
-				// Make sure the diagram element is correctly attached to the model, and
-				// create a model if we don't have one yet.
-				ModelElement rootORMModel = null;
-				IList elements = store.ElementDirectory.GetElements(ORMModel.MetaClassGuid);
-				if (elements.Count == 0)
-				{
-					rootORMModel = ORMModel.CreateORMModel(store);
-				}
-				else
-				{
-					Debug.Assert(elements.Count == 1);
-					rootORMModel = (ModelElement)elements[0];
-				}
-				diagram.Associate(rootORMModel);
-			}
-
-			// Make sure all views are connected to the (single) diagram
-			// A more realistic scenario would be to have views for each diagram or a user's persisted set of views
-			foreach (ORMDesignerDocView docView in this.DocViews)
-			{
-				docView.InitializeView(diagram, this);
-			}
-
 			this.SetFileName(fileName);
-
-			// Make sure all of the shapes are set up correctly
-			diagram.PerformShapeAnchoringRule();
 
 			if (dontSave)
 			{
 				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
 				docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
+			}
+
+
+			foreach (ORMDiagram diagram in this.Store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid, true))
+			{
+				if (diagram.AutoPopulateShapes)
+				{
+					diagram.AutoPopulateShapes = false;
+					// TODO: We could perform an auto-layout here as well...
+				}
 			}
 		}
 

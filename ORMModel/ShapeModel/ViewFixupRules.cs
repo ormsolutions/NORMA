@@ -47,7 +47,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 
 					ObjectType objectType = objectTypeShape.ModelElement as ObjectType;
 					InternalUniquenessConstraint preferredConstraint;
-					if (null != (preferredConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint))
+					if (null != (preferredConstraint = objectType.PreferredIdentifier as InternalUniquenessConstraint) &&
+						preferredConstraint.RoleCollection[0].RolePlayer.IsValueType)
 					{
 
 						bool expandingRefMode = (bool)e.NewValue;
@@ -443,17 +444,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			ObjectType rolePlayer = link.RolePlayer;
-			FactType nestedType = rolePlayer.NestedFactType;
-			Role playedRole = link.PlayedRoleCollection;
-			FactType associatedFact = playedRole.FactType;
+			FactType associatedFact = link.PlayedRoleCollection.FactType;
 			if (associatedFact != null)
 			{
+				ObjectType rolePlayer = link.RolePlayer;
 				ORMModel model = rolePlayer.Model;
 				if (model != null)
 				{
-					Debug.Assert(model == associatedFact.Model);
-					Diagram.FixUpDiagram(model, (nestedType == null) ? rolePlayer as ModelElement : nestedType);
+					FactType nestedFact = rolePlayer.NestedFactType;
+					if (nestedFact != null)
+					{
+						Diagram.FixUpDiagram(model, nestedFact);
+						Diagram.FixUpDiagram(nestedFact, rolePlayer);
+					}
+					else
+					{
+						Diagram.FixUpDiagram(model, rolePlayer);
+					}
 					Diagram.FixUpDiagram(model, associatedFact);
 					Diagram.FixUpDiagram(model, link);
 				}
@@ -539,8 +546,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			RoleValueConstraint roleValueRangeDefn = link.ValueConstraint;
-			Role role = roleValueRangeDefn.Role;
+			RoleValueConstraint roleValueConstraint = link.ValueConstraint;
+			Role role = roleValueConstraint.Role;
 			FactType factType = role.FactType;
 			ObjectType objectType = null;
 			foreach(Role r in factType.RoleCollection)
@@ -557,7 +564,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if(model != null)
 				{
 					Diagram.FixUpDiagram(model, objectType);
-					Diagram.FixUpDiagram(objectType, roleValueRangeDefn);
+					Diagram.FixUpDiagram(objectType, roleValueConstraint);
 					Diagram.FixUpDiagram(model, link);
 				}
 			}
@@ -630,15 +637,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			ValueTypeValueConstraint valueTypeValueRangeDefn = link.ValueConstraint;
-			ObjectType objectType = valueTypeValueRangeDefn.ValueType;
+			ValueTypeValueConstraint valueTypeValueConstraint = link.ValueConstraint;
+			ObjectType objectType = valueTypeValueConstraint.ValueType;
 			if (objectType != null)
 			{
 				ORMModel model = objectType.Model;
 				if (model != null)
 				{
 					Diagram.FixUpDiagram(model, objectType);
-					Diagram.FixUpDiagram(objectType, valueTypeValueRangeDefn);
+					Diagram.FixUpDiagram(objectType, valueTypeValueConstraint);
 					Diagram.FixUpDiagram(model, link);
 				}
 			}
@@ -652,8 +659,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
-			RoleValueConstraint roleValueRangeDefn = link.ValueConstraint;
-			Role role = roleValueRangeDefn.Role;
+			RoleValueConstraint roleValueConstraint = link.ValueConstraint;
+			Role role = roleValueConstraint.Role;
 			FactType factType = role.FactType;
 			ObjectType objectType = null;
 			foreach (Role r in factType.RoleCollection)
@@ -669,7 +676,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (model != null)
 				{
 					Diagram.FixUpDiagram(model, objectType);
-					Diagram.FixUpDiagram(objectType, roleValueRangeDefn);
+					Diagram.FixUpDiagram(objectType, roleValueConstraint);
 					Diagram.FixUpDiagram(model, link);
 				}
 			}
@@ -810,6 +817,29 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // PresentationLinkRemoved class
+		#region ParentShapeRemoved class
+		[RuleOn(typeof(ParentShapeHasRelativeChildShapes))]
+		[RuleOn(typeof(ParentShapeContainsNestedChildShapes))]
+		private class ParentShapeRemoved : RemoveRule
+		{
+			/// <summary>
+			/// Deletion of a parent shape should delete the child shape.
+			/// </summary>
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ParentShapeHasRelativeChildShapes linkRelative = e.ModelElement as ParentShapeHasRelativeChildShapes;
+				ParentShapeContainsNestedChildShapes linkNested;
+				if (linkRelative != null)
+				{
+					linkRelative.RelativeChildShapes.Remove();
+				}
+				else if ((linkNested = e.ModelElement as ParentShapeContainsNestedChildShapes) != null)
+				{
+					linkNested.NestedChildShapes.Remove();
+				}
+			}
+		}
+		#endregion // ParentShapeRemoved class
 		#region EliminateOrphanedShapesFixupListener class
 		/// <summary>
 		/// A fixup class to remove orphaned pels

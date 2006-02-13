@@ -52,7 +52,7 @@ namespace Neumont.Tools.ORM.FactEditor
 			{
 
 				ORMDesignerDocView docView = (ORMDesignerDocView)myCurrentDocument.DocViews[0];
-				ORMDiagram diagram = docView.Diagram as ORMDiagram;
+				ORMDiagram diagram = docView.CurrentDiagram as ORMDiagram;
 				Dictionary<ModelElement, bool> modelElements = new Dictionary<ModelElement, bool>();
 				bool newObjectsCreated = false;
 
@@ -149,7 +149,7 @@ namespace Neumont.Tools.ORM.FactEditor
 							bool currentObjectIsValueType = currentObject.IsValueType;
 
 							// get a presentation element to work with for determine if the ref mode is expanded or collapsed
-							ShapeModel.ObjectTypeShape objShape = (myCurrentDocView.Diagram as ORMDiagram).FindShapeForElement<ShapeModel.ObjectTypeShape>(currentObject);
+							ShapeModel.ObjectTypeShape objShape = (myCurrentDocView.CurrentDiagram as ORMDiagram).FindShapeForElement<ShapeModel.ObjectTypeShape>(currentObject);
 
 							// convert this object to a entity type if it was a value type and if we are now adding a ref mode
 							if (refModeLength > 0 && currentObjectIsValueType)
@@ -303,7 +303,7 @@ namespace Neumont.Tools.ORM.FactEditor
 							}
 						}
 
-						docView.Diagram.AutoLayoutChildShapes(shapeElements);
+						docView.CurrentDiagram.AutoLayoutChildShapes(shapeElements);
 						t.Commit();
 					}
 				}

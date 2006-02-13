@@ -204,6 +204,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
 			}
+			if (attributeInfo.Id == ORMDiagram.AutoPopulateShapesMetaAttributeGuid)
+			{
+				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
 			return ORMCustomSerializedAttributeInfo.Default;
 		}
 		ORMCustomSerializedAttributeInfo IORMCustomSerializedElement.GetCustomSerializedAttributeInfo(MetaAttributeInfo attributeInfo, MetaRoleInfo rolePlayedInfo)
