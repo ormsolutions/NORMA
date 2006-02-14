@@ -11,6 +11,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	/// An extension of a TextField shape. The minimum size is recalculated
 	/// according to the current shape contents.
 	/// </summary>
+	[CLSCompliant(true)]
 	public class AutoSizeTextField : TextField
 	{
 		/// <summary>
@@ -60,25 +61,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 			return textSize;
-		}
-		/// <summary>
-		/// Modify the display text for independent object types.
-		/// </summary>
-		/// <param name="parentShape">The ShapeElement to get the display text for.</param>
-		/// <returns>The text to display.</returns>
-		public override string GetDisplayText(ShapeElement parentShape)
-		{
-			string text = base.GetDisplayText(parentShape);
-			ObjectModel.ObjectType obj;
-			if (!(this is ReferenceModeAutoSizeTextField) &&
-				null != (obj = parentShape.ModelElement as ObjectModel.ObjectType))
-			{
-				if (obj.IsIndependent)
-				{
-					text = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeIsIndependentReading, text);
-				}
-			}
-			return text;
 		}
 	}
 }

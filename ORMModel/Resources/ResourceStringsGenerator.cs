@@ -1439,11 +1439,41 @@
 		/// <summary>
 		/// The string used to display that an object is independent.
 		/// </summary>
-		public static string ObjectTypeShapeIsIndependentReading
+		public static string ObjectTypeShapeIndependentFormatString
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.IsIndependentReading");
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.IndependentFormatString");
+			}
+		}
+		/// <summary>
+		/// The string used to display a reference mode.
+		/// </summary>
+		public static string ObjectTypeShapeReferenceModeFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.ReferenceModeFormatString");
+			}
+		}
+		/// <summary>
+		/// The string used to display an objectified type name.
+		/// </summary>
+		public static string ObjectifiedFactTypeNameShapeStandardFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.StandardFormatString");
+			}
+		}
+		/// <summary>
+		/// The string used to display an objectified type name for an independent object.
+		/// </summary>
+		public static string ObjectifiedFactTypeNameShapeIndependentFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.IndependentFormatString");
 			}
 		}
 		/// <summary>

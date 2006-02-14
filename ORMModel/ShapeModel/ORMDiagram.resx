@@ -339,9 +339,21 @@
     <value xml:space="preserve">Move Role Sequence Up</value>
     <comment xml:space="preserve">The transaction name used for moving a role sequence up in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
-  <data name="ObjectTypeShape.IsIndependentReading">
+  <data name="ObjectTypeShape.IndependentFormatString">
     <value xml:space="preserve">{0} !</value>
     <comment xml:space="preserve">The string used to display that an object is independent.</comment>
+  </data>
+  <data name="ObjectTypeShape.ReferenceModeFormatString">
+    <value xml:space="preserve">({0})</value>
+    <comment xml:space="preserve">The string used to display a reference mode.</comment>
+  </data>
+  <data name="ObjectifiedFactTypeNameShape.StandardFormatString">
+    <value xml:space="preserve">"{0}"</value>
+    <comment xml:space="preserve">The string used to display an objectified type name.</comment>
+  </data>
+  <data name="ObjectifiedFactTypeNameShape.IndependentFormatString">
+    <value xml:space="preserve">"{0} !"</value>
+    <comment xml:space="preserve">The string used to display an objectified type name for an independent object.</comment>
   </data>
   <data name="OptionsPage.Category.Appearance">
     <value xml:space="preserve">Appearance</value>

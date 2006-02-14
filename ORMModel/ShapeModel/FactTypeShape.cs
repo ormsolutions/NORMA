@@ -4153,6 +4153,43 @@ namespace Neumont.Tools.ORM.ShapeModel
 				Location = new PointD(0, -1.5 * size.Height);
 			}
 		}
+		#region ObjectNameTextField class
+		/// <summary>
+		/// Create a text field that will correctly display objectified type names
+		/// </summary>
+		/// <returns></returns>
+		protected override AutoSizeTextField CreateAutoSizeTextField()
+		{
+			return new ObjectNameTextField();
+		}
+		/// <summary>
+		/// Class to show a decorated object name
+		/// </summary>
+		protected class ObjectNameTextField : AutoSizeTextField
+		{
+			/// <summary>
+			/// Modify the display text for independent object types.
+			/// </summary>
+			/// <param name="parentShape">The ShapeElement to get the display text for.</param>
+			/// <returns>The text to display.</returns>
+			public override string GetDisplayText(ShapeElement parentShape)
+			{
+				string baseText = base.GetDisplayText(parentShape);
+				ObjectType objectType;
+				string formatString;
+				if (null != (objectType = parentShape.ModelElement as ObjectType) &&
+					objectType.IsIndependent)
+				{
+					formatString = ResourceStrings.ObjectifiedFactTypeNameShapeIndependentFormatString;
+				}
+				else
+				{
+					formatString = ResourceStrings.ObjectifiedFactTypeNameShapeStandardFormatString;
+				}
+				return string.Format(CultureInfo.InvariantCulture, formatString, baseText);
+			}
+		}
+		#endregion // ObjectNameTextField class
 	}
 	#endregion // ObjectifiedFactTypeNameShape class
 }

@@ -15,7 +15,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 {
 	public partial class ObjectTypeShape : IModelErrorActivation
 	{
-
 		#region IModelErrorActivation Implementation
 		/// <summary>
 		/// Implements IModelErrorActivation.ActivateModelError for DataTypeNotSpecifiedError
@@ -189,7 +188,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			base.InitializeShapeFields(shapeFields);
 
 			// Initialize field
-			AutoSizeTextField field = new AutoSizeTextField();
+			AutoSizeTextField field = CreateObjectNameTextField();
 			field.DrawBorder = false;
 			field.FillBackground = false;
 			field.DefaultTextBrushId = DiagramBrushes.ShapeTitleText;
@@ -204,7 +203,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			field.AssociateValueWith(Store, ObjectTypeShape.ShapeNameMetaAttributeGuid, NamedElement.NameMetaAttributeGuid);
 
 			// Initialize reference mode field
-			AutoSizeTextField referenceModeField = new ReferenceModeAutoSizeTextField();
+			AutoSizeTextField referenceModeField = CreateReferenceModeTextField();
 			referenceModeField.DrawBorder = false;
 			referenceModeField.FillBackground = false;
 			referenceModeField.DefaultTextBrushId = DiagramBrushes.ShapeTitleText;
@@ -306,6 +305,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				//if primaryidentifyer for a Entity type is 
 				//removed and ref mode is not expanded...AutoResize() the entity type
 				Guid attributeGuid = e.MetaAttribute.Id;
+				bool resizeShapes = false;
 				if (attributeGuid == NamedElement.NameMetaAttributeGuid)
 				{
 					// Figure out if we need to resize related object shapes. This happens
@@ -346,9 +346,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 							}
 						}
 					}
-					foreach (object obj in e.ModelElement.AssociatedPresentationElements)
+					resizeShapes = true;
+				}
+				else if (attributeGuid == ObjectType.IsIndependentMetaAttributeGuid)
+				{
+					resizeShapes = true;
+				}
+				if (resizeShapes)
+				{
+					foreach (PresentationElement pel in e.ModelElement.PresentationRolePlayers)
 					{
-						ORMBaseShape shape = obj as ORMBaseShape;
+						ORMBaseShape shape = pel as ORMBaseShape;
 						if (shape != null)
 						{
 							shape.AutoResize();
@@ -470,98 +478,135 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // Store Event Handlers
-	}
-	/// <summary>
-	/// Temporary class to fer refernce mode to show up.
-	/// </summary>
-	public class ReferenceModeAutoSizeTextField : AutoSizeTextField
-	{
-		//TODO:Remove
+		#region ReferenceModeTextField class
 		/// <summary>
-		/// Default constructor
+		/// Create the text field used for displaying the reference mode
 		/// </summary>
-		public ReferenceModeAutoSizeTextField()
+		/// <returns>ReferenceModeTextField</returns>
+		protected virtual ReferenceModeTextField CreateReferenceModeTextField()
 		{
-			DefaultFocusable = true;
-			DefaultSelectable = true;
-			DefaultVisibility = true;			
+			return new ReferenceModeTextField();
 		}
-
 		/// <summary>
-		/// Get the minimum width of the shape field for the current text.
+		/// Class to show reference mode
 		/// </summary>
-		/// <param name="parentShape">ShapeElement</param>
-		/// <returns>Width of current text</returns>
-		public override double GetMinimumWidth(ShapeElement parentShape)
+		protected class ReferenceModeTextField : AutoSizeTextField
 		{
-			ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
-			ObjectType objectType = parentShape.ModelElement as ObjectType;
-			if (objectType != null)
+			/// <summary>
+			/// Default constructor
+			/// </summary>
+			public ReferenceModeTextField()
 			{
-				if (!objectType.IsValueType && !objectTypeShape.ExpandRefMode)
-				{
-
-					return base.GetMinimumWidth(parentShape);
-				}
+				DefaultFocusable = true;
+				DefaultSelectable = true;
 			}
-			return 0;
+
+			/// <summary>
+			/// Get the minimum width of the shape field for the current text.
+			/// </summary>
+			/// <param name="parentShape">ShapeElement</param>
+			/// <returns>Width of current text</returns>
+			public override double GetMinimumWidth(ShapeElement parentShape)
+			{
+				ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
+				ObjectType objectType = parentShape.ModelElement as ObjectType;
+				if (objectType != null)
+				{
+					if (!objectType.IsValueType && !objectTypeShape.ExpandRefMode)
+					{
+
+						return base.GetMinimumWidth(parentShape);
+					}
+				}
+				return 0;
+			}
+			/// <summary>
+			/// Get the minimum height of the shape field for the current text.
+			/// </summary>
+			/// <param name="parentShape">ShapeElement</param>
+			/// <returns>Width of current text</returns>
+			public override double GetMinimumHeight(ShapeElement parentShape)
+			{
+				ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
+				ObjectType objectType = parentShape.ModelElement as ObjectType;
+				if (objectType != null)
+				{
+					if (!objectType.IsValueType && !objectTypeShape.ExpandRefMode)
+					{
+
+						return base.GetMinimumHeight(parentShape);
+					}
+				}
+				return 0;
+			}
+
+			/// <summary>
+			/// Returns whether or not the text field is visible
+			/// </summary>
+			/// <param name="parentShape"></param>
+			/// <returns></returns>
+			public override bool GetVisible(ShapeElement parentShape)
+			{
+				ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
+				ObjectType objectType = parentShape.ModelElement as ObjectType;
+				if (objectType != null && !objectTypeShape.ExpandRefMode)
+				{
+					if (!objectType.IsValueType)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+
+			/// <summary>
+			/// Overrides the display text to add parenthesis
+			/// </summary>
+			public override string GetDisplayText(ShapeElement parentShape)
+			{
+				ObjectType objectType = parentShape.ModelElement as ObjectType;
+				if (objectType != null)
+				{
+					if (objectType.HasReferenceMode)
+					{
+						return string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeReferenceModeFormatString, base.GetDisplayText(parentShape));
+					}
+				}
+				return base.GetDisplayText(parentShape);
+			}
+		}
+		#endregion // ReferenceModeTextField class
+		#region ObjectNameTextField class
+		/// <summary>
+		/// Create the text field used for displaying the object name
+		/// </summary>
+		/// <returns>ObjectNameTextField</returns>
+		protected virtual ObjectNameTextField CreateObjectNameTextField()
+		{
+			return new ObjectNameTextField();
 		}
 		/// <summary>
-		/// Get the minimum height of the shape field for the current text.
+		/// Class to show a decorated object name
 		/// </summary>
-		/// <param name="parentShape">ShapeElement</param>
-		/// <returns>Width of current text</returns>
-		public override double GetMinimumHeight(ShapeElement parentShape)
+		protected class ObjectNameTextField : AutoSizeTextField
 		{
-			ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
-			ObjectType objectType = parentShape.ModelElement as ObjectType;
-			if (objectType != null)
+			/// <summary>
+			/// Modify the display text for independent object types.
+			/// </summary>
+			/// <param name="parentShape">The ShapeElement to get the display text for.</param>
+			/// <returns>The text to display.</returns>
+			public override string GetDisplayText(ShapeElement parentShape)
 			{
-				if (!objectType.IsValueType && !objectTypeShape.ExpandRefMode)
+				string retVal = base.GetDisplayText(parentShape);
+				ObjectType objectType;
+				if (null != (objectType = parentShape.ModelElement as ObjectType) &&
+					objectType.IsIndependent)
 				{
-
-					return base.GetMinimumHeight(parentShape);
+					retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeIndependentFormatString, retVal);
 				}
+				return retVal;
 			}
-			return 0;
 		}
-
-		/// <summary>
-		/// Returns whether or not the text field is visible
-		/// </summary>
-		/// <param name="parentShape"></param>
-		/// <returns></returns>
-		public override bool GetVisible(ShapeElement parentShape)
-		{
-			ObjectTypeShape objectTypeShape = parentShape as ObjectTypeShape;
-			ObjectType objectType = parentShape.ModelElement as ObjectType;
-			if (objectType != null && !objectTypeShape.ExpandRefMode)
-			{
-				if (!objectType.IsValueType)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// Overrides the display text to add parenthesis
-		/// </summary>
-		/// <param name="parentShape"></param>
-		/// <returns></returns>
-		public override string GetDisplayText(ShapeElement parentShape)
-		{
-			
-			ObjectType objectType = parentShape.ModelElement as ObjectType;
-			if (objectType != null)
-			{
-				if (objectType.HasReferenceMode)
-				{
-					return string.Format(CultureInfo.InvariantCulture, "({0})", base.GetDisplayText(parentShape));
-				}
-			}
-			return base.GetDisplayText(parentShape);
-		}
+		#endregion // ObjectNameTextField class
 	}
 }
