@@ -387,7 +387,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.Inline)]
+		/// <summary>
+		/// Ensure that the ExpandRefMode property is set. Called when a
+		/// reference mode pattern is added to the model manually on
+		/// shapes that are already expanded.
+		/// </summary>
+		/// <param name="constraint">The constraint providing a preferred identifier</param>
+		/// <param name="preferredIdentifierFor">The ObjectType from the core model</param>
+		private static void EnsureRefModeExpanded(InternalUniquenessConstraint constraint, ObjectType preferredIdentifierFor)
+		{
+			Debug.Assert(constraint != null); // Check before call
+			Debug.Assert(preferredIdentifierFor != null); // Check before call
+			//Get the object that represents the item with the preferred identifier. 
+			foreach (PresentationElement pel in preferredIdentifierFor.PresentationRolePlayers)
+			{
+				ObjectTypeShape objectShape = pel as ObjectTypeShape;
+				if (objectShape != null)
+				{
+					//If there is a fact shape and it is visible then we need to 
+					//set ExpandRefMode to true, otherwise set it to false.
+					FactTypeShape factShape = (objectShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(constraint.FactType);
+					objectShape.ExpandRefMode = factShape != null && factShape.IsVisible;
+				}
+			}
+		}
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private class PreferredIdentifierAddedRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -395,24 +419,49 @@ namespace Neumont.Tools.ORM.ShapeModel
 				EntityTypeHasPreferredIdentifier link;
 				InternalUniquenessConstraint constraint;
 				if (null != (link = e.ModelElement as EntityTypeHasPreferredIdentifier) &&
-					null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint))
+					null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint) &&
+					constraint.RoleCollection[0].RolePlayer.IsValueType)
 				{
-					//Get the object that represents the item with the preferred identifier. 
-					foreach (PresentationElement pel in link.PreferredIdentifierFor.PresentationRolePlayers)
-					{
-						ObjectTypeShape objectShape = pel as ObjectTypeShape;
-						if (objectShape != null)
-						{
-							//If there is a fact shape and it is visible then we need to 
-							//set ExpandRefMode to true, otherwise set it to false.
-							FactTypeShape factShape = (objectShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(constraint.FactType);
-							objectShape.ExpandRefMode = factShape != null && factShape.IsVisible;
-						}
-					}
+					EnsureRefModeExpanded(constraint, link.PreferredIdentifierFor);
 				}
 			} //method
 		} //class
-
+		/// <summary>
+		/// An object type can be a preferred identifier. Changing it to a value
+		/// type makes it a refmode. Make sure that the ExpandRefMode property is in sync.
+		/// </summary>
+		[RuleOn(typeof(ValueTypeHasDataType))]
+		private class DataTypeAddedRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ModelElement element = e.ModelElement;
+				EntityTypeHasPreferredIdentifier link;
+				if (null == (link = element as EntityTypeHasPreferredIdentifier))
+				{
+					ValueTypeHasDataType dataTypeLink = element as ValueTypeHasDataType;
+					RoleMoveableCollection playedRoles = dataTypeLink.ValueTypeCollection.PlayedRoleCollection;
+					int playedRolesCount = playedRoles.Count;
+					for (int i = 0; i < playedRolesCount; ++i)
+					{
+						ConstraintRoleSequenceMoveableCollection sequences = playedRoles[i].ConstraintRoleSequenceCollection;
+						int constraintsCount = sequences.Count;
+						for (int j = 0; j < constraintsCount; ++j)
+						{
+							InternalUniquenessConstraint iuc = sequences[j] as InternalUniquenessConstraint;
+							if (iuc != null)
+							{
+								ObjectType preferredFor = (iuc as IConstraint).PreferredIdentifierFor;
+								if (preferredFor != null)
+								{
+									EnsureRefModeExpanded(iuc, preferredFor);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		#endregion // Shape display update rules
 		#region Store Event Handlers
 		/// <summary>
