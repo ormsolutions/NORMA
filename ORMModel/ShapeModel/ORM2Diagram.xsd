@@ -71,7 +71,7 @@
 					</xs:element>
 					<xs:element name="Subject" type="SubjectRef"/>
 				</xs:sequence>
-				<xs:attribute name="DisplayRoleName" default="UserDefault">
+				<xs:attribute name="DisplayRoleNames" default="UserDefault">
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
 							<xs:enumeration value="UserDefault"/>

@@ -2519,7 +2519,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (roleName.Location == new PointD(-fts.Location.X, -fts.Location.Y))
 				{
 					double x = -0.2;
-					double y = -0.15;
+					double y = -0.2;
 					FactType ft = fts.ModelElement as FactType;
 					// Cascades RoleNameShapes for facts that contain more than one role
 					for (int i = 0; i < ft.RoleCollection.Count; i++)

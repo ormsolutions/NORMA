@@ -115,6 +115,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 						else
 						{
 							rns.Hide();
+							rns.Size = SizeD.Empty;
 						}
 					}
 					break;
