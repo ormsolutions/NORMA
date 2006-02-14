@@ -146,6 +146,7 @@
     </Compile>
     <Compile Include="ObjectModel\ORMElements.cs" />
     <Compile Include="ObjectModel\ORMElementUtilities.cs" />
+    <Compile Include="ObjectModel\ORMMetaModel.cs" />
     <Compile Include="ObjectModel\ReadingOrder.cs" />
     <Compile Include="ObjectModel\ReferenceMode.cs" />
     <Compile Include="ObjectModel\ORMCore.SerializationExtensions.cs">

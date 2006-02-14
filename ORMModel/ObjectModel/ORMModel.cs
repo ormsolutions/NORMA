@@ -1633,27 +1633,4 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // Relationship-specific derivations of DuplicateNameError
 	#endregion // NamedElementDictionary and DuplicateNameError integration
-	#region ORMMetaModel.ReflectRules property
-	public partial class ORMMetaModel
-	{
-		private static bool myReflectRulesSuspended;
-		/// <summary>
-		/// Static property to disable rule reflection for fast
-		/// model load. This needs to be on a meta model, not the
-		/// package, so that the models also load from the command line.
-		/// </summary>
-		public static bool ReflectRules
-		{
-			get
-			{
-				return !myReflectRulesSuspended;
-			}
-			set
-			{
-				Debug.Assert(value || !myReflectRulesSuspended, "ReflectRules already turned off");
-				myReflectRulesSuspended = !value;
-			}
-		}
-	}
-	#endregion // ORMMetaModel.ReflectRules property
 }

@@ -175,10 +175,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // InternalConstraint Specific
 		#region Role owner validation rules
-
-
-
-
 		/// <summary>
 		/// If a role is added to an internal constraint then it must
 		/// have the same owning facttype as the constraint.
@@ -289,7 +285,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Add Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class EnforceRoleSequenceValidityForAdd : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -298,8 +294,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				SingleColumnExternalConstraint constraint = link.ConstraintRoleSequenceCollection as SingleColumnExternalConstraint;
 				if (constraint != null)
 				{
-					constraint.VerifyCompatibleRolePlayerTypeForRule(null);
-					constraint.VerifyRoleSequenceCountForRule(null);
+					ORMMetaModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
+					ORMMetaModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
 				}
 			}
 		}
@@ -307,8 +303,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Remove Rule for arity and compatibility checking when Single Column ExternalConstraints roles are added
 		/// </summary>
-
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class EnforceRoleSequenceValidityForRemove : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -317,14 +312,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 				SingleColumnExternalConstraint constraint = link.ConstraintRoleSequenceCollection as SingleColumnExternalConstraint;
 				if (constraint != null && !constraint.IsRemoved)
 				{
-					constraint.VerifyCompatibleRolePlayerTypeForRule(null);
-					constraint.VerifyRoleSequenceCountForRule(null);
+					ORMMetaModel.DelayValidateElement(constraint, DelayValidateRoleSequenceCountErrors);
+					ORMMetaModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
 				}
 			}
 
 		}
-
-		
 		/// <summary>
 		/// If a role is added after the role sequence is already attached,
 		/// then create the corresponding ExternalFactConstraint and ExternalRoleConstraint
@@ -510,6 +503,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region Error synchronization rules
 		#region VerifyRoleSequenceCountForRule
 		/// <summary>
+		/// Validator callback for CompatibleRolePlayerTypeError
+		/// </summary>
+		private static void DelayValidateRoleSequenceCountErrors(ModelElement element)
+		{
+			(element as SingleColumnExternalConstraint).VerifyRoleSequenceCountForRule(null);
+		}
+		/// <summary>
 		/// Add, remove, and otherwise validate the current set of
 		/// errors for this constraint.
 		/// </summary>
@@ -577,7 +577,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion // VerifyRoleSequenceCountForRule
-
+		/// <summary>
+		/// Validator callback for CompatibleRolePlayerTypeError
+		/// </summary>
+		private static void DelayValidateCompatibleRolePlayerTypeError(ModelElement element)
+		{
+			(element as SingleColumnExternalConstraint).VerifyCompatibleRolePlayerTypeForRule(null);
+		}
 		/// <summary>
 		/// Verify CompatibleRolePlayertypeForRule Used to verify compatibility for single column constraints.
 		/// </summary>
@@ -587,6 +593,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private void VerifyCompatibleRolePlayerTypeForRule(INotifyElementAdded notifyAdded)
 		{
 			CompatibleRolePlayerTypeError compatibleError;
+			if (IsRemoved)
+			{
+				return;
+			}
 			if (0 == (((IConstraint)this).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
 			{
 				if (notifyAdded != null)
@@ -679,7 +689,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit)]
+		[RuleOn(typeof(ObjectTypePlaysRole))]
 		private class EnforceRoleSequenceValidityForFactTypeAdd : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -693,7 +703,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					SingleColumnExternalConstraint sequence = roleSequences[i] as SingleColumnExternalConstraint;
 					if (sequence != null)
 					{
-						sequence.VerifyCompatibleRolePlayerTypeForRule(null);
+						ORMMetaModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
 					}
 				}
 			}
@@ -702,7 +712,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		///Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.TopLevelCommit)]
+		[RuleOn(typeof(ObjectTypePlaysRole))]
 		private class EnforceRoleSequenceValidityForFactTypeRemove : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -717,7 +727,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					SingleColumnExternalConstraint sequence = roleSequences[i] as SingleColumnExternalConstraint;
 					if (sequence != null)
 					{
-						sequence.VerifyCompatibleRolePlayerTypeForRule(null);
+						ORMMetaModel.DelayValidateElement(sequence, DelayValidateCompatibleRolePlayerTypeError);
 					}
 				}
 			}
@@ -968,6 +978,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#region Error synchronization rules
 		#region VerifyRoleSequenceCountForRule
 		/// <summary>
+		/// Validator callback for CompatibleRolePlayerTypeError
+		/// </summary>
+		private static void DelayValidateRoleSequenceCountErrors(ModelElement element)
+		{
+			(element as MultiColumnExternalConstraint).VerifyRoleSequenceCountForRule(null);
+		}
+		/// <summary>
 		/// Add, remove, and otherwise validate the current set of
 		/// errors for this constraint.
 		/// </summary>
@@ -1040,6 +1057,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // VerifyRoleSequenceCountForRule
 		#region VerifyRoleSequenceArityForRule
+		/// <summary>
+		/// Validator callback for ArityMismatchError
+		/// </summary>
+		private static void DelayValidateArityMismatchError(ModelElement element)
+		{
+			(element as MultiColumnExternalConstraint).VerifyRoleSequenceArityForRule(null);
+		}
 		/// <summary>
 		/// Add, remove, and otherwise validate the current set of
 		/// errors for this constraint.
@@ -1243,29 +1267,31 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
+		/// <summary>
+		/// Validator callback for CompatibleRolePlayerTypeError
+		/// </summary>
+		private static void DelayValidateCompatibleRolePlayerTypeError(ModelElement element)
+		{
+			(element as MultiColumnExternalConstraint).VerifyCompatibleRolePlayerTypeForRule(null);
+		}
 		private void VerifyCompatibleRolePlayerTypeForRule(INotifyElementAdded notifyAdded)
 		{
-			if (null == TooFewRoleSequencesError && null == TooManyRoleSequencesError && null == ArityMismatchError)
-			{
-				VerifyCompatibleRolePlayerTypeForRule(notifyAdded, false);
-			}
-			else
-			{
-				VerifyCompatibleRolePlayerTypeForRule(notifyAdded, true);
-			}
+			VerifyCompatibleRolePlayerTypeForRule(
+				notifyAdded,
+				!(null == TooFewRoleSequencesError && null == TooManyRoleSequencesError && null == ArityMismatchError));
 		}
 		#endregion // VerifyCompatibleRolePlayerTypeForRule
 		#region Add/Remove Rules
-		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence), FireTime = TimeToFire.TopLevelCommit)]
+		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence))]
 		private class EnforceRoleSequenceCardinalityForAdd : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				MultiColumnExternalConstraintHasRoleSequence link = e.ModelElement as MultiColumnExternalConstraintHasRoleSequence;
-				link.ExternalConstraint.VerifyRoleSequenceCountForRule(null);
+				ORMMetaModel.DelayValidateElement(link.ExternalConstraint, DelayValidateRoleSequenceCountErrors);
 			}
 		}
-		[RuleOn(typeof(ModelHasMultiColumnExternalConstraint), FireTime = TimeToFire.TopLevelCommit)]
+		[RuleOn(typeof(ModelHasMultiColumnExternalConstraint))]
 		private class EnforceRoleSequenceCardinalityForConstraintAdd : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -1274,11 +1300,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 				MultiColumnExternalConstraint externalConstraint = link.MultiColumnExternalConstraintCollection as MultiColumnExternalConstraint;
 				if (externalConstraint != null)
 				{
-					externalConstraint.VerifyRoleSequenceCountForRule(null);
+					ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateRoleSequenceCountErrors);
 				}
 			}
 		}
-		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(MultiColumnExternalConstraintHasRoleSequence))]
 		private class EnforceRoleSequenceCardinalityForRemove : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -1287,14 +1313,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				MultiColumnExternalConstraint externalConstraint = link.ExternalConstraint;
 				if (externalConstraint != null && !externalConstraint.IsRemoved)
 				{
-					externalConstraint.VerifyRoleSequenceCountForRule(null);
+					ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateRoleSequenceCountErrors);
 				}
 			}
 		}
 		/// <summary>
 		/// Add Rule for arity and compatibility checking when ExternalConstraints roles are added
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class EnforceRoleSequenceValidityForAdd : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -1306,15 +1332,15 @@ namespace Neumont.Tools.ORM.ObjectModel
 					MultiColumnExternalConstraint constraint = sequence.ExternalConstraint;
 					if (constraint != null)
 					{
-						sequence.ExternalConstraint.VerifyRoleSequenceArityForRule(null);
-						sequence.ExternalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
+						ORMMetaModel.DelayValidateElement(constraint, DelayValidateArityMismatchError);
+						ORMMetaModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
 					}
 				}
 			}
 		}
 
 		//Remove Rule for VerifyCompatibleRolePlayer when ExternalConstraints roles are removed
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class EnforceRoleSequenceValidityForRemove : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -1326,8 +1352,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 					MultiColumnExternalConstraint externalConstraint = sequence.ExternalConstraint;
 					if (externalConstraint != null && !externalConstraint.IsRemoved)
 					{
-						externalConstraint.VerifyRoleSequenceArityForRule(null);
-						externalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
+						ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateArityMismatchError);
+						ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
 					}
 				}
 			}
@@ -1351,7 +1377,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		//Add Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is added
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ObjectTypePlaysRole))]
 		private class EnforceRoleSequenceValidityForFactTypeAdd : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -1365,31 +1391,38 @@ namespace Neumont.Tools.ORM.ObjectModel
 					MultiColumnExternalConstraintRoleSequence sequence = roleSequences[i] as MultiColumnExternalConstraintRoleSequence;
 					if (sequence != null)
 					{
-						sequence.ExternalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
+						MultiColumnExternalConstraint externalConstraint = sequence.ExternalConstraint;
+						if (externalConstraint != null)
+						{
+							ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
+						}
 					}
 				}
 			}
 		}
 
 		//Remove Rule for VerifyCompatibleRolePlayer when a Role/Object relationship is removed
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ObjectTypePlaysRole))]
 		private class EnforceRoleSequenceValidityForFactTypeRemove : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				Role role = link.PlayedRoleCollection;
-				ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
-				int count = roleSequences.Count;
-				for (int i = 0; i < count; ++i)
+				if (!role.IsRemoved)
 				{
-					MultiColumnExternalConstraintRoleSequence sequence = roleSequences[i] as MultiColumnExternalConstraintRoleSequence;
-					if (sequence != null && !sequence.IsRemoved)
+					ConstraintRoleSequenceMoveableCollection roleSequences = role.ConstraintRoleSequenceCollection;
+					int count = roleSequences.Count;
+					for (int i = 0; i < count; ++i)
 					{
-						MultiColumnExternalConstraint externalConstraint = sequence.ExternalConstraint;
-						if (externalConstraint != null && !externalConstraint.IsRemoved)
+						MultiColumnExternalConstraintRoleSequence sequence = roleSequences[i] as MultiColumnExternalConstraintRoleSequence;
+						if (sequence != null && !sequence.IsRemoved)
 						{
-							externalConstraint.VerifyCompatibleRolePlayerTypeForRule(null);
+							MultiColumnExternalConstraint externalConstraint = sequence.ExternalConstraint;
+							if (externalConstraint != null && !externalConstraint.IsRemoved)
+							{
+								ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
+							}
 						}
 					}
 				}
@@ -1445,7 +1478,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			VerifyRoleSequenceCountForRule(notifyAdded);
-			VerifyRoleSequenceArityForRule(notifyAdded);
+			// VerifyRoleSequenceArityForRule(notifyAdded); // This is called by VeryRoleSequenceCountForRule
 			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
@@ -1974,6 +2007,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IModelErrorOwner Implementation
 		#region NMinusOneError Validation
 		/// <summary>
+		/// Validator callback for NMinusOneError
+		/// </summary>
+		private static void DelayValidateNMinusOneError(ModelElement element)
+		{
+			(element as InternalUniquenessConstraint).VerifyNMinusOneForRule(null);
+		}
+		/// <summary>
 		/// Add, remove, and otherwise validate the current NMinusOne errors
 		/// </summary>
 		/// <param name="notifyAdded">If not null, this is being called during
@@ -2020,7 +2060,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates NMinusOneError
 		/// Checks when Internal constraint is added
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactTypeHasInternalConstraint))]
 		private class NMinusOneAddRuleModelValidation : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -2029,31 +2069,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 				InternalUniquenessConstraint constraint = link.InternalConstraintCollection as InternalUniquenessConstraint;
 				if (constraint != null)
 				{
-					constraint.VerifyNMinusOneForRule(null);
-				}
-			}
-		}
-		/// <summary>
-		/// Only validates NMinusOneError
-		/// Checks when Internal constraint is removed
-		/// </summary>
-		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class NMinusOneRemoveRuleModelValidation : RemoveRule
-		{
-			public override void ElementRemoved(ElementRemovedEventArgs e)
-			{
-				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
-				InternalUniquenessConstraint constraint = link.InternalConstraintCollection as InternalUniquenessConstraint;
-				if (constraint != null)
-				{
-					constraint.VerifyNMinusOneForRule(null);
+					ORMMetaModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 				}
 			}
 		}
 		/// <summary>
 		/// Only validates NMinusOneError
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class NMinusOneAddRuleModelConstraintAddValidation : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -2062,23 +2085,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 				InternalUniquenessConstraint constraint = link.ConstraintRoleSequenceCollection as InternalUniquenessConstraint;
 				if (constraint != null)
 				{
-					constraint.VerifyNMinusOneForRule(null);
+					ORMMetaModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 				}
 			}
 		}
 		/// <summary>
 		/// Only validates NMinusOneError
 		/// </summary>
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class NMinusOneRemoveRuleModelConstraintRemoveValidation : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				InternalUniquenessConstraint constraint = link.ConstraintRoleSequenceCollection as InternalUniquenessConstraint;
-				if (constraint != null)
+				if (constraint != null && !constraint.IsRemoved)
 				{
-					constraint.VerifyNMinusOneForRule(null);
+					ORMMetaModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 				}
 			}
 		}
@@ -2086,7 +2109,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates NMinusOneError
 		/// Used for Adding roles to the role sequence check
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactTypeHasRole))]
 		private class NMinusOneAddRuleModelFactAddValidation : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
@@ -2097,7 +2120,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					foreach (InternalUniquenessConstraint constraint in fact.GetInternalConstraints<InternalUniquenessConstraint>())
 					{
-						constraint.VerifyNMinusOneForRule(null);
+						ORMMetaModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 					}
 				}
 			}
@@ -2106,7 +2129,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Only validates NMinusOneError
 		/// Used for Removing roles to the role sequence check
 		/// </summary>
-		[RuleOn(typeof(FactTypeHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(FactTypeHasRole))]
 		private class NMinusOneRemoveRuleModelFactRemoveValidation : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -2119,7 +2142,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					{
 						if (!constraint.IsRemoved)
 						{
-							constraint.VerifyNMinusOneForRule(null);
+							ORMMetaModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
 						}
 					}
 				}
