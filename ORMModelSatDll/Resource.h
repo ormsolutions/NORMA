@@ -14,6 +14,7 @@
 #define IDI_HELPICON							110
 #define IDI_POSICON								123
 #define IDI_ORMDESGNERTOOLBARIMAGES				124
+#define IDI_TOOLWINDOWICONS						125
 #define IDS_PACKAGELOADKEY						150
 
 // Next default values for new objects

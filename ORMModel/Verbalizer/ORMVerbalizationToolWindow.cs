@@ -167,6 +167,26 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Selection monitor event handlers and helpers
 		#region Overrides
 		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapResource
+		{
+			get
+			{
+				return 125;
+			}
+		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapIndex
+		{
+			get
+			{
+				return 0;
+			}
+		}
+		/// <summary>
 		/// Gets the title that will be displayed on the tool window.
 		/// </summary>
 		public override string WindowTitle

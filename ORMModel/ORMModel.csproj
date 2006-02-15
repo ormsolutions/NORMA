@@ -329,6 +329,7 @@
     </Content>
     <Content Include="Resources\ResourceStringsGenerator.xslt" />
     <None Include="Shell\catalog.xml" />
+    <None Include="Resources\ToolWindowIcons.bmp" />
     <Content Include="Shell\Converters\CoreModelImport.xslt" />
     <Content Include="Shell\Converters\CoreUpgradeTo2006-01.xslt" />
     <Content Include="Shell\Converters\RootUpgradeTo2006-01.xslt" />

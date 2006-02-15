@@ -54,6 +54,26 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion // Accessor properties
 		#region ToolWindow overrides
 		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapResource
+		{
+			get
+			{
+				return 125;
+			}
+		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapIndex
+		{
+			get
+			{
+				return 2;
+			}
+		}
+		/// <summary>
 		/// Returns the localized Tital for the too window
 		/// </summary>
 		/// <value></value>

@@ -72,6 +72,26 @@ namespace Neumont.Tools.ORM.Shell
 
 		#region ToolWindow overrides
 		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapResource
+		{
+			get
+			{
+				return 125;
+			}
+		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapIndex
+		{
+			get
+			{
+				return 1;
+			}
+		}
+		/// <summary>
 		/// Gets the title that will be displayed on the tool window.
 		/// </summary>
 		public override string WindowTitle

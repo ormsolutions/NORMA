@@ -108,6 +108,7 @@ IDI_HELPICON            ICON                    "..\\ORMModel\\Resources\\AboutB
 // Bitmap
 //
 IDI_ORMDESGNERTOOLBARIMAGES	BITMAP		DISCARDABLE			"..\\ORMModel\\Resources\\ORMDesignerToolbarImages.bmp"
+IDI_TOOLWINDOWICONS			BITMAP		DISCARDABLE			"..\\ORMModel\\Resources\\ToolWindowIcons.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
