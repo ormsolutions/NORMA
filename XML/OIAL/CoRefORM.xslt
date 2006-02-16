@@ -337,13 +337,13 @@
 								</xsl:otherwise>
 							</xsl:choose>
 							<!--UNDONE:  To support relative closure do not include the value constraint-->
-							<orm:ValueConstraint>
-								<orm:ValueRangeDefinition id="{@id}_Value_Range_Definition">
+							<orm:ValueRestriction>
+								<orm:ValueConstriant id="{@id}_Value_Range_Definition">
 									<orm:ValueRanges>
 										<orm:ValueRange id="{@id}_True_Value" MinValue="true" MaxValue="true" MinInclusion="NotSet" MaxInclusion="NotSet" />
 									</orm:ValueRanges>
-								</orm:ValueRangeDefinition>
-							</orm:ValueConstraint>
+								</orm:ValueConstriant>
+							</orm:ValueRestriction>
 						</orm:ValueType>
 					</xsl:otherwise>
 				</xsl:choose>
