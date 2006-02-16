@@ -338,11 +338,11 @@
 							</xsl:choose>
 							<!--UNDONE:  To support relative closure do not include the value constraint-->
 							<orm:ValueRestriction>
-								<orm:ValueConstriant id="{@id}_Value_Range_Definition">
+								<orm:ValueConstraint name="{@id}_Constraint_Name" id="{@id}_Value_Range_Definition">
 									<orm:ValueRanges>
-										<orm:ValueRange id="{@id}_True_Value" MinValue="true" MaxValue="true" MinInclusion="NotSet" MaxInclusion="NotSet" />
+										<orm:ValueRange name="{@id}_Range_Name" id="{@id}_True_Value" MinValue="true" MaxValue="true" MinInclusion="NotSet" MaxInclusion="NotSet" />
 									</orm:ValueRanges>
-								</orm:ValueConstriant>
+								</orm:ValueConstraint>
 							</orm:ValueRestriction>
 						</orm:ValueType>
 					</xsl:otherwise>
