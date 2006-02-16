@@ -2826,6 +2826,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				MetaDataDirectory metaDir = factType.Store.MetaDataDirectory;
 				return new PropertyDescriptorCollection(new PropertyDescriptor[]{
 					this.CreatePropertyDescriptor(metaDir.FindMetaAttribute(FactTypeShape.ConstraintDisplayPositionMetaAttributeGuid), this),
+					this.CreatePropertyDescriptor(metaDir.FindMetaAttribute(FactTypeShape.DisplayRoleNamesMetaAttributeGuid), this), 
 					nestingType.CreatePropertyDescriptor(metaDir.FindMetaAttribute(NamedElement.NameMetaAttributeGuid), nestingType),
 					nestingType.CreatePropertyDescriptor(metaDir.FindMetaAttribute(ObjectType.IsIndependentMetaAttributeGuid), nestingType),
 					new HeaderDescriptor(factType, ObjectifiedFactPropertyConverter.Converter),
