@@ -237,12 +237,6 @@
     </Compile>
     <Compile Include="Shell\ORMSerializer.cs" />
     <Compile Include="Shell\ORMDesignerSettings.cs" />
-    <Compile Include="SyncDoc\ORMElementProvider.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SyncDoc\ORMXmlHandler.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Verbalizer\ORMVerbalizationToolWindow.cs" />
     <None Include="Shell\ProjectItems\ORMProjectItems.vsdir" />
     <AppDesigner Include="Properties\" />
