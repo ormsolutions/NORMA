@@ -17,14 +17,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public delegate void ElementValidator(ModelElement element);
 	public partial class ORMMetaModel
 	{
-		#region ORMMetaModel.ReflectRules property
+		#region InitializingToolboxItems property
 		private static bool myReflectRulesSuspended;
 		/// <summary>
 		/// Static property to disable rule reflection for fast
 		/// model load. This needs to be on a meta model, not the
 		/// package, so that the models also load from the command line.
 		/// </summary>
-		public static bool ReflectRules
+		public static bool InitializingToolboxItems
 		{
 			get
 			{
@@ -32,11 +32,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			set
 			{
-				Debug.Assert(value || !myReflectRulesSuspended, "ReflectRules already turned off");
+				Debug.Assert(value || !myReflectRulesSuspended, "InitializingToolboxItems already turned off");
 				myReflectRulesSuspended = !value;
 			}
 		}
-		#endregion // ORMMetaModel.ReflectRules property
+		#endregion // InitializingToolboxItems property
 		#region Delayed Model Validation
 		private const string DelayedValidationContextKey = "{F8B7BB89-78A2-4F53-8C55-FC69B8A0FEF3}";
 		/// <summary>

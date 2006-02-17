@@ -11,6 +11,10 @@ namespace ExtensionExample
 	public partial class ExtensionDomainModel : IORMCustomSerializedMetaModel
 	{
 		/// <summary>
+		/// The default XmlNamespace associated with the 'ExtensionDomainModel' extension model
+		/// </summary>
+		public const string XmlNamespace = "http://schemas.neumont.edu/ORM/ExtensionExample";
+		/// <summary>
 		/// Implements IORMCustomSerializedMetaModel.DefaultElementPrefix
 		/// </summary>
 		protected static string DefaultElementPrefix

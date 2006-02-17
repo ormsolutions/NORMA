@@ -76,14 +76,14 @@ namespace Neumont.Tools.ORM.Shell
 		public override ModelingToolboxItem[] GetToolboxItems()
 		{
 			ModelingToolboxItem[] items = null;
-			ORMMetaModel.ReflectRules = false;
+			ORMMetaModel.InitializingToolboxItems = false;
 			try
 			{
 				items = base.GetToolboxItems();
 			}
 			finally
 			{
-				ORMMetaModel.ReflectRules = true;
+				ORMMetaModel.InitializingToolboxItems = true;
 			}
 
 			// Build up a dictionary of items so we can add filter strings. This is

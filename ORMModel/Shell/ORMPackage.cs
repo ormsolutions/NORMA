@@ -65,7 +65,7 @@ namespace Neumont.Tools.ORM.Shell
 
 		#region Constants
 		private const string REGISTRYROOT_PACKAGE = @"Neumont\ORM Architect";
-		private const string REGISTRYROOT_EXTENSIONS = REGISTRYROOT_PACKAGE + @"\Extensions";
+		private const string REGISTRYROOT_EXTENSIONS = REGISTRYROOT_PACKAGE + @"\Extensions\";
 		private const string REGISTRYVALUE_SETTINGSPATH = "SettingsPath";
 		private const string REGISTRYVALUE_CONVERTERSDIR = "ConvertersDir";
 		#endregion
@@ -456,61 +456,24 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion
 
-		#region Global SubStores
-		private static Type[] myGlobalSubStores;
+		#region Extension SubStores
 		/// <summary>
-		/// Gets a <see cref="Type"/><see cref="Array">[]</see> of the core ORM Designer
-		/// <see cref="SubStore"/>s, including <see cref="SubStore"/>s contained within
-		/// any registered extensions.
+		/// Retrieves the <see cref="SubStore"/> for a specific extension namespace.
 		/// </summary>
-		/// <returns>
-		/// An array of the <see cref="Type"/>s of all loaded <see cref="SubStore"/>s,
-		/// or <see langword="null"/> if an <see cref="ORMDesignerPackage"/> has not been
-		/// instantiated by the host application.
-		/// </returns>
-		public static Type[] GetGlobalSubStores()
-		{
-			if (Singleton == null)
-			{
-				return null;
-			}
-
-			// If we haven't yet obtained the array of SubStores, do so...
-			if (myGlobalSubStores == null)
-			{
-				List<Type> subStoreTypes = new List<Type>();
-				subStoreTypes.Add(typeof(Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurface));
-				subStoreTypes.Add(typeof(ObjectModel.ORMMetaModel));
-				subStoreTypes.Add(typeof(ShapeModel.ORMShapeModel));
-				GetExtensionSubStores(subStoreTypes);
-				myGlobalSubStores = subStoreTypes.ToArray();
-			}
-
-			// Return a copy of the array, so that if the caller modifies it, it won't affect any other callers
-			return myGlobalSubStores.Clone() as Type[];
-		}
-		/// <summary>
-		/// Retrieves the <see cref="SubStore"/>s from all registered extensions,
-		/// and adds them to the <see cref="ICollection{Type}"/> <paramref name="extensionSubStoreTypes"/>.
-		/// </summary>
-		/// <param name="extensionSubStoreTypes">
-		/// The <see cref="ICollection{Type}"/> to which the extension <see cref="SubStore"/>s
-		/// should be added.
-		/// </param>
-		private static void GetExtensionSubStores(ICollection<Type> extensionSubStoreTypes)
+		/// <remarks>If a <see cref="SubStore"/> cannot be found for a namespace, <see langword="null"/> is returned.</remarks>
+		public static Type GetExtensionSubStore(string extensionNamespace)
 		{
 			RegistryKey applicationRegistryRoot = null;
 			RegistryKey userRegistryRoot = null;
 			try
 			{
 				applicationRegistryRoot = mySingleton.ApplicationRegistryRoot;
-				userRegistryRoot = mySingleton.UserRegistryRoot;
 
-				// Get the application (all users) extensions
-				LoadExtensions(extensionSubStoreTypes, applicationRegistryRoot, REGISTRYROOT_EXTENSIONS);
-
-				// Get the per-user extensions
-				LoadExtensions(extensionSubStoreTypes, userRegistryRoot, REGISTRYROOT_EXTENSIONS);
+				// Try to get the extension from application (all users), otherwise get it from per-user
+				return
+					LoadExtension(extensionNamespace, applicationRegistryRoot)
+					??
+					LoadExtension(extensionNamespace, userRegistryRoot = mySingleton.UserRegistryRoot);
 			}
 			finally
 			{
@@ -528,89 +491,65 @@ namespace Neumont.Tools.ORM.Shell
 		/// Adds the extension <see cref="SubStore"/> <see cref="Type"/>s from the <paramref name="extensionPath"/>
 		/// under <paramref name="hkeyBase"/> to the <see cref="ICollection{Type}"/> <paramref name="extensionSubStoreTypes"/>.
 		/// </summary>
-		private static void LoadExtensions(ICollection<Type> extensionSubStoreTypes, RegistryKey hkeyBase, string extensionPath)
+		private static Type LoadExtension(string extensionNamespace, RegistryKey hkeyBase)
 		{
-			RegistryKey hkeyExtensions = null;
-			try
+			using (RegistryKey hkeyExtension = hkeyBase.OpenSubKey(REGISTRYROOT_EXTENSIONS + extensionNamespace, RegistryKeyPermissionCheck.ReadSubTree))
 			{
-				hkeyExtensions = hkeyBase.OpenSubKey(extensionPath, RegistryKeyPermissionCheck.ReadSubTree);
-
-				if (hkeyExtensions != null)
+				if (hkeyExtension != null)
 				{
-					foreach (string extensionKeyName in hkeyExtensions.GetSubKeyNames())
+				// Execution is returned to this point if the user elects to retry a failed extension load
+				LABEL_RETRY:
+					try
 					{
-						using (RegistryKey hkeyExtension = hkeyExtensions.OpenSubKey(extensionKeyName, RegistryKeyPermissionCheck.ReadSubTree))
+						string extensionTypeString = hkeyExtension.GetValue("Class") as string;
+						if (string.IsNullOrEmpty(extensionTypeString))
 						{
-							if (hkeyExtension != null)
-							{
-							// Execution is returned to this point if the user elects to retry a failed extension load
-							LABEL_RETRY:
-								try
-								{
-									string extensionTypeString = hkeyExtension.GetValue("Class") as string;
-									if (string.IsNullOrEmpty(extensionTypeString))
-									{
-										// If we don't have an extension type name, just go on to the next registered extension
-										continue;
-									}
+							// If we don't have an extension type name, just go on to the next registered extension
+							return null;
+						}
 
-									AssemblyName extensionAssemblyName;
-									string extensionAssemblyNameString = hkeyExtension.GetValue("Assembly") as string;
-									if (!string.IsNullOrEmpty(extensionAssemblyNameString))
-									{
-										extensionAssemblyName = new AssemblyName(extensionAssemblyNameString);
-									}
-									else
-									{
-										extensionAssemblyName = new AssemblyName();
-									}
-									extensionAssemblyName.CodeBase = hkeyExtension.GetValue("CodeBase") as string;
+						AssemblyName extensionAssemblyName;
+						string extensionAssemblyNameString = hkeyExtension.GetValue("Assembly") as string;
+						if (!string.IsNullOrEmpty(extensionAssemblyNameString))
+						{
+							extensionAssemblyName = new AssemblyName(extensionAssemblyNameString);
+						}
+						else
+						{
+							extensionAssemblyName = new AssemblyName();
+						}
+						extensionAssemblyName.CodeBase = hkeyExtension.GetValue("CodeBase") as string;
 
-									Type extensionType = Assembly.Load(extensionAssemblyName).GetType(extensionTypeString, true, false);
-									
-									if (extensionType.IsSubclassOf(typeof(SubStore)))
-									{
-										extensionSubStoreTypes.Add(extensionType);
-									}
-								}
-								catch (Exception ex)
-								{
-									// An Exception can occur for a number of reasons, such as the user not having the correct
-									// registry or file permissions, or the referenced assmebly or file not existing or being corrupt
+						Type extensionType = Assembly.Load(extensionAssemblyName).GetType(extensionTypeString, true, false);
 
-									string message = string.Format(System.Globalization.CultureInfo.CurrentUICulture, ResourceStrings.ExtensionLoadFailureMessage, Environment.NewLine, extensionKeyName, ex);
-									int result = VsShellUtilities.ShowMessageBox(Singleton, message, ResourceStrings.ExtensionLoadFailureTitle, OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_ABORTRETRYIGNORE, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_THIRD);
-									if (result == (int)DialogResult.Retry)
-									{
-										goto LABEL_RETRY;
-									}
-									else if (result != (int)DialogResult.Ignore)
-									{
-										// If a debugger is already attached, Launch() has no effect, so we can always safely call it
-										Debugger.Launch();
-										Debugger.Break();
-										throw;
-									}
-								}
-							}
+						if (extensionType.IsSubclassOf(typeof(SubStore)))
+						{
+							return extensionType;
+						}
+					}
+					catch (Exception ex)
+					{
+						// An Exception can occur for a number of reasons, such as the user not having the correct
+						// registry or file permissions, or the referenced assmebly or file not existing or being corrupt
+
+						string message = string.Format(System.Globalization.CultureInfo.CurrentUICulture, ResourceStrings.ExtensionLoadFailureMessage, Environment.NewLine, extensionNamespace, ex);
+						int result = VsShellUtilities.ShowMessageBox(Singleton, message, ResourceStrings.ExtensionLoadFailureTitle, OLEMSGICON.OLEMSGICON_WARNING, OLEMSGBUTTON.OLEMSGBUTTON_ABORTRETRYIGNORE, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_THIRD);
+						if (result == (int) DialogResult.Retry)
+						{
+							goto LABEL_RETRY;
+						}
+						else if (result != (int) DialogResult.Ignore)
+						{
+							// If a debugger is already attached, Launch() has no effect, so we can always safely call it
+							Debugger.Launch();
+							Debugger.Break();
+							throw;
 						}
 					}
 				}
-			}
-			catch (System.Security.SecurityException ex)
-			{
-				// Ignore any SecurityException that occurs if the user does not have permission to read the RegistryKey.
-				// NOTE: In theory, this should never happen
-				Debug.Assert(false, "A SecurityException was thrown while accessing the Registry:" + Environment.NewLine + ex);
-			}
-			finally
-			{
-				if (hkeyExtensions != null)
-				{
-					hkeyExtensions.Close();
-				}
+				return null;
 			}
 		}
-		#endregion // Global SubStores
+		#endregion // Extension SubStores
 	}
 }

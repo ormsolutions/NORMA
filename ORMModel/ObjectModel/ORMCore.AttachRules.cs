@@ -10,7 +10,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected override Type[] AllMetaModelTypes()
 		{
-			if (!(Neumont.Tools.ORM.ObjectModel.ORMMetaModel.ReflectRules))
+			if (!(Neumont.Tools.ORM.ObjectModel.ORMMetaModel.InitializingToolboxItems))
 			{
 				return Type.EmptyTypes;
 			}

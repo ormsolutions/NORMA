@@ -45,7 +45,7 @@
 					<plx:branch>
 						<plx:condition>
 							<plx:unaryOperator type="booleanNot">
-								<plx:callStatic dataTypeName="ORMMetaModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" name="ReflectRules" type="property"/>
+								<plx:callStatic dataTypeName="ORMMetaModel" dataTypeQualifier="Neumont.Tools.ORM.ObjectModel" name="InitializingToolboxItems" type="property"/>
 							</plx:unaryOperator>
 						</plx:condition>
 						<plx:return>

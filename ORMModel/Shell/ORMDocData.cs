@@ -14,6 +14,7 @@ using Neumont.Tools.ORM.ShapeModel;
 using Neumont.Tools.ORM.Framework;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell.Interop;
+using System.Xml;
 
 #if ATTACHELEMENTPROVIDERS
 using Neumont.Tools.ORM.DocumentSynchronization;
@@ -52,6 +53,9 @@ namespace Neumont.Tools.ORM.Shell
 		}
 		#endregion // Private flags
 		#region Member variables
+		private Stream myFileStream;
+		private IDictionary<string, Type> myExtensionSubStores;
+		private static readonly IDictionary<string, Type> myStandardSubStores;
 		#endregion // Member variables
 		#region Construction/destruction
 		/// <summary>
@@ -61,6 +65,16 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="editorFactory">EditorFactory</param>
 		public ORMDesignerDocData(IServiceProvider serviceProvider, EditorFactory editorFactory) : base(serviceProvider, editorFactory)
 		{
+		}
+		/// <summary>
+		/// DocData constructor used to create the standard substores needed for the tool.
+		/// </summary>
+		static ORMDesignerDocData()
+		{
+			Dictionary<string, Type> standardSubStores = new Dictionary<string, Type>();
+			standardSubStores.Add(ORMMetaModel.XmlNamespace, typeof(ORMMetaModel));
+			standardSubStores.Add(ORMShapeModel.XmlNamespace, typeof(ORMShapeModel));
+			myStandardSubStores = standardSubStores;
 		}
 		#endregion // Construction/destruction
 		#region Base overrides
@@ -72,9 +86,98 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			if (storeKey == PrimaryStoreKey)
 			{
-				return ORMDesignerPackage.GetGlobalSubStores();
+				// Always have 1 for the CoreDesignSurface. Note that the framework automatically
+				// loads the core model (ModelElement, ElementLink, etc).
+				int knownCount = 1 + myStandardSubStores.Count;
+				int count = knownCount;
+				IDictionary<string, Type> extensionSubstores = myExtensionSubStores;
+				if (extensionSubstores != null)
+				{
+					count += extensionSubstores.Count;
+				}
+				Type[] retVal = new Type[count];
+				retVal[0] = typeof(CoreDesignSurface);
+				myStandardSubStores.Values.CopyTo(retVal, 1);
+				if (extensionSubstores != null)
+				{
+					extensionSubstores.Values.CopyTo(retVal, knownCount);
+				}
+				return retVal;
+			}						
+			return null;			
+		}
+		/// <summary>
+		/// Override the LoadDocData method.
+		/// We override here to do a peek ahead and load the namespaces in the ORM file.
+		/// </summary>
+		/// <param name="fileName">The name of the file we are trying to load.</param>
+		/// <param name="isReload">Tells us if the file is being reloaded or not.</param>
+		/// <returns></returns>
+		protected override int LoadDocData(string fileName, bool isReload)
+		{
+			// Convert early so we can accurately check extension elements
+			int retVal = 0;
+			bool dontSave = false;
+			using(FileStream fileStream = File.OpenRead(fileName))
+			{
+				ORMDesignerSettings settings = ORMDesignerPackage.DesignerSettings;
+				using(Stream convertedStream = settings.ConvertStream(fileStream))
+				{
+					dontSave = convertedStream != null;
+					Stream stream = dontSave ? convertedStream : fileStream;
+					myFileStream = stream;
+					try
+					{
+						XmlReaderSettings readerSettings = new XmlReaderSettings();
+						readerSettings.CloseInput = false;
+						Dictionary<string, Type> documentExtensions = null;
+						using(XmlReader reader = XmlReader.Create(stream, readerSettings))
+						{
+							reader.MoveToContent();
+							if(reader.NodeType == XmlNodeType.Element)
+							{
+								if(reader.MoveToFirstAttribute())
+								{
+									do
+									{
+										if(reader.Prefix == "xmlns")
+										{
+											string URI = reader.Value;
+											if (!string.Equals(URI, ORMMetaModel.XmlNamespace, StringComparison.Ordinal) &&
+												!string.Equals(URI, ORMShapeModel.XmlNamespace, StringComparison.Ordinal) &&
+												!string.Equals(URI, ORMSerializer.RootXmlNamespace, StringComparison.Ordinal))
+											{
+												Type extensionType = ORMDesignerPackage.GetExtensionSubStore(URI);
+												if (extensionType != null)
+												{
+													if (documentExtensions == null)
+													{
+														documentExtensions = new Dictionary<string, Type>();
+													}
+													documentExtensions.Add(URI, extensionType);
+												}
+											}
+										}
+									} while(reader.MoveToNextAttribute());
+								}
+							}
+						}
+						myExtensionSubStores = documentExtensions;
+						stream.Position = 0;
+						retVal = base.LoadDocData(fileName, isReload);
+					}
+					finally
+					{
+						myFileStream = null;
+					}
+				}
 			}
-			return null;
+			if (dontSave)
+			{
+				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
+				docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
+			}
+			return retVal;
 		}
 		/// <summary>
 		/// Load a file
@@ -83,144 +186,26 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="isReload"></param>
 		protected override void Load(string fileName, bool isReload)
 		{
-			if (fileName == null)
-				return;
-
-			Store store = this.Store;
-			bool dontSave = false;
-			if (fileName.EndsWith(@"\default.orm", true, CultureInfo.CurrentCulture))
+			if(fileName == null)
 			{
-				#region Generate Test Object Model
+				return;
+			}
+
+			Debug.Assert(myFileStream != null);
+			Stream stream = myFileStream;
+			Store store = this.Store;
+
+			if(stream.Length > 1)
+			{
 				DeserializationFixupManager fixupManager = new DeserializationFixupManager(DeserializationFixupPhaseType, store);
-				foreach (IDeserializationFixupListener listener in DeserializationFixupListeners)
+				foreach(IDeserializationFixupListener listener in DeserializationFixupListeners)
 				{
 					fixupManager.AddListener(listener);
 				}
-				ORMModel model = ORMModel.CreateORMModel(store);
-				model.Name = "Model1";
-				fixupManager.DeserializationComplete();
-
-				// Create a ValueType
-				ObjectType valType = ObjectType.CreateObjectType(store);
-				valType.Name = "ValueType1";
-				valType.Model = model;
-				valType.DataType = model.DefaultDataType;
-
-				// Create an EntityType
-				ObjectType entType = ObjectType.CreateObjectType(store);
-				entType.Name = "EntityType1";
-				entType.Model = model;
-
-				// Create a FactType
-				FactType fact = FactType.CreateFactType(store);
-				fact.Name = "Fact1";
-				fact.Model = model; // Also do after roles are added to test shape generation
-				RoleMoveableCollection roles = fact.RoleCollection;
-				Role role = Role.CreateRole(store);
-				role.Name = "Role1";
-				role.RolePlayer = valType;
-				roles.Add(role);
-
-				role = Role.CreateRole(store);
-				role.Name = "Role2";
-				role.RolePlayer = entType;
-				roles.Add(role);
-
-				ReadingOrder readOrd = ReadingOrder.CreateReadingOrder(store);
-				readOrd.RoleCollection.Add(fact.RoleCollection[0]);
-				readOrd.RoleCollection.Add(fact.RoleCollection[1]);
-
-				fact.ReadingOrderCollection.Add(readOrd);
-
-				Reading read = Reading.CreateReading(store);
-				readOrd.ReadingCollection.Add(read);
-				read.Text = "{0} has {1}";
-
-				read = Reading.CreateReading(store);
-				readOrd.ReadingCollection.Add(read);
-				read.Text = "{0} owns {1}";
-
-				read = Reading.CreateReading(store);
-				readOrd.ReadingCollection.Add(read);
-				read.Text = "{0} possesses {1}";
-
-				readOrd = ReadingOrder.CreateReadingOrder(store);
-				readOrd.RoleCollection.Add(fact.RoleCollection[1]);
-				readOrd.RoleCollection.Add(fact.RoleCollection[0]);
-				fact.ReadingOrderCollection.Add(readOrd);
-
-				read = Reading.CreateReading(store);
-				readOrd.ReadingCollection.Add(read);
-				read.Text = "{0} is of {1}";
-
-				InternalConstraint ic = InternalUniquenessConstraint.CreateInternalUniquenessConstraint(store);
-				ic.RoleCollection.Add(fact.RoleCollection[0]); // Automatically sets FactType, setting it again will remove and delete the new constraint
-
-				// Create an objectified fact type with one role
-				FactType nestedFact = FactType.CreateFactType(store);
-				nestedFact.Name = "ObjectifiedFact1";
-				nestedFact.Model = model; // Also do after roles are added to test shape generation
-
-				ObjectType nestingType = ObjectType.CreateObjectType(store);
-				nestingType.Name = "ObjectifyFact1";
-				nestingType.Model = model;
-				roles = nestedFact.RoleCollection;
-				role = Role.CreateRole(store);
-				role.Name = "Role1";
-				roles.Add(role);
-
-				nestingType.NestedFactType = nestedFact;
-				role.RolePlayer = entType;
-
-				//ExternalUniquenessConstraint euc = ExternalUniquenessConstraint.CreateExternalUniquenessConstraint(store);
-				ExclusionConstraint euc = ExclusionConstraint.CreateExclusionConstraint(store);
-				euc.Name = "Constraint1";
-				euc.Model = model;
-				MultiColumnExternalConstraintRoleSequenceMoveableCollection roleSequences = euc.RoleSequenceCollection;
-				MultiColumnExternalConstraintRoleSequence roleSequence = MultiColumnExternalConstraintRoleSequence.CreateMultiColumnExternalConstraintRoleSequence(store);
-				roleSequence.RoleCollection.Add(fact.RoleCollection[1]);
-				roleSequences.Add(roleSequence);
-				roleSequence = MultiColumnExternalConstraintRoleSequence.CreateMultiColumnExternalConstraintRoleSequence(store);
-				roleSequences.Add(roleSequence);
-				roleSequence.RoleCollection.Add(nestedFact.RoleCollection[0]);
-
-				// UNDONE: Need to verify that this ordering is handled as well
-				//fact.Model = model; // Done earlier to test shape generation
-				#endregion // Generate Test Object Model
-			}
-			else
-			{
-				Synchronize();
-				using (FileStream fileStream = File.OpenRead(fileName))
-				{
-					ORMDesignerSettings settings = ORMDesignerPackage.DesignerSettings;
-					using (Stream convertedStream = settings.ConvertStream(fileStream))
-					{
-						Stream stream = (convertedStream != null) ? convertedStream : fileStream;
-						dontSave = convertedStream != null;
-						if (stream.Length > 1)
-						{
-							DeserializationFixupManager fixupManager = new DeserializationFixupManager(DeserializationFixupPhaseType, store);
-							foreach (IDeserializationFixupListener listener in DeserializationFixupListeners)
-							{
-								fixupManager.AddListener(listener);
-							}
-							(new ORMSerializer(store)).Load(stream, fixupManager);
-						}
-					}
-				}
+				(new ORMSerializer(store)).Load(stream, fixupManager);
 			}
 
-			this.SetFileName(fileName);
-
-			if (dontSave)
-			{
-				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
-				docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
-			}
-
-
-			foreach (ORMDiagram diagram in this.Store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid, true))
+			foreach (ORMDiagram diagram in store.ElementDirectory.GetElements(ORMDiagram.MetaClassGuid, true))
 			{
 				if (diagram.AutoPopulateShapes)
 				{
@@ -229,16 +214,12 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-
 		/// <summary>
 		/// Saves the model in Store format
 		/// </summary>
 		/// <param name="fileName"></param>
 		protected override void Save(string fileName)
 		{
-			if (fileName == null || fileName.EndsWith(@"\default.orm", true, CultureInfo.CurrentCulture))
-				return;
-
 			// sync the model to any artifacts.
 			Synchronize();
 

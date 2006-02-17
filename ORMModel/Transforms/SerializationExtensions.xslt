@@ -1569,6 +1569,28 @@
 				<plx:pragma type="closeRegion" data="{$ModelName} model serialization"/>
 			</plx:trailingInfo>
 			<plx:implementsInterface dataTypeName="IORMCustomSerializedMetaModel"/>
+			<plx:field name="XmlNamespace" visibility="public" const="true" dataTypeName=".string" static="false">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>The default XmlNamespace associated with the '<xsl:value-of select="$ModelName"/>' extension model</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<xsl:variable name="DefaultXmlNamespace">
+					<xsl:variable name="namespaces" select="se:Namespaces/se:Namespace"/>
+					<xsl:variable name="defaultNamespace" select="$namespaces[@DefaultPrefix='true' or @DefaultPrefix='1']"/>
+					<xsl:choose>
+						<xsl:when test="$defaultNamespace">
+							<xsl:value-of select="$defaultNamespace[1]/@URI"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$namespaces[1]/@URI"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<plx:initialize>
+					<plx:string><xsl:value-of select="$DefaultXmlNamespace"/></plx:string>
+				</plx:initialize>
+			</plx:field>
 			<xsl:for-each select="se:Namespaces">
 				<plx:property visibility="protected" name="DefaultElementPrefix" modifier="static">
 					<plx:leadingInfo>

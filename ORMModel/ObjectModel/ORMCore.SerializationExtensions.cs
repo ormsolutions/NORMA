@@ -11,6 +11,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 	public partial class ORMMetaModel : IORMCustomSerializedMetaModel
 	{
 		/// <summary>
+		/// The default XmlNamespace associated with the 'ORMMetaModel' extension model
+		/// </summary>
+		public const string XmlNamespace = "http://schemas.neumont.edu/ORM/2006-01/ORMCore";
+		/// <summary>
 		/// Implements IORMCustomSerializedMetaModel.DefaultElementPrefix
 		/// </summary>
 		protected static string DefaultElementPrefix
