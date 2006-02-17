@@ -61,7 +61,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#region FactTypeShape class
 	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation
 	{
-
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
 		/// The activity of a role in a ConstraintBox
@@ -613,6 +612,57 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					IList<Role> constraintRoles = factConstraint.RoleCollection;
 					int constraintRoleCount = constraintRoles.Count;
+					if (factConstraint.Constraint.ConstraintStorageStyle == ConstraintStorageStyle.MultiColumnExternalConstraint)
+					{
+						// The constraint can have multiple role sequences, and there is nothing stopping
+						// them from overlapping. Although this is a pathological state, it is a valid model
+						// and needs to draw without crashing.
+						int duplicateCount = 0;
+						for (int i = constraintRoleCount - 1; i > 0; --i)
+						{
+							Role testRole = constraintRoles[i];
+							for (int j = 0; j < i; ++j)
+							{
+								if (object.ReferenceEquals(constraintRoles[j], testRole))
+								{
+									++duplicateCount;
+									break;
+								}
+							}
+						}
+						if (duplicateCount != 0)
+						{
+							int lastItem = constraintRoleCount - duplicateCount;
+							Role[] uniqueConstraintRoles = new Role[lastItem];
+							uniqueConstraintRoles[0] = constraintRoles[0];
+							if (lastItem > 1)
+							{
+								for (int i = constraintRoleCount - 1; i > 0; --i)
+								{
+									Role testRole = constraintRoles[i];
+									int j = 0;
+									for (; j < i; ++j)
+									{
+										if (object.ReferenceEquals(constraintRoles[j], testRole))
+										{
+											break;
+										}
+									}
+									if (j == i)
+									{
+										uniqueConstraintRoles[--lastItem] = testRole;
+										if (lastItem == 1)
+										{
+											break;
+										}
+									}
+								}
+								Debug.Assert(!((ICollection<Role>)uniqueConstraintRoles).Contains(null)); // Algorithm gone bad
+							}
+							constraintRoles = uniqueConstraintRoles;
+							constraintRoleCount -= duplicateCount;
+						}
+					}
 					#region Optimized ConstraintRoleBox assignments
 					// Optimization time: If we're dealing with binary or ternary constraints,
 					// use the pre-defined ConstraintBoxRoleActivity collections.  This saves
@@ -721,6 +771,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					else
 					{
+						Debug.Assert(factRoleCount >= 4);
 						// The original code, now used for handling fact types with 4 or more roles
 						// or fact types that are irregular. 
 						ConstraintBox currentBox = new ConstraintBox(factConstraint, factRoleCount);
@@ -730,11 +781,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 						// mainly for drawing, to determine if a dashed line needs to be drawn
 						// to connect the solid lines over the active roles of the constraint.
 
-						// UNDONE: This assert is crashing the ExternalConstraintConnectAction when RoleSequences are being edited.  Find out why.
-//						Debug.Assert(constraintRoleCount < factRoleCount); // Should be predefined otherwise
+						Debug.Assert(constraintRoleCount < factRoleCount); // Should be predefined otherwise
 						ConstraintBoxRoleActivity[] activeRoles = currentBox.ActiveRoles;
-						// UNDONE: This assert is crashing the ExternalConstraintConnectAction when RoleSequences are being edited.  Find out why.
-//						Debug.Assert(activeRoles.Length == factRoleCount);
+						Debug.Assert(activeRoles.Length == factRoleCount);
 						// Walk the fact's roles, and for each role that is found in this constraint
 						// mark the role as active in the constraintBox.roleActive array.  
 						for (int i = 0; i < constraintRoleCount; ++i)
@@ -742,16 +791,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 							int roleIndex = factRoles.IndexOf(constraintRoles[i]);
 							Debug.Assert(roleIndex != -1); // This violates the IFactConstraint contract
 							activeRoles[roleIndex] = ConstraintBoxRoleActivity.Active;
-						}
-						if (factRoleCount == 2)
-						{
-							for (int i = 0; i < factRoleCount; ++i)
-							{
-								if (activeRoles[i] != ConstraintBoxRoleActivity.Active)
-								{
-									activeRoles[i] = ConstraintBoxRoleActivity.NotInBox;
-								}
-							}
 						}
 						constraintBoxes[currentConstraintIndex] = currentBox;
 					}
@@ -1799,7 +1838,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 										MultiColumnExternalConstraint mcec;
 										SingleColumnExternalConstraint scec;
 										bool drawIndexNumbers = false;
-										string s = "";
+										string indexString = "";
 
 										if (activeExternalAction == null)
 										{
@@ -1817,22 +1856,32 @@ namespace Neumont.Tools.ORM.ShapeModel
 											if (null != (mcec = stickyConstraint as MultiColumnExternalConstraint))
 											{
 												MultiColumnExternalConstraintRoleSequenceMoveableCollection sequenceCollection = mcec.RoleSequenceCollection;
-												int y = 0;
 												int sequenceCollectionCount = sequenceCollection.Count;
-												for (int x = 0; x < sequenceCollectionCount; ++x)
+												for (int sequenceIndex = 0; sequenceIndex < sequenceCollectionCount; ++sequenceIndex)
 												{
-													y = sequenceCollection[x].RoleCollection.IndexOf(currentRole);
-													if (y >= 0)
+													int roleIndex = sequenceCollection[sequenceIndex].RoleCollection.IndexOf(currentRole);
+													if (roleIndex >= 0)
 													{
-														// Show 1-based position of the role in the MCEC.
-														s = string.Concat(s, (x + 1).ToString(CultureInfo.InvariantCulture), ".", (y + 1).ToString(CultureInfo.InvariantCulture));
+														for (int j = sequenceIndex + 1; j < sequenceCollectionCount; ++j)
+														{
+															if (sequenceCollection[j].RoleCollection.IndexOf(currentRole) >= 0)
+															{
+																// Indicate overlapping role sequences
+																indexString = ResourceStrings.SetConstraintStickyRoleOverlapping;
+															}
+														}
+														if (indexString.Length == 0)
+														{
+															// Show 1-based position of the role in the MCEC.
+															indexString = string.Format(CultureInfo.InvariantCulture, ResourceStrings.SetConstraintStickyRoleFormatString, sequenceIndex + 1, roleIndex + 1);
+														}
 														break;
 													}
 												}
 											}
 											else if (null != (scec = stickyConstraint as SingleColumnExternalConstraint))
 											{
-												s = (scec.RoleCollection.IndexOf(currentRole) + 1).ToString();
+												indexString = (scec.RoleCollection.IndexOf(currentRole) + 1).ToString();
 											}
 
 											if (stringFormat == null)
@@ -1849,7 +1898,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 											{
 												constraintSequenceBrush = currentDiagram.StyleSet.GetBrush(ORMDiagram.StickyForegroundResource);
 											}
-											g.DrawString(s, constraintSequenceFont, constraintSequenceBrush, roleBounds, stringFormat);
+											g.DrawString(indexString, constraintSequenceFont, constraintSequenceBrush, roleBounds, stringFormat);
 										}
 									}
 									else if (highlightThisRole)
@@ -2132,7 +2181,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return ORMBaseShape.ShouldHaveShadow(this);
+				return ORMBaseShape.ElementHasMultiplePresentations(this);
 			}
 		}
 		/// <summary>
@@ -2191,6 +2240,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return true;
 			}
 		}
+
 		/// <summary>
 		/// Set the default size for this object. This value is basically
 		/// ignored because the size is ultimately based on the contained
@@ -2429,6 +2479,66 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
+		/// Indicate that we support tool tips. Used for showing
+		/// detailed information about sticky roles.
+		/// </summary>
+		public override bool HasToolTip
+		{
+			get
+			{
+				return true;
+			}
+		}
+		/// <summary>
+		/// Show a tooltip explaining the numbering for sticky multi-column
+		/// external constraint roles.
+		/// </summary>
+		public override string GetToolTipText(DiagramItem item)
+		{
+			string retVal = null;
+			ShapeSubField subField = item.SubField;
+			RoleSubField roleField;
+			if ((null != subField) &&
+				(null != (roleField = subField as RoleSubField)))
+			{
+				IStickyObject stickyObject;
+				ExternalConstraintShape shape;
+				MultiColumnExternalConstraint mcec;
+				Role role;
+				if ((null != (stickyObject = ((ORMDiagram)Diagram).StickyObject)) &&
+					(null != (shape = stickyObject as ExternalConstraintShape)) &&
+					(null != (mcec = shape.AssociatedConstraint as MultiColumnExternalConstraint)) &&
+					stickyObject.StickySelectable(role = roleField.AssociatedRole))
+				{
+					ExternalConstraintConnectAction activeExternalAction = ActiveExternalConstraintConnectAction;
+					if ((activeExternalAction == null) ||
+						(-1 == activeExternalAction.GetActiveRoleIndex(role)))
+					{
+						MultiColumnExternalConstraintRoleSequenceMoveableCollection sequences = (mcec as MultiColumnExternalConstraint).RoleSequenceCollection;
+						int sequenceCount = sequences.Count;
+						string formatString = ResourceStrings.SetConstraintStickyRoleTooltipFormatString;
+						for (int i = 0; i < sequenceCount; ++i)
+						{
+							MultiColumnExternalConstraintRoleSequence sequence = sequences[i];
+							int roleIndex = sequence.RoleCollection.IndexOf(role);
+							if (roleIndex != -1)
+							{
+								string current = string.Format(CultureInfo.InvariantCulture, formatString, i + 1, roleIndex + 1);
+								if (retVal == null)
+								{
+									retVal = current;
+								}
+								else
+								{
+									retVal = string.Format(CultureInfo.InvariantCulture, "{0}\n{1}", retVal, current);
+								}
+							}
+						}
+					}
+				}
+			}
+			return retVal;
+		}		/// <summary>
 		/// Return different shapes for objectified versus non-objectified fact types.
 		/// The actual shape is controlled by the tools options page.
 		/// </summary>
@@ -2916,7 +3026,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (factType != null)
 				{
 					SingleColumnExternalConstraint scec;
-					MultiColumnExternalConstraint mcec;
+					MultiColumnExternalConstraint mcec = null;
 					IList factConstraints = null;
 					IList<Role> roles = null;
 					if (null != (scec = constraint as SingleColumnExternalConstraint))
@@ -2957,7 +3067,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 										roleIndex = factRoles.IndexOf(roles[0]);
 										break;
 									case 2:
-										if (displayOption == ExternalConstraintRoleBarDisplay.AdjacentRoles)
+										Role role0 = roles[0];
+										Role role1 = roles[1];
+										if (displayOption == ExternalConstraintRoleBarDisplay.AdjacentRoles ||
+											(mcec != null && object.ReferenceEquals(role0, role1))) // Handles overlapping role sequences
 										{
 											goto default;
 										}
@@ -2965,8 +3078,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 										{
 											factRoles = factType.RoleCollection;
 											factRoleCount = factRoles.Count;
-											int index1 = factRoles.IndexOf(roles[0]);
-											int index2 = factRoles.IndexOf(roles[1]);
+											int index1 = factRoles.IndexOf(role0);
+											int index2 = factRoles.IndexOf(role1);
 											if (Math.Abs(index1 - index2) > 1)
 											{
 												goto default;

@@ -471,6 +471,18 @@
     <value xml:space="preserve">Set Super Type</value>
     <comment xml:space="preserve">The transaction name used by the subtype connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="SetConstraintStickyRole.DisplayFormatString">
+    <value xml:space="preserve">{0}.{1}</value>
+    <comment xml:space="preserve">The format string used to combine the sequence and column numbers in the role box of an active set (multicolumn) constraint.</comment>
+  </data>
+  <data name="SetConstraintStickyRole.DisplayTooltipFormatString">
+    <value xml:space="preserve">{0}.{1} (Sequence {0}, Role {1})</value>
+    <comment xml:space="preserve">The format string used to combine the sequence and column numbers in the tooltip of the role box of an active set (multicolumn) constraint.</comment>
+  </data>
+  <data name="SetConstraintStickyRole.DisplayOverlapping">
+    <value xml:space="preserve">{..}</value>
+    <comment xml:space="preserve">The string to display when role sequences in the active set (multicolumn) constraint overlap on a single role.</comment>
+  </data>
   <data name="SubtypeLink.Accessible.Description">
     <value xml:space="preserve">Connects a subtype to its supertype</value>
     <comment xml:space="preserve">Returned as the accessible description for a subtype link</comment>

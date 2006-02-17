@@ -46,24 +46,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#endregion // Virtual extensions
 		#region Customize appearance
 		/// <summary>
-		/// Determines if a <see cref="ShapeElement"/> should be drawn with a shadow because it
-		/// appears in more than one place in a model.
+		/// Determines if a the model element backing the shape element
+		/// is represented by a shape of the same type elsewhere in the presentation
+		/// layer.
 		/// </summary>
-		/// <seealso cref="ObjectTypeShape.HasShadow"/>
-		/// <seealso cref="FactTypeShape.HasShadow"/>
-		public static bool ShouldHaveShadow(ShapeElement shapeElement)
+		public static bool ElementHasMultiplePresentations(ShapeElement shapeElement)
 		{
 			ModelElement modelElement = shapeElement.ModelElement;
 			if (modelElement != null)
 			{
 				PresentationElementMoveableCollection presentationElements = modelElement.PresentationRolePlayers;
-				if (presentationElements.Count > 1)
+				int pelCount = presentationElements.Count;
+				if (pelCount != 0)
 				{
 					Type thisType = shapeElement.GetType();
-					for (int i = 0; i < presentationElements.Count; i++)
+					for (int i = 0; i < pelCount; ++i)
 					{
-						PresentationElement presentationElement = presentationElements[i];
-						if (shapeElement != presentationElement && thisType.Equals(presentationElement.GetType()))
+						PresentationElement pel = presentationElements[i];
+						if (!object.ReferenceEquals(shapeElement, pel) && thisType.IsAssignableFrom(pel.GetType()))
 						{
 							return true;
 						}

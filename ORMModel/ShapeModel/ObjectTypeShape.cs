@@ -61,7 +61,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			get
 			{
-				return ORMBaseShape.ShouldHaveShadow(this);
+				return ORMBaseShape.ElementHasMultiplePresentations(this);
 			}
 		}
 		/// <summary>

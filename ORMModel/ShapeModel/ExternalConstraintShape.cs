@@ -416,8 +416,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Implements IStickyObject.StickySelectable
 		/// </summary>
-		/// <param name="mel"></param>
-		/// <returns></returns>
 		protected bool StickySelectable(ModelElement mel)
 		{
 			bool rVal = false;
@@ -453,15 +451,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return StickySelectable(mel);
 		}
 		/// <summary>
-		/// Implements IStickyObject.StickySelectable
+		/// Implements IStickyObject.StickyRedraw
 		/// </summary>
 		protected void StickyRedraw()
 		{
 			RedrawAssociatedPels(true);
 		}
-		/// <summary>
-		/// Implements IStickyObject.StickySelectable
-		/// </summary>
 		void IStickyObject.StickyRedraw()
 		{
 			StickyRedraw();

@@ -247,7 +247,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // SingleColumnExternalConstraintAdded class
-		#region InternalConstraint fixup
+		#region ConstraintSetChanged fixup
 		#region FactTypeHasInternalConstraintAdded class
 		[RuleOn(typeof(FactTypeHasInternalConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
 		private class FactTypeHasInternalConstraintAdded : AddRule
@@ -319,11 +319,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 				FactType factType;
 				IConstraint constraint;
-				ConstraintRoleSequence sequence;
-				if (null != (factType = link.RoleCollection.FactType) &&
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection;
+				if (!sequence.IsRemoved &&
+					null != (factType = link.RoleCollection.FactType) &&
 					!factType.IsRemoved &&
-					null != (sequence = link.ConstraintRoleSequenceCollection) &&
-					!sequence.IsRemoved &&
 					null != (constraint = sequence.Constraint)
 					)
 				{
@@ -332,7 +331,31 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // ConstraintRoleSequenceRoleRemoved class
-		#endregion // InternalConstraint fixup
+		#region ExternalRoleConstraintRemoved class
+		/// <summary>
+		/// Update the fact type when constraint roles are removed. Used when
+		/// an entire role sequence is deleted from a multi-column external fact constraint
+		/// that does not also delete the fact constraint.
+		/// </summary>
+		[RuleOn(typeof(ExternalRoleConstraint), FireTime = TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class ExternalRoleConstraintRemoved : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ExternalRoleConstraint link = e.ModelElement as ExternalRoleConstraint;
+				FactType factType;
+				MultiColumnExternalFactConstraint factConstraint = link.FactConstraintCollection as MultiColumnExternalFactConstraint;
+				if (factConstraint != null &&
+					!factConstraint.IsRemoved &&
+					(null != (factType = factConstraint.FactTypeCollection)) &&
+					!factType.IsRemoved)
+				{
+					FactTypeShape.ConstraintSetChanged(factType, factConstraint.MultiColumnExternalConstraintCollection, false);
+				}
+			}
+		}
+		#endregion // ExternalRoleConstraintRemoved class
+		#endregion // ConstraintSetChanged fixup
 		#endregion // ModelHasConstraint fixup
 		#region FactTypeHasRole fixup
 		#region RoleAdded class

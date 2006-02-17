@@ -1809,6 +1809,36 @@
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.DefaultNewPageName");
 			}
 		}
+		/// <summary>
+		/// The format string used to combine the sequence and column numbers in the role box of an active set (multicolumn) constraint.
+		/// </summary>
+		public static string SetConstraintStickyRoleFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "SetConstraintStickyRole.DisplayFormatString");
+			}
+		}
+		/// <summary>
+		/// The format string used to combine the sequence and column numbers in the tooltip of the role box of an active set (multicolumn) constraint.
+		/// </summary>
+		public static string SetConstraintStickyRoleTooltipFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "SetConstraintStickyRole.DisplayTooltipFormatString");
+			}
+		}
+		/// <summary>
+		/// The string to display when role sequences in the active set (multicolumn) constraint overlap on a single role.
+		/// </summary>
+		public static string SetConstraintStickyRoleOverlapping
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "SetConstraintStickyRole.DisplayOverlapping");
+			}
+		}
 	}
 	#endregion // ResourceStrings class
 }

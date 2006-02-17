@@ -16,6 +16,7 @@
 		<arg:Rule class="ORMShapeModel.ConstraintRoleSequenceRoleRemoved"/>
 		<arg:Rule class="ORMShapeModel.ExternalFactConstraintAdded"/>
 		<arg:Rule class="ORMShapeModel.ExternalFactConstraintRemoved"/>
+		<arg:Rule class="ORMShapeModel.ExternalRoleConstraintRemoved"/>
 		<arg:Rule class="ORMShapeModel.FactTypedAdded"/>
 		<arg:Rule class="ORMShapeModel.FactTypeShapeChanged"/>
 		<arg:Rule class="ORMShapeModel.FactTypeHasInternalConstraintAdded"/>

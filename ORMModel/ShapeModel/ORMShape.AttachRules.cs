@@ -30,6 +30,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(ConstraintRoleSequenceRoleRemoved),
 				typeof(ExternalFactConstraintAdded),
 				typeof(ExternalFactConstraintRemoved),
+				typeof(ExternalRoleConstraintRemoved),
 				typeof(FactTypedAdded),
 				typeof(FactTypeShapeChanged),
 				typeof(FactTypeHasInternalConstraintAdded),

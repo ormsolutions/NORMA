@@ -587,4 +587,13 @@
 	<ResourceString name="DiagramDefaultNewPageName" model="Diagram" resourceName="Diagram.DefaultNewPageName">
 		<comment type="summary">The text shown for a new page on the tabbed diagram.</comment>
 	</ResourceString>
+	<ResourceString name="SetConstraintStickyRoleFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayFormatString">
+		<comment type="summary">The format string used to combine the sequence and column numbers in the role box of an active set (multicolumn) constraint.</comment>
+	</ResourceString>
+	<ResourceString name="SetConstraintStickyRoleTooltipFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayTooltipFormatString">
+		<comment type="summary">The format string used to combine the sequence and column numbers in the tooltip of the role box of an active set (multicolumn) constraint.</comment>
+	</ResourceString>
+	<ResourceString name="SetConstraintStickyRoleOverlapping" model="Diagram" resourceName="SetConstraintStickyRole.DisplayOverlapping">
+		<comment type="summary">The string to display when role sequences in the active set (multicolumn) constraint overlap on a single role.</comment>
+	</ResourceString>
 </ResourceStrings>
