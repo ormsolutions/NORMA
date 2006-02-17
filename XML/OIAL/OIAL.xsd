@@ -192,7 +192,7 @@
 				<xs:complexType>
 					<xs:complexContent>
 						<xs:extension base="oil:singleRoleConstraint">
-							<xs:attribute name="isPrimary" use="required" type="xs:boolean"/>
+							<xs:attribute name="isPreferred" use="required" type="xs:boolean"/>
 						</xs:extension>
 					</xs:complexContent>
 				</xs:complexType>
@@ -321,7 +321,7 @@
 				<xs:complexType>
 					<xs:complexContent>
 						<xs:extension base="oil:singleRoleSequenceConstraint">
-							<xs:attribute name="isPrimary" use="required" type="xs:boolean"/>
+							<xs:attribute name="isPreferred" use="required" type="xs:boolean"/>
 						</xs:extension>
 					</xs:complexContent>
 				</xs:complexType>

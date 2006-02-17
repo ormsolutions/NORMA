@@ -337,7 +337,7 @@
 				<xsl:with-param name="Prefix" select="$prefix"/>
 			</xsl:call-template>
 			<xsl:for-each select="oil:singleRoleUniquenessConstraint[@modality='alethic']">
-				<dcl:uniquenessConstraint name="{dsf:makeValidIdentifier(concat($prefix,@name))}" isPrimary="{@isPrimary}">
+				<dcl:uniquenessConstraint name="{dsf:makeValidIdentifier(concat($prefix,@name))}" isPrimary="{@isPreferred}">
 					<dcl:columnRef name="{dsf:makeValidIdentifier(concat($prefix,../@name))}"/>
 				</dcl:uniquenessConstraint>
 			</xsl:for-each>
@@ -394,6 +394,28 @@
 			<!-- TODO: We're nested and not-alethicly-mandatory in our parent, so add constraints for enforcing our mandatories. -->
 		</xsl:if>
 
+		<!-- TODO: This will break if @targetConceptType is not this table. -->
+		<xsl:for-each select="oil:roleSequenceUniquenessConstraint[@modality='alethic']">
+			<dcl:uniquenessConstraint name="{dsf:makeValidIdentifier(concat($prefix,@name))}" isPrimary="{@isPreferred}">
+				<xsl:for-each select="oil:roleSequence/oil:typeRef">
+					<xsl:variable name="refTarget" select="parent::oil:roleSequence/parent::oil:roleSequenceUniquenessConstraint/parent::oil:conceptType/child::*[@name=current()/@targetChild]"/>
+					<xsl:call-template name="GetColumnRef">
+						<xsl:with-param name="OilModel" select="$OilModel"/>
+						<xsl:with-param name="DataTypes" select="$DataTypes"/>
+						<xsl:with-param name="Target" select="$refTarget"/>
+					</xsl:call-template>
+					<!--
+					<xsl:choose>
+						<xsl:when test="$refTarget[self::oil:informationType]">
+							<dcl:columnRef name="{dsf:makeValidIdentifier(concat($prefix,@targetChild))}"/>
+						</xsl:when>
+						<xsl:when test="$regTarget[self::oil:conceptTypeRef]">
+						</xsl:when>
+					</xsl:choose>-->
+				</xsl:for-each>
+			</dcl:uniquenessConstraint>
+		</xsl:for-each>
+
 	</xsl:template>
 
 
@@ -436,10 +458,10 @@
 		<xsl:param name="DataTypes"/>
 		<xsl:param name="Target"/>
 		<xsl:choose>
-			<xsl:when test="$Target/self::oil:conceptType or self::oil:conceptTypeRef">
+			<xsl:when test="$Target/self::oil:conceptType or $Target/self::oil:conceptTypeRef">
 				<xsl:variable name="conceptTypeRefPrefix">
 					<xsl:if test="$Target/self::oil:conceptTypeRef">
-						<xsl:value-of select="concat(@name,'_')"/>
+						<xsl:value-of select="concat($Target/@name,'_')"/>
 					</xsl:if>
 				</xsl:variable>
 				<xsl:variable name="preferredIdentifierColumnsFragment">
@@ -487,7 +509,7 @@
 			</xsl:call-template>
 		</xsl:param>
 		<xsl:variable name="dataType" select="$DataTypes[@name=$TargetInformationType/@formatRef]"/>
-		<dcl:column name="{dsf:makeValidIdentifier(concat($Prefix,@name))}" isNullable="{$AlwaysNullable or not(@mandatory='alethic')}" isIdentity="{$AllowIdentity and $dataType/@isForIdentity='true'}">
+		<dcl:column name="{dsf:makeValidIdentifier(concat($Prefix,$TargetInformationType/@name))}" isNullable="{$AlwaysNullable or not($TargetInformationType/@mandatory='alethic')}" isIdentity="{$AllowIdentity and $dataType/@isForIdentity='true'}">
 			<xsl:copy-of select="$dataType/child::*"/>
 		</dcl:column>
 	</xsl:template>
@@ -508,8 +530,8 @@
 		<xsl:param name="DataTypes"/>
 		<xsl:param name="TargetConceptType"/>
 		<xsl:param name="AlwaysNullable" select="false()"/>
-		<xsl:variable name="preferredIdentifierInformationType" select="$TargetConceptType/oil:informationType[oil:singleRoleUniquenessConstraint[@isPrimary='true']]"/>
-		<xsl:variable name="preferredIdentifierRoleSequenceUniquenessConstraint" select="$TargetConceptType/oil:roleSequenceUniquenessConstraint[@isPrimary='true']"/>
+		<xsl:variable name="preferredIdentifierInformationType" select="$TargetConceptType/oil:informationType[oil:singleRoleUniquenessConstraint[@isPreferred='true']]"/>
+		<xsl:variable name="preferredIdentifierRoleSequenceUniquenessConstraint" select="$TargetConceptType/oil:roleSequenceUniquenessConstraint[@isPreferred='true']"/>
 		<xsl:choose>
 			<xsl:when test="$preferredIdentifierInformationType">
 				<xsl:for-each select="$preferredIdentifierInformationType">

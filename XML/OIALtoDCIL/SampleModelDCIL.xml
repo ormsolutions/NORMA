@@ -71,6 +71,10 @@
     <dcl:referenceConstraint name="DrivenByPerson_FK" targetTable="Person">
       <dcl:columnRef sourceName="DrvnByPrsn_Prsn_d" targetName="Person_id" />
     </dcl:referenceConstraint>
+    <dcl:uniquenessConstraint name="IUC18" isPrimary="true">
+      <dcl:columnRef name="DrivesCar_vin" />
+      <dcl:columnRef name="DrvnByPrsn_Prsn_d" />
+    </dcl:uniquenessConstraint>
   </dcl:table>
   <dcl:table name="PBCFPOD">
     <dcl:column name="CarSold_vin" isNullable="false" isIdentity="false">
@@ -91,6 +95,21 @@
     <dcl:referenceConstraint name="Seller_FK" targetTable="Person">
       <dcl:columnRef sourceName="Seller_Person_id" targetName="Person_id" />
     </dcl:referenceConstraint>
+    <dcl:uniquenessConstraint name="IUC23" isPrimary="true">
+      <dcl:columnRef name="Buyer_Person_id" />
+      <dcl:columnRef name="CarSold_vin" />
+      <dcl:columnRef name="Seller_Person_id" />
+    </dcl:uniquenessConstraint>
+    <dcl:uniquenessConstraint name="IUC24" isPrimary="false">
+      <dcl:columnRef name="SaleDate_YMD" />
+      <dcl:columnRef name="Seller_Person_id" />
+      <dcl:columnRef name="CarSold_vin" />
+    </dcl:uniquenessConstraint>
+    <dcl:uniquenessConstraint name="IUC25" isPrimary="false">
+      <dcl:columnRef name="CarSold_vin" />
+      <dcl:columnRef name="SaleDate_YMD" />
+      <dcl:columnRef name="Buyer_Person_id" />
+    </dcl:uniquenessConstraint>
   </dcl:table>
   <dcl:table name="Review">
     <dcl:column name="Car_vin" isNullable="false" isIdentity="false">
@@ -102,6 +121,10 @@
     <dcl:column name="Criteria_Name" isNullable="false" isIdentity="false">
       <dcl:predefinedDataType name="CHARACTER VARYING" precision="64" />
     </dcl:column>
+    <dcl:uniquenessConstraint name="IUC26" isPrimary="true">
+      <dcl:columnRef name="Car_vin" />
+      <dcl:columnRef name="Criteria_Name" />
+    </dcl:uniquenessConstraint>
   </dcl:table>
   <dcl:table name="PersonHasNickName">
     <dcl:column name="NickName" isNullable="false" isIdentity="false">
@@ -113,6 +136,10 @@
     <dcl:referenceConstraint name="Person_FK" targetTable="Person">
       <dcl:columnRef sourceName="Person_Person_id" targetName="Person_id" />
     </dcl:referenceConstraint>
+    <dcl:uniquenessConstraint name="IUC33" isPrimary="true">
+      <dcl:columnRef name="NickName" />
+      <dcl:columnRef name="Person_Person_id" />
+    </dcl:uniquenessConstraint>
   </dcl:table>
   <dcl:table name="Person">
     <dcl:column name="FirstName" isNullable="false" isIdentity="false">
@@ -151,6 +178,9 @@
     <dcl:column name="Gender_Gender_Code" isNullable="false" isIdentity="false">
       <dcl:domainDataTypeRef name="Gender_Code" />
     </dcl:column>
+    <dcl:column name="PersonHasParents" isNullable="true" isIdentity="false">
+      <dcl:predefinedDataType name="BOOLEAN" />
+    </dcl:column>
     <dcl:column isNullable="true" isIdentity="false" name="VlTyp1_VlTyp1Vl">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
@@ -172,12 +202,34 @@
     <dcl:referenceConstraint name="Mother_FK" targetTable="Person">
       <dcl:columnRef sourceName="Mother_Person_id" targetName="Person_id" />
     </dcl:referenceConstraint>
+    <dcl:uniquenessConstraint name="CPEUC3" isPrimary="true">
+      <dcl:columnRef name="Father_Person_id" />
+      <dcl:columnRef name="CPBOBON" />
+      <dcl:columnRef name="Mother_Person_id" />
+    </dcl:uniquenessConstraint>
     <dcl:column name="Death_Date_YMD" isNullable="true" isIdentity="false">
       <dcl:predefinedDataType name="BIGINT" />
     </dcl:column>
     <dcl:column name="DDCDCT" isNullable="true" isIdentity="false">
       <dcl:domainDataTypeRef name="DeathCause_Type" />
     </dcl:column>
+    <dcl:column name="DNDNDIFPC" isNullable="true" isIdentity="false">
+      <dcl:predefinedDataType name="BOOLEAN" />
+    </dcl:column>
+    <dcl:column name="DUDUDIV" isNullable="true" isIdentity="false">
+      <dcl:predefinedDataType name="BOOLEAN" />
+    </dcl:column>
+    <dcl:column name="DUDUDIB" isNullable="true" isIdentity="false">
+      <dcl:predefinedDataType name="BOOLEAN" />
+    </dcl:column>
+    <dcl:uniquenessConstraint name="EUC1" isPrimary="false">
+      <dcl:columnRef name="FirstName" />
+      <dcl:columnRef name="Date_YMD" />
+    </dcl:uniquenessConstraint>
+    <dcl:uniquenessConstraint name="EUC2" isPrimary="false">
+      <dcl:columnRef name="LastName" />
+      <dcl:columnRef name="Date_YMD" />
+    </dcl:uniquenessConstraint>
   </dcl:table>
   <dcl:table name="Task">
     <dcl:column name="Task_id" isNullable="false" isIdentity="true">

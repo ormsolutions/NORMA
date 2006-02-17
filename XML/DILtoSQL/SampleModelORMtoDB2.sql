@@ -5,7 +5,8 @@ SET SCHEMA 'SAMPLEMODEL';
 CREATE TABLE SampleModel.PersonDrivesCar
 (
 	DrivesCar_vin BIGINT NOT NULL, 
-	DrvnByPrsn_Prsn_d BIGINT NOT NULL
+	DrvnByPrsn_Prsn_d BIGINT NOT NULL, 
+	CONSTRAINT IUC18 PRIMARY KEY(DrivesCar_vin, DrvnByPrsn_Prsn_d)
 );
 
 CREATE TABLE SampleModel.PBCFPOD
@@ -13,20 +14,25 @@ CREATE TABLE SampleModel.PBCFPOD
 	CarSold_vin BIGINT NOT NULL, 
 	SaleDate_YMD BIGINT NOT NULL, 
 	Buyer_Person_id BIGINT NOT NULL, 
-	Seller_Person_id BIGINT NOT NULL
+	Seller_Person_id BIGINT NOT NULL, 
+	CONSTRAINT IUC23 PRIMARY KEY(Buyer_Person_id, CarSold_vin, Seller_Person_id)
+	CONSTRAINT IUC24 UNIQUE(SaleDate_YMD, Seller_Person_id, CarSold_vin)
+	CONSTRAINT IUC25 UNIQUE(CarSold_vin, SaleDate_YMD, Buyer_Person_id)
 );
 
 CREATE TABLE SampleModel.Review
 (
 	Car_vin BIGINT NOT NULL, 
 	Rating_Nr_Integer BIGINT CONSTRAINT Integer_Chk CHECK (Rating_Nr_Integer BETWEEN 1 AND 7) NOT NULL, 
-	Criteria_Name CHARACTER VARYING(64) NOT NULL
+	Criteria_Name CHARACTER VARYING(64) NOT NULL, 
+	CONSTRAINT IUC26 PRIMARY KEY(Car_vin, Criteria_Name)
 );
 
 CREATE TABLE SampleModel.PersonHasNickName
 (
 	NickName CHARACTER VARYING(64) NOT NULL, 
-	Person_Person_id BIGINT NOT NULL
+	Person_Person_id BIGINT NOT NULL, 
+	CONSTRAINT IUC33 PRIMARY KEY(NickName, Person_Person_id)
 );
 
 CREATE TABLE SampleModel.Person
@@ -50,9 +56,12 @@ CREATE TABLE SampleModel.Person
 	DNDNDIFPC CHARACTER(1) FOR BIT DATA, 
 	DUDUDIV CHARACTER(1) FOR BIT DATA, 
 	DUDUDIB CHARACTER(1) FOR BIT DATA, 
-	CONSTRAINT IUC2 PRIMARY KEY(Person_id), 
+	CONSTRAINT IUC2 PRIMARY KEY(Person_id)
 	
 	
+	
+	CONSTRAINT EUC1 UNIQUE(FirstName, Date_YMD)
+	CONSTRAINT EUC2 UNIQUE(LastName, Date_YMD)
 );
 
 CREATE TABLE SampleModel.Task

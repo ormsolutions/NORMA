@@ -241,7 +241,7 @@
 	<xsl:template name="GenerateEntityComplexTypes">
 		<xsl:param name="informationTypeFormatMappings"/>
 		<xsl:for-each select="//oil:conceptType">
-			<xsl:variable name="preferredIdentifier" select="oil:informationType[oil:singleRoleUniquenessConstraint/@isPrimary='true']"/>
+			<xsl:variable name="preferredIdentifier" select="oil:informationType[oil:singleRoleUniquenessConstraint/@isPreferred='true']"/>
 			<xsOut:complexType name="{@name}">
 				<xsOut:attribute name="{$preferredIdentifier/@name}" type="{$informationTypeFormatMappings[@name=$preferredIdentifier/@formatRef]/@target}" use="required"/>
 			</xsOut:complexType>
@@ -250,7 +250,7 @@
 
 	<xsl:template match="oil:conceptType">
 		<xsl:param name="informationTypeFormatMappings"/>
-		<!--<xsl:variable name="preferredIdentifier" select="oil:informationType[oil:singleRoleUniquenessConstraint/@isPrimary='true']/@name"/>-->
+		<!--<xsl:variable name="preferredIdentifier" select="oil:informationType[oil:singleRoleUniquenessConstraint/@isPreferred='true']/@name"/>-->
 		<!--Complex type definitions for each major Object Type-->
 		<xsOut:complexType name="{@name}_FACTS">
 			<xsOut:complexContent>
@@ -279,7 +279,7 @@
 					<!--<xsOut:attribute name="{$preferredIdentifier}" type="{concat('oxs:',$preferredIdentifier)}" use="required"/>-->
 					<xsl:for-each select="oil:informationType">
 						<xsl:choose>
-							<xsl:when test="oil:singleRoleUniquenessConstraint/@isPrimary='true'">
+							<xsl:when test="oil:singleRoleUniquenessConstraint/@isPreferred='true'">
 							</xsl:when>
 							<xsl:otherwise>
 								<xsOut:attribute name="{@formatRef}" type="{$informationTypeFormatMappings[@name=current()/@formatRef]/@target}">
@@ -545,7 +545,7 @@
 				<xsl:variable name="fieldPath">
 
 				</xsl:variable>
-				<xsl:variable name="singleField" select="oil:informationType[oil:singleRoleUniquenessConstraint/@isPrimary='true']/@name"/>
+				<xsl:variable name="singleField" select="oil:informationType[oil:singleRoleUniquenessConstraint/@isPreferred='true']/@name"/>
 				<xsl:if test="string-length($singleField)">
 					<xsOut:field xpath="@{$singleField}"/>
 				</xsl:if>
@@ -557,7 +557,7 @@
 			<xsl:variable name="MyName"  select="../@name"/>
 			<xsl:variable name="MyParentsName" select="../../@name"/>
 			<!--Only does one to one relationships-->
-			<xsl:if test="@isPrimary!='true'">
+			<xsl:if test="@isPreferred!='true'">
 				<xsOut:unique name="{$MyName}_UNIQUE">
 					<xsOut:selector xpath="oxs:{/oil:model/@name}/oxs:{$MyParentsName}"/>
 					<xsOut:field xpath="oxs:{$MyName}"/>
@@ -571,7 +571,7 @@
 				<xsl:variable name="parentName" select="../@name"/>
 				<xsOut:keyref name="{$parentName}{@name}_REF" refer="{@target}_KEY">
 					<xs:selector xpath="oxs:{$parentName}Elements/oxs:{$parentName}"/>
-					<xsl:variable name="identifyer" select="../../oil:conceptType[@name=current()/@target]/oil:informationType[oil:singleRoleUniquenessConstraint/@isPrimary='true']/@name"/>
+					<xsl:variable name="identifyer" select="../../oil:conceptType[@name=current()/@target]/oil:informationType[oil:singleRoleUniquenessConstraint/@isPreferred='true']/@name"/>
 					<xs:field xpath="oxs:{@target}/@{$identifyer}"/>
 				</xsOut:keyref>
 			</xsl:for-each>

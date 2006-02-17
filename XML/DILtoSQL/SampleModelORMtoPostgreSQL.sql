@@ -13,7 +13,8 @@ CREATE DOMAIN SampleModel.Gender_Code AS CHARACTER(1) CONSTRAINT Gender_Code_Chk
 CREATE TABLE SampleModel.PersonDrivesCar
 (
 	DrivesCar_vin BIGINT NOT NULL, 
-	DrvnByPrsn_Prsn_d BIGINT NOT NULL
+	DrvnByPrsn_Prsn_d BIGINT NOT NULL, 
+	CONSTRAINT IUC18 PRIMARY KEY(DrivesCar_vin, DrvnByPrsn_Prsn_d)
 );
 
 CREATE TABLE SampleModel.PBCFPOD
@@ -21,20 +22,25 @@ CREATE TABLE SampleModel.PBCFPOD
 	CarSold_vin BIGINT NOT NULL, 
 	SaleDate_YMD BIGINT NOT NULL, 
 	Buyer_Person_id BIGINT NOT NULL, 
-	Seller_Person_id BIGINT NOT NULL
+	Seller_Person_id BIGINT NOT NULL, 
+	CONSTRAINT IUC23 PRIMARY KEY(Buyer_Person_id, CarSold_vin, Seller_Person_id), 
+	CONSTRAINT IUC24 UNIQUE(SaleDate_YMD, Seller_Person_id, CarSold_vin), 
+	CONSTRAINT IUC25 UNIQUE(CarSold_vin, SaleDate_YMD, Buyer_Person_id)
 );
 
 CREATE TABLE SampleModel.Review
 (
 	Car_vin BIGINT NOT NULL, 
 	Rating_Nr_Integer SampleModel."Integer" NOT NULL, 
-	Criteria_Name CHARACTER VARYING(64) NOT NULL
+	Criteria_Name CHARACTER VARYING(64) NOT NULL, 
+	CONSTRAINT IUC26 PRIMARY KEY(Car_vin, Criteria_Name)
 );
 
 CREATE TABLE SampleModel.PersonHasNickName
 (
 	NickName CHARACTER VARYING(64) NOT NULL, 
-	Person_Person_id BIGINT NOT NULL
+	Person_Person_id BIGINT NOT NULL, 
+	CONSTRAINT IUC33 PRIMARY KEY(NickName, Person_Person_id)
 );
 
 CREATE TABLE SampleModel.Person
@@ -48,15 +54,22 @@ CREATE TABLE SampleModel.Person
 	HTHTSHTSD CHARACTER VARYING(256) , 
 	OwnsCar_vin BIGINT , 
 	Gender_Gender_Code SampleModel.Gender_Code NOT NULL, 
+	PersonHasParents BOOLEAN, 
 	VlTyp1_VlTyp1Vl BIGINT , 
 	CPBOBON BIGINT , 
 	Father_Person_id BIGINT NOT NULL, 
 	Mother_Person_id BIGINT NOT NULL, 
 	Death_Date_YMD BIGINT , 
 	DDCDCT SampleModel.DeathCause_Type , 
+	DNDNDIFPC BOOLEAN, 
+	DUDUDIV BOOLEAN, 
+	DUDUDIB BOOLEAN, 
 	CONSTRAINT IUC2 PRIMARY KEY(Person_id), 
 	CONSTRAINT IUC9 UNIQUE(SclScrtyNmbr), 
-	CONSTRAINT IUC22 UNIQUE(OwnsCar_vin)
+	CONSTRAINT IUC22 UNIQUE(OwnsCar_vin), 
+	CONSTRAINT CPEUC3 PRIMARY KEY(Father_Person_id, CPBOBON, Mother_Person_id), 
+	CONSTRAINT EUC1 UNIQUE(FirstName, Date_YMD), 
+	CONSTRAINT EUC2 UNIQUE(LastName, Date_YMD)
 );
 
 CREATE TABLE SampleModel.Task

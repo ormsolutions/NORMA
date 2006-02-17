@@ -12,6 +12,7 @@
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
 
+	<!-- The assertions have very low overhead. It is strongly advised that $EnableAssertions always be set to true() -->
 	<xsl:param name="EnableAssertions" select="true()"/>
 	<xsl:param name="OutputDebugInformation" select="false()"/>
 	<!-- To use $OutputVerboseDebugInformation, $OutputDebugInformtion must also be set to true() -->
@@ -298,17 +299,20 @@
 		</xsl:variable>
 		<xsl:variable name="inheritedPlayedRoles" select="msxsl:node-set($inheritedPlayedRolesFragment)/child::*"/>
 
-		<!-- All roles directly played by this object type or its supertype(s).  -->
+		<!-- All roles directly played by this object type or its supertype(s). -->
 		<xsl:variable name="directAndInheritedPlayedRoles" select="$directPlayedRoles | $inheritedPlayedRoles"/>
 
 		<!-- All direct and inherited facts participated in by the supertype(s) of this object type. -->
 		<xsl:variable name="inheritedFacts" select="$Model/orm:Facts/orm:Fact[orm:FactRoles/child::*/@id=$inheritedPlayedRoles/@ref]"/>
 		
 		<!-- Facts that this object type directly participates in. Facts participated in via join paths and subtyping relationships are NOT included. -->
-		<xsl:variable name="directFacts" select="$Model/orm:Facts/orm:Fact[orm:FactRoles/child::*/@id=current()/orm:PlayedRoles/child::*/@ref]"/>
+		<xsl:variable name="directFacts" select="$Model/orm:Facts/orm:Fact[orm:FactRoles/child::*/@id=$directPlayedRoles/@ref]"/>
 
 		<!-- All direct and inherited facts for this object type. -->
 		<xsl:variable name="directAndInheritedFacts" select="$directFacts | $inheritedFacts"/>
+
+		<!-- All roles in $directFacts that are not in $directPlayedRoles. -->
+		<xsl:variable name="directFactsNonPlayedRoles" select="$directFacts/orm:FactRoles/child::*[not(@id=$directPlayedRoles/@ref)]"/>
 		
 		<!-- The internal or external uniqueness constraint that is the preferred identifier for this object type. -->
 		<xsl:variable name="preferredIdentifier" select="($Model/orm:Facts/orm:Fact/orm:InternalConstraints/orm:InternalUniquenessConstraint|$Model/orm:ExternalConstraints/orm:ExternalUniquenessConstraint)[@id=current()/orm:PreferredIdentifier/@ref]"/>
@@ -372,6 +376,9 @@
 		<directAndInheritedFacts>
 			<xsl:copy-of select="$directAndInheritedFacts"/>
 		</directAndInheritedFacts>
+		<directFactsNonPlayedRoles>
+			<xsl:copy-of select="$directFactsNonPlayedRoles"/>
+		</directFactsNonPlayedRoles>
 		<preferredIdentifier>
 			<xsl:copy-of select="$preferredIdentifier"/>
 		</preferredIdentifier>
@@ -568,7 +575,7 @@
 			<!-- If we're an orm:ValueType, we need to add an oil:informationType to capture the data that we contain. -->
 			<xsl:if test="self::orm:ValueType">
 				<oil:informationType name="{concat($thisObjectTypeName,'Value')}" mandatory="alethic" sourceRef="{$thisObjectTypeId}" formatRef="{$thisObjectTypeName}">
-					<oil:singleRoleUniquenessConstraint name="{concat($thisObjectTypeName,'Value_Unique')}" modality="alethic" sourceRef="{$thisObjectTypeId}" isPrimary="true"/>
+					<oil:singleRoleUniquenessConstraint name="{concat($thisObjectTypeName,'Value_Unique')}" modality="alethic" sourceRef="{$thisObjectTypeId}" isPreferred="true"/>
 				</oil:informationType>
 			</xsl:if>
 
@@ -627,7 +634,7 @@
 									<xsl:with-param name="Target" select="$uniquenessConstraint"/>
 								</xsl:call-template>
 							</xsl:attribute>
-							<xsl:attribute name="isPrimary">
+							<xsl:attribute name="isPreferred">
 								<xsl:value-of select="$thisObjectTypeInformation/preferredIdentifier/orm:InternalUniquenessConstraint/@id = $uniquenessConstraint/@id"/>
 							</xsl:attribute>
 						</oil:singleRoleUniquenessConstraint>
@@ -694,9 +701,122 @@
 				</xsl:choose>
 			</xsl:for-each>
 
-			
+			<!-- Process external constraints. -->
+			<xsl:for-each select="$Model/orm:ExternalConstraints/child::*[orm:RoleSequence/orm:Role/@ref=$thisObjectTypeInformation/directFactsNonPlayedRoles/child::*/@id]">
+				<!-- TODO: Process non-uniqueness external constraints here. -->
+
+				<!-- HACK: TODO: UNDONE: The code inside $roleSequences kind of works, but is largely untested and very fragile. -->
+				<xsl:variable name="roleSequences">
+					<xsl:for-each select="orm:RoleSequence">
+						<oil:roleSequence>
+							<xsl:for-each select="orm:Role">
+								<!-- The meanings of 'this' and 'opposite' are reversed for this block... -->
+								<!-- HACK: A lot of these are not really needed, other than that the templates we call to process the role require them. -->
+								<xsl:variable name="fact" select="$Model/orm:Facts/orm:Fact[orm:FactRoles/child::*/@id=current()/@ref]"/>
+								<xsl:variable name="oppositeRole" select="$fact/orm:FactRoles/child::*[@id=current()/@ref]"/>
+								<xsl:variable name="oppositeRolePlayerId" select="$oppositeRole/orm:RolePlayer/@ref"/>
+								<xsl:variable name="thisRole" select="$fact[orm:FactRoles/child::*/@id=$oppositeRolePlayerId]/orm:FactRoles/child::*[not(@id=$oppositeRolePlayerId)]"/>
+								<xsl:variable name="thisRoleId" select="$thisRole/@id"/>
+								<xsl:variable name="oppositeRolePlayer" select="$ObjectTypeInformation[@id=$oppositeRolePlayerId]"/>
+								<xsl:variable name="oppositeRolePlayerName" select="$oppositeRolePlayer/@Name"/>
+								<xsl:variable name="oppositeRolePlayerDesiredParentOrTopLevelTypeId">
+									<xsl:call-template name="GetTopLevelTypeId">
+										<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
+										<xsl:with-param name="TopLevelTypes" select="$TopLevelTypes"/>
+										<xsl:with-param name="TargetId" select="$oppositeRolePlayerId"/>
+										<xsl:with-param name="DesiredParentId" select="$thisObjectTypeId"/>
+									</xsl:call-template>
+								</xsl:variable>
+								<xsl:variable name="name">
+									<xsl:choose>
+										<xsl:when test="string-length($oppositeRole/@Name)&gt;0">
+											<xsl:value-of select="$oppositeRole/@Name"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="$oppositeRolePlayerName"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:variable name="mandatory" select="'false'"/>
+								<xsl:variable name="oilConstraints" select="''"/>
+								<xsl:choose>
+									<xsl:when test="not(string-length($oppositeRolePlayerDesiredParentOrTopLevelTypeId))">
+										<xsl:variable name="informationTypesFragment">
+											<xsl:call-template name="GetOilInformationTypes">
+												<xsl:with-param name="Model" select="$Model"/>
+												<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
+												<xsl:with-param name="ContainingConceptTypeName" select="$thisObjectTypeName"/>
+												<xsl:with-param name="RolePlayer" select="$oppositeRolePlayer"/>
+												<xsl:with-param name="Mandatory" select="$mandatory"/>
+												<xsl:with-param name="SourceRoleRef" select="$thisRoleId"/>
+												<xsl:with-param name="BaseName" select="$name"/>
+												<xsl:with-param name="OilConstraints" select="$oilConstraints"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:for-each select="msxsl:node-set($informationTypesFragment)/child::*">
+											<oil:typeRef targetConceptType="{$thisObjectTypeName}" targetChild="{@name}"/>
+										</xsl:for-each>
+									</xsl:when>
+									<xsl:when test="$oppositeRolePlayerDesiredParentOrTopLevelTypeId = $thisObjectTypeId">
+										<xsl:variable name="conceptTypesFragment">
+											<xsl:apply-templates select="$oppositeRolePlayer" mode="GenerateConceptTypes">
+												<xsl:with-param name="Model" select="$Model"/>
+												<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
+												<xsl:with-param name="FactTypeAbsorptions" select="$FactTypeAbsorptions"/>
+												<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
+												<xsl:with-param name="TopLevelTypes" select="$TopLevelTypes"/>
+												<xsl:with-param name="Mandatory" select="$mandatory"/>
+												<xsl:with-param name="SourceRoleRef" select="$thisRoleId"/>
+												<xsl:with-param name="OilConstraintsFromParent" select="$oilConstraints"/>
+											</xsl:apply-templates>
+										</xsl:variable>
+										<xsl:for-each select="msxsl:node-set($conceptTypesFragment)/child::*">
+											<oil:typeRef targetConceptType="{$thisObjectTypeName}" targetChild="{@name}"/>
+										</xsl:for-each>
+									</xsl:when>
+									<xsl:when test="not($EnableAssertions) or ($oppositeRolePlayerId=($TopLevelTypes/@id|$ObjectTypeAbsorptions/@ref))">
+										<oil:typeRef targetConceptType="{$thisObjectTypeName}" targetChild="{$name}"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:message terminate="yes">
+											<xsl:text>SANITY CHECK: Opposite role players must be not absorbed, absorbed by us, or absorbed by another top-level type.</xsl:text>
+										</xsl:message>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:for-each>
+						</oil:roleSequence>
+					</xsl:for-each>
+				</xsl:variable>
+				
+				<xsl:choose>
+					<xsl:when test="self::orm:ExternalUniquenessConstraint">
+						<oil:roleSequenceUniquenessConstraint name="{@Name}" sourceRef="{@id}">
+							<xsl:attribute name="modality">
+								<xsl:call-template name="GetModality">
+									<xsl:with-param name="Target" select="."/>
+								</xsl:call-template>
+							</xsl:attribute>
+							<xsl:attribute name="isPreferred">
+								<xsl:value-of select="$thisObjectTypeInformation/preferredIdentifier/orm:ExternalUniquenessConstraint/@id = current()/@id"/>
+							</xsl:attribute>
+							<xsl:copy-of select="$roleSequences"/>
+						</oil:roleSequenceUniquenessConstraint>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:comment>
+							<xsl:text>WARNING: There once was an external constraint here. There isn't any more. It was of type "</xsl:text>
+							<xsl:value-of select="local-name()"/>
+							<xsl:text>", and named "</xsl:text>
+							<xsl:value-of select="@Name"/>
+							<xsl:text>".</xsl:text>
+						</xsl:comment>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:for-each>
+
+			<!-- Process other external constraints. -->
 			<xsl:for-each select="$Model/orm:ExternalConstraints/child::*[orm:RoleSequence/orm:Role/@ref=$thisObjectTypeInformation/directPlayedRoles/child::*/@ref]">
-				<!-- TODO: Process external constraints here. -->
+				
 			</xsl:for-each>
 
 			<!-- HACK: This node-set() call doesn't strictly need to be here, but if it is not, the output formatting done by the processor gets screwed up. -->
