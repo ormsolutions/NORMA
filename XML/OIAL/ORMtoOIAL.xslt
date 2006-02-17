@@ -311,8 +311,8 @@
 		<!-- All direct and inherited facts for this object type. -->
 		<xsl:variable name="directAndInheritedFacts" select="$directFacts | $inheritedFacts"/>
 
-		<!-- All roles in $directFacts that are not in $directPlayedRoles. -->
-		<xsl:variable name="directFactsNonPlayedRoles" select="$directFacts/orm:FactRoles/child::*[not(@id=$directPlayedRoles/@ref)]"/>
+		<!-- All roles in $directFacts that are opposite a role in $directPlayedRoles. -->
+		<xsl:variable name="directFactsOppositeRoles" select="$directFacts/orm:FactRoles/child::*[not(@id=$directPlayedRoles/@ref)] | $directFacts/orm:FactRoles[child::*[1]/@id=$directPlayedRoles/@ref and child::*[2]/@id=$directPlayedRoles/@ref]/child::*"/>
 		
 		<!-- The internal or external uniqueness constraint that is the preferred identifier for this object type. -->
 		<xsl:variable name="preferredIdentifier" select="($Model/orm:Facts/orm:Fact/orm:InternalConstraints/orm:InternalUniquenessConstraint|$Model/orm:ExternalConstraints/orm:ExternalUniquenessConstraint)[@id=current()/orm:PreferredIdentifier/@ref]"/>
@@ -376,9 +376,9 @@
 		<directAndInheritedFacts>
 			<xsl:copy-of select="$directAndInheritedFacts"/>
 		</directAndInheritedFacts>
-		<directFactsNonPlayedRoles>
-			<xsl:copy-of select="$directFactsNonPlayedRoles"/>
-		</directFactsNonPlayedRoles>
+		<directFactsOppositeRoles>
+			<xsl:copy-of select="$directFactsOppositeRoles"/>
+		</directFactsOppositeRoles>
 		<preferredIdentifier>
 			<xsl:copy-of select="$preferredIdentifier"/>
 		</preferredIdentifier>
@@ -702,20 +702,20 @@
 			</xsl:for-each>
 
 			<!-- Process external constraints. -->
-			<xsl:for-each select="$Model/orm:ExternalConstraints/child::*[orm:RoleSequence/orm:Role/@ref=$thisObjectTypeInformation/directFactsNonPlayedRoles/child::*/@id]">
-				<!-- TODO: Process non-uniqueness external constraints here. -->
+			<xsl:for-each select="$Model/orm:ExternalConstraints/child::*[(child::orm:RoleSequences|self::*)/orm:RoleSequence/orm:Role/@ref=$thisObjectTypeInformation/directFactsOppositeRoles/child::*/@id]">
 
 				<!-- HACK: TODO: UNDONE: The code inside $roleSequences kind of works, but is largely untested and very fragile. -->
-				<xsl:variable name="roleSequences">
-					<xsl:for-each select="orm:RoleSequence">
+				<xsl:variable name="roleSequencesFragment">
+					<!-- This code will probably only work when ALL of the roles in ALL of the role sequences are from facts in which the opposite role is played by this object. -->
+					<xsl:for-each select="(child::orm:RoleSequences|self::*)/orm:RoleSequence">
 						<oil:roleSequence>
 							<xsl:for-each select="orm:Role">
-								<!-- The meanings of 'this' and 'opposite' are reversed for this block... -->
+								<!-- Remember: We are looping over the roles and role sequences of an external constraint, NOT of a fact type! -->
 								<!-- HACK: A lot of these are not really needed, other than that the templates we call to process the role require them. -->
 								<xsl:variable name="fact" select="$Model/orm:Facts/orm:Fact[orm:FactRoles/child::*/@id=current()/@ref]"/>
 								<xsl:variable name="oppositeRole" select="$fact/orm:FactRoles/child::*[@id=current()/@ref]"/>
 								<xsl:variable name="oppositeRolePlayerId" select="$oppositeRole/orm:RolePlayer/@ref"/>
-								<xsl:variable name="thisRole" select="$fact[orm:FactRoles/child::*/@id=$oppositeRolePlayerId]/orm:FactRoles/child::*[not(@id=$oppositeRolePlayerId)]"/>
+								<xsl:variable name="thisRole" select="$fact/orm:FactRoles/child::*[not(@id=$oppositeRolePlayerId)]"/>
 								<xsl:variable name="thisRoleId" select="$thisRole/@id"/>
 								<xsl:variable name="oppositeRolePlayer" select="$ObjectTypeInformation[@id=$oppositeRolePlayerId]"/>
 								<xsl:variable name="oppositeRolePlayerName" select="$oppositeRolePlayer/@Name"/>
@@ -758,21 +758,7 @@
 										</xsl:for-each>
 									</xsl:when>
 									<xsl:when test="$oppositeRolePlayerDesiredParentOrTopLevelTypeId = $thisObjectTypeId">
-										<xsl:variable name="conceptTypesFragment">
-											<xsl:apply-templates select="$oppositeRolePlayer" mode="GenerateConceptTypes">
-												<xsl:with-param name="Model" select="$Model"/>
-												<xsl:with-param name="ObjectTypeInformation" select="$ObjectTypeInformation"/>
-												<xsl:with-param name="FactTypeAbsorptions" select="$FactTypeAbsorptions"/>
-												<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
-												<xsl:with-param name="TopLevelTypes" select="$TopLevelTypes"/>
-												<xsl:with-param name="Mandatory" select="$mandatory"/>
-												<xsl:with-param name="SourceRoleRef" select="$thisRoleId"/>
-												<xsl:with-param name="OilConstraintsFromParent" select="$oilConstraints"/>
-											</xsl:apply-templates>
-										</xsl:variable>
-										<xsl:for-each select="msxsl:node-set($conceptTypesFragment)/child::*">
-											<oil:typeRef targetConceptType="{$thisObjectTypeName}" targetChild="{@name}"/>
-										</xsl:for-each>
+										<oil:typeRef targetConceptType="{$thisObjectTypeName}" targetChild="{$name}"/>
 									</xsl:when>
 									<xsl:when test="not($EnableAssertions) or ($oppositeRolePlayerId=($TopLevelTypes/@id|$ObjectTypeAbsorptions/@ref))">
 										<oil:typeRef targetConceptType="{$thisObjectTypeName}" targetChild="{$name}"/>
@@ -787,20 +773,74 @@
 						</oil:roleSequence>
 					</xsl:for-each>
 				</xsl:variable>
+				<!-- HACK: This node-set() call doesn't strictly need to be here, but if it is not, the output formatting done by the processor gets screwed up. -->
+				<xsl:variable name="roleSequences" select="msxsl:node-set($roleSequencesFragment)/child::*"/>
+				<xsl:variable name="modality">
+					<xsl:call-template name="GetModality">
+						<xsl:with-param name="Target" select="."/>
+					</xsl:call-template>
+				</xsl:variable>
 				
 				<xsl:choose>
+					<!-- TODO: Process other external constraints here. -->
 					<xsl:when test="self::orm:ExternalUniquenessConstraint">
-						<oil:roleSequenceUniquenessConstraint name="{@Name}" sourceRef="{@id}">
-							<xsl:attribute name="modality">
-								<xsl:call-template name="GetModality">
-									<xsl:with-param name="Target" select="."/>
-								</xsl:call-template>
-							</xsl:attribute>
+						<oil:roleSequenceUniquenessConstraint name="{@Name}" modality="{$modality}" sourceRef="{@id}">
 							<xsl:attribute name="isPreferred">
 								<xsl:value-of select="$thisObjectTypeInformation/preferredIdentifier/orm:ExternalUniquenessConstraint/@id = current()/@id"/>
 							</xsl:attribute>
 							<xsl:copy-of select="$roleSequences"/>
 						</oil:roleSequenceUniquenessConstraint>
+					</xsl:when>
+					<xsl:when test="self::orm:RingConstraint">
+						<oil:ringConstraint name="{@Name}" modality="{$modality}" sourceRef="{@id}">
+							<xsl:attribute name="type">
+								<xsl:choose>
+									<xsl:when test="@Type='Irreflexive'">
+										<xsl:value-of select="'irreflexive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='Acyclic'">
+										<xsl:value-of select="'acyclic'"/>
+									</xsl:when>
+									<xsl:when test="@Type='Intransitive'">
+										<xsl:value-of select="'intransitive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='Symmetric'">
+										<xsl:value-of select="'symmetric'"/>
+									</xsl:when>
+									<xsl:when test="@Type='Asymmetric'">
+										<xsl:value-of select="'asymmetric'"/>
+									</xsl:when>
+									<xsl:when test="@Type='AntiSymmetric'">
+										<xsl:value-of select="'anti-symmetric'"/>
+									</xsl:when>
+									<xsl:when test="@Type='AcyclicIntransitive'">
+										<xsl:value-of select="'acyclic intransitive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='SymmetricIrreflexive'">
+										<xsl:value-of select="'symmetric irreflexive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='SymmetricIntransitive'">
+										<xsl:value-of select="'symmetric intransitive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='AsymmetricIntransitive'">
+										<xsl:value-of select="'asymmetric intransitive'"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:message terminate="yes">
+											<xsl:text>ERROR: Ring constraint type of "</xsl:text>
+											<xsl:value-of select="@Type"/>
+											<xsl:text>" is not recognized.</xsl:text>
+										</xsl:message>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:attribute>
+							<xsl:copy-of select="$roleSequences"/>
+						</oil:ringConstraint>
+					</xsl:when>
+					<xsl:when test="self::orm:ExclusionConstraint">
+						<oil:exclusionConstraint name="{@Name}" modality="{$modality}" sourceRef="{@id}">
+							<xsl:copy-of select="$roleSequences"/>
+						</oil:exclusionConstraint>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:comment>
@@ -812,10 +852,6 @@
 						</xsl:comment>
 					</xsl:otherwise>
 				</xsl:choose>
-			</xsl:for-each>
-
-			<!-- Process other external constraints. -->
-			<xsl:for-each select="$Model/orm:ExternalConstraints/child::*[orm:RoleSequence/orm:Role/@ref=$thisObjectTypeInformation/directPlayedRoles/child::*/@ref]">
 				
 			</xsl:for-each>
 
@@ -846,7 +882,7 @@
 					<xsl:with-param name="ObjectTypeAbsorptions" select="$ObjectTypeAbsorptions"/>
 					<xsl:with-param name="TopLevelTypes" select="$TopLevelTypes"/>
 					<xsl:with-param name="TargetId" select="$towardsId"/>
-					<xsl:with-param name="DesignedParentId" select="$DesiredParentId"/>
+					<xsl:with-param name="DesiredParentId" select="$DesiredParentId"/>
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
