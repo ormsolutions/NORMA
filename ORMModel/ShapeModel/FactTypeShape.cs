@@ -120,19 +120,21 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Constructor
 			/// </summary>
 			/// <param name="factConstraint">A reference to the original constraint that this ConstraintBox is based on.</param>
+			/// <param name="uniqueConstraintRoles">Unique constraint roles. factConstraint.RoleCollection can contain duplicate roles
+			/// and must be used with extreme caution.</param>
 			/// <param name="factRoleCount">The number of roles for the context fact.</param>
 			[CLSCompliant(false)]
-			public ConstraintBox(IFactConstraint factConstraint, int factRoleCount)
+			public ConstraintBox(IFactConstraint factConstraint, IList<Role> uniqueConstraintRoles, int factRoleCount)
 			{
-				// UNDONE: These asserts are crashing the ExternalConstraintConnectAction when RoleSequences are being edited.  Find out why.
-//				Debug.Assert(factConstraint != null);
-//				Debug.Assert(factRoleCount > 0 && factRoleCount >= factConstraint.RoleCollection.Count);
+				Debug.Assert(factConstraint != null);
+				Debug.Assert(uniqueConstraintRoles != null);
+				Debug.Assert(factRoleCount > 0 && factRoleCount >= uniqueConstraintRoles.Count);
 				myBounds = new RectangleD();
 				IConstraint constraint = factConstraint.Constraint;
 				myConstraintType = constraint.ConstraintType;
 				myActiveRoles = new ConstraintBoxRoleActivity[factRoleCount];
 				myFactConstraint = factConstraint;
-				myRoleCollection = null;
+				myRoleCollection = uniqueConstraintRoles;
 				myIsHidden = false;
 				myIsValid = null;
 			}
@@ -140,15 +142,19 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// Constructor
 			/// </summary>
 			/// <param name="factConstraint">A reference to the original constraint that this ConstraintBox is based on.</param>
+			/// <param name="uniqueConstraintRoles">Unique constraint roles. factConstraint.RoleCollection can contain duplicate roles
+			/// and must be used with extreme caution.</param>
 			/// <param name="roleActivity">A representation of the factConstraint's role activity within the fact.</param>
 			[CLSCompliant(false)]
-			public ConstraintBox(IFactConstraint factConstraint, ConstraintBoxRoleActivity[] roleActivity)
+			public ConstraintBox(IFactConstraint factConstraint, IList<Role> uniqueConstraintRoles, ConstraintBoxRoleActivity[] roleActivity)
 			{
+				Debug.Assert(factConstraint != null);
+				Debug.Assert(uniqueConstraintRoles != null);
+				Debug.Assert(roleActivity != null);
 				if (!object.ReferenceEquals(roleActivity, PreDefinedConstraintBoxRoleActivities_FullySpanning) && !object.ReferenceEquals(roleActivity,PreDefinedConstraintBoxRoleActivities_AntiSpanning))
 				{
 					int roleActivityCount = roleActivity.Length;
-					Debug.Assert(factConstraint != null);
-					Debug.Assert(roleActivityCount > 0 && roleActivityCount >= factConstraint.RoleCollection.Count);
+					Debug.Assert(roleActivityCount > 0 && roleActivityCount >= uniqueConstraintRoles.Count);
 					myBounds = new RectangleD();
 				}
 				else
@@ -159,7 +165,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				myConstraintType = constraint.ConstraintType;
 				myActiveRoles = roleActivity;
 				myFactConstraint = factConstraint;
-				myRoleCollection = null;
+				myRoleCollection = uniqueConstraintRoles;
 				myIsHidden = false;
 				myIsValid = null;
 			}
@@ -215,7 +221,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 					}
 					else
 					{
-						Debug.Assert(roles[1] == ConstraintBoxRoleActivity.Inactive); // Spanning of anti-spanning otherwise
+						Debug.Assert(roles[1] == ConstraintBoxRoleActivity.Inactive); // Spanning or anti-spanning otherwise
 						myActiveRoles = PreDefinedConstraintBoxRoleActivities_BinaryLeftCompressed;
 					}
 				}
@@ -239,12 +245,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			{
 				get
 				{
-					IList<Role> roles = myRoleCollection;
-					if (roles == null)
-					{
-						myRoleCollection = roles = myFactConstraint.RoleCollection;
-					}
-					return roles;
+					return myRoleCollection;
 				}
 			}
 			/// <summary>
@@ -767,14 +768,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 					#region Manual ConstraintRoleBox assignment
 					if (predefinedActivityRoles != null)
 					{
-						constraintBoxes[currentConstraintIndex] = new ConstraintBox(factConstraint, predefinedActivityRoles);
+						constraintBoxes[currentConstraintIndex] = new ConstraintBox(factConstraint, constraintRoles, predefinedActivityRoles);
 					}
 					else
 					{
 						Debug.Assert(factRoleCount >= 4);
 						// The original code, now used for handling fact types with 4 or more roles
 						// or fact types that are irregular. 
-						ConstraintBox currentBox = new ConstraintBox(factConstraint, factRoleCount);
+						ConstraintBox currentBox = new ConstraintBox(factConstraint, constraintRoles, factRoleCount);
 
 						// The constraint is not a fully-spanning constraint.  We must now
 						// determine if the hole is between active roles.  This is important
@@ -3059,7 +3060,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 							else
 							{
 								RoleMoveableCollection factRoles;
-								switch (roles.Count)
+								int roleCount = roles.Count;
+								int role1Index = 1;
+								switch (roleCount)
 								{
 									case 1:
 										factRoles = factType.RoleCollection;
@@ -3067,28 +3070,74 @@ namespace Neumont.Tools.ORM.ShapeModel
 										roleIndex = factRoles.IndexOf(roles[0]);
 										break;
 									case 2:
-										Role role0 = roles[0];
-										Role role1 = roles[1];
-										if (displayOption == ExternalConstraintRoleBarDisplay.AdjacentRoles ||
-											(mcec != null && object.ReferenceEquals(role0, role1))) // Handles overlapping role sequences
 										{
-											goto default;
-										}
-										else
-										{
-											factRoles = factType.RoleCollection;
-											factRoleCount = factRoles.Count;
-											int index1 = factRoles.IndexOf(role0);
-											int index2 = factRoles.IndexOf(role1);
-											if (Math.Abs(index1 - index2) > 1)
+											Role role0 = roles[0];
+											Role role1 = roles[role1Index];
+											if (mcec != null && object.ReferenceEquals(role0, role1))
 											{
+												// Handle overlapping role sequences
+												goto case 1;
+											}
+											else if (displayOption == ExternalConstraintRoleBarDisplay.AdjacentRoles)
+											{
+												mcec = null;
 												goto default;
 											}
-											roleIndex = (index1 + index2 + 1) / 2;
-											attachBeforeRole = true;
+											else
+											{
+												factRoles = factType.RoleCollection;
+												factRoleCount = factRoles.Count;
+												int index1 = factRoles.IndexOf(role0);
+												int index2 = factRoles.IndexOf(role1);
+												if (Math.Abs(index1 - index2) > 1)
+												{
+													mcec = null;
+													goto default;
+												}
+												roleIndex = (index1 + index2 + 1) / 2;
+												attachBeforeRole = true;
+											}
 										}
 										break;
 									default:
+										if (mcec != null)
+										{
+											// Handle overlapping role sequences. If the correct mode is
+											// not on, the GetAbsoluteConstraintAttachPoint will not find
+											// the correct point because the role bar is not visible.
+											Role role0 = roles[0];
+											Role role1 = null;
+											bool haveThirdRole = false;
+											for (int i = 1; i < roleCount; ++i)
+											{
+												Role testRole = roles[i];
+												if (role1 == null)
+												{
+													if (!object.ReferenceEquals(testRole, role0))
+													{
+														role1Index = i;
+														role1 = testRole;
+													}
+												}
+												else if (!object.ReferenceEquals(testRole, role0) && !object.ReferenceEquals(testRole, role1))
+												{
+													haveThirdRole = true;
+													break;
+												}
+											}
+											if (!haveThirdRole)
+											{
+												mcec = null;
+												if (role1 == null)
+												{
+													goto case 1;
+												}
+												else
+												{
+													goto case 2;
+												}
+											}
+										}
 										return GetAbsoluteConstraintAttachPoint(constraint);
 								}
 							}
@@ -3984,10 +4033,17 @@ namespace Neumont.Tools.ORM.ShapeModel
 												break;
 											case 2:
 												{
-													if (displayOption == ExternalConstraintRoleBarDisplay.SplitRoles)
+													// Handle possible duplicates in IFactConstraint.RoleCollection
+													Role role0 = roles[0];
+													Role role1 = roles[1];
+													if (object.ReferenceEquals(role0, role1))
+													{
+														goto case 1;
+													}
+													else if (displayOption == ExternalConstraintRoleBarDisplay.SplitRoles)
 													{
 														factRoles = factConstraint.FactType.RoleCollection;
-														constraintBarVisible = Math.Abs(factRoles.IndexOf(roles[0]) - factRoles.IndexOf(roles[1])) > 1;
+														constraintBarVisible = Math.Abs(factRoles.IndexOf(role0) - factRoles.IndexOf(role1)) > 1;
 													}
 													else
 													{
