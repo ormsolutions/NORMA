@@ -1031,6 +1031,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 				return (this.Store as ObjectModel.IORMToolServices).FontAndColorService.GetFont(ORMDesignerColorCategory.Editor);
 			}
 		}
+		/// <summary>
+		/// Stop all auto shape selection on transaction commit except when
+		/// the item is being dropped.
+		/// </summary>
+		public override IList FixUpDiagramSelection(ShapeElement newChildShape)
+		{
+			if (DropTargetContext.HasDropTargetContext(Store.TransactionManager.CurrentTransaction))
+			{
+				return base.FixUpDiagramSelection(newChildShape);
+			}
+			return null;
+		}
 		#endregion // Other base overrides
 		#region Display Properties
 		/// <summary>
