@@ -1292,6 +1292,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateErrors(notifyAdded);
 		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected static void DelayValidateErrors()
+		{
+			// No implementation required
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
 		#endregion // IModelErrorOwner Implementation
 	}
 	#region Relationship-specific derivations of DuplicateNameError

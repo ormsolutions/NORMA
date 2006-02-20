@@ -55,6 +55,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded">A callback for notifying
 		/// the caller of all objects that are added.</param>
 		void ValidateErrors(INotifyElementAdded notifyAdded);
+		/// <summary>
+		/// Called to add delayed validate callbacks to model
+		/// elements. The implementation should use the ORMMetaModel.DelayValidateElement
+		/// to register callbacks for element validation when the transaction is committed.
+		/// </summary>
+		void DelayValidateErrors();
 	}
 	#endregion // IModelErrorOwner interface
 	#region IModelErrorActivation interface

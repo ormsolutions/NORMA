@@ -339,22 +339,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-
-		[RuleOn(typeof(ModelHasSingleColumnExternalConstraint), FireTime = TimeToFire.LocalCommit)]
-		private class ConstraintHasRoleSequenceAddedLocalCommit : AddRule
-		{
-			public override void ElementAdded(ElementAddedEventArgs e)
-			{
-				ModelHasSingleColumnExternalConstraint link = e.ModelElement as ModelHasSingleColumnExternalConstraint;
-				IModelErrorOwner errorOwner = link.SingleColumnExternalConstraintCollection as IModelErrorOwner;
-				if (errorOwner != null)
-				{
-					errorOwner.ValidateErrors(null);
-				}
-			}
-		}
-
-
 		/// <summary>
 		/// If a role sequence is added that already contains roles, then
 		/// make sure the corresponding ExternalFactConstraint and ExternalRoleConstraint
@@ -362,11 +346,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// constraint is a role sequence.
 		/// </summary>
 		[RuleOn(typeof(ModelHasSingleColumnExternalConstraint))]
-		private class ConstraintHasRoleSequenceAdded : AddRule
+		private class ConstraintAdded : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				EnsureFactConstraintForRoleSequence(e.ModelElement as ModelHasSingleColumnExternalConstraint);
+				ModelHasSingleColumnExternalConstraint link = e.ModelElement as ModelHasSingleColumnExternalConstraint;
+				// Add implied fact constraint elements
+				EnsureFactConstraintForRoleSequence(link);
+
+				// Register for delayed error validation
+				IModelErrorOwner errorOwner = link.SingleColumnExternalConstraintCollection as IModelErrorOwner;
+				if (errorOwner != null)
+				{
+					errorOwner.DelayValidateErrors();
+				}
 			}
 		}
 		/// <summary>
@@ -440,13 +433,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the caller of all objects that are added.</param>
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
+			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
 			VerifyRoleSequenceCountForRule(notifyAdded);
-			
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected void DelayValidateErrors()
+		{
+			ORMMetaModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
+			ORMMetaModel.DelayValidateElement(this, DelayValidateRoleSequenceCountErrors);
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
 		#region Deserialization Fixup
@@ -1297,10 +1302,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasMultiColumnExternalConstraint link = e.ModelElement as ModelHasMultiColumnExternalConstraint;
-				MultiColumnExternalConstraint externalConstraint = link.MultiColumnExternalConstraintCollection as MultiColumnExternalConstraint;
-				if (externalConstraint != null)
+				IModelErrorOwner errorOwner = link.MultiColumnExternalConstraintCollection as IModelErrorOwner;
+				if (errorOwner != null)
 				{
-					ORMMetaModel.DelayValidateElement(externalConstraint, DelayValidateRoleSequenceCountErrors);
+					errorOwner.DelayValidateErrors();
 				}
 			}
 		}
@@ -1477,6 +1482,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the caller of all objects that are added.</param>
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
+			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyRoleSequenceCountForRule(notifyAdded);
 			// VerifyRoleSequenceArityForRule(notifyAdded); // This is called by VeryRoleSequenceCountForRule
 			VerifyCompatibleRolePlayerTypeForRule(notifyAdded);
@@ -1484,6 +1490,19 @@ namespace Neumont.Tools.ORM.ObjectModel
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected void DelayValidateErrors()
+		{
+			ORMMetaModel.DelayValidateElement(this, DelayValidateRoleSequenceCountErrors);
+			// ORMMetaModel.DelayValidateElement(this, DelayValidateArityMismatchError); // This is called by DelayValidateRoleSequenceCountErrors
+			ORMMetaModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
 	}
@@ -1998,11 +2017,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
+			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyNMinusOneForRule(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected void DelayValidateErrors()
+		{
+			ORMMetaModel.DelayValidateElement(this, DelayValidateNMinusOneError);
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
 		#region NMinusOneError Validation
@@ -2066,10 +2097,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				FactTypeHasInternalConstraint link = e.ModelElement as FactTypeHasInternalConstraint;
-				InternalUniquenessConstraint constraint = link.InternalConstraintCollection as InternalUniquenessConstraint;
-				if (constraint != null)
+				IModelErrorOwner errorOwner = link.InternalConstraintCollection as IModelErrorOwner;
+				if (errorOwner != null)
 				{
-					ORMMetaModel.DelayValidateElement(constraint, DelayValidateNMinusOneError);
+					errorOwner.DelayValidateErrors();
 				}
 			}
 		}
@@ -3164,7 +3195,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			base.ValidateErrors(notifyAdded);
-			ValidateImpliedDisjunctiveError(notifyAdded, false, false, null);
+			ValidateImpliedByMandatoryError(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -3173,241 +3204,165 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion // IModelErrorOwner Implementation
 		#region Error Rules
 		/// <summary>
+		/// Validator callback for DisjunctiveMandatoryImpliedByMandatoryError
+		/// </summary>
+		private static void DelayValidateDisjunctiveMandatoryImpliedByMandatoryError(ModelElement element)
+		{
+			(element as DisjunctiveMandatoryConstraint).ValidateImpliedByMandatoryError(null);
+		}
+		/// <summary>
 		/// Verify that we the disjunctive mandatory constraint is not attached to a role that
-		/// also has a simple mandatory
+		/// also has a simple mandatory or contains the full set of roles from another disjunctive
+		/// mandatory constraint.
 		/// </summary>
 		/// <param name="notifyAdded">Set during deserialization</param>
-		/// <param name="forceError">Set to true if we already know that the error condition will be there,
-		/// such as when a simplemandatory constraint is added</param>
-		/// <param name="simpleMandatoryChange">This is being called as a result of changing a simple mandatory
-		/// value on a role attached to this disjunctive mandatory constraint. In this case, there is no reason
-		/// to also modify intersecting disjunctive mandatories because the intersecting mandatory will also be called.</param>
-		/// <param name="intersectingMandatoryConstraint">If the rolesequence of a mandatory constraint that intersects another mandatory
-		/// constraint is modified, then the error state of the intersecting constraint may change. The opposite constraint
-		/// is called automatically by this method, but should not call back to here.</param>
-		private void ValidateImpliedDisjunctiveError(INotifyElementAdded notifyAdded, bool forceError, bool simpleMandatoryChange, DisjunctiveMandatoryConstraint intersectingMandatoryConstraint)
+		private void ValidateImpliedByMandatoryError(INotifyElementAdded notifyAdded)
 		{
 			if (!IsRemoved)
 			{
-				bool hasError = forceError;
-				Store theStore = Store;
-				if (!hasError)
+				bool hasError = false;
+				RoleMoveableCollection constraintRoles = RoleCollection;
+				int constraintRoleCount = constraintRoles.Count;
+				for (int iConstraint = 0; !hasError && iConstraint < constraintRoleCount; ++iConstraint)
 				{
-					// This can be called from a Removing rule, so use GetElementLinks explicitly instead
-					// of the generated RoleCollection so we can see distinguish between the links removing
-					// and the role removing.
-					IList roleLinks = GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
-					int roleCount = roleLinks.Count;
-					int verifiedRoleCount = -1;
-					bool checkIntersectingMandatories = !simpleMandatoryChange && notifyAdded == null;
-					bool continueProcessing = true;
-					for (int i = 0; continueProcessing && i < roleCount; i++)
+					Role constraintRole = constraintRoles[iConstraint];
+					ConstraintRoleSequenceMoveableCollection intersectingSequences = constraintRole.ConstraintRoleSequenceCollection;
+					int intersectingSequenceCount = intersectingSequences.Count;
+					for (int iIntersectingSequence = 0; !hasError && iIntersectingSequence < intersectingSequenceCount; ++iIntersectingSequence)
 					{
-						ConstraintRoleSequenceHasRole roleLink = (ConstraintRoleSequenceHasRole)roleLinks[i];
-						Role role = roleLink.RoleCollection;
-						// If the role is removing, then any checks on the intersecting mandatory
-						// will run in the course of normal processing. However, if only the link is
-						// removing, then an intersecting mandatory will not get any notifications
-						// that one of the intersecting objects has been modified.
-						if (!role.IsRemoving)
+						ConstraintRoleSequence intersectingSequence = intersectingSequences[iIntersectingSequence];
+						if (!object.ReferenceEquals(intersectingSequence, this))
 						{
-							ConstraintRoleSequenceMoveableCollection attachedSequences = role.ConstraintRoleSequenceCollection;
-							int roleSequenceCount = attachedSequences.Count;
-							for (int j = 0; j < roleSequenceCount; ++j)
+							IConstraint intersectingConstraint = intersectingSequence.Constraint;
+							switch (intersectingConstraint.ConstraintType)
 							{
-								ConstraintRoleSequence roleSequence = attachedSequences[j];
-								if (!roleSequence.IsRemoving)
-								{
-									IConstraint constraint = roleSequence.Constraint;
-									switch (constraint.ConstraintType)
+								case ConstraintType.SimpleMandatory:
+									hasError = true;
+									break;
+								case ConstraintType.DisjunctiveMandatory:
 									{
-										case ConstraintType.SimpleMandatory:
-											if (!roleLink.IsRemoving)
+										DisjunctiveMandatoryConstraint intersectingMandatory = intersectingSequence as DisjunctiveMandatoryConstraint;
+										RoleMoveableCollection intersectingRoles = intersectingMandatory.RoleCollection;
+										int intersectingRoleCount = intersectingRoles.Count;
+										if (intersectingRoleCount <= constraintRoleCount) // Can't be a subset if the count is greater
+										{
+											hasError = true; // Assume we have the problem, disprove it
+											for (int iIntersectingRole = 0; iIntersectingRole < intersectingRoleCount; ++iIntersectingRole)
 											{
-												hasError = true;
-												// If there aren't any intersecting mandatories to process then we have all the
-												// information we need.
-												continueProcessing = checkIntersectingMandatories;
-											}
-											break;
-										case ConstraintType.DisjunctiveMandatory:
-											if (!object.ReferenceEquals(this, roleSequence))
-											{
-												DisjunctiveMandatoryConstraint intersectedMandatory = (DisjunctiveMandatoryConstraint)roleSequence;
-												if (hasError)
+												Role intersectingRole = intersectingRoles[iIntersectingRole];
+												// Finding a role that is not contained in the set of roles for this constraint
+												// means that it is not a true subset.
+												if (!object.ReferenceEquals(intersectingRole, constraintRole) &&
+													(-1 == constraintRoles.IndexOf(intersectingRole)))
 												{
-													Debug.Assert(checkIntersectingMandatories); // Loop should break otherwise
-													if (!object.ReferenceEquals(intersectedMandatory, intersectingMandatoryConstraint))
-													{
-														Debug.Assert(!simpleMandatoryChange && null == notifyAdded); // Conditions from checkIntersectingMandatories error, constant values passed here
-														intersectedMandatory.ValidateImpliedDisjunctiveError(null, false, false, this);
-													}
-												}
-												else
-												{
-													// If the intersected mandatory is a subset of the constraint we're testing
-													// then it implies this constraint. If they're equal you'll get an error on each one.
-													// If this is a subset of the other, then the other will have an error.
-													IList intersectedLinks = intersectedMandatory.GetElementLinks(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceCollectionMetaRoleGuid);
-													// Note that we can't do a sanity check here with counts because we could be in a Removing state
-													int intersectedLinksCount = intersectedLinks.Count;
-													hasError = true; // Assume they're all contained, prove otherwise
-													int verifiedIntersectedCount = 0;
-													for (int iIntersectedLink = 0; hasError && iIntersectedLink < intersectedLinksCount; ++iIntersectedLink)
-													{
-														ConstraintRoleSequenceHasRole intersectedRoleLink = (ConstraintRoleSequenceHasRole)intersectedLinks[iIntersectedLink];
-														Role intersectedRole = intersectedRoleLink.RoleCollection;
-														if (!intersectedRoleLink.IsRemoving && !intersectedRole.IsRemoving)
-														{
-															++verifiedIntersectedCount;
-															if (object.ReferenceEquals(intersectedRole, role))
-															{
-																if (roleLink.IsRemoving)
-																{
-																	hasError = false;
-																	break;
-																}
-															}
-															else
-															{
-																int iTestCurrent = 0;
-																for (; iTestCurrent < roleCount; ++iTestCurrent)
-																{
-																	ConstraintRoleSequenceHasRole testRoleLink = (ConstraintRoleSequenceHasRole)roleLinks[iTestCurrent];
-																	Role testRole = testRoleLink.RoleCollection;
-																	if (!testRoleLink.IsRemoving && !testRole.IsRemoving)
-																	{
-																		if (object.ReferenceEquals(intersectedRole, testRole))
-																		{
-																			break;
-																		}
-																	}
-																}
-																if (iTestCurrent == roleCount)
-																{
-																	hasError = false;
-																	break;
-																}
-															}
-														}
-													}
-													if (checkIntersectingMandatories)
-													{
-														if (!object.ReferenceEquals(intersectedMandatory, intersectingMandatoryConstraint))
-														{
-															// The intersecting mandatory also needs to be processed
-															bool forceIntersectingError = false;
-															if (hasError && verifiedIntersectedCount <= roleCount)
-															{
-																// To simplify conditioning on the opposite error, see if the
-																// role counts are the same. If they are, then we can completely
-																// bypass the opposite processing.
-																// The error might go both ways
-																if (verifiedRoleCount == -1)
-																{
-																	// Get an accurate role count
-																	verifiedRoleCount = 0;
-																	for (int k = 0; k < roleCount; ++k)
-																	{
-																		if (!((ConstraintRoleSequenceHasRole)roleLinks[k]).IsRemoving)
-																		{
-																			++verifiedRoleCount;
-																		}
-																	}
-																}
-																forceIntersectingError = verifiedRoleCount == verifiedIntersectedCount;
-															}
-															Debug.Assert(!simpleMandatoryChange && null == notifyAdded); // Conditions from checkIntersectingMandatories error, constant values passed here
-															intersectedMandatory.ValidateImpliedDisjunctiveError(null, forceIntersectingError, false, this);
-														}
-													}
-													else if (hasError)
-													{
-														continueProcessing = false;
-													}
+													hasError = false;
+													break;
 												}
 											}
-											break;
+										}
+									}
+									break;
+							}
+						}
+					}
+				}
+				DisjunctiveMandatoryImpliedByMandatoryError error = ImpliedByMandatoryError;
+				if (hasError)
+				{
+					if (error == null)
+					{
+						error = DisjunctiveMandatoryImpliedByMandatoryError.CreateDisjunctiveMandatoryImpliedByMandatoryError(Store);
+						error.Model = Model;
+						error.DisjunctiveMandatoryConstraint = this;
+						error.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(error, true);
+						}
+					}
+				}
+				else if (error != null)
+				{
+					error.Remove();
+				}
+			}
+		}
+		/// <summary>
+		/// Verify the state of the DisjunctiveMandatoryImpliedByMandatoryError when
+		/// a mandatory constraint is added to or removed from a role. Helper function for
+		/// rules.
+		/// </summary>
+		/// <param name="link">The ConstraintRoleSequenceHasRole element.</param>
+		private static void ValidateIntersectingDisjunctiveMandatoryConstraints(ConstraintRoleSequenceHasRole link)
+		{
+			ConstraintRoleSequence roleSequence = link.ConstraintRoleSequenceCollection;
+			IConstraint constraint = roleSequence.Constraint;
+			DisjunctiveMandatoryConstraint currentDisjunctive = null;
+			bool checkIntersection = false;
+			switch (constraint.ConstraintType)
+			{
+				case ConstraintType.SimpleMandatory:
+					checkIntersection = true;
+					break;
+				case ConstraintType.DisjunctiveMandatory:
+					checkIntersection = true;
+					currentDisjunctive = roleSequence as DisjunctiveMandatoryConstraint;
+					break;
+			}
+			if (checkIntersection)
+			{
+				Role modifiedRole = link.RoleCollection;
+				ConstraintRoleSequenceMoveableCollection constraints = modifiedRole.ConstraintRoleSequenceCollection;
+				int constraintCount = constraints.Count;
+				ConstraintRoleSequence currentSequence;
+				for (int i = 0; i < constraintCount; ++i)
+				{
+					currentSequence = constraints[i];
+					if (currentSequence.Constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
+					{
+						ORMMetaModel.DelayValidateElement(currentSequence, DelayValidateDisjunctiveMandatoryImpliedByMandatoryError);
+					}
+				}
+				if (currentDisjunctive != null)
+				{
+					// We need to find all other disjunctive mandatory constraints that
+					// intersect with any role of this constraint
+					RoleMoveableCollection roles = currentDisjunctive.RoleCollection;
+					int roleCount = roles.Count;
+					for (int iRole = 0; iRole < roleCount; ++iRole)
+					{
+						Role testRole = roles[iRole];
+						if (!object.ReferenceEquals(testRole, modifiedRole))
+						{
+							constraints = testRole.ConstraintRoleSequenceCollection;
+							constraintCount = constraints.Count;
+							for (int i = 0; i < constraintCount; ++i)
+							{
+								currentSequence = constraints[i];
+								if (!object.ReferenceEquals(currentSequence, currentDisjunctive))
+								{
+									if (currentSequence.Constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
+									{
+										ORMMetaModel.DelayValidateElement(currentSequence, DelayValidateDisjunctiveMandatoryImpliedByMandatoryError);
 									}
 								}
 							}
 						}
 					}
 				}
-				if (!IsRemoving)
-				{
-					DisjunctiveMandatoryImpliedByMandatoryError noImpliedMandatoryError = ImpliedByMandatoryError;
-					if (hasError)
-					{
-						if (noImpliedMandatoryError == null)
-						{
-							noImpliedMandatoryError = DisjunctiveMandatoryImpliedByMandatoryError.CreateDisjunctiveMandatoryImpliedByMandatoryError(theStore);
-							noImpliedMandatoryError.Model = Model;
-							noImpliedMandatoryError.DisjunctiveMandatoryConstraint = this;
-							noImpliedMandatoryError.GenerateErrorText();
-							if (notifyAdded != null)
-							{
-								notifyAdded.ElementAdded(noImpliedMandatoryError, true);
-							}
-						}
-					}
-					else if (noImpliedMandatoryError != null)
-					{
-						noImpliedMandatoryError.Remove();
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// Verify that the DisjunctiveMandatoryImpliedByMandatoryError is present/not present when
-		/// a simple mandatory constraint is added to a role that also participates in a DisjunctiveMandatoryConstraint
-		/// </summary>
-		/// <param name="mandatoryContraint">The SimpleMandatoryConstraint to test</param>
-		/// <param name="forAdd">True if the constraint was just added, false otherwise</param>
-		private static void VerifyMandatoryHasNoDisjunctivMandatoryConstraints(SimpleMandatoryConstraint mandatoryContraint, bool forAdd)
-		{
-			RoleMoveableCollection roles = mandatoryContraint.RoleCollection;
-			if (roles.Count != 0)
-			{
-				Role currentRole = roles[0];
-				ConstraintRoleSequenceMoveableCollection constraints = currentRole.ConstraintRoleSequenceCollection;
-				int constraintCount = constraints.Count;
-				IConstraint currentConstraint;
-				for (int i = 0; i < constraintCount; ++i)
-				{
-					currentConstraint = constraints[i].Constraint;
-					if (currentConstraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
-					{
-						(currentConstraint as DisjunctiveMandatoryConstraint).ValidateImpliedDisjunctiveError(null, forAdd, true, null);
-					}
-				}
 			}
 		}
 		#endregion //Error Rules
 		#region VerifyImpliedDisjunctiveMandatoryRole Add/Remove Methods
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class VerifyImpliedDisjunctiveMandatoryRoleAdd : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequenceCollection;
-				IConstraint constraint = roleSequences.Constraint;
-				switch (constraint.ConstraintType)
-				{
-					case ConstraintType.SimpleMandatory:
-						SimpleMandatoryConstraint simpleMandatory = constraint as SimpleMandatoryConstraint;
-						VerifyMandatoryHasNoDisjunctivMandatoryConstraints(simpleMandatory, true);
-						break;
-					case ConstraintType.DisjunctiveMandatory:
-						DisjunctiveMandatoryConstraint mandatory = constraint as DisjunctiveMandatoryConstraint;
-						mandatory.ValidateImpliedDisjunctiveError(null, false, false, null);
-						break;
-
-				}
+				ValidateIntersectingDisjunctiveMandatoryConstraints(e.ModelElement as ConstraintRoleSequenceHasRole);
 			}
 		}
-		[RuleOn(typeof(ConstraintRoleSequenceHasRole), FireTime = TimeToFire.Inline)]
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
 		private class VerifyImpliedDisjunctiveMandatoryRoleRemoved : RemovingRule
 		{
 			/// <summary>
@@ -3415,21 +3370,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			/// </summary>
 			public override void ElementRemoving(ElementRemovingEventArgs e)
 			{
-				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
-				ConstraintRoleSequence roleSequences = link.ConstraintRoleSequenceCollection;
-				IConstraint constraint = roleSequences.Constraint;
-				switch (constraint.ConstraintType)
-				{
-					case ConstraintType.SimpleMandatory:
-						SimpleMandatoryConstraint simpleMandatory = constraint as SimpleMandatoryConstraint;
-						VerifyMandatoryHasNoDisjunctivMandatoryConstraints(simpleMandatory, false);
-						break;
-					case ConstraintType.DisjunctiveMandatory:
-						DisjunctiveMandatoryConstraint mandatory = constraint as DisjunctiveMandatoryConstraint;
-						mandatory.ValidateImpliedDisjunctiveError(null, false, false, null);
-						break;
-
-				}
+				ValidateIntersectingDisjunctiveMandatoryConstraints(e.ModelElement as ConstraintRoleSequenceHasRole);
 			}
 		}
 		#endregion //VerifyImpliedDisjunctiveMandatoryRole Add/Remove Methods

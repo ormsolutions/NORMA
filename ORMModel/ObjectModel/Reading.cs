@@ -9,11 +9,10 @@ using System.Globalization;
 using Neumont.Tools.ORM.Framework;
 namespace Neumont.Tools.ORM.ObjectModel
 {
+	#region Reading class
 	public partial class Reading : IModelErrorOwner
 	{
-		private static Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
-
-		#region overrides
+		#region Base overrides
 		/// <summary>
 		/// The filled version of the reading. Currently works on the assumption that the arity of
 		/// the statement is equal to the number of roles. The text is expected to have {n} where
@@ -74,9 +73,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 			return base.GetComponentName();
 		}
-		#endregion
-
+		#endregion // Base overrides
 		#region IsValidReadingText methods
+		private static readonly Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
 		/// <summary>
 		/// Does some testing to see if the reading text is appropriate for the current
 		/// set of roles assigned to it. Would eventually be more useful if it provided
@@ -165,7 +164,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return regCountPlaces.Matches(textText).Count;
 		}
 		#endregion
-
 		#region rule classes and helpers
 
 		/// <summary>
@@ -303,7 +301,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-
 		#region ReadingOrderHasRoleRemoved rule class
 		[RuleOn(typeof(ReadingOrderHasRole))]
 		private class ReadingOrderHasRoleRemoved : RemoveRule
@@ -326,11 +323,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		#endregion
-
 		#endregion // rule classes and helpers
-
 		#region IModelErrorOwner implementation
-
 		/// <summary>
 		/// Returns the errors associated with the Reading.
 		/// </summary>
@@ -372,11 +366,21 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateErrors(notifyAdded);
 		}
-
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected static void DelayValidateErrors()
+		{
+			// UNDONE: DelayedValidation (Reading)
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
 		#endregion
 	}
-
-	#region class TooFewRolesError
+	#endregion // Reading class
+	#region TooFewReadingRolesError class
 	public partial class TooFewReadingRolesError : IRepresentModelElements
 	{
 		#region overrides
@@ -420,11 +424,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		#endregion
-
 	}
-	#endregion
-
-	#region class TooManyRolesError
+	#endregion // TooFewReadingRolesError class
+	#region TooManyReadingRolesError class
 	public partial class TooManyReadingRolesError : IRepresentModelElements
 	{
 		#region overrides
@@ -453,7 +455,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		#endregion
-
 		#region IRepresentModelElements Members
 		/// <summary>
 		/// The Reading the error belongs too.
@@ -470,5 +471,5 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		#endregion
 	}
-	#endregion
+	#endregion // TooManyReadingRolesError class
 }

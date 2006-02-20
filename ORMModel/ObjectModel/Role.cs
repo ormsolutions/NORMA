@@ -736,11 +736,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// the caller of all objects that are added.</param>
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
+			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyRolePlayerRequiredForRule(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected static void DelayValidateErrors()
+		{
+			// UNDONE: DelayedValidation (Role)
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
 		#region RolePlayer validation rules

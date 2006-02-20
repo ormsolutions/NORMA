@@ -1254,6 +1254,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
+				// UNDONE: DelayedValidation
 				link.ObjectTypeCollection.ValidateErrors(null);
 			}
 		}
@@ -1411,6 +1412,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
+			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			ValidateDataTypeNotSpecifiedError(notifyAdded);
 			ValidateRequiresReferenceScheme(notifyAdded);
 			ValidateObjectTypeRequiresPrimarySubtypeError(notifyAdded);
@@ -1419,6 +1421,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			ValidateErrors(notifyAdded);
 		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected static void DelayValidateErrors()
+		{
+			// UNDONE: DelayedValidation (ObjectType)
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
+
 		#endregion // IModelErrorOwner implementation
 		#region CheckForIncompatibleRelationshipRule class
 		/// <summary>

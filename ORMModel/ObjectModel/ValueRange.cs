@@ -62,7 +62,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return ErrorCollection;
-
 			}
 		}
 		/// <summary>
@@ -91,11 +90,23 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="notifyAdded"></param>
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
+			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			VerifyValueMatch(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected static void DelayValidateErrors()
+		{
+			// UNDONE: DelayedValidation (ValueRange)
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
 		}
 		private void VerifyValueMatch(INotifyElementAdded notifyAdded)
 		{
@@ -106,7 +117,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MaxValueMismatchError maxMismatch;
 			if (dataType != null)
 			{
-				if (!dataType.CanParse(MinValue))
+				string min = MinValue;
+				string max = MaxValue;
+				if (min.Length != 0 && !dataType.CanParse(min))
 				{
 					needMinError = true;
 					minMismatch = MinValueMismatchError;
@@ -123,9 +136,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 					minMismatch.GenerateErrorText();
 				}
-				if (MinValue != MaxValue)
+				if (min != max)
 				{
-					if (!dataType.CanParse(MaxValue))
+					if (max.Length != 0 && !dataType.CanParse(MaxValue))
 					{
 						needMaxError = true;
 						maxMismatch = MaxValueMismatchError;

@@ -617,14 +617,25 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		protected void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
+			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			ValidateRequiresReading(notifyAdded);
 			ValidateRequiresInternalUniqueness(notifyAdded);
 			ValidateImpliedInternalUniqueness(notifyAdded);
-			
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected static void DelayValidateErrors()
+		{
+			// UNDONE: DelayedValidation (FactType)
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
 		}
 		#endregion
 		#region Validation Methods
@@ -919,6 +930,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 					FactType fact = link.FactTypeCollection;
 					if (fact != null)
 					{
+						// UNDONE: DelayedValidation
 						fact.ValidateErrors(null);
 					}
 				}
