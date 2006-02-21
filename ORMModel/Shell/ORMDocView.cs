@@ -82,9 +82,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		CopyImage = 0x2000,
 		/// <summary>
-		/// Display the verbalization browser toolwindow
+		/// Display standard toolwindows that we never disable.
+		/// This currently maps to the Verbalization and Model Browser windows
 		/// </summary>
-		DisplayVerbalizationWindow = 0x2000,
+		DisplayStandardWindows = 0x2000,
 		/// <summary>
 		/// Select all top level selectable elements on the current diagram
 		/// </summary>
@@ -109,9 +110,31 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		AddInternalUniqueness = 0x40000,
 		/// <summary>
+		/// Delete an object shape
+		/// </summary>
+		DeleteObjectShape = 0x200000,
+		/// <summary>
+		/// Delete a fact shape
+		/// </summary>
+		DeleteFactShape = 0x400000,
+		/// <summary>
+		/// Delete a constraint shape
+		/// </summary>
+		DeleteConstraintShape = 0x800000,
+		/// <summary>
+		/// Special command used in addition to the specific Delete*Shape elements.
+		/// DeleteAnyShape will survive most complex multi-select cases whereas the Delete*Shape
+		/// will not. This is handled specially for the delete case.
+		/// </summary>
+		DeleteAnyShape = 0x1000000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
+		/// <summary>
+		/// Mask field representing individual shape delete commands
+		/// </summary>
+		DeleteShape = DeleteObjectShape | DeleteFactShape | DeleteConstraintShape,
 		/// <summary>
 		/// Mask field representing individual RoleSeqeuence edit commands
 		/// </summary>
@@ -133,7 +156,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// The filter for multi selection when the elements are all of the same type.
 		/// </summary>
-		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AddInternalUniqueness | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.DeleteAny | (ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
+		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AddInternalUniqueness | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.DeleteShape | (ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
 		/// <summary>
 		/// The filter for multi selection when the elements are of different types. This should always be a subset of the simple command filter
 		/// </summary>
@@ -329,7 +352,7 @@ namespace Neumont.Tools.ORM.Shell
 						}
 						if (mel != null)
 						{
-							SetCommandStatus(mel, out currentVisible, out currentEnabled, out currentCheckable, out currentChecked);
+							SetCommandStatus(mel, pel, out currentVisible, out currentEnabled, out currentCheckable, out currentChecked);
 							Debug.Assert(0 == (currentEnabled & ~currentVisible)); // Everthing enabled should be visible
 							Debug.Assert(0 == (currentChecked & ~currentCheckable)); // Everything checked should be checkable
 
@@ -407,7 +430,7 @@ namespace Neumont.Tools.ORM.Shell
 
 						if (mel != null)
 						{
-							SetCommandStatus(mel, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands);
+							SetCommandStatus(mel, pel, out visibleCommands, out enabledCommands, out checkableCommands, out checkedCommands);
 							Debug.Assert(0 == (enabledCommands & ~visibleCommands)); // Everthing enabled should be visible
 							Debug.Assert(0 == (checkedCommands & ~checkableCommands)); // Everything checked should be checkable
 							visibleCommands &= ~DisabledSingleSelectCommandFilter;
@@ -425,11 +448,12 @@ namespace Neumont.Tools.ORM.Shell
 		/// current state of an individual given element.
 		/// </summary>
 		/// <param name="element">A single model element. Should be a backing object, not a presentation element.</param>
+		/// <param name="presentationElement">The selected presentation element representing the element. Can be null.</param>
 		/// <param name="visibleCommands">(output) The set of visible commands</param>
 		/// <param name="enabledCommands">(output) The set of enabled commands</param>
 		/// <param name="checkableCommands">(output) The set of commands that are checked in some circumstances</param>
 		/// <param name="checkedCommands">(output) The set of checked commands</param>
-		protected virtual void SetCommandStatus(ModelElement element, out ORMDesignerCommands visibleCommands, out ORMDesignerCommands enabledCommands, out ORMDesignerCommands checkableCommands, out ORMDesignerCommands checkedCommands)
+		public virtual void SetCommandStatus(ModelElement element, PresentationElement presentationElement, out ORMDesignerCommands visibleCommands, out ORMDesignerCommands enabledCommands, out ORMDesignerCommands checkableCommands, out ORMDesignerCommands checkedCommands)
 		{
 			enabledCommands = ORMDesignerCommands.None;
 			visibleCommands = ORMDesignerCommands.None;
@@ -440,19 +464,29 @@ namespace Neumont.Tools.ORM.Shell
 			if (element is FactType)
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.AutoLayout;
+				if (presentationElement is FactTypeShape)
+				{
+					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape;
+					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape;
+				}
 			}
 			else if (null != (objectType = element as ObjectType))
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteObjectType | ORMDesignerCommands.DeleteAny;
-				if (objectType.NestedFactType == null)
+				if (presentationElement is ObjectTypeShape)
 				{
-					visibleCommands |= ORMDesignerCommands.AutoLayout;
-					enabledCommands |= ORMDesignerCommands.AutoLayout;
+					visibleCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape;
+					enabledCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape;
 				}
 			}
 			else if (element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint)
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditExternalConstraint | ORMDesignerCommands.AutoLayout;
+				if (presentationElement is ExternalConstraintShape)
+				{
+					visibleCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape;
+					enabledCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape;
+				}
 			}
 			else if (element is InternalConstraint)
 			{
@@ -460,7 +494,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			else if (element is ORMModel)
 			{
-				visibleCommands = ORMDesignerCommands.Delete | ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.CopyImage;
+				visibleCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.CopyImage;
 				enabledCommands = ORMDesignerCommands.DisplayCustomReferenceModeWindow | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.CopyImage;
 			}
 			else if (null != (role = element as Role))
@@ -534,8 +568,8 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			// Turn on the verbalization window command for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll;
-			enabledCommands |= ORMDesignerCommands.DisplayVerbalizationWindow | ORMDesignerCommands.SelectAll;
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll;
+			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll;
 		}
 		
 		/// <summary>
@@ -556,7 +590,11 @@ namespace Neumont.Tools.ORM.Shell
 				command.Checked = 0 != (commandFlag & docView.myCheckedCommands);
 				if (0 != (commandFlag & (ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny)))
 				{
-					docView.SetDeleteCommandText((OleMenuCommand)command);
+					docView.SetDeleteElementCommandText((OleMenuCommand)command);
+				}
+				else if (0 != (commandFlag & (ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape)))
+				{
+					docView.SetDeleteShapeCommandText((OleMenuCommand)command);
 				}
 				else if (commandFlag == ORMDesignerCommands.ToggleSimpleMandatory && command.Enabled)
 				{
@@ -653,10 +691,10 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		/// <summary>
-		/// Set the menu's text for the delete command
+		/// Set the menu's text for the delete element command
 		/// </summary>
 		/// <param name="command">OleMenuCommand</param>
-		protected virtual void SetDeleteCommandText(OleMenuCommand command)
+		protected virtual void SetDeleteElementCommandText(OleMenuCommand command)
 		{
 			Debug.Assert(command != null);
 			string commandText;
@@ -686,6 +724,37 @@ namespace Neumont.Tools.ORM.Shell
 			// the default command text
 			command.Text = commandText;
 		}
+		/// <summary>
+		/// Set the menu's text for the delete element command
+		/// </summary>
+		/// <param name="command">OleMenuCommand</param>
+		protected virtual void SetDeleteShapeCommandText(OleMenuCommand command)
+		{
+			Debug.Assert(command != null);
+			string commandText;
+			switch (myVisibleCommands & ORMDesignerCommands.DeleteShape)
+			{
+				case ORMDesignerCommands.DeleteObjectShape:
+					commandText = ResourceStrings.CommandDeleteObjectTypeShapeText;
+					break;
+				case ORMDesignerCommands.DeleteFactShape:
+					commandText = ResourceStrings.CommandDeleteFactTypeShapeText;
+					break;
+				case ORMDesignerCommands.DeleteConstraintShape:
+					commandText = ResourceStrings.CommandDeleteConstraintShapeText;
+					break;
+				default:
+					commandText = null;
+					break;
+			}
+			if (commandText == null && 0 != (myVisibleCommands & ORMDesignerCommands.DeleteAnyShape))
+			{
+				commandText = ResourceStrings.CommandDeleteMultipleText;
+			}
+			// Setting command.Text to null will pick up
+			// the default command text
+			command.Text = commandText;
+		}
 		#endregion // Base overrides
 		#region ORMDesignerDocView Specific
 		/// <summary>
@@ -702,10 +771,10 @@ namespace Neumont.Tools.ORM.Shell
 			SetSelectedComponents(null);
 		}
 		/// <summary>
-		/// Execute the delete command
+		/// Execute the delete element command
 		/// </summary>
 		/// <param name="commandText">The text from the command</param>
-		protected virtual void OnMenuDelete(string commandText)
+		protected virtual void OnMenuDeleteElement(string commandText)
 		{
 			int count = SelectionCount;
 			if (count > 0)
@@ -856,6 +925,55 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
+		/// <summary>
+		/// Execute the delete shape command
+		/// </summary>
+		/// <param name="commandText">The text from the command</param>
+		protected virtual void OnMenuDeleteShape(string commandText)
+		{
+			int count = SelectionCount;
+			if (count > 0)
+			{
+				ModelingDocData docData = this.DocData as ModelingDocData;
+				Debug.Assert(docData != null);
+				Store store = docData.Store;
+				Debug.Assert(store != null);
+				ORMDesignerCommands enabledCommands = myEnabledCommands;
+				// There are a number of things to watch out for in a complex selection.
+				// 1) The type of object needs to be redetermined for each selected object
+				// 2) Deletions may have side effects on other objects, so selected items
+				//    may be deleted already by the time we get to them
+				// 3) The queued selection can have removed elements in it and needs to be cleaned
+				//    up before committing.
+				bool complexSelection = 0 == (enabledCommands & ORMDesignerCommands.DeleteShape);
+
+				// Use the localized text from the command for our transaction name
+				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", "")))
+				{
+					// Note that we don't deal with QueuedSelection here like
+					// we do in OnMenuDeleteElement because we only run this
+					// command for top-level shape elements, so there is no
+					// chance that we will have a parent other than the diagram
+					// to select.
+					foreach (ModelElement mel in GetSelectedComponents())
+					{
+						if (mel is ShapeElement)
+						{
+							mel.Remove();
+						}
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+
+						// Clearing the selection selects the diagram
+						CurrentDesigner.Selection.Clear();
+					}
+				}
+			}
+		}
+
+		
 		/// <summary>
 		/// Execute the SelectAll menu command
 		/// </summary>

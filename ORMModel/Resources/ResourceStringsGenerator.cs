@@ -877,6 +877,46 @@
 			}
 		}
 		/// <summary>
+		/// This text appears in the edit menu when fact types are selected in the diagram.
+		/// </summary>
+		public static string CommandDeleteFactTypeShapeText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteFactTypeShape.Text");
+			}
+		}
+		/// <summary>
+		/// This text appears in the edit menu when object types are selected in the diagram.
+		/// </summary>
+		public static string CommandDeleteObjectTypeShapeText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteObjectTypeShape.Text");
+			}
+		}
+		/// <summary>
+		/// This text appears in the edit menu when constraint types are selected in the diagram.
+		/// </summary>
+		public static string CommandDeleteConstraintShapeText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteConstraintShape.Text");
+			}
+		}
+		/// <summary>
+		/// This text appears in the edit menu when multiple elements of different types are selected in the diagram.
+		/// </summary>
+		public static string CommandDeleteMultipleShapeText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteMultipleShape.Text");
+			}
+		}
+		/// <summary>
 		/// This text appears in the edit menu when roles are selected in the diagram.
 		/// </summary>
 		public static string CommandDeleteRoleText

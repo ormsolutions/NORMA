@@ -49,13 +49,6 @@ namespace Neumont.Tools.ORM.Shell
 			public ORMDesignerCommandSet(IServiceProvider serviceProvider)
 			{
 				this.myServiceProvider = serviceProvider;
-				// add view ORM Model Explorer commands in the top-level menu.
-				// These do not need a status handler (always enabled when the application designer is 
-				// active), so we don't need an EFTMenuCommand
-				MenuCommand menuCommand = new MenuCommand(new EventHandler(OnMenuViewORMModelExplorer), ORMDesignerCommandIds.ViewModelExplorer);
-				menuCommand.Supported = true;
-				MenuService.AddCommand(menuCommand);
-
 				#region Array of menu commands
 				myCommands = new MenuCommand[]
 				{
@@ -74,13 +67,17 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnMenuCopyImage),
 				ORMDesignerCommandIds.CopyImage)
 				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusDelete),
-				new EventHandler(OnMenuDelete),				
-				StandardCommands.Delete)
+				new EventHandler(OnStatusDeleteElement),
+				new EventHandler(OnMenuDeleteElement),
+				ORMDesignerCommandIds.DeleteElement)
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusSelectAll),
-				new EventHandler(OnMenuSelectAll),				
+				new EventHandler(OnMenuSelectAll),
 				StandardCommands.SelectAll)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusDeleteShape),
+				new EventHandler(OnMenuDeleteShape),
+				StandardCommands.Delete)
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusReadingsWindow),
 				new EventHandler(OnMenuReadingsWindow),
@@ -97,7 +94,6 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusFactEditorWindow),
 				new EventHandler(OnMenuFactEditorWindow),
 				ORMDesignerCommandIds.ViewFactEditor)
-
 				// Constraint editing commands				
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusActivateRoleSequence),
@@ -130,9 +126,13 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnMenuShowNegativeVerbalization),
 				ORMDesignerCommandIds.ShowNegativeVerbalization)
 				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusVerbalizationWindow),
+				new EventHandler(OnStatusStandardWindow),
 				new EventHandler(OnMenuVerbalizationWindow),
 				ORMDesignerCommandIds.ViewVerbalizationBrowser)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusStandardWindow),
+				new EventHandler(OnMenuViewORMModelBrowser),
+				ORMDesignerCommandIds.ViewModelBrowser)
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusAutoLayout),
 				new EventHandler(OnMenuAutoLayout),
@@ -204,9 +204,9 @@ namespace Neumont.Tools.ORM.Shell
 			}
 
 			/// <summary>
-			/// Show the ORM Model Explorer
+			/// Show the ORM Model Browser
 			/// </summary>
-			protected void OnMenuViewORMModelExplorer(object sender, EventArgs e)
+			protected void OnMenuViewORMModelBrowser(object sender, EventArgs e)
 			{
 				ORMDesignerPackage.BrowserWindow.Show();
 			}
@@ -244,23 +244,43 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			private void OnStatusDelete(object sender, EventArgs e)
+			private void OnStatusDeleteElement(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny);
 			}
-
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			private void OnMenuDelete(object sender, EventArgs e)
+			private void OnMenuDeleteElement(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
 				if (docView != null)
 				{
 					// call delete on the doc view
-					docView.OnMenuDelete((sender as OleMenuCommand).Text);
+					docView.OnMenuDeleteElement((sender as OleMenuCommand).Text);
 				}
 			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusDeleteShape(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			private void OnMenuDeleteShape(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// call delete on the doc view
+					docView.OnMenuDeleteShape((sender as OleMenuCommand).Text);
+				}
+			}
+
+
 			private void OnStatusReferenceModesWindow(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayCustomReferenceModeWindow);
@@ -410,9 +430,9 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			private void OnStatusVerbalizationWindow(object sender, EventArgs e)
+			private void OnStatusStandardWindow(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayVerbalizationWindow);
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayStandardWindows);
 			}
 			/// <summary>
 			/// Menu handler
@@ -652,9 +672,9 @@ namespace Neumont.Tools.ORM.Shell
 			public static readonly CommandID DebugViewStore = new CommandID(guidORMDesignerCommandSet, cmdIdDebugViewStore);
 #endif // DEBUG
 			/// <summary>
-			/// The ORM Model Explorer item on the view menu
+			/// The ORM Model Browser item on the view menu
 			/// </summary>
-			public static readonly CommandID ViewModelExplorer = new CommandID(guidORMDesignerCommandSet, cmdIdViewModelExplorer);
+			public static readonly CommandID ViewModelBrowser = new CommandID(guidORMDesignerCommandSet, cmdIdViewModelBrowser);
 			/// <summary>
 			/// Copy selected elements as an image.
 			/// </summary>
@@ -706,6 +726,12 @@ namespace Neumont.Tools.ORM.Shell
 			/// uniqueness constraint is not yet defined for the combination.
 			/// </summary>
 			public static readonly CommandID AddInternalUniqueness = new CommandID(guidORMDesignerCommandSet, cmdIdAddInternalUniqueness);
+			/// <summary>
+			/// The standard delete command is bound to shape deletion
+			/// in the designer. This command explicitly deletes the underlying
+			/// model elements.
+			/// </summary>
+			public static readonly CommandID DeleteElement = new CommandID(guidORMDesignerCommandSet, cmdIdDeleteElement);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -753,9 +779,9 @@ namespace Neumont.Tools.ORM.Shell
 			private const int cmdIdDebugViewStore = 0x28FF;
 #endif // DEBUG
 			/// <summary>
-			/// The ORM Model Explorer item on the view menu
+			/// The ORM Model Browser item on the view menu
 			/// </summary>
-			private const int cmdIdViewModelExplorer = 0x2900;
+			private const int cmdIdViewModelBrowser = 0x2900;
 			/// <summary>
 			/// The ORM Readings Window item on the fact type context menu
 			/// </summary>
@@ -826,6 +852,12 @@ namespace Neumont.Tools.ORM.Shell
 			/// uniqueness constraint is not yet defined for the combination.
 			/// </summary>
 			private const int cmdIdAddInternalUniqueness = 0x2911;
+			/// <summary>
+			/// The standard delete command is bound to shape deletion
+			/// in the designer. This command explicitly deletes the underlying
+			/// model elements.
+			/// </summary>
+			private const int cmdIdDeleteElement = 0x2914;
 
 			/// <summary>
 			/// The context menu for the diagram

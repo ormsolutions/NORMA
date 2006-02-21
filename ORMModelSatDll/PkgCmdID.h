@@ -22,6 +22,7 @@
 #define groupIdModelCommands			0x1003
 #define groupIdConstraintEditContext	0x1004
 #define groupIdVerbalizationCommands	0x1005
+#define groupIdORMToolWindows			0x1006
 
 ///////////////////////////////////////////////////////////////////////////////
 // Command IDs       (0x2xxx)
@@ -29,7 +30,7 @@
 #ifdef DEBUG
 #define cmdIdDebugViewStore				0x28FF
 #endif
-#define cmdIdViewModelExplorer			0x2900
+#define cmdIdViewModelBrowser			0x2900
 #define cmdIdViewReadingEditor			0x2901
 #define cmdIdViewReferenceModeEditor	0x2902
 #define cmdIdInsertRoleAfter			0x2903
@@ -51,6 +52,8 @@
 
 #define cmdIdToggleSimpleMandatory		0x2910
 #define cmdIdAddInternalUniqueness		0x2911
+
+#define cmdIdDeleteElement				0x2914
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs
 #define bmpIdShowNegativeVerbalization	1

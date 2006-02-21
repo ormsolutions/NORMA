@@ -307,6 +307,18 @@
 	<ResourceString name="CommandDeleteMultipleText" model="Diagram" resourceName="Command.DeleteMultiple.Text">
 		<comment type="summary">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
 	</ResourceString>
+	<ResourceString name="CommandDeleteFactTypeShapeText" model="Diagram" resourceName="Command.DeleteFactTypeShape.Text">
+		<comment type="summary">This text appears in the edit menu when fact types are selected in the diagram.</comment>
+	</ResourceString>
+	<ResourceString name="CommandDeleteObjectTypeShapeText" model="Diagram" resourceName="Command.DeleteObjectTypeShape.Text">
+		<comment type="summary">This text appears in the edit menu when object types are selected in the diagram.</comment>
+	</ResourceString>
+	<ResourceString name="CommandDeleteConstraintShapeText" model="Diagram" resourceName="Command.DeleteConstraintShape.Text">
+		<comment type="summary">This text appears in the edit menu when constraint types are selected in the diagram.</comment>
+	</ResourceString>
+	<ResourceString name="CommandDeleteMultipleShapeText" model="Diagram" resourceName="Command.DeleteMultipleShape.Text">
+		<comment type="summary">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
+	</ResourceString>
 	<ResourceString name="CommandDeleteRoleText" model="Diagram" resourceName="Command.DeleteRole.Text">
 		<comment type="summary">This text appears in the edit menu when roles are selected in the diagram.</comment>
 	</ResourceString>

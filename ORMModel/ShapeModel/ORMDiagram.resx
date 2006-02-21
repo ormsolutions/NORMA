@@ -128,13 +128,29 @@
     <comment xml:space="preserve">This text appears in the edit menu when fact types are selected in the diagram.</comment>
   </data>
   <data name="Command.DeleteMultiple.Text">
-    <value xml:space="preserve">&amp;Delete Selection</value>
+    <value xml:space="preserve">&amp;Delete From Model</value>
     <comment xml:space="preserve">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
   </data>
   <data name="Command.DeleteObjectType.Text">
     <value xml:space="preserve">&amp;Delete Object Type</value>
     <comment xml:space="preserve">This text appears in the edit menu when object types are selected in the diagram.</comment>
   </data>
+	<data name="Command.DeleteConstraintShape.Text">
+		<value xml:space="preserve">Delete Constraint &amp;Shape</value>
+		<comment xml:space="preserve">This text appears in the edit menu when constraint types are selected in the diagram.</comment>
+	</data>
+	<data name="Command.DeleteFactTypeShape.Text">
+		<value xml:space="preserve">Delete Fact &amp;Shape</value>
+		<comment xml:space="preserve">This text appears in the edit menu when fact types are selected in the diagram.</comment>
+	</data>
+	<data name="Command.DeleteMultipleShape.Text">
+		<value xml:space="preserve">Delete Selected &amp;Shapes</value>
+		<comment xml:space="preserve">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
+	</data>
+	<data name="Command.DeleteObjectTypeShape.Text">
+		<value xml:space="preserve">Delete Object &amp;Shape</value>
+		<comment xml:space="preserve">This text appears in the edit menu when object types are selected in the diagram.</comment>
+	</data>
   <data name="Command.DeleteRole.Text">
     <value xml:space="preserve">&amp;Delete Role</value>
     <comment xml:space="preserve">This text appears in the edit menu when roles are selected in the diagram.</comment>

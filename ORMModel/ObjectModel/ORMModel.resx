@@ -319,7 +319,7 @@
     <comment xml:space="preserve">Text to place in the reading editor when the document view currently has an unsupported selection.</comment>
   </data>
   <data name="ModelReadingEditor.WindowTitle">
-    <value xml:space="preserve">Reading Editor</value>
+    <value xml:space="preserve">ORM Reading Editor</value>
     <comment xml:space="preserve">Text to place in the title of the reading editor tool window.</comment>
   </data>
   <data name="ModelReferenceModeEditor.AbbreviatedEntityTypeName">
@@ -355,7 +355,7 @@
     <comment xml:space="preserve">Text used to name the Custom Reference Modes column</comment>
   </data>
   <data name="ModelReferenceModeEditor.EditorWindowTitle">
-    <value xml:space="preserve">Reference Mode Editor</value>
+    <value xml:space="preserve">ORM Reference Mode Editor</value>
     <comment xml:space="preserve">The text that displays the title of the editor window.</comment>
   </data>
   <data name="ModelReferenceModeEditor.EntityTypeName">
