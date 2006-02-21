@@ -3296,7 +3296,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 		private static void ValidateIntersectingDisjunctiveMandatoryConstraints(ConstraintRoleSequenceHasRole link)
 		{
 			ConstraintRoleSequence roleSequence = link.ConstraintRoleSequenceCollection;
+			if (roleSequence is MultiColumnExternalConstraintRoleSequence)
+			{
+				return;
+			}
 			IConstraint constraint = roleSequence.Constraint;
+			Debug.Assert(constraint != null); // Only multicolumn role sequences can ever have a null constraints
 			DisjunctiveMandatoryConstraint currentDisjunctive = null;
 			bool checkIntersection = false;
 			switch (constraint.ConstraintType)
