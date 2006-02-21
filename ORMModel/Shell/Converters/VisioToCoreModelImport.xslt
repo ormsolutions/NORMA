@@ -449,22 +449,7 @@
 							</orm:Role>
 						</xsl:for-each>
 					</orm:RoleSequence>
-					<!--Pretty dirty here.  I had to do it because Orthogonal
-						references the prefered identifier by an attribute called @ObjectNamespace
-						not the Object ID. So all of this is to get the ObjectID of the preferred Identifier.-->
-					<xsl:if test="$constraintFragment/@IsPrimaryReference='true'">
-						<xsl:variable name="objectIDFragment" select="../../../../Roles/Role[@RoleID=$constraintFragment/RoleSequences/RoleSequence/RoleSequenceItems/RoleSequenceItem/@RoleSequenceItemRoleID]/@RolePlayerObjectID"/>
-						<xsl:variable name="objectNamespace" select="../../../../Objects/Object[@ObjectID=$objectIDFragment]/@ObjectNamespace"/>
-						<xsl:variable name="tempObjectID" select="../../../../Objects/Object[@ObjectName=$objectNamespace]/@ObjectID"/>
-						<xsl:if test="not(string-length($tempObjectID) = '0')">
-							<orm:PreferredIdentifierFor>
-								<xsl:attribute name="ref">
-									<xsl:text>GUID_ObjectID</xsl:text>
-									<xsl:value-of select="$tempObjectID"/>
-								</xsl:attribute>
-							</orm:PreferredIdentifierFor>
-						</xsl:if>
-					</xsl:if>
+					<xsl:apply-templates select="$constraintFragment[@NumberOfItemsPerSequence='1' and @IsPrimaryReference='true']" mode="preferredId" />
 				</orm:InternalUniquenessConstraint>
 			</xsl:when>
 			<xsl:when test="$constraintFragment[@ConstraintID=current()/@FactConstraintID and @IsInternal='true' and @ConstraintType='Mandatory']">
@@ -490,6 +475,17 @@
 				</orm:SimpleMandatoryConstraint>
 			</xsl:when>
 		</xsl:choose>
+	</xsl:template>
+	<xsl:template match="Constraint" mode="preferredId">
+		<!--Pretty dirty here.  I had to do it because Orthogonal
+			references the preferred identifier by an attribute called @ObjectNamespace
+			not the Object ID. So all of this is to get the ObjectID of the preferred identifier.-->
+		<!--Note: This is the source of the slow down in the entire transform!-->
+		<xsl:variable name="tempRoleId" select="current()/RoleSequences/RoleSequence/RoleSequenceItems/RoleSequenceItem/@RoleSequenceItemRoleID" />
+		<xsl:variable name="tempObjectId" select="../../Roles/Role[@RoleID=$tempRoleId]/@RolePlayerObjectID" />
+		<xsl:variable name="tempObjectName" select="../../Objects/Object[@ObjectKind='Value Type' and @ObjectNamespace and @ObjectID=$tempObjectId]/@ObjectNamespace" />
+		<xsl:variable name="finalTempObjectID" select="../../Objects/Object[@ObjectKind='Entity Type' and @ObjectName=$tempObjectName]/@ObjectID" />
+		<orm:PreferredIdentifierFor ref="GUID_ObjectID{$finalTempObjectID}" />
 	</xsl:template>
 	<!--End Fact Templates-->
 	<!--Begin SubtypeFactTemplates-->
