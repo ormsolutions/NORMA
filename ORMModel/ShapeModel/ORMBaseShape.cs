@@ -19,6 +19,14 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 		}
 		/// <summary>
+		/// Place the child shape the first time it is placed
+		/// on the diagram
+		/// </summary>
+		/// <param name="parent">The parent shape</param>
+		public virtual void PlaceAsChildOf(NodeShape parent)
+		{
+		}
+		/// <summary>
 		/// Override to modify the content size of an item.
 		/// By default, the AutoResize function will use this
 		/// size (if it is set) with no margins.
@@ -122,6 +130,25 @@ namespace Neumont.Tools.ORM.ShapeModel
 			if (null != (baseShape = child as ORMBaseShape))
 			{
 				baseShape.ConfiguringAsChildOf(this);
+			}
+		}
+		/// <summary>
+		/// If a new child shape was not placed, then defer to
+		/// PlaceAsChildOf on the child. Note that AutoResize
+		/// has not been called on the child prior to this call.
+		/// </summary>
+		/// <param name="child">A new child shape element</param>
+		/// <param name="childWasPlaced">false if the child element was
+		/// not previously placed.</param>
+		protected override void OnChildConfigured(ShapeElement child, bool childWasPlaced)
+		{
+			if (!childWasPlaced)
+			{
+				ORMBaseShape baseShape;
+				if (null != (baseShape = child as ORMBaseShape))
+				{
+					baseShape.PlaceAsChildOf(this);
+				}
 			}
 		}
 		#endregion // Customize appearance

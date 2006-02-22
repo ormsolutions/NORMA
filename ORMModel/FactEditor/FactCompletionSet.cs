@@ -33,7 +33,6 @@ namespace Neumont.Tools.ORM.FactEditor
 		private ORMDesignerDocView myCurrentDocView;
 		private ImageList myImageList;
 		private IComparer<ObjectType> myComparer;
-		private Reading myReading;
 		private FactType myEditFact;
 
 		/// <summary>
@@ -342,16 +341,11 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <summary>
 		/// Get or set the selected fact we are editing.
 		/// </summary>
-		/// <value></value>
 		public FactType EditFact
 		{
 			get
 			{
 				return myEditFact;
-			}
-			private set
-			{
-				myEditFact = value;
 			}
 		}
 
@@ -458,27 +452,59 @@ namespace Neumont.Tools.ORM.FactEditor
 				myObjectEntries.Insert(~newIndex, objectType);
 			}
 		}
+		private static readonly Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}", RegexOptions.Compiled);
 		void SelectionChangedEvent(object sender, MonitorSelectionEventArgs e)
 		{
 			IVsTextLines textLines = null;
 			ErrorHandler.ThrowOnFailure(myTextView.GetBuffer(out textLines));
 
 			ORMDesignerDocView theView = e.NewValue as ORMDesignerDocView;
+			FactType fact = null;
+			Reading reading = null;
+			ReadingOrder readingOrder = null;
 			if (theView != null)
 			{
-				EditFact = ResolveUnderlyingFact(theView.PrimarySelection);
-			}
-
-			String fullReading = "";
-			if (myEditFact != null)
-			{
-				Regex regCountPlaces = new Regex(@"{(?<placeHolderNr>\d+)}");
-				ReadingOrder myReadingOrder = FactType.FindMatchingReadingOrder(myEditFact);
-				if (myReadingOrder != null)
+				fact = EditorUtility.ResolveContextFactType(theView.PrimarySelection);
+				if (fact != null)
 				{
-					myReading = myReadingOrder.PrimaryReading;
-					fullReading = regCountPlaces.Replace(myReading.Text, new MatchEvaluator(ReplacePlaceholders));
+					readingOrder = FactType.FindMatchingReadingOrder(fact);
+					if (readingOrder != null)
+					{
+						reading = readingOrder.PrimaryReading;
+					}
 				}
+			}
+			string fullReading = "";
+			myEditFact = fact;
+			if (reading != null)
+			{
+				RoleMoveableCollection roles = readingOrder.RoleCollection;
+				int roleCount = roles.Count;
+				fullReading = regCountPlaces.Replace(
+					reading.Text,
+					delegate(Match m)
+					{
+						string retval = null;
+						string matchText = m.Value;
+						int rolePosition = int.Parse(matchText.Substring(1, matchText.Length - 2), CultureInfo.InvariantCulture);
+						if (roleCount > rolePosition)
+						{
+							ObjectType player = roles[rolePosition].RolePlayer;
+							if (player != null)
+							{
+								retval = string.Format(CultureInfo.InvariantCulture, "[{0}({1})]", player.Name, player.ReferenceModeString);
+							}
+							else
+							{
+								retval = ResourceStrings.ModelReadingEditorMissingRolePlayerText;
+							}
+						}
+						else
+						{
+							retval = ResourceStrings.ModelReadingEditorMissingRolePlayerText;
+						}
+						return retval;
+					});
 			}
 
 			IntPtr initialText = Marshal.StringToBSTR(fullReading);
@@ -509,82 +535,5 @@ namespace Neumont.Tools.ORM.FactEditor
 			#endregion // IComparer<ObjectType> Members
 		}
 		#endregion // ObjectTypeNameComparer private class
-
-		private static FactType ResolveUnderlyingFact(object instance)
-		{
-			instance = EditorUtility.ResolveContextInstance(instance, true);
-			FactType retval = null;
-			ModelElement elem;
-			Role role;
-			InternalConstraint internalConstraint;
-
-			if (null != (role = instance as Role))
-			{
-				//this one coming straight through on the selection so handling
-				//and returning here.
-				return role.FactType;
-			}
-			else if (null != (internalConstraint = instance as InternalConstraint))
-			{
-				return internalConstraint.FactType;
-			}
-			else
-			{
-				elem = instance as ModelElement;
-			}
-
-			if (elem != null)
-			{
-				FactType fact = elem as FactType;
-				if (fact != null)
-				{
-					return fact;
-				}
-
-				Reading reading = elem as Reading;
-				if (reading != null)
-				{
-					return reading.ReadingOrder.FactType;
-				}
-
-				ReadingOrder readingOrder = elem as ReadingOrder;
-				if (readingOrder != null)
-				{
-					return readingOrder.FactType;
-				}
-
-				ObjectType objType = elem as ObjectType;
-				if (objType != null)
-				{
-					return objType.NestedFactType;
-				}
-			}
-
-			return retval;
-		}
-		private string ReplacePlaceholders(Match m)
-		{
-			string retval = null;
-			RoleMoveableCollection roles = myReading.ReadingOrder.RoleCollection;
-			string matchText = m.Value;
-			int rolePosition = int.Parse(matchText.Substring(1, matchText.Length - 2), CultureInfo.InvariantCulture);
-			if (roles.Count > rolePosition)
-			{
-				ObjectType player = roles[rolePosition].RolePlayer;
-				if (player != null)
-				{
-					retval = string.Format(CultureInfo.InvariantCulture, "[{0}({1})]", player.Name, player.ReferenceModeString);
-				}
-				else
-				{
-					retval = ResourceStrings.ModelReadingEditorMissingRolePlayerText;
-				}
-			}
-			else
-			{
-				retval = ResourceStrings.ModelReadingEditorMissingRolePlayerText;
-			}
-			return retval;
-		}
 	}
 }

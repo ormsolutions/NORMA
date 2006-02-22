@@ -2613,40 +2613,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			return true;
 		}
-
-		/// <summary>
-		/// Checks the location of the RoleNameShape. 
-		/// If its in the default location it moves it next to the associated FactTypeShape, otherwise leaves it alone
-		/// </summary>
-		protected override void OnChildConfigured(ShapeElement child, bool childWasPlaced)
-		{
-			base.OnChildConfigured(child, childWasPlaced);
-			if (child is RoleNameShape)
-			{
-				RoleNameShape roleName = child as RoleNameShape;
-				FactTypeShape fts = roleName.ParentShape as FactTypeShape;
-
-				// Checks to see of RoleNameShape is placed in the upper left corner
-				if (roleName.Location == new PointD(-fts.Location.X, -fts.Location.Y))
-				{
-					double x = -0.2;
-					double y = -0.2;
-					FactType ft = fts.ModelElement as FactType;
-					// Cascades RoleNameShapes for facts that contain more than one role
-					for (int i = 0; i < ft.RoleCollection.Count; i++)
-					{
-						Role role = ft.RoleCollection[i];
-						if (role == roleName.ModelElement)
-						{
-							x += i * 0.15;
-							y -= i * 0.15;
-							break;
-						}
-					}
-					roleName.Location = new PointD(x, y);
-				}
-			}
-		}
 		/// <summary>
 		/// An object type is displayed as an ObjectTypeShape unless it is
 		/// objectified, in which case we display it as an ObjectifiedFactTypeNameShape
@@ -4310,18 +4276,13 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Move the name label above the parent fact type shape
+		/// Move a new name label above the parent fact type shape
 		/// </summary>
-		/// <param name="fixupState">BoundsFixupState</param>
-		/// <param name="iteration">int</param>
-		public override void OnBoundsFixup(BoundsFixupState fixupState, int iteration)
+		public override void PlaceAsChildOf(NodeShape parent)
 		{
-			base.OnBoundsFixup(fixupState, iteration);
-			if (fixupState != BoundsFixupState.Invalid)
-			{
-				SizeD size = Size;
-				Location = new PointD(0, -1.5 * size.Height);
-			}
+			AutoResize();
+			SizeD size = Size;
+			Location = new PointD(0, -1.5 * size.Height);
 		}
 		#region ObjectNameTextField class
 		/// <summary>

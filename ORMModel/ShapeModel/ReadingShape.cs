@@ -10,6 +10,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using System.Drawing;
+using Microsoft.VisualStudio.EnterpriseTools.Shell;
 
 #endregion
 
@@ -240,30 +241,26 @@ namespace Neumont.Tools.ORM.ShapeModel
 				myTextShapeField = value;
 			}
 		}
-
 		/// <summary>
-		/// Putting the reading text under the fact.
+		/// Place a newly added reading shape under the fact
 		/// </summary>
-		public override void OnBoundsFixup(BoundsFixupState fixupState, int iteration)
+		/// <param name="parent">FactTypeShape parent element</param>
+		public override void PlaceAsChildOf(NodeShape parent)
 		{
-			base.OnBoundsFixup(fixupState, iteration);
-			if (fixupState != BoundsFixupState.Invalid)
+			FactTypeShape factShape = (FactTypeShape)parent;
+			AutoResize();
+			SizeD size = Size;
+			double yOffset;
+			if (factShape.ConstraintDisplayPosition == ConstraintDisplayPosition.Top)
 			{
-				FactTypeShape factShape = (FactTypeShape)ParentShape;
-				SizeD size = Size;
-				double yOffset;
-				if (factShape.ConstraintDisplayPosition == ConstraintDisplayPosition.Top)
-				{
-					yOffset = factShape.Size.Height + .5 * size.Height;
-				}
-				else
-				{
-					yOffset = -1.5 * size.Height;
-				}
-				Location = new PointD(0, yOffset);
+				yOffset = factShape.Size.Height + .5 * size.Height;
 			}
+			else
+			{
+				yOffset = -1.5 * size.Height;
+			}
+			Location = new PointD(0, yOffset);
 		}
-
 		/// <summary>
 		/// Changed to allow resizing of the label
 		/// </summary>

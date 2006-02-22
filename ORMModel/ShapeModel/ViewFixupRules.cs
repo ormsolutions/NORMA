@@ -567,27 +567,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 		private static void FixupRoleValueConstraintLink(RoleHasValueConstraint link, INotifyElementAdded notifyAdded)
 		{
-			// Make sure the object type, fact type, and link
-			// are displayed on the diagram
+			// Make sure the fact type and link are displayed on the diagram
 			RoleValueConstraint roleValueConstraint = link.ValueConstraint;
 			Role role = roleValueConstraint.Role;
 			FactType factType = role.FactType;
-			ObjectType objectType = null;
-			foreach(Role r in factType.RoleCollection)
-			{
-				if(!Object.ReferenceEquals(r, role))
-				{
-					objectType = r.RolePlayer;
-				}
-			}
 
-			if(objectType != null)
+			if (factType != null)
 			{
-				ORMModel model = objectType.Model;
+				ORMModel model = factType.Model;
 				if(model != null)
 				{
-					Diagram.FixUpDiagram(model, objectType);
-					Diagram.FixUpDiagram(objectType, roleValueConstraint);
+					Diagram.FixUpDiagram(model, factType);
+					Diagram.FixUpDiagram(factType, roleValueConstraint);
 					Diagram.FixUpDiagram(model, link);
 				}
 			}

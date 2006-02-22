@@ -455,6 +455,61 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 			}
 			return instance;
 		}
+		/// <summary>
+		/// Find the FactType associated with the specified instance. The
+		/// instance will first be stripped of any wrapping objects by the
+		/// ResolveConstextInstance method.
+		/// </summary>
+		/// <param name="instance">The selected object returned by ITypeDescriptorContext.Instance</param>
+		/// <returns>A FactType, or null if the item is not associated with a FactType.</returns>
+		public static FactType ResolveContextFactType(object instance)
+		{
+			instance = EditorUtility.ResolveContextInstance(instance, false);
+			FactType retval = null;
+			ModelElement elem;
+
+			if (null != (elem = instance as ModelElement))
+			{
+				FactType fact;
+				Role role;
+				InternalConstraint internalConstraint;
+				Reading reading;
+				ReadingOrder readingOrder;
+				ObjectType objType;
+				if (null != (fact = elem as FactType))
+				{
+					retval = fact;
+				}
+				else if (null != (role = elem as Role))
+				{
+					//this one coming straight through on the selection so handling
+					//and returning here.
+					retval = role.FactType;
+				}
+				else if (null != (internalConstraint = elem as InternalConstraint))
+				{
+					retval = internalConstraint.FactType;
+				}
+				else if (null != (reading = elem as Reading))
+				{
+					readingOrder = reading.ReadingOrder;
+					if (null != readingOrder)
+					{
+						retval = readingOrder.FactType;
+					}
+				}
+				else if (null != (readingOrder = elem as ReadingOrder))
+				{
+					retval = readingOrder.FactType;
+				}
+				else if (null != (objType = elem as ObjectType))
+				{
+					retval = objType.NestedFactType;
+				}
+			}
+			// Handle weird teardown scenarios where the Store is going away
+			return (retval != null && retval.Store != null) ? retval : null;
+		}
 		#endregion // EditorUtility Specific
 	}
 }

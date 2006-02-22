@@ -55,7 +55,7 @@ namespace Neumont.Tools.ORM.Shell
 			ORMDesignerDocView theView = e.NewValue as ORMDesignerDocView;
 			if (theView != null)
 			{
-				FactType theFact = ReadingTextEditor.ResolveUnderlyingFact(theView.PrimarySelection);
+				FactType theFact = EditorUtility.ResolveContextFactType(theView.PrimarySelection);
 				FactType currentFact = EditingFactType;
 				if (theFact == null && currentFact != null)
 				{

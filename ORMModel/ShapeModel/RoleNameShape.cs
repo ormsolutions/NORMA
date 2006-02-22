@@ -7,10 +7,11 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.Shell;
 using Microsoft.VisualStudio.Modeling;
 using System.Collections;
+using System.Globalization;
 
 namespace Neumont.Tools.ORM.ShapeModel
 {
-	partial class RoleNameShape
+	public partial class RoleNameShape
 	{
 		private static AutoSizeTextField myTextField;
 
@@ -19,24 +20,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// </summary>
 		protected static readonly StyleSetResourceId RoleNameTextBrush = new StyleSetResourceId("Neumont", "RoleNameTextBrush");
 		/// <summary>
-		/// Sets up the AutoSizeTextField to be added to the ShapeFieldCollection, is only run once
+		/// Sets the AutoSizeTextField to be added to the ShapeFieldCollection, is only run once
 		/// </summary>
-		protected override void InitializeShapeFields(ShapeFieldCollection shapeFields)
+		protected override AutoSizeTextField CreateAutoSizeTextField()
 		{
-			RoleNameAutoSizeTextField textField = RoleNameAutoSizeTextField.CreateAutoSizeTextField();
-			textField.AssociateValueWith(Store, AssociatedShapeMetaAttributeGuid, AssociatedModelMetaAttributeGuid);
-			textField.DefaultFocusable = true;
-			textField.FillBackground = true;
-			shapeFields.Add(textField);
-
-			// Adjust anchoring after all shape fields are added
-			AnchoringBehavior anchor = textField.AnchoringBehavior;
-			anchor.CenterHorizontally();
-			anchor.CenterVertically();
-
-			Debug.Assert(myTextField == null); // This should only be called once per type
-			textField.DefaultTextBrushId = RoleNameTextBrush;
-			TextShapeField = textField;
+			AutoSizeTextField newTextField = new RoleNameAutoSizeTextField();
+			newTextField.DefaultFocusable = true;
+			newTextField.FillBackground = true;
+			newTextField.DefaultTextBrushId = RoleNameTextBrush;
+			return newTextField;
 		}
 		/// <summary>
 		/// Sets up the Brush to be used to draw the object and adds it to the StyleSet
@@ -157,28 +149,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 			}
 		}
-	}
-
-	/// <summary>
-	/// Inherited AutoSizeTextField class so the display GetDisplayText could be overridden
-	/// </summary>
-	public class RoleNameAutoSizeTextField : AutoSizeTextField
-	{
 		/// <summary>
-		/// Gets the text to display in the RoleNameShape and appends square brackets to beginning and end
+		/// Place a newly added role name shape
 		/// </summary>
-		public override string GetDisplayText(ShapeElement parentShape)
+		/// <param name="parent">Parent FactTypeShape</param>
+		public override void PlaceAsChildOf(NodeShape parent)
 		{
-			string roleName = base.GetDisplayText(parentShape);
-			return "[" + roleName + "]";
+			FactTypeShape factShape = (FactTypeShape)parent;
+			double x = -0.2;
+			double y = -0.2;
+			FactType factType = factShape.AssociatedFactType;
+			// Cascades RoleNameShapes for facts that contain more than one role
+			RoleMoveableCollection roles = factType.RoleCollection;
+			int roleIndex = roles.IndexOf((Role)ModelElement);
+			if (roleIndex != -1)
+			{
+				x += roleIndex * 0.15;
+				y -= roleIndex * 0.15;
+			}
+			Location = new PointD(x, y);
 		}
-
 		/// <summary>
-		/// Returns a new instance of a RoleNameAutoSizeTextField
+		/// Inherited AutoSizeTextField class so the display GetDisplayText could be overridden
 		/// </summary>
-		public static RoleNameAutoSizeTextField CreateAutoSizeTextField()
+		private class RoleNameAutoSizeTextField : AutoSizeTextField
 		{
-			return new RoleNameAutoSizeTextField();
+			/// <summary>
+			/// Gets the text to display in the RoleNameShape and appends square brackets to beginning and end
+			/// </summary>
+			public override string GetDisplayText(ShapeElement parentShape)
+			{
+				string roleName = base.GetDisplayText(parentShape);
+				return string.Format(CultureInfo.InvariantCulture, "[{0}]", roleName); // UNDONE: Localize format string
+			}
 		}
 	}
 }

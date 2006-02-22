@@ -86,17 +86,12 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Move the name label above the parent shape
 		/// </summary>
-		/// <param name="fixupState">BoundsFixupState</param>
-		/// <param name="iteration">int</param>
-		public override void OnBoundsFixup(BoundsFixupState fixupState, int iteration)
+		public override void PlaceAsChildOf(NodeShape parent)
 		{
-			base.OnBoundsFixup(fixupState, iteration);
-			if (fixupState != BoundsFixupState.Invalid)
-			{
-				SizeD size = Size;
-				RectangleD parentBounds = ParentShape.AbsoluteBoundingBox;
-				Location = new PointD(parentBounds.Width, -1 * size.Height);
-			}
+			AutoResize();
+			SizeD size = Size;
+			RectangleD parentBounds = ParentShape.AbsoluteBoundingBox;
+			Location = new PointD(parentBounds.Width, -1 * size.Height);
 		}
 		/// <summary>
 		/// Changed to allow resizing of the label
