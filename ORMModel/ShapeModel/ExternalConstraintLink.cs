@@ -293,12 +293,41 @@ namespace Neumont.Tools.ORM.ShapeModel
 						// based on its center point. If both ends move the connection point,
 						// then only the first one passed in here can find the opposite shape.
 						// UNDONE: Slimy hack, should be removed if we get better framework support.
+						// The order here needs to be in sync with the code in RemoveDanglingConstraintShape
 						Connect(toShape, fromShape);
 					}
 				}
 			}
 		}
 		#endregion // ExternalConstraintLink specific
+		#region Dangling constraint shape deletion
+		/// <summary>
+		/// External constraint shapes can only be drawn if they show all of their
+		/// links, so automatically remove them if a connecting shape is removed.
+		/// </summary>
+		[RuleOn(typeof(ExternalConstraintLink))]
+		private class RemoveDanglingConstraintShapeRule : RemovingRule
+		{
+			public override void ElementRemoving(ElementRemovingEventArgs e)
+			{
+				ExternalConstraintLink link = e.ModelElement as ExternalConstraintLink;
+				ModelElement linkMel;
+				ExternalConstraintShape shape;
+				ModelElement shapeMel;
+				// The FromShape (as opposed to ToShape) here needs to be in
+				// sync with the code in ConfiguringAsChildOf
+				if (null != (shape = link.FromShape as ExternalConstraintShape) &&
+					!shape.IsRemoving &&
+					null != (linkMel = link.ModelElement) &&
+					!linkMel.IsRemoving &&
+					null != (shapeMel = shape.ModelElement) &&
+					!shapeMel.IsRemoving)
+				{
+					shape.Remove();
+				}
+			}
+		}
+		#endregion // Dangling constraint shape deletion
 		#region Accessibility Properties
 		/// <summary>
 		/// Return the localized accessible name for the link

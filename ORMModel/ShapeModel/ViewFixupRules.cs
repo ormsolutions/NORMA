@@ -883,6 +883,30 @@ namespace Neumont.Tools.ORM.ShapeModel
 		}
 		#endregion // EliminateOrphanedShapesFixupListener class
 		#endregion // SubjectHasPresentation fixup
+		#region LinkConnectsToNodeRemoved class
+		/// <summary>
+		/// Don't leave links dangling. Remove any link shape that points
+		/// to no model element.
+		/// </summary>
+		[RuleOn(typeof(LinkConnectsToNode), FireTime=TimeToFire.LocalCommit)]
+		private class LinkConnectsToNodeRemoved : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				LinkConnectsToNode link = e.ModelElement as LinkConnectsToNode;
+				LinkShape linkShape = link.Link;
+				NodeShape nodeShape = link.Nodes;
+				ModelElement backingElement;
+				if (nodeShape.IsRemoved &&
+					!linkShape.IsRemoved &&
+					null != (backingElement = linkShape.ModelElement) &&
+					!backingElement.IsRemoved)
+				{
+					linkShape.Remove();
+				}
+			}
+		}
+		#endregion // LinkConnectsToNodeRemoved class
 		#region ReadingOrder fixup
 		/// <summary>
 		/// Add shape elements for reading orders. Used during deserialization fixup
@@ -994,7 +1018,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 		}
 		#endregion // DisplayRolePlayersFixupListener class
-
 		#endregion // View Fixup Rules
 	}
 }

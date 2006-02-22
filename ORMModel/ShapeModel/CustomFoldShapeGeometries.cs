@@ -89,9 +89,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 							testShape = linkShape.FromShape;
 						}
 
-						//UNDONE: the following line throws an error when an external constraint
-						//is connected to a role on a primary reference scheme which has been
-						//set to ExpandRefMode = false. Ticket #92
 						PointD shapeCenter = testShape.AbsoluteCenter;
 						if (VGConstants.FuzzEqual(shapeCenter.X, vectorEndPoint.X, VGConstants.FuzzDistance) &&
 							VGConstants.FuzzEqual(shapeCenter.Y, vectorEndPoint.Y, VGConstants.FuzzDistance))
