@@ -416,11 +416,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
+				ObjectType rolePlayer;
+				RoleMoveableCollection roles;
 				EntityTypeHasPreferredIdentifier link;
 				InternalUniquenessConstraint constraint;
 				if (null != (link = e.ModelElement as EntityTypeHasPreferredIdentifier) &&
 					null != (constraint = link.PreferredIdentifier as InternalUniquenessConstraint) &&
-					constraint.RoleCollection[0].RolePlayer.IsValueType)
+					0 != (roles = constraint.RoleCollection).Count &&
+					null != (rolePlayer = roles[0].RolePlayer) &&
+					rolePlayer.IsValueType)
 				{
 					EnsureRefModeExpanded(constraint, link.PreferredIdentifierFor);
 				}
@@ -455,6 +459,72 @@ namespace Neumont.Tools.ORM.ShapeModel
 								if (preferredFor != null)
 								{
 									EnsureRefModeExpanded(iuc, preferredFor);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// A preferred identifier internal uniqueness constraint can be attached to a role with no
+		/// role player. Attaching a role player will match the reference mode pattern, which then needs
+		/// to ensure that the ExpandRefMode property is correct.
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole))]
+		private class RolePlayerAddedRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				if (link.RolePlayer.IsValueType)
+				{
+					ConstraintRoleSequenceMoveableCollection sequences = link.PlayedRoleCollection.ConstraintRoleSequenceCollection;
+					int constraintsCount = sequences.Count;
+					for (int i = 0; i < constraintsCount; ++i)
+					{
+						InternalUniquenessConstraint iuc = sequences[i] as InternalUniquenessConstraint;
+						if (iuc != null)
+						{
+							ObjectType preferredFor = (iuc as IConstraint).PreferredIdentifierFor;
+							if (preferredFor != null)
+							{
+								EnsureRefModeExpanded(iuc, preferredFor);
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Deleting a value type that participates in a refmode pattern does not remove the
+		/// preferred identifier, so there is no notification to the shape that the refmode is gone.
+		/// This forces the opposite ObjectTypeShape to resize in case it lost its refmode.
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole), FireTime=TimeToFire.TopLevelCommit, Priority = DiagramFixupConstants.ResizeParentRulePriority)]
+		private class RolePlayerRemovedRule : RemoveRule
+		{
+			public override void ElementRemoved(ElementRemovedEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				Role role = link.PlayedRoleCollection;
+				if (!role.IsRemoved)
+				{
+					foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+					{
+						InternalUniquenessConstraint iuc = sequence as InternalUniquenessConstraint;
+						if (iuc != null)
+						{
+							ObjectType objectType = (iuc as IConstraint).PreferredIdentifierFor;
+							if (objectType != null)
+							{
+								foreach (PresentationElement pel in objectType.PresentationRolePlayers)
+								{
+									ObjectTypeShape objectShape = pel as ObjectTypeShape;
+									if (objectShape != null)
+									{
+										objectShape.AutoResize();
+									}
 								}
 							}
 						}

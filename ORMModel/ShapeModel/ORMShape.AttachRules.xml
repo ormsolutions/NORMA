@@ -10,6 +10,8 @@
 		<arg:Rule class="ObjectTypeShape.DataTypeAddedRule"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierRemovedRule"/>
 		<arg:Rule class="ObjectTypeShape.PreferredIdentifierAddedRule"/>
+		<arg:Rule class="ObjectTypeShape.RolePlayerAddedRule"/>
+		<arg:Rule class="ObjectTypeShape.RolePlayerRemovedRule"/>
 		<arg:Rule class="ObjectTypeShape.ShapeChangeRule"/>
 		<arg:Rule class="ORMBaseBinaryLinkShape.LinkChangeRule"/>
 		<arg:Rule class="ORMShapeModel.ConstraintRoleSequenceRoleAdded"/>

@@ -24,6 +24,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 				typeof(ObjectTypeShape).GetNestedType("DataTypeAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierRemovedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ObjectTypeShape).GetNestedType("PreferredIdentifierAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ObjectTypeShape).GetNestedType("RolePlayerAddedRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(ObjectTypeShape).GetNestedType("RolePlayerRemovedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ObjectTypeShape).GetNestedType("ShapeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ORMBaseBinaryLinkShape).GetNestedType("LinkChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(ConstraintRoleSequenceRoleAdded),

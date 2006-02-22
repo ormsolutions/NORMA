@@ -222,6 +222,7 @@
     <Compile Include="Shell\ORMDocData.cs" />
     <Compile Include="Shell\ORMDocView.cs" />
     <Compile Include="Shell\ORMEditorFactory.cs" />
+    <Compile Include="Shell\ORMModelBrowserCommandSet.cs" />
     <Compile Include="Shell\ORMPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Version.cs">
@@ -290,7 +291,9 @@
     <None Include="Shell\ProjectItems\Web\CSharp.zip" />
     <None Include="Shell\ProjectItems\Web\JSharp.zip" />
     <None Include="Shell\ProjectItems\Web\VisualBasic.zip" />
-    <None Include="Transforms\SerializationExtensions.xsd" />
+    <None Include="Transforms\SerializationExtensions.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Transforms\SerializationExtensions.xslt" />
     <EmbeddedResource Include="ObjectModel\ORM2Core.xsd">
       <SubType>Designer</SubType>

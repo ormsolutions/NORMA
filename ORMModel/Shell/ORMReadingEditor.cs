@@ -341,7 +341,7 @@ namespace Neumont.Tools.ORM.Shell
 				hr = (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
 			}
 
-			if (!handled)
+			if (!handled && myCurrentDocument != null)
 			{
 				Debug.Assert(ErrorHandler.Failed(hr));
 				MSOLE.IOleCommandTarget forwardTo = myCurrentDocument.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
@@ -409,7 +409,7 @@ namespace Neumont.Tools.ORM.Shell
 				handled = false;
 				hr = (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
 			}
-			if (!handled)
+			if (!handled && myCurrentDocument != null)
 			{
 				Debug.Assert(ErrorHandler.Failed(hr));
 				MSOLE.IOleCommandTarget forwardTo = myCurrentDocument.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
