@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ObjectModel.Editors;
 using Microsoft.VisualStudio.Modeling.Diagrams;
+using Neumont.Tools.ORM.ShapeModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
