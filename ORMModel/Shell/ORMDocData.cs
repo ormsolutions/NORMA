@@ -300,11 +300,12 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			Store store = Store;
 			AddErrorReportingEvents();
+			AddTabRestoreEvents();
 			NamedElementDictionary.AttachEventHandlers(store);
 			ORMDiagram.AttachEventHandlers(store);
 			SetFlag(PrivateFlags.AddedPostLoadEvents, true);
 		}
-		/// <summary>s
+		/// <summary>
 		/// Detach model events. Adds NamedElementDictionary handling
 		/// to the document's primary store.
 		/// </summary>
@@ -318,6 +319,7 @@ namespace Neumont.Tools.ORM.Shell
 			Store store = Store;
 			NamedElementDictionary.DetachEventHandlers(store);
 			ORMDiagram.DetachEventHandlers(store);
+			RemoveTabRestoreEvents();
 			RemoveErrorReportingEvents();
 		}
 		/// <summary>
@@ -404,6 +406,58 @@ namespace Neumont.Tools.ORM.Shell
 			}
 		}
 		#endregion // Error reporting
+		#region Tab Restoration Hack
+		private void AddTabRestoreEvents()
+		{
+			//Added events to cater for undo/redo
+			Store store = Store;
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+			MetaClassInfo classInfo = dataDirectory.FindMetaClass(Diagram.MetaClassGuid);
+			eventDirectory.ElementAdded.Add(classInfo, new ElementAddedEventHandler(DiagramAddedEvent));
+			eventDirectory.ElementRemoved.Add(classInfo, new ElementRemovedEventHandler(DiagramRemovedEvent));
+		}
+		private void RemoveTabRestoreEvents()
+		{
+			//Added events to cater for undo/redo
+			Store store = Store;
+			MetaDataDirectory dataDirectory = store.MetaDataDirectory;
+			EventManagerDirectory eventDirectory = store.EventManagerDirectory;
+			MetaClassInfo classInfo = dataDirectory.FindMetaClass(Diagram.MetaClassGuid);
+			eventDirectory.ElementAdded.Remove(classInfo, new ElementAddedEventHandler(DiagramAddedEvent));
+			eventDirectory.ElementRemoved.Remove(classInfo, new ElementRemovedEventHandler(DiagramRemovedEvent));
+		}
+		private void DiagramAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			AddOrRemoveTabForEvent(e.ModelElement as Diagram, true);
+		}
+		private void DiagramRemovedEvent(object sender, ElementRemovedEventArgs e)
+		{
+			AddOrRemoveTabForEvent(e.ModelElement as Diagram, false);
+		}
+		private void AddOrRemoveTabForEvent(Diagram diagram, bool add)
+		{
+			Store store = diagram.Store;
+			if (store.InUndo || store.InRedo)
+			{
+				foreach (DocView view in DocViews)
+				{
+					TabbedDiagramDocView tabbedDocView = view as TabbedDiagramDocView;
+					if (tabbedDocView != null)
+					{
+						if (add)
+						{
+							tabbedDocView.Diagrams.Add(diagram, true);
+						}
+						else
+						{
+							tabbedDocView.Diagrams.Remove(diagram);
+						}
+					}
+				}
+			}
+		}
+		#endregion // Tab Restoration Hack
 		#region ORMDesignerDocData specific
 		/// <summary>
 		/// Retrieve the phase enum to use with the
