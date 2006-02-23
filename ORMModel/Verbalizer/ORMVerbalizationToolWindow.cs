@@ -151,7 +151,11 @@ namespace Neumont.Tools.ORM.Shell
 					ORMDesignerDocData docData = value.DocData as ORMDesignerDocData;
 					if (docData != null)
 					{
-						docData.Store.EventManagerDirectory.ElementEventsEnded.Add(new ElementEventsEndedEventHandler(ModelStateChangedEvent));
+						Store store = docData.Store;
+						if (store != null && !store.Disposed)
+						{
+							store.EventManagerDirectory.ElementEventsEnded.Add(new ElementEventsEndedEventHandler(ModelStateChangedEvent));
+						}
 					}
 				}
 			}

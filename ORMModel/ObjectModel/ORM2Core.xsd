@@ -27,6 +27,17 @@
 		<xs:attribute name="id" type="xs:ID"/>
 	</xs:complexType>
 	<!--End ORMModel-->
+	<xs:complexType name="NotesType">
+		<xs:sequence minOccurs="0">
+			<xs:element name="Note" type="NoteType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="NoteType">
+		<xs:sequence>
+			<xs:element name="Text" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:ID"/>
+	</xs:complexType>
 	<!--Objects and Object Types-->
 	<!--ObjectRef and  ObjectRefs define references to constrains and collections of constraints-->
 	<xs:complexType name="ObjectRefs">
@@ -47,7 +58,7 @@
 	</xs:complexType>
 	<xs:complexType name="ObjectType" abstract="true">
 		<xs:sequence>
-			<xs:element name="ObjectNotes" type="Data" minOccurs="0"/>
+			<xs:element name="Notes" type="NotesType" minOccurs="0" />
 			<xs:element name="PlayedRoles" type="PlayedRoles" minOccurs="0"/>
 			<!--Subtypes is derived.-->
 			<!--We need to be able to reference elements from the derived schema without introducing ambiguity.-->
@@ -361,7 +372,7 @@
 	<xs:complexType name="BaseFact" abstract="true">
 		<!-- These are duplicated in SubtypeFact without type extension -->
 		<xs:sequence minOccurs="0" maxOccurs="1">
-			<xs:element name="FactNotes" type="Data" minOccurs="0"/>
+			<xs:element name="Notes" type="NotesType" minOccurs="0" />
 			<xs:element name="DerivationRule" type="Data" minOccurs="0"/>
 			<xs:element name="FactRoles" type="Roles" minOccurs="0"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>
@@ -394,7 +405,7 @@
 	<xs:complexType name="SubtypeFact">
 		<!-- This is a straight copy from BaseFact with a change to FactRoles and an Extensions element-->
 		<xs:sequence minOccurs="0" maxOccurs="1">
-			<xs:element name="FactNotes" type="Data" minOccurs="0"/>
+			<xs:element name="Notes" type="NotesType" minOccurs="0" />
 			<xs:element name="DerivationRule" type="Data" minOccurs="0"/>
 			<xs:element name="FactRoles" type="SubtypeRoles" minOccurs="1"/>
 			<xs:element name="ReadingOrders" type="ReadingOrders" minOccurs="0"/>

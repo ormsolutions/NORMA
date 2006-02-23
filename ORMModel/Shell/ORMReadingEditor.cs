@@ -269,6 +269,82 @@ namespace Neumont.Tools.ORM.Shell
 		#region IOleCommandTarget Members
 
 		/// <summary>
+		/// Provides a first chance to tell the shell that this window is capable of handling certain commands. Implements IOleCommandTarget.QueryStatus
+		/// </summary>
+		protected int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, MSOLE.OLECMD[] prgCmds, IntPtr pCmdText)
+		{
+			int hr = VSConstants.S_OK;
+			bool handled = true;
+			// Only handle commands from the Office 97 Command Set (aka VSStandardCommandSet97).
+			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
+			{
+				// There typically is only one command passed in to this array - in any case, we only care
+				// about the first command.
+				MSOLE.OLECMD cmd = prgCmds[0];
+				switch ((VSConstants.VSStd97CmdID)cmd.cmdID)
+				{
+					case VSConstants.VSStd97CmdID.Delete:
+						// Inform the shell that we should have a chance to handle the delete command.
+						if (this.myForm.ReadingEditor.EditingFactType != null)
+						{
+							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
+							prgCmds[0] = cmd;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+
+					case VSConstants.VSStd97CmdID.EditLabel:
+						// Inform the shell that we should have a chance to handle the edit label (rename) command.
+						if (this.myForm.ReadingEditor.EditingFactType != null)
+						{
+							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
+							prgCmds[0] = cmd;
+						}
+						else
+						{
+							goto default;
+						}
+						break;
+
+					default:
+						// Inform the shell that we don't support any other commands.
+						handled = false;
+						hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
+						break;
+				}
+			}
+			else
+			{
+				// Inform the shell that we don't recognize this command group.
+				handled = false;
+				hr = (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
+			}
+			if (!handled && myCurrentDocument != null)
+			{
+				Debug.Assert(ErrorHandler.Failed(hr));
+				ModelingDocData docData = myCurrentDocument;
+				if (docData != null)
+				{
+					MSOLE.IOleCommandTarget forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
+					// If the command wasn't handled already, forward it to the undo manager.
+					hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+				}
+				else
+				{
+					hr = (int)MSOLE.Constants.MSOCMDERR_E_NOTSUPPORTED;
+				}
+			}
+			return hr;
+		}
+		int MSOLE.IOleCommandTarget.QueryStatus(ref Guid pguidCmdGroup, uint cCmds, MSOLE.OLECMD[] prgCmds, IntPtr pCmdText)
+		{
+			return QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
+		}
+
+		/// <summary>
 		/// Provides a first chance to handle any command that MSOLE.IOleCommandTarget.QueryStatus
 		/// informed the shell to pass to this window. Implements IOleCommandTarget.Exec
 		/// </summary>
@@ -340,87 +416,22 @@ namespace Neumont.Tools.ORM.Shell
 				handled = false;
 				hr = (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
 			}
-
 			if (!handled && myCurrentDocument != null)
 			{
 				Debug.Assert(ErrorHandler.Failed(hr));
-				MSOLE.IOleCommandTarget forwardTo = myCurrentDocument.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
-				// If the command wasn't handled already, give the undo manager a chance to handle the command.
-				hr = forwardTo.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+				ModelingDocData docData = myCurrentDocument;
+				if (docData != null)
+				{
+					MSOLE.IOleCommandTarget forwardTo = docData.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
+					// If the command wasn't handled already, give the undo manager a chance to handle the command.
+					hr = forwardTo.Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
+				}
 			}
 			return hr;
 		}
 		int MSOLE.IOleCommandTarget.Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
 		{
 			return Exec(ref pguidCmdGroup, nCmdID, nCmdexecopt, pvaIn, pvaOut);
-		}
-
-		/// <summary>
-		/// Provides a first chance to tell the shell that this window is capable of handling certain commands. Implements IOleCommandTarget.QueryStatus
-		/// </summary>
-		protected int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, MSOLE.OLECMD[] prgCmds, IntPtr pCmdText)
-		{
-			int hr = VSConstants.S_OK;
-			bool handled = true;
-			// Only handle commands from the Office 97 Command Set (aka VSStandardCommandSet97).
-			if (pguidCmdGroup == VSConstants.GUID_VSStandardCommandSet97)
-			{
-				// There typically is only one command passed in to this array - in any case, we only care
-				// about the first command.
-				MSOLE.OLECMD cmd = prgCmds[0];
-				switch ((VSConstants.VSStd97CmdID)cmd.cmdID)
-				{
-					case VSConstants.VSStd97CmdID.Delete:
-						// Inform the shell that we should have a chance to handle the delete command.
-						if (this.myForm.ReadingEditor.EditingFactType != null)
-						{
-							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
-							prgCmds[0] = cmd;
-						}
-						else
-						{
-							goto default;
-						}
-						break;
-
-					case VSConstants.VSStd97CmdID.EditLabel:
-						// Inform the shell that we should have a chance to handle the edit label (rename) command.
-						if (this.myForm.ReadingEditor.EditingFactType != null)
-						{
-							cmd.cmdf = (int)(MSOLE.OLECMDF.OLECMDF_SUPPORTED | MSOLE.OLECMDF.OLECMDF_ENABLED);
-							prgCmds[0] = cmd;
-						}
-						else
-						{
-							goto default;
-						}
-						break;
-
-					default:
-						// Inform the shell that we don't support any other commands.
-						handled = false;
-						hr = (int)MSOLE.Constants.OLECMDERR_E_NOTSUPPORTED;
-						break;
-				}
-			}
-			else
-			{
-				// Inform the shell that we don't recognize this command group.
-				handled = false;
-				hr = (int)MSOLE.Constants.OLECMDERR_E_UNKNOWNGROUP;
-			}
-			if (!handled && myCurrentDocument != null)
-			{
-				Debug.Assert(ErrorHandler.Failed(hr));
-				MSOLE.IOleCommandTarget forwardTo = myCurrentDocument.UndoManager.VSUndoManager as MSOLE.IOleCommandTarget;
-				// If the command wasn't handled already, forward it to the undo manager.
-				hr = forwardTo.QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
-			}
-			return hr;
-		}
-		int MSOLE.IOleCommandTarget.QueryStatus(ref Guid pguidCmdGroup, uint cCmds, MSOLE.OLECMD[] prgCmds, IntPtr pCmdText)
-		{
-			return QueryStatus(ref pguidCmdGroup, cCmds, prgCmds, pCmdText);
 		}
 
 		#endregion

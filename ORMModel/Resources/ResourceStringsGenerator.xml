@@ -358,8 +358,14 @@
 	<ResourceString name="ModelReadingEditorWindowTitle" model="Model" resourceName="ModelReadingEditor.WindowTitle">
 		<comment type="summary">Text to place in the title of the reading editor tool window.</comment>
 	</ResourceString>
+	<ResourceString name="ModelNotesWindowTitle" model="Model" resourceName="ModelNotesWindow.WindowTitle">
+		<comment type="summary">Text to place in the title bar of the notes tool window.</comment>
+	</ResourceString>
+	<ResourceString name="ModelNotesWindowRootTypeNameNotesSeparatorFormatString" model="Model" resourceName="ModelNotesWindow.RootTypeNameNotesSeparatorFormatString">
+		<comment type="summary">Text that separates a root type's name from notes if multiple notes are displayed in the ORM notes window. Replacement field 0 is the element name, 1 is the note text.</comment>
+	</ResourceString>
 	<ResourceString name="ModelReadingEditorUnsupportedSelectionText" model="Model" resourceName="ModelReadingEditor.UnsupportedSelectionText">
-		<comment type="summary">Text that will display in the middle of the tool window when  the document view currently has an unsuppoted collection.</comment>
+		<comment type="summary">Text that will display in the middle of the tool window when the document view currently has an unsuppoted collection.</comment>
 	</ResourceString>
 	<ResourceString name="PackageOfficialName" model="Diagram" resourceName="Package.OfficialName">
 		<comment type="summary">The official name of the package used in the About dialog</comment>

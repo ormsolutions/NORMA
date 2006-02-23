@@ -240,6 +240,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FrequencyConstraintHasFrequencyConstraintInvalidatedByInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid);
+			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.NoteMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.NoteMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid);
 			MetaRoles.Add(Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.FactTypeHasFrequencyConstraintContradictsInternalUniquenessConstraintError.FrequencyConstraintContradictsInternalUniquenessConstraintErrorCollectionMetaRoleGuid);
 			#endregion
@@ -523,6 +524,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.ReadingOrderElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRange),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.Note),
+				typeof(Neumont.Tools.ORM.ObjectModel.NoteElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ORMElementLink),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataTypeElementFactoryCreator),
@@ -644,6 +647,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError),
 				typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator),
+				typeof(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote),
+				typeof(Neumont.Tools.ORM.ObjectModel.RootTypeHasNoteElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError),
 				typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameErrorElementFactoryCreator),
 				typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError),
@@ -672,6 +677,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			Microsoft.VisualStudio.Modeling.MetaFieldInfo[] typeArray = new Microsoft.VisualStudio.Modeling.MetaFieldInfo[]
 			{
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.RootType), "IsExternal", Neumont.Tools.ORM.ObjectModel.RootType.IsExternalMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.RootType.RootTypeIsExternalFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.RootType), "NoteText", Neumont.Tools.ORM.ObjectModel.RootType.NoteTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.RootType.RootTypeNoteTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), "IsIndependent", Neumont.Tools.ORM.ObjectModel.ObjectType.IsIndependentMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeIsIndependentFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), "IsValueType", Neumont.Tools.ORM.ObjectModel.ObjectType.IsValueTypeMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeIsValueTypeFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectType), "Scale", Neumont.Tools.ORM.ObjectModel.ObjectType.ScaleMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ObjectType.ObjectTypeScaleFieldHandler)),
@@ -716,6 +722,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRange), "Text", Neumont.Tools.ORM.ObjectModel.ValueRange.TextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueRange.ValueRangeTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRange), "MinInclusion", Neumont.Tools.ORM.ObjectModel.ValueRange.MinInclusionMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueRange.ValueRangeMinInclusionFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRange), "MaxInclusion", Neumont.Tools.ORM.ObjectModel.ValueRange.MaxInclusionMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueRange.ValueRangeMaxInclusionFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.Note), "Text", Neumont.Tools.ORM.ObjectModel.Note.TextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.Note.NoteTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "Scale", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ScaleMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeHasDataTypeScaleFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType), "Length", Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.LengthMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.ValueTypeHasDataType.ValueTypeHasDataTypeLengthFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation), "IsStored", Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.IsStoredMetaAttributeGuid, typeof(Neumont.Tools.ORM.ObjectModel.FactTypeDerivation.FactTypeDerivationIsStoredFieldHandler)),
@@ -856,6 +863,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError), "RingConstraint", Neumont.Tools.ORM.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError), "ObjectTypeRequiresPrimarySubtypeError", Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError), "ObjectType", Neumont.Tools.ORM.ObjectModel.ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote), "Note", Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.NoteMetaRoleGuid),
+				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote), "Element", Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.ElementMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "DuplicateNameError", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.DuplicateNameErrorMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError), "InternalConstraintCollection", Neumont.Tools.ORM.ObjectModel.InternalConstraintHasDuplicateNameError.InternalConstraintCollectionMetaRoleGuid),
 				new Microsoft.VisualStudio.Modeling.MetaRolePlayerInfo(typeof(Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError), "MinValueMismatchError", Neumont.Tools.ORM.ObjectModel.ValueRangeHasMinValueMismatchError.MinValueMismatchErrorMetaRoleGuid),
@@ -1059,6 +1068,140 @@ namespace Neumont.Tools.ORM.ObjectModel
 		#endregion
 		#endregion
 		
+		#region NoteText's Generated  Field Code
+		#region NoteText's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String NoteTextMetaAttributeGuidString = "449f9dde-4857-4ef4-a0cf-d4659d131da3";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid NoteTextMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RootType.NoteTextMetaAttributeGuidString);
+		#endregion
+
+		#region NoteText's Generated Property Code
+
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.MergableProperty(false)]
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(CustomStorage=true, FieldHandlerType=typeof(RootTypeNoteTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RootType.NoteTextMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.RootType.NoteText")]
+		public  System.String NoteText
+		{
+			get
+			{
+				return rootTypeNoteTextFieldHandler.GetFieldValue(this);
+			}
+		
+			set
+			{
+				rootTypeNoteTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region RootTypeNoteTextFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for RootType.NoteText field
+		/// </summary>
+		private static RootTypeNoteTextFieldHandler	rootTypeNoteTextFieldHandler	= RootTypeNoteTextFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for RootType.NoteText
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class RootTypeNoteTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementCustomStoredFieldHandler<Neumont.Tools.ORM.ObjectModel.RootType,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private RootTypeNoteTextFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the RootType.NoteText field handler
+			/// </summary>
+			/// <value>RootTypeNoteTextFieldHandler</value>
+			public static RootTypeNoteTextFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.RootType.rootTypeNoteTextFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.RootType.rootTypeNoteTextFieldHandler;
+					}
+					else
+					{
+						// The static constructor in RootType will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.RootType.rootTypeNoteTextFieldHandler, so just instantiate one and return it
+						return new RootTypeNoteTextFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the RootType.NoteText field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.RootType.NoteTextMetaAttributeGuid;
+				}
+			}
+		}
+		#endregion
+		#endregion
+		
+		#region Note's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.Note Note
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.ElementMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.NoteMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.Note;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.ElementMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.NoteMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.Note counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.Note;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.NoteMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.ElementMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote), newRoles);
+				}
+			}
+		}
+		#endregion
 	}
 	#region RootType's Generated Constructor Code
 	public abstract partial class RootType
@@ -24338,6 +24481,275 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// </summary>
 	[System.CLSCompliant(true)]
 	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaClass("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Note.MetaClassGuidString, "Neumont.Tools.ORM.ObjectModel.Note")]
+	public  partial class Note : Neumont.Tools.ORM.ObjectModel.ORMModelElement
+	{
+		#region Note's Generated MetaClass Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "87e59167-ed64-4b0c-9d96-a3fa9a44a8de";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Note.MetaClassGuidString);
+		#endregion
+
+		#region Text's Generated  Field Code
+		#region Text's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		public const System.String TextMetaAttributeGuidString = "610ac093-f914-4e67-a753-774ff69b4e3f";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		public static readonly System.Guid TextMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.Note.TextMetaAttributeGuidString);
+		#endregion
+
+		#region Text's Generated Property Code
+
+		private System.String textPropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.StringDomainAttribute]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(NoteTextFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.Note.TextMetaAttributeGuidString, "Neumont.Tools.ORM.ObjectModel.Note.Text")]
+		public  System.String Text
+		{
+			get
+			{
+				return textPropertyStorage;
+			}
+		
+			set
+			{
+				noteTextFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region NoteTextFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for Note.Text field
+		/// </summary>
+		private static NoteTextFieldHandler	noteTextFieldHandler	= NoteTextFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for Note.Text
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class NoteTextFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ObjectModel.Note,System.String>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private NoteTextFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the Note.Text field handler
+			/// </summary>
+			/// <value>NoteTextFieldHandler</value>
+			public static NoteTextFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ObjectModel.Note.noteTextFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ObjectModel.Note.noteTextFieldHandler;
+					}
+					else
+					{
+						// The static constructor in Note will assign this value to
+						// Neumont.Tools.ORM.ObjectModel.Note.noteTextFieldHandler, so just instantiate one and return it
+						return new NoteTextFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the Note.Text field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ObjectModel.Note.TextMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the Note</param>
+			protected sealed override System.String GetValue(Neumont.Tools.ORM.ObjectModel.Note element)
+			{
+				return element.textPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ObjectModel.Note element, System.String value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.String oldValue)
+			{
+				oldValue = element.textPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.textPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region Element's Generated Accessor Code
+		/// <summary>
+		/// 
+		/// </summary>
+		public Neumont.Tools.ORM.ObjectModel.RootType Element
+		{
+			get
+			{
+				return this.GetCounterpartRolePlayer(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.NoteMetaRoleGuid, Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.ElementMetaRoleGuid, false) as Neumont.Tools.ORM.ObjectModel.RootType;
+			}
+			set
+			{
+				bool sameRolePlayer = false;
+				System.Collections.IList links = this.GetElementLinks(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.NoteMetaRoleGuid);
+				if (links.Count > 0)
+				{
+					System.Diagnostics.Debug.Assert(1 == links.Count);
+					Microsoft.VisualStudio.Modeling.MetaRoleInfo roleInfo = this.Partition.MetaDataDirectory.FindMetaRole(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.ElementMetaRoleGuid);
+					foreach (Microsoft.VisualStudio.Modeling.ElementLink link in links)
+					{
+						if (!link.IsRemoved)
+						{
+							Neumont.Tools.ORM.ObjectModel.RootType counterpart = link.GetRolePlayer(roleInfo) as Neumont.Tools.ORM.ObjectModel.RootType;
+							if (counterpart != null && object.ReferenceEquals(counterpart, value))
+							{
+								sameRolePlayer = true;
+							}
+							else
+							{
+								link.Remove();
+							}
+							break;
+						}
+					}
+				}
+				if ((!sameRolePlayer) && (value != null))
+				{
+					Microsoft.VisualStudio.Modeling.RoleAssignment[] newRoles = new Microsoft.VisualStudio.Modeling.RoleAssignment[2];
+					newRoles[0] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.ElementMetaRoleGuid, value);
+					newRoles[1] = new Microsoft.VisualStudio.Modeling.RoleAssignment(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.NoteMetaRoleGuid, this);
+					this.Partition.ElementFactory.CreateElementLink(typeof(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote), newRoles);
+				}
+			}
+		}
+		#endregion
+	}
+	#region Note's Generated Constructor Code
+	public  partial class Note
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public Note(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static Note CreateNote(Microsoft.VisualStudio.Modeling.Store store)
+		{
+			return CreateNote(store.DefaultPartition);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static Note CreateAndInitializeNote(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeNote(store.DefaultPartition, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public Note(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+			: base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static Note CreateNote(Microsoft.VisualStudio.Modeling.Partition partition)
+		{
+			return (Note)partition.ElementFactory.CreateElement(typeof(Note));
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static Note CreateAndInitializeNote(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (Note)partition.ElementFactory.CreateElement(typeof(Note), assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for Note
+	/// <summary>
+	/// Note Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.Note))]
+	public sealed class NoteElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public NoteElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.Note( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static NoteElementFactoryCreator Instance
+		{
+			get
+			{
+				return new NoteElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
 	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
 	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.ORMElementLink.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.ORMElementLink")]
 	public abstract partial class ORMElementLink : Microsoft.VisualStudio.Modeling.ElementLink
@@ -34688,6 +35100,159 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get
 			{
 				return new ObjectTypeHasObjectTypeRequiresPrimarySubtypeErrorElementFactoryCreator();
+			}
+		}
+	}
+	#endregion
+
+}
+namespace Neumont.Tools.ORM.ObjectModel
+{
+	/// <summary>
+	/// 
+	/// </summary>
+	[System.CLSCompliant(true)]
+	[System.Serializable]
+	[Microsoft.VisualStudio.Modeling.MetaRelationship("83ad9e12-0e90-47cd-8e2f-a79f8d9c7288")]
+	[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.MetaRelationshipGuidString, "Neumont.Tools.ORM.ObjectModel.RootTypeHasNote")]
+	public  partial class RootTypeHasNote : Neumont.Tools.ORM.ObjectModel.ORMElementLink
+	{
+		#region RootTypeHasNote's Generated MetaRelationship Code
+		/// <summary>
+		/// MetaClass Guid String
+		/// </summary>
+		public new const System.String MetaClassGuidString = "7ad55585-14c6-427d-9147-c3b30bd45716";
+		/// <summary>
+		/// MetaClass Guid
+		/// </summary>
+		public static readonly new System.Guid MetaClassGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.MetaClassGuidString);
+		/// <summary>
+		/// MetaRelationship Guid String
+		/// </summary>
+		public new const System.String MetaRelationshipGuidString = RootTypeHasNote.MetaClassGuidString;
+		/// <summary>
+		/// MetaRelationship Guid
+		/// </summary>
+		public static readonly new System.Guid MetaRelationshipGuid = RootTypeHasNote.MetaClassGuid;
+		#endregion
+
+		#region Note's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String NoteMetaRoleGuidString = "5dd076c8-714e-4f46-a6bc-a14b960ed852";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid NoteMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.NoteMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=false, IsNavigableFrom=false, PropagateRemove=true, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.NoteMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.Note")]
+		public  Neumont.Tools.ORM.ObjectModel.Note Note
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.Note)this.GetRolePlayer(NoteMetaRoleGuid); }
+			set { this.SetRolePlayer(NoteMetaRoleGuid, value); }
+		}
+		
+		#endregion
+		#region Element's Generated MetaRole Code
+		/// <summary>
+		/// MetaRole Guid String
+		/// </summary>
+		public const System.String ElementMetaRoleGuidString = "825b3774-7bb3-4ef5-96db-4d31aeb7202c";
+		/// <summary>
+		/// MetaRole Guid
+		/// </summary>
+		public static readonly System.Guid ElementMetaRoleGuid = new System.Guid(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.ElementMetaRoleGuidString);
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.VisualStudio.Modeling.MetaRole(IsOptional=false, IsOrdered=true, IsAggregate=true, IsNavigableFrom=false, PropagateRemove=false, PropagateCopy=false, Cardinality=Microsoft.VisualStudio.Modeling.Cardinality.One)]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.ElementMetaRoleGuidString, "Neumont.Tools.ORM.ObjectModel.RootTypeHasNote.Element")]
+		public  Neumont.Tools.ORM.ObjectModel.RootType Element
+		{
+			get { return (Neumont.Tools.ORM.ObjectModel.RootType)this.GetRolePlayer(ElementMetaRoleGuid); }
+			set { this.SetRolePlayer(ElementMetaRoleGuid, value); }
+		}
+		
+		#endregion
+	}
+	#region RootTypeHasNote's Generated Constructor Code
+	public  partial class RootTypeHasNote
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RootTypeHasNote(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.ModelDataBag bag) : base(store.DefaultPartition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RootTypeHasNote CreateRootTypeHasNote(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return CreateRootTypeHasNote(store.DefaultPartition, rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RootTypeHasNote CreateAndInitializeRootTypeHasNote(Microsoft.VisualStudio.Modeling.Store store, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return CreateAndInitializeRootTypeHasNote(store.DefaultPartition, rolePlayers, assignments);
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RootTypeHasNote(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		    : base(partition, bag)
+		{
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RootTypeHasNote CreateRootTypeHasNote(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers)
+		{
+			return (RootTypeHasNote)partition.ElementFactory.CreateElementLink(typeof(RootTypeHasNote), rolePlayers);
+		}
+		/// <summary>
+		/// Class Factory
+		/// </summary>
+		public static RootTypeHasNote CreateAndInitializeRootTypeHasNote(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.RoleAssignment[] rolePlayers, Microsoft.VisualStudio.Modeling.AttributeAssignment[] assignments)
+		{
+			return (RootTypeHasNote)partition.ElementFactory.CreateElementLink(typeof(RootTypeHasNote), rolePlayers, assignments);
+		}
+	}
+	#endregion
+	#region Class Factory Creator for RootTypeHasNote
+	/// <summary>
+	/// RootTypeHasNote Class Factory Creator
+	/// </summary>
+	[Microsoft.VisualStudio.Modeling.ElementFactoryCreatorFor(typeof(Neumont.Tools.ORM.ObjectModel.RootTypeHasNote))]
+	public sealed class RootTypeHasNoteElementFactoryCreator : Microsoft.VisualStudio.Modeling.ElementFactoryCreator
+	{
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public RootTypeHasNoteElementFactoryCreator()
+		{
+		}
+		/// <summary>
+		/// Class Factory Create Method
+		/// </summary>
+		public override Microsoft.VisualStudio.Modeling.ModelElement Create(Microsoft.VisualStudio.Modeling.Partition partition, Microsoft.VisualStudio.Modeling.ModelDataBag bag)
+		{
+			return new Neumont.Tools.ORM.ObjectModel.RootTypeHasNote( partition, bag );
+		}
+		/// <summary>
+		/// Create an instance of the createor object
+		/// </summary>
+		public static RootTypeHasNoteElementFactoryCreator Instance
+		{
+			get
+			{
+				return new RootTypeHasNoteElementFactoryCreator();
 			}
 		}
 	}

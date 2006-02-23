@@ -42,11 +42,13 @@ namespace Neumont.Tools.ORM.Shell
 	[ProvideToolWindow(typeof(ORMReadingEditorToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMVerbalizationToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindow(typeof(ORMBrowserToolWindow), Style=VsDockStyle.Tabbed, Transient=true, Orientation=ToolWindowOrientation.Right, Window=ToolWindowGuids.Outputwindow)]
+	[ProvideToolWindow(typeof(ORMNotesWindow), Style = VsDockStyle.Tabbed, Transient = true, Orientation = ToolWindowOrientation.Right, Window = ToolWindowGuids.Outputwindow)]
 	[ProvideToolWindowVisibility(typeof(ORMDesignerPackage.FactEditorToolWindowShim), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMReferenceModeEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMReadingEditorToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMVerbalizationToolWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideToolWindowVisibility(typeof(ORMBrowserToolWindow), ORMDesignerEditorFactory.GuidString)]
+	[ProvideToolWindowVisibility(typeof(ORMNotesWindow), ORMDesignerEditorFactory.GuidString)]
 	[ProvideMenuResource(1000, 1)]
 	[ProvideToolboxItems(1, true)]
 	[ProvideToolboxFormat("Microsoft.VisualStudio.Modeling.ElementGroupPrototype")]
@@ -198,6 +200,7 @@ namespace Neumont.Tools.ORM.Shell
 				AddToolWindow(typeof(ORMReadingEditorToolWindow));
 				AddToolWindow(typeof(ORMReferenceModeEditorToolWindow));
 				AddToolWindow(typeof(ORMVerbalizationToolWindow));
+				AddToolWindow(typeof(ORMNotesWindow));
 				EnsureFactEditorToolWindow();
 				
 				// Make sure our options are loaded from the registry
@@ -405,6 +408,16 @@ namespace Neumont.Tools.ORM.Shell
 			get
 			{
 				return (ORMReadingEditorToolWindow)mySingleton.GetToolWindow(typeof(ORMReadingEditorToolWindow), true);
+			}
+		}
+		/// <summary>
+		/// Notes tool window.
+		/// </summary>
+		public static ORMNotesWindow NotesWindow
+		{
+			get
+			{
+				return (ORMNotesWindow)mySingleton.GetToolWindow(typeof(ORMNotesWindow), true);
 			}
 		}
 		/// <summary>

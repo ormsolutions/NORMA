@@ -53,6 +53,8 @@
 #define cmdIdToggleSimpleMandatory		0x2910
 #define cmdIdAddInternalUniqueness		0x2911
 
+#define cmdIdViewNotesWindow			0x2913
+
 #define cmdIdDeleteElement				0x2914
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs

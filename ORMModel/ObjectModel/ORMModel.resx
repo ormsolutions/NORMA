@@ -322,6 +322,14 @@
     <value xml:space="preserve">ORM Reading Editor</value>
     <comment xml:space="preserve">Text to place in the title of the reading editor tool window.</comment>
   </data>
+  <data name="ModelNotesWindow.WindowTitle">
+    <value xml:space="preserve">ORM Notes Window</value>
+    <comment xml:space="preserve">Text to place in the title bar of the notes tool window.</comment>
+  </data>
+  <data name="ModelNotesWindow.RootTypeNameNotesSeparatorFormatString">
+    <value xml:space="preserve">{0}: {1}</value>
+    <comment xml:space="preserve">Text that separates a root type's name from notes if multiple notes are displayed in the ORM notes window. Replacement field 0 is the element name, 1 is the note text.</comment>
+  </data>
   <data name="ModelReferenceModeEditor.AbbreviatedEntityTypeName">
     <value xml:space="preserve">E</value>
     <comment xml:space="preserve">Abbreviated form of the entity type name</comment>

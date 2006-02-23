@@ -114,6 +114,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 				typeof(Role).GetNestedType("RolePlayerRequiredRemovedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(Role).GetNestedType("UpdatedRolePlayerRequiredErrorsRemovedRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(RoleValueConstraint).GetNestedType("RoleValueConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(RootType).GetNestedType("RootTypeChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+				typeof(Note).GetNestedType("NoteChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SingleColumnExternalConstraint).GetNestedType("ConstraintAdded", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SingleColumnExternalConstraint).GetNestedType("ConstraintRoleSequenceHasRoleAdded", BindingFlags.Public | BindingFlags.NonPublic),
 				typeof(SingleColumnExternalConstraint).GetNestedType("EnforceRoleSequenceValidityForAdd", BindingFlags.Public | BindingFlags.NonPublic),

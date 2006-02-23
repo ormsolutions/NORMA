@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<dmd xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:schemas-microsoft-com:dmd">
+<dmd xmlns="urn:schemas-microsoft-com:dmd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <model name="ORMMetaModel" identity="83ad9e12-0e90-47cd-8e2f-a79f8d9c7288" id="i83ad9e12z0e90z47cdz8e2fza79f8d9c7288" namespace="Neumont.Tools.ORM.ObjectModel" isLoaded="true">
     <mdfmetadata xsi:type="modelmdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" majorversion="1" minorversion="1" alwaysgeneratecollection="false">
       <copyright>------------------------------------------------------------------------------
@@ -1431,6 +1431,28 @@ Information Contained Herein is Proprietary and Confidential.
           </role>
         </roles>
       </relationship>
+      <relationship name="RootTypeHasNote" identity="7ad55585-14c6-427d-9147-c3b30bd45716" namespace="Neumont.Tools.ORM.ObjectModel" id="i7ad55585z14c6z427dz9147zc3b30bd45716" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+        <roles>
+          <role name="Note" identity="5dd076c8-714e-4f46-a6bc-a14b960ed852" id="i5dd076c8z714ez4f46za6bcza14b960ed852" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>ic6bdf8b0zef3dz406azafb2z8bfeb1f528c3</source>
+            <type>i87e59167zed64z4b0cz9d96za3fa9a44a8de</type>
+            <generatedProperty name="Note" identity="b3cdb81f-6612-4397-92a8-337bc020d586">
+              <referenceType>i87e59167zed64z4b0cz9d96za3fa9a44a8de</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="Element" identity="825b3774-7bb3-4ef5-96db-4d31aeb7202c" id="i825b3774z7bb3z4ef5z96dbz4d31aeb7202c" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i87e59167zed64z4b0cz9d96za3fa9a44a8de</source>
+            <type>ic6bdf8b0zef3dz406azafb2z8bfeb1f528c3</type>
+            <generatedProperty name="Element" identity="3a3b8623-2c8e-4a4d-8abf-5b33bfa5df3b">
+              <referenceType>ic6bdf8b0zef3dz406azafb2z8bfeb1f528c3</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
     </relationships>
     <trees>
       <treenavigator name="intrinsic" identity="ba1d8762-3be9-41fa-b3ad-3a2bc978f8fe" id="iba1d8762z3be9z41fazb3adz3a2bc978f8fe">
@@ -2466,6 +2488,20 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i68e3a5d5zbb3cz4c0czbb6dz245d5531fcb8</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="RootTypeHasNote.Note" identity="9fca772a-1cb1-46d6-8234-938a78fac7e8" id="i9fca772az1cb1z46d6z8234z938a78fac7e8" definitionlevel="none" containmentstyle="embedding">
+            <source />
+            <role>i5dd076c8z714ez4f46za6bcza14b960ed852</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="Note-ORMModelElement" identity="f26e45bd-b60b-4506-9e13-ad94a4e48e12" id="if26e45bdzb60bz4506z9e13zad94a4e48e12" definitionlevel="none">
+            <source />
+            <superType>ib5e86643zb849z47f8zafc8z70ace49cc51a</superType>
+            <subType>i87e59167zed64z4b0cz9d96za3fa9a44a8de</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="RootTypeHasNote-ORMElementLink" identity="05074850-f5fc-45e9-acad-5896ad8afa1b" id="i05074850zf5fcz45e9zacadz5896ad8afa1b" definitionlevel="none">
+            <source />
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>i7ad55585z14c6z427dz9147zc3b30bd45716</subType>
           </treeExpression>
         </expressions>
         <roots />
@@ -3696,6 +3732,28 @@ Information Contained Herein is Proprietary and Confidential.
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i68e3a5d5zbb3cz4c0czbb6dz245d5531fcb8</subType>
           </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="RootTypeHasNote.Note" identity="6f0cd2a9-66a6-40eb-9ce6-b917406e7350" id="i6f0cd2a9z66a6z40ebz9ce6zb917406e7350" definitionlevel="definition" containmentstyle="fromsource">
+            <source>i9fca772az1cb1z46d6z8234z938a78fac7e8</source>
+            <role>i5dd076c8z714ez4f46za6bcza14b960ed852</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="Note-ORMModelElement" identity="7d14a933-c17b-4ace-a549-e6faecb98768" id="i7d14a933zc17bz4aceza549ze6faecb98768" definitionlevel="use">
+            <source>if26e45bdzb60bz4506z9e13zad94a4e48e12</source>
+            <superType>ib5e86643zb849z47f8zafc8z70ace49cc51a</superType>
+            <subType>i87e59167zed64z4b0cz9d96za3fa9a44a8de</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="RootTypeHasNote-ORMElementLink" identity="86f18932-8bac-4505-881c-e9f9ec3deaf9" id="i86f18932z8bacz4505z881cze9f9ec3deaf9" definitionlevel="definition">
+            <source>i05074850zf5fcz45e9zacadz5896ad8afa1b</source>
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>i7ad55585z14c6z427dz9147zc3b30bd45716</subType>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="0fc30602-958f-485c-9116-24d30018b8ad" id="i0fc30602z958fz485cz9116z24d30018b8ad">
+            <source />
+            <property>i610ac093zf914z4e67za753z774ff69b4e3f</property>
+          </treeExpression>
+          <treeExpression xsi:type="ValuePropertyExpression" name="" identity="991c03eb-1813-420b-9991-d305279effe2" id="i991c03ebz1813z420bz9991zd305279effe2">
+            <source />
+            <property>i449f9ddez4857z4ef4za0cfzd4659d131da3</property>
+          </treeExpression>
         </expressions>
         <roots>
           <root name="ModelElement" identity="7ff516db-ce3c-4610-a36c-ec835c0f8057" id="i7ff516dbzce3cz4610za36czec835c0f8057">
@@ -4225,6 +4283,14 @@ Information Contained Herein is Proprietary and Confidential.
             <source />
             <role>i7e7e5ec4z1810z4427z93bdz711e5ac95dc8</role>
           </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="RootTypeHasNote.Note" identity="142a29f3-30da-4820-874f-c4d8e2a4133e" id="i142a29f3z30daz4820z874fzc4d8e2a4133e" definitionlevel="none" containmentstyle="fromsource">
+            <source>i9fca772az1cb1z46d6z8234z938a78fac7e8</source>
+            <role>i5dd076c8z714ez4f46za6bcza14b960ed852</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="RootTypeHasNote.RootType" identity="9a7475cb-39db-4072-8e58-a88d85f92933" id="i9a7475cbz39dbz4072z8e58za88d85f92933" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i825b3774z7bb3z4ef5z96dbz4d31aeb7202c</role>
+          </treeExpression>
         </expressions>
         <roots />
         <source>iba1d8762z3be9z41fazb3adz3a2bc978f8fe</source>
@@ -4334,6 +4400,12 @@ Information Contained Herein is Proprietary and Confidential.
           <property name="IsExternal" identity="b62dffb1-d93c-4b77-901a-ad7f0920141a" id="ib62dffb1zd93cz4b77z901azad7f0920141a">
             <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
             <propertyInfo xsi:type="BooleanPropertyInfo" name="BooleanPropertyInfo" identity="3abea2a2-6c30-4ab2-90b5-cbae2a39c266" default="false" />
+          </property>
+          <property name="NoteText" identity="449f9dde-4857-4ef4-a0cf-d4659d131da3" id="i449f9ddez4857z4ef4za0cfzd4659d131da3">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="true" allownulls="false" readwritestate="readwrite" tag="">
+              <clrattribute name="System.ComponentModel.MergableProperty" parametertext="false" />
+            </mdfmetadata>
+            <propertyInfo xsi:type="StringPropertyInfo" name="" identity="a5dbbc76-c561-4ed9-bc57-fb0917fe1736" default="" max="2147483647" />
           </property>
         </valueProperties>
       </concept>
@@ -4887,6 +4959,16 @@ Information Contained Herein is Proprietary and Confidential.
       <concept name="ObjectTypeRequiresPrimarySubtypeError" identity="24f4068f-8eea-4ced-b5f7-ddff7838cab4" namespace="Neumont.Tools.ORM.ObjectModel" id="i24f4068fz8eeaz4cedzb5f7zddff7838cab4" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+      </concept>
+      <concept name="Note" identity="87e59167-ed64-4b0c-9d96-a3fa9a44a8de" namespace="Neumont.Tools.ORM.ObjectModel" id="i87e59167zed64z4b0cz9d96za3fa9a44a8de" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="true" />
+        <superType>ib5e86643zb849z47f8zafc8z70ace49cc51a</superType>
+        <valueProperties>
+          <property name="Text" identity="610ac093-f914-4e67-a753-774ff69b4e3f" id="i610ac093zf914z4e67za753z774ff69b4e3f">
+            <mdfmetadata xsi:type="propertymdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" customstorage="false" allownulls="false" readwritestate="readwrite" tag="" />
+            <propertyInfo xsi:type="StringPropertyInfo" name="" identity="4726e8bb-dd85-4b15-b552-7713d2100b46" default="" max="2147483647" />
+          </property>
+        </valueProperties>
       </concept>
     </concepts>
   </model>

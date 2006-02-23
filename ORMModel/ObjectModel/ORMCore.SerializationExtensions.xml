@@ -52,6 +52,14 @@
 			<se:Link RelationshipName="ModelHasReferenceModeKind" RoleName="ReferenceModeKindCollection" />
 		</se:ChildElement>
 	</se:Element>
+	<se:Element Class="RootType" Name="RootType" SortChildElements="true" Override="true">
+		<se:ChildElement Name="Notes">
+			<se:Link RelationshipName="RootTypeHasNote" RoleName="Note"/>
+		</se:ChildElement>
+	</se:Element>
+	<se:Element Class="Note" Override="true">
+		<se:Attribute ID="Text" WriteStyle="Element"/>
+	</se:Element>
 	<!--Object Types-->
 	<se:Element Class="ObjectType" Name="EntityType" SortChildElements="true" Override="true">
 		<se:ConditionalName Name="ValueType">

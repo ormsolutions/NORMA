@@ -1047,7 +1047,27 @@
 			}
 		}
 		/// <summary>
-		/// Text that will display in the middle of the tool window when  the document view currently has an unsuppoted collection.
+		/// Text to place in the title bar of the notes tool window.
+		/// </summary>
+		public static string ModelNotesWindowTitle
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelNotesWindow.WindowTitle");
+			}
+		}
+		/// <summary>
+		/// Text that separates a root type's name from notes if multiple notes are displayed in the ORM notes window. Replacement field 0 is the element name, 1 is the note text.
+		/// </summary>
+		public static string ModelNotesWindowRootTypeNameNotesSeparatorFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelNotesWindow.RootTypeNameNotesSeparatorFormatString");
+			}
+		}
+		/// <summary>
+		/// Text that will display in the middle of the tool window when the document view currently has an unsuppoted collection.
 		/// </summary>
 		public static string ModelReadingEditorUnsupportedSelectionText
 		{

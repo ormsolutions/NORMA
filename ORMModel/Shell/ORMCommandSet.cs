@@ -63,6 +63,10 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnMenuReferenceModesWindow),
 				ORMDesignerCommandIds.ViewReferenceModeEditor)
 				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusStandardWindow),
+				new EventHandler(OnMenuNotesWindow),
+				ORMDesignerCommandIds.ViewNotesWindow)
+				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusCopyImage),
 				new EventHandler(OnMenuCopyImage),
 				ORMDesignerCommandIds.CopyImage)
@@ -94,7 +98,7 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusFactEditorWindow),
 				new EventHandler(OnMenuFactEditorWindow),
 				ORMDesignerCommandIds.ViewFactEditor)
-				// Constraint editing commands				
+				// Constraint editing commands
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusActivateRoleSequence),
 				new EventHandler(OnMenuActivateRoleSequence),
@@ -279,8 +283,6 @@ namespace Neumont.Tools.ORM.Shell
 					docView.OnMenuDeleteShape((sender as OleMenuCommand).Text);
 				}
 			}
-
-
 			private void OnStatusReferenceModesWindow(object sender, EventArgs e)
 			{
 				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisplayCustomReferenceModeWindow);
@@ -410,7 +412,14 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				ORMDesignerPackage.ReferenceModeEditorWindow.Show();
 			}
-
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuNotesWindow(object sender, EventArgs e)
+			{
+				ORMNotesWindow notesWindow = ORMDesignerPackage.NotesWindow;
+				notesWindow.Show();
+			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
@@ -684,6 +693,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ViewReadingEditor = new CommandID(guidORMDesignerCommandSet, cmdIdViewReadingEditor);
 			/// <summary>
+			/// The ORM Note Window item on the context menu
+			/// </summary>
+			public static readonly CommandID ViewNotesWindow = new CommandID(guidORMDesignerCommandSet, cmdIdViewNotesWindow);
+			/// <summary>
 			/// Insert a role after the selected role
 			/// </summary>
 			public static readonly CommandID InsertRoleAfter = new CommandID(guidORMDesignerCommandSet, cmdIdInsertRoleAfter);
@@ -852,6 +865,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// uniqueness constraint is not yet defined for the combination.
 			/// </summary>
 			private const int cmdIdAddInternalUniqueness = 0x2911;
+			/// <summary>
+			/// The ORM Note Window item on the context menu
+			/// </summary>
+			private const int cmdIdViewNotesWindow = 0x2913;
 			/// <summary>
 			/// The standard delete command is bound to shape deletion
 			/// in the designer. This command explicitly deletes the underlying

@@ -285,6 +285,9 @@
   <data name="Neumont.Tools.ORM.ObjectModel.ORMModel">
     <value xml:space="preserve">ORMModel</value>
   </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.Note">
+    <value xml:space="preserve">Note</value>
+  </data>
   <data name="Neumont.Tools.ORM.ObjectModel.Reading">
     <value xml:space="preserve">Reading</value>
   </data>
@@ -323,6 +326,9 @@
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.RootType.IsExternal">
     <value xml:space="preserve">IsExternal</value>
+  </data>
+  <data name="Neumont.Tools.ORM.ObjectModel.RootType.NoteText">
+    <value xml:space="preserve">Note</value>
   </data>
   <data name="Neumont.Tools.ORM.ObjectModel.SubsetConstraint">
     <value xml:space="preserve">SubsetConstraint</value>
