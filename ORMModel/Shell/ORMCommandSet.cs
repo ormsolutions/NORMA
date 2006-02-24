@@ -875,7 +875,6 @@ namespace Neumont.Tools.ORM.Shell
 			/// model elements.
 			/// </summary>
 			private const int cmdIdDeleteElement = 0x2914;
-
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>

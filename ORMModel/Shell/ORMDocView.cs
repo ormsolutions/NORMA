@@ -15,6 +15,7 @@ using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
 namespace Neumont.Tools.ORM.Shell
 {
+	#region ORMDesignerCommands enum
 	/// <summary>
 	/// Valid commands
 	/// </summary>
@@ -78,10 +79,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		EditExternalConstraint = 0x1000,
 		/// <summary>
-		/// Support the CopyImage command
-		/// </summary>
-		CopyImage = 0x2000,
-		/// <summary>
 		/// Display standard toolwindows that we never disable.
 		/// This currently maps to the Verbalization and Model Browser windows
 		/// </summary>
@@ -128,6 +125,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		DeleteAnyShape = 0x1000000,
 		/// <summary>
+		/// Support the CopyImage command
+		/// </summary>
+		CopyImage = 0x2000000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
@@ -142,9 +143,9 @@ namespace Neumont.Tools.ORM.Shell
 		// Update the multiselect command filter constants in ORMDesignerDocView
 		// when new commands are added
 	}
-
+	#endregion // ORMDesignerCommands enum
 	/// <summary>
-	/// DocView designed to contain a single ORM Diagram
+	/// DocView designed to contain a multiple ORM Diagrams
 	/// </summary>
 	[CLSCompliant(false)]
 	public partial class ORMDesignerDocView : TabbedDiagramDocView
@@ -153,6 +154,8 @@ namespace Neumont.Tools.ORM.Shell
 		private ORMDesignerCommands myEnabledCommands;
 		private ORMDesignerCommands myVisibleCommands;
 		private ORMDesignerCommands myCheckedCommands;
+		private IServiceProvider myCtorServiceProvider;
+		private IMonitorSelectionService myMonitorSelection;
 		/// <summary>
 		/// The filter for multi selection when the elements are all of the same type.
 		/// </summary>
@@ -174,6 +177,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="serviceProvider">IServiceProvider</param>
 		public ORMDesignerDocView(DocData docData, IServiceProvider serviceProvider) : base(docData, serviceProvider)
 		{
+			myCtorServiceProvider = serviceProvider;
 		}
 		#endregion // Construction/destruction
 		#region Base overrides
@@ -585,6 +589,12 @@ namespace Neumont.Tools.ORM.Shell
 			Debug.Assert(command != null);
 			if (docView != null)
 			{
+				IMonitorSelectionService monitorService = docView.MonitorSelectionService;
+				if (monitorService != null && !object.ReferenceEquals(monitorService.CurrentSelectionContainer, docView))
+				{
+					ORMDesignerCommands activeFilter = ORMDesignerCommands.DisplayStandardWindows;
+					commandFlag &= activeFilter;
+				}
 				command.Visible = 0 != (commandFlag & docView.myVisibleCommands);
 				command.Enabled = 0 != (commandFlag & docView.myEnabledCommands);
 				command.Checked = 0 != (commandFlag & docView.myCheckedCommands);
@@ -769,6 +779,21 @@ namespace Neumont.Tools.ORM.Shell
 		{
 			(sender as DocData).DocumentClosing -= new EventHandler(DocumentClosing);
 			SetSelectedComponents(null);
+		}
+		/// <summary>
+		/// returns the monitor service
+		/// </summary>
+		protected IMonitorSelectionService MonitorSelectionService
+		{
+			get
+			{
+				IMonitorSelectionService monitorSelect = myMonitorSelection;
+				if (monitorSelect == null)
+				{
+					myMonitorSelection = monitorSelect = (IMonitorSelectionService)myCtorServiceProvider.GetService(typeof(IMonitorSelectionService));
+				}
+				return monitorSelect;
+			}
 		}
 		/// <summary>
 		/// Execute the delete element command

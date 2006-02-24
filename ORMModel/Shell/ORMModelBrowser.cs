@@ -20,7 +20,7 @@ using Neumont.Tools.ORM.ShapeModel;
 
 namespace Neumont.Tools.ORM.Shell
 {
-		/// <summary>
+	/// <summary>
 	/// This is the concrete tool window class that the Object Model Browser uses
 	/// </summary>
 	[Guid("DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A")]
@@ -34,7 +34,7 @@ namespace Neumont.Tools.ORM.Shell
 		private object myCommandSet;
 		private IMonitorSelectionService myMonitorSelection;
 				
-		#region MenuService, MonitorService, and SelectedNode properties
+		#region MenuService, MonitorSelectionService, and SelectedNode properties
 		private static bool myCommandsPopulated;
 		/// <summary>
 		/// returns the menu service and instantiates a new command set if none exists
@@ -55,7 +55,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// returns the monitor service
 		/// </summary>
-		protected IMonitorSelectionService MonitorService
+		protected IMonitorSelectionService MonitorSelectionService
 		{
 			get
 			{
@@ -77,7 +77,7 @@ namespace Neumont.Tools.ORM.Shell
 				return this.ObjectModelBrowser.ObjectModelBrowser.SelectedNode;
 			}
 		}
-		#endregion //MenuService, MonitorService, and SelectedNode properties
+		#endregion //MenuService, MonitorSelectionService, and SelectedNode properties
 		#region Command handling for window
 		/// <summary>
 		/// sets up commands that should be enabled in the ORM Model Browser window
@@ -148,7 +148,7 @@ namespace Neumont.Tools.ORM.Shell
 			ORMDesignerCommands enabledCommands = ORMDesignerCommands.None;
 			ORMDesignerCommands checkedCommands = ORMDesignerCommands.None;
 			ORMDesignerCommands checkableCommands = ORMDesignerCommands.None;
-			IMonitorSelectionService monitorService = this.MonitorService;
+			IMonitorSelectionService monitorService = this.MonitorSelectionService;
 			if (monitorService != null)
 			{
 				ORMDesignerDocView currentDoc = monitorService.CurrentDocumentView as ORMDesignerDocView;
@@ -237,14 +237,14 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				get
 				{
-					return ORMDesignerDocView.ORMDesignerCommandIds.ViewContextMenu;
+					return ORMDesignerDocView.ORMDesignerCommandIds.ViewContextMenu; //.ViewBrowserContextMenu;
 				}
 			}
 			#region MonitorSelectionService and CurrentWindow Properties
 			/// <summary>
 			/// gets the monitor selection service associated with this ORM Model Browser window
 			/// </summary>
-			private IMonitorSelectionService MonitorService
+			private IMonitorSelectionService MonitorSelectionService
 			{
 				get
 				{
@@ -267,64 +267,42 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			#endregion
 			#region ModelExplorerTreeContainer Overrides
-			/// <summary>
-			/// Create IElementVisitor
-			/// </summary>
-			/// <returns>IElementVisitor</returns>
-			protected override IElementVisitor CreateElementVisitor()
+			protected override IElementVisitorFilter CreateElementVisitorFilter()
 			{
-				return new ExplorerElementVisitor(this.ObjectModelBrowser, ServiceProvider);
+				return new CustomVisitorFilter();
 			}
 			protected override IList FindRootElements(Store store)
 			{
 				return store.ElementDirectory.GetElements(ORMModel.MetaClassGuid);
 			}
 			#endregion
-			#region CustomVisitor
-			/*
-			private class CustomVisitor : ExplorerElementVisitor
+			#region CustomVisitorFilter
+			private class CustomVisitorFilter : AggregateVisitorFilter
 			{
-				public CustomVisitor(TreeView treeView, IServiceProvider serviceProvider) : base(treeView, serviceProvider)
+				private static Dictionary<Guid, VisitorFilterResult> myFilterDictionary;
+				public override VisitorFilterResult ShouldVisitRelationship(ElementWalker walker, ModelElement sourceElement, MetaRoleInfo sourceRoleInfo, MetaRelationshipInfo metaRelationshipInfo, ElementLink targetRelationship)
 				{
-				}
-				protected override void PruneTree()
-				{
-					PruneTree(TreeView.Nodes);
-				}
-				private void PruneTree(TreeNodeCollection nodes)
-				{
-					IList<ModelElementTreeNode> deadNodes = null;
-					foreach (TreeNode childNode in nodes)
+					VisitorFilterResult result;
+					Dictionary<Guid, VisitorFilterResult> dictionary = myFilterDictionary;
+					if (dictionary == null)
 					{
-						ModelElementTreeNode node;
-						if (null != (node = childNode as ModelElementTreeNode))
-						{
-							if (node.KeepNode)
-							{
-								node.KeepNode = false;
-								PruneTree(node.Nodes);
-							}
-							else
-							{
-								if (deadNodes == null)
-								{
-									deadNodes = new List<ModelElementTreeNode>();
-								}
-								deadNodes.Add(node);
-							}
-						}
+						dictionary = new Dictionary<Guid, VisitorFilterResult>();
+						dictionary.Add(ModelHasDataType.MetaRelationshipGuid, VisitorFilterResult.Never);
+						dictionary.Add(ModelHasError.MetaRelationshipGuid, VisitorFilterResult.Never);
+						dictionary.Add(ModelHasReferenceMode.MetaRelationshipGuid, VisitorFilterResult.Never);
+						dictionary.Add(ModelHasReferenceModeKind.MetaRelationshipGuid, VisitorFilterResult.Never);
+						dictionary.Add(ORMModelElementHasExtensionElement.MetaRelationshipGuid, VisitorFilterResult.Never);
+						dictionary.Add(ORMNamedElementHasExtensionElement.MetaRelationshipGuid, VisitorFilterResult.Never);
+						myFilterDictionary = dictionary;
 					}
-					if (deadNodes != null)
+					if (!dictionary.TryGetValue(metaRelationshipInfo.Id, out result))
 					{
-						foreach (TreeNode killNode in deadNodes)
-						{
-							killNode.Remove();
-						}
+						result = base.ShouldVisitRelationship(walker, sourceElement, sourceRoleInfo, metaRelationshipInfo, targetRelationship);
 					}
+					return result;
 				}
 			}
-			*/
-			#endregion // CustomVisitor
+			#endregion // CustomVisitorFilter
 		}
 		#endregion // TreeContainer class
 		#region Construction/Destruction
