@@ -151,6 +151,10 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string ToolboxValueTypeItemId = "Toolbox.ValueType.Item.Id";
 		/// <summary>
+		/// The identifier for the ObjectifiedFactType toolbox item
+		/// </summary>
+		public const string ToolboxObjectifiedFactTypeItemId = "Toolbox.ObjectifiedFactType.Item.Id";
+		/// <summary>
 		/// The identifier for the UnaryFactType toolbox item
 		/// </summary>
 		public const string ToolboxUnaryFactTypeItemId = "Toolbox.UnaryFactType.Item.Id";

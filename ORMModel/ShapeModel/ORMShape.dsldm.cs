@@ -3497,6 +3497,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 	
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.EntityType.Item.Id", 0, "Toolbox.EntityType.Bitmap.Id", "Toolbox.EntityType.Caption.Id", "Toolbox.EntityType.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.ValueType.Item.Id", 5, "Toolbox.ValueType.Bitmap.Id", "Toolbox.ValueType.Caption.Id", "Toolbox.ValueType.Tooltip.Id", "Toolbox.DefaultTabName")]
+	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.ObjectifiedFactType.Item.Id", 7, "Toolbox.ObjectifiedFactType.Bitmap.Id", "Toolbox.ObjectifiedFactType.Caption.Id", "Toolbox.ObjectifiedFactType.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.UnaryFactType.Item.Id", 10, "Toolbox.UnaryFactType.Bitmap.Id", "Toolbox.UnaryFactType.Caption.Id", "Toolbox.UnaryFactType.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.BinaryFactType.Item.Id", 15, "Toolbox.BinaryFactType.Bitmap.Id", "Toolbox.BinaryFactType.Caption.Id", "Toolbox.BinaryFactType.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.TernaryFactType.Item.Id", 20, "Toolbox.TernaryFactType.Bitmap.Id", "Toolbox.TernaryFactType.Caption.Id", "Toolbox.TernaryFactType.Tooltip.Id", "Toolbox.DefaultTabName")]
@@ -3507,7 +3508,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.EqualityConstraint.Item.Id", 35, "Toolbox.EqualityConstraint.Bitmap.Id", "Toolbox.EqualityConstraint.Caption.Id", "Toolbox.EqualityConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.ExclusionConstraint.Item.Id", 40, "Toolbox.ExclusionConstraint.Bitmap.Id", "Toolbox.ExclusionConstraint.Caption.Id", "Toolbox.ExclusionConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.InclusiveOrConstraint.Item.Id", 45, "Toolbox.InclusiveOrConstraint.Bitmap.Id", "Toolbox.InclusiveOrConstraint.Caption.Id", "Toolbox.InclusiveOrConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
-	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.ExclusiveOrConstraint.Item.Id", 50, "Toolbox.ExclusiveOrConstraint.Bitmap.Id", "Toolbox.ExclusiveOrConstraint.Caption.Id", "Toolbox.ExclusiveOrConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.SubsetConstraint.Item.Id", 55, "Toolbox.SubsetConstraint.Bitmap.Id", "Toolbox.SubsetConstraint.Caption.Id", "Toolbox.SubsetConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.FrequencyConstraint.Item.Id", 57, "Toolbox.FrequencyConstraint.Bitmap.Id", "Toolbox.FrequencyConstraint.Caption.Id", "Toolbox.FrequencyConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]
 	[Microsoft.VisualStudio.Modeling.MetaToolboxItem("Toolbox.RingConstraint.Item.Id", 58, "Toolbox.RingConstraint.Bitmap.Id", "Toolbox.RingConstraint.Caption.Id", "Toolbox.RingConstraint.Tooltip.Id", "Toolbox.DefaultTabName")]

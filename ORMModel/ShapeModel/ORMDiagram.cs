@@ -564,6 +564,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 					group.UserData = "VALUETYPE";
 					retVal = group.CreatePrototype(valueType);
 					break;
+				case ResourceStrings.ToolboxObjectifiedFactTypeItemId:
+					roleArity = 2;
+					break;
 				case ResourceStrings.ToolboxUnaryFactTypeItemId:
 					roleArity = 1;
 					break;
@@ -611,18 +614,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 					group.AddGraph(fc);
 					retVal = group.CreatePrototype(fc);
 					break;
-				case ResourceStrings.ToolboxRoleConnectorItemId:
-				case ResourceStrings.ToolboxExternalConstraintConnectorItemId:
-				case ResourceStrings.ToolboxSubtypeConnectorItemId:
-					// Intentionally unprototyped item
-					break;
 				case ResourceStrings.ToolboxRingConstraintItemId:
 					RingConstraint ring = RingConstraint.CreateRingConstraint(store);
 					group.AddGraph(ring);
 					retVal = group.CreatePrototype(ring);
 					break;
+				case ResourceStrings.ToolboxRoleConnectorItemId:
+				case ResourceStrings.ToolboxExternalConstraintConnectorItemId:
+				case ResourceStrings.ToolboxSubtypeConnectorItemId:
+					// Intentionally unprototyped item
+					break;
 				default:
-					Debug.Assert(false, "Unkown ResourceString Id"); // Unknown Id
+					Debug.Assert(false, "Unknown ResourceString Id"); // Unknown Id
 					break;
 			}
 			if (retVal == null)
@@ -638,7 +641,23 @@ namespace Neumont.Tools.ORM.ShapeModel
 						group.AddGraph(role);
 					}
 					group.AddGraph(factType);
-					retVal = group.CreatePrototype(factType);
+					if (itemId == ResourceStrings.ToolboxObjectifiedFactTypeItemId)
+					{
+						// Create the relationship between the FactType and ObjectType for Objectified Fact Types
+						ObjectType objectifiedObjectType = ObjectType.CreateObjectType(store);
+						group.AddGraph(objectifiedObjectType);
+						Objectification objectification = Objectification.CreateObjectification(store, new RoleAssignment[]
+							{
+								new RoleAssignment(Objectification.NestingTypeMetaRoleGuid, objectifiedObjectType),
+								new RoleAssignment(Objectification.NestedFactTypeMetaRoleGuid, factType)
+							});
+						group.AddGraph(objectification);
+						retVal = group.CreatePrototype(new ModelElement[] { factType, objectifiedObjectType });
+					}
+					else
+					{
+						retVal = group.CreatePrototype(factType);
+					}
 				}
 			}
 			return retVal;

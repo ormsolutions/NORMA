@@ -132,7 +132,7 @@
   <data name="Neumont.Tools.ORM.ShapeModel.ORMShapeModel" xml:space="preserve">
     <value>ORMShapeModel</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="Toolbox.BinaryFactType.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA
@@ -143,13 +143,13 @@
 </value>
   </data>
   <data name="Toolbox.BinaryFactType.Caption.Id" xml:space="preserve">
-    <value>Binary Fact</value>
+    <value>Binary Fact Type</value>
   </data>
   <data name="Toolbox.BinaryFactType.Item.Id" xml:space="preserve">
     <value>Toolbox.BinaryFactType.Item.Id</value>
   </data>
   <data name="Toolbox.BinaryFactType.Tooltip.Id" xml:space="preserve">
-    <value>New Binary Fact</value>
+    <value>New Binary Fact Type</value>
   </data>
   <data name="Toolbox.DefaultTabName" xml:space="preserve">
     <value>ORM Designer</value>
@@ -316,7 +316,33 @@
   <data name="Toolbox.InternalUniquenessConstraint.Tooltip.Id" xml:space="preserve">
     <value>New Internal Uniqueness Constraint</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="Toolbox.ObjectifiedFactType.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+      Qk02AwAAAAAAADYAAAAoAAAAEAAAABAAAAABABgAAAAAAAAAAADEDgAAxA4AAAAAAAAAAAAAAP8AAP8A
+      AP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8A
+      AP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8A
+      AP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8A
+      AP8AAP8AAP8AAP8A/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAAAP8AAP8AAP8A/wAA
+      /////////////////////////////////////////////////wAAAP8A/wAA////////AAAAAAAAAAAA
+      AAAAAAAAAAAAAAAAAAAAAAAA/////////////wAA/wAA////////AAAA////////////AAAA////////
+      ////AAAA/////////////wAA/wAA////////AAAA////////////AAAA////////////AAAA////////
+      /////wAA/wAA////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/////////////wAAAP8A/wAA
+      /////////////////////////////////////////////////wAAAP8AAP8AAP8A/wAA/wAA/wAA/wAA
+      /wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAAAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8A
+      AP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8A
+      AP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8A
+      AP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8AAP8A
+    </value>
+  </data>
+  <data name="Toolbox.ObjectifiedFactType.Caption.Id" xml:space="preserve">
+    <value>Objectified Fact Type</value>
+  </data>
+  <data name="Toolbox.ObjectifiedFactType.Item.Id" xml:space="preserve">
+    <value>Toolbox.ObjectifiedFactType.Item.Id</value>
+  </data>
+  <data name="Toolbox.ObjectifiedFactType.Tooltip.Id" xml:space="preserve">
+    <value>New Objectified Fact Type</value>
+  </data>
   <data name="Toolbox.RingConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAAAAAADEDgAAxA4AABAAAAAQAAAAAAAA/wAA
@@ -332,8 +358,8 @@
   <data name="Toolbox.RingConstraint.Item.Id" xml:space="preserve">
     <value>Toolbox.RingConstraint.Item.Id</value>
   </data>
-  <data name="Toolbox.RoleConnector.Tooltip.Id" xml:space="preserve">
-    <value>Role Connector Tool</value>
+  <data name="Toolbox.RingConstraint.Tooltip.Id" xml:space="preserve">
+    <value>New Ring Constraint</value>
   </data>
   <data name="Toolbox.RoleConnector.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -349,6 +375,9 @@
   </data>
   <data name="Toolbox.RoleConnector.Item.Id" xml:space="preserve">
     <value>Toolbox.RoleConnector.Item.Id</value>
+  </data>
+  <data name="Toolbox.RoleConnector.Tooltip.Id" xml:space="preserve">
+    <value>Role Connector Tool</value>
   </data>
   <data name="Toolbox.SubsetConstraint.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -396,13 +425,13 @@
 </value>
   </data>
   <data name="Toolbox.TernaryFactType.Caption.Id" xml:space="preserve">
-    <value>Ternary Fact</value>
+    <value>Ternary Fact Type</value>
   </data>
   <data name="Toolbox.TernaryFactType.Item.Id" xml:space="preserve">
     <value>Toolbox.TernaryFactType.Item.Id</value>
   </data>
   <data name="Toolbox.TernaryFactType.Tooltip.Id" xml:space="preserve">
-    <value>New Ternary Fact</value>
+    <value>New Ternary Fact Type</value>
   </data>
   <data name="Toolbox.UnaryFactType.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -414,13 +443,13 @@
 </value>
   </data>
   <data name="Toolbox.UnaryFactType.Caption.Id" xml:space="preserve">
-    <value>Unary Fact</value>
+    <value>Unary Fact Type</value>
   </data>
   <data name="Toolbox.UnaryFactType.Item.Id" xml:space="preserve">
     <value>Toolbox.UnaryFactType.Item.Id</value>
   </data>
   <data name="Toolbox.UnaryFactType.Tooltip.Id" xml:space="preserve">
-    <value>New Unary Fact</value>
+    <value>New Unary Fact Type</value>
   </data>
   <data name="Toolbox.ValueType.Bitmap.Id" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -438,7 +467,7 @@
     <value>Toolbox.ValueType.Item.Id</value>
   </data>
   <data name="Toolbox.ValueType.Tooltip.Id" xml:space="preserve">
-    <value>New ValueType</value>
+    <value>New Value Type</value>
   </data>
   <data name="Neumont.Tools.ORM.ShapeModel.FactTypeShape.DisplayRoleName" xml:space="preserve">
     <value>DisplayRoleName</value>

@@ -23,14 +23,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		public const string GuidString = "EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B";
 
-        #region Construction/destruction
+		#region Construction/destruction
 		/// <summary>
 		/// Public constructor for our editor factory.
 		/// </summary>
 		public ORMDesignerEditorFactory(IServiceProvider serviceProvider) : base(serviceProvider)
 		{
 		}
-        #endregion // Construction/destruction
+		#endregion // Construction/destruction
 		#region Base overrides
 		/// <summary>
 		/// This method is called before the EditorFactory.CreateEditorInstance method to allow us to map LOGICAL views to PHYSICAL ones.  Our Editor Factory supports unlimited physical views.
@@ -41,7 +41,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>The physical view name</returns>
 		protected override string MapLogicalView(Guid logicalView, object viewContext)
 		{
-			return "";
+			return String.Empty;
 		}
 		/// <summary>
 		/// Standard override. Create an ORMDesignerDocData
@@ -63,7 +63,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns>ORMDesignerDocView</returns>
 		protected override DocView CreateDocView(DocData docData, string physicalView, out string editorCaption)
 		{
-			editorCaption = "";
+			editorCaption = String.Empty;
 			return new ORMDesignerDocView(docData, this.ServiceProvider);
 		}
 		/// <summary>
@@ -152,20 +152,16 @@ namespace Neumont.Tools.ORM.Shell
 				items[itemIndex] = new ModelingToolboxItem(
 					itemBase.Id,
 					itemBase.Position,
-					StringNotNull(itemBase.DisplayName),
+					itemBase.DisplayName ?? String.Empty,
 					itemBase.Bitmap,
-					StringNotNull(itemBase.TabNameId),
-					StringNotNull(itemBase.TabName),
-					StringNotNull(itemBase.ContextSensitiveHelpKeyword),
-					StringNotNull(itemBase.Description),
+					itemBase.TabNameId ?? String.Empty,
+					itemBase.TabName ?? String.Empty,
+					itemBase.ContextSensitiveHelpKeyword ?? String.Empty,
+					itemBase.Description ?? String.Empty,
 					itemBase.Prototype,
 					newFilters);
 			}
 		}
-		private static string StringNotNull(string testString)
-		{
-				return (testString != null) ? testString : "";
-		}
 		#endregion // Base overrides
 	}
-} 
+}
