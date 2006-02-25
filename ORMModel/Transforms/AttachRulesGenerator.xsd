@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="XSDtoHTML.xslt"?>
 <xs:schema
 	id="AttachRulesGenerator"
@@ -7,13 +7,41 @@
 	attributeFormDefault="unqualified"
 	xmlns="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" >
+	<xs:annotation>
+		<xs:appinfo source="Common Public License Copyright Notice">
+			Neumont Object Role Modeling Architect for Visual Studio
+
+			Copyright © Neumont University. All rights reserved.
+
+			The use and distribution terms for this software are covered by the
+			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+			can be found in the file CPL.txt at the root of this distribution.
+			By using this software in any fashion, you are agreeing to be bound by
+			the terms of this license.
+
+			You must not remove this notice, or any other, from this software.
+		</xs:appinfo>
+	</xs:annotation>
+	
 	<xs:element name="Rules" type="RulesType"/>
 	<xs:complexType name="RulesType">
 		<xs:annotation>
 			<xs:documentation>The root node. Contains Model nodes.</xs:documentation>
 		</xs:annotation>
-		<xs:sequence maxOccurs="unbounded">
-			<xs:element name="Model" type="ModelType"/>
+		<xs:sequence>
+			<xs:element name="Copyright" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Copyright notice.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="name" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Model" type="ModelType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ModelType">

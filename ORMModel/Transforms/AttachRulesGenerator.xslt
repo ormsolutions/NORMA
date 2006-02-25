@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0" 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
-    xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
+	xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
-	<!--<xsl:output indent="yes"/>-->
+	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
 	<xsl:template match="arg:Rules">
@@ -15,6 +15,7 @@
 			<xsl:apply-templates select="child::*"/>
 		</plx:root>
 	</xsl:template>
+	<xsl:template match="arg:Copyright"/>
 	<xsl:template match="arg:Model">
 		<xsl:variable name="namespaceNameTemp">
 			<xsl:choose>
@@ -28,6 +29,22 @@
 		</xsl:variable>
 		<xsl:variable name="namespaceName" select="string($namespaceNameTemp)"/>
 		<plx:namespace name="{$namespaceName}">
+			<plx:leadingInfo>
+				<plx:comment>Common Public License Copyright Notice</plx:comment>
+				<plx:comment>/**************************************************************************\</plx:comment>
+				<plx:comment>* Neumont Object Role Modeling Architect for Visual Studio                 *</plx:comment>
+				<plx:comment>*                                                                          *</plx:comment>
+				<plx:comment>* Copyright © Neumont University. All rights reserved.                     *</plx:comment>
+				<plx:comment>*                                                                          *</plx:comment>
+				<plx:comment>* The use and distribution terms for this software are covered by the      *</plx:comment>
+				<plx:comment>* Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *</plx:comment>
+				<plx:comment>* can be found in the file CPL.txt at the root of this distribution.       *</plx:comment>
+				<plx:comment>* By using this software in any fashion, you are agreeing to be bound by   *</plx:comment>
+				<plx:comment>* the terms of this license.                                               *</plx:comment>
+				<plx:comment>*                                                                          *</plx:comment>
+				<plx:comment>* You must not remove this notice, or any other, from this software.       *</plx:comment>
+				<plx:comment>\**************************************************************************/</plx:comment>
+			</plx:leadingInfo>
 			<plx:class name="{@class}" visibility="public" partial="true">
 				<plx:leadingInfo>
 					<plx:pragma type="region" data="Attach rules to {@class} model"/>

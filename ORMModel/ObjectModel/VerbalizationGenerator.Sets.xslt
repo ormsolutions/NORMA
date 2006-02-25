@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
->
+	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+
+	<xsl:output method="xml" encoding="utf-8" indent="no"/>
+	
 	<!-- This file is designed as an include in VerbalizationGenerator.xslt. The CustomToolNamespace,
 			 VerbalizationTextSnippetType, VerbalizationSet, and VerbalizationSets params are used in
 			 this file and defined in the containing file. They are redefined here (along with a root template)

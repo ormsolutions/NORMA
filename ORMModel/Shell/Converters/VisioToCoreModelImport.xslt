@@ -1,12 +1,26 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Object Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
 	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
 	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram"
-	exclude-result-prefixes="#default xsl msxsl">
-	<!--<xsl:output method="xml" indent="yes" version="1.0" encoding="utf-8" />-->
+	exclude-result-prefixes="#default xsl"
+	extension-element-prefixes="msxsl">
+	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:variable name="apos" select='"&apos;"' />
 	<xsl:variable name="seperator" select='", "' />
 	<!--We Shouldn't have to do this for some reason the importer will not run without it.-->

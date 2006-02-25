@@ -343,7 +343,9 @@
       <LastGenOutput>ORMShape.SerializationExtensions.cs</LastGenOutput>
     </None>
     <None Include="Transforms\AttachRulesGenerator.xslt" />
-    <None Include="Transforms\AttachRulesGenerator.xsd" />
+    <None Include="Transforms\AttachRulesGenerator.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ShapeModel\ORMShape.AttachRules.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMShape.AttachRules.cs</LastGenOutput>
