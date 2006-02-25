@@ -15,7 +15,7 @@
 
 		You must not remove this notice, or any other, from this software.
 	</se:Copyright>
-	<se:MetaModel Class="ExtensionDomainModel">
+	<se:MetaModel Class="ExtensionDomainModel" DisplayNameResourceId="DisplayName" DescriptionResourceId="Description">
 		<se:Namespaces>
 			<se:Namespace Prefix="ormExtension" URI="http://schemas.neumont.edu/ORM/ExtensionExample" SchemaFile="ExtensionDomainModelTest.xsd" DefaultPrefix="true"/>
 		</se:Namespaces>

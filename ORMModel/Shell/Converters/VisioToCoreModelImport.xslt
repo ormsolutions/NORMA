@@ -104,11 +104,13 @@
 		</xsl:attribute>
 	</xsl:template>
 	<xsl:template match="ObjectNotes">
-		<orm:ObjectNotes>
-			<orm:Data>
-				<xsl:value-of select ="."/>
-			</orm:Data>
-		</orm:ObjectNotes>
+		<orm:Notes>
+			<orm:Note id="GUID_ObjectNoteID_{../@ObjectID}">
+				<orm:Text>
+					<xsl:value-of select ="."/>
+				</orm:Text>
+			</orm:Note>
+		</orm:Notes>
 	</xsl:template>
 	<xsl:template match="@NestedPredicateFactID">
 		<orm:NestedPredicate ref="GUID_FactID{.}" />
@@ -254,6 +256,7 @@
 		<orm:Fact>
 			<xsl:apply-templates select="@FactID" />
 			<xsl:apply-templates select="@IsExternal" />
+			<xsl:apply-templates select="FactNotes" />
 			<xsl:apply-templates select="FactRoles" />
 			<xsl:apply-templates select="FactReadings"/>
 			<xsl:apply-templates select="FactConstraints"/>
@@ -268,6 +271,15 @@
 			<xsl:text>FactID</xsl:text>
 			<xsl:value-of select="."/>
 		</xsl:attribute>
+	</xsl:template>
+	<xsl:template match="FactNotes">
+		<orm:Notes>
+			<orm:Note id="GUID_FactNoteID_{../@FactID}">
+				<orm:Text>
+					<xsl:value-of select="."/>
+				</orm:Text>
+			</orm:Note>
+		</orm:Notes>
 	</xsl:template>
 	<xsl:template match="FactRoles">
 		<orm:FactRoles>

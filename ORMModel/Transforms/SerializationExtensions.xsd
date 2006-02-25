@@ -183,6 +183,16 @@
 								<xs:attribute name="name" type="xs:string" use="required"/>
 							</xs:extension>
 						</xs:simpleContent>
+						<xs:attribute name="DisplayNameResourceId" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation>The display name resource id.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="DescriptionResourceId" type="xs:string" use="optional">
+							<xs:annotation>
+								<xs:documentation>The resource id of the description.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
 				<xs:choice maxOccurs="unbounded">

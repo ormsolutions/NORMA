@@ -31,6 +31,7 @@ using Neumont.Tools.ORM.Framework;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell.Interop;
 using System.Xml;
+using System.Reflection;
 
 #if ATTACHELEMENTPROVIDERS
 using Neumont.Tools.ORM.DocumentSynchronization;
@@ -79,7 +80,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="serviceProvider">IServiceProvider</param>
 		/// <param name="editorFactory">EditorFactory</param>
-		public ORMDesignerDocData(IServiceProvider serviceProvider, EditorFactory editorFactory) : base(serviceProvider, editorFactory)
+		public ORMDesignerDocData(IServiceProvider serviceProvider, EditorFactory editorFactory)
+			: base(serviceProvider, editorFactory)
 		{
 		}
 		/// <summary>
@@ -119,8 +121,90 @@ namespace Neumont.Tools.ORM.Shell
 					extensionSubstores.Values.CopyTo(retVal, knownCount);
 				}
 				return retVal;
-			}						
-			return null;			
+			}
+			return null;
+		}
+		/// <summary>
+		/// See the <see cref="LoadDocData"/> method.
+		/// </summary>
+		/// <param name="fileName">The file name that we pass to <see cref="ModelingDocData.LoadDocData"/>.</param>
+		/// <param name="inputStream">The stream from which we are trying to load.</param>
+		/// <param name="isReload">Tells us if the file is being reloaded or not.</param>
+		public int LoadDocDataFromStream(string fileName, bool isReload, Stream inputStream)
+		{
+			// MSBUG: We're calling OnDocumentLoading beause they don't...
+			base.OnDocumentLoading(EventArgs.Empty);
+			// Convert early so we can accurately check extension elements
+			int retVal = 0;
+			bool dontSave = false;
+			ORMDesignerSettings settings = ORMDesignerPackage.DesignerSettings;
+			using (Stream convertedStream = settings.ConvertStream(inputStream))
+			{
+				dontSave = convertedStream != null;
+				Stream stream = dontSave ? convertedStream : inputStream;
+				myFileStream = stream;
+				try
+				{
+					XmlReaderSettings readerSettings = new XmlReaderSettings();
+					readerSettings.CloseInput = false;
+					Dictionary<string, Type> documentExtensions = null;
+					using (XmlReader reader = XmlReader.Create(stream, readerSettings))
+					{
+						reader.MoveToContent();
+						if (reader.NodeType == XmlNodeType.Element)
+						{
+							if (reader.MoveToFirstAttribute())
+							{
+								do
+								{
+									if (reader.Prefix == "xmlns")
+									{
+										string URI = reader.Value;
+										if (!string.Equals(URI, ORMMetaModel.XmlNamespace, StringComparison.Ordinal) &&
+											!string.Equals(URI, ORMShapeModel.XmlNamespace, StringComparison.Ordinal) &&
+											!string.Equals(URI, ORMSerializer.RootXmlNamespace, StringComparison.Ordinal))
+										{
+											Type extensionType = ORMDesignerPackage.GetExtensionSubStore(URI);
+											if (extensionType != null)
+											{
+												if (documentExtensions == null)
+												{
+													documentExtensions = new Dictionary<string, Type>();
+												}
+												documentExtensions.Add(URI, extensionType);
+											}
+										}
+									}
+								} while (reader.MoveToNextAttribute());
+							}
+						}
+					}
+					myExtensionSubStores = documentExtensions;
+					stream.Position = 0;
+
+					foreach (DocView view in DocViews)
+					{
+						TabbedDiagramDocView tabbedView = view as TabbedDiagramDocView;
+						if (tabbedView != null)
+						{
+							tabbedView.Diagrams.Clear();
+						}
+					}
+					retVal = base.LoadDocData(fileName, isReload);
+				}
+				finally
+				{
+					myFileStream = null;
+				}
+			}
+			if (dontSave)
+			{
+				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable) ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
+				docTable.ModifyDocumentFlags(Cookie, (uint) _VSRDTFLAGS.RDT_DontSave, 1);
+			}
+			// MSBUG: We're calling OnDocumentLoaded beause they don't...
+			base.OnDocumentLoaded(EventArgs.Empty);
+			return retVal;
 		}
 		/// <summary>
 		/// Override the LoadDocData method.
@@ -131,69 +215,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// <returns></returns>
 		protected override int LoadDocData(string fileName, bool isReload)
 		{
-			// Convert early so we can accurately check extension elements
-			int retVal = 0;
-			bool dontSave = false;
-			using(FileStream fileStream = File.OpenRead(fileName))
+			using (FileStream fileStream = File.OpenRead(fileName))
 			{
-				ORMDesignerSettings settings = ORMDesignerPackage.DesignerSettings;
-				using(Stream convertedStream = settings.ConvertStream(fileStream))
-				{
-					dontSave = convertedStream != null;
-					Stream stream = dontSave ? convertedStream : fileStream;
-					myFileStream = stream;
-					try
-					{
-						XmlReaderSettings readerSettings = new XmlReaderSettings();
-						readerSettings.CloseInput = false;
-						Dictionary<string, Type> documentExtensions = null;
-						using(XmlReader reader = XmlReader.Create(stream, readerSettings))
-						{
-							reader.MoveToContent();
-							if(reader.NodeType == XmlNodeType.Element)
-							{
-								if(reader.MoveToFirstAttribute())
-								{
-									do
-									{
-										if(reader.Prefix == "xmlns")
-										{
-											string URI = reader.Value;
-											if (!string.Equals(URI, ORMMetaModel.XmlNamespace, StringComparison.Ordinal) &&
-												!string.Equals(URI, ORMShapeModel.XmlNamespace, StringComparison.Ordinal) &&
-												!string.Equals(URI, ORMSerializer.RootXmlNamespace, StringComparison.Ordinal))
-											{
-												Type extensionType = ORMDesignerPackage.GetExtensionSubStore(URI);
-												if (extensionType != null)
-												{
-													if (documentExtensions == null)
-													{
-														documentExtensions = new Dictionary<string, Type>();
-													}
-													documentExtensions.Add(URI, extensionType);
-												}
-											}
-										}
-									} while(reader.MoveToNextAttribute());
-								}
-							}
-						}
-						myExtensionSubStores = documentExtensions;
-						stream.Position = 0;
-						retVal = base.LoadDocData(fileName, isReload);
-					}
-					finally
-					{
-						myFileStream = null;
-					}
-				}
+				return LoadDocDataFromStream(fileName, isReload, fileStream);
 			}
-			if (dontSave)
-			{
-				IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
-				docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
-			}
-			return retVal;
 		}
 		/// <summary>
 		/// Load a file
@@ -202,7 +227,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="isReload"></param>
 		protected override void Load(string fileName, bool isReload)
 		{
-			if(fileName == null)
+			if (fileName == null)
 			{
 				return;
 			}
@@ -211,10 +236,10 @@ namespace Neumont.Tools.ORM.Shell
 			Stream stream = myFileStream;
 			Store store = this.Store;
 
-			if(stream.Length > 1)
+			if (stream.Length > 1)
 			{
 				DeserializationFixupManager fixupManager = new DeserializationFixupManager(DeserializationFixupPhaseType, store);
-				foreach(IDeserializationFixupListener listener in DeserializationFixupListeners)
+				foreach (IDeserializationFixupListener listener in DeserializationFixupListeners)
 				{
 					fixupManager.AddListener(listener);
 				}

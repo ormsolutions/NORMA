@@ -22,6 +22,8 @@ using Neumont.Tools.ORM.Shell;
 namespace ExtensionExample
 {
 	#region ExtensionDomainModel model serialization
+	[MetaModelDisplayName(typeof(ExtensionDomainModel), "DisplayName")]
+	[MetaModelDescription(typeof(ExtensionDomainModel), "Description")]
 	public partial class ExtensionDomainModel : IORMCustomSerializedMetaModel
 	{
 		/// <summary>

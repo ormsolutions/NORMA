@@ -23,6 +23,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
@@ -252,7 +253,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="customNamespace">The custom namespace to use.</param>
 		/// <param name="writeStyle">The style to use when writting.</param>
 		/// <param name="doubleTagName">The name of the double tag.</param>
-		public ORMCustomSerializedElementInfo(string customPrefix, string customName, string customNamespace, ORMCustomSerializedElementWriteStyle writeStyle, string doubleTagName) : base(customPrefix, customName, customNamespace, doubleTagName)
+		public ORMCustomSerializedElementInfo(string customPrefix, string customName, string customNamespace, ORMCustomSerializedElementWriteStyle writeStyle, string doubleTagName)
+			: base(customPrefix, customName, customNamespace, doubleTagName)
 		{
 			myWriteStyle = writeStyle;
 		}
@@ -303,7 +305,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="writeCustomStorage">true to write when custom storage.</param>
 		/// <param name="writeStyle">The style to use when writting.</param>
 		/// <param name="doubleTagName">The name of the double tag.</param>
-		public ORMCustomSerializedAttributeInfo(string customPrefix, string customName, string customNamespace, bool writeCustomStorage, ORMCustomSerializedAttributeWriteStyle writeStyle, string doubleTagName) : base(customPrefix, customName, customNamespace, doubleTagName)
+		public ORMCustomSerializedAttributeInfo(string customPrefix, string customName, string customNamespace, bool writeCustomStorage, ORMCustomSerializedAttributeWriteStyle writeStyle, string doubleTagName)
+			: base(customPrefix, customName, customNamespace, doubleTagName)
 		{
 			myWriteCustomStorage = writeCustomStorage;
 			myWriteStyle = writeStyle;
@@ -353,7 +356,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="customName">The custom name to use.</param>
 		/// <param name="childGuids">The child element guids.</param>
-		public ORMCustomSerializedChildElementInfo(string customName, params Guid[] childGuids) : base(null, customName, null, ORMCustomSerializedElementWriteStyle.Element, null)
+		public ORMCustomSerializedChildElementInfo(string customName, params Guid[] childGuids)
+			: base(null, customName, null, ORMCustomSerializedElementWriteStyle.Element, null)
 		{
 			myGuidList = childGuids;
 		}
@@ -366,7 +370,8 @@ namespace Neumont.Tools.ORM.Shell
 		/// <param name="writeStyle">The style to use when writting.</param>
 		/// <param name="doubleTagName">The name of the double tag.</param>
 		/// <param name="childGuids">The child element guids.</param>
-		public ORMCustomSerializedChildElementInfo(string customPrefix, string customName, string customNamespace, ORMCustomSerializedElementWriteStyle writeStyle, string doubleTagName, params Guid[] childGuids) : base(customPrefix, customName, customNamespace, writeStyle, doubleTagName)
+		public ORMCustomSerializedChildElementInfo(string customPrefix, string customName, string customNamespace, ORMCustomSerializedElementWriteStyle writeStyle, string doubleTagName, params Guid[] childGuids)
+			: base(customPrefix, customName, customNamespace, writeStyle, doubleTagName)
 		{
 			myGuidList = childGuids;
 		}
@@ -1806,7 +1811,7 @@ namespace Neumont.Tools.ORM.Shell
 				if (0 == (0xff00 & GetKeyState(System.Windows.Forms.Keys.ShiftKey)))
 				{
 #endif // DEBUG
-				settings.ValidationType = ValidationType.Schema;
+					settings.ValidationType = ValidationType.Schema;
 #if DEBUG
 				}
 #endif // DEBUG
@@ -2003,46 +2008,46 @@ namespace Neumont.Tools.ORM.Shell
 									resolveOppositeMetaClass = true;
 									break;
 								case ORMCustomSerializedElementMatchStyle.MultipleOppositeMetaRoles:
-								{
-									oppositeMetaRoleGuids = match.OppositeMetaRoleGuidCollection;
-									break;
-								}
-								case ORMCustomSerializedElementMatchStyle.Attribute:
-								{
-									MetaAttributeInfo attributeInfo = dataDir.FindMetaAttribute(match.MetaAttributeGuid);
-									if (match.DoubleTagName == null)
 									{
-										// Reader the value off directly
-										SetAttributeValue(element, attributeInfo, reader.ReadString());
-										nodeProcessed = true;
+										oppositeMetaRoleGuids = match.OppositeMetaRoleGuidCollection;
+										break;
 									}
-									else
+								case ORMCustomSerializedElementMatchStyle.Attribute:
 									{
-										// Look for the inner tag
-										string matchName = match.DoubleTagName;
-										while (reader.Read())
+										MetaAttributeInfo attributeInfo = dataDir.FindMetaAttribute(match.MetaAttributeGuid);
+										if (match.DoubleTagName == null)
 										{
-											XmlNodeType innerType = reader.NodeType;
-											if (innerType == XmlNodeType.Element)
+											// Reader the value off directly
+											SetAttributeValue(element, attributeInfo, reader.ReadString());
+											nodeProcessed = true;
+										}
+										else
+										{
+											// Look for the inner tag
+											string matchName = match.DoubleTagName;
+											while (reader.Read())
 											{
-												if (reader.LocalName == matchName && reader.NamespaceURI == namespaceName)
+												XmlNodeType innerType = reader.NodeType;
+												if (innerType == XmlNodeType.Element)
 												{
-													SetAttributeValue(element, attributeInfo, reader.ReadString());
-													nodeProcessed = true;
+													if (reader.LocalName == matchName && reader.NamespaceURI == namespaceName)
+													{
+														SetAttributeValue(element, attributeInfo, reader.ReadString());
+														nodeProcessed = true;
+													}
+													else
+													{
+														PassEndElement(reader);
+													}
 												}
-												else
+												else if (innerType == XmlNodeType.EndElement)
 												{
-													PassEndElement(reader);
+													break;
 												}
-											}
-											else if (innerType == XmlNodeType.EndElement)
-											{
-												break;
 											}
 										}
+										break;
 									}
-									break;
-								}
 								case ORMCustomSerializedElementMatchStyle.None:
 									handledByCustomElement = false;
 									break;
@@ -2559,4 +2564,96 @@ namespace Neumont.Tools.ORM.Shell
 		}
 	}
 	#endregion // New Deserialization
+	#region MetaModelAttributes
+	#region MetaModelAttributesUtility
+	/// <summary>
+	/// Grabs a Singleton ResourceManager.
+	/// </summary>
+	public static class MetaModelAttributesUtility
+	{
+		/// <summary>
+		/// The class that actually returns a ResourceManager.
+		/// </summary>
+		/// <param name="metaModelType">The type of MetaModel.</param>
+		/// <returns>The ResourceManager.</returns>
+		public static ResourceManager GetSingletonResourceManager(Type metaModelType)
+		{
+			PropertyInfo propertyInfo = metaModelType.GetProperty("SingletonResourceManager", BindingFlags.Static | BindingFlags.Public);
+			if (propertyInfo != null)
+			{
+				return propertyInfo.GetValue(null, null) as ResourceManager;
+			}
+			return null;
+		}
+	}
+	#endregion MetaModelAttributesUtility
+	#region MetaModelDescriptionAttribute
+	/// <summary>
+	/// This is a description attribute for the MetaModel.
+	/// </summary>s
+	public class MetaModelDescriptionAttribute : System.ComponentModel.DescriptionAttribute
+	{
+		private string _description;
+		private readonly Type _ownerType;
+		/// <summary>
+		/// MetaModelDescriptionAttribute constructor.
+		/// </summary>
+		/// <param name="ownerType">The owner</param>
+		/// <param name="resourceId">the resource id you wish to be returned.</param>
+		public MetaModelDescriptionAttribute(Type ownerType, string resourceId)
+			: base(resourceId)
+		{
+			this._ownerType = ownerType;
+		}
+		/// <summary>
+		/// Gets the Description from the Resource manager.
+		/// </summary>
+		public override string Description
+		{
+			get
+			{
+				if (this._description == null)
+				{
+					this._description = MetaModelAttributesUtility.GetSingletonResourceManager(this._ownerType).GetString(base.DescriptionValue, CultureInfo.CurrentUICulture);
+				}
+				return this._description;
+			}
+		}
+	}
+	#endregion // MetaModelDescriptionAttribute
+	#region MetaModelDisplayNameAttribute
+	/// <summary>
+	/// This class defines a MetaModelDisplayNameAttribute.
+	/// </summary>
+	public class MetaModelDisplayNameAttribute : DisplayNameAttribute
+	{
+		private string _displayName;
+		private readonly Type _ownerType;
+		/// <summary>
+		/// Constructor for a MetaModelDisplayNameAttribute.
+		/// </summary>
+		/// <param name="ownerType">The owner of the Attribute.</param>
+		/// <param name="resourceId">The resource id of the attribute you are trying to retrieve.</param>
+		public MetaModelDisplayNameAttribute(Type ownerType, string resourceId)
+			: base(resourceId)
+		{
+			this._ownerType = ownerType;
+		}
+		/// <summary>
+		/// Getter for the DisplayName of the MetaModelDisplayName attribute.
+		/// </summary>
+		public override string DisplayName
+		{
+			get
+			{
+				if (this._displayName == null)
+				{
+					this._displayName = MetaModelAttributesUtility.GetSingletonResourceManager(this._ownerType).GetString(base.DisplayNameValue, CultureInfo.CurrentUICulture);
+				}
+				return this._displayName;
+			}
+		}
+	}
+	#endregion // MetaModelDisplayNameAttribute
+	#endregion // MetaModelAttributes
 }

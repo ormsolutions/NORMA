@@ -61,6 +61,7 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdMoveRoleSequenceDown			guidORMDesignerCommandSet:groupIdConstraintEditContext,	0x0607,		guidOfficeIcon:msotcidNoIcon,								BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Move Role Sequence &Down";
 
 		guidORMDesignerCommandSet:cmdIdViewReadingEditor,			guidORMDesignerCommandSet:groupIdFactCommands,			0x0610,		guidOfficeIcon:msotcidNoIcon,								BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Readings Window";
+		guidORMDesignerCommandSet:cmdIdExtensionManager,			guidORMDesignerCommandSet:groupIdModelCommands,			0x0500,	guidOfficeIcon:msotcidNoIcon,	BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"E&xtension Manager...";
 
 		guidORMDesignerCommandSet:cmdIdViewModelBrowser,			guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0100,		guidOfficeIcon:msotcidNoIcon,								BUTTON,	0,												"ORM M&odel Browser";
 		guidORMDesignerCommandSet:cmdIdViewVerbalizationBrowser,	guidORMDesignerCommandSet:groupIdORMToolWindows,		0x0200,		guidOfficeIcon:msotcidNoIcon,								BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"ORM &Verbalization Browser";

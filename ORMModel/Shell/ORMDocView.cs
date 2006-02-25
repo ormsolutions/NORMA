@@ -123,6 +123,14 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		AddInternalUniqueness = 0x40000,
 		/// <summary>
+		/// Display the ExtensionManager dialog
+		/// </summary>
+		ExtensionManager = 0x80000,
+		/// <summary>
+		/// Support the CopyImage command
+		/// </summary>
+		CopyImage = 0x100000,
+		/// <summary>
 		/// Delete an object shape
 		/// </summary>
 		DeleteObjectShape = 0x200000,
@@ -140,10 +148,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// will not. This is handled specially for the delete case.
 		/// </summary>
 		DeleteAnyShape = 0x1000000,
-		/// <summary>
-		/// Support the CopyImage command
-		/// </summary>
-		CopyImage = 0x2000000,
 		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
@@ -588,8 +592,8 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			// Turn on the verbalization window command for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll;
-			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll;
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager;
+			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager;
 		}
 		
 		/// <summary>
@@ -1228,7 +1232,13 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 		}
-
+		/// <summary>
+		/// Display the extension manager dialog for the current model
+		/// </summary>
+		protected virtual void OnMenuExtensionManager()
+		{
+			ExtensionManager.ShowDialog(ServiceProvider, this.DocData as ORMDesignerDocData);
+		}
 		#region OnMenuCopyImage
 #if CUSTOM_COPY_IMAGE
 		#region NativeMethods

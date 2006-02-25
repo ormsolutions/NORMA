@@ -1578,6 +1578,8 @@
 	</xsl:template>
 	<xsl:template match="se:MetaModel">
 		<xsl:variable name="ModelName" select="@Class"/>
+		<xsl:variable name="DisplayResourceId" select="@DisplayNameResourceId"/>
+		<xsl:variable name="DescriptionResourceId" select="@DescriptionResourceId"/>
 		<plx:class name="{$ModelName}" visibility="public" partial="true">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="{$ModelName} model serialization"/>
@@ -1585,6 +1587,28 @@
 			<plx:trailingInfo>
 				<plx:pragma type="closeRegion" data="{$ModelName} model serialization"/>
 			</plx:trailingInfo>
+			<xsl:if test="$DisplayResourceId and $DescriptionResourceId">
+				<plx:attribute dataTypeName="MetaModelDisplayName">
+					<plx:passParam>
+						<plx:typeOf dataTypeName="{$ModelName}"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string>
+							<xsl:value-of select="$DisplayResourceId"/>
+						</plx:string>
+					</plx:passParam>
+				</plx:attribute>
+				<plx:attribute dataTypeName="MetaModelDescription">
+					<plx:passParam>
+						<plx:typeOf dataTypeName="{$ModelName}"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:string>
+							<xsl:value-of select="$DescriptionResourceId"/>
+						</plx:string>
+					</plx:passParam>
+				</plx:attribute>
+			</xsl:if>
 			<plx:implementsInterface dataTypeName="IORMCustomSerializedMetaModel"/>
 			<plx:field name="XmlNamespace" visibility="public" const="true" dataTypeName=".string" static="false">
 				<plx:leadingInfo>

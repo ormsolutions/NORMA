@@ -579,6 +579,48 @@ namespace Neumont.Tools.ORM.Shell
 				return null;
 			}
 		}
+		/// <summary>
+		/// This method cycles through the registered Custom Extensions.
+		/// It then returns an IList of ORMExtensionType. containing all the Types of the Custome Extensions.
+		/// </summary>
+		/// <returns>An IList of registered ORMExtensionTypes.</returns>
+		public static IList<ORMExtensionType> GetAvailableCustomExtensions()
+		{
+			List<ORMExtensionType> extensions = new List<ORMExtensionType>();
+
+			// Here we check for CustomExtensions in the ApplicationRegistryRoot.
+			using (RegistryKey applicationRegistryRoot = mySingleton.ApplicationRegistryRoot)
+			{
+				using (RegistryKey hkeyExtensions = applicationRegistryRoot.OpenSubKey(REGISTRYROOT_EXTENSIONS, RegistryKeyPermissionCheck.ReadSubTree))
+				{
+					if (hkeyExtensions != null)
+					{
+						string[] extensionNamespaces = hkeyExtensions.GetSubKeyNames();
+						foreach (String extensionNamespace in extensionNamespaces)
+						{
+							extensions.Add(new ORMExtensionType(extensionNamespace, LoadExtension(extensionNamespace, applicationRegistryRoot)));
+						}
+					}
+				}
+			}
+
+			// Here we check for CustomExtensions in the UserRegistryRoot.
+			using (RegistryKey userRegistryRoot = mySingleton.UserRegistryRoot)
+			{
+				using (RegistryKey hkeyExtensions = userRegistryRoot.OpenSubKey(REGISTRYROOT_EXTENSIONS, RegistryKeyPermissionCheck.ReadSubTree))
+				{
+					if (hkeyExtensions != null)
+					{
+						string[] extensionNamespaces = hkeyExtensions.GetSubKeyNames();
+						foreach (String extensionNamespace in extensionNamespaces)
+						{
+							extensions.Add(new ORMExtensionType(extensionNamespace, LoadExtension(extensionNamespace, userRegistryRoot)));
+						}
+					}
+				}
+			}
+			return extensions;
+		}
 		#endregion // Extension SubStores
 	}
 }

@@ -165,6 +165,10 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusAddInternalUniqueness),
 				new EventHandler(OnMenuAddInternalUniqueness),
 				ORMDesignerCommandIds.AddInternalUniqueness)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusExtensionManager),
+				new EventHandler(OnMenuExtensionManager),
+				ORMDesignerCommandIds.ExtensionManager)
 			};
 				#endregion
 				AddCommands(myCommands);
@@ -417,6 +421,25 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// Defer to the doc view
 					docView.OnMenuAddInternalUniqueness();
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusExtensionManager(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.ExtensionManager);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuExtensionManager(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuExtensionManager();
 				}
 			}
 			#region External Constraint editing menu options
@@ -756,6 +779,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID AddInternalUniqueness = new CommandID(guidORMDesignerCommandSet, cmdIdAddInternalUniqueness);
 			/// <summary>
+			/// The Extension Manager dialog command.  Launches the Extension Manager dialog.
+			/// </summary>
+			public static readonly CommandID ExtensionManager = new CommandID(guidORMDesignerCommandSet, cmdIdExtensionManager);
+			/// <summary>
 			/// The standard delete command is bound to shape deletion
 			/// in the designer. This command explicitly deletes the underlying
 			/// model elements.
@@ -881,6 +908,10 @@ namespace Neumont.Tools.ORM.Shell
 			/// uniqueness constraint is not yet defined for the combination.
 			/// </summary>
 			private const int cmdIdAddInternalUniqueness = 0x2911;
+			/// <summary>
+			/// Opens up the Extension Manager dialog
+			/// </summary>
+			private const int cmdIdExtensionManager = 0x2912;
 			/// <summary>
 			/// The ORM Note Window item on the context menu
 			/// </summary>
