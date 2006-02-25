@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Copyright © 2005 Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, and Neumont University
+	Copyright © Neumont University. All rights reserved.
 
 	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
 	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
@@ -8,9 +8,10 @@
 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 	3. This notice may not be removed or altered from any source distribution.
 -->
+<!-- Contributors: Kevin M. Owen, Corey Kaylor -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt" 
+	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:oil="http://schemas.orm.net/OIAL"
@@ -21,11 +22,11 @@
 	extension-element-prefixes="msxsl dsf"
 	exclude-result-prefixes="odt oil">
 
-	<xsl:import href="../DIL/DILSupportFunctions.xslt"/>
+	<xsl:import href="../../DIL/Transforms/DILSupportFunctions.xslt"/>
 
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
-	
+
 	<xsl:template match="oil:model">
 		<xsl:variable name="oilModel" select="."/>
 		<dcl:schema name="{dsf:makeValidIdentifier(@name)}">
@@ -316,8 +317,8 @@
 		<TODO value="Fallback for GenerateDomain. How this is done will depend on how we chose to do data types for ORM."/>
 	</xsl:template>
 
-	
-	
+
+
 	<xsl:template match="oil:conceptType" mode="GenerateTableContent">
 		<xsl:param name="OilModel"/>
 		<xsl:param name="DataTypes"/>
@@ -497,7 +498,7 @@
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<xsl:template name="GetColumnForInformationType">
 		<xsl:param name="DataTypes"/>
 		<xsl:param name="TargetInformationType"/>
@@ -749,5 +750,5 @@
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

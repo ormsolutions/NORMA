@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Copyright © 2005 Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, and Neumont University
+	Copyright © Neumont University. All rights reserved.
 
 	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
 	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
@@ -8,10 +8,11 @@
 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 	3. This notice may not be removed or altered from any source distribution.
 -->
+<!-- Contributors: Kevin M. Owen, Corey Kaylor -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions" 
+	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
 	xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
@@ -21,8 +22,8 @@
 	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
 	extension-element-prefixes="msxsl dsf">
 
-	<xsl:import href="../DIL/DILSupportFunctions.xslt"/>
-	
+	<xsl:import href="DILSupportFunctions.xslt"/>
+
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
 
@@ -48,7 +49,7 @@
 				</xsl:attribute>
 			</xsl:if>
 	</xsl:template>
-	
+
 	<xsl:template match="dcl:domainDataType">
 		<ddl:domainDefinition name="{@name}">
 			<xsl:call-template name="GenerateSchemaAttribute"/>
@@ -198,7 +199,7 @@
 			<xsl:call-template name="GenerateSchemaAttribute"/>
 		</ddt:domain>
 	</xsl:template>
-	
+
 	<xsl:template match="dcl:predefinedDataType[@name='FLOAT' or @name='REAL' or @name='DOUBLE PRECISION']">
 		<ddt:approximateNumeric type="{@name}">
 			<xsl:if test="@name='FLOAT'">
@@ -232,5 +233,5 @@
 	<xsl:template match="dcl:predefinedDataType[@name='TIME' or @name='TIMESTAMP']">
 		<!-- TODO: DCIL currently doesn't have a way for the user to specify the @zone they want for a TIME or TIMESTAMP -->
 	</xsl:template>
-	
+
 </xsl:stylesheet>

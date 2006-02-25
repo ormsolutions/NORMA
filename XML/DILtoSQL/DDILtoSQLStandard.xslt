@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-	Copyright © 2005 Kevin M. Owen, Corey Kaylor, Korvyn Dornseif, and Neumont University
+	Copyright © Neumont University. All rights reserved.
 
 	This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
 	Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
@@ -8,6 +8,7 @@
 	2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 	3. This notice may not be removed or altered from any source distribution.
 -->
+<!-- Contributors: Corey Kaylor, Kevin M. Owen -->
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"

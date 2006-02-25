@@ -1,0 +1,60 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">GenerationSamples</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{42E3FEAD-AFDE-49E1-996E-97C9E8C0C379}</ProjectGuid>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="SampleModel.orm">
+      <Generator>ORMCustomTool</Generator>
+      <LastGenOutput>SampleModel.OIAL.xml</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup Condition="Exists('SampleModel.orm')">
+    <None Include="SampleModel.OIAL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>ORMtoOIAL</ORMGenerator>
+    </None>
+    <None Include="SampleModel.xsd">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>OIALtoXSD</ORMGenerator>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SampleModel.DCIL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>OIALtoDCIL</ORMGenerator>
+    </None>
+    <None Include="SampleModel.DDIL.xml">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DCILtoDDIL</ORMGenerator>
+    </None>
+    <None Include="SampleModel.SQLStandard.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DDILtoSQLStandard</ORMGenerator>
+    </None>
+    <None Include="SampleModel.PostgreSQL.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DDILtoPostgreSQL</ORMGenerator>
+    </None>
+    <None Include="SampleModel.DB2.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DDILtoDB2</ORMGenerator>
+    </None>
+    <None Include="SampleModel.SQLServer.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DDILtoSQLServer</ORMGenerator>
+    </None>
+  </ItemGroup>
+</Project>

@@ -35,7 +35,6 @@
 			<ComponentRef Id="ORMCustomToolVBasicComponent"/>
 			<ComponentRef Id="ORMCustomToolVCSharpComponent"/>
 			<ComponentRef Id="ORMCustomToolVJSharpComponent"/>
-			<ComponentRef Id="ORMCustomToolSchemasComponent"/>
 		</ComponentGroup>
 		<ComponentGroup Id="ClassModelGenerationFeatureComponents">
 			<!-- OIAL-to-PLiX transforms go here. -->
