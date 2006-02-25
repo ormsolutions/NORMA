@@ -466,7 +466,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			// The ChainMouseAction call can reactivate this connect action,
 			// so make sure we snapshot the state we need and do all requisite
 			// cleanup before a potential reactivation.
-			ExternalConstraintShape chainOnShape = (myPendingOnClickedAction == OnClickedAction.Complete) ? mySourceShape : null;
+			ExternalConstraintShape chainOnShape = (myPendingOnClickedAction == OnClickedAction.Complete && !(myInitialSelectedRoles != null && myInitialSelectedRoles.Count != 0)) ? mySourceShape : null;
 			Reset();
 			if (chainOnShape != null)
 			{
