@@ -8,6 +8,11 @@
 				<Directory Id="$(var.DefaultCompanyDir)" Name="$(var.DefaultCompanyDir)">
 					<Directory Id="$(var.DefaultShortProductDir)" Name="$(var.DefaultShortProductDir)" LongName="$(var.DefaultProductDir)">
 
+						<Component Id="LicenseFilesComponent" Guid="8D623CBC-D6BC-40DA-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
+							<File Id="CPL.txt" Name="CPL.txt" src="..\CPL.txt"
+								DefaultLanguage="0" CompanionFile="Neumont.Tools.ORM.dll"/>
+						</Component>
+
 						<Directory Id="BINDIR" Name="bin">
 
 							<!-- Executables and PDBs go here -->

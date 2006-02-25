@@ -41,25 +41,9 @@
   <ItemGroup>
     <Compile Include="ImsToDmdCustomTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <None Include="..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />

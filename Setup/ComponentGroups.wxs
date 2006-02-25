@@ -3,6 +3,7 @@
 	<?include Config.wxi?>
 	<Fragment>
 		<ComponentGroup Id="MainFeatureComponents">
+			<ComponentRef Id="LicenseFilesComponent"/>
 			<ComponentRef Id="NORMAVSPackageComponent"/>
 			<ComponentRef Id="NORMAVSPackageSatelliteComponent_$(var.DefaultLCID)"/>
 			<ComponentRef Id="NORMAVSSchemaCatalogComponent"/>

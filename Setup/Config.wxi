@@ -27,11 +27,11 @@
 	<?define PublicKeyToken="957d5b7d5e79e25f"?>
 	<!-- GUID for NORMA Visual Studio Package (NOT MSI package!) -->
 	<?define NORMAVSPackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"?>
-	<?define NORMAVSPackageAssemblyName="Neumont.Tools.ORM, Version=$(var.MajorMinorVersion), Culture=neutral, PublicKeyToken=$(var.PublicKeyToken)"?>
+	<?define NORMAVSPackageAssemblyName="Neumont.Tools.ORM, Version=$(var.MajorMinorVersion).0.0, Culture=neutral, PublicKeyToken=$(var.PublicKeyToken)"?>
 	<?define NORMAVSEditorGuid="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"?>
 	<?define NORMAVSFontAndColorsServiceGuid="C5AA80F8-F730-4809-AAB1-8D925E36F9F5"?>
 	<?define ORMCustomToolGuid="977BD01E-F2B4-4341-9C47-459420624A20"?>
-	<?define ORMCustomToolAssemblyName="Neumont.Tools.ORM.ORMCustomTool, Version=$(var.MajorMinorVersion), Culture=neutral, PublicKeyToken=$(var.PublicKeyToken)"?>
+	<?define ORMCustomToolAssemblyName="Neumont.Tools.ORM.ORMCustomTool, Version=$(var.MajorMinorVersion).0.0, Culture=neutral, PublicKeyToken=$(var.PublicKeyToken)"?>
 	<!-- The LCID of the MSI and the fallback resources. This should NOT be changed. -->
 	<?define DefaultLCID="1033"?>
 	<!-- The Package Load Key information. -->
