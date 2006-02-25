@@ -263,6 +263,9 @@
 	<ResourceString name="ModelExceptionFactAddReadingInvalidReadingText" model="Model" resourceName="ModelException.Fact.AddReading.InvalidReadingText">
 		<comment type="summary">The error message that is returned when attempting to add a new reading to a fact and the text is not valid.  It needs to have a number of place holders equal to the number of roles in the fact and they need to have their positions identified by number using the replacement syntax of String.Format. For example: "{0} has {1}"</comment>
 	</ResourceString>
+	<ResourceString name="ModelErrorConstraintExternalUniquenessImplied" model="Model" resourceName="ModelError.Constraint.ExternalUniquenessImpliedByUniquenessError.Text">
+		<comment type="summary">Model validation error text when an external uniqueness constraint intersects a second uniqueness constraint where the second constraints roles are a subset of the constraint roles.</comment>
+	</ResourceString>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text">
 		<comment type="summary">Model validation error shown when too few role sequences are defined for a constraint. This is a frequent occurrence as external constraints are easily created in this state.</comment>
 	</ResourceString>
@@ -479,6 +482,9 @@
 	<ResourceString name="ModelExceptionSubtypeFactNotNested" model="Model" resourceName="ModelException.SubtypeFact.NotNested">
 		<comment type="summary">Exception message when an attempt is made to nest a SubtypeFact.</comment>
 	</ResourceString>
+	<ResourceString name="ModelExceptionSubtypeFactPrimaryMustBeTrue" model="Model" resourceName="ModelException.SubtypeFact.PrimaryMustBeTrue">
+		<comment type="summary">Exception message when an attempt is made to change the SubtypeFact.IsPrimary property to false.</comment>
+	</ResourceString>
 	<ResourceString name="ModelExceptionSubtypeFactCycle" model="Model" resourceName="ModelException.SubtypeFact.Cycle">
 		<comment type="summary">Exception message when an attempt is made to add a subtype relationship where the subtype is a direct or indirect subtype of the supertype.</comment>
 	</ResourceString>
@@ -563,8 +569,14 @@
 	<ResourceString name="ModelErrorExternalEqualityIsImpliedByMandatoryError" model="Model" resourceName="ModelError.Constraint.ExternalEqualityIsImpliedByMandatory.Text">
 		<comment type="summary">Constraint '{0}' is implied by mandatory constraints.</comment>
 	</ResourceString>
-	<ResourceString name="ObjectTypeRequiresPrimarySubtypeError" model="Model" resourceName="ModelError.ObjectType.ObjectTypeRequiresPrimarySubtypeError.Message">
-		<comment type="summary">Text displayed in the text of the ObjectTypeRequiresPrimarySubtypeError. {0} is the name of the object type and {1} is the name of the model.</comment>
+	<ResourceString name="ModelErrorObjectTypeRequiresPrimarySupertypeError" model="Model" resourceName="ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message">
+		<comment type="summary">Text displayed in the text of the ObjectTypeRequiresPrimarySupertypeError. {0} is the name of the object type and {1} is the name of the model.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorObjectTypeCompatibleSupertypesError" model="Model" resourceName="ModelError.ObjectType.CompatibleSupertypesError.Message">
+		<comment type="summary">Text displayed in the text of the CompatibleSupertypesError. {0} is the name of the object type and {1} is the name of the model.</comment>
+	</ResourceString>
+	<ResourceString name="ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError" model="Model" resourceName="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message">
+		<comment type="summary">Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0} is the name of the object type and {1} is the name of the model.</comment>
 	</ResourceString>
 	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message">
 		<comment type="summary">An entity type must have a primary reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>

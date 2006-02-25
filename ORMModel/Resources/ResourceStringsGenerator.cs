@@ -661,6 +661,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// Model validation error text when an external uniqueness constraint intersects a second uniqueness constraint where the second constraints roles are a subset of the constraint roles.
+		/// </summary>
+		public static string ModelErrorConstraintExternalUniquenessImplied
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalUniquenessImpliedByUniquenessError.Text");
+			}
+		}
+		/// <summary>
 		/// Model validation error shown when too few role sequences are defined for a constraint. This is a frequent occurrence as external constraints are easily created in this state.
 		/// </summary>
 		public static string ModelErrorConstraintHasTooFewRoleSequencesText
@@ -1381,6 +1391,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// Exception message when an attempt is made to change the SubtypeFact.IsPrimary property to false.
+		/// </summary>
+		public static string ModelExceptionSubtypeFactPrimaryMustBeTrue
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeFact.PrimaryMustBeTrue");
+			}
+		}
+		/// <summary>
 		/// Exception message when an attempt is made to add a subtype relationship where the subtype is a direct or indirect subtype of the supertype.
 		/// </summary>
 		public static string ModelExceptionSubtypeFactCycle
@@ -1661,13 +1681,33 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
-		/// Text displayed in the text of the ObjectTypeRequiresPrimarySubtypeError. {0} is the name of the object type and {1} is the name of the model.
+		/// Text displayed in the text of the ObjectTypeRequiresPrimarySupertypeError. {0} is the name of the object type and {1} is the name of the model.
 		/// </summary>
-		public static string ObjectTypeRequiresPrimarySubtypeError
+		public static string ModelErrorObjectTypeRequiresPrimarySupertypeError
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.ObjectTypeRequiresPrimarySubtypeError.Message");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message");
+			}
+		}
+		/// <summary>
+		/// Text displayed in the text of the CompatibleSupertypesError. {0} is the name of the object type and {1} is the name of the model.
+		/// </summary>
+		public static string ModelErrorObjectTypeCompatibleSupertypesError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.CompatibleSupertypesError.Message");
+			}
+		}
+		/// <summary>
+		/// Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0} is the name of the object type and {1} is the name of the model.
+		/// </summary>
+		public static string ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message");
 			}
 		}
 		/// <summary>

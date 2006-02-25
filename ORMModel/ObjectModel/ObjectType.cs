@@ -30,9 +30,30 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// A callback definition used for walking subtype and supertype hierarchies.
 	/// </summary>
 	/// <param name="type">The ObjectType being visited</param>
+	/// <param name="depth">The distance from the initial recursion point. depth
+	/// 0 is the starting object.</param>
 	/// <returns>true to continue iteration, false to stop</returns>
 	[CLSCompliant(true)]
-	public delegate bool ObjectTypeVisitor(ObjectType type);
+	public delegate ObjectTypeVisitorResult ObjectTypeVisitor(ObjectType type, int depth);
+	/// <summary>
+	/// Expected results from the ObjectTypeVisitor delegate
+	/// </summary>
+	[CLSCompliant(true)]
+	public enum ObjectTypeVisitorResult
+	{
+		/// <summary>
+		/// Continue recursion
+		/// </summary>
+		Continue,
+		/// <summary>
+		/// Stop recursion
+		/// </summary>
+		Stop,
+		/// <summary>
+		/// Continue iterating siblings, but not children
+		/// </summary>
+		SkipChildren,
+	}
 	public partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IModelErrorOwner
 	{
 		#region Public token values
@@ -675,13 +696,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSupertypes(ObjectType startingType, ObjectTypeVisitor visitor)
 		{
-			if (!visitor(startingType))
+			return (startingType != null) ? WalkSupertypes(startingType, 0, visitor) : false;
+		}
+		private static bool WalkSupertypes(ObjectType startingType, int depth, ObjectTypeVisitor visitor)
+		{
+			ObjectTypeVisitorResult result = visitor(startingType, depth);
+			switch (result)
 			{
-				return false;
+				//case ObjectTypeVisitorResult.Continue:
+				//    break;
+				case ObjectTypeVisitorResult.SkipChildren:
+					return true;
+				case ObjectTypeVisitorResult.Stop:
+					return false;
 			}
+			++depth;
 			foreach (ObjectType superType in startingType.SupertypeCollection)
 			{
-				if (!WalkSupertypes(superType, visitor))
+				if (!WalkSupertypes(superType, depth, visitor))
 				{
 					return false;
 				}
@@ -696,13 +728,24 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSubtypes(ObjectType startingType, ObjectTypeVisitor visitor)
 		{
-			if (!visitor(startingType))
+			return (startingType != null) ? WalkSubtypes(startingType, 0, visitor) : false;
+		}
+		private static bool WalkSubtypes(ObjectType startingType, int depth, ObjectTypeVisitor visitor)
+		{
+			ObjectTypeVisitorResult result = visitor(startingType, depth);
+			switch (result)
 			{
-				return false;
+				//case ObjectTypeVisitorResult.Continue:
+				//    break;
+				case ObjectTypeVisitorResult.SkipChildren:
+					return true;
+				case ObjectTypeVisitorResult.Stop:
+					return false;
 			}
+			++depth;
 			foreach (ObjectType subType in startingType.SubtypeCollection)
 			{
-				if (!WalkSubtypes(subType, visitor))
+				if (!WalkSubtypes(subType, depth, visitor))
 				{
 					return false;
 				}
@@ -1024,7 +1067,14 @@ namespace Neumont.Tools.ORM.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Validate that a DataTypeNotSpecifiedError is present if neede, and that
+		/// Validator callback for DataTypeNoteSpecifiedError
+		/// </summary>
+		private static void DelayValidateDataTypeNoteSpecifiedError(ModelElement element)
+		{
+			(element as ObjectType).ValidateDataTypeNotSpecifiedError(null);
+		}
+		/// <summary>
+		/// Validate that a DataTypeNotSpecifiedError is present if needed, and that
 		/// the data type is an unspecified type instance if the error is present.
 		/// </summary>
 		private void ValidateDataTypeNotSpecifiedError(INotifyElementAdded notifyAdded)
@@ -1057,6 +1107,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // DataTypeNotSpecifiedError retrieval and validation
 		#region EntityTypeRequiresReferenceSchemeError Validation
+		/// <summary>
+		/// Validator callback for EntityTypeRequiresReferenceSchemeError
+		/// </summary>
+		private static void DelayValidateEntityTypeRequiresReferenceSchemeError(ModelElement element)
+		{
+			(element as ObjectType).ValidateRequiresReferenceScheme(null);
+		}
 		private void ValidateRequiresReferenceScheme(INotifyElementAdded notifyAdded)
 		{
 			if (!IsRemoved)
@@ -1104,13 +1161,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 
 		#endregion // EntityTypeRequiresReferenceSchemeError Validation
-		#region ObectTypeRequiresPrimarySubtype Validation
+		#region ObectTypeRequiresPrimarySupertype Validation
 		/// <summary>
-		/// Rule helper to determine whether or not ObjectTypeRequiresPrimarySubtypeError should appear
+		/// Validator callback for ObjectTypeRequiresPrimarySupertypeError
+		/// </summary>
+		private static void DelayValidateObjectTypeRequiresPrimarySupertypeError(ModelElement element)
+		{
+			(element as ObjectType).ValidateObjectTypeRequiresPrimarySupertypeError(null);
+		}
+		/// <summary>
+		/// Rule helper to determine whether or not ObjectTypeRequiresPrimarySupertypeError should appear
 		/// will assign SubFact as primary if only one exists.
 		/// </summary>
 		/// <param name="notifyAdded"></param>
-		private void ValidateObjectTypeRequiresPrimarySubtypeError(INotifyElementAdded notifyAdded)
+		private void ValidateObjectTypeRequiresPrimarySupertypeError(INotifyElementAdded notifyAdded)
 		{
 			if (!IsRemoved)
 			{
@@ -1121,7 +1185,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				{
 					SubtypeFact firstSubtypeFact = null;
 					int subtypeFactCount = 0;
-					//bool hasPrimarySubtypeFact = false;
+					//bool hasPrimarySupertypeFact = false;
 					int primaryFactCount = 0;
 					for (int i = 0; i < linkCount; ++i)
 					{
@@ -1158,7 +1222,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 										}
 										break;
 									}
-									//hasPrimarySubtypeFact = true;
+									//hasPrimarySupertypeFact = true;
 								}
 								else if (firstSubtypeFact == null)
 								{
@@ -1184,12 +1248,12 @@ namespace Neumont.Tools.ORM.ObjectModel
 						}
 					}
 				}
-				ObjectTypeRequiresPrimarySubtypeError primaryRequired = this.ObjectTypeRequiresPrimarySubtypeError;
+				ObjectTypeRequiresPrimarySupertypeError primaryRequired = this.ObjectTypeRequiresPrimarySupertypeError;
 				if (hasError)
 				{
 					if (primaryRequired == null)
 					{
-						primaryRequired = ObjectTypeRequiresPrimarySubtypeError.CreateObjectTypeRequiresPrimarySubtypeError(this.Store);
+						primaryRequired = ObjectTypeRequiresPrimarySupertypeError.CreateObjectTypeRequiresPrimarySupertypeError(this.Store);
 						primaryRequired.ObjectType = this;
 						primaryRequired.Model = this.Model;
 						primaryRequired.GenerateErrorText();
@@ -1205,97 +1269,342 @@ namespace Neumont.Tools.ORM.ObjectModel
 				}
 			}
 		}
-		#endregion //ObectTypeRequiresPrimarySubtype Validation
+		#endregion //ObectTypeRequiresPrimarySupertype Validation
+		#region PreferredIdentifierRequiresMandatoryError Validation
+		/// <summary>
+		/// Validator callback for PreferredIdentifierRequiresMandatoryError
+		/// </summary>
+		private static void DelayValidatePreferredIdentifierRequiresMandatoryError(ModelElement element)
+		{
+			(element as ObjectType).ValidatePreferredIdentifierRequiresMandatoryError(null);
+		}
+		/// <summary>
+		/// Called inside a transaction to force mandatory role validation
+		/// </summary>
+		public void ValidateMandatoryRolesForPreferredIdentifier()
+		{
+			ORMMetaModel.DelayValidateElement(this, DelayValidatePreferredIdentifierRequiresMandatoryError);
+		}
+		/// <summary>
+		/// Rule helper to determine whether or not ValidatePreferredIdentifierRequiresMandatoryError
+		/// should be attached to the ObjectType.
+		/// </summary>
+		/// <param name="notifyAdded">Element notification, set during deserialization</param>
+		private void ValidatePreferredIdentifierRequiresMandatoryError(INotifyElementAdded notifyAdded)
+		{
+			if (!IsRemoved)
+			{
+				bool hasError = false;
+				ExternalUniquenessConstraint pid = PreferredIdentifier as ExternalUniquenessConstraint;
+				if (pid != null)
+				{
+					hasError = true;
+					RoleMoveableCollection constraintRoles = pid.RoleCollection;
+					int constraintRoleCount = constraintRoles.Count;
+					for (int i = 0; hasError && i < constraintRoleCount; ++i)
+					{
+						Role constrainedRole = constraintRoles[i];
+						RoleMoveableCollection factRoles = constrainedRole.FactType.RoleCollection;
+						Debug.Assert(factRoles.Count == 2); // Should not be a preferred identifier otherwise
+						Role oppositeRole = factRoles[0];
+						if (object.ReferenceEquals(oppositeRole, constrainedRole))
+						{
+							oppositeRole = factRoles[1];
+						}
+						ConstraintRoleSequenceMoveableCollection constraintRoleSequences = oppositeRole.ConstraintRoleSequenceCollection;
+						int roleSequenceCount = constraintRoleSequences.Count;
+						for (int j = 0; hasError && j < roleSequenceCount; ++j)
+						{
+							ConstraintRoleSequence roleSequence = constraintRoleSequences[j];
+							IConstraint constraint = roleSequence.Constraint;
+							switch (constraint.ConstraintType)
+							{
+								case ConstraintType.SimpleMandatory:
+									hasError = false;
+									break;
+								case ConstraintType.DisjunctiveMandatory:
+									// If all of the roles are opposite to preferred
+									// identifier then this is sufficient to satisfy the
+									// mandatory condition.
+									{
+										RoleMoveableCollection intersectingRoles = roleSequence.RoleCollection;
+										int intersectingRolesCount = intersectingRoles.Count;
+										int k = 0;
+										for (; k < intersectingRolesCount; ++k)
+										{
+											Role testRole = intersectingRoles[k];
+											if (!object.ReferenceEquals(oppositeRole, testRole))
+											{
+												RoleMoveableCollection testRoles = testRole.FactType.RoleCollection;
+												if (testRoles.Count != 2)
+												{
+													break;
+												}
+												Role testOppositeRole = testRoles[0];
+												if (object.ReferenceEquals(testOppositeRole, testRole))
+												{
+													testOppositeRole = testRoles[1];
+												}
+												if (!constraintRoles.Contains(testOppositeRole))
+												{
+													break;
+												}
+											}
+										}
+										if (k == intersectingRolesCount)
+										{
+											hasError = false;
+										}
+									}
+									break;
+							}
+						}
+					}
+				}
+				PreferredIdentifierRequiresMandatoryError mandatoryRequired = this.PreferredIdentifierRequiresMandatoryError;
+				if (hasError)
+				{
+					if (mandatoryRequired == null)
+					{
+						mandatoryRequired = PreferredIdentifierRequiresMandatoryError.CreatePreferredIdentifierRequiresMandatoryError(this.Store);
+						mandatoryRequired.ObjectType = this;
+						mandatoryRequired.Model = this.Model;
+						mandatoryRequired.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(mandatoryRequired);
+						}
+					}
+				}
+				else if (mandatoryRequired != null)
+				{
+					mandatoryRequired.Remove();
+				}
+			}
+		}
+		#endregion // PreferredIdentifierRequiresMandatoryError Validation
+		#region CompatibleSupertypesError Validation
+		/// <summary>
+		/// Validator callback for CompatibleSupertypesError
+		/// </summary>
+		private static void DelayValidateCompatibleSupertypesError(ModelElement element)
+		{
+			(element as ObjectType).ValidateCompatibleSupertypesError(null);
+		}
+		/// <summary>
+		/// Rule helper to determine whether or not CompatibleSupertypesError
+		/// should be attached to the ObjectType.
+		/// </summary>
+		/// <param name="notifyAdded">Element notification, set during deserialization</param>
+		private void ValidateCompatibleSupertypesError(INotifyElementAdded notifyAdded)
+		{
+			if (!IsRemoved)
+			{
+				bool hasError = false;
+				Dictionary<ObjectType, int> visitedNodes = null;
+				bool firstSupertypeComplete = false;
+				ObjectTypeVisitorResult lastResult = ObjectTypeVisitorResult.Continue;
+				WalkSupertypes(this, delegate(ObjectType type, int depth)
+				{
+					switch (depth)
+					{
+						case 0:
+							return ObjectTypeVisitorResult.Continue; // Called for this object
+						case 1:
+							if (null == visitedNodes)
+							{
+								visitedNodes = new Dictionary<ObjectType, int>();
+							}
+							else if (firstSupertypeComplete)
+							{
+								if (lastResult != ObjectTypeVisitorResult.SkipChildren)
+								{
+									hasError = true;
+									return ObjectTypeVisitorResult.Stop;
+								}
+							}
+							else
+							{
+								firstSupertypeComplete = true;
+							}
+							break;
+					}
+					ObjectTypeVisitorResult retVal = ObjectTypeVisitorResult.Continue;
+					if (firstSupertypeComplete)
+					{
+						int existingDepth;
+						if (visitedNodes.TryGetValue(type, out existingDepth))
+						{
+							// If our current depth is 1 of the existing depth
+							// is one then we're in a transitive condition, which
+							// is not allowed.
+							if (depth == 1 || existingDepth == 1)
+							{
+								hasError = true;
+								retVal = ObjectTypeVisitorResult.Stop;
+							}
+							else
+							{
+								retVal = ObjectTypeVisitorResult.SkipChildren;
+							}
+						}
+						else
+						{
+							visitedNodes.Add(type, depth);
+						}
+					}
+					else
+					{
+						visitedNodes.Add(type, depth);
+					}
+					lastResult = retVal;
+					return retVal;
+				});
+				if (!hasError && firstSupertypeComplete && lastResult != ObjectTypeVisitorResult.SkipChildren)
+				{
+					hasError = true;
+				}
+				CompatibleSupertypesError incompatibleSupertypes = this.CompatibleSupertypesError;
+				if (hasError)
+				{
+					if (incompatibleSupertypes == null)
+					{
+						incompatibleSupertypes = CompatibleSupertypesError.CreateCompatibleSupertypesError(this.Store);
+						incompatibleSupertypes.ObjectType = this;
+						incompatibleSupertypes.Model = this.Model;
+						incompatibleSupertypes.GenerateErrorText();
+						if (notifyAdded != null)
+						{
+							notifyAdded.ElementAdded(incompatibleSupertypes);
+						}
+					}
+				}
+				else if (incompatibleSupertypes != null)
+				{
+					incompatibleSupertypes.Remove();
+				}
+			}
+		}
+		#endregion // CompatibleSupertypesError Validation
 		#region EntityTypeRequiresReferenceSchemeError Rules
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private class VerifyReferenceSchemeAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-				link.PreferredIdentifierFor.ValidateRequiresReferenceScheme(null);
+				ObjectType objectType = link.PreferredIdentifierFor;
+				ORMMetaModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+				if (link.PreferredIdentifier is ExternalUniquenessConstraint)
+				{
+					ORMMetaModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
+				}
 			}
 		}
-		[RuleOn(typeof(EntityTypeHasPreferredIdentifier), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(EntityTypeHasPreferredIdentifier))]
 		private class VerifyReferenceSchemeRemoveRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				EntityTypeHasPreferredIdentifier link = e.ModelElement as EntityTypeHasPreferredIdentifier;
-				link.PreferredIdentifierFor.ValidateRequiresReferenceScheme(null);
+				ObjectType objectType = link.PreferredIdentifierFor;
+				if (!objectType.IsRemoved)
+				{
+					ORMMetaModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+					if (link.PreferredIdentifier is ExternalUniquenessConstraint)
+					{
+						ORMMetaModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
+					}
+				}
 			}
 		}
-		[RuleOn(typeof(Objectification), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(Objectification))]
 		private class VerifyObjectificationAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				Objectification link = e.ModelElement as Objectification;
-				link.NestingType.ValidateRequiresReferenceScheme(null);
+				ORMMetaModel.DelayValidateElement(link.NestingType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			}
 		}
-		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ValueTypeHasDataType))]
 		private class VerifyValueTypeHasDataTypeAddRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				link.ValueTypeCollection.ValidateRequiresReferenceScheme(null);
+				ORMMetaModel.DelayValidateElement(link.ValueTypeCollection, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			}
 		}
-		[RuleOn(typeof(Objectification), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(Objectification))]
 		private class VerifyObjectificationRemoveRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				Objectification link = e.ModelElement as Objectification;
-				link.NestingType.ValidateRequiresReferenceScheme(null);
+				ORMMetaModel.DelayValidateElement(link.NestingType, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			}
 		}
-		[RuleOn(typeof(ValueTypeHasDataType), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ValueTypeHasDataType))]
 		private class VerifyValueTypeHasDataTypeRemoveRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
 			{
 				ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
-				link.ValueTypeCollection.ValidateRequiresReferenceScheme(null);
+				ORMMetaModel.DelayValidateElement(link.ValueTypeCollection, DelayValidateEntityTypeRequiresReferenceSchemeError);
 			}
 		}
 		/// <summary>
 		/// Calls the validation of all FactType related errors
 		/// </summary>
-		[RuleOn(typeof(ModelHasObjectType), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ModelHasObjectType))]
 		private class ModelHasObjectTypeAddRuleModelValidation : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
-				// UNDONE: DelayedValidation
-				link.ObjectTypeCollection.ValidateErrors(null);
+				link.ObjectTypeCollection.DelayValidateErrors();
 			}
 		}
 		/// <summary>
 		/// The reference scheme requirements change when the supertype changes
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ObjectTypePlaysRole))]
 		private class SupertypeAddedRule : AddRule
 		{
 			public override void ElementAdded(ElementAddedEventArgs e)
 			{
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
-				SubtypeMetaRole role = link.PlayedRoleCollection as SubtypeMetaRole;
-				if (role != null)
+				Role role = link.PlayedRoleCollection;
+				if (role is SubtypeMetaRole)
 				{
 					ObjectType objectType = link.RolePlayer;
-					objectType.ValidateRequiresReferenceScheme(null);
-					objectType.ValidateObjectTypeRequiresPrimarySubtypeError(null);
+					ORMMetaModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+					ORMMetaModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
+					WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth)
+					{
+						ORMMetaModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
+						ValidateAttachedConstraintColumnCompatibility(type);
+						return ObjectTypeVisitorResult.Continue;
+					});
+				}
+				else if (role is SupertypeMetaRole)
+				{
+					WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth)
+					{
+						if (depth != 0)
+						{
+							ValidateAttachedConstraintColumnCompatibility(type);
+						}
+						return ObjectTypeVisitorResult.Continue;
+					});
 				}
 			}
 		}
 		/// <summary>
 		/// The reference scheme requirements change when the supertype changes
 		/// </summary>
-		[RuleOn(typeof(ObjectTypePlaysRole), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(ObjectTypePlaysRole))]
 		private class SupertypeRemoveRule : RemoveRule
 		{
 			public override void ElementRemoved(ElementRemovedEventArgs e)
@@ -1305,17 +1614,155 @@ namespace Neumont.Tools.ORM.ObjectModel
 				if (role != null)
 				{
 					ObjectType objectType = link.RolePlayer;
-					objectType.ValidateRequiresReferenceScheme(null);
-					objectType.ValidateObjectTypeRequiresPrimarySubtypeError(null);
+					if (!objectType.IsRemoved)
+					{
+						ORMMetaModel.DelayValidateElement(objectType, DelayValidateEntityTypeRequiresReferenceSchemeError);
+						ORMMetaModel.DelayValidateElement(objectType, DelayValidateObjectTypeRequiresPrimarySupertypeError);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Subtypes need to check super type compatibility when a subtype link is removing
+		/// </summary>
+		[RuleOn(typeof(ObjectTypePlaysRole))]
+		private class SupertypeRemovingRule : RemovingRule
+		{
+			public override void ElementRemoving(ElementRemovingEventArgs e)
+			{
+				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
+				Role role = link.PlayedRoleCollection;
+				if (role is SubtypeMetaRole)
+				{
+					WalkSubtypes(role.RolePlayer, delegate(ObjectType type, int depth)
+					{
+						ORMMetaModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
+						// Keep going while we're here to see if we need to validate compatible role
+						ValidateAttachedConstraintColumnCompatibility(type);
+						return ObjectTypeVisitorResult.Continue;
+					});
+				}
+				else if (role is SupertypeMetaRole)
+				{
+					WalkSupertypes(role.RolePlayer, delegate(ObjectType type, int depth)
+					{
+						if (depth != 0) // The node itself will be picked up as a subtype, no need to do it twice
+						{
+							ValidateAttachedConstraintColumnCompatibility(type);
+						}
+						return ObjectTypeVisitorResult.Continue;
+					});
+				}
+			}
+		}
+		/// <summary>
+		/// Helper function for SupertypeRemovingRule
+		/// </summary>
+		/// <param name="type"></param>
+		private static void ValidateAttachedConstraintColumnCompatibility(ObjectType type)
+		{
+			RoleMoveableCollection playedRoles = type.PlayedRoleCollection;
+			int playedRoleCount = playedRoles.Count;
+			for (int i = 0; i < playedRoleCount; ++i)
+			{
+				Role playedRole = playedRoles[i];
+				if (!playedRole.IsRemoving)
+				{
+					ConstraintRoleSequenceMoveableCollection sequences = playedRole.ConstraintRoleSequenceCollection;
+					int sequenceCount = sequences.Count;
+					for (int j = 0; j < sequenceCount; ++j)
+					{
+						ConstraintRoleSequence sequence = sequences[j];
+						if (!sequence.IsRemoving)
+						{
+							IConstraint constraint = sequence.Constraint;
+							if (constraint != null &&
+								0 != (constraint.RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns))
+							{
+								constraint.ValidateColumnCompatibility();
+							}
+						}
+					}
+				}
+			}
+		}
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		private class MandatoryRoleAddedRule : AddRule
+		{
+			public override void ElementAdded(ElementAddedEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection;
+				if (sequence is MultiColumnExternalConstraintRoleSequence)
+				{
+					return;
+				}
+				ConstraintType constraintType = ((IConstraint)sequence).ConstraintType;
+				switch (constraintType)
+				{
+					case ConstraintType.SimpleMandatory:
+					case ConstraintType.DisjunctiveMandatory:
+						RoleMoveableCollection roles = sequence.RoleCollection;
+						int roleCount = roles.Count;
+						for (int i = 0; i < roleCount; ++i)
+						{
+							Role role = roles[i];
+							ObjectType objectType;
+							ExternalUniquenessConstraint pid;
+							if (null != (objectType = role.RolePlayer) &&
+								null != (pid = objectType.PreferredIdentifier as ExternalUniquenessConstraint) &&
+								pid.FactTypeCollection.Contains(role.FactType))
+							{
+								ORMMetaModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
+							}
+						}
+						break;
+				}
+			}
+		}
+		[RuleOn(typeof(ConstraintRoleSequenceHasRole))]
+		private class MandatoryRoleRemovingRule : RemovingRule
+		{
+			public override void ElementRemoving(ElementRemovingEventArgs e)
+			{
+				ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+				ConstraintRoleSequence sequence = link.ConstraintRoleSequenceCollection;
+				if (sequence is MultiColumnExternalConstraintRoleSequence)
+				{
+					return;
+				}
+				ConstraintType constraintType = ((IConstraint)sequence).ConstraintType;
+				switch (constraintType)
+				{
+					case ConstraintType.SimpleMandatory:
+					case ConstraintType.DisjunctiveMandatory:
+						RoleMoveableCollection roles = sequence.RoleCollection;
+						int roleCount = roles.Count;
+						for (int i = 0; i < roleCount; ++i)
+						{
+							Role role = roles[i];
+							ObjectType objectType;
+							ExternalUniquenessConstraint pid;
+							if (null != (objectType = role.RolePlayer) &&
+								!objectType.IsRemoving &&
+								null != (pid = objectType.PreferredIdentifier as ExternalUniquenessConstraint) &&
+								!pid.IsRemoving &&
+								pid.FactTypeCollection.Contains(role.FactType))
+							{
+								ORMMetaModel.DelayValidateElement(objectType, DelayValidatePreferredIdentifierRequiresMandatoryError);
+							}
+						}
+						break;
 				}
 			}
 		}
 		#endregion // EntityTypeRequiresReferenceSchemeError Rules
-		#region ObjectTypeRequiresPrimarySubtypeError Rules
+		#region ObjectTypeRequiresPrimarySupertypeError Rules
 		/// <summary>
-		/// 
+		/// If a subtypefact is set as primary then clear the primary
+		/// subtype from other facts.
 		/// </summary>
-		[RuleOn(typeof(SubtypeFact), FireTime = TimeToFire.LocalCommit)]
+		[RuleOn(typeof(SubtypeFact))]
 		private class SubtypeFactChangeRule : ChangeRule
 		{
 			private bool myIgnoreRule;
@@ -1331,45 +1778,34 @@ namespace Neumont.Tools.ORM.ObjectModel
 					bool newValue = (bool)e.NewValue;
 					if (!newValue)
 					{
-						throw new InvalidOperationException("UNDONE: Add something to resource strings, search for 'ModelException.'");
+						throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeFactPrimaryMustBeTrue);
 					}
 					SubtypeFact changedFact = e.ModelElement as SubtypeFact;
 					ObjectType subtype = changedFact.Subtype;
 					try
 					{
 						myIgnoreRule = true;
-						using (Transaction t = subtype.Store.TransactionManager.BeginTransaction(""))
+						foreach (Role role in subtype.PlayedRoleCollection)
 						{
-							foreach (Role role in subtype.PlayedRoleCollection)
+							if (role is SubtypeMetaRole)
 							{
-								if (role is SubtypeMetaRole)
+								SubtypeFact subtypeFact = role.FactType as SubtypeFact;
+								if (!object.ReferenceEquals(subtypeFact, changedFact))
 								{
-									SubtypeFact subtypeFact = role.FactType as SubtypeFact;
-									if (!object.ReferenceEquals(subtypeFact, changedFact))
-									{
-										subtypeFact.IsPrimary = false;
-									}
+									subtypeFact.IsPrimary = false;
 								}
-							}
-							if (t.HasPendingChanges)
-							{
-								t.Commit();
 							}
 						}
 					}
 					finally
 					{
-						if (!subtype.IsRemoved)
-						{
-							subtype.ValidateObjectTypeRequiresPrimarySubtypeError(null);
-						}
 						myIgnoreRule = false;
+						ORMMetaModel.DelayValidateElement(subtype, DelayValidateObjectTypeRequiresPrimarySupertypeError);
 					}
-
 				}
 			}
 		}
-		#endregion //ObjectTypeRequiresPrimarySubtypeError Rules
+		#endregion //ObjectTypeRequiresPrimarySupertypeError Rules
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Returns the errors associated with the object.
@@ -1409,10 +1845,22 @@ namespace Neumont.Tools.ORM.ObjectModel
 					}
 				}
 
-				ObjectTypeRequiresPrimarySubtypeError primarySubtypeRequired = ObjectTypeRequiresPrimarySubtypeError;
-				if (primarySubtypeRequired != null)
+				ObjectTypeRequiresPrimarySupertypeError primarySupertypeRequired = ObjectTypeRequiresPrimarySupertypeError;
+				if (primarySupertypeRequired != null)
 				{
-					yield return primarySubtypeRequired;
+					yield return primarySupertypeRequired;
+				}
+
+				PreferredIdentifierRequiresMandatoryError preferredRequiresMandatory = PreferredIdentifierRequiresMandatoryError;
+				if (preferredRequiresMandatory != null)
+				{
+					yield return preferredRequiresMandatory;
+				}
+
+				CompatibleSupertypesError compatibleSupertypes = CompatibleSupertypesError;
+				if (compatibleSupertypes != null)
+				{
+					yield return compatibleSupertypes;
 				}
 			}
 		}
@@ -1431,7 +1879,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
 			ValidateDataTypeNotSpecifiedError(notifyAdded);
 			ValidateRequiresReferenceScheme(notifyAdded);
-			ValidateObjectTypeRequiresPrimarySubtypeError(notifyAdded);
+			ValidateObjectTypeRequiresPrimarySupertypeError(notifyAdded);
+			ValidatePreferredIdentifierRequiresMandatoryError(notifyAdded);
+			ValidateCompatibleSupertypesError(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -1440,15 +1890,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.DelayValidateErrors
 		/// </summary>
-		protected static void DelayValidateErrors()
+		protected void DelayValidateErrors()
 		{
-			// UNDONE: DelayedValidation (ObjectType)
+			ORMMetaModel.DelayValidateElement(this, DelayValidateDataTypeNoteSpecifiedError);
+			ORMMetaModel.DelayValidateElement(this, DelayValidateEntityTypeRequiresReferenceSchemeError);
+			ORMMetaModel.DelayValidateElement(this, DelayValidateObjectTypeRequiresPrimarySupertypeError);
+			ORMMetaModel.DelayValidateElement(this, DelayValidatePreferredIdentifierRequiresMandatoryError);
+			ORMMetaModel.DelayValidateElement(this, DelayValidateCompatibleSupertypesError);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
 			DelayValidateErrors();
 		}
-
 		#endregion // IModelErrorOwner implementation
 		#region CheckForIncompatibleRelationshipRule class
 		/// <summary>
@@ -1647,11 +2100,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // ReferenceModeDisplayPropertyDescriptor class
 	}
-
-	#region class EntityTypeRequiresReferenceSchemeError
+	#region EntityTypeRequiresReferenceSchemeError class
 	partial class EntityTypeRequiresReferenceSchemeError : IRepresentModelElements
 	{
-		#region overrides
+		#region Base Overrides
 		/// <summary>
 		/// Creates error text for when an EntityType lacks a reference scheme.
 		/// </summary>
@@ -1674,8 +2126,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
 			}
 		}
-		#endregion
-
+		#endregion // Base Overrides
 		#region IRepresentModelElements Members
 		/// <summary>
 		/// The EntityType to which the error belongs
@@ -1690,9 +2141,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 	}
-	#endregion // class EntityTypeRequiresReferenceSchemeError
-	#region class ObjectTypeRequiresPrimarySubtypeError
-	public partial class ObjectTypeRequiresPrimarySubtypeError : IRepresentModelElements
+	#endregion // EntityTypeRequiresReferenceSchemeError class
+	#region ObjectTypeRequiresPrimarySupertypeError class
+	public partial class ObjectTypeRequiresPrimarySupertypeError : IRepresentModelElements
 	{
 		#region Base Overrides
 		/// <summary>
@@ -1700,7 +2151,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeRequiresPrimarySubtypeError, ObjectType.Name, Model.Name);
+			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeRequiresPrimarySupertypeError, ObjectType.Name, Model.Name);
 			if (Name != newText)
 			{
 				Name = newText;
@@ -1714,7 +2165,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
 		}
 		#endregion //Base Overrides
-		#region Implimentations
+		#region IRepresentModelElements Implementation
 		/// <summary>
 		/// Returns object associated with this error
 		/// </summary>
@@ -1727,7 +2178,77 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			return GetRepresentedElements();
 		}
-		#endregion //Implimentations
+		#endregion // IRepresentModelElements Implementation
 	}
-	#endregion //class ObjectTypeRequiresPrimarySubtypeError
+	#endregion // ObjectTypeRequiresPrimarySupertypeError class
+	#region PreferredIdentifierRequiresMandatoryError class
+	public partial class PreferredIdentifierRequiresMandatoryError : IRepresentModelElements
+	{
+		#region Base Overrides
+		/// <summary>
+		/// Generates the text for the error to be displayed.
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			Name = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError, ObjectType.Name, Model.Name);
+		}
+		/// <summary>
+		/// Regenerate error text when the object name changes or model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
+		}
+		#endregion //Base Overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Returns object associated with this error
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.ObjectType };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
+	#endregion // PreferredIdentifierRequiresMandatoryError class
+	#region CompatibleSupertypesError class
+	public partial class CompatibleSupertypesError : IRepresentModelElements
+	{
+		#region Base Overrides
+		/// <summary>
+		/// Generates the text for the error to be displayed.
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			Name = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeCompatibleSupertypesError, ObjectType.Name, Model.Name);
+		}
+		/// <summary>
+		/// Regenerate error text when the object name changes or model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
+		}
+		#endregion //Base Overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Returns object associated with this error
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.ObjectType };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
+	#endregion // CompatibleSupertypesError class
 }

@@ -214,10 +214,13 @@ namespace Neumont.Tools.ORM.ObjectModel
 				int linkCount = errorLinks.Count;
 				for (int i = 0; i < linkCount; ++i)
 				{
-					ModelHasError error = (ModelHasError)errorLinks[i];
-					if (!error.IsRemoved)
+					ModelHasError errorLink = (ModelHasError)errorLinks[i];
+					ModelError error = errorLink.ErrorCollection;
+					if (!errorLink.IsRemoved && !error.IsRemoved)
 					{
-						ModelError.AddToTaskProvider(error);
+						// Make sure the text is up to date
+						error.GenerateErrorText();
+						ModelError.AddToTaskProvider(errorLink);
 					}
 				}
 			}

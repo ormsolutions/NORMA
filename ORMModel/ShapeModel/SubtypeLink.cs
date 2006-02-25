@@ -35,15 +35,15 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// resource id for pen to draw non primary subtype facts that are using the normal pen
 		/// </summary>
-		protected static readonly StyleSetResourceId NonPrimaryNormalResource = new StyleSetResourceId("Neumont", "NonPrimarySubtypeLinkNormalResource");
+		protected static readonly StyleSetResourceId NonPrimaryNormalResource = new StyleSetResourceId("Neumont", "NonPrimarySupertypeLinkNormalResource");
 		/// <summary>
 		/// resource id for pen to draw non primary subtype facts that are using the sticky pen
 		/// </summary>
-		protected static readonly StyleSetResourceId NonPrimaryStickyResource = new StyleSetResourceId("Neumont", "NonPrimarySubtypeLinkStickyResource");
+		protected static readonly StyleSetResourceId NonPrimaryStickyResource = new StyleSetResourceId("Neumont", "NonPrimarySupertypeLinkStickyResource");
 		/// <summary>
 		/// resource id for pen to draw non primary subtype facts that are using the active pen
 		/// </summary>
-		protected static readonly StyleSetResourceId NonPrimaryActiveResource = new StyleSetResourceId("Neumont", "NonPrimarySubtypeLinkActiveResource");
+		protected static readonly StyleSetResourceId NonPrimaryActiveResource = new StyleSetResourceId("Neumont", "NonPrimarySupertypeLinkActiveResource");
 		/// <summary>
 		/// Change the outline pen to a thin black line for all instances
 		/// of this shape.

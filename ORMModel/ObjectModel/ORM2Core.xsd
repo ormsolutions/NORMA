@@ -441,9 +441,6 @@
 	<xs:complexType name="RingConstraintRef">
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
-	<xs:complexType name="ObjectTypeRequiresPrimarySubtypeRef">
-		<xs:attribute name="ref" type="xs:IDREF"/>
-	</xs:complexType>
 	<!--end ConstraintRef and  ConstraintRefs-->
 	<xs:complexType name="ExternalConstraints">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -716,7 +713,9 @@
 			<xs:element name="RingConstraintTypeNotSpecifiedError" type="RingConstraintTypeNotSpecifiedError"/>
 			<xs:element name="DisjunctiveMandatoryImpliedByMandatoryError" type="DisjunctiveMandatoryImpliedByMandatoryError"/>
 			<xs:element name="ImpliedInternalUniquenessConstraintError" type="ImpliedInternalUniquenessConstraintError"/>
-			<xs:element name="ObjectTypeRequiresPrimarySubtypeError" type="ObjectTypeRequiresPrimarySubtypeError"/>
+			<xs:element name="ObjectTypeRequiresPrimarySupertypeError" type="ObjectTypeRequiresPrimarySupertypeError"/>
+			<xs:element name="PreferredIdentifierRequiresMandatoryError" type="PreferredIdentifierRequiresMandatoryError"/>
+			<xs:element name="CompatibleSupertypesError" type="CompatibleSupertypesError"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
@@ -880,11 +879,29 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ObjectTypeRequiresPrimarySubtypeError">
+	<xs:complexType name="ObjectTypeRequiresPrimarySupertypeError">
 		<xs:complexContent>
 			<xs:extension base="ModelError">
 				<xs:sequence>
-					<xs:element name="ObjectType" type="ObjectTypeRequiresPrimarySubtypeRef"/>
+					<xs:element name="ObjectType" type="ObjectRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PreferredIdentifierRequiresMandatoryError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ObjectType" type="ObjectRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CompatibleSupertypesError">
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ObjectType" type="ObjectRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

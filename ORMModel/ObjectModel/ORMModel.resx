@@ -157,6 +157,10 @@
     <value xml:space="preserve">Constraint '{0}' in Model '{1}' is implied by mandatory constraint(s).</value>
     <comment xml:space="preserve">Model validation error text when two roles played by the same object have an external equality constrant and also have both roles identified as mandatory.</comment>
   </data>
+  <data name="ModelError.Constraint.ExternalUniquenessImpliedByUniquenessError.Text">
+    <value xml:space="preserve">Constraint '{0}' in model '{1}' is implied by an intersecting uniqueness constraint.</value>
+    <comment xml:space="preserve">Model validation error text when an external uniqueness constraint intersects a second uniqueness constraint where the second constraints roles are a subset of the constraint roles.</comment>
+  </data>
   <data name="ModelError.Constraint.TooFewRoleSequences.Text">
     <value xml:space="preserve">Constraint '{0}' does not have enough role sequences.</value>
     <comment xml:space="preserve">Model validation error text when too few role sequences are specified for a constraint. This is a common condition when constraints are being created.</comment>
@@ -189,10 +193,18 @@
     <value xml:space="preserve">Model '{0}' contains multiple object types named '{1}'. Type names must be unique across all entity and value types in a model.</value>
     <comment xml:space="preserve">Model validation error text used when multiple object types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
   </data>
-	<data name="ModelError.ObjectType.ObjectTypeRequiresPrimarySubtypeError.Message">
-		<value xml:space="preserve">Object type '{0}' in model '{1}' requires a primary subtype.</value>
-		<comment xml:space="preserve">Text displayed in the text of the ObjectTypeRequiresPrimarySubtypeError.</comment>
-	</data>
+  <data name="ModelError.ObjectType.CompatibleSupertypesError.Message">
+    <value xml:space="preserve">Supertypes for object type '{0}' in model '{1}' must be compatible and intransitive.</value>
+    <comment xml:space="preserve">Text displayed in the text of the CompatibleSupertypesError.</comment>
+  </data>
+  <data name="ModelError.ObjectType.ObjectTypeRequiresPrimarySupertypeError.Message">
+    <value xml:space="preserve">Object type '{0}' in model '{1}' requires a primary supertype.</value>
+    <comment xml:space="preserve">Text displayed in the text of the ObjectTypeRequiresPrimarySupertypeError.</comment>
+  </data>
+  <data name="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message">
+    <value xml:space="preserve">Object type '{0}' in model '{1}' has a preferred identification scheme with no corresponding mandatory roles. One or more near roles in the facts attached to the preferred identifier must be mandatory.</value>
+    <comment xml:space="preserve">Text displayed in the text of the PreferredIdentifierRequiresMandatoryError.</comment>
+  </data>
   <data name="ModelError.Reading.TooFewRoles.Message">
     <value xml:space="preserve">Too few roles for the reading with text '{0}' in model '{1}'</value>
     <comment xml:space="preserve">Text displayed in the text of the TooFewRolesError</comment>
@@ -288,6 +300,10 @@
   <data name="ModelException.SubtypeFact.Cycle">
     <value xml:space="preserve">A cycle has been detected in a chain of subtype relationships. A subtype must not be the direct or indirect subtype of its supertype.</value>
     <comment xml:space="preserve">Exception message when an attempt is made to add a subtype relationship where the subtype is a direct or indirect subtype of the supertype.</comment>
+  </data>
+  <data name="ModelException.SubtypeFact.PrimaryMustBeTrue">
+    <value xml:space="preserve">The SubtypeFact.IsPrimary property cannot be set to false.</value>
+    <comment xml:space="preserve">Exception message when an attempt is made to change the SubtypeFact.</comment>
   </data>
   <data name="ModelException.SubtypeFact.NotNested">
     <value xml:space="preserve">A SubtypeFact cannot be a nested fact type</value>

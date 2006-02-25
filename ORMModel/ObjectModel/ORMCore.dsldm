@@ -1419,15 +1419,15 @@
           </role>
         </roles>
       </relationship>
-      <relationship name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError" identity="68e3a5d5-bb3c-4c0c-bb6d-245d5531fcb8" namespace="Neumont.Tools.ORM.ObjectModel" id="i68e3a5d5zbb3cz4c0czbb6dz245d5531fcb8" isLoaded="true" isAbstract="false">
+      <relationship name="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" identity="68e3a5d5-bb3c-4c0c-bb6d-245d5531fcb8" namespace="Neumont.Tools.ORM.ObjectModel" id="i68e3a5d5zbb3cz4c0czbb6dz245d5531fcb8" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
         <roles>
-          <role name="ObjectTypeRequiresPrimarySubtypeError" identity="ae7f8f8f-ae73-4a18-bc68-a5138a579f5c" id="iae7f8f8fzae73z4a18zbc68za5138a579f5c" min="1" max="1" isUnbounded="false" accepts="none">
+          <role name="ObjectTypeRequiresPrimarySupertypeError" identity="ae7f8f8f-ae73-4a18-bc68-a5138a579f5c" id="iae7f8f8fzae73z4a18zbc68za5138a579f5c" min="1" max="1" isUnbounded="false" accepts="none">
             <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
             <source>i910a08efze1a5z461azbebdz150932f12aad</source>
             <type>i24f4068fz8eeaz4cedzb5f7zddff7838cab4</type>
-            <generatedProperty name="ObjectTypeRequiresPrimarySubtypeError" identity="f22bda35-013e-49ad-98c7-abc4cbb287d7">
+            <generatedProperty name="ObjectTypeRequiresPrimarySupertypeError" identity="f22bda35-013e-49ad-98c7-abc4cbb287d7">
               <referenceType>i24f4068fz8eeaz4cedzb5f7zddff7838cab4</referenceType>
             </generatedProperty>
           </role>
@@ -1459,6 +1459,182 @@
             <type>ic6bdf8b0zef3dz406azafb2z8bfeb1f528c3</type>
             <generatedProperty name="Element" identity="3a3b8623-2c8e-4a4d-8abf-5b33bfa5df3b">
               <referenceType>ic6bdf8b0zef3dz406azafb2z8bfeb1f528c3</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <relationship name="ObjectTypeHasCompatibleSupertypesError" identity="fd77a9a0-997f-4289-8c5d-6dabfb9f75bf" namespace="Neumont.Tools.ORM.ObjectModel" id="ifd77a9a0z997fz4289z8c5dz6dabfb9f75bf" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+        <roles>
+          <role name="CompatibleSupertypesError" identity="4c7f5b10-0d8c-4064-ae10-a60759da5496" id="i4c7f5b10z0d8cz4064zae10za60759da5496" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i910a08efze1a5z461azbebdz150932f12aad</source>
+            <type>i5face1eez692dz4371z8638z2553d49aee10</type>
+            <generatedProperty name="CompatibleSupertypesError" identity="7e313143-e05e-4077-8685-9001a4808a7a">
+              <referenceType>i5face1eez692dz4371z8638z2553d49aee10</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="ObjectType" identity="4403485e-75d5-4e7a-84d2-0f8bf0cd0ab9" id="i4403485ez75d5z4e7az84d2z0f8bf0cd0ab9" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i5face1eez692dz4371z8638z2553d49aee10</source>
+            <type>i910a08efze1a5z461azbebdz150932f12aad</type>
+            <generatedProperty name="ObjectType" identity="f33ec3ab-0a81-4063-8002-a1f25606a1f2">
+              <referenceType>i910a08efze1a5z461azbebdz150932f12aad</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
+      <relationship name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError" identity="59346b60-b2c5-4942-b32e-744201e5aba9" namespace="Neumont.Tools.ORM.ObjectModel" id="i59346b60zb2c5z4942zb32ez744201e5aba9" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+        <roles>
+          <role name="ImpliedByUniquenessError" identity="4d76f7f2-dfce-458f-8003-7745360372b0" id="i4d76f7f2zdfcez458fz8003z7745360372b0" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>ic50782dez5fd3z4076za062zdd8983367363</source>
+            <type>i2bee7b88z2833z49a2z92c1z91d2716000e5</type>
+            <generatedProperty name="ImpliedByUniquenessError" identity="64846d1b-46b3-4b6e-a177-9139d579790b">
+              <referenceType>i2bee7b88z2833z49a2z92c1z91d2716000e5</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="ExternalUniquenessConstraint" identity="3800537a-5acf-41b6-b3be-3a0654cc24ad" id="i3800537az5acfz41b6zb3bez3a0654cc24ad" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i2bee7b88z2833z49a2z92c1z91d2716000e5</source>
+            <type>ic50782dez5fd3z4076za062zdd8983367363</type>
+            <generatedProperty name="ExternalUniquenessConstraint" identity="ebc0ec78-2f2f-4608-a7c7-23d690fbd069">
+              <referenceType>ic50782dez5fd3z4076za062zdd8983367363</referenceType>
+            </generatedProperty>
+          </role>
+        </roles>
+      </relationship>
+      <relationship name="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" identity="15496813-6de5-4d5a-bdb1-1e269b443254" namespace="Neumont.Tools.ORM.ObjectModel" id="i15496813z6de5z4d5azbdb1z1e269b443254" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="mdfclassmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+        <roles>
+          <role name="PreferredIdentifierRequiresMandatoryError" identity="9cf911a9-a36f-440e-9e5d-46d85362e336" id="i9cf911a9za36fz440ez9e5dz46d85362e336" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i910a08efze1a5z461azbebdz150932f12aad</source>
+            <type>i90b39c97zaf3fz4b28z8657z6a5fba74a2ee</type>
+            <generatedProperty name="PreferredIdentifierRequiresMandatoryError" identity="14848689-ce1b-420b-8fe4-be4dd4a75213">
+              <referenceType>i90b39c97zaf3fz4b28z8657z6a5fba74a2ee</referenceType>
+            </generatedProperty>
+          </role>
+          <role name="ObjectType" identity="eb306daf-395f-4418-8143-8cecb4ab7312" id="ieb306dafz395fz4418z8143z8cecb4ab7312" min="1" max="1" isUnbounded="false" accepts="none">
+            <mdfmetadata xsi:type="rolemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" isordered="true" isnavigablefrom="false" />
+            <source>i90b39c97zaf3fz4b28z8657z6a5fba74a2ee</source>
+            <type>i910a08efze1a5z461azbebdz150932f12aad</type>
+            <generatedProperty name="ObjectType" identity="ebb5ea73-6861-462a-8463-d9faa60e9e86">
+              <referenceType>i910a08efze1a5z461azbebdz150932f12aad</referenceType>
             </generatedProperty>
           </role>
         </roles>
@@ -2485,16 +2661,16 @@
             <superType>i393d854fz34c5z4dc5z86c6z56816581b957</superType>
             <subType>ia1ee563az1bd4z47e0z9aabz3d82083e4202</subType>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeRequiresPrimarySubtypeError-ModelError" identity="7af24c7b-7aff-4ff3-ad0e-b57cf2cc897d" id="i7af24c7bz7affz4ff3zad0ezb57cf2cc897d" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeRequiresPrimarySupertypeError-ModelError" identity="7af24c7b-7aff-4ff3-ad0e-b57cf2cc897d" id="i7af24c7bz7affz4ff3zad0ezb57cf2cc897d" definitionlevel="none">
             <source />
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i24f4068fz8eeaz4cedzb5f7zddff7838cab4</subType>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeError" identity="083f5805-7f87-41ae-a04c-9d33dd732325" id="i083f5805z7f87z41aeza04cz9d33dd732325" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeError" identity="083f5805-7f87-41ae-a04c-9d33dd732325" id="i083f5805z7f87z41aeza04cz9d33dd732325" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>iae7f8f8fzae73z4a18zbc68za5138a579f5c</role>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError-ORMElementLink" identity="2d3ab6da-ef7a-4656-b1ea-dce1ee33ce47" id="i2d3ab6dazef7az4656zb1eazdce1ee33ce47" definitionlevel="none">
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError-ORMElementLink" identity="2d3ab6da-ef7a-4656-b1ea-dce1ee33ce47" id="i2d3ab6dazef7az4656zb1eazdce1ee33ce47" definitionlevel="none">
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i68e3a5d5zbb3cz4c0czbb6dz245d5531fcb8</subType>
@@ -2512,6 +2688,76 @@
             <source />
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i7ad55585z14c6z427dz9147zc3b30bd45716</subType>
+          </treeExpression>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <treeExpression xsi:type="InheritanceExpression" name="CompatibleSupertypesError-ModelError" identity="fd9e383d-50e8-452e-8090-050a70924c45" id="ifd9e383dz50e8z452ez8090z050a70924c45" definitionlevel="none">
+            <source />
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i5face1eez692dz4371z8638z2553d49aee10</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ExternalUniquenessImpliedByUniquenessError-ModelError" identity="3f43d69a-0645-4399-8aac-5cb3f648f443" id="i3f43d69az0645z4399z8aacz5cb3f648f443" definitionlevel="none">
+            <source />
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i2bee7b88z2833z49a2z92c1z91d2716000e5</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="PreferredIdentifierRequiresMandatoryError-ModelError" identity="d7819e8d-8d35-48ce-8250-27ee99abecf4" id="id7819e8dz8d35z48cez8250z27ee99abecf4" definitionlevel="none">
+            <source />
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i90b39c97zaf3fz4b28z8657z6a5fba74a2ee</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesError" identity="14561b5b-01b9-47b6-af29-dc739159c72e" id="i14561b5bz01b9z47b6zaf29zdc739159c72e" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i4c7f5b10z0d8cz4064zae10za60759da5496</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeHasCompatibleSupertypesError-ORMElementLink" identity="84b75bc5-f59f-4239-a69e-a30153c125b1" id="i84b75bc5zf59fz4239za69eza30153c125b1" definitionlevel="none">
+            <source />
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>ifd77a9a0z997fz4289z8c5dz6dabfb9f75bf</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError.ExternalUniquenessImpliedByUniquenessError" identity="46894116-9bd5-4f8a-bd3c-3045fd62dbec" id="i46894116z9bd5z4f8azbd3cz3045fd62dbec" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i4d76f7f2zdfcez458fz8003z7745360372b0</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError-ORMElementLink" identity="43c74b7d-0368-4968-89c2-43d9a1008412" id="i43c74b7dz0368z4968z89c2z43d9a1008412" definitionlevel="none">
+            <source />
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>i59346b60zb2c5z4942zb32ez744201e5aba9</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryError" identity="765459f6-d8e2-4f43-bb01-ab72899848c6" id="i765459f6zd8e2z4f43zbb01zab72899848c6" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i9cf911a9za36fz440ez9e5dz46d85362e336</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeHasPreferredIdentifierRequiresMandatoryError-ORMElementLink" identity="dfd22c2e-88b5-4061-90c6-f0c015a6723f" id="idfd22c2ez88b5z4061z90c6zf0c015a6723f" definitionlevel="none">
+            <source />
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>i15496813z6de5z4d5azbdb1z1e269b443254</subType>
           </treeExpression>
         </expressions>
         <roots />
@@ -3691,12 +3937,12 @@
             <source />
             <property>i83d36429za9c8z405ezaab1z937045b79804</property>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="RingConstraintTypeNotSpecifiedError-ModelError" identity="f4abab21-10ab-48ab-9372-4a21066748ef" id="if4abab21z10abz48abz9372z4a21066748ef" definitionlevel="use">
+          <treeExpression xsi:type="InheritanceExpression" name="RingConstraintTypeNotSpecifiedError-ModelError" identity="f4abab21-10ab-48ab-9372-4a21066748ef" id="if4abab21z10abz48abz9372z4a21066748ef" definitionlevel="definition">
             <source>i662a688cze4e5z42bez9502z9875cc06a420</source>
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i5c7caee2z7993z44fdz9ea3zd57cfd445757</subType>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedError" identity="9c493e17-51fb-4c12-bf14-c3d474298079" id="i9c493e17z51fbz4c12zbf14zc3d474298079" definitionlevel="definition" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedError" identity="9c493e17-51fb-4c12-bf14-c3d474298079" id="i9c493e17z51fbz4c12zbf14zc3d474298079" definitionlevel="use" containmentstyle="fromsource">
             <source>id8df5addz4799z422bzb5e2z97dcc2b382a5</source>
             <role>i98abb08fz429az4272z840dz32f6c472cf99</role>
           </treeExpression>
@@ -3728,16 +3974,16 @@
             <source />
             <property>i2d2a56cezc311z49b5zb375ze6cecab3ea00</property>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeRequiresPrimarySubtypeError-ModelError" identity="ed14b5eb-8871-4585-8495-cfc9876a75a7" id="ied14b5ebz8871z4585z8495zcfc9876a75a7" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeRequiresPrimarySupertypeError-ModelError" identity="ed14b5eb-8871-4585-8495-cfc9876a75a7" id="ied14b5ebz8871z4585z8495zcfc9876a75a7" definitionlevel="definition">
             <source>i7af24c7bz7affz4ff3zad0ezb57cf2cc897d</source>
             <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
             <subType>i24f4068fz8eeaz4cedzb5f7zddff7838cab4</subType>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeError" identity="b67b2484-0809-4a87-aee5-2ecbe349bead" id="ib67b2484z0809z4a87zaee5z2ecbe349bead" definitionlevel="use" containmentstyle="fromsource">
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeError" identity="b67b2484-0809-4a87-aee5-2ecbe349bead" id="ib67b2484z0809z4a87zaee5z2ecbe349bead" definitionlevel="use" containmentstyle="fromsource">
             <source>i083f5805z7f87z41aeza04cz9d33dd732325</source>
             <role>iae7f8f8fzae73z4a18zbc68za5138a579f5c</role>
           </treeExpression>
-          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError-ORMElementLink" identity="186da005-52f5-4849-b825-a9c3bc0c83da" id="i186da005z52f5z4849zb825za9c3bc0c83da" definitionlevel="definition">
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError-ORMElementLink" identity="186da005-52f5-4849-b825-a9c3bc0c83da" id="i186da005z52f5z4849zb825za9c3bc0c83da" definitionlevel="definition">
             <source>i2d3ab6dazef7az4656zb1eazdce1ee33ce47</source>
             <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
             <subType>i68e3a5d5zbb3cz4c0czbb6dz245d5531fcb8</subType>
@@ -3763,6 +4009,48 @@
           <treeExpression xsi:type="ValuePropertyExpression" name="" identity="991c03eb-1813-420b-9991-d305279effe2" id="i991c03ebz1813z420bz9991zd305279effe2">
             <source />
             <property>i449f9ddez4857z4ef4za0cfzd4659d131da3</property>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="CompatibleSupertypesError-ModelError" identity="a88fbf5c-5a9b-4775-b6d9-bbf908eaeac8" id="ia88fbf5cz5a9bz4775zb6d9zbbf908eaeac8" definitionlevel="definition">
+            <source>ifd9e383dz50e8z452ez8090z050a70924c45</source>
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i5face1eez692dz4371z8638z2553d49aee10</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ExternalUniquenessImpliedByUniquenessError-ModelError" identity="97a1b8d4-8044-4250-97a2-36708cdca50e" id="i97a1b8d4z8044z4250z97a2z36708cdca50e" definitionlevel="definition">
+            <source>i3f43d69az0645z4399z8aacz5cb3f648f443</source>
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i2bee7b88z2833z49a2z92c1z91d2716000e5</subType>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="PreferredIdentifierRequiresMandatoryError-ModelError" identity="200719be-880a-4bd1-8109-f231699234c9" id="i200719bez880az4bd1z8109zf231699234c9" definitionlevel="definition">
+            <source>id7819e8dz8d35z48cez8250z27ee99abecf4</source>
+            <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+            <subType>i90b39c97zaf3fz4b28z8657z6a5fba74a2ee</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesError" identity="35ff41d5-c090-41a4-af65-fcaad325afb9" id="i35ff41d5zc090z41a4zaf65zfcaad325afb9" definitionlevel="use" containmentstyle="fromsource">
+            <source>i14561b5bz01b9z47b6zaf29zdc739159c72e</source>
+            <role>i4c7f5b10z0d8cz4064zae10za60759da5496</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeHasCompatibleSupertypesError-ORMElementLink" identity="e1d5babb-928b-44ee-9cda-cbfdaf9dfad0" id="ie1d5babbz928bz44eez9cdazcbfdaf9dfad0" definitionlevel="definition">
+            <source>i84b75bc5zf59fz4239za69eza30153c125b1</source>
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>ifd77a9a0z997fz4289z8c5dz6dabfb9f75bf</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError.ExternalUniquenessImpliedByUniquenessError" identity="3dc68c5b-5a83-48b1-a551-debc9e86831f" id="i3dc68c5bz5a83z48b1za551zdebc9e86831f" definitionlevel="use" containmentstyle="fromsource">
+            <source>i46894116z9bd5z4f8azbd3cz3045fd62dbec</source>
+            <role>i4d76f7f2zdfcez458fz8003z7745360372b0</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError-ORMElementLink" identity="bd0a60df-d56f-4731-bba7-9ec704f46a06" id="ibd0a60dfzd56fz4731zbba7z9ec704f46a06" definitionlevel="definition">
+            <source>i43c74b7dz0368z4968z89c2z43d9a1008412</source>
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>i59346b60zb2c5z4942zb32ez744201e5aba9</subType>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryError" identity="553577f7-223d-44df-a76c-72ab85a77eaa" id="i553577f7z223dz44dfza76cz72ab85a77eaa" definitionlevel="use" containmentstyle="fromsource">
+            <source>i765459f6zd8e2z4f43zbb01zab72899848c6</source>
+            <role>i9cf911a9za36fz440ez9e5dz46d85362e336</role>
+          </treeExpression>
+          <treeExpression xsi:type="InheritanceExpression" name="ObjectTypeHasPreferredIdentifierRequiresMandatoryError-ORMElementLink" identity="f740208f-94fc-42cb-9c75-cf1943ca72c2" id="if740208fz94fcz42cbz9c75zcf1943ca72c2" definitionlevel="definition">
+            <source>idfd22c2ez88b5z4061z90c6zf0c015a6723f</source>
+            <superType>i718adac4za9e2z454dza700z1c34b6d3bcbf</superType>
+            <subType>i15496813z6de5z4d5azbdb1z1e269b443254</subType>
           </treeExpression>
         </expressions>
         <roots>
@@ -4285,11 +4573,11 @@
             <source />
             <role>i49832416zd3ddz4ce0zb930z3802e23d44a1</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectTypeRequiresPrimarySubtypeError" identity="9bc7f45a-0290-425a-b34b-38a58e2b4459" id="i9bc7f45az0290z425azb34bz38a58e2b4459" definitionlevel="none" containmentstyle="embedding">
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectTypeRequiresPrimarySupertypeError" identity="9bc7f45a-0290-425a-b34b-38a58e2b4459" id="i9bc7f45az0290z425azb34bz38a58e2b4459" definitionlevel="none" containmentstyle="embedding">
             <source>i083f5805z7f87z41aeza04cz9d33dd732325</source>
             <role>iae7f8f8fzae73z4a18zbc68za5138a579f5c</role>
           </treeExpression>
-          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError.ObjectType" identity="292e4656-fd71-43f8-9989-830630dd5588" id="i292e4656zfd71z43f8z9989z830630dd5588" definitionlevel="none" containmentstyle="reference">
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError.ObjectType" identity="292e4656-fd71-43f8-9989-830630dd5588" id="i292e4656zfd71z43f8z9989z830630dd5588" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i7e7e5ec4z1810z4427z93bdz711e5ac95dc8</role>
           </treeExpression>
@@ -4300,6 +4588,46 @@
           <treeExpression xsi:type="RoleExpression" name="RootTypeHasNote.RootType" identity="9a7475cb-39db-4072-8e58-a88d85f92933" id="i9a7475cbz39dbz4072z8e58za88d85f92933" definitionlevel="none" containmentstyle="reference">
             <source />
             <role>i825b3774z7bb3z4ef5z96dbz4d31aeb7202c</role>
+          </treeExpression>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasCompatibleSupertypesError.CompatibleSupertypesError" identity="9b3344d2-8637-41d4-b2f6-428d0cb54391" id="i9b3344d2z8637z41d4zb2f6z428d0cb54391" definitionlevel="none" containmentstyle="embedding">
+            <source>i14561b5bz01b9z47b6zaf29zdc739159c72e</source>
+            <role>i4c7f5b10z0d8cz4064zae10za60759da5496</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasCompatibleSupertypesError.ObjectType" identity="1407dffa-c5b5-4bae-8e32-0bb7eab26710" id="i1407dffazc5b5z4baez8e32z0bb7eab26710" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i4403485ez75d5z4e7az84d2z0f8bf0cd0ab9</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError.ExternalUniquenessImpliedByUniquenessError" identity="19f66e5d-0e6c-4fb9-ba06-ec066fb7ee98" id="i19f66e5dz0e6cz4fb9zba06zec066fb7ee98" definitionlevel="none" containmentstyle="embedding">
+            <source>i46894116z9bd5z4f8azbd3cz3045fd62dbec</source>
+            <role>i4d76f7f2zdfcez458fz8003z7745360372b0</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ExternalUniquenessConstraintHasExternalUniquenessImpliedByUniquenessError.ExternalUniquenessConstraint" identity="27a5f74f-62ba-48f3-9d67-706d44e5a841" id="i27a5f74fz62baz48f3z9d67z706d44e5a841" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>i3800537az5acfz41b6zb3bez3a0654cc24ad</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasPreferredIdentifierRequiresMandatoryError.PreferredIdentifierRequiresMandatoryError" identity="ebf87caa-e120-4c5c-8e52-1422321ad0a0" id="iebf87caaze120z4c5cz8e52z1422321ad0a0" definitionlevel="none" containmentstyle="embedding">
+            <source>i765459f6zd8e2z4f43zbb01zab72899848c6</source>
+            <role>i9cf911a9za36fz440ez9e5dz46d85362e336</role>
+          </treeExpression>
+          <treeExpression xsi:type="RoleExpression" name="ObjectTypeHasPreferredIdentifierRequiresMandatoryError.ObjectType" identity="8d994791-a339-4e3c-9e54-3eaae360b85f" id="i8d994791za339z4e3cz9e54z3eaae360b85f" definitionlevel="none" containmentstyle="reference">
+            <source />
+            <role>ieb306dafz395fz4418z8143z8cecb4ab7312</role>
           </treeExpression>
         </expressions>
         <roots />
@@ -4966,7 +5294,7 @@
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i393d854fz34c5z4dc5z86c6z56816581b957</superType>
       </concept>
-      <concept name="ObjectTypeRequiresPrimarySubtypeError" identity="24f4068f-8eea-4ced-b5f7-ddff7838cab4" namespace="Neumont.Tools.ORM.ObjectModel" id="i24f4068fz8eeaz4cedzb5f7zddff7838cab4" isLoaded="true" isAbstract="false">
+      <concept name="ObjectTypeRequiresPrimarySupertypeError" identity="24f4068f-8eea-4ced-b5f7-ddff7838cab4" namespace="Neumont.Tools.ORM.ObjectModel" id="i24f4068fz8eeaz4cedzb5f7zddff7838cab4" isLoaded="true" isAbstract="false">
         <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
         <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
@@ -4979,6 +5307,20 @@
             <propertyInfo xsi:type="StringPropertyInfo" name="" identity="4726e8bb-dd85-4b15-b552-7713d2100b46" default="" max="2147483647" />
           </property>
         </valueProperties>
+      </concept>
+
+
+      <concept name="CompatibleSupertypesError" identity="5face1ee-692d-4371-8638-2553d49aee10" namespace="Neumont.Tools.ORM.ObjectModel" id="i5face1eez692dz4371z8638z2553d49aee10" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+      </concept>
+      <concept name="ExternalUniquenessImpliedByUniquenessError" identity="2bee7b88-2833-49a2-92c1-91d2716000e5" namespace="Neumont.Tools.ORM.ObjectModel" id="i2bee7b88z2833z49a2z92c1z91d2716000e5" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
+      </concept>
+      <concept name="PreferredIdentifierRequiresMandatoryError" identity="90b39c97-af3f-4b28-8657-6a5fba74a2ee" namespace="Neumont.Tools.ORM.ObjectModel" id="i90b39c97zaf3fz4b28z8657z6a5fba74a2ee" isLoaded="true" isAbstract="false">
+        <mdfmetadata xsi:type="conceptorshapemdfmetadata" accessmodifier="public" category="" description="" doccomment="" localize="false" />
+        <superType>i50b3feeazfa3az4c87zbb8cz74b26c12b330</superType>
       </concept>
     </concepts>
   </model>

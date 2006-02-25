@@ -65,6 +65,11 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Valid for uniqueness constraint types.
 		/// </summary>
 		ObjectType PreferredIdentifierFor { get; set; }
+		/// <summary>
+		/// Called during a transaction to tell the constraint
+		/// to revalidate all column compatibility settings.
+		/// </summary>
+		void ValidateColumnCompatibility();
 	}
 	#endregion // IConstraint interface
 	#region Constraint class
@@ -663,18 +668,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 							{
 								// Populate the cache
 								superTypesCache = new Collection<ObjectType>();
-								ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type)
+								ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type, int depth)
 								{
 									superTypesCache.Add(type);
-									return true;
+									return ObjectTypeVisitorResult.Continue;
 								});
 							}
 							// If the type is contained, WalkSupertype will return false because the iteration
 							// did not complete.
-							isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type)
+							isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type, int depth)
 							{
 								// Continue iteration if the type is recognized in the cache
-								return !superTypesCache.Contains(type);
+								return superTypesCache.Contains(type) ? ObjectTypeVisitorResult.Stop : ObjectTypeVisitorResult.Continue;
 							});
 
 							if (!isCompatible)
@@ -790,6 +795,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			set
 			{
 			}
+		}
+		/// <summary>
+		/// Implements IConstraint.ValidateColumnCompatibility
+		/// </summary>
+		protected void ValidateColumnCompatibility()
+		{
+			if (!IsRemoved && !IsRemoving)
+			{
+				ORMMetaModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
+			}
+		}
+		void IConstraint.ValidateColumnCompatibility()
+		{
+			ValidateColumnCompatibility();
 		}
 		#endregion // IConstraint Implementation
 	}
@@ -1233,18 +1252,18 @@ namespace Neumont.Tools.ORM.ObjectModel
 									{
 										// Populate the cache
 										superTypesCache = new Collection<ObjectType>();
-										ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type)
+										ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type, int depth)
 										{
 											superTypesCache.Add(type);
-											return true;
+											return ObjectTypeVisitorResult.Continue;
 										});
 									}
 									// If the type is contained, WalkSupertype will return false because the iteration
 									// did not complete.
-									bool isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type)
+									bool isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type, int depth)
 									{
 										// Continue iteration if the type is recognized in the cache
-										return !superTypesCache.Contains(type);
+										return superTypesCache.Contains(type) ? ObjectTypeVisitorResult.Stop : ObjectTypeVisitorResult.Continue;
 									});
 									if (!isCompatible)
 									{
@@ -1558,6 +1577,20 @@ namespace Neumont.Tools.ORM.ObjectModel
 			{
 			}
 		}
+		/// <summary>
+		/// Implements IConstraint.ValidateColumnCompatibility
+		/// </summary>
+		protected void ValidateColumnCompatibility()
+		{
+			if (!IsRemoved && !IsRemoving)
+			{
+				ORMMetaModel.DelayValidateElement(this, DelayValidateCompatibleRolePlayerTypeError);
+			}
+		}
+		void IConstraint.ValidateColumnCompatibility()
+		{
+			ValidateColumnCompatibility();
+		}
 		#endregion // IConstraint Implementation
 	}
 	#endregion // MultiColumnExternalConstraint class
@@ -1651,6 +1684,17 @@ namespace Neumont.Tools.ORM.ObjectModel
 			set
 			{
 			}
+		}
+		/// <summary>
+		/// Implements IConstraint.ValidateColumnCompatibility
+		/// </summary>
+		protected static void ValidateColumnCompatibility()
+		{
+			// Stub for FxCop extensibility pattern
+		}
+		void IConstraint.ValidateColumnCompatibility()
+		{
+			ValidateColumnCompatibility();
 		}
 		#endregion // IConstraint Implementation
 	}
@@ -2565,7 +2609,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 											ObjectType currentRolePlayer = null;
 											// Don't use oppositeRole.RolePlayer, this will pick up
 											// a removing role player, which is exactly the condition we're
-											// looking fore.
+											// looking for.
 											IList rolePlayerLinks = oppositeRole.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid);
 											int rolePlayerLinksCount = rolePlayerLinks.Count;
 											for (int i = 0; i < rolePlayerLinksCount; ++i)
@@ -2620,6 +2664,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 										remove = false;
 									}
 								}
+							}
+							if (!remove)
+							{
+								forType.ValidateMandatoryRolesForPreferredIdentifier();
 							}
 						}
 					}
@@ -3112,6 +3160,10 @@ namespace Neumont.Tools.ORM.ObjectModel
 									continue;
 								}
 							}
+							break;
+						}
+						else
+						{
 							break;
 						}
 					}
@@ -3837,6 +3889,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 	}
 	#endregion // PreferredIdentifierFor implementation
 	#region ModelError classes
+	#region TooManyRoleSequencesError class
 	public partial class TooManyRoleSequencesError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -3892,6 +3945,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
+	#endregion // TooManyRoleSequencesError class
+	#region TooFewRoleSequencesError class
 	public partial class TooFewRoleSequencesError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -3951,6 +4006,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
+	#endregion // TooFewRoleSequencesError class
+	#region ExternalConstraintRoleSequenceArityMismatchError class
 	public partial class ExternalConstraintRoleSequenceArityMismatchError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -3994,6 +4051,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
+	#endregion // ExternalConstraintRoleSequenceArityMismatchError class
+	#region CompatibleRolePlayerTypeError class
 	public partial class CompatibleRolePlayerTypeError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -4067,6 +4126,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // Accessor Properties
 	}
+	#endregion // CompatibleRolePlayerTypeError class
+	#region FrequencyConstraintMinMaxError class
 	public partial class FrequencyConstraintMinMaxError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -4109,8 +4170,9 @@ namespace Neumont.Tools.ORM.ObjectModel
 			return GetRepresentedElements();
 		}
 		#endregion // IRepresentModelElements Implementation
-	
 	}
+	#endregion // FrequencyConstraintMinMaxError class
+	#region FrequencyConstraintContradictsInternalUniquenessConstraintError class
 	public partial class FrequencyConstraintContradictsInternalUniquenessConstraintError : IRepresentModelElements
 	{
 		#region Base Overrides
@@ -4155,6 +4217,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
+	#endregion // FrequencyConstraintContradictsInternalUniquenessConstraintError class
+	#region ImpliedInternalUniquenessConstraintError class
 	public partial class ImpliedInternalUniquenessConstraintError : IRepresentModelElements
 	{
 		#region Base Overrides
@@ -4207,6 +4271,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion
 	}
+	#endregion // ImpliedInternalUniquenessConstraintError class
+	#region EqualityIsImpliedByMandatoryError class
 	public partial class EqualityIsImpliedByMandatoryError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -4250,6 +4316,8 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion //IRepresentModelElements Implementation
 	}
+	#endregion // EqualityIsImpliedByMandatoryError class
+	#region DisjunctiveMandatoryImpliedByMandatoryError class
 	public partial class DisjunctiveMandatoryImpliedByMandatoryError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -4294,6 +4362,43 @@ namespace Neumont.Tools.ORM.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
+	#endregion // DisjunctiveMandatoryImpliedByMandatoryError class
+	#region ExternalUniquenessImpliedByUniquenessError class
+	public partial class ExternalUniquenessImpliedByUniquenessError : IRepresentModelElements
+	{
+		#region Base Overrides
+		/// <summary>
+		/// Generates the text for the error to be displayed.
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			Name = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintExternalUniquenessImplied, ExternalUniquenessConstraint.Name, Model.Name);
+		}
+		/// <summary>
+		/// Regenerate error text when the constraint name or model name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get { return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange; }
+		}
+		#endregion //Base Overrides
+		#region IRepresentModelElements Implementation
+		/// <summary>
+		/// Returns object associated with this error
+		/// </summary>
+		/// <returns></returns>
+		protected ModelElement[] GetRepresentedElements()
+		{
+			return new ModelElement[] { this.ExternalUniquenessConstraint };
+		}
+		ModelElement[] IRepresentModelElements.GetRepresentedElements()
+		{
+			return GetRepresentedElements();
+		}
+		#endregion // IRepresentModelElements Implementation
+	}
+	#endregion // ExternalUniquenessImpliedByUniquenessError class
+	#region RingConstraintTypeNotSpecifiedError class
 	public partial class RingConstraintTypeNotSpecifiedError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -4343,6 +4448,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 
 		#endregion //IRepresentModelElements Implementation
 	}
+	#endregion // RingConstraintTypeNotSpecifiedError class
 	#endregion // ModelError classes
 	#region ExclusionType enum
 	/// <summary>

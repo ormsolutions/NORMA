@@ -157,7 +157,9 @@
 		<se:Link Name="PreferredIdentifier" RelationshipName="EntityTypeHasPreferredIdentifier" RoleName="PreferredIdentifier"/>
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError" RoleName="ObjectTypeRequiresPrimarySubtypeError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectTypeRequiresPrimarySupertypeError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" RoleName="PreferredIdentifierRequiresMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ObjectTypeHasCompatibleSupertypesError" RoleName="CompatibleSupertypesError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="CustomReferenceMode" HasMixedTypedAttributes="true" SortChildElements="true" Override="true">
 		<se:Attribute ID="CustomFormatString" WriteStyle="Element"/>
@@ -470,8 +472,14 @@
 	<se:Element Class="DisjunctiveMandatoryImpliedByMandatoryError" Override="true">
 		<se:Link RelationshipName="DisjunctiveMandatoryConstraintHasDisjunctiveMandatoryImpliedByMandatoryError" RoleName="DisjunctiveMandatoryConstraint" Name="DisjunctiveMandatoryConstraint"/>
 	</se:Element>
-	<se:Element Class="ObjectTypeRequiresPrimarySubtypeError" Override="true">
-		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySubtypeError" RoleName="ObjectType" Name="ObjectType"/>
+	<se:Element Class="ObjectTypeRequiresPrimarySupertypeError" Override="true">
+		<se:Link RelationshipName="ObjectTypeHasObjectTypeRequiresPrimarySupertypeError" RoleName="ObjectType" Name="ObjectType"/>
+	</se:Element>
+	<se:Element Class="PreferredIdentifierRequiresMandatoryError" Override="true">
+		<se:Link RelationshipName="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" RoleName="ObjectType" Name="ObjectType"/>
+	</se:Element>
+	<se:Element Class="CompatibleSupertypesError" Override="true">
+		<se:Link RelationshipName="ObjectTypeHasCompatibleSupertypesError" RoleName="ObjectType" Name="ObjectType"/>
 	</se:Element>
 	<se:Element Class="CompatibleRolePlayerTypeError" Override="true">
 		<se:Attribute ID="Column">

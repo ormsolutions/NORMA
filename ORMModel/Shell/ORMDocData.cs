@@ -33,9 +33,6 @@ using Microsoft.VisualStudio.Shell.Interop;
 using System.Xml;
 using System.Reflection;
 
-#if ATTACHELEMENTPROVIDERS
-using Neumont.Tools.ORM.DocumentSynchronization;
-#endif // ATTACHELEMENTPROVIDERS
 namespace Neumont.Tools.ORM.Shell
 {
 	#region ORMDesignerDocData class
@@ -298,34 +295,6 @@ namespace Neumont.Tools.ORM.Shell
 				return formatList.Replace("|", "\n");
 			}
 		}
-#if ATTACHELEMENTPROVIDERS
-		/// <summary>
-		/// UNDONE: Attach element providers
-		/// </summary>
-		/// <param name="store">The store being loaded</param>
-		/// <param name="storeKey">The key for the store in the docdata. Handles PrimaryStoreKey.</param>
-		/// <returns></returns>
-		protected override ElementProvider[] GetElementProviders(Store store, object storeKey)
-		{
-			if (storeKey == PrimaryStoreKey)
-			{
-				//return new ElementProvider[] { new ORMElementProvider(store) };
-			}
-			return base.GetElementProviders(store, storeKey);
-		}
-		/// <summary>
-		/// Continually synchronize the primary store with the element provider
-		/// </summary>
-		/// <param name="storeKey">The store key in the docdata. Handles PrimaryStoreKey.</param>
-		public override bool GetContinuousSynchronization(object storeKey)
-		{
-			if (storeKey == PrimaryStoreKey)
-			{
-				return true;
-			}
-			return base.GetContinuousSynchronization(storeKey);
-		}
-#endif // ATTACHELEMENTPROVIDERS
 		/// <summary>
 		/// Set the document scope to ProjectScope for the element provider mechanism
 		/// </summary>
