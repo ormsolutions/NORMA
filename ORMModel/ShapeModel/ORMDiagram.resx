@@ -342,6 +342,10 @@
     <value xml:space="preserve">Add Internal Uniqueness Constraint</value>
     <comment xml:space="preserve">The name given to the transaction used when adding an internal uniqueness constraint.</comment>
   </data>
+  <data name="DropShape.TransactionName">
+    <value xml:space="preserve">Add Shape</value>
+    <comment xml:space="preserve">The name given to the transaction used when adding a shape element for an existing object.</comment>
+  </data>
   <data name="InsertRole.TransactionName">
     <value xml:space="preserve">Insert Role</value>
     <comment xml:space="preserve">The transaction name used by the InsertRoleBefore/InsertRoleAfter commands. The text appears in the undo dropdown in the VS IDE.</comment>

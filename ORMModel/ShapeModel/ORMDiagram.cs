@@ -67,7 +67,9 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="e"></param>
 		public override void OnDragOver(DiagramDragEventArgs e)
 		{
-			if (e.Data.GetData(typeof(ObjectType)) != null || e.Data.GetData(typeof(FactType)) != null)
+			IDataObject dataObject = e.Data;
+			if (dataObject.GetData(typeof(ObjectType)) != null || dataObject.GetData(typeof(FactType)) != null || dataObject.GetData(typeof(MultiColumnExternalConstraint)) != null ||
+				dataObject.GetData(typeof(SingleColumnExternalConstraint)) != null)
 			{
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
@@ -80,19 +82,147 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <param name="e"></param>
 		public override void OnDragDrop(DiagramDragEventArgs e)
 		{
-			ModelElement element = e.Data.GetData(typeof(ObjectType)) as ModelElement;
-			if (element != null || (element = e.Data.GetData(typeof(FactType)) as ModelElement) != null)
+			IDataObject dataObject = e.Data;
+			if (dataObject == null)
+			{
+				return;
+			}
+			ObjectType objectType = null;
+			FactType factType = null;
+			MultiColumnExternalConstraint multiCol = null;
+			SingleColumnExternalConstraint singleCol = null;
+			ModelElement element = null;
+			bool[] factsContained;
+			int factsRemaining;
+			if (null != (objectType = dataObject.GetData(typeof(ObjectType)) as ObjectType))
+			{
+				element = objectType;
+			}
+			else if (null != (factType = dataObject.GetData(typeof(FactType)) as FactType))
+			{
+				element = factType;
+			}
+			else if (null != (multiCol = dataObject.GetData(typeof(MultiColumnExternalConstraint)) as MultiColumnExternalConstraint))
+			{
+				FactTypeMoveableCollection factTypeList = multiCol.FactTypeCollection;
+				factsContained = new bool[factTypeList.Count];
+				factsRemaining = factTypeList.Count;
+				FactType fact;
+				foreach (ShapeElement shape in NestedChildShapes)
+				{
+					if (null != (fact = shape.ModelElement as FactType))
+					{
+						int index = factTypeList.IndexOf(fact);
+						if (index != -1)
+						{
+							if (!factsContained[index])
+							{
+								factsContained[index] = true;
+								--factsRemaining;
+								if (factsRemaining == 0)
+								{
+									element = multiCol;
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			else if (null != (singleCol = dataObject.GetData(typeof(SingleColumnExternalConstraint)) as SingleColumnExternalConstraint))
+			{
+				FactTypeMoveableCollection factTypeList = singleCol.FactTypeCollection;
+				factsContained = new bool[factTypeList.Count];
+				factsRemaining = factTypeList.Count;
+				FactType fact;
+				foreach (ShapeElement shape in NestedChildShapes)
+				{
+					if (null != (fact = shape.ModelElement as FactType))
+					{
+						int index = factTypeList.IndexOf(fact);
+						if (index != -1)
+						{
+							if (!factsContained[index])
+							{
+								factsContained[index] = true;
+								--factsRemaining;
+								if (factsRemaining == 0)
+								{
+									element = singleCol;
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			if (element != null)
 			{
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
-				using (Transaction transaction = this.TransactionManager.BeginTransaction())
+				using (Transaction transaction = this.TransactionManager.BeginTransaction(ResourceStrings.DropShapeTransactionName))
 				{
+					ModelElement droppedOnElement = this.ModelElement;
 					DropTargetContext.Set(transaction, Id, e.MousePosition, null);
-					Diagram.FixUpDiagram(this.ModelElement, element);
+					Diagram.FixUpDiagram(droppedOnElement, element);
+					if (factType != null)
+					{
+						foreach (Role role in factType.RoleCollection)
+						{
+							FixupRelatedLinks(droppedOnElement, role.GetElementLinks(ObjectTypePlaysRole.PlayedRoleCollectionMetaRoleGuid));
+							FixupRelatedLinks(droppedOnElement, role.GetElementLinks(SingleColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid));
+							FixupRelatedLinks(droppedOnElement, role.GetElementLinks(MultiColumnExternalFactConstraint.FactTypeCollectionMetaRoleGuid));
+						}
+					}
+					else if (objectType != null)
+					{
+						IList rolePlayerLinks = objectType.GetElementLinks(ObjectTypePlaysRole.RolePlayerMetaRoleGuid);
+						int linksCount = rolePlayerLinks.Count;
+						for (int i = 0; i < linksCount; ++i)
+						{
+							ObjectTypePlaysRole link = rolePlayerLinks[i] as ObjectTypePlaysRole;
+							Role role = link.PlayedRoleCollection;
+							SubtypeMetaRole subRole;
+							SupertypeMetaRole superRole;
+							FactType subtypeFact = null;
+							if (null != (subRole = role as SubtypeMetaRole))
+							{
+								subtypeFact = role.FactType;
+							}
+							else if (null != (superRole = role as SupertypeMetaRole))
+							{
+								subtypeFact = role.FactType;
+							}
+							if (subtypeFact != null)
+							{
+								FixUpDiagram(droppedOnElement, subtypeFact);
+							}
+							else
+							{
+								FixUpDiagram(droppedOnElement, link);
+							}
+						}
+					}
+					else if (singleCol != null)
+					{ 
+						FixupRelatedLinks(droppedOnElement, singleCol.GetElementLinks(SingleColumnExternalFactConstraint.SingleColumnExternalConstraintCollectionMetaRoleGuid));
+					}
+					else if (multiCol != null)
+					{
+						FixupRelatedLinks(droppedOnElement, multiCol.GetElementLinks(MultiColumnExternalFactConstraint.MultiColumnExternalConstraintCollectionMetaRoleGuid));
+					}
 					transaction.Commit();
 				}
 			}
 			base.OnDragDrop(e);
+		}
+		private static void FixupRelatedLinks(ModelElement droppedOnElement, IList links)
+		{
+			int linksCount = links.Count;
+			for (int i = 0; i < linksCount; ++i)
+			{
+				FixUpDiagram(droppedOnElement, (ModelElement)links[i]);
+			}
 		}
 		# endregion //drag drop overrides
 		#region Toolbox filter strings
@@ -180,37 +310,39 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// surface. Nesting object types are not displayed.</returns>
 		protected override bool ShouldAddShapeForElement(ModelElement element)
 		{
-			if (!this.AutoPopulateShapes && this.ActiveDiagramView == null)
+			ElementLink link = element as ElementLink;
+			SubtypeFact subtypeFact = null;
+			ModelElement element1 = null;
+			ModelElement element2 = null;
+			if (link != null)
 			{
-				ElementLink link = element as ElementLink;
-				SubtypeFact subtypeFact;
-				ModelElement element1 = null;
-				ModelElement element2 = null;
-				if (link != null)
+				element1 = link.GetRolePlayer(0);
+				Role role1 = element1 as Role;
+				if (role1 != null)
 				{
-					element1 = link.GetRolePlayer(0);
-					Role role1 = element1 as Role;
-					if (role1 != null)
-					{
-						element1 = role1.FactType;
-					}
-					element2 = link.GetRolePlayer(1);
-					Role role2 = element2 as Role;
-					if (role2 != null)
-					{
-						element2 = role2.FactType;
-					}
+					element1 = role1.FactType;
 				}
-				else if ((subtypeFact = element as SubtypeFact) != null)
+				element2 = link.GetRolePlayer(1);
+				Role role2 = element2 as Role;
+				if (role2 != null)
 				{
-					element1 = subtypeFact.Subtype;
-					element2 = subtypeFact.Supertype;
+					element2 = role2.FactType;
 				}
+			}
+			else if ((subtypeFact = element as SubtypeFact) != null)
+			{
+				element1 = subtypeFact.Subtype;
+				element2 = subtypeFact.Supertype;
+			}
 
-				if (element1 == null || element2 == null || FindShapeForElement(element1) == null || FindShapeForElement(element2) == null)
-				{
-					return false;
-				}
+			bool isLink = link != null || subtypeFact != null;
+			if (isLink && (element1 == null || element2 == null || FindShapeForElement(element1) == null || FindShapeForElement(element2) == null))
+			{
+				return false;
+			}
+			else if (!isLink && this.ActiveDiagramView == null)
+			{
+				return false;
 			}
 			ObjectType objType;
 			FactType factType;
@@ -234,7 +366,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 			}
 			else if (null != (objectTypePlaysRole = element as ObjectTypePlaysRole))
 			{
-				FactType fact = objectTypePlaysRole.PlayedRoleCollection.FactType;
+				FactType fact = objectTypePlaysRole.PlayedRoleCollection.FactType;				
 				if (fact is SubtypeFact
 #if !SHOW_IMPLIED_SHAPES
 					|| fact.ImpliedByObjectification != null

@@ -451,6 +451,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// The name given to the transaction used when adding a shape element for an existing object.
+		/// </summary>
+		public static string DropShapeTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "DropShape.TransactionName");
+			}
+		}
+		/// <summary>
 		/// The instructions shown when creating an external constraint
 		/// </summary>
 		public static string ExternalConstraintConnectActionInstructions

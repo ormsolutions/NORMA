@@ -240,8 +240,19 @@ namespace Neumont.Tools.ORM.Shell
 			void browser_ItemDrag(object sender, ItemDragEventArgs e)
 			{
 				object resolvedObject = EditorUtility.ResolveContextInstance(e.Item, false);
-				ModelElement element = resolvedObject as ObjectType;
-				if (element != null || (element  = resolvedObject as FactType)!= null)
+				ModelElement element;
+				IDataObject elementData = new DataObject();
+				if (null != (element = resolvedObject  as MultiColumnExternalConstraint))
+				{
+					elementData.SetData(typeof(MultiColumnExternalConstraint), element);
+					ObjectModelBrowser.DoDragDrop(elementData, DragDropEffects.All);
+				}
+				else if (null != (element = resolvedObject as SingleColumnExternalConstraint))
+				{
+					elementData.SetData(typeof(SingleColumnExternalConstraint), element);
+					ObjectModelBrowser.DoDragDrop(elementData, DragDropEffects.All);
+				}
+				else if ((element = resolvedObject as ObjectType) != null || (element  = resolvedObject as FactType)!= null)
 				{
 					ObjectModelBrowser.DoDragDrop(element, DragDropEffects.All);
 				}
