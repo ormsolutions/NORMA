@@ -1,6 +1,6 @@
-﻿#region Common Public License Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -367,6 +367,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// An array of attributes for colorization
 		/// </summary>
 		/// <value></value>
+		[CLSCompliant(false)]
 		public uint[] ColorAttributes
 		{
 			get { return myColorAttributes; }

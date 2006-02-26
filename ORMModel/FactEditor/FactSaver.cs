@@ -1,6 +1,6 @@
-﻿#region Common Public License Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -45,6 +45,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <param name="docView">Curent document view</param>
 		/// <param name="parsedFact">Parsed fact</param>
 		/// <param name="fact">Editing fact</param>
+		[CLSCompliant(false)]
 		public static void AddFact(ORMDesignerDocView docView, ParsedFact parsedFact, FactType fact)
 		{
 			(new FactSaver(docView, parsedFact, fact)).AddFactToModel();

@@ -1,6 +1,6 @@
-﻿#region Common Public License Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -86,12 +86,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <summary>
 		/// Implements IVsColorizer.ColorizeLine
 		/// </summary>
-		/// <param name="iLine"></param>
-		/// <param name="iLength"></param>
-		/// <param name="pszText"></param>
-		/// <param name="iState"></param>
-		/// <param name="pAttributes"></param>
-		/// <returns></returns>
+		[CLSCompliant(false)]
 		protected int ColorizeLine(int iLine, int iLength, IntPtr pszText, int iState, uint[] pAttributes)
 		{
 			if (null == pAttributes)

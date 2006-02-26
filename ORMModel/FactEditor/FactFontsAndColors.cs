@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -146,9 +146,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <summary>
 		/// Implements IVsProvideColorableItems.GetColorableItem
 		/// </summary>
-		/// <param name="iIndex"></param>
-		/// <param name="ppItem"></param>
-		/// <returns></returns>
+		[CLSCompliant(false)]
 		protected static int GetColorableItem(int iIndex, out IVsColorableItem ppItem)
 		{
 			Debug.Assert(iIndex > 0); // Appears to make all calls 1-based

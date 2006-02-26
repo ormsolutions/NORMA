@@ -1,6 +1,6 @@
-﻿#region Common Public License Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -130,12 +130,14 @@ namespace Neumont.Tools.ORM.Shell
 	/// documents.
 	/// </summary>
 	/// <param name="docData">A running ORMDesignerDocData to modify</param>
+	[CLSCompliant(false)]
 	public delegate void NotifyDocument(ORMDesignerDocData docData);
 	#endregion // NotifyDocument Delegate
 	/// <summary>
 	/// Options dialog for ORM designers
 	/// see https://svn.neumont.edu/projects/orm2/wiki/HowToAddOptionPageOptions for adding options
 	/// </summary>
+	[CLSCompliant(false)]
 	[Guid("B4ABD9FD-CE79-4B26-8D36-F345CB53B525")]
 	public class OptionsPage : DialogPage
 	{

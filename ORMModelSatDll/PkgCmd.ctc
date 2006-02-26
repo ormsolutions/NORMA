@@ -1,6 +1,6 @@
-﻿// Common Public License Copyright Notice
+// Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -39,7 +39,7 @@ CMDS_SECTION guidORMDesignerPackage
 		// Command Macro Context Menu Groups
 #ifdef DEBUG
 		guidORMDesignerCommandSet:groupIdDebugCommands,				guidORMDesignerCommandSet:menuIdContextMenu,			0x1000;
-#endif	
+#endif
 		guidORMDesignerCommandSet:groupIdRoleCommands,				guidORMDesignerCommandSet:menuIdContextMenu,			0x0010;
 		guidORMDesignerCommandSet:groupIdFactCommands,				guidORMDesignerCommandSet:menuIdContextMenu,			0x0018;
 		guidORMDesignerCommandSet:groupIdORMToolWindows,			guidORMDesignerCommandSet:menuIdContextMenu,			0x0020;
@@ -99,4 +99,3 @@ CMDS_SECTION guidORMDesignerPackage
 
 	KEYBINDINGS_SECTION
 	KEYBINDINGS_END
-	

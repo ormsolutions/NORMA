@@ -1,6 +1,6 @@
 // Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -130,8 +130,8 @@ IDI_TOOLWINDOWICONS			BITMAP		DISCARDABLE			"..\\ORMModel\\Resources\\ToolWindow
 STRINGTABLE
 BEGIN
 	IDS_PACKAGELOADKEY		"ETDZA3QMCCACH1EJAZZRDACMQQDZP1R0EHC9HJCQPZA0D3DZKTMCIEZIH3PJIKEPEJJ3A9K1PJP1MRR8J9IHC1HCM3RADIK9QMKCM8AEAHE8DMMCQ0AZITHAHQPMMZRT"
-    IDS_DISPLAYNAME         "Object Role Modeling File"
-    IDS_DESCRIPTION         "Object Role Modeling File for Neumont ORM Architect"
+    IDS_DISPLAYNAME         "Object-Role Modeling File"
+    IDS_DESCRIPTION         "Object-Role Modeling File for Neumont ORM Architect"
     IDS_BASEFILENAME        "ORMModel.orm"
     IDS_OPTIONSCATEGORY     "ORM Designer"
     IDS_OPTIONSGENERAL      "General"

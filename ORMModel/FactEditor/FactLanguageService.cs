@@ -1,6 +1,6 @@
-﻿#region Common Public License Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -129,7 +129,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <summary>
 		/// Construct a language service for the ORM package
 		/// </summary>
-		/// <param name="package"></param>
+		[CLSCompliant(false)]
 		public FactLanguageService(ORMDesignerPackage package)
 		{
 			myPackage = package;
@@ -152,9 +152,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <summary>
 		/// Implements IVsLanguageInfo.GetCodeWindowManager
 		/// </summary>
-		/// <param name="pCodeWin"></param>
-		/// <param name="ppCodeWinMgr"></param>
-		/// <returns></returns>
+		[CLSCompliant(false)]
 		protected int GetCodeWindowManager(IVsCodeWindow pCodeWin, out IVsCodeWindowManager ppCodeWinMgr)
 		{
 			ppCodeWinMgr = new FactCodeWindowManager(myPackage, pCodeWin);
@@ -168,9 +166,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <summary>
 		/// Implements IVsLanguageInfo.GetColorizer
 		/// </summary>
-		/// <param name="pBuffer"></param>
-		/// <param name="ppColorizer"></param>
-		/// <returns></returns>
+		[CLSCompliant(false)]
 		protected int GetColorizer(IVsTextLines pBuffer, out IVsColorizer ppColorizer)
 		{
 			InitFactParser();

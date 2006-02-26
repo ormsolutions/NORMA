@@ -1,10 +1,12 @@
 using System;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: CLSCompliant(false)]
+[assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
+[assembly: NeutralResourcesLanguage("en-US")]
 [assembly: AssemblyTitle("Neumont.Tools.ORM.dll")]
 [assembly: AssemblyProduct("Neumont ORM Architect for Visual Studio")]
 [assembly: AssemblyDescription("Neumont ORM Architect for Visual Studio - Package DLL")]

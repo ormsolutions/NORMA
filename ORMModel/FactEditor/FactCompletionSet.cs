@@ -1,6 +1,6 @@
-﻿#region Common Public License Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -56,6 +56,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// </summary>
 		/// <param name="package"></param>
 		/// <param name="textView"></param>
+		[CLSCompliant(false)]
 		public FactCompletionSet(ORMDesignerPackage package, IVsTextView textView)
 		{
 			myTextView = textView;
@@ -133,6 +134,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// *pdwFlags is set to contain one of the GBM_* flags the default 
 		/// matching in the view uses case sensitive comparison.
 		/// </summary>
+		[CLSCompliant(false)]
 		protected static int GetBestMatch(string pszSoFar, int iLength, out int piIndex, out uint pdwFlags)
 		{
 			Debug.Assert(false); // Only called if UpdateCompletionFlags.CSF_CUSTOMMATCHING is set
@@ -251,6 +253,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// Flags indicating specific behaviors of this completion set (CSF_* in textmgr.idl)
 		/// </summary>
 		/// <returns></returns>
+		[CLSCompliant(false)]
 		protected static uint GetFlags()
 		{
 			return (uint)UpdateCompletionFlags.CSF_HAVEDESCRIPTIONS;
@@ -301,6 +304,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <summary>
 		/// Implements IVsCompletionSet.OnCommit
 		/// </summary>
+		[CLSCompliant(false)]
 		protected static int OnCommit(string pszSoFar, int iIndex, int fSelected, ushort cCommit, out string pbstrCompleteWord)
 		{
 			Debug.Assert(false); // Only called if UpdateCompletionFlags.CSF_CUSTOMCOMMIT is set
@@ -318,6 +322,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <summary>
 		/// Get the FactCompletionSet's current DocData.
 		/// </summary>
+		[CLSCompliant(false)]
 		public ORMDesignerDocView CurrentDocumentView
 		{
 			get

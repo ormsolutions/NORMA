@@ -1,4 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
 <Include xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
 	<Registry Root="HKLM" Key="$(var.VSRegRoot)">
 		
@@ -96,6 +109,15 @@
 			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A}">
 				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMBrowserToolWindow" Type="string"/>
+				<Registry Name="Style" Value="Tabbed" Type="string"/>
+				<Registry Name="Orientation" Value="Right" Type="string"/>
+				<Registry Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>
+				<Registry Name="DontForceCreate" Value="1" Type="integer"/>
+				<Registry Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
+			</Registry>
+			<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="{A7C9E14E-9EEE-4D79-A7F4-9E9D1A567498}">
+				<Registry Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
+				<Registry Name="Name" Value="Neumont.Tools.ORM.Shell.ORMNotesToolWindow" Type="string"/>
 				<Registry Name="Style" Value="Tabbed" Type="string"/>
 				<Registry Name="Orientation" Value="Right" Type="string"/>
 				<Registry Name="Window" Value="{$(var.VSOutputWindowGuid)}" Type="string"/>

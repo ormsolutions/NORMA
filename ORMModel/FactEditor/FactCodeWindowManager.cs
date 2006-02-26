@@ -1,6 +1,6 @@
-﻿#region Common Public License Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -46,6 +46,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// </summary>
 		/// <param name="package">That package on which to create text views</param>
 		/// <param name="codeWindow">The source window for the facts being entered</param>
+		[CLSCompliant(false)]
 		public FactCodeWindowManager(ORMDesignerPackage package, IVsCodeWindow codeWindow)
 		{
 			myPackage = package;
@@ -101,8 +102,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <summary>
 		/// Implements IVsCodeWindowManager.OnNewView
 		/// </summary>
-		/// <param name="view"></param>
-		/// <returns></returns>
+		[CLSCompliant(false)]
 		protected int OnNewView(IVsTextView view)
 		{
 			FactTextViewFilter textViewFilter;

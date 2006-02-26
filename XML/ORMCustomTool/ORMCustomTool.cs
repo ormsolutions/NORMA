@@ -140,7 +140,7 @@ namespace Neumont.Tools.ORM.ORMCustomTool
 			if (!String.Equals(projectItemExtension, EXTENSION_ORM, StringComparison.OrdinalIgnoreCase) && !String.Equals(projectItemExtension, EXTENSION_XML, StringComparison.OrdinalIgnoreCase))
 			{
 				// TODO: Localize message.
-				pGenerateProgress.GeneratorError(0, 0, "ORMCustomTool is only supported on Object Role Modeling files, which must have the extension \"" + EXTENSION_ORM + "\" or \"" + EXTENSION_XML + "\".", uint.MaxValue, uint.MaxValue);
+				pGenerateProgress.GeneratorError(0, 0, "ORMCustomTool is only supported on Object-Role Modeling files, which must have the extension \"" + EXTENSION_ORM + "\" or \"" + EXTENSION_XML + "\".", uint.MaxValue, uint.MaxValue);
 				rgbOutputFileContents[0] = IntPtr.Zero;
 				pcbOutput = 0;
 				return VSConstants.E_FAIL;

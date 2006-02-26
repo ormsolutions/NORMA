@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -52,7 +52,6 @@ namespace Neumont.Tools.ORM.Framework
 	/// An interface to provide an extensible plugin point
 	/// for managing deserialization fixups
 	/// </summary>
-	[CLSCompliant(true)]
 	public interface IDeserializationFixupListener : INotifyElementAdded
 	{
 		/// <summary>

@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -165,7 +165,7 @@ namespace Neumont.Tools.ORM.Shell
 	}
 	#endregion // ORMDesignerCommands enum
 	/// <summary>
-	/// DocView designed to contain a multiple ORM Diagrams
+	/// <see cref="DiagramDocView"/> designed to contain multiple <see cref="ORMDiagram"/>s.
 	/// </summary>
 	[CLSCompliant(false)]
 	public partial class ORMDesignerDocView : TabbedDiagramDocView

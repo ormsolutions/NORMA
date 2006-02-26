@@ -4,12 +4,12 @@
 	id="SerializationExtensions"
 	targetNamespace="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
 	elementFormDefault="qualified"
-	attributeFormDefault="unqualified" 
+	attributeFormDefault="unqualified"
 	xmlns="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
-			Neumont Object Role Modeling Architect for Visual Studio
+			Neumont Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
 
@@ -22,7 +22,7 @@
 			You must not remove this notice, or any other, from this software.
 		</xs:appinfo>
 	</xs:annotation>
-	
+
 	<xs:simpleType name="ElementWriteStyle">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="NotWritten">

@@ -2,7 +2,7 @@
 using System.Reflection;
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object Role Modeling Architect for Visual Studio                 *
+// * Neumont Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *

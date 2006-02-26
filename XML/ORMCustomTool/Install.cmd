@@ -28,6 +28,7 @@ XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoSQLStandard.xslt" "%DILTransformsDir%
 XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoPostgreSQL.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoDB2.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoSQLServer.xslt" "%DILTransformsDir%\"
+XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DDILtoOracle.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\DILtoSQL\DomainInliner.xslt" "%DILTransformsDir%\"
 XCOPY /Y /D /V /Q "%~dp0\..\DIL\DILSupportFunctions.xslt" "%DILTransformsDir%\"
 CALL:_AddXslORMGenerator "DCILtoDDIL" "DCIL to DDIL" "Transforms DCIL to DDIL." ".DDIL.xml" "DCIL" "DDIL" "%DILTransformsDir%\DCILtoDDIL.xslt"
@@ -35,6 +36,7 @@ CALL:_AddXslORMGenerator "DDILtoSQLStandard" "DDIL to SQL Standard" "Transforms 
 CALL:_AddXslORMGenerator "DDILtoPostgreSQL" "DDIL to PostgreSQL" "Transforms DDIL to PostgreSQL-dialect SQL." ".PostgreSQL.sql" "DDIL" "SQL_PostgreSQL" "%DILTransformsDir%\DDILtoPostgreSQL.xslt"
 CALL:_AddXslORMGenerator "DDILtoDB2" "DDIL to DB2" "Transforms DDIL to DB2-dialect SQL." ".DB2.sql" "DDIL" "SQL_DB2" "%DILTransformsDir%\DDILtoDB2.xslt"
 CALL:_AddXslORMGenerator "DDILtoSQLServer" "DDIL to SQL Server" "Transforms DDIL to SQL Server-dialect SQL." ".SQLServer.sql" "DDIL" "SQL_SQLServer" "%DILTransformsDir%\DDILtoSQLServer.xslt"
+CALL:_AddXslORMGenerator "DDILtoOracle" "DDIL to Oracle" "Transforms DDIL to Oracle-dialect SQL." ".Oracle.sql" "DDIL" "SQL_Oracle" "%DILTransformsDir%\DDILtoOracle.xslt"
 
 GOTO:EOF
 

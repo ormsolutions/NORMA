@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -56,7 +56,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 	/// and to automatically update the error text on
 	/// a RegenerateErrorTextEvents.OwnerNameChange.
 	/// </summary>
-	[CLSCompliant(false)]
 	public interface IModelErrorOwner
 	{
 		/// <summary>
@@ -172,7 +171,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Return a deserialization fixup listener. The listener
 		/// validates all model errors and adds errors to the task provider.
 		/// </summary>
-		[CLSCompliant(false)]
 		public static IDeserializationFixupListener FixupListener
 		{
 			get

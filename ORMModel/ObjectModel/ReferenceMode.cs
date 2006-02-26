@@ -1,6 +1,6 @@
-﻿#region Common Public License Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -213,7 +213,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Return a deserialization fixup listener. The listener
 		/// adds the implicit InternalFactConstraint elements.
 		/// </summary>
-		[CLSCompliant(false)]
 		public static IDeserializationFixupListener FixupListener
 		{
 			get
@@ -439,7 +438,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="formatString"></param>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		[CLSCompliant(false)]
 		public static IEnumerable<ObjectType> FindObjectUsingReferenceModes(ReferenceMode mode, string formatString, ORMModel model)
 		{
 			IList links = model.Store.ElementDirectory.GetElements(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
@@ -464,7 +462,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="oldReferenceModeName"></param>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		[CLSCompliant(false)]
 		public static IEnumerable<ObjectType> FindObjectUsingReferenceModes(ReferenceMode mode, string formatString, string oldReferenceModeName, ORMModel model)
 		{
 			IList links = model.Store.ElementDirectory.GetElements(EntityTypeHasPreferredIdentifier.MetaRelationshipGuid);
@@ -487,7 +484,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <param name="referenceModeName">The name of the reference mode(s) to locate</param>
 		/// <param name="model">The containing model</param>
 		/// <returns>Always returns a collection, does not return null</returns>
-		[CLSCompliant(false)]
 		public static IList<ReferenceMode> FindReferenceModesByName(string referenceModeName, ORMModel model)
 		{
 			// Choice of implementation: We need to either make two passes to allocate the

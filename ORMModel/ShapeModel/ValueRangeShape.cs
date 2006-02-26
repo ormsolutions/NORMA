@@ -1,6 +1,6 @@
-﻿#region Common Public License Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -68,7 +68,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Store per-type value for the base class
 		/// </summary>
-		[CLSCompliant(false)]
 		protected override AutoSizeTextField TextShapeField
 		{
 			get
@@ -119,7 +118,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Overrides default implemenation to instantiate an Reading specific one.
 		/// </summary>
-		[CLSCompliant(false)]
 		protected override AutoSizeTextField CreateAutoSizeTextField()
 		{
 			return new ValueRangeAutoSizeTextField();

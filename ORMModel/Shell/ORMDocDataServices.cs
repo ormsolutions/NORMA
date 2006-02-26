@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -180,6 +180,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Default implementation of a task provider
 		/// </summary>
+		[CLSCompliant(false)]
 		protected class ORMTaskProvider : TaskProvider, IORMToolTaskProvider
 		{
 			#region Member Variables
@@ -376,6 +377,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Default implementation of a task item
 		/// </summary>
+		[CLSCompliant(false)]
 		protected class ORMTaskItem : Task, IORMToolTaskItem
 		{
 			#region Member Variables

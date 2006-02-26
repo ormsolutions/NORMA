@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -37,7 +37,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// </summary>
 	[Guid("A7C9E14E-9EEE-4D79-A7F4-9E9D1A567498")]
 	[CLSCompliant(false)]
-	public class ORMNotesWindow : ToolWindow, MSOLE.IOleCommandTarget
+	public class ORMNotesToolWindow : ToolWindow, MSOLE.IOleCommandTarget
 	{
 		#region Private data members
 		private TextBox myTextBox;
@@ -49,7 +49,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Returns the ORM Notes Window.
 		/// </summary>
-		public ORMNotesWindow(IServiceProvider serviceProvider)
+		public ORMNotesToolWindow(IServiceProvider serviceProvider)
 			: base(serviceProvider)
 		{
 			IMonitorSelectionService monitor = (IMonitorSelectionService)serviceProvider.GetService(typeof(IMonitorSelectionService));

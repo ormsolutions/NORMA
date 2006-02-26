@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -151,7 +151,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// appropriate methods on IFactConstraint to get to the Constraint
 		/// and RoleCollection values for each returned constraint.
 		/// </summary>
-		[CLSCompliant(false)]
 		public ICollection<IFactConstraint> ExternalFactConstraintCollection
 		{
 			get
@@ -165,7 +164,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// constraint.
 		/// </summary>
 		/// <value></value>
-		[CLSCompliant(false)]
 		public ICollection<IFactConstraint> FactConstraintCollection
 		{
 			get
@@ -178,7 +176,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <param name="filterType">The type of constraint to return</param>
 		/// <returns>IEnumerable</returns>
-		[CLSCompliant(false)]
 		public IEnumerable<InternalConstraint> GetInternalConstraints(ConstraintType filterType)
 		{
 			IList constraints = InternalConstraintCollection;
@@ -197,7 +194,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// </summary>
 		/// <typeparam name="T">An internal constraint type</typeparam>
 		/// <returns>IEnumerable</returns>
-		[CLSCompliant(false)]
 		public IEnumerable<T> GetInternalConstraints<T>() where T : InternalConstraint
 		{
 			IList constraints = InternalConstraintCollection;
@@ -549,7 +545,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the error associated with the fact.
 		/// </summary>
-		[CLSCompliant(false)]
 		protected IEnumerable<ModelError> ErrorCollection
 		{
 			get

@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -470,7 +470,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// The guids identifying multiple opposite meta roles. Valid for a match
 		/// style of MultipleOppositeMetaRoles.
 		/// </summary>
-		[CLSCompliant(false)]
 		public IList<Guid> OppositeMetaRoleGuidCollection
 		{
 			get

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
-	Neumont Object Role Modeling Architect for Visual Studio
+	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
 
@@ -18,7 +18,7 @@
 	xmlns:oil="http://schemas.orm.net/OIAL"
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:xsOut="OutputSchema"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	extension-element-prefixes="msxsl"
 	exclude-result-prefixes="oil odt">
 	<xsl:namespace-alias stylesheet-prefix="xsOut" result-prefix="xs"/>

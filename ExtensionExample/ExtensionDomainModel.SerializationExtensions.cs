@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using Neumont.Tools.ORM.Shell;
 // Common Public License Copyright Notice
 // /**************************************************************************\
-// * Neumont Object Role Modeling Architect for Visual Studio                 *
+// * Neumont Object-Role Modeling Architect for Visual Studio                 *
 // *                                                                          *
 // * Copyright © Neumont University. All rights reserved.                     *
 // *                                                                          *
@@ -201,7 +201,6 @@ namespace ExtensionExample
 		/// <summary>
 		/// Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer
 		/// </summary>
-		[CLSCompliant(false)]
 		protected IComparer<MetaRoleInfo> CustomSerializedChildRoleComparer
 		{
 			get

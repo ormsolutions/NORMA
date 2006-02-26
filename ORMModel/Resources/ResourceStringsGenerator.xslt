@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet 
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet
     version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
@@ -11,7 +11,7 @@
 				<plx:leadingInfo>
 					<plx:comment>Common Public License Copyright Notice</plx:comment>
 					<plx:comment>/**************************************************************************\</plx:comment>
-					<plx:comment>* Neumont Object Role Modeling Architect for Visual Studio                 *</plx:comment>
+					<plx:comment>* Neumont Object-Role Modeling Architect for Visual Studio                 *</plx:comment>
 					<plx:comment>*                                                                          *</plx:comment>
 					<plx:comment>* Copyright © Neumont University. All rights reserved.                     *</plx:comment>
 					<plx:comment>*                                                                          *</plx:comment>

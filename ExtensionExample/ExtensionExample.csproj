@@ -86,7 +86,9 @@
     <None Include="..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
-    <EmbeddedResource Include="ExtensionDomainModelTest.xsd" />
+    <EmbeddedResource Include="ExtensionDomainModelTest.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="Plix.xml">
     </None>
   </ItemGroup>

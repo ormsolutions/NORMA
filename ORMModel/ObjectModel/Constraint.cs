@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -420,7 +420,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ErrorCollection
 		/// </summary>
-		[CLSCompliant(false)]
 		protected IEnumerable<ModelError> ErrorCollection
 		{
 			get
@@ -480,7 +479,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Return a deserialization fixup listener. The listener
 		/// adds the implicit ExternalFactConstraint elements.
 		/// </summary>
-		[CLSCompliant(false)]
 		public static IDeserializationFixupListener FixupListener
 		{
 			get
@@ -833,7 +831,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// fact type from here, use the FactTypeCollection property on the returned
 		/// object. To get to the roles, use the ConstrainedRoleCollection property.
 		/// </summary>
-		[CLSCompliant(false)]
 		public IList<ExternalFactConstraint> ExternalFactConstraintCollection
 		{
 			get
@@ -969,7 +966,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Return a deserialization fixup listener. The listener
 		/// adds the implicit ExternalFactConstraint elements.
 		/// </summary>
-		[CLSCompliant(false)]
 		public static IDeserializationFixupListener FixupListener
 		{
 			get
@@ -1481,7 +1477,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ErrorCollection
 		/// </summary>
-		[CLSCompliant(false)]
 		protected IEnumerable<ModelError> ErrorCollection
 		{
 			get
@@ -1615,7 +1610,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IFactConstraint.RoleCollection
 		/// </summary>
-		[CLSCompliant(false)]
 		protected IList<Role> IFactConstraintRoleCollection
 		{
 			get
@@ -1711,7 +1705,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IFactConstraint.RoleCollection
 		/// </summary>
-		[CLSCompliant(false)]
 		protected IList<Role> RoleCollection
 		{
 			get
@@ -2053,7 +2046,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the error associated with the constraint.
 		/// </summary>
-		[CLSCompliant(false)]
 		protected IEnumerable<ModelError> ErrorCollection
 		{
 			get
@@ -2256,7 +2248,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ErrorCollection
 		/// </summary>
-		[CLSCompliant(false)]
 		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
@@ -3236,7 +3227,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ErrorCollection
 		/// </summary>
-		[CLSCompliant(false)]
 		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
@@ -3456,7 +3446,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the error associated with the constraint.
 		/// </summary>
-		[CLSCompliant(false)]
 		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get
@@ -3724,7 +3713,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Return errors associated with the constraint
 		/// </summary>
-		[CLSCompliant(false)]
 		protected new IEnumerable<ModelError> ErrorCollection
 		{
 			get

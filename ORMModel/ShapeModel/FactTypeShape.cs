@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -139,7 +139,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="uniqueConstraintRoles">Unique constraint roles. factConstraint.RoleCollection can contain duplicate roles
 			/// and must be used with extreme caution.</param>
 			/// <param name="factRoleCount">The number of roles for the context fact.</param>
-			[CLSCompliant(false)]
 			public ConstraintBox(IFactConstraint factConstraint, IList<Role> uniqueConstraintRoles, int factRoleCount)
 			{
 				Debug.Assert(factConstraint != null);
@@ -161,7 +160,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <param name="uniqueConstraintRoles">Unique constraint roles. factConstraint.RoleCollection can contain duplicate roles
 			/// and must be used with extreme caution.</param>
 			/// <param name="roleActivity">A representation of the factConstraint's role activity within the fact.</param>
-			[CLSCompliant(false)]
 			public ConstraintBox(IFactConstraint factConstraint, IList<Role> uniqueConstraintRoles, ConstraintBoxRoleActivity[] roleActivity)
 			{
 				Debug.Assert(factConstraint != null);
@@ -245,7 +243,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// The constraint object this box is for.
 			/// </summary>
-			[CLSCompliant(false)]
 			public IFactConstraint FactConstraint
 			{
 				get
@@ -256,7 +253,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 			/// <summary>
 			/// A (cached) reference to the fact constraint's role collection
 			/// </summary>
-			[CLSCompliant(false)]
 			public IList<Role> RoleCollection
 			{
 				get
@@ -4268,7 +4264,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// <summary>
 		/// Store per-type value for the base class
 		/// </summary>
-		[CLSCompliant(false)]
 		protected override AutoSizeTextField TextShapeField
 		{
 			get

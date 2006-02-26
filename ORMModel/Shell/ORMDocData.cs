@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -39,6 +39,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// DocData object for the ORM Designer editor
 	/// </summary>
+	[CLSCompliant(false)]
 	public partial class ORMDesignerDocData : ModelingDocData, IExtensibleObject
 	{
 		#region Private flags

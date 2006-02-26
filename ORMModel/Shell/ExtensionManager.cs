@@ -38,6 +38,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="serviceProvider"><see cref="IServiceProvider"/></param>
 		/// <param name="docData">The docData retrieved from the current document.</param>
+		[CLSCompliant(false)]
 		public static void ShowDialog(IServiceProvider serviceProvider, ORMDesignerDocData docData)
 		{
 			ExtensionManager extensionManager = new ExtensionManager(docData.Store);

@@ -1,6 +1,6 @@
-﻿#region Common Public License Copyright Notice
+#region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -96,6 +96,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// </summary>
 		/// <param name="package">The package we are attached to</param>
 		/// <param name="view">The view to filter</param>
+		[CLSCompliant(false)]
 		public FactTextViewFilter(ORMDesignerPackage package, IVsTextView view)
 		{
 			myPackage = package;
@@ -175,12 +176,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <summary>
 		/// Implements IOleCommandTarget.Exec
 		/// </summary>
-		/// <param name="pguidCmdGroup"></param>
-		/// <param name="nCmdID"></param>
-		/// <param name="nCmdexecopt"></param>
-		/// <param name="pvaIn"></param>
-		/// <param name="pvaOut"></param>
-		/// <returns></returns>
+		[CLSCompliant(false)]
 		protected int Exec(ref Guid pguidCmdGroup, uint nCmdID, uint nCmdexecopt, IntPtr pvaIn, IntPtr pvaOut)
 		{
 			// NOTE: pass on the commands we don't use to m_srpNextCmdTarg
@@ -365,11 +361,7 @@ namespace Neumont.Tools.ORM.FactEditor
 		/// <summary>
 		/// Implements IOleCommandTarget.QueryStatus
 		/// </summary>
-		/// <param name="pguidCmdGroup"></param>
-		/// <param name="cCmds"></param>
-		/// <param name="prgCmds"></param>
-		/// <param name="pCmdText"></param>
-		/// <returns></returns>
+		[CLSCompliant(false)]
 		protected int QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, IntPtr pCmdText)
 		{
 			if (typeof(ORMDesignerPackage).GUID == pguidCmdGroup)
@@ -437,9 +429,7 @@ Removed for FxCop compliance, not currently used */
 		/// <summary>
 		/// Implements IVsTextViewFilter.GetDataTipText
 		/// </summary>
-		/// <param name="pSpan"></param>
-		/// <param name="pbstrText"></param>
-		/// <returns></returns>
+		[CLSCompliant(false)]
 		protected static int GetDataTipText(TextSpan[] pSpan, out string pbstrText)
 		{
 			pbstrText = null;
@@ -453,10 +443,7 @@ Removed for FxCop compliance, not currently used */
 		/// <summary>
 		/// Implements IVsTextViewFilter.GetPairExtents
 		/// </summary>
-		/// <param name="iLine"></param>
-		/// <param name="iIndex"></param>
-		/// <param name="pSpan"></param>
-		/// <returns></returns>
+		[CLSCompliant(false)]
 		protected static int GetPairExtents(int iLine, int iIndex, TextSpan[] pSpan)
 		{
 			return VSConstants.E_NOTIMPL;
@@ -469,11 +456,7 @@ Removed for FxCop compliance, not currently used */
 		/// <summary>
 		/// Implements IVsTextViewFilter.GetWordExtent
 		/// </summary>
-		/// <param name="iLine"></param>
-		/// <param name="iIndex"></param>
-		/// <param name="dwFlags"></param>
-		/// <param name="pSpan"></param>
-		/// <returns></returns>
+		[CLSCompliant(false)]
 		protected static int GetWordExtent(int iLine, int iIndex, uint dwFlags, TextSpan[] pSpan)
 		{
 			return VSConstants.E_NOTIMPL;
@@ -535,7 +518,7 @@ Removed for FxCop compliance, not currently used */
 		/// <summary>
 		/// Expose the text view so the window manager can remove command filters
 		/// </summary>
-		/// <value></value>
+		[CLSCompliant(false)]
 		public IVsTextView TextView
 		{
 			get { return myTextView; }

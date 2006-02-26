@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -79,7 +79,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// All of the value types in the object types collection.
 		/// </summary>
-		[CLSCompliant(false)]
 		public IEnumerable<ObjectType> ValueTypeCollection
 		{
 			get
@@ -331,7 +330,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// generate model validation errors and exceptions for duplicate
 		/// element names.
 		/// </summary>
-		[CLSCompliant(false)]
 		protected class ObjectTypeNamedElementDictionary : NamedElementDictionary
 		{
 			private class DuplicateNameManager : IDuplicateNameCollectionManager
@@ -441,7 +439,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// generate model validation errors and exceptions for duplicate
 		/// element names.
 		/// </summary>
-		[CLSCompliant(false)]
 		protected class FactTypeNamedElementDictionary : NamedElementDictionary
 		{
 			private class DuplicateNameManager : IDuplicateNameCollectionManager
@@ -551,7 +548,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// generate model validation errors and exceptions for duplicate
 		/// element names.
 		/// </summary>
-		[CLSCompliant(false)]
 		protected class ConstraintNamedElementDictionary : NamedElementDictionary
 		{
 			private class DuplicateNameManager : IDuplicateNameCollectionManager
@@ -1266,7 +1262,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Implements IModelErrorOwner.ErrorCollection
 		/// </summary>
-		[CLSCompliant(false)]
 		protected IEnumerable<ModelError> ErrorCollection
 		{
 			get

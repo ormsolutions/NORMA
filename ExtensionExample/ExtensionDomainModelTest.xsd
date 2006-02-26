@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema
 	id="ExtensionExample"
 	targetNamespace="http://schemas.neumont.edu/ORM/ExtensionExample"
 	elementFormDefault="qualified"
-	attributeFormDefault="unqualified" 
+	attributeFormDefault="unqualified"
 	xmlns="http://schemas.neumont.edu/ORM/ExtensionExample"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
-			Neumont Object Role Modeling Architect for Visual Studio
+			Neumont Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
 
@@ -21,21 +21,21 @@
 			You must not remove this notice, or any other, from this software.
 		</xs:appinfo>
 	</xs:annotation>
-	
-    <xs:element name="SampleElement">
-        <xs:complexType>
-            <xs:sequence />
-            <xs:attribute name="TestProperty" type="xs:string" />
-            <xs:attribute name="id" type="xs:ID" />
-            <xs:attribute name="CustomEnum" type="TestEnumeration" />
-        </xs:complexType>
-    </xs:element>
-    <xs:simpleType name="TestEnumeration">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="None" />
-            <xs:enumeration value="One" />
-            <xs:enumeration value="Two" />
-            <xs:enumeration value="Three" />
-        </xs:restriction>
-    </xs:simpleType>
+
+	<xs:element name="SampleElement">
+		<xs:complexType>
+			<xs:sequence />
+			<xs:attribute name="TestProperty" type="xs:string" />
+			<xs:attribute name="id" type="xs:ID" />
+			<xs:attribute name="CustomEnum" type="TestEnumeration" />
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="TestEnumeration">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None" />
+			<xs:enumeration value="One" />
+			<xs:enumeration value="Two" />
+			<xs:enumeration value="Three" />
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

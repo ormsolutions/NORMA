@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
@@ -22,7 +22,7 @@
 				<plx:leadingInfo>
 					<plx:comment>Common Public License Copyright Notice</plx:comment>
 					<plx:comment>/**************************************************************************\</plx:comment>
-					<plx:comment>* Neumont Object Role Modeling Architect for Visual Studio                 *</plx:comment>
+					<plx:comment>* Neumont Object-Role Modeling Architect for Visual Studio                 *</plx:comment>
 					<plx:comment>*                                                                          *</plx:comment>
 					<plx:comment>* Copyright © Neumont University. All rights reserved.                     *</plx:comment>
 					<plx:comment>*                                                                          *</plx:comment>
@@ -760,11 +760,6 @@
 								<summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:attribute dataTypeName="CLSCompliant">
-							<plx:passParam>
-								<plx:falseKeyword/>
-							</plx:passParam>
-						</plx:attribute>
 						<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="CustomSerializedChildRoleComparer"/>
 						<plx:returns dataTypeName="IComparer">
 							<plx:passTypeParam dataTypeName="MetaRoleInfo"/>
@@ -861,11 +856,6 @@
 								<summary>Implements IORMCustomSerializedElement.CustomSerializedChildRoleComparer</summary>
 							</plx:docComment>
 						</plx:leadingInfo>
-						<plx:attribute dataTypeName="CLSCompliant">
-							<plx:passParam>
-								<plx:falseKeyword/>
-							</plx:passParam>
-						</plx:attribute>
 						<plx:interfaceMember dataTypeName="IORMCustomSerializedElement" memberName="CustomSerializedChildRoleComparer"/>
 						<plx:returns dataTypeName="IComparer">
 							<plx:passTypeParam dataTypeName="MetaRoleInfo"/>

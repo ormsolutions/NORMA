@@ -3,12 +3,12 @@
 	attributeFormDefault="unqualified"
 	elementFormDefault="qualified"
 	targetNamespace="http://schemas.neumont.edu/ORM/DesignerSettings"
-	xmlns="http://schemas.neumont.edu/ORM/DesignerSettings" 
-	xmlns:ds="http://schemas.neumont.edu/ORM/DesignerSettings" 
+	xmlns="http://schemas.neumont.edu/ORM/DesignerSettings"
+	xmlns:ds="http://schemas.neumont.edu/ORM/DesignerSettings"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xs:annotation>
 		<xs:appinfo source="Common Public License Copyright Notice">
-			Neumont Object Role Modeling Architect for Visual Studio
+			Neumont Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
 

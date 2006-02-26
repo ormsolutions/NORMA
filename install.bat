@@ -74,7 +74,7 @@ REG ADD "HKLM\SOFTWARE\Microsoft\VisualStudio\8.0Exp\FontAndColors\Orm Verbalize
 REG ADD "HKCR\MIME\Database\Content Type\application/orm+xml" /v "Extension" /d ".orm" /f 1>NUL
 REG ADD "HKCR\.orm" /ve /d "ormfile" /f 1>NUL
 REG ADD "HKCR\.orm" /v "Content Type" /d "application/orm+xml" /f 1>NUL
-REG ADD "HKCR\ormfile" /ve /d "Object Role Modeling File" /f 1>NUL
+REG ADD "HKCR\ormfile" /ve /d "Object-Role Modeling File" /f 1>NUL
 REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\Neumont.Tools.ORM.dll,0" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open" /ve /d "&Open" /f 1>NUL
 REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSDir%\Common7\IDE\devenv.exe\" /RootSuffix Exp /dde \"%1\"" /f 1>NUL

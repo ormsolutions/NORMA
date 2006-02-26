@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -657,7 +657,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// Get the sub types for this type
 		/// </summary>
 		/// <returns>Enumeration of ObjectType</returns>
-		[CLSCompliant(false)]
 		public IEnumerable<ObjectType> SubtypeCollection
 		{
 			get
@@ -1810,7 +1809,6 @@ namespace Neumont.Tools.ORM.ObjectModel
 		/// <summary>
 		/// Returns the errors associated with the object.
 		/// </summary>
-		[CLSCompliant(false)]
 		protected IEnumerable<ModelError> ErrorCollection
 		{
 			get

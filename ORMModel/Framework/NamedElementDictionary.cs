@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -821,7 +821,6 @@ namespace Neumont.Tools.ORM.Framework
 		/// </summary>
 		/// <param name="implicitFixupPhase">A fixup phase for adding implicitly
 		/// created elements and populating the name dictionaries</param>
-		[CLSCompliant(false)]
 		public static IDeserializationFixupListener GetFixupListener(int implicitFixupPhase)
 		{
 			return new DeserializationFixupListener(implicitFixupPhase);

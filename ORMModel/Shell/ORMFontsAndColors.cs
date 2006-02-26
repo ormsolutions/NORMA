@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -110,6 +110,7 @@ namespace Neumont.Tools.ORM.Shell
 	/// <summary>
 	/// Abstract 
 	/// </summary>
+	[CLSCompliant(false)]
 	public interface IORMFontAndColorService
 	{
 		/// <summary>
@@ -708,6 +709,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		/// <param name="colorIndex">Item to retrieve</param>
 		/// <returns>FONTFLAGS</returns>
+		[CLSCompliant(false)]
 		protected FONTFLAGS GetFontFlags(ORMDesignerColor colorIndex)
 		{
 			int index;

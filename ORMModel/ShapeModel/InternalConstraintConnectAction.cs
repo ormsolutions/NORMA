@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -439,7 +439,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Gets and sets the selected roles.
 		/// </summary>
 		/// <value></value>
-		[CLSCompliant(false)]
 		public IList<Role> SelectedRoleCollection
 		{
 			get

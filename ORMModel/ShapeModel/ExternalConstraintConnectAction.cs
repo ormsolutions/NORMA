@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -522,7 +522,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// Get the sequence of currently selected roles.
 		/// </summary>
 		/// <value>IList&lt;Role&gt;</value>
-		[CLSCompliant(false)]
 		public IList<Role> SelectedRoleCollection
 		{
 			get
@@ -562,7 +561,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 		/// The initial roles that were in the role sequence that this ConnectAction is editing.
 		/// </summary>
 		/// <value>List&lt;Role&gt;</value>
-		[CLSCompliant(false)]
 		public IList<Role> InitialRoles
 		{
 			get

@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+	Neumont Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->
 <WixLocalization xmlns="http://schemas.microsoft.com/wix/2003/11/localization">
 	<String Id="Manufacturer">Neumont University</String>
 	<String Id="ProductName">Neumont ORM Architect for Visual Studio</String>
@@ -18,7 +31,7 @@
 	<String Id="RelationalSchemaGenerationFeatureTitle">RelationalSchemaGeneration</String>
 	<String Id="RelationalSchemaGenerationFeatureDescription">RelationalSchemaGeneration</String>
 	
-	<String Id="ORMFileDescription">Object Role Modeling File</String>
+	<String Id="ORMFileDescription">Object-Role Modeling File</String>
 	<String Id="ORMFileOpenCommand">Open</String>
 	
 	<String Id="ORMCustomToolDescription">ORM Custom Tool</String>

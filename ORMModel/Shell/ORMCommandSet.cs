@@ -1,6 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
-* Neumont Object Role Modeling Architect for Visual Studio                 *
+* Neumont Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 *                                                                          *
@@ -45,7 +45,6 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// Command objects for the ORMDesignerDocView
 		/// </summary>
-		[CLSCompliant(false)]
 		protected class ORMDesignerCommandSet : MarshalByRefObject, IDisposable
 		{
 			private IMenuCommandService myMenuService;
@@ -456,7 +455,7 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			protected void OnMenuNotesWindow(object sender, EventArgs e)
 			{
-				ORMNotesWindow notesWindow = ORMDesignerPackage.NotesWindow;
+				ORMNotesToolWindow notesWindow = ORMDesignerPackage.NotesWindow;
 				notesWindow.Show();
 			}
 			/// <summary>
