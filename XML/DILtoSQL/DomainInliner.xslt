@@ -25,9 +25,6 @@
 
 	<xsl:variable name="domainDefinitions" select="//ddl:domainDefinition"/>
 
-	<xsl:template match="*" priority="-10">
-		<xsl:apply-templates select="." mode="DomainInliner"/>
-	</xsl:template>
 	<xsl:template match="*" mode="DomainInliner">
 		<xsl:param name="columnName"/>
 		<xsl:copy>

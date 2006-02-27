@@ -4,14 +4,6 @@ GO
 CREATE SCHEMA SampleModel;
 GO
 
-CREATE DOMAIN SampleModel.SclScrtyNmbr AS NATIONAL CHARACTER(11) CONSTRAINT SclScrtyNmbr_Chk CHECK ((LEN(LTRIM(RTRIM(VALUE)))) >= 11) ;
-
-CREATE DOMAIN SampleModel."Integer" AS BIGINT CONSTRAINT Integer_Chk CHECK (VALUE BETWEEN 1 AND 7) ;
-
-CREATE DOMAIN SampleModel.DeathCause_Type AS NATIONAL CHARACTER VARYING(14) CONSTRAINT DthCs_Typ_Chk CHECK (VALUE IN ('natural', 'not so natural')) ;
-
-CREATE DOMAIN SampleModel.Gender_Code AS NATIONAL CHARACTER(1) CONSTRAINT Gender_Code_Chk CHECK ((LEN(LTRIM(RTRIM(VALUE)))) >= 1 AND VALUE IN ('M', 'F')) ;
-
 CREATE TABLE SampleModel.PersonDrivesCar
 (
 	DrivesCar_vin BIGINT NOT NULL, 
@@ -33,7 +25,7 @@ CREATE TABLE SampleModel.PBCFPOD
 CREATE TABLE SampleModel.Review
 (
 	Car_vin BIGINT NOT NULL, 
-	Rating_Nr_Integer SampleModel."Integer" NOT NULL, 
+	Rating_Nr_Integer BIGINT CONSTRAINT Integer_Chk CHECK (Rating_Nr_Integer BETWEEN 1 AND 7) NOT NULL, 
 	Criteria_Name NATIONAL CHARACTER VARYING(64) NOT NULL, 
 	CONSTRAINT IUC26 PRIMARY KEY(Car_vin, Criteria_Name)
 );
@@ -51,18 +43,18 @@ CREATE TABLE SampleModel.Person
 	Person_id BIGINT IDENTITY (1, 1) NOT NULL, 
 	Date_YMD BIGINT NOT NULL, 
 	LastName NATIONAL CHARACTER VARYING(64) NOT NULL, 
-	SclScrtyNmbr SampleModel.SclScrtyNmbr , 
+	SclScrtyNmbr NATIONAL CHARACTER(11) CONSTRAINT SclScrtyNmbr_Chk CHECK ((LEN(LTRIM(RTRIM(SclScrtyNmbr)))) >= 11) , 
 	HatType_ColorARGB BIGINT , 
 	HTHTSHTSD NATIONAL CHARACTER VARYING(256) , 
 	OwnsCar_vin BIGINT , 
-	Gender_Gender_Code SampleModel.Gender_Code NOT NULL, 
+	Gender_Gender_Code NATIONAL CHARACTER(1) CONSTRAINT Gender_Code_Chk CHECK ((LEN(LTRIM(RTRIM(Gender_Gender_Code)))) >= 1 AND Gender_Gender_Code IN ('M', 'F')) NOT NULL, 
 	PersonHasParents BOOLEAN, 
 	VlTyp1_VlTyp1Vl BIGINT , 
 	CPBOBON BIGINT , 
 	Father_Person_id BIGINT NOT NULL, 
 	Mother_Person_id BIGINT NOT NULL, 
 	Death_Date_YMD BIGINT , 
-	DDCDCT SampleModel.DeathCause_Type , 
+	DDCDCT NATIONAL CHARACTER VARYING(14) CONSTRAINT DthCs_Typ_Chk CHECK (DDCDCT IN ('natural', 'not so natural')) , 
 	DNDNDIFPC BOOLEAN, 
 	DUDUDIV BOOLEAN, 
 	DUDUDIB BOOLEAN, 

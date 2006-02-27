@@ -56,5 +56,10 @@
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoSQLServer</ORMGenerator>
     </None>
+    <None Include="SampleModel.Oracle.sql">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>DDILtoOracle</ORMGenerator>
+    </None>
   </ItemGroup>
 </Project>

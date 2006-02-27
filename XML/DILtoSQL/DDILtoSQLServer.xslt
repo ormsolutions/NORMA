@@ -21,10 +21,18 @@
 	extension-element-prefixes="msxsl"
 	exclude-result-prefixes="dml dms dep ddt dil ddl">
 
-	<xsl:import href="DDILtoSQLStandard.xslt"/>	
+	<xsl:import href="DDILtoSQLStandard.xslt"/>
+	<xsl:import href="DomainInliner.xslt"/>
 
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
-	<xsl:strip-space elements="*"/>	
+	<xsl:strip-space elements="*"/>
+
+	<xsl:template match="/">
+		<xsl:variable name="domainInlinedDilFragment">
+			<xsl:apply-templates mode="DomainInliner" select="."/>
+		</xsl:variable>
+		<xsl:apply-templates select="msxsl:node-set($domainInlinedDilFragment)/child::*"/>
+	</xsl:template>
 
 	<xsl:template match="ddl:schemaDefinition">
 		<xsl:param name="indent"/>
