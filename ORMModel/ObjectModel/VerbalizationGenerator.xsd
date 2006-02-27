@@ -47,7 +47,51 @@
 	</xs:simpleType>
 	<xs:simpleType name="SnippetTypeEnum">
 		<xs:restriction base="xs:NMTOKEN">
-			<xs:enumeration value="ObjectType"/>
+			<xs:enumeration value="NotesVerbalization">
+				<xs:annotation>
+					<xs:documentation>Notes: {0}</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ObjectifiesFactTypeVerbalization">
+				<xs:annotation>
+					<xs:documentation>{0} objectifies "{1}"</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ReferenceModeVerbalization">
+				<xs:annotation>
+					<xs:documentation>Reference Mode: {0}</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PortableDataTypeVerbalization">
+				<xs:annotation>
+					<xs:documentation>Portable data type: {0}</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IndependentVerbalization">
+				<xs:annotation>
+					<xs:documentation>{0} is independent (it may have instances that play no other roles)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ReferenceSchemeVerbalization">
+				<xs:annotation>
+					<xs:documentation>Reference Scheme: {0}</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ObjectType">
+				<xs:annotation>
+					<xs:documentation>{0}</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EntityTypeVerbalization">
+				<xs:annotation>
+					<xs:documentation>{0} is an entity type</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ValueTypeVerbalization">
+				<xs:annotation>
+					<xs:documentation>{0} is a value type</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="ObjectTypeWithSubscript"/>
 			<xs:enumeration value="ObjectTypeMissing"/>
 			<xs:enumeration value="ImpersonalPronoun"/>
@@ -76,11 +120,18 @@
 			<xs:enumeration value="ModalPossibilityOperator"/>
 			<xs:enumeration value="ModalNecessityOperator"/>
 			<xs:enumeration value="NegativeReadingForUnaryOnlyDisjunctiveMandatory"/>
+			
 			<xs:enumeration value="CompoundListOpen"/>
 			<xs:enumeration value="CompoundListPairSeparator"/>
 			<xs:enumeration value="CompoundListSeparator"/>
 			<xs:enumeration value="CompoundListFinalSeparator"/>
 			<xs:enumeration value="CompoundListClose"/>
+			
+			<xs:enumeration value="IndentedCompoundListOpen"/>
+			<xs:enumeration value="IndentedCompoundListPairSeparator"/>
+			<xs:enumeration value="IndentedCompoundListSeparator"/>
+			<xs:enumeration value="IndentedCompoundListFinalSeparator"/>
+			<xs:enumeration value="IndentedCompoundListClose"/>
 			<xs:enumeration value="IndentedListOpen"/>
 			<xs:enumeration value="IndentedListPairSeparator"/>
 			<xs:enumeration value="IndentedListSeparator"/>
@@ -272,6 +323,7 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="CompactSimpleList"/>
 			<xs:enumeration value="CompoundList"/>
+			<xs:enumeration value="IndentedCompoundList"/>
 			<xs:enumeration value="IndentedList"/>
 			<xs:enumeration value="IndentedLogicalAndList"/>
 			<xs:enumeration value="IndentedLogicalOrList"/>
@@ -303,6 +355,7 @@
 			<xs:enumeration value="included"/>
 			<xs:enumeration value="excluded"/>
 			<xs:enumeration value="singleColumnConstraintRoles"/>
+			<xs:enumeration value="preferredIdentifier"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:attributeGroup name="FactArityAttributes">
@@ -330,8 +383,63 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:simpleType name="ConditionalMatchPatternType">
+	<xs:simpleType name="ConditionalBlockContextType">
+		<xs:annotation>
+			<xs:documentation>Provide an extension point for adding extra context code at the beginning of a conditional block.</xs:documentation>
+		</xs:annotation>
 		<xs:restriction base="xs:token">
+			<xs:enumeration value="ObjectifiedFactType">
+				<xs:annotation>
+					<xs:documentation>Used when object type is objectified fact type.</xs:documentation>
+				</xs:annotation>				
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ConditionalMatchPatternType">
+		<xs:annotation>
+			<xs:documentation>Provide an extension point for conditionally including snippets.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="IsEntityType">
+				<xs:annotation>
+					<xs:documentation>True if the IsValueType property for the current object type is false.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IsValueType">
+				<xs:annotation>
+					<xs:documentation>True if the IsValueType property for the current object type is true.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IsObjectifiedFactType">
+				<xs:annotation>
+					<xs:documentation>True if the IsValueType property for the current object type is true.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HasPortableDataType">
+				<xs:annotation>
+					<xs:documentation>True if the current object type has portable data type.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HasNotes">
+				<xs:annotation>
+					<xs:documentation>True if the current object type has notes associated with it.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IsIndependent">
+				<xs:annotation>
+					<xs:documentation>True if the current object type is independent.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HasReferenceMode">
+				<xs:annotation>
+					<xs:documentation>True if the current object type has a reference mode.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HasPreferredIdentifier">
+				<xs:annotation>
+					<xs:documentation>True if the current object type has preferred identifier.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="IsPersonal">
 				<xs:annotation>
 					<xs:documentation>True if the IsPersonal property for the current role player is true.</xs:documentation>
@@ -435,9 +543,15 @@
 	<xs:group name="ReplacementElementsGroup">
 		<xs:choice>
 			<xs:element name="Snippet" type="SnippetType"/>
+			<xs:element name="ObjectTypeName" type="ObjectTypeNameType"/>
+			<xs:element name="NoteText" type="NoteTextType"/>
+			<xs:element name="ReferenceMode" type="ReferenceModeType"/>
+			<xs:element name="PortableDataType" type="PortableDataTypeType"/>
+			<xs:element name="Notes" type="NotesType"/>
 			<xs:element name="IterateRoles" type="IterateRolesType"/>
 			<xs:element name="CompositeList" type="CompositeListType"/>
 			<xs:element name="Fact" type="FactType"/>
+			<xs:element name="ReferenceScheme" type="ReferenceSchemeType"/>
 			<xs:element name="ConditionalReplacement" type="ConditionalReplacementType"/>
 			<xs:element name="IterateValueRanges" type="IterateValueRangesType"/>
 			<xs:element name="MinValue" type="MinValueType"/>
@@ -470,6 +584,13 @@
 						<xs:extension base="CompositeListType">
 							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
 						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ReferenceScheme">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ReferenceSchemeType"/>
 					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
@@ -547,10 +668,12 @@
 			</xs:element>
 		</xs:choice>
 	</xs:group>
+	
 	<xs:complexType name="SnippetTypeWithConditionalMatch">
 		<xs:complexContent>
 			<xs:extension base="SnippetType">
 				<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+				<xs:attribute name="conditionalBlockContext" use="optional" type="ConditionalBlockContextType"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -605,6 +728,41 @@
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
+	<xs:complexType name="PortableDataTypeType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the portable data type of the object type.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="NotesType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the notes of the object type.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="ObjectTypeNameType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the name of the object type.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="NoteTextType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the notes of the object type.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="ReferenceModeType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the reference mode of the object type.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
 	<xs:complexType name="MinValueType">
 		<xs:annotation>
 			<xs:documentation>
@@ -644,6 +802,24 @@
 	<xs:complexType name="FactConstructType">
 		<!-- Nothing here yet, this is for the top-level verbalization of a Fact -->
 	</xs:complexType>
+	<xs:complexType name="NoteConstructType">
+		<xs:annotation>
+			<xs:documentation>Returns the verbalization for the notes associated with an objectType.</xs:documentation>
+		</xs:annotation>
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ObjectConstructType">
+		<xs:annotation>
+			<xs:documentation>Returns the full verbalization for an entity, value, or objectified fact type.</xs:documentation>
+		</xs:annotation>
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
+		</xs:choice>
+	</xs:complexType>
 	<xs:complexType name="FactType">
 		<xs:annotation>
 			<xs:documentation>
@@ -655,10 +831,17 @@
 		</xs:sequence>
 		<xs:attribute name="readingChoice" use="optional" type="ReadingChoicePreferSingleMatchEnum"/>
 	</xs:complexType>
+	<xs:complexType name="ReferenceSchemeType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the reference scheme for an object, e.g. Country has CountryCode etc.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
 	<xs:complexType name="IterateRolesNoListType">
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="Fact" type="FactType"/>
-			<xs:element name="Snippet" type="SnippetType"/>
+			<xs:element name="Snippet" type="SnippetType"/>			
 			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
 		</xs:choice>
 		<xs:attribute name="match" type="IterateRolesMatchEnum" default="all"/>
@@ -865,6 +1048,8 @@
 						<xs:all>
 							<xs:element name="FactType" type="FactConstructType"/>
 							<xs:element name="Constraints" type="ConstraintsConstructType"/>
+							<xs:element name="ObjectType" type="ObjectConstructType" />
+							<xs:element name="Note" type="NoteConstructType" />
 						</xs:all>
 					</xs:complexType>
 				</xs:element>

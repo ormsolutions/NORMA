@@ -16,6 +16,14 @@
 	<Languages>
 		<Language xml:lang="en-US">
 			<Snippets>
+				<Snippet type="IndependentVerbalization"><![CDATA[{0} <span class="quantifier">is independent (it may have instances that play no other roles)</span>]]></Snippet>
+				<Snippet type="PortableDataTypeVerbalization"><![CDATA[<span class="quantifier">Portable data type:</span> {0}]]></Snippet>
+				<Snippet type="ReferenceModeVerbalization"><![CDATA[<span class="quantifier">Reference Mode:</span> {0}]]></Snippet>
+				<Snippet type="ReferenceSchemeVerbalization"><![CDATA[<span class="quantifier">Reference Scheme:</span> {0}]]></Snippet>
+				<Snippet type="ObjectifiesFactTypeVerbalization"><![CDATA[{0} <span class="quantifier">objectifies</span> "{1}"]]></Snippet>
+				<Snippet type="EntityTypeVerbalization"><![CDATA[{0} <span class="quantifier">is an entity type</span>]]></Snippet>
+				<Snippet type="ValueTypeVerbalization"><![CDATA[{0} <span class="quantifier">is a value type</span>]]></Snippet>
+				<Snippet type="NotesVerbalization"><![CDATA[<span class="quantifier">Notes:</span> {0}]]></Snippet>
 				<Snippet type="ConstraintProvidesPreferredIdentifier"><![CDATA[<span class="quantifier">this association with</span> {0} <span class="quantifier">provides the preferred identification scheme for</span> {1}]]></Snippet>
 
 				<!-- All object type names are wrapped with this style automatically.
@@ -67,9 +75,9 @@
 				<Snippet type="InSeparator"><![CDATA[<span class="objectType">{0}</span> in {1}]]></Snippet>
 				<Snippet type="PeriodDelimiter"><![CDATA[{0}.<span class="objectType">{1}</span>]]></Snippet>
 				<Snippet type="SelfReference"><![CDATA[{0}]]></Snippet>
-				<Snippet type="SingleValueValueConstraint"><![CDATA[<span class="quantifier">the possible value of</span> {0} <span class="quantifier">is {1}</span>]]></Snippet>
-				<Snippet type="MultiValueValueConstraint"><![CDATA[<span class="quantifier">the possible values of</span> {0} <span class="quantifier">are {1}</span>]]></Snippet>
-				<Snippet type="MinClosedMaxClosed"><![CDATA[at least <span class="objectType">{0}</span> to at most <span class="objectType">{1}</span>]]></Snippet>
+				<Snippet type="SingleValueValueConstraint"><![CDATA[<span class="quantifier">the possible value of {0} is {1}</span>]]></Snippet>
+				<Snippet type="MultiValueValueConstraint"><![CDATA[<span class="quantifier">the possible values of <span class="objectType">{0}</span> are {1}</span>]]></Snippet>
+				<Snippet type="MinClosedMaxClosed"><![CDATA[<span class="quantifier">at least <span class="objectType">{0}</span> to at most <span class="objectType">{1}</span></span>]]></Snippet>
 				<Snippet type="MinClosedMaxOpen"><![CDATA[at least <span class="objectType">{0}</span> to below <span class="objectType">{1}</span>]]></Snippet>
 				<Snippet type="MinClosedMaxUnbounded"><![CDATA[at least <span class="objectType">{0}</span>]]></Snippet>
 				<Snippet type="MinOpenMaxClosed"><![CDATA[above <span class="objectType">{0}</span> to at most <span class="objectType">{1}</span>]]></Snippet>
@@ -77,12 +85,11 @@
 				<Snippet type="MinOpenMaxUnbounded"><![CDATA[above <span class="objectType">{0}</span>]]></Snippet>
 				<Snippet type="MinUnboundedMaxClosed"><![CDATA[at most <span class="objectType">{1}</span>]]></Snippet>
 				<Snippet type="MinUnboundedMaxOpen"><![CDATA[below <span class="objectType">{1}</span>]]></Snippet>
-
-				<Snippet type="CompoundListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
-				<Snippet type="CompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
-				<Snippet type="CompoundListSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
-				<Snippet type="CompoundListFinalSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
-				<Snippet type="CompoundListClose"><![CDATA[</span>]]></Snippet>
+				<Snippet type="IndentedCompoundListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
+				<Snippet type="IndentedCompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
+				<Snippet type="IndentedCompoundListSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
+				<Snippet type="IndentedCompoundListFinalSeparator"><![CDATA[<span class="listSeparator">; </span>]]></Snippet>
+				<Snippet type="IndentedCompoundListClose"><![CDATA[</span>]]></Snippet>				
 				<Snippet type="IndentedListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 				<Snippet type="IndentedListPairSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
 				<Snippet type="IndentedListSeparator"><![CDATA[<span class="listSeparator"> and </span><br/>]]></Snippet>
@@ -110,6 +117,12 @@
 				<Snippet type="TopLevelIndentedLogicalAndListFinalSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
 				<Snippet type="TopLevelIndentedLogicalAndListClose"><![CDATA[</span>]]></Snippet>
 
+				<Snippet type="CompoundListOpen"><![CDATA[]]></Snippet>
+				<Snippet type="CompoundListPairSeparator"><![CDATA[; ]]></Snippet>
+				<Snippet type="CompoundListSeparator"><![CDATA[; ]]></Snippet>
+				<Snippet type="CompoundListFinalSeparator"><![CDATA[; ]]></Snippet>
+				<Snippet type="CompoundListClose"><![CDATA[]]></Snippet>
+				
 				<Snippet type="SimpleListOpen"><![CDATA[]]></Snippet>
 				<Snippet type="SimpleListPairSeparator"><![CDATA[<span class="listSeparator"> and </span>]]></Snippet>
 				<Snippet type="SimpleListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
@@ -158,6 +171,45 @@
 	<Constructs>
 		<!-- Generate FactType verbalization along with constraints -->
 		<FactType/>
+		<!-- Generate ObjectType verbalization along with constraints -->
+		<ObjectType>
+			<ConditionalSnippet>
+				<Snippet ref="EntityTypeVerbalization" conditionalMatch="IsEntityType"/>
+				<Snippet ref="ValueTypeVerbalization"/>
+				<SnippetReplacements>
+					<Snippet ref="ObjectType">
+						<ObjectTypeName/>
+					</Snippet>
+				</SnippetReplacements>
+			</ConditionalSnippet>
+			<Snippet ref="ObjectifiesFactTypeVerbalization" conditionalMatch="IsObjectifiedFactType" conditionalBlockContext="ObjectifiedFactType">
+				<Snippet ref="ObjectType">
+					<ObjectTypeName/>
+				</Snippet>
+				<Fact/>
+			</Snippet>
+			<Snippet ref="ReferenceSchemeVerbalization" conditionalMatch="HasPreferredIdentifier">
+				<IterateRoles match="preferredIdentifier" listStyle="CompoundList">
+					<Fact/>
+				</IterateRoles>
+			</Snippet>
+			<Snippet ref="ReferenceModeVerbalization" conditionalMatch="HasReferenceMode">
+				<ReferenceMode/>
+			</Snippet>
+				<Snippet ref="IndependentVerbalization" conditionalMatch="IsIndependent">
+					<Snippet ref="ObjectType">
+						<ObjectTypeName/>
+					</Snippet>
+				</Snippet>
+			<Snippet ref="PortableDataTypeVerbalization" conditionalMatch="HasPortableDataType">
+				<PortableDataType/>
+			</Snippet>
+		</ObjectType>
+		<Note>
+			<Snippet ref="NotesVerbalization">
+				<NoteText/>
+			</Snippet>
+		</Note>
 		<!-- Generate constraint verbalizations -->
 		<Constraints>
 			<Constraint type="InternalUniquenessConstraint" patternGroup="InternalConstraint">
@@ -404,14 +456,13 @@
 					</ConditionalReading>
 				</ConstrainedRoles>
 			</Constraint>
-
 			<Constraint type="DisjunctiveMandatoryConstraint" patternGroup="SingleColumnExternalConstraint">
 				<!-- Unaries are the only reading choice that has an optional negative reading -->
 				<ConstrainedRoles sign="negative" maxFactArity="1">
 					<Snippet ref="ModalPossibilityOperator">
 						<Snippet ref="NegativeReadingForUnaryOnlyDisjunctiveMandatory">
 							<IterateRoles listStyle="SimpleList" match="singleColumnConstraintRoles" pass="first"/>
-							<IterateRoles listStyle="CompoundList" match="singleColumnConstraintRoles">
+							<IterateRoles listStyle="IndentedCompoundList" match="singleColumnConstraintRoles">
 								<Fact/>
 							</IterateRoles>
 						</Snippet>
