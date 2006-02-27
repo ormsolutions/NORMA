@@ -466,7 +466,7 @@ namespace CleanDSLDM
 											writerSettings.OmitXmlDeclaration = false;
 											writerSettings.Indent = true;
 											writerSettings.IndentChars = "  ";
-											writerSettings.Encoding = Encoding.Default;
+											writerSettings.Encoding = IdMapTransform.OutputSettings.Encoding;
 											using (XmlWriter xmlWriter = XmlWriter.Create(outStream, writerSettings))
 											{
 												xmlWriter.WriteProcessingInstruction("xml", @"version=""1.0"""); // Write it explicitly to make output match designer-saved xml declaration
