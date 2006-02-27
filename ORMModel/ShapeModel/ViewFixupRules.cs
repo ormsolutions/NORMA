@@ -427,7 +427,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (link != null)
 				{
 					FixupRolePlayerLink(link);
-					Diagram.FixUpDiagram(link, link.PlayedRoleCollection);
 				}
 			}
 		}
@@ -468,7 +467,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				ObjectTypePlaysRole link = e.ModelElement as ObjectTypePlaysRole;
 				if (link != null)
 				{
-					RoleNameShape.RemoveRoleNameShapeFromRole(link.PlayedRoleCollection);
 					// This will fire the PresentationLinkRemoved rule
 					link.PresentationRolePlayers.Clear();
 				}
@@ -862,7 +860,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				if (linkRelative != null)
 				{
 					linkRelative.RelativeChildShapes.Remove();
-				}
+                }
 				else if ((linkNested = e.ModelElement as ParentShapeContainsNestedChildShapes) != null)
 				{
 					linkNested.NestedChildShapes.Remove();
