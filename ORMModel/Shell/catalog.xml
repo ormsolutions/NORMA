@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
 	<Schema targetNamespace="http://schemas.neumont.edu/ORM/DesignerSettings" href="ORMDesignerSettings.xsd"/>
-	<Schema targetNamespace="http://schemas.neumont.edu/ORM/ORMCustomToolOptions" href="ORMCustomToolOptions.xsd"/>
 </SchemaCatalog>
