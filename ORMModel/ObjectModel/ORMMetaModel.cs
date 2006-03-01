@@ -109,7 +109,7 @@ namespace Neumont.Tools.ORM.ObjectModel
 		{
 			Store store = element.Store;
 			Debug.Assert(store.TransactionActive);
-			IDictionary contextDictionary = store.TransactionManager.CurrentTransaction.Context.ContextInfo;
+			IDictionary contextDictionary = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 			Dictionary<ElementValidatorKey, object> dictionary = null;
 			ElementValidatorKey key = new ElementValidatorKey(element, validator);
 			if (contextDictionary.Contains(DelayedValidationContextKey))

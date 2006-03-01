@@ -157,7 +157,6 @@ namespace Neumont.Tools.ORM.FactEditor
 							else
 							{
 								currentObject = existingElement.FirstElement as ObjectType;
-								currentObject.Name = objectName;
 							}
 							bool convertingToValueType = false;
 							bool entityWasCollapsed = false;
@@ -237,7 +236,14 @@ namespace Neumont.Tools.ORM.FactEditor
 						} // end of use existing object
 						if (!modelElements.ContainsKey(currentObject))
 						{
-							modelElements.Add(currentObject, true);
+							if (!isEmptyElement)
+							{
+								isEmptyElement = null == diagram.FindShapeForElement(currentObject);
+							}
+							if (isEmptyElement)
+							{
+								modelElements.Add(currentObject, isEmptyElement);
+							}
 						}
 
 						// Add this object to the fact role collection, default the role name to the object name
@@ -256,7 +262,10 @@ namespace Neumont.Tools.ORM.FactEditor
 //					{
 //						currentFact.Model = myModel;
 //					}
-					modelElements.Add(currentFact, true);
+					if (currentFact != myEditFact)
+					{
+						modelElements.Add(currentFact, true);
+					}
 
 					// If we're creating a new fact, add the reading to the reading collection
 					if (myEditFact == null)
@@ -313,14 +322,17 @@ namespace Neumont.Tools.ORM.FactEditor
 						Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
 						foreach (KeyValuePair<ModelElement, bool> modelElement in modelElements)
 						{
-							ShapeElement shapeElement = diagram.FindShapeForElement(modelElement.Key);
-							if (shapeElement != null)
+							if (modelElement.Value)
 							{
-								shapeElements.Add(shapeElement, modelElement.Value);
+								ShapeElement shapeElement = diagram.FindShapeForElement(modelElement.Key);
+								if (shapeElement != null)
+								{
+									shapeElements.Add(shapeElement, true);
+								}
 							}
 						}
 
-						docView.CurrentDiagram.AutoLayoutChildShapes(shapeElements);
+						diagram.AutoLayoutChildShapes(shapeElements);
 						t.Commit();
 					}
 				}
