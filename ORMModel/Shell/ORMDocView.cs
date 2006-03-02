@@ -149,6 +149,10 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		DeleteAnyShape = 0x1000000,
 		/// <summary>
+		/// Align top level shape elements. Applies to all of the standard Format.Align commands.
+		/// </summary>
+		AlignShapes = 0x2000000,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole,
@@ -179,7 +183,17 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// The filter for multi selection when the elements are all of the same type.
 		/// </summary>
-		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter = ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.AutoLayout | ORMDesignerCommands.AddInternalUniqueness | ORMDesignerCommands.ToggleSimpleMandatory | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.DeleteShape | (ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
+		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter =
+			ORMDesignerCommands.DisplayStandardWindows |
+			ORMDesignerCommands.SelectAll |
+			ORMDesignerCommands.AlignShapes |
+			ORMDesignerCommands.AutoLayout |
+			ORMDesignerCommands.AddInternalUniqueness |
+			ORMDesignerCommands.ToggleSimpleMandatory |
+			ORMDesignerCommands.DeleteAny |
+			ORMDesignerCommands.DeleteAnyShape |
+			ORMDesignerCommands.DeleteShape |
+			(ORMDesignerCommands.Delete & ~ORMDesignerCommands.DeleteRole); // We don't allow deletion of the final role. Don't bother with sorting out the multiselect problems here
 		/// <summary>
 		/// The filter for multi selection when the elements are of different types. This should always be a subset of the simple command filter
 		/// </summary>
@@ -187,7 +201,9 @@ namespace Neumont.Tools.ORM.Shell
 		/// <summary>
 		/// A filter to turn off commands for a single selection
 		/// </summary>
-		private const ORMDesignerCommands DisabledSingleSelectCommandFilter = ORMDesignerCommands.AutoLayout;
+		private const ORMDesignerCommands DisabledSingleSelectCommandFilter =
+			ORMDesignerCommands.AutoLayout |
+			ORMDesignerCommands.AlignShapes;
 		#endregion // Member variables
 		#region Construction/destruction
 		/// <summary>
@@ -490,8 +506,8 @@ namespace Neumont.Tools.ORM.Shell
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteFactType | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.DisplayReadingsWindow | ORMDesignerCommands.DisplayFactEditorWindow | ORMDesignerCommands.AutoLayout;
 				if (presentationElement is FactTypeShape)
 				{
-					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape;
-					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape;
+					visibleCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
+					enabledCommands |= ORMDesignerCommands.DeleteFactShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
 				}
 			}
 			else if (null != (objectType = element as ObjectType))
@@ -499,8 +515,8 @@ namespace Neumont.Tools.ORM.Shell
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteObjectType | ORMDesignerCommands.DeleteAny;
 				if (presentationElement is ObjectTypeShape)
 				{
-					visibleCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape;
-					enabledCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape;
+					visibleCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
+					enabledCommands |= ORMDesignerCommands.AutoLayout | ORMDesignerCommands.DeleteObjectShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
 				}
 			}
 			else if (element is MultiColumnExternalConstraint || element is SingleColumnExternalConstraint)
@@ -508,8 +524,8 @@ namespace Neumont.Tools.ORM.Shell
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny | ORMDesignerCommands.EditExternalConstraint | ORMDesignerCommands.AutoLayout;
 				if (presentationElement is ExternalConstraintShape)
 				{
-					visibleCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape;
-					enabledCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape;
+					visibleCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
+					enabledCommands |= ORMDesignerCommands.DeleteConstraintShape | ORMDesignerCommands.DeleteAnyShape | ORMDesignerCommands.AlignShapes;
 				}
 			}
 			else if (element is InternalConstraint)
@@ -1085,6 +1101,102 @@ namespace Neumont.Tools.ORM.Shell
 					// ORM diagrams don't do line routing, so there is no reason to attempt routing here
 					diagram.AutoLayoutShapeElements(GetSelectedComponents(), VGRoutingStyle.VGRouteNone, PlacementValueStyle.VGPlaceWideSSW, false);
 					t.Commit();
+				}
+			}
+		}
+		/// <summary>
+		/// Execute the Align menu commands
+		/// </summary>
+		/// <param name="commandId">Standard command id. Expecting one of AlignBottom,
+		/// AlignBottom, AlignHorizontalCenters, AlignLeft, AlignRight, AlignTop, AlignVerticalCenters
+		/// </param>
+		protected virtual void OnMenuAlignShapes(int commandId)
+		{
+			ICollection components;
+			int selectionCount;
+			DiagramItem primaryItem = CurrentDesigner.Selection.PrimaryItem;
+			NodeShape matchShape = null;
+			if (primaryItem != null)
+			{
+				matchShape = primaryItem.Shape as NodeShape;
+			}
+			if (matchShape == null)
+			{
+				matchShape = PrimarySelection as NodeShape;
+			}
+			if (null != matchShape &&
+				null != (components = GetSelectedComponents()) &&
+				(selectionCount = components.Count) > 1)
+			{
+				double alignTo;
+				RectangleD matchBounds = matchShape.AbsoluteBoundingBox;
+				switch (commandId)
+				{
+					case 1: // AlignBottom
+						Debug.Assert(commandId == StandardCommands.AlignBottom.ID);
+						alignTo = matchBounds.Bottom;
+						break;
+					case 2: // AlignHorizontalCenters
+						Debug.Assert(commandId == StandardCommands.AlignHorizontalCenters.ID);
+						alignTo = matchBounds.Center.Y;
+						break;
+					case 3: // AlignLeft
+						Debug.Assert(commandId == StandardCommands.AlignLeft.ID);
+						alignTo = matchBounds.Left;
+						break;
+					case 4: // AlignRight
+						Debug.Assert(commandId == StandardCommands.AlignRight.ID);
+						alignTo = matchBounds.Right;
+						break;
+					case 6: // AlignTop
+						Debug.Assert(commandId == StandardCommands.AlignTop.ID);
+						alignTo = matchBounds.Top;
+						break;
+					case 7: // AlignVerticalCenters
+						Debug.Assert(commandId == StandardCommands.AlignVerticalCenters.ID);
+						alignTo = matchBounds.Center.X;
+						break;
+					default:
+						return;
+				}
+				using (Transaction t = matchShape.Store.TransactionManager.BeginTransaction(ResourceStrings.AlignShapesTransactionName))
+				{
+					foreach (object component in components)
+					{
+						NodeShape shape = component as NodeShape;
+						if (shape != null &&
+							!object.ReferenceEquals(shape, matchShape))
+						{
+							RectangleD bounds = shape.AbsoluteBoundingBox;
+							PointD newLocation = bounds.Location;
+							switch (commandId)
+							{
+								case 1: // AlignBottom
+									newLocation = new PointD(bounds.Left, alignTo - bounds.Height);
+									break;
+								case 2: // AlignHorizontalCenters
+									newLocation = new PointD(bounds.Left, alignTo - bounds.Height / 2);
+									break;
+								case 3: // AlignLeft
+									newLocation = new PointD(alignTo, bounds.Top);
+									break;
+								case 4: // AlignRight
+									newLocation = new PointD(alignTo - bounds.Width, bounds.Top);
+									break;
+								case 6: // AlignTop
+									newLocation = new PointD(bounds.Left, alignTo);
+									break;
+								case 7: // AlignVerticalCenters
+									newLocation = new PointD(alignTo - bounds.Width / 2, bounds.Top);
+									break;
+							}
+							shape.Location = newLocation;
+						}
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+					}
 				}
 			}
 		}

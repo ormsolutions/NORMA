@@ -129,7 +129,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-	<assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="AlignShapes.TransactionName">
+    <value xml:space="preserve">Align Diagram Shapes</value>
+    <comment xml:space="preserve">The transaction name used by shape alignment commands. The text appears in the undo dropdown in the VS IDE.</comment>
+  </data>
   <data name="AutoLayout.TransactionName">
     <value xml:space="preserve">Layout Diagram Shapes</value>
     <comment xml:space="preserve">The transaction name used by AutoLayout command. The text appears in the undo dropdown in the VS IDE.</comment>

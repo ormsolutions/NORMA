@@ -168,6 +168,32 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnStatusExtensionManager),
 				new EventHandler(OnMenuExtensionManager),
 				ORMDesignerCommandIds.ExtensionManager)
+
+				// Alignment Commands
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusAlignShapes),
+				new EventHandler(OnMenuAlignShapes),
+				StandardCommands.AlignBottom)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusAlignShapes),
+				new EventHandler(OnMenuAlignShapes),
+				StandardCommands.AlignHorizontalCenters)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusAlignShapes),
+				new EventHandler(OnMenuAlignShapes),
+				StandardCommands.AlignLeft)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusAlignShapes),
+				new EventHandler(OnMenuAlignShapes),
+				StandardCommands.AlignRight)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusAlignShapes),
+				new EventHandler(OnMenuAlignShapes),
+				StandardCommands.AlignTop)
+				,new DynamicStatusMenuCommand(
+				new EventHandler(OnStatusAlignShapes),
+				new EventHandler(OnMenuAlignShapes),
+				StandardCommands.AlignVerticalCenters)
 			};
 				#endregion
 				AddCommands(myCommands);
@@ -439,6 +465,25 @@ namespace Neumont.Tools.ORM.Shell
 				{
 					// Defer to the doc view
 					docView.OnMenuExtensionManager();
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusAlignShapes(object sender, EventArgs e)
+			{
+				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.AlignShapes);
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuAlignShapes(object sender, EventArgs e)
+			{
+				ORMDesignerDocView docView = CurrentORMView;
+				if (docView != null)
+				{
+					// Defer to the doc view
+					docView.OnMenuAlignShapes((sender as MenuCommand).CommandID.ID);
 				}
 			}
 			#region External Constraint editing menu options

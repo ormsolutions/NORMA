@@ -1791,6 +1791,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// The transaction name used by shape alignment commands. The text appears in the undo dropdown in the VS IDE.
+		/// </summary>
+		public static string AlignShapesTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "AlignShapes.TransactionName");
+			}
+		}
+		/// <summary>
 		/// The transaction name used by AutoLayout command. The text appears in the undo dropdown in the VS IDE.
 		/// </summary>
 		public static string AutoLayoutTransactionName

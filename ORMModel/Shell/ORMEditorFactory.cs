@@ -34,6 +34,7 @@ namespace Neumont.Tools.ORM.Shell
 	[CLSCompliant(false)]
 	public class ORMDesignerEditorFactory : ModelingEditorFactory
 	{
+		// Keep in sync with PkgCmd.ctc
 		/// <summary>
 		/// The <see cref="String"/> form of the <see cref="Guid"/> for <see cref="ORMDesignerEditorFactory"/>.
 		/// </summary>

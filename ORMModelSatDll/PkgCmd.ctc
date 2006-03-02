@@ -27,6 +27,9 @@
 // (keep in sync with ORMDesignerCommandSet.cs)
 // {7C51C000-1EAD-4b39-89B5-42BC9F49EA24}
 #define guidORMDesignerCommandSet { 0x7c51c000, 0x1ead, 0x4b39, { 0x89, 0xb5, 0x42, 0xbc, 0x9f, 0x49, 0xea, 0x24 } }
+// Keep in sync with ORMEditorFactory.cs
+// "{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}";
+#define guidORMDesignerEditor { 0xEDA9E282, 0x8FC6, 0x4AE4, { 0xAF, 0x2C, 0xC2, 0x24, 0xFD, 0x3A, 0xE4, 0x9B } }
 
 CMDS_SECTION guidORMDesignerPackage
 	MENUS_BEGIN
@@ -98,4 +101,6 @@ CMDS_SECTION guidORMDesignerPackage
 	VISIBILITY_END
 
 	KEYBINDINGS_SECTION
+		// GUID:CMDID												EDITORGUID					EMULATIONGUID					KEYSTATE
+		guidORMDesignerCommandSet:cmdIdDeleteElement,				guidORMDesignerEditor,		guidORMDesignerEditor,			VK_DELETE:C;
 	KEYBINDINGS_END

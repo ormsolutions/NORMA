@@ -602,6 +602,9 @@
 	<ResourceString name="RemoveImpliedInternalUniquenessConstraintsTransactionName" model="Model" resourceName="FactType.RemoveImpliedInternalUniquenessConstraints.TransactionName">
 		<comment type="summary">The name of the transaction that auto-fixes implied and duplicate internal constraints.</comment>
 	</ResourceString>
+	<ResourceString name="AlignShapesTransactionName" model="Diagram" resourceName="AlignShapes.TransactionName">
+		<comment type="summary">The transaction name used by shape alignment commands. The text appears in the undo dropdown in the VS IDE.</comment>
+	</ResourceString>
 	<ResourceString name="AutoLayoutTransactionName" model="Diagram" resourceName="AutoLayout.TransactionName">
 		<comment type="summary">The transaction name used by AutoLayout command. The text appears in the undo dropdown in the VS IDE.</comment>
 	</ResourceString>
