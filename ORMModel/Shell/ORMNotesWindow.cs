@@ -435,5 +435,27 @@ namespace Neumont.Tools.ORM.Shell
 		}
 
 		#endregion
+		#region ToolWindow overrides
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapResource
+		{
+			get
+			{
+				return 125;
+			}
+		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapIndex
+		{
+			get
+			{
+				return 5;
+			}
+		}
+		#endregion
 	}
 }

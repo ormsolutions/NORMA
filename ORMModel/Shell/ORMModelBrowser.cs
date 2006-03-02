@@ -345,6 +345,27 @@ namespace Neumont.Tools.ORM.Shell
 		#endregion
 		#region ModelExplorerToolWindow Overrides
 		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapResource
+		{
+			get
+			{
+				return 125;
+			}
+		}
+		/// <summary>
+		/// See <see cref="ToolWindow.BitmapResource"/>.
+		/// </summary>
+		protected override int BitmapIndex
+		{
+			get
+			{
+				return 4;
+			}
+		}
+
+		/// <summary>
 		/// Retrieve the localized text for the model browser tool window
 		/// </summary>
 		public override String WindowTitle
