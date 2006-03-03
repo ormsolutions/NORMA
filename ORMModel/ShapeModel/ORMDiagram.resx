@@ -467,7 +467,7 @@
     <comment xml:space="preserve">The official name of the package</comment>
   </data>
   <data name="Package.ProductDetails">
-    <value xml:space="preserve">NORMA - Neumont Object Role Modeling Architect</value>
+    <value xml:space="preserve">NORMA - Neumont Object-Role Modeling Architect</value>
     <comment xml:space="preserve">The extra information that appears in the about box of Visual Studio</comment>
   </data>
   <data name="ReadingShape.AttachedRoleDisplay">
