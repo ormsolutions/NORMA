@@ -335,8 +335,11 @@
 	<ResourceString name="CommandDeleteConstraintText" model="Diagram" resourceName="Command.DeleteConstraint.Text">
 		<comment type="summary">This text appears in the edit menu when constraint types are selected in the diagram.</comment>
 	</ResourceString>
-	<ResourceString name="CommandDeleteMultipleText" model="Diagram" resourceName="Command.DeleteMultiple.Text">
+	<ResourceString name="CommandDeleteMultipleElementsText" model="Diagram" resourceName="Command.DeleteMultipleElements.Text">
 		<comment type="summary">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
+	</ResourceString>
+	<ResourceString name="CommandDeleteMultipleShapesText" model="Diagram" resourceName="Command.DeleteMultipleShapes.Text">
+		<comment type="summary">This text appears in the edit menu when multiple shapes of different types are selected in the diagram.</comment>
 	</ResourceString>
 	<ResourceString name="CommandDeleteFactTypeShapeText" model="Diagram" resourceName="Command.DeleteFactTypeShape.Text">
 		<comment type="summary">This text appears in the edit menu when fact types are selected in the diagram.</comment>

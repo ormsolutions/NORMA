@@ -820,6 +820,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 				}
 				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (attributeInfo.Id == FactTypeShape.RolesPositionMetaAttributeGuid)
+			{
+				return new ORMCustomSerializedAttributeInfo(null, null, null, false, ORMCustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
 			if (0 != (ORMCustomSerializedElementSupportedOperations.AttributeInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedAttributeInfo(attributeInfo, rolePlayedInfo);

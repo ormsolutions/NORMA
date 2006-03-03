@@ -903,11 +903,21 @@ namespace Neumont.Tools.ORM
 		/// <summary>
 		/// This text appears in the edit menu when multiple elements of different types are selected in the diagram.
 		/// </summary>
-		public static string CommandDeleteMultipleText
+		public static string CommandDeleteMultipleElementsText
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteMultiple.Text");
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteMultipleElements.Text");
+			}
+		}
+		/// <summary>
+		/// This text appears in the edit menu when multiple shapes of different types are selected in the diagram.
+		/// </summary>
+		public static string CommandDeleteMultipleShapesText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Command.DeleteMultipleShapes.Text");
 			}
 		}
 		/// <summary>

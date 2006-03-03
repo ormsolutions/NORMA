@@ -216,7 +216,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			if (commandText == null && 0 != (myVisibleCommands & ORMDesignerCommands.DeleteAny))
 			{
-				commandText = ResourceStrings.CommandDeleteMultipleText;
+				commandText = ResourceStrings.CommandDeleteMultipleElementsText;
 			}
 			// Setting command.Text to null will pick up
 			// the default command text

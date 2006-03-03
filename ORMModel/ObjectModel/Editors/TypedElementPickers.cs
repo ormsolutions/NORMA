@@ -209,7 +209,8 @@ namespace Neumont.Tools.ORM.ObjectModel.Editors
 				List<FactType> types = new List<FactType>(count);
 				foreach (FactType factType in candidates)
 				{
-					if (factType is SubtypeFact)
+					if ((factType is SubtypeFact) ||
+						(factType.ImpliedByObjectification != null))
 					{
 						continue;
 					}

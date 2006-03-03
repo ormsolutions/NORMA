@@ -379,6 +379,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape), "ExpandRefMode", Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ExpandRefModeMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectTypeShape.ObjectTypeShapeExpandRefModeFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape), "ConstraintDisplayPosition", Neumont.Tools.ORM.ShapeModel.FactTypeShape.ConstraintDisplayPositionMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeConstraintDisplayPositionFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape), "DisplayRoleNames", Neumont.Tools.ORM.ShapeModel.FactTypeShape.DisplayRoleNamesMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeDisplayRoleNamesFieldHandler)),
+				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape), "RolesPosition", Neumont.Tools.ORM.ShapeModel.FactTypeShape.RolesPositionMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.FactTypeShape.FactTypeShapeRolesPositionFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape), "ObjectTypeName", Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectTypeNameMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ObjectifiedFactTypeNameShape.ObjectifiedFactTypeNameShapeObjectTypeNameFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape), "ReadingText", Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ReadingShape.ReadingShapeReadingTextFieldHandler)),
 				new Microsoft.VisualStudio.Modeling.MetaFieldInfo(typeof(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape), "ValueRangeText", Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueRangeTextMetaAttributeGuid, typeof(Neumont.Tools.ORM.ShapeModel.ValueConstraintShape.ValueConstraintShapeValueRangeTextFieldHandler)),
@@ -1199,6 +1200,128 @@ namespace Neumont.Tools.ORM.ShapeModel
 				{
 					OnValueChanging(element, oldValue, value);
 					element.displayRoleNamesPropertyStorage = value;
+					OnValueChanged(element, oldValue, value);
+					return true;
+				}
+				return false;
+			}
+		
+		}
+		#endregion
+		#endregion
+		
+		#region RolesPosition's Generated  Field Code
+		#region RolesPosition's Generated  MetaAttribute Code
+		/// <summary>
+		/// MetaAttribute Guid String
+		/// </summary>
+		internal const System.String RolesPositionMetaAttributeGuidString = "89244439-fbb1-4deb-bff3-69d47cb90a6b";
+
+		/// <summary>
+		/// MetaAttribute Guid
+		/// </summary>
+		internal static readonly System.Guid RolesPositionMetaAttributeGuid = new System.Guid(Neumont.Tools.ORM.ShapeModel.FactTypeShape.RolesPositionMetaAttributeGuidString);
+		#endregion
+
+		#region RolesPosition's Generated Property Code
+
+		private System.Double rolesPositionPropertyStorage = 0;
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[Microsoft.VisualStudio.Modeling.DoubleDomainAttribute(MinValue=-1.79769313486232E+307,MaxValue=1.79769313486232E+307)]
+		[Microsoft.VisualStudio.Modeling.MetaAttributeAttribute(FieldHandlerType=typeof(FactTypeShapeRolesPositionFieldHandler))]
+		[Microsoft.VisualStudio.Modeling.MetaObject(Neumont.Tools.ORM.ShapeModel.FactTypeShape.RolesPositionMetaAttributeGuidString, "Neumont.Tools.ORM.ShapeModel.FactTypeShape.RolesPosition")]
+		private  System.Double RolesPosition
+		{
+			get
+			{
+				return rolesPositionPropertyStorage;
+			}
+		
+			set
+			{
+				factTypeShapeRolesPositionFieldHandler.SetFieldValue(this, value, false, Microsoft.VisualStudio.Modeling.TransactionManager.CommandFactory);
+			}
+		}
+		#endregion
+
+		#region FactTypeShapeRolesPositionFieldHandler Generated Code
+		/// <summary>
+		/// FieldHandler for FactTypeShape.RolesPosition field
+		/// </summary>
+		private static FactTypeShapeRolesPositionFieldHandler	factTypeShapeRolesPositionFieldHandler	= FactTypeShapeRolesPositionFieldHandler.Instance;
+
+		/// <summary>
+		/// Implement the field handler for FactTypeShape.RolesPosition
+		/// </summary>
+		[System.CLSCompliant(false)]
+		public sealed partial class FactTypeShapeRolesPositionFieldHandler : Microsoft.VisualStudio.Modeling.TypedModelElementInlineFieldHandler<Neumont.Tools.ORM.ShapeModel.FactTypeShape,System.Double>
+		{
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			private FactTypeShapeRolesPositionFieldHandler() { }
+
+			/// <summary>
+			/// Returns the singleton instance of the FactTypeShape.RolesPosition field handler
+			/// </summary>
+			/// <value>FactTypeShapeRolesPositionFieldHandler</value>
+			public static FactTypeShapeRolesPositionFieldHandler Instance
+			{
+				get
+				{
+					if (Neumont.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeRolesPositionFieldHandler != null)
+					{
+						return Neumont.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeRolesPositionFieldHandler;
+					}
+					else
+					{
+						// The static constructor in FactTypeShape will assign this value to
+						// Neumont.Tools.ORM.ShapeModel.FactTypeShape.factTypeShapeRolesPositionFieldHandler, so just instantiate one and return it
+						return new FactTypeShapeRolesPositionFieldHandler();
+					}
+				}
+			}
+
+			/// <summary>
+			/// Returns the meta attribute id for the FactTypeShape.RolesPosition field handler
+			/// </summary>
+			/// <value>Guid</value>
+			public sealed override System.Guid Id
+			{
+				get
+				{
+					return Neumont.Tools.ORM.ShapeModel.FactTypeShape.RolesPositionMetaAttributeGuid;
+				}
+			}
+			/// <summary>
+			/// Gets the value of the attribute as it exists in the element
+			/// </summary>
+			/// <param name="element">the FactTypeShape</param>
+			protected sealed override System.Double GetValue(Neumont.Tools.ORM.ShapeModel.FactTypeShape element)
+			{
+				return element.rolesPositionPropertyStorage;
+			}
+
+			/// <summary>
+			/// Sets the value into the element
+			/// </summary>
+			/// <param name="element">the element</param>
+			/// <param name="value">new value</param>
+			/// <param name="commandFactory">the command factory for this change</param>
+			/// <param name="allowDuplicates">allow duplicate value to continue to fire rules and events</param>
+			/// <param name="oldValue">the old value before the change</param>
+			/// <returns>true if the value actually changed</returns>
+			protected sealed override bool SetValue(Neumont.Tools.ORM.ShapeModel.FactTypeShape element, System.Double value, Microsoft.VisualStudio.Modeling.CommandFactory commandFactory, bool allowDuplicates, ref System.Double oldValue)
+			{
+				oldValue = element.rolesPositionPropertyStorage;
+				if (allowDuplicates || oldValue != value)
+				{
+					OnValueChanging(element, oldValue, value);
+					element.rolesPositionPropertyStorage = value;
 					OnValueChanged(element, oldValue, value);
 					return true;
 				}

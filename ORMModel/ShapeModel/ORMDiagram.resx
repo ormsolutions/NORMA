@@ -146,9 +146,13 @@
     <value xml:space="preserve">&amp;Delete Fact Type</value>
     <comment xml:space="preserve">This text appears in the edit menu when fact types are selected in the diagram.</comment>
   </data>
-  <data name="Command.DeleteMultiple.Text">
+  <data name="Command.DeleteMultipleElements.Text">
     <value xml:space="preserve">&amp;Delete From Model</value>
     <comment xml:space="preserve">This text appears in the edit menu when multiple elements of different types are selected in the diagram.</comment>
+  </data>
+  <data name="Command.DeleteMultipleShapes.Text">
+    <value xml:space="preserve">Delete &amp;Shapes</value>
+    <comment xml:space="preserve">This text appears in the edit menu when multiple shapes of different types are selected in the diagram.</comment>
   </data>
   <data name="Command.DeleteObjectType.Text">
     <value xml:space="preserve">&amp;Delete Object Type</value>

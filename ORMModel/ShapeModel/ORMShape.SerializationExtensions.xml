@@ -79,5 +79,6 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="RolesPosition" WriteStyle="NotWritten"/>
 	</se:Element>
 </se:CustomSerializedElements>

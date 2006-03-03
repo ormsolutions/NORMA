@@ -764,7 +764,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			if (commandText == null && 0 != (myVisibleCommands & ORMDesignerCommands.DeleteAny))
 			{
-				commandText = ResourceStrings.CommandDeleteMultipleText;
+				commandText = ResourceStrings.CommandDeleteMultipleElementsText;
 			}
 			// Setting command.Text to null will pick up
 			// the default command text
@@ -795,7 +795,7 @@ namespace Neumont.Tools.ORM.Shell
 			}
 			if (commandText == null && 0 != (myVisibleCommands & ORMDesignerCommands.DeleteAnyShape))
 			{
-				commandText = ResourceStrings.CommandDeleteMultipleText;
+				commandText = ResourceStrings.CommandDeleteMultipleShapesText;
 			}
 			// Setting command.Text to null will pick up
 			// the default command text
@@ -1128,6 +1128,7 @@ namespace Neumont.Tools.ORM.Shell
 				null != (components = GetSelectedComponents()) &&
 				(selectionCount = components.Count) > 1)
 			{
+				FactTypeShape factShape;
 				double alignTo;
 				RectangleD matchBounds = matchShape.AbsoluteBoundingBox;
 				switch (commandId)
@@ -1138,7 +1139,7 @@ namespace Neumont.Tools.ORM.Shell
 						break;
 					case 2: // AlignHorizontalCenters
 						Debug.Assert(commandId == StandardCommands.AlignHorizontalCenters.ID);
-						alignTo = matchBounds.Center.Y;
+						alignTo = (null == (factShape = matchShape as FactTypeShape)) ? matchBounds.Center.Y : matchBounds.Top + factShape.RolesCenter.Y;
 						break;
 					case 3: // AlignLeft
 						Debug.Assert(commandId == StandardCommands.AlignLeft.ID);
@@ -1154,7 +1155,7 @@ namespace Neumont.Tools.ORM.Shell
 						break;
 					case 7: // AlignVerticalCenters
 						Debug.Assert(commandId == StandardCommands.AlignVerticalCenters.ID);
-						alignTo = matchBounds.Center.X;
+						alignTo = (null == (factShape = matchShape as FactTypeShape)) ? matchBounds.Center.X : matchBounds.Left + factShape.RolesCenter.X;
 						break;
 					default:
 						return;
@@ -1175,7 +1176,7 @@ namespace Neumont.Tools.ORM.Shell
 									newLocation = new PointD(bounds.Left, alignTo - bounds.Height);
 									break;
 								case 2: // AlignHorizontalCenters
-									newLocation = new PointD(bounds.Left, alignTo - bounds.Height / 2);
+									newLocation = new PointD(bounds.Left, alignTo - ((null == (factShape = shape as FactTypeShape)) ? (bounds.Height / 2) : factShape.RolesCenter.Y));
 									break;
 								case 3: // AlignLeft
 									newLocation = new PointD(alignTo, bounds.Top);
@@ -1187,7 +1188,7 @@ namespace Neumont.Tools.ORM.Shell
 									newLocation = new PointD(bounds.Left, alignTo);
 									break;
 								case 7: // AlignVerticalCenters
-									newLocation = new PointD(alignTo - bounds.Width / 2, bounds.Top);
+									newLocation = new PointD(alignTo - ((null == (factShape = shape as FactTypeShape)) ? (bounds.Width / 2) : factShape.RolesCenter.X), bounds.Top);
 									break;
 							}
 							shape.Location = newLocation;

@@ -1037,8 +1037,8 @@ namespace Neumont.Tools.ORM.ShapeModel
 		#region Size Constants
 		private const double RoleBoxHeight = 0.11;
 		private const double RoleBoxWidth = 0.16;
-		private const double NestedFactHorizontalMargin = 0.2;
-		private const double NestedFactVerticalMargin = 0.075;
+		private const double NestedFactHorizontalMargin = 0.09;
+		private const double NestedFactVerticalMargin = 0.056;
 		private const double ConstraintHeight = 0.07;
 		private const double ExternalConstraintBarCenterAdjust = ConstraintHeight / 5;
 		#endregion // Size Constants
@@ -2435,8 +2435,24 @@ namespace Neumont.Tools.ORM.ShapeModel
 					contentSize.Width += NestedFactHorizontalMargin + NestedFactHorizontalMargin;
 					contentSize.Height += NestedFactVerticalMargin + NestedFactVerticalMargin;
 				}
+				Size = contentSize;
+				UpdateRolesPosition();
 			}
-			Size = contentSize;
+		}
+		private void UpdateRolesPosition()
+		{
+			double oldRolesPosition = RolesPosition;
+			double newRolesPosition = myRolesShapeField.GetBounds(this).Center.Y;
+			if (!VGConstants.FuzzEqual(oldRolesPosition, newRolesPosition, VGConstants.FuzzDistance))
+			{
+				RolesPosition = newRolesPosition;
+				if (oldRolesPosition != 0)
+				{
+					PointD newLocation = Location;
+					newLocation.Offset(0, oldRolesPosition - newRolesPosition);
+					Location = newLocation;
+				}
+			}
 		}
 		/// <summary>
 		/// Called during a transaction when a new constraint
@@ -3696,6 +3712,16 @@ namespace Neumont.Tools.ORM.ShapeModel
 			return default(PointD);
 		}
 		/// <summary>
+		/// The center of the roles box
+		/// </summary>
+		public PointD RolesCenter
+		{
+			get
+			{
+				return new PointD(Size.Width / 2, RolesPosition);
+			}
+		}
+		/// <summary>
 		/// Static property set when an external constraint is being created. The active
 		/// connection is used to track which roles are highlighted.
 		/// </summary>
@@ -4035,6 +4061,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 										}
 										if (constraintBarVisible)
 										{
+											bool resized = false;
 											if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
 											{
 												if (factRoles == null)
@@ -4048,6 +4075,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 													// the top to the bottom will require more space and change the
 													// size of the fact shape.
 													factShape.AutoResize();
+													resized = true;
 												}
 											}
 											// All links going into the FactTypeShape are
@@ -4059,6 +4087,10 @@ namespace Neumont.Tools.ORM.ShapeModel
 												{
 													binaryLinkToFact.RipUp();
 												}
+											}
+											if (!resized)
+											{
+												factShape.UpdateRolesPosition();
 											}
 										}
 									}

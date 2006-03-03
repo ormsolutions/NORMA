@@ -50,6 +50,10 @@
 						<metaattribute name ="DisplayRoleNames" identity="9607af0f-2e12-4215-b8a5-91b67c1a9f08" type="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="true" tag="">
 							<enumerationdomain type="Neumont.Tools.ORM.ShapeModel.DisplayRoleNames" default="DisplayRoleNames.UserDefault"/>
 						</metaattribute>
+						<metaattribute name ="RolesPosition" identity="89244439-fbb1-4deb-bff3-69d47cb90a6b" type="System.Double" accessmodifier="private" xpathexpression="" reversexpathexpression="" realattributename="" proxyattributename="" category="" description="" doccomment="" localize="false" tag="">
+							<clrattribute name="System.ComponentModel.Browsable" parametertext="false" />
+							<doubledomain default="0" />
+						</metaattribute>
 					</metaattributes>
 					<derivedshapes />
 				</shape>
