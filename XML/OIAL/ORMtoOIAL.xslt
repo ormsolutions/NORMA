@@ -22,6 +22,8 @@
 	extension-element-prefixes="msxsl"
 	exclude-result-prefixes="orm ormRoot">
 
+	<xsl:import href="CoRefORM.xslt"/>
+
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 	<xsl:strip-space elements="*"/>
 
@@ -30,8 +32,6 @@
 	<xsl:param name="OutputDebugInformation" select="false()"/>
 	<!-- To use $OutputVerboseDebugInformation, $OutputDebugInformtion must also be set to true() -->
 	<xsl:param name="OutputVerboseDebugInformation" select="false()"/>
-
-	<xsl:include href="CoRefORM.xslt"/>
 
 	<xsl:template match="ormRoot:ORM2">
 		<xsl:apply-templates select="orm:ORMModel"/>

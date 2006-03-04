@@ -13,6 +13,13 @@
 	You must not remove this notice, or any other, from this software.
 -->
 <Include xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+	<Registry Root="HKCU" Key="$(var.VSRegRoot)">
+		<Registry Action="removeKeyOnInstall" Key="FontAndColors\{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"/>
+		<Registry Action="removeKeyOnInstall" Key="FontAndColors\{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"/>
+		<Registry Action="removeKeyOnInstall" Key="FontAndColors\Cache\{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"/>
+		<Registry Action="removeKeyOnInstall" Key="FontAndColors\Cache\{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"/>
+	</Registry>
+	
 	<Registry Root="HKLM" Key="$(var.VSRegRoot)">
 		
 		<Registry Action="createKeyAndRemoveKeyOnUninstall" Key="Packages\{$(var.NORMAVSPackageGuid)}">

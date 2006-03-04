@@ -26,7 +26,7 @@ namespace Neumont.Tools.ORM.Shell
 {
 	#region ORMDesignerColor Enum
 	/// <summary>
-	/// Indexed color values in the 'ORM Editor' and 'ORM Verbalizer' color categories
+	/// Indexed color values in the 'ORM Designer' and 'ORM Verbalizer' color categories
 	/// </summary>
 	public enum ORMDesignerColor
 	{

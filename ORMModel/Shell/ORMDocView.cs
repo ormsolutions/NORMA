@@ -188,6 +188,7 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		private const ORMDesignerCommands EnabledSimpleMultiSelectCommandFilter =
 			ORMDesignerCommands.DisplayStandardWindows |
+			ORMDesignerCommands.CopyImage |
 			ORMDesignerCommands.SelectAll |
 			ORMDesignerCommands.AlignShapes |
 			ORMDesignerCommands.AutoLayout |
@@ -611,8 +612,8 @@ namespace Neumont.Tools.ORM.Shell
 				}
 			}
 			// Turn on the verbalization window command for all selections
-			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager;
-			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager;
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.CopyImage;
+			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.CopyImage;
 		}
 		
 		/// <summary>

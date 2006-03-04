@@ -354,8 +354,8 @@
     <comment xml:space="preserve">Text to place in the title of the reading editor tool window.</comment>
   </data>
   <data name="ModelNotesWindow.WindowTitle">
-    <value xml:space="preserve">ORM Notes Window</value>
-    <comment xml:space="preserve">Text to place in the title bar of the notes tool window.</comment>
+    <value xml:space="preserve">ORM Notes Editor</value>
+    <comment xml:space="preserve">Text to place in the title bar of the notes editor tool window.</comment>
   </data>
   <data name="ModelNotesWindow.RootTypeNameNotesSeparatorFormatString">
     <value xml:space="preserve">{0}: {1}</value>

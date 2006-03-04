@@ -15,7 +15,7 @@
 <WixLocalization xmlns="http://schemas.microsoft.com/wix/2003/11/localization">
 	<String Id="Manufacturer">Neumont University</String>
 	<String Id="ProductName">Neumont ORM Architect for Visual Studio</String>
-	<String Id="ReleaseVersion">2006-02 CTP</String>
+	<String Id="ReleaseVersion">2006-03 CTP</String>
 	<String Id="PackageCommentsPrefix">This installer database contains the logic and data required to install&#x20;</String>
 	<String Id="PackageCommentsSuffix">.</String>
 
@@ -35,6 +35,11 @@
 	<String Id="ORMFileOpenCommand">Open</String>
 	
 	<String Id="ORMCustomToolDescription">ORM Custom Tool</String>
+
+	<!-- UI Strings -->
+	<!--<String Id="ExitDialogTitle">[ProductName] Setup</String>
+	<String Id="ExitDialogFinish">&amp;Finish</String>
+	<String Id="ExitDialogDescription">Setup completed successfully. Click "Finish" to exit.</String>-->
 	
 	<!-- Some of the following strings were taken from the DSL Tools generated setup. They will not normally need to be changed. -->
 	<String Id="Windows2000OrHigherRequired">This setup requires Microsoft Windows 2000 or later.</String>

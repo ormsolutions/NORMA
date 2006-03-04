@@ -66,6 +66,12 @@
 
 #define cmdIdDeleteAlternate			0x2914
 ///////////////////////////////////////////////////////////////////////////////
-// Bitmap IDs
-#define bmpIdShowNegativeVerbalization	1
-#define bmpIdShowPositiveVerbalization	2
+// Bitmap IDs for BitmapResourceStrip.bmp
+#define bmpIdShowNegativeVerbalization		1
+#define bmpIdShowPositiveVerbalization		2
+#define bmpIdToolWindowVerbalizationBrowser	3
+#define bmpIdToolWindowReadingEditor		4
+#define bmpIdToolWindowReferenceModeEditor	5
+#define bmpIdToolWindowFactEditor			6
+#define bmpIdToolWindowModelBrowser			7
+#define bmpIdToolWindowNotesEditor			8

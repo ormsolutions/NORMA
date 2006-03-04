@@ -60,16 +60,18 @@ namespace Neumont.Tools.ORM.ShapeModel
 	#endregion // IStickyObject interface
 	public partial class ORMDiagram : IProxyDisplayProvider
 	{
-		# region drag drop overrides
+		# region DragDrop overrides
 		/// <summary>
-		/// check to see if dragged object is a type that can be dropped on the diagram, if so change drag drop effects
+		/// Check to see if <see cref="DiagramDragEventArgs.Data">dragged object</see> is a type that can be dropped on the <see cref="Diagram"/>,
+		/// if so change <see cref="DiagramDragEventArgs.Effect"/>.
 		/// </summary>
-		/// <param name="e"></param>
 		public override void OnDragOver(DiagramDragEventArgs e)
 		{
-			IDataObject dataObject = e.Data;
-			if (dataObject.GetData(typeof(ObjectType)) != null || dataObject.GetData(typeof(FactType)) != null || dataObject.GetData(typeof(MultiColumnExternalConstraint)) != null ||
-				dataObject.GetData(typeof(SingleColumnExternalConstraint)) != null)
+			string[] dataFormats = e.Data.GetFormats();
+			if (Array.IndexOf(dataFormats, typeof(ObjectType).FullName) >= 0 ||
+				Array.IndexOf(dataFormats, typeof(FactType).FullName) >= 0 ||
+				Array.IndexOf(dataFormats, typeof(MultiColumnExternalConstraint).FullName) >= 0 ||
+				Array.IndexOf(dataFormats, typeof(SingleColumnExternalConstraint).FullName) >= 0)
 			{
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
@@ -224,7 +226,7 @@ namespace Neumont.Tools.ORM.ShapeModel
 				FixUpDiagram(droppedOnElement, (ModelElement)links[i]);
 			}
 		}
-		# endregion //drag drop overrides
+		# endregion // DragDrop overrides
 		#region Toolbox filter strings
 		/// <summary>
 		/// The filter string used for simple actions
