@@ -64,7 +64,7 @@
 
 #define cmdIdViewNotesWindow			0x2913
 
-#define cmdIdDeleteElement				0x2914
+#define cmdIdDeleteAlternate			0x2914
 ///////////////////////////////////////////////////////////////////////////////
 // Bitmap IDs
 #define bmpIdShowNegativeVerbalization	1

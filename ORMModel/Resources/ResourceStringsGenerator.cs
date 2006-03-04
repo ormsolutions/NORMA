@@ -1791,6 +1791,16 @@ namespace Neumont.Tools.ORM
 			}
 		}
 		/// <summary>
+		/// The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.
+		/// </summary>
+		public static string FinalShapeDeletionMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.FinalShapeDeletion.Message");
+			}
+		}
+		/// <summary>
 		/// The name of the transaction that auto-fixes implied and duplicate internal constraints.
 		/// </summary>
 		public static string RemoveImpliedInternalUniquenessConstraintsTransactionName

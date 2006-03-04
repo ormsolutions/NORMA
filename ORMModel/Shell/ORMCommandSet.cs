@@ -86,16 +86,16 @@ namespace Neumont.Tools.ORM.Shell
 				new EventHandler(OnMenuCopyImage),
 				ORMDesignerCommandIds.CopyImage)
 				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusDeleteElement),
-				new EventHandler(OnMenuDeleteElement),
-				ORMDesignerCommandIds.DeleteElement)
+				new EventHandler(OnStatusDeleteAlternate),
+				new EventHandler(OnMenuDeleteAlternate),
+				ORMDesignerCommandIds.DeleteAlternate)
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusSelectAll),
 				new EventHandler(OnMenuSelectAll),
 				StandardCommands.SelectAll)
 				,new DynamicStatusMenuCommand(
-				new EventHandler(OnStatusDeleteShape),
-				new EventHandler(OnMenuDeleteShape),
+				new EventHandler(OnStatusDelete),
+				new EventHandler(OnMenuDelete),
 				StandardCommands.Delete)
 				,new DynamicStatusMenuCommand(
 				new EventHandler(OnStatusReadingsWindow),
@@ -293,39 +293,65 @@ namespace Neumont.Tools.ORM.Shell
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			private void OnStatusDeleteElement(object sender, EventArgs e)
+			private void OnStatusDeleteAlternate(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny);
+				ORMDesignerDocView.OnStatusCommand(
+					sender,
+					CurrentORMView,
+					(OptionsPage.CurrentPrimaryDeleteBehavior == PrimaryDeleteBehavior.DeleteShape) ?
+						ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny :
+						ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			private void OnMenuDeleteElement(object sender, EventArgs e)
+			private void OnMenuDeleteAlternate(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
 				if (docView != null)
 				{
-					// call delete on the doc view
-					docView.OnMenuDeleteElement((sender as OleMenuCommand).Text);
+					// call the appropriate delete on the doc view
+					switch (OptionsPage.CurrentPrimaryDeleteBehavior)
+					{
+						case PrimaryDeleteBehavior.DeleteShape:
+							docView.OnMenuDeleteElement((sender as OleMenuCommand).Text);
+							break;
+						case PrimaryDeleteBehavior.DeleteElement:
+							docView.OnMenuDeleteShape((sender as OleMenuCommand).Text);
+							break;
+					}
 				}
 			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
-			private void OnStatusDeleteShape(object sender, EventArgs e)
+			private void OnStatusDelete(object sender, EventArgs e)
 			{
-				ORMDesignerDocView.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape);
+				ORMDesignerDocView.OnStatusCommand(
+					sender,
+					CurrentORMView,
+					(OptionsPage.CurrentPrimaryDeleteBehavior == PrimaryDeleteBehavior.DeleteElement) ?
+						ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny :
+						ORMDesignerCommands.DeleteShape | ORMDesignerCommands.DeleteAnyShape);
 			}
 			/// <summary>
 			/// Menu handler
 			/// </summary>
-			private void OnMenuDeleteShape(object sender, EventArgs e)
+			private void OnMenuDelete(object sender, EventArgs e)
 			{
 				ORMDesignerDocView docView = CurrentORMView;
 				if (docView != null)
 				{
-					// call delete on the doc view
-					docView.OnMenuDeleteShape((sender as OleMenuCommand).Text);
+					// call the appropriate delete on the doc view
+					switch (OptionsPage.CurrentPrimaryDeleteBehavior)
+					{
+						case PrimaryDeleteBehavior.DeleteElement:
+							docView.OnMenuDeleteElement((sender as OleMenuCommand).Text);
+							break;
+						case PrimaryDeleteBehavior.DeleteShape:
+							docView.OnMenuDeleteShape((sender as OleMenuCommand).Text);
+							break;
+					}
 				}
 			}
 			private void OnStatusReferenceModesWindow(object sender, EventArgs e)
@@ -827,11 +853,12 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			public static readonly CommandID ExtensionManager = new CommandID(guidORMDesignerCommandSet, cmdIdExtensionManager);
 			/// <summary>
-			/// The standard delete command is bound to shape deletion
-			/// in the designer. This command explicitly deletes the underlying
-			/// model elements.
+			/// The standard delete command is bound to shape deletion by
+			/// default in the designer. This can be changed to element deletion
+			/// with the options page. The alternate delete command is bound to
+			/// Control-Delete and does the command not handled directly by delete.
 			/// </summary>
-			public static readonly CommandID DeleteElement = new CommandID(guidORMDesignerCommandSet, cmdIdDeleteElement);
+			public static readonly CommandID DeleteAlternate = new CommandID(guidORMDesignerCommandSet, cmdIdDeleteAlternate);
 			#endregion // CommandID objects for commands
 			#region CommandID objects for menus
 			/// <summary>
@@ -961,11 +988,12 @@ namespace Neumont.Tools.ORM.Shell
 			/// </summary>
 			private const int cmdIdViewNotesWindow = 0x2913;
 			/// <summary>
-			/// The standard delete command is bound to shape deletion
-			/// in the designer. This command explicitly deletes the underlying
-			/// model elements.
+			/// The standard delete command is bound to shape deletion by
+			/// default in the designer. This can be changed to element deletion
+			/// with the options page. The alternate delete command is bound to
+			/// Control-Delete and does the command not handled directly by delete.
 			/// </summary>
-			private const int cmdIdDeleteElement = 0x2914;
+			private const int cmdIdDeleteAlternate = 0x2914;
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>

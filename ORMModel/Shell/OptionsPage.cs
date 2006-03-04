@@ -122,6 +122,41 @@ namespace Neumont.Tools.ORM.Shell
 		/// </summary>
 		Off,
 	}
+	/// <summary>
+	/// Provide options for the behavior of the Delete and Control-Delete keys
+	/// </summary>
+	public enum PrimaryDeleteBehavior
+	{
+		/// <summary>
+		/// The Delete key deletes shapes, Ctrl-Delete deletes elements from
+		/// the model
+		/// </summary>
+		DeleteShape,
+		/// <summary>
+		/// The Delete key deletes elements from the  model, Ctrl-Delete
+		/// deletes shapes from the current diagram
+		/// </summary>
+		DeleteElement,
+	}
+	/// <summary>
+	/// Provide options for the designer behavior when the final shape for
+	/// an element is deleted from a diagram.
+	/// </summary>
+	public enum FinalShapeDeleteBehavior
+	{
+		/// <summary>
+		/// Do not delete the underlying element from the object model
+		/// </summary>
+		DeleteShapeOnly,
+		/// <summary>
+		/// Delete the shape and the underlying element
+		/// </summary>
+		DeleteShapeAndElement,
+		/// <summary>
+		/// Ask the user if they would like to delete the underlying element
+		/// </summary>
+		Prompt,
+	}
 	#endregion
 	#region NotifyDocument Delegate
 	/// <summary>
@@ -199,6 +234,14 @@ namespace Neumont.Tools.ORM.Shell
 		private const ExternalConstraintRoleBarDisplay ExternalConstraintRoleBarDisplay_Default = ExternalConstraintRoleBarDisplay.SplitRoles;
 		private static ExternalConstraintRoleBarDisplay myCurrentExternalConstraintRoleBarDisplay = ExternalConstraintRoleBarDisplay_Default;
 		private ExternalConstraintRoleBarDisplay myExternalConstraintRoleBarDisplay = ExternalConstraintRoleBarDisplay_Default;
+
+		private const PrimaryDeleteBehavior PrimaryDeleteBehavior_Default = PrimaryDeleteBehavior.DeleteShape;
+		private static PrimaryDeleteBehavior myCurrentPrimaryDeleteBehavior = PrimaryDeleteBehavior_Default;
+		private PrimaryDeleteBehavior myPrimaryDeleteBehavior = PrimaryDeleteBehavior_Default;
+
+		private const FinalShapeDeleteBehavior FinalShapeDeleteBehavior_Default = FinalShapeDeleteBehavior.Prompt;
+		private static FinalShapeDeleteBehavior myCurrentFinalShapeDeleteBehavior = FinalShapeDeleteBehavior_Default;
+		private FinalShapeDeleteBehavior myFinalShapeDeleteBehavior = FinalShapeDeleteBehavior_Default;
 		#endregion // Member variables
 		#region Base overrides
 		/// <summary>
@@ -214,6 +257,8 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
 			myCurrentDefaultDataType = myDefaultDataType;
 			myCurrentExternalConstraintRoleBarDisplay = myExternalConstraintRoleBarDisplay;
+			myCurrentPrimaryDeleteBehavior = myPrimaryDeleteBehavior;
+			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 		}
 		/// <summary>
 		/// Set local values for the current settings to determine later if the
@@ -228,6 +273,8 @@ namespace Neumont.Tools.ORM.Shell
 			myRoleNameDisplay = myCurrentRoleNameDisplay;
 			myDefaultDataType = myCurrentDefaultDataType;
 			myExternalConstraintRoleBarDisplay = myCurrentExternalConstraintRoleBarDisplay;
+			myPrimaryDeleteBehavior = myCurrentPrimaryDeleteBehavior;
+			myFinalShapeDeleteBehavior = myCurrentFinalShapeDeleteBehavior;
 		}
 
 		/// <summary>
@@ -245,6 +292,8 @@ namespace Neumont.Tools.ORM.Shell
 			{
 				// Non-displayed setting, don't notify
 				myCurrentDefaultDataType = myDefaultDataType;
+				myCurrentPrimaryDeleteBehavior = myPrimaryDeleteBehavior;
+				myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 				return;
 			}
 
@@ -259,6 +308,8 @@ namespace Neumont.Tools.ORM.Shell
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
 			myCurrentExternalConstraintRoleBarDisplay = myExternalConstraintRoleBarDisplay;
 			myCurrentDefaultDataType = myDefaultDataType;
+			myCurrentPrimaryDeleteBehavior = myPrimaryDeleteBehavior;
+			myCurrentFinalShapeDeleteBehavior = myFinalShapeDeleteBehavior;
 
 			// Walk all the documents and invalidate ORM diagrams if the options have changed
 			NotifySettingsChange(
@@ -473,7 +524,6 @@ namespace Neumont.Tools.ORM.Shell
 			get { return myCurrentDefaultDataType; }
 		}
 
-
 		/// <summary>
 		/// Display of external constraint bars
 		/// </summary>
@@ -493,6 +543,48 @@ namespace Neumont.Tools.ORM.Shell
 		public static ExternalConstraintRoleBarDisplay CurrentExternalConstraintRoleBarDisplay
 		{
 			get { return myCurrentExternalConstraintRoleBarDisplay; }
+		}
+
+		/// <summary>
+		/// Behavior of Delete and Control-Delete keys
+		/// </summary>
+		[DefaultValue(PrimaryDeleteBehavior_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryDeleteBehaviorId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyPrimaryDeleteBehaviorDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyPrimaryDeleteBehaviorDisplayNameId)]
+		public PrimaryDeleteBehavior PrimaryDeleteBehavior
+		{
+			get { return myPrimaryDeleteBehavior; }
+			set { myPrimaryDeleteBehavior = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for PrimaryDeleteBehavior
+		/// </summary>
+		public static PrimaryDeleteBehavior CurrentPrimaryDeleteBehavior
+		{
+			get { return myCurrentPrimaryDeleteBehavior; }
+		}
+
+		/// <summary>
+		/// Behavior of final shape deletion
+		/// </summary>
+		[DefaultValue(FinalShapeDeleteBehavior_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryDeleteBehaviorId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyFinalShapeDeleteBehaviorDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyFinalShapeDeleteBehaviorDisplayNameId)]
+		public FinalShapeDeleteBehavior FinalShapeDeleteBehavior
+		{
+			get { return myFinalShapeDeleteBehavior; }
+			set { myFinalShapeDeleteBehavior = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for PrimaryDeleteBehavior
+		/// </summary>
+		public static FinalShapeDeleteBehavior CurrentFinalShapeDeleteBehavior
+		{
+			get { return myCurrentFinalShapeDeleteBehavior; }
 		}
 		#endregion // Accessor properties
 	}

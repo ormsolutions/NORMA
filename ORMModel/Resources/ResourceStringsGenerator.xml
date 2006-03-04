@@ -602,6 +602,9 @@
 	<ResourceString name="ImpliedInternalConstraintFixMessage" model="Diagram" resourceName="MessageBox.ImpliedInternalUniquenessConstraint.Message">
 		<comment type="summary">The message of the auto-fix message box for implied internal constraints</comment>
 	</ResourceString>
+	<ResourceString name="FinalShapeDeletionMessage" model="Diagram" resourceName="MessageBox.FinalShapeDeletion.Message">
+		<comment type="summary">The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.</comment>
+	</ResourceString>
 	<ResourceString name="RemoveImpliedInternalUniquenessConstraintsTransactionName" model="Model" resourceName="FactType.RemoveImpliedInternalUniquenessConstraints.TransactionName">
 		<comment type="summary">The name of the transaction that auto-fixes implied and duplicate internal constraints.</comment>
 	</ResourceString>

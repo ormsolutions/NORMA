@@ -235,13 +235,17 @@ namespace Neumont.Tools.ORM
 		/// </summary>
 		public const string ToolboxRingConstraintItemId = "Toolbox.RingConstraint.Item.Id";
 		/// <summary>
-		/// Category name for options page
+		/// Category name for options page (appearance)
 		/// </summary>
 		public const string OptionsPageCategoryAppearanceId = "OptionsPage.Category.Appearance";
 		/// <summary>
-		/// Category name for options page
+		/// Category name for options page (data type)
 		/// </summary>
 		public const string OptionsPageCategoryDataTypesId = "OptionsPage.Category.DataTypes";
+		/// <summary>
+		/// Category name for options page (delete behavior)
+		/// </summary>
+		public const string OptionsPageCategoryDeleteBehaviorId = "OptionsPage.Category.DeleteBehavior";
 		/// <summary>
 		/// Description of the default data type option
 		/// </summary>
@@ -290,6 +294,22 @@ namespace Neumont.Tools.ORM
 		/// Display Name of the Role Name Display option
 		/// </summary>
 		public const string OptionsPagePropertyRoleNameDisplayDisplayNameId = "OptionsPage.Property.RoleNameDisplay.DisplayName";
+		/// <summary>
+		/// Description of the Primary Delete Behavior
+		/// </summary>
+		public const string OptionsPagePropertyPrimaryDeleteBehaviorDescriptionId = "OptionsPage.Property.PrimaryDeleteBehavior.Description";
+		/// <summary>
+		/// Display Name of the Primary Delete Behavior option
+		/// </summary>
+		public const string OptionsPagePropertyPrimaryDeleteBehaviorDisplayNameId = "OptionsPage.Property.PrimaryDeleteBehavior.DisplayName";
+		/// <summary>
+		/// Description of the Final Shape Delete Behavior option
+		/// </summary>
+		public const string OptionsPagePropertyFinalShapeDeleteBehaviorDescriptionId = "OptionsPage.Property.FinalShapeDeleteBehavior.Description";
+		/// <summary>
+		/// Display Name of the Final Shape Delete Behavior option
+		/// </summary>
+		public const string OptionsPagePropertyFinalShapeDeleteBehaviorDisplayNameId = "OptionsPage.Property.FinalShapeDeleteBehavior.DisplayName";
 		/// <summary>
 		/// Display Name of the Object Name color
 		/// </summary>

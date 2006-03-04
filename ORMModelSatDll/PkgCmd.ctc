@@ -83,7 +83,7 @@ CMDS_SECTION guidORMDesignerPackage
 		guidORMDesignerCommandSet:cmdIdShowPositiveVerbalization,	guidORMDesignerCommandSet:groupIdVerbalizationCommands,	0x030,		guidORMDesignerCommandSet:bmpIdShowPositiveVerbalization,	BUTTON, DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Show positive verbalization";
 		guidORMDesignerCommandSet:cmdIdShowNegativeVerbalization,	guidORMDesignerCommandSet:groupIdVerbalizationCommands,	0x040,		guidORMDesignerCommandSet:bmpIdShowNegativeVerbalization,	BUTTON, DEFAULTINVISIBLE|DYNAMICVISIBILITY,				"Show negative verbalization, if available";
 
-		guidORMDesignerCommandSet:cmdIdDeleteElement,				guidORMDesignerCommandSet:groupIdDeleteContext,			0x010,		guidOfficeIcon:msotcidNoIcon,								BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY|TEXTCHANGES,	"&Delete Model Element";
+		guidORMDesignerCommandSet:cmdIdDeleteAlternate,				guidORMDesignerCommandSet:groupIdDeleteContext,			0x020,		guidOfficeIcon:msotcidNoIcon,								BUTTON,	DEFAULTINVISIBLE|DYNAMICVISIBILITY|TEXTCHANGES,	"&Delete Model Element";
 	BUTTONS_END
 	COMBOS_BEGIN
 	COMBOS_END
@@ -94,7 +94,7 @@ CMDS_SECTION guidORMDesignerPackage
 	CMDS_END
 
 	CMDPLACEMENT_SECTION
-		CMDSETID_StandardCommandSet97:cmdidDelete,					guidORMDesignerCommandSet:groupIdDeleteContext,			0x0020;
+		CMDSETID_StandardCommandSet97:cmdidDelete,					guidORMDesignerCommandSet:groupIdDeleteContext,			0x0010;
 	CMDPLACEMENT_END
 
 	VISIBILITY_SECTION
@@ -102,5 +102,5 @@ CMDS_SECTION guidORMDesignerPackage
 
 	KEYBINDINGS_SECTION
 		// GUID:CMDID												EDITORGUID					EMULATIONGUID					KEYSTATE
-		guidORMDesignerCommandSet:cmdIdDeleteElement,				guidORMDesignerEditor,		guidORMDesignerEditor,			VK_DELETE:C;
+		guidORMDesignerCommandSet:cmdIdDeleteAlternate,				guidORMDesignerEditor,		guidORMDesignerEditor,			VK_DELETE:C;
 	KEYBINDINGS_END

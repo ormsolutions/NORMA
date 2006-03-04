@@ -29,6 +29,9 @@ using Microsoft.VisualStudio.Shell;
 using Neumont.Tools.ORM;
 using Neumont.Tools.ORM.ObjectModel;
 using Neumont.Tools.ORM.ShapeModel;
+using Microsoft.VisualStudio.Shell.Interop;
+using System.Windows.Forms;
+using System.Globalization;
 namespace Neumont.Tools.ORM.Shell
 {
 	#region ORMDesignerCommands enum
@@ -1016,11 +1019,40 @@ namespace Neumont.Tools.ORM.Shell
 					// command for top-level shape elements, so there is no
 					// chance that we will have a parent other than the diagram
 					// to select.
+					FinalShapeDeleteBehavior finalDeleteBehavior = OptionsPage.CurrentFinalShapeDeleteBehavior;
+					bool testMelDeletion = finalDeleteBehavior != FinalShapeDeleteBehavior.DeleteShapeOnly;
 					foreach (ModelElement mel in GetSelectedComponents())
 					{
-						if (mel is ShapeElement)
+						PresentationElement pel = mel as ShapeElement;
+						if (pel != null)
 						{
-							mel.Remove();
+							ModelElement backingMel = null;
+							if (testMelDeletion)
+							{
+								backingMel = pel.ModelElement;
+							}
+							pel.Remove();
+							if (backingMel != null && !backingMel.IsRemoved && backingMel.PresentationRolePlayers.Count == 0)
+							{
+								if (finalDeleteBehavior == FinalShapeDeleteBehavior.Prompt)
+								{
+									IVsUIShell shell;
+									if (null != (shell = (IVsUIShell)ServiceProvider.GetService(typeof(IVsUIShell))))
+									{
+										Guid g = new Guid();
+										int pnResult;
+										shell.ShowMessageBox(0, ref g, ResourceStrings.PackageOfficialName,
+											string.Format(CultureInfo.CurrentCulture, ResourceStrings.FinalShapeDeletionMessage, backingMel.GetClassName(), backingMel.GetComponentName()),
+											"", 0, OLEMSGBUTTON.OLEMSGBUTTON_YESNO,
+											OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_SECOND, OLEMSGICON.OLEMSGICON_QUERY, 0, out pnResult);
+										if (pnResult == (int)DialogResult.No)
+										{
+											continue;
+										}
+									}
+								}
+								backingMel.Remove();
+							}
 						}
 					}
 					if (t.HasPendingChanges)

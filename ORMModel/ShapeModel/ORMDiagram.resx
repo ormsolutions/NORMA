@@ -374,6 +374,10 @@
     <value xml:space="preserve">One or more of the internal uniqueness constraints are implied by other internal uniqueness constraints. Do you wish to remove the implied constraints?</value>
     <comment xml:space="preserve">The message for the auto-fix implied internal uniqueness constraint message box.</comment>
   </data>
+  <data name="MessageBox.FinalShapeDeletion.Message">
+    <value xml:space="preserve">The only shape representing this element is being deleted. Delete the underlying '{0}' element '{1}' as well?</value>
+    <comment xml:space="preserve">The message for the prompt to delete an element from the model when the final shape representing it is delete. Replacement field 0 gets the class name and 1 the component name.</comment>
+  </data>
   <data name="MoveRoleSequenceDown.TransactionName">
     <value xml:space="preserve">Move Role Sequence Down</value>
     <comment xml:space="preserve">The transaction name used for moving a role sequence down in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
@@ -400,11 +404,15 @@
   </data>
   <data name="OptionsPage.Category.Appearance">
     <value xml:space="preserve">Appearance</value>
-    <comment xml:space="preserve">This is the title of the category on the options page.</comment>
+    <comment xml:space="preserve">This is the title of the category on the options page (appearance).</comment>
   </data>
   <data name="OptionsPage.Category.DataTypes">
     <value xml:space="preserve">Data Types</value>
-    <comment xml:space="preserve">This is the title of the category on the options page.</comment>
+    <comment xml:space="preserve">This is the title of the category on the options page (data types).</comment>
+  </data>
+  <data name="OptionsPage.Category.DeleteBehavior">
+    <value xml:space="preserve">Delete Behavior</value>
+    <comment xml:space="preserve">This is the title of the category on the options page (delete behavior).</comment>
   </data>
   <data name="OptionsPage.Property.DataType.Description">
     <value xml:space="preserve">The data type for objects. This will be the default data type used when creating new value types.</value>
@@ -453,6 +461,22 @@
   <data name="OptionsPage.Property.RoleNameDisplay.DisplayName">
     <value xml:space="preserve">Display Role Names Default</value>
     <comment xml:space="preserve">The display name for the Display Role Names option.</comment>
+  </data>
+  <data name="OptionsPage.Property.PrimaryDeleteBehavior.Description">
+    <value xml:space="preserve">The Delete key can either delete shapes or underlying model elements. Pressing Control-Delete will map to the alternate value.</value>
+    <comment xml:space="preserve">The description for the Primary Delete Behavior option.</comment>
+  </data>
+  <data name="OptionsPage.Property.PrimaryDeleteBehavior.DisplayName">
+    <value xml:space="preserve">Delete Key Behavior</value>
+    <comment xml:space="preserve">The display name for the Primary Delete Behavior option.</comment>
+  </data>
+  <data name="OptionsPage.Property.FinalShapeDeleteBehavior.Description">
+    <value xml:space="preserve">Determine if deleting the final shape representing a model element should also remove the underlying element from the model.</value>
+    <comment xml:space="preserve">The description for the Final Shape Delete Behavior option.</comment>
+  </data>
+  <data name="OptionsPage.Property.FinalShapeDeleteBehavior.DisplayName">
+    <value xml:space="preserve">Final Shape Deletion</value>
+    <comment xml:space="preserve">The display name for the Final Shape Delete Behavior option.</comment>
   </data>
   <data name="OptionsPageChange.TransactionName">
     <value xml:space="preserve">Update Diagram Layout</value>
