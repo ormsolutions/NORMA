@@ -102,6 +102,7 @@
 					<xs:attribute name="mandatory" use="required" type="oil:mandatory"/>
 					<xs:attribute name="sourceRoleRef" use="required" type="oil:sourceRef"/>
 					<xs:attribute name="target" use="required" type="xs:token"/>
+					<xs:attribute name="oppositeName" use="required" type="xs:token"/>
 				</xs:complexType>
 				<xs:keyref name="conceptTypeRef" refer="oil:conceptTypeKey">
 					<xs:selector xpath="."/>

@@ -639,6 +639,16 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+				<xsl:variable name="oppositeName">
+					<xsl:choose>
+						<xsl:when test="string-length($thisRole/@Name)&gt;0">
+							<xsl:value-of select="$thisRole/@Name"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$thisObjectTypeName"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:variable name="oppositeOilUniquenessConstraint">
 					<xsl:variable name="uniquenessConstraint" select="orm:InternalConstraints/orm:InternalUniquenessConstraint[orm:RoleSequence/orm:Role/@ref=$oppositeRoleId]"/>
 					<xsl:if test="$uniquenessConstraint">
@@ -703,7 +713,7 @@
 						</xsl:apply-templates>
 					</xsl:when>
 					<xsl:when test="not($EnableAssertions) or ($oppositeRolePlayerId=($TopLevelTypes/@id|$ObjectTypeAbsorptions/@ref))">
-						<oil:conceptTypeRef name="{$name}" target="{$oppositeRolePlayerName}" mandatory="{$mandatory}" sourceRoleRef="{$thisRoleId}">
+						<oil:conceptTypeRef name="{$name}" target="{$oppositeRolePlayerName}" oppositeName="{$oppositeName}"  mandatory="{$mandatory}" sourceRoleRef="{$thisRoleId}">
 							<xsl:copy-of select="$oilConstraints"/>
 						</oil:conceptTypeRef>
 					</xsl:when>

@@ -36,7 +36,7 @@
 		<odt:boolean name="PersonHasParents" fixed="true" />
 	</oil:informationTypeFormats>
 	<oil:conceptType name="PersonDrivesCar" sourceRef="_C0918686-ECCA-4775-BE23-1304918E4EF5">
-		<oil:conceptTypeRef name="DrivenByPerson" target="Person" mandatory="alethic" sourceRoleRef="_0ABD30A1-BF17-4110-9340-3765A1C76BCA_opposite" />
+		<oil:conceptTypeRef name="DrivenByPerson" target="Person" oppositeName="PersonDrivesCar" mandatory="alethic" sourceRoleRef="_0ABD30A1-BF17-4110-9340-3765A1C76BCA_opposite" />
 		<oil:informationType name="DrivesCar_vin" formatRef="vin" mandatory="alethic" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_18AE032D-6C6B-46C4-9383-D3CB9387FA60_opposite" />
 		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint18" modality="alethic" sourceRef="_E2444156-EB65-4515-B856-67D639C707CC" isPreferred="true">
 			<oil:roleSequence>
@@ -46,9 +46,9 @@
 		</oil:roleSequenceUniquenessConstraint>
 	</oil:conceptType>
 	<oil:conceptType name="PersonBoughtCarFromPersonOnDate" sourceRef="_06C709AC-304C-491C-8846-D2A1630F51F2">
-		<oil:conceptTypeRef name="Buyer" target="Person" mandatory="alethic" sourceRoleRef="_9496C251-F06F-4383-93FB-F9BF04A523CB_opposite" />
+		<oil:conceptTypeRef name="Buyer" target="Person" oppositeName="PersonBoughtCarFromPersonOnDate" mandatory="alethic" sourceRoleRef="_9496C251-F06F-4383-93FB-F9BF04A523CB_opposite" />
 		<oil:informationType name="CarSold_vin" formatRef="vin" mandatory="alethic" sourceRef="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" sourceRoleRef="_C0203916-6D57-4C48-9151-B36F507D9D18_opposite" />
-		<oil:conceptTypeRef name="Seller" target="Person" mandatory="alethic" sourceRoleRef="_7C8166A7-F037-493E-BFB7-2A1634AB2238_opposite" />
+		<oil:conceptTypeRef name="Seller" target="Person" oppositeName="PersonBoughtCarFromPersonOnDate" mandatory="alethic" sourceRoleRef="_7C8166A7-F037-493E-BFB7-2A1634AB2238_opposite" />
 		<oil:informationType name="SaleDate_YMD" formatRef="YMD" mandatory="alethic" sourceRef="_4907AECD-F205-4A81-BD0F-4ACFB1F99682" sourceRoleRef="_1657F414-1F65-41C5-935F-FACC31E02630_opposite" />
 		<oil:ringConstraint name="RingConstraint1" modality="alethic" sourceRef="_A8FB10ED-DD06-4C59-9AD4-C686D9D43AA2" type="irreflexive">
 			<oil:roleSequence>
@@ -91,7 +91,7 @@
 	</oil:conceptType>
 	<oil:conceptType name="PersonHasNickName" sourceRef="_E47D212A-E9AD-4F29-AEB1-B50D33CFBF35">
 		<oil:informationType name="NickName" formatRef="NickName" mandatory="alethic" sourceRef="_E47D212A-E9AD-4F29-AEB1-B50D33CFBF35_coref_fact1" sourceRoleRef="_2A32CF98-5EC6-470F-999D-BF8B65CB9B64_opposite" />
-		<oil:conceptTypeRef name="Person" target="Person" mandatory="alethic" sourceRoleRef="_6FA75148-1A54-4675-BD51-E8C95E37DD51_opposite" />
+		<oil:conceptTypeRef name="Person" target="Person" oppositeName="PersonHasNickName" mandatory="alethic" sourceRoleRef="_6FA75148-1A54-4675-BD51-E8C95E37DD51_opposite" />
 		<oil:roleSequenceUniquenessConstraint name="InternalUniquenessConstraint33" modality="alethic" sourceRef="_144EEAB0-D64E-4439-B9E1-AF58CA1E3257" isPreferred="true">
 			<oil:roleSequence>
 				<oil:typeRef targetConceptType="PersonHasNickName" targetChild="NickName" />
@@ -103,9 +103,9 @@
 		<oil:conceptType name="MalePerson" sourceRef="_E3BF7F91-1182-4A4F-8C4D-A0331B34E9A4" mandatory="false" sourceRoleRef="_2DC337A4-AE48-4EFD-8A48-D212D8F2E1FB" />
 		<oil:conceptType name="FemalePerson" sourceRef="_B6D73AD6-31DD-4147-AB22-BF6E9D994CBE" mandatory="false" sourceRoleRef="_8E6158FD-6C2F-4220-9294-8F358936935C" />
 		<oil:conceptType name="ChildPerson" sourceRef="_D15A716E-037F-4263-B4FF-09CAC6B69738" mandatory="false" sourceRoleRef="_D1871C44-65D4-41A5-86A6-6AEFB0F9A365">
-			<oil:conceptTypeRef name="Father" target="MalePerson" mandatory="alethic" sourceRoleRef="_EC45C05E-8DCA-4B2E-BF98-D90AAEF12B40" />
+			<oil:conceptTypeRef name="Father" target="MalePerson" oppositeName="ChildPerson" mandatory="alethic" sourceRoleRef="_EC45C05E-8DCA-4B2E-BF98-D90AAEF12B40" />
 			<oil:informationType name="BirthOrder_BirthOrder_Nr" formatRef="BirthOrder_Nr" mandatory="alethic" sourceRef="_71982F2A-0A4F-4313-AAE2-0374B10D4BD5" sourceRoleRef="_8084EC0C-69B5-4BB2-B306-1CE593984C7D" />
-			<oil:conceptTypeRef name="Mother" target="FemalePerson" mandatory="alethic" sourceRoleRef="_FD76E0F8-4497-47C7-A66F-3D428A8B6009" />
+			<oil:conceptTypeRef name="Mother" target="FemalePerson" oppositeName="ChildPerson" mandatory="alethic" sourceRoleRef="_FD76E0F8-4497-47C7-A66F-3D428A8B6009" />
 			<oil:roleSequenceUniquenessConstraint name="ExternalUniquenessConstraint3" modality="alethic" sourceRef="_B2E18505-0ED3-4BEA-A133-99B653A17A2E" isPreferred="true">
 				<oil:roleSequence>
 					<oil:typeRef targetConceptType="ChildPerson" targetChild="Father" />
@@ -149,7 +149,7 @@
 		</oil:conceptType>
 		<oil:informationType name="Gender_Gender_Code" formatRef="Gender_Code" mandatory="alethic" sourceRef="_FF723148-C1AB-4835-84CD-996B28BC4027" sourceRoleRef="_94C9DD40-B34A-4BF7-A0B8-CAEA067FF7A0" />
 		<oil:informationType name="PersonHasParents" formatRef="PersonHasParents" mandatory="false" sourceRef="_B3958780-E433-4992-963B-E34C33E62DB7_coref_fact1" sourceRoleRef="_65D25484-9FF7-407D-B870-B628A66A5A0F" />
-		<oil:conceptTypeRef name="ValueType1" target="ValueType1" mandatory="false" sourceRoleRef="_37C4F90B-50F3-4655-9946-C6D796CA4FDB" />
+		<oil:conceptTypeRef name="ValueType1" target="ValueType1" oppositeName="Person" mandatory="false" sourceRoleRef="_37C4F90B-50F3-4655-9946-C6D796CA4FDB" />
 		<oil:roleSequenceUniquenessConstraint name="ExternalUniquenessConstraint1" modality="alethic" sourceRef="_F40FEEF1-947A-453D-8B63-C791930EB876" isPreferred="false">
 			<oil:roleSequence>
 				<oil:typeRef targetConceptType="Person" targetChild="FirstName" />
@@ -172,7 +172,7 @@
 		</oil:exclusionConstraint>
 	</oil:conceptType>
 	<oil:conceptType name="Task" sourceRef="_779E9788-0C2F-44B6-B958-AEEC22593966">
-		<oil:conceptTypeRef name="Person" target="Person" mandatory="false" sourceRoleRef="_FB7333FB-CE11-4A31-B7DE-6F20958A525A" />
+		<oil:conceptTypeRef name="Person" target="Person" oppositeName="Task" mandatory="false" sourceRoleRef="_FB7333FB-CE11-4A31-B7DE-6F20958A525A" />
 		<oil:informationType name="Task_id" formatRef="Task_id" mandatory="alethic" sourceRef="_14CF837F-8CA5-4317-A315-044BA559B422" sourceRoleRef="_D38BF87C-33BA-4BFC-9D23-32F52F333AB6">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint16" sourceRef="_5B3BE23F-5BD6-49A1-802C-F7FB27F9BAC7" modality="alethic" isPreferred="true" />
 		</oil:informationType>
@@ -181,6 +181,6 @@
 		<oil:informationType name="ValueType1Value" mandatory="alethic" sourceRef="_D4808010-4C18-442E-A5E4-B69A33A5FA88" formatRef="ValueType1">
 			<oil:singleRoleUniquenessConstraint name="ValueType1Value_Unique" modality="alethic" sourceRef="_D4808010-4C18-442E-A5E4-B69A33A5FA88" isPreferred="true" />
 		</oil:informationType>
-		<oil:conceptTypeRef name="Person" target="Person" mandatory="false" sourceRoleRef="_92066292-C1C5-4063-9652-E071F922267B" />
+		<oil:conceptTypeRef name="Person" target="Person" oppositeName="ValueType1" mandatory="false" sourceRoleRef="_92066292-C1C5-4063-9652-E071F922267B" />
 	</oil:conceptType>
 </oil:model>
