@@ -11,7 +11,7 @@
 <!-- Contributors: Kevin M. Owen, Corey Kaylor -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:oil="http://schemas.orm.net/OIAL"
@@ -19,7 +19,7 @@
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
-	extension-element-prefixes="msxsl dsf"
+	extension-element-prefixes="exsl dsf"
 	exclude-result-prefixes="odt oil">
 
 	<xsl:import href="../../DIL/Transforms/DILSupportFunctions.xslt"/>
@@ -37,7 +37,7 @@
 					</FormatMapping>
 				</xsl:for-each>
 			</xsl:variable>
-			<xsl:variable name="dataTypes" select="msxsl:node-set($dataTypesFragment)/child::*"/>
+			<xsl:variable name="dataTypes" select="exsl:node-set($dataTypesFragment)/child::*"/>
 
 			<xsl:for-each select="oil:informationTypeFormats/child::*[@name = $dataTypes[dcl:domainDataTypeRef]/@name]">
 				<dcl:domainDataType name="{dsf:makeValidIdentifier(@name)}">
@@ -288,7 +288,7 @@
 					<TODO value="Figure out how to enforce regular expressions in databases."/>
 				</xsl:if>
 			</xsl:variable>
-			<xsl:variable name="checkConstraintParts" select="msxsl:node-set($checkConstraintPartsFragment)/child::*"/>
+			<xsl:variable name="checkConstraintParts" select="exsl:node-set($checkConstraintPartsFragment)/child::*"/>
 			<xsl:variable name="countCheckConstraintParts" select="count($checkConstraintParts)"/>
 			<xsl:choose>
 				<xsl:when test="$countCheckConstraintParts >= 2">
@@ -355,14 +355,14 @@
 					<xsl:with-param name="AlwaysNullable" select="$isNullable"/>
 				</xsl:call-template>
 			</xsl:variable>
-			<xsl:variable name="foreignKeyColumnsWithOriginalNames" select="msxsl:node-set($foreignKeyColumnsWithOriginalNamesFragment)/child::*"/>
+			<xsl:variable name="foreignKeyColumnsWithOriginalNames" select="exsl:node-set($foreignKeyColumnsWithOriginalNamesFragment)/child::*"/>
 			<xsl:variable name="foreignKeyColumnsFragment">
 				<xsl:call-template name="AddPrefixToNames">
 					<xsl:with-param name="Prefix" select="concat($conceptTypeRefName,'_')"/>
 					<xsl:with-param name="Targets" select="$foreignKeyColumnsWithOriginalNames"/>
 				</xsl:call-template>
 			</xsl:variable>
-			<xsl:variable name="foreignKeyColumns" select="msxsl:node-set($foreignKeyColumnsFragment)/child::*"/>
+			<xsl:variable name="foreignKeyColumns" select="exsl:node-set($foreignKeyColumnsFragment)/child::*"/>
 			<xsl:copy-of select="$foreignKeyColumns"/>
 			<xsl:if test="$isNullable and count($foreignKeyColumns)>1">
 				<dcl:checkConstraint name="{dsf:makeValidIdentifier(concat($conceptTypeRefName,'_Chk'))}">
@@ -483,7 +483,7 @@
 						</xsl:when>
 					</xsl:choose>
 				</xsl:variable>
-				<xsl:for-each select="msxsl:node-set($preferredIdentifierColumnsFragment)/child::*">
+				<xsl:for-each select="exsl:node-set($preferredIdentifierColumnsFragment)/child::*">
 					<dcl:columnRef name="{dsf:makeValidIdentifier(concat($conceptTypeRefPrefix,@name))}"/>
 				</xsl:for-each>
 			</xsl:when>
@@ -494,7 +494,7 @@
 						<xsl:with-param name="TargetInformationType" select="$Target"/>
 					</xsl:call-template>
 				</xsl:variable>
-				<dcl:columnRef name="{msxsl:node-set($informationTypeColumnFragment)/child::*/@name}"/>
+				<dcl:columnRef name="{exsl:node-set($informationTypeColumnFragment)/child::*/@name}"/>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

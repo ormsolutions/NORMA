@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 	xmlns:idMap="id-map-extension"
-	exclude-result-prefixes="#default msxsl">
+	exclude-result-prefixes="#default">
 
 	<!-- Templates to duplicate structure with new Ids -->
 	<xsl:template match="*">

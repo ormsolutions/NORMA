@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Copyright © Neumont University. All rights reserved.
 
@@ -13,7 +13,7 @@
 	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
 	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram"
 	exclude-result-prefixes="#default xsl">
-	<xsl:output method="xml" encoding="utf-8" indent="no"/>
+	<xsl:output method="xml" encoding="utf-8" media-type="application/orm+xml" indent="no"/>
 	<xsl:template match="orm:ORMModel">
 		<ormRoot:ORM2>
 			<xsl:copy-of select="."/>

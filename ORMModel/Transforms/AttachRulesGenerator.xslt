@@ -2,8 +2,7 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
-	xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+	xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator">
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<!-- Pick up param value supplied automatically by plix loader -->

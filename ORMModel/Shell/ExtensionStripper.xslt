@@ -1,16 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:nsu="urn:schemas-neumont-edu:ORM:NamespacesUtility"
 	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
 	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
-	extension-element-prefixes="msxsl nsu">
+	extension-element-prefixes="exsl nsu">
+
+	<xsl:output method="xml" encoding="utf-8" media-type="application/orm+xml" indent="no"/>
 
 	<xsl:variable name="whateverFragment">
 		<xsl:call-template name="GetNextSelectedNamespace"/>
 	</xsl:variable>
-	<xsl:variable name="selectedNamespaces" select="msxsl:node-set($whateverFragment)/child::*/@namespaceUri"/>
+	<xsl:variable name="selectedNamespaces" select="exsl:node-set($whateverFragment)/child::*/@namespaceUri"/>
 
 	<xsl:template name="AddNamespacePrefix">
 		<xsl:param name="Prefix"/>
@@ -25,7 +27,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:copy-of select="msxsl:node-set($DummyFragment)/child::*/namespace::node()[local-name()!='xml']"/>
+		<xsl:copy-of select="exsl:node-set($DummyFragment)/child::*/namespace::node()[local-name()!='xml']"/>
 	</xsl:template>
 
 	<xsl:template match="ormRoot:ORM2">

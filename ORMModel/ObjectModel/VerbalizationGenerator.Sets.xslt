@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+	xmlns:exsl="http://exslt.org/common"
+	extension-element-prefixes="exsl">
 
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
-	
+
 	<!-- This file is designed as an include in VerbalizationGenerator.xslt. The CustomToolNamespace,
 			 VerbalizationTextSnippetType, VerbalizationSet, and VerbalizationSets params are used in
 			 this file and defined in the containing file. They are redefined here (along with a root template)
@@ -115,7 +116,7 @@
 				<!-- Record if we're the last snippet element, or forward the data on -->
 				<xsl:choose>
 					<xsl:when test="position()=last()">
-						<xsl:for-each select="msxsl:node-set($matchFragment)/child::*">
+						<xsl:for-each select="exsl:node-set($matchFragment)/child::*">
 							<Snippet type="{@type}" text="{text()}"/>
 						</xsl:for-each>
 					</xsl:when>
@@ -137,7 +138,7 @@
 									<xsl:with-param name="Sign" select="$Sign"/>
 									<xsl:with-param name="MatchType" select="$MatchType"/>
 									<xsl:with-param name="BestMatch" select="string($passBestMatch)"/>
-									<xsl:with-param name="Match" select="msxsl:node-set($matchFragment)/child::*"/>
+									<xsl:with-param name="Match" select="exsl:node-set($matchFragment)/child::*"/>
 								</xsl:call-template>
 							</xsl:if>
 						</xsl:for-each>
@@ -164,7 +165,7 @@
 		<xsl:variable name="SortedSnippetsFragment">
 			<xsl:call-template name="GenerateSortedSnippetsFragment"/>
 		</xsl:variable>
-		<xsl:variable name="SortedSnippets" select="msxsl:node-set($SortedSnippetsFragment)/child::*"/>
+		<xsl:variable name="SortedSnippets" select="exsl:node-set($SortedSnippetsFragment)/child::*"/>
 		<!-- We're using the alethic positive snippet set twice (once for the text,
 		     once to generate the enum values, so go ahead and cache it -->
 		<xsl:variable name="alethicPositiveFragment">
@@ -174,7 +175,7 @@
 				<xsl:with-param name="Sign" select="'positive'"/>
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="alethicPositive" select="msxsl:node-set($alethicPositiveFragment)/child::*"/>
+		<xsl:variable name="alethicPositive" select="exsl:node-set($alethicPositiveFragment)/child::*"/>
 
 		<!-- Spit an enum of all snippet types -->
 		<plx:enum visibility="public" name="{$VerbalizationTextSnippetType}">
@@ -515,7 +516,7 @@
 				<plx:passParam>
 					<plx:callNew dataTypeName=".string" dataTypeIsSimpleArray="true">
 						<plx:arrayInitializer>
-							<xsl:for-each select="msxsl:node-set($SnippetsFragment)/child::*">
+							<xsl:for-each select="exsl:node-set($SnippetsFragment)/child::*">
 								<plx:passParam>
 									<plx:string>
 										<xsl:value-of select="@text"/>

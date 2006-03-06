@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	xmlns:exsl="http://exslt.org/common"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
+	extension-element-prefixes="exsl">
 
 	<xsl:include href="GenerateTuple.xslt"/>
-	
+
 	<!-- TODO: Determine if these classes are already available in the solution (or anything referenced by it) prior to generating them. -->
 	<xsl:template name="GenerateGlobalSupportClasses">
 		<xsl:variable name="PropertyChangeEventArgsClassBody">

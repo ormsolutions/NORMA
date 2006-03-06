@@ -15,10 +15,8 @@
 <xsl:stylesheet
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 	xmlns:idMap="id-map-extension"
-	xmlns:dmd="urn:schemas-microsoft-com:dmd"
-	exclude-result-prefixes="msxsl">
+	xmlns:dmd="urn:schemas-microsoft-com:dmd">
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<!-- Templates to duplicate structure with new Ids -->
 	<xsl:template match="*">

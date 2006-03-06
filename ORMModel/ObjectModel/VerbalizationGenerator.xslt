@@ -3,10 +3,10 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
->
+	xmlns:exsl="http://exslt.org/common"
+	extension-element-prefixes="exsl">
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
-	<xsl:output method="xml" encoding="utf-8"  indent="no"/>
+	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 	<xsl:preserve-space elements="ve:Snippet"/>
 	<!-- Pick up param value supplied automatically by plix loader -->
 	<xsl:param name="CustomToolNamespace" select="'TestNamespace'"/>
@@ -172,7 +172,7 @@
 				<xsl:variable name="factMockup">
 					<ve:Fact/>
 				</xsl:variable>
-				<xsl:apply-templates select="msxsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
+				<xsl:apply-templates select="exsl:node-set($factMockup)/child::*" mode="ConstraintVerbalization">
 					<xsl:with-param name="TopLevel" select="true()"/>
 				</xsl:apply-templates>
 				<plx:return>
@@ -265,7 +265,7 @@
 					<!--<xsl:apply-templates select="ve:EnableSubscripts" mode="SubscriptConditions"/>-->
 					<plx:trueKeyword/>
 				</xsl:variable>
-				<xsl:variable name="subscriptConditions" select="msxsl:node-set($subscriptConditionsFragment)/child::*"/>
+				<xsl:variable name="subscriptConditions" select="exsl:node-set($subscriptConditionsFragment)/child::*"/>
 
 				<!-- Pick up standard code we'll need for any constraint -->
 				<xsl:if test="$isRoleValue">
@@ -954,7 +954,7 @@
 			<xsl:variable name="conditionOperatorsFragment">
 				<xsl:apply-templates select="@*" mode="ConstraintConditionOperator"/>
 			</xsl:variable>
-			<xsl:for-each select="msxsl:node-set($conditionOperatorsFragment)/child::*">
+			<xsl:for-each select="exsl:node-set($conditionOperatorsFragment)/child::*">
 				<xsl:if test="position()=1">
 					<xsl:call-template name="CombineElements">
 						<xsl:with-param name="OperatorType" select="'booleanAnd'"/>
@@ -962,7 +962,7 @@
 				</xsl:if>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="conditionTest" select="msxsl:node-set($conditionTestFragment)/child::*"/>
+		<xsl:variable name="conditionTest" select="exsl:node-set($conditionTestFragment)/child::*"/>
 		<xsl:choose>
 			<xsl:when test="$conditionTest">
 				<xsl:variable name="branchType">
@@ -1666,7 +1666,7 @@
 		<xsl:variable name="conditionFragment">
 			<xsl:call-template name="ConditionalMatchCondition"/>
 		</xsl:variable>
-		<xsl:variable name="condition" select="msxsl:node-set($conditionFragment)/child::*"/>
+		<xsl:variable name="condition" select="exsl:node-set($conditionFragment)/child::*"/>
 		<xsl:for-each select="child::ve:Snippet">
 			<xsl:if test="position()=1">
 				<xsl:call-template name="ProcessSnippetConditions">
@@ -1695,7 +1695,7 @@
 		<xsl:variable name="conditionFragment">
 			<xsl:call-template name="ConditionalMatchCondition"/>
 		</xsl:variable>
-		<xsl:variable name="condition" select="msxsl:node-set($conditionFragment)/child::*"/>
+		<xsl:variable name="condition" select="exsl:node-set($conditionFragment)/child::*"/>
 		<xsl:choose>
 			<xsl:when test="$fallback">
 				<xsl:choose>
@@ -1780,7 +1780,7 @@
 		<xsl:variable name="conditionFragment">
 			<xsl:call-template name="ConditionalMatchCondition"/>
 		</xsl:variable>
-		<xsl:variable name="condition" select="msxsl:node-set($conditionFragment)/child::*"/>
+		<xsl:variable name="condition" select="exsl:node-set($conditionFragment)/child::*"/>
 		<xsl:choose>
 			<xsl:when test="$fallback">
 				<xsl:choose>
@@ -1936,7 +1936,7 @@
 				</xsl:call-template>
 			</xsl:if>
 		</xsl:variable>
-		<xsl:variable name="condition" select="msxsl:node-set($conditionFragment)/child::*"/>
+		<xsl:variable name="condition" select="exsl:node-set($conditionFragment)/child::*"/>
 		<xsl:if test="$condition">
 			<xsl:text disable-output-escaping="yes"><![CDATA[<plx:branch><plx:condition>]]></xsl:text>
 			<xsl:copy-of select="$condition"/>
@@ -2433,7 +2433,7 @@
 		<xsl:variable name="conditionalsFragment">
 			<xsl:apply-templates select="@*" mode="SubscriptFilterOperators"/>
 		</xsl:variable>
-		<xsl:variable name="conditions" select="msxsl:node-set($conditionalsFragment)/child::*"/>
+		<xsl:variable name="conditions" select="exsl:node-set($conditionalsFragment)/child::*"/>
 		<xsl:choose>
 			<xsl:when test="count($conditions)">
 				<xsl:for-each select="$conditions">
@@ -2580,7 +2580,7 @@
 				<plx:nameRef name="{$FirstPassVariable}"/>
 			</xsl:if>
 		</xsl:variable>
-		<xsl:for-each select="msxsl:node-set($operatorsFragment)/child::*">
+		<xsl:for-each select="exsl:node-set($operatorsFragment)/child::*">
 			<xsl:if test="position()=1">
 				<xsl:call-template name="CombineElements">
 					<xsl:with-param name="OperatorType" select="'booleanAnd'"/>
@@ -3205,7 +3205,7 @@
 					<xsl:with-param name="IteratorVariableName" select="$iterVarName"/>
 				</xsl:apply-templates>
 			</xsl:variable>
-			<xsl:for-each select="msxsl:node-set($filterOperatorsFragment)/child::*">
+			<xsl:for-each select="exsl:node-set($filterOperatorsFragment)/child::*">
 				<xsl:if test="position()=1">
 					<xsl:call-template name="CombineElements">
 						<xsl:with-param name="OperatorType" select="'booleanAnd'"/>
@@ -3213,7 +3213,7 @@
 				</xsl:if>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="filterTest" select="msxsl:node-set($filterTestFragment)/child::*"/>
+		<xsl:variable name="filterTest" select="exsl:node-set($filterTestFragment)/child::*"/>
 		<xsl:variable name="filteredCountVarName" select="concat($VariablePrefix,'FilteredCount',$VariableDecorator)"/>
 		<xsl:variable name="filteredIterVarName" select="concat($VariablePrefix,'FilteredIter',$VariableDecorator)"/>
 		<xsl:variable name="trackFirstPass" select="0!=count(descendant::ve:PredicateReplacement[@pass='first'])"/>
@@ -4157,7 +4157,7 @@
 					<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
 				</xsl:apply-templates>
 			</xsl:variable>
-			<xsl:for-each select="msxsl:node-set($filterOperatorsFragment)/child::*">
+			<xsl:for-each select="exsl:node-set($filterOperatorsFragment)/child::*">
 				<xsl:if test="position()=1">
 					<xsl:call-template name="CombineElements">
 						<xsl:with-param name="OperatorType" select="'booleanAnd'"/>
@@ -4165,7 +4165,7 @@
 				</xsl:if>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="filterTest" select="msxsl:node-set($filterTestFragment)/child::*"/>
+		<xsl:variable name="filterTest" select="exsl:node-set($filterTestFragment)/child::*"/>
 
 		<!-- Get the count for the set in a value, which will be used either to
 			 increment the full count or as a filter upper bound -->
@@ -4196,7 +4196,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:variable name="setCountValue" select="msxsl:node-set($setCountValueFragment)/child::*"/>
+		<xsl:variable name="setCountValue" select="exsl:node-set($setCountValueFragment)/child::*"/>
 		<xsl:choose>
 			<xsl:when test="$filterTest">
 				<plx:loop>
@@ -4244,7 +4244,7 @@
 													<xsl:text>allConstraintRoles</xsl:text>
 												</xsl:when>
 												<xsl:when test="$contextMatch='excluded'">
-													<xsl:text>factRoles</xsl:text>	
+													<xsl:text>factRoles</xsl:text>
 												</xsl:when>
 											</xsl:choose>
 										</xsl:attribute>

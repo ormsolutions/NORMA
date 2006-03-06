@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Copyright © Neumont University. All rights reserved.
 
@@ -9,9 +9,9 @@
 	3. This notice may not be removed or altered from any source distribution.
 -->
 <!-- Contributors: Corey Kaylor, Kevin M. Owen -->
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
 	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
@@ -19,7 +19,7 @@
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
-	extension-element-prefixes="msxsl dsf"
+	extension-element-prefixes="exsl dsf"
 	exclude-result-prefixes="dml dms dep ddt dil ddl">
 
 	<xsl:import href="DDILtoSQLStandard.xslt"/>
@@ -33,7 +33,7 @@
 		<xsl:variable name="domainInlinedDilFragment">
 			<xsl:apply-templates mode="DomainInliner" select="."/>
 		</xsl:variable>
-		<xsl:apply-templates select="msxsl:node-set($domainInlinedDilFragment)/child::*"/>
+		<xsl:apply-templates select="exsl:node-set($domainInlinedDilFragment)/child::*"/>
 	</xsl:template>
 
 	<xsl:template match="dms:startTransactionStatement">
@@ -46,7 +46,7 @@
 			<xsl:when test="@accessMode">
 				<xsl:value-of select="@accessMode"/>
 			</xsl:when>
-		</xsl:choose>		
+		</xsl:choose>
 		<xsl:value-of select="$StatementDelimeter"/>
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
@@ -163,5 +163,5 @@
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates/>
 	</xsl:template>
-		
+
 </xsl:stylesheet>

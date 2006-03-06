@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Copyright © Neumont University. All rights reserved.
 
@@ -9,16 +9,16 @@
 	3. This notice may not be removed or altered from any source distribution.
 -->
 <!-- Contributors: Corey Kaylor, Kevin M. Owen -->
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
-	extension-element-prefixes="msxsl"
+	extension-element-prefixes="exsl"
 	exclude-result-prefixes="dml dms dep ddt dil ddl">
 
 	<xsl:import href="DDILtoSQLStandard.xslt"/>
@@ -31,7 +31,7 @@
 		<xsl:variable name="domainInlinedDilFragment">
 			<xsl:apply-templates mode="DomainInliner" select="."/>
 		</xsl:variable>
-		<xsl:apply-templates select="msxsl:node-set($domainInlinedDilFragment)/child::*"/>
+		<xsl:apply-templates select="exsl:node-set($domainInlinedDilFragment)/child::*"/>
 	</xsl:template>
 
 	<xsl:template match="ddl:schemaDefinition">
@@ -52,7 +52,7 @@
 			<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
 		</xsl:apply-templates>
 	</xsl:template>
-	
+
 	<xsl:template match="dms:startTransactionStatement">
 		<xsl:text>BEGIN TRANSACTION</xsl:text>
 		<xsl:value-of select="$StatementDelimeter"/>
@@ -76,11 +76,11 @@
 		<xsl:text> </xsl:text>
 	</xsl:template>
 
-	<xsl:template match="ddl:sequenceGeneratorStartWithOption">		
+	<xsl:template match="ddl:sequenceGeneratorStartWithOption">
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="ddl:sequenceGeneratorIncrementByOption">	
+	<xsl:template match="ddl:sequenceGeneratorIncrementByOption">
 		<xsl:apply-templates/>
 	</xsl:template>
 
@@ -88,16 +88,16 @@
 		<xsl:choose>
 			<xsl:when test="@type='CHARACTER' or @type='CHARACTER VARYING'">
 				<xsl:if test="@type='CHARACTER'">
-					<xsl:text>NATIONAL </xsl:text>					
+					<xsl:text>NATIONAL </xsl:text>
 				</xsl:if>
 				<xsl:if test="@type='CHARACTER VARYING'">
-					<xsl:text>NATIONAL </xsl:text>					
+					<xsl:text>NATIONAL </xsl:text>
 				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:apply-imports/>
 			</xsl:otherwise>
-		</xsl:choose>		
+		</xsl:choose>
 		<xsl:value-of select="@type"/>
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:value-of select="@length"/>
@@ -129,17 +129,17 @@
 			</xsl:when>
 			<xsl:when test="@specification='LEADING'">
 				<xsl:text>LTRIM</xsl:text>
-				<xsl:value-of select="$LeftParen"/>				
+				<xsl:value-of select="$LeftParen"/>
 				<xsl:apply-templates select="dep:trimSource"/>
-				<xsl:value-of select="$RightParen"/>				
+				<xsl:value-of select="$RightParen"/>
 			</xsl:when>
-			<xsl:when test="@specification='TRAILING'">				
+			<xsl:when test="@specification='TRAILING'">
 				<xsl:text>RTRIM</xsl:text>
 				<xsl:value-of select="$LeftParen"/>
 				<xsl:apply-templates select="dep:trimSource"/>
-				<xsl:value-of select="$RightParen"/>				
+				<xsl:value-of select="$RightParen"/>
 			</xsl:when>
-		</xsl:choose>				
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="@onUpdate" mode="ForReferenceSpecification">
@@ -151,7 +151,7 @@
 			<xsl:otherwise>
 				<xsl:value-of select="."/>
 			</xsl:otherwise>
-		</xsl:choose>		
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="@onDelete" mode="ForReferenceSpecification">
@@ -187,14 +187,14 @@
 						<xsl:variable name="table" select="concat($tableName, '_')"/>
 						<xsl:value-of select="concat($table, @name)"/>
 					</xsl:otherwise>
-				</xsl:choose>				
+				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="@name"/>
 			</xsl:otherwise>
-		</xsl:choose>		
+		</xsl:choose>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates/>
 	</xsl:template>
-	
+
 </xsl:stylesheet>

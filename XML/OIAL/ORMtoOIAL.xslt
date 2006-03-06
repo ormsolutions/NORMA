@@ -14,12 +14,12 @@
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
 	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
 	xmlns:odt="http://schemas.orm.net/ORMDataTypes"
 	xmlns:oil="http://schemas.orm.net/OIAL"
-	extension-element-prefixes="msxsl"
+	extension-element-prefixes="exsl"
 	exclude-result-prefixes="orm ormRoot">
 
 	<xsl:import href="CoRefORM.xslt"/>
@@ -48,7 +48,7 @@
 				<xsl:with-param name="Model" select="$SourceModel"/>
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="Model" select="msxsl:node-set($ModelFragment)/child::*"/>
+		<xsl:variable name="Model" select="exsl:node-set($ModelFragment)/child::*"/>
 
 		<xsl:variable name="objectsAndFacts" select="($Model/orm:Objects|$Model/orm:Facts)/child::*"/>
 
@@ -62,7 +62,7 @@
 				</xsl:copy>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="ObjectTypeInformation" select="msxsl:node-set($ObjectTypeInformationFragment)/child::*"/>
+		<xsl:variable name="ObjectTypeInformation" select="exsl:node-set($ObjectTypeInformationFragment)/child::*"/>
 
 		<!-- NOTE: The descriptions below EXCLUDE facts that are part of the preferred reference mode. -->
 		<!-- Get independent object types. -->
@@ -184,7 +184,7 @@
 				</AbsorbFactType>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="FactTypeAbsorptions" select="msxsl:node-set($FactTypeAbsorptionsFragment)/child::*"/>
+		<xsl:variable name="FactTypeAbsorptions" select="exsl:node-set($FactTypeAbsorptionsFragment)/child::*"/>
 
 		<xsl:variable name="ObjectTypeAbsorptionsFragment">
 			<xsl:for-each select="$NonIndependentSubtypeObjectTypes">
@@ -221,7 +221,7 @@
 				</xsl:for-each>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="ObjectTypeAbsorptions" select="msxsl:node-set($ObjectTypeAbsorptionsFragment)/child::*"/>
+		<xsl:variable name="ObjectTypeAbsorptions" select="exsl:node-set($ObjectTypeAbsorptionsFragment)/child::*"/>
 
 		<!-- Get the non-independent, non-subtype object types that play at least one functional role (not including their preferred identifier) that isn't absorbed away from that object type. -->
 		<xsl:variable name="NonAbsorbedFunctionalRolePlayingObjectTypesFragment">
@@ -232,7 +232,7 @@
 				</xsl:if>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="NonAbsorbedFunctionalRolePlayingObjectTypes" select="msxsl:node-set($NonAbsorbedFunctionalRolePlayingObjectTypesFragment)/child::*"/>
+		<xsl:variable name="NonAbsorbedFunctionalRolePlayingObjectTypes" select="exsl:node-set($NonAbsorbedFunctionalRolePlayingObjectTypesFragment)/child::*"/>
 
 		<!-- Get the independent object types and object types that play functional roles that are not absorbed by something else. -->
 		<xsl:variable name="TopLevelTypes" select="$IndependentObjectTypes | $NonAbsorbedFunctionalRolePlayingObjectTypes"/>
@@ -311,7 +311,7 @@
 				</xsl:call-template>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="inheritedPlayedRoles" select="msxsl:node-set($inheritedPlayedRolesFragment)/child::*"/>
+		<xsl:variable name="inheritedPlayedRoles" select="exsl:node-set($inheritedPlayedRolesFragment)/child::*"/>
 
 		<!-- All roles directly played by this object type or its supertype(s). -->
 		<xsl:variable name="directAndInheritedPlayedRoles" select="$directPlayedRoles | $inheritedPlayedRoles"/>
@@ -442,7 +442,7 @@
 				<xsl:with-param name="Model" select="$Model"/>
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:copy-of select="msxsl:node-set($allInformationFragment)/child::*[local-name()=$RequestedInformation]/child::*"/>
+		<xsl:copy-of select="exsl:node-set($allInformationFragment)/child::*[local-name()=$RequestedInformation]/child::*"/>
 	</xsl:template>
 
 	<xsl:template match="orm:ValueType" mode="GenerateInformationTypeFormats">
@@ -676,7 +676,7 @@
 					<xsl:copy-of select="$oppositeOilValueConstraint"/>
 				</xsl:variable>
 				<!-- HACK: This node-set() call doesn't strictly need to be here, but if it is not, the output formatting done by the processor gets screwed up. -->
-				<xsl:variable name="oilConstraints" select="msxsl:node-set($oilConstraintsFragment)/child::*"/>
+				<xsl:variable name="oilConstraints" select="exsl:node-set($oilConstraintsFragment)/child::*"/>
 				<xsl:choose>
 					<xsl:when test="not(string-length($oppositeRolePlayerDesiredParentOrTopLevelTypeId))">
 						<xsl:call-template name="GetOilInformationTypes">
@@ -767,7 +767,7 @@
 												<xsl:with-param name="OilConstraints" select="$oilConstraints"/>
 											</xsl:call-template>
 										</xsl:variable>
-										<xsl:for-each select="msxsl:node-set($informationTypesFragment)/child::*">
+										<xsl:for-each select="exsl:node-set($informationTypesFragment)/child::*">
 											<oil:typeRef targetConceptType="{$thisObjectTypeName}" targetChild="{@name}"/>
 										</xsl:for-each>
 									</xsl:when>
@@ -788,7 +788,7 @@
 					</xsl:for-each>
 				</xsl:variable>
 				<!-- HACK: This node-set() call doesn't strictly need to be here, but if it is not, the output formatting done by the processor gets screwed up. -->
-				<xsl:variable name="roleSequences" select="msxsl:node-set($roleSequencesFragment)/child::*"/>
+				<xsl:variable name="roleSequences" select="exsl:node-set($roleSequencesFragment)/child::*"/>
 				<xsl:variable name="modality">
 					<xsl:call-template name="GetModality">
 						<xsl:with-param name="Target" select="."/>
@@ -871,7 +871,7 @@
 
 			<!-- HACK: This node-set() call doesn't strictly need to be here, but if it is not, the output formatting done by the processor gets screwed up. -->
 			<!-- This copy-of needs to be the last thing to put child elements into this conceptType. -->
-			<xsl:copy-of select="msxsl:node-set($OilConstraintsFromParent)/child::*"/>
+			<xsl:copy-of select="exsl:node-set($OilConstraintsFromParent)/child::*"/>
 
 		</oil:conceptType>
 	</xsl:template>
@@ -987,7 +987,7 @@
 				<xsl:with-param name="OilConstraints" select="$OilConstraints"/>
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="oilInformationTypes" select="msxsl:node-set($oilInformationTypesFragment)/child::*"/>
+		<xsl:variable name="oilInformationTypes" select="exsl:node-set($oilInformationTypesFragment)/child::*"/>
 		<xsl:copy-of select="$oilInformationTypes"/>
 		<!-- Check if there is more than one informationType. If there is, and they aren't all alethicly mandatory, we need to spit an equalityConstraint for them. -->
 		<xsl:if test="count($oilInformationTypes)>1 and $oilInformationTypes[not(@mandatory='alethic')]">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Copyright © Neumont University. All rights reserved.
 
@@ -9,18 +9,18 @@
 	3. This notice may not be removed or altered from any source distribution.
 -->
 <!-- Contributors: Corey Kaylor, Kevin M. Owen -->
-<xsl:stylesheet version="1.0" 
+<xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
 	xmlns:dep="http://schemas.orm.net/DIL/DILEP"
 	xmlns:ddt="http://schemas.orm.net/DIL/DILDT"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
-	extension-element-prefixes="msxsl"
+	extension-element-prefixes="exsl"
 	exclude-result-prefixes="dml dms dep ddt dil ddl">
-	
+
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
@@ -109,7 +109,7 @@
 	<!-- Table Definition pg.525 -->
 
 	<xsl:template match="ddl:tableDefinition">
-		<xsl:param name="indent"/>		
+		<xsl:param name="indent"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:text>CREATE </xsl:text>
 		<xsl:apply-templates select="@scope" mode="ForTableDefinition"/>
@@ -163,18 +163,18 @@
 		<xsl:param name="indent"/>
 		<xsl:value-of select="$indent"/>
 		<xsl:apply-templates select="@name" mode="ForColumnDefinition"/>
-		<xsl:apply-templates select="ddt:boolean | ddt:characterString | ddt:binaryString | ddt:exactNumeric | ddt:approximateNumeric | ddt:date | ddt:time | ddt:interval | ddt:domain"/>		
+		<xsl:apply-templates select="ddt:boolean | ddt:characterString | ddt:binaryString | ddt:exactNumeric | ddt:approximateNumeric | ddt:date | ddt:time | ddt:interval | ddt:domain"/>
 		<xsl:apply-templates select="ddl:defaultClause"/>
 		<xsl:apply-templates select="ddl:identityColumnSpecification"/>
 		<xsl:apply-templates select="ddl:generationClause"/>
 		<xsl:apply-templates select="ddl:columnConstraintDefinition"/>
 		<xsl:choose>
-			<xsl:when test="position()=last() and not(following-sibling::*)">				
+			<xsl:when test="position()=last() and not(following-sibling::*)">
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>, </xsl:text>
 			</xsl:otherwise>
-		</xsl:choose>		
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="ddl:generationClause">
@@ -245,7 +245,7 @@
 	</xsl:template>
 
 	<xsl:template match="ddt:time">
-		<xsl:value-of select="@type"/>		
+		<xsl:value-of select="@type"/>
 		<xsl:apply-templates select="@precision" mode="ForTimeDataType"/>
 		<xsl:apply-templates select="@zone" mode="ForDateDataType"/>
 		<xsl:text> </xsl:text>
@@ -265,7 +265,7 @@
 			<xsl:text>.</xsl:text>
 		</xsl:if>
 		<xsl:value-of select="@name"/>
-		<xsl:text> </xsl:text>		
+		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<xsl:template match="ddl:identityColumnSpecification">
@@ -304,10 +304,10 @@
 		<xsl:if test="not(@shouldCycle)">
 			<xsl:text>NO </xsl:text>
 		</xsl:if>
-		<xsl:text>CYCLE</xsl:text>		
+		<xsl:text>CYCLE</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="@precision" mode="ForIntervalDataType">		
+	<xsl:template match="@precision" mode="ForIntervalDataType">
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:value-of select="."/>
 		<xsl:value-of select="$RightParen"/>
@@ -330,7 +330,7 @@
 
 	<xsl:template match="@precision" mode="ForExactNumeric">
 		<xsl:value-of select="$LeftParen"/>
-		<xsl:value-of select="."/>		
+		<xsl:value-of select="."/>
 	</xsl:template>
 
 	<xsl:template match="@scale" mode="ForExactNumeric">
@@ -481,7 +481,7 @@
 	</xsl:template>
 
 	<xsl:template match="dep:valueKeyword">
-		<xsl:text>VALUE</xsl:text>		
+		<xsl:text>VALUE</xsl:text>
 	</xsl:template>
 
 	<!-- End of Column Definition -->
@@ -534,7 +534,7 @@
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
-	<xsl:template match="dep:numericMultiplication">		
+	<xsl:template match="dep:numericMultiplication">
 		<xsl:value-of select="$LeftParen"/>
 		<xsl:apply-templates select="child::*[1]"/>
 		<xsl:text> * </xsl:text>
@@ -635,7 +635,7 @@
 				</xsl:for-each>
 				<xsl:value-of select="$RightParen"/>
 			</xsl:otherwise>
-		</xsl:choose>		
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="dep:parenthesizedValueExpression">
@@ -647,7 +647,7 @@
 	<xsl:template match="dep:charLengthExpression">
 		<xsl:text>CHARACTER_LENGTH</xsl:text>
 		<xsl:value-of select="$LeftParen"/>
-		<xsl:apply-templates/>		
+		<xsl:apply-templates/>
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
@@ -736,7 +736,7 @@
 		</xsl:if>
 		<xsl:apply-templates select="@name" mode="ForConstraintNameDefinition"/>
 		<xsl:text> </xsl:text>
-		<xsl:apply-templates/>	
+		<xsl:apply-templates/>
 	</xsl:template>
 
 	<xsl:template match="@name" mode="ForConstraintNameDefinition">
@@ -779,12 +779,12 @@
 
 	<xsl:template match="ddl:referentialConstraintDefinition">
 		<xsl:text>FOREIGN KEY </xsl:text>
-		<xsl:value-of select="$LeftParen"/>		
-		<xsl:apply-templates select="ddl:column"/>		
+		<xsl:value-of select="$LeftParen"/>
+		<xsl:apply-templates select="ddl:column"/>
 		<xsl:value-of select="$RightParen"/>
 		<xsl:text> </xsl:text>
 		<xsl:apply-templates select="child::*[not(self::ddl:column)]"/>
-	</xsl:template>	
+	</xsl:template>
 
 	<xsl:template match="ddl:referencesSpecification">
 		<xsl:text> REFERENCES </xsl:text>
@@ -824,8 +824,8 @@
 		<xsl:apply-templates/>
 		<xsl:value-of select="$RightParen"/>
 		<xsl:text> </xsl:text>
-	</xsl:template>	
-	
+	</xsl:template>
+
 	<!-- End of Table Constraint Definition -->
 
 	<!-- Start Transaction Statement -->
@@ -839,7 +839,7 @@
 		<xsl:value-of select="$NewLine"/>
 		<xsl:value-of select="$NewLine"/>
 	</xsl:template>
-	
+
 	<!-- Start Transaction Statement -->
 
 	<!-- Alter Table Statement -->
@@ -870,15 +870,15 @@
 
 	<xsl:template match="ddl:addColumnDefinition">
 		<xsl:text>ADD COLUMN </xsl:text>
-		<xsl:apply-templates/>		
+		<xsl:apply-templates/>
 	</xsl:template>
 
 	<!-- End of Alter Table Statement -->
 
 	<xsl:template name="RenderIdentifier">
 		<xsl:param name="name"/>
-		<xsl:value-of select="$name"/>		
+		<xsl:value-of select="$name"/>
 	</xsl:template>
-	
-		
+
+
 </xsl:stylesheet>

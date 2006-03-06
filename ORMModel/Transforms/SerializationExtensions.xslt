@@ -3,7 +3,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:se="http://schemas.neumont.edu/ORM/SDK/SerializationExtensions"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+	xmlns:exsl="http://exslt.org/common">
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 
@@ -558,7 +558,7 @@
 									</xsl:if>
 								</xsl:for-each>
 							</xsl:variable>
-							<xsl:variable name="SortedLevels" select="msxsl:node-set($SortedLevelsFragment)"/>
+							<xsl:variable name="SortedLevels" select="exsl:node-set($SortedLevelsFragment)"/>
 							<plx:local name="metaDataDir" dataTypeName="MetaDataDirectory">
 								<plx:initialize>
 									<plx:callInstance name="MetaDataDirectory" type="property">
@@ -687,7 +687,7 @@
 								<Value>x</Value>
 								<Value>y</Value>
 							</xsl:variable>
-							<xsl:for-each select="msxsl:node-set($paramVals)/child::*">
+							<xsl:for-each select="exsl:node-set($paramVals)/child::*">
 								<plx:local name="{.}Pos" dataTypeName=".i4"/>
 								<plx:branch>
 									<plx:condition>
@@ -891,7 +891,7 @@
 						</xsl:copy>
 					</xsl:for-each>
 				</xsl:variable>
-				<xsl:variable name="linksInChildElement" select="msxsl:node-set($linksInChildElementFragment)/child::*"/>
+				<xsl:variable name="linksInChildElement" select="exsl:node-set($linksInChildElementFragment)/child::*"/>
 				<xsl:variable name="childElements" select="se:ChildElement"/>
 				<xsl:variable name="allLinksTemp">
 					<xsl:for-each select="se:Link[not(@WriteStyle='NotWritten')]">
@@ -917,7 +917,7 @@
 						</xsl:choose>
 					</xsl:for-each>
 				</xsl:variable>
-				<xsl:variable name="allLinks" select="msxsl:node-set($allLinksTemp)/child::*"/>
+				<xsl:variable name="allLinks" select="exsl:node-set($allLinksTemp)/child::*"/>
 
 				<xsl:for-each select="$allLinks">
 					<xsl:choose>
@@ -987,7 +987,7 @@
 							</xsl:if>
 						</xsl:for-each>
 					</xsl:variable>
-					<xsl:variable name="localLinks" select="msxsl:node-set($localLinksFragment)/child::*"/>
+					<xsl:variable name="localLinks" select="exsl:node-set($localLinksFragment)/child::*"/>
 					<xsl:if test="count($localLinks)">
 						<xsl:variable name="containerName" select="@Name"/>
 						<xsl:for-each select="$localLinks">
@@ -1054,7 +1054,7 @@
 							</xsl:if>
 						</xsl:for-each>
 					</xsl:variable>
-					<xsl:variable name="links" select="msxsl:node-set($linksFragment)/child::*"/>
+					<xsl:variable name="links" select="exsl:node-set($linksFragment)/child::*"/>
 					<xsl:if test="count($links)">
 						<plx:callInstance name="InitializeRoles">
 							<plx:callObject>
@@ -1159,7 +1159,7 @@
 					</plx:callInstance>
 				</xsl:for-each>
 			</xsl:variable>
-			<xsl:variable name="mapChildElementBody" select="msxsl:node-set($mapChildElementBodyFragment)/child::*"/>
+			<xsl:variable name="mapChildElementBody" select="exsl:node-set($mapChildElementBodyFragment)/child::*"/>
 			<xsl:variable name="hasMappedChildElements" select="0!=count($mapChildElementBody)"/>
 			<xsl:if test="$hasMappedChildElements">
 				<plx:field name="myChildElementMappings" dataTypeName="Dictionary" visibility="private" static="true">
@@ -2200,7 +2200,7 @@
 				</xsl:element>
 			</xsl:if>
 		</xsl:variable>
-		<xsl:variable name="supportedOperations" select="msxsl:node-set($supportedOperationsFragment)"/>
+		<xsl:variable name="supportedOperations" select="exsl:node-set($supportedOperationsFragment)"/>
 		<xsl:variable name="operationCount" select="count($supportedOperations/child::*)"/>
 		<xsl:choose>
 			<xsl:when test="$operationCount=0">

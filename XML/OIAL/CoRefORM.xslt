@@ -12,7 +12,16 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot" xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:loc="urn:local-temps" xmlns:xs="http://www.w3.org/2001/XMLSchema" extension-element-prefixes="msxsl" exclude-result-prefixes="loc xs">
+<xsl:stylesheet version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
+	xmlns:exsl="http://exslt.org/common"
+	xmlns:loc="urn:local-temps"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	extension-element-prefixes="exsl"
+	exclude-result-prefixes="loc xs">
+
 	<xsl:param name="CoRefOppositeRoleIdDecorator" select="'_opposite'"/>
 	<xsl:param name="CoRefInternalUniquenessIdDecorator" select="'_unique'"/>
 	<xsl:param name="CoRefInternalUniquenessNameDecorator" select="'_unique'"/>
@@ -81,7 +90,7 @@
 		<xsl:variable name="RoleMapFragment">
 			<xsl:apply-templates select="$Model/orm:ExternalConstraints/orm:ImpliedEqualityConstraint" mode="BuildRoleMap"/>
 		</xsl:variable>
-		<xsl:variable name="RoleMap" select="msxsl:node-set($RoleMapFragment)/child::*"/>
+		<xsl:variable name="RoleMap" select="exsl:node-set($RoleMapFragment)/child::*"/>
 		<xsl:variable name="ObjectifiedTypes" select="$Model/orm:Objects/orm:ObjectifiedType"/>
 		<xsl:variable name="ImpliedFacts" select="$Model/orm:Facts/orm:ImpliedFact[orm:ImpliedByObjectification]" />
 		<xsl:variable name="ImpliedExternalUniquenessConstraints" select="$Model/orm:ExternalConstraints/orm:ImpliedExternalUniquenessConstraint" />
@@ -112,7 +121,7 @@
 				</xsl:copy>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="ObjectifiedFacts" select="msxsl:node-set($ObjectifiedFactsFragment)/child::*"/>
+		<xsl:variable name="ObjectifiedFacts" select="exsl:node-set($ObjectifiedFactsFragment)/child::*"/>
 		<!-- At one point BinarizableFacts were known as MultiRoleUniquenessFactTypes. Enough said. -->
 		<xsl:variable name="BinarizableFacts" select="$Model/orm:Facts/orm:Fact[not(@id=$ObjectifiedFacts/@id) and (orm:InternalConstraints/orm:InternalUniquenessConstraint/orm:RoleSequence[count(orm:Role)>1] or count(orm:FactRoles/orm:Role)=1)]"/>
 

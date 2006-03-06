@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Copyright © Neumont University. All rights reserved.
 
@@ -13,11 +13,11 @@
 	xmlns:oldDiagram="http://schemas.neumont.edu/ORM/ORMDiagram"
 	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
 	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt" 
+	xmlns:exsl="http://exslt.org/common"
 	exclude-result-prefixes="#default xsl oldRoot oldDiagram"
-	extension-element-prefixes="msxsl">
+	extension-element-prefixes="exsl">
 	<xsl:import href="CoreUpgradeTo2006-01.xslt"/>
-	<xsl:output method="xml" encoding="utf-8" indent="no"/>
+	<xsl:output method="xml" encoding="utf-8" media-type="application/orm+xml" indent="no"/>
 	<!-- Note: processing for default elements done in core -->
 	<xsl:template name="AddNamespacePrefix">
 		<xsl:param name="Prefix"/>
@@ -32,7 +32,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:copy-of select="msxsl:node-set($DummyFragment)/child::*/namespace::*[local-name()!='xml']"/>
+		<xsl:copy-of select="exsl:node-set($DummyFragment)/child::*/namespace::*[local-name()!='xml']"/>
 	</xsl:template>
 	<xsl:template match="oldRoot:ORM2">
 		<!-- The extension mechanism requires all namespaces used in the file to be specified on

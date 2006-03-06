@@ -11,7 +11,7 @@
 <!-- Contributors: Kevin M. Owen, Corey Kaylor -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:dsf="urn:schemas-orm-net:DIL:DILSupportFunctions"
 	xmlns:dcl="http://schemas.orm.net/DIL/DCIL"
 	xmlns:dil="http://schemas.orm.net/DIL/DIL"
@@ -20,7 +20,7 @@
 	xmlns:ddl="http://schemas.orm.net/DIL/DDIL"
 	xmlns:dml="http://schemas.orm.net/DIL/DMIL"
 	xmlns:dms="http://schemas.orm.net/DIL/DILMS"
-	extension-element-prefixes="msxsl dsf">
+	extension-element-prefixes="exsl dsf">
 
 	<xsl:import href="DILSupportFunctions.xslt"/>
 

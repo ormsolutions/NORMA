@@ -14,13 +14,13 @@
 -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+	xmlns:exsl="http://exslt.org/common"
 	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
 	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
 	xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram"
 	exclude-result-prefixes="#default xsl"
-	extension-element-prefixes="msxsl">
-	<xsl:output method="xml" encoding="utf-8" indent="no"/>
+	extension-element-prefixes="exsl">
+	<xsl:output method="xml" encoding="utf-8" media-type="application/orm+xml" indent="no"/>
 	<xsl:variable name="apos" select='"&apos;"' />
 	<xsl:variable name="seperator" select='", "' />
 	<!--We Shouldn't have to do this for some reason the importer will not run without it.-->
@@ -399,8 +399,8 @@
 						<xsl:copy-of select="."/>
 					</xsl:for-each>
 				</xsl:variable>
-				<xsl:variable name="factRoleIDsAscending" select="msxsl:node-set($factRoleIDsAscendingFrag)/child::*"/>
-				<xsl:variable name="factRoleIDsDescending" select="msxsl:node-set($factRoleIDsDescendingFrag)/child::*"/>
+				<xsl:variable name="factRoleIDsAscending" select="exsl:node-set($factRoleIDsAscendingFrag)/child::*"/>
+				<xsl:variable name="factRoleIDsDescending" select="exsl:node-set($factRoleIDsDescendingFrag)/child::*"/>
 				<xsl:choose>
 					<xsl:when test="$location = 1">
 						<xsl:for-each select="$factRoleIDsAscending">
@@ -601,7 +601,7 @@
 				<xsl:copy-of select="."/>
 			</xsl:for-each>
 		</xsl:variable>
-		<xsl:variable name="externalConstraints" select="msxsl:node-set($externalConstraintsFragment)/child::*"/>
+		<xsl:variable name="externalConstraints" select="exsl:node-set($externalConstraintsFragment)/child::*"/>
 		<xsl:if test="count($externalConstraints) &gt; 0">
 			<orm:ExternalConstraints>
 				<xsl:for-each select="$externalConstraints">
@@ -718,9 +718,9 @@
 						<xsl:copy-of select="."/>
 					</xsl:for-each>
 				</xsl:variable>
-				<xsl:copy-of select="msxsl:node-set($allValueTypes)/child::*[position()=last() or following-sibling::*[1]/@ConceptualDatatype!=@ConceptualDatatype]"/>
+				<xsl:copy-of select="exsl:node-set($allValueTypes)/child::*[position()=last() or following-sibling::*[1]/@ConceptualDatatype!=@ConceptualDatatype]"/>
 			</xsl:variable>
-			<xsl:variable name="uniqueConceptualDatatypes" select="msxsl:node-set($uniqueConceptualDatatypesFragment)/child::*"/>
+			<xsl:variable name="uniqueConceptualDatatypes" select="exsl:node-set($uniqueConceptualDatatypesFragment)/child::*"/>
 			<xsl:variable name="uniqueConceptualDatatypes2Fragment">
 				<xsl:for-each select="$uniqueConceptualDatatypes">
 					<xsl:choose>
@@ -744,7 +744,7 @@
 					</xsl:choose>
 				</xsl:for-each>
 			</xsl:variable>
-			<xsl:variable name="uniqueConceptualDatatypes2" select="msxsl:node-set($uniqueConceptualDatatypes2Fragment)/child::*"/>
+			<xsl:variable name="uniqueConceptualDatatypes2" select="exsl:node-set($uniqueConceptualDatatypes2Fragment)/child::*"/>
 			<xsl:for-each select="$uniqueConceptualDatatypes2">
 				<xsl:choose>
 					<xsl:when test="contains(., 'R-Fixed Length')">
