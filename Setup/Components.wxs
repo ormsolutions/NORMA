@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -129,7 +129,7 @@
 						<Directory Id="Help" Name="Help">
 							<!-- Help files go here -->
 							<Component Id="NORMAVSHelpComponent" Guid="31ED0AEA-D66C-4AD0-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-								<File Id="Creating_ORM_Schemas.pdf" Name="CrORMSch.pdf" LongName="Creating ORM Schemas.pdf" src="..\Documentation\NORMA_Creating ORM schemas.pdf"
+								<File Id="Creating_ORM_Schemas.doc" Name="CrORMSch.doc" LongName="Creating ORM Schemas.doc" src="..\Documentation\Creating ORM Schemas.doc"
 										DefaultLanguage="$(var.DefaultLCID)" CompanionFile="Neumont.Tools.ORM.dll"/>
 							</Component>
 						</Directory>
