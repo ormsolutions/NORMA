@@ -263,7 +263,6 @@
     <None Include="ObjectModel\VerbalizationGenerator.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Resources\Toolbox.EntityType.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ObjectModel\ORMCore.dsldm.resx">
       <DependentUpon>ORMCore.dsldm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -272,8 +271,6 @@
       <DependentUpon>ORMModel.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ShapeModel\ConnectExternalConstraintAllowed.cur" />
-    <EmbeddedResource Include="ShapeModel\ConnectExternalConstraintSearching.cur" />
     <EmbeddedResource Include="ShapeModel\ORMDiagram.resx">
       <DependentUpon>ORMDiagram.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -331,19 +328,12 @@
       <LastGenOutput>VerbalizationGenerator.cs</LastGenOutput>
     </Content>
     <Content Include="ObjectModel\VerbalizationGenerator.xslt" />
-    <None Include="Resources\AboutBox.ico" />
-    <None Include="Resources\Toolbox.RingConstraint.Bitmap.Id.bmp" />
-    <None Include="Resources\ORM.ico" />
-    <None Include="Resources\DiagramTabImage.png" />
-    <None Include="Resources\BitmapResourceStrip.bmp" />
     <Content Include="Resources\ResourceStringsGenerator.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>
     </Content>
     <Content Include="Resources\ResourceStringsGenerator.xslt" />
     <None Include="Shell\catalog.xml" />
-    <None Include="Resources\ToolWindowIcons.bmp" />
-    <None Include="Resources\Toolbox.ObjectifiedFactType.Bitmap.Id.bmp" />
     <Content Include="Shell\Converters\CoreModelImport.xslt" />
     <Content Include="Shell\Converters\CoreUpgradeTo2006-01.xslt" />
     <Content Include="Shell\Converters\RootUpgradeTo2006-01.xslt" />
@@ -362,15 +352,32 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMShape.AttachRules.cs</LastGenOutput>
     </None>
+    <None Include="ShapeModel\ORMShape.dsldm">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ORMShape.ims</DependentUpon>
+    </None>
+    <None Include="ShapeModel\ORMShape.dsldm.dsldmt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ORMShape.dsldm.cs</LastGenOutput>
+    </None>
+    <None Include="ShapeModel\ORMShape.ims">
+      <Generator>NUImsToDmdGenerator</Generator>
+      <LastGenOutput>ORMShape.dsldm</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ShapeModel\ConnectExternalConstraintAllowed.cur" />
+    <EmbeddedResource Include="ShapeModel\ConnectExternalConstraintSearching.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectSubtypeSearching.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectSubtypeAllowed.cur" />
-    <None Include="Resources\Toolbox.SubtypeConnector.Bitmap.Id.bmp" />
-    <None Include="Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp" />
-    <None Include="Resources\Toolbox.RoleConnector.Bitmap.Id.bmp" />
     <EmbeddedResource Include="ShapeModel\ConnectRoleAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectRoleSearching.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectInternalConstraintAllowed.cur" />
     <EmbeddedResource Include="ShapeModel\ConnectInternalConstraintSearching.cur" />
+    <None Include="Resources\Toolbox.EntityType.Bitmap.Id.bmp" />
+    <None Include="Resources\Toolbox.SubtypeConnector.Bitmap.Id.bmp" />
+    <None Include="Resources\Toolbox.FrequencyConstraint.Bitmap.Id.bmp" />
+    <None Include="Resources\Toolbox.RoleConnector.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.InternalUniquenessConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.SubsetConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.ValueType.Bitmap.Id.bmp" />
@@ -384,18 +391,14 @@
     <None Include="Resources\Toolbox.PreferredExternalUniquenessConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.EqualityConstraint.Bitmap.Id.bmp" />
     <None Include="Resources\Toolbox.ExternalConstraintConnector.Bitmap.Id.bmp" />
-    <None Include="ShapeModel\ORMShape.dsldm">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ORMShape.ims</DependentUpon>
-    </None>
-    <None Include="ShapeModel\ORMShape.dsldm.dsldmt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ORMShape.dsldm.cs</LastGenOutput>
-    </None>
-    <None Include="ShapeModel\ORMShape.ims">
-      <Generator>NUImsToDmdGenerator</Generator>
-      <LastGenOutput>ORMShape.dsldm</LastGenOutput>
-    </None>
+    <None Include="Resources\Toolbox.ObjectifiedFactType.Bitmap.Id.bmp" />
+    <None Include="Resources\Toolbox.RingConstraint.Bitmap.Id.bmp" />
+    <None Include="Resources\ToolWindowIcons.bmp" />
+    <None Include="Resources\ToolWindowIcons32.bmp" />
+    <None Include="Resources\VerbalizationToolbarImages.bmp" />
+    <None Include="Resources\DiagramTabImage.png" />
+    <None Include="Resources\AboutBox.ico" />
+    <None Include="Resources\ORM.ico" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
