@@ -2,8 +2,8 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-	xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore"
-	xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:ao="http://schemas.neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects">
 	<xsl:include href="ModelContextCode.xslt"/>
@@ -101,120 +101,11 @@
 		</plx:class>
 	</xsl:template>
 
-	<!--Build the DeserializationFactory class-->
-	<xsl:template name="GenerateDeserializationFactoryClass">
-		<xsl:param name="Model"/>
-		<xsl:param name="ModelContextName"/>
-		<xsl:param name="ModelDeserializationName"/>
-		<plx:class visibility="private" modifier="sealed" name="{$ModelDeserializationName}">
-			<plx:leadingInfo>
-				<plx:pragma type="region" data="{$ModelDeserializationName}"/>
-			</plx:leadingInfo>
-			<plx:trailingInfo>
-				<plx:pragma type="closeRegion" data="{$ModelDeserializationName}"/>
-			</plx:trailingInfo>
-			<plx:implementsInterface dataTypeName="I{$ModelDeserializationName}"/>
-			<plx:field name="{$PrivateMemberPrefix}Context" visibility="private" dataTypeName="{$ModelContextName}"/>
-			<plx:function visibility="public" name=".construct">
-				<plx:param name="context" dataTypeName="{$ModelContextName}"/>
-				<plx:assign>
-					<plx:left>
-						<plx:callThis name="{$PrivateMemberPrefix}Context" type="field"/>
-					</plx:left>
-					<plx:right>
-						<plx:nameRef type="parameter" name="context"/>
-					</plx:right>
-				</plx:assign>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance name="{$PrivateMemberPrefix}IsDeserializing" type="field">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="context"/>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:trueKeyword/>
-					</plx:right>
-				</plx:assign>
-			</plx:function>
-			<plx:function visibility="public" name="Dispose">
-				<plx:interfaceMember dataTypeName="IDisposable" memberName="Dispose"/>
-				<plx:assign>
-					<plx:left>
-						<plx:callInstance type="field"  name="{$PrivateMemberPrefix}IsDeserializing">
-							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}Context"/>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:left>
-					<plx:right>
-						<plx:falseKeyword/>
-					</plx:right>
-				</plx:assign>
-			</plx:function>
-			<xsl:apply-templates select="$AbsorbedObjects" mode="ForGenerateDeserializationContextMethod">
-				<xsl:with-param name="Model" select="$Model"/>
-				<xsl:with-param name="ModelDeserializationName" select="$ModelDeserializationName"/>
-			</xsl:apply-templates>
-		</plx:class>
-	</xsl:template>
-
-	<!--Build the Deserialization methods of the DeserializationFactory class for constructing new
-	core objects.-->
-	<xsl:template name="GenerateDeserializationContextMethod">
-		<xsl:param name="Model"/>
-		<xsl:param name="ModelDeserializationName"/>
-		<xsl:param name="className"/>
-		<xsl:variable name="propertiesFragment">
-			<xsl:apply-templates select="child::*" mode="TransformPropertyObjects">
-				<xsl:with-param name="Model" select="$Model"/>
-			</xsl:apply-templates>
-		</xsl:variable>
-		<xsl:variable name="properties" select="msxsl:node-set($propertiesFragment)/child::*"/>
-		<plx:function visibility="public" name="Create{$className}">
-			<plx:interfaceMember memberName="Create{$className}" dataTypeName="I{$ModelDeserializationName}"/>
-			<xsl:variable name="mandatoryParametersFragment">
-				<xsl:call-template name="GenerateMandatoryParameters">
-					<xsl:with-param name="properties" select="$properties"/>
-					<xsl:with-param name="nullPlaceholders" select="true()"/>
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:variable name="mandatoryParameters" select="msxsl:node-set($mandatoryParametersFragment)"/>
-			<xsl:copy-of select="$mandatoryParameters/plx:param"/>
-			<plx:returns dataTypeName="{$className}"/>
-			<plx:return>
-				<plx:callNew dataTypeName="{$className}{$ImplementationClassSuffix}">
-					<plx:passParam>
-						<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}Context"/>
-					</plx:passParam>
-					<xsl:for-each select="$mandatoryParameters/child::*">
-						<xsl:choose>
-							<!--Change plx:param tags from the GenerateMandatoryParameters 
-							template to plx:passParam tags-->
-							<xsl:when test="local-name()='param'">
-								<plx:passParam>
-									<plx:nameRef type="parameter" name="{@name}"/>
-								</plx:passParam>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:copy-of select="."/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:for-each>
-				</plx:callNew>
-			</plx:return>
-		</plx:function>
-	</xsl:template>
 
 	<xsl:template name="GenerateModelContextMethods">
 		<xsl:param name="Model"/>
 		<xsl:param name="ModelContextName"/>
 		<xsl:call-template name="BuildExternalUniquenessConstraintValidationFunctions">
-			<xsl:with-param name="Model" select="$Model"/>
-			<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
-		</xsl:call-template>
-		<xsl:call-template name="BuildAssociationUniquenessConstraintValidationFunctions">
 			<xsl:with-param name="Model" select="$Model"/>
 			<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
 		</xsl:call-template>
@@ -247,36 +138,6 @@
 				<xsl:with-param name="uniqueObjectName" select="$uniqueObjectName"/>
 				<xsl:with-param name="parameters" select="$parameters"/>
 			</xsl:call-template>
-		</xsl:for-each>
-	</xsl:template>
-
-	<xsl:template name="BuildAssociationUniquenessConstraintValidationFunctions">
-		<xsl:param name="Model"/>
-		<xsl:param name="ModelContextName"/>
-		<xsl:for-each select="$AbsorbedObjects/../ao:Association">
-			<xsl:variable name="uniqueObjectName" select="concat(@name,$AssociationClassSuffix)"/>
-			<xsl:for-each select="$Model/orm:Facts/orm:Fact[@id=current()/@id]/orm:InternalConstraints/orm:InternalUniquenessConstraint">
-				<xsl:variable name="parametersFragment">
-					<xsl:for-each select="orm:RoleSequence/orm:Role">
-						<xsl:call-template name="GetParameterFromRole">
-							<xsl:with-param name="Model" select="$Model"/>
-						</xsl:call-template>
-					</xsl:for-each>
-				</xsl:variable>
-				<xsl:variable name="parameters" select="msxsl:node-set($parametersFragment)/child::*"/>
-				<!-- TODO: Only pass external uniqueness constraints to the following template if they are composed of simple binaries -->
-				<xsl:call-template name="GenerateSimpleBinaryUniquenessChangeMethods">
-					<xsl:with-param name="Model" select="$Model"/>
-					<xsl:with-param name="uniqueObjectName" select="$uniqueObjectName"/>
-					<xsl:with-param name="parameters" select="$parameters"/>
-				</xsl:call-template>
-				<!-- TODO: Only pass external uniqueness constraints to the following template if they are composed of simple binaries -->
-				<xsl:call-template name="GenerateSimpleBinaryUniquenessLookupMethod">
-					<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
-					<xsl:with-param name="uniqueObjectName" select="$uniqueObjectName"/>
-					<xsl:with-param name="parameters" select="$parameters"/>
-				</xsl:call-template>
-			</xsl:for-each>
 		</xsl:for-each>
 	</xsl:template>
 

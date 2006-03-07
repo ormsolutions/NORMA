@@ -2,8 +2,8 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-	xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore"
-	xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot"
+	xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore"
+	xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:ao="http://schemas.neumont.edu/ORM/SDK/ClassGenerator/AbsorbedObjects">
 
