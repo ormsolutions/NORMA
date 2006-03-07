@@ -415,7 +415,6 @@ namespace Neumont.Tools.ORM.ShapeModel
 				else if (mySourceShape != null && null != (ormDiagram = currentElement as ORMDiagram))
 				{
 					base.OnClicked(e); // Let through to allow a cancel
-					ormDiagram.StickyObject = null;
 				}
 			}
 		}
