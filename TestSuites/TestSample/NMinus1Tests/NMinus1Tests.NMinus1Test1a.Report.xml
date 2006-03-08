@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
-	<Compare result="failDiffgram">
-		<xd:xmldiff version="1.0" srcDocHash="15381462751169579431" options="IgnoreComments IgnorePI IgnorePrefixes IgnoreWhitespace IgnoreXmlDecl " fragments="no" xmlns:xd="http://schemas.microsoft.com/xmltools/2002/xmldiff">
-			<xd:node match="2">
-				<xd:remove match="@xmlns:ormExtension" />
-			</xd:node>
-		</xd:xmldiff>
-	</Compare>
+	<Compare result="pass" />
 	<ValidationErrors>
 		<ValidationError>Fact type 'FactType1' requires uniqueness constraint spanning &gt;= 2 roles in model 'NewModel'.</ValidationError>
 	</ValidationErrors>

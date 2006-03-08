@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
-<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/ORMRoot">
+<ormRoot:ORM2 xmlns:orm="http://schemas.neumont.edu/ORM/2006-01/ORMCore" xmlns:ormDiagram="http://schemas.neumont.edu/ORM/2006-01/ORMDiagram" xmlns:ormRoot="http://schemas.neumont.edu/ORM/2006-01/ORMRoot">
   <orm:ORMModel id="_D67E836F-D978-43C1-BA57-EEB0799BA1AA" Name="NewModel">
     <orm:Objects>
       <orm:EntityType id="_821ED408-21E9-4998-9F0B-9ED4E74E4CEE" Name="Wife" IsExternal="false" IsIndependent="false" _ReferenceMode="WifeId">
@@ -179,10 +178,10 @@
   </orm:ORMModel>
   <ormDiagram:ORMDiagram id="_3AEADC47-EAD0-4279-955F-43B3D3B9A2D9" IsCompleteView="false" Name="" BaseFontName="Tahoma" BaseFontSize="0.0972222238779068">
     <ormDiagram:Shapes>
-      <ormDiagram:ObjectTypeShape id="_C6EF4503-459A-41AE-A5CE-01C2E3683F43" IsExpanded="true" AbsoluteBounds="0.5, 0.9625, 0.865682417154312, 0.40900605320930483" ExpandRefMode="false">
+      <ormDiagram:ObjectTypeShape id="_C6EF4503-459A-41AE-A5CE-01C2E3683F43" IsExpanded="true" AbsoluteBounds="0.5, 0.9625, 0.70568241715431212, 0.37900605320930481" ExpandRefMode="false">
         <ormDiagram:Subject ref="_821ED408-21E9-4998-9F0B-9ED4E74E4CEE" />
       </ormDiagram:ObjectTypeShape>
-      <ormDiagram:ObjectTypeShape id="_F7A7B7E8-A6CC-4C90-84B8-D5BE77FBDD12" IsExpanded="true" AbsoluteBounds="2.825, 0.875, 1.0096643209457397, 0.40900605320930483" ExpandRefMode="false">
+      <ormDiagram:ObjectTypeShape id="_F7A7B7E8-A6CC-4C90-84B8-D5BE77FBDD12" IsExpanded="true" AbsoluteBounds="2.825, 0.875, 0.84966432094573974, 0.37900605320930481" ExpandRefMode="false">
         <ormDiagram:Subject ref="_33DA7CC8-522B-44AB-9F20-8B07D1DDDB6E" />
       </ormDiagram:ObjectTypeShape>
       <ormDiagram:FactTypeShape id="_43F118C2-10D0-460B-BB9C-6522389F3EF4" IsExpanded="true" AbsoluteBounds="1.9625000000000001, 1.1500000000000001, 0.33388888899236918, 0.19388888899236917" ConstraintDisplayPosition="Top">

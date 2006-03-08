@@ -47,16 +47,16 @@ namespace TestSample.DTBlankTests
 
 			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
 
-            UnspecifiedDataType unspecified = (UnspecifiedDataType)model.Store.ElementDirectory.GetElements(UnspecifiedDataType.MetaClassGuid)[0];
-            ObjectType o = (ObjectType)model.ObjectTypesDictionary.GetElement("WifeId").SingleElement;
+			UnspecifiedDataType unspecified = (UnspecifiedDataType)model.Store.ElementDirectory.GetElements(UnspecifiedDataType.MetaClassGuid)[0];
+			ObjectType o = (ObjectType)model.ObjectTypesDictionary.GetElement("WifeId").SingleElement;
 
 
-            using (Transaction t = store.TransactionManager.BeginTransaction("Add invalid data type error"))
-            {
-                //Make the error
-                o.DataType = unspecified;
-                t.Commit();
-            }
+			using (Transaction t = store.TransactionManager.BeginTransaction("Add invalid data type error"))
+			{
+				//Make the error
+				o.DataType = unspecified;
+				t.Commit();
+			}
 			
 			myTestServices.LogValidationErrors("After adding error");
 		}
@@ -65,22 +65,22 @@ namespace TestSample.DTBlankTests
 		public void DTBlankTest2b(Store store)
 		{
 
-            myTestServices.LogValidationErrors("Before removing error");
+			myTestServices.LogValidationErrors("Before removing error");
 
-            ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
-            NumericDataType numeric = (NumericDataType)model.Store.ElementDirectory.GetElements(NumericDataType.MetaClassGuid)[0];
-            ObjectType o = (ObjectType)model.ObjectTypesDictionary.GetElement("WifeId").SingleElement;
+			ORMModel model = (ORMModel)store.ElementDirectory.GetElements(ORMModel.MetaClassGuid)[0];
+			FloatingPointNumericDataType numeric = (FloatingPointNumericDataType)model.Store.ElementDirectory.GetElements(FloatingPointNumericDataType.MetaClassGuid)[0];
+			ObjectType o = (ObjectType)model.ObjectTypesDictionary.GetElement("WifeId").SingleElement;
 
 
-            using (Transaction t = store.TransactionManager.BeginTransaction("Add invalid data type error"))
-            {
-                //remove
-                o.DataType = numeric;
-                t.Commit();
-            }
+			using (Transaction t = store.TransactionManager.BeginTransaction("Remove invalid data type error"))
+			{
+				//remove
+				o.DataType = numeric;
+				t.Commit();
+			}
 
-            myTestServices.LogValidationErrors("After removing error");
-        }
+			myTestServices.LogValidationErrors("After removing error");
+		}
 
 	}
 }

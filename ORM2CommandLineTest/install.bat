@@ -11,24 +11,24 @@ set envPath="C:\Program Files\Microsoft Visual Studio 8\"
 ) else (
 set envPath=%3
 )
-xcopy /Y /D /Q %rootPath%%outDir%"Neumont.Tools.ORM.SDK.TestEngine.dll" %envPath%"Common7\IDE\PrivateAssemblies\"
-xcopy /Y /D /Q %rootPath%%outDir%"Neumont.Tools.ORM.SDK.TestEngine.XML" %envPath%"Common7\IDE\PrivateAssemblies\"
+SET NORMADir="%ProgramFiles%\Neumont\ORM Architect for Visual Studio"
+xcopy /Y /D /Q %rootPath%%outDir%"Neumont.Tools.ORM.SDK.TestEngine.dll" %NORMADir%"\bin\"
+xcopy /Y /D /Q %rootPath%%outDir%"Neumont.Tools.ORM.SDK.TestEngine.XML" %NORMADir%"\bin\"
 if exist %rootPath%%outDir%"Neumont.Tools.ORM.SDK.TestEngine.pdb" (
-xcopy /Y /D /Q %rootPath%%outDir%"Neumont.Tools.ORM.SDK.TestEngine.pdb" %envPath%"Common7\IDE\PrivateAssemblies\"
+xcopy /Y /D /Q %rootPath%%outDir%"Neumont.Tools.ORM.SDK.TestEngine.pdb" %NORMADir%"\bin\"
 ) else (
-if exist %envPath%"Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.SDK.TestEngine.pdb" (
-del %envPath%"Common7\IDE\PrivateAssemblies\Neumont.Tools.ORM.SDK.TestEngine.pdb"
+if exist %NORMADir%"\bin\Neumont.Tools.ORM.SDK.TestEngine.pdb" (
+del %NORMADir%"\bin\Neumont.Tools.ORM.SDK.TestEngine.pdb"
 )
 )
-xcopy /Y /D /Q %rootPath%%outDir%"ORMTestDriver.exe" %envPath%"Common7\IDE\"
+xcopy /Y /D /Q %rootPath%%outDir%"ORMTestDriver.exe" %NORMADir%"\bin\"
 if exist %rootPath%%outDir%"ORMTestDriver.pdb" (
-xcopy /Y /D /Q %rootPath%%outDir%"ORMTestDriver.pdb" %envPath%"Common7\IDE\"
+xcopy /Y /D /Q %rootPath%%outDir%"ORMTestDriver.pdb" %NORMADir%"\bin\"
 ) else (
-if exist %envPath%"Common7\IDE\ORMTestDriver.pdb" (
-del %envPath%"Common7\IDE\ORMTestDriver.pdb"
+if exist %NORMADir%"\bin\ORMTestDriver.pdb" (
+del %NORMADir%"\bin\"ORMTestDriver.pdb"
 )
 )
-xcopy /Y /D /Q %rootPath%%outDir%"ORMTestDriver.exe.config" %envPath%"Common7\IDE\"
 xcopy /Y /D /Q %rootPath%%outDir%"ORMTestReport.xsd" %envPath%"Xml\Schemas\"
 xcopy /Y /D /Q %rootPath%%outDir%"ORMTestSuite.xsd" %envPath%"Xml\Schemas\"
 xcopy /Y /D /Q %rootPath%%outDir%"ORMTestSuiteReport.xsd" %envPath%"Xml\Schemas\"

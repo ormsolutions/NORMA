@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDriverEngine", "ORM2CommandLineTest\TestDriverEngine.csproj", "{5DB17441-D264-4B37-88D5-98C3B1CF7D71}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDriverApp", "ORM2CommandLineTest\TestDriverApp.csproj", "{469D6D17-F8DA-48A4-8F76-671A4B8031A5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7DAB2FAD-F582-4D21-B3E0-B831C5F544CF} = {7DAB2FAD-F582-4D21-B3E0-B831C5F544CF}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSample", "TestSuites\TestSample\TestSample.csproj", "{7DAB2FAD-F582-4D21-B3E0-B831C5F544CF}"
 EndProject

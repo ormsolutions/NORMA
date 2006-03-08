@@ -32,6 +32,10 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Neumont.Tools.ORM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Neumont\ORM Architect for Visual Studio\bin\Neumont.Tools.ORM.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -57,16 +61,12 @@
       <Name>TestDriverEngine</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\ORMModel\ORMModel.csproj">
-      <Project>{888816BF-5497-49F9-8353-C8EF30CB9226}</Project>
-      <Name>ORMModel</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\ORMPackage.snk">
       <Link>ORMPackage.snk</Link>
     </None>
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2b.Compare.orm" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1c.Load.orm" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1c.Compare.orm" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test2b.Load.orm" />
@@ -90,12 +90,8 @@
     <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1c.Load.orm" />
     <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1c.Compare.orm" />
     <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2a.Load.orm" />
-    <None Include="DTBlankTests\DTBlankTests.DTBlankTest2a.Compare.orm" />
-    <None Include="DTBlankTests\DTBlank.orm" />
-    <None Include="DTBlankTests\DTBlankFixed.orm" />
-    <None Include="FCMinMaxTests\FrequencyConstraintError.orm" />
-    <None Include="FCMinMaxTests\FrequencyConstraintErrorFixed.orm" />
-    <None Include="NMinus1Tests\NMinus1ErrorFixed.orm" />
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2b.Load.orm" />
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2a.Compare.orm" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1b.Compare.orm" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1b.Load.orm" />
     <EmbeddedResource Include="NMinus1Tests\NMinus1Tests.NMinus1Test1a.Compare.orm" />
@@ -152,6 +148,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest1c.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2b.Report.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DTBlankTests\DTBlankTests.DTBlankTest2a.Report.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
