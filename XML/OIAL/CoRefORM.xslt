@@ -30,7 +30,7 @@
 	<xsl:param name="CoRefFactIdDecorator" select="'_coref_fact'"/>
 	<xsl:param name="CoRefFactNameDecorator" select="'_coref_fact'"/>
 	<xsl:param name="CoRefValueDataTypeIdDecorator" select="'_Data_Type'"/>
-	<xsl:param name="CoRefRoleNamePreposition" select="' as '" />
+	<xsl:param name="CoRefRoleNamePreposition" select="'AS'" />
 	<xsl:variable name="ExistingTrueOrFalseLogicalDataType" select="ormRoot:ORM2/orm:ORMModel/orm:DataTypes/orm:TrueOrFalseLogicalDataType"/>
 	<xsl:variable name="CoRefLogicalDataTypeIdDecoratorFragment">
 		<xsl:choose>
